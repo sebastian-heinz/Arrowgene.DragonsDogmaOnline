@@ -1,0 +1,2 @@
+﻿INSERT INTO `account` (id,name,normal_name,hash,mail,mail_verified,mail_verified_at,mail_token,password_token,state,last_login,created) VALUES 
+(1,'admin','admin','$2a$10$q38QrceMiKLxI3rj6zGpHOQTqG61pEbu5wExo6bhV3s5srxbg11Oi','admin',0,NULL,NULL,NULL,1,NULL,'2019-11-09 20:23:33.2347542');

@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <RootNamespace>Ddo.Cli</RootNamespace>
+        <Title>Dragons Dogma Online Command Line Interface</Title>
+        <Company>Ddo Team</Company>
+        <Product>Ddo.Cli</Product>
+        <Version>$(Version)</Version>
+        <Copyright>Copyright © 2019 Ddo Team</Copyright>
+        <LangVersion>8</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Ddo.Server\Ddo.Server.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <_UnmanagedRegistrationCache Remove="obj\Ddo.Cli.csproj.UnmanagedRegistration.cache" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ResolveComReferenceCache Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.csproj.ResolveComReference.cache" />
+    </ItemGroup>
+    <ItemGroup>
+      <IntermediateAssembly Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.dll" />
+    </ItemGroup>
+    <ItemGroup>
+      <_DebugSymbolsIntermediatePath Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.pdb" />
+    </ItemGroup>
+    <ItemGroup>
+      <_DeploymentManifestEntryPoint Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.dll" />
+    </ItemGroup>
+    <ItemGroup>
+      <ApplicationManifest Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.dll.manifest" />
+    </ItemGroup>
+    <ItemGroup>
+      <DeployManifest Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.application" />
+    </ItemGroup>
+    <ItemGroup>
+      <ClsidMap Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.clsidmap" />
+    </ItemGroup>
+    <ItemGroup>
+      <RegFreeComManifest Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.X.manifest" />
+    </ItemGroup>
+</Project>
