@@ -13,31 +13,4 @@
     <ItemGroup>
       <ProjectReference Include="..\Ddo.Server\Ddo.Server.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <_UnmanagedRegistrationCache Remove="obj\Ddo.Cli.csproj.UnmanagedRegistration.cache" />
-    </ItemGroup>
-    <ItemGroup>
-      <_ResolveComReferenceCache Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.csproj.ResolveComReference.cache" />
-    </ItemGroup>
-    <ItemGroup>
-      <IntermediateAssembly Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.dll" />
-    </ItemGroup>
-    <ItemGroup>
-      <_DebugSymbolsIntermediatePath Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.pdb" />
-    </ItemGroup>
-    <ItemGroup>
-      <_DeploymentManifestEntryPoint Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.dll" />
-    </ItemGroup>
-    <ItemGroup>
-      <ApplicationManifest Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.dll.manifest" />
-    </ItemGroup>
-    <ItemGroup>
-      <DeployManifest Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.application" />
-    </ItemGroup>
-    <ItemGroup>
-      <ClsidMap Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.clsidmap" />
-    </ItemGroup>
-    <ItemGroup>
-      <RegFreeComManifest Remove="obj\Debug\netcoreapp3.0\Ddo.Cli.X.manifest" />
-    </ItemGroup>
 </Project>

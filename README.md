@@ -61,7 +61,7 @@ ensure that no other local services run on these.request1
 
 # Client
 Launch the client with the following args:
-`"DDO.exe" "addr=127.0.0. port=52100 token=00000000000000000000 DL=http://127.0.0.1/patch/master/win/ LVer=03.04.003.20181115.0 RVer=3040008"`
+`"DDO.exe" "addr=localhost port=52100 token=00000000000000000000 DL=http://127.0.0.1/win/ LVer=03.04.003.20181115.0 RVer=3040008`
 
 # Guidelines
 ## Git 

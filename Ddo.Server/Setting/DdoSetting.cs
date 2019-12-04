@@ -69,9 +69,9 @@ namespace Ddo.Server.Setting
         {
             ListenIpAddress = IPAddress.Any;
             AuthServerIpAddress = IPAddress.Loopback;
-            AuthServerPort = 53312;
+            AuthServerPort = 52100;
             LobbyServerIpAddress = IPAddress.Loopback;
-            LobbyServerPort = 53310;
+            LobbyServerPort = 52101;
             NeedRegistration = false;
             LogLevel = 0;
             LogUnknownIncomingPackets = true;

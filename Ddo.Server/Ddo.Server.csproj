@@ -22,7 +22,4 @@
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Files\www" />
-    </ItemGroup>
 </Project>

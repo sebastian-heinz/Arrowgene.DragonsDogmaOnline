@@ -12,7 +12,7 @@ namespace Ddo.Server.Setting
             ServerHeader = null;
             WebFolder = Path.Combine(Util.ExecutingDirectory(), "Files/www");
             HttpPort = 80;
-            HttpsEnabled = true;
+            HttpsEnabled = false;
             HttpsPort = 443;
             HttpsCertPath = Path.Combine(Util.ExecutingDirectory(), "Files/ddo.pfx");
         }

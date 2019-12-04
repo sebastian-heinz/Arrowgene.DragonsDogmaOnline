@@ -19,7 +19,7 @@ jobs:
       - name: Build Release
         id: build_release
         run: |
-          DDO_VERSION_FILE=${{ github.workspace }}/DDO.version
+          DDO_VERSION_FILE=${{ github.workspace }}/ddo.version
           DDO_VERSION=$(<"$DDO_VERSION_FILE")
           echo ::set-env name=DDO_VERSION::$DDO_VERSION
           echo ::set-env name=DDO_VERSION_E::$(echo ${GITHUB_SHA} | cut -c1-8)

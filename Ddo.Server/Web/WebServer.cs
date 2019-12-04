@@ -41,7 +41,8 @@ namespace Ddo.Server.Web
             WebResponse response = await _middlewareStack.Start(request);
             if (!response.RouteFound)
             {
-                _logger.Info($"No route or middleware registered for requested Path: {request.Path}");
+                // TODO misleading
+                // _logger.Info($"No route or middleware registered for requested Path: {request.Path}");
             }
             return response;
         }
