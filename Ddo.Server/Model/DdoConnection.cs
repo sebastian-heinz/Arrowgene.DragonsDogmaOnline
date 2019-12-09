@@ -53,7 +53,12 @@ namespace Ddo.Server.Model
                 return;
             }
 
-          //  _logger.LogOutgoingPacket(this, packet);
+            //  _logger.LogOutgoingPacket(this, packet);
+            Socket.Send(data);
+        }
+
+        public void Send(byte[] data)
+        {
             Socket.Send(data);
         }
     }
