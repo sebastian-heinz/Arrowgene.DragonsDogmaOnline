@@ -1,27 +1,35 @@
 ﻿using System;
+using System.Security.Cryptography;
 using Arrowgene.Services.Buffers;
 using Ddo.Cli.Argument;
 using Ddo.Server.Common;
+using Buffer = Arrowgene.Services.Buffers.Buffer;
 
 namespace Ddo.Cli.Command.Commands
 {
     public class DecryptCommand : ConsoleCommand
     {
-        public override CommandResultType Handle(ConsoleParameter parameter)
+        private static void DumpBuffer(IBuffer buffer)
         {
-            string data =
-                "0130C0FA76B46338A97AAD8469AF8926D93232CEA2FBB37C7A807BC9B91028CDFA74B553790754BB160A838C371630EA75347AE3BAEEE746F28D9809F669FF0F4D516DBE7FE00656B918C9AEA6CE794FE5EA6BB16E1D58223DCD87DA0B3B531DA3719DF7200624FC2EC5196F7676EBB7D4FC89587E84433526D9C9F11E7EAE3D44B5276516BAC887BB932D6E0442F1C46C0E2BDE1F07745E1D490AD0FEBFAED94B5ADEF93AADE151C09D3E999684B98230B4088B0407638E1A39BD14676D85AAD612496DC1852CB674C5647BC68DF1FC62FECEEAAFA55E728E723268BE988AB1EA33885CCD5FDAE7B9B3F867FEE4BD62464DECC56E2215AF88C6464B355080A348A471DF15E660CFA35C0A5A1106D0A47E057FE0857D3DC7A02EBE976AA9C1B7F45BBBC31C87106488A34B33832B7BC237A7";
-            byte[] decrypted = Decrypt(Util.FromHexString(data));
-            //    Console.WriteLine(Util.ToHexString(decrypted, ' '));
-            Console.WriteLine(Util.ToAsciiString(decrypted, true));
-
-            IBuffer buffer = new StreamBuffer(decrypted);
+            int pos = buffer.Position;
             buffer.SetPositionStart();
+            Console.WriteLine(Util.ToAsciiString(buffer.GetAllBytes(), true));
             while (buffer.Size > buffer.Position)
             {
                 byte[] row = buffer.ReadBytes(16);
                 Console.WriteLine(Util.ToHexString(row, ' '));
             }
+
+            buffer.Position = pos;
+        }
+
+        public override CommandResultType Handle(ConsoleParameter parameter)
+        {
+            string data =
+                "0130C0FA76B46338A97AAD8469AF8926D93232CEA2FBB37C7A807BC9B91028CDFA74B553790754BB160A838C371630EA75347AE3BAEEE746F28D9809F669FF0F4D516DBE7FE00656B918C9AEA6CE794FE5EA6BB16E1D58223DCD87DA0B3B531DA3719DF7200624FC2EC5196F7676EBB7D4FC89587E84433526D9C9F11E7EAE3D44B5276516BAC887BB932D6E0442F1C46C0E2BDE1F07745E1D490AD0FEBFAED94B5ADEF93AADE151C09D3E999684B98230B4088B0407638E1A39BD14676D85AAD612496DC1852CB674C5647BC68DF1FC62FECEEAAFA55E728E723268BE988AB1EA33885CCD5FDAE7B9B3F867FEE4BD62464DECC56E2215AF88C6464B355080A348A471DF15E660CFA35C0A5A1106D0A47E057FE0857D3DC7A02EBE976AA9C1B7F45BBBC31C87106488A34B33832B7BC237A7";
+
+            byte[] decrypted = Decrypt(Util.FromHexString(data));
+
 
             return CommandResultType.Exit;
         }
@@ -36,7 +44,7 @@ namespace Ddo.Cli.Command.Commands
             ushort dataLen = buffer.ReadUInt16();
             IBuffer output = new StreamBuffer();
 
-            byte[] lastData = new byte[16];
+            byte[] lastData = init;
             while (buffer.Size > buffer.Position)
             {
                 byte[] data = buffer.ReadBytes(16);
@@ -45,17 +53,27 @@ namespace Ddo.Cli.Command.Commands
                 lastData = data;
             }
 
-            // copy 256 bytes
-            // copy 16 bytes
-            output.Position = 256;
-            byte[] b1 = output.ReadBytes(16);
-            byte[] b2 = output.ReadBytes(4);
-            byte[] b3 = output.ReadBytes(4);
-            byte[] b4 = output.ReadBytes(4);
-            byte[] b5 = output.ReadBytes(4);
-            byte[] b6 = output.ReadBytes(4);
+            DumpBuffer(output);
+            Console.WriteLine();
 
+            IBuffer buffer1 = output.Clone(0, 256);
+            IBuffer buffer2 = output.Clone(256, 36);
+            Process256(buffer1);
+            Process36(buffer2);
 
+            return output.GetAllBytes();
+        }
+
+        private void Process36(IBuffer input)
+        {
+            IBuffer output = new StreamBuffer();
+            input.SetPositionStart();
+            byte[] b1 = input.ReadBytes(16);
+            byte[] b2 = input.ReadBytes(4);
+            byte[] b3 = input.ReadBytes(4);
+            byte[] b4 = input.ReadBytes(4);
+            byte[] b5 = input.ReadBytes(4);
+            byte[] b6 = input.ReadBytes(4);
             byte[] bb = new byte[20];
             bb[0] = b2[3];
             bb[1] = b2[2];
@@ -77,19 +95,153 @@ namespace Ddo.Cli.Command.Commands
             bb[17] = b6[2];
             bb[18] = b6[1];
             bb[19] = b6[0];
+            output.WriteBytes(bb);
 
-            // missing 0x00000 ??
-            
-
-
-            return output.GetAllBytes();
+            DumpBuffer(input);
+            Console.WriteLine();
+            DumpBuffer(output);
         }
 
-        private static byte[] unk = new byte[]
+
+        private void Process256(IBuffer input)
         {
-            0x0C, 0xD3, 0xAA, 0xD9, 0x84, 0x5B, 0x22, 0x51, 0xF3, 0x2C, 0x55, 0x26, 0x7B, 0xA4, 0xDD, 0xAE, 0xFD, 0x11,
-            0x3D, 0x7D
-        };
+            input.SetPositionStart();
+            IBuffer output = new StreamBuffer();
+            for (int i = 0; i < 4; i++)
+            {
+                uint a1 = input.ReadUInt32();
+                uint a2 = input.ReadUInt32();
+                uint a3 = input.ReadUInt32();
+                uint a4 = input.ReadUInt32();
+
+                uint a11 = Buffer.SwapBytes(a1);
+                uint a22 = Buffer.SwapBytes(a2);
+                uint a33 = Buffer.SwapBytes(a3);
+                uint a44 = Buffer.SwapBytes(a4);
+                output.WriteInt32(a11);
+                output.WriteInt32(a22);
+                output.WriteInt32(a33);
+                output.WriteInt32(a44);
+            }
+
+            for (int i = 0; i < 64; i++)
+            {
+                output.Position = 0x34 + (i * 4);
+                uint e = output.ReadUInt32();
+                output.Position = 0x20 + (i * 4);
+                uint f = output.ReadUInt32();
+
+                uint ef = e ^ f; // 013ED0B3 | 3341 18 | xor eax,dword ptr ds:[ecx+18]
+
+                output.Position = 0 + (i * 4);
+                uint g = output.ReadUInt32();
+                uint efg = ef ^ g;
+
+                output.Position = 0x8 + (i * 4);
+                uint h = output.ReadUInt32();
+                uint efgh = efg ^ h;
+
+                uint rol = RotateLeft(efgh, 1);
+                output.Position = 0x40 + (i * 4);
+                output.WriteInt32(rol);
+            }
+
+            Hash(output.GetAllBytes());
+        }
+
+        private const uint Hash0 = 0x67452301;
+        private const uint Hash1 = 0xEFCDAB89;
+        private const uint Hash2 = 0x98BADCFE;
+        private const uint Hash3 = 0x10325476;
+
+        private byte[] Hash(byte[] input)
+        {
+            IBuffer bIn = new StreamBuffer(input);
+
+            uint mem0 = Hash0;
+            uint reg0 = Hash1;
+            uint reg2 = Hash2;
+            uint reg1 = Hash3;
+
+            uint reg3 = Hash0;
+            uint reg4 = 0xC3D2E1F0;
+
+            uint c_0x02175E3C = 0x512F8357;
+            uint c_0x02175E40 = 0x6574116F;
+            uint c_0x02175E44 = 0x84B64612;
+            uint c_0x02175E48 = 0xC1CF3B18;
+
+            bIn.Position = 0;
+            int c = 0;
+            while (c < 0x50)
+            {
+                uint eax;
+                uint ecx;
+                if (c > 0x3b)
+                {
+                    uint h = reg1 ^ reg2;
+                    uint h1 = h ^ reg0;
+                    eax = h1;
+                    ecx = c_0x02175E48;
+                }
+                else if (c > 0x27)
+                {
+                    uint f0 = reg2 | reg0;
+                    uint f1 = reg1 & f0;
+                    uint f2 = reg2 & reg0;
+                    uint f3 = f1 | f2;
+                    eax = f3;
+                    ecx = c_0x02175E44;
+                }
+                else if (c > 0x13)
+                {
+                    uint h = reg1 ^ reg2;
+                    uint h1 = h ^ reg0;
+                    eax = h1;
+                    ecx = c_0x02175E40;
+                }
+                else
+                {
+                    uint n = ~reg0;
+                    uint n1 = n & reg1;
+                    uint n2 = reg0 & reg2;
+                    uint n3 = n2 | n1;
+                    eax = n3;
+                    ecx = c_0x02175E3C;
+                }
+
+                uint n4 = RotateLeft(reg3, 5);
+                uint t0 = bIn.ReadUInt32();
+                uint t1 = n4 + t0; //013ED153 | 037C94 1C | add edi,dword ptr ss:[esp+edx*4+1C]
+                uint a = ecx ^ 0xBADFACE;
+                uint t2 = eax + t1;
+                uint t3 = a + t2;
+                uint t4 = reg4 + t3;
+                uint n5 = RotateRight(reg0, 2);
+                c++;
+                reg4 = reg1;
+                reg0 = mem0;
+                mem0 = t4; // 013ED175 | 897C24 14  | mov dword ptr ss:[esp+14],edi
+                reg1 = reg2;
+                reg2 = n5;
+                reg3 = t4; //TODO optimize t4
+
+                if (c == 0x50)
+                {
+
+                    break;
+                }
+            }
+
+            uint res0 = 0xFEEFCDAB + reg0; // 013ED18D | 0171 04 | add dword ptr ds:[ecx+4],esi
+            uint res1 = 0xF0103254 + reg1;
+            uint res2 = 0x7698BADC + reg2;
+            uint res3 = 0x67452301 + reg3;
+            uint res4 = 0x90c3d2e1 + reg4;
+            
+            return new byte[0];
+        }
+
 
         private byte[] Process16Byte(byte[] data, byte[] lastData)
         {
@@ -646,6 +798,10 @@ namespace Ddo.Cli.Command.Commands
                            CryptoKey[index + 0]);
         }
 
+
+        private static byte[] init = new byte[]
+            {0x24, 0x63, 0x62, 0x4D, 0x36, 0x57, 0x50, 0x29, 0x61, 0x58, 0x3D, 0x25, 0x4A, 0x5E, 0x7A, 0x41};
+
         private static byte[] CryptoKey = new byte[]
         {
             0x66, 0x32, 0x33, 0x65, 0x39, 0x38, 0x48, 0x61, 0x66, 0x4A, 0x64, 0x53, 0x6F, 0x61, 0x6A, 0x38,
@@ -686,5 +842,15 @@ namespace Ddo.Cli.Command.Commands
             0x72, 0x07, 0xB9, 0x55, 0xF8, 0xEE, 0xAC, 0x0A, 0x36, 0x49, 0x2A, 0x68, 0x3C, 0x38, 0xF1, 0xA4,
             0x40, 0x28, 0xD3, 0x7B, 0xBB, 0xC9, 0x43, 0xC1, 0x15, 0xE3, 0xAD, 0xF4, 0x77, 0xC7, 0x80, 0x9E
         };
+
+        public static uint RotateLeft(uint x, int n)
+        {
+            return (((x) << (n)) | ((x) >> (32 - (n))));
+        }
+
+        public static uint RotateRight(uint x, int n)
+        {
+            return (x >> n) | (x << (32 - n));
+        }
     }
 }
