@@ -147,10 +147,10 @@ namespace Ddo.Server.Crypto
         protected override byte[] HashFinal()
         {
             byte[] result = new byte[HashSizeBytes];
-            WriteUInt(_memoryA, result, 0, true);
-            WriteUInt(_memoryB, result, 4, true);
+            WriteUInt(_memoryD, result, 0, true);
+            WriteUInt(_memoryA, result, 4, true);
             WriteUInt(_memoryC, result, 8, true);
-            WriteUInt(_memoryD, result, 12, true);
+            WriteUInt(_memoryB, result, 12, true);
             WriteUInt(_memoryE, result, 16, true);
             return result;
         }

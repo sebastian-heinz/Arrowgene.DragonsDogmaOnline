@@ -66,11 +66,26 @@ namespace Ddo.Cli.Command.Commands
             IBuffer processedB = Process64(output.Clone(64, 64));
             IBuffer processedC = Process64(output.Clone(128, 64));
             IBuffer processedD = Process64(output.Clone(192, 64));
+            
+            IBuffer lastRow = output.Clone(256, 16);
+            lastRow.WriteByte(0x80);
+            lastRow.WriteBytes(new byte[15]);
+            lastRow.WriteBytes(new byte[16]);
+            lastRow.WriteBytes(new byte[14]);
+            lastRow.WriteByte(0x08);
+            lastRow.WriteByte(0x80);
+            IBuffer processedE = Process64(lastRow);
+
+            
             IBuffer processed = new StreamBuffer();
             processed.WriteBuffer(processedA);
             processed.WriteBuffer(processedB);
             processed.WriteBuffer(processedC);
             processed.WriteBuffer(processedD);
+            processed.WriteBuffer(processedE);
+            Console.WriteLine("Processed:");
+            DumpBuffer(processed);
+            Console.WriteLine();
 
             // Parse expected Hash
             IBuffer hashBytes = output.Clone(272, 20);
@@ -78,8 +93,8 @@ namespace Ddo.Cli.Command.Commands
             Console.WriteLine("Expected Hash:");
             DumpBuffer(new StreamBuffer(expectedHash));
             Console.WriteLine();
-
-            IBuffer buffer3 = output.Clone(256, 36);
+            
+            Unknown();
 
             // Calculate hash
             DdoHash ddoHash = new DdoHash();
@@ -89,6 +104,25 @@ namespace Ddo.Cli.Command.Commands
             Console.WriteLine();
 
             return output.GetAllBytes();
+        }
+
+        private void Unknown()
+        {
+            // possible hash init
+            uint c1 = 0xD9AAD30C;
+            uint c2 = 0x51225B84;
+            uint c3 = 0x26552CF3;
+            uint c4 = 0xAEDDA47B;
+            uint c5 = 0x7D3D11FD;
+
+            uint a = c1 ^ 0xBEEFF00D;
+            uint a1 = c2 ^ 0xBEEFF00D;
+            uint a3 = c3 ^ 0xBEEFF00D;
+            uint a4 = c4 ^ 0xBEEFF00D;
+            uint a5 = c5 ^ 0xBEEFF00D;
+
+
+            int z = 0;
         }
 
         private byte[] ReadHash(byte[] input)
