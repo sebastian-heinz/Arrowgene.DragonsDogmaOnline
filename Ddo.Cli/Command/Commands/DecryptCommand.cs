@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Security.Cryptography;
 using Arrowgene.Services.Buffers;
 using Ddo.Cli.Argument;
 using Ddo.Server.Common;
+using Ddo.Server.Crypto;
 using Buffer = Arrowgene.Services.Buffers.Buffer;
 
 namespace Ddo.Cli.Command.Commands
@@ -27,7 +27,8 @@ namespace Ddo.Cli.Command.Commands
         {
             string data =
                 "0130C0FA76B46338A97AAD8469AF8926D93232CEA2FBB37C7A807BC9B91028CDFA74B553790754BB160A838C371630EA75347AE3BAEEE746F28D9809F669FF0F4D516DBE7FE00656B918C9AEA6CE794FE5EA6BB16E1D58223DCD87DA0B3B531DA3719DF7200624FC2EC5196F7676EBB7D4FC89587E84433526D9C9F11E7EAE3D44B5276516BAC887BB932D6E0442F1C46C0E2BDE1F07745E1D490AD0FEBFAED94B5ADEF93AADE151C09D3E999684B98230B4088B0407638E1A39BD14676D85AAD612496DC1852CB674C5647BC68DF1FC62FECEEAAFA55E728E723268BE988AB1EA33885CCD5FDAE7B9B3F867FEE4BD62464DECC56E2215AF88C6464B355080A348A471DF15E660CFA35C0A5A1106D0A47E057FE0857D3DC7A02EBE976AA9C1B7F45BBBC31C87106488A34B33832B7BC237A7";
-
+            string data2 =
+                "0150066b608643985002409e7be9541a39c4658cde84ce0f290dd91ebc1c7d4054864bfcaa80279c06d06b149f350c320029f8329c6e837b07608d4bd7aa13ecea46b77f3673e05da5a4b6877f27922701d333c89f10171c3b5f9482924f38b572ef68a598323f5091d0b1d572678437bd10f1dad2b112decf9c801f193188c0cd7c881918220bd851d8372c73f87b66e78462792e53d2cc5868e768941b6011fe9d65300b8841153afb06e73e9419f057656c9f30e836c17e0489537cdf91d17bf6a8d24e889a6b8c414a456d06410bca38a15aba22109841d523911b716ee7eca07970e1392857dc646d9adfecb26d0f877cd19cd27857aaf098cd73d0cf18597286eb6b06c1e4a9934046e369d8c619d3af94867aa106789d43ef76427dbaaf728d06d668b7e252ca95bfa6f99c5f515d7334218a51a761eb7b25977c574f8ce878daeac7be1945b1c00f954b5cab9810";
             byte[] decrypted = Decrypt(Util.FromHexString(data));
 
 
@@ -41,9 +42,12 @@ namespace Ddo.Cli.Command.Commands
         {
             IBuffer buffer = new StreamBuffer(input);
             buffer.SetPositionStart();
-            ushort dataLen = buffer.ReadUInt16();
-            IBuffer output = new StreamBuffer();
 
+            // Read data length
+            ushort dataLen = buffer.ReadUInt16();
+
+            // Decrypt Data
+            IBuffer output = new StreamBuffer();
             byte[] lastData = init;
             while (buffer.Size > buffer.Position)
             {
@@ -53,57 +57,62 @@ namespace Ddo.Cli.Command.Commands
                 lastData = data;
             }
 
+            Console.WriteLine("Decrypted:");
             DumpBuffer(output);
             Console.WriteLine();
 
-            IBuffer buffer1 = output.Clone(0, 256);
-            IBuffer buffer2 = output.Clone(256, 36);
-            Process256(buffer1);
-            Process36(buffer2);
+
+            IBuffer processedA = Process64(output.Clone(0, 64));
+            IBuffer processedB = Process64(output.Clone(64, 64));
+            IBuffer processedC = Process64(output.Clone(128, 64));
+            IBuffer processedD = Process64(output.Clone(192, 64));
+            IBuffer processed = new StreamBuffer();
+            processed.WriteBuffer(processedA);
+            processed.WriteBuffer(processedB);
+            processed.WriteBuffer(processedC);
+            processed.WriteBuffer(processedD);
+
+            // Parse expected Hash
+            IBuffer hashBytes = output.Clone(272, 20);
+            byte[] expectedHash = ReadHash(hashBytes.GetAllBytes());
+            Console.WriteLine("Expected Hash:");
+            DumpBuffer(new StreamBuffer(expectedHash));
+            Console.WriteLine();
+
+            IBuffer buffer3 = output.Clone(256, 36);
+
+            // Calculate hash
+            DdoHash ddoHash = new DdoHash();
+            byte[] calculatedHash = ddoHash.ComputeHash(processed.GetAllBytes());
+            Console.WriteLine("Calculated Hash:");
+            DumpBuffer(new StreamBuffer(calculatedHash));
+            Console.WriteLine();
 
             return output.GetAllBytes();
         }
 
-        private void Process36(IBuffer input)
+        private byte[] ReadHash(byte[] input)
         {
-            IBuffer output = new StreamBuffer();
-            input.SetPositionStart();
-            byte[] b1 = input.ReadBytes(16);
-            byte[] b2 = input.ReadBytes(4);
-            byte[] b3 = input.ReadBytes(4);
-            byte[] b4 = input.ReadBytes(4);
-            byte[] b5 = input.ReadBytes(4);
-            byte[] b6 = input.ReadBytes(4);
-            byte[] bb = new byte[20];
-            bb[0] = b2[3];
-            bb[1] = b2[2];
-            bb[2] = b2[1];
-            bb[3] = b2[0];
-            bb[4] = b3[3];
-            bb[5] = b3[2];
-            bb[6] = b3[1];
-            bb[7] = b3[0];
-            bb[8] = b4[3];
-            bb[9] = b4[2];
-            bb[10] = b4[1];
-            bb[11] = b4[0];
-            bb[12] = b5[3];
-            bb[13] = b5[2];
-            bb[14] = b5[1];
-            bb[15] = b5[0];
-            bb[16] = b6[3];
-            bb[17] = b6[2];
-            bb[18] = b6[1];
-            bb[19] = b6[0];
-            output.WriteBytes(bb);
+            int hashSize = 20;
+            byte[] output = new byte[hashSize];
+            int srcIndex = -1;
+            int srcOffset = 0;
+            for (int dstIndex = 0; dstIndex < 20; dstIndex++)
+            {
+                if (srcIndex < srcOffset)
+                {
+                    srcIndex = dstIndex + 3;
+                    srcOffset = dstIndex;
+                }
 
-            DumpBuffer(input);
-            Console.WriteLine();
-            DumpBuffer(output);
+                output[dstIndex] = input[srcIndex];
+                srcIndex--;
+            }
+
+            return output;
         }
 
-
-        private void Process256(IBuffer input)
+        private IBuffer Process64(IBuffer input)
         {
             input.SetPositionStart();
             IBuffer output = new StreamBuffer();
@@ -113,7 +122,6 @@ namespace Ddo.Cli.Command.Commands
                 uint a2 = input.ReadUInt32();
                 uint a3 = input.ReadUInt32();
                 uint a4 = input.ReadUInt32();
-
                 uint a11 = Buffer.SwapBytes(a1);
                 uint a22 = Buffer.SwapBytes(a2);
                 uint a33 = Buffer.SwapBytes(a3);
@@ -146,102 +154,8 @@ namespace Ddo.Cli.Command.Commands
                 output.WriteInt32(rol);
             }
 
-            Hash(output.GetAllBytes());
+            return output;
         }
-
-        private const uint Hash0 = 0x67452301;
-        private const uint Hash1 = 0xEFCDAB89;
-        private const uint Hash2 = 0x98BADCFE;
-        private const uint Hash3 = 0x10325476;
-
-        private byte[] Hash(byte[] input)
-        {
-            IBuffer bIn = new StreamBuffer(input);
-
-            uint mem0 = Hash0;
-            uint reg0 = Hash1;
-            uint reg2 = Hash2;
-            uint reg1 = Hash3;
-
-            uint reg3 = Hash0;
-            uint reg4 = 0xC3D2E1F0;
-
-            uint c_0x02175E3C = 0x512F8357;
-            uint c_0x02175E40 = 0x6574116F;
-            uint c_0x02175E44 = 0x84B64612;
-            uint c_0x02175E48 = 0xC1CF3B18;
-
-            bIn.Position = 0;
-            int c = 0;
-            while (c < 0x50)
-            {
-                uint eax;
-                uint ecx;
-                if (c > 0x3b)
-                {
-                    uint h = reg1 ^ reg2;
-                    uint h1 = h ^ reg0;
-                    eax = h1;
-                    ecx = c_0x02175E48;
-                }
-                else if (c > 0x27)
-                {
-                    uint f0 = reg2 | reg0;
-                    uint f1 = reg1 & f0;
-                    uint f2 = reg2 & reg0;
-                    uint f3 = f1 | f2;
-                    eax = f3;
-                    ecx = c_0x02175E44;
-                }
-                else if (c > 0x13)
-                {
-                    uint h = reg1 ^ reg2;
-                    uint h1 = h ^ reg0;
-                    eax = h1;
-                    ecx = c_0x02175E40;
-                }
-                else
-                {
-                    uint n = ~reg0;
-                    uint n1 = n & reg1;
-                    uint n2 = reg0 & reg2;
-                    uint n3 = n2 | n1;
-                    eax = n3;
-                    ecx = c_0x02175E3C;
-                }
-
-                uint n4 = RotateLeft(reg3, 5);
-                uint t0 = bIn.ReadUInt32();
-                uint t1 = n4 + t0; //013ED153 | 037C94 1C | add edi,dword ptr ss:[esp+edx*4+1C]
-                uint a = ecx ^ 0xBADFACE;
-                uint t2 = eax + t1;
-                uint t3 = a + t2;
-                uint t4 = reg4 + t3;
-                uint n5 = RotateRight(reg0, 2);
-                c++;
-                reg4 = reg1;
-                reg0 = mem0;
-                mem0 = t4; // 013ED175 | 897C24 14  | mov dword ptr ss:[esp+14],edi
-                reg1 = reg2;
-                reg2 = n5;
-                reg3 = t4; //TODO optimize t4
-
-                if (c == 0x50)
-                {
-
-                    break;
-                }
-            }
-
-            uint res0 = 0xFEEFCDAB + reg0; // 013ED18D | 0171 04 | add dword ptr ds:[ecx+4],esi
-            uint res1 = 0xF0103254 + reg1;
-            uint res2 = 0x7698BADC + reg2;
-            uint res3 = 0x67452301 + reg3;
-            uint res4 = 0x90c3d2e1 + reg4;
-            
-            return new byte[0];
-        }
-
 
         private byte[] Process16Byte(byte[] data, byte[] lastData)
         {
@@ -677,24 +591,6 @@ namespace Ddo.Cli.Command.Commands
                     {
                         memoryOut[i] = (byte) (memoryIn[i] ^ lastData[i]);
                     }
-
-
-                    //   byte x1 = (byte) (memoryIn[0] ^ lastData[2]);
-                    //   byte x2 = (byte) (memoryIn[1] ^ lastData[3]);
-                    //   byte x3 = (byte) (memoryIn[2] ^ lastData[4]);
-                    //   byte x4 = (byte) (memoryIn[3] ^ lastData[5]);
-                    //   byte x5 = (byte) (memoryIn[4] ^ lastData[6]);
-                    //   byte x6 = (byte) (memoryIn[5] ^ lastData[7]);
-                    //   byte x7 = (byte) (memoryIn[6] ^ lastData[8]);
-                    //   byte x8 = (byte) (memoryIn[7] ^ lastData[9]);
-                    //   byte x9 = (byte) (memoryIn[8] ^ lastData[10]);
-                    //   byte x10 = (byte) (memoryIn[9] ^ lastData[11]);
-                    //   byte x11 = (byte) (memoryIn[10] ^ lastData[12]);
-                    //   byte x12 = (byte) (memoryIn[11] ^ lastData[13]);
-                    //   byte x13 = (byte) (memoryIn[12] ^ lastData[14]);
-                    //   byte x14 = (byte) (memoryIn[13] ^ lastData[15]);
-                    //   byte x15 = (byte) (memoryIn[14] ^ lastData[16]);
-                    //   byte x16 = (byte) (memoryIn[15] ^ lastData[17]);
                 }
             }
 
@@ -718,16 +614,6 @@ namespace Ddo.Cli.Command.Commands
             uint keyD = (uint) (CryptoKey[loKeyIdx + 4] << 24 | CryptoKey[loKeyIdx + 5] << 16 |
                                 CryptoKey[loKeyIdx + 6] << 8 | CryptoKey[loKeyIdx + 7]);
 
-
-            // uint keyA = (uint) (CryptoKey[136] << 24 | CryptoKey[137] << 16 | CryptoKey[138] << 8 | CryptoKey[139]);
-            // uint keyB = (uint) (CryptoKey[140] << 24 | CryptoKey[141] << 16 | CryptoKey[142] << 8 | CryptoKey[143]);
-            // uint keyC = (uint) (CryptoKey[128] << 24 | CryptoKey[129] << 16 | CryptoKey[130] << 8 | CryptoKey[131]);
-            // uint keyD = (uint) (CryptoKey[132] << 24 | CryptoKey[133] << 16 | CryptoKey[134] << 8 | CryptoKey[135]);
-
-            // uint keyA = (uint) (CryptoKey[200] << 24 | CryptoKey[201] << 16 | CryptoKey[202] << 8 | CryptoKey[203]);
-            // uint keyB = (uint) (CryptoKey[204] << 24 | CryptoKey[205] << 16 | CryptoKey[206] << 8 | CryptoKey[207]);
-            // uint keyC = (uint) (CryptoKey[192] << 24 | CryptoKey[193] << 16 | CryptoKey[194] << 8 | CryptoKey[195]);
-            // uint keyD = (uint) (CryptoKey[196] << 24 | CryptoKey[197] << 16 | CryptoKey[198] << 8 | CryptoKey[199]);
             uint resA = resultA >> 0x1F;
             uint resD = resultD | keyD;
             uint rkA = keyA & resultA;
@@ -779,17 +665,6 @@ namespace Ddo.Cli.Command.Commands
             uint re12 = keyCa4 >> 0x8;
             memoryOut[14] = (byte) re12;
             memoryOut[15] = (byte) keyCa4;
-        }
-
-        private byte[] CopyBuffer(byte[] data)
-        {
-            byte[] res = new byte[data.Length];
-            for (int i = 0; i < data.Length; i++)
-            {
-                res[i] = data[i];
-            }
-
-            return res;
         }
 
         private static uint GetKey(uint index)
