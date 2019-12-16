@@ -3,13 +3,13 @@ using System.Security.Cryptography;
 
 namespace Ddo.Server.Crypto
 {
-    public sealed class DdoHash : HashAlgorithm
+    public sealed class DdoPacketHash : HashAlgorithm
     {
-        public const string HashAlgorithmName = "DdoHash";
+        public const string HashAlgorithmName = "DdoPacketHash";
 
         public static void Register()
         {
-            CryptoConfig.AddAlgorithm(typeof(DdoHash), HashAlgorithmName);
+            CryptoConfig.AddAlgorithm(typeof(DdoPacketHash), HashAlgorithmName);
         }
 
         private const uint InitA = 0xEFCDAB89;
@@ -36,7 +36,7 @@ namespace Ddo.Server.Crypto
         private uint _prevMemoryD;
         private uint _prevMemoryE;
 
-        public DdoHash()
+        public DdoPacketHash()
         {
             Initialize();
         }

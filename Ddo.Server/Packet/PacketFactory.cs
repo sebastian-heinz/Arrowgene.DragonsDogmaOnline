@@ -68,9 +68,8 @@ namespace Ddo.Server.Packet
 
                 if (_header == null && _buffer.Size - _buffer.Position >= PacketHeaderSize)
                 {
-                    ushort id = _buffer.ReadUInt16(Endianness.Big);
                     ushort dataSize = _buffer.ReadUInt16(Endianness.Big);
-                    _header = new PacketHeader(id, dataSize);
+                    _header = new PacketHeader(0, dataSize);
                 }
 
                 if (_header != null && _buffer.Size - _buffer.Position >= _header.DataSize)
