@@ -57,7 +57,7 @@ With default configuration the server will listen on following ports:
 80 - http/download
 52100 - tcp/server
 ```
-ensure that no other local services run on these.request1
+ensure that no other local services listen on these ports.
 
 # Client
 Launch the client with the following args:
