@@ -112,119 +112,110 @@ namespace Ddo.Cli.Command.Commands
 
             return output.GetAllBytes();
         }
-
-
-        private byte[] GenerateKey(byte[] inputBytes)
+        
+        private byte[] GenerateKey(byte[] input)
         {
-            IBuffer input = new StreamBuffer(inputBytes);
-            input.SetPositionStart();
-            IBuffer output = new StreamBuffer();
-            output.SetPositionStart();
-
-
-            IBuffer out5 = new StreamBuffer();
-            out5.SetPositionStart();
-            out5.WriteBytes(input.GetBytes(16,16));
-            
+            byte[] output = new byte[0x80];
+            for (int i = 0; i < 32; i++)
+            {
+                output[i] = input[i];
+            }
             for (int i = 0; i < 4; i++)
             {
-                uint a = input.ReadUInt32();
-                uint b = input.GetUInt32((i * 4) + 16);
+                int offsetA = i * 4;
+                int offsetB = i * 4 + 16;
+                int offsetC = i * 4 + 32;
+                uint a = (uint) (input[offsetA] | input[offsetA + 1] << 8 |
+                                 input[offsetA + 2] << 16 | input[offsetA + 3] << 24);
+                uint b = (uint) (input[offsetB] | input[offsetB + 1] << 8 |
+                                 input[offsetB + 2] << 16 | input[offsetB + 3] << 24);
                 uint c = a ^ b;
-                output.WriteInt32(c);
+                output[offsetC] = (byte) (c & 0xFF);
+                output[offsetC + 1] = (byte) (c >> 8 & 0xFF);
+                output[offsetC + 2] = (byte) (c >> 16 & 0xFF);
+                output[offsetC + 3] = (byte) (c >> 24 & 0xFF);
             }
-
-            DumpBuffer(output);
-            byte[] outp = output.GetAllBytes();
-            GenerateA(0, outp, 0);
-            DumpBuffer(new StreamBuffer(outp));
-            GenerateA(8, outp, 8);
-            DumpBuffer(new StreamBuffer(outp));
-
-
-            StreamBuffer sbi = new StreamBuffer(outp);
-            IBuffer output2 = new StreamBuffer();
-            sbi.SetPositionStart();
-            input.Position = 0;
+            // start
+            GenerateA(32, output, 0, true);
+            GenerateA(40, output, 8, false);
             for (int i = 0; i < 4; i++)
             {
-                uint a = input.ReadUInt32();
-                uint b = sbi.ReadUInt32();
+                int offsetA = i * 4;
+                int offsetB = i * 4 + 32;
+                int offsetC = i * 4 + 32;
+                uint a = (uint) (output[offsetA] | output[offsetA + 1] << 8 |
+                                 output[offsetA + 2] << 16 | output[offsetA + 3] << 24);
+                uint b = (uint) (output[offsetB] | output[offsetB + 1] << 8 |
+                                 output[offsetB + 2] << 16 | output[offsetB + 3] << 24);
                 uint c = a ^ b;
-                output2.WriteInt32(c);
+                output[offsetC] = (byte) (c & 0xFF);
+                output[offsetC + 1] = (byte) (c >> 8 & 0xFF);
+                output[offsetC + 2] = (byte) (c >> 16 & 0xFF);
+                output[offsetC + 3] = (byte) (c >> 24 & 0xFF);
             }
-
-            DumpBuffer(output2);
-            outp = output2.GetAllBytes();
-            GenerateA(16, outp, 0);
-            DumpBuffer(new StreamBuffer(outp));
-            GenerateA(24, outp, 8);
-            DumpBuffer(new StreamBuffer(outp));
-
-            out5.WriteBytes(outp);
-
-            byte[] outpO = new StreamBuffer(outp).GetAllBytes();
-            byte[] outp1 = new StreamBuffer(outp).GetAllBytes();
-
+            GenerateA(32, output, 16, true);
+            GenerateA(40, output, 24, false);
             // 0355EAEF | 0FB64C24 0C | movzx ecx,byte ptr ss:[esp+C]
             for (int i = 0; i < 4; i++)
             {
-                outp[(i * 4) + 0] = inputBytes[(i * 4) + 3];
-                outp[(i * 4) + 1] = inputBytes[(i * 4) + 2];
-                outp[(i * 4) + 2] = inputBytes[(i * 4) + 1];
-                outp[(i * 4) + 3] = inputBytes[(i * 4) + 0];
+                int offsetSrc = i * 4;
+                int offsetDst = i * 4 + 64;
+                output[offsetDst + 0] = output[offsetSrc + 3];
+                output[offsetDst + 1] = output[offsetSrc + 2];
+                output[offsetDst + 2] = output[offsetSrc + 1];
+                output[offsetDst + 3] = output[offsetSrc + 0];
             }
-
-            DumpBuffer(new StreamBuffer(outp));
-
             for (int i = 0; i < 4; i++)
             {
-                outpO[(i * 4) + 0] = outp1[(i * 4) + 3];
-                outpO[(i * 4) + 1] = outp1[(i * 4) + 2];
-                outpO[(i * 4) + 2] = outp1[(i * 4) + 1];
-                outpO[(i * 4) + 3] = outp1[(i * 4) + 0];
+                int offsetSrc = i * 4 + 32;
+                int offsetDst = i * 4 + 80;
+                output[offsetDst + 0] = output[offsetSrc + 3];
+                output[offsetDst + 1] = output[offsetSrc + 2];
+                output[offsetDst + 2] = output[offsetSrc + 1];
+                output[offsetDst + 3] = output[offsetSrc + 0];
             }
-
-            DumpBuffer(new StreamBuffer(outpO));
-            
-            
-            IBuffer output1 = new StreamBuffer();
-            output1.SetPositionStart();
-            DumpBuffer(out5);
-            out5.SetPositionStart();
             for (int i = 0; i < 4; i++)
             {
-                uint a = out5.ReadUInt32();
-                uint b = out5.GetUInt32((i * 4) + 16);
+                int offsetA = i * 4 + 16;
+                int offsetB = i * 4 + 32;
+                int offsetC = i * 4 + 48;
+                uint a = (uint) (output[offsetA] | output[offsetA + 1] << 8 |
+                                 output[offsetA + 2] << 16 | output[offsetA + 3] << 24);
+                uint b = (uint) (output[offsetB] | output[offsetB + 1] << 8 |
+                                 output[offsetB + 2] << 16 | output[offsetB + 3] << 24);
                 uint c = a ^ b;
-                output1.WriteInt32(c);
+                output[offsetC] = (byte) (c & 0xFF);
+                output[offsetC + 1] = (byte) (c >> 8 & 0xFF);
+                output[offsetC + 2] = (byte) (c >> 16 & 0xFF);
+                output[offsetC + 3] = (byte) (c >> 24 & 0xFF);
             }
-            DumpBuffer(output1);
+            GenerateA(48, output, 32, true);
+            GenerateA(56, output, 40, false);
+            // 0355C36F | 0FB64C24 1C | movzx ecx,byte ptr ss:[esp+1C]
+            DumpBuffer(new StreamBuffer(output));
+            
 
             
             
             
-            
+            return output;
+
             // 0355EC27   | 81FE 80000000         | cmp esi,80 
 
-            
-            
-            
-            
 
-            return output.GetAllBytes();
+            return output;
         }
 
-        private void GenerateA(int lookupIdx, byte[] outp, int outpIdx)
+        private void GenerateA(int outputIndex, byte[] output, int lookupIdx, bool first)
         {
             // 0343B8F6 | 0FB60B | movzx ecx,byte ptr ds:[ebx] | keygen - 1st byte
 
-            byte a1 = outp[outpIdx + 0];
+            byte a1 = output[outputIndex + 0];
             byte b1 = (byte) (a1 ^ K_20DBD30[lookupIdx + 0]); // 02334600  | 0FB607 | movzx eax,byte ptr ds:[edi]
             byte c1 = K_2179DD0[b1]; // 0349A933  | 8A81 D09D1702 | mov al,byte ptr ds:[ecx+2179DD0]
             //0349A93D  | 884424 14 | mov byte ptr ss:[esp+14],al
 
-            byte d1 = outp[outpIdx + 1];
+            byte d1 = output[outputIndex + 1];
             byte e1 = (byte) (d1 ^ K_20DBD30[lookupIdx + 1]);
             byte f1 = K_2179DD0[e1];
             byte g1 = (byte) (f1 >> 0x07);
@@ -232,7 +223,7 @@ namespace Ddo.Cli.Command.Commands
             byte i1 = (byte) (g1 ^ h1);
             // 0256B5DA  | 884C24 0F | mov byte ptr ss:[esp+F],cl
 
-            byte j1 = outp[outpIdx + 2];
+            byte j1 = output[outputIndex + 2];
             byte k1 = (byte) (j1 ^ K_20DBD30[lookupIdx + 2]);
             byte l1 = K_2179DD0[k1];
             byte m1 = (byte) (l1 >> 0x01);
@@ -240,13 +231,13 @@ namespace Ddo.Cli.Command.Commands
             byte o1 = (byte) (m1 ^ n1);
             // 03B15411  | 884C24 0D | mov byte ptr ss:[esp+D],cl
 
-            byte p1 = outp[outpIdx + 3]; // 0366CCAA  | C1EA 07 | shr edx,7
+            byte p1 = output[outputIndex + 3]; // 0366CCAA  | C1EA 07 | shr edx,7
             byte q1 = (byte) (p1 >> 0x07); // 0366CCAA  | C1EA 07 | shr edx,7
             byte r1 = (byte) (K_20DBD30[lookupIdx + 3] >> 0x07); // 03A56D87  | C1F8 07 | sar eax,7 
             byte s1 = (byte) (q1 ^ r1); // 0251E753 | 33D0 | xor edx,eax
             byte t1 = (byte) (p1 + p1);
 
-            byte u1 = outp[outpIdx + 4];
+            byte u1 = output[outputIndex + 4];
             byte v1 = (byte) (s1 ^ t1);
             byte w1 = (byte) (v1 & 0xFF);
             byte x1 = (byte) (K_20DBD30[lookupIdx + 3] & 0x7F);
@@ -262,7 +253,7 @@ namespace Ddo.Cli.Command.Commands
             byte f2 = (byte) (d2 ^ e2);
             // 03523162  | 884C24 0E | mov byte ptr ss:[esp+E],cl
 
-            byte g2 = outp[outpIdx + 5];
+            byte g2 = output[outputIndex + 5];
             byte h2 = (byte) (g2 ^ K_20DBD30[lookupIdx + 5]);
             byte i2 = K_2179DD0[h2];
             byte j2 = (byte) (i2 >> 0x01);
@@ -270,7 +261,7 @@ namespace Ddo.Cli.Command.Commands
             byte l2 = (byte) (j2 ^ k2);
             // 03441B02  | 884C24 18 | mov byte ptr ss:[esp+18],cl 
 
-            byte m2 = outp[outpIdx + 6];
+            byte m2 = output[outputIndex + 6];
             byte n2 = (byte) (m2 >> 0x07);
             byte o2 = (byte) (K_20DBD30[lookupIdx + 6] >> 0x07);
             byte p2 = (byte) (n2 ^ o2);
@@ -282,17 +273,23 @@ namespace Ddo.Cli.Command.Commands
             byte v2 = (byte) (t2 ^ u2);
             byte w2 = K_2179DD0[v2];
 
-            byte x2 = outp[outpIdx + 7]; // 03A21C2B  | 0FB64B 07 | movzx ecx,byte ptr ds:[ebx+7] 
+            byte x2 = output[outputIndex + 7]; // 03A21C2B  | 0FB64B 07 | movzx ecx,byte ptr ds:[ebx+7] 
             byte y2 = (byte) (x2 ^ K_20DBD30[lookupIdx + 7]);
 
 
-            int idx = 0;
-            if (outpIdx == 0)
+            // int idx = 0;
+            // if (outputIndex == 0)
+            // {
+            //     idx = 8;
+            // }
+
+            int idx = outputIndex - 8;
+            if (first)
             {
-                idx = 8;
+                idx = outputIndex + 8;
             }
 
-            byte z2 = outp[idx + 0]; // 02519BA0  | 8A06 | mov al,byte ptr ds:[esi] 
+            byte z2 = output[idx + 0]; // 02519BA0  | 8A06 | mov al,byte ptr ds:[esi] 
             byte a3 = K_2179DD0[y2];
             byte b3 = (byte) (a3 ^ z2);
             byte c3 = (byte) (w2 ^ b3);
@@ -300,66 +297,65 @@ namespace Ddo.Cli.Command.Commands
             byte e3 = (byte) (d3 ^ a2);
             byte f3 = (byte) (e3 ^ o1);
             byte g3 = (byte) (f3 ^ c1);
-            outp[idx + 0] = g3; // 0409B4AC | 8806 | mov byte ptr ds:[esi],al
+            output[idx + 0] = g3; // 0409B4AC | 8806 | mov byte ptr ds:[esi],al
 
             byte h3 = (byte) (a3 ^ w2);
             byte i3 = (byte) (h3 ^ f2);
             byte j3 = (byte) (i3 ^ a2);
             byte k3 = (byte) (j3 ^ i1);
             byte l3 = (byte) (k3 ^ c1);
-            byte m3 = (byte) (l3 ^ outp[idx + 1]); // 04041189  | 3046 01 | xor byte ptr ds:[esi+1],al
-            outp[idx + 1] = m3;
+            byte m3 = (byte) (l3 ^ output[idx + 1]); // 04041189  | 3046 01 | xor byte ptr ds:[esi+1],al
+            output[idx + 1] = m3;
 
-            byte
-                n3 = outp[idx + 2]; //0376CF65  | 8A46 02               | mov al,byte ptr ds:[esi+2                                     
+            byte n3 = output[idx + 2]; //0376CF65  | 8A46 02 | mov al,byte ptr ds:[esi+2
             byte o3 = (byte) (a3 ^ n3);
             byte p3 = (byte) (l2 ^ o3);
             byte q3 = (byte) (f2 ^ p3);
             byte r3 = (byte) (q3 ^ o1);
             byte s3 = (byte) (r3 ^ i1);
             byte t3 = (byte) (s3 ^ c1);
-            outp[idx + 2] = t3; // 036633FD  | 8A46 03 | mov al,byte ptr ds:[esi+3]  
+            output[idx + 2] = t3; // 036633FD  | 8A46 03 | mov al,byte ptr ds:[esi+3]  
 
-            byte u3 = outp[idx + 3];
+            byte u3 = output[idx + 3];
             byte v3 = (byte) (u3 ^ w2);
             byte w3 = (byte) (v3 ^ l2);
             byte x3 = (byte) (w3 ^ f2);
             byte y3 = (byte) (x3 ^ a2);
             byte z3 = (byte) (y3 ^ o1);
             byte a4 = (byte) (z3 ^ i1);
-            outp[idx + 3] = a4;
+            output[idx + 3] = a4;
 
-            byte b4 = outp[idx + 4];
+            byte b4 = output[idx + 4];
             byte c4 = (byte) (b4 ^ a3);
             byte d4 = (byte) (c4 ^ w2);
             byte e4 = (byte) (d4 ^ l2);
             byte f4 = (byte) (e4 ^ i1);
             byte g4 = (byte) (f4 ^ c1);
-            outp[idx + 4] = g4;
+            output[idx + 4] = g4;
 
-            byte h4 = outp[idx + 5]; // 0364EFC2 | 8A46 05 | mov al,byte ptr ds:[esi+5] 
+            byte h4 = output[idx + 5]; // 0364EFC2 | 8A46 05 | mov al,byte ptr ds:[esi+5] 
             byte i4 = (byte) (h4 ^ a3);
             byte j4 = (byte) (i4 ^ w2);
             byte k4 = (byte) (j4 ^ f2);
             byte l4 = (byte) (k4 ^ o1);
             byte m4 = (byte) (l4 ^ i1);
-            outp[idx + 5] = m4;
+            output[idx + 5] = m4;
 
-            byte n4 = outp[idx + 6]; // 0251F2F0 | 8846 05 | mov byte ptr ds:[esi+5],al
+            byte n4 = output[idx + 6]; // 0251F2F0 | 8846 05 | mov byte ptr ds:[esi+5],al
             byte o4 = (byte) (n4 ^ a3);
             byte p4 = (byte) (o4 ^ l2);
             byte q4 = (byte) (p4 ^ f2);
             byte r4 = (byte) (q4 ^ a2);
             byte s4 = (byte) (r4 ^ o1);
-            outp[idx + 6] = s4;
+            output[idx + 6] = s4;
 
-            byte t4 = outp[idx + 7];
+            byte t4 = output[idx + 7];
             byte u4 = (byte) (t4 ^ w2);
             byte v4 = (byte) (u4 ^ l2);
             byte w4 = (byte) (v4 ^ f2);
             byte x4 = (byte) (w4 ^ a2);
             byte y4 = (byte) (x4 ^ c1);
-            outp[idx + 7] = y4; // 0409A0E0 | 8846 07 | mov byte ptr ds:[esi+7],al
+            output[idx + 7] = y4; // 0409A0E0 | 8846 07 | mov byte ptr ds:[esi+7],al
         }
 
 
