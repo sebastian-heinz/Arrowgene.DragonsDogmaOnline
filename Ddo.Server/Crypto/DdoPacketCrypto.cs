@@ -14,7 +14,33 @@ namespace Ddo.Server.Crypto
 
             // Decrypt Data
             IBuffer output = new StreamBuffer();
+            
             byte[] lastData = init;
+
+            while (buffer.Size > buffer.Position)
+            {
+                byte[] data = buffer.ReadBytes(16);
+                byte[] result = Process16Byte(data, lastData);
+                output.WriteBytes(result);
+                lastData = data;
+            }
+
+            return output.GetAllBytes();
+        }
+        
+        public byte[] DecryptRecv(byte[] input)
+        {
+            IBuffer buffer = new StreamBuffer(input);
+            buffer.SetPositionStart();
+
+            // Read data length
+            ushort dataLen = buffer.ReadUInt16(Endianness.Big);
+
+            // Decrypt Data
+            IBuffer output = new StreamBuffer();
+            
+            byte[] lastData = init;
+
             while (buffer.Size > buffer.Position)
             {
                 byte[] data = buffer.ReadBytes(16);

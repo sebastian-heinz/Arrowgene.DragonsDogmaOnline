@@ -24,7 +24,7 @@ namespace Ddo.Server.PacketHandler
 
             byte[] response1 = Util.FromHexString(hexResponse1);
             
-           connection.Send(response1);
+          connection.Send(response1);
         }
     };
 }
