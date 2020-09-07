@@ -112,30 +112,33 @@ namespace Ddo.Cli.Command.Commands
 
             return output.GetAllBytes();
         }
-        
+
         private byte[] GenerateKey(byte[] input)
         {
-            byte[] output = new byte[0x80];
+            byte[] output = new byte[144];
             for (int i = 0; i < 32; i++)
             {
                 output[i] = input[i];
             }
+
+
+            // start
             for (int i = 0; i < 4; i++)
             {
                 int offsetA = i * 4;
                 int offsetB = i * 4 + 16;
                 int offsetC = i * 4 + 32;
-                uint a = (uint) (input[offsetA] | input[offsetA + 1] << 8 |
-                                 input[offsetA + 2] << 16 | input[offsetA + 3] << 24);
-                uint b = (uint) (input[offsetB] | input[offsetB + 1] << 8 |
-                                 input[offsetB + 2] << 16 | input[offsetB + 3] << 24);
+                uint a = (uint) (output[offsetA] | output[offsetA + 1] << 8 |
+                                 output[offsetA + 2] << 16 | output[offsetA + 3] << 24);
+                uint b = (uint) (output[offsetB] | output[offsetB + 1] << 8 |
+                                 output[offsetB + 2] << 16 | output[offsetB + 3] << 24);
                 uint c = a ^ b;
                 output[offsetC] = (byte) (c & 0xFF);
                 output[offsetC + 1] = (byte) (c >> 8 & 0xFF);
                 output[offsetC + 2] = (byte) (c >> 16 & 0xFF);
                 output[offsetC + 3] = (byte) (c >> 24 & 0xFF);
             }
-            // start
+
             GenerateA(32, output, 0, true);
             GenerateA(40, output, 8, false);
             for (int i = 0; i < 4; i++)
@@ -153,6 +156,7 @@ namespace Ddo.Cli.Command.Commands
                 output[offsetC + 2] = (byte) (c >> 16 & 0xFF);
                 output[offsetC + 3] = (byte) (c >> 24 & 0xFF);
             }
+
             GenerateA(32, output, 16, true);
             GenerateA(40, output, 24, false);
             // 0355EAEF | 0FB64C24 0C | movzx ecx,byte ptr ss:[esp+C]
@@ -165,6 +169,7 @@ namespace Ddo.Cli.Command.Commands
                 output[offsetDst + 2] = output[offsetSrc + 1];
                 output[offsetDst + 3] = output[offsetSrc + 0];
             }
+
             for (int i = 0; i < 4; i++)
             {
                 int offsetSrc = i * 4 + 32;
@@ -174,6 +179,7 @@ namespace Ddo.Cli.Command.Commands
                 output[offsetDst + 2] = output[offsetSrc + 1];
                 output[offsetDst + 3] = output[offsetSrc + 0];
             }
+
             for (int i = 0; i < 4; i++)
             {
                 int offsetA = i * 4 + 16;
@@ -189,22 +195,265 @@ namespace Ddo.Cli.Command.Commands
                 output[offsetC + 2] = (byte) (c >> 16 & 0xFF);
                 output[offsetC + 3] = (byte) (c >> 24 & 0xFF);
             }
+
             GenerateA(48, output, 32, true);
             GenerateA(56, output, 40, false);
             // 0355C36F | 0FB64C24 1C | movzx ecx,byte ptr ss:[esp+1C]
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 16;
+                int offsetDst = i * 4 + 96;
+                output[offsetDst + 0] = output[offsetSrc + 3];
+                output[offsetDst + 1] = output[offsetSrc + 2];
+                output[offsetDst + 2] = output[offsetSrc + 1];
+                output[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 48;
+                int offsetDst = i * 4 + 112;
+                output[offsetDst + 0] = output[offsetSrc + 3];
+                output[offsetDst + 1] = output[offsetSrc + 2];
+                output[offsetDst + 2] = output[offsetSrc + 1];
+                output[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+            // 037835A | 8D4C24 54             | lea ecx,dword ptr ss:[esp+54]                                  | check point
+            // 0250593 | 8B5424 0C             | mov edx,dword ptr ss:[esp+C]                                   | keygen - 7
+            for (int i = 0; i < 4; i++)
+            {
+                // 0366183 | 8901 | mov dword ptr ds:[ecx],eax 
+                int offsetSrc = i * 4;
+                int offsetDst = i * 4 + 128;
+                output[offsetDst + 0] = output[offsetSrc + 3];
+                output[offsetDst + 1] = output[offsetSrc + 2];
+                output[offsetDst + 2] = output[offsetSrc + 1];
+                output[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+
+            byte[] result = new byte[0x80];
+
+            // copy last row to result - reversed
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 128;
+                int offsetDst = i * 4;
+                result[offsetDst + 0] = output[offsetSrc + 3];
+                result[offsetDst + 1] = output[offsetSrc + 2];
+                result[offsetDst + 2] = output[offsetSrc + 1];
+                result[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+            // move to last row
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 112;
+                int offsetDst = i * 4 + 128;
+                output[offsetDst + 0] = output[offsetSrc + 0];
+                output[offsetDst + 1] = output[offsetSrc + 1];
+                output[offsetDst + 2] = output[offsetSrc + 2];
+                output[offsetDst + 3] = output[offsetSrc + 3];
+            }
+
+            // copy last row to result - reversed
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 128;
+                int offsetDst = i * 4 + 16;
+                result[offsetDst + 0] = output[offsetSrc + 3];
+                result[offsetDst + 1] = output[offsetSrc + 2];
+                result[offsetDst + 2] = output[offsetSrc + 1];
+                result[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+            GenerateRowB(96, output, 0x0F, 0x11);
+            // copy last row to result - reversed
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 128;
+                int offsetDst = i * 4 + 32;
+                result[offsetDst + 0] = output[offsetSrc + 3];
+                result[offsetDst + 1] = output[offsetSrc + 2];
+                result[offsetDst + 2] = output[offsetSrc + 1];
+                result[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+            GenerateRowB(80, output, 0x0F, 0x11);
+            // copy last row to result - reversed
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 128;
+                int offsetDst = i * 4 + 48;
+                result[offsetDst + 0] = output[offsetSrc + 3];
+                result[offsetDst + 1] = output[offsetSrc + 2];
+                result[offsetDst + 2] = output[offsetSrc + 1];
+                result[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+            GenerateRowB(96, output, 0x1E, 0x02);
+            // copy last row to result - reversed
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 128;
+                int offsetDst = i * 4 + 64;
+                result[offsetDst + 0] = output[offsetSrc + 3];
+                result[offsetDst + 1] = output[offsetSrc + 2];
+                result[offsetDst + 2] = output[offsetSrc + 1];
+                result[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+            GenerateRowB(112, output, 0x1E, 0x02);
+            // copy last row to result - reversed
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 128;
+                int offsetDst = i * 4 + 80;
+                result[offsetDst + 0] = output[offsetSrc + 3];
+                result[offsetDst + 1] = output[offsetSrc + 2];
+                result[offsetDst + 2] = output[offsetSrc + 1];
+                result[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+            GenerateRowB(64, output, 0x0D, 0x13, 4);
+            // copy last row to result - reversed
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetSrc = i * 4 + 128;
+                int offsetDst = i * 4 + 96;
+                result[offsetDst + 0] = output[offsetSrc + 3];
+                result[offsetDst + 1] = output[offsetSrc + 2];
+                result[offsetDst + 2] = output[offsetSrc + 1];
+                result[offsetDst + 3] = output[offsetSrc + 0];
+            }
+
+
             DumpBuffer(new StreamBuffer(output));
-            
+            DumpBuffer(new StreamBuffer(result));
 
-            
-            
-            
-            return output;
-
-            // 0355EC27   | 81FE 80000000         | cmp esi,80 
-
-
-            return output;
+            return result;
         }
+
+        private void GenerateRowA(int outputIndex, byte[] output, byte shl, byte shr, int startOffset = 0)
+        {
+            // 040E5627 | 897424 1C | mov dword ptr ss:[esp+1C],esi | write shift
+
+            int startOutputIndex = outputIndex;
+            for (int i = 0; i < 4; i++)
+            {
+                int offsetA = outputIndex + 4;
+                if (i >= 3)
+                {
+                    offsetA = startOutputIndex;
+                }
+
+                int offsetB = outputIndex;
+                int offsetC = i * 4 + 128;
+
+                uint a = (uint) (output[offsetA] | output[offsetA + 1] << 8 |
+                                 output[offsetA + 2] << 16 | output[offsetA + 3] << 24);
+                uint b = (uint) (output[offsetB] | output[offsetB + 1] << 8 |
+                                 output[offsetB + 2] << 16 | output[offsetB + 3] << 24);
+
+                uint a1 = a >> shr;
+                uint b1 = b << shl;
+                uint c = a1 ^ b1;
+
+                output[offsetC] = (byte) (c & 0xFF);
+                output[offsetC + 1] = (byte) (c >> 8 & 0xFF);
+                output[offsetC + 2] = (byte) (c >> 16 & 0xFF);
+                output[offsetC + 3] = (byte) (c >> 24 & 0xFF);
+
+                outputIndex += 4;
+            }
+        }
+
+        private void GenerateRowB(int outputIndex, byte[] output, byte shl, byte shr, int startOffset = 0)
+        {
+            // 040E5627 | 897424 1C | mov dword ptr ss:[esp+1C],esi | write shift
+
+            int startOutputIndex = outputIndex;
+            int endOutputIndex = outputIndex + 16;
+            int current = startOutputIndex + startOffset;
+            int read = 0;
+
+            while (read < 16)
+            {
+
+                uint b = (uint) (output[current]);
+                current++;
+                if (current >= endOutputIndex)
+                {
+                    current = startOutputIndex;
+                }
+
+                b = (uint) (b | output[current] << 8);
+                current++;
+                if (current >= endOutputIndex)
+                {
+                    current = startOutputIndex;
+                }
+
+                b = (uint) (b | output[current] << 16);
+                current++;
+                if (current >= endOutputIndex)
+                {
+                    current = startOutputIndex;
+                }
+
+                b = (uint) (b | output[current] << 24);
+                current++;
+                if (current >= endOutputIndex)
+                {
+                    current = startOutputIndex;
+                }
+
+                uint a = (uint) (output[current]);
+                current++;
+                if (current >= endOutputIndex)
+                {
+                    current = startOutputIndex;
+                }
+
+                a = (uint) (a | output[current] << 8);
+                current++;
+                if (current >= endOutputIndex)
+                {
+                    current = startOutputIndex;
+                }
+
+                a = (uint) (a | output[current] << 16);
+                current++;
+                if (current >= endOutputIndex)
+                {
+                    current = startOutputIndex;
+                }
+
+                a = (uint) (a | output[current] << 24);
+                current++;
+                if (current >= endOutputIndex)
+                {
+                    current = startOutputIndex;
+                }
+
+                uint a1 = a >> shr;
+                uint b1 = b << shl;
+                uint c = a1 ^ b1;
+
+                int offsetC = read + 128;
+                output[offsetC] = (byte) (c & 0xFF);
+                output[offsetC + 1] = (byte) (c >> 8 & 0xFF);
+                output[offsetC + 2] = (byte) (c >> 16 & 0xFF);
+                output[offsetC + 3] = (byte) (c >> 24 & 0xFF);
+
+                outputIndex += 4;
+
+                current -= 4;
+                read += 4;
+            }
+        }
+
 
         private void GenerateA(int outputIndex, byte[] output, int lookupIdx, bool first)
         {
@@ -275,13 +524,6 @@ namespace Ddo.Cli.Command.Commands
 
             byte x2 = output[outputIndex + 7]; // 03A21C2B  | 0FB64B 07 | movzx ecx,byte ptr ds:[ebx+7] 
             byte y2 = (byte) (x2 ^ K_20DBD30[lookupIdx + 7]);
-
-
-            // int idx = 0;
-            // if (outputIndex == 0)
-            // {
-            //     idx = 8;
-            // }
 
             int idx = outputIndex - 8;
             if (first)
