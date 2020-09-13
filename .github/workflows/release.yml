@@ -26,7 +26,7 @@ jobs:
           mkdir ./release
           for DDO_RUNTIME in win-x86 win-x64 linux-x64 osx-x64; do
               # Server
-              dotnet publish Ddo.Cli/Ddo.Cli.csproj /p:Version=$DDO_VERSION /p:FromMSBuild=true --runtime $DDO_RUNTIME --configuration Release --output ./publish/$DDO_RUNTIME-$DDO_VERSION/Server
+              dotnet publish Arrowgene.Ddo.Cli/Arrowgene.Ddo.Cli.csproj /p:Version=$DDO_VERSION /p:FromMSBuild=true --runtime $DDO_RUNTIME --configuration Release --output ./publish/$DDO_RUNTIME-$DDO_VERSION/Server
               # ReleaseFiles
               cp -r ./ReleaseFiles/. ./publish/$DDO_RUNTIME-$DDO_VERSION/
               # Pack

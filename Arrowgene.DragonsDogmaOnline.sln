@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddo.GameServer", "Arrowgene.Ddo.GameServer\Arrowgene.Ddo.GameServer.csproj", "{5C0F18BB-B735-4284-82A2-27506DFC9E56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddo.Cli", "Arrowgene.Ddo.Cli\Arrowgene.Ddo.Cli.csproj", "{72B2D640-DEA0-4BA7-A3B5-899954BFBBF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddo.WebServer", "Arrowgene.Ddo.WebServer\Arrowgene.Ddo.WebServer.csproj", "{B6813ECD-CF44-4899-838B-94D5F85B39A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddo.Database", "Arrowgene.Ddo.Database\Arrowgene.Ddo.Database.csproj", "{E8FD9C06-57D7-4117-97AC-DE7779A73FB1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C0F18BB-B735-4284-82A2-27506DFC9E56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C0F18BB-B735-4284-82A2-27506DFC9E56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C0F18BB-B735-4284-82A2-27506DFC9E56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C0F18BB-B735-4284-82A2-27506DFC9E56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72B2D640-DEA0-4BA7-A3B5-899954BFBBF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72B2D640-DEA0-4BA7-A3B5-899954BFBBF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72B2D640-DEA0-4BA7-A3B5-899954BFBBF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72B2D640-DEA0-4BA7-A3B5-899954BFBBF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6813ECD-CF44-4899-838B-94D5F85B39A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6813ECD-CF44-4899-838B-94D5F85B39A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6813ECD-CF44-4899-838B-94D5F85B39A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6813ECD-CF44-4899-838B-94D5F85B39A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8FD9C06-57D7-4117-97AC-DE7779A73FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8FD9C06-57D7-4117-97AC-DE7779A73FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8FD9C06-57D7-4117-97AC-DE7779A73FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8FD9C06-57D7-4117-97AC-DE7779A73FB1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {301F2D20-6E16-4CDA-A0BF-7D1F97416DEC}
+	EndGlobalSection
+EndGlobal

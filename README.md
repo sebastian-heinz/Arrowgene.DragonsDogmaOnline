@@ -103,10 +103,8 @@ but will eventually be merged back into develop (to definitely add the new featu
 ## 3rd Parties and Libraries
 - System.Data.SQLite (https://system.data.sqlite.org/)
 - MySqlConnector (https://www.nuget.org/packages/MySqlConnector)
-- bcrypt.net (https://github.com/BcryptNet/bcrypt.net)
 - AspNetCore (https://github.com/aspnet/AspNetCore)
 - .NET Standard (https://github.com/dotnet/standard)
 - Arrowgene.Services (https://github.com/Arrowgene/Arrowgene.Services)
-- CRC32 Implementation by Damien Guard (https://github.com/damieng/DamienGKit/blob/master/CSharp/DamienG.Library/Security/Cryptography/Crc32.cs)
 
 

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Arrowgene.Ddo.Database</RootNamespace>
+        <Title>Dragons Dogma Online - Database</Title>
+        <Company>DDO Team</Company>
+        <Product>Ddo.Database</Product>
+        <Version>$(Version)</Version>
+        <Copyright>Copyright © 2019-2020 DDO Team</Copyright>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Arrowgene.Logging" Version="1.1.1" />
+      <PackageReference Include="MySqlConnector" Version="1.0.1" />
+      <PackageReference Include="System.Data.SQLite" Version="1.0.113.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ContentWithTargetPath Include="Files\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+        </ContentWithTargetPath>
+    </ItemGroup>
+
+</Project>
