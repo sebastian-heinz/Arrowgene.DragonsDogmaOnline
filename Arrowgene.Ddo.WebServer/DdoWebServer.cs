@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Arrowgene.Ddo.Shared;
 using Arrowgene.WebServer;
 using Arrowgene.WebServer.Server;
 using Arrowgene.WebServer.Server.Kestrel;

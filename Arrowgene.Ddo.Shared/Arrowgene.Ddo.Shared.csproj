@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Arrowgene.Ddo.Shared</RootNamespace>
+        <Title>Dragons Dogma Online - Shared</Title>
+        <Company>DDO Team</Company>
+        <Product>Ddo.Shared</Product>
+        <Version>$(Version)</Version>
+        <Copyright>Copyright © 2019-2020 DDO Team</Copyright>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Arrowgene.Buffers" Version="1.0.0" />
+    </ItemGroup>
+
+</Project>

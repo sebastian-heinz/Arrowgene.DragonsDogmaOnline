@@ -58,6 +58,15 @@ namespace Arrowgene.Ddo.Cli
             LogProvider.OnLogWrite += LogProviderOnOnLogWrite;
         }
 
+        private void LoadCommands()
+        {
+            AddCommand(new ShowCommand());
+            AddCommand(new ServerCommand());
+            AddCommand(new DecryptCommand());
+            AddCommand(new KeyTransformCommand());
+            AddCommand(new HelpCommand(_commands));
+        }
+
         private void RunArguments(string[] arguments)
         {
             LogProvider.Start();
@@ -103,14 +112,6 @@ namespace Arrowgene.Ddo.Cli
                 string[] arguments = input.Split(CliSeparator);
                 result = ProcessArguments(arguments);
             }
-        }
-
-        private void LoadCommands()
-        {
-            AddCommand(new ShowCommand());
-            AddCommand(new ServerCommand());
-            AddCommand(new DecryptCommand());
-            AddCommand(new HelpCommand(_commands));
         }
 
         private CommandResultType ProcessArguments(string[] arguments)

@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Runtime.Serialization;
+using Arrowgene.Ddo.Shared;
 
 namespace Arrowgene.Ddo.WebServer
 {

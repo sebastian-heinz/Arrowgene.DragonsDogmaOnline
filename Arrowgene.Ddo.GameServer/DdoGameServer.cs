@@ -23,6 +23,7 @@
 using Arrowgene.Ddo.GameServer.Handler;
 using Arrowgene.Ddo.GameServer.Logging;
 using Arrowgene.Ddo.GameServer.Network;
+using Arrowgene.Ddo.Shared;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Arrowgene.Ddo.GameServer;
 using Arrowgene.Ddo.GameServer.Network;
+using Arrowgene.Ddo.Shared;
 
 namespace Arrowgene.Ddo.GameServer.Handler
 {

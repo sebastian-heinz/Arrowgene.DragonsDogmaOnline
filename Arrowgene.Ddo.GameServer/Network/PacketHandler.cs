@@ -1,4 +1,5 @@
 ﻿using Arrowgene.Buffers;
+using Arrowgene.Ddo.Shared;
 
 namespace Arrowgene.Ddo.GameServer.Network
 {

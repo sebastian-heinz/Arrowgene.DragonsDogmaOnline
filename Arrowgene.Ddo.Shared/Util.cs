@@ -2,11 +2,14 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+using Arrowgene.Buffers;
 
-namespace Arrowgene.Ddo.Cli
+namespace Arrowgene.Ddo.Shared
 {
-    internal static class Util
+    public static class Util
     {
+        public static IBufferProvider Buffer = new StreamBuffer();
+
         /// <summary>
         ///     The directory of the executing assembly.
         ///     This might not be the location where the .dll files are located.
@@ -74,6 +77,20 @@ namespace Arrowgene.Ddo.Cli
             }
 
             return sb.ToString();
+        }
+        
+        public static void DumpBuffer(IBuffer buffer)
+        {
+            int pos = buffer.Position;
+            buffer.SetPositionStart();
+            Console.WriteLine(Util.ToAsciiString(buffer.GetAllBytes(), true));
+            while (buffer.Size > buffer.Position)
+            {
+                byte[] row = buffer.ReadBytes(16);
+                Console.WriteLine(Util.ToHexString(row, ' '));
+            }
+
+            buffer.Position = pos;
         }
     }
 }

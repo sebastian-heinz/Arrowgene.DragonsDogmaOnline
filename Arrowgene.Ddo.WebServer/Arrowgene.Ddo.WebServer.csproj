@@ -17,4 +17,7 @@
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
     </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Arrowgene.Ddo.Shared\Arrowgene.Ddo.Shared.csproj" />
+    </ItemGroup>
 </Project>

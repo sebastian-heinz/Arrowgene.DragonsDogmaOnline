@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddo.GameServer.Logging;
+using Arrowgene.Ddo.Shared;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddo.GameServer.Network

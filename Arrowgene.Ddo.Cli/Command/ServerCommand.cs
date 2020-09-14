@@ -1,11 +1,13 @@
 ﻿using System;
 using Arrowgene.Ddo.GameServer;
+using Arrowgene.Ddo.WebServer;
 
 namespace Arrowgene.Ddo.Cli.Command
 {
     public class ServerCommand : ICommand
     {
-        private DdoGameServer _server;
+        private DdoGameServer _gameServer;
+        private DdoWebServer _webServer;
 
         public string Key => "server";
 
@@ -14,21 +16,29 @@ namespace Arrowgene.Ddo.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-            if (_server == null)
+            if (_gameServer == null)
             {
                 GameServerSetting setting = new GameServerSetting();
-                _server = new DdoGameServer(setting);
+                _gameServer = new DdoGameServer(setting);
+            }
+
+            if (_webServer == null)
+            {
+                WebServerSetting setting = new WebServerSetting();
+                _webServer = new DdoWebServer();
             }
 
             if (parameter.Arguments.Contains("start"))
             {
-                _server.Start();
+                _webServer.Start();
+                _gameServer.Start();
                 return CommandResultType.Completed;
             }
 
             if (parameter.Arguments.Contains("stop"))
             {
-                _server.Stop();
+                _webServer.Stop();
+                _gameServer.Stop();
                 return CommandResultType.Completed;
             }
 
@@ -37,9 +47,10 @@ namespace Arrowgene.Ddo.Cli.Command
         
         public void Shutdown()
         {
-            if (_server != null)
+            if (_gameServer != null)
             {
-                _server.Stop();
+                _webServer.Stop();
+                _gameServer.Stop();
             }
         }
     }

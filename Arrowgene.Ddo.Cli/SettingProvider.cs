@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text.Json;
+using Arrowgene.Ddo.Shared;
 
 namespace Arrowgene.Ddo.Cli
 {
