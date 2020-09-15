@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddo.Shared;
+using Arrowgene.Ddo.Shared.Crypto;
 
 namespace Arrowgene.Ddo.Cli.Command
 {
@@ -11,60 +13,30 @@ namespace Arrowgene.Ddo.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-            string keyHex =
-                "414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141";
-            byte[] key = Util.FromHexString(keyHex);
+            string seedHex = "49 BC 63 56 69 D7 A2 0C C3 3F 93 DA 08 6E A6 C1".Replace(" ", "");
 
-            Console.WriteLine("a:");
-            Util.DumpBuffer(new StreamBuffer(a(key)));
-            Console.WriteLine();
-            Console.WriteLine("c:");
-            Util.DumpBuffer(new StreamBuffer(c(key)));
-            Console.WriteLine();
-            Console.WriteLine("d:");
-            Util.DumpBuffer(new StreamBuffer(d(key)));
+            DdoRandom rng = new DdoRandom();
+            rng.SetSeed(Util.FromHexString(seedHex));
+            string key = rng.GenerateKey();
+            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+
+            Console.WriteLine($"Key: {key}");
             Console.WriteLine();
 
             byte[] output = new byte[0x210 * 3];
+            bb(output);
 
 
-            output[0x210] = 2;
-            ba(output);
-            uint v = 0x8;
-            uint v1 = v >> 0x5; // esp + c
-            uint v2 = v & 0x1F; // 013EBFC0 | 83E1 1F | and ecx,1F   esp + 14
-            uint v3 = 0x20 - v2;
-
-            bb(output, v2, v3);
-
-            uint v4 = (uint) (output[0] |
-                              output[1] << 8 |
-                              output[2] << 16 |
-                              output[3] << 24
-                );
-            v4 = v4 << (byte) v2;
-            output[0] = (byte) (v4 & 0xFF);
-            output[1] = (byte) (v4 >> 8 & 0xFF);
-            output[2] = (byte) (v4 >> 16 & 0xFF);
-            output[3] = (byte) (v4 >> 24 & 0xFF);
-
-            // output[1] = 2;
-            // output[0x210] = 0xBB;
-
-            // 013B5E10   | 56  | push esi
-            byte[] data = new byte[]
+            // 0332DF66 | 0FBE18 | movsx ebx,byte ptr ds:[eax] | proc - 1
+            byte[] proc1_in = new byte[]
             {
-                0xF6, 0x47, 0x3E, 0x35, 0xD5, 0x7F, 0x88, 0xE7,
-                0x09, 0x3F, 0x90, 0x2D, 0xA8, 0xB4, 0x65, 0x66
+                0xD7, 0xE4, 0x88, 0xB1
             };
-            uint a1 = (uint) (data[0] | data[1] << 8 | data[2] << 16 | data[3] << 24);
-            uint a2 = (uint) (data[4] | data[5] << 8 | data[6] << 16 | data[7] << 24);
-            uint a3 = (uint) (data[8] | data[9] << 8 | data[10] << 16 | data[11] << 24);
-            uint a4 = (uint) (data[12] | data[13] << 8 | data[14] << 16 | data[15] << 24);
+            byte[] proc1_out = x(proc1_in, 0xB188E5D7);
+            // 00B010E7 | 8D6424 04 | lea esp,dword ptr ss:[esp+4] | proc 1 - end
 
-            uint a11 = a1 << 0xF;
-            uint a12 = a11 ^ a1;
             
+
             Console.WriteLine("output:");
             Util.DumpBuffer(new StreamBuffer(output));
             Console.WriteLine();
@@ -75,7 +47,6 @@ namespace Arrowgene.Ddo.Cli.Command
         public void Shutdown()
         {
         }
-
 
 
         private byte[] a(byte[] input)
@@ -127,28 +98,44 @@ namespace Arrowgene.Ddo.Cli.Command
             }
         }
 
-        private void bb(byte[] output, uint eax, uint esp_p10)
+        /// <summary>
+        /// 013EBFB0 | 83EC 08 | sub esp,8 
+        /// </summary>
+        private void bb(byte[] output)
         {
-            uint edx = 0;
-            uint edi = 0;
-            uint esi = 0;
-            //uint eax = 8;
+            uint offset;
+            uint ecx = 0x8;
+            uint eax = ecx;
+            eax = eax >> 0x5;
+            ecx = ecx & 0x1F;
+            uint mem_a = eax;
+            uint mem_b = ecx;
             uint ebx = 0x84;
-            uint ecx = 0x84;
+            ebx = ebx - eax;
+            if (ebx >= 1)
+            {
+                // 013EBFD5 | 83FB 01 | cmp ebx,1
+            }
+
+            uint edx = 0x20;
+            edx = edx - ecx;
+            ecx = ebx + eax;
+            eax = mem_b;
+            uint mem_c = edx;
             uint ebp = ecx * 4;
-            uint esp_p_10 = edx;
             while (ebx > 1)
             {
-                uint offset = ebx * 4 - 4;
-                esi = (uint) (output[offset] |
-                              output[offset + 1] << 8 |
-                              output[offset + 2] << 16 |
-                              output[offset + 3] << 24
+                offset = ebx * 4 - 4;
+                // 013EBFF0 | 8B749F FC | mov esi,dword ptr ds:[edi+ebx*4-4] 
+                uint esi = (uint) (output[offset] |
+                                   output[offset + 1] << 8 |
+                                   output[offset + 2] << 16 |
+                                   output[offset + 3] << 24
                     );
                 ebx--;
                 ecx = eax;
                 esi = esi << (byte) ecx;
-                ecx = esp_p10;
+                ecx = mem_c;
                 ebp = ebp - 4;
 
                 // 013EC000 | 8975 00  | mov dword ptr ss:[ebp],esi 
@@ -172,6 +159,31 @@ namespace Arrowgene.Ddo.Cli.Command
                 output[ebp + 1] = (byte) (edx >> 8 & 0xFF);
                 output[ebp + 2] = (byte) (edx >> 16 & 0xFF);
                 output[ebp + 3] = (byte) (edx >> 24 & 0xFF);
+            }
+            eax = mem_a;
+            ecx = mem_b;
+            edx = (uint) (output[0] |
+                          output[1] << 8 |
+                          output[2] << 16 |
+                          output[3] << 24
+                );
+            edx = edx >> (byte) ecx;
+            
+            offset = eax * 4;
+            output[offset] = (byte) (edx & 0xFF);
+            output[offset + 1] = (byte) (edx >> 8 & 0xFF);
+            output[offset + 2] = (byte) (edx >> 16 & 0xFF);
+            output[offset + 3] = (byte) (edx >> 24 & 0xFF);
+            
+            // test eax, eax
+            while (eax > 0)
+            {
+                eax--;
+                offset = eax * 4;
+                output[offset] = 0;
+                output[offset + 1] = 0;
+                output[offset + 2] = 0;
+                output[offset + 3] = 0;
             }
         }
 

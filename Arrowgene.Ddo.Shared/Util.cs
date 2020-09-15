@@ -3,12 +3,29 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Arrowgene.Buffers;
+using Arrowgene.Ddo.Shared.Crypto;
 
 namespace Arrowgene.Ddo.Shared
 {
     public static class Util
     {
         public static IBufferProvider Buffer = new StreamBuffer();
+        public static readonly CryptoRandom CryptoRandom = new CryptoRandom();
+
+        private static readonly Random Random = new Random();
+
+        public static int GetRandomNumber(int min, int max)
+        {
+            lock (Random)
+            {
+                return Random.Next(min, max);
+            }
+        }
+
+        public static long GetUnixTime(DateTime dateTime)
+        {
+            return ((DateTimeOffset) dateTime).ToUnixTimeSeconds();
+        }
 
         /// <summary>
         ///     The directory of the executing assembly.
@@ -21,7 +38,7 @@ namespace Arrowgene.Ddo.Shared
             var directory = Path.GetDirectoryName(uri.LocalPath);
             return directory;
         }
-        
+
         public static byte[] FromHexString(string hexString)
         {
             if ((hexString.Length & 1) != 0)
@@ -78,16 +95,16 @@ namespace Arrowgene.Ddo.Shared
 
             return sb.ToString();
         }
-        
+
         public static void DumpBuffer(IBuffer buffer)
         {
             int pos = buffer.Position;
             buffer.SetPositionStart();
-            Console.WriteLine(Util.ToAsciiString(buffer.GetAllBytes(), true));
+            Console.WriteLine(ToAsciiString(buffer.GetAllBytes(), true));
             while (buffer.Size > buffer.Position)
             {
                 byte[] row = buffer.ReadBytes(16);
-                Console.WriteLine(Util.ToHexString(row, ' '));
+                Console.WriteLine(ToHexString(row, ' '));
             }
 
             buffer.Position = pos;

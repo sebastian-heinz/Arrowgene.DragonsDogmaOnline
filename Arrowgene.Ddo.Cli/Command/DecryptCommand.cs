@@ -1,6 +1,5 @@
 ﻿using System;
 using Arrowgene.Buffers;
-using Arrowgene.Ddo.GameServer.Crypto;
 using Arrowgene.Ddo.Shared;
 using Arrowgene.Ddo.Shared.Crypto;
 
@@ -40,25 +39,25 @@ namespace Arrowgene.Ddo.Cli.Command
         {
             0x24, 0x63, 0x62, 0x4D, 0x36, 0x57, 0x50, 0x29, 0x61, 0x58, 0x3D, 0x25, 0x4A, 0x5E, 0x7A, 0x41
         };
-        
+
         private byte[] Decrypt(byte[] input)
         {
             Console.WriteLine("Key:");
             Util.DumpBuffer(new StreamBuffer(InitialKey));
 
             //camellia.KeySchedule();
-           //Console.WriteLine("Subkey:");
-           // Util.DumpBuffer(new StreamBuffer(key));
+            //Console.WriteLine("Subkey:");
+            // Util.DumpBuffer(new StreamBuffer(key));
 
-           byte[] decrypted = new byte[input.Length];
-           Camellia camellia = new Camellia();
-           camellia.Decrypt(input, decrypted, InitialKey, InitialPrev);
+            byte[] decrypted = new byte[input.Length];
+            Camellia camellia = new Camellia();
+            camellia.Decrypt(input, decrypted, InitialKey, InitialPrev);
 
             Console.WriteLine("Decrypted:");
             Util.DumpBuffer(new StreamBuffer(decrypted));
             Console.WriteLine();
 
-            
+
             IBuffer output = new StreamBuffer(decrypted);
             // Inflate output for hash calculation
             IBuffer inflated = Inflate(output);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Arrowgene.Ddo.GameServer.Crypto
+namespace Arrowgene.Ddo.Shared.Crypto
 {
     public sealed class DdoPacketHash : HashAlgorithm
     {
