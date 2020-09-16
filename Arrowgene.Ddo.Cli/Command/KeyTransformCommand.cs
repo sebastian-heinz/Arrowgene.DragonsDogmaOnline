@@ -13,7 +13,7 @@ namespace Arrowgene.Ddo.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-            string seedHex = "4A 30 F6 AD 33 1A 35 F4 FD ED 8D 14 44 D3 92 A1".Replace(" ", "");
+            string seedHex = "A1 10 03 20 3A E2 E4 A9 0E AC 37 3F 28 6F 64 4C".Replace(" ", "");
 
             DdoRandom rng = new DdoRandom();
             rng.SetSeed(Util.FromHexString(seedHex));
@@ -22,6 +22,9 @@ namespace Arrowgene.Ddo.Cli.Command
 
             Console.WriteLine($"Key: {key}");
             Console.WriteLine();
+            
+            int count = 0xCD;
+            
             
             // 0332DF66 | 0FBE18 | movsx ebx,byte ptr ds:[eax] | proc - 1
             byte[] proc1_in = new byte[]
@@ -34,33 +37,62 @@ namespace Arrowgene.Ddo.Cli.Command
             
             byte[] output = new byte[0x210 * 3];
             
-            b(output);
+            b(output, 0x02);
             ba(output);
             bb(output);
+
+            while (count > 0)
+            {
+
+                // 040DD0A3 | 0FB6C8 | movzx ecx,al 
+                uint eax = rng.Next();
+                uint ecx = (byte) eax;
+                uint ebp = 0x1;
+
+                if ((byte) eax == 0)
+                {
+                    // 040DD0A6 | 84C0 | test al,al
+                    ecx = ebp;
+                }
+
+                eax = ecx;
+
+                uint edx = 0; // 040DD0AE | 99 | cdq
+
+                // eax = 0745F63C
+
+                b(output, eax);
+                ba(output);
+                bb(output);
+
+
+                count--;
+            }
+
+            // 013EDFF8 | 5D  | pop ebp  
             
-           // 040DD0A3 | 0FB6C8 | movzx ecx,al 
-           uint eax = rng.Next();
-           uint ecx = (byte) eax;
-           uint ebp = 0x1;
+            for (int kindex = 0; kindex < keyBytes.Length; kindex++)
+            {
+                bb(output);
+                // todo maybe clear from 0x210 - end ?
+                b(output, keyBytes[kindex]);
+                ba(output);
+            }
 
-           if ((byte) eax == 0)
-           {
-              // 040DD0A6 | 84C0 | test al,al
-              ecx = ebp;
-           }
-
-           eax = ecx;
-
-           uint edx = 0; // 040DD0AE | 99 | cdq
+            // 007B9EBB | E9 7841C300 | jmp ddo_dump_fix.13EE038 
+            
+            // 013EBCBF | F3:A5 | rep movsd | decryption - access 7 (copy) (D1 E8 68 9D)
+            
+            
+            
+            // 013EBA34            | 8B043A                | mov eax,dword ptr ds:[edx+edi]  
            
-           // eax = 0745F63C
-           
-           
-           
-
             Console.WriteLine("output:");
             Util.DumpBuffer(new StreamBuffer(output));
             Console.WriteLine();
+
+            
+            
 
             return CommandResultType.Exit;
         }
@@ -109,9 +141,8 @@ namespace Arrowgene.Ddo.Cli.Command
             return output;
         }
 
-        private void b(byte[] output)
+        private void b(byte[] output, uint edi)
         {
-            uint edi = 0x2;
             uint edx = 0;
 
             // 013EBD2C | 893E | mov dword ptr ds:[esi],edi 
