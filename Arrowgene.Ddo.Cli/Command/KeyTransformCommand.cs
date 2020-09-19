@@ -18,7 +18,6 @@ namespace Arrowgene.Ddo.Cli.Command
             DdoRandom rng = new DdoRandom();
             rng.SetSeed(Util.FromHexString(seedHex));
             string key = rng.GenerateKey();
-            //    key = "f23e98HafJdSoaj80QBjhh23oajgklSadrhogh2IJnwJEF58";
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
             Util.DumpBuffer(new StreamBuffer(keyBytes));
@@ -70,6 +69,7 @@ namespace Arrowgene.Ddo.Cli.Command
                 count--;
             }
 
+
             // 013EDFF8 | 5D  | pop ebp  
 
             for (int kindex = 0; kindex < keyBytes.Length; kindex++)
@@ -83,11 +83,15 @@ namespace Arrowgene.Ddo.Cli.Command
             // 007B9EBB | E9 7841C300 | jmp ddo_dump_fix.13EE038 
 
             // 013EBCBF | F3:A5 | rep movsd | decryption - access 7 (copy) (D1 E8 68 9D)
+            
+            Console.WriteLine("output:");
+            Util.DumpBuffer(new StreamBuffer(output));
+            Console.WriteLine();
 
 
             // 013EBA34            | 8B043A                | mov eax,dword ptr ds:[edx+edi]  
             string server_reply =
-                "00000000D1E8689D69FA8F6C56488F22A6515FF75DD958AA3AEEFE3948C1D0C2BA61719C16C2DEB185341FBA7A96F309BB90EB5DD69AC0A46B3426C2DBA45481C7E22B5D4EBB21F6C8AE690B1A8C48579D18566F8F833FF54C1FF4320C8B2A7EDD87521C5EEE7D712E09FFA893EC9FFCA961078032908CE678FE1E87CF38B0C7F3B67072D94D56B76E4081ABA5DD55EEE74F93E021BE0C63718ED31A83B65DEA5145B5B3F2F9090BB80211010A0B8DE745B48C98256277FA7D99984FEDC4BCA898688708BF0D44285C9598B02A97D4E497F4CEF7F291259ADDFF1A73FAB5A7D0BB5E16454AECB6CA82825BA1839F43AC407EA9DA6AD07A901F1FBB598CF560F8775EAC9C";
+                "D1E8689D69FA8F6C56488F22A6515FF75DD958AA3AEEFE3948C1D0C2BA61719C16C2DEB185341FBA7A96F309BB90EB5DD69AC0A46B3426C2DBA45481C7E22B5D4EBB21F6C8AE690B1A8C48579D18566F8F833FF54C1FF4320C8B2A7EDD87521C5EEE7D712E09FFA893EC9FFCA961078032908CE678FE1E87CF38B0C7F3B67072D94D56B76E4081ABA5DD55EEE74F93E021BE0C63718ED31A83B65DEA5145B5B3F2F9090BB80211010A0B8DE745B48C98256277FA7D99984FEDC4BCA898688708BF0D44285C9598B02A97D4E497F4CEF7F291259ADDFF1A73FAB5A7D0BB5E16454AECB6CA82825BA1839F43AC407EA9DA6AD07A901F1FBB598CF560F8775EAC9C";
             // utilizes servers response
             byte[] srbytes = Util.FromHexString(server_reply);
             byte[] server = new byte[0x210 * 3];
@@ -95,13 +99,14 @@ namespace Arrowgene.Ddo.Cli.Command
             {
                 server[0x210 + i] = srbytes[i];
             }
+            transform(srbytes);
 
             combine(server, 0x1);
-
-
-            Console.WriteLine("output:");
-            Util.DumpBuffer(new StreamBuffer(output));
+            Console.WriteLine("server:");
+            Util.DumpBuffer(new StreamBuffer(server));
             Console.WriteLine();
+
+
 
 
             return CommandResultType.Exit;
@@ -109,6 +114,79 @@ namespace Arrowgene.Ddo.Cli.Command
 
         public void Shutdown()
         {
+        }
+
+        private void transform(byte[] output)
+        {
+            // Reverse decrypted
+            Console.WriteLine("Reversed:");
+          //  Array.Reverse(output);
+        //    Util.DumpBuffer(new StreamBuffer(output));
+            Console.WriteLine();
+
+            // Transform reversed
+            output = x(output, 0x204D276C);
+            Console.WriteLine("Transformed:");
+            Util.DumpBuffer(new StreamBuffer(output));
+            Console.WriteLine();
+
+            output = x(output, 0x204D276C);
+            Console.WriteLine("Transformed:");
+            Util.DumpBuffer(new StreamBuffer(output));
+            Console.WriteLine();
+
+          output = x(output, 0x204D276C);
+          Console.WriteLine("Transformed:");
+          Util.DumpBuffer(new StreamBuffer(output));
+          Console.WriteLine();
+          
+          output = x(output, 0x204D276C);
+          Console.WriteLine("Transformed:");
+          Util.DumpBuffer(new StreamBuffer(output));
+          Console.WriteLine();
+
+            // Transform transformed
+            byte[] destination_addr = new byte[output.Length];
+            uint esi;
+            uint edx = 0;
+            for (int i = 0; i < output.Length; i += 4)
+            {
+                // 013EBC82  | 8B39 | mov edi,dword ptr ds:[ecx]  
+                // first iteration has no data, might contain previous data later?
+                uint edi = (uint) (destination_addr[i] | destination_addr[i + 1] << 8 |
+                                   destination_addr[i + 2] << 16 | destination_addr[i + 3] << 24);
+
+                uint eax = (byte) i;
+                esi = edi;
+
+                uint src = (uint) (output[i] | output[i + 1] << 8 |
+                                   output[i + 2] << 16 | output[i + 3] << 24);
+                esi = esi - src;
+                esi = esi - eax;
+                if (edi == esi)
+                {
+                    edx = eax;
+                }
+
+                if (edi < esi)
+                {
+                    eax = 1;
+                }
+
+                eax = eax | edx;
+
+                edx = 0xFFFFFDF0;
+
+
+                destination_addr[i] = (byte) (esi & 0xFF);
+                destination_addr[i + 1] = (byte) (esi >> 8 & 0xFF);
+                destination_addr[i + 2] = (byte) (esi >> 16 & 0xFF);
+                destination_addr[i + 3] = (byte) (esi >> 24 & 0xFF);
+            }
+
+            Console.WriteLine("Transformed:");
+            Util.DumpBuffer(new StreamBuffer(destination_addr));
+            Console.WriteLine();
         }
 
 
@@ -119,9 +197,10 @@ namespace Arrowgene.Ddo.Cli.Command
             output[1] = (byte) (val >> 8 & 0xFF);
             output[2] = (byte) (val >> 16 & 0xFF);
             output[3] = (byte) (val >> 24 & 0xFF);
-            for (uint i = 0; i < 0x210; i++)
+            uint idx = 0;
+            for (uint i = 0; i < 0x84; i++)
             {
-                uint offset_0 = 0;
+                uint offset_0 = idx * 4;
                 uint offset_1 = 0x210 + (i * 4);
                 uint offset_2 = 0x420 + (i * 4);
 
@@ -160,11 +239,6 @@ namespace Arrowgene.Ddo.Cli.Command
                 output[offset_2 + 1] = (byte) (r2 >> 8 & 0xFF);
                 output[offset_2 + 2] = (byte) (r2 >> 16 & 0xFF);
                 output[offset_2 + 3] = (byte) (r2 >> 24 & 0xFF);
-
-
-                Console.WriteLine("dmp:");
-                Util.DumpBuffer(new StreamBuffer(output));
-                Console.WriteLine();
             }
         }
 

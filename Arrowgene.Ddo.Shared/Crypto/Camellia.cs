@@ -14,7 +14,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
             uint keyLength = (uint) key.Length * 8;
             byte[][] subkey = new byte[34][];
 
-            
+
             KeySchedule(keyLength, key, subkey);
             int length = input.Length;
             if (output.Length < input.Length)
@@ -25,12 +25,10 @@ namespace Arrowgene.Ddo.Shared.Crypto
             int current = 0;
             while (current < length)
             {
-                if (current + 16 < length)
+                int xorLen = current + 16 < length ? 16 : length - current;
+                for (int i = 0; i < xorLen; i++)
                 {
-                    for (int i = 0; i < 16; i++)
-                    {
-                        input[current + i] = (byte) (input[current + i] ^ prv[i]);
-                    }
+                    input[current + i] = (byte) (input[current + i] ^ prv[i]);
                 }
                 CryptBlock(
                     false,
@@ -39,15 +37,11 @@ namespace Arrowgene.Ddo.Shared.Crypto
                     subkey,
                     output.Slice(current, 16)
                 );
-                if (current + 16 < length)
+                for (int i = 0; i < xorLen; i++)
                 {
-                    for (int i = 0; i < 16; i++)
-                    {
-                        prv[i] = output[current + i];
-                    }
+                    prv[i] = output[current + i];
                 }
-
-                current += 16;
+                current += xorLen;
             }
         }
 
@@ -56,9 +50,8 @@ namespace Arrowgene.Ddo.Shared.Crypto
         /// </summary>
         public void Decrypt(Span<byte> input, Span<byte> output, byte[] key, Span<byte> prv)
         {
-            
             // TODO check if input length is dividable by 16
-            
+
             uint keyLength = (uint) key.Length * 8;
             byte[][] subkey = new byte[34][];
             KeySchedule(keyLength, key, subkey);
@@ -78,17 +71,18 @@ namespace Arrowgene.Ddo.Shared.Crypto
                     subkey,
                     output.Slice(current, 16)
                 );
-                if (current + 16 < length)
+                int xorLen = current + 16 < length ? 16 : length - current;
+                for (int i = 0; i < xorLen; i++)
                 {
-                    for (int i = 0; i < 16; i++) {
-                        output[current + i] = (byte)(output[current + i] ^ prv[i]);
-                    }
-                    for (int i = 0; i < 16; i++) {
-                        prv[i] = input[current + i];
-                    }
+                    output[current + i] = (byte) (output[current + i] ^ prv[i]);
                 }
 
-                current += 16;
+                for (int i = 0; i < xorLen; i++)
+                {
+                    prv[i] = input[current + i];
+                }
+
+                current += xorLen;
             }
         }
 
@@ -114,7 +108,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
             {
                 subkey[subKeyIndex] = new byte[8];
             }
-            
+
             Span<byte> pl;
             Span<byte> pr;
             Span<byte> p;
@@ -137,7 +131,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
             int[] drop; /* pointer to drop128[] or drop256[] */
 
             /* padding */
-            int bytes = (int)keyLen / 8;
+            int bytes = (int) keyLen / 8;
             int rounds = bytes / 16;
             for (int round = 0; round < rounds; round++)
             {
@@ -146,7 +140,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
                 int count = remainingBytes > 16 ? 16 : remainingBytes;
                 Buffer.BlockCopy(key, round * 16, ikey[round], 0, count);
             }
-            
+
             if (keyLen == 192)
             {
                 for (i = 0; i < 8; i++)
@@ -257,8 +251,8 @@ namespace Arrowgene.Ddo.Shared.Crypto
             /* prewhitening */
             //xorOctets(16, pt, subkey[ski], ct);
             xorOctets(8, pt.Slice(0, 8), subkey[ski], ct.Slice(0, 8));
-            xorOctets(8, pt.Slice(8, 8), subkey[ski+ 1], ct.Slice(8, 8));
-            
+            xorOctets(8, pt.Slice(8, 8), subkey[ski + 1], ct.Slice(8, 8));
+
             if (decrypt)
             {
                 /* decryption */
@@ -301,9 +295,9 @@ namespace Arrowgene.Ddo.Shared.Crypto
             }
 
             //xorOctets(16, ct, subkey[ski], ct);
-            
+
             xorOctets(8, ct.Slice(0, 8), subkey[ski], ct.Slice(0, 8));
-            xorOctets(8, ct.Slice(8, 8), subkey[ski+ 1], ct.Slice(8, 8));
+            xorOctets(8, ct.Slice(8, 8), subkey[ski + 1], ct.Slice(8, 8));
         }
 
         private byte s1(int x)
@@ -323,7 +317,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
 
         private byte s4(int x)
         {
-            return s[(byte)(x << 1) + (x >> 7)];
+            return s[(byte) (x << 1) + (x >> 7)];
         }
 
         /* dst[] <- src1[] ^ src2[] */
