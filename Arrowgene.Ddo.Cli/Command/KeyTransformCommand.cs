@@ -13,6 +13,44 @@ namespace Arrowgene.Ddo.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
+            transform_server();
+            //  transform_client();
+            return CommandResultType.Exit;
+        }
+
+        public void Shutdown()
+        {
+        }
+
+        private void transform_server()
+        {
+            // server decrypted response, 256 bytes
+            string keyDataHex =
+                "9CAC5E77F860F58C59BB1F1F907AD06ADAA97E40AC439F83A15B8282CAB6EC4A45165EBBD0A7B5FA731AFFDD9A2591F2F7CEF497E4D4972AB098955C28440DBF08876898A8BCC4ED4F98997DFA776225988CB445E78D0B0A011102B80B09F9F2B3B54551EA5DB6831AD38E71630CBE21E0934FE7EE55DDA5AB81406EB7564DD97270B6F3C7B038CF871EFE78E68C9032800761A9FC9FEC93A8FF092E717DEE5E1C5287DD7E2A8B0C32F41F4CF53F838F6F56189D57488C1A0B69AEC8F621BB4E5D2BE2C78154A4DBC226346BA4C09AD65DEB90BB09F3967ABA1F3485B1DEC2169C7161BAC2D0C14839FEEE3AAA58D95DF75F51A6228F48566C8FFA699D68E8D1";
+            byte[] keyData_D1_E8 = Util.FromHexString(keyDataHex);
+            Console.WriteLine("Reversed:");
+            Array.Reverse(keyData_D1_E8);
+            Util.DumpBuffer(new StreamBuffer(keyData_D1_E8));
+            Console.WriteLine();
+
+            byte[] keyData_BD_CF = x(keyData_D1_E8, 0x204D276C);
+            Console.WriteLine("Transformed:");
+            Util.DumpBuffer(new StreamBuffer(keyData_BD_CF));
+            Console.WriteLine();
+
+            byte[] keyData_2F_17 = t4(keyData_D1_E8, new byte[0]);
+            Console.WriteLine("t4:");
+            Util.DumpBuffer(new StreamBuffer(keyData_2F_17));
+            Console.WriteLine();
+            
+            bb(keyData_2F_17);
+            Console.WriteLine("t4:");
+            Util.DumpBuffer(new StreamBuffer(keyData_2F_17));
+            Console.WriteLine();
+        }
+
+        private void transform_client()
+        {
             string seedHex = "C4 1A 5A 0F 1A 32 C1 A4 95 FA 5D C7 C5 A9 06 A4".Replace(" ", "");
 
             DdoRandom rng = new DdoRandom();
@@ -83,110 +121,64 @@ namespace Arrowgene.Ddo.Cli.Command
             // 007B9EBB | E9 7841C300 | jmp ddo_dump_fix.13EE038 
 
             // 013EBCBF | F3:A5 | rep movsd | decryption - access 7 (copy) (D1 E8 68 9D)
-            
+
             Console.WriteLine("output:");
             Util.DumpBuffer(new StreamBuffer(output));
             Console.WriteLine();
 
 
             // 013EBA34            | 8B043A                | mov eax,dword ptr ds:[edx+edi]  
-            string server_reply =
-                "D1E8689D69FA8F6C56488F22A6515FF75DD958AA3AEEFE3948C1D0C2BA61719C16C2DEB185341FBA7A96F309BB90EB5DD69AC0A46B3426C2DBA45481C7E22B5D4EBB21F6C8AE690B1A8C48579D18566F8F833FF54C1FF4320C8B2A7EDD87521C5EEE7D712E09FFA893EC9FFCA961078032908CE678FE1E87CF38B0C7F3B67072D94D56B76E4081ABA5DD55EEE74F93E021BE0C63718ED31A83B65DEA5145B5B3F2F9090BB80211010A0B8DE745B48C98256277FA7D99984FEDC4BCA898688708BF0D44285C9598B02A97D4E497F4CEF7F291259ADDFF1A73FAB5A7D0BB5E16454AECB6CA82825BA1839F43AC407EA9DA6AD07A901F1FBB598CF560F8775EAC9C";
-            // utilizes servers response
-            byte[] srbytes = Util.FromHexString(server_reply);
-            byte[] server = new byte[0x210 * 3];
-            for (int i = 0; i < srbytes.Length; i++)
+        }
+
+        /// <summary>
+        /// 013EBC60 | 53 | push ebx
+        /// </summary>
+        private byte[] t4(byte[] srcD, byte[] dstD)
+        {
+            byte[] dst = new byte[0x210];
+            byte[] src = new byte[0x210];
+            for (int i = 0; i < srcD.Length; i++)
             {
-                server[0x210 + i] = srbytes[i];
+                src[i + 4] = srcD[i];
             }
-            transform(srbytes);
 
-            combine(server, 0x1);
-            Console.WriteLine("server:");
-            Util.DumpBuffer(new StreamBuffer(server));
-            Console.WriteLine();
-
-
-
-
-            return CommandResultType.Exit;
-        }
-
-        public void Shutdown()
-        {
-        }
-
-        private void transform(byte[] output)
-        {
-            // Reverse decrypted
-            Console.WriteLine("Reversed:");
-          //  Array.Reverse(output);
-        //    Util.DumpBuffer(new StreamBuffer(output));
-            Console.WriteLine();
-
-            // Transform reversed
-            output = x(output, 0x204D276C);
-            Console.WriteLine("Transformed:");
-            Util.DumpBuffer(new StreamBuffer(output));
-            Console.WriteLine();
-
-            output = x(output, 0x204D276C);
-            Console.WriteLine("Transformed:");
-            Util.DumpBuffer(new StreamBuffer(output));
-            Console.WriteLine();
-
-          output = x(output, 0x204D276C);
-          Console.WriteLine("Transformed:");
-          Util.DumpBuffer(new StreamBuffer(output));
-          Console.WriteLine();
-          
-          output = x(output, 0x204D276C);
-          Console.WriteLine("Transformed:");
-          Util.DumpBuffer(new StreamBuffer(output));
-          Console.WriteLine();
-
-            // Transform transformed
-            byte[] destination_addr = new byte[output.Length];
-            uint esi;
-            uint edx = 0;
-            for (int i = 0; i < output.Length; i += 4)
+            uint eax = 0;
+            for (int i = 0; i < 0x84; i++)
             {
-                // 013EBC82  | 8B39 | mov edi,dword ptr ds:[ecx]  
-                // first iteration has no data, might contain previous data later?
-                uint edi = (uint) (destination_addr[i] | destination_addr[i + 1] << 8 |
-                                   destination_addr[i + 2] << 16 | destination_addr[i + 3] << 24);
-
-                uint eax = (byte) i;
-                esi = edi;
-
-                uint src = (uint) (output[i] | output[i + 1] << 8 |
-                                   output[i + 2] << 16 | output[i + 3] << 24);
-                esi = esi - src;
-                esi = esi - eax;
-                if (edi == esi)
+                int offset = i * 4;
+                uint d = (uint) (dst[offset] | dst[offset + 1] << 8 | dst[offset + 2] << 16 | dst[offset + 3] << 24);
+                uint s = (uint) (src[offset] | src[offset + 1] << 8 | src[offset + 2] << 16 | src[offset + 3] << 24);
+                uint r = d - s;
+                r = r - eax;
+                
+                uint edx = 0;
+                if (d == r)
                 {
                     edx = eax;
                 }
-
-                if (edi < esi)
+                if (d < r)
                 {
                     eax = 1;
                 }
-
+                else
+                {
+                    eax = 0;
+                }
                 eax = eax | edx;
-
-                edx = 0xFFFFFDF0;
-
-
-                destination_addr[i] = (byte) (esi & 0xFF);
-                destination_addr[i + 1] = (byte) (esi >> 8 & 0xFF);
-                destination_addr[i + 2] = (byte) (esi >> 16 & 0xFF);
-                destination_addr[i + 3] = (byte) (esi >> 24 & 0xFF);
+                
+                dst[offset] = (byte) (r & 0xFF);
+                dst[offset + 1] = (byte) (r >> 8 & 0xFF);
+                dst[offset+ 2] = (byte) (r >> 16 & 0xFF);
+                dst[offset + 3] = (byte) (r >> 24 & 0xFF);
             }
 
-            Console.WriteLine("Transformed:");
-            Util.DumpBuffer(new StreamBuffer(destination_addr));
-            Console.WriteLine();
+        //  byte[] output = new byte[256];
+        //  for (int i = 0; i < output.Length; i++)
+        //  {
+        //      output[i] = dst[i + 4];
+        //  }
+
+            return dst;
         }
 
 

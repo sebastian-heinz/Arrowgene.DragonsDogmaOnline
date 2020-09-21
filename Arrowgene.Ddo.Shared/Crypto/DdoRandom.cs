@@ -69,21 +69,42 @@ namespace Arrowgene.Ddo.Shared.Crypto
         {
             if (steps > 0)
             {
-                uint a2 = _r1 << 0xF;
-                uint a3 = _r1 ^ a2;
-                uint d2 = _r4 >> 0x11;
-                uint d3 = d2 ^ a3;
-                uint d4 = d3 >> 0x4;
-                uint d5 = d4 ^ _r4;
-                uint d6 = d5 ^ a3;
-                _r1 = _r2;
-                _r2 = _r3;
-                _r3 = _r4;
-                _r4 = d6;
+                for (int i = 0; i < steps; i++)
+                {
+                    uint a2 = _r1 << 0xF;
+                    uint a3 = _r1 ^ a2;
+                    uint d2 = _r4 >> 0x11;
+                    uint d3 = d2 ^ a3;
+                    uint d4 = d3 >> 0x4;
+                    uint d5 = d4 ^ _r4;
+                    uint d6 = d5 ^ a3;
+                    _r1 = _r2;
+                    _r2 = _r3;
+                    _r3 = _r4;
+                    _r4 = d6;
+                }
             }
             else if (steps < 0)
             {
                 throw new NotImplementedException();
+                steps = Math.Abs(steps);
+                for (int i = 0; i < steps; i++)
+                {
+                    // probably not recoverable
+                    uint d6 = _r4;
+                    _r4 = _r3;
+                    _r3 = _r2;
+                    _r2 = _r1;
+                    uint d2 = _r4 >> 0x11;
+                    // a3 = d5 ^ d6;
+                    // a3 = d2 ^ d3;
+                    // d4 = _r4 ^ d5
+
+                    // uint d6 = d5 ^ a3;
+                    // uint d5 = d4 ^ _r4;
+                    // uint d4 = d3 >> 0x4;
+                    // uint d3 = d2 ^ a3;
+                }
             }
         }
     }
