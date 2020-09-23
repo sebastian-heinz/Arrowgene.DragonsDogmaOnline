@@ -11,10 +11,16 @@ namespace Arrowgene.Ddo.Cli.Command
         public string Key => "transform";
         public string Description => "Transforms Key";
 
+        private static byte[] keyData_D1_E8;
+        private static byte[] keyData_9C_AC;
+        private static byte[] keyData_BD_CF;
+        private static byte[] keyData_2F_17;
+        private static byte[] keyData_52_2E;
+
         public CommandResultType Run(CommandParameter parameter)
         {
             transform_server();
-            //  transform_client();
+            //    transform_client();
             return CommandResultType.Exit;
         }
 
@@ -27,31 +33,72 @@ namespace Arrowgene.Ddo.Cli.Command
             // server decrypted response, 256 bytes
             string keyDataHex =
                 "9CAC5E77F860F58C59BB1F1F907AD06ADAA97E40AC439F83A15B8282CAB6EC4A45165EBBD0A7B5FA731AFFDD9A2591F2F7CEF497E4D4972AB098955C28440DBF08876898A8BCC4ED4F98997DFA776225988CB445E78D0B0A011102B80B09F9F2B3B54551EA5DB6831AD38E71630CBE21E0934FE7EE55DDA5AB81406EB7564DD97270B6F3C7B038CF871EFE78E68C9032800761A9FC9FEC93A8FF092E717DEE5E1C5287DD7E2A8B0C32F41F4CF53F838F6F56189D57488C1A0B69AEC8F621BB4E5D2BE2C78154A4DBC226346BA4C09AD65DEB90BB09F3967ABA1F3485B1DEC2169C7161BAC2D0C14839FEEE3AAA58D95DF75F51A6228F48566C8FFA699D68E8D1";
-            byte[] keyData_D1_E8 = Util.FromHexString(keyDataHex);
-            Console.WriteLine("Reversed:");
+            keyData_9C_AC = Util.FromHexString(keyDataHex);
+            Console.WriteLine("Server Data:");
+            Util.DumpBuffer(new StreamBuffer(keyData_9C_AC));
+            Console.WriteLine();
+
+
+            keyData_D1_E8 = Util.FromHexString(keyDataHex);
             Array.Reverse(keyData_D1_E8);
+            Console.WriteLine("Reversed:");
             Util.DumpBuffer(new StreamBuffer(keyData_D1_E8));
             Console.WriteLine();
 
-            byte[] keyData_BD_CF = x(keyData_D1_E8, 0x204D276C);
+
+            keyData_BD_CF = x(keyData_D1_E8, 0x204D276C);
             Console.WriteLine("Transformed:");
             Util.DumpBuffer(new StreamBuffer(keyData_BD_CF));
             Console.WriteLine();
 
-            byte[] keyData_2F_17 = t4(keyData_D1_E8, new byte[0]);
+
+            byte[] dst = new byte[0x210];
+            dst[0x104] = 1;
+            byte[] src = new byte[0x210];
+            for (int i = 0; i < keyData_D1_E8.Length; i++)
+            {
+                src[i + 4] = keyData_D1_E8[i];
+            }
+
+            t4(src, dst);
+            keyData_2F_17 = new byte[0x100];
+            for (int i = 0; i < keyData_2F_17.Length; i++)
+            {
+                keyData_2F_17[i] = dst[i + 4];
+            }
+
             Console.WriteLine("t4:");
             Util.DumpBuffer(new StreamBuffer(keyData_2F_17));
+            Console.WriteLine();
+
+
+            dst = new byte[0x210 * 2];
+            for (int i = 0; i < keyData_2F_17.Length; i++)
+            {
+                dst[i] = keyData_2F_17[i];
+            }
+            bb(dst, 0x1);
+            keyData_52_2E = new byte[0x100];
+            for (int i = 0; i < keyData_52_2E.Length; i++)
+            {
+                keyData_52_2E[i] = dst[i];
+            }
+            Console.WriteLine("bb:");
+            Util.DumpBuffer(new StreamBuffer(keyData_52_2E));
             Console.WriteLine();
             
-            bb(keyData_2F_17);
-            Console.WriteLine("t4:");
-            Util.DumpBuffer(new StreamBuffer(keyData_2F_17));
-            Console.WriteLine();
+
+            // Next
+           // A2 D1 D1 3A 2C 0B E0 26 53 6F E1 BA B3 5C 41 11 44 4D 4E AB 8A 23 02 8C 6F 7D 5E 7A 8A 3C 1D C7 D2 7B 42 9C F4 96 C1 8B 0A D3 18 EC 89 DE 28 44 53 CA 7E B6 28 97 B3 7B 48 B6 56 FD 70 3A A8 45 63 89 BC 13 6E A2 2C E9 CB E7 6E 51 C5 CE 53 21 E1 F8 80 15 66 C1 17 9A E7 E9 AA 03 45 F0 5A C7 43 23 04 1D A3 ED 01 AE D8 26 C0 06 AC 3C F1 FF 9A DF E6 32 0E 03 C2 F1 60 8E 9F 70 18 92 1E 1B 4D 64 53 91 22 7F FD A8 B4 44 54 23 30 60 D9 3E BC 83 E6 39 1D E3 58 CA F9 92 44 2B 5C 75 95 98 1A 0C EC E9 8F FA DD FD EB E9 E5 30 74 97 E6 CE B4 3B 11 0B 04 CD CE 60 25 76 86 AE CE 2E F1 EE 81 E4 77 AF 47 D5 CE 9E AA D1 56 36 D0 16 62 10 1A DC B4 CB 44 00 CA 19 0B 94 B0 5E 88 42 D3 75 6B 27 92 6A FA FA 48 BD F8 C0 78 A7 7E 03 AD 4A 2A 5F 0A DF C0 C1 89 4C E7 14 3E 0F 10 43 A7 C6
+           
+          // b(output, eax); eax = rng, maybe client op is reverse and recovers RNG ?
+           
+           
         }
 
         private void transform_client()
         {
-            string seedHex = "C4 1A 5A 0F 1A 32 C1 A4 95 FA 5D C7 C5 A9 06 A4".Replace(" ", "");
+            string seedHex = "8A 92 D7 7F 2A C6 57 06 D9 A2 1B 27 F0 92 A0 F7".Replace(" ", "");
 
             DdoRandom rng = new DdoRandom();
             rng.SetSeed(Util.FromHexString(seedHex));
@@ -78,7 +125,7 @@ namespace Arrowgene.Ddo.Cli.Command
 
             b(output, 0x02);
             ba(output);
-            bb(output);
+            bb(output, 0x8);
 
             while (count > 0)
             {
@@ -101,7 +148,7 @@ namespace Arrowgene.Ddo.Cli.Command
 
                 b(output, eax);
                 ba(output);
-                bb(output);
+                bb(output, 0x8);
 
 
                 count--;
@@ -112,7 +159,7 @@ namespace Arrowgene.Ddo.Cli.Command
 
             for (int kindex = 0; kindex < keyBytes.Length; kindex++)
             {
-                bb(output);
+                bb(output, 0x8);
                 // todo maybe clear from 0x210 - end ?
                 b(output, keyBytes[kindex]);
                 ba(output);
@@ -126,22 +173,27 @@ namespace Arrowgene.Ddo.Cli.Command
             Util.DumpBuffer(new StreamBuffer(output));
             Console.WriteLine();
 
-
             // 013EBA34            | 8B043A                | mov eax,dword ptr ds:[edx+edi]  
+            // byte[] dst = new byte[0x210];
+            // dst[0] = 1;
+            // byte[] srcA = new byte[0x210];
+            // for (int i = 0; i < keyData_D1_E8.Length; i++)
+            // {
+            //     srcA[i + 4] = keyData_D1_E8[i];
+            // }
+            // byte[] srcB = new byte[0x210];
+            // combine(srcA, srcB, dst);
+            // 
+            // Console.WriteLine("output:");
+            // Util.DumpBuffer(new StreamBuffer(srcB));
+            // Console.WriteLine();
         }
 
         /// <summary>
         /// 013EBC60 | 53 | push ebx
         /// </summary>
-        private byte[] t4(byte[] srcD, byte[] dstD)
+        private void t4(byte[] src, byte[] dst)
         {
-            byte[] dst = new byte[0x210];
-            byte[] src = new byte[0x210];
-            for (int i = 0; i < srcD.Length; i++)
-            {
-                src[i + 4] = srcD[i];
-            }
-
             uint eax = 0;
             for (int i = 0; i < 0x84; i++)
             {
@@ -150,12 +202,18 @@ namespace Arrowgene.Ddo.Cli.Command
                 uint s = (uint) (src[offset] | src[offset + 1] << 8 | src[offset + 2] << 16 | src[offset + 3] << 24);
                 uint r = d - s;
                 r = r - eax;
-                
+
+                if (d == 1)
+                {
+                    int sda = 1;
+                }
+
                 uint edx = 0;
                 if (d == r)
                 {
                     edx = eax;
                 }
+
                 if (d < r)
                 {
                     eax = 1;
@@ -164,52 +222,41 @@ namespace Arrowgene.Ddo.Cli.Command
                 {
                     eax = 0;
                 }
+
                 eax = eax | edx;
-                
+
                 dst[offset] = (byte) (r & 0xFF);
                 dst[offset + 1] = (byte) (r >> 8 & 0xFF);
-                dst[offset+ 2] = (byte) (r >> 16 & 0xFF);
+                dst[offset + 2] = (byte) (r >> 16 & 0xFF);
                 dst[offset + 3] = (byte) (r >> 24 & 0xFF);
             }
-
-        //  byte[] output = new byte[256];
-        //  for (int i = 0; i < output.Length; i++)
-        //  {
-        //      output[i] = dst[i + 4];
-        //  }
-
-            return dst;
         }
 
 
-        private void combine(byte[] output, uint val)
+        private void combine(byte[] srcA, byte[] srcB, byte[] dst)
         {
             // 013EBA00 | 51 | push ecx 
-            output[0] = (byte) (val & 0xFF);
-            output[1] = (byte) (val >> 8 & 0xFF);
-            output[2] = (byte) (val >> 16 & 0xFF);
-            output[3] = (byte) (val >> 24 & 0xFF);
-            uint idx = 0;
+            uint esi = 0;
             for (uint i = 0; i < 0x84; i++)
             {
-                uint offset_0 = idx * 4;
-                uint offset_1 = 0x210 + (i * 4);
-                uint offset_2 = 0x420 + (i * 4);
+                uint offset = i * 4;
+                esi = 0;
 
-                uint s0 = (uint) (output[offset_0] |
-                                  output[offset_0 + 1] << 8 |
-                                  output[offset_0 + 2] << 16 |
-                                  output[offset_0 + 3] << 24
+                uint offset_esi = esi * 4;
+                uint s0 = (uint) (srcA[offset] |
+                                  srcA[offset + 1] << 8 |
+                                  srcA[offset + 2] << 16 |
+                                  srcA[offset + 3] << 24
                     );
-                uint s1 = (uint) (output[offset_1] |
-                                  output[offset_1 + 1] << 8 |
-                                  output[offset_1 + 2] << 16 |
-                                  output[offset_1 + 3] << 24
+                uint s1 = (uint) (dst[offset_esi] |
+                                  dst[offset_esi + 1] << 8 |
+                                  dst[offset_esi + 2] << 16 |
+                                  dst[offset_esi + 3] << 24
                     );
-                uint s2 = (uint) (output[offset_2] |
-                                  output[offset_2 + 1] << 8 |
-                                  output[offset_2 + 2] << 16 |
-                                  output[offset_2 + 3] << 24
+                uint s2 = (uint) (srcB[offset] |
+                                  srcB[offset + 1] << 8 |
+                                  srcB[offset + 2] << 16 |
+                                  srcB[offset + 3] << 24
                     );
                 uint r = s1 * s0;
                 uint r1 = r + s2;
@@ -227,10 +274,10 @@ namespace Arrowgene.Ddo.Cli.Command
                     //  edx += 1;
                 }
 
-                output[offset_2] = (byte) (r2 & 0xFF);
-                output[offset_2 + 1] = (byte) (r2 >> 8 & 0xFF);
-                output[offset_2 + 2] = (byte) (r2 >> 16 & 0xFF);
-                output[offset_2 + 3] = (byte) (r2 >> 24 & 0xFF);
+                srcB[offset] = (byte) (r2 & 0xFF);
+                srcB[offset + 1] = (byte) (r2 >> 8 & 0xFF);
+                srcB[offset + 2] = (byte) (r2 >> 16 & 0xFF);
+                srcB[offset + 3] = (byte) (r2 >> 24 & 0xFF);
             }
         }
 
@@ -302,10 +349,10 @@ namespace Arrowgene.Ddo.Cli.Command
         /// <summary>
         /// 013EBFB0 | 83EC 08 | sub esp,8 
         /// </summary>
-        private void bb(byte[] output)
+        private void bb(byte[] output, uint esp_14)
         {
             uint offset;
-            uint ecx = 0x8;
+            uint ecx = esp_14;
             uint eax = ecx;
             eax = eax >> 0x5;
             ecx = ecx & 0x1F;
