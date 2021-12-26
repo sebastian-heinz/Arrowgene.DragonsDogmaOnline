@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddo.GameServer</RootNamespace>
         <Title>Dragons Dogma Online - Game Server</Title>
         <Company>DDO Team</Company>

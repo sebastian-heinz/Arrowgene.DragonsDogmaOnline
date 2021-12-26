@@ -108,3 +108,13 @@ but will eventually be merged back into develop (to definitely add the new featu
 - Arrowgene.Services (https://github.com/Arrowgene/Arrowgene.Services)
 
 
+
+
+- 1 hardcoded key - s->c
+- 2 hardcoded key - c->s
+//- 3 hardcoded key - s->c ??
+- 4 generated key - s->c
+
+
+
+

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddo.Shared;
 using Arrowgene.Ddo.Shared.Crypto;
@@ -8,6 +10,7 @@ namespace Arrowgene.Ddo.Cli.Command
 {
     public class DecryptCommand : ICommand
     {
+        
         public string Key => "decrypt";
         public string Description => "Decrypt packet data";
 
@@ -20,8 +23,11 @@ namespace Arrowgene.Ddo.Cli.Command
             string client_1 =
                 "066b608643985002409e7be9541a39c4658cde84ce0f290dd91ebc1c7d4054864bfcaa80279c06d06b149f350c320029f8329c6e837b07608d4bd7aa13ecea46b77f3673e05da5a4b6877f27922701d333c89f10171c3b5f9482924f38b572ef68a598323f5091d0b1d572678437bd10f1dad2b112decf9c801f193188c0cd7c881918220bd851d8372c73f87b66e78462792e53d2cc5868e768941b6011fe9d65300b8841153afb06e73e9419f057656c9f30e836c17e0489537cdf91d17bf6a8d24e889a6b8c414a456d06410bca38a15aba22109841d523911b716ee7eca07970e1392857dc646d9adfecb26d0f877cd19cd27857aaf098cd73d0cf18597286eb6b06c1e4a9934046e369d8c619d3af94867aa106789d43ef76427dbaaf728d06d668b7e252ca95bfa6f99c5f515d7334218a51a761eb7b25977c574f8ce878daeac7be1945b1c00f954b5cab9810";
 
+            new Handshake().test();
+            
             DecryptServer1(Util.FromHexString(server_1));
             DecryptClient1(Util.FromHexString(client_1));
+  
             return CommandResultType.Exit;
         }
 
@@ -39,14 +45,14 @@ namespace Arrowgene.Ddo.Cli.Command
         {
             0x24, 0x63, 0x62, 0x4D, 0x36, 0x57, 0x50, 0x29, 0x61, 0x58, 0x3D, 0x25, 0x4A, 0x5E, 0x7A, 0x41
         };
-
+        
         private void DecryptServer1(byte[] input)
         {
             Console.WriteLine("--DecryptServer1--");
             Console.WriteLine();
 
             Console.WriteLine("Camellia Key:");
-            Util.DumpBuffer(new StreamBuffer(InitialKey));
+            Util.ConsoleDumpBuffer(new StreamBuffer(InitialKey));
             Console.WriteLine();
 
             byte[] decrypted = new byte[input.Length];
@@ -55,6 +61,9 @@ namespace Arrowgene.Ddo.Cli.Command
             IBuffer decBuffer = new StreamBuffer(decrypted);
             decBuffer.SetPositionStart();
             byte[] hashData = decBuffer.ReadBytes(272);
+            Console.WriteLine("hashData:");
+            Util.ConsoleDumpBuffer(new StreamBuffer(hashData));
+            Console.WriteLine();
             decBuffer.SetPositionStart();
             byte[] keyData = decBuffer.ReadBytes(256);
             byte[] unknown0 = decBuffer.ReadBytes(16);
@@ -62,27 +71,44 @@ namespace Arrowgene.Ddo.Cli.Command
             byte[] unknown1 = decBuffer.ReadBytes(12);
 
             Console.WriteLine("Decrypted:");
-            Util.DumpBuffer(new StreamBuffer(decrypted));
+            Util.ConsoleDumpBuffer(new StreamBuffer(decrypted));
             Console.WriteLine();
 
             Console.WriteLine("Expected Hash:");
-            Util.DumpBuffer(new StreamBuffer(expectedHash));
+            Util.ConsoleDumpBuffer(new StreamBuffer(expectedHash));
             Console.WriteLine();
 
             SHA1Managed sha1 = new SHA1Managed();
             byte[] calculatedHash = sha1.ComputeHash(hashData);
             Console.WriteLine("Calculated Hash:");
-            Util.DumpBuffer(new StreamBuffer(calculatedHash));
+            Util.ConsoleDumpBuffer(new StreamBuffer(calculatedHash));
             Console.WriteLine();
+
+
+            SHA256Managed sha256 = new SHA256Managed();
+            byte[] calculatedHash256 = sha256.ComputeHash(hashData);
+            Console.WriteLine("Calculated Hash256:");
+            Util.ConsoleDumpBuffer(new StreamBuffer(calculatedHash256));
+            Console.WriteLine();
+            
+            
+          // RSACryptoServiceProvider RSAalg = new RSACryptoServiceProvider();
+
+          // byte[] decryptedData = RSAalg.Decrypt(keyData, false);
+          // Console.WriteLine("RSA:");
+          // Util.ConsoleDumpBuffer(new StreamBuffer(decryptedData));
+          // Console.WriteLine();
+            
         }
 
+        
         private void DecryptClient1(byte[] input)
         {
             Console.WriteLine("--DecryptClient1--");
             Console.WriteLine();
 
             Console.WriteLine("Camellia Key:");
-            Util.DumpBuffer(new StreamBuffer(InitialKey));
+            Util.ConsoleDumpBuffer(new StreamBuffer(InitialKey));
             Console.WriteLine();
 
             byte[] decrypted = new byte[input.Length];
@@ -93,7 +119,7 @@ namespace Arrowgene.Ddo.Cli.Command
             byte[] keyData = decBuffer.ReadBytes(256);
 
             Console.WriteLine("Decrypted:");
-            Util.DumpBuffer(new StreamBuffer(decrypted));
+            Util.ConsoleDumpBuffer(new StreamBuffer(decrypted));
             Console.WriteLine();
         }
     }

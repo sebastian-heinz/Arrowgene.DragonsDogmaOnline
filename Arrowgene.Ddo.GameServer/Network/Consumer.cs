@@ -73,7 +73,6 @@ namespace Arrowgene.Ddo.GameServer.Network
 
         private void HandlePacket(Client client, Packet packet)
         {
-            Logger.LogUnknownIncomingPacket(client, packet);
             if (!_packetHandlerLookup.ContainsKey(packet.Id))
             {
                 //Logger.LogUnknownIncomingPacket(client, packet);

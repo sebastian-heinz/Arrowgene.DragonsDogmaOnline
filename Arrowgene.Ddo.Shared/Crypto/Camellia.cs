@@ -44,6 +44,52 @@ namespace Arrowgene.Ddo.Shared.Crypto
                 current += xorLen;
             }
         }
+        
+        public void Encrypt2(Span<byte> input, Span<byte> output, byte[] key, Span<byte> prv)
+        {
+            // TODO - Modifies input value to apply XOR - make a copy
+            // TODO check if input length is dividable by 16
+            uint keyLength = (uint) key.Length * 8;
+            byte[][] subkey = new byte[34][];
+            int idx = 0;
+            for (int i = 0; i < subkey.Length; i++)
+            {
+                for (int j = 0; j < subkey[i].Length; i++)
+                {
+                    subkey[i][j] = key[idx];
+                    idx++;
+                }   
+            }
+            
+            int length = input.Length;
+            if (output.Length < input.Length)
+            {
+                // error not enough space
+            }
+
+            int current = 0;
+            while (current < length)
+            {
+                int xorLen = current + 16 < length ? 16 : length - current;
+                for (int i = 0; i < xorLen; i++)
+                {
+                    input[current + i] = (byte) (input[current + i] ^ prv[i]);
+                }
+                CryptBlock(
+                    false,
+                    keyLength,
+                    input.Slice(current, 16),
+                    subkey,
+                    output.Slice(current, 16)
+                );
+                for (int i = 0; i < xorLen; i++)
+                {
+                    prv[i] = output[current + i];
+                }
+                current += xorLen;
+            }
+        }
+        
 
         /// <summary>
         /// Dragons Dogma Online Network Decryption

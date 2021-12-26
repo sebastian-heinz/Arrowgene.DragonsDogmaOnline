@@ -35,8 +35,8 @@ namespace Arrowgene.Ddo.GameServer.Network
             {
                 Logger.Error($"dataLength < 0 || dataLength > ushort.MaxValue (dataLength:{dataLength})");
             }
-
-            buffer.WriteUInt16((ushort) dataLength, Endianness.Big);
+            
+            buffer.WriteUInt16((ushort) data.Length /* without header*/, Endianness.Big);
             buffer.WriteBytes(data);
             return buffer.GetAllBytes();
         }
@@ -77,7 +77,6 @@ namespace Arrowgene.Ddo.GameServer.Network
                         return packets;
                     }
 
-                    _dataSize -= PacketHeaderSize;
                     _readHeader = true;
                 }
 

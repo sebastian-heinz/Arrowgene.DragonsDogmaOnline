@@ -1,6 +1,7 @@
 ﻿using System;
 using Arrowgene.Buffers;
 using Arrowgene.Ddo.GameServer.Network;
+using Arrowgene.Ddo.Shared;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -12,7 +13,11 @@ namespace Arrowgene.Ddo.GameServer.Logging
         {
             base.Initialize(identity, name, write, configuration);
         }
-
+        public void Hex(byte[] data)
+        {
+            Info($"{Util.HexDump(data)}");
+        }
+        
         public void Info(Client client, string message)
         {
             Info($"{client.Identity} {message}");
@@ -71,14 +76,17 @@ namespace Arrowgene.Ddo.GameServer.Logging
         {
             // todo packet log wrapper class
             Write(LogLevel.Debug,
-                $"{client.Identity} - {packet.Id} {Environment.NewLine} {((StreamBuffer) packet.Data).Dump()}", packet);
+                $"{client.Identity} - {packet.Id} {Environment.NewLine}{Util.HexDump(packet.Data.GetAllBytes())}", packet);
         }
 
         public void Received(ITcpSocket socket, byte[] data)
         {
-            StreamBuffer b = new StreamBuffer(data);
-                Write(LogLevel.Debug,
-                    $"{socket.Identity} {Environment.NewLine} {b.Dump()}", b);
+            Write(LogLevel.Debug,$"Received: {data.Length}bytes from {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
+        }
+        
+        public void Send(ITcpSocket socket, byte[] data)
+        {
+            Write(LogLevel.Debug,$"Send: {data.Length}bytes to {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
         }
     }
 }

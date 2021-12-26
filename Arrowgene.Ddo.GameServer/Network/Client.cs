@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddo.GameServer.Logging;
+using Arrowgene.Ddo.Shared.Crypto;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -18,8 +19,10 @@ namespace Arrowgene.Ddo.GameServer.Network
         {
             _socket = socket;
             _packetFactory = packetFactory;
+            Handshake = new Handshake();
         }
 
+        public Handshake Handshake { get; }
         public string Identity { get; private set; }
 
         public List<Packet> Receive(byte[] data)
@@ -62,7 +65,7 @@ namespace Arrowgene.Ddo.GameServer.Network
 
         public void Send(byte[] data)
         {
-            // Logger.LogOutgoingPacket(this, packet, ServerType);
+            Logger.Send(_socket, data);
             _socket.Send(data);
         }
     }
