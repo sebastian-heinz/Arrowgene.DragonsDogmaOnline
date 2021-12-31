@@ -1,6 +1,15 @@
 ﻿using System;
+using System.IO;
+using System.Numerics;
 using System.Security.Cryptography;
+using System.Text;
 using Arrowgene.Buffers;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Engines;
+using Org.BouncyCastle.Crypto.Parameters;
+using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddo.Shared.Crypto
 {
@@ -39,7 +48,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
             0x9C, 0x71, 0x61, 0xBA, 0xC2, 0xD0, 0xC1, 0x48, 0x39, 0xFE, 0xEE, 0x3A, 0xAA, 0x58, 0xD9, 0x5D,
             0xF7, 0x5F, 0x51, 0xA6, 0x22, 0x8F, 0x48, 0x56, 0x6C, 0x8F, 0xFA, 0x69, 0x9D, 0x68, 0xE8, 0xD1
         };
-
+        
         private static byte[] TestServerIv = new byte[]
         {
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11
@@ -54,29 +63,38 @@ namespace Arrowgene.Ddo.Shared.Crypto
         private byte[] _serverIv;
         private byte[] _serverUnk;
 
+        private BigInteger _sKey;
+        private BigInteger _sIv;
+        private BigInteger _sUn;
+        
         public Handshake()
         {
             _serverKey = new byte[256];
             _serverIv = new byte[16];
             _serverUnk = new byte[12];
             
-          //  _serverKey[0] = 1;
+            _serverKey = TestServerKey;
+            _serverIv = TestServerIv;
+            _serverUnk = TestServerUnk;
 
-          //  for (int i = 0; i < _serverKey.Length; i++)
-          //  {
-          //      _serverKey[i] = (byte)(i & 0xFF);
-          //  }
+            _sKey = new BigInteger(_serverKey);
+            _sIv = new BigInteger(_serverIv);
+            _sUn = new BigInteger(_serverUnk);
+        }
+        
+        private void Decrypt(byte[] keyData,  byte[] iv, byte[] unknown)
+        {
+            BigInteger cKey = new BigInteger(keyData);
+            BigInteger cIv = new BigInteger(iv);
+            BigInteger cUn = new BigInteger(unknown);
             
-             _serverKey = TestServerKey;
-             _serverIv = TestServerIv;
-            // _serverUnk = TestServerUnk;
+            
+           // Console.WriteLine($"res:{Environment.NewLine}{Util.HexDump(res)}");
         }
 
         public void test()
         {
-            CngKey bobKey = CngKey.Import(TestServerKey, CngKeyBlobFormat.EccPublicBlob);
-            int i = 1;
-
+         
         }
 
         public byte[] CreateClientCertChallenge()
@@ -110,10 +128,10 @@ namespace Arrowgene.Ddo.Shared.Crypto
                               $"Iv:{Environment.NewLine}{Util.HexDump(iv)}" +
                               $"Unk:{Environment.NewLine}{Util.HexDump(unk)}"
             );
-
+            
+            Decrypt(keyData, iv, unk);
 
             string hexResponse1 =
-                "0060" +
                 "3b440b4e0e65f4d73322e9f37c0d73ad" +
                 "b4b72750bc9e7a45d14bf59e1031576f" +
                 "db9dce65b0ce1743c69ce4a1dafd8eb5" +

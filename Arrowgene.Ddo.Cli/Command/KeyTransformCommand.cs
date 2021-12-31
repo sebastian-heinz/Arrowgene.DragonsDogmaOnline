@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Numerics;
 using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddo.Shared;
 using Arrowgene.Ddo.Shared.Crypto;
+using Buffer = Arrowgene.Buffers.Buffer;
 
 namespace Arrowgene.Ddo.Cli.Command
 {
@@ -18,11 +20,18 @@ namespace Arrowgene.Ddo.Cli.Command
         private static byte[] keyData_52_2E;
         private static byte[] keyData_A2_D1;
 
-        
-        
+
         public CommandResultType Run(CommandParameter parameter)
         {
-          //  transform_server(); 
+            string seedHex = "8A 92 D7 7F 2A C6 57 06 D9 A2 1B 27 F0 92 A0 F7".Replace(" ", "");
+            string serverKeyHex =
+                "9CAC5E77F860F58C59BB1F1F907AD06ADAA97E40AC439F83A15B8282CAB6EC4A45165EBBD0A7B5FA731AFFDD9A2591F2F7CEF497E4D4972AB098955C28440DBF08876898A8BCC4ED4F98997DFA776225988CB445E78D0B0A011102B80B09F9F2B3B54551EA5DB6831AD38E71630CBE21E0934FE7EE55DDA5AB81406EB7564DD97270B6F3C7B038CF871EFE78E68C9032800761A9FC9FEC93A8FF092E717DEE5E1C5287DD7E2A8B0C32F41F4CF53F838F6F56189D57488C1A0B69AEC8F621BB4E5D2BE2C78154A4DBC226346BA4C09AD65DEB90BB09F3967ABA1F3485B1DEC2169C7161BAC2D0C14839FEEE3AAA58D95DF75F51A6228F48566C8FFA699D68E8D1";
+            byte[] rngSeed = Util.FromHexString(seedHex);
+            byte[] serverKey = Util.FromHexString(serverKeyHex);
+
+
+            //transform_server();
+            transform_bi(rngSeed, serverKey);
             transform_client();
             return CommandResultType.Exit;
         }
@@ -31,87 +40,157 @@ namespace Arrowgene.Ddo.Cli.Command
         {
         }
 
+        private void transform_bi(byte[] rngSeedData, byte[] serverKeyData)
+        {
+            // === server ===
+            BigInteger serverKey = new BigInteger(serverKeyData, true, true);
+            byte[] dst = new byte[0x210];
+            dst[0x104] = 1;
+            BigInteger constant = new BigInteger(dst, true, false);
+            BigInteger s1 = serverKey * BigInteger.Pow(2, 8 * 4);
+            BigInteger s2 = constant - s1; // 013EBC60 
+            // s2 = 2F 17 97 62 __ 88 A1 53 63
+            Console.WriteLine($"transform_bi-s1:{Environment.NewLine}{Util.HexDump(s1.ToByteArray())}");
+
+            BigInteger s3 = s2 / BigInteger.Pow(2, 8 * 4);
+            BigInteger s4 = s3 * BigInteger.Pow(2, 1); // 013EBFB0 (x*2^y)
+            BigInteger s5 = serverKey * BigInteger.Pow(2, 1); // 013EBFB0
+
+            Console.WriteLine($"transform_bi-s4:{Environment.NewLine}{Util.HexDump(s4.ToByteArray())}");
+            Console.WriteLine($"transform_bi-s5:{Environment.NewLine}{Util.HexDump(s5.ToByteArray())}");
+
+            // === client ===
+            // 1) Construct BigInteger with RandomData + New Cammelia Key
+            DdoRandom rng = new DdoRandom();
+            rng.SetSeed(rngSeedData);
+            string newKey = rng.GenerateKey();
+            byte[] newKeyBytes = Encoding.UTF8.GetBytes(newKey);
+            BigInteger c1 = new BigInteger(0);
+            BigInteger c2 = new BigInteger(2);
+
+            c1 = c1 + c2; // add first byte
+            c1 = c1 * BigInteger.Pow(2, 8); // shift left, to make space
+
+            // add random data
+            for (int i = 0; i < 0xCD; i++)
+            {
+                byte rnd = (byte) rng.Next();
+                c1 = c1 + new BigInteger(rnd); // add random byte
+                c1 = c1 * BigInteger.Pow(2, 8); // shift left, to make space for next
+            }
+
+            // add new camellia key
+            for (int i = 0; i < newKeyBytes.Length; i++)
+            {
+                c1 = c1 * BigInteger.Pow(2, 8); // shift left, to make space for next
+                byte newKeyByte = newKeyBytes[i];
+                c1 = c1 + new BigInteger(newKeyByte); // add new key byte
+            }
+
+
+            Console.WriteLine($"transform_bi-c1:{Environment.NewLine}{Util.HexDump(c1.ToByteArray())}");
+
+
+            bool breakPoint = true;
+        }
+
+        private void transform_client_bi()
+        {
+            string keyDataHex =
+                "9CAC5E77F860F58C59BB1F1F907AD06ADAA97E40AC439F83A15B8282CAB6EC4A45165EBBD0A7B5FA731AFFDD9A2591F2F7CEF497E4D4972AB098955C28440DBF08876898A8BCC4ED4F98997DFA776225988CB445E78D0B0A011102B80B09F9F2B3B54551EA5DB6831AD38E71630CBE21E0934FE7EE55DDA5AB81406EB7564DD97270B6F3C7B038CF871EFE78E68C9032800761A9FC9FEC93A8FF092E717DEE5E1C5287DD7E2A8B0C32F41F4CF53F838F6F56189D57488C1A0B69AEC8F621BB4E5D2BE2C78154A4DBC226346BA4C09AD65DEB90BB09F3967ABA1F3485B1DEC2169C7161BAC2D0C14839FEEE3AAA58D95DF75F51A6228F48566C8FFA699D68E8D1";
+            keyData_9C_AC = Util.FromHexString(keyDataHex);
+
+
+            // generate random
+            BigInteger c1 = new BigInteger(0);
+            BigInteger c2 = new BigInteger(2);
+        }
+
         private void transform_server()
         {
             // server decrypted response, 256 bytes
             string keyDataHex =
                 "9CAC5E77F860F58C59BB1F1F907AD06ADAA97E40AC439F83A15B8282CAB6EC4A45165EBBD0A7B5FA731AFFDD9A2591F2F7CEF497E4D4972AB098955C28440DBF08876898A8BCC4ED4F98997DFA776225988CB445E78D0B0A011102B80B09F9F2B3B54551EA5DB6831AD38E71630CBE21E0934FE7EE55DDA5AB81406EB7564DD97270B6F3C7B038CF871EFE78E68C9032800761A9FC9FEC93A8FF092E717DEE5E1C5287DD7E2A8B0C32F41F4CF53F838F6F56189D57488C1A0B69AEC8F621BB4E5D2BE2C78154A4DBC226346BA4C09AD65DEB90BB09F3967ABA1F3485B1DEC2169C7161BAC2D0C14839FEEE3AAA58D95DF75F51A6228F48566C8FFA699D68E8D1";
             keyData_9C_AC = Util.FromHexString(keyDataHex);
-            Console.WriteLine("Server Data:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(keyData_9C_AC));
-            Console.WriteLine();
-
+            // Console.WriteLine("Server Data:");
+            //  Util.ConsoleDumpBuffer(new StreamBuffer(keyData_9C_AC));
+            //  Console.WriteLine();
 
             keyData_D1_E8 = Util.FromHexString(keyDataHex);
             Array.Reverse(keyData_D1_E8);
-            Console.WriteLine("Reversed:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(keyData_D1_E8));
-            Console.WriteLine();
+            //  Console.WriteLine("Reversed:");
+            //  Util.ConsoleDumpBuffer(new StreamBuffer(keyData_D1_E8));
+            //  Console.WriteLine();
 
+            // keyData_BD_CF = x(keyData_D1_E8, 0x204D276C);
+            // Console.WriteLine("Transformed:");
+            // Util.ConsoleDumpBuffer(new StreamBuffer(keyData_BD_CF));
+            // Console.WriteLine()
 
-            keyData_BD_CF = x(keyData_D1_E8, 0x204D276C);
-            Console.WriteLine("Transformed:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(keyData_BD_CF));
-            Console.WriteLine();
-
-
+            // constant value
             byte[] dst = new byte[0x210];
             dst[0x104] = 1;
+
+            // 
             byte[] src = new byte[0x210];
             for (int i = 0; i < keyData_D1_E8.Length; i++)
             {
                 src[i + 4] = keyData_D1_E8[i];
             }
 
-            t4(src, dst);
+            //  Console.WriteLine($"src:{Environment.NewLine}{Util.HexDump(src)}");
+
+            t4(src, dst); // x=b-a
+            //   Console.WriteLine($"t4:{Environment.NewLine}{Util.HexDump(dst)}");
+
             keyData_2F_17 = new byte[0x100];
             for (int i = 0; i < keyData_2F_17.Length; i++)
             {
                 keyData_2F_17[i] = dst[i + 4];
             }
 
-            Console.WriteLine("t4:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(keyData_2F_17));
-            Console.WriteLine();
-
+            // Console.WriteLine($"keyData_2F_17:{Environment.NewLine}{Util.HexDump(keyData_2F_17)}");
 
             dst = new byte[0x210 * 2];
             for (int i = 0; i < keyData_2F_17.Length; i++)
             {
                 dst[i] = keyData_2F_17[i];
             }
-            bb(dst, 0x1);
+
+            //  Console.WriteLine($"dst:{Environment.NewLine}{Util.HexDump(dst)}");
+
+            bb(dst, 0x1); // x*2^y 
+            //   Console.WriteLine($"bb:{Environment.NewLine}{Util.HexDump(dst)}");
+
+            // resize? can be ignored?
             keyData_52_2E = new byte[0x100];
             for (int i = 0; i < keyData_52_2E.Length; i++)
             {
                 keyData_52_2E[i] = dst[i];
             }
-            Console.WriteLine("bb:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(keyData_52_2E));
-            Console.WriteLine();
-            
 
+            //  Console.WriteLine($"s4:{Environment.NewLine}{Util.HexDump(keyData_52_2E)}");
 
             dst = new byte[0x210 * 2];
             for (int i = 0; i < keyData_D1_E8.Length; i++)
             {
                 dst[i] = keyData_D1_E8[i];
             }
+
             bb(dst, 0x1);
             keyData_A2_D1 = new byte[0x100];
             for (int i = 0; i < keyData_A2_D1.Length; i++)
             {
                 keyData_A2_D1[i] = dst[i];
             }
-            Console.WriteLine("bb:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(keyData_A2_D1));
-            Console.WriteLine();
-            
+
+            // Console.WriteLine("bb:");
+            //  Util.ConsoleDumpBuffer(new StreamBuffer(keyData_A2_D1));
+            //   Console.WriteLine();
+
 
             // 07599CB8  88 46 47 EB 4C D3 7F 64 B3 42 7A 14 31 8D FA BA  .FGëLÓ.d³Bz.1.úº  
 // 013EBA00
-           
-           
         }
 
         private void transform_client()
@@ -123,13 +202,12 @@ namespace Arrowgene.Ddo.Cli.Command
             string key = rng.GenerateKey();
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
-            Util.ConsoleDumpBuffer(new StreamBuffer(keyBytes));
-            Console.WriteLine($"Key: {key}");
-            Console.WriteLine();
+            //  Util.ConsoleDumpBuffer(new StreamBuffer(keyBytes));
+            //  Console.WriteLine($"Key: {key}");
+            //  Console.WriteLine();
+
 
             int count = 0xCD;
-
-
             // 0332DF66 | 0FBE18 | movsx ebx,byte ptr ds:[eax] | proc - 1
             byte[] proc1_in = new byte[]
             {
@@ -139,21 +217,53 @@ namespace Arrowgene.Ddo.Cli.Command
             // 00B010E7 | 8D6424 04 | lea esp,dword ptr ss:[esp+4] | proc 1 - end
 
 
-            byte[] output = new byte[0x210 * 2];
+            //   Buffer bss = new StreamBuffer();
+            //   bss.WriteBytes(c1.ToByteArray());
+            //   bss.WriteBytes(new byte[520]);
+            //   bss.WriteBytes(c2.ToByteArray());
+            //   bss.WriteBytes(new byte[527]);
+            //   byte[] test = bss.GetAllBytes();
+            // Console.WriteLine($"output:{Environment.NewLine}{Util.HexDump(t.ToByteArray())}");
 
-            b(output, 0x02);
-            ba(output);
+            // init two big ints
+            BigInteger c1 = new BigInteger(0);
+            BigInteger c2 = new BigInteger(2);
+            byte[] output = new byte[0x210 * 2];
+            b(output, 0x02); // set 2nd big int to INT32 value and null
+            //   BigInteger k1 = new BigInteger(test.AsSpan(0, 0x210));
+            //   BigInteger k2 = new BigInteger(test.AsSpan(0x210, 0x210));
+            //   Console.WriteLine($"output:{Environment.NewLine}{Util.HexDump(k2.ToByteArray())}");
+            //   Console.WriteLine($"output:{Environment.NewLine}{Util.HexDump(c2.ToByteArray())}");
+
+            BigInteger c3 = c1 + c2;
+            ba(output); // addition of two BigInts -> result in first parts
+            //   Console.WriteLine($"output:{Environment.NewLine}{Util.HexDump(output)}");
+
+
+            // 1st Buffer * 2 ^ esp_14 
+            BigInteger c4 = c1 * BigInteger.Pow(2, 8);
+            // BigInteger c4 = c3 * BigInteger.Pow(2, 8 * 0xCD);
             bb(output, 0x8);
-            Console.WriteLine("output:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(output));
-            Console.WriteLine();
+            //   Console.WriteLine($"bb(output, 0x8):{Environment.NewLine}{Util.HexDump(output)}");
+            //    Console.WriteLine($"c3 * BigInteger.Pow(c2, 8):{Environment.NewLine}{Util.HexDump(c4.ToByteArray())}");
+
+            byte[] rnd = new byte[0xCD];
+            for (int i = 0; i < rnd.Length; i++)
+            {
+                rnd[i] = (byte) rng.Next();
+            }
+
+            BigInteger r = new BigInteger(rnd, true, true);
+            BigInteger t = c4 + r;
+
+            BigInteger c1x = c4;
+            BigInteger c2x = c3;
             while (count > 0)
             {
                 // 040DD0A3 | 0FB6C8 | movzx ecx,al 
-                uint eax = rng.Next();
-                uint ecx = (byte) eax;
+                uint eax = rnd[rnd.Length - count]; //rng.Next();
+                uint ecx = rnd[rnd.Length - count]; //(byte) eax;
                 uint ebp = 0x1;
-
                 if ((byte) eax == 0)
                 {
                     // 040DD0A6 | 84C0 | test al,al
@@ -161,22 +271,23 @@ namespace Arrowgene.Ddo.Cli.Command
                 }
 
                 eax = ecx;
-
                 uint edx = 0; // 040DD0AE | 99 | cdq
-
                 // eax = 0745F63C
-
-                b(output, eax);
+                c2x = c2x.DdoSetInteger(eax);
+                b(output, eax); // updatekeyandIV_Step
+                c1x = c1x + c2x;
                 ba(output);
+                c1x = c1x * BigInteger.Pow(2, 8);
                 bb(output, 0x8);
-
-
                 count--;
             }
 
-            Console.WriteLine("output:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(output));
-            Console.WriteLine();
+            //     Console.WriteLine($"while (count > 0):{Environment.NewLine}{Util.HexDump(output)}");
+            //    Console.WriteLine($"c1x:{Environment.NewLine}{Util.HexDump(c1x.ToByteArray())}");
+            //   Console.WriteLine($"r:{Environment.NewLine}{Util.HexDump(r.ToByteArray())}");
+            //   Console.WriteLine($"t:{Environment.NewLine}{Util.HexDump(t.ToByteArray())}");
+
+
             // 013EDFF8 | 5D  | pop ebp  
 
             for (int kindex = 0; kindex < keyBytes.Length; kindex++)
@@ -191,9 +302,9 @@ namespace Arrowgene.Ddo.Cli.Command
 
             // 013EBCBF | F3:A5 | rep movsd | decryption - access 7 (copy) (D1 E8 68 9D)
 
-            Console.WriteLine("output:");
-            Util.ConsoleDumpBuffer(new StreamBuffer(output));
-            Console.WriteLine();
+            // Console.WriteLine("after new key bytes:");
+            // Util.ConsoleDumpBuffer(new StreamBuffer(output));
+            //  Console.WriteLine();
 
             // 013EBA34            | 8B043A                | mov eax,dword ptr ds:[edx+edi]  
             // byte[] dst = new byte[0x210];
