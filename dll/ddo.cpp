@@ -21,7 +21,7 @@ constexpr int MAX_HOOKS = 10;
 struct hook
 {
     DWORD base_addr;     // base addr
-    LPVOID org_fn_rva;  // addrs of hooked original fn
+    DWORD org_fn_rva;  // addrs of hooked original fn
     DWORD caller_fn_rva[MAX_HOOKS]; // where the hook should start
     LPVOID hook_fn_addr; // addr of function to call instead
 };
@@ -49,6 +49,7 @@ void execute_hook(hook h) {
 
 // global vars - start
 hook h_bigint_sub;
+hook h_bigint_add;
 
 HMODULE base;
 DWORD base_addr;
@@ -58,34 +59,49 @@ bool enabled;
 // global vars - end
 
 // hooks - start
-void tf(void* a, void* b, void* c, void* d) {
-    fprintf(stdout, "InHook");
+typedef int (*org_bigint_sub)(void* a, void* b, void* c, void* d);
+typedef int (*org_bigint_add)(void* a);
+
+/// <summary>
+/// Subtracts a - b, stores result in a
+/// </summary>
+int bigint_sub(void* a, void* b, void* c, void* d) {
+    org_bigint_sub org = (org_bigint_sub)(h_bigint_sub.base_addr + h_bigint_sub.org_fn_rva);
+    show((char*)a, 0x210, false);
+    show((char*)b, 0x210, false);
+    int r = org(a,b,c,d);
+    show((char*)a, 0x210, false);
+    show((char*)b, 0x210, false);
+    return r;
 }
+
+int bigint_add(void* a) {
+    org_bigint_add org = (org_bigint_add)(h_bigint_add.base_addr + h_bigint_add.org_fn_rva);
+    show((char*)a, 0x210, false);
+    int r = org(a);
+    show((char*)a, 0x210, false);
+    return r;
+}
+
 // hooks - end
 
 void setup() {
-
     h_bigint_sub = {
         base_addr,
-        (LPVOID)0xFEBC60,
+        0xFEBC60,
         {0xFEB98C, 0xFEC600, 0xFEC9DF, 0xFECB79},
-        tf,
+        bigint_sub,
     };
     execute_hook(h_bigint_sub);
 
-    //013EB98C
+    h_bigint_add = {
+    base_addr,
+    0xFEC0C0,
+    {0x13EB8E4, 0x13EC5CF, 0x13EC592},
+    bigint_add,
+    };
+    execute_hook(h_bigint_add);
 
-    //if (debug) {
-    //	// Enable Debug (Shows FPS + Prints Debug String)
-    //	WriteMemory((LPVOID)(base_addr + 0x14D42), "\x3C\x01\x90\x90\x90\x90", 6);
-    //hook_fn(base_addr, 0x8E606, hook_write_file_debug);
-    //}
-    //if (recv_area_op_code) {
-    //	hook_fn(base_addr, 0xA5B4F, hook_area_op);
-    //}
-    //if (use_item_decrypted) {
-    //	WriteMemory((LPVOID)(base_addr + 0x1BDA2), "\x3C\x01\x90\x90\x90\x90", 6);
-    //}
 }
 
 BOOL APIENTRY DllMain(HMODULE hModule,

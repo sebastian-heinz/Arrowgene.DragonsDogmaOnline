@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <RootNamespace>Arrowgene.Ddo.Shared</RootNamespace>
         <Title>Dragons Dogma Online - Shared</Title>
         <Company>DDO Team</Company>
@@ -12,8 +12,6 @@
 
     <ItemGroup>
       <PackageReference Include="Arrowgene.Buffers" Version="1.0.0" />
-      <PackageReference Include="BouncyCastle" Version="1.8.9" />
-      <PackageReference Include="System.Security.Cryptography.Cng" Version="4.5.0" />
     </ItemGroup>
 
 </Project>

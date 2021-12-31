@@ -1,15 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Text;
 using Arrowgene.Buffers;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.Pkcs;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Engines;
-using Org.BouncyCastle.Crypto.Parameters;
-using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddo.Shared.Crypto
 {
@@ -87,8 +79,6 @@ namespace Arrowgene.Ddo.Shared.Crypto
             BigInteger cKey = new BigInteger(keyData);
             BigInteger cIv = new BigInteger(iv);
             BigInteger cUn = new BigInteger(unknown);
-            
-            
            // Console.WriteLine($"res:{Environment.NewLine}{Util.HexDump(res)}");
         }
 
