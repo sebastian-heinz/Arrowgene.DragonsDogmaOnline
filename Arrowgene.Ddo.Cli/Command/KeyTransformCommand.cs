@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Numerics;
 using System.Text;
-using Arrowgene.Buffers;
 using Arrowgene.Ddo.Shared;
 using Arrowgene.Ddo.Shared.Crypto;
-using Buffer = Arrowgene.Buffers.Buffer;
 
 namespace Arrowgene.Ddo.Cli.Command
 {
@@ -12,15 +10,7 @@ namespace Arrowgene.Ddo.Cli.Command
     {
         public string Key => "transform";
         public string Description => "Transforms Key";
-
-        private static byte[] keyData_D1_E8;
-        private static byte[] keyData_9C_AC;
-        private static byte[] keyData_BD_CF;
-        private static byte[] keyData_2F_17;
-        private static byte[] keyData_52_2E;
-        private static byte[] keyData_A2_D1;
-
-
+        
         public CommandResultType Run(CommandParameter parameter)
         {
             string seedHex = "8A 92 D7 7F 2A C6 57 06 D9 A2 1B 27 F0 92 A0 F7".Replace(" ", "");
@@ -30,9 +20,9 @@ namespace Arrowgene.Ddo.Cli.Command
             byte[] serverKey = Util.FromHexString(serverKeyHex);
 
 
-            //transform_server();
+            transform_server(rngSeed, serverKey);
+            transform_client(rngSeed, serverKey);
             transform_bi(rngSeed, serverKey);
-            transform_client();
             return CommandResultType.Exit;
         }
 
@@ -53,7 +43,7 @@ namespace Arrowgene.Ddo.Cli.Command
             Console.WriteLine($"transform_bi-s1:{Environment.NewLine}{Util.HexDump(s1.ToByteArray())}");
 
             BigInteger s3 = s2 / BigInteger.Pow(2, 8 * 4);
-            BigInteger s4 = s3 * BigInteger.Pow(2, 1); // 013EBFB0 (x*2^y)
+            BigInteger s4 = s3 * BigInteger.Pow(2, 1); // 013EBFB0 (x*2^y) {bb}
             BigInteger s5 = serverKey * BigInteger.Pow(2, 1); // 013EBFB0
 
             Console.WriteLine($"transform_bi-s4:{Environment.NewLine}{Util.HexDump(s4.ToByteArray())}");
@@ -94,29 +84,15 @@ namespace Arrowgene.Ddo.Cli.Command
             bool breakPoint = true;
         }
 
-        private void transform_client_bi()
-        {
-            string keyDataHex =
-                "9CAC5E77F860F58C59BB1F1F907AD06ADAA97E40AC439F83A15B8282CAB6EC4A45165EBBD0A7B5FA731AFFDD9A2591F2F7CEF497E4D4972AB098955C28440DBF08876898A8BCC4ED4F98997DFA776225988CB445E78D0B0A011102B80B09F9F2B3B54551EA5DB6831AD38E71630CBE21E0934FE7EE55DDA5AB81406EB7564DD97270B6F3C7B038CF871EFE78E68C9032800761A9FC9FEC93A8FF092E717DEE5E1C5287DD7E2A8B0C32F41F4CF53F838F6F56189D57488C1A0B69AEC8F621BB4E5D2BE2C78154A4DBC226346BA4C09AD65DEB90BB09F3967ABA1F3485B1DEC2169C7161BAC2D0C14839FEEE3AAA58D95DF75F51A6228F48566C8FFA699D68E8D1";
-            keyData_9C_AC = Util.FromHexString(keyDataHex);
-
-
-            // generate random
-            BigInteger c1 = new BigInteger(0);
-            BigInteger c2 = new BigInteger(2);
-        }
-
-        private void transform_server()
+        private void transform_server(byte[] rngSeedData, byte[] serverKeyData)
         {
             // server decrypted response, 256 bytes
-            string keyDataHex =
-                "9CAC5E77F860F58C59BB1F1F907AD06ADAA97E40AC439F83A15B8282CAB6EC4A45165EBBD0A7B5FA731AFFDD9A2591F2F7CEF497E4D4972AB098955C28440DBF08876898A8BCC4ED4F98997DFA776225988CB445E78D0B0A011102B80B09F9F2B3B54551EA5DB6831AD38E71630CBE21E0934FE7EE55DDA5AB81406EB7564DD97270B6F3C7B038CF871EFE78E68C9032800761A9FC9FEC93A8FF092E717DEE5E1C5287DD7E2A8B0C32F41F4CF53F838F6F56189D57488C1A0B69AEC8F621BB4E5D2BE2C78154A4DBC226346BA4C09AD65DEB90BB09F3967ABA1F3485B1DEC2169C7161BAC2D0C14839FEEE3AAA58D95DF75F51A6228F48566C8FFA699D68E8D1";
-            keyData_9C_AC = Util.FromHexString(keyDataHex);
+            byte[] keyData_9C_AC = serverKeyData;
             // Console.WriteLine("Server Data:");
             //  Util.ConsoleDumpBuffer(new StreamBuffer(keyData_9C_AC));
             //  Console.WriteLine();
 
-            keyData_D1_E8 = Util.FromHexString(keyDataHex);
+            byte[] keyData_D1_E8 = serverKeyData;
             Array.Reverse(keyData_D1_E8);
             //  Console.WriteLine("Reversed:");
             //  Util.ConsoleDumpBuffer(new StreamBuffer(keyData_D1_E8));
@@ -143,7 +119,7 @@ namespace Arrowgene.Ddo.Cli.Command
             t4(src, dst); // x=b-a
             //   Console.WriteLine($"t4:{Environment.NewLine}{Util.HexDump(dst)}");
 
-            keyData_2F_17 = new byte[0x100];
+            byte[] keyData_2F_17 = new byte[0x100];
             for (int i = 0; i < keyData_2F_17.Length; i++)
             {
                 keyData_2F_17[i] = dst[i + 4];
@@ -163,7 +139,7 @@ namespace Arrowgene.Ddo.Cli.Command
             //   Console.WriteLine($"bb:{Environment.NewLine}{Util.HexDump(dst)}");
 
             // resize? can be ignored?
-            keyData_52_2E = new byte[0x100];
+            byte[] keyData_52_2E = new byte[0x100];
             for (int i = 0; i < keyData_52_2E.Length; i++)
             {
                 keyData_52_2E[i] = dst[i];
@@ -178,7 +154,7 @@ namespace Arrowgene.Ddo.Cli.Command
             }
 
             bb(dst, 0x1);
-            keyData_A2_D1 = new byte[0x100];
+            byte[] keyData_A2_D1 = new byte[0x100];
             for (int i = 0; i < keyData_A2_D1.Length; i++)
             {
                 keyData_A2_D1[i] = dst[i];
@@ -193,12 +169,10 @@ namespace Arrowgene.Ddo.Cli.Command
 // 013EBA00
         }
 
-        private void transform_client()
+        private void transform_client(byte[] rngSeedData, byte[] serverKeyData)
         {
-            string seedHex = "8A 92 D7 7F 2A C6 57 06 D9 A2 1B 27 F0 92 A0 F7".Replace(" ", "");
-
             DdoRandom rng = new DdoRandom();
-            rng.SetSeed(Util.FromHexString(seedHex));
+            rng.SetSeed(rngSeedData);
             string key = rng.GenerateKey();
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
