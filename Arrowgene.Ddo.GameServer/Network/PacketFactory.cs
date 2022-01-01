@@ -11,12 +11,12 @@ namespace Arrowgene.Ddo.GameServer.Network
         private static readonly DdoLogger Logger = LogProvider.Logger<DdoLogger>(typeof(PacketFactory));
 
         public const int PacketLengthFieldSize = 2;
-      //  public const int PacketIdFieldSize = 2;
         public const int PacketHeaderSize = PacketLengthFieldSize;
 
         private bool _readHeader;
         private uint _dataSize;
         private int _position;
+        private PacketId _packetId;
         private IBuffer _buffer;
         private readonly GameServerSetting _setting;
 
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddo.GameServer.Network
 
         public byte[] Write(Packet packet)
         {
-            byte[] data = packet.Data.GetAllBytes();
+            byte[] data = packet.Data;
             IBuffer buffer = Util.Buffer.Provide();
             int dataLength = data.Length + PacketHeaderSize;
             if (dataLength < 0 || dataLength > ushort.MaxValue)
@@ -77,16 +77,19 @@ namespace Arrowgene.Ddo.GameServer.Network
                         return packets;
                     }
 
+                    // todo identify if packet contains ID and parse
+                    _packetId = PacketId.ClientChallengeReq_C2L;
+
                     _readHeader = true;
                 }
 
                 if (_readHeader && _buffer.Size - _buffer.Position >= _dataSize)
                 {
                     byte[] packetData = _buffer.ReadBytes((int) _dataSize);
-                    IBuffer buffer = Util.Buffer.Provide(packetData);
-                    Packet packet = new Packet(buffer);
+                    Packet packet = new Packet(_packetId, packetData);
                     packets.Add(packet);
                     _readHeader = false;
+                    _packetId = PacketId.Unknown;
                     read = _buffer.Position != _buffer.Size;
                 }
             }
@@ -109,6 +112,7 @@ namespace Arrowgene.Ddo.GameServer.Network
             _dataSize = 0;
             _position = 0;
             _buffer = null;
+            _packetId = PacketId.Unknown;
         }
     }
 }

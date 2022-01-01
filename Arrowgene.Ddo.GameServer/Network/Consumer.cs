@@ -11,7 +11,7 @@ namespace Arrowgene.Ddo.GameServer.Network
     public class Consumer : ThreadedBlockingQueueConsumer
     {
         private static readonly DdoLogger Logger = LogProvider.Logger<DdoLogger>(typeof(Consumer));
-        private readonly Dictionary<ushort, IPacketHandler> _packetHandlerLookup;
+        private readonly Dictionary<PacketId, IPacketHandler> _packetHandlerLookup;
         private readonly Dictionary<ITcpSocket, Client> _clients;
         private readonly object _lock;
         private readonly GameServerSetting _setting;
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddo.GameServer.Network
             _setting = setting;
             _lock = new object();
             _clients = new Dictionary<ITcpSocket, Client>();
-            _packetHandlerLookup = new Dictionary<ushort, IPacketHandler>();
+            _packetHandlerLookup = new Dictionary<PacketId, IPacketHandler>();
         }
 
         public void Clear()
@@ -81,7 +81,6 @@ namespace Arrowgene.Ddo.GameServer.Network
 
             IPacketHandler packetHandler = _packetHandlerLookup[packet.Id];
             //Logger.LogIncomingPacket(client, packet);
-            packet.Data.SetPositionStart();
             try
             {
                 packetHandler.Handle(client, packet);

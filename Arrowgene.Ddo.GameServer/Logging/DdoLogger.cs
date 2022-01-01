@@ -76,7 +76,7 @@ namespace Arrowgene.Ddo.GameServer.Logging
         {
             // todo packet log wrapper class
             Write(LogLevel.Debug,
-                $"{client.Identity} - {packet.Id} {Environment.NewLine}{Util.HexDump(packet.Data.GetAllBytes())}", packet);
+                $"{client.Identity} - {packet.Id} {Environment.NewLine}{Util.HexDump(packet.Data)}", packet);
         }
 
         public void Received(ITcpSocket socket, byte[] data)

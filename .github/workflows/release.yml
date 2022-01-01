@@ -21,8 +21,8 @@ jobs:
         run: |
           DDO_VERSION_FILE=${{ github.workspace }}/ddo.version
           DDO_VERSION=$(<"$DDO_VERSION_FILE")
-          echo ::set-env name=DDO_VERSION::$DDO_VERSION
-          echo ::set-env name=DDO_VERSION_E::$(echo ${GITHUB_SHA} | cut -c1-8)
+          echo "DDO_VERSION=DDO_VERSION" >> $GITHUB_ENV
+          echo "DDO_VERSION_E=$(echo ${GITHUB_SHA} | cut -c1-8)" >> $GITHUB_ENV
           mkdir ./release
           for DDO_RUNTIME in win-x86 win-x64 linux-x64 osx-x64; do
               # Server

@@ -62,8 +62,6 @@ namespace Arrowgene.Ddo.Cli
         {
             AddCommand(new ShowCommand());
             AddCommand(new ServerCommand());
-            AddCommand(new DecryptCommand());
-            AddCommand(new KeyTransformCommand());
             AddCommand(new HelpCommand(_commands));
         }
 

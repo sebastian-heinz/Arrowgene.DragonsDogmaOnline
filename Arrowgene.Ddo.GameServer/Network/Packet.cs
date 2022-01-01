@@ -4,19 +4,30 @@ namespace Arrowgene.Ddo.GameServer.Network
 {
     public class Packet
     {
-        public Packet(in ushort id, IBuffer data)
+        public Packet(PacketId id, byte[] data)
         {
             Id = id;
             Data = data;
         }
-        
-        public Packet(IBuffer data)
+
+        public Packet(PacketId id)
         {
-            Id = 0;
+            Id = id;
+            Data = new byte[0];
+        }
+
+        public Packet(byte[] data)
+        {
+            Id = PacketId.Unknown;
             Data = data;
         }
 
-        public ushort Id { get; }
-        public IBuffer Data { get; }
+        public PacketId Id { get; }
+        public byte[] Data { get; }
+
+        public IBuffer AsBuffer()
+        {
+            return new StreamBuffer(Data);
+        }
     }
 }

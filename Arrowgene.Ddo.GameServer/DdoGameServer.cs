@@ -20,11 +20,9 @@
  * along with Arrowgene.Ddo.GameServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Arrowgene.Buffers;
 using Arrowgene.Ddo.GameServer.Handler;
 using Arrowgene.Ddo.GameServer.Logging;
 using Arrowgene.Ddo.GameServer.Network;
-using Arrowgene.Ddo.Shared;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
 
@@ -61,9 +59,8 @@ namespace Arrowgene.Ddo.GameServer
 
         private void AuthClientConnected(Client client)
         {
-
-            byte[] handshake = client.Handshake.CreateClientCertChallenge();
-            Packet packet = new Packet(new StreamBuffer(handshake));
+            byte[] handshake = client.DdoNetworkCrypto.CreateClientCertChallenge();
+            Packet packet = new Packet(handshake);
             client.Send(packet);
         }
 
@@ -83,7 +80,7 @@ namespace Arrowgene.Ddo.GameServer
 
         private void LoadPacketHandler()
         {
-            _authConsumer.AddHandler(new ClientNetworkKeyHandler(this));
+            _authConsumer.AddHandler(new ClientChallengeHandler(this));
         }
     }
 }

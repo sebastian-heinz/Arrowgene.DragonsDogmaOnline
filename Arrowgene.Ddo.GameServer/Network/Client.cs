@@ -19,10 +19,10 @@ namespace Arrowgene.Ddo.GameServer.Network
         {
             _socket = socket;
             _packetFactory = packetFactory;
-            Handshake = new Handshake();
+            DdoNetworkCrypto = new DdoNetworkCrypto();
         }
 
-        public Handshake Handshake { get; }
+        public DdoNetworkCrypto DdoNetworkCrypto { get; }
         public string Identity { get; private set; }
 
         public List<Packet> Receive(byte[] data)
@@ -41,9 +41,9 @@ namespace Arrowgene.Ddo.GameServer.Network
             return packets;
         }
 
-        public void Send(ushort id, IBuffer buffer)
+        public void Send(PacketId id, IBuffer buffer)
         {
-            Packet packet = new Packet(id, buffer);
+            Packet packet = new Packet(id, buffer.GetAllBytes());
             Send(packet);
         }
 

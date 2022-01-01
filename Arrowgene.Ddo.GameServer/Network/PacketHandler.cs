@@ -15,7 +15,7 @@ namespace Arrowgene.Ddo.GameServer.Network
         protected DdoGameServer Server { get; }
         protected GameServerSetting Settings { get; }
 
-        public abstract ushort Id { get; }
+        public abstract PacketId Id { get; }
         public abstract void Handle(Client client, Packet packet);
     }
 }
