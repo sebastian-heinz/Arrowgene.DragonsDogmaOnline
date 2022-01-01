@@ -44,6 +44,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
             _serverUnk = new byte[12];
             byte[] exponent = _rsaKeyInfo.Exponent;
             System.Buffer.BlockCopy(exponent, 0, _rsaExponent, _rsaExponent.Length - exponent.Length, exponent.Length);
+          //  System.Buffer.BlockCopy(exponent, 0, _rsaExponent, 0, exponent.Length);
         }
 
         private byte[] Copy(byte[] src)
@@ -61,10 +62,11 @@ namespace Arrowgene.Ddo.Shared.Crypto
             //   BigInteger cUn = new BigInteger(unknown);
             // Console.WriteLine($"res:{Environment.NewLine}{Util.HexDump(res)}");
 
+
             BigInteger decrypted = BigInteger.ModPow(
-                new BigInteger(keyData, true, false),
-                new BigInteger(_rsaKeyInfo.D, true, true),
-                new BigInteger(_rsaKeyInfo.Modulus, true, true)
+                new BigInteger(allBytes.AsSpan(1,256), true, true),
+                new BigInteger(_rsaKeyInfo.D, true, false),
+                new BigInteger(_rsaKeyInfo.Modulus, true, false)
             );
             Console.WriteLine($"decrypted:{Environment.NewLine}{Util.HexDump(decrypted.ToByteArray())}");
 
@@ -73,8 +75,8 @@ namespace Arrowgene.Ddo.Shared.Crypto
             //  b.WriteByte(iv[0]);
             //   b.WriteByte(iv[1]);
 
-            //   byte[] d = _rsa.Decrypt(b.GetAllBytes(), RSAEncryptionPadding.Pkcs1);
-            //   Console.WriteLine($"d:{Environment.NewLine}{Util.HexDump(e)}");
+              byte[] d = _rsa.Decrypt(allBytes.AsSpan(1,256).ToArray(), RSAEncryptionPadding.Pkcs1);
+               Console.WriteLine($"d:{Environment.NewLine}{Util.HexDump(d)}");
         }
 
         public byte[] CreateClientCertChallenge()
