@@ -2,14 +2,12 @@
 using System.Numerics;
 using System.Security.Cryptography;
 using Arrowgene.Buffers;
+using Buffer = Arrowgene.Buffers.Buffer;
 
 namespace Arrowgene.Ddo.Shared.Crypto
 {
     public class Handshake
     {
-        private static SHA1Managed _sha1 = new SHA1Managed();
-        private static Camellia _camellia = new Camellia();
-
         private static byte[] InitialKey = new byte[]
         {
             0x66, 0x32, 0x33, 0x65, 0x39, 0x38, 0x48, 0x61, 0x66, 0x4A, 0x64, 0x53, 0x6F, 0x61, 0x6A, 0x38,
@@ -21,77 +19,69 @@ namespace Arrowgene.Ddo.Shared.Crypto
             0x24, 0x63, 0x62, 0x4D, 0x36, 0x57, 0x50, 0x29, 0x61, 0x58, 0x3D, 0x25, 0x4A, 0x5E, 0x7A, 0x41
         };
 
-        private static byte[] TestServerKey = new byte[]
+
+        private static byte[] BlowFishKey = new byte[]
         {
-            0x9C, 0xAC, 0x5E, 0x77, 0xF8, 0x60, 0xF5, 0x8C, 0x59, 0xBB, 0x1F, 0x1F, 0x90, 0x7A, 0xD0, 0x6A,
-            0xDA, 0xA9, 0x7E, 0x40, 0xAC, 0x43, 0x9F, 0x83, 0xA1, 0x5B, 0x82, 0x82, 0xCA, 0xB6, 0xEC, 0x4A,
-            0x45, 0x16, 0x5E, 0xBB, 0xD0, 0xA7, 0xB5, 0xFA, 0x73, 0x1A, 0xFF, 0xDD, 0x9A, 0x25, 0x91, 0xF2,
-            0xF7, 0xCE, 0xF4, 0x97, 0xE4, 0xD4, 0x97, 0x2A, 0xB0, 0x98, 0x95, 0x5C, 0x28, 0x44, 0x0D, 0xBF,
-            0x08, 0x87, 0x68, 0x98, 0xA8, 0xBC, 0xC4, 0xED, 0x4F, 0x98, 0x99, 0x7D, 0xFA, 0x77, 0x62, 0x25,
-            0x98, 0x8C, 0xB4, 0x45, 0xE7, 0x8D, 0x0B, 0x0A, 0x01, 0x11, 0x02, 0xB8, 0x0B, 0x09, 0xF9, 0xF2,
-            0xB3, 0xB5, 0x45, 0x51, 0xEA, 0x5D, 0xB6, 0x83, 0x1A, 0xD3, 0x8E, 0x71, 0x63, 0x0C, 0xBE, 0x21,
-            0xE0, 0x93, 0x4F, 0xE7, 0xEE, 0x55, 0xDD, 0xA5, 0xAB, 0x81, 0x40, 0x6E, 0xB7, 0x56, 0x4D, 0xD9,
-            0x72, 0x70, 0xB6, 0xF3, 0xC7, 0xB0, 0x38, 0xCF, 0x87, 0x1E, 0xFE, 0x78, 0xE6, 0x8C, 0x90, 0x32,
-            0x80, 0x07, 0x61, 0xA9, 0xFC, 0x9F, 0xEC, 0x93, 0xA8, 0xFF, 0x09, 0x2E, 0x71, 0x7D, 0xEE, 0x5E,
-            0x1C, 0x52, 0x87, 0xDD, 0x7E, 0x2A, 0x8B, 0x0C, 0x32, 0xF4, 0x1F, 0x4C, 0xF5, 0x3F, 0x83, 0x8F,
-            0x6F, 0x56, 0x18, 0x9D, 0x57, 0x48, 0x8C, 0x1A, 0x0B, 0x69, 0xAE, 0xC8, 0xF6, 0x21, 0xBB, 0x4E,
-            0x5D, 0x2B, 0xE2, 0xC7, 0x81, 0x54, 0xA4, 0xDB, 0xC2, 0x26, 0x34, 0x6B, 0xA4, 0xC0, 0x9A, 0xD6,
-            0x5D, 0xEB, 0x90, 0xBB, 0x09, 0xF3, 0x96, 0x7A, 0xBA, 0x1F, 0x34, 0x85, 0xB1, 0xDE, 0xC2, 0x16,
-            0x9C, 0x71, 0x61, 0xBA, 0xC2, 0xD0, 0xC1, 0x48, 0x39, 0xFE, 0xEE, 0x3A, 0xAA, 0x58, 0xD9, 0x5D,
-            0xF7, 0x5F, 0x51, 0xA6, 0x22, 0x8F, 0x48, 0x56, 0x6C, 0x8F, 0xFA, 0x69, 0x9D, 0x68, 0xE8, 0xD1
-        };
-        
-        private static byte[] TestServerIv = new byte[]
-        {
-            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11
+            0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66
         };
 
-        private static byte[] TestServerUnk = new byte[]
-        {
-            0x9F, 0xE3, 0x81, 0x97, 0xE3, 0x81, 0xBE, 0xE3, 0x81, 0x97, 0xE3, 0x81
-        };
 
-        private byte[] _serverKey;
-        private byte[] _serverIv;
+        private static SHA1Managed _sha1 = new SHA1Managed();
+        private static Camellia _camellia = new Camellia();
+        private static RSACryptoServiceProvider _rsa = new RSACryptoServiceProvider(2048);
+        private static BlowFish _blowFish = new BlowFish(new byte[16]);
+
+        private byte[] _rsaModulus;
+        private byte[] _rsaExponent;
         private byte[] _serverUnk;
+        private RSAParameters _rsaKeyInfo;
 
-        private BigInteger _sKey;
-        private BigInteger _sIv;
-        private BigInteger _sUn;
-        
         public Handshake()
         {
-            _serverKey = new byte[256];
-            _serverIv = new byte[16];
+            _rsaKeyInfo = _rsa.ExportParameters(true);
+            _rsaModulus = _rsaKeyInfo.Modulus;
+            _rsaExponent = new byte[16];
             _serverUnk = new byte[12];
-            
-            _serverKey = TestServerKey;
-            _serverIv = TestServerIv;
-            _serverUnk = TestServerUnk;
-
-            _sKey = new BigInteger(_serverKey);
-            _sIv = new BigInteger(_serverIv);
-            _sUn = new BigInteger(_serverUnk);
-        }
-        
-        private void Decrypt(byte[] keyData,  byte[] iv, byte[] unknown)
-        {
-            BigInteger cKey = new BigInteger(keyData);
-            BigInteger cIv = new BigInteger(iv);
-            BigInteger cUn = new BigInteger(unknown);
-           // Console.WriteLine($"res:{Environment.NewLine}{Util.HexDump(res)}");
+            byte[] exponent = _rsaKeyInfo.Exponent;
+            System.Buffer.BlockCopy(exponent, 0, _rsaExponent, _rsaExponent.Length - exponent.Length, exponent.Length);
         }
 
-        public void test()
+        private byte[] Copy(byte[] src)
         {
-         
+            int srcLen = src.Length;
+            byte[] dst = new byte[srcLen];
+            System.Buffer.BlockCopy(src, 0, dst, 0, srcLen);
+            return dst;
+        }
+
+        private void Decrypt(byte[] keyData, byte[] iv, byte[] unknown, byte[] allBytes)
+        {
+            //   BigInteger cKey = new BigInteger(keyData);
+            //   BigInteger cIv = new BigInteger(iv);
+            //   BigInteger cUn = new BigInteger(unknown);
+            // Console.WriteLine($"res:{Environment.NewLine}{Util.HexDump(res)}");
+
+            BigInteger decrypted = BigInteger.ModPow(
+                new BigInteger(keyData, true, false),
+                new BigInteger(_rsaKeyInfo.D, true, true),
+                new BigInteger(_rsaKeyInfo.Modulus, true, true)
+            );
+            Console.WriteLine($"decrypted:{Environment.NewLine}{Util.HexDump(decrypted.ToByteArray())}");
+
+            //   StreamBuffer b = new StreamBuffer();
+            //    b.WriteBytes(keyData); 
+            //  b.WriteByte(iv[0]);
+            //   b.WriteByte(iv[1]);
+
+            //   byte[] d = _rsa.Decrypt(b.GetAllBytes(), RSAEncryptionPadding.Pkcs1);
+            //   Console.WriteLine($"d:{Environment.NewLine}{Util.HexDump(e)}");
         }
 
         public byte[] CreateClientCertChallenge()
         {
             StreamBuffer buffer = new StreamBuffer();
-            buffer.WriteBytes(_serverKey);
-            buffer.WriteBytes(_serverIv);
+            buffer.WriteBytes(_rsaModulus);
+            buffer.WriteBytes(_rsaExponent);
             byte[] hashMaterial = buffer.GetAllBytes();
             byte[] calculatedHash = _sha1.ComputeHash(hashMaterial);
             buffer.WriteBytes(calculatedHash);
@@ -99,7 +89,8 @@ namespace Arrowgene.Ddo.Shared.Crypto
             byte[] certChallenge = buffer.GetAllBytes();
             byte[] certChallengeEncrypted = new byte[certChallenge.Length];
             Console.WriteLine($"Created Cert Challenge:{Environment.NewLine}{Util.HexDump(certChallenge)}");
-            _camellia.Encrypt(certChallenge, certChallengeEncrypted, InitialKey, InitialPrev);
+            // InitialPrev will be modified - need to be preserved for decryption
+            _camellia.Encrypt(certChallenge, certChallengeEncrypted, InitialKey, Copy(InitialPrev));
             return certChallengeEncrypted;
         }
 
@@ -107,7 +98,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
         {
             byte[] decrypted = new byte[challengeResponse.Length];
             Camellia camellia = new Camellia();
-            camellia.Decrypt(challengeResponse, decrypted, InitialKey, InitialPrev);
+            camellia.Decrypt(challengeResponse, decrypted, InitialKey, Copy(InitialPrev));
             IBuffer decBuffer = new StreamBuffer(decrypted);
             decBuffer.SetPositionStart();
             byte[] keyData = decBuffer.ReadBytes(256);
@@ -118,8 +109,8 @@ namespace Arrowgene.Ddo.Shared.Crypto
                               $"Iv:{Environment.NewLine}{Util.HexDump(iv)}" +
                               $"Unk:{Environment.NewLine}{Util.HexDump(unk)}"
             );
-            
-            Decrypt(keyData, iv, unk);
+
+            Decrypt(keyData, iv, unk, decBuffer.GetAllBytes());
 
             string hexResponse1 =
                 "3b440b4e0e65f4d73322e9f37c0d73ad" +

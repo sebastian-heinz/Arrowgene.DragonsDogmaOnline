@@ -73,7 +73,8 @@ namespace Arrowgene.Ddo.Shared.Crypto
             return cipher_bigint.ToByteArray();
         }
 
-        public byte[] Decrypt(PrivateKey privateKey, byte[] cipherText)
+        public byte[] 
+           Decrypt(PrivateKey privateKey, byte[] cipherText)
         {
 
             //Decrypting.

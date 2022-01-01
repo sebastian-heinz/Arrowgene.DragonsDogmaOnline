@@ -2,10 +2,18 @@
 
 template <typename I> void ReadMemory(LPVOID address, I& value, int byteNum)
 {
-	unsigned long OldProtection;
-	VirtualProtect(address, byteNum, PAGE_EXECUTE_READWRITE, &OldProtection);
-	value = *(I*)address;
-	VirtualProtect(address, byteNum, OldProtection, &OldProtection);
+    unsigned long OldProtection;
+    VirtualProtect(address, byteNum, PAGE_EXECUTE_READWRITE, &OldProtection);
+    value = *(I*)address;
+    VirtualProtect(address, byteNum, OldProtection, &OldProtection);
+}
+
+template <typename I> void ReadMemoryMem(LPVOID address, I value, int byteNum)
+{
+    unsigned long OldProtection;
+    VirtualProtect(address, byteNum, PAGE_EXECUTE_READWRITE, &OldProtection);
+    memcpy(value, address, byteNum);
+    VirtualProtect(address, byteNum, OldProtection, &OldProtection);
 }
 
 template <typename I> void ChangeMemory(LPVOID address, I value, int byteNum)
