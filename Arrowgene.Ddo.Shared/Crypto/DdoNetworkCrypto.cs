@@ -24,16 +24,12 @@ namespace Arrowgene.Ddo.Shared.Crypto
         private readonly RSACryptoServiceProvider _rsa;
         private readonly RSAParameters _rsaKeyInfo;
         private byte[] _camelliaKey;
-        private byte[] _camelliaIvServer;
-        private byte[] _camelliaIvClient;
 
         public DdoNetworkCrypto()
         {
             _rsa = new RSACryptoServiceProvider(2048);
             _rsaKeyInfo = _rsa.ExportParameters(true);
             _camelliaKey = CamelliaKey;
-            _camelliaIvServer = Copy(CamelliaIv);
-            _camelliaIvClient = Copy(CamelliaIv);
         }
 
         private byte[] Copy(byte[] src)
@@ -46,19 +42,15 @@ namespace Arrowgene.Ddo.Shared.Crypto
 
         public byte[] Encrypt(byte[] data)
         {
-            byte[] encrypted = new byte[data.Length];
-            
-            Console.WriteLine($"_camelliaIvServer1:{Environment.NewLine}{Util.HexDump(_camelliaIvClient)}");
-            _camellia.Encrypt(data, encrypted, _camelliaKey,  _camelliaIvClient);
-            Console.WriteLine($"_camelliaIvServer1:{Environment.NewLine}{Util.HexDump(_camelliaIvClient)}");
-            return encrypted;
+      
+            _camellia.Encrypt(data, out Span<byte> encrypted, _camelliaKey,  Copy(CamelliaIv));
+            return encrypted.ToArray();
         }
         
         public byte[] Decrypt(byte[] encrypted)
         {
-            byte[] decrypted = new byte[encrypted.Length];
-            _camellia.Encrypt(encrypted, decrypted, _camelliaKey,  _camelliaIvServer);
-            return decrypted;
+            _camellia.Decrypt(encrypted, out Span<byte> decrypted, _camelliaKey,  Copy(CamelliaIv));
+            return decrypted.ToArray();
         }
 
         public byte[] CreateClientCertChallenge()
@@ -72,22 +64,16 @@ namespace Arrowgene.Ddo.Shared.Crypto
             buffer.WriteBytes(calculatedHash);
             buffer.WriteBytes(new byte[12]); // unknown
             byte[] certChallenge = buffer.GetAllBytes();
-            byte[] certChallengeEncrypted = new byte[certChallenge.Length];
             Console.WriteLine($"Created Cert Challenge:{Environment.NewLine}{Util.HexDump(certChallenge)}");
             // InitialPrev will be modified - need to be preserved for decryption
-            Console.WriteLine($"_camelliaIvServer1:{Environment.NewLine}{Util.HexDump(_camelliaIvServer)}");
-            _camellia.Encrypt(certChallenge, certChallengeEncrypted, _camelliaKey,  _camelliaIvServer);
-            Console.WriteLine($"_camelliaIvServer2:{Environment.NewLine}{Util.HexDump(_camelliaIvServer)}");
-            return certChallengeEncrypted;
+            _camellia.Encrypt(certChallenge, out Span<byte> certChallengeEncrypted, _camelliaKey,  Copy(CamelliaIv));
+            return certChallengeEncrypted.ToArray();
         }
 
         public bool HandleClientCertChallenge(byte[] challengeResponse)
         {
-            byte[] decrypted = new byte[challengeResponse.Length];
-            Console.WriteLine($"_camelliaIvServer1:{Environment.NewLine}{Util.HexDump(_camelliaIvClient)}");
-            _camellia.Decrypt(challengeResponse, decrypted, _camelliaKey,  _camelliaIvClient);
-            Console.WriteLine($"_camelliaIvServer2:{Environment.NewLine}{Util.HexDump(_camelliaIvClient)}");
-            IBuffer decBuffer = new StreamBuffer(decrypted);
+            _camellia.Decrypt(challengeResponse, out Span<byte> decrypted, _camelliaKey,  Copy(CamelliaIv));
+            IBuffer decBuffer = new StreamBuffer(decrypted.ToArray());
             decBuffer.SetPositionStart();
             byte decryptedCamelliaKeyLength = decBuffer.ReadByte();
             byte[] rsaEncryptedCamelliaKey = decBuffer.ReadBytes(256);

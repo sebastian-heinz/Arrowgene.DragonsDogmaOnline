@@ -7,8 +7,19 @@ namespace Arrowgene.Ddo.Shared.Crypto
         /// <summary>
         /// Dragons Dogma Online Network Encryption
         /// </summary>
-        public void Encrypt(Span<byte> input, Span<byte> output, byte[] key, Span<byte> prv)
+        public void Encrypt(Span<byte> input, out Span<byte> output, byte[] key, Span<byte> prv)
         {
+            // output_size = input_size + (block_size - (input_size % block_size))
+            int mod = input.Length % 16;
+            if (mod > 0)
+            {
+                int padding = 16 - mod;
+                byte[] padInput = new byte[input.Length + padding];
+                Buffer.BlockCopy(input.ToArray(), 0, padInput,0, input.Length);
+                input = padInput;
+            }
+            
+            
             // TODO - Modifies input value to apply XOR - make a copy
             // TODO check if input length is dividable by 16
             uint keyLength = (uint) key.Length * 8;
@@ -17,10 +28,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
 
             KeySchedule(keyLength, key, subkey);
             int length = input.Length;
-            if (output.Length < input.Length)
-            {
-                // error not enough space
-            }
+            output = new byte[length];
 
             int current = 0;
             while (current < length)
@@ -94,7 +102,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
         /// <summary>
         /// Dragons Dogma Online Network Decryption
         /// </summary>
-        public void Decrypt(Span<byte> input, Span<byte> output, byte[] key, Span<byte> prv)
+        public void Decrypt(Span<byte> input, out Span<byte> output, byte[] key, Span<byte> prv)
         {
             // TODO check if input length is dividable by 16
 
@@ -102,10 +110,7 @@ namespace Arrowgene.Ddo.Shared.Crypto
             byte[][] subkey = new byte[34][];
             KeySchedule(keyLength, key, subkey);
             int length = input.Length;
-            if (output.Length < input.Length)
-            {
-                // error not enough space
-            }
+            output = new byte[length];
 
             int current = 0;
             while (current < length)
