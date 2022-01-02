@@ -57,7 +57,7 @@ using System.Text;
 
 namespace Arrowgene.Ddo.Shared.Crypto
 {
-    class BlowFish
+    public class BlowFish
     {
         #region "Global variables and constants"
 

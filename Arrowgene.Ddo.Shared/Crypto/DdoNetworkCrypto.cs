@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
 using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddo.Shared.Crypto
@@ -94,6 +95,16 @@ namespace Arrowgene.Ddo.Shared.Crypto
             Console.WriteLine($"newCamelliaKey:{Environment.NewLine}{Util.HexDump(newCamelliaKey)}");
 
             _camelliaKey = newCamelliaKey;
+            
+        
+            // test
+            string keyS = "ABB(DF2I8[{Y-oS_CCMy(@<}qR}WYX11M)w[5V.~CbjwM5q<F1Iab+-";
+            byte[] key = Encoding.UTF8.GetBytes(keyS);
+            BlowFish bf = new BlowFish(key);
+            byte[] dec = bf.Decrypt_ECB(encryptedBlowFish);
+            Console.WriteLine($"dec:{Environment.NewLine}{Util.HexDump(dec)}");
+            //
+            
             
             return true;
         }

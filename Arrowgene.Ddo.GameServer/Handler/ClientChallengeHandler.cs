@@ -25,30 +25,22 @@ namespace Arrowgene.Ddo.GameServer.Handler
             }
 
             IBuffer test = new StreamBuffer();  
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); 
-            test.WriteByte(1); test.WriteByte(1); 
-            test.WriteInt32(2); // 0xC - 12
-            test.WriteByte(1); //0x10 - 16
-            test.WriteByte(1); // 0x11 - 17
+            
+            // header ??
+            test.WriteUInt16(2); 
+            test.WriteUInt16(0); 
+           // test.WriteInt16(0); 
+            // header ??
+            
+            // respo struc
+            test.WriteUInt16(1); //us_error
+            test.WriteUInt32(1); //n_result
+            test.WriteByte(16);  //uc_PasswordSrcSize
+            test.WriteByte(16);  //ucPasswordENcSize
             test.WriteCString("abcdef0123456789"); // max 0x3d - 0terminated bytes @0x12
             
-            
-  
             byte[] enc = client.DdoNetworkCrypto.Encrypt(test.GetAllBytes());
-            
-          //  IBuffer test2 = new StreamBuffer();
-           // test2.WriteBytes(new byte[] {0x00,0x02});
-           // test2.WriteBytes(enc);
-            
+
             client.Send(new Packet(enc));
         }
     };
