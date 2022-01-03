@@ -4,34 +4,47 @@ using System.Collections.Generic;
 namespace Arrowgene.Ddo.GameServer.Network
 {
     public readonly struct PacketId
-    {  
-        public static readonly PacketId UNKNOWN = new PacketId(0,0,0, "UNKNOWN");
+    {
+        public static readonly PacketId UNKNOWN = new PacketId(0, 0, 0, "UNKNOWN");
+
         // public static readonly PacketId L2C_LOGIN_SERVER_CERT_NOTICE = new PacketId(0,0,0, "L2C_LOGIN_SERVER_CERT_NOTICE");
-        public static readonly PacketId C2L_CLIENT_CHALLENGE_REQ = new PacketId(1,0,1, "C2L_CLIENT_CHALLENGE_REQ");
-        public static readonly PacketId L2C_CLIENT_CHALLENGE_RES = new PacketId(1,0,2, "L2C_CLIENT_CHALLENGE_RES");
-        
-        private static  Dictionary<int, PacketId> InitializePacketIds()
+        public static readonly PacketId C2L_CLIENT_CHALLENGE_REQ = new PacketId(1, 0, 1, "C2L_CLIENT_CHALLENGE_REQ");
+        public static readonly PacketId L2C_CLIENT_CHALLENGE_RES = new PacketId(1, 0, 2, "L2C_CLIENT_CHALLENGE_RES");
+        public static readonly PacketId C2L_SESSION_KEY_REQ = new PacketId(0, 1, 1, "C2L_SESSION_KEY_REQ");
+        public static readonly PacketId L2C_SESSION_KEY_RES = new PacketId(0, 1, 2, "L2C_SESSION_KEY_RES");
+        public static readonly PacketId X1 = new PacketId(0, 0, 1, "X1");
+        public static readonly PacketId X2 = new PacketId(0, 0, 2, "X2");
+        public static readonly PacketId X3 = new PacketId(3, 0, 1, "X3");
+        public static readonly PacketId X4 = new PacketId(3, 0, 0x10, "X4 Character Data?");
+
+        private static Dictionary<int, PacketId> InitializePacketIds()
         {
             Dictionary<int, PacketId> packetIds = new Dictionary<int, PacketId>();
             AddPacketIdEntry(packetIds, UNKNOWN);
             // AddPacketIdEntry(packetIds, L2C_LOGIN_SERVER_CERT_NOTICE);
             AddPacketIdEntry(packetIds, C2L_CLIENT_CHALLENGE_REQ);
             AddPacketIdEntry(packetIds, L2C_CLIENT_CHALLENGE_RES);
+            AddPacketIdEntry(packetIds, C2L_SESSION_KEY_REQ);
+            AddPacketIdEntry(packetIds, L2C_SESSION_KEY_RES);
+            AddPacketIdEntry(packetIds, X1);
+            AddPacketIdEntry(packetIds, X2);
+            AddPacketIdEntry(packetIds, X3);
+            AddPacketIdEntry(packetIds, X4);
             return packetIds;
         }
-        
+
         private static readonly Dictionary<int, PacketId> PacketIds = InitializePacketIds();
-        
+
         private static void AddPacketIdEntry(Dictionary<int, PacketId> packetIds, PacketId packetId)
         {
             packetIds.Add(packetId.GetHashCode(), packetId);
         }
-        
+
         private static int GetHashCode(byte groupId, ushort handlerId, byte handlerSubId)
         {
             return HashCode.Combine(groupId, handlerId, handlerSubId);
         }
-        
+
         public static PacketId Get(byte groupId, ushort handlerId, byte handlerSubId)
         {
             int hashCode = GetHashCode(groupId, handlerId, handlerSubId);
@@ -42,7 +55,7 @@ namespace Arrowgene.Ddo.GameServer.Network
 
             return UNKNOWN;
         }
-        
+
         public readonly byte GroupId;
         public readonly ushort HandlerId;
         public readonly byte HandlerSubId;

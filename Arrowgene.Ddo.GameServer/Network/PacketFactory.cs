@@ -29,6 +29,7 @@ namespace Arrowgene.Ddo.GameServer.Network
 
         private bool _readHeader;
         private uint _dataSize;
+        private uint _packetCount;
         private int _position;
         private IBuffer _buffer;
         private readonly GameServerSetting _setting;
@@ -39,6 +40,7 @@ namespace Arrowgene.Ddo.GameServer.Network
         {
             _setting = setting;
             _camelliaKey = CamelliaKey;
+            _packetCount = 0;
             Reset();
         }
 
@@ -75,8 +77,11 @@ namespace Arrowgene.Ddo.GameServer.Network
 
             IBuffer packetDataBuffer = Util.Buffer.Provide();
             packetDataBuffer.WriteByte(packet.Id.GroupId);
-            packetDataBuffer.WriteUInt16(packet.Id.HandlerId);
+            packetDataBuffer.WriteUInt16(packet.Id.HandlerId,Endianness.Big);
             packetDataBuffer.WriteByte(packet.Id.HandlerSubId);
+            packetDataBuffer.WriteByte(0x34);
+            packetDataBuffer.WriteUInt32(_packetCount, Endianness.Big);
+            Console.WriteLine(Util.HexDump(packetDataBuffer.GetAllBytes()));
             packetDataBuffer.WriteBytes(data);
             byte[] packetData = packetDataBuffer.GetAllBytes();
             byte[] encryptedPacketData = Encrypt(packetData);
@@ -141,27 +146,26 @@ namespace Arrowgene.Ddo.GameServer.Network
                     IBuffer packetBuffer = new StreamBuffer(packetData);
                     packetBuffer.SetPositionStart();
                     byte groupId = packetBuffer.ReadByte();
-                    ushort handlerId = packetBuffer.ReadUInt16();
+                    ushort handlerId = packetBuffer.ReadUInt16(Endianness.Big);
                     byte handlerSubId = packetBuffer.ReadByte();
-                    //byte[] unknown = packetBuffer.ReadBytes(5);
-                    uint unknownA = packetBuffer.ReadUInt32();
-                    byte unknownB = packetBuffer.ReadByte();
+                    byte unknownA = packetBuffer.ReadByte();
+                    uint packetCount = packetBuffer.ReadUInt32(Endianness.Big);
                     
                     byte[] payload;
                     PacketId packetId;
                     
                     // abusing this as part of header validation
-                    if (unknownA != 0 || unknownB != 0)
+                    if (unknownA != 0)
                     {
                         payload = packetData;
                         packetId = PacketId.C2L_CLIENT_CHALLENGE_REQ;
                     }
                     else
                     {
-                        payload = packetBuffer.ReadBytes(packetBuffer.Position - packetBuffer.Size);
+                        payload = packetBuffer.ReadBytes(packetBuffer.Size - packetBuffer.Position);
                         packetId = PacketId.Get(groupId, handlerId, handlerSubId);
                     }
-                    Packet packet = new Packet(packetId, payload);
+                    Packet packet = new Packet(packetId, payload, packetCount, PacketSource.Client);
                     packets.Add(packet);
                     _readHeader = false;
                     read = _buffer.Position != _buffer.Size;

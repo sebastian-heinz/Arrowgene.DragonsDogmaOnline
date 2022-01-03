@@ -64,6 +64,7 @@ namespace Arrowgene.Ddo.Cli
             AddCommand(new ServerCommand());
             AddCommand(new HelpCommand(_commands));
             AddCommand(new TestCommand());
+            AddCommand(new PcapDecryptCommand());
         }
 
         private void RunArguments(string[] arguments)

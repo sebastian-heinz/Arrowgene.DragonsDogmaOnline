@@ -23,12 +23,12 @@ namespace Arrowgene.Ddo.GameServer.Network
         }
 
         public string Identity { get; private set; }
-        
+
         public void Close()
         {
             _socket.Close();
         }
-        
+
         public List<Packet> Receive(byte[] data)
         {
             List<Packet> packets;
@@ -42,13 +42,12 @@ namespace Arrowgene.Ddo.GameServer.Network
                 packets = new List<Packet>();
             }
 
-            return packets;
-        }
+            foreach (Packet packet in packets)
+            {
+                Logger.LogPacket(this, packet);
+            }
 
-        public void Send(PacketId id, IBuffer buffer)
-        {
-            Packet packet = new Packet(id, buffer.GetAllBytes());
-            Send(packet);
+            return packets;
         }
 
         public void Send(Packet packet)
@@ -65,6 +64,7 @@ namespace Arrowgene.Ddo.GameServer.Network
             }
 
             SendRaw(data);
+            Logger.LogPacket(this, packet);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Arrowgene.Ddo.GameServer.Network
             _challenge = new Challenge();
             byte[] challenge = _challenge.CreateClientCertChallenge();
             Packet packet = new Packet(challenge);
-            
+
             byte[] data;
             try
             {
@@ -104,6 +104,7 @@ namespace Arrowgene.Ddo.GameServer.Network
             {
                 Logger.Error(this, "Failed CertChallenge");
             }
+
             _packetFactory.SetCamelliaKey(challenge.CamelliaKey);
             return challenge;
         }

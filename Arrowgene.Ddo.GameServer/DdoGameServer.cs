@@ -79,6 +79,7 @@ namespace Arrowgene.Ddo.GameServer
         private void LoadPacketHandler()
         {
             _authConsumer.AddHandler(new ClientChallengeHandler(this));
+            _authConsumer.AddHandler(new ClientSessionKeyHandler(this));
         }
     }
 }

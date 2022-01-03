@@ -13,11 +13,12 @@ namespace Arrowgene.Ddo.GameServer.Logging
         {
             base.Initialize(identity, name, write, configuration);
         }
+
         public void Hex(byte[] data)
         {
             Info($"{Util.HexDump(data)}");
         }
-        
+
         public void Info(Client client, string message)
         {
             Info($"{client.Identity} {message}");
@@ -72,21 +73,25 @@ namespace Arrowgene.Ddo.GameServer.Logging
             }
         }
 
-        public void LogUnknownIncomingPacket(Client client, Packet packet)
+        public void LogPacket(Client client, Packet packet)
         {
-            // todo packet log wrapper class
             Write(LogLevel.Debug,
-                $"{client.Identity} - {packet.Id} {Environment.NewLine}{Util.HexDump(packet.Data)}", packet);
+                $"{client.Identity}{Environment.NewLine}" +
+                $"Source:{packet.Source} Id:{packet.Id.GroupId}.{packet.Id.HandlerId}.{packet.Id.HandlerSubId}{Environment.NewLine}" +
+                $"Name:{packet.Id.Name}{Environment.NewLine}" +
+                $"{Util.HexDump(packet.Data)}", packet);
         }
 
         public void Received(ITcpSocket socket, byte[] data)
         {
-            Write(LogLevel.Debug,$"Received: {data.Length}bytes from {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
+            Write(LogLevel.Debug,
+                $"Received: {data.Length}bytes from {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
         }
-        
+
         public void Send(ITcpSocket socket, byte[] data)
         {
-            Write(LogLevel.Debug,$"Send: {data.Length}bytes to {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
+            Write(LogLevel.Debug,
+                $"Send: {data.Length}bytes to {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
         }
     }
 }
