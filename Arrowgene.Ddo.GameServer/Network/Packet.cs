@@ -18,7 +18,7 @@ namespace Arrowgene.Ddo.GameServer.Network
 
         public Packet(byte[] data)
         {
-            Id = PacketId.Unknown;
+            Id = PacketId.UNKNOWN;
             Data = data;
         }
 

@@ -14,44 +14,25 @@ namespace Arrowgene.Ddo.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.ClientChallengeReq_C2L;
+        public override PacketId Id => PacketId.C2L_CLIENT_CHALLENGE_REQ;
 
         public override void Handle(Client client, Packet packet)
         {
-            if (!client.DdoNetworkCrypto.HandleClientCertChallenge(packet.Data))
+            Challenge.Response challenge = client.HandleChallenge(packet.Data);
+            if (challenge.Error)
             {
                 Logger.Error(client, "Failed CertChallenge");
                 return;
             }
 
-            IBuffer test = new StreamBuffer();
-            // header
-            test.WriteByte(1); // group id
-            test.WriteUInt16(0);  // handler id
-            test.WriteByte(2);  // handler sub id
-            // struc
-
-            //
-          //  test.WriteByte(0);
-          //  test.WriteByte(0);
-          //  test.WriteByte(0);
-          //  test.WriteByte(0);
-          //  test.WriteByte(0);
-          //  //
-          //  test.WriteByte(0);
-          //  test.WriteByte(0);
-          //  test.WriteByte(0);
-          //  test.WriteByte(0);
-
-            
-           test.WriteUInt16(0); //us_error
-            test.WriteUInt32(1); //n_result
-            test.WriteByte(16);  //uc_PasswordSrcSize
-            test.WriteByte(16);  //ucPasswordENcSize
-            test.WriteBytes(client.DdoNetworkCrypto.GetEncryptedBlowFishPassword());
-            
-            byte[] enc = client.DdoNetworkCrypto.Encrypt(test.GetAllBytes());
-            client.Send(new Packet(enc));
+            IBuffer buffer = new StreamBuffer();
+            buffer.WriteInt32(0); //us_error
+            buffer.WriteInt32(0); //n_result
+            buffer.WriteByte(challenge.DecryptedBlowFishKeyLength); //uc_PasswordSrcSize
+            buffer.WriteByte(challenge.EncryptedBlowFishKeyLength); //ucPasswordENcSize
+            buffer.WriteBytes(challenge.EncryptedBlowFishPassword);
+            buffer.WriteBytes(new byte[48]);
+            client.Send(new Packet(PacketId.L2C_CLIENT_CHALLENGE_RES, buffer.GetAllBytes()));
         }
-    };
+    }
 }

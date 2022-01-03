@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddo.GameServer.Logging;
-using Arrowgene.Ddo.Shared.Crypto;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -14,17 +13,22 @@ namespace Arrowgene.Ddo.GameServer.Network
 
         private ITcpSocket _socket;
         private PacketFactory _packetFactory;
+        private Challenge _challenge;
 
         public Client(ITcpSocket socket, PacketFactory packetFactory)
         {
             _socket = socket;
             _packetFactory = packetFactory;
-            DdoNetworkCrypto = new DdoNetworkCrypto();
+            _challenge = null;
         }
 
-        public DdoNetworkCrypto DdoNetworkCrypto { get; }
         public string Identity { get; private set; }
-
+        
+        public void Close()
+        {
+            _socket.Close();
+        }
+        
         public List<Packet> Receive(byte[] data)
         {
             List<Packet> packets;
@@ -60,13 +64,48 @@ namespace Arrowgene.Ddo.GameServer.Network
                 return;
             }
 
-            Send(data);
+            SendRaw(data);
         }
 
-        public void Send(byte[] data)
+        /// <summary>
+        /// Sends raw bytes to the client, without any further processing
+        /// </summary>
+        public void SendRaw(byte[] data)
         {
             Logger.Send(_socket, data);
             _socket.Send(data);
+        }
+
+        public void InitializeChallenge()
+        {
+            _challenge = new Challenge();
+            byte[] challenge = _challenge.CreateClientCertChallenge();
+            Packet packet = new Packet(challenge);
+            
+            byte[] data;
+            try
+            {
+                data = _packetFactory.WriteWithoutHeader(packet);
+            }
+            catch (Exception ex)
+            {
+                Logger.Exception(this, ex);
+                return;
+            }
+
+            SendRaw(data);
+        }
+
+        public Challenge.Response HandleChallenge(byte[] data)
+        {
+            Challenge.Response challenge = _challenge.HandleClientCertChallenge(data);
+            _challenge = null;
+            if (challenge.Error)
+            {
+                Logger.Error(this, "Failed CertChallenge");
+            }
+            _packetFactory.SetCamelliaKey(challenge.CamelliaKey);
+            return challenge;
         }
     }
 }

@@ -59,9 +59,7 @@ namespace Arrowgene.Ddo.GameServer
 
         private void AuthClientConnected(Client client)
         {
-            byte[] handshake = client.DdoNetworkCrypto.CreateClientCertChallenge();
-            Packet packet = new Packet(handshake);
-            client.Send(packet);
+            client.InitializeChallenge();
         }
 
         private void AuthClientDisconnected(Client client)
