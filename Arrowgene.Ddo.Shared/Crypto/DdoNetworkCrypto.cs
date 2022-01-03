@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
-using System.Text;
 using Arrowgene.Buffers;
+using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddo.Shared.Crypto
 {
@@ -18,13 +18,21 @@ namespace Arrowgene.Ddo.Shared.Crypto
             0x24, 0x63, 0x62, 0x4D, 0x36, 0x57, 0x50, 0x29, 0x61, 0x58, 0x3D, 0x25, 0x4A, 0x5E, 0x7A, 0x41
         };
 
+        private static readonly byte[] BlowFishKey = new byte[]
+        {
+            0x6D, 0x6F, 0x66, 0x75, 0x6D, 0x6F, 0x66, 0x75, 0x20, 0x63, 0x61, 0x70, 0x63, 0x6F, 0x6D, 0x28,
+            0x5E, 0x2D, 0x5E, 0x29
+        };
+
         private static readonly SHA1Managed _sha1 = new SHA1Managed();
-        private static readonly Camellia _camellia = new Camellia();
-
-
+        private static readonly Camellia _camellia = new Camellia(); 
+        private static readonly BlowFish _blowFish = new BlowFish(BlowFishKey, true);
+        
         private readonly RSACryptoServiceProvider _rsa;
         private readonly RSAParameters _rsaKeyInfo;
         private byte[] _camelliaKey;
+        private byte[] _blowFishPassword;
+        private byte[] _encryptedBlowFishPassword;
 
         public DdoNetworkCrypto()
         {
@@ -37,23 +45,37 @@ namespace Arrowgene.Ddo.Shared.Crypto
         {
             int srcLen = src.Length;
             byte[] dst = new byte[srcLen];
-            System.Buffer.BlockCopy(src, 0, dst, 0, srcLen);
+            Buffer.BlockCopy(src, 0, dst, 0, srcLen);
             return dst;
         }
 
         public byte[] Encrypt(byte[] data)
         {
-      
-            _camellia.Encrypt(data, out Span<byte> encrypted, _camelliaKey,  Copy(CamelliaIv));
+            _camellia.Encrypt(data, out Span<byte> encrypted, _camelliaKey, Copy(CamelliaIv));
             return encrypted.ToArray();
         }
-        
+
         public byte[] Decrypt(byte[] encrypted)
         {
-            _camellia.Decrypt(encrypted, out Span<byte> decrypted, _camelliaKey,  Copy(CamelliaIv));
+            _camellia.Decrypt(encrypted, out Span<byte> decrypted, _camelliaKey, Copy(CamelliaIv));
             return decrypted.ToArray();
         }
+        
+        public byte[] EncryptBlowFish(byte[] data)
+        {
+            return _blowFish.Encrypt_ECB(data);
+        }
 
+        public byte[] GetEncryptedBlowFishPassword()
+        {
+            return _encryptedBlowFishPassword;
+        }
+        
+        public byte[] DecryptBlowFish(byte[] encrypted)
+        {
+            return _blowFish.Decrypt_ECB(encrypted);
+        }
+        
         public byte[] CreateClientCertChallenge()
         {
             StreamBuffer buffer = new StreamBuffer();
@@ -67,13 +89,13 @@ namespace Arrowgene.Ddo.Shared.Crypto
             byte[] certChallenge = buffer.GetAllBytes();
             Console.WriteLine($"Created Cert Challenge:{Environment.NewLine}{Util.HexDump(certChallenge)}");
             // InitialPrev will be modified - need to be preserved for decryption
-            _camellia.Encrypt(certChallenge, out Span<byte> certChallengeEncrypted, _camelliaKey,  Copy(CamelliaIv));
+            _camellia.Encrypt(certChallenge, out Span<byte> certChallengeEncrypted, _camelliaKey, Copy(CamelliaIv));
             return certChallengeEncrypted.ToArray();
         }
 
         public bool HandleClientCertChallenge(byte[] challengeResponse)
         {
-            _camellia.Decrypt(challengeResponse, out Span<byte> decrypted, _camelliaKey,  Copy(CamelliaIv));
+            _camellia.Decrypt(challengeResponse, out Span<byte> decrypted, _camelliaKey, Copy(CamelliaIv));
             IBuffer decBuffer = new StreamBuffer(decrypted.ToArray());
             decBuffer.SetPositionStart();
             byte decryptedCamelliaKeyLength = decBuffer.ReadByte();
@@ -81,30 +103,21 @@ namespace Arrowgene.Ddo.Shared.Crypto
             decBuffer.ReadBytes(3);
             byte decryptedBlowFishKeyLength = decBuffer.ReadByte();
             byte encryptedBlowFishKeyLength = decBuffer.ReadByte();
-            byte[] encryptedBlowFish = decBuffer.ReadBytes(62);
+            _encryptedBlowFishPassword = decBuffer.ReadBytesTerminated(0); //62 length
 
             Console.WriteLine($"Received CertChallenge Response:{Environment.NewLine}" +
                               $"decryptedCamelliaKeyLength:{decryptedCamelliaKeyLength}{Environment.NewLine}" +
                               $"rsaEncryptedCamelliaKey:{Environment.NewLine}{Util.HexDump(rsaEncryptedCamelliaKey)}" +
                               $"decryptedBlowFishKeyLength:{decryptedBlowFishKeyLength}{Environment.NewLine}" +
                               $"encryptedBlowFishKeyLength:{encryptedBlowFishKeyLength}{Environment.NewLine}" +
-                              $"encryptedBlowFish:{Environment.NewLine}{Util.HexDump(encryptedBlowFish)}"
+                              $"_encryptedBlowFishPassword:{Environment.NewLine}{Util.HexDump(_encryptedBlowFishPassword)}"
             );
 
-            byte[] newCamelliaKey = _rsa.Decrypt(rsaEncryptedCamelliaKey, RSAEncryptionPadding.Pkcs1);
-            Console.WriteLine($"newCamelliaKey:{Environment.NewLine}{Util.HexDump(newCamelliaKey)}");
+            _camelliaKey = _rsa.Decrypt(rsaEncryptedCamelliaKey, RSAEncryptionPadding.Pkcs1);
+            Console.WriteLine($"_camelliaKey:{Environment.NewLine}{Util.HexDump(_camelliaKey)}");
 
-            _camelliaKey = newCamelliaKey;
-            
-        
-            // test
-            string keyS = "ABB(DF2I8[{Y-oS_CCMy(@<}qR}WYX11M)w[5V.~CbjwM5q<F1Iab+-";
-            byte[] key = Encoding.UTF8.GetBytes(keyS);
-            BlowFish bf = new BlowFish(key);
-            byte[] dec = bf.Decrypt_ECB(encryptedBlowFish);
-            Console.WriteLine($"dec:{Environment.NewLine}{Util.HexDump(dec)}");
-            //
-            
+            _blowFishPassword = _blowFish.Decrypt_ECB(_encryptedBlowFishPassword);
+            Console.WriteLine($"_blowFishPassword:{Environment.NewLine}{Util.HexDump(_blowFishPassword)}");
             
             return true;
         }
