@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Arrowgene.Buffers;
 using Arrowgene.Ddo.GameServer.Logging;
+using Arrowgene.Ddo.GameServer.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -19,10 +19,13 @@ namespace Arrowgene.Ddo.GameServer.Network
         {
             _socket = socket;
             _packetFactory = packetFactory;
+            State = new ClientState();
             _challenge = null;
         }
 
         public string Identity { get; private set; }
+        public ClientState State { get; private set; }
+    
 
         public void Close()
         {

@@ -12,10 +12,10 @@ namespace Arrowgene.Ddo.GameServer.Network
         public static readonly PacketId L2C_CLIENT_CHALLENGE_RES = new PacketId(1, 0, 2, "L2C_CLIENT_CHALLENGE_RES");
         public static readonly PacketId C2L_SESSION_KEY_REQ = new PacketId(0, 1, 1, "C2L_SESSION_KEY_REQ");
         public static readonly PacketId L2C_SESSION_KEY_RES = new PacketId(0, 1, 2, "L2C_SESSION_KEY_RES");
-        public static readonly PacketId X1 = new PacketId(0, 0, 1, "X1");
-        public static readonly PacketId X2 = new PacketId(0, 0, 2, "X2");
-        public static readonly PacketId X3 = new PacketId(3, 0, 1, "X3");
-        public static readonly PacketId X4 = new PacketId(3, 0, 0x10, "X4 Character Data?");
+        public static readonly PacketId X1_REQ = new PacketId(0, 0, 1, "X1_REQ");
+        public static readonly PacketId X1_RES = new PacketId(0, 0, 2, "X1_RES");
+        public static readonly PacketId X2_REQ = new PacketId(3, 0, 1, "X2_REQ");
+        public static readonly PacketId X2_RES = new PacketId(3, 0, 0x10, "X2_RES Character Data?");
 
         private static Dictionary<int, PacketId> InitializePacketIds()
         {
@@ -26,10 +26,10 @@ namespace Arrowgene.Ddo.GameServer.Network
             AddPacketIdEntry(packetIds, L2C_CLIENT_CHALLENGE_RES);
             AddPacketIdEntry(packetIds, C2L_SESSION_KEY_REQ);
             AddPacketIdEntry(packetIds, L2C_SESSION_KEY_RES);
-            AddPacketIdEntry(packetIds, X1);
-            AddPacketIdEntry(packetIds, X2);
-            AddPacketIdEntry(packetIds, X3);
-            AddPacketIdEntry(packetIds, X4);
+            AddPacketIdEntry(packetIds, X1_REQ);
+            AddPacketIdEntry(packetIds, X1_RES);
+            AddPacketIdEntry(packetIds, X2_REQ);
+            AddPacketIdEntry(packetIds, X2_RES);
             return packetIds;
         }
 
@@ -53,7 +53,7 @@ namespace Arrowgene.Ddo.GameServer.Network
                 return PacketIds[hashCode];
             }
 
-            return UNKNOWN;
+            return new PacketId(groupId, handlerId, handlerSubId, "Unknown");
         }
 
         public readonly byte GroupId;

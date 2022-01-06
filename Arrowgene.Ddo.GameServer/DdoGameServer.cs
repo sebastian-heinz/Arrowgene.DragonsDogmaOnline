@@ -80,6 +80,8 @@ namespace Arrowgene.Ddo.GameServer
         {
             _authConsumer.AddHandler(new ClientChallengeHandler(this));
             _authConsumer.AddHandler(new ClientSessionKeyHandler(this));
+            _authConsumer.AddHandler(new ClientX1Handler(this));
+            _authConsumer.AddHandler(new ClientX2Handler(this));
         }
     }
 }

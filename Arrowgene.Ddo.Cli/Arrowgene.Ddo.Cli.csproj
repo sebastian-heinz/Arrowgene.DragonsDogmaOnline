@@ -12,6 +12,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddo.GameServer\Arrowgene.Ddo.GameServer.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddo.WebServer\Arrowgene.Ddo.WebServer.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddo.PacketLibrary\Arrowgene.Ddo.PacketLibrary.csproj" />
     </ItemGroup>
     
 </Project>

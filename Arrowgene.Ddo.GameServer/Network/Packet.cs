@@ -4,12 +4,20 @@ namespace Arrowgene.Ddo.GameServer.Network
 {
     public class Packet
     {
-        public Packet(PacketId id, byte[] data, uint count, PacketSource source)
+        public Packet(PacketId id, byte[] data, PacketSource source, uint count)
         {
             Id = id;
             Source = source;
             Data = data;
             Count = count;
+        }
+        
+        public Packet(PacketId id, byte[] data, PacketSource source)
+        {
+            Id = id;
+            Source = source;
+            Data = data;
+            Count = 0;
         }
         
         public Packet(PacketId id, byte[] data)

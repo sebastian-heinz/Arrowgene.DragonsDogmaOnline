@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddo.Database", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddo.Shared", "Arrowgene.Ddo.Shared\Arrowgene.Ddo.Shared.csproj", "{840B5617-2B22-461F-96F5-9062303F08E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddo.PacketLibrary", "Arrowgene.Ddo.PacketLibrary\Arrowgene.Ddo.PacketLibrary.csproj", "{BF629F75-0210-4ACA-B7E7-0E06411DFE08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{840B5617-2B22-461F-96F5-9062303F08E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{840B5617-2B22-461F-96F5-9062303F08E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{840B5617-2B22-461F-96F5-9062303F08E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF629F75-0210-4ACA-B7E7-0E06411DFE08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF629F75-0210-4ACA-B7E7-0E06411DFE08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF629F75-0210-4ACA-B7E7-0E06411DFE08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF629F75-0210-4ACA-B7E7-0E06411DFE08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -81,11 +81,11 @@ namespace Arrowgene.Ddo.GameServer.Network
             packetDataBuffer.WriteByte(packet.Id.HandlerSubId);
             packetDataBuffer.WriteByte(0x34);
             packetDataBuffer.WriteUInt32(_packetCount, Endianness.Big);
-            Console.WriteLine(Util.HexDump(packetDataBuffer.GetAllBytes()));
             packetDataBuffer.WriteBytes(data);
+            
             byte[] packetData = packetDataBuffer.GetAllBytes();
             byte[] encryptedPacketData = Encrypt(packetData);
-
+            
             IBuffer buffer = Util.Buffer.Provide();
             buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without header*/, Endianness.Big);
             buffer.WriteBytes(encryptedPacketData);
@@ -155,7 +155,8 @@ namespace Arrowgene.Ddo.GameServer.Network
                     PacketId packetId;
                     
                     // abusing this as part of header validation
-                    if (unknownA != 0)
+                    if (unknownA != 0 /*reading client packet*/ 
+                        && unknownA != 0x34 /*reading server packet*/)
                     {
                         payload = packetData;
                         packetId = PacketId.C2L_CLIENT_CHALLENGE_REQ;
@@ -165,7 +166,7 @@ namespace Arrowgene.Ddo.GameServer.Network
                         payload = packetBuffer.ReadBytes(packetBuffer.Size - packetBuffer.Position);
                         packetId = PacketId.Get(groupId, handlerId, handlerSubId);
                     }
-                    Packet packet = new Packet(packetId, payload, packetCount, PacketSource.Client);
+                    Packet packet = new Packet(packetId, payload, PacketSource.Client, packetCount);
                     packets.Add(packet);
                     _readHeader = false;
                     read = _buffer.Position != _buffer.Size;

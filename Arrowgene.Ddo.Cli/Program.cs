@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Arrowgene.Ddo.Cli.Command;
+using Arrowgene.Ddo.GameServer.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddo.Cli
@@ -270,6 +271,23 @@ namespace Arrowgene.Ddo.Cli
                 default:
                     consoleColor = ConsoleColor.Gray;
                     break;
+            }
+
+            Packet packet = e.Log.Tag as Packet;
+            if (packet != null)
+            {
+                switch (packet.Source)
+                {
+                    case PacketSource.Client:
+                        consoleColor = ConsoleColor.Green;
+                        break;
+                    case PacketSource.Server:
+                        consoleColor = ConsoleColor.Yellow;
+                        break;
+                    case PacketSource.Unknown:
+                        consoleColor = ConsoleColor.DarkRed;
+                        break;
+                }
             }
 
             string text = log.ToString();

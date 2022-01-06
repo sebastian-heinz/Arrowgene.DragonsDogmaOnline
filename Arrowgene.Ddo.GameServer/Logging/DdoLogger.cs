@@ -84,14 +84,14 @@ namespace Arrowgene.Ddo.GameServer.Logging
 
         public void Received(ITcpSocket socket, byte[] data)
         {
-            Write(LogLevel.Debug,
-                $"Received: {data.Length}bytes from {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
+        //    Write(LogLevel.Debug,
+        //        $"Received: {data.Length}bytes from {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
         }
 
         public void Send(ITcpSocket socket, byte[] data)
         {
-            Write(LogLevel.Debug,
-                $"Send: {data.Length}bytes to {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
+         //   Write(LogLevel.Debug,
+         //       $"Send: {data.Length}bytes to {socket.Identity}{Environment.NewLine}{Util.HexDump(data)}", data);
         }
     }
 }
