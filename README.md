@@ -97,8 +97,14 @@ but will eventually be merged back into develop (to definitely add the new featu
 | Enum type name            | PascalCase  | [A-z]              | No          |
 
 # Attribution
-## Contributors
-- Nothilvien [@sebastian-heinz](https://github.com/sebastian-heinz)
+## Contributors / Making It Happening
+Let me preface with that this work could not exist without the excellent work of various individuals
+- Ando - Reverse Engineering & Tooling (Session Splitter, Camellia Key Cracker)
+- David - Reverse Engineering (unpacking PC Executable, defeating Anti Debug and CRC checks)
+- The White Dragon Temple
+- Nothilvien [@sebastian-heinz](https://github.com/sebastian-heinz) - Reverse Engineering & Server Code
+  
+(if you have been forgotten please reach out)
 
 ## 3rd Parties and Libraries
 - System.Data.SQLite (https://system.data.sqlite.org/)

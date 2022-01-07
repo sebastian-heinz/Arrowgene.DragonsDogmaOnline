@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-         //   File.WriteAllBytes("F://d8.bin", LoginDump.data_Dump_8);
+            File.WriteAllBytes("F://char.bin", LoginDump.data_Dump_24);
 
   
             
