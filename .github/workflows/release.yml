@@ -19,18 +19,18 @@ jobs:
       - name: Build Release
         id: build_release
         run: |
-          DDO_VERSION_FILE=${{ github.workspace }}/ddo.version
-          DDO_VERSION=$(<"$DDO_VERSION_FILE")
-          echo "DDO_VERSION=$DDO_VERSION" >> $GITHUB_ENV
-          echo "DDO_VERSION_E=$(echo ${GITHUB_SHA} | cut -c1-8)" >> $GITHUB_ENV
+          DDON_VERSION_FILE=${{ github.workspace }}/ddon.version
+          DDON_VERSION=$(<"$DDON_VERSION_FILE")
+          echo "DDON_VERSION=$DDON_VERSION" >> $GITHUB_ENV
+          echo "DDON_VERSION_E=$(echo ${GITHUB_SHA} | cut -c1-8)" >> $GITHUB_ENV
           mkdir ./release
-          for DDO_RUNTIME in win-x86 win-x64 linux-x64 osx-x64; do
+          for DDON_RUNTIME in win-x86 win-x64 linux-x64 osx-x64; do
               # Server
-              dotnet publish Arrowgene.Ddo.Cli/Arrowgene.Ddo.Cli.csproj /p:Version=$DDO_VERSION /p:FromMSBuild=true --runtime $DDO_RUNTIME --configuration Release --output ./publish/$DDO_RUNTIME-$DDO_VERSION/Server
+              dotnet publish Arrowgene.Ddon.Cli/Arrowgene.Ddon.Cli.csproj /p:Version=$DDON_VERSION /p:FromMSBuild=true --runtime $DDON_RUNTIME --configuration Release --output ./publish/$DDON_RUNTIME-$DDON_VERSION/Server
               # ReleaseFiles
-              cp -r ./ReleaseFiles/. ./publish/$DDO_RUNTIME-$DDO_VERSION/
+              cp -r ./ReleaseFiles/. ./publish/$DDON_RUNTIME-$DDON_VERSION/
               # Pack
-              tar cjf ./release/$DDO_RUNTIME-$DDO_VERSION.tar.gz ./publish/$DDO_RUNTIME-$DDO_VERSION
+              tar cjf ./release/$DDON_RUNTIME-$DDON_VERSION.tar.gz ./publish/$DDON_RUNTIME-$DDON_VERSION
           done
           
       - name: Create Release
@@ -39,8 +39,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: release-${{ env.DDO_VERSION }}-${{ env.DDO_VERSION_E }}
-          release_name: Release ${{ env.DDO_VERSION }}-${{ env.DDO_VERSION_E }}
+          tag_name: release-${{ env.DDON_VERSION }}-${{ env.DDON_VERSION_E }}
+          release_name: Release ${{ env.DDON_VERSION }}-${{ env.DDON_VERSION_E }}
           draft: false
           prerelease: false
 
@@ -50,8 +50,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/win-x86-${{ env.DDO_VERSION }}.tar.gz
-          asset_name: win-x86-${{ env.DDO_VERSION }}-${{ env.DDO_VERSION_E }}.tar.gz
+          asset_path: ./release/win-x86-${{ env.DDON_VERSION }}.tar.gz
+          asset_name: win-x86-${{ env.DDON_VERSION }}-${{ env.DDON_VERSION_E }}.tar.gz
           asset_content_type: application/gzip
           
       - name: Upload win-x64 Release Asset
@@ -60,8 +60,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/win-x64-${{ env.DDO_VERSION }}.tar.gz
-          asset_name: win-x64-${{ env.DDO_VERSION }}-${{ env.DDO_VERSION_E }}.tar.gz
+          asset_path: ./release/win-x64-${{ env.DDON_VERSION }}.tar.gz
+          asset_name: win-x64-${{ env.DDON_VERSION }}-${{ env.DDON_VERSION_E }}.tar.gz
           asset_content_type: application/gzip
           
       - name: Upload linux-x64 Release Asset
@@ -70,8 +70,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/linux-x64-${{ env.DDO_VERSION }}.tar.gz
-          asset_name: linux-x64-${{ env.DDO_VERSION }}-${{ env.DDO_VERSION_E }}.tar.gz
+          asset_path: ./release/linux-x64-${{ env.DDON_VERSION }}.tar.gz
+          asset_name: linux-x64-${{ env.DDON_VERSION }}-${{ env.DDON_VERSION_E }}.tar.gz
           asset_content_type: application/gzip
           
       - name: Upload osx-x64 Release Asset
@@ -80,6 +80,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/osx-x64-${{ env.DDO_VERSION }}.tar.gz
-          asset_name: osx-x64-${{ env.DDO_VERSION }}-${{ env.DDO_VERSION_E }}.tar.gz
+          asset_path: ./release/osx-x64-${{ env.DDON_VERSION }}.tar.gz
+          asset_name: osx-x64-${{ env.DDON_VERSION }}-${{ env.DDON_VERSION_E }}.tar.gz
           asset_content_type: application/gzip

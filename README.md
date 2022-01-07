@@ -40,7 +40,7 @@ C# Plugin: https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp
 
 ### Open Project:
 Open the Project Folder:  
-`\ddo-server`
+`\Arrowgene.DragonsDogmaOnline`
 
 ## 3.3) IntelliJ Rider
 https://www.jetbrains.com/rider/
@@ -49,7 +49,7 @@ https://www.jetbrains.com/rider/
 Open the `DragonsDogmaOnline.sln`-file
 
 ## 4) Debug the Project
-Run the `Ddo.Cli`-Project
+Run the `Ddon.Cli`-Project
 
 # Server
 With default configuration the server will listen on following ports:
@@ -105,16 +105,4 @@ but will eventually be merged back into develop (to definitely add the new featu
 - MySqlConnector (https://www.nuget.org/packages/MySqlConnector)
 - AspNetCore (https://github.com/aspnet/AspNetCore)
 - .NET Standard (https://github.com/dotnet/standard)
-- Arrowgene.Services (https://github.com/Arrowgene/Arrowgene.Services)
-
-
-
-
-- 1 hardcoded key - s->c
-- 2 hardcoded key - c->s
-//- 3 hardcoded key - s->c ??
-- 4 generated key - s->c
-
-
-
-
+- Arrowgene.Networking (https://github.com/sebastian-heinz/Arrowgene.Networking)

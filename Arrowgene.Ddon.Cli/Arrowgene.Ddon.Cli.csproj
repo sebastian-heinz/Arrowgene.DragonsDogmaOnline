@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <RootNamespace>Arrowgene.Ddon.Cli</RootNamespace>
+        <Title>Dragons Dogma Online - Command Line Interface</Title>
+        <Company>Ddon Team</Company>
+        <Product>Ddon.Cli</Product>
+        <Version>$(Version)</Version>
+        <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.PacketLibrary\Arrowgene.Ddon.PacketLibrary.csproj" />
+    </ItemGroup>
+    
+</Project>

@@ -1,3 +1,3 @@
 pushd "%~dp0"
 cd ./Server.
-start Arrowgene.Ddo.Cli.exe server start
+start Arrowgene.Ddon.Cli.exe server start
