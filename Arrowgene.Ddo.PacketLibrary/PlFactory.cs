@@ -19,90 +19,147 @@ namespace Arrowgene.Ddo.PacketLibrary
                 return sessions;
             }
 
-            packets.Sort((a, b) => a.TsSec.CompareTo(b.TsSec));
+            //   packets.Sort((a, b) => a.TsSec.CompareTo(b.TsSec));
             uint initialTsSec = packets[0].TsSec;
             uint initialTsUsec = packets[0].TsUsec;
-            PlSession current = new PlSession();
+
+            List<List<Pcap.Packet>> streams = ExtractStreams(packets);
+            foreach (List<Pcap.Packet> stream in streams)
+            {
+                List<PlFactoryPacket> plFactoryPackets = ExtractPackets(stream, initialTsSec, initialTsUsec);
+                PlSession session = new PlSession();
+                foreach (PlFactoryPacket plFactoryPacket in plFactoryPackets)
+                {
+                    PlPacket plPacket = new PlPacket();
+                    plPacket.Data = plFactoryPacket.Data;
+                    plPacket.Timestamp = plFactoryPacket.Timestamp;
+                    plPacket.Direction = plFactoryPacket.GetDirection();
+                    session.Add(plPacket);
+                }
+
+                sessions.Add(session);
+            }
+
+            return sessions;
+        }
+
+        private List<PlFactoryPacket> ExtractPackets(List<Pcap.Packet> packets, uint initialTsSec,
+            uint initialTsUsec)
+        {
+            List<PlFactoryPacket> plFactoryPackets = new List<PlFactoryPacket>();
             for (int packetNum = 0; packetNum < packets.Count; packetNum++)
             {
                 Pcap.Packet pcapPacket = packets[packetNum];
-
                 TcpSegment tcpSegment = GetTcpSegment(pcapPacket);
                 if (tcpSegment == null)
                 {
                     continue;
                 }
 
+                if (tcpSegment.Body == null || tcpSegment.Body.Length <= 0)
+                {
+                    // no data
+                    continue;
+                }
+
                 TcpFlag flag = TcpFlags.ParseFlags(tcpSegment.B12, tcpSegment.B13);
+                if ((flag & TcpFlag.fin) != 0)
+                {
+                    // no data
+                    continue;
+                }
+
                 if ((flag & TcpFlag.syn) != 0)
                 {
                     // no data
                     continue;
                 }
 
-                // unknown status
-                bool isLogin;
-                ushort clientPort;
-                if (tcpSegment.SrcPort == 52100)
+                PlFactoryPacket plFactoryPacket = new PlFactoryPacket();
+                plFactoryPacket.Data = tcpSegment.Body;
+                plFactoryPacket.SrcPort = tcpSegment.SrcPort;
+                plFactoryPacket.DstPort = tcpSegment.DstPort;
+                plFactoryPacket.Flag = flag;
+                plFactoryPacket.TsSec = pcapPacket.TsSec;
+                plFactoryPacket.TsUsec = pcapPacket.TsUsec;
+                plFactoryPacket.InitialTsSec = initialTsSec;
+                plFactoryPacket.InitialTsUsec = initialTsUsec;
+                plFactoryPacket.PacketNum = pcapPacket.PacketNum;
+                plFactoryPackets.Add(plFactoryPacket);
+            }
+
+
+            return plFactoryPackets;
+        }
+
+        private List<List<Pcap.Packet>> ExtractStreams(List<Pcap.Packet> pcapSession)
+        {
+            List<List<Pcap.Packet>> streams = new List<List<Pcap.Packet>>();
+            for (int packetNum = 0; packetNum < pcapSession.Count; packetNum++)
+            {
+                Pcap.Packet pcapPacket = pcapSession[packetNum];
+                TcpSegment tcpSegment = GetTcpSegment(pcapPacket);
+                if (tcpSegment == null)
                 {
-                    isLogin = true;
-                    clientPort = tcpSegment.DstPort;
-                }
-                else if (tcpSegment.DstPort == 52100)
-                {
-                    isLogin = true;
-                    clientPort = tcpSegment.SrcPort;
-                }
-                else if (tcpSegment.SrcPort == 52000)
-                {
-                    isLogin = false;
-                    clientPort = tcpSegment.DstPort;
-                }
-                else if (tcpSegment.DstPort == 52000)
-                {
-                    isLogin = false;
-                    clientPort = tcpSegment.SrcPort;
-                }
-                else
-                {
-                    // not ddo port
                     continue;
                 }
 
-                if (current.IsLogin == null)
+                if (!(
+                    tcpSegment.SrcPort == 52100
+                    || tcpSegment.DstPort == 52100
+                    || tcpSegment.SrcPort == 52000
+                    || tcpSegment.DstPort == 52000)
+                )
                 {
-                    // new session
-                    current.IsLogin = isLogin;
-                    current.ClientPort = clientPort;
-                }
-                else if (current.IsLogin != isLogin || current.ClientPort != clientPort)
-                {
-                    // state change
-                    sessions.Add(current);
-                    current = new PlSession();
-                    current.IsLogin = isLogin;
-                    current.ClientPort = clientPort;
+                    // not ddo packet
+                    continue;
                 }
 
-                if (!(pcapPacket.Body is EthernetFrame ethFrame))
+                TcpFlag flag = TcpFlags.ParseFlags(tcpSegment.B12, tcpSegment.B13);
+                if ((flag & TcpFlag.syn) != 0 && (flag & TcpFlag.ack) != 0)
                 {
-                    return null;
+                    // connection accepted
+                    List<Pcap.Packet> stream = IsolateStream(tcpSegment, packetNum, pcapSession);
+                    streams.Add(stream);
                 }
-
-                PlPacket plPacket = new PlPacket();
-                plPacket.Data = tcpSegment.Body;
-                plPacket.SrcPort = tcpSegment.SrcPort;
-                plPacket.DstPort = tcpSegment.DstPort;
-                plPacket.Flag = flag;
-                plPacket.TsSec = pcapPacket.TsSec;
-                plPacket.TsUsec = pcapPacket.TsUsec;
-                plPacket.InitialTsSec = initialTsSec;
-                plPacket.InitialTsUsec = initialTsUsec;
-                plPacket.PacketNum = (uint)packetNum + 1;
-                current.Add(plPacket);
             }
 
-            return sessions;
+            return streams;
+        }
+
+        private List<Pcap.Packet> IsolateStream(TcpSegment startSegment, int startPacketNum,
+            List<Pcap.Packet> pcapSession)
+        {
+            List<Pcap.Packet> stream = new List<Pcap.Packet>();
+            for (int packetNum = startPacketNum; packetNum < pcapSession.Count; packetNum++)
+            {
+                Pcap.Packet pcapPacket = pcapSession[packetNum];
+                TcpSegment tcpSegment = GetTcpSegment(pcapPacket);
+                if (tcpSegment == null)
+                {
+                    continue;
+                }
+
+                // match
+                if (!(
+                    (startSegment.SrcPort == tcpSegment.SrcPort && startSegment.DstPort == tcpSegment.DstPort)
+                    || (startSegment.DstPort == tcpSegment.SrcPort && startSegment.SrcPort == tcpSegment.DstPort)
+                ))
+                {
+                    continue;
+                }
+
+                TcpFlag flag = TcpFlags.ParseFlags(tcpSegment.B12, tcpSegment.B13);
+                if ((flag & TcpFlag.fin) != 0)
+                {
+                    // end of stream
+                    break;
+                }
+
+                stream.Add(pcapPacket);
+            }
+
+            return stream;
         }
 
         private TcpSegment GetTcpSegment(Pcap.Packet pcapPacket)
@@ -130,12 +187,6 @@ namespace Arrowgene.Ddo.PacketLibrary
 
             if (!(protocolBody.Body is TcpSegment tcpSegment))
             {
-                return null;
-            }
-
-            if (tcpSegment.Body == null || tcpSegment.Body.Length <= 0)
-            {
-                // no data
                 return null;
             }
 

@@ -143,7 +143,7 @@ namespace Arrowgene.Ddo.PacketLibrary.KaitaiModel
             {
                 var i = 0;
                 while (!m_io.IsEof) {
-                    _packets.Add(new Packet(m_io, this, m_root));
+                    _packets.Add(new Packet((uint)i + 1, m_io, this, m_root));
                     i++;
                 }
             }
@@ -227,11 +227,12 @@ namespace Arrowgene.Ddo.PacketLibrary.KaitaiModel
         {
             public static Packet FromFile(string fileName)
             {
-                return new Packet(new KaitaiStream(fileName));
+                return new Packet(0, new KaitaiStream(fileName));
             }
 
-            public Packet(KaitaiStream p__io, Pcap p__parent = null, Pcap p__root = null) : base(p__io)
+            public Packet(uint packetNum, KaitaiStream p__io, Pcap p__parent = null, Pcap p__root = null) : base(p__io)
             {
+                PacketNum = packetNum;
                 m_parent = p__parent;
                 m_root = p__root;
                 _read();
@@ -289,6 +290,8 @@ namespace Arrowgene.Ddo.PacketLibrary.KaitaiModel
             public Pcap M_Root { get { return m_root; } }
             public Pcap M_Parent { get { return m_parent; } }
             public byte[] M_RawBody { get { return __raw_body; } }
+
+            public uint PacketNum { get; }
         }
         private Header _hdr;
         private List<Packet> _packets;

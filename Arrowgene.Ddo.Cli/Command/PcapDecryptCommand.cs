@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using Arrowgene.Ddo.GameServer;
+using Arrowgene.Ddo.GameServer.Dump;
+using Arrowgene.Ddo.GameServer.Network;
 using Arrowgene.Ddo.PacketLibrary;
+using Arrowgene.Ddo.Shared;
 
 namespace Arrowgene.Ddo.Cli.Command
 {
@@ -24,19 +29,31 @@ namespace Arrowgene.Ddo.Cli.Command
 
             PlFactory plFactory = new PlFactory();
             List<PlSession> sessions = plFactory.Create(pcapPath);
+            
+            List<PlPacket> encrypted = sessions[0].GetPackets();
+            PacketFactory pf = new PacketFactory(new GameServerSetting());
+            pf.SetCamelliaKey(keyBytes);
+            
+            // parse ddo packets
+            List<Packet> packets = new List<Packet>();
+            foreach (PlPacket plPacket in encrypted)
+            {
+                packets.AddRange(pf.Read(plPacket.Data));
+            }
 
+           string dump = PacketDump.DumpCSharpStruc(packets, "LoginDump");
+           
+           
+            
+            foreach (Packet packet in packets)
+            {
+                Console.WriteLine(
+                    $"Id:{packet.Id.GroupId}.{packet.Id.HandlerId}.{packet.Id.HandlerSubId}{Environment.NewLine}" +
+                    $"Name:{packet.Id.Name}{Environment.NewLine}" +
+                    $"{Util.HexDump(packet.Data)}"
+                );
+            }
 
-            // PacketFactory pf = new PacketFactory(new GameServerSetting());
-            // pf.SetCamelliaKey(keyBytes);
-            // List<Packet> packets = pf.Read(data);
-            // foreach (Packet packet in packets)
-            // {
-            //     Console.WriteLine(
-            //         $"Id:{packet.Id.GroupId}.{packet.Id.HandlerId}.{packet.Id.HandlerSubId}{Environment.NewLine}" +
-            //         $"Name:{packet.Id.Name}{Environment.NewLine}" +
-            //         $"{Util.HexDump(packet.Data)}"
-            //     );
-            // }
             return CommandResultType.Continue;
         }
 

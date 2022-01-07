@@ -14,14 +14,22 @@ namespace Arrowgene.Ddo.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.X2_REQ;
+        public override PacketId Id => PacketId.X2_REQ_CHAR;
 
         public override void Handle(Client client, Packet packet)
         {
-            client.Send(StaticResponse.Character);
-        //    client.Send(StaticResponse.Websites);
-          //  client.Send(StaticResponse.P);
-       //     client.Send(StaticResponse.Account);
+            client.Send(Dump.LoginDump.Dump_8);
+            client.Send(Dump.LoginDump.Dump_9);
+            client.Send(Dump.LoginDump.Dump_10);
+            client.Send(Dump.LoginDump.Dump_11);
+            client.Send(Dump.LoginDump.Dump_12);
+            client.Send(Dump.LoginDump.Dump_13);
+            client.Send(Dump.LoginDump.Dump_14);
+            client.Send(Dump.LoginDump.Dump_15);
+            client.Send(Dump.LoginDump.Dump_16);
+            client.Send(Dump.LoginDump.Dump_17);
+            
+            client.Send(Dump.LoginDump.Dump_18);
         }
 
     }

@@ -14,9 +14,15 @@ namespace Arrowgene.Ddo.GameServer.Network
         public static readonly PacketId L2C_SESSION_KEY_RES = new PacketId(0, 1, 2, "L2C_SESSION_KEY_RES");
         public static readonly PacketId X1_REQ = new PacketId(0, 0, 1, "X1_REQ");
         public static readonly PacketId X1_RES = new PacketId(0, 0, 2, "X1_RES");
-        public static readonly PacketId X2_REQ = new PacketId(3, 0, 1, "X2_REQ");
-        public static readonly PacketId X2_RES = new PacketId(3, 0, 0x10, "X2_RES Character Data?");
-
+        public static readonly PacketId X2_REQ_CHAR = new PacketId(3, 0, 1, "X2_REQ_CHAR");
+        public static readonly PacketId X2_RES_CHAR_DONE = new PacketId(3, 0, 2, "X2_RES_CHAR_DONE");
+        public static readonly PacketId X2_RES_CHAR_DATA = new PacketId(3, 0, 0x10, "X2_RES_CHAR_DATA");
+        public static readonly PacketId X3_REQ = new PacketId(2, 2, 1, "X3_REQ");
+        public static readonly PacketId X3_RES = new PacketId(2, 2, 2, "X3_RES");
+        public static readonly PacketId X4_REQ = new PacketId(4, 0, 1, "X4_REQ");
+        public static readonly PacketId X4_RES = new PacketId(4, 0, 2, "X4_RES");
+        public static readonly PacketId X5_REQ = new PacketId(5, 0, 1, "X5_REQ");
+        public static readonly PacketId X5_RES = new PacketId(5, 0, 2, "X5_RES");
         private static Dictionary<int, PacketId> InitializePacketIds()
         {
             Dictionary<int, PacketId> packetIds = new Dictionary<int, PacketId>();
@@ -28,8 +34,15 @@ namespace Arrowgene.Ddo.GameServer.Network
             AddPacketIdEntry(packetIds, L2C_SESSION_KEY_RES);
             AddPacketIdEntry(packetIds, X1_REQ);
             AddPacketIdEntry(packetIds, X1_RES);
-            AddPacketIdEntry(packetIds, X2_REQ);
-            AddPacketIdEntry(packetIds, X2_RES);
+            AddPacketIdEntry(packetIds, X2_REQ_CHAR);
+            AddPacketIdEntry(packetIds, X2_RES_CHAR_DONE);
+            AddPacketIdEntry(packetIds, X2_RES_CHAR_DATA);
+            AddPacketIdEntry(packetIds, X3_REQ);
+            AddPacketIdEntry(packetIds, X3_RES);
+            AddPacketIdEntry(packetIds, X4_REQ);
+            AddPacketIdEntry(packetIds, X4_RES);
+            AddPacketIdEntry(packetIds, X5_REQ);
+            AddPacketIdEntry(packetIds, X5_RES);
             return packetIds;
         }
 
