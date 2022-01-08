@@ -22,11 +22,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(LoginDump.Dump_28);
             client.Send(LoginDump.Dump_31);
 
-
             string ip = "127.0.0.1";
             IBuffer buffer = new StreamBuffer(LoginDump.data_Dump_32);
             buffer.SetPositionStart();
-            buffer.Position = 47;
+            buffer.Position = 48;
             buffer.WriteUInt16((ushort)ip.Length, Endianness.Big);
             buffer.WriteString(ip);
             buffer.WriteUInt16(52000, Endianness.Big);

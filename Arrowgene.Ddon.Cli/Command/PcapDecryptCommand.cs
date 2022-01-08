@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-            File.WriteAllBytes("F://char.bin", LoginDump.data_Dump_24);
+         //   File.WriteAllBytes("F://char.bin", LoginDump.data_Dump_24);
 
   
             
@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 packets.AddRange(pf.Read(plPacket.Data));
             }
 
-           string dump = PacketDump.DumpCSharpStruc(packets, "LoginDump");
+          // string dump = PacketDump.DumpCSharpStruc(packets, "LoginDump");
            
            
             

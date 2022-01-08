@@ -102,7 +102,6 @@ namespace Arrowgene.Ddon.GameServer
             _authConsumer.AddHandler(new GpCourseGetInfoHandler(this));
             _authConsumer.AddHandler(new GetCharacterListHandler(this));
             _authConsumer.AddHandler(new ClientX6Handler(this));
-            _authConsumer.AddHandler(new ClientX8Handler(this));
             _authConsumer.AddHandler(new ClientX9Handler(this));
             _authConsumer.AddHandler(new ClientX10Handler(this));
         }
