@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
-using Arrowgene.Ddon.GameServer;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Network;
 using Arrowgene.Ddon.PacketLibrary;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.Cli.Command
@@ -24,22 +22,20 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-         //   File.WriteAllBytes("F://char.bin", LoginDump.data_Dump_24);
+            //   File.WriteAllBytes("F://char.bin", LoginDump.data_Dump_24);
 
-  
-            
-            
+
             string pcapPath = parameter.Arguments[0];
             string key = parameter.Arguments[1];
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
             PlFactory plFactory = new PlFactory();
             List<PlSession> sessions = plFactory.Create(pcapPath);
-            
+
             List<PlPacket> encrypted = sessions[0].GetPackets();
-            PacketFactory pf = new PacketFactory(new GameServerSetting());
+            PacketFactory pf = new PacketFactory(new ServerSetting());
             pf.SetCamelliaKey(keyBytes);
-            
+
             // parse ddon packets
             List<Packet> packets = new List<Packet>();
             foreach (PlPacket plPacket in encrypted)
@@ -47,10 +43,9 @@ namespace Arrowgene.Ddon.Cli.Command
                 packets.AddRange(pf.Read(plPacket.Data));
             }
 
-          // string dump = PacketDump.DumpCSharpStruc(packets, "LoginDump");
-           
-           
-            
+            // string dump = PacketDump.DumpCSharpStruc(packets, "LoginDump");
+
+
             foreach (Packet packet in packets)
             {
                 Console.WriteLine(

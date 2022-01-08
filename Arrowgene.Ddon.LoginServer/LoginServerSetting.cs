@@ -1,21 +1,21 @@
 ﻿using System.Runtime.Serialization;
 using Arrowgene.Ddon.Server;
 
-namespace Arrowgene.Ddon.GameServer
+namespace Arrowgene.Ddon.LoginServer
 {
     [DataContract]
-    public class GameServerSetting
+    public class LoginServerSetting
     {
         [DataMember(Order = 1)] public ServerSetting ServerSetting { get; set; }
 
-        public GameServerSetting()
+        public LoginServerSetting()
         {
             ServerSetting = new ServerSetting();
-            ServerSetting.ServerPort = 52000;
-            ServerSetting.Name = "Game";
+            ServerSetting.ServerPort = 52100;
+            ServerSetting.Name = "Login";
         }
 
-        public GameServerSetting(GameServerSetting setting)
+        public LoginServerSetting(LoginServerSetting setting)
         {
             ServerSetting = new ServerSetting(setting.ServerSetting);
         }

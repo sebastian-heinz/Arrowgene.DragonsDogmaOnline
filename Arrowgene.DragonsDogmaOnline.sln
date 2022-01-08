@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.GameServer", "Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj", "{5C0F18BB-B735-4284-82A2-27506DFC9E56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.LoginServer", "Arrowgene.Ddon.LoginServer\Arrowgene.Ddon.LoginServer.csproj", "{5C0F18BB-B735-4284-82A2-27506DFC9E56}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Cli", "Arrowgene.Ddon.Cli\Arrowgene.Ddon.Cli.csproj", "{72B2D640-DEA0-4BA7-A3B5-899954BFBBF5}"
 EndProject
@@ -14,6 +14,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Shared", "Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj", "{840B5617-2B22-461F-96F5-9062303F08E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.PacketLibrary", "Arrowgene.Ddon.PacketLibrary\Arrowgene.Ddon.PacketLibrary.csproj", "{BF629F75-0210-4ACA-B7E7-0E06411DFE08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Server", "Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj", "{7D39A3F8-4E2E-4E6F-9136-86EC13D64328}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.GameServer", "Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj", "{87B8E9EB-CCCF-481F-8D01-74676ED62AAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{BF629F75-0210-4ACA-B7E7-0E06411DFE08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF629F75-0210-4ACA-B7E7-0E06411DFE08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF629F75-0210-4ACA-B7E7-0E06411DFE08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D39A3F8-4E2E-4E6F-9136-86EC13D64328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D39A3F8-4E2E-4E6F-9136-86EC13D64328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D39A3F8-4E2E-4E6F-9136-86EC13D64328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D39A3F8-4E2E-4E6F-9136-86EC13D64328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87B8E9EB-CCCF-481F-8D01-74676ED62AAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87B8E9EB-CCCF-481F-8D01-74676ED62AAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87B8E9EB-CCCF-481F-8D01-74676ED62AAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87B8E9EB-CCCF-481F-8D01-74676ED62AAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

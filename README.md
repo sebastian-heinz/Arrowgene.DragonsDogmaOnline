@@ -108,7 +108,6 @@ Let me preface with that this work could not exist without the excellent work of
 
 ## 3rd Parties and Libraries
 - System.Data.SQLite (https://system.data.sqlite.org/)
-- MySqlConnector (https://www.nuget.org/packages/MySqlConnector)
-- AspNetCore (https://github.com/aspnet/AspNetCore)
-- .NET Standard (https://github.com/dotnet/standard)
+- KaitaiStruct.Runtime.Csharp (https://kaitai.io/)
 - Arrowgene.Networking (https://github.com/sebastian-heinz/Arrowgene.Networking)
+- .NET Standard (https://github.com/dotnet/standard)

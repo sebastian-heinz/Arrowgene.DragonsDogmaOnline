@@ -21,89 +21,42 @@
  */
 
 using Arrowgene.Ddon.GameServer.Handler;
-using Arrowgene.Ddon.GameServer.Logging;
-using Arrowgene.Ddon.GameServer.Network;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp.Server.AsyncEvent;
+using Arrowgene.Networking.Tcp;
 
 namespace Arrowgene.Ddon.GameServer
 {
-    public class DdonGameServer
+    public class DdonGameServer : DdonServer<GameClient>
     {
         private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonGameServer));
         public GameServerSetting Setting { get; }
-        public ClientLookup Clients { get; }
 
-        private readonly Consumer _authConsumer;
-        private readonly AsyncEventServer _authServer;
-
-        private readonly Consumer _gameConsumer;
-        private readonly AsyncEventServer _gameServer;
-
-
-        public DdonGameServer(GameServerSetting setting)
-        {
-            Setting = new GameServerSetting(setting);
-            LogProvider.Configure<DdonLogger>(Setting);
-
-            Clients = new ClientLookup();
-
-            _authConsumer = new Consumer(Setting, Setting.AuthServerSocketSettings, "Auth");
-            _authConsumer.ClientDisconnected += AuthClientDisconnected;
-            _authConsumer.ClientConnected += AuthClientConnected;
-            _authServer = new AsyncEventServer(
-                Setting.ListenIpAddress,
-                Setting.AuthServerPort,
-                _authConsumer,
-                Setting.AuthServerSocketSettings
-            );
-            
-            _gameConsumer = new Consumer(Setting, Setting.AuthServerSocketSettings, "Game");
-            _gameConsumer.ClientDisconnected += AuthClientDisconnected;
-            _gameConsumer.ClientConnected += AuthClientConnected;
-            _gameServer = new AsyncEventServer(
-                Setting.ListenIpAddress,
-                Setting.GameServerPort,
-                _gameConsumer,
-                Setting.AuthServerSocketSettings
-            );
-            
-            LoadPacketHandler();
-        }
-
-        private void AuthClientConnected(Client client)
+        protected override void ClientConnected(GameClient client)
         {
             client.InitializeChallenge();
         }
 
-        private void AuthClientDisconnected(Client client)
+        protected override void ClientDisconnected(GameClient client)
         {
         }
 
-        public void Start()
+        public override GameClient NewClient(ITcpSocket socket, PacketFactory packetFactory)
         {
-            _gameServer.Start();
-            _authServer.Start();
+            return new GameClient(socket, packetFactory);
         }
 
-        public void Stop()
+        public DdonGameServer(GameServerSetting setting) : base(setting.ServerSetting)
         {
-            _authServer.Stop();
-            _gameServer.Stop();
+            Setting = new GameServerSetting(setting);
+            LoadPacketHandler();
         }
 
         private void LoadPacketHandler()
         {
-            _authConsumer.AddHandler(new ClientChallengeHandler(this));
-            _authConsumer.AddHandler(new ClientSessionKeyHandler(this));
-            _authConsumer.AddHandler(new ClientX1Handler(this));
-            _authConsumer.AddHandler(new GetErrorMessageListHandler(this));
-            _authConsumer.AddHandler(new GetLoginSettingHandler(this));
-            _authConsumer.AddHandler(new GpCourseGetInfoHandler(this));
-            _authConsumer.AddHandler(new GetCharacterListHandler(this));
-            _authConsumer.AddHandler(new ClientX6Handler(this));
-            _authConsumer.AddHandler(new ClientX9Handler(this));
-            _authConsumer.AddHandler(new ClientX10Handler(this));
+            AddHandler(new ClientChallengeHandler(this));
         }
     }
 }

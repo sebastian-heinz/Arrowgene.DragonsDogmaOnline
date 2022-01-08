@@ -1,11 +1,13 @@
 ﻿using System;
 using Arrowgene.Ddon.GameServer;
+using Arrowgene.Ddon.LoginServer;
 using Arrowgene.Ddon.WebServer;
 
 namespace Arrowgene.Ddon.Cli.Command
 {
     public class ServerCommand : ICommand
     {
+        private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
         private DdonWebServer _webServer;
 
@@ -16,10 +18,10 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-            if (_gameServer == null)
+            if (_loginServer == null)
             {
-                GameServerSetting setting = new GameServerSetting();
-                _gameServer = new DdonGameServer(setting);
+                LoginServerSetting setting = new LoginServerSetting();
+                _loginServer = new DdonLoginServer(setting);
             }
 
             if (_webServer == null)
@@ -28,10 +30,17 @@ namespace Arrowgene.Ddon.Cli.Command
                 _webServer = new DdonWebServer();
             }
 
+            if (_gameServer == null)
+            {
+                GameServerSetting setting = new GameServerSetting();
+                _gameServer = new DdonGameServer(setting);
+            }
+
             if (parameter.Arguments.Contains("start"))
             {
                 _webServer.Start();
                 _gameServer.Start();
+                _loginServer.Start();
                 return CommandResultType.Completed;
             }
 
@@ -39,18 +48,28 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 _webServer.Stop();
                 _gameServer.Stop();
+                _loginServer.Stop();
                 return CommandResultType.Completed;
             }
 
             return CommandResultType.Continue;
         }
-        
+
         public void Shutdown()
         {
+            if (_loginServer != null)
+            {
+                _loginServer.Stop();
+            }
+
             if (_gameServer != null)
             {
-                _webServer.Stop();
                 _gameServer.Stop();
+            }
+
+            if (_webServer != null)
+            {
+                _webServer.Stop();
             }
         }
     }

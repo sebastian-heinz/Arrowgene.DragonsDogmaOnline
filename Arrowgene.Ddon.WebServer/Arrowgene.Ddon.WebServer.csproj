@@ -4,7 +4,7 @@
         <RootNamespace>Arrowgene.Ddon.WebServer</RootNamespace>
         <Title>Dragons Dogma Online - Web Server</Title>
         <Company>DDON Team</Company>
-        <Product>Ddon.GameServer</Product>
+        <Product>Ddon.WebServer</Product>
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
     </PropertyGroup>

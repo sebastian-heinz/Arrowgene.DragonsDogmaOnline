@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Arrowgene.Ddon.Server</RootNamespace>
+        <Title>Dragons Dogma Online - Server</Title>
+        <Company>DDON Team</Company>
+        <Product>Ddon.Server</Product>
+        <Version>$(Version)</Version>
+        <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Arrowgene.Buffers" Version="1.0.0" />
+        <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
+        <PackageReference Include="Arrowgene.Networking" Version="1.0.6" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
+    </ItemGroup>
+</Project>
