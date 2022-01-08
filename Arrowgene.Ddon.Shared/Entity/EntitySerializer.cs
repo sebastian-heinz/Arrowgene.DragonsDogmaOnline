@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -31,12 +32,15 @@ namespace Arrowgene.Ddon.Shared.Entity
 
         public static void RegisterReader(EntitySerializer reader)
         {
-            Serializers.Add(reader.GetType(), reader);
+            Serializers.Add(reader.GetEntityType(), reader);
         }
 
-        public static EntitySerializer GetReader(Type type)
+        public static EntitySerializer<T> Get<T>()
         {
-            return Serializers[type];
+            Type type = typeof(T);
+            object obj = Serializers[type];
+            EntitySerializer<T> serializer = obj as EntitySerializer<T>;
+            return serializer;
         }
 
         protected abstract Type GetEntityType();
@@ -50,6 +54,73 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected override Type GetEntityType()
         {
             return typeof(T);
+        }
+
+        protected void WriteUInt32(IBuffer buffer, uint value)
+        {
+            buffer.WriteUInt32(value, Endianness.Big);
+        }
+
+        protected uint ReadUInt32(IBuffer buffer)
+        {
+            return buffer.ReadUInt32(Endianness.Big);
+        }
+
+        protected void WriteUInt16(IBuffer buffer, ushort value)
+        {
+            buffer.WriteUInt16(value, Endianness.Big);
+        }
+        
+        protected ushort ReadUInt16(IBuffer buffer)
+        {
+            return buffer.ReadUInt16(Endianness.Big);
+        }
+
+        protected void WriteByte(IBuffer buffer, byte value)
+        {
+            buffer.WriteByte(value);
+        }
+        
+        protected byte ReadByte(IBuffer buffer)
+        {
+            return buffer.ReadByte();
+        }
+
+        protected void WriteMtString(IBuffer buffer, string str)
+        {
+            buffer.WriteUInt16((ushort) str.Length, Endianness.Big);
+            buffer.WriteString(str, Encoding.UTF8);
+        }
+
+        protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity)
+        {
+            EntitySerializer<TEntity> serializer = Get<TEntity>();
+            if (serializer == null)
+            {
+                // error
+                return;
+            }
+
+            serializer.Write(buffer, entity);
+        }
+
+        protected TEntity ReadEntity<TEntity>(IBuffer buffer)
+        {
+            EntitySerializer<TEntity> serializer = Get<TEntity>();
+            if (serializer == null)
+            {
+                // error
+                return default;
+            }
+
+            return serializer.Read(buffer);
+        }
+
+        protected string ReadMtString(IBuffer buffer)
+        {
+            ushort len = buffer.ReadUInt16(Endianness.Big);
+            string str = buffer.ReadString(len, Encoding.UTF8);
+            return str;
         }
 
         public byte[] Write(T entity)

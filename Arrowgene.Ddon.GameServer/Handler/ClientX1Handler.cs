@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             //  buffer.WriteString("F3829860AD5A4");  // but it is shorter?
             buffer.WriteByte((byte) client.State.SessionKey.Length);
             buffer.WriteString(client.State.SessionKey);
-            
+
             client.Send(new Packet(PacketId.X1_RES, buffer.GetAllBytes(), PacketSource.Server));
         }
     }

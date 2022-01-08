@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.GameServer
         }
 
         [DataMember(Order = 2)] public ushort AuthServerPort { get; set; }
+        [DataMember(Order = 2)] public ushort GameServerPort { get; set; }
         [DataMember(Order = 10)] public bool NeedRegistration { get; set; }
         [DataMember(Order = 20)] public int LogLevel { get; set; }
         [DataMember(Order = 21)] public bool LogUnknownIncomingPackets { get; set; }
@@ -46,6 +47,7 @@ namespace Arrowgene.Ddon.GameServer
             ListenIpAddress = IPAddress.Any;
             AuthServerIpAddress = IPAddress.Loopback;
             AuthServerPort = 52100;
+            GameServerPort = 52000;
             NeedRegistration = false;
             LogLevel = 0;
             LogUnknownIncomingPackets = true;
@@ -60,6 +62,7 @@ namespace Arrowgene.Ddon.GameServer
             ListenIpAddress = setting.ListenIpAddress;
             AuthServerIpAddress = setting.AuthServerIpAddress;
             AuthServerPort = setting.AuthServerPort;
+            GameServerPort = setting.GameServerPort;
             NeedRegistration = setting.NeedRegistration;
             LogLevel = setting.LogLevel;
             LogUnknownIncomingPackets = setting.LogUnknownIncomingPackets;

@@ -1,24 +1,27 @@
-﻿using System;
-using Arrowgene.Buffers;
+﻿using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public struct DoubleByteThing
     {
-        byte unk1;
-        byte unk2;    
+        public byte unk1;
+        public byte unk2;
     }
 
     public class DoubleByteThingSerializer : EntitySerializer<DoubleByteThing>
     {
         public override void Write(IBuffer buffer, DoubleByteThing obj)
         {
-            throw new NotImplementedException();
+            WriteByte(buffer, obj.unk1);
+            WriteByte(buffer, obj.unk2);
         }
 
         public override DoubleByteThing Read(IBuffer buffer)
         {
-            throw new NotImplementedException();
+            DoubleByteThing obj = new DoubleByteThing();
+            obj.unk1 = ReadByte(buffer);
+            obj.unk2 = ReadByte(buffer);
+            return obj;
         }
     }
 }

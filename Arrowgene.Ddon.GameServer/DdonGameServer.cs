@@ -37,6 +37,9 @@ namespace Arrowgene.Ddon.GameServer
         private readonly Consumer _authConsumer;
         private readonly AsyncEventServer _authServer;
 
+        private readonly Consumer _gameConsumer;
+        private readonly AsyncEventServer _gameServer;
+
 
         public DdonGameServer(GameServerSetting setting)
         {
@@ -54,6 +57,17 @@ namespace Arrowgene.Ddon.GameServer
                 _authConsumer,
                 Setting.AuthServerSocketSettings
             );
+            
+            _gameConsumer = new Consumer(Setting, Setting.AuthServerSocketSettings, "Game");
+            _gameConsumer.ClientDisconnected += AuthClientDisconnected;
+            _gameConsumer.ClientConnected += AuthClientConnected;
+            _gameServer = new AsyncEventServer(
+                Setting.ListenIpAddress,
+                Setting.GameServerPort,
+                _gameConsumer,
+                Setting.AuthServerSocketSettings
+            );
+            
             LoadPacketHandler();
         }
 
@@ -68,12 +82,14 @@ namespace Arrowgene.Ddon.GameServer
 
         public void Start()
         {
+            _gameServer.Start();
             _authServer.Start();
         }
 
         public void Stop()
         {
             _authServer.Stop();
+            _gameServer.Stop();
         }
 
         private void LoadPacketHandler()
@@ -81,10 +97,14 @@ namespace Arrowgene.Ddon.GameServer
             _authConsumer.AddHandler(new ClientChallengeHandler(this));
             _authConsumer.AddHandler(new ClientSessionKeyHandler(this));
             _authConsumer.AddHandler(new ClientX1Handler(this));
-            _authConsumer.AddHandler(new GetErrorMessageListReqHandler(this));
-            _authConsumer.AddHandler(new ClientX3Handler(this));
-            _authConsumer.AddHandler(new ClientX4Handler(this));
-            _authConsumer.AddHandler(new ClientX5Handler(this));
+            _authConsumer.AddHandler(new GetErrorMessageListHandler(this));
+            _authConsumer.AddHandler(new GetLoginSettingHandler(this));
+            _authConsumer.AddHandler(new GpCourseGetInfoHandler(this));
+            _authConsumer.AddHandler(new GetCharacterListHandler(this));
+            _authConsumer.AddHandler(new ClientX6Handler(this));
+            _authConsumer.AddHandler(new ClientX8Handler(this));
+            _authConsumer.AddHandler(new ClientX9Handler(this));
+            _authConsumer.AddHandler(new ClientX10Handler(this));
         }
     }
 }
