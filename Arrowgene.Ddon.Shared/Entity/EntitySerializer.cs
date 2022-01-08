@@ -51,9 +51,29 @@ namespace Arrowgene.Ddon.Shared.Entity
         public abstract void Write(IBuffer buffer, T obj);
         public abstract T Read(IBuffer buffer);
 
+        public List<T> ReadList(IBuffer buffer)
+        {
+            return ReadEntityList<T>(buffer);
+        }
+
+        public void WriteList(IBuffer buffer, List<T> entities)
+        {
+            WriteEntityList<T>(buffer, entities);
+        }
+
         protected override Type GetEntityType()
         {
             return typeof(T);
+        }
+
+        protected void WriteUInt64(IBuffer buffer, ulong value)
+        {
+            buffer.WriteUInt64(value, Endianness.Big);
+        }
+
+        protected ulong ReadUInt64(IBuffer buffer)
+        {
+            return buffer.ReadUInt64(Endianness.Big);
         }
 
         protected void WriteUInt32(IBuffer buffer, uint value)
@@ -70,7 +90,7 @@ namespace Arrowgene.Ddon.Shared.Entity
         {
             buffer.WriteUInt16(value, Endianness.Big);
         }
-        
+
         protected ushort ReadUInt16(IBuffer buffer)
         {
             return buffer.ReadUInt16(Endianness.Big);
@@ -80,7 +100,7 @@ namespace Arrowgene.Ddon.Shared.Entity
         {
             buffer.WriteByte(value);
         }
-        
+
         protected byte ReadByte(IBuffer buffer)
         {
             return buffer.ReadByte();
@@ -102,6 +122,27 @@ namespace Arrowgene.Ddon.Shared.Entity
             }
 
             serializer.Write(buffer, entity);
+        }
+
+        protected void WriteEntityList<TEntity>(IBuffer buffer, List<TEntity> entities)
+        {
+            WriteUInt32(buffer, (uint) entities.Count);
+            for (int i = 0; i < entities.Count; i++)
+            {
+                WriteEntity(buffer, entities[i]);
+            }
+        }
+
+        protected List<TEntity> ReadEntityList<TEntity>(IBuffer buffer)
+        {
+            List<TEntity> entities = new List<TEntity>();
+            uint len = ReadUInt32(buffer);
+            for (int i = 0; i < len; i++)
+            {
+                entities.Add(ReadEntity<TEntity>(buffer));
+            }
+
+            return entities;
         }
 
         protected TEntity ReadEntity<TEntity>(IBuffer buffer)

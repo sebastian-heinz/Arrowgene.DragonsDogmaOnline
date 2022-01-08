@@ -1,24 +1,27 @@
-﻿using System;
-using Arrowgene.Buffers;
+﻿using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public struct CDataEquipElementUnkType2
     {
-        byte u0;
-        ushort u2;
+        public byte u0;
+        public ushort u2;
     }
 
     public class CDataEquipElementUnkType2Serializer : EntitySerializer<CDataEquipElementUnkType2>
     {
         public override void Write(IBuffer buffer, CDataEquipElementUnkType2 obj)
         {
-            throw new NotImplementedException();
+            WriteByte(buffer, obj.u0);
+            WriteUInt16(buffer, obj.u2);
         }
 
         public override CDataEquipElementUnkType2 Read(IBuffer buffer)
         {
-            throw new NotImplementedException();
+            CDataEquipElementUnkType2 obj = new CDataEquipElementUnkType2();
+            obj.u0 = ReadByte(buffer);
+            obj.u2 = ReadUInt16(buffer);
+            return obj;
         }
     }
 }

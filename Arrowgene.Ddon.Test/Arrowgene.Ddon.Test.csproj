@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <RootNamespace>Arrowgene.Ddon.Test</RootNamespace>
+        <Title>Dragons Dogma Online - Test</Title>
+        <Company>DDON Team</Company>
+        <Product>Ddon.Test</Product>
+        <Version>$(Version)</Version>
+        <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="xunit" Version="2.4.0" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+        <PackageReference Include="coverlet.collector" Version="1.0.1" />
+        <PackageReference Include="dotnet-xunit" Version="*" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="TestFiles\**" CopyToOutputDirectory="PreserveNewest" LinkBase="TestFiles\" />
+    </ItemGroup>
+</Project>

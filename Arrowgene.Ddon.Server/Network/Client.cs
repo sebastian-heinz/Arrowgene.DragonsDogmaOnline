@@ -19,9 +19,10 @@ namespace Arrowgene.Ddon.Server.Network
             _socket = socket;
             _packetFactory = packetFactory;
             _challenge = null;
+            Identity = socket.Identity;
         }
 
-        public string Identity { get; private set; }
+        public string Identity { get; protected set; }
 
         public void Close()
         {

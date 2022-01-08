@@ -7,6 +7,7 @@ namespace Arrowgene.Ddon.LoginServer
     {
         public LoginClient(ITcpSocket socket, PacketFactory packetFactory) : base(socket, packetFactory)
         {
+            Identity = $"[LoginClient@{socket.Identity}]";
         }
 
         public string SessionKey { get; set; }

@@ -7,6 +7,7 @@ namespace Arrowgene.Ddon.GameServer
     {
         public GameClient(ITcpSocket socket, PacketFactory packetFactory) : base(socket, packetFactory)
         {
+            Identity = $"[GameClient@{socket.Identity}]";
         }
     }
 }
