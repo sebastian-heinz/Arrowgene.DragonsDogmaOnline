@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server.Logging;
@@ -90,7 +90,12 @@ namespace Arrowgene.Ddon.Server.Network
             packetDataBuffer.WriteByte(packet.Id.HandlerSubId);
             packetDataBuffer.WriteByte(0x34);
             packetDataBuffer.WriteUInt32(_packetCount, Endianness.Big);
+
             packetDataBuffer.WriteBytes(data);
+
+            // Align packet data to 16 bytes.
+            var neededBytes = 16 - (packetDataBuffer.Position % 16);
+            packetDataBuffer.WriteBytes(new byte[neededBytes]);
 
             byte[] packetData = packetDataBuffer.GetAllBytes();
             byte[] encryptedPacketData = Encrypt(packetData);

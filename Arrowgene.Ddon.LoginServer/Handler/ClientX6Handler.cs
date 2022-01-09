@@ -42,17 +42,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             });
 
             buffer.WriteByte(1); // "counter".
-
-            // Align packet data to 16 bytes.
-            // TODO: This move this to packet transport layer / before encryption.
-            var neededBytes = 16 - ((buffer.Position + 9) % 16);
-            buffer.WriteBytes(new byte[neededBytes]);
             byte[] data = buffer.GetBytes(0, buffer.Position);
 
             client.Send(new Packet(PacketId.L2C_NEXT_CONNECT_SERVER_NTC, data, PacketSource.Server));
-            
-
-
         }
     }
 }
