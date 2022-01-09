@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             IBuffer buffer = new StreamBuffer();
             buffer.WriteInt32(0, Endianness.Big); // error
             buffer.WriteInt32(0, Endianness.Big); // result
-            
+
             CDataCharacterListInfo character = new CDataCharacterListInfo();
             character.Element.FirstName = "Dragons";
             character.Element.LastName = "Dogma";
@@ -34,9 +34,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             characters.Add(character);
             EntitySerializer.Get<CDataCharacterListInfo>().WriteList(buffer, characters);
             Packet response = new Packet(PacketId.L2C_GET_CHARACTER_LIST_RES, buffer.GetAllBytes(), PacketSource.Server);
-            client.Send(response);
+            //  client.Send(response);
 
-            // client.Send(LoginDump.Dump_24);
+            client.Send(LoginDump.Dump_24);
         }
     }
 }

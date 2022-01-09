@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.PacketLibrary;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -43,7 +44,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 packets.AddRange(pf.Read(plPacket.Data));
             }
 
-            // string dump = PacketDump.DumpCSharpStruc(packets, "LoginDump");
+             string dump = PacketDump.DumpCSharpStruc(packets, "GameDump");
 
 
             foreach (Packet packet in packets)

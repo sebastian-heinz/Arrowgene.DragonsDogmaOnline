@@ -19,21 +19,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         public override void Handle(LoginClient client, Packet packet)
         {
             IBuffer buffer = new StreamBuffer();
-            buffer.WriteByte(0);
-            buffer.WriteByte(0);
-            buffer.WriteByte(0);
-            buffer.WriteByte(0);
-            buffer.WriteByte(0);
-            buffer.WriteByte(0);
-            buffer.WriteByte(0);
-            buffer.WriteByte(0);
-            buffer.WriteByte(0);
-
-            // buffer.WriteByte(0x1F); // str len ??
-            //  buffer.WriteString("F3829860AD5A4");  // but it is shorter?
-            buffer.WriteByte((byte) client.SessionKey.Length);
-            buffer.WriteString(client.SessionKey);
-
+            buffer.WriteUInt32(0, Endianness.Big);
+            buffer.WriteUInt32(0, Endianness.Big);
+            buffer.WriteBytes(new byte[15]);
             client.Send(new Packet(PacketId.X1_RES, buffer.GetAllBytes(), PacketSource.Server));
         }
     }

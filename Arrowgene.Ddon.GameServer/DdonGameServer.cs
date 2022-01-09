@@ -57,7 +57,16 @@ namespace Arrowgene.Ddon.GameServer
 
         private void LoadPacketHandler()
         {
+            AddHandler(new CharacterDecideCharacterIdHandler(this));
             AddHandler(new ClientChallengeHandler(this));
+            AddHandler(new ConnectionLoginHandler(this));
+            AddHandler(new ConnectionMoveOutServerHandler(this));
+            AddHandler(new ConnectionPingHandler(this));
+            AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
+            AddHandler(new ServerGetGameSettingHandler(this));
+            AddHandler(new ServerGetRealTimeHandler(this));
+            AddHandler(new ServerGetServerListHandler(this));
+            AddHandler(new StageGetStageListHandler(this));
         }
     }
 }
