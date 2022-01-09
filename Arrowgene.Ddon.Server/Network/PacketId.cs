@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Server.Network
@@ -85,8 +85,8 @@ namespace Arrowgene.Ddon.Server.Network
         public static readonly PacketId L2C_CLIENT_CHALLENGE_RES = new PacketId(1, 0, 2, "L2C_CLIENT_CHALLENGE_RES");
         public static readonly PacketId C2L_GET_GAME_SESSION_KEY_REQ = new PacketId(0, 1, 1, "C2L_GET_GAME_SESSION_KEY_REQ");
         public static readonly PacketId L2C_GET_GAME_SESSION_KEY_RES = new PacketId(0, 1, 2, "L2C_GET_GAME_SESSION_KEY_RES");
-        public static readonly PacketId X1_REQ = new PacketId(0, 0, 1, "X1_REQ");
-        public static readonly PacketId X1_RES = new PacketId(0, 0, 2, "X1_RES");
+        public static readonly PacketId C2L_PING_REQ = new PacketId(0, 0, 1, "C2L_PING_REQ");
+        public static readonly PacketId L2C_PING_RES = new PacketId(0, 0, 2, "L2C_PING_RES");
         public static readonly PacketId C2L_GET_ERROR_MESSAGE_LIST_REQ = new PacketId(3, 0, 1, "C2L_GET_ERROR_MESSAGE_LIST_REQ");
         public static readonly PacketId L2C_GET_ERROR_MESSAGE_LIST_RES = new PacketId(3, 0, 2, "L2C_GET_ERROR_MESSAGE_LIST_RES");
         public static readonly PacketId L2C_GET_ERROR_MESSAGE_LIST_NTC = new PacketId(3, 0, 0x10, "L2C_GET_ERROR_MESSAGE_LIST_NTC");
@@ -123,8 +123,8 @@ namespace Arrowgene.Ddon.Server.Network
             AddPacketIdEntry(packetIds, L2C_CLIENT_CHALLENGE_RES);
             AddPacketIdEntry(packetIds, C2L_GET_GAME_SESSION_KEY_REQ);
             AddPacketIdEntry(packetIds, L2C_GET_GAME_SESSION_KEY_RES);
-            AddPacketIdEntry(packetIds, X1_REQ);
-            AddPacketIdEntry(packetIds, X1_RES);
+            AddPacketIdEntry(packetIds, C2L_PING_REQ);
+            AddPacketIdEntry(packetIds, L2C_PING_RES);
             AddPacketIdEntry(packetIds, C2L_GET_ERROR_MESSAGE_LIST_REQ);
             AddPacketIdEntry(packetIds, L2C_GET_ERROR_MESSAGE_LIST_RES);
             AddPacketIdEntry(packetIds, L2C_GET_ERROR_MESSAGE_LIST_NTC);
