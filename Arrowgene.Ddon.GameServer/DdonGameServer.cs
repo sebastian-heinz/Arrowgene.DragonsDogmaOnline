@@ -32,6 +32,13 @@ namespace Arrowgene.Ddon.GameServer
     public class DdonGameServer : DdonServer<GameClient>
     {
         private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonGameServer));
+
+        public DdonGameServer(GameServerSetting setting) : base(setting.ServerSetting)
+        {
+            Setting = new GameServerSetting(setting);
+            LoadPacketHandler();
+        }
+
         public GameServerSetting Setting { get; }
 
         protected override void ClientConnected(GameClient client)
@@ -43,15 +50,9 @@ namespace Arrowgene.Ddon.GameServer
         {
         }
 
-        public override GameClient NewClient(ITcpSocket socket, PacketFactory packetFactory)
+        public override GameClient NewClient(ITcpSocket socket)
         {
-            return new GameClient(socket, packetFactory);
-        }
-
-        public DdonGameServer(GameServerSetting setting) : base(setting.ServerSetting)
-        {
-            Setting = new GameServerSetting(setting);
-            LoadPacketHandler();
+            return new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
         }
 
         private void LoadPacketHandler()

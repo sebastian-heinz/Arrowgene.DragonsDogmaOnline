@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Cli.Command
             List<PlSession> sessions = plFactory.Create(pcapPath);
 
             List<PlPacket> encrypted = sessions[0].GetPackets();
-            PacketFactory pf = new PacketFactory(new ServerSetting());
+            PacketFactory pf = new PacketFactory(new ServerSetting(), PacketIdResolver.LoginPacketIdResolver);
             pf.SetCamelliaKey(keyBytes);
 
             // parse ddon packets

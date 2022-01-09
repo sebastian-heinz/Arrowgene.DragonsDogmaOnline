@@ -16,5 +16,8 @@
         <ProjectReference Include="..\Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.PacketLibrary\Arrowgene.Ddon.PacketLibrary.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
+    </ItemGroup>
     
 </Project>

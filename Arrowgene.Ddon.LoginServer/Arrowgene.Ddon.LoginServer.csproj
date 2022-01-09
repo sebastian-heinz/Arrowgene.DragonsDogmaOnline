@@ -11,4 +11,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
+    </ItemGroup>
 </Project>

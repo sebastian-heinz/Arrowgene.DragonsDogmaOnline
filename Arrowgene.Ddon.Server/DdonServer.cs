@@ -71,6 +71,6 @@ namespace Arrowgene.Ddon.Server
 
         protected abstract void ClientConnected(TClient client);
         protected abstract void ClientDisconnected(TClient client);
-        public abstract TClient NewClient(ITcpSocket socket, PacketFactory packetFactory);
+        public abstract TClient NewClient(ITcpSocket socket);
     }
 }

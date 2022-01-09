@@ -32,7 +32,15 @@ namespace Arrowgene.Ddon.LoginServer
     public class DdonLoginServer : DdonServer<LoginClient>
     {
         private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonLoginServer));
+
+        public DdonLoginServer(LoginServerSetting setting) : base(setting.ServerSetting)
+        {
+            Setting = new LoginServerSetting(setting);
+            LoadPacketHandler();
+        }
+
         public LoginServerSetting Setting { get; }
+
 
         protected override void ClientConnected(LoginClient client)
         {
@@ -43,15 +51,9 @@ namespace Arrowgene.Ddon.LoginServer
         {
         }
 
-        public override LoginClient NewClient(ITcpSocket socket, PacketFactory packetFactory)
+        public override LoginClient NewClient(ITcpSocket socket)
         {
-            return new LoginClient(socket, packetFactory);
-        }
-
-        public DdonLoginServer(LoginServerSetting setting) : base(setting.ServerSetting)
-        {
-            Setting = new LoginServerSetting(setting);
-            LoadPacketHandler();
+            return new LoginClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.LoginPacketIdResolver));
         }
 
         private void LoadPacketHandler()

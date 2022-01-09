@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity;
@@ -20,11 +21,11 @@ namespace Arrowgene.Ddon.Test.Shared.Entity.Structure
             buffer = new StreamBuffer(bin);
             buffer.SetPositionStart();
             List<CDataCharacterListInfo> deserialized = EntitySerializer.Get<CDataCharacterListInfo>().ReadList(buffer);
-            buffer = new StreamBuffer(bin);
+            buffer = new StreamBuffer();
             EntitySerializer.Get<CDataCharacterListInfo>().WriteList(buffer, deserialized);
             byte[] serialized = buffer.GetAllBytes();
 
-            Assert.StrictEqual(bin, serialized);
+            Assert.True(StructuralComparisons.StructuralEqualityComparer.Equals(bin, serialized));
         }
     }
 }

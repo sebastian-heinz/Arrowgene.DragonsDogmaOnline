@@ -127,7 +127,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         protected override void HandleConnected(ITcpSocket socket)
         {
-            TClient client = _clientFactory.NewClient(socket, new PacketFactory(_setting));
+            TClient client = _clientFactory.NewClient(socket);
             lock (_lock)
             {
                 _clients.Add(socket, client);

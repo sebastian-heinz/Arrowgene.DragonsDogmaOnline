@@ -34,13 +34,15 @@ namespace Arrowgene.Ddon.Server.Network
         private IBuffer _buffer;
         private readonly ServerSetting _setting;
         private byte[] _camelliaKey;
+        private IPacketIdResolver _packetIdResolver;
 
 
-        public PacketFactory(ServerSetting setting)
+        public PacketFactory(ServerSetting setting, IPacketIdResolver packetIdResolver)
         {
             _setting = setting;
             _camelliaKey = CamelliaKey;
             _packetCount = 0;
+            _packetIdResolver = packetIdResolver;
             Reset();
         }
 
@@ -169,7 +171,7 @@ namespace Arrowgene.Ddon.Server.Network
                     else
                     {
                         payload = packetBuffer.ReadBytes(packetBuffer.Size - packetBuffer.Position);
-                        packetId = PacketId.Get(groupId, handlerId, handlerSubId);
+                        packetId = _packetIdResolver.Get(groupId, handlerId, handlerSubId);
                     }
                     Packet packet = new Packet(packetId, payload, PacketSource.Client, packetCount);
                     packets.Add(packet);
