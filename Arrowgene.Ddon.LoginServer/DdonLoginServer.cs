@@ -65,6 +65,7 @@ namespace Arrowgene.Ddon.LoginServer
             AddHandler(new GetLoginSettingHandler(this));
             AddHandler(new GpCourseGetInfoHandler(this));
             AddHandler(new GetCharacterListHandler(this));
+            AddHandler(new DeleteCharacterHandler(this));
             AddHandler(new ClientX6Handler(this));
             AddHandler(new ClientX9Handler(this));
             AddHandler(new ClientX10Handler(this));

@@ -99,6 +99,9 @@ namespace Arrowgene.Ddon.Server.Network
         public static readonly PacketId X11_REQ = new PacketId(5, 3, 1, "X11_REQ");
         public static readonly PacketId X11_RES = new PacketId(5, 3, 2, "X11_RES");
 
+        public static readonly PacketId C2L_DELETE_CHARACTER_INFO_REQ = new PacketId(5, 4, 1, "C2L_DELETE_CHARACTER_INFO_REQ");
+        public static readonly PacketId L2C_DELETE_CHARACTER_INFO_RES = new PacketId(5, 4, 2, "L2C_DELETE_CHARACTER_INFO_RES");
+
         public static readonly PacketId X60 = new PacketId(5, 1, 1, "X60");
         public static readonly PacketId X61 = new PacketId(5, 1, 2, "X61");
         public static readonly PacketId X62 = new PacketId(5, 5, 16, "X62");
@@ -134,6 +137,8 @@ namespace Arrowgene.Ddon.Server.Network
             AddPacketIdEntry(packetIds, L2C_GP_COURSE_GET_INFO_RES);
             AddPacketIdEntry(packetIds, C2L_GET_CHARACTER_LIST_REQ);
             AddPacketIdEntry(packetIds, L2C_GET_CHARACTER_LIST_RES);
+            AddPacketIdEntry(packetIds, C2L_DELETE_CHARACTER_INFO_REQ);
+            AddPacketIdEntry(packetIds, L2C_DELETE_CHARACTER_INFO_RES);
             AddPacketIdEntry(packetIds, X60);
             AddPacketIdEntry(packetIds, X61);
             AddPacketIdEntry(packetIds, X62);
