@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
+using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -76,6 +77,7 @@ namespace Arrowgene.Ddon.Server.Network
                 Logger.Error($"data == null, tried to write invalid data");
                 return null;
             }
+
             int totalLength = data.Length + PacketLengthFieldSize + PacketHeaderSize;
             if (totalLength < 0 || totalLength > ushort.MaxValue)
             {
@@ -84,15 +86,15 @@ namespace Arrowgene.Ddon.Server.Network
 
             IBuffer packetDataBuffer = Util.Buffer.Provide();
             packetDataBuffer.WriteByte(packet.Id.GroupId);
-            packetDataBuffer.WriteUInt16(packet.Id.HandlerId,Endianness.Big);
+            packetDataBuffer.WriteUInt16(packet.Id.HandlerId, Endianness.Big);
             packetDataBuffer.WriteByte(packet.Id.HandlerSubId);
             packetDataBuffer.WriteByte(0x34);
             packetDataBuffer.WriteUInt32(_packetCount, Endianness.Big);
             packetDataBuffer.WriteBytes(data);
-            
+
             byte[] packetData = packetDataBuffer.GetAllBytes();
             byte[] encryptedPacketData = Encrypt(packetData);
-            
+
             IBuffer buffer = Util.Buffer.Provide();
             buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without header*/, Endianness.Big);
             buffer.WriteBytes(encryptedPacketData);
@@ -157,22 +159,36 @@ namespace Arrowgene.Ddon.Server.Network
                     byte handlerSubId = packetBuffer.ReadByte();
                     byte unknownA = packetBuffer.ReadByte();
                     uint packetCount = packetBuffer.ReadUInt32(Endianness.Big);
-                    
+
                     byte[] payload;
                     PacketId packetId;
-                    
+
                     // abusing this as part of header validation
-                    if (unknownA != 0 /*reading client packet*/ 
+                    if (unknownA != 0 /*reading client packet*/
                         && unknownA != 0x34 /*reading server packet*/)
                     {
                         payload = packetData;
-                        packetId = PacketId.C2L_CLIENT_CHALLENGE_REQ;
+                        if (_packetIdResolver.ServerType == ServerType.Game)
+                        {
+                            packetId = PacketId.C2S_CERT_CLIENT_CHALLENGE_REQ;
+                        }
+                        else if (_packetIdResolver.ServerType == ServerType.Login)
+                        {
+                            packetId = PacketId.C2L_CLIENT_CHALLENGE_REQ;
+                        }
+                        else
+                        {
+                            Logger.Error($"Invalid Server Type");
+                            Reset();
+                            return packets;
+                        }
                     }
                     else
                     {
                         payload = packetBuffer.ReadBytes(packetBuffer.Size - packetBuffer.Position);
                         packetId = _packetIdResolver.Get(groupId, handlerId, handlerSubId);
                     }
+
                     Packet packet = new Packet(packetId, payload, PacketSource.Client, packetCount);
                     packets.Add(packet);
                     _readHeader = false;
@@ -208,7 +224,7 @@ namespace Arrowgene.Ddon.Server.Network
         {
             int srcLen = src.Length;
             byte[] dst = new byte[srcLen];
-            System.Buffer.BlockCopy(src, 0, dst, 0, srcLen);
+            Buffer.BlockCopy(src, 0, dst, 0, srcLen);
             return dst;
         }
 

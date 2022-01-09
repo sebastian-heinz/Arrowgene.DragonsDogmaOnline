@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2L_CLIENT_CHALLENGE_REQ;
+        public override PacketId Id => PacketId.C2S_CERT_CLIENT_CHALLENGE_REQ;
 
         public override void Handle(GameClient client, Packet packet)
         {
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             buffer.WriteByte(challenge.EncryptedBlowFishKeyLength); //ucPasswordENcSize
             buffer.WriteBytes(challenge.EncryptedBlowFishPassword);
             buffer.WriteBytes(new byte[48]);
-            client.Send(new Packet(PacketId.L2C_CLIENT_CHALLENGE_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(new Packet(PacketId.S2C_CERT_CLIENT_CHALLENGE_RES, buffer.GetAllBytes(), PacketSource.Server));
         }
     }
 }
