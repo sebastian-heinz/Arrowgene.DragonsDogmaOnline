@@ -2,18 +2,28 @@
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataMatchingProfile
+    public class CDataMatchingProfile
     {
+        public CDataMatchingProfile()
+        {
+            EntryJob = 0;
+            EntryJobLevel = 0;
+            CurrentJob = 0;
+            CurrentJobLevel = 0;
+            ObjectiveType1 = 0;
+            ObjectiveType2 = 0;
+            PlayStyle = 0;
+            Comment = "";
+            IsJoinParty = 0;
+        }
+
         public byte EntryJob;
         public uint EntryJobLevel;
         public byte CurrentJob;
         public uint CurrentJobLevel;
         public uint ObjectiveType1;
         public uint ObjectiveType2;
-
         public uint PlayStyle;
-
-        // length prefix
         public string Comment;
         public byte IsJoinParty;
     }

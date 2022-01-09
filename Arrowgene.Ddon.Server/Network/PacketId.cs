@@ -96,6 +96,8 @@ namespace Arrowgene.Ddon.Server.Network
         public static readonly PacketId L2C_GP_COURSE_GET_INFO_RES = new PacketId(4, 0, 2, "L2C_GP_COURSE_GET_INFO_RES");
         public static readonly PacketId C2L_GET_CHARACTER_LIST_REQ = new PacketId(5, 0, 1, "C2L_GET_CHARACTER_LIST_REQ");
         public static readonly PacketId L2C_GET_CHARACTER_LIST_RES = new PacketId(5, 0, 2, "L2C_GET_CHARACTER_LIST_RES");
+        public static readonly PacketId X11_REQ = new PacketId(5, 3, 1, "X11_REQ");
+        public static readonly PacketId X11_RES = new PacketId(5, 3, 2, "X11_RES");
 
         public static readonly PacketId X60 = new PacketId(5, 1, 1, "X60");
         public static readonly PacketId X61 = new PacketId(5, 1, 2, "X61");

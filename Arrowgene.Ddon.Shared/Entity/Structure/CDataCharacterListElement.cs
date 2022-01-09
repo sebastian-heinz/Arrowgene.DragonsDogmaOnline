@@ -2,24 +2,31 @@
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataCharacterListElement
+    public class CDataCharacterListElement
     {
+        public CDataCharacterListElement()
+        {
+            CharacterID = 0;
+            FirstName = "";
+            LastName = "";
+            ClanName = "";
+            ServerID = 0;
+            OnlineStatus = 0;
+            jobInfo0 = new DoubleByteThing();
+            jobInfo1 = new DoubleByteThing();
+            m_wstrMatchingPlofile = "";
+            unk2 = 0;
+        }
+
         public uint CharacterID;
-
-        // length prefix
         public string FirstName;
-
-        // length prefix
         public string LastName;
-
-        // length prefix
         public string ClanName;
         public ushort ServerID;
         public byte OnlineStatus;
-
         public DoubleByteThing jobInfo0;
-
         public DoubleByteThing jobInfo1;
+
         /*
         Represents:
         CurrentJobInfo_ucJob;
@@ -27,8 +34,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         EntryJobInfo_ucJob;
         EntryJobInfo_ucLv;
         */
-
-        // length prefix
         public string m_wstrMatchingPlofile;
         public byte unk2;
     }

@@ -108,8 +108,16 @@ namespace Arrowgene.Ddon.Shared.Entity
 
         protected void WriteMtString(IBuffer buffer, string str)
         {
-            buffer.WriteUInt16((ushort) str.Length, Endianness.Big);
-            buffer.WriteString(str, Encoding.UTF8);
+            byte[] utf8 = Encoding.UTF8.GetBytes(str);
+            buffer.WriteUInt16((ushort)utf8.Length, Endianness.Big);
+            buffer.WriteBytes(utf8);
+        }
+
+        protected string ReadMtString(IBuffer buffer)
+        {
+            ushort len = buffer.ReadUInt16(Endianness.Big);
+            string str = buffer.ReadString(len, Encoding.UTF8);
+            return str;
         }
 
         protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity)
@@ -155,13 +163,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             }
 
             return serializer.Read(buffer);
-        }
-
-        protected string ReadMtString(IBuffer buffer)
-        {
-            ushort len = buffer.ReadUInt16(Endianness.Big);
-            string str = buffer.ReadString(len, Encoding.UTF8);
-            return str;
         }
 
         public byte[] Write(T entity)

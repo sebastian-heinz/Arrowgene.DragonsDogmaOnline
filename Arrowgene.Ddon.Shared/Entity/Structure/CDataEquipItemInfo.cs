@@ -3,23 +3,29 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataEquipItemInfo
+    public class CDataEquipItemInfo
     {
+        public CDataEquipItemInfo()
+        {
+            u0 = 0;
+            u1 = 0;
+            u2 = 0;
+            u3 = 0;
+            u4 = 0;
+            u5 = 0;
+            u6 = new List<CDataEquipElementParam>();
+            u7 = new List<CDataEquipElementUnkType>();
+            u8 = new List<CDataEquipElementUnkType2>();
+        }
+
         public uint u0;
         public byte u1;
         public byte u2;
         public ushort u3;
         public byte u4;
-
         public byte u5;
-
-        // length prefix
         public List<CDataEquipElementParam> u6;
-
-        // length prefix
         public List<CDataEquipElementUnkType> u7;
-
-        // length prefix
         public List<CDataEquipElementUnkType2> u8;
     }
 

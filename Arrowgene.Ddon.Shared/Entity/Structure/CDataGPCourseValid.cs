@@ -2,16 +2,21 @@
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataGPCourseValid
+    public class CDataGPCourseValid
     {
+        public CDataGPCourseValid()
+        {
+            ID = 0;
+            CourseID = 0;
+            NameA = "";
+            NameB = "";
+            StartTime = 0;
+            EndTime = 0;
+        }
+
         public uint ID;
-
         public uint CourseID;
-
-        // length prefix
         public string NameA;
-
-        // length prefix
         public string NameB;
         public ulong StartTime;
         public ulong EndTime;

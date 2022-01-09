@@ -3,25 +3,28 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataCharacterListInfo
+    public class CDataCharacterListInfo
     {
+        public CDataCharacterListInfo()
+        {
+            Element = new CDataCharacterListElement();
+            EditInfo = new CDataEditInfo();
+            MatchingProfile = new CDataMatchingProfile();
+            EquipItemInfo = new List<CDataEquipItemInfo>();
+            GpCourseValidList = new List<CDataGPCourseValid>();
+            ClanName = "";
+            ClanNameShort = "";
+            ClanNameShort = "";
+            IsClanMemberNotice = 0;
+        }
+
         public CDataCharacterListElement Element;
         public CDataEditInfo EditInfo;
-
         public CDataMatchingProfile MatchingProfile;
-
-        // size prefix
         public List<CDataEquipItemInfo> EquipItemInfo;
-
-        // size prefix
         public List<CDataGPCourseValid> GpCourseValidList;
-
         public byte NextFlowType;
-
-        // length prefix
         public string ClanName;
-
-        // length prefix
         public string ClanNameShort;
         public byte IsClanMemberNotice;
     }
