@@ -83,8 +83,8 @@ namespace Arrowgene.Ddon.Server.Network
         // public static readonly PacketId L2C_LOGIN_SERVER_CERT_NOTICE = new PacketId(0,0,0, "L2C_LOGIN_SERVER_CERT_NOTICE");
         public static readonly PacketId C2L_CLIENT_CHALLENGE_REQ = new PacketId(1, 0, 1, "C2L_CLIENT_CHALLENGE_REQ");
         public static readonly PacketId L2C_CLIENT_CHALLENGE_RES = new PacketId(1, 0, 2, "L2C_CLIENT_CHALLENGE_RES");
-        public static readonly PacketId C2L_GET_GAME_SESSION_KEY_REQ = new PacketId(0, 1, 1, "C2L_GET_GAME_SESSION_KEY_REQ");
-        public static readonly PacketId L2C_GET_GAME_SESSION_KEY_RES = new PacketId(0, 1, 2, "L2C_GET_GAME_SESSION_KEY_RES");
+        public static readonly PacketId C2L_LOGIN_REQ = new PacketId(0, 1, 1, "C2L_LOGIN_REQ");
+        public static readonly PacketId L2C_LOGIN_RES = new PacketId(0, 1, 2, "L2C_LOGIN_RES");
         public static readonly PacketId C2L_PING_REQ = new PacketId(0, 0, 1, "C2L_PING_REQ");
         public static readonly PacketId L2C_PING_RES = new PacketId(0, 0, 2, "L2C_PING_RES");
         public static readonly PacketId C2L_GET_ERROR_MESSAGE_LIST_REQ = new PacketId(3, 0, 1, "C2L_GET_ERROR_MESSAGE_LIST_REQ");
@@ -121,8 +121,8 @@ namespace Arrowgene.Ddon.Server.Network
             // AddPacketIdEntry(packetIds, L2C_LOGIN_SERVER_CERT_NOTICE);
             AddPacketIdEntry(packetIds, C2L_CLIENT_CHALLENGE_REQ);
             AddPacketIdEntry(packetIds, L2C_CLIENT_CHALLENGE_RES);
-            AddPacketIdEntry(packetIds, C2L_GET_GAME_SESSION_KEY_REQ);
-            AddPacketIdEntry(packetIds, L2C_GET_GAME_SESSION_KEY_RES);
+            AddPacketIdEntry(packetIds, C2L_LOGIN_REQ);
+            AddPacketIdEntry(packetIds, L2C_LOGIN_RES);
             AddPacketIdEntry(packetIds, C2L_PING_REQ);
             AddPacketIdEntry(packetIds, L2C_PING_RES);
             AddPacketIdEntry(packetIds, C2L_GET_ERROR_MESSAGE_LIST_REQ);

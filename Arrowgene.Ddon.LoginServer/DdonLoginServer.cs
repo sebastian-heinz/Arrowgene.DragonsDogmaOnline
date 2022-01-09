@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.LoginServer
         private void LoadPacketHandler()
         {
             AddHandler(new ClientChallengeHandler(this));
-            AddHandler(new ClientSessionKeyHandler(this));
+            AddHandler(new ClientLoginHandler(this));
             AddHandler(new ClientPingHandler(this));
             AddHandler(new GetErrorMessageListHandler(this));
             AddHandler(new GetLoginSettingHandler(this));
