@@ -1,7 +1,8 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
@@ -22,16 +23,36 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             client.Send(LoginDump.Dump_28);
             client.Send(LoginDump.Dump_31);
 
-            string ip = "127.0.0.1";
-            IBuffer buffer = new StreamBuffer(LoginDump.data_Dump_32);
-            buffer.SetPositionStart();
-            buffer.Position = 48;
-            buffer.WriteUInt16((ushort) ip.Length, Endianness.Big);
-            buffer.WriteString(ip);
-            buffer.WriteUInt16(52000, Endianness.Big);
-            buffer.WriteBytes(new byte[] {0x0, 0x1, 0x46, 0xE9, 0x1D});
+            // Begin writing L2C_NEXT_CONNECT_SERVER_NTC
+            IBuffer buffer = new StreamBuffer();
+            buffer.WriteUInt32(0, Endianness.Big); // Error
+
+            CDataGameServerListInfoSerializer serializer = new CDataGameServerListInfoSerializer();
+            serializer.Write(buffer, new CDataGameServerListInfo
+            {
+                ID = 17,
+                Name = "サーバー017",
+                Brief = "",
+                TrafficName = "少なめ",
+                MaxLoginNum = 1000, // Player cap
+                LoginNum = 0x1C, // Current players
+                Addr = "127.0.0.1",
+                Port = 52000,
+                IsHide = false
+            });
+
+            buffer.WriteByte(1); // "counter".
+
+            // Align packet data to 16 bytes.
+            // TODO: This move this to packet transport layer / before encryption.
+            var neededBytes = 16 - ((buffer.Position + 9) % 16);
+            buffer.WriteBytes(new byte[neededBytes]);
             byte[] data = buffer.GetBytes(0, buffer.Position);
-            client.Send(new Packet(PacketId.X8, data, PacketSource.Server));
+
+            client.Send(new Packet(PacketId.L2C_NEXT_CONNECT_SERVER_NTC, data, PacketSource.Server));
+            
+
+
         }
     }
 }

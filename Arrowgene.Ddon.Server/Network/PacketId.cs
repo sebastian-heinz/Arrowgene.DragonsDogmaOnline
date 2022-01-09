@@ -103,7 +103,7 @@ namespace Arrowgene.Ddon.Server.Network
         public static readonly PacketId X61 = new PacketId(5, 1, 2, "X61");
         public static readonly PacketId X62 = new PacketId(5, 5, 16, "X62");
 
-        public static readonly PacketId X8 = new PacketId(2, 3, 16, "X8");
+        public static readonly PacketId L2C_NEXT_CONNECT_SERVER_NTC = new PacketId(2, 3, 16, "L2C_NEXT_CONNECT_SERVER_NTC");
 
         public static readonly PacketId X9_REQ = new PacketId(2, 1, 1, "X9_REQ");
         public static readonly PacketId X9_RES = new PacketId(2, 1, 2, "X9_RES");
@@ -137,7 +137,7 @@ namespace Arrowgene.Ddon.Server.Network
             AddPacketIdEntry(packetIds, X60);
             AddPacketIdEntry(packetIds, X61);
             AddPacketIdEntry(packetIds, X62);
-            AddPacketIdEntry(packetIds, X8);
+            AddPacketIdEntry(packetIds, L2C_NEXT_CONNECT_SERVER_NTC);
             AddPacketIdEntry(packetIds, X9_REQ);
             AddPacketIdEntry(packetIds, X9_RES);
             AddPacketIdEntry(packetIds, X10_REQ);
