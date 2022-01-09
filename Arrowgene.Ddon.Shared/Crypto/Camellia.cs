@@ -151,7 +151,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
          * 	subkey[26] should be allocated for keyLen == 128.
          * 	otherwise subkey[34] should be allocated.
          */
-        public void KeySchedule(uint keyLen, byte[] key, byte[][] subkey)
+        public void KeySchedule(uint keyLen, Span<byte> key, byte[][] subkey)
         {
             /* 0...KL, 1...KR, 2...KA, 3...KB */
             byte[][] ikey = new byte[4][]
@@ -198,7 +198,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
                 int currentBytes = round * 16;
                 int remainingBytes = bytes - currentBytes;
                 int count = remainingBytes > 16 ? 16 : remainingBytes;
-                Buffer.BlockCopy(key, round * 16, ikey[round], 0, count);
+                Buffer.BlockCopy(key.ToArray(), round * 16, ikey[round], 0, count);
             }
 
             if (keyLen == 192)

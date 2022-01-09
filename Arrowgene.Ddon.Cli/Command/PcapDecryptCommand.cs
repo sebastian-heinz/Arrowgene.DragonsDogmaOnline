@@ -32,8 +32,8 @@ namespace Arrowgene.Ddon.Cli.Command
             PlFactory plFactory = new PlFactory();
             List<PlSession> sessions = plFactory.Create(pcapPath);
 
-            List<PlPacket> encrypted = sessions[0].GetPackets();
-            PacketFactory pf = new PacketFactory(new ServerSetting(), PacketIdResolver.LoginPacketIdResolver);
+            List<PlPacket> encrypted = sessions[1].GetPackets();
+            PacketFactory pf = new PacketFactory(new ServerSetting(), PacketIdResolver.GamePacketIdResolver);
             pf.SetCamelliaKey(keyBytes);
 
             // parse ddon packets
