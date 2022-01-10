@@ -95,12 +95,22 @@ namespace Arrowgene.Ddon.Shared.Entity
         {
             return buffer.ReadUInt16(Endianness.Big);
         }
+        
+        protected void WriteBool(IBuffer buffer, bool value)
+        {
+            buffer.WriteBool(value);
+        }
 
         protected void WriteByte(IBuffer buffer, byte value)
         {
             buffer.WriteByte(value);
         }
-
+        
+        protected bool ReadBool(IBuffer buffer)
+        {
+            return buffer.ReadBool();
+        }
+        
         protected byte ReadByte(IBuffer buffer)
         {
             return buffer.ReadByte();
