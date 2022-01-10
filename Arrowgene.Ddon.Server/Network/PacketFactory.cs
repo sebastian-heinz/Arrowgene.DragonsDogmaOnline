@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Server.Network
     public class PacketFactory
     {
         private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(PacketFactory));
-        private static readonly Camellia _camellia = new Camellia();
+        private static readonly Camellia Camellia = new Camellia();
 
         private static readonly byte[] CamelliaKey = new byte[]
         {
@@ -28,6 +28,7 @@ namespace Arrowgene.Ddon.Server.Network
         private const int PacketLengthFieldSize = 2;
         private const int PacketHeaderSize = 9;
         private const int PacketMinimumDataSize = 16;
+        private const uint CamelliaKeyLength = 32 * 8;
 
         private bool _readHeader;
         private ushort _dataSize;
@@ -37,20 +38,26 @@ namespace Arrowgene.Ddon.Server.Network
         private readonly ServerSetting _setting;
         private byte[] _camelliaKey;
         private IPacketIdResolver _packetIdResolver;
+        private Memory<byte> _t8Encrypt;
+        private Memory<byte> _t8Decrypt;
+        private Memory<byte> _camelliaSubKey;
 
 
         public PacketFactory(ServerSetting setting, IPacketIdResolver packetIdResolver)
         {
             _setting = setting;
-            _camelliaKey = CamelliaKey;
             _packetCount = 0;
             _packetIdResolver = packetIdResolver;
+            _t8Encrypt = new Memory<byte>(new byte[8]);
+            _t8Decrypt = new Memory<byte>(new byte[8]);
+            SetCamelliaKey(CamelliaKey);
             Reset();
         }
 
         public void SetCamelliaKey(byte[] camelliaKey)
         {
             _camelliaKey = Copy(camelliaKey);
+            Camellia.KeySchedule(_camelliaKey, out _camelliaSubKey);
         }
 
         public byte[] WriteWithoutHeader(Packet packet)
@@ -135,6 +142,7 @@ namespace Arrowgene.Ddon.Server.Network
                         Reset();
                         return packets;
                     }
+
                     _readHeader = true;
                 }
 
@@ -142,7 +150,7 @@ namespace Arrowgene.Ddon.Server.Network
                 {
                     byte[] encryptedPacketData = _buffer.ReadBytes(_dataSize);
                     byte[] packetData = Decrypt(encryptedPacketData);
-            
+
                     IBuffer packetBuffer = new StreamBuffer(packetData);
                     packetBuffer.SetPositionStart();
                     byte groupId = packetBuffer.ReadByte();
@@ -203,13 +211,27 @@ namespace Arrowgene.Ddon.Server.Network
 
         public byte[] Encrypt(byte[] data)
         {
-            _camellia.Encrypt(data, out Span<byte> encrypted, _camelliaKey, Copy(CamelliaIv));
+            Camellia.Encrypt(
+                data,
+                out Span<byte> encrypted,
+                CamelliaKeyLength,
+                _camelliaSubKey.Span,
+                Copy(CamelliaIv),
+                _t8Encrypt.Span
+            );
             return encrypted.ToArray();
         }
 
         public byte[] Decrypt(byte[] encrypted)
         {
-            _camellia.Decrypt(encrypted, out Span<byte> decrypted, _camelliaKey, Copy(CamelliaIv));
+            Camellia.Decrypt(
+                encrypted,
+                out Span<byte> decrypted,
+                CamelliaKeyLength,
+                _camelliaSubKey.Span,
+                Copy(CamelliaIv),
+                _t8Decrypt.Span
+            );
             return decrypted.ToArray();
         }
 

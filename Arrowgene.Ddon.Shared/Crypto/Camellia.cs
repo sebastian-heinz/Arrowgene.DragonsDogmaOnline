@@ -4,32 +4,41 @@ namespace Arrowgene.Ddon.Shared.Crypto
 {
     public class Camellia
     {
-        /// <summary>
-        /// Dragons Dogma Online Network Encryption
-        /// </summary>
-        public void Encrypt(Span<byte> input, out Span<byte> output, byte[] key, Span<byte> prv)
+        public uint GetKeyLength(Span<byte> key)
         {
-            // output_size = input_size + (block_size - (input_size % block_size))
+            return (uint) key.Length * 8;
+        }
+
+        public void Encrypt(Span<byte> input, out Span<byte> output, Span<byte> key, Span<byte> prv, bool pad = false)
+        {
+            KeySchedule(key, out Memory<byte> subKey);
+            Encrypt(input, out output, GetKeyLength(key), subKey.Span, prv, new byte[8], pad);
+        }
+
+        public void Decrypt(Span<byte> input, out Span<byte> output, Span<byte> key, Span<byte> prv, bool pad = false)
+        {
+            KeySchedule(key, out Memory<byte> subKey);
+            Decrypt(input, out output, GetKeyLength(key), subKey.Span, prv, new byte[8], pad);
+        }
+
+        public void Encrypt(Span<byte> input, out Span<byte> output, uint keyLength, Span<byte> subKey, Span<byte> prv, Span<byte> t8, bool pad = false)
+        {
             int mod = input.Length % 16;
             if (mod > 0)
             {
+                if (!pad)
+                {
+                    throw new Exception("Invalid PlainText Size");
+                }
+
                 int padding = 16 - mod;
                 byte[] padInput = new byte[input.Length + padding];
-                Buffer.BlockCopy(input.ToArray(), 0, padInput,0, input.Length);
+                Buffer.BlockCopy(input.ToArray(), 0, padInput, 0, input.Length);
                 input = padInput;
             }
-            
-            
-            // TODO - Modifies input value to apply XOR - make a copy
-            // TODO check if input length is dividable by 16
-            uint keyLength = (uint) key.Length * 8;
-            byte[][] subkey = new byte[34][];
 
-
-            KeySchedule(keyLength, key, subkey);
             int length = input.Length;
             output = new byte[length];
-
             int current = 0;
             while (current < length)
             {
@@ -38,89 +47,42 @@ namespace Arrowgene.Ddon.Shared.Crypto
                 {
                     input[current + i] = (byte) (input[current + i] ^ prv[i]);
                 }
+
                 CryptBlock(
                     false,
                     keyLength,
                     input.Slice(current, 16),
-                    subkey,
-                    output.Slice(current, 16)
+                    subKey,
+                    output.Slice(current, 16),
+                    t8
                 );
                 for (int i = 0; i < xorLen; i++)
                 {
                     prv[i] = output[current + i];
                 }
+
                 current += xorLen;
             }
         }
-        
-        public void Encrypt2(Span<byte> input, Span<byte> output, byte[] key, Span<byte> prv)
-        {
-            // TODO - Modifies input value to apply XOR - make a copy
-            // TODO check if input length is dividable by 16
-            uint keyLength = (uint) key.Length * 8;
-            byte[][] subkey = new byte[34][];
-            int idx = 0;
-            for (int i = 0; i < subkey.Length; i++)
-            {
-                for (int j = 0; j < subkey[i].Length; i++)
-                {
-                    subkey[i][j] = key[idx];
-                    idx++;
-                }   
-            }
-            
-            int length = input.Length;
-            if (output.Length < input.Length)
-            {
-                // error not enough space
-            }
 
-            int current = 0;
-            while (current < length)
-            {
-                int xorLen = current + 16 < length ? 16 : length - current;
-                for (int i = 0; i < xorLen; i++)
-                {
-                    input[current + i] = (byte) (input[current + i] ^ prv[i]);
-                }
-                CryptBlock(
-                    false,
-                    keyLength,
-                    input.Slice(current, 16),
-                    subkey,
-                    output.Slice(current, 16)
-                );
-                for (int i = 0; i < xorLen; i++)
-                {
-                    prv[i] = output[current + i];
-                }
-                current += xorLen;
-            }
-        }
-        
-
-        /// <summary>
-        /// Dragons Dogma Online Network Decryption
-        /// </summary>
-        public void Decrypt(Span<byte> input, out Span<byte> output, byte[] key, Span<byte> prv)
+        public void Decrypt(Span<byte> input, out Span<byte> output, uint keyLength, Span<byte> subKey, Span<byte> prv, Span<byte> t8, bool pad = false)
         {
-            // TODO check if input length is dividable by 16
             int mod = input.Length % 16;
             if (mod > 0)
             {
+                if (!pad)
+                {
+                    throw new Exception("Invalid CipherText Size");
+                }
+
                 int padding = 16 - mod;
                 byte[] padInput = new byte[input.Length + padding];
-                Buffer.BlockCopy(input.ToArray(), 0, padInput,0, input.Length);
+                Buffer.BlockCopy(input.ToArray(), 0, padInput, 0, input.Length);
                 input = padInput;
             }
 
-
-            uint keyLength = (uint) key.Length * 8;
-            byte[][] subkey = new byte[34][];
-            KeySchedule(keyLength, key, subkey);
             int length = input.Length;
             output = new byte[length];
-
             int current = 0;
             while (current < length)
             {
@@ -128,8 +90,9 @@ namespace Arrowgene.Ddon.Shared.Crypto
                     true,
                     keyLength,
                     input.Slice(current, 16),
-                    subkey,
-                    output.Slice(current, 16)
+                    subKey,
+                    output.Slice(current, 16),
+                    t8
                 );
                 int xorLen = current + 16 < length ? 16 : length - current;
                 for (int i = 0; i < xorLen; i++)
@@ -146,13 +109,20 @@ namespace Arrowgene.Ddon.Shared.Crypto
             }
         }
 
+        public void KeySchedule(Span<byte> key, out Memory<byte> subKey)
+        {
+            KeySchedule(key, out subKey, new byte[8]);
+        }
+
         /*
          * 	Camellia key schedule
          * 	subkey[26] should be allocated for keyLen == 128.
          * 	otherwise subkey[34] should be allocated.
          */
-        public void KeySchedule(uint keyLen, Span<byte> key, byte[][] subkey)
+        public void KeySchedule(Span<byte> key, out Memory<byte> subKey, Span<byte> t8)
         {
+            uint keyLen = GetKeyLength(key);
+
             /* 0...KL, 1...KR, 2...KA, 3...KB */
             byte[][] ikey = new byte[4][]
             {
@@ -161,13 +131,6 @@ namespace Arrowgene.Ddon.Shared.Crypto
                 new byte[16],
                 new byte[16],
             };
-
-            // subkey
-            // todo calculate and initialize subkey size
-            for (int subKeyIndex = 0; subKeyIndex < subkey.Length; subKeyIndex++)
-            {
-                subkey[subKeyIndex] = new byte[8];
-            }
 
             Span<byte> pl;
             Span<byte> pr;
@@ -192,12 +155,14 @@ namespace Arrowgene.Ddon.Shared.Crypto
 
             /* padding */
             int bytes = (int) keyLen / 8;
+
             int rounds = bytes / 16;
             for (int round = 0; round < rounds; round++)
             {
                 int currentBytes = round * 16;
                 int remainingBytes = bytes - currentBytes;
                 int count = remainingBytes > 16 ? 16 : remainingBytes;
+                // TODO
                 Buffer.BlockCopy(key.ToArray(), round * 16, ikey[round], 0, count);
             }
 
@@ -221,7 +186,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
                     xorOctets(16, ikey[i / 2 + 1], ikey[0], ikey[2]);
                 }
 
-                CamelliaRound(Sigma[i], pl, pr);
+                CamelliaRound(Sigma[i], pl, pr, t8);
                 p = pl;
                 pl = pr;
                 pr = p;
@@ -233,14 +198,16 @@ namespace Arrowgene.Ddon.Shared.Crypto
                 Span<byte> spanKey3 = new Span<byte>(ikey[3]);
                 Span<byte> spanKey3_0 = spanKey3.Slice(0, 8);
                 Span<byte> spanKey3_8 = spanKey3.Slice(8, 8);
-                CamelliaRound(Sigma[4], spanKey3_0, spanKey3_8);
-                CamelliaRound(Sigma[5], spanKey3_8, spanKey3_0);
+                CamelliaRound(Sigma[4], spanKey3_0, spanKey3_8, t8);
+                CamelliaRound(Sigma[5], spanKey3_8, spanKey3_0, t8);
             }
 
             /* subkey generation */
             aki = dki = ski = 0;
+            int subKeyCount;
             if (keyLen == 128)
             {
+                subKeyCount = 26;
                 maxikey = 2;
                 drop = drop128;
                 // memcpy(ikey[1], ikey[2], 16); /* ikey[1] is KA for 128-bit key */
@@ -249,9 +216,12 @@ namespace Arrowgene.Ddon.Shared.Crypto
             else
             {
                 /* keyLen == 192 or 256 */
+                subKeyCount = 34;
                 maxikey = 4;
                 drop = drop256;
             }
+
+            subKey = new byte[subKeyCount * 8];
 
             for (i = 0; i < 8; i++)
             {
@@ -259,12 +229,10 @@ namespace Arrowgene.Ddon.Shared.Crypto
                 {
                     if (aki != drop[dki])
                     {
-                        //  memcpy(subkey[ski++], &ikey[j / 2][(j % 2) * 8], 8);
                         byte[] iKeySrc = ikey[j / 2];
                         Span<byte> iKeySrcSpan = new Span<byte>(iKeySrc);
                         Span<byte> src = iKeySrcSpan.Slice((j % 2) * 8, 8);
-                        // todo optimize copy
-                        Buffer.BlockCopy(src.ToArray(), 0, subkey[ski], 0, 8);
+                        src.CopyTo(subKey.Span.Slice(ski * 8));
                         ski++;
                     }
                     else
@@ -289,7 +257,21 @@ namespace Arrowgene.Ddon.Shared.Crypto
             }
         }
 
-        public void CryptBlock(bool decrypt, uint keyLen, Span<byte> pt, byte[][] subkey, Span<byte> ct)
+        public void CryptBlock(bool decrypt, uint keyLen, Span<byte> pt, Span<byte> subKey, Span<byte> ct)
+        {
+            CryptBlock(decrypt, keyLen, pt, subKey, ct, new byte[8]);
+        }
+
+        /// <summary>
+        /// Crypts 16byte block
+        /// </summary>
+        /// <param name="decrypt"></param>
+        /// <param name="keyLen"></param>
+        /// <param name="pt"></param>
+        /// <param name="subKey"></param>
+        /// <param name="ct"></param>
+        /// <param name="t8">temporary 8byte array to use</param>
+        public void CryptBlock(bool decrypt, uint keyLen, Span<byte> pt, Span<byte> subKey, Span<byte> ct, Span<byte> t8)
         {
             int r; /* round */
             int ski; /* subkey index */
@@ -309,10 +291,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
             }
 
             /* prewhitening */
-            //xorOctets(16, pt, subkey[ski], ct);
-            xorOctets(8, pt.Slice(0, 8), subkey[ski], ct.Slice(0, 8));
-            xorOctets(8, pt.Slice(8, 8), subkey[ski + 1], ct.Slice(8, 8));
-
+            xorOctets(16, pt.Slice(0, 16), subKey.Slice(ski * 8, 16), ct.Slice(0, 16));
             if (decrypt)
             {
                 /* decryption */
@@ -334,15 +313,15 @@ namespace Arrowgene.Ddon.Shared.Crypto
 
                 if (r == 6 || r == 12 || r == 18)
                 {
-                    CamelliaFL(subkey[ski], ct.Slice(0, 8));
+                    CamelliaFL(subKey.Slice(ski * 8, 8), ct.Slice(0, 8), t8);
                     ski += direction;
-                    CamelliaFLinv(subkey[ski], ct.Slice(8, 8));
+                    CamelliaFLinv(subKey.Slice(ski * 8, 8), ct.Slice(8, 8), t8);
                     ski += direction;
                 }
 
-                CamelliaRound(subkey[ski], ct.Slice(0, 8), ct.Slice(8, 8));
+                CamelliaRound(subKey.Slice(ski * 8, 8), ct.Slice(0, 8), ct.Slice(8, 8), t8);
                 ski += direction;
-                CamelliaRound(subkey[ski], ct.Slice(8, 8), ct.Slice(0, 8));
+                CamelliaRound(subKey.Slice(ski * 8, 8), ct.Slice(8, 8), ct.Slice(0, 8), t8);
                 ski += direction;
             }
 
@@ -354,30 +333,27 @@ namespace Arrowgene.Ddon.Shared.Crypto
                 ski--;
             }
 
-            //xorOctets(16, ct, subkey[ski], ct);
-
-            xorOctets(8, ct.Slice(0, 8), subkey[ski], ct.Slice(0, 8));
-            xorOctets(8, ct.Slice(8, 8), subkey[ski + 1], ct.Slice(8, 8));
+            xorOctets(16, ct.Slice(0, 16), subKey.Slice(ski * 8, 16), ct.Slice(0, 16));
         }
 
         private byte s1(int x)
         {
-            return s[x];
+            return S[x];
         }
 
         private byte s2(int x)
         {
-            return (byte) ((s[x] << 1) + (s[x] >> 7));
+            return (byte) ((S[x] << 1) + (S[x] >> 7));
         }
 
         private byte s3(int x)
         {
-            return (byte) ((s[x] << 7) + (s[x] >> 1));
+            return (byte) ((S[x] << 7) + (S[x] >> 1));
         }
 
         private byte s4(int x)
         {
-            return s[(byte) (x << 1) + (x >> 7)];
+            return S[(byte) (x << 1) + (x >> 7)];
         }
 
         /* dst[] <- src1[] ^ src2[] */
@@ -478,66 +454,62 @@ namespace Arrowgene.Ddon.Shared.Crypto
         }
 
         /* Camellia round function without swap */
-        private void CamelliaRound(byte[] subkey, Span<byte> l, Span<byte> r)
+        private void CamelliaRound(Span<byte> subKey, Span<byte> l, Span<byte> r, Span<byte> t8)
         {
-            byte[] t = new byte[8];
-
             /* key XOR */
-            xorOctets(8, subkey, l, t);
+            xorOctets(8, subKey, l, t8);
 
             /* S-Function */
-            t[0] = s1(t[0]);
-            t[1] = s2(t[1]);
-            t[2] = s3(t[2]);
-            t[3] = s4(t[3]);
-            t[4] = s2(t[4]);
-            t[5] = s3(t[5]);
-            t[6] = s4(t[6]);
-            t[7] = s1(t[7]);
+            t8[0] = s1(t8[0]);
+            t8[1] = s2(t8[1]);
+            t8[2] = s3(t8[2]);
+            t8[3] = s4(t8[3]);
+            t8[4] = s2(t8[4]);
+            t8[5] = s3(t8[5]);
+            t8[6] = s4(t8[6]);
+            t8[7] = s1(t8[7]);
 
             /* P-Function with Feistel XOR */
-            byte a = (byte) (t[0] ^ t[3] ^ t[4] ^ t[5] ^ t[6]);
+            byte a = (byte) (t8[0] ^ t8[3] ^ t8[4] ^ t8[5] ^ t8[6]);
             r[7] ^= a;
-            a ^= (byte) (t[0] ^ t[1] ^ t[2]);
+            a ^= (byte) (t8[0] ^ t8[1] ^ t8[2]);
             r[3] ^= a;
-            a ^= (byte) (t[1] ^ t[6] ^ t[7]);
+            a ^= (byte) (t8[1] ^ t8[6] ^ t8[7]);
             r[6] ^= a;
-            a ^= (byte) (t[0] ^ t[1] ^ t[3]);
+            a ^= (byte) (t8[0] ^ t8[1] ^ t8[3]);
             r[2] ^= a;
-            a ^= (byte) (t[0] ^ t[5] ^ t[6]);
+            a ^= (byte) (t8[0] ^ t8[5] ^ t8[6]);
             r[5] ^= a;
-            a ^= (byte) (t[0] ^ t[2] ^ t[3]);
+            a ^= (byte) (t8[0] ^ t8[2] ^ t8[3]);
             r[1] ^= a;
-            a ^= (byte) (t[3] ^ t[4] ^ t[5]);
+            a ^= (byte) (t8[3] ^ t8[4] ^ t8[5]);
             r[4] ^= a;
-            a ^= (byte) (t[1] ^ t[2] ^ t[3]);
+            a ^= (byte) (t8[1] ^ t8[2] ^ t8[3]);
             r[0] ^= a;
         }
 
         /* Camellia FL function */
-        private void CamelliaFL(Span<byte> subkey, Span<byte> x)
+        private void CamelliaFL(Span<byte> subKey, Span<byte> x, Span<byte> t4)
         {
-            byte[] t = new byte[4];
-            and4octets(x.Slice(0, 4), subkey.Slice(0, 4), t);
-            rot1(4, t);
-            xorOctets(4, t, x.Slice(4, 4), x.Slice(4, 4));
-            or4octets(x.Slice(4, 4), subkey.Slice(4, 4), t);
-            xorOctets(4, x.Slice(0, 4), t, x.Slice(0, 4));
+            and4octets(x.Slice(0, 4), subKey.Slice(0, 4), t4);
+            rot1(4, t4);
+            xorOctets(4, t4, x.Slice(4, 4), x.Slice(4, 4));
+            or4octets(x.Slice(4, 4), subKey.Slice(4, 4), t4);
+            xorOctets(4, x.Slice(0, 4), t4, x.Slice(0, 4));
         }
 
         /* Camellia FL^{-1} function */
-        private void CamelliaFLinv(Span<byte> subkey, Span<byte> y)
+        private void CamelliaFLinv(Span<byte> subKey, Span<byte> y, Span<byte> t4)
         {
-            byte[] t = new byte[4];
-            or4octets(y.Slice(4, 4), subkey.Slice(4, 4), t);
-            xorOctets(4, y.Slice(0, 4), t, y.Slice(0, 4));
-            and4octets(y.Slice(0, 4), subkey.Slice(0, 4), t);
-            rot1(4, t);
-            xorOctets(4, t, y.Slice(4, 4), y.Slice(4, 4));
+            or4octets(y.Slice(4, 4), subKey.Slice(4, 4), t4);
+            xorOctets(4, y.Slice(0, 4), t4, y.Slice(0, 4));
+            and4octets(y.Slice(0, 4), subKey.Slice(0, 4), t4);
+            rot1(4, t4);
+            xorOctets(4, t4, y.Slice(4, 4), y.Slice(4, 4));
         }
 
         /* sbox */
-        private static byte[] s = new byte[256]
+        private static readonly byte[] S = new byte[256]
         {
             0x70, 0x82, 0x2c, 0xec, 0xb3, 0x27, 0xc0, 0xe5,
             0xe4, 0x85, 0x57, 0x35, 0xea, 0x0c, 0xae, 0x41,
@@ -574,7 +546,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
         };
 
         /* key schedule constants */
-        private static byte[][] Sigma = new byte[6][]
+        private static readonly byte[][] Sigma = new byte[6][]
         {
             new byte[8] {0xa0, 0x9e, 0x66, 0x7f, 0x3b, 0xcc, 0x90, 0x8b},
             new byte[8] {0xb6, 0x7a, 0xe8, 0x58, 0x4c, 0xaa, 0x73, 0xb2},

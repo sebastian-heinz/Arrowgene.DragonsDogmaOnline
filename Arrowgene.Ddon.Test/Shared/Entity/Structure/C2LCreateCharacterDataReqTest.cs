@@ -26,8 +26,6 @@ namespace Arrowgene.Ddon.Test.Shared.Entity.Structure
             EntitySerializer.Get<C2LCreateCharacterDataReq>().Write(buffer, deserialized);
             byte[] serialized = buffer.GetAllBytes();
             Assert.True(StructuralComparisons.StructuralEqualityComparer.Equals(bin, serialized));
-
-            //C2LCreateCharacterDataReq character = new C2LCreateCharacterDataReq();
         }
 
     }

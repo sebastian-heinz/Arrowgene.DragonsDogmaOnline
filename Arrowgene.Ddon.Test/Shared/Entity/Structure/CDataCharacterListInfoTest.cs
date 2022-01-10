@@ -25,10 +25,6 @@ namespace Arrowgene.Ddon.Test.Shared.Entity.Structure
             EntitySerializer.Get<CDataCharacterListInfo>().WriteList(buffer, deserialized);
             byte[] serialized = buffer.GetAllBytes();
             Assert.True(StructuralComparisons.StructuralEqualityComparer.Equals(bin, serialized));
-                
-            CDataCharacterListInfo character = new CDataCharacterListInfo();
-
-            int i = 1;
         }
     }
 }

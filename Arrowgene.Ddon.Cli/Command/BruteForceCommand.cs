@@ -69,16 +69,15 @@ namespace Arrowgene.Ddon.Cli.Command
             }
 
             Camellia c = new Camellia();
-            byte[][] subKey = new byte[34][];
             byte[] output = new byte[BlockSize];
             for (int j = 0; j < keyBuffer.Length - KeyLength; j++)
             {
-                c.KeySchedule(KeyLengthBits, keyBuffer.Slice(j, KeyLength), subKey);
+                c.KeySchedule( keyBuffer.Slice(j, KeyLength), out Memory<byte> subKey);
                 c.CryptBlock(
                     true,
-                    KeyLength,
+                    KeyLength * 8,
                     Data,
-                    subKey,
+                    subKey.Span,
                     output
                 );
                 for (int i = 0; i < BlockSize; i++)
