@@ -27,9 +27,10 @@ namespace Arrowgene.Ddon.Server.Network
 
         private const int PacketLengthFieldSize = 2;
         private const int PacketHeaderSize = 9;
+        private const int PacketMinimumDataSize = 16;
 
         private bool _readHeader;
-        private uint _dataSize;
+        private ushort _dataSize;
         private uint _packetCount;
         private int _position;
         private IBuffer _buffer;
@@ -128,34 +129,18 @@ namespace Arrowgene.Ddon.Server.Network
                 if (!_readHeader && _buffer.Size - _buffer.Position >= PacketLengthFieldSize)
                 {
                     _dataSize = _buffer.ReadUInt16(Endianness.Big);
-                    if (_dataSize < PacketLengthFieldSize)
+                    if (_dataSize < PacketMinimumDataSize)
                     {
-                        Logger.Error($"DataSize:{_dataSize} < PacketLengthFieldSize:{PacketLengthFieldSize}");
+                        Logger.Error($"DataSize:{_dataSize} < PacketMinimumDataSize:{PacketMinimumDataSize}");
                         Reset();
                         return packets;
                     }
-
-                    if (_dataSize > int.MaxValue)
-                    {
-                        Logger.Error($"DataSize:{_dataSize} < int.MaxValue:{int.MaxValue} - not supported");
-                        Reset();
-                        return packets;
-                    }
-
                     _readHeader = true;
                 }
 
                 if (_readHeader && _buffer.Size - _buffer.Position >= _dataSize)
                 {
-                    int dataSize = (int) _dataSize;
-                    if (dataSize < PacketHeaderSize)
-                    {
-                        Logger.Error($"DataSize:{dataSize} < PacketHeaderSize:{PacketHeaderSize}");
-                        Reset();
-                        return packets;
-                    }
-
-                    byte[] encryptedPacketData = _buffer.ReadBytes(dataSize);
+                    byte[] encryptedPacketData = _buffer.ReadBytes(_dataSize);
                     byte[] packetData = Decrypt(encryptedPacketData);
                     IBuffer packetBuffer = new StreamBuffer(packetData);
                     packetBuffer.SetPositionStart();
@@ -172,6 +157,8 @@ namespace Arrowgene.Ddon.Server.Network
                     if (unknownA != 0 /*reading client packet*/
                         && unknownA != 0x34 /*reading server packet*/)
                     {
+                        // TODO potentially change this to check if it is the first packet of a session
+                        // and treat it as the challenge
                         payload = packetData;
                         if (_packetIdResolver.ServerType == ServerType.Game)
                         {

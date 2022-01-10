@@ -7,8 +7,10 @@ namespace Arrowgene.Ddon.Cli.Command
 {
     public class ServerCommand : ICommand
     {
+        private Setting _setting;
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
+        private DdonGameServer _selectServer;
         private DdonWebServer _webServer;
 
         public string Key => "server";
@@ -18,22 +20,27 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
+            if (_setting == null)
+            {
+                _setting = new Setting();
+            }
             if (_loginServer == null)
             {
-                LoginServerSetting setting = new LoginServerSetting();
-                _loginServer = new DdonLoginServer(setting);
+                _loginServer = new DdonLoginServer(_setting.LoginServerSetting);
             }
 
             if (_webServer == null)
             {
-                WebServerSetting setting = new WebServerSetting();
-                _webServer = new DdonWebServer();
+                _webServer = new DdonWebServer(_setting.WebServerSetting);
             }
 
             if (_gameServer == null)
             {
-                GameServerSetting setting = new GameServerSetting();
-                _gameServer = new DdonGameServer(setting);
+                _gameServer = new DdonGameServer(_setting.GameServerSetting);
+                
+                GameServerSetting s = new GameServerSetting();
+                s.ServerSetting.ServerPort = 52200;
+                _selectServer = new DdonGameServer(s);
             }
 
             if (parameter.Arguments.Contains("start"))
@@ -41,6 +48,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 _webServer.Start();
                 _gameServer.Start();
                 _loginServer.Start();
+                _selectServer.Start();
                 return CommandResultType.Completed;
             }
 
@@ -49,6 +57,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 _webServer.Stop();
                 _gameServer.Stop();
                 _loginServer.Stop();
+                _selectServer.Stop();
                 return CommandResultType.Completed;
             }
 
@@ -65,6 +74,7 @@ namespace Arrowgene.Ddon.Cli.Command
             if (_gameServer != null)
             {
                 _gameServer.Stop();
+                _selectServer.Stop();
             }
 
             if (_webServer != null)

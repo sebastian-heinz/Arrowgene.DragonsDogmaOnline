@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.WebServer;
 
 namespace Arrowgene.Ddon.WebServer
 {
@@ -9,29 +11,21 @@ namespace Arrowgene.Ddon.WebServer
     {
         public WebServerSetting()
         {
-            ServerHeader = null;
-            WebFolder = Path.Combine(Util.ExecutingDirectory(), "Files/www");
-            HttpPort = 80;
-            HttpsEnabled = false;
-            HttpsPort = 443;
-            HttpsCertPath = Path.Combine(Util.ExecutingDirectory(), "Files/ddon.pfx");
+            WebSetting = new WebSetting();
+            WebSetting.ServerHeader = "";
+            WebSetting.WebFolder = Path.Combine(Util.ExecutingDirectory(), "Files/www");
+            WebSetting.HttpPorts = new List<ushort>() {80};
+            WebSetting.HttpsEnabled = false;
+            WebSetting.HttpsPort = 443;
+            WebSetting.HttpsCertPath = "";
+            WebSetting.HttpsCertPw = "";
         }
 
-        public WebServerSetting(WebServerSetting webSetting)
+        public WebServerSetting(WebServerSetting webServerSetting)
         {
-            ServerHeader = webSetting.ServerHeader;
-            WebFolder = webSetting.WebFolder;
-            HttpPort = webSetting.HttpPort;
-            HttpsEnabled = webSetting.HttpsEnabled;
-            HttpsPort = webSetting.HttpsPort;
-            HttpsCertPath = webSetting.HttpsCertPath;
+            WebSetting = new WebSetting(webServerSetting.WebSetting);
         }
 
-        [DataMember(Order = 1)] public string ServerHeader { get; set; }
-        [DataMember(Order = 2)] public short HttpPort { get; set; }
-        [DataMember(Order = 3)] public bool HttpsEnabled { get; set; }
-        [DataMember(Order = 4)] public short HttpsPort { get; set; }
-        [DataMember(Order = 5)] public string HttpsCertPath { get; set; }
-        [DataMember(Order = 6)] public string WebFolder { get; set; }
+        [DataMember(Order = 1)] public WebSetting WebSetting { get; set; }
     }
 }
