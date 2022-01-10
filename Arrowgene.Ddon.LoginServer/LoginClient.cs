@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Networking.Tcp;
 
 namespace Arrowgene.Ddon.LoginServer
@@ -10,6 +10,6 @@ namespace Arrowgene.Ddon.LoginServer
             Identity = $"[LoginClient@{socket.Identity}]";
         }
 
-        public string SessionKey { get; set; }
+        public string OnetimeToken { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This file is part of Arrowgene.Ddon.LoginServer
  *
  * Arrowgene.Ddon.LoginServer is a server implementation for the game "Dragons Dogma Online".
@@ -59,12 +59,13 @@ namespace Arrowgene.Ddon.LoginServer
         private void LoadPacketHandler()
         {
             AddHandler(new ClientChallengeHandler(this));
-            AddHandler(new ClientSessionKeyHandler(this));
-            AddHandler(new ClientX1Handler(this));
+            AddHandler(new ClientLoginHandler(this));
+            AddHandler(new ClientPingHandler(this));
             AddHandler(new GetErrorMessageListHandler(this));
             AddHandler(new GetLoginSettingHandler(this));
             AddHandler(new GpCourseGetInfoHandler(this));
             AddHandler(new GetCharacterListHandler(this));
+            AddHandler(new DeleteCharacterHandler(this));
             AddHandler(new ClientX6Handler(this));
             AddHandler(new ClientX9Handler(this));
             AddHandler(new ClientX10Handler(this));
