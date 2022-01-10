@@ -58,6 +58,7 @@ namespace Arrowgene.Ddon.GameServer
         private void LoadPacketHandler()
         {
             AddHandler(new CharacterDecideCharacterIdHandler(this));
+            AddHandler(new ClanClanSettingUpdateHandler(this));
             AddHandler(new ClientChallengeHandler(this));
             AddHandler(new ConnectionLoginHandler(this));
             AddHandler(new ConnectionMoveOutServerHandler(this));

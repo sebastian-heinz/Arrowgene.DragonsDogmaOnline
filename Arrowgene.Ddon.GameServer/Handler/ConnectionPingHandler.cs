@@ -21,7 +21,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             IBuffer buffer = new StreamBuffer();
             buffer.WriteUInt32(0, Endianness.Big);
             buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteBytes(new byte[15]);
             client.Send(new Packet(PacketId.S2C_CONNECTION_PING_RES, buffer.GetAllBytes(), PacketSource.Server));
         }
     }

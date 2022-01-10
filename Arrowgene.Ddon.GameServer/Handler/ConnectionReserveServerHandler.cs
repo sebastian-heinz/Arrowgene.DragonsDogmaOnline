@@ -1,4 +1,6 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+﻿using System;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Logging;
@@ -18,7 +20,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, Packet packet)
         {
-            client.Send(GameDump.Dump_27);
+            
+            IBuffer buffer = new StreamBuffer();
+            buffer.WriteUInt32(0, Endianness.Big);
+            buffer.WriteUInt32(0, Endianness.Big);
+            buffer.WriteBytes(new byte[]
+            {
+                0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x00, 0x20, 0x4F, 0xD8, 0x1B, 0x02, 0x84, 0x14, 0xB0
+            });
+            client.Send(new Packet(PacketId.S2C_CONNECTION_RESERVE_SERVER_RES, buffer.GetAllBytes(), PacketSource.Server));
+            
+            //client.Send(GameDump.Dump_27);
         }
     }
 }
