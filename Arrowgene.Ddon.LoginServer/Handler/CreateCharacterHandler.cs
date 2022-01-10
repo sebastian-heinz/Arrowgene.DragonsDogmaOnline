@@ -31,8 +31,18 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             IBuffer buffer = new StreamBuffer();
             buffer.WriteInt32(0, Endianness.Big); // error
             buffer.WriteInt32(0, Endianness.Big); // result
-            buffer.WriteInt32(0, Endianness.Big); // WaitNum
+            buffer.WriteInt32(0, Endianness.Big); // WaitNum -- How many people you are waiting for until your character registers
             client.Send(new Packet(PacketId.L2C_CREATE_CHARACTER_DATA_RES, buffer.GetAllBytes(), PacketSource.Server));
+
+
+            // Sent to client once the player queue "WaitNum" above is 0,
+            // send immediately in our case.
+            IBuffer buffer2 = new StreamBuffer();
+            buffer2.WriteInt32(0, Endianness.Big); // error
+            buffer2.WriteInt32(0, Endianness.Big); // result
+            Packet response2 = new Packet(PacketId.L2C_CREATE_CHARACTER_DATA_NTC, buffer2.GetAllBytes(), PacketSource.Server);
+            client.Send(response2);
+
         }
     }
 }

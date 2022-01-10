@@ -32,18 +32,21 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataEquipJobItemSerializer()),
                     Create(new CDataGPCourseValidSerializer()),
                     Create(new CDataJobPlayPointSerializer()),
+                    Create(new CDataLoginSettingSerializer()),
                     Create(new CDataMatchingProfileSerializer()),
                     Create(new CDataOrbCategoryStatusSerializer()),
                     Create(new CDataOrbPageStatusSerializer()),
                     Create(new CDataPlayPointDataSerializer()),
                     Create(new CDataShortCutSerializer()),
                     Create(new CDataStatusInfoSerializer()),
+                    Create(new CDataURLInfoSerializer()),
                     Create(new DoubleByteThingSerializer()),
                     Create(new UnkownCharacterData0Serializer()),
                     Create(new UnkownCharacterData1Serializer()),
 
                     // Packet structure serializers
                     Create(new C2LCreateCharacterDataReqSerializer()),
+                    Create(new L2CGetLoginSettingsResSerializer()),
                 }
             );
 

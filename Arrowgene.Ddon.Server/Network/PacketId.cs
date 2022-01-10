@@ -98,6 +98,7 @@ namespace Arrowgene.Ddon.Server.Network
         public static readonly PacketId L2C_GET_CHARACTER_LIST_RES = new PacketId(5, 0, 2, "L2C_GET_CHARACTER_LIST_RES");
         public static readonly PacketId C2L_CREATE_CHARACTER_DATA_REQ = new PacketId(5, 3, 1, "C2L_CREATE_CHARACTER_DATA_REQ");
         public static readonly PacketId L2C_CREATE_CHARACTER_DATA_RES = new PacketId(5, 3, 2, "L2C_CREATE_CHARACTER_DATA_RES");
+        public static readonly PacketId L2C_CREATE_CHARACTER_DATA_NTC = new PacketId(5, 3, 16, "L2C_CREATE_CHARACTER_DATA_NTC");
 
         public static readonly PacketId C2L_DELETE_CHARACTER_INFO_REQ = new PacketId(5, 4, 1, "C2L_DELETE_CHARACTER_INFO_REQ");
         public static readonly PacketId L2C_DELETE_CHARACTER_INFO_RES = new PacketId(5, 4, 2, "L2C_DELETE_CHARACTER_INFO_RES");
