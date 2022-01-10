@@ -142,6 +142,7 @@ namespace Arrowgene.Ddon.Server.Network
                 {
                     byte[] encryptedPacketData = _buffer.ReadBytes(_dataSize);
                     byte[] packetData = Decrypt(encryptedPacketData);
+            
                     IBuffer packetBuffer = new StreamBuffer(packetData);
                     packetBuffer.SetPositionStart();
                     byte groupId = packetBuffer.ReadByte();

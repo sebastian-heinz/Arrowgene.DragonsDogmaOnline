@@ -61,14 +61,19 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ClanClanSettingUpdateHandler(this));
             AddHandler(new ClientChallengeHandler(this));
             AddHandler(new ConnectionLoginHandler(this));
+            AddHandler(new ConnectionMoveInServerHandler(this));
             AddHandler(new ConnectionMoveOutServerHandler(this));
             AddHandler(new ConnectionPingHandler(this));
             AddHandler(new ConnectionReserveServerHandler(this));
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
+            AddHandler(new LobbyLobbyJoinHandler(this));
+            AddHandler(new QuestGetCycleContentsStateListHandler(this));
+            AddHandler(new ServerGetGameSettingHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));
             AddHandler(new ServerGetRealTimeHandler(this));
             AddHandler(new ServerGetServerListHandler(this));
             AddHandler(new StageGetStageListHandler(this));
+            AddHandler(new WarpGetFavoriteWarpPointListHandler(this));
             AddHandler(new WarpGetStartPointListHandler(this));
         }
     }

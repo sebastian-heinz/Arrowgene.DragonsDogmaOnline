@@ -105,14 +105,14 @@ namespace Arrowgene.Ddon.Shared.Crypto
         public void Decrypt(Span<byte> input, out Span<byte> output, byte[] key, Span<byte> prv)
         {
             // TODO check if input length is dividable by 16
-           // int mod = input.Length % 16;
-           // if (mod > 0)
-           // {
-           //     int padding = 16 - mod;
-           //     byte[] padInput = new byte[input.Length + padding];
-           //     Buffer.BlockCopy(input.ToArray(), 0, padInput,0, input.Length);
-           //     input = padInput;
-           // }
+            int mod = input.Length % 16;
+            if (mod > 0)
+            {
+                int padding = 16 - mod;
+                byte[] padInput = new byte[input.Length + padding];
+                Buffer.BlockCopy(input.ToArray(), 0, padInput,0, input.Length);
+                input = padInput;
+            }
 
 
             uint keyLength = (uint) key.Length * 8;

@@ -31,11 +31,14 @@ namespace Arrowgene.Ddon.Cli.Command
             string dataStr = parameter.Arguments[0];
 
             Data = Util.FromHexString(dataStr);
-            int depth = 1024 * 10;
+            int depth = 1024 * 100;
             uint start_s = 0;
             uint end_s = 60;
             uint start_ms = start_s * 1000;
             uint end_ms = end_s * 1000;
+            
+            
+   
 
             List<Thread> threads = new List<Thread>();
             for (uint ms = start_ms; ms < end_ms; ms++)
@@ -84,10 +87,10 @@ namespace Arrowgene.Ddon.Cli.Command
                 }
 
                 if (
-                    //output[0] == 0x01
+                    output[0] == 0x00 &&
                     output[1] == 0x00
-                    && output[2] == 0x00
-                    && output[3] == 0x02
+                    && output[2] == 0x05
+                    && output[3] == 0x01
                     //  && output[4] == 0x34
                 )
                 {
