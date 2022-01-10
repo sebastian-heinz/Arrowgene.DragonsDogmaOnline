@@ -10,7 +10,6 @@ namespace Arrowgene.Ddon.Cli.Command
         private Setting _setting;
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
-        private DdonGameServer _selectServer;
         private DdonWebServer _webServer;
 
         public string Key => "server";
@@ -24,6 +23,7 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 _setting = new Setting();
             }
+            
             if (_loginServer == null)
             {
                 _loginServer = new DdonLoginServer(_setting.LoginServerSetting);
@@ -37,10 +37,6 @@ namespace Arrowgene.Ddon.Cli.Command
             if (_gameServer == null)
             {
                 _gameServer = new DdonGameServer(_setting.GameServerSetting);
-                
-                GameServerSetting s = new GameServerSetting();
-                s.ServerSetting.ServerPort = 52200;
-                _selectServer = new DdonGameServer(s);
             }
 
             if (parameter.Arguments.Contains("start"))
@@ -48,7 +44,6 @@ namespace Arrowgene.Ddon.Cli.Command
                 _webServer.Start();
                 _gameServer.Start();
                 _loginServer.Start();
-                _selectServer.Start();
                 return CommandResultType.Completed;
             }
 
@@ -57,7 +52,6 @@ namespace Arrowgene.Ddon.Cli.Command
                 _webServer.Stop();
                 _gameServer.Stop();
                 _loginServer.Stop();
-                _selectServer.Stop();
                 return CommandResultType.Completed;
             }
 
@@ -74,7 +68,6 @@ namespace Arrowgene.Ddon.Cli.Command
             if (_gameServer != null)
             {
                 _gameServer.Stop();
-                _selectServer.Stop();
             }
 
             if (_webServer != null)

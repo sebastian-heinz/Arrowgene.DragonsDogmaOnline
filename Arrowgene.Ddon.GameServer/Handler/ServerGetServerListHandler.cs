@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.WriteUInt32(0, Endianness.Big);
                 res.WriteUInt32(0, Endianness.Big);
                 res.WriteMtString("127.0.0.1" + i);
-                res.WriteUInt16(52200, Endianness.Big);
+                res.WriteUInt16(52000, Endianness.Big);
                 res.WriteByte(0);
             }
 

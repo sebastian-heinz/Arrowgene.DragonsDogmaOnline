@@ -1,5 +1,4 @@
 ﻿using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Logging;
@@ -15,11 +14,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_WARP_GET_FAVORITE_WARP_POINT_LIST_REQ;
+        public override PacketId Id => PacketId.C2S_QUEST_GET_CYCLE_CONTENTS_STATE_LIST_REQ;
 
         public override void Handle(GameClient client, Packet packet)
         {
-            // TODO
+            IBuffer buffer = new StreamBuffer();
+            buffer.WriteUInt32(0, Endianness.Big);
+            buffer.WriteUInt32(0, Endianness.Big);
+            buffer.WriteBytes(new byte[15]);
+          //  client.Send(new Packet(PacketId.S2C_QUEST_GET_CYCLE_CONTENTS_STATE_LIST_RES, buffer.GetAllBytes(), PacketSource.Server));
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.Server.Network
         {
             if (_packetHandlerLookup.ContainsKey(packetHandler.Id))
             {
-                Logger.Error($"PacketHandlerId: {packetHandler.Id} already exists");
+                Logger.Error($"PacketHandlerId: {packetHandler.Id.Name} already exists");
             }
             else
             {
