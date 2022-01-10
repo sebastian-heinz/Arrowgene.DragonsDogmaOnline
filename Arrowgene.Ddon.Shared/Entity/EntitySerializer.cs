@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Entity
@@ -12,16 +13,37 @@ namespace Arrowgene.Ddon.Shared.Entity
             new Dictionary<Type, EntitySerializer>(
                 new[]
                 {
+                    // Data structure serializers
+                    Create(new CDataAchievementIdentifierSerializer()),
+                    Create(new CDataArisenProfileSerializer()),
+                    Create(new CDataCharacterEquipDataSerializer()),
+                    Create(new CDataCharacterInfoSerializer()),
+                    Create(new CDataCharacterJobDataSerializer()),
                     Create(new CDataCharacterListElementSerializer()),
                     Create(new CDataCharacterListInfoSerializer()),
+                    Create(new CDataCharacterMessageSerializer()),
+                    Create(new CDataCharacterMsgSetSerializer()),
+                    Create(new CDataCommunicationShortCutSerializer()),
                     Create(new CDataEditInfoSerializer()),
                     Create(new CDataEquipElementParamSerializer()),
                     Create(new CDataEquipElementUnkTypeSerializer()),
                     Create(new CDataEquipElementUnkType2Serializer()),
                     Create(new CDataEquipItemInfoSerializer()),
+                    Create(new CDataEquipJobItemSerializer()),
                     Create(new CDataGPCourseValidSerializer()),
+                    Create(new CDataJobPlayPointSerializer()),
                     Create(new CDataMatchingProfileSerializer()),
+                    Create(new CDataOrbCategoryStatusSerializer()),
+                    Create(new CDataOrbPageStatusSerializer()),
+                    Create(new CDataPlayPointDataSerializer()),
+                    Create(new CDataShortCutSerializer()),
+                    Create(new CDataStatusInfoSerializer()),
                     Create(new DoubleByteThingSerializer()),
+                    Create(new UnkownCharacterData0Serializer()),
+                    Create(new UnkownCharacterData1Serializer()),
+
+                    // Packet structure serializers
+                    Create(new C2LCreateCharacterDataReqSerializer()),
                 }
             );
 
