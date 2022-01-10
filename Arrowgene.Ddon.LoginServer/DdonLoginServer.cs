@@ -69,7 +69,7 @@ namespace Arrowgene.Ddon.LoginServer
             AddHandler(new ClientX6Handler(this));
             AddHandler(new ClientX9Handler(this));
             AddHandler(new ClientX10Handler(this));
-            AddHandler(new ClientX11Handler(this));
+            AddHandler(new CreateCharacterHandler(this));
         }
     }
 }
