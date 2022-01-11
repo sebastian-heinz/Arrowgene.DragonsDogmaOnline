@@ -5,7 +5,6 @@ using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
-using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -56,7 +55,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public void SetCamelliaKey(byte[] camelliaKey)
         {
-            _camelliaKey = Copy(camelliaKey);
+            _camelliaKey = Util.Copy(camelliaKey);
             Camellia.KeySchedule(_camelliaKey, out _camelliaSubKey);
         }
 
@@ -216,7 +215,7 @@ namespace Arrowgene.Ddon.Server.Network
                 out Span<byte> encrypted,
                 CamelliaKeyLength,
                 _camelliaSubKey.Span,
-                Copy(CamelliaIv),
+                Util.Copy(CamelliaIv),
                 _t8Encrypt.Span
             );
             return encrypted.ToArray();
@@ -229,19 +228,12 @@ namespace Arrowgene.Ddon.Server.Network
                 out Span<byte> decrypted,
                 CamelliaKeyLength,
                 _camelliaSubKey.Span,
-                Copy(CamelliaIv),
+                Util.Copy(CamelliaIv),
                 _t8Decrypt.Span
             );
             return decrypted.ToArray();
         }
 
-        private byte[] Copy(byte[] src)
-        {
-            int srcLen = src.Length;
-            byte[] dst = new byte[srcLen];
-            Buffer.BlockCopy(src, 0, dst, 0, srcLen);
-            return dst;
-        }
 
         private void Reset()
         {

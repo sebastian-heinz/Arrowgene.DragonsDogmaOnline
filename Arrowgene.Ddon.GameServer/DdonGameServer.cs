@@ -57,16 +57,39 @@ namespace Arrowgene.Ddon.GameServer
 
         private void LoadPacketHandler()
         {
+            AddHandler(new AreaGetAreaBaseInfoListHandler(this));
+            AddHandler(new CharacterCommunityCharacterStatusGetHandler(this));
             AddHandler(new CharacterDecideCharacterIdHandler(this));
+            
+            AddHandler(new ClanClanGetJoinRequestedListHandler(this));
+            AddHandler(new ClanClanGetMyInfoHandler(this));
+            AddHandler(new ClanClanGetMyMemberListHandler(this));
             AddHandler(new ClanClanSettingUpdateHandler(this));
+            
             AddHandler(new ClientChallengeHandler(this));
+            
             AddHandler(new ConnectionLoginHandler(this));
             AddHandler(new ConnectionMoveInServerHandler(this));
             AddHandler(new ConnectionMoveOutServerHandler(this));
             AddHandler(new ConnectionPingHandler(this));
             AddHandler(new ConnectionReserveServerHandler(this));
+            
+            AddHandler(new EquipGetCharacterEquipListHandler(this));
+            AddHandler(new FriendGetFriendListHandler(this));
+            
+            AddHandler(new Gp_28_2_1_Handler(this));
+            
+            AddHandler(new ItemGetStorageItemListHandler(this));
+            AddHandler(new ItemSortGetItemSortDataBinHandler(this));
+            
+            AddHandler(new JobGetJobChangeListHandler(this));
+            
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
             AddHandler(new LobbyLobbyJoinHandler(this));
+            AddHandler(new OrbDevoteGetOrbGainExtendParamHandler(this));
+            
+            AddHandler(new PawnGetMyPawnListHandler(this));
+            AddHandler(new PawnGetRentedPawnListHandler(this));
             
             AddHandler(new QuestGetCycleContentsStateListHandler(this));
             
@@ -75,9 +98,11 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetRealTimeHandler(this));
             AddHandler(new ServerGetServerListHandler(this));
             
+            AddHandler(new SkillGetCurrentSetSkillListHandler(this));
             AddHandler(new StageGetStageListHandler(this));
             
             AddHandler(new WarpGetFavoriteWarpPointListHandler(this));
+            AddHandler(new WarpGetReleaseWarpPointListHandler(this));
             AddHandler(new WarpGetStartPointListHandler(this));
         }
     }

@@ -19,7 +19,6 @@ namespace Arrowgene.Ddon.PacketLibrary
                 return sessions;
             }
 
-            //   packets.Sort((a, b) => a.TsSec.CompareTo(b.TsSec));
             uint initialTsSec = packets[0].TsSec;
             uint initialTsUsec = packets[0].TsUsec;
 
@@ -41,6 +40,35 @@ namespace Arrowgene.Ddon.PacketLibrary
             }
 
             return sessions;
+        }
+
+        private int GetNext(int packetNum, out TcpSegment tcpSegment, List<Pcap.Packet> packets)
+        {
+            for (int i = packetNum; i < packets.Count; i++)
+            {
+                Pcap.Packet pcapPacket = packets[i];
+                tcpSegment = GetTcpSegment(pcapPacket);
+                if (tcpSegment == null)
+                {
+                    continue;
+                }
+
+                if (!(
+                    tcpSegment.SrcPort == 52100
+                    || tcpSegment.DstPort == 52100
+                    || tcpSegment.SrcPort == 52000
+                    || tcpSegment.DstPort == 52000)
+                )
+                {
+                    // not ddon packet
+                    continue;
+                }
+
+                return i;
+            }
+
+            tcpSegment = null;
+            return -1;
         }
 
         private List<PlFactoryPacket> ExtractPackets(List<Pcap.Packet> packets, uint initialTsSec,
@@ -95,41 +123,49 @@ namespace Arrowgene.Ddon.PacketLibrary
         private List<List<Pcap.Packet>> ExtractStreams(List<Pcap.Packet> pcapSession)
         {
             List<List<Pcap.Packet>> streams = new List<List<Pcap.Packet>>();
-            for (int packetNum = 0; packetNum < pcapSession.Count; packetNum++)
+            int packetNum = 0;
+            bool hasSegments = true;
+            while (hasSegments)
             {
-                Pcap.Packet pcapPacket = pcapSession[packetNum];
-                TcpSegment tcpSegment = GetTcpSegment(pcapPacket);
+                packetNum = GetNext(packetNum, out TcpSegment tcpSegment, pcapSession);
                 if (tcpSegment == null)
                 {
-                    continue;
-                }
-
-                if (!(
-                    tcpSegment.SrcPort == 52100
-                    || tcpSegment.DstPort == 52100
-                    || tcpSegment.SrcPort == 52000
-                    || tcpSegment.DstPort == 52000)
-                )
-                {
-                    // not ddon packet
+                    hasSegments = false;
                     continue;
                 }
 
                 TcpFlag flag = TcpFlags.ParseFlags(tcpSegment.B12, tcpSegment.B13);
-                if ((flag & TcpFlag.syn) != 0 && (flag & TcpFlag.ack) != 0)
+                if (!flag.HasFlag(TcpFlag.syn))
                 {
-                    // connection accepted
-                    List<Pcap.Packet> stream = IsolateStream(tcpSegment, packetNum, pcapSession);
-                    streams.Add(stream);
+                    // not beginning
+                    packetNum++;
+                    continue;
                 }
+
+                if (flag.HasFlag(TcpFlag.ack))
+                {
+                    // not beginning
+                    packetNum++;
+                    continue;
+                }
+
+                List<Pcap.Packet> stream = IsolateStream(tcpSegment, packetNum, pcapSession);
+                streams.Add(stream);
+                packetNum++;
             }
 
             return streams;
         }
 
-        private List<Pcap.Packet> IsolateStream(TcpSegment startSegment, int startPacketNum,
-            List<Pcap.Packet> pcapSession)
+        private List<Pcap.Packet> IsolateStream(TcpSegment synSegment, int startPacketNum, List<Pcap.Packet> pcapSession)
         {
+            uint aSeq = synSegment.SeqNum;
+            uint aSegmentLength = 0;
+            uint aAckNum = synSegment.AckNum;
+            uint bSeq = 0;
+            uint bSegmentLength = 0;
+            uint bAckNum = 0;
+            bool accepted = false;
             List<Pcap.Packet> stream = new List<Pcap.Packet>();
             for (int packetNum = startPacketNum; packetNum < pcapSession.Count; packetNum++)
             {
@@ -140,12 +176,20 @@ namespace Arrowgene.Ddon.PacketLibrary
                     continue;
                 }
 
-                // match
-                if (!(
-                    (startSegment.SrcPort == tcpSegment.SrcPort && startSegment.DstPort == tcpSegment.DstPort)
-                    || (startSegment.DstPort == tcpSegment.SrcPort && startSegment.SrcPort == tcpSegment.DstPort)
-                ))
+                bool direction;
+                if (synSegment.SrcPort == tcpSegment.SrcPort && synSegment.DstPort == tcpSegment.DstPort)
                 {
+                    // A -> B
+                    direction = true;
+                }
+                else if (synSegment.SrcPort == tcpSegment.DstPort && synSegment.DstPort == tcpSegment.SrcPort)
+                {
+                    // B -> A
+                    direction = false;
+                }
+                else
+                {
+                    // not related to stream
                     continue;
                 }
 
@@ -154,6 +198,66 @@ namespace Arrowgene.Ddon.PacketLibrary
                 {
                     // end of stream
                     break;
+                }
+
+                if (flag.HasFlag(TcpFlag.syn) && flag.HasFlag(TcpFlag.ack))
+                {
+                    // connection accepted
+                    bSeq = tcpSegment.SeqNum;
+                    bSegmentLength = 0;
+                    bAckNum = tcpSegment.AckNum;
+                    accepted = true;
+                    continue;
+                }
+
+                if (!accepted)
+                {
+                    continue;
+                }
+
+                if (direction)
+                {
+                    if (tcpSegment.SeqNum < aSeq)
+                    {
+                        // retransmission
+                        for (int r = stream.Count - 1; r > 0; r--)
+                        {
+                            Pcap.Packet errPacket = stream[r];
+                            TcpSegment errSegment = GetTcpSegment(errPacket);
+                            if (errSegment.SeqNum == tcpSegment.SeqNum)
+                            {
+                                stream[r] = pcapPacket;
+                            }
+                        }
+
+                        continue;
+                    }
+
+                    aSeq = tcpSegment.SeqNum;
+                    aSegmentLength = (uint) tcpSegment.Body.Length;
+                    aAckNum = tcpSegment.AckNum;
+                }
+                else
+                {
+                    if (tcpSegment.SeqNum < bSeq)
+                    {
+                        // retransmission
+                        for (int r = stream.Count - 1; r > 0; r--)
+                        {
+                            Pcap.Packet errPacket = stream[r];
+                            TcpSegment errSegment = GetTcpSegment(errPacket);
+                            if (errSegment.SeqNum == tcpSegment.SeqNum)
+                            {
+                                stream[r] = pcapPacket;
+                            }
+                        }
+
+                        continue;
+                    }
+
+                    bSeq = tcpSegment.SeqNum;
+                    bSegmentLength = (uint) tcpSegment.Body.Length;
+                    bAckNum = tcpSegment.AckNum;
                 }
 
                 stream.Add(pcapPacket);

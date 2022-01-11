@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Arrowgene.Ddon.Server.Network;
 
-namespace Arrowgene.Ddon.LoginServer.Dump
+namespace Arrowgene.Ddon.Cli.Misc
 {
     public static class PacketDump
     {

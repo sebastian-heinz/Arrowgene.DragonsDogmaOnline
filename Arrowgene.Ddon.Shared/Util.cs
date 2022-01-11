@@ -14,6 +14,14 @@ namespace Arrowgene.Ddon.Shared
 
         private static readonly Random Random = new Random();
 
+        public static byte[] Copy(byte[] src)
+        {
+            int srcLen = src.Length;
+            byte[] dst = new byte[srcLen];
+            System.Buffer.BlockCopy(src, 0, dst, 0, srcLen);
+            return dst;
+        }
+
         public static int GetRandomNumber(int min, int max)
         {
             lock (Random)
@@ -103,12 +111,12 @@ namespace Arrowgene.Ddon.Shared
             Console.WriteLine(HexDump(buffer.GetAllBytes()));
             buffer.Position = pos;
         }
-        
+
         public static void ConsoleDumpHex(byte[] bytes)
         {
             Console.WriteLine(HexDump(bytes));
         }
-        
+
         public static string HexDump(byte[] bytes, int bytesPerLine = 16)
         {
             if (bytes == null) return "<null>";

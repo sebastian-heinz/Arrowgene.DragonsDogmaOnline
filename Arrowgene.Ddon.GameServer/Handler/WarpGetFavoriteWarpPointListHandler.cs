@@ -1,5 +1,4 @@
-﻿using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
+﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Logging;
@@ -19,11 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, Packet packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteBytes(new byte[15]);
-          //  client.Send(new Packet(PacketId.S2C_WARP_GET_FAVORITE_WARP_POINT_LIST_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(InGameDump.Dump_23);
         }
     }
 }

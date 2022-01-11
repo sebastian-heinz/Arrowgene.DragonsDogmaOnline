@@ -19,12 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, Packet packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteUInt32(1, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-           // client.Send(new Packet(PacketId.S2C_SERVER_GAME_TIME_GET_BASEINFO_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(InGameDump.Dump_29);
         }
     }
 }

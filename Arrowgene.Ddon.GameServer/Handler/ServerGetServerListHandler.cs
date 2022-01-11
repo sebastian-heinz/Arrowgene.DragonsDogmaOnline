@@ -37,21 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.WriteUInt16(52000, Endianness.Big);
                 res.WriteByte(0);
             }
-
-
             client.Send(new Packet(PacketId.S2C_SERVER_GET_SERVER_LIST_RES, res.GetAllBytes(), PacketSource.Server));
-
-
-            //IBuffer buffer = new StreamBuffer(GameDump.data_Dump_23);
-            //buffer.Position = 56;
-            //string firstIp = "127.0.0.1";
-            //buffer.WriteUInt16((ushort) firstIp.Length, Endianness.Big);
-            //buffer.WriteString(firstIp);
-            //buffer.WriteUInt16((ushort) 52200, Endianness.Big);
-            //buffer.WriteBytes(GameDump.data_Dump_23.AsSpan(72 + 2).ToArray());
-            //client.Send(new Packet(PacketId.S2C_SERVER_GET_SERVER_LIST_RES, buffer.GetAllBytes(), PacketSource.Server));
-
-            // client.Send(GameDump.Dump_23);
         }
     }
 }
