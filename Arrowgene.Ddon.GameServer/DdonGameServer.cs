@@ -58,7 +58,10 @@ namespace Arrowgene.Ddon.GameServer
         private void LoadPacketHandler()
         {
             AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
+            
             AddHandler(new AreaGetAreaBaseInfoListHandler(this));
+            AddHandler(new AreaGetLeaderAreaReleaseListHandler(this));
+            
             AddHandler(new BattleContentInfoListHandler(this));
             AddHandler(new BlackListGetBlackListHandler(this));
 
@@ -89,11 +92,15 @@ namespace Arrowgene.Ddon.GameServer
             
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
             
+            AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
+            
             AddHandler(new ItemGetStorageItemListHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
             
             AddHandler(new JobGetJobChangeListHandler(this));
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
+            
+            AddHandler(new LobbyLobbyChatMsgHandler(this));
             AddHandler(new LobbyLobbyJoinHandler(this));
             
             AddHandler(new MailMailGetListDataHandler(this));
@@ -107,6 +114,8 @@ namespace Arrowgene.Ddon.GameServer
             
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             
+            AddHandler(new PartyPartyCreateHandler(this));
+            
             AddHandler(new PawnGetMyPawnListHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
             
@@ -118,7 +127,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetServerListHandler(this));
             
             AddHandler(new SkillGetCurrentSetSkillListHandler(this));
+            
+            AddHandler(new StageAreaChangeHandler(this));
             AddHandler(new StageGetStageListHandler(this));
+            
             AddHandler(new StampBonusCheckHandler(this));
             
             AddHandler(new WarpGetFavoriteWarpPointListHandler(this));

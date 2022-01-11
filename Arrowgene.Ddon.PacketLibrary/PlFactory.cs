@@ -229,7 +229,6 @@ namespace Arrowgene.Ddon.PacketLibrary
                                 stream[r] = pcapPacket;
                             }
                         }
-
                         continue;
                     }
 
