@@ -57,7 +57,11 @@ namespace Arrowgene.Ddon.GameServer
 
         private void LoadPacketHandler()
         {
+            AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
             AddHandler(new AreaGetAreaBaseInfoListHandler(this));
+            AddHandler(new BattleContentInfoListHandler(this));
+            AddHandler(new BlackListGetBlackListHandler(this));
+
             AddHandler(new CharacterCommunityCharacterStatusGetHandler(this));
             AddHandler(new CharacterDecideCharacterIdHandler(this));
             
@@ -75,18 +79,33 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ConnectionReserveServerHandler(this));
             
             AddHandler(new EquipGetCharacterEquipListHandler(this));
+            
             AddHandler(new FriendGetFriendListHandler(this));
+            AddHandler(new FriendGetRecentCharacterListHandler(this));
+            
             
             AddHandler(new Gp_28_2_1_Handler(this));
+            AddHandler(new GpGetUpdateAppCourseBonusFlagHandler(this));
+            
+            AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
             
             AddHandler(new ItemGetStorageItemListHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
             
             AddHandler(new JobGetJobChangeListHandler(this));
-            
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
             AddHandler(new LobbyLobbyJoinHandler(this));
+            
+            AddHandler(new MailMailGetListDataHandler(this));
+            AddHandler(new MailMailGetListFootHandler(this));
+            AddHandler(new MailMailGetListHeadHandler(this));
+            AddHandler(new MailSystemMailGetListDataHandler(this));
+            AddHandler(new MailSystemMailGetListFootHandler(this));
+            AddHandler(new MailSystemMailGetListHeadHandler(this));
+            
             AddHandler(new OrbDevoteGetOrbGainExtendParamHandler(this));
+            
+            AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             
             AddHandler(new PawnGetMyPawnListHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
@@ -100,6 +119,7 @@ namespace Arrowgene.Ddon.GameServer
             
             AddHandler(new SkillGetCurrentSetSkillListHandler(this));
             AddHandler(new StageGetStageListHandler(this));
+            AddHandler(new StampBonusCheckHandler(this));
             
             AddHandler(new WarpGetFavoriteWarpPointListHandler(this));
             AddHandler(new WarpGetReleaseWarpPointListHandler(this));
