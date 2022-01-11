@@ -75,12 +75,14 @@ namespace Arrowgene.Ddon.GameServer
             
             AddHandler(new ClientChallengeHandler(this));
             
+            AddHandler(new ConnectionGetLoginAnnouncementHandler(this));
             AddHandler(new ConnectionLoginHandler(this));
             AddHandler(new ConnectionMoveInServerHandler(this));
             AddHandler(new ConnectionMoveOutServerHandler(this));
             AddHandler(new ConnectionPingHandler(this));
             AddHandler(new ConnectionReserveServerHandler(this));
             
+            AddHandler(new DailyMissionListGetHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
             
             AddHandler(new FriendGetFriendListHandler(this));
@@ -117,9 +119,13 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartyPartyCreateHandler(this));
             
             AddHandler(new PawnGetMyPawnListHandler(this));
+            AddHandler(new PawnGetNoraPawnListHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
             
             AddHandler(new QuestGetCycleContentsStateListHandler(this));
+            AddHandler(new QuestGetMainQuestListHandler(this));
+            AddHandler(new QuestGetQuestCompletedListHandler(this));
+            AddHandler(new QuestGetWorldManageQuestListHandler(this));
             
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));
@@ -136,6 +142,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new WarpGetFavoriteWarpPointListHandler(this));
             AddHandler(new WarpGetReleaseWarpPointListHandler(this));
             AddHandler(new WarpGetStartPointListHandler(this));
+            AddHandler(new WarpGetWarpPointListHandler(this));
         }
     }
 }
