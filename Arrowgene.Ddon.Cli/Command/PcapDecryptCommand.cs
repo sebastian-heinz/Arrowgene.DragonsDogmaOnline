@@ -70,17 +70,19 @@ namespace Arrowgene.Ddon.Cli.Command
         private void PrintPackets(List<Packet> packets)
         {
             StringBuilder sb = new StringBuilder();
+            StringBuilder sbh = new StringBuilder();
             foreach (Packet packet in packets)
             {
-                string text = $"Id:{packet.Id.GroupId}.{packet.Id.HandlerId}.{packet.Id.HandlerSubId}{Environment.NewLine}" +
-                              $"Name:{packet.Id.Name}{Environment.NewLine}" +
-                              $"{Util.HexDump(packet.Data)}";
-                Console.WriteLine(text);
-                sb.Append(text);
+                string pStr = packet.ToString();
+                sbh.Append(packet.Source + " count:" + packet.Count.ToString("0000") + " " + Util.ToHexString(packet.GetHeaderBytes()) + " " + packet.Id.Name + Environment.NewLine);
+                // Console.WriteLine(pStr);
+                sb.Append(pStr);
+                sb.Append(Environment.NewLine);
             }
 
-            //   string dump = PacketDump.DumpCSharpStruc(packets, "GameFull");
-            //     File.WriteAllText("F://game_full.txt", sb.ToString());
+            // string dump = PacketDump.DumpCSharpStruc(packets, "GameFull");
+            File.WriteAllText("F://game_full.txt", sb.ToString());
+            // File.WriteAllText("F://game_full_head.txt", sbh.ToString());
         }
 
         private List<Packet> Convert(List<PlPacket> plPackets)
@@ -109,11 +111,21 @@ namespace Arrowgene.Ddon.Cli.Command
                     if (encPacket.Direction == "S2C")
                     {
                         List<Packet> decrypted = pfClient.Read(encPacket.Data);
+                        foreach (Packet packet in decrypted)
+                        {
+                            packet.Source = PacketSource.Server;
+                        }
+
                         packets.AddRange(decrypted);
                     }
                     else if (encPacket.Direction == "C2S")
                     {
                         List<Packet> decrypted = pfServer.Read(encPacket.Data);
+                        foreach (Packet packet in decrypted)
+                        {
+                            packet.Source = PacketSource.Client;
+                        }
+
                         packets.AddRange(decrypted);
                     }
                 }

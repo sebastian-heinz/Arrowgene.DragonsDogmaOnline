@@ -75,6 +75,16 @@ namespace Arrowgene.Ddon.Server.Network
         {
             return GetHashCode(GroupId, HandlerId, HandlerSubId);
         }
+        
+        public static bool operator ==(PacketId a, PacketId b) 
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(PacketId a, PacketId b) 
+        {
+            return !a.Equals(b);
+        }
 
         public static readonly PacketId UNKNOWN = new PacketId(0, 0, 0, "UNKNOWN");
 

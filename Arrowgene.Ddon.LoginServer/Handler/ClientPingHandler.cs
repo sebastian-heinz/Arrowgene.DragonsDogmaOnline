@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             buffer.WriteUInt32(0, Endianness.Big);
             buffer.WriteUInt32(0, Endianness.Big);
 
-            client.Send(new Packet(PacketId.L2C_PING_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(new Packet(PacketId.L2C_PING_RES, buffer.GetAllBytes()));
         }
     }
 }

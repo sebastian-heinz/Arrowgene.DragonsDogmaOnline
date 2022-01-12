@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             List<CDataCharacterListInfo> characters = new List<CDataCharacterListInfo>();
             characters.Add(character);
             EntitySerializer.Get<CDataCharacterListInfo>().WriteList(buffer, characters);
-            Packet response = new Packet(PacketId.L2C_GET_CHARACTER_LIST_RES, buffer.GetAllBytes(), PacketSource.Server);
+            Packet response = new Packet(PacketId.L2C_GET_CHARACTER_LIST_RES, buffer.GetAllBytes());
             //  client.Send(response);
 
             client.Send(LoginDump.Dump_24);

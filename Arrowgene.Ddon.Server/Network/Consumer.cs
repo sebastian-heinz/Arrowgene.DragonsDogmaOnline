@@ -49,7 +49,6 @@ namespace Arrowgene.Ddon.Server.Network
 
         protected override void HandleReceived(ITcpSocket socket, byte[] data)
         {
-            Logger.Received(socket, data);
             if (!socket.IsAlive)
             {
                 return;

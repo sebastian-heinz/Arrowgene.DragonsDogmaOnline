@@ -180,7 +180,10 @@ namespace Arrowgene.Ddon.Shared
                 result.Append(line);
             }
 
-            return result.ToString();
+            string ret = result.ToString();
+            ret = ret.TrimEnd(Environment.NewLine.ToCharArray());
+            ret = ret += Environment.NewLine;
+            return ret;
         }
     }
 }

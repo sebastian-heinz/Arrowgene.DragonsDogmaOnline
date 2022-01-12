@@ -1,9 +1,9 @@
 ﻿namespace Arrowgene.Ddon.Server.Network
 {
-    public enum PacketSource
+    public enum PacketSource : byte
     {
-        Unknown,
-        Server,
-        Client
+        Unknown = 0xFF,
+        Server = 0x34,
+        Client = 0x00
     }
 }

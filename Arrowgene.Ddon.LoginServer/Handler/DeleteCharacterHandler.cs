@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             IBuffer buffer = new StreamBuffer();
             buffer.WriteInt32(0); //us_error
             buffer.WriteUInt32(0, Endianness.Big);
-            client.Send(new Packet(PacketId.L2C_DELETE_CHARACTER_INFO_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(new Packet(PacketId.L2C_DELETE_CHARACTER_INFO_RES, buffer.GetAllBytes()));
         }
     }
 }

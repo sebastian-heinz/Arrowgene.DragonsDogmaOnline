@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             buffer.WriteUInt16((ushort)client.OnetimeToken.Length, Endianness.Big);
             buffer.WriteBytes(utf8);
 
-            client.Send(new Packet(PacketId.L2C_LOGIN_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(new Packet(PacketId.L2C_LOGIN_RES, buffer.GetAllBytes()));
         }
     }
 }

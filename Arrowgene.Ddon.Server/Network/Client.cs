@@ -72,7 +72,6 @@ namespace Arrowgene.Ddon.Server.Network
         /// </summary>
         public void SendRaw(byte[] data)
         {
-            Logger.Send(_socket, data);
             _socket.Send(data);
         }
 
@@ -80,12 +79,10 @@ namespace Arrowgene.Ddon.Server.Network
         {
             _challenge = new Challenge();
             byte[] challenge = _challenge.CreateClientCertChallenge();
-            Packet packet = new Packet(challenge);
-
             byte[] data;
             try
             {
-                data = _packetFactory.WriteWithoutHeader(packet);
+                data = _packetFactory.WriteDataWithLengthPrefix(challenge);
             }
             catch (Exception ex)
             {

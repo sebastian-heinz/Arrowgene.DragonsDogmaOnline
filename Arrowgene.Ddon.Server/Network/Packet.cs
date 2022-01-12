@@ -1,4 +1,6 @@
-﻿using Arrowgene.Buffers;
+﻿using System;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -11,46 +13,49 @@ namespace Arrowgene.Ddon.Server.Network
             Data = data;
             Count = count;
         }
-        
-        public Packet(PacketId id, byte[] data, PacketSource source)
-        {
-            Id = id;
-            Source = source;
-            Data = data;
-            Count = 0;
-        }
-        
+
         public Packet(PacketId id, byte[] data)
         {
             Id = id;
             Source = PacketSource.Unknown;
             Data = data;
+            Count = 0;
         }
 
-        public Packet(PacketId id)
-        {
-            Id = id;
-            Source = PacketSource.Unknown;
-            Data = new byte[0];
-        }
+        public PacketId Id { get; set; }
+        public byte[] Data { get; set; }
+        public PacketSource Source { get; set; }
+        public uint Count { get; set; }
 
-        public Packet(byte[] data)
+        public byte[] GetHeaderBytes()
         {
-            Id = PacketId.UNKNOWN;
-            Source = PacketSource.Unknown;
-            Data = data;
+            if (Id == PacketId.C2S_CERT_CLIENT_CHALLENGE_REQ
+                || Id == PacketId.C2L_CLIENT_CHALLENGE_REQ)
+            {
+                return new byte[0];
+            }
+
+            IBuffer buffer = new StreamBuffer();
+            buffer.WriteByte(Id.GroupId);
+            buffer.WriteUInt16(Id.HandlerId, Endianness.Big);
+            buffer.WriteByte(Id.HandlerSubId);
+            buffer.WriteByte((byte) Source);
+            buffer.WriteUInt32(Count, Endianness.Big);
+            return buffer.GetAllBytes();
         }
-        
-        public PacketSource Source { get; }
-        public PacketId Id { get; }
-        public uint Count { get; }
-        public byte[] Data { get; }
 
         public IBuffer AsBuffer()
         {
             IBuffer buffer = new StreamBuffer(Data);
             buffer.SetPositionStart();
             return buffer;
+        }
+
+        public override string ToString()
+        {
+            return $"{Source} #{Count:000000} ({Id.GroupId}.{Id.HandlerId}.{Id.HandlerSubId}) {Id.Name}{Environment.NewLine}" +
+                   $"{Util.HexDump(GetHeaderBytes())}" +
+                   $"{Util.HexDump(Data)}";
         }
     }
 }

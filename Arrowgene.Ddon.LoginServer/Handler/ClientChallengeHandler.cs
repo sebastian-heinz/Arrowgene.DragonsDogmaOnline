@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             buffer.WriteByte(challenge.EncryptedBlowFishKeyLength); //ucPasswordENcSize
             buffer.WriteBytes(challenge.EncryptedBlowFishPassword);
             buffer.WriteBytes(new byte[48]);
-            client.Send(new Packet(PacketId.L2C_CLIENT_CHALLENGE_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(new Packet(PacketId.L2C_CLIENT_CHALLENGE_RES, buffer.GetAllBytes()));
         }
     }
 }

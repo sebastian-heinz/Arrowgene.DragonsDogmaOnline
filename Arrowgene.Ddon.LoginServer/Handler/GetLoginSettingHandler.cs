@@ -1,4 +1,4 @@
-using Arrowgene.Buffers;
+﻿using Arrowgene.Buffers;
 using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             };
             EntitySerializer.Get<L2CGetLoginSettingsRes>().Write(buffer, entity);
 
-            Packet response = new Packet(PacketId.L2C_GET_LOGIN_SETTING_RES, buffer.GetAllBytes(), PacketSource.Server);
+            Packet response = new Packet(PacketId.L2C_GET_LOGIN_SETTING_RES, buffer.GetAllBytes());
             client.Send(response);
 
             //client.Send(LoginDump.Dump_20);

@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.Server.Network
         public PacketFactory(ServerSetting setting, IPacketIdResolver packetIdResolver)
         {
             _setting = setting;
-            _packetCount = 0;
+            _packetCount = 1;
             _packetIdResolver = packetIdResolver;
             _t8Encrypt = new Memory<byte>(new byte[8]);
             _t8Decrypt = new Memory<byte>(new byte[8]);
@@ -59,25 +59,32 @@ namespace Arrowgene.Ddon.Server.Network
             Camellia.KeySchedule(_camelliaKey, out _camelliaSubKey);
         }
 
-        public byte[] WriteWithoutHeader(Packet packet)
+        public byte[] WriteDataWithLengthPrefix(byte[] data)
         {
-            byte[] data = packet.Data;
+            if (data == null)
+            {
+                Logger.Error($"data == null, tried to write invalid data");
+                return null;
+            }
+
             int totalLength = data.Length + PacketLengthFieldSize;
             if (totalLength < 0 || totalLength > ushort.MaxValue)
             {
                 Logger.Error($"dataLength < 0 || dataLength > ushort.MaxValue (dataLength:{totalLength})");
+                return null;
             }
 
-            byte[] encryptedPacketData = Encrypt(packet.Data);
+            byte[] encryptedPacketData = Encrypt(data);
 
             IBuffer buffer = Util.Buffer.Provide();
-            buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without header*/, Endianness.Big);
+            buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without length prefix */, Endianness.Big);
             buffer.WriteBytes(encryptedPacketData);
             return buffer.GetAllBytes();
         }
 
         public byte[] Write(Packet packet)
         {
+            packet.Source = PacketSource.Server;
             byte[] data = packet.Data;
             if (data == null)
             {
@@ -89,14 +96,37 @@ namespace Arrowgene.Ddon.Server.Network
             if (totalLength < 0 || totalLength > ushort.MaxValue)
             {
                 Logger.Error($"dataLength < 0 || dataLength > ushort.MaxValue (dataLength:{totalLength})");
+                return null;
+            }
+
+            if (true)
+            {
+                // temporary solution to attach original packet name to custom packet names
+                PacketId knownPacketId = _packetIdResolver.Get(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId);
+                if (knownPacketId != PacketId.UNKNOWN && knownPacketId.Name != packet.Id.Name)
+                {
+                    string combinedName = knownPacketId.Name + "->" + packet.Id.Name;
+                    packet.Id = new PacketId(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId, combinedName);
+                }
+            }
+            
+            if (packet.Id.HandlerSubId == 16)
+            {
+                // only increase for _NTC packets
+                packet.Count = _packetCount;
+                _packetCount++;
+            }
+            else
+            {
+                packet.Count = 0;
             }
 
             IBuffer packetDataBuffer = Util.Buffer.Provide();
             packetDataBuffer.WriteByte(packet.Id.GroupId);
             packetDataBuffer.WriteUInt16(packet.Id.HandlerId, Endianness.Big);
             packetDataBuffer.WriteByte(packet.Id.HandlerSubId);
-            packetDataBuffer.WriteByte(0x34);
-            packetDataBuffer.WriteUInt32(_packetCount, Endianness.Big);
+            packetDataBuffer.WriteByte((byte) packet.Source);
+            packetDataBuffer.WriteUInt32(packet.Count, Endianness.Big);
 
             packetDataBuffer.WriteBytes(data);
 
@@ -108,7 +138,7 @@ namespace Arrowgene.Ddon.Server.Network
             byte[] encryptedPacketData = Encrypt(packetData);
 
             IBuffer buffer = Util.Buffer.Provide();
-            buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without header*/, Endianness.Big);
+            buffer.WriteUInt16((ushort) encryptedPacketData.Length /* without length prefix */, Endianness.Big);
             buffer.WriteBytes(encryptedPacketData);
             return buffer.GetAllBytes();
         }
@@ -155,15 +185,20 @@ namespace Arrowgene.Ddon.Server.Network
                     byte groupId = packetBuffer.ReadByte();
                     ushort handlerId = packetBuffer.ReadUInt16(Endianness.Big);
                     byte handlerSubId = packetBuffer.ReadByte();
-                    byte unknownA = packetBuffer.ReadByte();
+                    byte packetSourceByte = packetBuffer.ReadByte();
                     uint packetCount = packetBuffer.ReadUInt32(Endianness.Big);
 
                     byte[] payload;
                     PacketId packetId;
+                    PacketSource packetSource = PacketSource.Unknown;
+                    if (Enum.IsDefined(typeof(PacketSource), packetSourceByte))
+                    {
+                        packetSource = (PacketSource) packetSourceByte;
+                    }
 
                     // abusing this as part of header validation
-                    if (unknownA != 0 /*reading client packet*/
-                        && unknownA != 0x34 /*reading server packet*/)
+                    if (packetSource != PacketSource.Server
+                        && packetSource != PacketSource.Client)
                     {
                         // TODO potentially change this to check if it is the first packet of a session
                         // and treat it as the challenge
@@ -189,7 +224,7 @@ namespace Arrowgene.Ddon.Server.Network
                         packetId = _packetIdResolver.Get(groupId, handlerId, handlerSubId);
                     }
 
-                    Packet packet = new Packet(packetId, payload, PacketSource.Client, packetCount);
+                    Packet packet = new Packet(packetId, payload, packetSource, packetCount);
                     packets.Add(packet);
                     _readHeader = false;
                     read = _buffer.Position != _buffer.Size;

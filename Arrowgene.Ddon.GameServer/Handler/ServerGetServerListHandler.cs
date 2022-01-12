@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.WriteUInt16(52000, Endianness.Big);
                 res.WriteByte(0);
             }
-            client.Send(new Packet(PacketId.S2C_SERVER_GET_SERVER_LIST_RES, res.GetAllBytes(), PacketSource.Server));
+            client.Send(new Packet(PacketId.S2C_SERVER_GET_SERVER_LIST_RES, res.GetAllBytes()));
         }
     }
 }

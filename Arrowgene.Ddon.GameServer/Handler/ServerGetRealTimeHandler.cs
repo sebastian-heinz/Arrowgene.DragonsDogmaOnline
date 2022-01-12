@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             buffer.WriteUInt32(0, Endianness.Big);
             buffer.WriteUInt32(0, Endianness.Big);
             buffer.WriteBytes(new byte[15]);
-            client.Send(new Packet(PacketId.S2C_SERVER_GET_REAL_TIME_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(new Packet(PacketId.S2C_SERVER_GET_REAL_TIME_RES, buffer.GetAllBytes()));
         }
     }
 }

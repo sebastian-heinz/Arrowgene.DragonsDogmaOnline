@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             buffer.WriteByte(1); // "counter".
             byte[] data = buffer.GetBytes(0, buffer.Position);
 
-            client.Send(new Packet(PacketId.L2C_NEXT_CONNECT_SERVER_NTC, data, PacketSource.Server));
+            client.Send(new Packet(PacketId.L2C_NEXT_CONNECT_SERVER_NTC, data));
         }
     }
 }

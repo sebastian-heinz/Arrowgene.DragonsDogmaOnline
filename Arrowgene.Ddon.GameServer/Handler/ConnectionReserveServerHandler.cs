@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x00, 0x20, 0x4F, 0xD8, 0x1B, 0x02, 0x84, 0x14, 0xB0
             });
-            client.Send(new Packet(PacketId.S2C_CONNECTION_RESERVE_SERVER_RES, buffer.GetAllBytes(), PacketSource.Server));
+            client.Send(new Packet(PacketId.S2C_CONNECTION_RESERVE_SERVER_RES, buffer.GetAllBytes()));
             
             //client.Send(GameDump.Dump_27);
         }
