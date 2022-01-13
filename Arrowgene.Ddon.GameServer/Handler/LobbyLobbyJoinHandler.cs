@@ -20,6 +20,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, Packet packet)
         {
             client.Send(InGameDump.Dump_13);
+            
+            // NTC
+            client.Send(GameFull.Dump_14);
+            client.Send(InGameDump.Dump_15);
+            client.Send(InGameDump.Dump_16);
         }
     }
 }

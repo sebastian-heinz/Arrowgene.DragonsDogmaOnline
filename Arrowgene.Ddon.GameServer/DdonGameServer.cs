@@ -60,6 +60,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
             
             AddHandler(new AreaGetAreaBaseInfoListHandler(this));
+            AddHandler(new AreaGetAreaQuestHintListHandler(this));
             AddHandler(new AreaGetLeaderAreaReleaseListHandler(this));
             
             AddHandler(new BattleContentInfoListHandler(this));
@@ -122,10 +123,19 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnGetNoraPawnListHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
             
+            AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
+            AddHandler(new QuestGetAreaBonusListHandler(this));
             AddHandler(new QuestGetCycleContentsStateListHandler(this));
+            AddHandler(new QuestGetLevelBonusListHandler(this));
             AddHandler(new QuestGetMainQuestListHandler(this));
+            AddHandler(new QuestGetPackageQuestListHandler(this));
+            AddHandler(new QuestGetPartyQuestProgressInfoHandler(this));
+            AddHandler(new QuestGetPriorityQuestHandler(this));
             AddHandler(new QuestGetQuestCompletedListHandler(this));
+            AddHandler(new QuestGetQuestPartyBonusListHandler(this));
+            AddHandler(new QuestGetTutorialQuestListHandler(this));
             AddHandler(new QuestGetWorldManageQuestListHandler(this));
+            AddHandler(new QuestQuestProgressHandler(this));
             
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));

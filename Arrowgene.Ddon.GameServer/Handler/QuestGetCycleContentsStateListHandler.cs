@@ -6,12 +6,12 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class WarpGetFavoriteWarpPointListHandler : PacketHandler<GameClient>
+    public class QuestGetCycleContentsStateListHandler : PacketHandler<GameClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(WarpGetFavoriteWarpPointListHandler));
+        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(QuestGetCycleContentsStateListHandler));
 
 
-        public WarpGetFavoriteWarpPointListHandler(DdonGameServer server) : base(server)
+        public QuestGetCycleContentsStateListHandler(DdonGameServer server) : base(server)
         {
         }
 

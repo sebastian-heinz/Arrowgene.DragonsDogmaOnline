@@ -103,13 +103,16 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 // temporary solution to attach original packet name to custom packet names
                 PacketId knownPacketId = _packetIdResolver.Get(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId);
-                if (knownPacketId != PacketId.UNKNOWN && knownPacketId.Name != packet.Id.Name)
+                if (knownPacketId != PacketId.UNKNOWN
+                    && !packet.Id.Name.Contains("->")
+                    && knownPacketId.Name != packet.Id.Name
+                )
                 {
                     string combinedName = knownPacketId.Name + "->" + packet.Id.Name;
                     packet.Id = new PacketId(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId, combinedName);
                 }
             }
-            
+
             if (packet.Id.HandlerSubId == 16)
             {
                 // only increase for _NTC packets
