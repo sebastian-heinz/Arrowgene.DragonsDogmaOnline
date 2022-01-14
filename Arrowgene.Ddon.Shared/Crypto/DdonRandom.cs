@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
         public DdonRandom()
         {
             byte[] seed = new byte[16];
-            Util.CryptoRandom.NextBytes(seed);
+            CryptoRandom.Instance.NextBytes(seed);
             SetSeed(seed);
         }
 
@@ -46,10 +46,10 @@ namespace Arrowgene.Ddon.Shared.Crypto
             uint r4 = (uint) (seed[12] | seed[13] << 8 | seed[14] << 16 | seed[15] << 24);
             SetSeed(r1, r2, r3, r4);
         }
-        
+
         public void SetSeed(uint seed)
         {
-            uint v2; 
+            uint v2;
             uint v3;
             uint v4;
             uint v5;
@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
                 v7 = v2;
                 v2 = v3;
                 v3 = v4;
-                v5 ^= (0x65AC9365u >> (int)(v5 & 3)) ^ ((v5 ^ (0x65AC9365u >> (int)(v5 & 3))) >> 3) ^ ((v5 ^ (0x65AC9365u >> (int)(v5 & 3))) >> 4) ^ (8 * (v5 ^ (0x65AC9365u >> (int)(v5 & 3)))) ^ (16 * (v5 ^ (0x65AC9365u >> (int)(v5 & 3))));
+                v5 ^= (0x65AC9365u >> (int) (v5 & 3)) ^ ((v5 ^ (0x65AC9365u >> (int) (v5 & 3))) >> 3) ^ ((v5 ^ (0x65AC9365u >> (int) (v5 & 3))) >> 4) ^ (8 * (v5 ^ (0x65AC9365u >> (int) (v5 & 3)))) ^ (16 * (v5 ^ (0x65AC9365u >> (int) (v5 & 3))));
                 v4 ^= v5 ^ (v5 << 15) ^ ((v5 ^ (v5 << 15)) >> 4) ^ (v4 >> 21);
             }
 

@@ -13,12 +13,10 @@ namespace Arrowgene.Ddon.Database.Sql
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqLiteDb));
 
-        
+
         public const string MemoryDatabasePath = ":memory:";
         public const int Version = 1;
-
-        private const string SelectAutoIncrement = "SELECT last_insert_rowid()";
-
+        
         private readonly string _databasePath;
         private string _connectionString;
 
@@ -79,15 +77,6 @@ namespace Arrowgene.Ddon.Database.Sql
         protected override long AutoIncrement(SQLiteConnection connection, SQLiteCommand command)
         {
             return connection.LastInsertRowId;
-            // long autoIncrement = NoAutoIncrement;
-            // ExecuteReader(SelectAutoIncrement, reader =>
-            // {
-            //     if (reader.Read())
-            //     {
-            //         autoIncrement = reader.GetInt32(0);
-            //     }
-            // });
-            // return autoIncrement;
         }
 
         public override int Upsert(string table, string[] columns, object[] values, string whereColumn,

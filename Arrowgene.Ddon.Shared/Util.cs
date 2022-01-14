@@ -9,10 +9,7 @@ namespace Arrowgene.Ddon.Shared
 {
     public static class Util
     {
-        public static IBufferProvider Buffer = new StreamBuffer();
-        public static readonly CryptoRandom CryptoRandom = new CryptoRandom();
-
-        private static readonly Random Random = new Random();
+        public static readonly IBufferProvider Buffer = new StreamBuffer();
 
         public static byte[] Copy(byte[] src)
         {
@@ -21,15 +18,7 @@ namespace Arrowgene.Ddon.Shared
             System.Buffer.BlockCopy(src, 0, dst, 0, srcLen);
             return dst;
         }
-
-        public static int GetRandomNumber(int min, int max)
-        {
-            lock (Random)
-            {
-                return Random.Next(min, max);
-            }
-        }
-
+        
         public static long GetUnixTime(DateTime dateTime)
         {
             return ((DateTimeOffset) dateTime).ToUnixTimeSeconds();
@@ -83,40 +72,7 @@ namespace Arrowgene.Ddon.Shared
 
             return sb.ToString();
         }
-
-        public static string ToAsciiString(byte[] data, bool spaced)
-        {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < data.Length; i++)
-            {
-                char c = '.';
-                if (data[i] >= 'A' && data[i] <= 'Z') c = (char) data[i];
-                if (data[i] >= 'a' && data[i] <= 'z') c = (char) data[i];
-                if (data[i] >= '0' && data[i] <= '9') c = (char) data[i];
-                if (spaced && i != 0)
-                {
-                    sb.Append("  ");
-                }
-
-                sb.Append(c);
-            }
-
-            return sb.ToString();
-        }
-
-        public static void ConsoleDumpBuffer(IBuffer buffer)
-        {
-            int pos = buffer.Position;
-            buffer.SetPositionStart();
-            Console.WriteLine(HexDump(buffer.GetAllBytes()));
-            buffer.Position = pos;
-        }
-
-        public static void ConsoleDumpHex(byte[] bytes)
-        {
-            Console.WriteLine(HexDump(bytes));
-        }
-
+        
         public static string HexDump(byte[] bytes, int bytesPerLine = 16)
         {
             if (bytes == null) return "<null>";

@@ -22,4 +22,8 @@
         </ContentWithTargetPath>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

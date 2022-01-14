@@ -1,4 +1,5 @@
 ﻿using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -17,5 +18,10 @@ namespace Arrowgene.Ddon.Database
         Account SelectAccountByName(string accountName);
         bool UpdateAccount(Account account);
         bool DeleteAccount(int accountId);
+
+        // Misc
+        bool SetToken(int accountId, GameToken token);
+        GameToken SelectToken(int accountId);
+        bool DeleteToken(int accountId);
     }
 }

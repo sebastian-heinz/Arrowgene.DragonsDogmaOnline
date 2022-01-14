@@ -9,6 +9,7 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
         <PackageReference Include="Arrowgene.WebServer" Version="1.0.3" />
     </ItemGroup>
     <ItemGroup>
@@ -18,6 +19,7 @@
         </ContentWithTargetPath>
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj" />
       <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
     </ItemGroup>
 </Project>

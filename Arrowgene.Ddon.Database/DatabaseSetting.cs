@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization;
 using Arrowgene.Ddon.Database.Model;
-
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Database
             SqLiteFolder = Path.Combine(Util.ExecutingDirectory(), "Files/Database");
             Host = "localhost";
             Port = 3306;
-            Database = "Ddo";
+            Database = "Ddon";
             User = string.Empty;
             Password = string.Empty;
 

@@ -52,6 +52,8 @@ namespace Arrowgene.Ddon.Shared.Crypto
     /// </summary>
     public class CryptoRandom : Random
     {
+        public static readonly CryptoRandom Instance = new CryptoRandom();
+        
         private RNGCryptoServiceProvider _rng = new RNGCryptoServiceProvider();
 
         private byte[] _buffer;

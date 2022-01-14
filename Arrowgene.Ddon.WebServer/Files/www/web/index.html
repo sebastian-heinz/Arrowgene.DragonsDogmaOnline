@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CrazyOnlineGames</title>
+</head>
+<body>
+
+<div>
+    <label><b>Username</b></label>
+    <input id="input_account" type="text" placeholder="Enter Username">
+    <label><b>Password</b></label>
+    <input id="input_password" type="password" placeholder="Enter Password">
+    <button id="button_login" type="button">Login</button>
+    <button id="button_create_account" type="button">Create</button>
+</div>
+
+<script>
+    (function () {
+        window.DDON = {
+            API_URL: "",
+            API_ACCOUNT: "",
+            setup: function (apiUrl) {
+                DDON.API_URL = apiUrl;
+                DDON.API_ACCOUNT = DDON.API_URL + "account";
+                DDON.addClick("button_login", DDON.login)
+                DDON.addClick("button_create_account", DDON.createAccount)
+            },
+            login: function () {
+                var data = {
+                    Action: "login",
+                    Account: DDON.getText("input_account"),
+                    Password: DDON.getText("input_password")
+                }
+                DDON.post(DDON.API_ACCOUNT, data, DDON.onLoginResponse);
+            },
+            onLoginResponse: function (data) {
+                console.log(data);
+            },
+            createAccount: function () {
+                var data = {
+                    Action: "create",
+                    Account: DDON.getText("input_account"),
+                    Password: DDON.getText("input_password")
+                }
+                DDON.post(DDON.API_ACCOUNT, data, DDON.onCreateAccountResponse);
+            },
+            onCreateAccountResponse: function (data) {
+                console.log(data);
+            },
+            post: function (url, data, cb) {
+                fetch(url, {
+                    method: 'post',
+                    body: JSON.stringify(data)
+                }).then(function (response) {
+                    cb(response.json());
+                })
+            },
+            addClick: function (elementId, cb) {
+                document.getElementById(elementId).onclick = cb;
+            },
+            getText: function (elementId) {
+                return document.getElementById(elementId).value;
+            },
+        }
+        DDON.setup("http://localhost/api/");
+    })();
+</script>
+</body>
+</html>

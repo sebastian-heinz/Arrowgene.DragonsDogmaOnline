@@ -6,7 +6,6 @@ using System.Text.Json;
 using Arrowgene.Ddon.PacketLibrary;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.Cli.Command
 {
@@ -32,10 +31,20 @@ namespace Arrowgene.Ddon.Cli.Command
         /// <returns></returns>
         public CommandResultType Run(CommandParameter parameter)
         {
+            string outName = "annotated.txt";
+            string outDir = "C:\\";
             List<Packet> packets = new List<Packet>();
             if (parameter.Arguments[0] == "json")
             {
-                String json = File.ReadAllText(parameter.Arguments[1]);
+                FileInfo f = new FileInfo(parameter.Arguments[1]);
+                if (!f.Exists)
+                {
+                    Console.WriteLine("File does not exist");
+                    return CommandResultType.Continue;
+                }
+                String json = File.ReadAllText(f.FullName);
+                outName = f.Name + "_annotated.txt";
+                outDir = f.DirectoryName;
                 PlPacketStream packetStream = JsonSerializer.Deserialize<PlPacketStream>(json);
                 if (packetStream.Encrypted)
                 {
@@ -63,26 +72,23 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Continue;
             }
 
-            PrintPackets(packets);
+            PrintPackets(packets, Path.Combine(outDir, outName));
             return CommandResultType.Continue;
         }
 
-        private void PrintPackets(List<Packet> packets)
+        private void PrintPackets(List<Packet> packets, string outPath)
         {
             StringBuilder sb = new StringBuilder();
-            StringBuilder sbh = new StringBuilder();
             foreach (Packet packet in packets)
             {
                 string pStr = packet.ToString();
-                sbh.Append(packet.Source + " count:" + packet.Count.ToString("0000") + " " + Util.ToHexString(packet.GetHeaderBytes()) + " " + packet.Id.Name + Environment.NewLine);
-                // Console.WriteLine(pStr);
                 sb.Append(pStr);
                 sb.Append(Environment.NewLine);
             }
 
             // string dump = PacketDump.DumpCSharpStruc(packets, "GameFull");
-            File.WriteAllText("F://game_full.txt", sb.ToString());
-            // File.WriteAllText("F://game_full_head.txt", sbh.ToString());
+            File.WriteAllText(outPath, sb.ToString());
+            Console.WriteLine(sb.ToString());
         }
 
         private List<Packet> Convert(List<PlPacket> plPackets)

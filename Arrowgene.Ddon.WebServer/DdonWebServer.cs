@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Arrowgene.Ddon.Database;
 using Arrowgene.WebServer;
 using Arrowgene.WebServer.Server;
 using Arrowgene.WebServer.Server.Kestrel;
@@ -11,10 +12,13 @@ namespace Arrowgene.Ddon.WebServer
     {
         private readonly WebService _webService;
         private readonly WebServerSetting _setting;
+        private readonly IDatabase _database;
 
         public DdonWebServer(WebServerSetting setting)
         {
             _setting = setting;
+
+            _database = DdonDatabaseBuilder.Build(_setting.DatabaseSetting);
 
             IWebServerCore core = new KestrelWebServer(_setting.WebSetting);
             _webService = new WebService(core);
@@ -23,6 +27,7 @@ namespace Arrowgene.Ddon.WebServer
             _webService.AddMiddleware(new StaticFileMiddleware("", webFileProvider));
 
             _webService.AddRoute(new IndexRoute());
+            _webService.AddRoute(new AccountRoute(_database));
         }
 
         public async Task Start()
