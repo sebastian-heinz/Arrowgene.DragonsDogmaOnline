@@ -83,6 +83,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ConnectionPingHandler(this));
             AddHandler(new ConnectionReserveServerHandler(this));
             
+            AddHandler(new ContextGetSetContextHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
             
@@ -94,6 +95,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new GpGetUpdateAppCourseBonusFlagHandler(this));
             
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
+            
+            AddHandler(new InstanceGetEnemySetListHandler(this));
+            AddHandler(new InstanceGetItemSetListHandler(this));
             
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
             

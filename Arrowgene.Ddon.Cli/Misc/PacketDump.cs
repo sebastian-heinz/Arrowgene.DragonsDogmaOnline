@@ -36,6 +36,10 @@ namespace Arrowgene.Ddon.Cli.Misc
 
         public static string DumpCSharpStruc(Packet packet, string name)
         {
+            if (packet.Source == PacketSource.Client)
+            {
+                return "";
+            }
             StringBuilder sb = new StringBuilder();
             sb.Append(
                 $"public static byte[] data_{name} = new byte[] /* {packet.Id.GroupId}.{packet.Id.HandlerId}.{packet.Id.HandlerSubId} */");
@@ -59,7 +63,7 @@ namespace Arrowgene.Ddon.Cli.Misc
             sb.Append("};");
             sb.Append(Environment.NewLine);
             sb.Append(
-                $"public static Packet {name} = new Packet(new PacketId({packet.Id.GroupId}, {packet.Id.HandlerId}, {packet.Id.HandlerSubId}, \"{name}\"), data_{name});");
+                $"public static Packet {name} = new Packet(new PacketId({packet.Id.GroupId}, {packet.Id.HandlerId}, {packet.Id.HandlerSubId}, \"{packet.Id.Name}\"), data_{name});");
             sb.Append(Environment.NewLine);
             
             return sb.ToString();

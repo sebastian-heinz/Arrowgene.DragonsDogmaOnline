@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.WebServer
                     res.Token = token.Token;
                     break;
                 case "create":
-                    Account account = CreateAccount(req.Account, "", req.Password);
+                    Account account = CreateAccount(req.Account, $"{req.Account}@dd.on", req.Password);
                     if (account == null)
                     {
                         res.Error = "Account already exists";

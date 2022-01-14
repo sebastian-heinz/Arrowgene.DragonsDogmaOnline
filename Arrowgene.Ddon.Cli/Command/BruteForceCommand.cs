@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Cli.Command
             BruteForceJson(
                 "C:\\Users\\railgun\\Downloads\\stream3-party-experiments-marked.pcapng_3_login.json",
                 100 * 8,
-                2393
+                -1
             );
 
             return CommandResultType.Continue;
@@ -89,10 +89,17 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (ms <= -1)
             {
+                uint min_ms = 60000;
+                uint startMs = 3 * 59000;
+                uint endMs = 4 * min_ms;
+
+                uint diff = endMs - startMs;
+                Console.WriteLine(diff);
+                
                 // need to crack by finding MS
-                uint depth = 10000u;
-                uint startMs = 2000;
-                uint endMs = 10000;
+                uint depth = 12000;
+               // uint startMs = 2000;
+               // uint endMs = 10000;
                 uint msStep = (uint) (endMs / threadCount);
                 uint msOffset = startMs;
                 for (int i = 0; i < threadCount; i++)

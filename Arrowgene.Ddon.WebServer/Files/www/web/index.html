@@ -7,12 +7,18 @@
 <body>
 
 <div>
-    <label><b>Username</b></label>
-    <input id="input_account" type="text" placeholder="Enter Username">
-    <label><b>Password</b></label>
-    <input id="input_password" type="password" placeholder="Enter Password">
-    <button id="button_login" type="button">Login</button>
-    <button id="button_create_account" type="button">Create</button>
+    <div>
+        <label><b>Username</b></label>
+        <input id="input_account" type="text" placeholder="Enter Username">
+    </div>
+    <div>
+        <label><b>Password</b></label>
+        <input id="input_password" type="password" placeholder="Enter Password">
+    </div>
+    <div>
+        <button id="button_login" type="button">Login</button>
+        <button id="button_create_account" type="button">Create</button>
+    </div>
 </div>
 
 <script>
@@ -35,7 +41,7 @@
                 DDON.post(DDON.API_ACCOUNT, data, DDON.onLoginResponse);
             },
             onLoginResponse: function (data) {
-                console.log(data);
+                window.postMessage(data, "*");
             },
             createAccount: function () {
                 var data = {
@@ -46,14 +52,16 @@
                 DDON.post(DDON.API_ACCOUNT, data, DDON.onCreateAccountResponse);
             },
             onCreateAccountResponse: function (data) {
-                console.log(data);
+                window.postMessage(data, "*");
             },
             post: function (url, data, cb) {
                 fetch(url, {
                     method: 'post',
                     body: JSON.stringify(data)
                 }).then(function (response) {
-                    cb(response.json());
+                    return response.json();
+                }).then(function (json) {
+                    cb(json);
                 })
             },
             addClick: function (elementId, cb) {

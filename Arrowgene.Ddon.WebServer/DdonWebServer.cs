@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Logging;
 using Arrowgene.WebServer;
 using Arrowgene.WebServer.Server;
 using Arrowgene.WebServer.Server.Kestrel;
@@ -10,6 +11,8 @@ namespace Arrowgene.Ddon.WebServer
 {
     public class DdonWebServer
     {
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonWebServer));
+
         private readonly WebService _webService;
         private readonly WebServerSetting _setting;
         private readonly IDatabase _database;
@@ -33,6 +36,7 @@ namespace Arrowgene.Ddon.WebServer
         public async Task Start()
         {
             await _webService.Start();
+            Logger.Info($"Running Web Server http://localhost/web/index.html");
         }
 
         public async Task Stop()
