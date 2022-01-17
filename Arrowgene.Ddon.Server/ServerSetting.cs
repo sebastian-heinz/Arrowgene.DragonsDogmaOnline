@@ -1,7 +1,5 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Runtime.Serialization;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
 
 namespace Arrowgene.Ddon.Server
@@ -37,7 +35,6 @@ namespace Arrowgene.Ddon.Server
 
         [DataMember(Order = 2)] public ushort ServerPort { get; set; }
         [DataMember(Order = 3)] public string Name { get; set; }
-        [DataMember(Order = 3)] public string AssetDirectory { get; set; }
         [DataMember(Order = 20)] public int LogLevel { get; set; }
         [DataMember(Order = 21)] public bool LogUnknownPackets { get; set; }
         [DataMember(Order = 22)] public bool LogOutgoingPackets { get; set; }
@@ -52,7 +49,6 @@ namespace Arrowgene.Ddon.Server
             ServerIpAddress = IPAddress.Loopback;
             ServerPort = 52100;
             Name = "Unknown";
-            AssetDirectory = Path.Combine(Util.RelativeExecutingDirectory(), "Files/Assets");
             LogLevel = 0;
             LogUnknownPackets = true;
             LogOutgoingPackets = true;
@@ -69,7 +65,6 @@ namespace Arrowgene.Ddon.Server
             ServerIpAddress = setting.ServerIpAddress;
             ServerPort = setting.ServerPort;
             Name = setting.Name;
-            AssetDirectory = setting.AssetDirectory;
             LogLevel = setting.LogLevel;
             LogUnknownPackets = setting.LogUnknownPackets;
             LogOutgoingPackets = setting.LogOutgoingPackets;

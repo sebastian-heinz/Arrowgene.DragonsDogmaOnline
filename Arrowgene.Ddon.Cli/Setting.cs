@@ -1,7 +1,9 @@
-﻿using System.Runtime.Serialization;
+﻿using System.IO;
+using System.Runtime.Serialization;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.WebServer;
 
 namespace Arrowgene.Ddon.Cli
@@ -13,6 +15,7 @@ namespace Arrowgene.Ddon.Cli
         [DataMember(Order = 20)] public GameServerSetting GameServerSetting { get; set; }
         [DataMember(Order = 30)] public LoginServerSetting LoginServerSetting { get; set; }
         [DataMember(Order = 40)] public DatabaseSetting DatabaseSetting { get; set; }
+        [DataMember(Order = 50)] public string AssetPath { get; set; }
 
         public Setting()
         {
@@ -20,6 +23,7 @@ namespace Arrowgene.Ddon.Cli
             GameServerSetting = new GameServerSetting();
             LoginServerSetting = new LoginServerSetting();
             DatabaseSetting = new DatabaseSetting();
+            AssetPath = Path.Combine(Util.RelativeExecutingDirectory(), "Files/Assets");
         }
 
         public Setting(Setting setting)
@@ -28,6 +32,7 @@ namespace Arrowgene.Ddon.Cli
             setting.GameServerSetting = new GameServerSetting(setting.GameServerSetting);
             setting.LoginServerSetting = new LoginServerSetting(setting.LoginServerSetting);
             setting.DatabaseSetting = new DatabaseSetting(setting.DatabaseSetting);
+            setting.AssetPath = AssetPath;
         }
     }
 }

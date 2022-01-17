@@ -1,6 +1,7 @@
 ﻿using System;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.WebServer;
 
 namespace Arrowgene.Ddon.Cli.Command
@@ -8,6 +9,7 @@ namespace Arrowgene.Ddon.Cli.Command
     public class ServerCommand : ICommand
     {
         private Setting _setting;
+        private IServerProvider _provider;
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
         private DdonWebServer _webServer;
@@ -23,10 +25,15 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 _setting = new Setting();
             }
-            
+
+            if (_provider == null)
+            {
+                _provider = new DefaultServerProvider(_setting.AssetPath);
+            }
+
             if (_loginServer == null)
             {
-                _loginServer = new DdonLoginServer(_setting.LoginServerSetting);
+                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _provider);
             }
 
             if (_webServer == null)
@@ -36,7 +43,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_gameServer == null)
             {
-                _gameServer = new DdonGameServer(_setting.GameServerSetting);
+                _gameServer = new DdonGameServer(_setting.GameServerSetting, _provider);
             }
 
             if (parameter.Arguments.Contains("start"))

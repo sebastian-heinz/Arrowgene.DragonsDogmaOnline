@@ -1,11 +1,12 @@
-﻿using Arrowgene.Ddon.LoginServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
+﻿using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class GetErrorMessageListHandler : PacketHandler<LoginClient>
+    public class GetErrorMessageListHandler : StructurePacketHandler<LoginClient, C2LGetErrorMessageListReq>
     {
         private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(GetErrorMessageListHandler));
 
@@ -16,22 +17,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override PacketId Id => PacketId.C2L_GET_ERROR_MESSAGE_LIST_REQ;
 
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, StructurePacket<C2LGetErrorMessageListReq> packet)
         {
-            //L2C_GET_ERROR_MESSAGE_LIST_NTC
-            client.Send(LoginDump.Dump_8);
-            client.Send(LoginDump.Dump_9);
-            client.Send(LoginDump.Dump_10);
-            client.Send(LoginDump.Dump_11);
-            client.Send(LoginDump.Dump_12);
-            client.Send(LoginDump.Dump_13);
-            client.Send(LoginDump.Dump_14);
-            client.Send(LoginDump.Dump_15);
-            client.Send(LoginDump.Dump_16);
-            client.Send(LoginDump.Dump_17);
-
-            //L2C_GET_ERROR_MESSAGE_LIST_RES
-            client.Send(LoginDump.Dump_18);
+            L2CGetErrorMessageListNtc ntc = new L2CGetErrorMessageListNtc(Server.AssetRepository.ClientErrorCodes);
+            Send(client, ntc);
+            L2CGetErrorMessageListRes res = new L2CGetErrorMessageListRes();
+            Send(client, res);
         }
     }
 }

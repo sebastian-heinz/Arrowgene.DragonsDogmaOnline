@@ -31,10 +31,10 @@ namespace Arrowgene.Ddon.Shared.Csv
                 BufferSize
             );
 
-            char c;
+            int c;
             StringBuilder sb = new StringBuilder();
             bool previousCr = false;
-            while ((c = (char) streamReader.Read()) > 0)
+            while ((c = streamReader.Read()) > 0)
             {
                 // only treat \r\n as line endings
                 if (c == '\r')
@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     continue;
                 }
 
-                sb.Append(c);
+                sb.Append((char)c);
                 previousCr = false;
             }
 

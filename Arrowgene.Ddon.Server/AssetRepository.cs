@@ -20,10 +20,11 @@ namespace Arrowgene.Ddon.Server
                 Logger.Error($"Could not initialize repository, '{folder}' does not exist");
                 return;
             }
-            ClientErrorCodes = new Dictionary<int, ClientErrorCode>();
-        }
 
-        public Dictionary<int, ClientErrorCode> ClientErrorCodes { get; }
+            ClientErrorCodes = new List<ClientErrorCode>();
+        }
+        
+        public List<ClientErrorCode> ClientErrorCodes { get; }
 
 
         public void Initialize()

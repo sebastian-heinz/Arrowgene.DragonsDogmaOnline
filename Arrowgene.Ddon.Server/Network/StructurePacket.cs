@@ -14,25 +14,29 @@ namespace Arrowgene.Ddon.Server.Network
 
         public StructurePacket(TStruct structure) : base(structure.Id, null)
         {
-            _structure = structure;
+            SetStructure(structure);
         }
 
         public TStruct Structure
         {
-            get
-            {
-                if (_structure == null)
-                {
-                    _structure = EntitySerializer.Get<TStruct>().Read(AsBuffer());
-                }
+            get => GetStructure();
+            set => SetStructure(value);
+        }
 
-                return _structure;
-            }
-            set
+        private void SetStructure(TStruct structure)
+        {
+            Data = EntitySerializer.Get<TStruct>().Write(structure);
+            _structure = structure;
+        }
+
+        private TStruct GetStructure()
+        {
+            if (_structure == null)
             {
-                Data = EntitySerializer.Get<TStruct>().Write(value);
-                _structure = value;
+                _structure = EntitySerializer.Get<TStruct>().Read(AsBuffer());
             }
+
+            return _structure;
         }
     }
 }

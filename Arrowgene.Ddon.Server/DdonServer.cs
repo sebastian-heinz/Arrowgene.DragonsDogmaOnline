@@ -35,27 +35,31 @@ namespace Arrowgene.Ddon.Server
 
         private readonly Consumer<TClient> _consumer;
         private readonly AsyncEventServer _server;
+        private readonly ServerSetting _setting;
 
-        public DdonServer(ServerSetting setting)
+        public DdonServer(ServerSetting setting, IServerProvider provider)
         {
-            LogProvider.Configure<DdonLogger>(setting);
+            _setting = setting;
+            AssetRepository = provider.AssetRepository;
+
+            LogProvider.Configure<DdonLogger>(_setting);
+
             _consumer = new Consumer<TClient>(
-                setting,
-                setting.ServerSocketSettings,
+                _setting,
+                _setting.ServerSocketSettings,
                 this
             );
             _consumer.ClientConnected += ClientConnected;
             _consumer.ClientDisconnected += ClientDisconnected;
+
             _server = new AsyncEventServer(
-                setting.ListenIpAddress,
-                setting.ServerPort,
+                _setting.ListenIpAddress,
+                _setting.ServerPort,
                 _consumer,
-                setting.ServerSocketSettings
+                _setting.ServerSocketSettings
             );
-            AssetRepository = new AssetRepository(setting.AssetDirectory);
-            AssetRepository.Initialize();
         }
-        
+
         public AssetRepository AssetRepository { get; }
 
         public void Start()

@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.LoginServer
     {
         private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonLoginServer));
 
-        public DdonLoginServer(LoginServerSetting setting) : base(setting.ServerSetting)
+        public DdonLoginServer(LoginServerSetting setting, IServerProvider provider) : base(setting.ServerSetting, provider)
         {
             Setting = new LoginServerSetting(setting);
             LoadPacketHandler();
