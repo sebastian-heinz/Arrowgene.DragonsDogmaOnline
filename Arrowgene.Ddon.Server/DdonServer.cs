@@ -52,7 +52,11 @@ namespace Arrowgene.Ddon.Server
                 _consumer,
                 setting.ServerSocketSettings
             );
+            AssetRepository = new AssetRepository(setting.AssetDirectory);
+            AssetRepository.Initialize();
         }
+        
+        public AssetRepository AssetRepository { get; }
 
         public void Start()
         {

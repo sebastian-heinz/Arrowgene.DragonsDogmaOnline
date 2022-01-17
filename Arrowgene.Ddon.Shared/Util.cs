@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Crypto;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -18,22 +16,10 @@ namespace Arrowgene.Ddon.Shared
             System.Buffer.BlockCopy(src, 0, dst, 0, srcLen);
             return dst;
         }
-        
+
         public static long GetUnixTime(DateTime dateTime)
         {
             return ((DateTimeOffset) dateTime).ToUnixTimeSeconds();
-        }
-
-        /// <summary>
-        ///     The directory of the executing assembly.
-        ///     This might not be the location where the .dll files are located.
-        /// </summary>
-        public static string ExecutingDirectory()
-        {
-            var path = Assembly.GetEntryAssembly().CodeBase;
-            var uri = new Uri(path);
-            var directory = Path.GetDirectoryName(uri.LocalPath);
-            return directory;
         }
 
         public static byte[] FromHexString(string hexString)
@@ -72,7 +58,7 @@ namespace Arrowgene.Ddon.Shared
 
             return sb.ToString();
         }
-        
+
         public static string HexDump(byte[] bytes, int bytesPerLine = 16)
         {
             if (bytes == null) return "<null>";
@@ -140,6 +126,134 @@ namespace Arrowgene.Ddon.Shared
             ret = ret.TrimEnd(Environment.NewLine.ToCharArray());
             ret = ret += Environment.NewLine;
             return ret;
+        }
+
+        public static string ExecutingDirectory()
+        {
+            //var path = Assembly.GetEntryAssembly().CodeBase;
+            //var uri = new Uri(path);
+            //var codeBase = Path.GetDirectoryName(uri.LocalPath);
+
+            // Console.WriteLine($"CodeBase {codeBase}");
+            // Console.WriteLine($"Launched from {Environment.CurrentDirectory}");
+            // Console.WriteLine($"Physical location {AppDomain.CurrentDomain.BaseDirectory}");
+            // Console.WriteLine($"AppContext.BaseDir {AppContext.BaseDirectory}");
+            // Console.WriteLine($"Runtime Call {Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}");
+            return AppContext.BaseDirectory;
+        }
+
+        public static string RelativeExecutingDirectory()
+        {
+            return RelativeDirectory(Environment.CurrentDirectory, ExecutingDirectory());
+        }
+
+        public static string RelativeDirectory(string fromDirectory, string toDirectory)
+        {
+            return RelativeDirectory(fromDirectory, toDirectory, toDirectory, Path.DirectorySeparatorChar);
+        }
+
+        public static string RelativeDirectory(string fromDirectory, string toDirectory, string defaultDirectory)
+        {
+            return RelativeDirectory(fromDirectory, toDirectory, defaultDirectory, Path.DirectorySeparatorChar);
+        }
+
+        /// <summary>
+        /// Returns a directory that is relative.
+        /// </summary>
+        /// <param name="fromDirectory">The directory to navigate from.</param>
+        /// <param name="toDirectory">The directory to reach.</param>
+        /// <param name="defaultDirectory">A directory to return on failure.</param>
+        /// <param name="directorySeparator">Directory Separator to use</param>
+        /// <returns>The relative directory or the defaultDirectory on failure.</returns>
+        public static string RelativeDirectory(string fromDirectory, string toDirectory, string defaultDirectory,
+            char directorySeparator)
+        {
+            string result;
+
+            if (fromDirectory.EndsWith("\\") || fromDirectory.EndsWith("/"))
+            {
+                fromDirectory = fromDirectory.Remove(fromDirectory.Length - 1);
+            }
+
+            if (toDirectory.EndsWith("\\") || toDirectory.EndsWith("/"))
+            {
+                toDirectory = toDirectory.Remove(toDirectory.Length - 1);
+            }
+
+            if (toDirectory.StartsWith(fromDirectory))
+            {
+                result = toDirectory.Substring(fromDirectory.Length);
+                if (result.StartsWith("\\") || result.StartsWith("/"))
+                {
+                    result = result.Substring(1, result.Length - 1);
+                }
+
+                if (result != "")
+                {
+                    result += directorySeparator;
+                }
+            }
+            else
+            {
+                string[] fromDirs = fromDirectory.Split(':', '\\', '/');
+                string[] toDirs = toDirectory.Split(':', '\\', '/');
+                if (fromDirs.Length <= 0 || toDirs.Length <= 0 || fromDirs[0] != toDirs[0])
+                {
+                    return defaultDirectory;
+                }
+
+                int offset = 1;
+                for (; offset < fromDirs.Length; offset++)
+                {
+                    if (toDirs.Length <= offset)
+                    {
+                        break;
+                    }
+
+                    if (fromDirs[offset] != toDirs[offset])
+                    {
+                        break;
+                    }
+                }
+
+                StringBuilder relativeBuilder = new StringBuilder();
+                for (int i = 0; i < fromDirs.Length - offset; i++)
+                {
+                    relativeBuilder.Append("..");
+                    relativeBuilder.Append(directorySeparator);
+                }
+
+                for (int i = offset; i < toDirs.Length - 1; i++)
+                {
+                    relativeBuilder.Append(toDirs[i]);
+                    relativeBuilder.Append(directorySeparator);
+                }
+
+                result = relativeBuilder.ToString();
+            }
+
+            result = DirectorySeparator(result, directorySeparator);
+            return result;
+        }
+
+        public static string DirectorySeparator(string path)
+        {
+            return DirectorySeparator(path, Path.DirectorySeparatorChar);
+        }
+
+        public static string DirectorySeparator(string path, char directorySeparator)
+        {
+            if (directorySeparator != '\\')
+            {
+                path = path.Replace('\\', directorySeparator);
+            }
+
+            if (directorySeparator != '/')
+            {
+                path = path.Replace('/', directorySeparator);
+            }
+
+            return path;
         }
     }
 }
