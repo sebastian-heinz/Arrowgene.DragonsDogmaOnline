@@ -21,10 +21,5 @@ namespace Arrowgene.Ddon.Server.Network
         {
             Handle(client, new StructurePacket<TReqStruct>(packet));
         }
-
-        public void Send<TResStruct>(TClient client, TResStruct res) where TResStruct : IPacketStructure
-        {
-            client.Send(new StructurePacket<TResStruct>(res));
-        }
     }
 }

@@ -20,9 +20,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         public override void Handle(LoginClient client, StructurePacket<C2LGetErrorMessageListReq> packet)
         {
             L2CGetErrorMessageListNtc ntc = new L2CGetErrorMessageListNtc(Server.AssetRepository.ClientErrorCodes);
-            Send(client, ntc);
+            client.Send(ntc);
             L2CGetErrorMessageListRes res = new L2CGetErrorMessageListRes();
-            Send(client, res);
+            client.Send(res);
         }
     }
 }

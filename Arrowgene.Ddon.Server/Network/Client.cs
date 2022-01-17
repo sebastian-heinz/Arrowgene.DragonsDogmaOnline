@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -48,6 +50,14 @@ namespace Arrowgene.Ddon.Shared
             }
 
             return packets;
+        }
+
+        /// <summary>
+        /// Send a Structure
+        /// </summary>
+        public void Send<TResStruct>(TResStruct res) where TResStruct : IPacketStructure
+        {
+            Send(new StructurePacket<TResStruct>(res));
         }
 
         public void Send(Packet packet)

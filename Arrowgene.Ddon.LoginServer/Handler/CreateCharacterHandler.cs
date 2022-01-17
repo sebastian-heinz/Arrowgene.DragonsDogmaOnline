@@ -23,11 +23,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             Logger.Debug(client, $"CharacterID '{packet.Structure.CharacterInfo.CharacterID}, UserID: {packet.Structure.CharacterInfo.UserID}'");
 
 
-            Send(client, new L2CCreateCharacterDataRes());
+            client.Send(new L2CCreateCharacterDataRes());
 
             // Sent to client once the player queue "WaitNum" above is 0,
             // send immediately in our case.
-            Send(client, new L2CCreateCharacterDataNtc());
+            client.Send(new L2CCreateCharacterDataNtc());
         }
     }
 }
