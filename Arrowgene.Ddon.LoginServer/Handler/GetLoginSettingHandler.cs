@@ -1,7 +1,7 @@
 ﻿using Arrowgene.Buffers;
 using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;

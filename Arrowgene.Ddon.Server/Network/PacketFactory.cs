@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
 
-namespace Arrowgene.Ddon.Server.Network
+namespace Arrowgene.Ddon.Shared
 {
     public class PacketFactory
     {

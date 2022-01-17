@@ -1,4 +1,4 @@
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Networking.Tcp;
 
 namespace Arrowgene.Ddon.LoginServer

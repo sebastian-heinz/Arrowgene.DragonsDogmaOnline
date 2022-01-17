@@ -1,6 +1,6 @@
 ﻿using Arrowgene.Networking.Tcp;
 
-namespace Arrowgene.Ddon.Server.Network
+namespace Arrowgene.Ddon.Shared
 {
     public interface IClientFactory<TClient> where TClient : Client
     {

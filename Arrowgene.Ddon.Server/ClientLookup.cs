@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.Server
 {

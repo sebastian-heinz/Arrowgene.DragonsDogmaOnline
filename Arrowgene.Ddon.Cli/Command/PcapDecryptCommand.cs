@@ -6,7 +6,7 @@ using System.Text.Json;
 using Arrowgene.Ddon.Cli.Misc;
 using Arrowgene.Ddon.PacketLibrary;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.Cli.Command
 {

@@ -1,15 +1,16 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class L2CGetLoginSettingsRes
+    public class L2CGetLoginSettingsRes : IPacketStructure
     {
         public L2CGetLoginSettingsRes()
         {
             LoginSetting = new CDataLoginSetting();
         }
+
+        public PacketId Id => PacketId.L2C_GET_LOGIN_SETTING_RES;
 
         public CDataLoginSetting LoginSetting;
     }

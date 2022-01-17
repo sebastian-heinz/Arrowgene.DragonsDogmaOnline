@@ -21,7 +21,7 @@
  */
 
 using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;

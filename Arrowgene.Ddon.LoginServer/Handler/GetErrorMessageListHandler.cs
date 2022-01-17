@@ -1,6 +1,6 @@
 ﻿using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler

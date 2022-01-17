@@ -1,4 +1,4 @@
-﻿namespace Arrowgene.Ddon.Server.Network
+﻿namespace Arrowgene.Ddon.Shared
 {
     public interface IPacketIdResolver
     {

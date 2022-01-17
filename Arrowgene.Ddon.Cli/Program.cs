@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using Arrowgene.Ddon.Cli.Command;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli

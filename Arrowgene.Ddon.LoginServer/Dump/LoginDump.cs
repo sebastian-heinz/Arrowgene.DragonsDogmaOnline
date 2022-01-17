@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.Server.Network;
+﻿using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.LoginServer.Dump
 {

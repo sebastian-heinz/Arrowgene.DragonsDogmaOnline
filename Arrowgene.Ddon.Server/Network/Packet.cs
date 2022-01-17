@@ -2,7 +2,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared;
 
-namespace Arrowgene.Ddon.Server.Network
+namespace Arrowgene.Ddon.Shared
 {
     public class Packet
     {

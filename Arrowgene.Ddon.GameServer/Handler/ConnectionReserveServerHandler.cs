@@ -2,7 +2,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler

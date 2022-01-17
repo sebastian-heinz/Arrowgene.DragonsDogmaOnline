@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Crypto;
 
-namespace Arrowgene.Ddon.Server.Network
+namespace Arrowgene.Ddon.Shared
 {
     public class Challenge
     {

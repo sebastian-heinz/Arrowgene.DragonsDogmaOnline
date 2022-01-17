@@ -120,7 +120,7 @@ namespace Arrowgene.Ddon.Shared.Entity
         {
             return buffer.ReadUInt16(Endianness.Big);
         }
-        
+
         protected void WriteBool(IBuffer buffer, bool value)
         {
             buffer.WriteBool(value);
@@ -130,12 +130,12 @@ namespace Arrowgene.Ddon.Shared.Entity
         {
             buffer.WriteByte(value);
         }
-        
+
         protected bool ReadBool(IBuffer buffer)
         {
             return buffer.ReadBool();
         }
-        
+
         protected byte ReadByte(IBuffer buffer)
         {
             return buffer.ReadByte();
@@ -144,7 +144,7 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected void WriteMtString(IBuffer buffer, string str)
         {
             byte[] utf8 = Encoding.UTF8.GetBytes(str);
-            buffer.WriteUInt16((ushort)utf8.Length, Endianness.Big);
+            buffer.WriteUInt16((ushort) utf8.Length, Endianness.Big);
             buffer.WriteBytes(utf8);
         }
 
@@ -153,6 +153,18 @@ namespace Arrowgene.Ddon.Shared.Entity
             ushort len = buffer.ReadUInt16(Endianness.Big);
             string str = buffer.ReadString(len, Encoding.UTF8);
             return str;
+        }
+
+        protected void WriteServerResponse(IBuffer buffer, ServerResponse value)
+        {
+            buffer.WriteUInt32(value.Error, Endianness.Big);
+            buffer.WriteUInt32(value.Result, Endianness.Big);
+        }
+
+        protected void ReadServerResponse(IBuffer buffer, ServerResponse value)
+        {
+            value.Error = buffer.ReadUInt32(Endianness.Big);
+            value.Result = buffer.ReadUInt32(Endianness.Big);
         }
 
         protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity)

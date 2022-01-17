@@ -4,7 +4,7 @@ using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
-namespace Arrowgene.Ddon.Server.Network
+namespace Arrowgene.Ddon.Shared
 {
     public class Client
     {

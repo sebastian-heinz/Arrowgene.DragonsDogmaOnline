@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
 
-namespace Arrowgene.Ddon.Server.Network
+namespace Arrowgene.Ddon.Shared
 {
     public class Consumer<TClient> : ThreadedBlockingQueueConsumer where TClient : Client
     {
