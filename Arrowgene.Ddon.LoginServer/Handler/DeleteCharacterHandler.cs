@@ -1,6 +1,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 using System.Text;
 
@@ -27,6 +28,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             buffer.WriteInt32(0); //us_error
             buffer.WriteUInt32(0, Endianness.Big);
             client.Send(new Packet(PacketId.L2C_DELETE_CHARACTER_INFO_RES, buffer.GetAllBytes()));
+
+            // Test for L2C_EJECTION_NTC: Kick user if they try to delete char.
+            //
+            //IBuffer buffer1 = new StreamBuffer();
+            //buffer.WriteMtString("ArrowGene.Ddon: Kicked from server due to attempted character deletion!");
+            //client.Send(new Packet(PacketId.L2C_EJECTION_NTC, buffer1.GetAllBytes()));
         }
     }
 }

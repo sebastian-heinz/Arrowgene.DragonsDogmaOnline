@@ -1,6 +1,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 using System.Text;
 
@@ -19,31 +20,26 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, Packet packet)
         {
+            // Read C2L_LOGIN_REQ packet;
             IBuffer recv = packet.AsBuffer();
-            ushort len = recv.ReadUInt16(Endianness.Big);
-            string onetimeToken = recv.ReadString(len);
-
+            string onetimeToken = recv.ReadMtString();
+            byte inPlatform = recv.ReadByte();
             /*
             PLATFORM_TYPE_NONE = 0x0,
             PLATFORM_TYPE_PC = 0x1,
             PLATFORM_TYPE_PS3 = 0x2,
             PLATFORM_TYPE_PS4 = 0x3,
             */
-            byte inPlatform = recv.ReadByte();
 
             Logger.Debug(client, $"Received OnetimeToken: {onetimeToken}");
 
             client.OnetimeToken = onetimeToken;
 
+            // Write L2C_LOGIN_RES packet.
             IBuffer buffer = new StreamBuffer();
             buffer.WriteInt32(0); //us_error
             buffer.WriteInt32(0); //n_result
-
-            // Onetime Token (MtString)
-            byte[] utf8 = Encoding.UTF8.GetBytes(client.OnetimeToken);
-            buffer.WriteUInt16((ushort)client.OnetimeToken.Length, Endianness.Big);
-            buffer.WriteBytes(utf8);
-
+            buffer.WriteMtString(client.OnetimeToken);
             client.Send(new Packet(PacketId.L2C_LOGIN_RES, buffer.GetAllBytes()));
         }
     }

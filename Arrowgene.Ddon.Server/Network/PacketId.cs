@@ -90,40 +90,46 @@ namespace Arrowgene.Ddon.Server.Network
 
         #region LoginPacketIds
 
-        // public static readonly PacketId L2C_LOGIN_SERVER_CERT_NOTICE = new PacketId(0,0,0, "L2C_LOGIN_SERVER_CERT_NOTICE");
-        public static readonly PacketId C2L_CLIENT_CHALLENGE_REQ = new PacketId(1, 0, 1, "C2L_CLIENT_CHALLENGE_REQ");
-        public static readonly PacketId L2C_CLIENT_CHALLENGE_RES = new PacketId(1, 0, 2, "L2C_CLIENT_CHALLENGE_RES");
-        public static readonly PacketId C2L_LOGIN_REQ = new PacketId(0, 1, 1, "C2L_LOGIN_REQ");
-        public static readonly PacketId L2C_LOGIN_RES = new PacketId(0, 1, 2, "L2C_LOGIN_RES");
         public static readonly PacketId C2L_PING_REQ = new PacketId(0, 0, 1, "C2L_PING_REQ");
         public static readonly PacketId L2C_PING_RES = new PacketId(0, 0, 2, "L2C_PING_RES");
-        public static readonly PacketId C2L_GET_ERROR_MESSAGE_LIST_REQ = new PacketId(3, 0, 1, "C2L_GET_ERROR_MESSAGE_LIST_REQ");
-        public static readonly PacketId L2C_GET_ERROR_MESSAGE_LIST_RES = new PacketId(3, 0, 2, "L2C_GET_ERROR_MESSAGE_LIST_RES");
-        public static readonly PacketId L2C_GET_ERROR_MESSAGE_LIST_NTC = new PacketId(3, 0, 0x10, "L2C_GET_ERROR_MESSAGE_LIST_NTC");
+        public static readonly PacketId C2L_LOGIN_REQ = new PacketId(0, 1, 1, "C2L_LOGIN_REQ");
+        public static readonly PacketId L2C_LOGIN_RES = new PacketId(0, 1, 2, "L2C_LOGIN_RES");
+        public static readonly PacketId C2L_LOGOUT_REQ = new PacketId(0, 2, 1, "C2L_LOGOUT_REQ");
+        public static readonly PacketId L2C_LOGOUT_RES = new PacketId(0, 2, 2, "L2C_LOGOUT_RES");
+        public static readonly PacketId L2C_EJECTION_NTC = new PacketId(0, 3, 16, "L2C_EJECTION_NTC");
+
+        public static readonly PacketId C2L_CLIENT_CHALLENGE_REQ = new PacketId(1, 0, 1, "C2L_CLIENT_CHALLENGE_REQ");
+        public static readonly PacketId L2C_CLIENT_CHALLENGE_RES = new PacketId(1, 0, 2, "L2C_CLIENT_CHALLENGE_RES");
+        public static readonly PacketId L2C_LOGIN_SERVER_CERT_NOTICE = new PacketId(1, 1, 16, "L2C_LOGIN_SERVER_CERT_NOTICE");
+
+        public static readonly PacketId C2L_GET_GAME_SERVER_LIST_RES = new PacketId(2, 0, 1, "C2L_GET_GAME_SERVER_LIST_RES");
+        public static readonly PacketId L2C_GET_GAME_SERVER_LIST_RES = new PacketId(2, 0, 2, "L2C_GET_GAME_SERVER_LIST_RES");
+        public static readonly PacketId C2L_GET_GAME_SESSION_KEY_REQ = new PacketId(2, 1, 1, "C2L_GET_GAME_SESSION_KEY_REQ");
+        public static readonly PacketId L2C_GET_GAME_SESSION_KEY_RES = new PacketId(2, 1, 2, "L2C_GET_GAME_SESSION_KEY_RES");
         public static readonly PacketId C2L_GET_LOGIN_SETTING_REQ = new PacketId(2, 2, 1, "C2L_GET_LOGIN_SETTING_REQ");
         public static readonly PacketId L2C_GET_LOGIN_SETTING_RES = new PacketId(2, 2, 2, "L2C_GET_LOGIN_SETTING_RES");
+        public static readonly PacketId L2C_NEXT_CONNECT_SERVER_NTC = new PacketId(2, 3, 16, "L2C_NEXT_CONNECT_SERVER_NTC");
+
+        public static readonly PacketId C2L_GET_ERROR_MESSAGE_LIST_REQ = new PacketId(3, 0, 1, "C2L_GET_ERROR_MESSAGE_LIST_REQ");
+        public static readonly PacketId L2C_GET_ERROR_MESSAGE_LIST_RES = new PacketId(3, 0, 2, "L2C_GET_ERROR_MESSAGE_LIST_RES");
+        public static readonly PacketId L2C_GET_ERROR_MESSAGE_LIST_NTC = new PacketId(3, 0, 16, "L2C_GET_ERROR_MESSAGE_LIST_NTC");
+
         public static readonly PacketId C2L_GP_COURSE_GET_INFO_REQ = new PacketId(4, 0, 1, "C2L_GP_COURSE_GET_INFO_REQ");
         public static readonly PacketId L2C_GP_COURSE_GET_INFO_RES = new PacketId(4, 0, 2, "L2C_GP_COURSE_GET_INFO_RES");
+
         public static readonly PacketId C2L_GET_CHARACTER_LIST_REQ = new PacketId(5, 0, 1, "C2L_GET_CHARACTER_LIST_REQ");
         public static readonly PacketId L2C_GET_CHARACTER_LIST_RES = new PacketId(5, 0, 2, "L2C_GET_CHARACTER_LIST_RES");
+        public static readonly PacketId C2L_DECIDE_CHARACTER_ID_REQ = new PacketId(5, 1, 1, "C2L_DECIDE_CHARACTER_ID_REQ");
+        public static readonly PacketId L2C_DECIDE_CHARACTER_ID_RES = new PacketId(5, 1, 2, "L2C_DECIDE_CHARACTER_ID_RES");
+        public static readonly PacketId C2L_DECIDE_CANCEL_CHARACTER_REQ = new PacketId(5, 2, 1, "C2L_DECIDE_CANCEL_CHARACTER_REQ");
+        public static readonly PacketId L2C_DECIDE_CANCEL_CHARACTER_RES = new PacketId(5, 2, 2, "L2C_DECIDE_CANCEL_CHARACTER_RES");
         public static readonly PacketId C2L_CREATE_CHARACTER_DATA_REQ = new PacketId(5, 3, 1, "C2L_CREATE_CHARACTER_DATA_REQ");
         public static readonly PacketId L2C_CREATE_CHARACTER_DATA_RES = new PacketId(5, 3, 2, "L2C_CREATE_CHARACTER_DATA_RES");
         public static readonly PacketId L2C_CREATE_CHARACTER_DATA_NTC = new PacketId(5, 3, 16, "L2C_CREATE_CHARACTER_DATA_NTC");
-
         public static readonly PacketId C2L_DELETE_CHARACTER_INFO_REQ = new PacketId(5, 4, 1, "C2L_DELETE_CHARACTER_INFO_REQ");
         public static readonly PacketId L2C_DELETE_CHARACTER_INFO_RES = new PacketId(5, 4, 2, "L2C_DELETE_CHARACTER_INFO_RES");
+        public static readonly PacketId L2C_LOGIN_WAIT_NUM_NTC = new PacketId(5, 5, 16, "L2C_LOGIN_WAIT_NUM_NTC");
 
-        public static readonly PacketId X60 = new PacketId(5, 1, 1, "X60");
-        public static readonly PacketId X61 = new PacketId(5, 1, 2, "X61");
-        public static readonly PacketId X62 = new PacketId(5, 5, 16, "X62");
-
-        public static readonly PacketId L2C_NEXT_CONNECT_SERVER_NTC = new PacketId(2, 3, 16, "L2C_NEXT_CONNECT_SERVER_NTC");
-
-        public static readonly PacketId X9_REQ = new PacketId(2, 1, 1, "X9_REQ");
-        public static readonly PacketId X9_RES = new PacketId(2, 1, 2, "X9_RES");
-
-        public static readonly PacketId X10_REQ = new PacketId(0, 2, 1, "X10_REQ");
-        public static readonly PacketId X10_RES = new PacketId(0, 2, 2, "X10_RES");
 
         #endregion
 
@@ -132,32 +138,40 @@ namespace Arrowgene.Ddon.Server.Network
         private static Dictionary<int, PacketId> InitializeLoginPacketIds()
         {
             Dictionary<int, PacketId> packetIds = new Dictionary<int, PacketId>();
-            // AddPacketIdEntry(packetIds, L2C_LOGIN_SERVER_CERT_NOTICE);
-            AddPacketIdEntry(packetIds, C2L_CLIENT_CHALLENGE_REQ);
-            AddPacketIdEntry(packetIds, L2C_CLIENT_CHALLENGE_RES);
-            AddPacketIdEntry(packetIds, C2L_LOGIN_REQ);
-            AddPacketIdEntry(packetIds, L2C_LOGIN_RES);
             AddPacketIdEntry(packetIds, C2L_PING_REQ);
             AddPacketIdEntry(packetIds, L2C_PING_RES);
+            AddPacketIdEntry(packetIds, C2L_LOGIN_REQ);
+            AddPacketIdEntry(packetIds, L2C_LOGIN_RES);
+            AddPacketIdEntry(packetIds, C2L_LOGOUT_REQ);
+            AddPacketIdEntry(packetIds, L2C_LOGOUT_RES);
+            AddPacketIdEntry(packetIds, L2C_EJECTION_NTC);
+            AddPacketIdEntry(packetIds, C2L_CLIENT_CHALLENGE_REQ);
+            AddPacketIdEntry(packetIds, L2C_CLIENT_CHALLENGE_RES);
+            AddPacketIdEntry(packetIds, L2C_LOGIN_SERVER_CERT_NOTICE);
+            AddPacketIdEntry(packetIds, C2L_GET_GAME_SERVER_LIST_RES);
+            AddPacketIdEntry(packetIds, L2C_GET_GAME_SERVER_LIST_RES);
+            AddPacketIdEntry(packetIds, C2L_GET_GAME_SESSION_KEY_REQ);
+            AddPacketIdEntry(packetIds, L2C_GET_GAME_SESSION_KEY_RES);
+            AddPacketIdEntry(packetIds, C2L_GET_LOGIN_SETTING_REQ);
+            AddPacketIdEntry(packetIds, L2C_GET_LOGIN_SETTING_RES);
+            AddPacketIdEntry(packetIds, L2C_NEXT_CONNECT_SERVER_NTC);
             AddPacketIdEntry(packetIds, C2L_GET_ERROR_MESSAGE_LIST_REQ);
             AddPacketIdEntry(packetIds, L2C_GET_ERROR_MESSAGE_LIST_RES);
             AddPacketIdEntry(packetIds, L2C_GET_ERROR_MESSAGE_LIST_NTC);
-            AddPacketIdEntry(packetIds, C2L_GET_LOGIN_SETTING_REQ);
-            AddPacketIdEntry(packetIds, L2C_GET_LOGIN_SETTING_RES);
             AddPacketIdEntry(packetIds, C2L_GP_COURSE_GET_INFO_REQ);
             AddPacketIdEntry(packetIds, L2C_GP_COURSE_GET_INFO_RES);
             AddPacketIdEntry(packetIds, C2L_GET_CHARACTER_LIST_REQ);
             AddPacketIdEntry(packetIds, L2C_GET_CHARACTER_LIST_RES);
+            AddPacketIdEntry(packetIds, C2L_DECIDE_CHARACTER_ID_REQ);
+            AddPacketIdEntry(packetIds, L2C_DECIDE_CHARACTER_ID_RES);
+            AddPacketIdEntry(packetIds, C2L_DECIDE_CANCEL_CHARACTER_REQ);
+            AddPacketIdEntry(packetIds, L2C_DECIDE_CANCEL_CHARACTER_RES);
+            AddPacketIdEntry(packetIds, C2L_CREATE_CHARACTER_DATA_REQ);
+            AddPacketIdEntry(packetIds, L2C_CREATE_CHARACTER_DATA_RES);
+            AddPacketIdEntry(packetIds, L2C_CREATE_CHARACTER_DATA_NTC);
             AddPacketIdEntry(packetIds, C2L_DELETE_CHARACTER_INFO_REQ);
             AddPacketIdEntry(packetIds, L2C_DELETE_CHARACTER_INFO_RES);
-            AddPacketIdEntry(packetIds, X60);
-            AddPacketIdEntry(packetIds, X61);
-            AddPacketIdEntry(packetIds, X62);
-            AddPacketIdEntry(packetIds, L2C_NEXT_CONNECT_SERVER_NTC);
-            AddPacketIdEntry(packetIds, X9_REQ);
-            AddPacketIdEntry(packetIds, X9_RES);
-            AddPacketIdEntry(packetIds, X10_REQ);
-            AddPacketIdEntry(packetIds, X10_RES);
+            AddPacketIdEntry(packetIds, L2C_LOGIN_WAIT_NUM_NTC);
             return packetIds;
         }
 
