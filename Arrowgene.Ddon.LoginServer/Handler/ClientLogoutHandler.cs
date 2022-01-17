@@ -5,23 +5,23 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientPingHandler : PacketHandler<LoginClient>
+    public class ClientLogoutHandler : PacketHandler<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(ClientPingHandler));
+        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(ClientLogoutHandler));
 
 
-        public ClientPingHandler(DdonLoginServer server) : base(server)
+        public ClientLogoutHandler(DdonLoginServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2L_PING_REQ;
+        public override PacketId Id => PacketId.C2L_LOGOUT_REQ;
 
         public override void Handle(LoginClient client, Packet packet)
         {
             IBuffer buffer = new StreamBuffer();
             buffer.WriteUInt32(0, Endianness.Big);
             buffer.WriteUInt32(0, Endianness.Big);
-            client.Send(new Packet(PacketId.L2C_PING_RES, buffer.GetAllBytes()));
+            client.Send(new Packet(PacketId.L2C_LOGOUT_RES, buffer.GetAllBytes()));
         }
     }
 }
