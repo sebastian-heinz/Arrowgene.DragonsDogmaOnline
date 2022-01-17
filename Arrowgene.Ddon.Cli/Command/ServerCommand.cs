@@ -1,13 +1,19 @@
 ﻿using System;
+using System.IO;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.WebServer;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli.Command
 {
     public class ServerCommand : ICommand
     {
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ServerCommand));
+
+
         private Setting _setting;
         private IServerProvider _provider;
         private DdonLoginServer _loginServer;
@@ -23,7 +29,18 @@ namespace Arrowgene.Ddon.Cli.Command
         {
             if (_setting == null)
             {
-                _setting = new Setting();
+                string settingPath = Path.Combine(Util.ExecutingDirectory(), "Arrowgene.Dd.json");
+                _setting = Setting.Load(settingPath);
+                if (_setting == null)
+                {
+                    _setting = new Setting();
+                    _setting.Save(settingPath);
+                    Logger.Info($"Created new settings and saved to:{settingPath}");
+                }
+                else
+                {
+                    Logger.Info($"Loaded settings from:{settingPath}");
+                }
             }
 
             if (_provider == null)

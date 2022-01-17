@@ -11,6 +11,25 @@ namespace Arrowgene.Ddon.Cli
     [DataContract]
     public class Setting
     {
+        public static Setting Load(string filePath)
+        {
+            FileInfo f = new FileInfo(filePath);
+            if (!f.Exists)
+            {
+                return null;
+            }
+
+            string json = File.ReadAllText(f.FullName);
+            Setting setting = JsonContractSerializer.Deserialize<Setting>(json);
+            return setting;
+        }
+
+        public void Save(string filePath)
+        {
+            string json = JsonContractSerializer.Serialize(this);
+            File.WriteAllText(filePath, json);
+        }
+
         [DataMember(Order = 10)] public WebServerSetting WebServerSetting { get; set; }
         [DataMember(Order = 20)] public GameServerSetting GameServerSetting { get; set; }
         [DataMember(Order = 30)] public LoginServerSetting LoginServerSetting { get; set; }

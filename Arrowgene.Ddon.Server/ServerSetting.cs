@@ -17,6 +17,7 @@ namespace Arrowgene.Ddon.Server
 
         [IgnoreDataMember] public IPAddress ListenIpAddress { get; set; }
 
+
         [DataMember(Name = "ListenIpAddress", Order = 0)]
         public string DataListenIpAddress
         {
@@ -25,6 +26,7 @@ namespace Arrowgene.Ddon.Server
         }
 
         [IgnoreDataMember] public IPAddress ServerIpAddress { get; set; }
+
 
         [DataMember(Name = "ServerIpAddress", Order = 1)]
         public string DataServerIpAddress
