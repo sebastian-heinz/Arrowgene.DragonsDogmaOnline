@@ -30,11 +30,37 @@ namespace Arrowgene.Ddon.Shared.Csv
                 true,
                 BufferSize
             );
-            string line;
-            while ((line = streamReader.ReadLine()) != null)
+
+            char c;
+            StringBuilder sb = new StringBuilder();
+            bool previousCr = false;
+            while ((c = (char) streamReader.Read()) > 0)
             {
-                ProcessLine(line, items);
+                // only treat \r\n as line endings
+                if (c == '\r')
+                {
+                    //carriage return
+                    previousCr = true;
+                    continue;
+                }
+
+                if (c == '\n')
+                {
+                    //line feed 
+                    if (previousCr)
+                    {
+                        ProcessLine(sb.ToString(), items);
+                        sb.Clear();
+                    }
+
+                    previousCr = false;
+                    continue;
+                }
+
+                sb.Append(c);
+                previousCr = false;
             }
+
 
             return items;
         }
