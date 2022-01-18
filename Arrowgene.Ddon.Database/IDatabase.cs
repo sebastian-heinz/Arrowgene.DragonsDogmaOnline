@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Database
         bool DeleteAccount(int accountId);
 
         // Character
-        Character CreateCharacter(Character character);
+        bool CreateCharacter(Character character);
         public bool UpdateCharacter(Character character);
         public Character SelectCharacter(int characterId);
         List<Character> SelectCharactersByAccountId(int accountId);

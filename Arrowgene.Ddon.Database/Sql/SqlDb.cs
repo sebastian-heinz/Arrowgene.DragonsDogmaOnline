@@ -241,6 +241,11 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetInt32(reader.GetOrdinal(column));
         }
 
+        protected uint GetUInt32(DbDataReader reader, string column)
+        {
+            return (uint)reader.GetInt32(reader.GetOrdinal(column));
+        }
+
         protected byte GetByte(DbDataReader reader, string column)
         {
             return reader.GetByte(reader.GetOrdinal(column));
@@ -249,6 +254,11 @@ namespace Arrowgene.Ddon.Database.Sql
         protected short GetInt16(DbDataReader reader, string column)
         {
             return reader.GetInt16(reader.GetOrdinal(column));
+        }
+
+        protected ushort GetUInt16(DbDataReader reader, string column)
+        {
+            return (ushort) reader.GetInt16(reader.GetOrdinal(column));
         }
 
         protected float GetFloat(DbDataReader reader, string column)

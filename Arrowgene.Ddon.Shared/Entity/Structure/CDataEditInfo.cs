@@ -2,7 +2,7 @@
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataEditInfo
+    public class CDataEditInfo
     {
         public byte Sex;
         public byte Voice;

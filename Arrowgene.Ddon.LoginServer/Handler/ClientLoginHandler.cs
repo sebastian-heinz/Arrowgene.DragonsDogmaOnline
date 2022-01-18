@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -23,10 +24,23 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            Logger.Debug(client, $"Received LoginToken:{packet.Structure.LoginToken} for platform:{packet.Structure.PlatformType}");
+            string loginToken = packet.Structure.LoginToken;
 
             L2CLoginRes res = new L2CLoginRes();
-            res.LoginToken = packet.Structure.LoginToken;
+            res.LoginToken = loginToken;
+
+            if (loginToken.Length != GameToken.LoginTokenLength)
+            {
+                // If game server disconnects client, the client might come back with a different token.
+                // Need to investigate, perhaps game server did not send proper error response to
+                // terminate the connection
+                Logger.Error(client, $"Invalid Login Token: {loginToken}");
+                res.Error = 1;
+                client.Send(res);
+                return;
+            }
+
+            Logger.Debug(client, $"Received LoginToken:{packet.Structure.LoginToken} for platform:{packet.Structure.PlatformType}");
 
             Account account = Database.SelectAccountByLoginToken(packet.Structure.LoginToken);
             if (_setting.AccountRequired)

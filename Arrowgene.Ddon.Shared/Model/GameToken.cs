@@ -7,8 +7,8 @@ namespace Arrowgene.Ddon.Shared.Model
     public class GameToken
     {
         private static string TokenPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        private const int LoginTokenLength = 20;
-        private const int GameTokenLength = 20;
+        public const int LoginTokenLength = 20;
+        public const int GameTokenLength = 20;
 
         public static string GenerateLoginToken()
         {
