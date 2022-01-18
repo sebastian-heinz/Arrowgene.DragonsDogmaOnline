@@ -1,11 +1,13 @@
 ﻿using System;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
-namespace Arrowgene.Ddon.Server.Logging
+namespace Arrowgene.Ddon.Server
 {
-    public class DdonLogger : Logger
+    public class ServerLogger : Logger
     {
         private ServerSetting _setting;
 

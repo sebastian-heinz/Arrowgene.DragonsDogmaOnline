@@ -1,6 +1,4 @@
-﻿using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity;
-
+﻿using Arrowgene.Ddon.Shared.Entity;
 namespace Arrowgene.Ddon.Server.Network
 {
     public class StructurePacket<TStruct> : Packet where TStruct : IPacketStructure

@@ -15,4 +15,11 @@
       <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
     </ItemGroup>
 
+    <ItemGroup>
+        <ContentWithTargetPath Include="Files\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+        </ContentWithTargetPath>
+    </ItemGroup>
+    
 </Project>

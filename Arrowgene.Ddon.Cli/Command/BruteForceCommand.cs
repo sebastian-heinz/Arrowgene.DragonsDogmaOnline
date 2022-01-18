@@ -8,6 +8,7 @@ using System.Threading;
 using Arrowgene.Ddon.PacketLibrary;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Cli.Command
 {

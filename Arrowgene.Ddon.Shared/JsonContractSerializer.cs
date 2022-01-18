@@ -9,7 +9,7 @@ using System.Xml;
 
 namespace Arrowgene.Ddon.Shared
 {
-    public class JsonContractSerializer
+    public static class JsonContractSerializer
     {
         public static readonly DataContractJsonSerializerSettings Settings =
             new DataContractJsonSerializerSettings

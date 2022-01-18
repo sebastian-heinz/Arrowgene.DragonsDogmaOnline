@@ -1,8 +1,9 @@
 ﻿using System;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 
-namespace Arrowgene.Ddon.Shared
+namespace Arrowgene.Ddon.Server.Network
 {
     public class Packet
     {

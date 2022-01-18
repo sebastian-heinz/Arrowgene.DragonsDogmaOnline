@@ -1,4 +1,4 @@
-﻿namespace Arrowgene.Ddon.Shared
+﻿namespace Arrowgene.Ddon.Shared.Network
 {
     public enum PacketSource : byte
     {

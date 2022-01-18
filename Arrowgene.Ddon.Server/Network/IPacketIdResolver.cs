@@ -1,4 +1,6 @@
-﻿namespace Arrowgene.Ddon.Shared
+﻿using Arrowgene.Ddon.Shared.Network;
+
+namespace Arrowgene.Ddon.Server.Network
 {
     public interface IPacketIdResolver
     {
@@ -8,8 +10,8 @@
 
     public static class PacketIdResolver
     {
-        public static LoginPacketIdResolver LoginPacketIdResolver = new LoginPacketIdResolver();
-        public static GamePacketIdResolver GamePacketIdResolver = new GamePacketIdResolver();
+        public static readonly LoginPacketIdResolver LoginPacketIdResolver = new LoginPacketIdResolver();
+        public static readonly GamePacketIdResolver GamePacketIdResolver = new GamePacketIdResolver();
     }
 
     public class LoginPacketIdResolver : IPacketIdResolver

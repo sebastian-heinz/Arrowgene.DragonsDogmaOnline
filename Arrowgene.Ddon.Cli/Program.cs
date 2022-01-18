@@ -22,10 +22,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading;
 using Arrowgene.Ddon.Cli.Command;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli
@@ -48,9 +51,16 @@ namespace Arrowgene.Ddon.Cli
         private readonly Dictionary<string, ICommand> _commands;
         private ICommand _lastCommand;
         private readonly object _consoleLock;
+        private readonly DirectoryInfo _logDir;
 
         private Program()
         {
+            _logDir = new DirectoryInfo(Path.Combine(Util.ExecutingDirectory(), "Logs"));
+            if (!_logDir.Exists)
+            {
+                Directory.CreateDirectory(_logDir.FullName);
+            }
+
             _lastCommand = null;
             _consoleLock = new object();
             _commands = new Dictionary<string, ICommand>();
@@ -301,6 +311,8 @@ namespace Arrowgene.Ddon.Cli
                 Console.ForegroundColor = consoleColor;
                 Console.WriteLine(text);
                 Console.ResetColor();
+                string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
+                File.WriteAllText(filePath, text);
             }
         }
     }

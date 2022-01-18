@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
+using Arrowgene.Ddon.Shared.Network;
 using Xunit;
 
 namespace Arrowgene.Ddon.Test.Shared.Crypto

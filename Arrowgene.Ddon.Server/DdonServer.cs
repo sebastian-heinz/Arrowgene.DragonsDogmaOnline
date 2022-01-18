@@ -20,8 +20,10 @@
  * along with Arrowgene.Ddon.LoginServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
@@ -31,18 +33,19 @@ namespace Arrowgene.Ddon.Server
     public abstract class DdonServer<TClient> : IClientFactory<TClient>
         where TClient : Client
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonServer<TClient>));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonServer<TClient>));
 
         private readonly Consumer<TClient> _consumer;
         private readonly AsyncEventServer _server;
         private readonly ServerSetting _setting;
 
-        public DdonServer(ServerSetting setting, IServerProvider provider)
+        public DdonServer(ServerSetting setting, IDatabase database, AssetRepository assetRepository)
         {
             _setting = setting;
-            AssetRepository = provider.AssetRepository;
-
-            LogProvider.Configure<DdonLogger>(_setting);
+            AssetRepository = assetRepository;
+            Database = database;
+            
+            LogProvider.Configure<ServerLogger>(_setting);
 
             _consumer = new Consumer<TClient>(
                 _setting,
@@ -61,6 +64,7 @@ namespace Arrowgene.Ddon.Server
         }
 
         public AssetRepository AssetRepository { get; }
+        public IDatabase Database { get; }
 
         public void Start()
         {

@@ -20,10 +20,12 @@
  * along with Arrowgene.Ddon.GameServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -31,9 +33,10 @@ namespace Arrowgene.Ddon.GameServer
 {
     public class DdonGameServer : DdonServer<GameClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonGameServer));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        public DdonGameServer(GameServerSetting setting, IServerProvider provider) : base(setting.ServerSetting, provider)
+        public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
+            : base(setting.ServerSetting, database, assetRepository)
         {
             Setting = new GameServerSetting(setting);
             LoadPacketHandler();

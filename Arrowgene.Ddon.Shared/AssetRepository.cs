@@ -4,7 +4,7 @@ using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
-namespace Arrowgene.Ddon.Server
+namespace Arrowgene.Ddon.Shared
 {
     public class AssetRepository
     {

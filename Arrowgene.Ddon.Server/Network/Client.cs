@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
-namespace Arrowgene.Ddon.Shared
+namespace Arrowgene.Ddon.Server.Network
 {
     public class Client
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(Client));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Client));
 
         private ITcpSocket _socket;
         private PacketFactory _packetFactory;

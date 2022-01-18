@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
+using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
-using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.WebServer;
 using Arrowgene.Logging;
 
@@ -15,10 +16,11 @@ namespace Arrowgene.Ddon.Cli.Command
 
 
         private Setting _setting;
-        private IServerProvider _provider;
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
         private DdonWebServer _webServer;
+        private IDatabase _database;
+        private AssetRepository _assetRepository;
 
         public string Key => "server";
 
@@ -43,24 +45,29 @@ namespace Arrowgene.Ddon.Cli.Command
                 }
             }
 
-            if (_provider == null)
+            if (_database == null)
             {
-                _provider = new DefaultServerProvider(_setting.AssetPath);
+                _database = DdonDatabaseBuilder.Build(_setting.DatabaseSetting);
+            }
+
+            if (_assetRepository == null)
+            {
+                _assetRepository = new AssetRepository(_setting.AssetPath);
             }
 
             if (_loginServer == null)
             {
-                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _provider);
+                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _database, _assetRepository);
             }
 
             if (_webServer == null)
             {
-                _webServer = new DdonWebServer(_setting.WebServerSetting);
+                _webServer = new DdonWebServer(_setting.WebServerSetting,_database);
             }
 
             if (_gameServer == null)
             {
-                _gameServer = new DdonGameServer(_setting.GameServerSetting, _provider);
+                _gameServer = new DdonGameServer(_setting.GameServerSetting, _database, _assetRepository);
             }
 
             if (parameter.Arguments.Contains("start"))

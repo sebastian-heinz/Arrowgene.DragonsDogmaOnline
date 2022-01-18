@@ -1,5 +1,5 @@
-﻿using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity;
+﻿using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Server.Network
 {

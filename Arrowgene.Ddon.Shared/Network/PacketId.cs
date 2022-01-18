@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Arrowgene.Ddon.Shared
+namespace Arrowgene.Ddon.Shared.Network
 {
     public readonly struct PacketId
     {

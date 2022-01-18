@@ -1,6 +1,6 @@
-﻿using Arrowgene.Ddon.Server;
+﻿using Arrowgene.Ddon.Shared.Network;
 
-namespace Arrowgene.Ddon.Shared
+namespace Arrowgene.Ddon.Server.Network
 {
     public abstract class PacketHandler<TClient> : IPacketHandler<TClient> where TClient : Client
     {

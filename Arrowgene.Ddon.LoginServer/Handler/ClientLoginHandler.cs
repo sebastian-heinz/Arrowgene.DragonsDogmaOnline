@@ -1,14 +1,17 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Text;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
     public class ClientLoginHandler : PacketHandler<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(ClientLoginHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientLoginHandler));
 
 
         public ClientLoginHandler(DdonLoginServer server) : base(server)
@@ -22,17 +25,19 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             // Read C2L_LOGIN_REQ packet;
             IBuffer recv = packet.AsBuffer();
             string onetimeToken = recv.ReadMtString();
-            byte inPlatform = recv.ReadByte();
-            /*
-            PLATFORM_TYPE_NONE = 0x0,
-            PLATFORM_TYPE_PC = 0x1,
-            PLATFORM_TYPE_PS3 = 0x2,
-            PLATFORM_TYPE_PS4 = 0x3,
-            */
+            if (!recv.ReadEnumByte(out PlatformType platformType))
+            {
+                platformType = PlatformType.None;
+                Logger.Error(client, "Failed to read PlatformType");
+            }
 
-            Logger.Debug(client, $"Received OnetimeToken: {onetimeToken}");
+            Logger.Debug(client, $"Received OnetimeToken: {onetimeToken} for platform: {platformType}");
 
             client.OnetimeToken = onetimeToken;
+            
+            
+           
+            
 
             // Write L2C_LOGIN_RES packet.
             IBuffer buffer = new StreamBuffer();

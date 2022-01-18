@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
-namespace Arrowgene.Ddon.Shared
+namespace Arrowgene.Ddon.Server.Network
 {
     public class PacketFactory
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(PacketFactory));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PacketFactory));
         private static readonly Camellia Camellia = new Camellia();
 
         private static readonly byte[] CamelliaKey = new byte[]

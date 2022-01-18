@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
 
-namespace Arrowgene.Ddon.Shared
+namespace Arrowgene.Ddon.Server.Network
 {
     public class Consumer<TClient> : ThreadedBlockingQueueConsumer where TClient : Client
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(Consumer<TClient>));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Consumer<TClient>));
         private readonly Dictionary<PacketId, IPacketHandler<TClient>> _packetHandlerLookup;
         private readonly Dictionary<ITcpSocket, TClient> _clients;
         private readonly object _lock;

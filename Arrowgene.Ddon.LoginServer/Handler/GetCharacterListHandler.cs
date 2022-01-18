@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.LoginServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
     public class GetCharacterListHandler : PacketHandler<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(GetCharacterListHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GetCharacterListHandler));
 
 
         public GetCharacterListHandler(DdonLoginServer server) : base(server)

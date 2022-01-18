@@ -1,13 +1,14 @@
 ﻿using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class QuestGetQuestCompletedListHandler : PacketHandler<GameClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(QuestGetQuestCompletedListHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetQuestCompletedListHandler));
 
 
         public QuestGetQuestCompletedListHandler(DdonGameServer server) : base(server)

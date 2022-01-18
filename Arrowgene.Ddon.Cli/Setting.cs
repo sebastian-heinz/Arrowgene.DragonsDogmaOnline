@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.WebServer;
 
 namespace Arrowgene.Ddon.Cli

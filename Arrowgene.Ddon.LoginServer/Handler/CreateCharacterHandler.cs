@@ -1,14 +1,14 @@
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
     public class CreateCharacterHandler : StructurePacketHandler<LoginClient, C2LCreateCharacterDataReq>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(CreateCharacterHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CreateCharacterHandler));
 
 
         public CreateCharacterHandler(DdonLoginServer server) : base(server)

@@ -6,7 +6,8 @@ using System.Text.Json;
 using Arrowgene.Ddon.Cli.Misc;
 using Arrowgene.Ddon.PacketLibrary;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Cli.Command
 {
@@ -43,6 +44,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     Console.WriteLine("File does not exist");
                     return CommandResultType.Continue;
                 }
+
                 String json = File.ReadAllText(f.FullName);
                 outName = f.Name + "_annotated.txt";
                 outDir = f.DirectoryName;
@@ -80,19 +82,18 @@ namespace Arrowgene.Ddon.Cli.Command
         private void PrintPackets(List<Packet> packets, string outPath)
         {
             StringBuilder sb = new StringBuilder();
-           // foreach (Packet packet in packets)
-           // {
-           //     string pStr = packet.ToString();
-           //     sb.Append(pStr);
-           //     sb.Append(Environment.NewLine);
-           // }
-           
-           
+            foreach (Packet packet in packets)
+            {
+                string pStr = packet.ToString();
+                sb.Append(pStr);
+                sb.Append(Environment.NewLine);
+            }
 
-            string dump = PacketDump.DumpCSharpStruc(packets, "Stream85");
-            File.WriteAllText( outPath+ ".cs", dump);
-        //    File.WriteAllText(outPath, sb.ToString());
-         //   Console.WriteLine(sb.ToString());
+
+            // string dump = PacketDump.DumpCSharpStruc(packets, "Stream85");
+            // File.WriteAllText( outPath+ ".cs", dump);
+            File.WriteAllText(outPath, sb.ToString());
+            //   Console.WriteLine(sb.ToString());
         }
 
         private List<Packet> Convert(List<PlPacket> plPackets)

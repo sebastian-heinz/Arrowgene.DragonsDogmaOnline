@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
-using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
     public class GetLoginSettingHandler : PacketHandler<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(GetLoginSettingHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GetLoginSettingHandler));
 
         private readonly LoginServerSetting _setting;
 

@@ -20,10 +20,12 @@
  * along with Arrowgene.Ddon.LoginServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.LoginServer.Handler;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -31,9 +33,10 @@ namespace Arrowgene.Ddon.LoginServer
 {
     public class DdonLoginServer : DdonServer<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonLoginServer));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonLoginServer));
 
-        public DdonLoginServer(LoginServerSetting setting, IServerProvider provider) : base(setting.ServerSetting, provider)
+        public DdonLoginServer(LoginServerSetting setting, IDatabase database, AssetRepository assetRepository)
+            : base(setting.ServerSetting, database, assetRepository)
         {
             Setting = new LoginServerSetting(setting);
             LoadPacketHandler();

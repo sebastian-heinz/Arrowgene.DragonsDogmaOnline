@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Shared;
+﻿using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.GameServer.Dump
 {

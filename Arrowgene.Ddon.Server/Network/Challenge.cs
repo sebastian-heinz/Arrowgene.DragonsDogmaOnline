@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Crypto;
 
-namespace Arrowgene.Ddon.Shared
+namespace Arrowgene.Ddon.Server.Network
 {
     public class Challenge
     {
@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Shared
                 response.CamelliaKey = _rsa.Decrypt(rsaEncryptedCamelliaKey, RSAEncryptionPadding.Pkcs1);
                 response.BlowFishPassword = BlowFish.Decrypt_ECB(response.EncryptedBlowFishPassword);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 response.Error = true;
             }

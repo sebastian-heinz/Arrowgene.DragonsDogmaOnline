@@ -1,15 +1,16 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.LoginServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
     public class ClientDecideCharacterIdHandler : PacketHandler<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(ClientDecideCharacterIdHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientDecideCharacterIdHandler));
 
 
         public ClientDecideCharacterIdHandler(DdonLoginServer server) : base(server)
@@ -20,7 +21,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, Packet packet)
         {
-
             // Parse request -- C2L_DECIDE_CHARACTER_ID_REQ
             IBuffer recv = packet.AsBuffer();
             var characterID = recv.ReadUInt32(Endianness.Big);
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 $"    Type: {type}\n" +
                 $"    RotationServerID: {rotationServerID}\n" +
                 $"    WaitNum: {waitNum}\n" +
-                $"    Counter: {counter}\n" 
+                $"    Counter: {counter}\n"
             );
 
             // Write L2C_DECIDE_CHARACTER_ID_RES packet.

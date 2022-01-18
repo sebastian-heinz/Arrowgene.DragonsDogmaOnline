@@ -1,5 +1,6 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {

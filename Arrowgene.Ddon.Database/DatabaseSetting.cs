@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Database
 {
