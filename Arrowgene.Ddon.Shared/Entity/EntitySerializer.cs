@@ -46,11 +46,16 @@ namespace Arrowgene.Ddon.Shared.Entity
 
                     // Packet structure serializers
                     Create(new C2LCreateCharacterDataReqSerializer()),
+                    Create(new C2LGetErrorMessageListReqSerializer()),
+                    Create(new C2LLoginReqSerializer()),
                     Create(new L2CCreateCharacterDataNtcSerializer()),
                     Create(new L2CCreateCharacterDataResSerializer()),
                     Create(new L2CGetErrorMessageListNtcSerializer()),
                     Create(new L2CGetErrorMessageListResSerializer()),
                     Create(new L2CGetLoginSettingsResSerializer()),
+                    Create(new L2CLoginResSerializer()),
+
+                    Create(new ServerResSerializer()),
                 }
             );
 

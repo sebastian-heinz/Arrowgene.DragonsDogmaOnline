@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Shared.Network;
+﻿using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -7,9 +8,11 @@ namespace Arrowgene.Ddon.Server.Network
         protected PacketHandler(DdonServer<TClient> server)
         {
             Server = server;
+            Database = server.Database;
         }
 
         protected DdonServer<TClient> Server { get; }
+        protected IDatabase Database { get; }
 
         public abstract PacketId Id { get; }
         public abstract void Handle(TClient client, Packet packet);

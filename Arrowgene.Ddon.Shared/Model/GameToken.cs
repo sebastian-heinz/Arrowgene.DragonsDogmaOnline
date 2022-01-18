@@ -26,6 +26,7 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public int AccountId { get; set; }
+        public int CharacterId { get; set; }
         public string Token { get; set; }
         public DateTime Created { get; set; }
     }

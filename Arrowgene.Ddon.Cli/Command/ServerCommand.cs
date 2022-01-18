@@ -53,6 +53,7 @@ namespace Arrowgene.Ddon.Cli.Command
             if (_assetRepository == null)
             {
                 _assetRepository = new AssetRepository(_setting.AssetPath);
+                _assetRepository.Initialize();
             }
 
             if (_loginServer == null)
@@ -62,7 +63,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_webServer == null)
             {
-                _webServer = new DdonWebServer(_setting.WebServerSetting,_database);
+                _webServer = new DdonWebServer(_setting.WebServerSetting, _database);
             }
 
             if (_gameServer == null)

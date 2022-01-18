@@ -1,50 +1,77 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
-using System.Text;
+using System;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientLoginHandler : PacketHandler<LoginClient>
+    public class ClientLoginHandler : StructurePacketHandler<LoginClient, C2LLoginReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientLoginHandler));
 
+        private readonly LoginServerSetting _setting;
 
         public ClientLoginHandler(DdonLoginServer server) : base(server)
         {
+            _setting = server.Setting;
         }
 
         public override PacketId Id => PacketId.C2L_LOGIN_REQ;
 
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            // Read C2L_LOGIN_REQ packet;
-            IBuffer recv = packet.AsBuffer();
-            string onetimeToken = recv.ReadMtString();
-            if (!recv.ReadEnumByte(out PlatformType platformType))
+            Logger.Debug(client, $"Received LoginToken:{packet.Structure.LoginToken} for platform:{packet.Structure.PlatformType}");
+
+            L2CLoginRes res = new L2CLoginRes();
+            res.LoginToken = packet.Structure.LoginToken;
+
+            Account account = Database.SelectAccountByLoginToken(packet.Structure.LoginToken);
+            if (_setting.AccountRequired)
             {
-                platformType = PlatformType.None;
-                Logger.Error(client, "Failed to read PlatformType");
+                if (account == null)
+                {
+                    Logger.Error(client, "Invalid Token");
+                    res.Error = 1;
+                    client.Send(res);
+                    return;
+                }
+
+                // clear token
+                account.LoginToken = string.Empty;
+            }
+            else
+            {
+                // allow easy access
+                // assume token as account name & password
+                if (account == null)
+                {
+                    account = Database.CreateAccount(packet.Structure.LoginToken, packet.Structure.LoginToken, packet.Structure.LoginToken);
+                    if (account == null)
+                    {
+                        Logger.Error(client, "Could not create account from LoginToken, choose another token");
+                        res.Error = 1;
+                        client.Send(res);
+                        return;
+                    }
+
+                    // set and do not clear token
+                    account.LoginToken = packet.Structure.LoginToken;
+                    account.LoginTokenCreated = DateTime.Now;
+                    Logger.Info(client, "Created new account from token");
+                }
             }
 
-            Logger.Debug(client, $"Received OnetimeToken: {onetimeToken} for platform: {platformType}");
+            account.LastLogin = DateTime.Now;
+            Database.UpdateAccount(account);
 
-            client.OnetimeToken = onetimeToken;
-            
-            
-           
-            
+            client.Account = account;
+            client.UpdateIdentity();
+            Logger.Info(client, "Logged In");
 
-            // Write L2C_LOGIN_RES packet.
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0); //us_error
-            buffer.WriteInt32(0); //n_result
-            buffer.WriteMtString(client.OnetimeToken);
-            client.Send(new Packet(PacketId.L2C_LOGIN_RES, buffer.GetAllBytes()));
+            client.Send(res);
         }
     }
 }

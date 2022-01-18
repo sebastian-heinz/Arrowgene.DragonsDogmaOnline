@@ -1,2 +1,1 @@
-﻿INSERT INTO `account` (id,name,normal_name,hash,mail,mail_verified,mail_verified_at,mail_token,password_token,state,last_login,created) VALUES 
-(1,'admin','admin','mXRcitlT60KfV8CyywcDnWAmI4y5uMWRveRytto6s7dx+bfBa6eX7lannGpDEAQ6','',0,NULL,NULL,NULL,1,NULL,'2022-01-01 0:0:0.0');
+﻿

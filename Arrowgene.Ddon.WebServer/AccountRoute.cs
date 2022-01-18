@@ -105,7 +105,9 @@ namespace Arrowgene.Ddon.WebServer
             }
 
             GameToken token = GameToken.Generate(account.Id);
-            _database.SetToken(account.Id, token);
+            account.LoginToken = token.Token;
+            account.LoginTokenCreated = token.Created;
+            _database.UpdateAccount(account);
             return token;
         }
     }

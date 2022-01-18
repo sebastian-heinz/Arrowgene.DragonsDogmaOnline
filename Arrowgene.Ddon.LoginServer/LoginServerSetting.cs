@@ -7,6 +7,7 @@ namespace Arrowgene.Ddon.LoginServer
     public class LoginServerSetting
     {
         [DataMember(Order = 1)] public ServerSetting ServerSetting { get; set; }
+        [DataMember(Order = 10)] public bool AccountRequired { get; set; }
         [DataMember(Order = 100)] public uint JobLevelMax { get; set; }
         [DataMember(Order = 101)] public uint ClanMemberMax { get; set; }
         [DataMember(Order = 102)] public byte CharacterNumMax { get; set; }
@@ -38,7 +39,9 @@ namespace Arrowgene.Ddon.LoginServer
             ServerSetting = new ServerSetting();
             ServerSetting.ServerPort = 52100;
             ServerSetting.Name = "Login";
-
+            
+            AccountRequired = false;
+            
             JobLevelMax = 65;
             ClanMemberMax = 100;
             CharacterNumMax = 4;
@@ -71,7 +74,9 @@ namespace Arrowgene.Ddon.LoginServer
         public LoginServerSetting(LoginServerSetting setting)
         {
             ServerSetting = new ServerSetting(setting.ServerSetting);
-
+            
+            AccountRequired = setting.AccountRequired;
+            
             JobLevelMax = setting.JobLevelMax;
             ClanMemberMax = setting.ClanMemberMax;
             CharacterNumMax = setting.CharacterNumMax;

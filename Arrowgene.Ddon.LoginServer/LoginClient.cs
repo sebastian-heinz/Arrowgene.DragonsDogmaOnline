@@ -1,5 +1,5 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Networking.Tcp;
 
 namespace Arrowgene.Ddon.LoginServer
@@ -8,9 +8,20 @@ namespace Arrowgene.Ddon.LoginServer
     {
         public LoginClient(ITcpSocket socket, PacketFactory packetFactory) : base(socket, packetFactory)
         {
-            Identity = $"[LoginClient@{socket.Identity}]";
+            UpdateIdentity();
         }
 
-        public string OnetimeToken { get; set; }
+        public void UpdateIdentity()
+        {
+            string newIdentity = $"[LoginClient@{Socket.Identity}]";
+            if (Account != null)
+            {
+                newIdentity += $"[Acc:{Account.NormalName}]";
+            }
+
+            Identity = newIdentity;
+        }
+
+        public Account Account { get; set; }
     }
 }

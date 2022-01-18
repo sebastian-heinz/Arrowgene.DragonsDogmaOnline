@@ -32,5 +32,10 @@ namespace Arrowgene.Ddon.Shared
 
             return false;
         }
+
+        public static void WriteEnumByte<TEnum>(this IBuffer buffer, TEnum value) where TEnum : struct
+        {
+            buffer.WriteByte((byte) (ValueType) value);
+        }
     }
 }
