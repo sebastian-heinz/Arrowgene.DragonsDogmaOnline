@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new C2LCreateCharacterDataReqSerializer()),
                     Create(new C2LGetErrorMessageListReqSerializer()),
                     Create(new C2LLoginReqSerializer()),
+                    Create(new C2SConnectionMoveInServerReqSerializer()),
                     Create(new L2CCreateCharacterDataNtcSerializer()),
                     Create(new L2CCreateCharacterDataResSerializer()),
                     Create(new L2CGetErrorMessageListNtcSerializer()),

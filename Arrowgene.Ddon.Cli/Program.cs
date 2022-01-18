@@ -39,6 +39,18 @@ namespace Arrowgene.Ddon.Cli
         private const char CliValueSeparator = '=';
         private static readonly ILogger Logger = LogProvider.Logger(typeof(Program));
 
+        private static HashSet<PacketId> IgnorePacketIds = new HashSet<PacketId>()
+        {
+            PacketId.L2C_GET_ERROR_MESSAGE_LIST_NTC,
+            PacketId.L2C_GET_CHARACTER_LIST_RES,
+            PacketId.L2C_GP_COURSE_GET_INFO_RES,
+            PacketId.L2C_GET_LOGIN_SETTING_RES,
+            PacketId.S2C_LOADING_INFO_LOADING_GET_INFO_RES,
+            PacketId.S2C_STAGE_GET_STAGE_LIST_RES,
+            PacketId.S2C_CHARACTER_DECIDE_CHARACTER_ID_RES,
+            PacketId.S2C_SERVER_GET_GAME_SETTING_RES,
+        };
+
         private static void Main(string[] args)
         {
             Console.WriteLine("Program started");
@@ -260,7 +272,6 @@ namespace Arrowgene.Ddon.Cli
             Logger.Info(sb.ToString());
         }
 
-
         private void LogProviderOnOnLogWrite(object sender, LogWriteEventArgs e)
         {
             Log log = e.Log;
@@ -283,6 +294,7 @@ namespace Arrowgene.Ddon.Cli
                     break;
             }
 
+            string text = null;
             Packet packet = e.Log.Tag as Packet;
             if (packet != null)
             {
@@ -298,9 +310,18 @@ namespace Arrowgene.Ddon.Cli
                         consoleColor = ConsoleColor.DarkRed;
                         break;
                 }
+
+                if (IgnorePacketIds.Contains(packet.Id))
+                {
+                    text = $"Ignored Packet Content:{Environment.NewLine}{packet.PrintHeader()}";
+                }
             }
 
-            string text = log.ToString();
+            if (text == null)
+            {
+                text = log.ToString();
+            }
+
             if (text == null)
             {
                 return;

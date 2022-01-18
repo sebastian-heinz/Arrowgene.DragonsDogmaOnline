@@ -32,6 +32,10 @@ namespace Arrowgene.Ddon.Database
         private static DdonSqLiteDb PrepareSqlLiteDb(string sqLiteFolder)
         {
             string sqLitePath = Path.Combine(sqLiteFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
+            
+            // TODO deleting database to ensure working condition fow now
+            File.Delete(sqLitePath);
+            
             DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath);
             if (db.CreateDatabase())
             {

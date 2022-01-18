@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Database.Model;
+﻿using System.Collections.Generic;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database
@@ -20,9 +21,18 @@ namespace Arrowgene.Ddon.Database
         bool UpdateAccount(Account account);
         bool DeleteAccount(int accountId);
 
-        // Misc
-        bool SetToken(int accountId, GameToken token);
-        GameToken SelectToken(int accountId);
-        bool DeleteToken(int accountId);
+        // Character
+        Character CreateCharacter(Character character);
+        public bool UpdateCharacter(Character character);
+        public Character SelectCharacter(int characterId);
+        List<Character> SelectCharactersByAccountId(int accountId);
+        public bool DeleteCharacter(int characterId);
+
+        // GameToken
+        bool SetToken(GameToken token);
+        GameToken SelectTokenByAccountId(int accountId);
+        GameToken SelectToken(string tokenStr);
+        bool DeleteTokenByAccountId(int accountId);
+        bool DeleteToken(string token);
     }
 }

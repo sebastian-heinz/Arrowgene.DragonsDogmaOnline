@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Crypto;
@@ -13,7 +14,7 @@ namespace Arrowgene.Ddon.WebServer
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(AccountRoute));
 
-        
+
         public override string Route => "/api/account";
 
         private readonly IDatabase _database;
@@ -49,14 +50,15 @@ namespace Arrowgene.Ddon.WebServer
             switch (req.Action)
             {
                 case "login":
-                    GameToken token = CreateToken(req.Account, req.Password);
+                    string token = CreateToken(req.Account, req.Password);
                     if (token == null)
                     {
                         res.Error = "Account or password wrong";
                         break;
                     }
+
                     res.Message = "Login Success";
-                    res.Token = token.Token;
+                    res.Token = token;
                     break;
                 case "create":
                     Account account = CreateAccount(req.Account, $"{req.Account}@dd.on", req.Password);
@@ -89,7 +91,7 @@ namespace Arrowgene.Ddon.WebServer
             return account;
         }
 
-        private GameToken CreateToken(string name, string password)
+        private string CreateToken(string name, string password)
         {
             Account account = _database.SelectAccountByName(name);
             if (account == null)
@@ -104,11 +106,10 @@ namespace Arrowgene.Ddon.WebServer
                 return null;
             }
 
-            GameToken token = GameToken.Generate(account.Id);
-            account.LoginToken = token.Token;
-            account.LoginTokenCreated = token.Created;
+            account.LoginToken = GameToken.GenerateLoginToken();
+            account.LoginTokenCreated = DateTime.Now;
             _database.UpdateAccount(account);
-            return token;
+            return account.LoginToken;
         }
     }
 }

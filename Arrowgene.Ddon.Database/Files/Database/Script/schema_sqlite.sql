@@ -27,10 +27,23 @@ CREATE TABLE IF NOT EXISTS `account`
     CONSTRAINT `uq_account_mail` UNIQUE (`mail`)
 );
 
-CREATE TABLE IF NOT EXISTS `ddo_token`
+CREATE TABLE IF NOT EXISTS `ddo_character`
 (
-    `account_id` INTEGER PRIMARY KEY NOT NULL,
-    `token`      TEXT                NOT NULL,
-    `created`    DATETIME            NOT NULL,
-    CONSTRAINT `fk_account_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+    `id`         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    `account_id` INTEGER                           NOT NULL,
+    `first_name` TEXT                              NOT NULL,
+    `last_name`  TEXT                              NOT NULL,
+    `created`    DATETIME                          NOT NULL,
+    CONSTRAINT `fk_character_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ddo_game_token`
+(
+    `account_id`   INTEGER PRIMARY KEY NOT NULL,
+    `character_id` INTEGER             NOT NULL,
+    `token`        TEXT                NOT NULL,
+    `created`      DATETIME            NOT NULL,
+    CONSTRAINT `uq_game_token_token` UNIQUE (`token`),
+    CONSTRAINT `fk_game_token_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`),
+    CONSTRAINT `fk_game_token_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddo_character` (`id`)
 );

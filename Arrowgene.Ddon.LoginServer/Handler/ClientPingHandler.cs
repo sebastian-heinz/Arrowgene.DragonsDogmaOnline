@@ -1,6 +1,7 @@
-using Arrowgene.Buffers;
+using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -19,10 +20,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, Packet packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            client.Send(new Packet(PacketId.L2C_PING_RES, buffer.GetAllBytes()));
+            client.PingTime = DateTime.Now;
+            ServerRes res = new ServerRes(PacketId.L2C_PING_RES);
+            client.Send(res);
         }
     }
 }

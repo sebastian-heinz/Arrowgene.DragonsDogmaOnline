@@ -24,6 +24,8 @@ namespace Arrowgene.Ddon.Server.Network
 
         public string Identity { get; protected set; }
 
+        public DateTime PingTime { get; set; }
+
         public void Close()
         {
             Socket.Close();

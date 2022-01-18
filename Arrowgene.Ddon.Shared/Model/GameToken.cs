@@ -7,12 +7,24 @@ namespace Arrowgene.Ddon.Shared.Model
     public class GameToken
     {
         private static string TokenPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        private const int TokenLength = 20;
+        private const int LoginTokenLength = 20;
+        private const int GameTokenLength = 20;
 
-        public static GameToken Generate(int accountId)
+        public static string GenerateLoginToken()
         {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < TokenLength; i++)
+            for (int i = 0; i < LoginTokenLength; i++)
+            {
+                int tokenPoolIndex = CryptoRandom.Instance.Next(0, TokenPool.Length - 1);
+                sb.Append(TokenPool[tokenPoolIndex]);
+            }
+            return sb.ToString();
+        }
+        
+        public static GameToken GenerateGameToken(int accountId, int characterId)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < GameTokenLength; i++)
             {
                 int tokenPoolIndex = CryptoRandom.Instance.Next(0, TokenPool.Length - 1);
                 sb.Append(TokenPool[tokenPoolIndex]);
@@ -22,6 +34,7 @@ namespace Arrowgene.Ddon.Shared.Model
             token.Token = sb.ToString();
             token.Created = DateTime.Now;
             token.AccountId = accountId;
+            token.CharacterId = characterId;
             return token;
         }
 
