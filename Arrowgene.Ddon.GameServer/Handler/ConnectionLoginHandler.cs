@@ -19,8 +19,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Logger.Debug(client, $"Received SessionKey:{packet.Structure.SessionKey} for platform:{packet.Structure.PlatformType}");
 
+            //TODO update key for user, for next login
+            
             S2CConnectionLoginRes res = new S2CConnectionLoginRes();
-            res.OneTimeToken = packet.Structure.SessionKey;
+            res.OneTimeToken = packet.Structure.SessionKey; // TODO set new token for next login
             client.Send(res);
 
             //client.Send(GameDump.Dump_4);

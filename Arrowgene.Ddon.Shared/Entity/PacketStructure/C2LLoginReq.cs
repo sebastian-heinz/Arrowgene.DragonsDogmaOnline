@@ -10,27 +10,27 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PlatformType PlatformType { get; set; }
 
         public PacketId Id => PacketId.C2L_LOGIN_REQ;
-    }
 
-    public class C2LLoginReqSerializer : EntitySerializer<C2LLoginReq>
-    {
-        public override void Write(IBuffer buffer, C2LLoginReq obj)
+        public class Serializer : EntitySerializer<C2LLoginReq>
         {
-            WriteMtString(buffer, obj.OneTimeToken);
-            buffer.WriteEnumByte(obj.PlatformType);
-        }
-
-        public override C2LLoginReq Read(IBuffer buffer)
-        {
-            C2LLoginReq obj = new C2LLoginReq();
-            obj.OneTimeToken = ReadMtString(buffer);
-            if (!buffer.ReadEnumByte(out PlatformType platformType))
+            public override void Write(IBuffer buffer, C2LLoginReq obj)
             {
-                platformType = PlatformType.None;
+                WriteMtString(buffer, obj.OneTimeToken);
+                buffer.WriteEnumByte(obj.PlatformType);
             }
 
-            obj.PlatformType = platformType;
-            return obj;
+            public override C2LLoginReq Read(IBuffer buffer)
+            {
+                C2LLoginReq obj = new C2LLoginReq();
+                obj.OneTimeToken = ReadMtString(buffer);
+                if (!buffer.ReadEnumByte(out PlatformType platformType))
+                {
+                    platformType = PlatformType.None;
+                }
+
+                obj.PlatformType = platformType;
+                return obj;
+            }
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataEquipElementUnkType2Serializer()),
                     Create(new CDataEquipItemInfoSerializer()),
                     Create(new CDataEquipJobItemSerializer()),
+                    Create(new CDataGameServerListInfoSerializer()),
                     Create(new CDataGPCourseValidSerializer()),
                     Create(new CDataJobPlayPointSerializer()),
                     Create(new CDataLoginSettingSerializer()),
@@ -45,20 +46,24 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new UnkownCharacterData1Serializer()),
 
                     // Packet structure serializers
-                    Create(new C2LCreateCharacterDataReqSerializer()),
-                    Create(new C2LGetErrorMessageListReqSerializer()),
-                    Create(new C2LLoginReqSerializer()),
+                    Create(new C2LCreateCharacterDataReq.Serializer()),
+                    Create(new C2LDecideCharacterIdReq.Serializer()),
+                    Create(new C2LGetErrorMessageListReq.Serializer()),
+                    Create(new C2LLoginReq.Serializer()),
                     Create(new C2SConnectionLoginReq.Serializer()),
-                    Create(new C2SConnectionMoveInServerReqSerializer()),
-                    Create(new L2CCreateCharacterDataNtcSerializer()),
-                    Create(new L2CCreateCharacterDataResSerializer()),
-                    Create(new L2CGetErrorMessageListNtcSerializer()),
-                    Create(new L2CGetErrorMessageListResSerializer()),
-                    Create(new L2CGetLoginSettingsResSerializer()),
-                    Create(new L2CLoginResSerializer()),
+                    Create(new C2SConnectionMoveInServerReq.Serializer()),
+                    Create(new L2CCreateCharacterDataNtc.Serializer()),
+                    Create(new L2CCreateCharacterDataRes.Serializer()),
+                    Create(new L2CGetErrorMessageListNtc.Serializer()),
+                    Create(new L2CGetErrorMessageListRes.Serializer()),
+                    Create(new L2CDecideCharacterIdRes.Serializer()),
+                    Create(new L2CGetLoginSettingsRes.Serializer()),
+                    Create(new L2CLoginRes.Serializer()),
+                    Create(new L2CLoginWaitNumNtc.Serializer()),
+                    Create(new L2CNextConnectionServerNtc.Serializer()),
                     Create(new S2CConnectionLoginRes.Serializer()),
 
-                    Create(new ServerResSerializer()),
+                    Create(new ServerRes.Serializer()),
                 }
             );
 

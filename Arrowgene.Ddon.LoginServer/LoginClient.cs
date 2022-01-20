@@ -23,5 +23,7 @@ namespace Arrowgene.Ddon.LoginServer
         }
 
         public Account Account { get; set; }
+        
+        public uint SelectedCharacterId { get; set; }
     }
 }

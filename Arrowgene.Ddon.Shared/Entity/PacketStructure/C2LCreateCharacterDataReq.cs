@@ -14,28 +14,28 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public PacketId Id => PacketId.C2L_CREATE_CHARACTER_DATA_REQ;
-        
+
         public CDataCharacterInfo CharacterInfo;
         public uint WaitNum;
         public byte RotationServerId;
-    }
 
-    public class C2LCreateCharacterDataReqSerializer : EntitySerializer<C2LCreateCharacterDataReq>
-    {
-        public override void Write(IBuffer buffer, C2LCreateCharacterDataReq obj)
+        public class Serializer : EntitySerializer<C2LCreateCharacterDataReq>
         {
-            WriteEntity(buffer, obj.CharacterInfo);
-            WriteUInt32(buffer, obj.WaitNum);
-            WriteByte(buffer, obj.RotationServerId);
-        }
+            public override void Write(IBuffer buffer, C2LCreateCharacterDataReq obj)
+            {
+                WriteEntity(buffer, obj.CharacterInfo);
+                WriteUInt32(buffer, obj.WaitNum);
+                WriteByte(buffer, obj.RotationServerId);
+            }
 
-        public override C2LCreateCharacterDataReq Read(IBuffer buffer)
-        {
-            C2LCreateCharacterDataReq obj = new C2LCreateCharacterDataReq();
-            obj.CharacterInfo = ReadEntity<CDataCharacterInfo>(buffer);
-            obj.WaitNum = ReadUInt32(buffer);
-            obj.RotationServerId = ReadByte(buffer);
-            return obj;
+            public override C2LCreateCharacterDataReq Read(IBuffer buffer)
+            {
+                C2LCreateCharacterDataReq obj = new C2LCreateCharacterDataReq();
+                obj.CharacterInfo = ReadEntity<CDataCharacterInfo>(buffer);
+                obj.WaitNum = ReadUInt32(buffer);
+                obj.RotationServerId = ReadByte(buffer);
+                return obj;
+            }
         }
     }
 }

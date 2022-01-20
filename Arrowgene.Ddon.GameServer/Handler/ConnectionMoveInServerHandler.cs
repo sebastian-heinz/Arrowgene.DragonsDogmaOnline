@@ -22,11 +22,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SConnectionMoveInServerReq> packet)
         {
-            Logger.Debug(client, $"Received GameToken:{packet.Structure.GameToken}");
-            GameToken token = Database.SelectToken(packet.Structure.GameToken);
+            Logger.Debug(client, $"Received GameToken:{packet.Structure.SessionKey}");
+            GameToken token = Database.SelectToken(packet.Structure.SessionKey);
             if (token == null)
             {
-                Logger.Error(client, $"Token:{packet.Structure.GameToken} not found");
+                Logger.Error(client, $"Token:{packet.Structure.SessionKey} not found");
                 // TODO reply error
                 // return;
             }

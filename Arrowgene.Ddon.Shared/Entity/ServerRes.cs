@@ -1,6 +1,4 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity
@@ -13,20 +11,20 @@ namespace Arrowgene.Ddon.Shared.Entity
         }
 
         public override PacketId Id { get; }
-    }
 
-    public class ServerResSerializer : EntitySerializer<ServerRes>
-    {
-        public override void Write(IBuffer buffer, ServerRes obj)
+        public class Serializer : EntitySerializer<ServerRes>
         {
-            WriteServerResponse(buffer, obj);
-        }
+            public override void Write(IBuffer buffer, ServerRes obj)
+            {
+                WriteServerResponse(buffer, obj);
+            }
 
-        public override ServerRes Read(IBuffer buffer)
-        {
-            ServerRes obj = new ServerRes(PacketId.UNKNOWN);
-            ReadServerResponse(buffer, obj);
-            return obj;
+            public override ServerRes Read(IBuffer buffer)
+            {
+                ServerRes obj = new ServerRes(PacketId.UNKNOWN);
+                ReadServerResponse(buffer, obj);
+                return obj;
+            }
         }
     }
 }

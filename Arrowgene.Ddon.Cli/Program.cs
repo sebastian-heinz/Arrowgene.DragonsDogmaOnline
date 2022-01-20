@@ -51,7 +51,8 @@ namespace Arrowgene.Ddon.Cli
             PacketId.S2C_SERVER_GET_GAME_SETTING_RES,
             PacketId.S2C_ITEM_GET_STORAGE_ITEM_LIST_RES,
             PacketId.S2C_EQUIP_GET_CHARACTER_EQUIP_LIST_RES,
-            PacketId.S2C_JOB_GET_JOB_CHANGE_LIST_RES
+            PacketId.S2C_JOB_GET_JOB_CHANGE_LIST_RES,
+            PacketId.S2C_QUEST_11_89_16_NTC,
         };
 
         private static void Main(string[] args)

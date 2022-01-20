@@ -24,11 +24,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         {
             // Request packet C2L_GET_GAME_SESSION_KEY_REQ has no data aside from header,
             // the rest is just padding/alignment to 16-byte boundary.
-
-
-            uint characterId = 0;
-
-            GameToken token = GameToken.GenerateGameToken(client.Account.Id, characterId);
+            
+            GameToken token = GameToken.GenerateGameToken(client.Account.Id, client.SelectedCharacterId);
             if (!Database.SetToken(token))
             {
                 Logger.Error(client, "Failed to store GameToken");
@@ -41,7 +38,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             IBuffer buffer = new StreamBuffer();
             buffer.WriteUInt32(0, Endianness.Big);
             buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteMtString(token.Token);
+            buffer.WriteMtString(token.Token); // SessionKey
             buffer.WriteUInt16(0, Endianness.Big);
             client.Send(new Packet(PacketId.L2C_GET_GAME_SESSION_KEY_RES, buffer.GetAllBytes()));
         }
