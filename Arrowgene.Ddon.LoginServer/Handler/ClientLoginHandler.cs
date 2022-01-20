@@ -3,8 +3,6 @@ using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
@@ -22,23 +20,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            string loginToken = packet.Structure.OneTimeToken;
+            Logger.Debug(client, $"Received LoginToken:{packet.Structure.OneTimeToken} for platform:{packet.Structure.PlatformType}");
 
             L2CLoginRes res = new L2CLoginRes();
-            res.OneTimeToken = loginToken;
-
-            if (loginToken.Length != GameToken.LoginTokenLength)
-            {
-                // If game server disconnects client, the client might come back with a different token.
-                // Need to investigate, perhaps game server did not send proper error response to
-                // terminate the connection
-                Logger.Error(client, $"Invalid Login Token: {loginToken}");
-                res.Error = 1;
-                client.Send(res);
-                return;
-            }
-
-            Logger.Debug(client, $"Received LoginToken:{packet.Structure.OneTimeToken} for platform:{packet.Structure.PlatformType}");
+            res.OneTimeToken = packet.Structure.OneTimeToken;
 
             Account account = Database.SelectAccountByLoginToken(packet.Structure.OneTimeToken);
             if (_setting.AccountRequired)
@@ -51,8 +36,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     return;
                 }
 
-                // clear token
-                account.LoginToken = string.Empty;
+                TimeSpan loginTokenAge = account.LoginTokenCreated - DateTime.Now;
+                if (loginTokenAge > TimeSpan.FromDays(1)) // TODO convert to setting
+                {
+                    Logger.Error(client, $"Token Created at: {account.LoginTokenCreated} expired.");
+                    res.Error = 1;
+                    client.Send(res);
+                    return;
+                }
             }
             else
             {
@@ -69,7 +60,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         return;
                     }
 
-                    // set and do not clear token
+                    // set token
                     account.LoginToken = packet.Structure.OneTimeToken;
                     account.LoginTokenCreated = DateTime.Now;
                     Logger.Info(client, "Created new account from token");

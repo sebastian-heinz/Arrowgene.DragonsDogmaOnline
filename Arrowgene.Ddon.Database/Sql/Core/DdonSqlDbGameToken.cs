@@ -9,9 +9,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private const string SqlInsertToken = "INSERT INTO `ddon_game_token` (`account_id`, `character_id`, `token`, `created`) VALUES (@account_id, @character_id, @token, @created);";
         private const string SqlUpdateToken = "UPDATE `ddon_game_token` SET `character_id`=@character_id, `token`=@token, `created`=@created WHERE `account_id` = @account_id;";
-        private const string SqlSelectTokenByAccountId = "SELECT `account_id`, `character_id`, `token`, `created` FROM `ddon_game_token` WHERE `account_id` = @account_id;";
+        private const string SqlSelectTokenByAccountId = "SELECT `token`, `account_id`, `character_id`, `token`, `created` FROM `ddon_game_token` WHERE `account_id` = @account_id;";
         private const string SqlDeleteTokenByAccountId = "DELETE FROM `ddon_game_token` WHERE `account_id`=@account_id;";
-        private const string SqlSelectToken = "SELECT `account_id`, `character_id`, `token`, `created` FROM `ddon_game_token` WHERE `token` = @token;";
+        private const string SqlSelectToken = "SELECT `token`, `account_id`, `character_id`, `token`, `created` FROM `ddon_game_token` WHERE `token` = @token;";
         private const string SqlDeleteToken = "DELETE FROM `ddon_game_token` WHERE `token`=@token;";
 
         public bool SetToken(GameToken token)
@@ -44,11 +44,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             GameToken token = null;
             ExecuteReader(SqlSelectTokenByAccountId, command => { AddParameter(command, "@account_id", accountId); }, reader =>
             {
-                token = new GameToken();
-                token.AccountId = GetInt32(reader, "account_id");
-                token.CharacterId = GetUInt32(reader, "character_id");
-                token.Token = GetString(reader, "token");
-                token.Created = GetDateTime(reader, "created");
+                if (reader.Read())
+                {
+                    token = new GameToken();
+                    token.AccountId = GetInt32(reader, "account_id");
+                    token.CharacterId = GetUInt32(reader, "character_id");
+                    token.Token = GetString(reader, "token");
+                    token.Created = GetDateTime(reader, "created");
+                }
             });
             return token;
         }
@@ -58,11 +61,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             GameToken token = null;
             ExecuteReader(SqlSelectToken, command => { AddParameter(command, "@token", tokenStr); }, reader =>
             {
-                token = new GameToken();
-                token.AccountId = GetInt32(reader, "account_id");
-                token.CharacterId = GetUInt32(reader, "character_id");
-                token.Token = GetString(reader, "token");
-                token.Created = GetDateTime(reader, "created");
+                if (reader.Read())
+                {
+                    token = new GameToken();
+                    token.AccountId = GetInt32(reader, "account_id");
+                    token.CharacterId = GetUInt32(reader, "character_id");
+                    token.Token = GetString(reader, "token");
+                    token.Created = GetDateTime(reader, "created");
+                }
             });
             return token;
         }

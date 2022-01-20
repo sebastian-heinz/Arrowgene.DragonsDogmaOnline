@@ -1,7 +1,9 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+﻿using System;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -19,13 +21,60 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Logger.Debug(client, $"Received SessionKey:{packet.Structure.SessionKey} for platform:{packet.Structure.PlatformType}");
 
-            //TODO update key for user, for next login
-            
             S2CConnectionLoginRes res = new S2CConnectionLoginRes();
-            res.OneTimeToken = packet.Structure.SessionKey; // TODO set new token for next login
-            client.Send(res);
+            GameToken token = Database.SelectToken(packet.Structure.SessionKey);
+            if (token == null)
+            {
+                Logger.Error(client, $"SessionKey:{packet.Structure.SessionKey} not found");
+                res.Error = 1;
+                client.Send(res);
+                return;
+            }
 
-            //client.Send(GameDump.Dump_4);
+            if (!Database.DeleteTokenByAccountId(token.AccountId))
+            {
+                Logger.Error(client, $"Failed to delete session key from DB:{packet.Structure.SessionKey}");
+            }
+
+
+            Account account = Database.SelectAccountById(token.AccountId);
+            if (account == null)
+            {
+                Logger.Error(client, $"AccountId:{token.AccountId} not found");
+                res.Error = 1;
+                client.Send(res);
+                return;
+            }
+
+            Character character = Database.SelectCharacter(token.CharacterId);
+            if (character == null)
+            {
+                Logger.Error(client, $"CharacterId:{token.CharacterId} not found");
+                res.Error = 1;
+                client.Send(res);
+                return;
+            }
+
+            client.Account = account;
+            client.Character = character;
+            client.UpdateIdentity();
+            Logger.Info(client, "Logged Into GameServer");
+
+            // update login token for client
+            client.Account.LoginToken = GameToken.GenerateLoginToken();
+            client.Account.LoginTokenCreated = DateTime.Now;
+            if (!Database.UpdateAccount(client.Account))
+            {
+                Logger.Error(client, "Failed to update OneTimeToken");
+                res.Error = 1;
+                client.Send(res);
+                return;
+            }
+
+            Logger.Debug(client, $"Updated OneTimeToken:{client.Account.LoginToken}");
+
+            res.OneTimeToken = client.Account.LoginToken;
+            client.Send(res);
         }
     }
 }

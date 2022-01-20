@@ -26,6 +26,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 $"    Counter: {packet.Structure.Counter}\n"
             );
 
+            client.SelectedCharacterId = packet.Structure.CharacterId;
+            Logger.Debug(client, $"Decided CharacterId: {client.SelectedCharacterId}");
+
+
             L2CDecideCharacterIdRes res = new L2CDecideCharacterIdRes();
             res.CharacterId = packet.Structure.CharacterId;
             res.WaitNum = packet.Structure.WaitNum;
@@ -49,7 +53,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Port = 52000,
                 IsHide = false
             };
-            serverNtc.Counter = 1;
+            serverNtc.Counter = packet.Structure.Counter;
             client.Send(serverNtc);
         }
     }

@@ -57,6 +57,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new L2CGetErrorMessageListNtc.Serializer()),
                     Create(new L2CGetErrorMessageListRes.Serializer()),
                     Create(new L2CDecideCharacterIdRes.Serializer()),
+                    Create(new L2CGetGameSessionKeyRes.Serializer()),
                     Create(new L2CGetLoginSettingsRes.Serializer()),
                     Create(new L2CLoginRes.Serializer()),
                     Create(new L2CLoginWaitNumNtc.Serializer()),
