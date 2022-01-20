@@ -20,6 +20,7 @@
  * along with Arrowgene.Ddon.LoginServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using Arrowgene.Ddon.LoginServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Logging;
@@ -33,6 +34,8 @@ namespace Arrowgene.Ddon.LoginServer
     {
         private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonLoginServer));
 
+        private HashSet<LoginClient> clients;
+
         public DdonLoginServer(LoginServerSetting setting) : base(setting.ServerSetting)
         {
             Setting = new LoginServerSetting(setting);
@@ -45,15 +48,22 @@ namespace Arrowgene.Ddon.LoginServer
         protected override void ClientConnected(LoginClient client)
         {
             client.InitializeChallenge();
+            clients.Add(client);
         }
 
         protected override void ClientDisconnected(LoginClient client)
         {
+            clients.Remove(client);
         }
 
         public override LoginClient NewClient(ITcpSocket socket)
         {
             return new LoginClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.LoginPacketIdResolver));
+        }
+
+        public override ICollection<LoginClient> Clients
+        {
+            get { return clients; }
         }
 
         private void LoadPacketHandler()
