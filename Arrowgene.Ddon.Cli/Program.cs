@@ -49,6 +49,9 @@ namespace Arrowgene.Ddon.Cli
             PacketId.S2C_STAGE_GET_STAGE_LIST_RES,
             PacketId.S2C_CHARACTER_DECIDE_CHARACTER_ID_RES,
             PacketId.S2C_SERVER_GET_GAME_SETTING_RES,
+            PacketId.S2C_ITEM_GET_STORAGE_ITEM_LIST_RES,
+            PacketId.S2C_EQUIP_GET_CHARACTER_EQUIP_LIST_RES,
+            PacketId.S2C_JOB_GET_JOB_CHANGE_LIST_RES
         };
 
         private static void Main(string[] args)

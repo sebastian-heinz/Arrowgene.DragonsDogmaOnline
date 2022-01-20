@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Model
             Status = new CDataStatusInfo();
         }
 
-        public int Id { get; set; }
+        public uint Id { get; set; }
         public int AccountId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

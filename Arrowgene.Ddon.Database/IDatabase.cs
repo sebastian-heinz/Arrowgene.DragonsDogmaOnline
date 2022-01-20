@@ -24,9 +24,9 @@ namespace Arrowgene.Ddon.Database
         // Character
         bool CreateCharacter(Character character);
         public bool UpdateCharacter(Character character);
-        public Character SelectCharacter(int characterId);
+        public Character SelectCharacter(uint characterId);
         List<Character> SelectCharactersByAccountId(int accountId);
-        public bool DeleteCharacter(int characterId);
+        public bool DeleteCharacter(uint characterId);
 
         // GameToken
         bool SetToken(GameToken token);

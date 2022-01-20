@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             // the rest is just padding/alignment to 16-byte boundary.
 
 
-            int characterId = 0;
+            uint characterId = 0;
 
             GameToken token = GameToken.GenerateGameToken(client.Account.Id, characterId);
             if (!Database.SetToken(token))

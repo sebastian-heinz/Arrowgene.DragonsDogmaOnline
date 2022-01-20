@@ -6,15 +6,17 @@ namespace Arrowgene.Ddon.Server.Network
 {
     public abstract class StructurePacketHandler<TClient, TReqStruct> : IPacketHandler<TClient>
         where TClient : Client
-        where TReqStruct : IPacketStructure
+        where TReqStruct : IPacketStructure, new()
     {
         protected StructurePacketHandler(DdonServer<TClient> server)
         {
             Server = server;
             Database = server.Database;
+            // Create a instance to obtain PacketId information.
+            Id = new TReqStruct().Id;
         }
 
-        public abstract PacketId Id { get; }
+        public PacketId Id { get; }
         protected DdonServer<TClient> Server { get; }
         protected IDatabase Database { get; }
 

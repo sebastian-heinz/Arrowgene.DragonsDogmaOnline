@@ -20,14 +20,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             _setting = server.Setting;
         }
 
-        public override PacketId Id => PacketId.C2L_LOGIN_REQ;
-
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            string loginToken = packet.Structure.LoginToken;
+            string loginToken = packet.Structure.OneTimeToken;
 
             L2CLoginRes res = new L2CLoginRes();
-            res.LoginToken = loginToken;
+            res.OneTimeToken = loginToken;
 
             if (loginToken.Length != GameToken.LoginTokenLength)
             {
@@ -40,9 +38,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 return;
             }
 
-            Logger.Debug(client, $"Received LoginToken:{packet.Structure.LoginToken} for platform:{packet.Structure.PlatformType}");
+            Logger.Debug(client, $"Received LoginToken:{packet.Structure.OneTimeToken} for platform:{packet.Structure.PlatformType}");
 
-            Account account = Database.SelectAccountByLoginToken(packet.Structure.LoginToken);
+            Account account = Database.SelectAccountByLoginToken(packet.Structure.OneTimeToken);
             if (_setting.AccountRequired)
             {
                 if (account == null)
@@ -62,7 +60,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 // assume token as account name & password
                 if (account == null)
                 {
-                    account = Database.CreateAccount(packet.Structure.LoginToken, packet.Structure.LoginToken, packet.Structure.LoginToken);
+                    account = Database.CreateAccount(packet.Structure.OneTimeToken, packet.Structure.OneTimeToken, packet.Structure.OneTimeToken);
                     if (account == null)
                     {
                         Logger.Error(client, "Could not create account from LoginToken, choose another token");
@@ -72,7 +70,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     }
 
                     // set and do not clear token
-                    account.LoginToken = packet.Structure.LoginToken;
+                    account.LoginToken = packet.Structure.OneTimeToken;
                     account.LoginTokenCreated = DateTime.Now;
                     Logger.Info(client, "Created new account from token");
                 }

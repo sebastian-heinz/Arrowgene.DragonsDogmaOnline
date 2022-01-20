@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 token = new GameToken();
                 token.AccountId = GetInt32(reader, "account_id");
-                token.CharacterId = GetInt32(reader, "character_id");
+                token.CharacterId = GetUInt32(reader, "character_id");
                 token.Token = GetString(reader, "token");
                 token.Created = GetDateTime(reader, "created");
             });
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 token = new GameToken();
                 token.AccountId = GetInt32(reader, "account_id");
-                token.CharacterId = GetInt32(reader, "character_id");
+                token.CharacterId = GetUInt32(reader, "character_id");
                 token.Token = GetString(reader, "token");
                 token.Created = GetDateTime(reader, "created");
             });

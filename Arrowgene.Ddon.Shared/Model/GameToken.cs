@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return sb.ToString();
         }
         
-        public static GameToken GenerateGameToken(int accountId, int characterId)
+        public static GameToken GenerateGameToken(int accountId, uint characterId)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < GameTokenLength; i++)
@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public int AccountId { get; set; }
-        public int CharacterId { get; set; }
+        public uint CharacterId { get; set; }
         public string Token { get; set; }
         public DateTime Created { get; set; }
     }

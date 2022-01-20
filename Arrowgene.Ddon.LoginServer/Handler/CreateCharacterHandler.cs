@@ -17,8 +17,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2L_CREATE_CHARACTER_DATA_REQ;
-
         public override void Handle(LoginClient client, StructurePacket<C2LCreateCharacterDataReq> packet)
         {
             Logger.Debug(client, $"Create character '{packet.Structure.CharacterInfo.FirstName} {packet.Structure.CharacterInfo.LastName}'");
@@ -32,16 +30,26 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.LastName = characterInfo.LastName;
             character.Visual = characterInfo.EditInfo;
             character.Status = characterInfo.StatusInfo;
+            
+            L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
             if (!Database.CreateCharacter(character))
             {
                 Logger.Error(client, "Failed to create character");
+                res.Result = 1;
+                client.Send(res);
             }
+            
 
-            client.Send(new L2CCreateCharacterDataRes());
+            L2CCreateCharacterDataNtc ntc = new L2CCreateCharacterDataNtc();
+            ntc.Result = character.Id; // Value will show up in DecideCharacterIdHandler as CharacterId
+            client.Send(ntc);
 
             // Sent to client once the player queue "WaitNum" above is 0,
             // send immediately in our case.
-            client.Send(new L2CCreateCharacterDataNtc());
+ 
+            res.Result = 0;
+            res.WaitNum = 0;
+            client.Send(res);
         }
     }
 }

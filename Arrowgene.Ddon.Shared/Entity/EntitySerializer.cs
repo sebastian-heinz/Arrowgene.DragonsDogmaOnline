@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new C2LCreateCharacterDataReqSerializer()),
                     Create(new C2LGetErrorMessageListReqSerializer()),
                     Create(new C2LLoginReqSerializer()),
+                    Create(new C2SConnectionLoginReq.Serializer()),
                     Create(new C2SConnectionMoveInServerReqSerializer()),
                     Create(new L2CCreateCharacterDataNtcSerializer()),
                     Create(new L2CCreateCharacterDataResSerializer()),
@@ -55,6 +56,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new L2CGetErrorMessageListResSerializer()),
                     Create(new L2CGetLoginSettingsResSerializer()),
                     Create(new L2CLoginResSerializer()),
+                    Create(new S2CConnectionLoginRes.Serializer()),
 
                     Create(new ServerResSerializer()),
                 }

@@ -1,12 +1,12 @@
 ﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionLoginHandler : PacketHandler<GameClient>
+    public class ConnectionLoginHandler : StructurePacketHandler<GameClient, C2SConnectionLoginReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionLoginHandler));
 
@@ -15,11 +15,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_CONNECTION_LOGIN_REQ;
-
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, StructurePacket<C2SConnectionLoginReq> packet)
         {
-            client.Send(GameDump.Dump_4);
+            Logger.Debug(client, $"Received SessionKey:{packet.Structure.SessionKey} for platform:{packet.Structure.PlatformType}");
+
+            S2CConnectionLoginRes res = new S2CConnectionLoginRes();
+            res.OneTimeToken = packet.Structure.SessionKey;
+            client.Send(res);
+
+            //client.Send(GameDump.Dump_4);
         }
     }
 }

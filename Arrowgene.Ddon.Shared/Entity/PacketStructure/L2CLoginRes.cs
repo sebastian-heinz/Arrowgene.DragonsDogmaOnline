@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class L2CLoginRes : ServerResponse
     {
-        public string LoginToken { get; set; }
+        public string OneTimeToken { get; set; }
 
         public override PacketId Id => PacketId.L2C_LOGIN_RES;
     }
@@ -15,14 +15,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public override void Write(IBuffer buffer, L2CLoginRes obj)
         {
             WriteServerResponse(buffer, obj);
-            WriteMtString(buffer, obj.LoginToken);
+            WriteMtString(buffer, obj.OneTimeToken);
         }
 
         public override L2CLoginRes Read(IBuffer buffer)
         {
             L2CLoginRes obj = new L2CLoginRes();
             ReadServerResponse(buffer, obj);
-            obj.LoginToken = ReadMtString(buffer);
+            obj.OneTimeToken = ReadMtString(buffer);
             return obj;
         }
     }

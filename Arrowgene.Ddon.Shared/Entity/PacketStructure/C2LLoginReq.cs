@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class C2LLoginReq : IPacketStructure
     {
-        public string LoginToken { get; set; }
+        public string OneTimeToken { get; set; }
         public PlatformType PlatformType { get; set; }
 
         public PacketId Id => PacketId.C2L_LOGIN_REQ;
@@ -16,14 +16,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override void Write(IBuffer buffer, C2LLoginReq obj)
         {
-            WriteMtString(buffer, obj.LoginToken);
+            WriteMtString(buffer, obj.OneTimeToken);
             buffer.WriteEnumByte(obj.PlatformType);
         }
 
         public override C2LLoginReq Read(IBuffer buffer)
         {
             C2LLoginReq obj = new C2LLoginReq();
-            obj.LoginToken = ReadMtString(buffer);
+            obj.OneTimeToken = ReadMtString(buffer);
             if (!buffer.ReadEnumByte(out PlatformType platformType))
             {
                 platformType = PlatformType.None;

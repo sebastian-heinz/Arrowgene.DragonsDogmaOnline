@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 return false;
             }
 
-            character.Id = (int) autoIncrement;
+            character.Id = (uint) autoIncrement;
             return true;
         }
 
@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return rowsAffected > NoRowsAffected;
         }
 
-        public Character SelectCharacter(int characterId)
+        public Character SelectCharacter(uint characterId)
         {
             Character character = null;
             ExecuteReader(SqlSelectCharacter,
@@ -95,7 +95,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return characters;
         }
 
-        public bool DeleteCharacter(int characterId)
+        public bool DeleteCharacter(uint characterId)
         {
             int rowsAffected = ExecuteNonQuery(SqlDeleteCharacter,
                 command => { AddParameter(command, "@id", characterId); });
@@ -105,7 +105,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private Character ReadCharacter(DbDataReader reader)
         {
             Character character = new Character();
-            character.Id = GetInt32(reader, "id");
+            character.Id = GetUInt32(reader, "id");
 
             character.AccountId = GetInt32(reader, "account_id");
             character.FirstName = GetString(reader, "first_name");

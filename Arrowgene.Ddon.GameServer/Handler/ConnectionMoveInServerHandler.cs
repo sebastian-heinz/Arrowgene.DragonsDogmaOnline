@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_CONNECTION_MOVE_IN_SERVER_REQ;
+       // public override PacketId Id => PacketId.C2S_CONNECTION_MOVE_IN_SERVER_REQ;
 
         public override void Handle(GameClient client, StructurePacket<C2SConnectionMoveInServerReq> packet)
         {

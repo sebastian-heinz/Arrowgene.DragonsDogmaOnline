@@ -15,8 +15,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2L_GET_ERROR_MESSAGE_LIST_REQ;
-
         public override void Handle(LoginClient client, StructurePacket<C2LGetErrorMessageListReq> packet)
         {
             L2CGetErrorMessageListNtc ntc = new L2CGetErrorMessageListNtc(Server.AssetRepository.ClientErrorCodes);

@@ -1,5 +1,4 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -44,8 +43,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             IBuffer buffer0 = new StreamBuffer();
             buffer0.WriteUInt32(0, Endianness.Big); // error
             buffer0.WriteUInt32(0, Endianness.Big); // result
-            buffer0.WriteUInt32(2117592, Endianness.Big); // CharcterID
-            buffer0.WriteUInt32(2, Endianness.Big); // Unknown -- (RotationServerID?)
+            buffer0.WriteUInt32(characterID, Endianness.Big); // CharcterID
+            buffer0.WriteUInt32(waitNum, Endianness.Big); // Unknown -- (RotationServerID?)
             client.Send(new Packet(PacketId.L2C_DECIDE_CHARACTER_ID_RES, buffer0.GetAllBytes()));
 
             // Write L2C_LOGIN_WAIT_NUM_NTC packet. This is NOT required to get in game (can be commented out entirely).
