@@ -20,6 +20,7 @@
  * along with Arrowgene.Ddon.LoginServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Logging;
@@ -72,5 +73,10 @@ namespace Arrowgene.Ddon.Server
         protected abstract void ClientConnected(TClient client);
         protected abstract void ClientDisconnected(TClient client);
         public abstract TClient NewClient(ITcpSocket socket);
+
+        public abstract ICollection<TClient> Clients
+        {
+            get;
+        }
     }
 }

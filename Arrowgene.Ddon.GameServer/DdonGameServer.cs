@@ -20,6 +20,7 @@
  * along with Arrowgene.Ddon.GameServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Logging;
@@ -32,6 +33,8 @@ namespace Arrowgene.Ddon.GameServer
     public class DdonGameServer : DdonServer<GameClient>
     {
         private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonGameServer));
+
+        private HashSet<GameClient> clients = new HashSet<GameClient>();
 
         public DdonGameServer(GameServerSetting setting) : base(setting.ServerSetting)
         {
@@ -48,11 +51,19 @@ namespace Arrowgene.Ddon.GameServer
 
         protected override void ClientDisconnected(GameClient client)
         {
+            clients.Remove(client);
         }
 
         public override GameClient NewClient(ITcpSocket socket)
         {
-            return new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+            GameClient newClient = new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+            clients.Add(newClient);
+            return newClient;
+        }
+
+        public override ICollection<GameClient> Clients
+        {
+            get { return clients; }
         }
 
         private void LoadPacketHandler()
