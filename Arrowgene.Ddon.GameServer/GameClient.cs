@@ -9,12 +9,12 @@ namespace Arrowgene.Ddon.GameServer
     {
         public GameClient(ITcpSocket socket, PacketFactory packetFactory) : base(socket, packetFactory)
         {
-            Identity = $"[GameClient@{socket.Identity}]";
+            UpdateIdentity();
         }
 
         public void UpdateIdentity()
         {
-            string newIdentity = $"[LoginClient@{Socket.Identity}]";
+            string newIdentity = $"[GameClient@{Socket.Identity}]";
             if (Account != null)
             {
                 newIdentity += $"[Acc:({Account.Id}){Account.NormalName}]";

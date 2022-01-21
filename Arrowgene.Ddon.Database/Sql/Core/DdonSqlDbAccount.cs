@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "SELECT `id`, `name`, `normal_name`, `hash`, `mail`, `mail_verified`, `mail_verified_at`, `mail_token`, `password_token`, `login_token`, `login_token_created`, `state`, `last_login`, `created` FROM `account` WHERE `id`=@id;";
 
         private const string SqlSelectAccountByName =
-            "SELECT `id`, `name`, `normal_name`, `hash`, `mail`, `mail_verified`, `mail_verified_at`, `mail_token`, `password_token`, `login_token`, `login_token_created`, `state`, `last_login`, `created` FROM `account` WHERE `name`=@name;";
+            "SELECT `id`, `name`, `normal_name`, `hash`, `mail`, `mail_verified`, `mail_verified_at`, `mail_token`, `password_token`, `login_token`, `login_token_created`, `state`, `last_login`, `created` FROM `account` WHERE `normal_name`=@normal_name;";
 
         private const string SqlSelectAccountByLoginToken =
             "SELECT `id`, `name`, `normal_name`, `hash`, `mail`, `mail_verified`, `mail_verified_at`, `mail_token`, `password_token`, `login_token`, `login_token_created`, `state`, `last_login`, `created` FROM `account` WHERE `login_token`=@login_token;";

@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 if (account == null)
                 {
-                    Logger.Error(client, "Invalid Token");
+                    Logger.Error(client, "Invalid OneTimeToken");
                     res.Error = 1;
                     client.Send(res);
                     return;
@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 TimeSpan loginTokenAge = account.LoginTokenCreated - DateTime.Now;
                 if (loginTokenAge > TimeSpan.FromDays(1)) // TODO convert to setting
                 {
-                    Logger.Error(client, $"Token Created at: {account.LoginTokenCreated} expired.");
+                    Logger.Error(client, $"OneTimeToken Created at: {account.LoginTokenCreated} expired.");
                     res.Error = 1;
                     client.Send(res);
                     return;
@@ -51,19 +51,23 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 // assume token as account name & password
                 if (account == null)
                 {
-                    account = Database.CreateAccount(packet.Structure.OneTimeToken, packet.Structure.OneTimeToken, packet.Structure.OneTimeToken);
+                    account = Database.SelectAccountByName(packet.Structure.OneTimeToken);
                     if (account == null)
                     {
-                        Logger.Error(client, "Could not create account from LoginToken, choose another token");
-                        res.Error = 1;
-                        client.Send(res);
-                        return;
+                        account = Database.CreateAccount(packet.Structure.OneTimeToken, packet.Structure.OneTimeToken, packet.Structure.OneTimeToken);
+                        if (account == null)
+                        {
+                            Logger.Error(client, "Could not create account from OneTimeToken, choose another token");
+                            res.Error = 2;
+                            client.Send(res);
+                            return;
+                        }
+
+                        Logger.Info(client, "Created new account from OneTimeToken");
                     }
 
-                    // set token
                     account.LoginToken = packet.Structure.OneTimeToken;
                     account.LoginTokenCreated = DateTime.Now;
-                    Logger.Info(client, "Created new account from token");
                 }
             }
 

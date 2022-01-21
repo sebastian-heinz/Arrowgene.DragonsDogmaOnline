@@ -4,7 +4,6 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -18,15 +17,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-       // public override PacketId Id => PacketId.C2S_CONNECTION_MOVE_IN_SERVER_REQ;
-
         public override void Handle(GameClient client, StructurePacket<C2SConnectionMoveInServerReq> packet)
         {
-            Logger.Debug(client, $"Received GameToken:{packet.Structure.SessionKey}");
+            Logger.Debug(client, $"Received SessionKey:{packet.Structure.SessionKey}");
             GameToken token = Database.SelectToken(packet.Structure.SessionKey);
             if (token == null)
             {
-                Logger.Error(client, $"Token:{packet.Structure.SessionKey} not found");
+                Logger.Error(client, $"SessionKey:{packet.Structure.SessionKey} not found");
                 // TODO reply error
                 // return;
             }

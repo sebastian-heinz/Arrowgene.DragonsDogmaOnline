@@ -81,6 +81,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new ConnectionGetLoginAnnouncementHandler(this));
             AddHandler(new ConnectionLoginHandler(this));
+            AddHandler(new ConnectionLogoutHandler(this));
             AddHandler(new ConnectionMoveInServerHandler(this));
             AddHandler(new ConnectionMoveOutServerHandler(this));
             AddHandler(new ConnectionPingHandler(this));

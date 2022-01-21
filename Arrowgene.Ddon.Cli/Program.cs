@@ -53,6 +53,13 @@ namespace Arrowgene.Ddon.Cli
             PacketId.S2C_EQUIP_GET_CHARACTER_EQUIP_LIST_RES,
             PacketId.S2C_JOB_GET_JOB_CHANGE_LIST_RES,
             PacketId.S2C_QUEST_11_89_16_NTC,
+            PacketId.S2C_ITEM_50_0_16_NTC,
+            PacketId.S2C_PAWN_GET_MYPAWN_LIST_RES,
+            PacketId.S2C_WARP_GET_FAVORITE_WARP_POINT_LIST_RES,
+            PacketId.S2C_CLAN_CLAN_GET_MY_MEMBER_LIST_RES,
+            PacketId.S2C_AREA_GET_LEADER_AREA_RELEASE_LIST_RES,
+            PacketId.S2C_PAWN_GET_NORA_PAWN_LIST_RES,
+            PacketId.S2C_DAILY_MISSION_LIST_GET_RES,
         };
 
         private static void Main(string[] args)
