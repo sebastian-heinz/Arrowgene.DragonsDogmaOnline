@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
@@ -40,11 +41,16 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 characterListResponse.Add(cResponse);
             }
             
+            // TODO TEMP RUMI - ADD Dump Character for entering world
+            IBuffer dumpBuffer = LoginDump.Dump_24.AsBuffer();
+            dumpBuffer.Position = 8;
+            List<CDataCharacterListInfo> dumpChars = EntitySerializer.Get<CDataCharacterListInfo>().ReadList(dumpBuffer);
+            characterListResponse.Add(dumpChars[0]);
+            // TODO TEMP RUMI
+            
             EntitySerializer.Get<CDataCharacterListInfo>().WriteList(buffer, characterListResponse);
             Packet response = new Packet(PacketId.L2C_GET_CHARACTER_LIST_RES, buffer.GetAllBytes());
             client.Send(response);
-
-            //  client.Send(LoginDump.Dump_24);
         }
     }
 }

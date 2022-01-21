@@ -37,7 +37,8 @@ namespace Arrowgene.Ddon.Database
             // TODO deleting database to ensure working condition fow now
             try
             {
-             //   File.Delete(sqLitePath);
+                // TODO - MORE TESTING WITHOUT NEW DB
+                File.Delete(sqLitePath);
             }
             catch (Exception)
             {
