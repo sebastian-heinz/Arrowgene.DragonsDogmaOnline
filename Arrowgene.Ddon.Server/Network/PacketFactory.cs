@@ -94,6 +94,10 @@ namespace Arrowgene.Ddon.Server.Network
                 return null;
             }
 
+            // char id replace
+            //00 20 B8 F8 
+            //data = Util.ReplaceBytes(data, new byte[] {0x00, 0x20, 0xB8, 0xF8}, new byte[] {0x00, 0x00, 0x00, 0x01});
+
             int totalLength = data.Length + PacketLengthFieldSize + PacketHeaderSize;
             if (totalLength < 0 || totalLength > ushort.MaxValue)
             {
