@@ -52,13 +52,22 @@ namespace Arrowgene.Ddon.Shared.Network
         public readonly ushort HandlerId;
         public readonly byte HandlerSubId;
         public readonly string Name;
+        public readonly string OriginalName;
 
-        public PacketId(byte groupId, ushort handlerId, byte handlerSubId, string name)
+        public PacketId(byte groupId, ushort handlerId, byte handlerSubId, string name, string originalName = null)
         {
             GroupId = groupId;
             HandlerId = handlerId;
             HandlerSubId = handlerSubId;
             Name = name;
+            if (originalName != null)
+            {
+                OriginalName = originalName;
+            }
+            else
+            {
+                OriginalName = name;
+            }
         }
 
         public bool Equals(PacketId other)
@@ -284,7 +293,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_LOBBY_LOBBY_LEAVE_RES = new PacketId(3, 1, 2, "S2C_LOBBY_LOBBY_LEAVE_RES"); // ロビーの退室に
         public static readonly PacketId C2S_LOBBY_LOBBY_CHAT_MSG_REQ = new PacketId(3, 2, 1, "C2S_LOBBY_LOBBY_CHAT_MSG_REQ");
         public static readonly PacketId S2C_LOBBY_LOBBY_CHAT_MSG_RES = new PacketId(3, 2, 2, "S2C_LOBBY_LOBBY_CHAT_MSG_RES");
-        public static readonly PacketId S2C_LOBBY_3_2_16_NTC = new PacketId(3, 2, 16, "S2C_LOBBY_3_2_16_NTC");
+        public static readonly PacketId S2C_LOBBY_LOBBY_CHAT_MSG_NTC = new PacketId(3, 2, 16, "S2C_LOBBY_LOBBY_CHAT_MSG_NTC", "S2C_LOBBY_3_2_16_NTC");
         public static readonly PacketId S2C_LOBBY_3_4_16_NTC = new PacketId(3, 4, 16, "S2C_LOBBY_3_4_16_NTC");
 
 // Group: 4 - (CHAT)
@@ -2182,7 +2191,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_LOBBY_LOBBY_LEAVE_RES);
             AddPacketIdEntry(packetIds, C2S_LOBBY_LOBBY_CHAT_MSG_REQ);
             AddPacketIdEntry(packetIds, S2C_LOBBY_LOBBY_CHAT_MSG_RES);
-            AddPacketIdEntry(packetIds, S2C_LOBBY_3_2_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_LOBBY_LOBBY_CHAT_MSG_NTC);
             AddPacketIdEntry(packetIds, S2C_LOBBY_3_4_16_NTC);
 
 // Group: 4 - (CHAT)

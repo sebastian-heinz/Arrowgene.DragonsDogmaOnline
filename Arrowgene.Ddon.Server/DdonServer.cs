@@ -20,10 +20,10 @@
  * along with Arrowgene.Ddon.LoginServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Server
             _setting = setting;
             AssetRepository = assetRepository;
             Database = database;
-            
+
             LogProvider.Configure<ServerLogger>(_setting);
 
             _consumer = new Consumer<TClient>(
@@ -84,5 +84,6 @@ namespace Arrowgene.Ddon.Server
         protected abstract void ClientConnected(TClient client);
         protected abstract void ClientDisconnected(TClient client);
         public abstract TClient NewClient(ITcpSocket socket);
+        public abstract List<TClient> Clients { get; }
     }
 }

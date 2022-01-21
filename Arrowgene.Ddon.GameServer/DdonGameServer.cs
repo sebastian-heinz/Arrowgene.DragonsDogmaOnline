@@ -20,12 +20,12 @@
  * along with Arrowgene.Ddon.GameServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -35,14 +35,19 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
+        private readonly List<GameClient> _clients;
+
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
             Setting = new GameServerSetting(setting);
+            _clients = new List<GameClient>();
             LoadPacketHandler();
         }
 
         public GameServerSetting Setting { get; }
+
+        public override List<GameClient> Clients => new List<GameClient>(_clients);
 
         protected override void ClientConnected(GameClient client)
         {
@@ -51,13 +56,16 @@ namespace Arrowgene.Ddon.GameServer
 
         protected override void ClientDisconnected(GameClient client)
         {
+            _clients.Remove(client);
         }
 
         public override GameClient NewClient(ITcpSocket socket)
         {
-            return new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+            GameClient newClient = new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+            _clients.Add(newClient);
+            return newClient;
         }
-
+        
         private void LoadPacketHandler()
         {
             AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
