@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Arrowgene.Logging;
+using Xunit.Abstractions;
 
 namespace Arrowgene.Ddon.Test
 {

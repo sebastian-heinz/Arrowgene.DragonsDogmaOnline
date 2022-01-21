@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
-using Arrowgene.Ddon.Cli.Misc;
 using Arrowgene.Ddon.PacketLibrary;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Cli.Command
 {
@@ -43,14 +43,25 @@ namespace Arrowgene.Ddon.Cli.Command
                     Console.WriteLine("File does not exist");
                     return CommandResultType.Continue;
                 }
+
                 String json = File.ReadAllText(f.FullName);
                 outName = f.Name + "_annotated.txt";
                 outDir = f.DirectoryName;
                 PlPacketStream packetStream = JsonSerializer.Deserialize<PlPacketStream>(json);
+                IPacketIdResolver resolver;
+                if (f.Name.Contains("login"))
+                {
+                    resolver = PacketIdResolver.LoginPacketIdResolver;
+                }
+                else
+                {
+                    resolver = PacketIdResolver.GamePacketIdResolver;
+                }
+
                 if (packetStream.Encrypted)
                 {
                     byte[] keyBytes = Encoding.UTF8.GetBytes(parameter.Arguments[2]);
-                    List<Packet> decrypted = Decrypt(packetStream.Packets, keyBytes);
+                    List<Packet> decrypted = Decrypt(packetStream.Packets, keyBytes, resolver);
                     packets.AddRange(decrypted);
                 }
                 else
@@ -65,7 +76,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 List<PlSession> sessions = plFactory.Create(parameter.Arguments[1]);
                 List<PlPacket> encrypted = sessions[2].GetPackets(); // hardcoded session index
                 byte[] keyBytes = Encoding.UTF8.GetBytes(parameter.Arguments[2]);
-                List<Packet> decrypted = Decrypt(encrypted, keyBytes);
+                List<Packet> decrypted = Decrypt(encrypted, keyBytes, PacketIdResolver.LoginPacketIdResolver);
                 packets.AddRange(decrypted);
             }
             else
@@ -80,19 +91,18 @@ namespace Arrowgene.Ddon.Cli.Command
         private void PrintPackets(List<Packet> packets, string outPath)
         {
             StringBuilder sb = new StringBuilder();
-           // foreach (Packet packet in packets)
-           // {
-           //     string pStr = packet.ToString();
-           //     sb.Append(pStr);
-           //     sb.Append(Environment.NewLine);
-           // }
-           
-           
+            foreach (Packet packet in packets)
+            {
+                string pStr = packet.ToString();
+                sb.Append(pStr);
+                sb.Append(Environment.NewLine);
+            }
 
-            string dump = PacketDump.DumpCSharpStruc(packets, "Stream85");
-            File.WriteAllText( outPath+ ".cs", dump);
-        //    File.WriteAllText(outPath, sb.ToString());
-         //   Console.WriteLine(sb.ToString());
+
+            // string dump = PacketDump.DumpCSharpStruc(packets, "Stream85");
+            // File.WriteAllText( outPath+ ".cs", dump);
+            File.WriteAllText(outPath, sb.ToString());
+            //   Console.WriteLine(sb.ToString());
         }
 
         private List<Packet> Convert(List<PlPacket> plPackets)
@@ -106,10 +116,10 @@ namespace Arrowgene.Ddon.Cli.Command
             return packets;
         }
 
-        private List<Packet> Decrypt(List<PlPacket> encrypted, byte[] keyBytes)
+        private List<Packet> Decrypt(List<PlPacket> encrypted, byte[] keyBytes, IPacketIdResolver resolver)
         {
-            PacketFactory pfServer = new PacketFactory(new ServerSetting(), PacketIdResolver.GamePacketIdResolver);
-            PacketFactory pfClient = new PacketFactory(new ServerSetting(), PacketIdResolver.GamePacketIdResolver);
+            PacketFactory pfServer = new PacketFactory(new ServerSetting(), resolver);
+            PacketFactory pfClient = new PacketFactory(new ServerSetting(), resolver);
             pfServer.SetCamelliaKey(keyBytes);
             pfClient.SetCamelliaKey(keyBytes);
             List<Packet> packets = new List<Packet>();

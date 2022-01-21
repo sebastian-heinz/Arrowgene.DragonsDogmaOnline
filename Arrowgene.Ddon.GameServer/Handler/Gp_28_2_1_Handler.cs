@@ -1,13 +1,14 @@
 ﻿using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class Gp_28_2_1_Handler : PacketHandler<GameClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(Gp_28_2_1_Handler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Gp_28_2_1_Handler));
 
 
         public Gp_28_2_1_Handler(DdonGameServer server) : base(server)

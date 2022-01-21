@@ -17,11 +17,10 @@ namespace Arrowgene.Ddon.WebServer
         private readonly WebServerSetting _setting;
         private readonly IDatabase _database;
 
-        public DdonWebServer(WebServerSetting setting)
+        public DdonWebServer(WebServerSetting setting, IDatabase database)
         {
             _setting = setting;
-
-            _database = DdonDatabaseBuilder.Build(_setting.DatabaseSetting);
+            _database = database;
 
             IWebServerCore core = new KestrelWebServer(_setting.WebSetting);
             _webService = new WebService(core);

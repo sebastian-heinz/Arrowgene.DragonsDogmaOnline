@@ -9,14 +9,17 @@ namespace Arrowgene.Ddon.Database
     public static class DdonDatabaseBuilder
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonDatabaseBuilder));
-        
+
         public static IDatabase Build(DatabaseSetting settings)
         {
             IDatabase database = null;
             switch (settings.Type)
             {
                 case DatabaseType.SQLite:
-                    database = PrepareSqlLiteDb(settings.SqLiteFolder);
+                    database = BuildSqLite(
+                        settings.SqLiteFolder,
+                        Path.Combine(settings.SqLiteFolder, $"db.v{DdonSqLiteDb.Version}.sqlite")
+                    );
                     break;
             }
 
@@ -29,9 +32,18 @@ namespace Arrowgene.Ddon.Database
             return database;
         }
 
-        private static DdonSqLiteDb PrepareSqlLiteDb(string sqLiteFolder)
+        public static DdonSqLiteDb BuildSqLite(string sqLiteFolder, string sqLitePath)
         {
-            string sqLitePath = Path.Combine(sqLiteFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
+            // TODO deleting database to ensure working condition fow now
+            try
+            {
+                // TODO - MORE TESTING WITHOUT NEW DB
+                File.Delete(sqLitePath);
+            }
+            catch (Exception)
+            {
+            }
+
             DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath);
             if (db.CreateDatabase())
             {

@@ -22,10 +22,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading;
 using Arrowgene.Ddon.Cli.Command;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli
@@ -35,6 +38,29 @@ namespace Arrowgene.Ddon.Cli
         private const char CliSeparator = ' ';
         private const char CliValueSeparator = '=';
         private static readonly ILogger Logger = LogProvider.Logger(typeof(Program));
+
+        private static HashSet<PacketId> IgnorePacketIds = new HashSet<PacketId>()
+        {
+            PacketId.L2C_GET_ERROR_MESSAGE_LIST_NTC,
+            PacketId.L2C_GET_CHARACTER_LIST_RES,
+            PacketId.L2C_GP_COURSE_GET_INFO_RES,
+            PacketId.L2C_GET_LOGIN_SETTING_RES,
+            PacketId.S2C_LOADING_INFO_LOADING_GET_INFO_RES,
+            PacketId.S2C_STAGE_GET_STAGE_LIST_RES,
+            PacketId.S2C_CHARACTER_DECIDE_CHARACTER_ID_RES,
+            PacketId.S2C_SERVER_GET_GAME_SETTING_RES,
+            PacketId.S2C_ITEM_GET_STORAGE_ITEM_LIST_RES,
+            PacketId.S2C_EQUIP_GET_CHARACTER_EQUIP_LIST_RES,
+            PacketId.S2C_JOB_GET_JOB_CHANGE_LIST_RES,
+            PacketId.S2C_QUEST_11_89_16_NTC,
+            PacketId.S2C_ITEM_50_0_16_NTC,
+            PacketId.S2C_PAWN_GET_MYPAWN_LIST_RES,
+            PacketId.S2C_WARP_GET_FAVORITE_WARP_POINT_LIST_RES,
+            PacketId.S2C_CLAN_CLAN_GET_MY_MEMBER_LIST_RES,
+            PacketId.S2C_AREA_GET_LEADER_AREA_RELEASE_LIST_RES,
+            PacketId.S2C_PAWN_GET_NORA_PAWN_LIST_RES,
+            PacketId.S2C_DAILY_MISSION_LIST_GET_RES,
+        };
 
         private static void Main(string[] args)
         {
@@ -48,9 +74,16 @@ namespace Arrowgene.Ddon.Cli
         private readonly Dictionary<string, ICommand> _commands;
         private ICommand _lastCommand;
         private readonly object _consoleLock;
+        private readonly DirectoryInfo _logDir;
 
         private Program()
         {
+            _logDir = new DirectoryInfo(Path.Combine(Util.ExecutingDirectory(), "Logs"));
+            if (!_logDir.Exists)
+            {
+                Directory.CreateDirectory(_logDir.FullName);
+            }
+
             _lastCommand = null;
             _consoleLock = new object();
             _commands = new Dictionary<string, ICommand>();
@@ -250,7 +283,6 @@ namespace Arrowgene.Ddon.Cli
             Logger.Info(sb.ToString());
         }
 
-
         private void LogProviderOnOnLogWrite(object sender, LogWriteEventArgs e)
         {
             Log log = e.Log;
@@ -273,6 +305,7 @@ namespace Arrowgene.Ddon.Cli
                     break;
             }
 
+            string text = null;
             Packet packet = e.Log.Tag as Packet;
             if (packet != null)
             {
@@ -288,9 +321,18 @@ namespace Arrowgene.Ddon.Cli
                         consoleColor = ConsoleColor.DarkRed;
                         break;
                 }
+
+                if (IgnorePacketIds.Contains(packet.Id))
+                {
+                    text = $"Ignored Packet Content:{Environment.NewLine}{packet.PrintHeader()}";
+                }
             }
 
-            string text = log.ToString();
+            if (text == null)
+            {
+                text = log.ToString();
+            }
+
             if (text == null)
             {
                 return;
@@ -301,6 +343,8 @@ namespace Arrowgene.Ddon.Cli
                 Console.ForegroundColor = consoleColor;
                 Console.WriteLine(text);
                 Console.ResetColor();
+                string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
+                File.WriteAllText(filePath, text);
             }
         }
     }

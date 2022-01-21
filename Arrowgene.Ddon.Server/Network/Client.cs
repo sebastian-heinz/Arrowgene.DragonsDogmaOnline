@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -8,15 +8,15 @@ namespace Arrowgene.Ddon.Server.Network
 {
     public class Client
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(Client));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Client));
 
-        private ITcpSocket _socket;
-        private PacketFactory _packetFactory;
+        protected readonly ITcpSocket Socket;
+        private readonly PacketFactory _packetFactory;
         private Challenge _challenge;
 
         public Client(ITcpSocket socket, PacketFactory packetFactory)
         {
-            _socket = socket;
+            Socket = socket;
             _packetFactory = packetFactory;
             _challenge = null;
             Identity = socket.Identity;
@@ -24,9 +24,11 @@ namespace Arrowgene.Ddon.Server.Network
 
         public string Identity { get; protected set; }
 
+        public DateTime PingTime { get; set; }
+
         public void Close()
         {
-            _socket.Close();
+            Socket.Close();
         }
 
         public List<Packet> Receive(byte[] data)
@@ -48,6 +50,14 @@ namespace Arrowgene.Ddon.Server.Network
             }
 
             return packets;
+        }
+
+        /// <summary>
+        /// Send a Structure
+        /// </summary>
+        public void Send<TResStruct>(TResStruct res) where TResStruct : IPacketStructure
+        {
+            Send(new StructurePacket<TResStruct>(res));
         }
 
         public void Send(Packet packet)
@@ -72,7 +82,7 @@ namespace Arrowgene.Ddon.Server.Network
         /// </summary>
         public void SendRaw(byte[] data)
         {
-            _socket.Send(data);
+            Socket.Send(data);
         }
 
         public void InitializeChallenge()

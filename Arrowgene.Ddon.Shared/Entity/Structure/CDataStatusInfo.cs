@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataStatusInfo
+    public class CDataStatusInfo
     {
         public uint HP;
         public uint Stamina;

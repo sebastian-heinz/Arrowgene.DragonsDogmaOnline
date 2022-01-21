@@ -1,6 +1,7 @@
 ﻿using System;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -51,11 +52,20 @@ namespace Arrowgene.Ddon.Server.Network
             return buffer;
         }
 
-        public override string ToString()
+        public string PrintHeader()
         {
             return $"{Source} #{Count:000000} ({Id.GroupId}.{Id.HandlerId}.{Id.HandlerSubId}) {Id.Name}{Environment.NewLine}" +
-                   $"{Util.HexDump(GetHeaderBytes())}" +
-                   $"{Util.HexDump(Data)}";
+                   $"{Util.HexDump(GetHeaderBytes())}";
+        }
+
+        public string PrintData()
+        {
+            return Util.HexDump(Data);
+        }
+
+        public override string ToString()
+        {
+            return $"{PrintHeader()}{PrintData()}";
         }
     }
 }

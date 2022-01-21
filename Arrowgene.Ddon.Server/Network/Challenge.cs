@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Server.Network
                 response.CamelliaKey = _rsa.Decrypt(rsaEncryptedCamelliaKey, RSAEncryptionPadding.Pkcs1);
                 response.BlowFishPassword = BlowFish.Decrypt_ECB(response.EncryptedBlowFishPassword);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 response.Error = true;
             }

@@ -1,46 +1,84 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.Server.Logging;
+using System;
+using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
-using System.Text;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientLoginHandler : PacketHandler<LoginClient>
+    public class ClientLoginHandler : StructurePacketHandler<LoginClient, C2LLoginReq>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(ClientLoginHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientLoginHandler));
 
+        private readonly LoginServerSetting _setting;
 
         public ClientLoginHandler(DdonLoginServer server) : base(server)
         {
+            _setting = server.Setting;
         }
 
-        public override PacketId Id => PacketId.C2L_LOGIN_REQ;
-
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            // Read C2L_LOGIN_REQ packet;
-            IBuffer recv = packet.AsBuffer();
-            string onetimeToken = recv.ReadMtString();
-            byte inPlatform = recv.ReadByte();
-            /*
-            PLATFORM_TYPE_NONE = 0x0,
-            PLATFORM_TYPE_PC = 0x1,
-            PLATFORM_TYPE_PS3 = 0x2,
-            PLATFORM_TYPE_PS4 = 0x3,
-            */
+            Logger.Debug(client, $"Received LoginToken:{packet.Structure.OneTimeToken} for platform:{packet.Structure.PlatformType}");
 
-            Logger.Debug(client, $"Received OnetimeToken: {onetimeToken}");
+            L2CLoginRes res = new L2CLoginRes();
+            res.OneTimeToken = packet.Structure.OneTimeToken;
 
-            client.OnetimeToken = onetimeToken;
+            Account account = Database.SelectAccountByLoginToken(packet.Structure.OneTimeToken);
+            if (_setting.AccountRequired)
+            {
+                if (account == null)
+                {
+                    Logger.Error(client, "Invalid OneTimeToken");
+                    res.Error = 1;
+                    client.Send(res);
+                    return;
+                }
 
-            // Write L2C_LOGIN_RES packet.
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0); //us_error
-            buffer.WriteInt32(0); //n_result
-            buffer.WriteMtString(client.OnetimeToken);
-            client.Send(new Packet(PacketId.L2C_LOGIN_RES, buffer.GetAllBytes()));
+                TimeSpan loginTokenAge = account.LoginTokenCreated - DateTime.Now;
+                if (loginTokenAge > TimeSpan.FromDays(1)) // TODO convert to setting
+                {
+                    Logger.Error(client, $"OneTimeToken Created at: {account.LoginTokenCreated} expired.");
+                    res.Error = 1;
+                    client.Send(res);
+                    return;
+                }
+            }
+            else
+            {
+                // allow easy access
+                // assume token as account name & password
+                if (account == null)
+                {
+                    account = Database.SelectAccountByName(packet.Structure.OneTimeToken);
+                    if (account == null)
+                    {
+                        account = Database.CreateAccount(packet.Structure.OneTimeToken, packet.Structure.OneTimeToken, packet.Structure.OneTimeToken);
+                        if (account == null)
+                        {
+                            Logger.Error(client, "Could not create account from OneTimeToken, choose another token");
+                            res.Error = 2;
+                            client.Send(res);
+                            return;
+                        }
+
+                        Logger.Info(client, "Created new account from OneTimeToken");
+                    }
+
+                    account.LoginToken = packet.Structure.OneTimeToken;
+                    account.LoginTokenCreated = DateTime.Now;
+                }
+            }
+
+            account.LastLogin = DateTime.Now;
+            Database.UpdateAccount(account);
+
+            client.Account = account;
+            client.UpdateIdentity();
+            Logger.Info(client, "Logged In");
+
+            client.Send(res);
         }
     }
 }

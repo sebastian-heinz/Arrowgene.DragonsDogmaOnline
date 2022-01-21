@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.WebServer</RootNamespace>
         <Title>Dragons Dogma Online - Web Server</Title>
         <Company>DDON Team</Company>

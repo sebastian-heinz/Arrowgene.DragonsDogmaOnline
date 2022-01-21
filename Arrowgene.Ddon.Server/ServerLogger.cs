@@ -1,16 +1,24 @@
 ﻿using System;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
-namespace Arrowgene.Ddon.Server.Logging
+namespace Arrowgene.Ddon.Server
 {
-    public class DdonLogger : Logger
+    public class ServerLogger : Logger
     {
+        private ServerSetting _setting;
+
         public override void Initialize(string identity, string name, Action<Log> write, object configuration)
         {
             base.Initialize(identity, name, write, configuration);
+            _setting = configuration as ServerSetting;
+            if (_setting == null)
+            {
+                Error("Couldn't apply DdonLogger configuration");
+            }
         }
 
         public void Hex(byte[] data)
@@ -74,6 +82,48 @@ namespace Arrowgene.Ddon.Server.Logging
 
         public void LogPacket(Client client, Packet packet)
         {
+            switch (packet.Source)
+            {
+                case PacketSource.Client:
+                {
+                    if (!_setting.LogIncomingPackets)
+                    {
+                        return;
+                    }
+
+                    if (!_setting.LogIncomingPacketPayload)
+                    {
+                        Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{packet.PrintHeader()}", packet);
+                        return;
+                    }
+
+                    break;
+                }
+                case PacketSource.Server:
+                {
+                    if (!_setting.LogOutgoingPackets)
+                    {
+                        return;
+                    }
+
+                    if (!_setting.LogOutgoingPacketPayload)
+                    {
+                        Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{packet.PrintHeader()}", packet);
+                        return;
+                    }
+
+                    break;
+                }
+                default:
+                    if (!_setting.LogUnknownPackets)
+                    {
+                        return;
+                    }
+
+                    break;
+            }
+
+
             Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{packet}", packet);
         }
     }

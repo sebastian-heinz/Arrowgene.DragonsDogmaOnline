@@ -1,64 +1,47 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.LoginServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientDecideCharacterIdHandler : PacketHandler<LoginClient>
+    public class ClientDecideCharacterIdHandler : StructurePacketHandler<LoginClient, C2LDecideCharacterIdReq>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(ClientDecideCharacterIdHandler));
-
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientDecideCharacterIdHandler));
 
         public ClientDecideCharacterIdHandler(DdonLoginServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2L_DECIDE_CHARACTER_ID_REQ;
-
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, StructurePacket<C2LDecideCharacterIdReq> packet)
         {
-
-            // Parse request -- C2L_DECIDE_CHARACTER_ID_REQ
-            IBuffer recv = packet.AsBuffer();
-            var characterID = recv.ReadUInt32(Endianness.Big);
-            var clientVersion = recv.ReadUInt32(Endianness.Big);
-            var type = recv.ReadByte();
-            var rotationServerID = recv.ReadByte();
-            var waitNum = recv.ReadUInt32(Endianness.Big);
-            var counter = recv.ReadByte();
-
             Logger.Debug(client,
                 $"C2L_DECIDE_CHARACTER_ID_REQ:\n" +
-                $"    CharacterID: {characterID}\n" +
-                $"    ClientVersion: {clientVersion}\n" +
-                $"    Type: {type}\n" +
-                $"    RotationServerID: {rotationServerID}\n" +
-                $"    WaitNum: {waitNum}\n" +
-                $"    Counter: {counter}\n" 
+                $"    CharacterID: {packet.Structure.CharacterId}\n" +
+                $"    ClientVersion: {packet.Structure.ClientVersion}\n" +
+                $"    Type: {packet.Structure.Type}\n" +
+                $"    RotationServerID: {packet.Structure.RotationServerId}\n" +
+                $"    WaitNum: {packet.Structure.WaitNum}\n" +
+                $"    Counter: {packet.Structure.Counter}\n"
             );
 
-            // Write L2C_DECIDE_CHARACTER_ID_RES packet.
-            IBuffer buffer0 = new StreamBuffer();
-            buffer0.WriteUInt32(0, Endianness.Big); // error
-            buffer0.WriteUInt32(0, Endianness.Big); // result
-            buffer0.WriteUInt32(2117592, Endianness.Big); // CharcterID
-            buffer0.WriteUInt32(2, Endianness.Big); // Unknown -- (RotationServerID?)
-            client.Send(new Packet(PacketId.L2C_DECIDE_CHARACTER_ID_RES, buffer0.GetAllBytes()));
+            client.SelectedCharacterId = packet.Structure.CharacterId;
+            Logger.Debug(client, $"Decided CharacterId: {client.SelectedCharacterId}");
 
-            // Write L2C_LOGIN_WAIT_NUM_NTC packet. This is NOT required to get in game (can be commented out entirely).
-            IBuffer buffer1 = new StreamBuffer();
-            buffer1.WriteUInt32(100, Endianness.Big);
-            client.Send(new Packet(PacketId.L2C_LOGIN_WAIT_NUM_NTC, buffer1.GetAllBytes()));
-            //client.Send(LoginDump.Dump_31);
 
-            // Write L2C_NEXT_CONNECT_SERVER_NTC
-            IBuffer buffer2 = new StreamBuffer();
-            buffer2.WriteUInt32(0, Endianness.Big); // Error
-            CDataGameServerListInfoSerializer serializer = new CDataGameServerListInfoSerializer();
-            serializer.Write(buffer2, new CDataGameServerListInfo
+            L2CDecideCharacterIdRes res = new L2CDecideCharacterIdRes();
+            res.CharacterId = packet.Structure.CharacterId;
+            res.WaitNum = packet.Structure.WaitNum;
+            client.Send(res);
+
+            // This is NOT required to get in game (can be commented out entirely).
+            L2CLoginWaitNumNtc waitNumNtc = new L2CLoginWaitNumNtc();
+            waitNumNtc.Unknown = 100;
+            client.Send(waitNumNtc);
+
+            L2CNextConnectionServerNtc serverNtc = new L2CNextConnectionServerNtc();
+            serverNtc.ServerList = new CDataGameServerListInfo
             {
                 ID = 17,
                 Name = "サーバー017",
@@ -69,9 +52,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Addr = "127.0.0.1",
                 Port = 52000,
                 IsHide = false
-            });
-            buffer2.WriteByte(1); // "counter"
-            client.Send(new Packet(PacketId.L2C_NEXT_CONNECT_SERVER_NTC, buffer2.GetAllBytes()));
+            };
+            serverNtc.Counter = packet.Structure.Counter;
+            client.Send(serverNtc);
         }
     }
 }

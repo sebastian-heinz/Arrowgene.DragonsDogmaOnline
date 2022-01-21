@@ -11,6 +11,9 @@ namespace Arrowgene.Ddon.Database.Model
         public string Mail { get; set; }
         public string MailToken { get; set; }
         public string PasswordToken { get; set; }
+        public string LoginToken { get; set; }
+       
+        public DateTime LoginTokenCreated { get; set; }
         public bool MailVerified { get; set; }
         public DateTime? MailVerifiedAt { get; set; }
         public AccountStateType State { get; set; }

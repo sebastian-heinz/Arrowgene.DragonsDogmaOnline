@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataEquipElementUnkType2Serializer()),
                     Create(new CDataEquipItemInfoSerializer()),
                     Create(new CDataEquipJobItemSerializer()),
+                    Create(new CDataGameServerListInfoSerializer()),
                     Create(new CDataGPCourseValidSerializer()),
                     Create(new CDataJobPlayPointSerializer()),
                     Create(new CDataLobbyChatMsgNoticeSerializer()),
@@ -49,8 +50,28 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new UnkownCharacterData1Serializer()),
 
                     // Packet structure serializers
-                    Create(new C2LCreateCharacterDataReqSerializer()),
-                    Create(new L2CGetLoginSettingsResSerializer()),
+                    Create(new C2LCreateCharacterDataReq.Serializer()),
+                    Create(new C2LDecideCharacterIdReq.Serializer()),
+                    Create(new C2LGetErrorMessageListReq.Serializer()),
+                    Create(new C2LLoginReq.Serializer()),
+                    Create(new C2SConnectionLoginReq.Serializer()),
+                    Create(new C2SConnectionMoveInServerReq.Serializer()),
+                    Create(new C2SConnectionMoveOutServerReq.Serializer()),
+                    Create(new L2CCreateCharacterDataNtc.Serializer()),
+                    Create(new L2CCreateCharacterDataRes.Serializer()),
+                    Create(new L2CGetErrorMessageListNtc.Serializer()),
+                    Create(new L2CGetErrorMessageListRes.Serializer()),
+                    Create(new L2CDecideCharacterIdRes.Serializer()),
+                    Create(new L2CGetGameSessionKeyRes.Serializer()),
+                    Create(new L2CGetLoginSettingsRes.Serializer()),
+                    Create(new L2CLoginRes.Serializer()),
+                    Create(new L2CLoginWaitNumNtc.Serializer()),
+                    Create(new L2CNextConnectionServerNtc.Serializer()),
+                    Create(new S2CConnectionLoginRes.Serializer()),
+                    Create(new S2CConnectionLogoutRes.Serializer()),
+                    Create(new S2CConnectionMoveOutServerRes.Serializer()),
+
+                    Create(new ServerRes.Serializer()),
                 }
             );
 
@@ -124,7 +145,7 @@ namespace Arrowgene.Ddon.Shared.Entity
         {
             return buffer.ReadUInt16(Endianness.Big);
         }
-        
+
         protected void WriteBool(IBuffer buffer, bool value)
         {
             buffer.WriteBool(value);
@@ -134,12 +155,12 @@ namespace Arrowgene.Ddon.Shared.Entity
         {
             buffer.WriteByte(value);
         }
-        
+
         protected bool ReadBool(IBuffer buffer)
         {
             return buffer.ReadBool();
         }
-        
+
         protected byte ReadByte(IBuffer buffer)
         {
             return buffer.ReadByte();
@@ -148,7 +169,7 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected void WriteMtString(IBuffer buffer, string str)
         {
             byte[] utf8 = Encoding.UTF8.GetBytes(str);
-            buffer.WriteUInt16((ushort)utf8.Length, Endianness.Big);
+            buffer.WriteUInt16((ushort) utf8.Length, Endianness.Big);
             buffer.WriteBytes(utf8);
         }
 
@@ -157,6 +178,18 @@ namespace Arrowgene.Ddon.Shared.Entity
             ushort len = buffer.ReadUInt16(Endianness.Big);
             string str = buffer.ReadString(len, Encoding.UTF8);
             return str;
+        }
+
+        protected void WriteServerResponse(IBuffer buffer, ServerResponse value)
+        {
+            buffer.WriteUInt32(value.Error, Endianness.Big);
+            buffer.WriteUInt32(value.Result, Endianness.Big);
+        }
+
+        protected void ReadServerResponse(IBuffer buffer, ServerResponse value)
+        {
+            value.Error = buffer.ReadUInt32(Endianness.Big);
+            value.Result = buffer.ReadUInt32(Endianness.Big);
         }
 
         protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity)

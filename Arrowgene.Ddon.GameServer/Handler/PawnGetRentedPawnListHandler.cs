@@ -1,14 +1,15 @@
 ﻿using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class PawnGetRentedPawnListHandler : PacketHandler<GameClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(PawnGetRentedPawnListHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetRentedPawnListHandler));
 
 
         public PawnGetRentedPawnListHandler(DdonGameServer server) : base(server)

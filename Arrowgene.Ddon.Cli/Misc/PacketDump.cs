@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Cli.Misc
 {

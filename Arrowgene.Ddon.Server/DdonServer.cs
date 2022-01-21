@@ -21,8 +21,9 @@
  */
 
 using System.Collections.Generic;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
@@ -32,28 +33,38 @@ namespace Arrowgene.Ddon.Server
     public abstract class DdonServer<TClient> : IClientFactory<TClient>
         where TClient : Client
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonServer<TClient>));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonServer<TClient>));
 
         private readonly Consumer<TClient> _consumer;
         private readonly AsyncEventServer _server;
+        private readonly ServerSetting _setting;
 
-        public DdonServer(ServerSetting setting)
+        public DdonServer(ServerSetting setting, IDatabase database, AssetRepository assetRepository)
         {
-            LogProvider.Configure<DdonLogger>(setting);
+            _setting = setting;
+            AssetRepository = assetRepository;
+            Database = database;
+
+            LogProvider.Configure<ServerLogger>(_setting);
+
             _consumer = new Consumer<TClient>(
-                setting,
-                setting.ServerSocketSettings,
+                _setting,
+                _setting.ServerSocketSettings,
                 this
             );
             _consumer.ClientConnected += ClientConnected;
             _consumer.ClientDisconnected += ClientDisconnected;
+
             _server = new AsyncEventServer(
-                setting.ListenIpAddress,
-                setting.ServerPort,
+                _setting.ListenIpAddress,
+                _setting.ServerPort,
                 _consumer,
-                setting.ServerSocketSettings
+                _setting.ServerSocketSettings
             );
         }
+
+        public AssetRepository AssetRepository { get; }
+        public IDatabase Database { get; }
 
         public void Start()
         {
@@ -73,10 +84,6 @@ namespace Arrowgene.Ddon.Server
         protected abstract void ClientConnected(TClient client);
         protected abstract void ClientDisconnected(TClient client);
         public abstract TClient NewClient(ITcpSocket socket);
-
-        public abstract ICollection<TClient> Clients
-        {
-            get;
-        }
+        public abstract List<TClient> Clients { get; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared
@@ -17,6 +18,24 @@ namespace Arrowgene.Ddon.Shared
             ushort len = buffer.ReadUInt16(Endianness.Big);
             string str = buffer.ReadString(len, Encoding.UTF8);
             return str;
+        }
+
+        public static bool ReadEnumByte<TEnum>(this IBuffer buffer, out TEnum value) where TEnum : struct
+        {
+            byte enumByte = buffer.ReadByte();
+            value = default;
+            if (Enum.IsDefined(typeof(TEnum), enumByte))
+            {
+                value = (TEnum) (ValueType) enumByte;
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void WriteEnumByte<TEnum>(this IBuffer buffer, TEnum value) where TEnum : struct
+        {
+            buffer.WriteByte((byte) (ValueType) value);
         }
     }
 }

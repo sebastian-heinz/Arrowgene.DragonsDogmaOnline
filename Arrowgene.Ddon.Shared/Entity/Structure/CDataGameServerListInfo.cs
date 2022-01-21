@@ -1,7 +1,4 @@
 using Arrowgene.Buffers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -60,7 +57,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteUInt32(buffer, obj.LoginNum);
             WriteMtString(buffer, obj.Addr);
             WriteUInt16(buffer, obj.Port);
-            WriteByte(buffer, obj.IsHide ? (byte)1 : (byte)0);
+            WriteBool(buffer, obj.IsHide);
         }
 
         public override CDataGameServerListInfo Read(IBuffer buffer)
@@ -75,7 +72,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.LoginNum = ReadUInt32(buffer);
             obj.Addr = ReadMtString(buffer);
             obj.Port = ReadUInt16(buffer);
-            obj.IsHide = ReadByte(buffer) == 1;
+            obj.IsHide = ReadBool(buffer);
             return obj;
         }
     }

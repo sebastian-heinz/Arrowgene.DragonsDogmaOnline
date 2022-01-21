@@ -16,19 +16,36 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public const string MemoryDatabasePath = ":memory:";
         public const int Version = 1;
-        
+
         private readonly string _databasePath;
         private string _connectionString;
+        private SQLiteConnection _memoryConnection;
 
         public DdonSqLiteDb(string databasePath)
         {
+            _memoryConnection = null;
             _databasePath = databasePath;
             Logger.Info($"Database Path: {_databasePath}");
         }
 
         public bool CreateDatabase()
         {
-            if (_databasePath != MemoryDatabasePath && !File.Exists(_databasePath))
+            _connectionString = BuildConnectionString(_databasePath);
+            if (_connectionString == null)
+            {
+                Logger.Error($"Failed to build connection string");
+                return false;
+            }
+
+            if (_databasePath == MemoryDatabasePath)
+            {
+                throw new NotSupportedException("Connections are utilzied via `using`, disposing the connection. In Memory DB only available for lifetime of connection");
+                _memoryConnection = new SQLiteConnection(_connectionString);
+                _memoryConnection.Open();
+                return true;
+            }
+
+            if (!File.Exists(_databasePath))
             {
                 FileStream fs = File.Create(_databasePath);
                 fs.Close();
@@ -56,11 +73,6 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected override SQLiteConnection Connection()
         {
-            if (_connectionString == null)
-            {
-                _connectionString = BuildConnectionString(_databasePath);
-            }
-
             SQLiteConnection connection = new SQLiteConnection(_connectionString);
             return connection.OpenAndReturn();
         }

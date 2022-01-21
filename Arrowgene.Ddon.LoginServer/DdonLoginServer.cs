@@ -21,10 +21,11 @@
  */
 
 using System.Collections.Generic;
+using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.LoginServer.Handler;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -32,38 +33,36 @@ namespace Arrowgene.Ddon.LoginServer
 {
     public class DdonLoginServer : DdonServer<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DdonLoginServer));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonLoginServer));
+        
+        private readonly List<LoginClient> _clients;
 
-        private HashSet<LoginClient> clients;
-
-        public DdonLoginServer(LoginServerSetting setting) : base(setting.ServerSetting)
+        public DdonLoginServer(LoginServerSetting setting, IDatabase database, AssetRepository assetRepository)
+            : base(setting.ServerSetting, database, assetRepository)
         {
             Setting = new LoginServerSetting(setting);
+            _clients = new List<LoginClient>();
             LoadPacketHandler();
         }
 
         public LoginServerSetting Setting { get; }
 
+        public override List<LoginClient> Clients => new List<LoginClient>(_clients);
 
         protected override void ClientConnected(LoginClient client)
         {
             client.InitializeChallenge();
-            clients.Add(client);
+            _clients.Add(client);
         }
 
         protected override void ClientDisconnected(LoginClient client)
         {
-            clients.Remove(client);
+            _clients.Remove(client);
         }
 
         public override LoginClient NewClient(ITcpSocket socket)
         {
             return new LoginClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.LoginPacketIdResolver));
-        }
-
-        public override ICollection<LoginClient> Clients
-        {
-            get { return clients; }
         }
 
         private void LoadPacketHandler()

@@ -1,24 +1,35 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
+﻿using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionMoveOutServerHandler : PacketHandler<GameClient>
+    public class ConnectionMoveOutServerHandler : StructurePacketHandler<GameClient, C2SConnectionMoveOutServerReq>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(ConnectionMoveOutServerHandler));
-
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionMoveOutServerHandler));
 
         public ConnectionMoveOutServerHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_CONNECTION_MOVE_OUT_SERVER_REQ;
-
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, StructurePacket<C2SConnectionMoveOutServerReq> packet)
         {
-            client.Send(GameDump.Dump_29);
+            Logger.Debug(client, $"Creating SessionKey");
+            S2CConnectionMoveOutServerRes res = new S2CConnectionMoveOutServerRes();
+            GameToken token = GameToken.GenerateGameToken(client.Account.Id, client.Character.Id);
+            if (!Database.SetToken(token))
+            {
+                Logger.Error(client, "Failed to store SessionKey");
+                res.Error = 1;
+                client.Send(res);
+                return;
+            }
+
+            Logger.Info(client, $"Created SessionKey:{token.Token} for CharacterId:{client.Character.Id}");
+            res.SessionKey = token.Token;
+            client.Send(res);
         }
     }
 }

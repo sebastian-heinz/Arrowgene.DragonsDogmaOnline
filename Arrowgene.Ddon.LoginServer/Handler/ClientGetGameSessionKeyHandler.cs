@@ -1,15 +1,15 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.LoginServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
     public class ClientGetGameSessionKeyHandler : PacketHandler<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(ClientGetGameSessionKeyHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientGetGameSessionKeyHandler));
 
 
         public ClientGetGameSessionKeyHandler(DdonLoginServer server) : base(server)
@@ -23,13 +23,20 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             // Request packet C2L_GET_GAME_SESSION_KEY_REQ has no data aside from header,
             // the rest is just padding/alignment to 16-byte boundary.
 
-            // Write L2C_GET_GAME_SESSION_KEY_RES packet.
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteMtString("F108F0F7B3034D56BE72506AC12CE94");
-            buffer.WriteUInt16(0, Endianness.Big);
-            client.Send(new Packet(PacketId.L2C_GET_GAME_SESSION_KEY_RES, buffer.GetAllBytes()));
+            Logger.Debug(client, $"Creating SessionKey for CharacterId:{client.SelectedCharacterId}");
+            L2CGetGameSessionKeyRes res = new L2CGetGameSessionKeyRes();
+            GameToken token = GameToken.GenerateGameToken(client.Account.Id, client.SelectedCharacterId);
+            if (!Database.SetToken(token))
+            {
+                Logger.Error(client, "Failed to store GameToken");
+                res.Error = 1;
+                client.Send(res);
+                return;
+            }
+
+            Logger.Info(client, $"Created SessionKey:{token.Token} for CharacterId:{client.SelectedCharacterId}");
+            res.SessionKey = token.Token;
+            client.Send(res);
         }
     }
 }

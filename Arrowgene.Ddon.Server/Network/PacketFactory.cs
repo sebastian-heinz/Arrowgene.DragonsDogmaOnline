@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Server.Logging;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Server.Network
 {
     public class PacketFactory
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(PacketFactory));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PacketFactory));
         private static readonly Camellia Camellia = new Camellia();
 
         private static readonly byte[] CamelliaKey = new byte[]
@@ -40,6 +40,7 @@ namespace Arrowgene.Ddon.Server.Network
         private Memory<byte> _t8Encrypt;
         private Memory<byte> _t8Decrypt;
         private Memory<byte> _camelliaSubKey;
+        private bool _firstPacket;
 
 
         public PacketFactory(ServerSetting setting, IPacketIdResolver packetIdResolver)
@@ -50,6 +51,7 @@ namespace Arrowgene.Ddon.Server.Network
             _t8Encrypt = new Memory<byte>(new byte[8]);
             _t8Decrypt = new Memory<byte>(new byte[8]);
             SetCamelliaKey(CamelliaKey);
+            _firstPacket = true;
             Reset();
         }
 
@@ -91,6 +93,10 @@ namespace Arrowgene.Ddon.Server.Network
                 Logger.Error($"data == null, tried to write invalid data");
                 return null;
             }
+
+            // char id replace
+            //00 20 B8 F8 
+            //data = Util.ReplaceBytes(data, new byte[] {0x00, 0x20, 0xB8, 0xF8}, new byte[] {0x00, 0x00, 0x00, 0x01});
 
             int totalLength = data.Length + PacketLengthFieldSize + PacketHeaderSize;
             if (totalLength < 0 || totalLength > ushort.MaxValue)
@@ -183,29 +189,16 @@ namespace Arrowgene.Ddon.Server.Network
                     byte[] encryptedPacketData = _buffer.ReadBytes(_dataSize);
                     byte[] packetData = Decrypt(encryptedPacketData);
 
-                    IBuffer packetBuffer = new StreamBuffer(packetData);
-                    packetBuffer.SetPositionStart();
-                    byte groupId = packetBuffer.ReadByte();
-                    ushort handlerId = packetBuffer.ReadUInt16(Endianness.Big);
-                    byte handlerSubId = packetBuffer.ReadByte();
-                    byte packetSourceByte = packetBuffer.ReadByte();
-                    uint packetCount = packetBuffer.ReadUInt32(Endianness.Big);
-
                     byte[] payload;
                     PacketId packetId;
+                    uint packetCount;
                     PacketSource packetSource = PacketSource.Unknown;
-                    if (Enum.IsDefined(typeof(PacketSource), packetSourceByte))
+                    if (_firstPacket)
                     {
-                        packetSource = (PacketSource) packetSourceByte;
-                    }
-
-                    // abusing this as part of header validation
-                    if (packetSource != PacketSource.Server
-                        && packetSource != PacketSource.Client)
-                    {
-                        // TODO potentially change this to check if it is the first packet of a session
-                        // and treat it as the challenge
-                        payload = packetData;
+                        /*
+                         * Public Key exchange from server or RSA encrypted payload from client.
+                         * These are always the first packets from client/server and do not contain a traditional header.
+                         */
                         if (_packetIdResolver.ServerType == ServerType.Game)
                         {
                             packetId = PacketId.C2S_CERT_CLIENT_CHALLENGE_REQ;
@@ -220,9 +213,35 @@ namespace Arrowgene.Ddon.Server.Network
                             Reset();
                             return packets;
                         }
+
+                        payload = packetData;
+                        packetSource = PacketSource.Client;
+                        packetCount = 0;
+                        _firstPacket = false;
                     }
                     else
                     {
+                        IBuffer packetBuffer = new StreamBuffer(packetData);
+                        packetBuffer.SetPositionStart();
+                        byte groupId = packetBuffer.ReadByte();
+                        ushort handlerId = packetBuffer.ReadUInt16(Endianness.Big);
+                        byte handlerSubId = packetBuffer.ReadByte();
+                        byte packetSourceByte = packetBuffer.ReadByte();
+                        packetCount = packetBuffer.ReadUInt32(Endianness.Big);
+
+                        if (Enum.IsDefined(typeof(PacketSource), packetSourceByte))
+                        {
+                            packetSource = (PacketSource) packetSourceByte;
+                        }
+
+                        if (packetSource != PacketSource.Server
+                            && packetSource != PacketSource.Client)
+                        {
+                            Logger.Error($"Invalid Server Type");
+                            Reset();
+                            return packets;
+                        }
+
                         payload = packetBuffer.ReadBytes(packetBuffer.Size - packetBuffer.Position);
                         packetId = _packetIdResolver.Get(groupId, handlerId, handlerSubId);
                     }

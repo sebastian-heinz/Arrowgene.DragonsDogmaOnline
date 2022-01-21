@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity;
@@ -27,6 +26,5 @@ namespace Arrowgene.Ddon.Test.Shared.Entity.Structure
             byte[] serialized = buffer.GetAllBytes();
             Assert.True(StructuralComparisons.StructuralEqualityComparer.Equals(bin, serialized));
         }
-
     }
 }

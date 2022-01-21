@@ -1,7 +1,7 @@
-﻿using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Server.Logging;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class LobbyLobbyChatMsgHandler : PacketHandler<GameClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(LobbyLobbyChatMsgHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LobbyLobbyChatMsgHandler));
 
 
         public LobbyLobbyChatMsgHandler(DdonGameServer server) : base(server)
@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             requestingClient.Send(response);
 
             // Notify all players
-            foreach(GameClient client in Server.Clients)
+            foreach (GameClient client in Server.Clients)
             {
                 IBuffer ntcBuffer = new StreamBuffer();
                 CDataLobbyChatMsgNotice ntc = new CDataLobbyChatMsgNotice();
@@ -51,5 +51,4 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
         }
     }
-
 }

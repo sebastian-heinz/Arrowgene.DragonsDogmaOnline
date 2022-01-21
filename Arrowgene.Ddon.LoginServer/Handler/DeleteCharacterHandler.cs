@@ -1,15 +1,15 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Server.Logging;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Text;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
     public class DeleteCharacterHandler : PacketHandler<LoginClient>
     {
-        private static readonly DdonLogger Logger = LogProvider.Logger<DdonLogger>(typeof(DeleteCharacterHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DeleteCharacterHandler));
 
         public DeleteCharacterHandler(DdonLoginServer server) : base(server)
         {

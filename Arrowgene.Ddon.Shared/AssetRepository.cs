@@ -4,7 +4,7 @@ using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
-namespace Arrowgene.Ddon.Server.Asset
+namespace Arrowgene.Ddon.Shared
 {
     public class AssetRepository
     {
@@ -21,17 +21,16 @@ namespace Arrowgene.Ddon.Server.Asset
                 return;
             }
 
-            ClientErrorCodes = new Dictionary<int, ClientErrorCode>();
+            ClientErrorCodes = new List<ClientErrorCode>();
         }
+        
+        public List<ClientErrorCode> ClientErrorCodes { get; }
 
-        public Dictionary<int, ClientErrorCode> ClientErrorCodes { get; }
 
-
-        public AssetRepository Initialize()
+        public void Initialize()
         {
             ClientErrorCodes.Clear();
             Load(ClientErrorCodes, "ClientErrorCodes.csv", new ClientErrorCodeCsvReader());
-            return this;
         }
 
         private void Load<T>(List<T> list, string fileName, CsvReader<T> reader)
