@@ -55,6 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new C2SConnectionMoveInServerReq.Serializer()),
                     Create(new C2SConnectionMoveOutServerReq.Serializer()),
                     Create(new C2SLobbyChatMsgReqSerializer()),
+                    Create(new C2SWarpRegisterFavoriteWarpReqSerializer()),
                     Create(new C2SWarpReqSerializer()),
                     Create(new L2CCreateCharacterDataNtc.Serializer()),
                     Create(new L2CCreateCharacterDataRes.Serializer()),
@@ -72,6 +73,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new S2CLobbyChatMsgResSerializer()),
                     Create(new S2CLobbyChatMsgNoticeSerializer()),
                     Create(new S2CLobbyChatMsgNoticeCharacterSerializer()),
+                    Create(new S2CWarpRegisterFavoriteWarpResSerializer()),
                     Create(new S2CWarpResSerializer()),
 
                     Create(new ServerRes.Serializer()),
