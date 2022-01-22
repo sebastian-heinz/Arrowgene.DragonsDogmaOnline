@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is part of Arrowgene.Ddon.GameServer
  *
  * Arrowgene.Ddon.GameServer is a server implementation for the game "Dragons Dogma Online".
@@ -81,6 +81,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new CharacterCommunityCharacterStatusGetHandler(this));
             AddHandler(new CharacterDecideCharacterIdHandler(this));
+            AddHandler(new CharacterPenaltyReviveHandler(this));
 
             AddHandler(new ClanClanGetJoinRequestedListHandler(this));
             AddHandler(new ClanClanGetMyInfoHandler(this));
