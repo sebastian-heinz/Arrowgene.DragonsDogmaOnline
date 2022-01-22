@@ -1,11 +1,11 @@
 using System;
 using Arrowgene.Buffers;
 
-namespace Arrowgene.Ddon.Shared.Entity.Structure
+namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class CDataLobbyChatMsgReq {
+    public class C2SLobbyChatMsgReq {
 
-        public CDataLobbyChatMsgReq() {
+        public C2SLobbyChatMsgReq() {
             type = 0;
             unk2 = 0;
             unk3 = 0;
@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             strMessage = string.Empty;
         }
 
-        public CDataLobbyChatMsgType.Type type; 
+        public Structure.CDataLobbyChatMsgType.Type type; 
         public uint unk2; // Target ID?
         public byte unk3;
         public uint unk4;
@@ -22,8 +22,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public string strMessage;
     }
 
-    public class CDataLobbyChatMsgReqSerializer : EntitySerializer<CDataLobbyChatMsgReq> {
-        public override void Write(IBuffer buffer, CDataLobbyChatMsgReq obj)
+    public class C2SLobbyChatMsgReqSerializer : EntitySerializer<C2SLobbyChatMsgReq> {
+        public override void Write(IBuffer buffer, C2SLobbyChatMsgReq obj)
         {
             WriteByte(buffer, (byte) obj.type);
             WriteUInt32(buffer, obj.unk2);
@@ -33,10 +33,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteMtString(buffer, obj.strMessage);
         }
 
-        public override CDataLobbyChatMsgReq Read(IBuffer buffer)
+        public override C2SLobbyChatMsgReq Read(IBuffer buffer)
         {
-            CDataLobbyChatMsgReq obj = new CDataLobbyChatMsgReq();
-            obj.type = (CDataLobbyChatMsgType.Type) buffer.ReadByte();
+            C2SLobbyChatMsgReq obj = new C2SLobbyChatMsgReq();
+            obj.type = (Structure.CDataLobbyChatMsgType.Type) buffer.ReadByte();
             obj.unk2 = buffer.ReadUInt32();
             obj.unk3 = buffer.ReadByte();
             obj.unk4 = buffer.ReadUInt32();

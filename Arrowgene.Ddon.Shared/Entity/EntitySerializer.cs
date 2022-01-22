@@ -33,10 +33,6 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataGameServerListInfoSerializer()),
                     Create(new CDataGPCourseValidSerializer()),
                     Create(new CDataJobPlayPointSerializer()),
-                    Create(new CDataLobbyChatMsgNoticeSerializer()),
-                    Create(new CDataLobbyChatMsgNoticeCharacterSerializer()),
-                    Create(new CDataLobbyChatMsgReqSerializer()),
-                    Create(new CDataLobbyChatMsgResSerializer()),
                     Create(new CDataLoginSettingSerializer()),
                     Create(new CDataMatchingProfileSerializer()),
                     Create(new CDataOrbCategoryStatusSerializer()),
@@ -57,6 +53,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new C2SConnectionLoginReq.Serializer()),
                     Create(new C2SConnectionMoveInServerReq.Serializer()),
                     Create(new C2SConnectionMoveOutServerReq.Serializer()),
+                    Create(new C2SLobbyChatMsgReqSerializer()),
                     Create(new L2CCreateCharacterDataNtc.Serializer()),
                     Create(new L2CCreateCharacterDataRes.Serializer()),
                     Create(new L2CGetErrorMessageListNtc.Serializer()),
@@ -70,6 +67,9 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new S2CConnectionLoginRes.Serializer()),
                     Create(new S2CConnectionLogoutRes.Serializer()),
                     Create(new S2CConnectionMoveOutServerRes.Serializer()),
+                    Create(new S2CLobbyChatMsgResSerializer()),
+                    Create(new S2CLobbyChatMsgNoticeSerializer()),
+                    Create(new S2CLobbyChatMsgNoticeCharacterSerializer()),
 
                     Create(new ServerRes.Serializer()),
                 }

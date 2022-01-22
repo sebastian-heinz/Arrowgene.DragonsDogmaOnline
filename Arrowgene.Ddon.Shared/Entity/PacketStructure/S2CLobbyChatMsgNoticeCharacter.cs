@@ -1,10 +1,10 @@
 using Arrowgene.Buffers;
 
-namespace Arrowgene.Ddon.Shared.Entity.Structure
+namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class CDataLobbyChatMsgNoticeCharacterBaseInfo
+    public class S2CLobbyChatMsgNoticeCharacterBaseInfo
     {
-        public CDataLobbyChatMsgNoticeCharacterBaseInfo()
+        public S2CLobbyChatMsgNoticeCharacterBaseInfo()
         {
             characterId = 0;
             strFirstName = string.Empty;
@@ -18,8 +18,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public string strClanName;
     }
 
-    public class CDataLobbyChatMsgNoticeCharacterSerializer : EntitySerializer<CDataLobbyChatMsgNoticeCharacterBaseInfo> {
-        public override void Write(IBuffer buffer, CDataLobbyChatMsgNoticeCharacterBaseInfo obj)
+    public class S2CLobbyChatMsgNoticeCharacterSerializer : EntitySerializer<S2CLobbyChatMsgNoticeCharacterBaseInfo> {
+        public override void Write(IBuffer buffer, S2CLobbyChatMsgNoticeCharacterBaseInfo obj)
         {
             WriteUInt32(buffer, obj.characterId);
             WriteMtString(buffer, obj.strFirstName);
@@ -27,9 +27,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteMtString(buffer, obj.strClanName);
         }
 
-        public override CDataLobbyChatMsgNoticeCharacterBaseInfo Read(IBuffer buffer)
+        public override S2CLobbyChatMsgNoticeCharacterBaseInfo Read(IBuffer buffer)
         {
-            CDataLobbyChatMsgNoticeCharacterBaseInfo obj = new CDataLobbyChatMsgNoticeCharacterBaseInfo();
+            S2CLobbyChatMsgNoticeCharacterBaseInfo obj = new S2CLobbyChatMsgNoticeCharacterBaseInfo();
             obj.characterId = ReadByte(buffer);
             obj.strFirstName = ReadMtString(buffer);
             obj.strLastName = ReadMtString(buffer);
