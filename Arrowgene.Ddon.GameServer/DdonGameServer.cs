@@ -77,6 +77,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new BattleContentInfoListHandler(this));
             AddHandler(new BlackListGetBlackListHandler(this));
 
+            AddHandler(new ActionSetPlayerActionHistoryHandler(this));
+
             AddHandler(new CharacterCommunityCharacterStatusGetHandler(this));
             AddHandler(new CharacterDecideCharacterIdHandler(this));
 
