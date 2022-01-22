@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
@@ -48,11 +49,11 @@ namespace Arrowgene.Ddon.Cli
 
         public Setting(Setting setting)
         {
-            setting.WebServerSetting = new WebServerSetting(setting.WebServerSetting);
-            setting.GameServerSetting = new GameServerSetting(setting.GameServerSetting);
-            setting.LoginServerSetting = new LoginServerSetting(setting.LoginServerSetting);
-            setting.DatabaseSetting = new DatabaseSetting(setting.DatabaseSetting);
-            setting.AssetPath = AssetPath;
+            WebServerSetting = new WebServerSetting(setting.WebServerSetting);
+            GameServerSetting = new GameServerSetting(setting.GameServerSetting);
+            LoginServerSetting = new LoginServerSetting(setting.LoginServerSetting);
+            DatabaseSetting = new DatabaseSetting(setting.DatabaseSetting);
+            AssetPath = AssetPath;
         }
     }
 }

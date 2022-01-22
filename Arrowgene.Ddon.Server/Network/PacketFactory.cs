@@ -115,7 +115,7 @@ namespace Arrowgene.Ddon.Server.Network
                 )
                 {
                     string combinedName = knownPacketId.Name + "->" + packet.Id.Name;
-                    packet.Id = new PacketId(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId, combinedName);
+                    packet.Id = new PacketId(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId, combinedName, _packetIdResolver.ServerType, packet.Source);
                 }
             }
 

@@ -39,27 +39,10 @@ namespace Arrowgene.Ddon.Cli
         private const char CliValueSeparator = '=';
         private static readonly ILogger Logger = LogProvider.Logger(typeof(Program));
 
-        private static HashSet<PacketId> IgnorePacketIds = new HashSet<PacketId>()
+        // A list of packet Ids to fully print to the console, regardless of setting
+        private static HashSet<PacketId> PrintPacketIds = new HashSet<PacketId>()
         {
-            PacketId.L2C_GET_ERROR_MESSAGE_LIST_NTC,
-            PacketId.L2C_GET_CHARACTER_LIST_RES,
-            PacketId.L2C_GP_COURSE_GET_INFO_RES,
-            PacketId.L2C_GET_LOGIN_SETTING_RES,
-            PacketId.S2C_LOADING_INFO_LOADING_GET_INFO_RES,
-            PacketId.S2C_STAGE_GET_STAGE_LIST_RES,
-            PacketId.S2C_CHARACTER_DECIDE_CHARACTER_ID_RES,
-            PacketId.S2C_SERVER_GET_GAME_SETTING_RES,
-            PacketId.S2C_ITEM_GET_STORAGE_ITEM_LIST_RES,
-            PacketId.S2C_EQUIP_GET_CHARACTER_EQUIP_LIST_RES,
-            PacketId.S2C_JOB_GET_JOB_CHANGE_LIST_RES,
-            PacketId.S2C_QUEST_11_89_16_NTC,
-            PacketId.S2C_ITEM_50_0_16_NTC,
-            PacketId.S2C_PAWN_GET_MYPAWN_LIST_RES,
-            PacketId.S2C_WARP_GET_FAVORITE_WARP_POINT_LIST_RES,
-            PacketId.S2C_CLAN_CLAN_GET_MY_MEMBER_LIST_RES,
-            PacketId.S2C_AREA_GET_LEADER_AREA_RELEASE_LIST_RES,
-            PacketId.S2C_PAWN_GET_NORA_PAWN_LIST_RES,
-            PacketId.S2C_DAILY_MISSION_LIST_GET_RES,
+            PacketId.L2C_CLIENT_CHALLENGE_RES
         };
 
         private static void Main(string[] args)
@@ -89,7 +72,7 @@ namespace Arrowgene.Ddon.Cli
             _commands = new Dictionary<string, ICommand>();
             _cancellationTokenSource = new CancellationTokenSource();
             Console.CancelKeyPress += ConsoleOnCancelKeyPress;
-            LogProvider.OnLogWrite += LogProviderOnOnLogWrite;
+            LogProvider.OnLogWrite += LogProviderOnLogWrite;
         }
 
         private void LoadCommands()
@@ -283,7 +266,7 @@ namespace Arrowgene.Ddon.Cli
             Logger.Info(sb.ToString());
         }
 
-        private void LogProviderOnOnLogWrite(object sender, LogWriteEventArgs e)
+        private void LogProviderOnLogWrite(object sender, LogWriteEventArgs e)
         {
             Log log = e.Log;
             LogLevel logLevel = log.LogLevel;
@@ -305,7 +288,6 @@ namespace Arrowgene.Ddon.Cli
                     break;
             }
 
-            string text = null;
             Packet packet = e.Log.Tag as Packet;
             if (packet != null)
             {
@@ -322,17 +304,13 @@ namespace Arrowgene.Ddon.Cli
                         break;
                 }
 
-                if (IgnorePacketIds.Contains(packet.Id))
+                if (PrintPacketIds.Contains(packet.Id))
                 {
-                    text = $"Ignored Packet Content:{Environment.NewLine}{packet.PrintHeader()}";
+                    log = new Log(log.LogLevel, packet.ToString(), log.Tag, log.LoggerIdentity, log.LoggerName);
                 }
             }
 
-            if (text == null)
-            {
-                text = log.ToString();
-            }
-
+            string text = log.ToString();
             if (text == null)
             {
                 return;
