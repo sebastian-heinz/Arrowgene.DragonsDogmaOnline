@@ -16,10 +16,20 @@ namespace Arrowgene.Ddon.Database
             switch (settings.Type)
             {
                 case DatabaseType.SQLite:
-                    database = BuildSqLite(
-                        settings.SqLiteFolder,
-                        Path.Combine(settings.SqLiteFolder, $"db.v{DdonSqLiteDb.Version}.sqlite")
-                    );
+                    string sqLitePath = Path.Combine(settings.SqLiteFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
+                    if (settings.WipeOnStartup)
+                    {
+                        try
+                        {
+                            File.Delete(sqLitePath);
+                        }
+                        catch (Exception)
+                        {
+                            // ignored
+                        }
+                    }
+
+                    database = BuildSqLite(settings.SqLiteFolder, sqLitePath);
                     break;
             }
 
@@ -34,16 +44,6 @@ namespace Arrowgene.Ddon.Database
 
         public static DdonSqLiteDb BuildSqLite(string sqLiteFolder, string sqLitePath)
         {
-            // TODO deleting database to ensure working condition fow now
-            try
-            {
-                // TODO - MORE TESTING WITHOUT NEW DB
-                File.Delete(sqLitePath);
-            }
-            catch (Exception)
-            {
-            }
-
             DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath);
             if (db.CreateDatabase())
             {

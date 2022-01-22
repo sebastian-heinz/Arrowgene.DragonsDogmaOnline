@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string[] CDataEditInfoFields = new string[]
         {
             "sex", "voice", "voice_pitch", "personality", "speech_freq", "body_type", "hair", "beard", "makeup", "scar",
-            "eye_preset_no", "nose_preset_no", "mouth_preset_mo", "eyebrow_tex_no", "color_skin", "color_hair",
+            "eye_preset_no", "nose_preset_no", "mouth_preset_no", "eyebrow_tex_no", "color_skin", "color_hair",
             "color_beard", "color_eyebrow", "color_r_eye", "color_l_eye", "color_makeup", "sokutobu", "hitai",
             "mimi_jyouge", "kannkaku", "mabisasi_jyouge", "hanakuchi_jyouge", "ago_saki_haba", "ago_zengo",
             "ago_saki_jyouge", "hitomi_ookisa", "me_ookisa", "me_kaiten", "mayu_kaiten", "mimi_ookisa", "mimi_muki",
@@ -124,7 +124,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.Visual.Scar = GetByte(reader, "scar");
             character.Visual.EyePresetNo = GetByte(reader, "eye_preset_no");
             character.Visual.NosePresetNo = GetByte(reader, "nose_preset_no");
-            character.Visual.MouthPresetNo = GetByte(reader, "mouth_preset_mo");
+            character.Visual.MouthPresetNo = GetByte(reader, "mouth_preset_no");
             character.Visual.EyebrowTexNo = GetByte(reader, "eyebrow_tex_no");
             character.Visual.ColorSkin = GetByte(reader, "color_skin");
             character.Visual.ColorHair = GetByte(reader, "color_hair");
@@ -156,7 +156,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.Visual.Hohoniku = GetUInt16(reader, "hohoniku");
             character.Visual.ErahoneJyouge = GetUInt16(reader, "erahone_jyouge");
             character.Visual.ErahoneHaba = GetUInt16(reader, "erahone_haba");
-            character.Visual.HanakuchiJyouge = GetUInt16(reader, "hana_jyouge");
+            character.Visual.HanaJyouge = GetUInt16(reader, "hana_jyouge");
             character.Visual.HanaHaba = GetUInt16(reader, "hana_haba");
             character.Visual.HanaTakasa = GetUInt16(reader, "hana_takasa");
             character.Visual.HanaKakudo = GetUInt16(reader, "hana_kakudo");
@@ -220,7 +220,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@scar", character.Visual.Scar);
             AddParameter(command, "@eye_preset_no", character.Visual.EyePresetNo);
             AddParameter(command, "@nose_preset_no", character.Visual.NosePresetNo);
-            AddParameter(command, "@mouth_preset_mo", character.Visual.MouthPresetNo);
+            AddParameter(command, "@mouth_preset_no", character.Visual.MouthPresetNo);
             AddParameter(command, "@eyebrow_tex_no", character.Visual.EyebrowTexNo);
             AddParameter(command, "@color_skin", character.Visual.ColorSkin);
             AddParameter(command, "@color_hair", character.Visual.ColorHair);
@@ -252,7 +252,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@hohoniku", character.Visual.Hohoniku);
             AddParameter(command, "@erahone_jyouge", character.Visual.ErahoneJyouge);
             AddParameter(command, "@erahone_haba", character.Visual.ErahoneHaba);
-            AddParameter(command, "@hana_jyouge", character.Visual.HanakuchiJyouge);
+            AddParameter(command, "@hana_jyouge", character.Visual.HanaJyouge);
             AddParameter(command, "@hana_haba", character.Visual.HanaHaba);
             AddParameter(command, "@hana_takasa", character.Visual.HanaTakasa);
             AddParameter(command, "@hana_kakudo", character.Visual.HanaKakudo);

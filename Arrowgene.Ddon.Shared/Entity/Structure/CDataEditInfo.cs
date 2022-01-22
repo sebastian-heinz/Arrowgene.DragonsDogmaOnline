@@ -89,7 +89,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteByte(buffer, obj.BodyType);
             WriteByte(buffer, obj.Hair);
             WriteByte(buffer, obj.Beard);
-            WriteByte(buffer, obj.Makeup);
+            WriteByte(buffer, obj.Makeup); //10
             WriteByte(buffer, obj.Scar);
             WriteByte(buffer, obj.EyePresetNo);
             WriteByte(buffer, obj.NosePresetNo);
@@ -99,33 +99,33 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteByte(buffer, obj.ColorHair);
             WriteByte(buffer, obj.ColorBeard);
             WriteByte(buffer, obj.ColorEyebrow);
-            WriteByte(buffer, obj.ColorREye);
+            WriteByte(buffer, obj.ColorREye); //20
             WriteByte(buffer, obj.ColorLEye);
-            WriteByte(buffer, obj.ColorMakeup);
+            WriteByte(buffer, obj.ColorMakeup); 
             WriteUInt16(buffer, obj.Sokutobu);
             WriteUInt16(buffer, obj.Hitai);
             WriteUInt16(buffer, obj.MimiJyouge);
-            WriteUInt16(buffer, obj.Kannkaku);
+            WriteUInt16(buffer, obj.Kannkaku); //30
             WriteUInt16(buffer, obj.MabisasiJyouge);
             WriteUInt16(buffer, obj.HanakuchiJyouge);
             WriteUInt16(buffer, obj.AgoSakiHaba);
             WriteUInt16(buffer, obj.AgoZengo);
-            WriteUInt16(buffer, obj.AgoSakiJyouge);
+            WriteUInt16(buffer, obj.AgoSakiJyouge); //40
             WriteUInt16(buffer, obj.HitomiOokisa);
             WriteUInt16(buffer, obj.MeOokisa);
             WriteUInt16(buffer, obj.MeKaiten);
             WriteUInt16(buffer, obj.MayuKaiten);
-            WriteUInt16(buffer, obj.MimiOokisa);
+            WriteUInt16(buffer, obj.MimiOokisa); //50
             WriteUInt16(buffer, obj.MimiMuki);
             WriteUInt16(buffer, obj.ElfMimi);
             WriteUInt16(buffer, obj.MikenTakasa);
             WriteUInt16(buffer, obj.MikenHaba);
-            WriteUInt16(buffer, obj.HohoboneRyou);
+            WriteUInt16(buffer, obj.HohoboneRyou); //60
             WriteUInt16(buffer, obj.HohoboneJyouge);
             WriteUInt16(buffer, obj.Hohoniku);
             WriteUInt16(buffer, obj.ErahoneJyouge);
             WriteUInt16(buffer, obj.ErahoneHaba);
-            WriteUInt16(buffer, obj.HanaJyouge);
+            WriteUInt16(buffer, obj.HanaJyouge); //70
             WriteUInt16(buffer, obj.HanaHaba);
             WriteUInt16(buffer, obj.HanaTakasa);
             WriteUInt16(buffer, obj.HanaKakudo);

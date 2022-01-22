@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `ddon_character`
     `scar`                        TINYINT                           NOT NULL,
     `eye_preset_no`               TINYINT                           NOT NULL,
     `nose_preset_no`              TINYINT                           NOT NULL,
-    `mouth_preset_mo`             TINYINT                           NOT NULL,
+    `mouth_preset_no`             TINYINT                           NOT NULL,
     `eyebrow_tex_no`              TINYINT                           NOT NULL,
     `color_skin`                  TINYINT                           NOT NULL,
     `color_hair`                  TINYINT                           NOT NULL,
