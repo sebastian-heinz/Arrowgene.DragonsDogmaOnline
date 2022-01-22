@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient requestingClient, Packet request)
         {
             // Read request
-            CDataLobbyChatMsgReq req = EntitySerializer.Get<CDataLobbyChatMsgReq>().Read(request.AsBuffer());
+            C2SLobbyChatMsgReq req = EntitySerializer.Get<C2SLobbyChatMsgReq>().Read(request.AsBuffer());
             Logger.Debug(requestingClient, $"{req.type}, {req.unk2}, {req.unk3}, {req.unk4}, {req.unk5}: {req.strMessage}"); // Log chat message
 
             // Write response
@@ -30,8 +31,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             resBuffer.WriteInt32(0, Endianness.Big); // error
             resBuffer.WriteInt32(0, Endianness.Big); // result
 
-            CDataLobbyChatMsgRes res = new CDataLobbyChatMsgRes();
-            EntitySerializer.Get<CDataLobbyChatMsgRes>().Write(resBuffer, res);
+            S2CLobbyChatMsgRes res = new S2CLobbyChatMsgRes();
+            EntitySerializer.Get<S2CLobbyChatMsgRes>().Write(resBuffer, res);
             Packet response = new Packet(PacketId.S2C_LOBBY_LOBBY_CHAT_MSG_RES, resBuffer.GetAllBytes());
             requestingClient.Send(response);
 
@@ -39,13 +40,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (GameClient client in Server.Clients)
             {
                 IBuffer ntcBuffer = new StreamBuffer();
-                CDataLobbyChatMsgNotice ntc = new CDataLobbyChatMsgNotice();
+                S2CLobbyChatMsgNotice ntc = new S2CLobbyChatMsgNotice();
                 ntc.unk0 = (byte) req.type;
                 ntc.strMessage = req.strMessage;
                 ntc.characterBaseInfo.strFirstName = "FirstName";
                 ntc.characterBaseInfo.strLastName = "LastName";
                 ntc.characterBaseInfo.strClanName = "ClanName";
-                EntitySerializer.Get<CDataLobbyChatMsgNotice>().Write(ntcBuffer, ntc);
+                EntitySerializer.Get<S2CLobbyChatMsgNotice>().Write(ntcBuffer, ntc);
                 Packet notice = new Packet(PacketId.S2C_LOBBY_LOBBY_CHAT_MSG_NTC, ntcBuffer.GetAllBytes());
                 client.Send(notice);
             }
