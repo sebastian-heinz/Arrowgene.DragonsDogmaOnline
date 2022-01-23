@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -7,35 +8,27 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.C2S_INSTANCE_GET_ENEMY_SET_LIST_REQ;
 
         public C2SInstanceGetEnemySetListReq() {
-            stageId = 0;
-            layerNo = 0;
-            groupId = 0;
-            subgroupId = 0;
+            LayoutId = new CStageLayoutID();
+            SubGroupId = 0;
         }
 
-        public uint stageId;
-        public byte layerNo;
-        public uint groupId;
-        public byte subgroupId;
+        public CStageLayoutID LayoutId { get; set; }
+        public byte SubGroupId { get; set; }
 
     }
 
     public class C2SInstanceGetEnemySetListReqSerializer : EntitySerializer<C2SInstanceGetEnemySetListReq> {
         public override void Write(IBuffer buffer, C2SInstanceGetEnemySetListReq obj)
         {
-            WriteUInt32(buffer, obj.stageId);
-            WriteByte(buffer, obj.layerNo);
-            WriteUInt32(buffer, obj.groupId);
-            WriteByte(buffer, obj.subgroupId);
+            WriteEntity<CStageLayoutID>(buffer, obj.LayoutId);
+            WriteByte(buffer, obj.SubGroupId);
         }
 
         public override C2SInstanceGetEnemySetListReq Read(IBuffer buffer)
         {
             C2SInstanceGetEnemySetListReq obj = new C2SInstanceGetEnemySetListReq();
-            obj.stageId = ReadUInt32(buffer);
-            obj.layerNo = ReadByte(buffer);
-            obj.groupId = ReadUInt32(buffer);
-            obj.subgroupId = ReadByte(buffer);
+            obj.LayoutId = ReadEntity<CStageLayoutID>(buffer);
+            obj.SubGroupId = ReadByte(buffer);
             return obj;
         }
     }

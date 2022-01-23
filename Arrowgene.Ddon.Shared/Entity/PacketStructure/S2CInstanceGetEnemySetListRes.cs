@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -8,79 +10,47 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public override PacketId Id => PacketId.S2C_INSTANCE_GET_ENEMY_SET_LIST_RES;
 
         public S2CInstanceGetEnemySetListRes() {
-            stageId = 0;
-            layerNo = 0;
-            groupId = 0;
-            subgroupId = 0;
-            stageId = 0;
-            layerNo = 0;
-            groupId = 0;
-            subgroupId = 0;
-            enemyArray = new byte[] {
-               0x0, 0x1, 0x0, 0x0, //Array details (?, length, ?, ?)
-            //Enemy 1
-            0x1, 0x3, 0x14, 0x1, //Enemy ID
-            0x0, 0x8, 0xFA, 0x0, //Named Enemy Params
-            0x0, 0x0, 0x0, 0x0, //RaidBoss Id
-            0x64, 0x0, //Scale
-            0x5E, 0x0,  //Level
-            0x0, //StartThinkTbl (Start Think Table?)
-            0x0, //RepopNum
-            0x0, //RepopCount
-            0x0, //EnemyTargetTypes
-            0x0, //MontageFix (?)
-            0x0, //SetType
-            0x0, //InfectionType
-            0x0, //BossBauge
-            0x0, //BossVGM
-            0x0, //IsManualSet (?)
-            0x0, //Is Area Boss
-            0x0, //Is blood enemy
-            0x0, //??
-            0x0, //??
-            0x0, //??
-            0x0, //??
-            
-            0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 //Packet end
-            };
-            randomSeed = 61235;
-            questId = 0;
+            LayoutId=new CStageLayoutID();
+            SubGroupId=0;
+            RandomSeed=61235;
+            QuestId=0;
+            EnemyList=new List<CDataLayoutEnemyData>();
+            DropItemSetList=new List<CDataDropItemSetInfo>();
+            NamedParamList=new List<CDataNamedEnemyParamClient>();
         }
 
-        public uint stageId;
-        public byte layerNo;
-        public uint groupId;
-        public byte subgroupId;
-         public uint randomSeed;
-        public uint questId;
-        public byte[] enemyArray;
+        public CStageLayoutID LayoutId { get; set; }
+        public byte SubGroupId { get; set; }
+         public uint RandomSeed { get; set; }
+        public uint QuestId { get; set; }
+        public List<CDataLayoutEnemyData> EnemyList { get; set; }
+        public List<CDataDropItemSetInfo> DropItemSetList { get; set; }
+        public List<CDataNamedEnemyParamClient> NamedParamList { get; set; }
 
         public class Serializer : EntitySerializer<S2CInstanceGetEnemySetListRes> {
             public override void Write(IBuffer buffer, S2CInstanceGetEnemySetListRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt16(buffer, 0); // ??? (padding?)
-                WriteUInt32(buffer, obj.stageId);
-                WriteByte(buffer, obj.layerNo);
-                WriteUInt32(buffer, obj.groupId);
-                WriteByte(buffer, obj.subgroupId);
-                WriteUInt32(buffer, obj.randomSeed);
-                WriteUInt32(buffer,obj.questId);
-                WriteByteArray(buffer,obj.enemyArray);
+                WriteEntity<CStageLayoutID>(buffer, obj.LayoutId);
+                WriteByte(buffer, obj.SubGroupId);
+                WriteUInt32(buffer, obj.RandomSeed);
+                WriteUInt32(buffer, obj.QuestId);
+                WriteEntityList<CDataLayoutEnemyData>(buffer, obj.EnemyList);
+                WriteEntityList<CDataDropItemSetInfo>(buffer, obj.DropItemSetList);
+                WriteEntityList<CDataNamedEnemyParamClient>(buffer, obj.NamedParamList);
             }
 
             public override S2CInstanceGetEnemySetListRes Read(IBuffer buffer)
             {
                 S2CInstanceGetEnemySetListRes obj = new S2CInstanceGetEnemySetListRes();
                 ReadServerResponse(buffer, obj);
-                ReadUInt16(buffer); // ??? (padding?)
-                obj.stageId = ReadUInt32(buffer);
-                obj.layerNo = ReadByte(buffer);
-                obj.groupId = ReadUInt32(buffer);
-                obj.subgroupId = ReadByte(buffer);
-                obj.randomSeed = ReadUInt32(buffer);
-                obj.questId = ReadUInt32(buffer);
-                //obj.enemyArray = TODO
+                obj.LayoutId = ReadEntity<CStageLayoutID>(buffer);
+                obj.SubGroupId = ReadByte(buffer);
+                obj.RandomSeed = ReadUInt32(buffer);
+                obj.QuestId = ReadUInt32(buffer);
+                obj.EnemyList = ReadEntityList<CDataLayoutEnemyData>(buffer);
+                obj.DropItemSetList = ReadEntityList<CDataDropItemSetInfo>(buffer);
+                obj.NamedParamList = ReadEntityList<CDataNamedEnemyParamClient>(buffer);
                 return obj;
             }
         }

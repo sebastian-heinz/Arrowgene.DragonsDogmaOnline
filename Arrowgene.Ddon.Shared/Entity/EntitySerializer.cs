@@ -24,6 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataCharacterMessageSerializer()),
                     Create(new CDataCharacterMsgSetSerializer()),
                     Create(new CDataCommunicationShortCutSerializer()),
+                    Create(new CDataDropItemSetInfo.Serializer()),
                     Create(new CDataEditInfoSerializer()),
                     Create(new CDataEquipElementParamSerializer()),
                     Create(new CDataEquipElementUnkTypeSerializer()),
@@ -34,16 +35,20 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataGPCourseValidSerializer()),
                     Create(new CDataJobPlayPointSerializer()),
                     Create(new CDataJumpLocationSerializer()),
+                    Create(new CDataLayoutEnemyData.Serializer()),
                     Create(new CDataLobbyMemberInfoSerializer()),
                     Create(new CDataLoginSettingSerializer()),
                     Create(new CDataMatchingProfileSerializer()),
+                    Create(new CDataNamedEnemyParamClient.Serializer()),
                     Create(new CDataOrbCategoryStatusSerializer()),
                     Create(new CDataOrbPageStatusSerializer()),
                     Create(new CDataPlayPointDataSerializer()),
                     Create(new CDataShortCutSerializer()),
+                    Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer()),
                     Create(new CDataStatusInfoSerializer()),
                     Create(new CDataURLInfoSerializer()),
                     Create(new CDataWarpPointSerializer()),
+                    Create(new CStageLayoutID.Serializer()),
                     Create(new DoubleByteThingSerializer()),
                     Create(new UnkownCharacterData0Serializer()),
                     Create(new UnkownCharacterData1Serializer()),
@@ -137,6 +142,26 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected override Type GetEntityType()
         {
             return typeof(T);
+        }
+
+        protected void WriteFloat(IBuffer buffer, float value)
+        {
+            buffer.WriteFloat(value, Endianness.Big);
+        }
+
+        protected float ReadFloat(IBuffer buffer)
+        {
+            return buffer.ReadFloat(Endianness.Big);
+        }
+
+        protected void WriteDouble(IBuffer buffer, double value)
+        {
+            buffer.WriteDouble(value, Endianness.Big);
+        }
+
+        protected double ReadDouble(IBuffer buffer)
+        {
+            return buffer.ReadDouble(Endianness.Big);
         }
 
         protected void WriteUInt64(IBuffer buffer, ulong value)

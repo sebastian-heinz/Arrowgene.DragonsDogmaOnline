@@ -20,10 +20,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
         {   
             S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes(); //note that the enemy array is inside this and is currently hardcoded
-            response.groupId = request.Structure.groupId;
-            response.layerNo = request.Structure.layerNo;
-            response.stageId = request.Structure.stageId;
-            response.subgroupId = request.Structure.subgroupId;
+            response.LayoutId.StageID = request.Structure.LayoutId.StageID;
+            response.LayoutId.LayerNo = request.Structure.LayoutId.LayerNo;
+            response.LayoutId.GroupID = request.Structure.LayoutId.GroupID;
+            response.SubGroupId = request.Structure.SubGroupId;
 
             client.Send(response);
         }
