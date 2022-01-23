@@ -41,14 +41,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataLobbyMemberInfo obj)
         {
-            buffer.WriteUInt32(obj.CharacterID);
-            buffer.WriteMtString(obj.FirstName);
-            buffer.WriteMtString(obj.LastName);
-            buffer.WriteMtString(obj.ClanName);
-            buffer.WriteUInt32(obj.PawnID);
-            buffer.WriteByte(obj.Unk0);
-            buffer.WriteByte(obj.Unk1);
-            buffer.WriteByte(obj.Unk2);
+            WriteUInt32(buffer, obj.CharacterID);
+            WriteMtString(buffer, obj.FirstName);
+            WriteMtString(buffer, obj.LastName);
+            WriteMtString(buffer, obj.ClanName);
+            WriteUInt32(buffer, obj.PawnID);
+            WriteByte(buffer, obj.Unk0);
+            WriteByte(buffer, obj.Unk1);
+            WriteByte(buffer, obj.Unk2);
         }
 
         public override CDataLobbyMemberInfo Read(IBuffer buffer)

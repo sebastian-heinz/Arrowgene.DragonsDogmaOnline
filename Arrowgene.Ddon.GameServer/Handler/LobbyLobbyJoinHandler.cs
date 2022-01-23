@@ -38,20 +38,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                        Unk2 = 1,
                    },
 
-                   new CDataLobbyMemberInfo()
-                   {
-                       CharacterID = 0xDEADBEEF,
-                       FirstName = "Example",
-                       LastName = "SecondLobbyMember",
-                       ClanName = "S;R",
-                       PawnID = 0,
-                       Unk0 = 1,
-                       Unk1 = 0,
-                       Unk2 = 1,
-                   },
+                   //new CDataLobbyMemberInfo()
+                   //{
+                   //    CharacterID = 0xDEADBEEF,
+                   //    FirstName = "Example",
+                   //    LastName = "SecondLobbyMember",
+                   //    ClanName = "S;R",
+                   //    PawnID = 0,
+                   //    Unk0 = 1,
+                   //    Unk1 = 0,
+                   //    Unk2 = 1,
+                   //},
                 }
             };
-            //client.Send(InGameDump.Dump_13);
+            client.Send(resp);
+            client.Send(InGameDump.Dump_13);
             
             // NTC
             client.Send(GameFull.Dump_14);
