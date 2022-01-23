@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataGPCourseValidSerializer()),
                     Create(new CDataJobPlayPointSerializer()),
                     Create(new CDataJumpLocationSerializer()),
+                    Create(new CDataLobbyMemberInfoSerializer()),
                     Create(new CDataLoginSettingSerializer()),
                     Create(new CDataMatchingProfileSerializer()),
                     Create(new CDataOrbCategoryStatusSerializer()),
@@ -46,6 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new DoubleByteThingSerializer()),
                     Create(new UnkownCharacterData0Serializer()),
                     Create(new UnkownCharacterData1Serializer()),
+
 
                     // Packet structure serializers
                     Create(new C2LCreateCharacterDataReq.Serializer()),
@@ -61,6 +63,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new C2SConnectionMoveInServerReq.Serializer()),
                     Create(new C2SConnectionMoveOutServerReq.Serializer()),
                     Create(new C2SLobbyChatMsgReqSerializer()),
+                    Create(new C2SLobbyJoinReq.Serializer()),
                     Create(new C2SWarpGetReturnLocationReqSerializer()),
                     Create(new C2SWarpRegisterFavoriteWarpReqSerializer()),
                     Create(new C2SWarpReqSerializer()),
@@ -84,6 +87,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new S2CLobbyChatMsgResSerializer()),
                     Create(new S2CLobbyChatMsgNoticeSerializer()),
                     Create(new S2CLobbyChatMsgNoticeCharacterSerializer()),
+                    Create(new S2CLobbyJoinRes.Serializer()),
                     Create(new S2CWarpGetReturnLocationResSerializer()),
                     Create(new S2CWarpRegisterFavoriteWarpResSerializer()),
                     Create(new S2CWarpResSerializer()),

@@ -36,12 +36,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public override C2SLobbyChatMsgReq Read(IBuffer buffer)
         {
             C2SLobbyChatMsgReq obj = new C2SLobbyChatMsgReq();
-            obj.type = (Structure.CDataLobbyChatMsgType.Type) buffer.ReadByte();
-            obj.unk2 = buffer.ReadUInt32();
-            obj.unk3 = buffer.ReadByte();
-            obj.unk4 = buffer.ReadUInt32();
-            obj.unk5 = buffer.ReadUInt32();
-            obj.strMessage = buffer.ReadMtString();
+            obj.type = (Structure.CDataLobbyChatMsgType.Type) ReadByte(buffer);
+            obj.unk2 = ReadUInt32(buffer);
+            obj.unk3 = ReadByte(buffer);
+            obj.unk4 = ReadUInt32(buffer);
+            obj.unk5 = ReadUInt32(buffer);
+            obj.strMessage = ReadMtString(buffer);
             return obj;
         }
     }

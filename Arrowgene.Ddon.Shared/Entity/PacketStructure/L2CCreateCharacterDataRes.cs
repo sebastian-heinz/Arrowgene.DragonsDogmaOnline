@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 L2CCreateCharacterDataRes obj = new L2CCreateCharacterDataRes();
                 ReadServerResponse(buffer, obj);
-                obj.WaitNum = buffer.ReadUInt32();
+                obj.WaitNum = ReadUInt32(buffer);
                 return obj;
             }
         }
