@@ -1,8 +1,10 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class C2SInstanceGetEnemySetListReq {
+    public class C2SInstanceGetEnemySetListReq : IPacketStructure {
+        public PacketId Id => PacketId.C2S_INSTANCE_GET_ENEMY_SET_LIST_REQ;
 
         public C2SInstanceGetEnemySetListReq() {
             stageId = 0;
@@ -15,6 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public byte layerNo;
         public uint groupId;
         public byte subgroupId;
+
     }
 
     public class C2SInstanceGetEnemySetListReqSerializer : EntitySerializer<C2SInstanceGetEnemySetListReq> {

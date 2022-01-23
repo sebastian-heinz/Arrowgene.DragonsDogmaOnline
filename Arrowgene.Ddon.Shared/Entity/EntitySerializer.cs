@@ -62,6 +62,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new C2SConnectionLoginReq.Serializer()),
                     Create(new C2SConnectionMoveInServerReq.Serializer()),
                     Create(new C2SConnectionMoveOutServerReq.Serializer()),
+                    Create(new C2SInstanceGetEnemySetListReqSerializer()),
                     Create(new C2SLobbyChatMsgReq.Serializer()),
                     Create(new C2SLobbyJoinReq.Serializer()),
                     Create(new C2SWarpGetReturnLocationReq.Serializer()),
@@ -84,6 +85,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new S2CConnectionLoginRes.Serializer()),
                     Create(new S2CConnectionLogoutRes.Serializer()),
                     Create(new S2CConnectionMoveOutServerRes.Serializer()),
+                    Create(new S2CInstanceGetEnemySetListRes.Serializer()),
                     Create(new S2CLobbyChatMsgRes.Serializer()),
                     Create(new S2CLobbyChatMsgNotice.Serializer()),
                     Create(new S2CLobbyChatMsgNoticeCharacterSerializer()),
@@ -91,9 +93,6 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new S2CWarpGetReturnLocationRes.Serializer()),
                     Create(new S2CWarpRegisterFavoriteWarpRes.Serializer()),
                     Create(new S2CWarpWarpRes.Serializer()),
-
-                    Create(new C2SInstanceGetEnemySetListReqSerializer()),
-                    Create(new C2SInstanceGetEnemySetListResSerializer()),
                     
                     Create(new ServerRes.Serializer()),
                 }
@@ -175,7 +174,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             buffer.WriteBool(value);
         }
 
-        protected void WriteByteArray(IBuffer buffer, byte[] value){
+        protected void WriteByteArray(IBuffer buffer, byte[] value)
+        {
             buffer.WriteBytes(value);
         }
 
