@@ -77,8 +77,13 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new BattleContentInfoListHandler(this));
             AddHandler(new BlackListGetBlackListHandler(this));
 
+            AddHandler(new ActionSetPlayerActionHistoryHandler(this));
+
             AddHandler(new CharacterCommunityCharacterStatusGetHandler(this));
             AddHandler(new CharacterDecideCharacterIdHandler(this));
+            AddHandler(new CharacterGoldenReviveHandler(this));
+            AddHandler(new CharacterPenaltyReviveHandler(this));
+            AddHandler(new CharacterPointReviveHandler(this));
 
             AddHandler(new ClanClanGetJoinRequestedListHandler(this));
             AddHandler(new ClanClanGetMyInfoHandler(this));
@@ -167,6 +172,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new WarpGetFavoriteWarpPointListHandler(this));
             AddHandler(new WarpGetReleaseWarpPointListHandler(this));
+            AddHandler(new WarpGetReturnLocationHandler(this));
             AddHandler(new WarpGetStartPointListHandler(this));
             AddHandler(new WarpGetWarpPointListHandler(this));
             AddHandler(new WarpRegisterFavoriteWarpHandler(this));
