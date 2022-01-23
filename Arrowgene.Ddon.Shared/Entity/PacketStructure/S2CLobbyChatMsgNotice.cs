@@ -1,55 +1,60 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CLobbyChatMsgNotice {
+    public class S2CLobbyChatMsgNotice : IPacketStructure {
 
         // Unidentified variables from the PS4 version:
         //  ucType (u8) (use CDataLobbyChatMsgType when identified)
         //  unHandleId (u32)
 
+        public PacketId Id => PacketId.S2C_LOBBY_LOBBY_CHAT_MSG_NTC;
+
+        public byte Unk0;
+        public uint Unk1;
+        public S2CLobbyChatMsgNoticeCharacterBaseInfo CharacterBaseInfo;
+        public byte Unk2;
+        public uint Unk3;
+        public uint Unk4;
+        public string StrMessage;
+
         public S2CLobbyChatMsgNotice() {
-            unk0 = 0;
-            unk1 = 0;
-            characterBaseInfo = new S2CLobbyChatMsgNoticeCharacterBaseInfo();
-            unk2 = 0;
-            unk3 = 0;
-            unk4 = 0;
-            strMessage = string.Empty;
+            Unk0 = 0;
+            Unk1 = 0;
+            CharacterBaseInfo = new S2CLobbyChatMsgNoticeCharacterBaseInfo();
+            Unk2 = 0;
+            Unk3 = 0;
+            Unk4 = 0;
+            StrMessage = string.Empty;
         }
 
-        public byte unk0;
-        public uint unk1;
-        public S2CLobbyChatMsgNoticeCharacterBaseInfo characterBaseInfo;
-        public byte unk2;
-        public uint unk3;
-        public uint unk4;
-        public string strMessage;
+        public class Serializer : EntitySerializer<S2CLobbyChatMsgNotice> {
+            public override void Write(IBuffer buffer, S2CLobbyChatMsgNotice obj)
+            {
+                WriteByte(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.Unk1);
+                WriteEntity<S2CLobbyChatMsgNoticeCharacterBaseInfo>(buffer, obj.CharacterBaseInfo);
+                WriteByte(buffer, obj.Unk2);
+                WriteUInt32(buffer, obj.Unk3);
+                WriteUInt32(buffer, obj.Unk4);
+                WriteMtString(buffer, obj.StrMessage);
+            }
+
+            public override S2CLobbyChatMsgNotice Read(IBuffer buffer)
+            {
+                S2CLobbyChatMsgNotice obj = new S2CLobbyChatMsgNotice();
+                obj.Unk0 = ReadByte(buffer);
+                obj.Unk1 = ReadUInt32(buffer);
+                obj.CharacterBaseInfo = ReadEntity<S2CLobbyChatMsgNoticeCharacterBaseInfo>(buffer);
+                obj.Unk2 = ReadByte(buffer);
+                obj.Unk3 = ReadUInt32(buffer);
+                obj.Unk4 = ReadUInt32(buffer);
+                obj.StrMessage = ReadMtString(buffer);
+                return obj;
+            }
+        }
+
     }
 
-    public class S2CLobbyChatMsgNoticeSerializer : EntitySerializer<S2CLobbyChatMsgNotice> {
-        public override void Write(IBuffer buffer, S2CLobbyChatMsgNotice obj)
-        {
-            WriteByte(buffer, obj.unk0);
-            WriteUInt32(buffer, obj.unk1);
-            WriteEntity<S2CLobbyChatMsgNoticeCharacterBaseInfo>(buffer, obj.characterBaseInfo);
-            WriteByte(buffer, obj.unk2);
-            WriteUInt32(buffer, obj.unk3);
-            WriteUInt32(buffer, obj.unk4);
-            WriteMtString(buffer, obj.strMessage);
-        }
-
-        public override S2CLobbyChatMsgNotice Read(IBuffer buffer)
-        {
-            S2CLobbyChatMsgNotice obj = new S2CLobbyChatMsgNotice();
-            obj.unk0 = ReadByte(buffer);
-            obj.unk1 = ReadUInt32(buffer);
-            obj.characterBaseInfo = ReadEntity<S2CLobbyChatMsgNoticeCharacterBaseInfo>(buffer);
-            obj.unk2 = ReadByte(buffer);
-            obj.unk3 = ReadUInt32(buffer);
-            obj.unk4 = ReadUInt32(buffer);
-            obj.strMessage = ReadMtString(buffer);
-            return obj;
-        }
-    }
 }
