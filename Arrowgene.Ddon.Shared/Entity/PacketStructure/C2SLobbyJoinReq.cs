@@ -14,15 +14,15 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, C2SLobbyJoinReq obj)
             {
-                buffer.WriteUInt32(obj.CharacterID);
-                buffer.WriteUInt32(obj.UserListMaxNum);
+                WriteUInt32(buffer, obj.CharacterID);
+                WriteUInt32(buffer, obj.UserListMaxNum);
             }
 
             public override C2SLobbyJoinReq Read(IBuffer buffer)
             {
                 C2SLobbyJoinReq obj = new C2SLobbyJoinReq();
-                obj.CharacterID = buffer.ReadUInt32();
-                obj.UserListMaxNum = buffer.ReadUInt32();
+                obj.CharacterID = ReadUInt32(buffer);
+                obj.UserListMaxNum = ReadUInt32(buffer);
                 return obj;
             }
         }
