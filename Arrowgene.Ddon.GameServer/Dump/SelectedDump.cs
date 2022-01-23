@@ -15,8 +15,80 @@ namespace Arrowgene.Ddon.GameServer.Dump
             0x0, 0x0, 0x1, 0x0, 0x4, 0x0, 0x0, 0x2, 0x1, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
             0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
         };
-
         public static Packet Dump_93047 = new Packet(new PacketId(13, 0, 2, "S2C_INSTANCE_GET_ENEMY_SET_LIST_RES"), data_Dump_93047);
+        public static byte[] data_Dump_Test = new byte[] /* 13.0.2 - stream 85 */
+        {
+            0x0, 0x0, //Error
+            0x0, 0x0, 0x0, 0x0, //Result?
+            0x0, 0x0, 0x0, 0x0, //???
+            0x0, 0x1, 0x0, 0x0, //StageId
+            0x0, //LayerNo
+            0x0, 0xF, 0x0, 0x0, //GroupId
+            0x80, //Subgorupid
+            0xB6, 0x67, 0x3, 0x1, //Random Seed
+            0x0, 0x0, 0x0, 0x0, //Quest Id
+            0x0, 0x1, 0x0, 0x0, //Array details (?, length, ?, ?)
+            //Enemy 1
+            0x0, 0x0, 0x0, 0x1, //Enemy ID
+            0x0, 0x0, 0x0, 0x0, //Named Enemy Params
+            0x0, 0x0, 0x0, 0x0, //RaidBoss Id
+            0x64, 0x0, //Scale
+            0x1, 0x0,  //Level
+            0x0, //StartThinkTbl (Start Think Table?)
+            0x0, //RepopNum
+            0x0, //RepopCount
+            0x0, //EnemyTargetTypes
+            0x4, //MontageFix (?)
+            0x0, //SetType
+            0x0, //InfectionType
+            0x0, //BossBauge
+            0x0, //BossVGM
+            0x0, //IsManualSet (?)
+            0x0, //Is Area Boss
+            0x0, //Is blood enemy
+            0x0, //??
+            0x0, //??
+            0x0, //??
+            0x0, //??
+            
+            0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 //Packet end
+        };
+
+        /*
+            class CPacket_S2C_GET_ENEMY_SET_LIST_RES: public CPacketDataBase
+            {
+                private:
+                    u16 m_usError;
+                    s32 m_nResult;
+                    CStageLayoutID m_LayoutId;
+                    u8 m_ucSubGroupId;
+                    u32 m_unRandomSeed;
+                    u32 m_unQuestId;
+                    MtTypedArray<CDataLayoutEnemyData> m_EnemyList;
+                    MtTypedArray<CDataDropItemSetInfo> m_DropItemSetList;
+                    MtTypedArray<CDataNamedEnemyParamClient> m_NamedparamList;
+                    bool m_bIsReceived;
+        */
+
+        
+        public static byte[] data_Dump_Test2 = new byte[] /* 13.0.2 - stream 85 */
+        {
+            0x0, 0x0, //Error
+            0x0, 0x0, 0x0, 0x0, //Result?
+            0x0, 0x0, 0x0, 0x0, //Stage Id
+            0x0, //LayerNo
+            0x1, 0x0, 0x0, 0x0, //GroupId
+            0x1, //Subgorupid
+            0x3D, 0x0, 0x0, 0x80, //Random Seed
+            0xB6, 0x67, 0x3, 0x1, //Quest Id
+            0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, //Array details (?, length, ?, ?)
+            0x2, 0x4, 0x3, 0x0, 0x0, 0xC, 0x56, 0x0, 0x0, 0x0, 0x0, 0x0, 0x64, 0x0, 0x64, 0x0, //Enemy 1
+            0x0, 0x0, 0x1, 0x0, 0x4, 0x0, 0x0, 0x2, 0x1, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, //More ENemy 1 details
+            0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 //Packet end
+        };
+
+
+        public static Packet Dump_Test = new Packet(new PacketId(13, 0, 2, "S2C_INSTANCE_GET_ENEMY_SET_LIST_RES"), data_Dump_Test);
 
         public static byte[] data_Dump_93283 = new byte[] /* 13.5.2 */
         {
