@@ -1,9 +1,6 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
@@ -31,8 +28,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice();
                 notice.Unk0 = (byte) request.Structure.Type;
                 notice.StrMessage = request.Structure.StrMessage;
-                notice.CharacterBaseInfo.strFirstName = "FirstName";
-                notice.CharacterBaseInfo.strLastName = "LastName";
+                notice.CharacterBaseInfo.strFirstName = requestingClient.Character.FirstName;
+                notice.CharacterBaseInfo.strLastName = requestingClient.Character.LastName;
                 notice.CharacterBaseInfo.strClanName = "ClanName";
                 client.Send(notice);
             }
