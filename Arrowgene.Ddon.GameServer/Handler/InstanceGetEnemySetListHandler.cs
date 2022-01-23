@@ -27,9 +27,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             //Write in the packet stuff
             IBuffer resBuffer = new StreamBuffer();
-            resBuffer.WriteInt16(0, Endianness.Big); // error
+            resBuffer.WriteInt32(0, Endianness.Big); // error
             resBuffer.WriteInt32(0, Endianness.Big); // result
-            resBuffer.WriteInt32(0, Endianness.Big); // ??? (padding?)
+            resBuffer.WriteInt16(0, Endianness.Big); // ??? (padding?)
 
             C2SInstanceGetEnemySetListRes res = new C2SInstanceGetEnemySetListRes(); //note that the enemy array is inside this and is currently hardcoded
             res.groupId = req.groupId;
