@@ -128,6 +128,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MailSystemMailGetListDataHandler(this));
             AddHandler(new MailSystemMailGetListFootHandler(this));
             AddHandler(new MailSystemMailGetListHeadHandler(this));
+            
+            AddHandler(new NpcGetExtendedFacilityHandler(this));
 
             AddHandler(new OrbDevoteGetOrbGainExtendParamHandler(this));
 

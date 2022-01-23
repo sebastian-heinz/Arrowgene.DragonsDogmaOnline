@@ -75,7 +75,9 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new S2CLobbyChatMsgNoticeCharacterSerializer()),
                     Create(new S2CWarpRegisterFavoriteWarpResSerializer()),
                     Create(new S2CWarpResSerializer()),
-
+                    Create(new C2SInstanceGetEnemySetListReqSerializer()),
+                    Create(new C2SInstanceGetEnemySetListResSerializer()),
+                    
                     Create(new ServerRes.Serializer()),
                 }
             );
@@ -154,6 +156,10 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected void WriteBool(IBuffer buffer, bool value)
         {
             buffer.WriteBool(value);
+        }
+
+        protected void WriteByteArray(IBuffer buffer, byte[] value){
+            buffer.WriteBytes(value);
         }
 
         protected void WriteByte(IBuffer buffer, byte value)
