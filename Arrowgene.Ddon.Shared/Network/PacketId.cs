@@ -284,7 +284,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_2_3_16_NTC = new PacketId(2, 3, 16, "S2C_CHARACTER_2_3_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_4_16_NTC = new PacketId(2, 4, 16, "S2C_CHARACTER_2_4_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_5_16_NTC = new PacketId(2, 5, 16, "S2C_CHARACTER_2_5_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CHARACTER_2_6_16_NTC = new PacketId(2, 6, 16, "S2C_CHARACTER_2_6_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NTC = new PacketId(2, 6, 16, "S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_6_16_NTC");
         public static readonly PacketId S2C_CHARACTER_2_7_16_NTC = new PacketId(2, 7, 16, "S2C_CHARACTER_2_7_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_8_16_NTC = new PacketId(2, 8, 16, "S2C_CHARACTER_2_8_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_9_16_NTC = new PacketId(2, 9, 16, "S2C_CHARACTER_2_9_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2182,7 +2182,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_3_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_4_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_5_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_6_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_7_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_8_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_9_16_NTC);
