@@ -18678,5 +18678,13 @@ namespace Arrowgene.Ddon.GameServer.Dump
         };
 
         public static Packet Dump_647 = new Packet(new PacketId(0, 0, 2, "Dump_647"), data_Dump_647);
+
+        public static byte[] data_Dump_648 = new byte[] /* 14.9.2 */
+        {
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0x48, 0x00, 0x06, 0x0F, 0x47,
+            0x00, 0x00, 0x07, 0xD4, 0x40, 0x01, 0x00                            
+        };
+
+        public static Packet Dump_648 = new Packet(new PacketId(14, 9, 2, "Dump_648"), data_Dump_648);
     }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is part of Arrowgene.Ddon.GameServer
  *
  * Arrowgene.Ddon.GameServer is a server implementation for the game "Dragons Dogma Online".
@@ -172,6 +172,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new StampBonusCheckHandler(this));
 
+            AddHandler(new WarpAreaWarpHandler(this));
             AddHandler(new WarpGetFavoriteWarpPointListHandler(this));
             AddHandler(new WarpGetReleaseWarpPointListHandler(this));
             AddHandler(new WarpGetReturnLocationHandler(this));
