@@ -323,5 +323,22 @@ namespace Arrowgene.Ddon.Shared
 
             return dst;
         }
+
+        public static string ToXML(object obj)
+        {
+            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(obj.GetType());
+            using (System.IO.StringWriter sw = new System.IO.StringWriter())
+            {
+                try
+                {
+                    xs.Serialize(sw, obj);
+                    return sw.ToString();
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

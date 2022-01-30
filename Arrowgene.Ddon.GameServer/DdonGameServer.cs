@@ -22,10 +22,14 @@
 
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -37,17 +41,25 @@ namespace Arrowgene.Ddon.GameServer
 
         private readonly List<GameClient> _clients;
 
+        private readonly List<CDataStageInfo> _stageInfo;
+
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
             Setting = new GameServerSetting(setting);
             _clients = new List<GameClient>();
+
+            S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
+            _stageInfo = stageListPacket.StageList;
+
             LoadPacketHandler();
         }
 
         public GameServerSetting Setting { get; }
 
         public override List<GameClient> Clients => new List<GameClient>(_clients);
+
+        public List<CDataStageInfo> StageList => new List<CDataStageInfo>(_stageInfo);
 
         protected override void ClientConnected(GameClient client)
         {

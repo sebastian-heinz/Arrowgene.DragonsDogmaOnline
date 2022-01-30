@@ -1,7 +1,9 @@
-﻿using Arrowgene.Buffers;
+﻿using System.Collections.Generic;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
@@ -19,11 +21,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
         {   
-            S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes(); //note that the enemy array is inside this and is currently hardcoded
+            S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes();
             response.LayoutId.StageID = request.Structure.LayoutId.StageID;
             response.LayoutId.LayerNo = request.Structure.LayoutId.LayerNo;
             response.LayoutId.GroupID = request.Structure.LayoutId.GroupID;
             response.SubGroupId = request.Structure.SubGroupId;
+            response.RandomSeed = 0xFFFFFFFF;
+
+            CDataLayoutEnemyData layoutEnemyData = new CDataLayoutEnemyData();
+            layoutEnemyData.EnemyInfo.EnemyId = 0x010314;
+            layoutEnemyData.EnemyInfo.NamedEnemyParamsId = 0x8FA;
+            layoutEnemyData.EnemyInfo.Scale = 0x64; // Normal
+            layoutEnemyData.EnemyInfo.Lv = 0x5E;
+            layoutEnemyData.EnemyInfo.EnemyTargetTypesId = 1;
+            response.EnemyList.Add(layoutEnemyData);
+
+            Logger.Debug(client, Util.ToXML(response));
 
             client.Send(response);
         }

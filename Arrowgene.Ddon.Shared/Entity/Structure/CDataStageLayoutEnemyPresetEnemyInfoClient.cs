@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint RaidBossId { get; set; }
         public ushort Scale { get; set; }
         public ushort Lv { get; set; } // Level
-        public ushort HmPresetNo { get; set; }
+        public ushort HmPresetNo { get; set; } // Preset for human enemies?
         public byte StartThinkTblNo { get; set; } // Start Think Table Number???
         public byte RepopNum { get; set; }
         public byte RepopCount { get; set; }
