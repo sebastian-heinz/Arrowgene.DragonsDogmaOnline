@@ -1,13 +1,13 @@
-﻿using System;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Server;
+﻿using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class StageAreaChangeHandler : PacketHandler<GameClient>
+    public class StageAreaChangeHandler : StructurePacketHandler<GameClient, C2SStageAreaChangeReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageAreaChangeHandler));
 
@@ -16,11 +16,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_STAGE_AREA_CHANGE_REQ;
-
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, StructurePacket<C2SStageAreaChangeReq> packet)
         {
-            client.Send(GameFull.Dump_109);
+            S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
+            res.StageNo = convertIdToStageNo(packet.Structure.StageId); // TODO: Convert StageId to StageNo
+            res.IsBase = false;
+
+            Logger.Debug(client, Util.ToXML(res));
+
+            client.Send(res);
+        }
+
+        private uint convertIdToStageNo(uint stageId)
+        {
+            foreach(CDataStageInfo stageInfo in (Server as DdonGameServer).StageList)
+            {
+                if(stageInfo.ID == stageId)
+                    return stageInfo.StageNo;
+            }
+
+            Logger.Error($"No stage found with ID ${stageId}");
+            return 0; // TODO: Maybe throw an exception?
         }
     }
 }
