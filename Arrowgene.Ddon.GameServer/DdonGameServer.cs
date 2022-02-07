@@ -125,6 +125,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
 
+            AddHandler(new InstanceEnemyKillHandler(this));
             AddHandler(new InstanceGetEnemySetListHandler(this));
             AddHandler(new InstanceGetItemSetListHandler(this));
 
