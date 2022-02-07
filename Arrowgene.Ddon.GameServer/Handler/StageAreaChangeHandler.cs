@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SStageAreaChangeReq> packet)
         {
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
-            res.StageNo = convertIdToStageNo(packet.Structure.StageId); // TODO: Convert StageId to StageNo
+            res.StageNo = convertIdToStageNo(packet.Structure.StageId);
             res.IsBase = false;
 
             Logger.Debug(client, Util.ToXML(res));

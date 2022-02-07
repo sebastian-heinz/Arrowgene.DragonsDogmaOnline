@@ -31,8 +31,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataLayoutEnemyData layoutEnemyData = new CDataLayoutEnemyData();
             layoutEnemyData.EnemyInfo.EnemyId = 0x010314;
             layoutEnemyData.EnemyInfo.NamedEnemyParamsId = 0x8FA;
-            layoutEnemyData.EnemyInfo.Scale = 0x64; // Normal
-            layoutEnemyData.EnemyInfo.Lv = 0x5E;
+            layoutEnemyData.EnemyInfo.Scale = 100;
+            layoutEnemyData.EnemyInfo.Lv = 94;
             layoutEnemyData.EnemyInfo.EnemyTargetTypesId = 1;
             response.EnemyList.Add(layoutEnemyData);
 

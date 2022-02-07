@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint EnemyId { get; set; }
         public uint NamedEnemyParamsId { get; set; }
         public uint RaidBossId { get; set; }
-        public ushort Scale { get; set; }
+        public ushort Scale { get; set; } // Scale as a percentage, 100(%) is normal
         public ushort Lv { get; set; } // Level
         public ushort HmPresetNo { get; set; } // Preset for human enemies?
         public byte StartThinkTblNo { get; set; } // Start Think Table Number???

@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                 new[]
                 {
                     // Data structure serializers
+                    Create(new CData_35_14_16.Serializer()),
                     Create(new CDataAchievementIdentifierSerializer()),
                     Create(new CDataArisenProfileSerializer()),
                     Create(new CDataCharacterEquipDataSerializer()),
@@ -71,6 +72,8 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new C2SConnectionLoginReq.Serializer()),
                     Create(new C2SConnectionMoveInServerReq.Serializer()),
                     Create(new C2SConnectionMoveOutServerReq.Serializer()),
+                    Create(new C2SContextGetSetContextReq.Serializer()),
+                    Create(new C2SInstanceEnemyKillReq.Serializer()),
                     Create(new C2SInstanceGetEnemySetListReqSerializer()),
                     Create(new C2SLobbyChatMsgReq.Serializer()),
                     Create(new C2SLobbyJoinReq.Serializer()),
@@ -99,6 +102,10 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new S2CConnectionLoginRes.Serializer()),
                     Create(new S2CConnectionLogoutRes.Serializer()),
                     Create(new S2CConnectionMoveOutServerRes.Serializer()),
+                    Create(new S2CContext_35_14_16_Ntc.Serializer()),
+                    Create(new S2CContextGetSetContextRes.Serializer()),
+                    Create(new S2CInstanceEnemyKillRes.Serializer()),
+                    Create(new S2CInstanceEnemyRepopNtc.Serializer()),
                     Create(new S2CInstanceGetEnemySetListRes.Serializer()),
                     Create(new S2CLobbyChatMsgRes.Serializer()),
                     Create(new S2CLobbyChatMsgNotice.Serializer()),
@@ -205,6 +212,36 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected ushort ReadUInt16(IBuffer buffer)
         {
             return buffer.ReadUInt16(Endianness.Big);
+        }
+
+        protected void WriteInt64(IBuffer buffer, long value)
+        {
+            buffer.WriteInt64(value, Endianness.Big);
+        }
+
+        protected long ReadInt64(IBuffer buffer)
+        {
+            return buffer.ReadInt64(Endianness.Big);
+        }
+
+        protected void WriteInt32(IBuffer buffer, int value)
+        {
+            buffer.WriteInt32(value, Endianness.Big);
+        }
+
+        protected int ReadInt32(IBuffer buffer)
+        {
+            return buffer.ReadInt32(Endianness.Big);
+        }
+
+        protected void WriteInt16(IBuffer buffer, short value)
+        {
+            buffer.WriteInt16(value, Endianness.Big);
+        }
+
+        protected short ReadInt16(IBuffer buffer)
+        {
+            return buffer.ReadInt16(Endianness.Big);
         }
 
         protected void WriteBool(IBuffer buffer, bool value)
