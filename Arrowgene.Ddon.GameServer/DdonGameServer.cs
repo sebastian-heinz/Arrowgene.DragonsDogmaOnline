@@ -180,7 +180,14 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetRealTimeHandler(this));
             AddHandler(new ServerGetServerListHandler(this));
 
+            AddHandler(new SkillGetAbilityCostHandler(this));
             AddHandler(new SkillGetCurrentSetSkillListHandler(this));
+            AddHandler(new SkillGetLearnedAbilityListHandler(this));
+            AddHandler(new SkillGetLearnedNormalSkillListHandler(this));
+            AddHandler(new SkillGetLearnedSkillListHandler(this));
+            AddHandler(new SkillGetPresetAbilityListHandler(this));
+            AddHandler(new SkillGetSetAbilityListHandler(this));
+            AddHandler(new SkillGetSetSkillListHandler(this));
 
             AddHandler(new StageAreaChangeHandler(this));
             AddHandler(new StageGetStageListHandler(this));
