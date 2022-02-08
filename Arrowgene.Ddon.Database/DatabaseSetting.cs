@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.Database
             Database = "Ddon";
             User = string.Empty;
             Password = string.Empty;
+            WipeOnStartup = true;
 
             string envDbType = Environment.GetEnvironmentVariable("DB_TYPE");
             switch (envDbType)
@@ -50,6 +51,7 @@ namespace Arrowgene.Ddon.Database
             User = databaseSettings.User;
             Password = databaseSettings.Password;
             Database = databaseSettings.Database;
+            WipeOnStartup = databaseSettings.WipeOnStartup;
         }
 
         [DataMember(Order = 0)] public DatabaseType Type { get; set; }
@@ -65,5 +67,7 @@ namespace Arrowgene.Ddon.Database
         [DataMember(Order = 5)] public string Password { get; set; }
 
         [DataMember(Order = 6)] public string Database { get; set; }
+
+        [DataMember(Order = 6)] public bool WipeOnStartup { get; set; }
     }
 }

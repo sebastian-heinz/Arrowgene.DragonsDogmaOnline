@@ -1,32 +1,37 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class C2SWarpRegisterFavoriteWarpReq
+    public class C2SWarpRegisterFavoriteWarpReq : IPacketStructure
     {
+        public PacketId Id => PacketId.C2S_WARP_REGISTER_FAVORITE_WARP_REQ;
+
+        public uint SlotNo { get; set; }
+        public uint WarpPointID { get; set; }
+
         public C2SWarpRegisterFavoriteWarpReq() {
-            slotNo = 0;
-            warpPointID = 0;
+            SlotNo = 0;
+            WarpPointID = 0;
         }
 
-        public uint slotNo;
-        public uint warpPointID;
+        public class Serializer : EntitySerializer<C2SWarpRegisterFavoriteWarpReq>
+        {
+            public override void Write(IBuffer buffer, C2SWarpRegisterFavoriteWarpReq obj)
+            {
+                WriteUInt32(buffer, obj.SlotNo);
+                WriteUInt32(buffer, obj.WarpPointID);
+            }
+
+            public override C2SWarpRegisterFavoriteWarpReq Read(IBuffer buffer)
+            {
+                C2SWarpRegisterFavoriteWarpReq obj = new C2SWarpRegisterFavoriteWarpReq();
+                obj.SlotNo = ReadUInt32(buffer);
+                obj.WarpPointID = ReadUInt32(buffer);
+                return obj;
+            }
+        }
+
     }
 
-    public class C2SWarpRegisterFavoriteWarpReqSerializer : EntitySerializer<C2SWarpRegisterFavoriteWarpReq>
-    {
-        public override void Write(IBuffer buffer, C2SWarpRegisterFavoriteWarpReq obj)
-        {
-            WriteUInt32(buffer, obj.slotNo);
-            WriteUInt32(buffer, obj.warpPointID);
-        }
-
-        public override C2SWarpRegisterFavoriteWarpReq Read(IBuffer buffer)
-        {
-            C2SWarpRegisterFavoriteWarpReq obj = new C2SWarpRegisterFavoriteWarpReq();
-            obj.slotNo = ReadUInt32(buffer);
-            obj.warpPointID = ReadUInt32(buffer);
-            return obj;
-        }
-    }
 }

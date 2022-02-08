@@ -26,12 +26,12 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public string Description =>
             $"Dragons Dogma Online Server. Ex.:{Environment.NewLine}server start{Environment.NewLine}server stop";
-
+        
         public CommandResultType Run(CommandParameter parameter)
         {
             if (_setting == null)
             {
-                string settingPath = Path.Combine(Util.ExecutingDirectory(), "Arrowgene.Ddon.exe.config.json");
+                string settingPath = Path.Combine(Util.ExecutingDirectory(), "Arrowgene.Ddon.config.json");
                 _setting = Setting.Load(settingPath);
                 if (_setting == null)
                 {
@@ -58,6 +58,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_loginServer == null)
             {
+                
                 _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _database, _assetRepository);
             }
 

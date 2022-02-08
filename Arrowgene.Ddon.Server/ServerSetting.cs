@@ -7,14 +7,6 @@ namespace Arrowgene.Ddon.Server
     [DataContract]
     public class ServerSetting
     {
-        /// <summary>
-        /// Warning:
-        /// Changing while having existing accounts requires to rehash all passwords.
-        /// The number is log2, so adding +1 doubles the time it takes.
-        /// https://wildlyinaccurate.com/bcrypt-choosing-a-work-factor/
-        /// </summary>
-        public const int BCryptWorkFactor = 10;
-
         [IgnoreDataMember] public IPAddress ListenIpAddress { get; set; }
 
 
@@ -54,9 +46,9 @@ namespace Arrowgene.Ddon.Server
             LogLevel = 0;
             LogUnknownPackets = true;
             LogOutgoingPackets = true;
-            LogOutgoingPacketPayload = true;
+            LogOutgoingPacketPayload = false;
             LogIncomingPackets = true;
-            LogIncomingPacketPayload = true;
+            LogIncomingPacketPayload = false;
             ServerSocketSettings = new AsyncEventSettings();
             ServerSocketSettings.MaxUnitOfOrder = 2;
         }

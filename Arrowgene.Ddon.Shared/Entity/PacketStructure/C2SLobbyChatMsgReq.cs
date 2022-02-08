@@ -1,48 +1,52 @@
 using System;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class C2SLobbyChatMsgReq {
+    public class C2SLobbyChatMsgReq : IPacketStructure {
+
+        public PacketId Id => PacketId.C2S_LOBBY_LOBBY_CHAT_MSG_REQ;
+
+        public Structure.CDataLobbyChatMsgType.Type Type { get; set; } 
+        public uint Unk2 { get; set; } // Target ID?
+        public byte Unk3 { get; set; }
+        public uint Unk4 { get; set; }
+        public uint Unk5 { get; set; }
+        public string StrMessage { get; set; }
 
         public C2SLobbyChatMsgReq() {
-            type = 0;
-            unk2 = 0;
-            unk3 = 0;
-            unk4 = 0;
-            unk5 = 0;
-            strMessage = string.Empty;
+            Type = 0;
+            Unk2 = 0;
+            Unk3 = 0;
+            Unk4 = 0;
+            Unk5 = 0;
+            StrMessage = string.Empty;
         }
 
-        public Structure.CDataLobbyChatMsgType.Type type; 
-        public uint unk2; // Target ID?
-        public byte unk3;
-        public uint unk4;
-        public uint unk5;
-        public string strMessage;
-    }
+        public class Serializer : EntitySerializer<C2SLobbyChatMsgReq> {
+            public override void Write(IBuffer buffer, C2SLobbyChatMsgReq obj)
+            {
+                WriteByte(buffer, (byte) obj.Type);
+                WriteUInt32(buffer, obj.Unk2);
+                WriteByte(buffer, obj.Unk3);
+                WriteUInt32(buffer, obj.Unk4);
+                WriteUInt32(buffer, obj.Unk5);
+                WriteMtString(buffer, obj.StrMessage);
+            }
 
-    public class C2SLobbyChatMsgReqSerializer : EntitySerializer<C2SLobbyChatMsgReq> {
-        public override void Write(IBuffer buffer, C2SLobbyChatMsgReq obj)
-        {
-            WriteByte(buffer, (byte) obj.type);
-            WriteUInt32(buffer, obj.unk2);
-            WriteByte(buffer, obj.unk3);
-            WriteUInt32(buffer, obj.unk4);
-            WriteUInt32(buffer, obj.unk5);
-            WriteMtString(buffer, obj.strMessage);
+            public override C2SLobbyChatMsgReq Read(IBuffer buffer)
+            {
+                C2SLobbyChatMsgReq obj = new C2SLobbyChatMsgReq();
+                obj.Type = (Structure.CDataLobbyChatMsgType.Type) ReadByte(buffer);
+                obj.Unk2 = ReadUInt32(buffer);
+                obj.Unk3 = ReadByte(buffer);
+                obj.Unk4 = ReadUInt32(buffer);
+                obj.Unk5 = ReadUInt32(buffer);
+                obj.StrMessage = ReadMtString(buffer);
+                return obj;
+            }
         }
 
-        public override C2SLobbyChatMsgReq Read(IBuffer buffer)
-        {
-            C2SLobbyChatMsgReq obj = new C2SLobbyChatMsgReq();
-            obj.type = (Structure.CDataLobbyChatMsgType.Type) buffer.ReadByte();
-            obj.unk2 = buffer.ReadUInt32();
-            obj.unk3 = buffer.ReadByte();
-            obj.unk4 = buffer.ReadUInt32();
-            obj.unk5 = buffer.ReadUInt32();
-            obj.strMessage = buffer.ReadMtString();
-            return obj;
-        }
     }
 }
