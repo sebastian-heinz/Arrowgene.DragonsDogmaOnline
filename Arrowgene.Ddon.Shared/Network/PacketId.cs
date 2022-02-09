@@ -533,7 +533,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_ITEM_GET_ITEM_STORAGE_INFO_RES = new PacketId(10, 9, 2, "S2C_ITEM_GET_ITEM_STORAGE_INFO_RES", ServerType.Game, PacketSource.Server); // アイテムストレージ情報取得に
         public static readonly PacketId S2C_ITEM_10_10_16_NTC = new PacketId(10, 10, 16, "S2C_ITEM_10_10_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_ITEM_10_11_16_NTC = new PacketId(10, 11, 16, "S2C_ITEM_10_11_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_ITEM_10_12_16_NTC = new PacketId(10, 12, 16, "S2C_ITEM_10_12_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_ITEM_UPDATE_CHARACTER_ITEM_NOTICE = new PacketId(10, 12, 16, "S2C_ITEM_UPDATE_CHARACTER_ITEM_NOTICE", ServerType.Game, PacketSource.Server, "S2C_ITEM_10_12_16_NTC");
         public static readonly PacketId S2C_ITEM_10_13_16_NTC = new PacketId(10, 13, 16, "S2C_ITEM_10_13_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_ITEM_10_14_16_NTC = new PacketId(10, 14, 16, "S2C_ITEM_10_14_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_ITEM_GET_PAY_COST_REQ = new PacketId(10, 15, 1, "C2S_ITEM_GET_PAY_COST_REQ", ServerType.Game, PacketSource.Client);
@@ -1488,7 +1488,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_JOB_GET_JOB_CHANGE_LIST_RES = new PacketId(33, 0, 2, "S2C_JOB_GET_JOB_CHANGE_LIST_RES", ServerType.Game, PacketSource.Server); // ジョブチェンジリスト取得に
         public static readonly PacketId C2S_JOB_CHANGE_JOB_REQ = new PacketId(33, 1, 1, "C2S_JOB_CHANGE_JOB_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_JOB_CHANGE_JOB_RES = new PacketId(33, 1, 2, "S2C_JOB_CHANGE_JOB_RES", ServerType.Game, PacketSource.Server); // ジョブチェンジに
-        public static readonly PacketId S2C_JOB_33_1_16_NTC = new PacketId(33, 1, 16, "S2C_JOB_33_1_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_JOB_CHANGE_JOB_NTC = new PacketId(33, 1, 16, "S2C_JOB_CHANGE_JOB_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_1_16_NTC");
         public static readonly PacketId C2S_JOB_CHANGE_PAWN_JOB_REQ = new PacketId(33, 2, 1, "C2S_JOB_CHANGE_PAWN_JOB_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_JOB_CHANGE_PAWN_JOB_RES = new PacketId(33, 2, 2, "S2C_JOB_CHANGE_PAWN_JOB_RES", ServerType.Game, PacketSource.Server); // ポーンジョブチェンジに
         public static readonly PacketId S2C_JOB_33_2_16_NTC = new PacketId(33, 2, 16, "S2C_JOB_33_2_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2431,7 +2431,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_ITEM_GET_ITEM_STORAGE_INFO_RES);
             AddPacketIdEntry(packetIds, S2C_ITEM_10_10_16_NTC);
             AddPacketIdEntry(packetIds, S2C_ITEM_10_11_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_ITEM_10_12_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_ITEM_UPDATE_CHARACTER_ITEM_NOTICE);
             AddPacketIdEntry(packetIds, S2C_ITEM_10_13_16_NTC);
             AddPacketIdEntry(packetIds, S2C_ITEM_10_14_16_NTC);
             AddPacketIdEntry(packetIds, C2S_ITEM_GET_PAY_COST_REQ);
@@ -3386,7 +3386,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_JOB_GET_JOB_CHANGE_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_JOB_CHANGE_JOB_REQ);
             AddPacketIdEntry(packetIds, S2C_JOB_CHANGE_JOB_RES);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_1_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_CHANGE_JOB_NTC);
             AddPacketIdEntry(packetIds, C2S_JOB_CHANGE_PAWN_JOB_REQ);
             AddPacketIdEntry(packetIds, S2C_JOB_CHANGE_PAWN_JOB_RES);
             AddPacketIdEntry(packetIds, S2C_JOB_33_2_16_NTC);

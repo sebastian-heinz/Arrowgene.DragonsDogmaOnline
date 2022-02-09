@@ -134,7 +134,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemGetStorageItemListHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
 
+            AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobGetJobChangeListHandler(this));
+
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
             AddHandler(new LobbyLobbyChatMsgHandler(this));
