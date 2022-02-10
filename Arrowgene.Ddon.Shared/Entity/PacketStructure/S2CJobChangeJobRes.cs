@@ -13,8 +13,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             CharacterJobData=new CDataCharacterJobData();
             CharacterEquipList=new List<CDataCharacterEquipInfo>();
-            SetAcquirementParamList=new List<CDataSetAcquierementParam>();
-            SetAbilityParamList=new List<CDataSetAcquierementParam>();
+            SetAcquirementParamList=new List<CDataSetAcquirementParam>();
+            SetAbilityParamList=new List<CDataSetAcquirementParam>();
             LearnNormalSkillParamList=new List<CDataLearnNormalSkillParam>();
             EquipJobItemList=new List<CDataEquipJobItem>();
             PlayPointDataList=new List<CDataPlayPointData>();
@@ -23,8 +23,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public CDataCharacterJobData CharacterJobData { get; set; }
         public List<CDataCharacterEquipInfo> CharacterEquipList { get; set; }
-        public List<CDataSetAcquierementParam> SetAcquirementParamList { get; set; }
-        public List<CDataSetAcquierementParam> SetAbilityParamList { get; set; }
+        public List<CDataSetAcquirementParam> SetAcquirementParamList { get; set; }
+        public List<CDataSetAcquirementParam> SetAbilityParamList { get; set; }
         public List<CDataLearnNormalSkillParam> LearnNormalSkillParamList { get; set; }
         public List<CDataEquipJobItem> EquipJobItemList { get; set; }
         public List<CDataPlayPointData> PlayPointDataList { get; set; }
@@ -37,8 +37,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteServerResponse(buffer, obj);
                 WriteEntity<CDataCharacterJobData>(buffer, obj.CharacterJobData);
                 WriteEntityList<CDataCharacterEquipInfo>(buffer, obj.CharacterEquipList);
-                WriteEntityList<CDataSetAcquierementParam>(buffer, obj.SetAcquirementParamList);
-                WriteEntityList<CDataSetAcquierementParam>(buffer, obj.SetAbilityParamList);
+                WriteEntityList<CDataSetAcquirementParam>(buffer, obj.SetAcquirementParamList);
+                WriteEntityList<CDataSetAcquirementParam>(buffer, obj.SetAbilityParamList);
                 WriteEntityList<CDataLearnNormalSkillParam>(buffer, obj.LearnNormalSkillParamList);
                 WriteEntityList<CDataEquipJobItem>(buffer, obj.EquipJobItemList);
                 WriteEntityList<CDataPlayPointData>(buffer, obj.PlayPointDataList);
@@ -51,8 +51,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 ReadServerResponse(buffer, obj);
                 obj.CharacterJobData = ReadEntity<CDataCharacterJobData>(buffer);
                 obj.CharacterEquipList = ReadEntityList<CDataCharacterEquipInfo>(buffer);
-                obj.SetAcquirementParamList = ReadEntityList<CDataSetAcquierementParam>(buffer);
-                obj.SetAbilityParamList = ReadEntityList<CDataSetAcquierementParam>(buffer);
+                obj.SetAcquirementParamList = ReadEntityList<CDataSetAcquirementParam>(buffer);
+                obj.SetAbilityParamList = ReadEntityList<CDataSetAcquirementParam>(buffer);
                 obj.LearnNormalSkillParamList = ReadEntityList<CDataLearnNormalSkillParam>(buffer);
                 obj.EquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
                 obj.PlayPointDataList = ReadEntityList<CDataPlayPointData>(buffer);

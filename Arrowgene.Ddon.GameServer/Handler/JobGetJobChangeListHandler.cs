@@ -1,8 +1,11 @@
 ﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -19,7 +22,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, Packet packet)
         {
-            client.Send(InGameDump.Dump_52);
+            S2CJobGetJobChangeListRes jobChangeList = EntitySerializer.Get<S2CJobGetJobChangeListRes>().Read(InGameDump.Dump_52.AsBuffer());
+            Logger.Debug(Util.ToXML(jobChangeList));
+            client.Send(jobChangeList);
         }
     }
 }

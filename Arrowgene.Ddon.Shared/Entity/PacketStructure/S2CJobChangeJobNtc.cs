@@ -14,8 +14,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             CharacterId=0;
             CharacterJobData=new CDataCharacterJobData();
             EquipItemInfo=new List<CDataEquipItemInfo>();
-            SetAcquierementParamList=new List<CDataSetAcquierementParam>();
-            SetAbilityParamList=new List<CDataSetAcquierementParam>();
+            SetAcquierementParamList=new List<CDataSetAcquirementParam>();
+            SetAbilityParamList=new List<CDataSetAcquirementParam>();
             LearnNormalSkillParamList=new List<CDataLearnNormalSkillParam>();
             EquipJobItemList=new List<CDataEquipJobItem>();
             Unk0=0;
@@ -25,8 +25,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint CharacterId { get; set; }
         public CDataCharacterJobData CharacterJobData { get; set; }
         public List<CDataEquipItemInfo> EquipItemInfo { get; set; }
-        public List<CDataSetAcquierementParam> SetAcquierementParamList { get; set; }
-        public List<CDataSetAcquierementParam> SetAbilityParamList { get; set; }
+        public List<CDataSetAcquirementParam> SetAcquierementParamList { get; set; }
+        public List<CDataSetAcquirementParam> SetAbilityParamList { get; set; }
         public List<CDataLearnNormalSkillParam> LearnNormalSkillParamList { get; set; }
         public List<CDataEquipJobItem> EquipJobItemList { get; set; }
         public byte Unk0 { get; set; }
@@ -39,8 +39,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteEntity<CDataCharacterJobData>(buffer, obj.CharacterJobData);
                 WriteEntityList<CDataEquipItemInfo>(buffer, obj.EquipItemInfo);
-                WriteEntityList<CDataSetAcquierementParam>(buffer, obj.SetAcquierementParamList);
-                WriteEntityList<CDataSetAcquierementParam>(buffer, obj.SetAbilityParamList);
+                WriteEntityList<CDataSetAcquirementParam>(buffer, obj.SetAcquierementParamList);
+                WriteEntityList<CDataSetAcquirementParam>(buffer, obj.SetAbilityParamList);
                 WriteEntityList<CDataLearnNormalSkillParam>(buffer, obj.LearnNormalSkillParamList);
                 WriteEntityList<CDataEquipJobItem>(buffer, obj.EquipJobItemList);
                 WriteByte(buffer, obj.Unk0);
@@ -53,8 +53,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.CharacterId = ReadUInt32(buffer);
                 obj.CharacterJobData = ReadEntity<CDataCharacterJobData>(buffer);
                 obj.EquipItemInfo = ReadEntityList<CDataEquipItemInfo>(buffer);
-                obj.SetAcquierementParamList = ReadEntityList<CDataSetAcquierementParam>(buffer);
-                obj.SetAbilityParamList = ReadEntityList<CDataSetAcquierementParam>(buffer);
+                obj.SetAcquierementParamList = ReadEntityList<CDataSetAcquirementParam>(buffer);
+                obj.SetAbilityParamList = ReadEntityList<CDataSetAcquirementParam>(buffer);
                 obj.LearnNormalSkillParamList = ReadEntityList<CDataLearnNormalSkillParam>(buffer);
                 obj.EquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
                 obj.Unk0 = ReadByte(buffer);

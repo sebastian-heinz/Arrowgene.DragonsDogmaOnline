@@ -4,6 +4,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataLearnNormalSkillParam
     {
+        public CDataLearnNormalSkillParam(CDataNormalSkillParam skill)
+        {
+            SkillNo = skill.SkillNo;
+        }
+
         public CDataLearnNormalSkillParam()
         {
             SkillNo=0;

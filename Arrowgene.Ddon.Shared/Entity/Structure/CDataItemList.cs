@@ -8,18 +8,18 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public string Unk0 { get; set; }
         public uint Unk1 { get; set; }
         public uint Unk2 { get; set; }
-        public byte Unk3 { get; set; }
-        public byte Unk4 { get; set; }
-        public ushort Unk5 { get; set; }
-        public byte Unk6 { get; set; }
-        public byte Unk7 { get; set; }
+        public byte Unk3 { get; set; } // EquipType?
+        public byte Unk4 { get; set; } // EquipSlot?
+        public ushort Unk5 { get; set; } // ItemID?
+        public byte Unk6 { get; set; } // Color?
+        public byte Unk7 { get; set; } // PlusValue?
         public bool Unk8 { get; set; }
         public uint Unk9 { get; set; }
         public uint Unk10 { get; set; }
         public uint Unk11 { get; set; }
-        public List<CDataEquipElementUnkType2> Unk12 { get; set; } 
-        public List<CDataEquipElementUnkType> Unk13 { get; set; }
-        public List<CDataEquipElementParam> Unk14 { get; set; }
+        public List<CDataEquipElementUnkType2> Unk12 { get; set; } // Maybe weapon crests?
+        public List<CDataEquipElementUnkType> Unk13 { get; set; } // Maybe armor crests?
+        public List<CDataEquipElementParam> Unk14 { get; set; } // EquipElementParamList?
         
         public class Serializer : EntitySerializer<CDataItemList>
         {

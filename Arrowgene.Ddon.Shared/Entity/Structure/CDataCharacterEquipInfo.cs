@@ -4,6 +4,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCharacterEquipInfo
     {
+        public CDataCharacterEquipInfo(CDataEquipItemInfo equipItemInfo)
+        {
+            EquipItemUID=equipItemInfo.ItemID.ToString(); // Perhaps?
+            EquipCategory=equipItemInfo.EquipSlot; // Maybe?
+            EquipType=equipItemInfo.EquipType;
+        }
+
         public CDataCharacterEquipInfo()
         {
             EquipItemUID=string.Empty;

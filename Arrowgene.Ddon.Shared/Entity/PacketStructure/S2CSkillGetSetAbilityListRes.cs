@@ -11,24 +11,24 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CSkillGetSetAbilityListRes()
         {
-            SetAcquierementParam=new List<CDataSetAcquierementParam>();
+            SetAcquierementParam=new List<CDataSetAcquirementParam>();
         }
 
-        public List<CDataSetAcquierementParam> SetAcquierementParam { get; set; }
+        public List<CDataSetAcquirementParam> SetAcquierementParam { get; set; }
 
         public class Serializer : EntitySerializer<S2CSkillGetSetAbilityListRes>
         {
             public override void Write(IBuffer buffer, S2CSkillGetSetAbilityListRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntityList<CDataSetAcquierementParam>(buffer, obj.SetAcquierementParam);
+                WriteEntityList<CDataSetAcquirementParam>(buffer, obj.SetAcquierementParam);
             }
 
             public override S2CSkillGetSetAbilityListRes Read(IBuffer buffer)
             {
                 S2CSkillGetSetAbilityListRes obj = new S2CSkillGetSetAbilityListRes();
                 ReadServerResponse(buffer, obj);
-                obj.SetAcquierementParam = ReadEntityList<CDataSetAcquierementParam>(buffer);
+                obj.SetAcquierementParam = ReadEntityList<CDataSetAcquirementParam>(buffer);
                 return obj;
             }
         }
