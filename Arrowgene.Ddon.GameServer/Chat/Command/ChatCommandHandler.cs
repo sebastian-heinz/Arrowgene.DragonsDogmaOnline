@@ -42,12 +42,17 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             {
                 return;
             }
-
+            
+            // message starts with `/` treat it as a chat command
+            // this should not reach any audience
+            message.Deliver = false;
+            
             string commandMessage = message.Message.Substring(1);
             string[] command = commandMessage.Split(ChatCommandSeparator);
             if (command.Length <= 0)
             {
                 Logger.Error(client, $"Command '{message.Message}' is invalid");
+                responses.Add(ChatResponse.CommandError(client, $"Command '{message.Message}' is invalid"));
                 return;
             }
 
@@ -64,6 +69,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             {
                 Logger.Error(client,
                     $"Not entitled to execute command '{chatCommand.Key}' (State < Required: {client.Account.State} < {chatCommand.AccountState})");
+                responses.Add(ChatResponse.CommandError(client, $"Not authorized to execute this command"));
                 return;
             }
 
@@ -80,9 +86,6 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             }
 
             chatCommand.Execute(subCommand, client, message, responses);
-            
-            // do not send original message
-            message.Deliver = false;
         }
     }
 }

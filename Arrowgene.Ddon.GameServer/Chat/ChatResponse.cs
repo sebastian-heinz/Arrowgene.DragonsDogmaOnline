@@ -11,9 +11,6 @@ namespace Arrowgene.Ddon.GameServer.Chat
             {
                 Deliver = true,
                 Message = message,
-                FirstName = "[System]",
-                LastName = "[Error]",
-                CharacterId = client.Character.Id,
                 Type = LobbyChatMsgType.ManagementAlertC,
                 Recipients = {client}
             };
@@ -25,10 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             {
                 Deliver = true,
                 Message = message,
-                FirstName = "[System]",
-                LastName = "[Msg]",
-                CharacterId = client.Character.Id,
-                Type = LobbyChatMsgType.ManagementAlertC,
+                Type = LobbyChatMsgType.System,
                 Recipients = {client}
             };
         }
