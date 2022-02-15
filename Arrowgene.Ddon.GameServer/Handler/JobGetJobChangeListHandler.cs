@@ -23,7 +23,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, Packet packet)
         {
             S2CJobGetJobChangeListRes jobChangeList = EntitySerializer.Get<S2CJobGetJobChangeListRes>().Read(InGameDump.Dump_52.AsBuffer());
-            Logger.Debug(Util.ToXML(jobChangeList));
             client.Send(jobChangeList);
         }
     }

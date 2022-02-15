@@ -41,6 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataJobChangeInfo.Serializer()),
                     Create(new CDataJobChangeJobResUnk0.Serializer()),
                     Create(new CDataJobChangeJobResUnk0Unk1.Serializer()),
+                    Create(new CDataJobInfo.Serializer()),
                     Create(new CDataJobPlayPointSerializer()),
                     Create(new CDataJumpLocationSerializer()),
                     Create(new CDataLayoutEnemyData.Serializer()),
@@ -67,7 +68,6 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new CDataURLInfoSerializer()),
                     Create(new CDataWarpPointSerializer()),
                     Create(new CStageLayoutID.Serializer()),
-                    Create(new DoubleByteThingSerializer()),
                     Create(new UnkownCharacterData0Serializer()),
                     Create(new UnkownCharacterData1Serializer()),
 
@@ -118,6 +118,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Create(new L2CLoginWaitNumNtc.Serializer()),
                     Create(new L2CNextConnectionServerNtc.Serializer()),
                     Create(new S2CActionSetPlayerActionHistoryRes.Serializer()),
+                    Create(new S2CChangeCharacterEquipLobbyNotice.Serializer()),
                     Create(new S2CCharacterCharacterGoldenReviveRes.Serializer()),
                     Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer()),
                     Create(new S2CCharacterCharacterPointReviveRes.Serializer()),

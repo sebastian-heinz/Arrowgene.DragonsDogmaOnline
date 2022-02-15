@@ -7,6 +7,8 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -43,27 +45,45 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     break;
                 }
             }
-
-            S2CJobChangeJobRes response = new S2CJobChangeJobRes();
-            response.CharacterEquipList = new List<CDataCharacterEquipInfo>(requestedJobChangeInfo.EquipItemList.Select(x => new CDataCharacterEquipInfo(x)));
-            response.PlayPointDataList = new List<CDataPlayPointData> { requestedJobPlayPoint.PlayPoint };
-            response.LearnNormalSkillParamList = new List<CDataLearnNormalSkillParam>(getCurrentSetSkillList.NormalSkillList.Where(x => x.Job == packet.Structure.JobId).Select(x => new CDataLearnNormalSkillParam(x)));
-            response.SetAbilityParamList = new List<CDataSetAcquirementParam>(getCurrentSetSkillList.SetAbilityList.Where(x => x.Job == packet.Structure.JobId));
-            response.SetAcquirementParamList = new List<CDataSetAcquirementParam>(getCurrentSetSkillList.SetCustomSkillList.Where(x => x.Job == packet.Structure.JobId));
-            client.Send(response);
-
+            
+            // TODO: Send these notices to all players
             S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
             notice.CharacterId = client.Character.Id;
+            notice.EquipItemInfo = requestedJobChangeInfo.EquipItemList;
             notice.CharacterJobData.Job = packet.Structure.JobId;
             notice.CharacterJobData.Lv = 50;
-            notice.EquipItemInfo = requestedJobChangeInfo.EquipItemList;
-            notice.LearnNormalSkillParamList = response.LearnNormalSkillParamList;
-            notice.SetAbilityParamList = response.SetAbilityParamList;
-            notice.SetAcquierementParamList = response.SetAcquirementParamList;
+            notice.LearnNormalSkillParamList = new List<CDataLearnNormalSkillParam>(getCurrentSetSkillList.NormalSkillList.Where(x => x.Job == packet.Structure.JobId).Select(x => new CDataLearnNormalSkillParam(x)));
+            notice.SetAbilityParamList = new List<CDataSetAcquirementParam>(getCurrentSetSkillList.SetAbilityList.Where(x => x.Job == packet.Structure.JobId));
+            notice.SetAcquirementParamList = new List<CDataSetAcquirementParam>(getCurrentSetSkillList.SetCustomSkillList.Where(x => x.Job == packet.Structure.JobId));
             client.Send(notice);
+
+            S2CChangeCharacterEquipLobbyNotice changeCharacterEquipLobbyNotice = new S2CChangeCharacterEquipLobbyNotice();
+            changeCharacterEquipLobbyNotice.CharacterId = client.Character.Id;
+            changeCharacterEquipLobbyNotice.Job = packet.Structure.JobId;
+            changeCharacterEquipLobbyNotice.EquipItemList = requestedJobChangeInfo.EquipItemList;
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNotice = new S2CItemUpdateCharacterItemNtc();
             client.Send(updateCharacterItemNotice);
+
+            IBuffer packet_S2C_JOB_33_20_16_NTC_buffer = new StreamBuffer();
+            packet_S2C_JOB_33_20_16_NTC_buffer.WriteByte(packet.Structure.JobId);
+            packet_S2C_JOB_33_20_16_NTC_buffer.WriteUInt32(0x24, Endianness.Big);
+            packet_S2C_JOB_33_20_16_NTC_buffer.WriteUInt32(0, Endianness.Big);
+            packet_S2C_JOB_33_20_16_NTC_buffer.WriteUInt32(0x333, Endianness.Big);
+            packet_S2C_JOB_33_20_16_NTC_buffer.WriteByte(0x4);
+            Packet packet_S2C_JOB_33_20_16_NTC = new Packet(PacketId.S2C_JOB_33_11_16_NTC, packet_S2C_JOB_33_20_16_NTC_buffer.GetAllBytes());
+            client.Send(packet_S2C_JOB_33_20_16_NTC);
+
+            client.Send(GameFull.Dump_20);
+
+            S2CJobChangeJobRes response = new S2CJobChangeJobRes();
+            response.CharacterJobData = response.CharacterJobData;
+            response.LearnNormalSkillParamList = response.LearnNormalSkillParamList;
+            response.SetAbilityParamList = response.SetAbilityParamList;
+            response.SetAcquirementParamList = response.SetAcquirementParamList;
+            response.CharacterEquipList = new List<CDataCharacterEquipInfo>(requestedJobChangeInfo.EquipItemList.Select(x => new CDataCharacterEquipInfo(x)));
+            response.PlayPointDataList = new List<CDataPlayPointData> { requestedJobPlayPoint.PlayPoint };
+            client.Send(response);
         }
     }
 }
