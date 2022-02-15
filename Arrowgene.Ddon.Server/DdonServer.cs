@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Server
         public AssetRepository AssetRepository { get; }
         public IDatabase Database { get; }
 
-        public void Start()
+        public virtual void Start()
         {
             _server.Start();
         }

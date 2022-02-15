@@ -1,6 +1,6 @@
-namespace Arrowgene.Ddon.Shared.Entity.Structure.CDataLobbyChatMsgType {
+namespace Arrowgene.Ddon.Shared.Model {
     
-    public enum Type : byte
+    public enum LobbyChatMsgType : byte
     {
         Say = 0,
         Shout = 1,

@@ -1,30 +1,33 @@
 using Arrowgene.Buffers;
 
-namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
+namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
+    /// <summary>
+    /// CDataStageLayoutEnemyPresetEnemyInfoClient
+    /// </summary>
     public class CDataStageLayoutEnemyPresetEnemyInfoClient
     {
         public CDataStageLayoutEnemyPresetEnemyInfoClient()
         {
-            EnemyId=0;
-            NamedEnemyParamsId=0;
-            RaidBossId=0;
-            Scale=0;
-            Lv=0;
-            HmPresetNo=0;
-            StartThinkTblNo=0;
-            RepopNum=0;
-            RepopCount=0;
-            EnemyTargetTypesId=0;
-            MontageFixNo=0;
-            SetType=0;
-            InfectionType=0;
-            IsBossGauge=false;
-            IsBossBGM=false;
-            IsManualSet=false;
-            IsAreaBoss=false;
-            IsBloodEnemy=false;
-            Unk0=false;
+            EnemyId = 0;
+            NamedEnemyParamsId = 0;
+            RaidBossId = 0;
+            Scale = 0;
+            Lv = 0;
+            HmPresetNo = 0;
+            StartThinkTblNo = 0;
+            RepopNum = 0;
+            RepopCount = 0;
+            EnemyTargetTypesId = 0;
+            MontageFixNo = 0;
+            SetType = 0;
+            InfectionType = 0;
+            IsBossGauge = false;
+            IsBossBGM = false;
+            IsManualSet = false;
+            IsAreaBoss = false;
+            IsBloodEnemy = false;
+            Unk0 = false;
         }
 
         public uint EnemyId { get; set; }

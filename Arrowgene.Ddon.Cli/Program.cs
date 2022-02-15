@@ -45,6 +45,13 @@ namespace Arrowgene.Ddon.Cli
             PacketId.L2C_CLIENT_CHALLENGE_RES
         };
 
+        // A list of packet Ids to always ignore, regardless of setting
+        private static HashSet<PacketId> IgnorePacketIds = new HashSet<PacketId>()
+        {
+            new PacketId(3, 3, 16, ""),
+            new PacketId(6, 25, 16, "")
+        };
+
         private static void Main(string[] args)
         {
             Console.WriteLine("Program started");
@@ -288,8 +295,32 @@ namespace Arrowgene.Ddon.Cli
                     break;
             }
 
-            Packet packet = e.Log.Tag as Packet;
-            if (packet != null)
+            if (e.Log.Tag is IStructurePacket structurePacket)
+            {
+                switch (structurePacket.Source)
+                {
+                    case PacketSource.Client:
+                        consoleColor = ConsoleColor.Green;
+                        break;
+                    case PacketSource.Server:
+                        consoleColor = ConsoleColor.Yellow;
+                        break;
+                    case PacketSource.Unknown:
+                        consoleColor = ConsoleColor.DarkRed;
+                        break;
+                }
+
+                if (IgnorePacketIds.Contains(structurePacket.Id))
+                {
+                    return;
+                }
+
+                if (PrintPacketIds.Contains(structurePacket.Id))
+                {
+                    log = new Log(log.LogLevel, structurePacket.ToString(), log.Tag, log.LoggerIdentity, log.LoggerName);
+                }
+            }
+            else if (e.Log.Tag is Packet packet)
             {
                 switch (packet.Source)
                 {
@@ -302,6 +333,11 @@ namespace Arrowgene.Ddon.Cli
                     case PacketSource.Unknown:
                         consoleColor = ConsoleColor.DarkRed;
                         break;
+                }
+
+                if (IgnorePacketIds.Contains(packet.Id))
+                {
+                    return;
                 }
 
                 if (PrintPacketIds.Contains(packet.Id))
