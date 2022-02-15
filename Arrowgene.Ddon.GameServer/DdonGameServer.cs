@@ -22,6 +22,9 @@
 
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Chat;
+using Arrowgene.Ddon.GameServer.Chat.Command;
+using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
@@ -40,26 +43,37 @@ namespace Arrowgene.Ddon.GameServer
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
         private readonly List<GameClient> _clients;
-
-        private readonly List<CDataStageInfo> _stageInfo;
-
+        
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
-            Setting = new GameServerSetting(setting);
             _clients = new List<GameClient>();
-
+            Setting = new GameServerSetting(setting);
+            Router = new GameRouter();
+            ChatManager = new ChatManager(Router);
+            
             S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
-            _stageInfo = stageListPacket.StageList;
-
-            LoadPacketHandler();
+            StageList = stageListPacket.StageList;
         }
 
         public GameServerSetting Setting { get; }
+        public ChatManager ChatManager { get; }
+        public GameRouter Router { get; }
 
+        /// <summary>
+        /// Returns a copy of the client list.
+        /// To prevent modifications of affecting the original list.
+        /// </summary>
         public override List<GameClient> Clients => new List<GameClient>(_clients);
 
-        public List<CDataStageInfo> StageList => new List<CDataStageInfo>(_stageInfo);
+        public List<CDataStageInfo> StageList { get; }
+
+        public override void Start()
+        {
+            LoadChatHandler();
+            LoadPacketHandler();
+            base.Start();
+        }
 
         protected override void ClientConnected(GameClient client)
         {
@@ -76,6 +90,12 @@ namespace Arrowgene.Ddon.GameServer
             GameClient newClient = new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
             _clients.Add(newClient);
             return newClient;
+        }
+
+        private void LoadChatHandler()
+        {
+            ChatManager.AddHandler(new ChatLogHandler());
+            ChatManager.AddHandler(new ChatCommandHandler(this));
         }
         
         private void LoadPacketHandler()
