@@ -1,6 +1,7 @@
 ﻿using System;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
@@ -79,7 +80,7 @@ namespace Arrowgene.Ddon.Server
                 Write(LogLevel.Error, $"{socket.Identity} {exception}", exception);
             }
         }
-
+        
         public void LogPacket(Client client, Packet packet)
         {
             switch (packet.Source)
@@ -89,6 +90,14 @@ namespace Arrowgene.Ddon.Server
                     if (!_setting.LogIncomingPackets)
                     {
                         return;
+                    }
+
+                    if (_setting.LogIncomingPacketStructure)
+                    {
+                        if (packet is IStructurePacket structurePacket)
+                        {
+                            Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                        }
                     }
 
                     if (!_setting.LogIncomingPacketPayload)
@@ -106,6 +115,14 @@ namespace Arrowgene.Ddon.Server
                         return;
                     }
 
+                    if (_setting.LogOutgoingPacketStructure)
+                    {
+                        if (packet is IStructurePacket structurePacket)
+                        {
+                            Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                        }
+                    }
+                    
                     if (!_setting.LogOutgoingPacketPayload)
                     {
                         Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{packet.PrintHeader()}", packet);

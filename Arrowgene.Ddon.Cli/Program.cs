@@ -288,8 +288,22 @@ namespace Arrowgene.Ddon.Cli
                     break;
             }
 
-            Packet packet = e.Log.Tag as Packet;
-            if (packet != null)
+            if (e.Log.Tag is IStructurePacket structurePacket)
+            {
+                switch (structurePacket.Source)
+                {
+                    case PacketSource.Client:
+                        consoleColor = ConsoleColor.Green;
+                        break;
+                    case PacketSource.Server:
+                        consoleColor = ConsoleColor.Yellow;
+                        break;
+                    case PacketSource.Unknown:
+                        consoleColor = ConsoleColor.DarkRed;
+                        break;
+                }
+            }
+            else if (e.Log.Tag is Packet packet)
             {
                 switch (packet.Source)
                 {

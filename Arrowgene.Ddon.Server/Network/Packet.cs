@@ -2,6 +2,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
+using YamlDotNet.Serialization;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -54,8 +55,12 @@ namespace Arrowgene.Ddon.Server.Network
 
         public string PrintHeader()
         {
-            return $"{Source} #{Count:000000} ({Id.GroupId}.{Id.HandlerId}.{Id.HandlerSubId}) {Id.Name}{Environment.NewLine}" +
-                   $"{Util.HexDump(GetHeaderBytes())}";
+            return $"{Source} #{Count:000000} ({Id.GroupId}.{Id.HandlerId}.{Id.HandlerSubId}) {Id.Name}";
+        }
+
+        public string PrintHeaderBytes()
+        {
+            return $"{Util.HexDump(GetHeaderBytes())}";
         }
 
         public string PrintData()
@@ -65,7 +70,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public override string ToString()
         {
-            return $"{PrintHeader()}{PrintData()}";
+            return $"{PrintHeader()}{Environment.NewLine}{PrintHeaderBytes()}{PrintData()}";
         }
     }
 }

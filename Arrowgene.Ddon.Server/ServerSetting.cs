@@ -35,6 +35,8 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 23)] public bool LogOutgoingPacketPayload { get; set; }
         [DataMember(Order = 24)] public bool LogIncomingPackets { get; set; }
         [DataMember(Order = 25)] public bool LogIncomingPacketPayload { get; set; }
+        [DataMember(Order = 26)] public bool LogIncomingPacketStructure { get; set; }
+        [DataMember(Order = 27)] public bool LogOutgoingPacketStructure { get; set; }
         [DataMember(Order = 100)] public AsyncEventSettings ServerSocketSettings { get; set; }
 
         public ServerSetting()
@@ -46,11 +48,13 @@ namespace Arrowgene.Ddon.Server
             LogLevel = 0;
             LogUnknownPackets = true;
             LogOutgoingPackets = true;
+            LogOutgoingPacketStructure = true;
             LogOutgoingPacketPayload = false;
             LogIncomingPackets = true;
+            LogIncomingPacketStructure = true;
             LogIncomingPacketPayload = false;
             ServerSocketSettings = new AsyncEventSettings();
-            ServerSocketSettings.MaxUnitOfOrder = 2;
+            ServerSocketSettings.MaxUnitOfOrder = 1;
         }
 
         public ServerSetting(ServerSetting setting)
@@ -62,8 +66,10 @@ namespace Arrowgene.Ddon.Server
             LogLevel = setting.LogLevel;
             LogUnknownPackets = setting.LogUnknownPackets;
             LogOutgoingPackets = setting.LogOutgoingPackets;
+            LogOutgoingPacketStructure = setting.LogOutgoingPacketStructure;
             LogOutgoingPacketPayload = setting.LogOutgoingPacketPayload;
             LogIncomingPackets = setting.LogIncomingPackets;
+            LogIncomingPacketStructure = setting.LogIncomingPacketStructure;
             LogIncomingPacketPayload = setting.LogIncomingPacketPayload;
             ServerSocketSettings = new AsyncEventSettings(setting.ServerSocketSettings);
         }

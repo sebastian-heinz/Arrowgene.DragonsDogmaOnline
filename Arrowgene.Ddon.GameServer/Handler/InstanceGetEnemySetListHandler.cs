@@ -35,9 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             layoutEnemyData.EnemyInfo.Lv = 94;
             layoutEnemyData.EnemyInfo.EnemyTargetTypesId = 1;
             response.EnemyList.Add(layoutEnemyData);
-
-            Logger.Debug(client, Util.ToXML(response));
-
+            
             client.Send(response);
         }
     }
