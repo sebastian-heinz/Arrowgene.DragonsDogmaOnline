@@ -26,6 +26,7 @@ using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Enemy;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -33,6 +34,7 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -43,14 +45,17 @@ namespace Arrowgene.Ddon.GameServer
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
         private readonly List<GameClient> _clients;
+        private readonly Dictionary<StageId, Stage> _stages;
         
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
             _clients = new List<GameClient>();
+            _stages = new Dictionary<StageId, Stage>();
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ChatManager = new ChatManager(Router);
+            EnemyManager = new EnemyManager();
             
             S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
             StageList = stageListPacket.StageList;
@@ -58,6 +63,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
+        public EnemyManager EnemyManager { get; }
         public GameRouter Router { get; }
 
         /// <summary>
@@ -68,8 +74,10 @@ namespace Arrowgene.Ddon.GameServer
 
         public List<CDataStageInfo> StageList { get; }
 
+
         public override void Start()
         {
+            LoadStages();
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
@@ -90,6 +98,11 @@ namespace Arrowgene.Ddon.GameServer
             GameClient newClient = new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
             _clients.Add(newClient);
             return newClient;
+        }
+
+        private void LoadStages()
+        {
+            _stages.Add(new StageId(0,0,0), new Stage(StageId.Invalid));
         }
 
         private void LoadChatHandler()
