@@ -11,6 +11,7 @@ namespace Arrowgene.Ddon.Shared.Csv
         private const int BufferSize = 128;
         private static readonly ILogger Logger = LogProvider.Logger(typeof(CsvReader<T>));
 
+        public bool AllowLF = false;
         protected abstract int NumExpectedItems { get; }
 
         public List<T> Read(string path)
@@ -47,7 +48,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 if (c == '\n')
                 {
                     //line feed 
-                    if (previousCr)
+                    if (previousCr || AllowLF)
                     {
                         ProcessLine(sb.ToString(), items);
                         sb.Clear();

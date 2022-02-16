@@ -1,17 +1,38 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Enemy.Csv;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Enemy
 {
     public class EnemyManager
     {
-        private readonly Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>> _spawns;
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EnemyManager));
 
-        public EnemyManager()
+        private readonly EnemySpawnCsvReader enemySpawnCsvReader;
+        private Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>> _spawns;
+
+        public EnemyManager(string enemySetCsvFile)
         {
-            _spawns = new Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>>();
+            this.enemySpawnCsvReader = new EnemySpawnCsvReader();
+            this.enemySpawnCsvReader.AllowLF = true;
+
+            this._spawns = new Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>>();
+
+            if(enemySetCsvFile != null) {
+                // Listen for changes in the csv file and update the spawns
+                FileSystemWatcher watcher = new FileSystemWatcher(Path.GetDirectoryName(enemySetCsvFile), Path.GetFileName(enemySetCsvFile));
+                watcher.Changed += (object sender, FileSystemEventArgs e) => this.LoadFromFile(e.FullPath);
+                watcher.EnableRaisingEvents = true;
+
+                // First time load
+                this.LoadFromFile(enemySetCsvFile);
+            }
         }
 
         public List<EnemySpawn> GetSpawns(CStageLayoutID stageLayoutId, byte subGroupId)
@@ -28,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy
             es.Enemy.Scale = 100;
             es.Enemy.Lv = 66;
             es.Enemy.EnemyTargetTypesId = 1;
-            return new List<EnemySpawn> {es};
+            //return new List<EnemySpawn> {es};
 
             if (!_spawns.ContainsKey(stageId))
             {
@@ -52,6 +73,28 @@ namespace Arrowgene.Ddon.GameServer.Enemy
 
         public void Save(IDatabase database)
         {
+        }
+
+        private void LoadFromFile(string file) {
+            Logger.Debug($"Loading enemy sets from file {file}");
+
+            List<EnemySpawn> enemySets = this.enemySpawnCsvReader.Read(file);
+
+            this._spawns.Clear();
+            foreach (EnemySpawn enemySet in enemySets)
+            {
+                if(!this._spawns.ContainsKey(enemySet.StageId))
+                    this._spawns.Add(enemySet.StageId, new Dictionary<byte, List<EnemySpawn>>());
+
+                this._spawns.TryGetValue(enemySet.StageId, out Dictionary<byte, List<EnemySpawn>> stageEnemySpawns);
+
+                if(!stageEnemySpawns.ContainsKey(enemySet.SubGroupId))
+                    stageEnemySpawns.Add(enemySet.SubGroupId, new List<EnemySpawn>());
+
+                stageEnemySpawns.TryGetValue(enemySet.SubGroupId, out List<EnemySpawn> stageSubGroupEnemySpawns);
+
+                stageSubGroupEnemySpawns.Add(enemySet);
+            }            
         }
     }
 }

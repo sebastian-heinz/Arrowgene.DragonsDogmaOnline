@@ -29,7 +29,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             List<EnemySpawn> spawns = _enemyManager.GetSpawns(stageId, subGroupId);
 
-
             S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes();
             response.LayoutId = stageId.ToStageLayoutId();
             response.SubGroupId = subGroupId;

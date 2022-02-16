@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ChatManager = new ChatManager(Router);
-            EnemyManager = new EnemyManager();
+            EnemyManager = new EnemyManager(setting.EnemySetCsvFile);
             
             S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
             StageList = stageListPacket.StageList;
@@ -172,6 +172,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
+            AddHandler(new Lobby_3_3_16_Handler(this));
             AddHandler(new LobbyLobbyChatMsgHandler(this));
             AddHandler(new LobbyLobbyJoinHandler(this));
 
