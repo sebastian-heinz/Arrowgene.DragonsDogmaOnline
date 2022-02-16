@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Client
         }
 
         protected abstract void Read(IBuffer buffer);
-        
+
         protected void WriteMtString(IBuffer buffer, string str)
         {
             byte[] utf8 = Encoding.UTF8.GetBytes(str);
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.Client
 
             return entities;
         }
-        
+
         protected void WriteUInt32(IBuffer buffer, uint value)
         {
             buffer.WriteUInt32(value, Endianness.Little);
@@ -69,6 +69,11 @@ namespace Arrowgene.Ddon.Client
         protected uint ReadUInt32(IBuffer buffer)
         {
             return buffer.ReadUInt32(Endianness.Little);
+        }
+
+        protected ushort ReadUInt16(IBuffer buffer)
+        {
+            return buffer.ReadUInt16(Endianness.Little);
         }
     }
 }

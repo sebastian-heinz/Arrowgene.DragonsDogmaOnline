@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Arrowgene.Buffers;
 
-namespace Arrowgene.Ddon.Client
+namespace Arrowgene.Ddon.Client.Resource
 {
-    public class AreaStageListArc : ClientResourceFile
+    public class AreaStageListArs : ClientResourceFile
     {
         public class AreaInfoStage
         {
@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Client
 
         public List<AreaInfoStage> AreaInfoStages { get; }
 
-        public AreaStageListArc()
+        public AreaStageListArs()
         {
             AreaInfoStages = new List<AreaInfoStage>();
         }
@@ -21,10 +21,10 @@ namespace Arrowgene.Ddon.Client
         protected override void Read(IBuffer buffer)
         {
             AreaInfoStages.Clear();
-            AreaInfoStages.AddRange(ReadMtArray(buffer, ReadAreaInfoStage));
+            AreaInfoStages.AddRange(ReadMtArray(buffer, ReadEntry));
         }
 
-        private AreaInfoStage ReadAreaInfoStage(IBuffer buffer)
+        private AreaInfoStage ReadEntry(IBuffer buffer)
         {
             AreaInfoStage ais = new AreaInfoStage();
             ais.StageNo = ReadUInt32(buffer);
