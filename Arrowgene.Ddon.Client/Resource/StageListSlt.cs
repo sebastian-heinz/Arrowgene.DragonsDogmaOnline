@@ -3,7 +3,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class StageListSlt : ClientResourceFile
+    public class StageListSlt : ResourceFile
     {
         public class Info
         {
@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Client.Resource
             AreaInfos = new List<Info>();
         }
 
-        protected override void Read(IBuffer buffer)
+        protected override void ReadResource(IBuffer buffer)
         {
             AreaInfos.Clear();
             List<Info> infos = ReadMtArray(buffer, ReadEntry);

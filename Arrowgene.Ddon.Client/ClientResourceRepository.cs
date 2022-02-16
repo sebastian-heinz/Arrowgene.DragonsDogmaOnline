@@ -13,6 +13,7 @@ namespace Arrowgene.Ddon.Client
         public AreaListAri AreaListAri { get; }
         public StageListSlt StageListSlt { get; }
         public LandListLal LandListLal { get; }
+        public StageToSpot StageToSpot { get; }
 
         private readonly DirectoryInfo _directory;
 
@@ -24,6 +25,7 @@ namespace Arrowgene.Ddon.Client
             StageListSlt = new StageListSlt();
             FieldAreaListFal = new FieldAreaListFal();
             LandListLal = new LandListLal();
+            StageToSpot = new StageToSpot();
         }
 
         public void Load()
@@ -33,6 +35,7 @@ namespace Arrowgene.Ddon.Client
             AreaStageListArs.Open(GetPath("area_stage_list.71827B54"));
             AreaListAri.Open(GetPath("area_list.6FF78212"));
             StageListSlt.Open(GetPath("stage_list.21502841"));
+            StageToSpot.Open(GetPath("stage_to_spot.2E244717"));
         }
 
         private string GetPath(string filePath)

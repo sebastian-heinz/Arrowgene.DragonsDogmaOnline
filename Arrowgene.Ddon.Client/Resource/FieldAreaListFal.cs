@@ -3,7 +3,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class FieldAreaListFal : ClientResourceFile
+    public class FieldAreaListFal : ResourceFile
     {
         public class FieldAreaInfo
         {
@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Client.Resource
             FieldAreaInfos = new List<FieldAreaInfo>();
         }
 
-        protected override void Read(IBuffer buffer)
+        protected override void ReadResource(IBuffer buffer)
         {
             FieldAreaInfos.Clear();
             List<FieldAreaInfo> infos = ReadMtArray(buffer, ReadEntry);

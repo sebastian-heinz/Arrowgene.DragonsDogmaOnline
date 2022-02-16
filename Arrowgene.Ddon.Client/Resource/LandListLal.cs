@@ -3,7 +3,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class LandListLal : ClientResourceFile
+    public class LandListLal : ResourceFile
     {
         public class Info
         {
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Client.Resource
             Infos = new List<Info>();
         }
 
-        protected override void Read(IBuffer buffer)
+        protected override void ReadResource(IBuffer buffer)
         {
             Infos.Clear();
             List<Info> infos = ReadMtArray(buffer, ReadEntry);

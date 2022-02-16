@@ -3,12 +3,12 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class AreaListAri : ClientResourceFile
+    public class AreaListAri : ResourceFile
     {
         public class AreaInfo
         {
             public uint AreaId { get; set; }
-            public uint PosX { get; set; } // maybe float?
+            public uint PosX { get; set; }
             public uint PosY { get; set; }
         }
 
@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Client.Resource
             AreaInfos = new List<AreaInfo>();
         }
 
-        protected override void Read(IBuffer buffer)
+        protected override void ReadResource(IBuffer buffer)
         {
             AreaInfos.Clear();
             AreaInfos.AddRange(ReadMtArray(buffer, ReadEntry));

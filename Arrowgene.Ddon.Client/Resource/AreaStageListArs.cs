@@ -3,7 +3,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class AreaStageListArs : ClientResourceFile
+    public class AreaStageListArs : ResourceFile
     {
         public class AreaInfoStage
         {
@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Client.Resource
             AreaInfoStages = new List<AreaInfoStage>();
         }
 
-        protected override void Read(IBuffer buffer)
+        protected override void ReadResource(IBuffer buffer)
         {
             AreaInfoStages.Clear();
             AreaInfoStages.AddRange(ReadMtArray(buffer, ReadEntry));

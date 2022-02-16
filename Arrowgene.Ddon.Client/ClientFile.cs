@@ -5,11 +5,8 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client
 {
-    public abstract class ClientResourceFile
+    public abstract class ClientFile
     {
-        public string MagicTag { get; set; }
-        public uint MagicId { get; set; }
-
         public void Open(string path)
         {
             IBuffer buffer = new StreamBuffer(path);
@@ -19,8 +16,6 @@ namespace Arrowgene.Ddon.Client
                 return;
             }
 
-            MagicTag = buffer.ReadFixedString(4);
-            MagicId = buffer.ReadUInt32(Endianness.Little);
             Read(buffer);
         }
 
