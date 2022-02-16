@@ -359,7 +359,7 @@ namespace Arrowgene.Ddon.Cli
                 Console.WriteLine(text);
                 Console.ResetColor();
                 string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
-                File.WriteAllText(filePath, text);
+                File.AppendAllText(filePath, text);
             }
         }
     }

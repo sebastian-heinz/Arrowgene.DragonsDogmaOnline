@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.Cli
             GameServerSetting = new GameServerSetting(setting.GameServerSetting);
             LoginServerSetting = new LoginServerSetting(setting.LoginServerSetting);
             DatabaseSetting = new DatabaseSetting(setting.DatabaseSetting);
-            AssetPath = AssetPath;
+            AssetPath = setting.AssetPath;
         }
     }
 }
