@@ -89,6 +89,7 @@ namespace Arrowgene.Ddon.Cli
             AddCommand(new HelpCommand(_commands));
             AddCommand(new BruteForceCommand());
             AddCommand(new PcapDecryptCommand());
+            AddCommand(new ClientCommand());
         }
 
         private void RunArguments(string[] arguments)
@@ -358,7 +359,7 @@ namespace Arrowgene.Ddon.Cli
                 Console.WriteLine(text);
                 Console.ResetColor();
                 string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
-                File.WriteAllText(filePath, text);
+                File.AppendAllText(filePath, text);
             }
         }
     }

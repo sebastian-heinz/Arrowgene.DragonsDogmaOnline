@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer
 
         private readonly List<GameClient> _clients;
         private readonly Dictionary<StageId, Stage> _stages;
-        
+
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
@@ -55,8 +55,8 @@ namespace Arrowgene.Ddon.GameServer
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ChatManager = new ChatManager(Router);
-            EnemyManager = new EnemyManager(setting.EnemySetCsvFile);
-            
+            EnemyManager = new EnemyManager(assetRepository, database);
+
             S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
             StageList = stageListPacket.StageList;
         }
@@ -102,7 +102,7 @@ namespace Arrowgene.Ddon.GameServer
 
         private void LoadStages()
         {
-            _stages.Add(new StageId(0,0,0), new Stage(StageId.Invalid));
+            _stages.Add(new StageId(0, 0, 0), new Stage(StageId.Invalid));
         }
 
         private void LoadChatHandler()
@@ -110,7 +110,7 @@ namespace Arrowgene.Ddon.GameServer
             ChatManager.AddHandler(new ChatLogHandler());
             ChatManager.AddHandler(new ChatCommandHandler(this));
         }
-        
+
         private void LoadPacketHandler()
         {
             AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
@@ -182,7 +182,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MailSystemMailGetListDataHandler(this));
             AddHandler(new MailSystemMailGetListFootHandler(this));
             AddHandler(new MailSystemMailGetListHeadHandler(this));
-            
+
             AddHandler(new NpcGetExtendedFacilityHandler(this));
 
             AddHandler(new OrbDevoteGetOrbGainExtendParamHandler(this));

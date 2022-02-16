@@ -31,5 +31,19 @@ namespace Arrowgene.Ddon.Shared.Model
                 GroupId = GroupId
             };
         }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {            
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+            
+            StageId objStageId = (StageId) obj;
+            return Id == objStageId.Id
+                && LayerNo == objStageId.LayerNo
+                && GroupId == objStageId.GroupId;
+        }
     }
 }

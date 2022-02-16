@@ -1,3 +1,4 @@
+Message ID,Error ID,PS4 Error Code,Message,English
 1,2000,ERROR_CODE_SYSTEM_NOT_DEBUG,通信エラーが発生しました。,A communication error has occurred.
 1,3000,ERROR_CODE_NET_WRITE_PACKET_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,3001,ERROR_CODE_NET_READ_PACKET_ERROR,通信エラーが発生しました。,A communication error has occurred.
@@ -18,7 +19,7 @@
 1,7006,ERROR_CODE_LOBBY_FATAL_INVALID_ROOM_INDEX,通信エラーが発生しました。,A communication error has occurred.
 1,7007,ERROR_CODE_LOBBY_FATAL_NOT_CREATED,通信エラーが発生しました。,A communication error has occurred.
 1,8000,ERROR_CODE_PARTY_INTERNAL_ERROR,"パーティー、メンバーが見つかりませんでした。
-すでに存在しないパーティー、メンバーの可能性があります。",
+すでに存在しないパーティー、メンバーの可能性があります。",Unable to find party or party member. They may already no longer exist.
 1,8001,ERROR_CODE_PARTY_CREATE_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,8002,ERROR_CODE_PARTY_PARTY_NO_ERROR,"パーティー、メンバーが見つかりませんでした。
 すでに存在しないパーティー、メンバーの可能性があります。",The party or the member was not found because neither the party or member currently exist
@@ -26,22 +27,22 @@
 もう一度お試しください。",The state of the party was modified. Please try again in a moment.
 1,8004,ERROR_CODE_PARTY_JOIN_CONDITION_ERROR,パーティーに参加する条件を満たしていません。,You did not fulfil the requirements to join the party.
 1,8005,ERROR_CODE_PARTY_ALREADY_JOINED,通信エラーが発生しました。,A communication error has occurred.
-1,8006,ERROR_CODE_PARTY_NOT_JOINED,パーティー参加処理を完了できませんでした。,
-1,8007,ERROR_CODE_PARTY_IS_NOT_LEADER,パーティーリーダーではないためできません。,
-1,8008,ERROR_CODE_PARTY_LEADER_ABSENCE,パーティーリーダーが不在です。,
+1,8006,ERROR_CODE_PARTY_NOT_JOINED,パーティー参加処理を完了できませんでした。,Unable to join party.
+1,8007,ERROR_CODE_PARTY_IS_NOT_LEADER,パーティーリーダーではないためできません。,You are not the party leader.
+1,8008,ERROR_CODE_PARTY_LEADER_ABSENCE,パーティーリーダーが不在です。,No existing party leader.
 1,8009,ERROR_CODE_PARTY_HOST_ABSENCE,通信エラーが発生しました。,A communication error has occurred.
-1,8010,ERROR_CODE_PARTY_JOIN_NUM_OVER,パーティーメンバーの上限を超えるため誘えません。,
+1,8010,ERROR_CODE_PARTY_JOIN_NUM_OVER,パーティーメンバーの上限を超えるため誘えません。,Unable to invite due to already being at party member limit.
 1,8011,ERROR_CODE_PARTY_JOIN_NUM_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,8012,ERROR_CODE_PARTY_KICK_OWN,通信エラーが発生しました。,A communication error has occurred.
 1,8013,ERROR_CODE_PARTY_NOT_FOUNDED,"通信エラーが発生しました。
-すでに存在しないパーティ、メンバーの可能性があります。",
+すでに存在しないパーティ、メンバーの可能性があります。",A communication error has occurred. The party or party memeber may already no longer exist.
 1,8014,ERROR_CODE_PARTY_FATAL_INDEX_ARRAY_OVER,通信エラーが発生しました。,A communication error has occurred.
 1,8015,ERROR_CODE_PARTY_NOT_JOIN_MYPAWN,通信エラーが発生しました。,A communication error has occurred.
 1,9000,ERROR_CODE_MATCHING_NOT_PLAY_ENTRY,通信エラーが発生しました。,A communication error has occurred.
 1,9001,ERROR_CODE_MATCHING_ALREADY_PLAY_ENTRY,通信エラーが発生しました。,A communication error has occurred.
 1,9002,ERROR_CODE_MATCHING_NOT_PLAY_START,通信エラーが発生しました。,A communication error has occurred.
 1,11000,ERROR_CODE_PAWN_NOT_FOUNDED,通信エラーが発生しました。,A communication error has occurred.
-1,11001,ERROR_CODE_PAWN_ALREADY_RENTED,すでにレンタルしているポーンです。,
+1,11001,ERROR_CODE_PAWN_ALREADY_RENTED,すでにレンタルしているポーンです。,Pawn is already rented.
 1,11002,ERROR_CODE_PAWN_NOT_YOUR_PAWN,通信エラーが発生しました。,A communication error has occurred.
 1,11003,ERROR_CODE_PAWN_NO_CRAFT_COUNT,通信エラーが発生しました。,A communication error has occurred.
 1,11004,ERROR_CODE_PAWN_NO_ADVENTURE_COUNT,通信エラーが発生しました。,A communication error has occurred.
@@ -54,11 +55,11 @@
 1,12006,ERROR_CODE_QUEST_CANT_DERIVERY_ITEM,通信エラーが発生しました。,A communication error has occurred.
 1,12007,ERROR_CODE_QUEST_NOT_CHECK_DERIVERY_ITEM,通信エラーが発生しました。,A communication error has occurred.
 1,12008,ERROR_CODE_QUEST_NOT_DERIVER_ITEM,"納品対象と異なるアイテムのため
-アイテムの納品に失敗しました。",
+アイテムの納品に失敗しました。",Failed to deliver item due to a different item being selected.
 1,12009,ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM,通信エラーが発生しました。,A communication error has occurred.
-1,12010,ERROR_CODE_QUEST_NOT_ENOUGH_DERIVERYED_ITEM,指定された個数を満たしていません。,
+1,12010,ERROR_CODE_QUEST_NOT_ENOUGH_DERIVERYED_ITEM,指定された個数を満たしていません。,You do not have enough of the item.
 1,12011,ERROR_CODE_QUEST_OVERRUN_DELIVER_ITEM,"指定された個数を満たしています。
-これ以上納品できません。",
+これ以上納品できません。",You already have reached the max amount of items to delever.
 1,12012,ERROR_CODE_QUEST_NOT_EXIST_REWARD_BOX_LIST_NO,通信エラーが発生しました。,A communication error has occurred.
 1,12013,ERROR_CODE_QUEST_UNKNOWN_QUEST_SCHEDULE_ID,通信エラーが発生しました。,A communication error has occurred.
 1,12014,ERROR_CODE_QUEST_UNKNOWN_SCRIPT_COMMAND,通信エラーが発生しました。,A communication error has occurred.
@@ -69,33 +70,33 @@
 1,12019,ERROR_CODE_QUEST_DETAIL_IS_NOT_SET,通信エラーが発生しました。,A communication error has occurred.
 1,12020,ERROR_CODE_QUEST_DATA_CACHE_DEFFERENT_VERSION,通信エラーが発生しました。,A communication error has occurred.
 1,12021,ERROR_CODE_QUEST_QUEST_END_DATE_OVER,"通信エラーが発生しました。
-クエストの終了日時を越えています。",
+クエストの終了日時を越えています。",A communication error has occurred. Quest end date has already passed.
 1,12022,ERROR_CODE_QUEST_DATA_CACHE_NONE,"受注しているクエストの配信期間が終了しています。
 通信エラーが引き続き表示される場合は、
-ゲームに再度ログインし直してください。",
+ゲームに再度ログインし直してください。",The accepted quests available date has finished. If you continue to recieve errors re-login to the game.
 1,12023,ERROR_CODE_QUEST_ORDER_CONDITION_NG,"クエストの受注条件、もしくは進行条件を
-満たせませんでした。",
+満たせませんでした。",You do not meet the requirements to accept or progress the quest.
 1,12024,ERROR_CODE_QUEST_NOT_LIGHT_QUEST,通信エラーが発生しました。,A communication error has occurred.
 1,12025,ERROR_CODE_QUEST_LEADER_NOT_ORDER,通信エラーが発生しました。,A communication error has occurred.
 1,12026,ERROR_CODE_QUEST_DIFFERENT_PROGRESS,通信エラーが発生しました。,A communication error has occurred.
-1,12027,ERROR_CODE_QUEST_ORDER_FULL,クエストの受注数が上限を超えています。,
+1,12027,ERROR_CODE_QUEST_ORDER_FULL,クエストの受注数が上限を超えています。,You have reached the maximum number of quests.
 1,12028,ERROR_CODE_QUEST_LEADER_ORDER_FULL,"リーダーのクエストの受注数が
-上限を超えています。",
+上限を超えています。",The party leader has reached the maximum number of quests.
 1,13000,ERROR_CODE_CYCLE_CONTENTS_PERIOD_OUTSIDE,通信エラーが発生しました。,A communication error has occurred.
-1,13001,ERROR_CODE_CYCLE_CONTENTS_INVALID_SCHEDULE_ID,対象のグランドミッションは存在していません。,
+1,13001,ERROR_CODE_CYCLE_CONTENTS_INVALID_SCHEDULE_ID,対象のグランドミッションは存在していません。,The selected grand mission does not exist.
 1,13002,ERROR_CODE_CYCLE_CONTENTS_PLAY_TIME_NOT_SET,通信エラーが発生しました。,A communication error has occurred.
 1,13003,ERROR_CODE_CYCLE_CONTENTS_REWARD_NONE,通信エラーが発生しました。,A communication error has occurred.
 1,14000,ERROR_CODE_ITEM_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,14001,ERROR_CODE_ITEM_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,14002,ERROR_CODE_ITEM_NUM_SHORT,通信エラーが発生しました。,A communication error has occurred.
 1,14003,ERROR_CODE_ITEM_STORAGE_OVERFLOW,"空きスペースが足りないため、
-アイテムを受け取れません。",
-1,14004,ERROR_CODE_ITEM_INVALID_ITEM_CATEGORY,アイテムの処理に失敗しました。,
+アイテムを受け取れません。",Can not accept item due to not enough space if your bag.
+1,14004,ERROR_CODE_ITEM_INVALID_ITEM_CATEGORY,アイテムの処理に失敗しました。,Failed to process item.
 1,14005,ERROR_CODE_ITEM_INVALID_EQUIP_CATEGORY,通信エラーが発生しました。,A communication error has occurred.
 1,14006,ERROR_CODE_ITEM_INVALID_MASTER_DATA_MAX_STACK_NUM,通信エラーが発生しました。,A communication error has occurred.
-1,14007,ERROR_CODE_ITEM_INVALID_UID,アイテムの処理に失敗しました。,
-1,14008,ERROR_CODE_ITEM_CACHE_UPDATE_FAILED,アイテムの処理に失敗しました。,
-1,14009,ERROR_CODE_ITEM_INVALID_EQUIP_SLOT,アイテムの処理に失敗しました。,
+1,14007,ERROR_CODE_ITEM_INVALID_UID,アイテムの処理に失敗しました。,Failed to process item.
+1,14008,ERROR_CODE_ITEM_CACHE_UPDATE_FAILED,アイテムの処理に失敗しました。,Failed to process item.
+1,14009,ERROR_CODE_ITEM_INVALID_EQUIP_SLOT,アイテムの処理に失敗しました。,Failed to process item.
 1,15000,ERROR_CODE_CHARACTER_DATA_CREATE_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,15001,ERROR_CODE_CHARACTER_DATA_NO_GOLD,通信エラーが発生しました。,A communication error has occurred.
 1,15002,ERROR_CODE_CHARACTER_DATA_NO_RIM,通信エラーが発生しました。,A communication error has occurred.
@@ -108,7 +109,7 @@
 1,15009,ERROR_CODE_CHARACTER_DATA_INVALID_OBJECTIVE_NO,通信エラーが発生しました。,A communication error has occurred.
 1,15010,ERROR_CODE_CHARACTER_DATA_INVALID_OBJECTIVE_TYPE,通信エラーが発生しました。,A communication error has occurred.
 1,15011,ERROR_CODE_CHARACTER_DATA_INVALID_CHARACTER_ID,通信エラーが発生しました。,A communication error has occurred.
-1,16000,ERROR_CODE_INSTANCE_AREA_PARTY_NOT_JOINED,パーティーに参加していません。,
+1,16000,ERROR_CODE_INSTANCE_AREA_PARTY_NOT_JOINED,パーティーに参加していません。,You are not a party memeber.
 1,16001,ERROR_CODE_INSTANCE_AREA_ENEMY_GROUP_NOT_CREATED,通信エラーが発生しました。,A communication error has occurred.
 1,16002,ERROR_CODE_INSTANCE_AREA_FATAL_ENEMY_INSTANCE_INITIALIZE_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,16003,ERROR_CODE_INSTANCE_AREA_ITEM_GROUP_NOT_CREATED,通信エラーが発生しました。,A communication error has occurred.
@@ -134,9 +135,9 @@
 1,18010,ERROR_CODE_CRAFT_ELEMENT_SLOT_OCCUPIED,通信エラーが発生しました。,A communication error has occurred.
 1,18011,ERROR_CODE_CRAFT_ELEMENT_SLOT_NOT_OCCUPIED,通信エラーが発生しました。,A communication error has occurred.
 1,19000,ERROR_CODE_WARP_INVALID_WARP_POINT_ID,通信エラーが発生しました。,A communication error has occurred.
-1,20000,ERROR_CODE_FRIEND_TARGET_PARAM_NOT_FOUND,申請した相手がオフラインになりました。,
-1,20001,ERROR_CODE_FRIEND_INVARID_FRIEND_NO,フレンドではないためできませんでした。,
-1,20002,ERROR_CODE_FRIEND_LIST_SIZE_OVER,どちらかのフレンド登録が上限を超えています。,
+1,20000,ERROR_CODE_FRIEND_TARGET_PARAM_NOT_FOUND,申請した相手がオフラインになりました。,The person you applied to has gone offline.
+1,20001,ERROR_CODE_FRIEND_INVARID_FRIEND_NO,フレンドではないためできませんでした。,Unable due to player not being a friend.
+1,20002,ERROR_CODE_FRIEND_LIST_SIZE_OVER,どちらかのフレンド登録が上限を超えています。,Either players friend list has reached the limit.
 1,21000,ERROR_CODE_SKILL_PARAM_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,21001,ERROR_CODE_SKILL_ALREADY_LEARN,通信エラーが発生しました。,A communication error has occurred.
 1,21002,ERROR_CODE_SKILL_PRIOR_SKILL_NOT_LEARN,通信エラーが発生しました。,A communication error has occurred.
@@ -151,20 +152,20 @@
 1,21011,ERROR_CODE_SKILL_ALREADY_RELEASE,通信エラーが発生しました。,A communication error has occurred.
 1,21012,ERROR_CODE_SKILL_NO_UNLOCK_ITEM,通信エラーが発生しました。,A communication error has occurred.
 1,21013,ERROR_CODE_SKILL_COST_OVER,通信エラーが発生しました。,A communication error has occurred.
-1,8016,ERROR_CODE_PARTY_NOT_ENTRY,パーティーへの誘いがキャンセルされました。,
+1,8016,ERROR_CODE_PARTY_NOT_ENTRY,パーティーへの誘いがキャンセルされました。,Party invitation has been cancelled.
 1,9003,ERROR_CODE_MATCHING_ALREADY_PLAY_START,通信エラーが発生しました。,A communication error has occurred.
 1,9004,ERROR_CODE_MATCHING_NOT_PLAY_INTERRUPT,通信エラーが発生しました。,A communication error has occurred.
 1,9005,ERROR_CODE_MATCHING_ALREADY_PLAY_INTERRUPT,通信エラーが発生しました。,A communication error has occurred.
 1,9006,ERROR_CODE_MATCHING_NOT_PLAY_INTERRUPT_REQUEST,通信エラーが発生しました。,A communication error has occurred.
-1,9007,ERROR_CODE_MATCHING_ALREADY_PLAY_INTERRUPT_REQUEST,すでにコンテンツ中断確認がおこなわれています。,
+1,9007,ERROR_CODE_MATCHING_ALREADY_PLAY_INTERRUPT_REQUEST,すでにコンテンツ中断確認がおこなわれています。,Content is already being interrupted.
 1,9008,ERROR_CODE_MATCHING_NOT_PLAY_INTERRUPT_ANSWER,通信エラーが発生しました。,A communication error has occurred.
 1,9009,ERROR_CODE_MATCHING_ALREADY_PLAY_INTERRUPT_ANSWER,通信エラーが発生しました。,A communication error has occurred.
 1,8017,ERROR_CODE_PARTY_ALREADY_ENTRY,通信エラーが発生しました。,A communication error has occurred.
-1,8018,ERROR_CODE_PARTY_NOT_INVITED,パーティーへの誘いがキャンセルされました。,
+1,8018,ERROR_CODE_PARTY_NOT_INVITED,パーティーへの誘いがキャンセルされました。,Party invitation has been cancelled.
 1,8019,ERROR_CODE_PARTY_NOT_INVITED_PARTY,"通信エラーが発生しました。
-すでに存在しないパーティ、メンバーの可能性があります。",
+すでに存在しないパーティ、メンバーの可能性があります。",A communication error has occurred. The party or party memeber may already no longer exist.
 1,12029,ERROR_CODE_QUEST_REWARD_BOX_OVER_SELECT_ITEM,通信エラーが発生しました。,A communication error has occurred.
-1,12030,ERROR_CODE_QUEST_PRIORITY_QUEST_SET_OVER,優先クエストの受注数が上限を超えています,
+1,12030,ERROR_CODE_QUEST_PRIORITY_QUEST_SET_OVER,優先クエストの受注数が上限を超えています,You have already reach the maximum number of priority quests.
 1,12031,ERROR_CODE_QUEST_PRIORITY_QUEST_NOT_EXIST,通信エラーが発生しました。,A communication error has occurred.
 1,12032,ERROR_CODE_QUEST_PROGRESS_WORK_SAVE_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,12033,ERROR_CODE_QUEST_SCRIPT_ERROR,通信エラーが発生しました。,A communication error has occurred.
@@ -174,16 +175,16 @@
 1,12037,ERROR_CODE_QUEST_UNSUPPORTED_QUEST_TYPE,通信エラーが発生しました。,A communication error has occurred.
 1,12038,ERROR_CODE_QUEST_ALREADY_START_TIMEKEEPING,通信エラーが発生しました。,A communication error has occurred.
 1,8020,ERROR_CODE_PARTY_INVITE_FAIL_REASON_SERVER,通信エラーが発生しました。,A communication error has occurred.
-1,8021,ERROR_CODE_PARTY_INVITE_FAIL_REASON_TIMEOUT,パーティーへの誘いがタイムアウトしました。,
-1,8022,ERROR_CODE_PARTY_INVITE_FAIL_REASON_CANCEL,要請が拒否されました。,
-1,8023,ERROR_CODE_PARTY_INVITE_FAIL_REASON_NO_LEADER,相手のパーティーのリーダーがいません。,
+1,8021,ERROR_CODE_PARTY_INVITE_FAIL_REASON_TIMEOUT,パーティーへの誘いがタイムアウトしました。,Party invitation has timed out.
+1,8022,ERROR_CODE_PARTY_INVITE_FAIL_REASON_CANCEL,要請が拒否されました。,Invite was refused.
+1,8023,ERROR_CODE_PARTY_INVITE_FAIL_REASON_NO_LEADER,相手のパーティーのリーダーがいません。,Player's party has no leader.
 1,8024,ERROR_CODE_PARTY_INVITE_FAIL_REASON_CHANGED,"相手のパーティーの状態が変わりました。
-もう一度お試しください。",
+もう一度お試しください。",Player's party status has changed. Please try again.
 1,8025,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_SERVER,通信エラーが発生しました。,A communication error has occurred.
-1,8026,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT,パーティーへの誘いがタイムアウトしました。,
-1,8027,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_NO_PARTY,相手のパーティーが無くなりました。,
-1,8028,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_SERVER_FULL,移動先のサーバーが満員です。,
-1,8029,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_CANCEL,相手のパーティーの都合によりキャンセルされました。,
+1,8026,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT,パーティーへの誘いがタイムアウトしました。,Party invite has timed out.
+1,8027,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_NO_PARTY,相手のパーティーが無くなりました。,Player's party has been disbanded.
+1,8028,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_SERVER_FULL,移動先のサーバーが満員です。,Server is full.
+1,8029,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_CANCEL,相手のパーティーの都合によりキャンセルされました。,Cancelled due to player's party circumstances.
 1,29000,ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID,通信エラーが発生しました。,A communication error has occurred.
 1,29001,ERROR_CODE_ORB_DEVOTE_ORB_LACK,通信エラーが発生しました。,A communication error has occurred.
 1,29002,ERROR_CODE_ORB_DEVOTE_ALREADY_RELEASE,通信エラーが発生しました。,A communication error has occurred.
@@ -196,12 +197,12 @@
 1,12039,ERROR_CODE_QUEST_CAN_NOT_CANCEL_QUEST,通信エラーが発生しました。,A communication error has occurred.
 1,12040,ERROR_CODE_QUEST_PROGRESS_CHARACTER_NOT_EXIST,通信エラーが発生しました。,A communication error has occurred.
 1,12041,ERROR_CODE_QUEST_PROGRESS_DIFFERENT_LEADER,通信エラーが発生しました。,A communication error has occurred.
-1,30000,ERROR_CODE_ENTRY_BOARD_NO_BOARD,エントリーボードが無くなりました。,
+1,30000,ERROR_CODE_ENTRY_BOARD_NO_BOARD,エントリーボードが無くなりました。,Entryboard no longer available.
 1,12042,ERROR_CODE_QUEST_DELIVER_ITEM_STORAGE_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,15012,ERROR_CODE_CHARACTER_REVIVE_POINT_FULL,通信エラーが発生しました。,A communication error has occurred.
 1,15013,ERROR_CODE_CHARACTER_REVIVE_POINT_BACKORDER,通信エラーが発生しました。,A communication error has occurred.
 1,15014,ERROR_CODE_CHARACTER_REVIVE_POINT_LACK,通信エラーが発生しました。,A communication error has occurred.
-1,15015,ERROR_CODE_CHARACTER_DATA_INVALID_NAME,この名前は使用できません。,
+1,15015,ERROR_CODE_CHARACTER_DATA_INVALID_NAME,この名前は使用できません。,Cannot use this name.
 1,15016,ERROR_CODE_CHARACTER_DATA_INVALID_EDIT_PARAM,通信エラーが発生しました。,A communication error has occurred.
 1,15017,ERROR_CODE_CHARACTER_DATA_INVALID_JOB_ID,通信エラーが発生しました。,A communication error has occurred.
 1,15018,ERROR_CODE_CHARACTER_DATA_CREATE_NUM_OVER,通信エラーが発生しました。,A communication error has occurred.
@@ -217,9 +218,9 @@
 1,24001,ERROR_CODE_JOBCHANGE_JOB_LOCKED,通信エラーが発生しました。,A communication error has occurred.
 1,24002,ERROR_CODE_JOBCHANGE_SAME_JOB,通信エラーが発生しました。,A communication error has occurred.
 1,24003,ERROR_CODE_JOBCHANGE_JOB_POINT_LACK,通信エラーが発生しました。,A communication error has occurred.
-1,24004,ERROR_CODE_JOBCHANGE_ITEM_CAPACITY_OVER,保管ボックスの空きが足りません。,
+1,24004,ERROR_CODE_JOBCHANGE_ITEM_CAPACITY_OVER,保管ボックスの空きが足りません。,Not enough space in storage box.
 1,24005,ERROR_CODE_JOBCHANGE_NO_WEAPON,"装備できる武器がみつからないため
-ジョブチェンジに失敗しました。",
+ジョブチェンジに失敗しました。",Unable to change job due to not possessing an equippable weapon.
 1,33000,ERROR_CODE_CLIENT_REQ_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,33001,ERROR_CODE_CLIENT_REQ_TIMEOUT,通信エラーが発生しました。,A communication error has occurred.
 1,3006,ERROR_CODE_NET_NOT_CONNECT_IMMIGRATION_SERVER,通信エラーが発生しました。,A communication error has occurred.
@@ -231,22 +232,22 @@
 1,3012,ERROR_CODE_NET_NOT_CONNECT_CHARACTER_DATA_SERVER,通信エラーが発生しました。,A communication error has occurred.
 1,3013,ERROR_CODE_NET_CHARACTER_DATA_SERVER_SEND_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,8030,ERROR_CODE_PARTY_INVITE_FAIL_REASON_NOT_LEADER,"パーティーリーダーではないプレイヤーを
-パーティーに誘うことができません。",
-1,8031,ERROR_CODE_PARTY_ALREADY_INVITE,すでにパーティー参加の誘いを行っています,
-1,8032,ERROR_CODE_PARTY_ALREADY_INVITED,すでにパーティーに誘われています,
+パーティーに誘うことができません。",Cannot invite a player that is not a party leader to your party.
+1,8031,ERROR_CODE_PARTY_ALREADY_INVITE,すでにパーティー参加の誘いを行っています,Already invited.
+1,8032,ERROR_CODE_PARTY_ALREADY_INVITED,すでにパーティーに誘われています,Already invited to a different party.
 1,8033,ERROR_CODE_PARTY_INVITE_IS_NOT_BASE,"白竜神殿かリムストーンのある拠点施設に
 いないプレイヤーのためできませんでした。
-",
+",Unable due to player not being at the White Dragon Temple or at a base with a riftstone.
 1,11005,ERROR_CODE_PAWN_REGISTERD_DATA_UPDATED,"登録されているポーンの状態に変更がありました。
-もう一度お試しください。",
+もう一度お試しください。",Registered pawn's status has been changed. Please try again.
 1,11006,ERROR_CODE_PAWN_NO_MYPAWN,通信エラーが発生しました。,A communication error has occurred.
 1,11007,ERROR_CODE_PAWN_INVALID_SLOT_NO,通信エラーが発生しました。,A communication error has occurred.
 1,11008,ERROR_CODE_PAWN_NO_RANDOM_EDIT_DATA,通信エラーが発生しました。,A communication error has occurred.
 1,11009,ERROR_CODE_PAWN_CREATE_NUM_OVER,通信エラーが発生しました。,A communication error has occurred.
 1,11010,ERROR_CODE_PAWN_RENTAL_NUM_OVER,通信エラーが発生しました。,A communication error has occurred.
-1,14010,ERROR_CODE_ITEM_INVALID_STORAGE_TYPE,アイテムを受け取ることができませんでした。,
-1,14011,ERROR_CODE_ITEM_INVALID_SLOT_NO,アイテムの処理に失敗しました。,
-1,14012,ERROR_CODE_ITEM_INVALID_ITEM_NUM,アイテムの処理に失敗しました。,
+1,14010,ERROR_CODE_ITEM_INVALID_STORAGE_TYPE,アイテムを受け取ることができませんでした。,Unable to recieve item.
+1,14011,ERROR_CODE_ITEM_INVALID_SLOT_NO,アイテムの処理に失敗しました。,Failed to process item.
+1,14012,ERROR_CODE_ITEM_INVALID_ITEM_NUM,アイテムの処理に失敗しました。,Failed to process item.
 1,14013,ERROR_CODE_ITEM_KEY_ITEM_ONLY_BAG,通信エラーが発生しました。,A communication error has occurred.
 1,14014,ERROR_CODE_ITEM_KEY_ITEM_CANT_SEPARATE,通信エラーが発生しました。,A communication error has occurred.
 1,14015,ERROR_CODE_ITEM_INVALID_EQUIP_JOB,通信エラーが発生しました。,A communication error has occurred.
@@ -258,54 +259,54 @@
 1,19001,ERROR_CODE_WARP_ALREADY_RELEASE_WARP_POINT_ID,通信エラーが発生しました。,A communication error has occurred.
 1,19002,ERROR_CODE_WARP_INVALID_FAVORITE_SLOT_NO,通信エラーが発生しました。,A communication error has occurred.
 1,19003,ERROR_CODE_WARP_LACK_RIM,通信エラーが発生しました。,A communication error has occurred.
-1,19004,ERROR_CODE_WARP_DIFFERENCE_PRICE,金額の変更があったためキャンセルしました。,
-1,19005,ERROR_CODE_WARP_LACK_RELEASE_AREA_RANK,解放に必要なエリアランクを満たしていません。,
-1,19006,ERROR_CODE_WARP_LACK_RELEASE_QUEST_PROGRESS,解放に必要なクエストの進行を満たしていません。,
+1,19004,ERROR_CODE_WARP_DIFFERENCE_PRICE,金額の変更があったためキャンセルしました。,Cancelled due to price being changed.
+1,19005,ERROR_CODE_WARP_LACK_RELEASE_AREA_RANK,解放に必要なエリアランクを満たしていません。,You are not high enough area rank to release.
+1,19006,ERROR_CODE_WARP_LACK_RELEASE_QUEST_PROGRESS,解放に必要なクエストの進行を満たしていません。,You have not progressed required quest far enough to release.
 1,19007,ERROR_CODE_WARP_LACK_RELEASE_CONDITION,"解放に必要なエリアランク、
-クエストの進行を満たしていません",
+クエストの進行を満たしていません",You are not high enough area rank and have not progressed required quest far enough to release.
 1,19008,ERROR_CODE_WARP_LAST_PARTY_WARP_INFO_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
-1,19009,ERROR_CODE_WARP_PARTY_WARP_TIME_OUT,同行ワープの承諾時間が切れました。,
+1,19009,ERROR_CODE_WARP_PARTY_WARP_TIME_OUT,同行ワープの承諾時間が切れました。,Party warp request has timed out.
 1,19010,ERROR_CODE_WARP_WARP_POINT_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,21014,ERROR_CODE_SKILL_INVALID_PRESET_NO,通信エラーが発生しました。,A communication error has occurred.
 1,22000,ERROR_CODE_SHOP_INVALID_SHOP_NO,通信エラーが発生しました。,A communication error has occurred.
 1,22001,ERROR_CODE_SHOP_INVALID_GOODS_INDEX,通信エラーが発生しました。,A communication error has occurred.
 1,22002,ERROR_CODE_SHOP_INVALID_ITEM_UID,通信エラーが発生しました。,A communication error has occurred.
-1,22003,ERROR_CODE_SHOP_INVALID_DEAL_NUM,取引個数指定にあやまりがあります。,
+1,22003,ERROR_CODE_SHOP_INVALID_DEAL_NUM,取引個数指定にあやまりがあります。,The is an error in the selected amount for trade.
 1,22004,ERROR_CODE_SHOP_LACK_MONEY,通信エラーが発生しました。,A communication error has occurred.
 1,22005,ERROR_CODE_SHOP_ITEM_CAPACITY_OVER,"荷物がいっぱいのため
-アイテムを受け取れませんでした。",
-1,22006,ERROR_CODE_SHOP_PRICE_NO_MATCH,金額の変更があったためキャンセルしました。,
+アイテムを受け取れませんでした。",Can not accept item due to inventory being full.
+1,22006,ERROR_CODE_SHOP_PRICE_NO_MATCH,金額の変更があったためキャンセルしました。,Cancelled due to a change in price.
 1,23000,ERROR_CODE_INN_INVALID_INN_NO,通信エラーが発生しました。,A communication error has occurred.
 1,23001,ERROR_CODE_INN_LACK_MONEY,通信エラーが発生しました。,A communication error has occurred.
-1,23002,ERROR_CODE_INN_PRICE_NO_MATCH,金額の変更があったためキャンセルしました。,
+1,23002,ERROR_CODE_INN_PRICE_NO_MATCH,金額の変更があったためキャンセルしました。,Cancelled due to a change in price.
 1,25000,ERROR_CODE_AREAMASTER_INVALID_AREA_NO,通信エラーが発生しました。,A communication error has occurred.
 1,25001,ERROR_CODE_AREAMASTER_AREA_POINT_LACK,通信エラーが発生しました。,A communication error has occurred.
 1,25002,ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,25003,ERROR_CODE_AREAMASTER_PARTY_INFO_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,25004,ERROR_CODE_AREAMASTER_PARTY_LEADER_INFO_NOT_FOUND,"パーティーリーダーの情報が取得できませんでした。
-もう一度お試しください。",
+もう一度お試しください。",Could not retrieve party leader information. Please try again.
 1,25005,ERROR_CODE_AREAMASTER_NOT_YET_SUPPLY,通信エラーが発生しました。,A communication error has occurred.
 1,25006,ERROR_CODE_AREAMASTER_INVALID_SUPPLY_STORAGE,通信エラーが発生しました。,A communication error has occurred.
 1,25007,ERROR_CODE_AREAMASTER_INVALID_SUPPLY_INDEX,"支給品の情報が更新されました。
-もう一度お試しください。",
+もう一度お試しください。",Supply status has changed. Please try again.
 1,25008,ERROR_CODE_AREAMASTER_INVALID_SUPPLY_NUM,"支給品の情報が更新されました。
-もう一度お試しください。",
+もう一度お試しください。",Supply status has changed. Please try again.
 1,25009,ERROR_CODE_AREAMASTER_ALREADY_PURCHASED_QUEST_INFO,通信エラーが発生しました。,A communication error has occurred.
 1,25010,ERROR_CODE_AREAMASTER_NOT_SCHEDULING_QUEST,"通信エラーが発生しました。
-配信中ではないクエスト情報です。",
+配信中ではないクエスト情報です。",A communication error has occurred. Not a currently available quest.
 1,26000,ERROR_CODE_HTTP_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,27000,ERROR_CODE_JOBMASTER_INVALID_JOB_ID,通信エラーが発生しました。,A communication error has occurred.
 1,27001,ERROR_CODE_JOBMASTER_ORDER_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,28000,ERROR_CODE_BAZAAR_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,30001,ERROR_CODE_ENTRY_BOARD_ALREADY_JOIN,通信エラーが発生しました。,A communication error has occurred.
-1,30002,ERROR_CODE_ENTRY_BOARD_ITEM_MAX,エントリーボードの登録上限を超えています。,
-1,30003,ERROR_CODE_ENTRY_BOARD_NO_ITEM,エントリーボードに登録されていません。,
-1,30004,ERROR_CODE_ENTRY_BOARD_NO_RECRUIT,エントリーボードの募集が終了しました。,
-1,30005,ERROR_CODE_ENTRY_BOARD_PASSWARD_NG,パスワードが間違っています。,
-1,30006,ERROR_CODE_ENTRY_BOARD_JOBLV_ERR,ジョブレベル条件を満たしていません。,
+1,30002,ERROR_CODE_ENTRY_BOARD_ITEM_MAX,エントリーボードの登録上限を超えています。,Reached maximum number of entry boards quests.
+1,30003,ERROR_CODE_ENTRY_BOARD_NO_ITEM,エントリーボードに登録されていません。,Not registered at the entry board.
+1,30004,ERROR_CODE_ENTRY_BOARD_NO_RECRUIT,エントリーボードの募集が終了しました。,Entry in to the entry board has finished.
+1,30005,ERROR_CODE_ENTRY_BOARD_PASSWARD_NG,パスワードが間違っています。,Password is incorrect.
+1,30006,ERROR_CODE_ENTRY_BOARD_JOBLV_ERR,ジョブレベル条件を満たしていません。,You have not reached the required job level.
 1,30007,ERROR_CODE_ENTRY_BOARD_NO_SPACE,"現在のジョブ、レベル、
 アイテムランクでは参加できないか、
-エントリーボードの受付が終了しました。",
+エントリーボードの受付が終了しました。","You can not particapate at your current job, level, or itemrank so entry board registration has been closed."
 1,30008,ERROR_CODE_ENTRY_BOARD_NOT_JOIN,エントリーボードに参加していません。,
 1,30009,ERROR_CODE_ENTRY_BOARD_PAWN_READY,通信エラーが発生しました。,A communication error has occurred.
 1,30010,ERROR_CODE_ENTRY_BOARD_NO_USER,通信エラーが発生しました。,A communication error has occurred.
@@ -314,29 +315,29 @@
 1,30013,ERROR_CODE_ENTRY_BOARD_NO_PARTY,通信エラーが発生しました。,A communication error has occurred.
 1,30014,ERROR_CODE_ENTRY_BOARD_RECREATE_NOT_LEADER,通信エラーが発生しました。,A communication error has occurred.
 1,31000,ERROR_CODE_SERVER_CONNECT_NUM_OVER,"ただいまサーバーが混雑しています。
-人数の空きができるまでお待ち頂く必要があります。",
+人数の空きができるまでお待ち頂く必要があります。",Server is currently at max capacity. Please wait until there is available space.
 1,32000,ERROR_CODE_MAIL_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,32001,ERROR_CODE_MAIL_RECEIVED,通信エラーが発生しました。,A communication error has occurred.
 1,32002,ERROR_CODE_MAIL_SEND,通信エラーが発生しました。,A communication error has occurred.
 1,32003,ERROR_CODE_MAIL_GET_ITEM,通信エラーが発生しました。,A communication error has occurred.
 1,34000,ERROR_CODE_GACHA_NOT_FOUND,"トレジャーズロットに接続できませんでした。
-もう一度お試しください。",
+もう一度お試しください。",Could not connect to Treasure Lot. Please try again.
 1,34001,ERROR_CODE_GACHA_PRICE_NO_MATCH,"トレジャーズロットの購入価格が正しくありません。
-もう一度お試しください。",
-1,34002,ERROR_CODE_GACHA_BUY,トレジャーズロットの購入ができませんでした。,
+もう一度お試しください。",Treasure Lot price is incorrect. Please try gain.
+1,34002,ERROR_CODE_GACHA_BUY,トレジャーズロットの購入ができませんでした。,Can not purchase Tresure Lot.
 1,35000,ERROR_CODE_ONLINE_STATUS_INVALID_STATUS_SETTING,通信エラーが発生しました。,A communication error has occurred.
 1,12043,ERROR_CODE_QUEST_QUEST_STOP,"通信エラーが発生しました。
-クエストが停止中です。",
+クエストが停止中です。",A communication error has occurred. The quest has been stopped.
 1,9010,ERROR_CODE_MATCHING_NOT_PLAY_END,通信エラーが発生しました。,A communication error has occurred.
 1,9011,ERROR_CODE_MATCHING_ALREADY_PLAY_END,通信エラーが発生しました。,A communication error has occurred.
 1,13005,ERROR_CODE_CYCLE_CONTENTS_IS_NOT_PLAY,通信エラーが発生しました。,A communication error has occurred.
 1,15019,ERROR_CODE_CHARACTER_NOT_RELEASE_CONTENTS,通信エラーが発生しました。,A communication error has occurred.
 1,42000,ERROR_CODE_CONTENTS_RELEASE_NOT_PARTY_PLAY_WITH_PLAYER,"パーティープレイ機能が解放されていない
-プレイヤーのため誘えませんでした。",
+プレイヤーのため誘えませんでした。",Unable to invite because player has not unlocked party play.
 1,42001,ERROR_CODE_CONTENTS_RELEASE_NOT_PARTY_PLAY_WITH_PAWN,通信エラーが発生しました。,A communication error has occurred.
 1,42002,ERROR_CODE_CONTENTS_RELEASE_NOT_WORLD_QUEST,通信エラーが発生しました。,A communication error has occurred.
-1,42003,ERROR_CODE_CONTENTS_RELEASE_NOT_GRAND_MISSION,グランドミッションが解放されていません。,
-1,42004,ERROR_CODE_CONTENTS_RELEASE_NOT_EXTREME_MISSION,コンテンツが解放されていません。,
+1,42003,ERROR_CODE_CONTENTS_RELEASE_NOT_GRAND_MISSION,グランドミッションが解放されていません。,Grand mission has not been unlocked.
+1,42004,ERROR_CODE_CONTENTS_RELEASE_NOT_EXTREME_MISSION,コンテンツが解放されていません。,Content has not been unlocked.
 1,42005,ERROR_CODE_CONTENTS_RELEASE_NOT_VISUAL_EQUIP,通信エラーが発生しました。,A communication error has occurred.
 1,42006,ERROR_CODE_CONTENTS_RELEASE_NOT_RESTANIA_NEWS,通信エラーが発生しました。,A communication error has occurred.
 1,42007,ERROR_CODE_CONTENTS_RELEASE_NOT_MASTER_HUNDBOOK,通信エラーが発生しました。,A communication error has occurred.
@@ -364,41 +365,41 @@
 1,6005,ERROR_CODE_AUTH_INVALID_PASSWORD_SIZE,通信エラーが発生しました。,A communication error has occurred.
 1,8034,ERROR_CODE_PARTY_STATE_SEQUENCE,通信エラーが発生しました。,A communication error has occurred.
 1,8035,ERROR_CODE_PARTY_NOT_PARTY_JOIN,"パーティー参加希望中ではないため
-パーティーへの誘いがキャンセルされました。",
+パーティーへの誘いがキャンセルされました。",Player does not wish to party so invite was cancelled.
 1,10000,ERROR_CODE_QUICK_PARTY_INTERNAL,通信エラーが発生しました。,A communication error has occurred.
 1,11011,ERROR_CODE_PAWN_NOT_LOST,通信エラーが発生しました。,A communication error has occurred.
 1,11012,ERROR_CODE_PAWN_NG_WORD,"通信エラーが発生しました。
-不正な情報が含まれています。",
+不正な情報が含まれています。",A communication error has occurred. There is some incorrect information.
 1,11013,ERROR_CODE_PAWN_COMMENT_LENGTH_OVER,通信エラーが発生しました。,A communication error has occurred.
 1,14017,ERROR_CODE_ITEM_INVALID_EQUIP_SEX,通信エラーが発生しました。,A communication error has occurred.
 1,15020,ERROR_CODE_CHARACTER_NG_WORD,"通信エラーが発生しました。
-不正な情報が含まれています。",
+不正な情報が含まれています。",A communication error has occurred. There is some incorrect information.
 1,15021,ERROR_CODE_CHARACTER_COMMENT_LENGTH_OVER,通信エラーが発生しました。,A communication error has occurred.
 1,18021,ERROR_CODE_CRAFT_INVALID_COLOR_MATERIAL,通信エラーが発生しました。,A communication error has occurred.
-1,23003,ERROR_CODE_INN_PENALTY_HEALED,すでに弱化の状態は回復しています。,
+1,23003,ERROR_CODE_INN_PENALTY_HEALED,すでに弱化の状態は回復しています。,Weakness condition has already been recovered.
 1,28001,ERROR_CODE_BAZAAR_STATE_CHANGED,"状態が変更されました。
-もう一度お試しください。",
+もう一度お試しください。",Status has been changed. Please try again.
 1,34003,ERROR_CODE_GACHA_STORAGE_MAX,"アイテムポストに空きがないため
-トレジャーズロットが行えませんでした。",
+トレジャーズロットが行えませんでした。",There is no space in your item post so you can not use the Treasure Lot.
 1,36000,ERROR_CODE_WEATHER_NOT_FOUND_LOOP_SCHEDULE,通信エラーが発生しました。,A communication error has occurred.
 1,37000,ERROR_CODE_LOADING_SEND_REQ_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,37001,ERROR_CODE_LOADING_NOT_FOUND_LOADING_INFO,通信エラーが発生しました。,A communication error has occurred.
 1,38000,ERROR_CODE_STAMP_BONUS_IS_RECIEVED,通信エラーが発生しました。,A communication error has occurred.
 1,39000,ERROR_CODE_RANKING_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
-1,39001,ERROR_CODE_RANKING_CHANGE_STATE,ランキングの公開期間が終了しました。,
+1,39001,ERROR_CODE_RANKING_CHANGE_STATE,ランキングの公開期間が終了しました。,Ranking listing time has already finished.
 1,40000,ERROR_CODE_CLAN_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,40001,ERROR_CODE_CLAN_NO_COM_SESSION,通信エラーが発生しました。,A communication error has occurred.
-1,40002,ERROR_CODE_CLAN_NOT_JOIN,クランに加入していません。,
-1,40003,ERROR_CODE_CLAN_NO_AUTHORIZATION,権限がありません。,
+1,40002,ERROR_CODE_CLAN_NOT_JOIN,クランに加入していません。,Not in a clan.
+1,40003,ERROR_CODE_CLAN_NO_AUTHORIZATION,権限がありません。,You do not have the required authorization.
 1,40004,ERROR_CODE_CLAN_LEAVE_MASTER,"クランメンバーがいるため
-クランマスターはクランを脱退出来ません。",
+クランマスターはクランを脱退出来ません。",Clan master can not leave a clan while there is a current member.
 1,41000,ERROR_CODE_GP_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,41001,ERROR_CODE_GP_LACK_GP,"黄金石の期限が切れているため
-処理が出来ませんでした。",
-1,41002,ERROR_CODE_GP_BUY_LIMIT_OVER,購入出来る上限を超えています。,
+処理が出来ませんでした。",Can not complete because golden gemstone time limit has expired.
+1,41002,ERROR_CODE_GP_BUY_LIMIT_OVER,購入出来る上限を超えています。,You have already purchased the maximum amount.
 1,41003,ERROR_CODE_GP_GET_CAP_NOT_FIND_SESSIONKEY_FROM_DB,通信エラーが発生しました。,A communication error has occurred.
 1,41004,ERROR_CODE_GP_EXEC_CAP_TO_GP_HISTORY_GET_GP_FAILED,通信エラーが発生しました。,A communication error has occurred.
-1,43000,ERROR_CODE_CONTROL_COMMON_MSG,現在この機能は使えません。,
+1,43000,ERROR_CODE_CONTROL_COMMON_MSG,現在この機能は使えません。,Can not use this feature at this time.
 1,42027,ERROR_CODE_CONTENTS_RELEASE_NOT_CREATE_SECOND_PAWN,通信エラーが発生しました。,A communication error has occurred.
 1,42028,ERROR_CODE_CONTENTS_RELEASE_NOT_PARTY_MENU,通信エラーが発生しました。,A communication error has occurred.
 1,42029,ERROR_CODE_CONTENTS_RELEASE_NOT_MAIN_MENU_ARISEN_PROFIEL,通信エラーが発生しました。,A communication error has occurred.
@@ -413,60 +414,60 @@
 1,6006,ERROR_CODE_AUTH_INVALID_DECODE_PASSWORD,通信エラーが発生しました。,A communication error has occurred.
 1,6007,ERROR_CODE_AUTH_SESSION_KEY_GENERATE,通信エラーが発生しました。,A communication error has occurred.
 1,6008,ERROR_CODE_AUTH_MULTIPLE_LOGIN,"同一のアカウントでログインされました。
-サーバーから切断されます。",
+サーバーから切断されます。",Logged into account multiple times. You have been disconnected from server.
 1,18022,ERROR_CODE_CRAFT_INVALID_CRAFT_STAGE,通信エラーが発生しました。,A communication error has occurred.
-1,22007,ERROR_CODE_SHOP_TEMPORARY_BLOCK,この施設は現在利用できません。,
+1,22007,ERROR_CODE_SHOP_TEMPORARY_BLOCK,この施設は現在利用できません。,Cannot use this facility currently.
 1,44000,ERROR_CODE_EVENT_CODE_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
-1,44001,ERROR_CODE_EVENT_CODE_EXPIRE,イベントコードの有効期限が切れています。,
+1,44001,ERROR_CODE_EVENT_CODE_EXPIRE,イベントコードの有効期限が切れています。,Event code has expired.
 1,44002,ERROR_CODE_EVENT_CODE_ALREADY_CODE,"入力されたイベントコードは
-すでに使用済みです。",
+すでに使用済みです。",Event code has already been used.
 1,44003,ERROR_CODE_EVENT_CODE_INVALID_CODE,"無効、または利用開始前の
-イベントコードです。",
-1,44004,ERROR_CODE_EVENT_CODE_ALREADY_EVENT,同じイベントコードはこれ以上利用できません。,
-1,8036,ERROR_CODE_PARTY_INVITE_CANCELD,パーティーへの誘いがキャンセルされました。,
+イベントコードです。",Invalid code.
+1,44004,ERROR_CODE_EVENT_CODE_ALREADY_EVENT,同じイベントコードはこれ以上利用できません。,Cannot use same event code more times.
+1,8036,ERROR_CODE_PARTY_INVITE_CANCELD,パーティーへの誘いがキャンセルされました。,Party invite has been cancelled.
 1,11014,ERROR_CODE_PAWN_INVALID,通信エラーが発生しました。,A communication error has occurred.
 1,15022,ERROR_CODE_CHARACTER_INTERNAL,通信エラーが発生しました。,A communication error has occurred.
 1,18023,ERROR_CODE_CRAFT_USE_EQUIP_ITEM,通信エラーが発生しました。,A communication error has occurred.
-1,20003,ERROR_CODE_FRIEND_TARGET_IN_BLACK_LIST,ブラックリストに登録しているためできません。,
-1,20004,ERROR_CODE_FRIEND_TARGET_ALREADY_FRIEND,すでにフレンド登録済みです。,
-1,20005,ERROR_CODE_FRIEND_TARGET_ALREADY_APPLYING,すでにフレンド申請中です。,
+1,20003,ERROR_CODE_FRIEND_TARGET_IN_BLACK_LIST,ブラックリストに登録しているためできません。,Unable because player is on your blacklist.
+1,20004,ERROR_CODE_FRIEND_TARGET_ALREADY_FRIEND,すでにフレンド登録済みです。,Already registered as a friend.
+1,20005,ERROR_CODE_FRIEND_TARGET_ALREADY_APPLYING,すでにフレンド申請中です。,Already sent a friend invitation.
 1,20006,ERROR_CODE_FRIEND_TARGET_ALREADY_APPROVING,"フレンド申請がきているプレイヤーです。
-コミュニティリストから承認してください。",
+コミュニティリストから承認してください。",Already recieved a friend request from player. Please check community list.
 1,30015,ERROR_CODE_ENTRY_BOARD_PARTY_CREATE_MAX,通信エラーが発生しました。,A communication error has occurred.
 1,45000,ERROR_CODE_COG_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,46000,ERROR_CODE_CHAT_TELL_CHARACTER_OFFLINE,通信エラーが発生しました。,A communication error has occurred.
 1,46001,ERROR_CODE_CHAT_TELL_SESSION_LOST,通信エラーが発生しました。,A communication error has occurred.
-1,47000,ERROR_CODE_GROUP_CHAT_CHARACTER_OFFLINE,オフラインのプレイヤーです。,
+1,47000,ERROR_CODE_GROUP_CHAT_CHARACTER_OFFLINE,オフラインのプレイヤーです。,Offline player.
 1,47001,ERROR_CODE_GROUP_CHAT_CHARACTER_ALREADY_IN_GROUP,"すでにグループチャットに
-参加しているため誘えませんでした。",
-1,47002,ERROR_CODE_GROUP_CHAT_CONTAIN_BLACK_LIST,ブラックリストに登録しているためできません。,
-1,47003,ERROR_CODE_GROUP_CHAT_NOT_IN_GROUP,すでにグループチャットから退室しています。,
-1,47004,ERROR_CODE_GROUP_CHAT_IN_DIFFERENT_GROUP,別のグループチャットに参加しているためできません。,
-1,8037,ERROR_CODE_PARTY_INVITE_FAIL_REASON_SESSION_RETURN,相手のパーティーの都合により誘えませんでした。,
-1,8038,ERROR_CODE_PARTY_INVITE_FAIL_REASON_JOIN_PREPARE,パーティー参加を行おうとしているメンバーがいるため誘えませんでした。,
+参加しているため誘えませんでした。","Can not invite, player is already in the group chat."
+1,47002,ERROR_CODE_GROUP_CHAT_CONTAIN_BLACK_LIST,ブラックリストに登録しているためできません。,Unable because player is on your blacklist.
+1,47003,ERROR_CODE_GROUP_CHAT_NOT_IN_GROUP,すでにグループチャットから退室しています。,Already left the group chat.
+1,47004,ERROR_CODE_GROUP_CHAT_IN_DIFFERENT_GROUP,別のグループチャットに参加しているためできません。,Currently in another group chat.
+1,8037,ERROR_CODE_PARTY_INVITE_FAIL_REASON_SESSION_RETURN,相手のパーティーの都合により誘えませんでした。,Can not invite due to players party circumstances.
+1,8038,ERROR_CODE_PARTY_INVITE_FAIL_REASON_JOIN_PREPARE,パーティー参加を行おうとしているメンバーがいるため誘えませんでした。,Can not invite because there is a memeber trying to join a party.
 1,8039,ERROR_CODE_PARTY_INVITE_SESSION_RETURN,"オフラインのパーティーメンバーが
-いるため誘えませんでした。",
-1,20007,ERROR_CODE_FRIEND_NOT_IN_APPLYING_LIST,申請中のプレイヤーはいません。,
-1,20008,ERROR_CODE_FRIEND_NOT_IN_APPROVING_LIST,承認待ちのプレイヤーはいません。,
-1,28002,ERROR_CODE_BAZAAR_EXHIBIT_NUM_OVER,出品可能数が０のため、新たに出品できません。,
+いるため誘えませんでした。",Can not invite because there is a party memeber that is offline.
+1,20007,ERROR_CODE_FRIEND_NOT_IN_APPLYING_LIST,申請中のプレイヤーはいません。,No players havve applied.
+1,20008,ERROR_CODE_FRIEND_NOT_IN_APPROVING_LIST,承認待ちのプレイヤーはいません。,No players are waiting for approval.
+1,28002,ERROR_CODE_BAZAAR_EXHIBIT_NUM_OVER,出品可能数が０のため、新たに出品できません。,Your number of submissions is 0 so you can not submit any more.
 1,8040,ERROR_CODE_PARTY_INVITE_FAIL_REASON_NOT_NORMAL_PARTY,"相手のパーティーがコンテンツ向けパーティーのため
-誘うことができませんでした。",
+誘うことができませんでした。",Player's party is a content aimed party so unable to invite.
 1,8041,ERROR_CODE_PARTY_INVITE_NOT_NORMAL_PARTY,"コンテンツ向けパーティーのため
-誘うことができませんでした。",
+誘うことができませんでした。",Party is a content aimed party so unable to invite.
 1,14018,ERROR_CODE_ITEM_CANNOT_STORE_STORAGE,"有効期限が切れているため、
-アイテムを送れませんでした。",
-1,11015,ERROR_CODE_PAWN_FAVORITE_NUM_OVER,お気に入りポーンはこれ以上追加できません。,
-1,11016,ERROR_CODE_PAWN_ALREADY_FAVORITE,すでにお気に入りポーンに登録されています。,
+アイテムを送れませんでした。",Item has expired so unable to send.
+1,11015,ERROR_CODE_PAWN_FAVORITE_NUM_OVER,お気に入りポーンはこれ以上追加できません。,Can not register more pawns into favorites.
+1,11016,ERROR_CODE_PAWN_ALREADY_FAVORITE,すでにお気に入りポーンに登録されています。,Pawn has already been favorited.
 1,8042,ERROR_CODE_PARTY_INVITE_LOBBY_NUM_OVER,"ロビーが混雑しているため
-パーティーに誘えませんでした。",
+パーティーに誘えませんでした。",Unable to invite due to the lobby being at maximum capacity.
 1,8043,ERROR_CODE_PARTY_INVITE_FAIL_REASON_LOBBY_NUM_OVER,"ロビーが混雑しているため
-相手のパーティーが合流できませんでした",
+相手のパーティーが合流できませんでした",Unable to transport to player's party because the lobby is at maximum capacity.
 1,8044,ERROR_CODE_PARTY_INVITE_CANCEL_REASON_LOBBY_NUM_OVER,"招待者のいるロビーが混雑しているため
-合流できませんでした",
+合流できませんでした",Unable to transport because the lobby that the inviter is in is at maximum capacity.
 1,2001,ERROR_CODE_SYSTEM_INTERNAL,通信エラーが発生しました。,A communication error has occurred.
-1,11017,ERROR_CODE_PAWN_NOT_YOUR_FAVORITE,お気に入りポーンに登録していません。,
+1,11017,ERROR_CODE_PAWN_NOT_YOUR_FAVORITE,お気に入りポーンに登録していません。,Can not register pawn as a favorite.
 1,30016,ERROR_CODE_ENTRY_BOARD_RECREATE_SESSION_RETURN,通信エラーが発生しました。,A communication error has occurred.
-1,47005,ERROR_CODE_GROUP_CHAT_CHARACTER_SESSION_LOST,回線切断中のため誘えませんでした。,
+1,47005,ERROR_CODE_GROUP_CHAT_CHARACTER_SESSION_LOST,回線切断中のため誘えませんでした。,Unable to invite because server connection has been lost.
 1,48000,ERROR_CODE_DLC_GET_AUTHID,通信エラーが発生しました。,A communication error has occurred.
 1,48001,ERROR_CODE_DLC_GET_BOUGHTS,通信エラーが発生しました。,A communication error has occurred.
 1,48002,ERROR_CODE_DLC_GET_HISTORIES,通信エラーが発生しました。,A communication error has occurred.
@@ -485,55 +486,55 @@
 1,45002,ERROR_CODE_COG_ANALIZE_SESSION_KEY_CREATE,通信エラーが発生しました。,A communication error has occurred.
 1,45003,ERROR_CODE_COG_ANALIZE_SESSION_KEY_REQ,通信エラーが発生しました。,A communication error has occurred.
 1,45004,ERROR_CODE_COG_ANALIZE_SESSION_KEY,通信エラーが発生しました。,A communication error has occurred.
-1,49000,ERROR_CODE_BLACK_LIST_ALREADY_REGISTER,すでにブラックリストに登録済みです。,
-1,49001,ERROR_CODE_BLACK_LIST_REGISTER_LIMIT_OVER,これ以上ブラックリストに登録できません。,
+1,49000,ERROR_CODE_BLACK_LIST_ALREADY_REGISTER,すでにブラックリストに登録済みです。,Already registered on your blacklist.
+1,49001,ERROR_CODE_BLACK_LIST_REGISTER_LIMIT_OVER,これ以上ブラックリストに登録できません。,Can not add any more players to your blacklist.
 1,49002,ERROR_CODE_BLACK_LIST_TARGET_IS_FRIEND,"フレンドまたは、フレンド申請中の相手
-なのでブラックリストに登録できません。",
-1,50000,ERROR_CODE_MATCHING_PROFILE_CHARACTER_OFFLINE,オフラインのプレイヤーです。,
-1,51000,ERROR_CODE_ARISEN_PROFILE_CHARACTER_OFFLINE,オフラインのプレイヤーです。,
+なのでブラックリストに登録できません。",Can not add to blacklist because player has either already been added as a friend or has been requested to be a friend.
+1,50000,ERROR_CODE_MATCHING_PROFILE_CHARACTER_OFFLINE,オフラインのプレイヤーです。,Player is offline.
+1,51000,ERROR_CODE_ARISEN_PROFILE_CHARACTER_OFFLINE,オフラインのプレイヤーです。,Player is offline.
 1,8045,ERROR_CODE_PARTY_INVITE_FAIL_REASON_ALREADY_INVITE,"そのプレイヤーは他のプレイヤーに
-パーティー要請をしているため誘えません。",
-1,40005,ERROR_CODE_CLAN_NOT_EXIST,対象メンバーはクランにいません。,
-1,40006,ERROR_CODE_CLAN_JOIN_REQUEST_NOT_FOUND,クランへの加入申請はありません。,
-1,40007,ERROR_CODE_CLAN_JOIN_REQUEST_ALREADY,すでに加入申請を行っています。,
-1,40008,ERROR_CODE_CLAN_SCOUT_ENTRY_NOT_FOUND,対象のスカウトエントリー情報が見つかりません。,
-1,40009,ERROR_CODE_CLAN_SCOUT_ENTRY_INVITE_NOT_FOUND,クランへの招待がキャンセルされました。,
-1,40010,ERROR_CODE_CLAN_SCOUT_ENTRY_INVITE_ALREADY,すでに招待済みのプレイヤーです。,
-1,10001,ERROR_CODE_QUICK_PARTY_SESSION_RETURN,回線切断中のメンバーがいるため申請出来ません。,
+パーティー要請をしているため誘えません。",Can not invite because player has already been invited to a party.
+1,40005,ERROR_CODE_CLAN_NOT_EXIST,対象メンバーはクランにいません。,Target member is not in clan.
+1,40006,ERROR_CODE_CLAN_JOIN_REQUEST_NOT_FOUND,クランへの加入申請はありません。,No clan requests found.
+1,40007,ERROR_CODE_CLAN_JOIN_REQUEST_ALREADY,すでに加入申請を行っています。,Clan request has already been sent.
+1,40008,ERROR_CODE_CLAN_SCOUT_ENTRY_NOT_FOUND,対象のスカウトエントリー情報が見つかりません。,Can not find player's scount entry information.
+1,40009,ERROR_CODE_CLAN_SCOUT_ENTRY_INVITE_NOT_FOUND,クランへの招待がキャンセルされました。,Clan invitation has been cancelled.
+1,40010,ERROR_CODE_CLAN_SCOUT_ENTRY_INVITE_ALREADY,すでに招待済みのプレイヤーです。,Player has already been invited.
+1,10001,ERROR_CODE_QUICK_PARTY_SESSION_RETURN,回線切断中のメンバーがいるため申請出来ません。,Can not request because a member has lost connection to the server.
 1,8046,ERROR_CODE_PARTY_LEADER_CHANGE_FAIL_NOT_SAME_STAGE,"メンバー全員が白竜神殿か、リムストーンのある
-同じ拠点施設にいないため変更出来ません。",
-1,8047,ERROR_CODE_PARTY_LEADER_CHANGE_FAIL_NOT_RELEASE_STAGE,解放済み拠点ではないためリーダー変更出来ません。,
-1,8048,ERROR_CODE_PARTY_LEADER_CHANGE_FAIL_PARTY_WARP,同行ワープ中なのでリーダー変更出来ません。,
+同じ拠点施設にいないため変更出来ません。",Can not change because not all members are at the White Dragon Temple or the same base with a riftstone.
+1,8047,ERROR_CODE_PARTY_LEADER_CHANGE_FAIL_NOT_RELEASE_STAGE,解放済み拠点ではないためリーダー変更出来ません。,Can not change leader because the base has not been released.
+1,8048,ERROR_CODE_PARTY_LEADER_CHANGE_FAIL_PARTY_WARP,同行ワープ中なのでリーダー変更出来ません。,Can not change leader because party is currently warping.
 1,18024,ERROR_CODE_CRAFT_INTERNAL,通信エラーが発生しました。,A communication error has occurred.
-1,40011,ERROR_CODE_CLAN_NG_WORD_NAME,このクラン名は使用できません。,
-1,40012,ERROR_CODE_CLAN_NG_WORD_SHORT_NAME,このクランの略称は使用できません。,
-1,40013,ERROR_CODE_CLAN_DUPLICATE_NAME,このクラン名はすでに使われています。,
-1,40014,ERROR_CODE_CLAN_ALREADY_JOIN,すでにクランに所属しています。,
+1,40011,ERROR_CODE_CLAN_NG_WORD_NAME,このクラン名は使用できません。,Can not use clan name.
+1,40012,ERROR_CODE_CLAN_NG_WORD_SHORT_NAME,このクランの略称は使用できません。,Can not use clan playstyle.
+1,40013,ERROR_CODE_CLAN_DUPLICATE_NAME,このクラン名はすでに使われています。,That clan name is already being used.
+1,40014,ERROR_CODE_CLAN_ALREADY_JOIN,すでにクランに所属しています。,You are already a member of a clan.
 1,8049,ERROR_CODE_PARTY_INVITE_NOT_CANCEL,"すでに要請に対する処理が行われたため
-キャンセルできませんでした。",
-1,47006,ERROR_CODE_GROUP_CHAT_REGISTERED_BLACK_LIST,オフラインのプレイヤーです。,
+キャンセルできませんでした。",Party invite is already being processed so you can not cancel it.
+1,47006,ERROR_CODE_GROUP_CHAT_REGISTERED_BLACK_LIST,オフラインのプレイヤーです。,Player is offline.
 1,44005,ERROR_CODE_EVENT_CODE_INPUT_LOCK,"イベントコードの利用が制限されているため、
 入力ができませんでした。
-しばらくたってから、再度お試しください。",
-1,8050,ERROR_CODE_PARTY_INVITE_FAIL_REASON_LEAVE_LEADER,リーダーが変わったためキャンセルしました。,
+しばらくたってから、再度お試しください。",Unable to input code because event code use is restricted. Please try again later.
+1,8050,ERROR_CODE_PARTY_INVITE_FAIL_REASON_LEAVE_LEADER,リーダーが変わったためキャンセルしました。,Cancelled because leader has changed.
 1,10002,ERROR_CODE_QUICK_PARTY_NO_BOARD,"対象が無くなったため
-クイックパーティーできません。",
-1,40015,ERROR_CODE_CLAN_MEMBER_MAX,クランメンバー数が上限を超えています。,
-1,40016,ERROR_CODE_CLAN_NOT_FOUND,このクランはすでに解散されています。,
-1,11018,ERROR_CODE_PAWN_REGISTERD_DATA_NOT_FOUND,ポーンの情報が取得できませんでした。,
+クイックパーティーできません。",Target no longer exists so unable to quick party.
+1,40015,ERROR_CODE_CLAN_MEMBER_MAX,クランメンバー数が上限を超えています。,Reached maximum number of clan members.
+1,40016,ERROR_CODE_CLAN_NOT_FOUND,このクランはすでに解散されています。,Clan has already been disbanded.
+1,11018,ERROR_CODE_PAWN_REGISTERD_DATA_NOT_FOUND,ポーンの情報が取得できませんでした。,Unable to retrieve pawn data.
 1,6009,ERROR_CODE_AUTH_DUPLICATE_DATA,通信エラーが発生しました。,A communication error has occurred.
 1,10003,ERROR_CODE_QUICK_PARTY_PARTY_JOINING,"パーティー参加処理中のメンバーがいるため
-クイックパーティーに登録できません。",
+クイックパーティーに登録できません。",Cannot register to quick party beacause a member is currently being added to the party.
 1,10004,ERROR_CODE_QUICK_PARTY_ENTRY_BOARD_ENTRY,"エントリーボード参加中のメンバーがいるため
-クイックパーティーに登録できません。 ",
+クイックパーティーに登録できません。 ",Cannot register to quick party because a member is currently participating in an entry board.
 1,11019,ERROR_CODE_PAWN_REVIVE_PRICE_NO_MATCH,通信エラーが発生しました。,A communication error has occurred.
-1,11020,ERROR_CODE_PAWN_REVIVE_NEED_GP_COURCE,＜<OPCS>＞の効果により利用可能です。,
+1,11020,ERROR_CODE_PAWN_REVIVE_NEED_GP_COURCE,＜<OPCS>＞の効果により利用可能です。,Able to use with the Option Course.
 1,30017,ERROR_CODE_ENTRY_BOARD_NOT_CREATE_QUICK_PARTY,"クイックパーティーに登録中のため
-エントリーボードの募集はできません。",
+エントリーボードの募集はできません。",Registered in quick party so you can not recruit in entry board.
 1,30018,ERROR_CODE_ENTRY_BOARD_NOT_ENTRY_QUICK_PARTY,"クイックパーティーに登録中のため
-エントリーボードに参加できません。",
+エントリーボードに参加できません。",Registered in quick party so you can not join an entry board.
 1,40017,ERROR_CODE_CLAN_NOT_DELETE_MASTER,"クランに所属しているため
-キャラクターを削除できません。",
+キャラクターを削除できません。",Can not delete character because that character is in a clan.
 1,14019,ERROR_CODE_ITEM_INVALID_ITEM_SORT,通信エラーが発生しました。,A communication error has occurred.
 1,41005,ERROR_CODE_GP_EXEC_CAP_TO_GP_HISTORY_INTERRUPTION_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,41006,ERROR_CODE_GP_SELECT_CAP_TO_GP_HISTORY_VERIFY_FAILED,通信エラーが発生しました。,A communication error has occurred.
@@ -558,157 +559,157 @@
 1,41025,ERROR_CODE_GP_INSURANCE_SESSIONKEY_ITEMLIST_REQ_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,41026,ERROR_CODE_GP_GETCAP_SESSIONKEY_GET_DB_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41027,ERROR_CODE_GP_GETCAP_GETCAP_REQ_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41028,ERROR_CODE_GP_GETCAP_GETCAP_ANALYZE_FALIED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41029,ERROR_CODE_GP_GETCAP_GETCAP_SESSIONKEY_API_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41030,ERROR_CODE_GP_GETCAP_GETCAP_ACCESSTOKEN_GET_DB_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41031,ERROR_CODE_GP_GETCAP_GETCAP_SESSIONKEY_REQ_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41032,ERROR_CODE_GP_GETCAP_GETCAP_OTHER_ERR,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41033,ERROR_CODE_GP_GETCAP_GETCAP_ANALYZER_GET_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41034,ERROR_CODE_GP_GETCAP_SESSIONKEY_ANALYZE_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41035,ERROR_CODE_GP_GETCAP_SESSIONKEY_GET_API_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,41036,ERROR_CODE_GP_GETCAP_SESSIONKEY_ANALYZER_GET_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen tthe online shop and try again.
 1,41037,ERROR_CODE_GP_GETCAP_SESSIONKEY_GETCAP_REQ_FAILED,"CAPの取得に失敗しました。
 オンラインショップを開き直すことで、
-CAPの取得を再試行します。",
+CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online shop and try again.
 1,41038,ERROR_CODE_GP_CAPTOGP_CAPTOGPS_GET_DB_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41039,ERROR_CODE_GP_CAPTOGP_SESSIONKEY_GET_DB_FALIED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41040,ERROR_CODE_GP_CAPTOGP_GP_GET_DB_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41041,ERROR_CODE_GP_CAPTOGP_USECAPVERIFY_REQ_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41042,ERROR_CODE_GP_CAPTOGP_USECAPVERIFY_ANALYZE_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
-1,47007,ERROR_CODE_GROUP_CHAT_GROUP_MEMBER_MAX,グループチャットの人数が上限を超えています。,
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
+1,47007,ERROR_CODE_GROUP_CHAT_GROUP_MEMBER_MAX,グループチャットの人数が上限を超えています。,Reached maximum number of group chat members.
 1,52000,ERROR_CODE_SUPPORT_POINT_STATUS_TYPE_INVALID,通信エラーが発生しました。,A communication error has occurred.
 1,52001,ERROR_CODE_SUPPORT_POINT_SETTING_POINT_NOTHING,通信エラーが発生しました。,A communication error has occurred.
 1,52002,ERROR_CODE_SUPPORT_POINT_CHAR_TYPE_INVALID,通信エラーが発生しました。,A communication error has occurred.
 1,52003,ERROR_CODE_SUPPORT_POINT_INVALID_CHAR_ID,通信エラーが発生しました。,A communication error has occurred.
 1,52004,ERROR_CODE_SUPPORT_POINT_USE_POINT_NOTHING,通信エラーが発生しました。,A communication error has occurred.
 1,40018,ERROR_CODE_CLAN_CACHE_NOT_FOUND,"クランメンバーがオフラインのため
-クラン情報が取得できませんでした。",
+クラン情報が取得できませんでした。",Unable to retrieve clan information because clan member is offline.
 1,2002,ERROR_CODE_SYSTEM_CACHE_DB,通信エラーが発生しました。,A communication error has occurred.
 1,41043,ERROR_CODE_GP_CAPTOGP_USECAPVERIFY_SESSIONKEY_API_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41044,ERROR_CODE_GP_CAPTOGP_USECAPVERIFY_ACCESSTOKEN_GET_DB_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41045,ERROR_CODE_GP_CAPTOGP_USECAPVERIFY_SESSIONKEY_REQ_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41046,ERROR_CODE_GP_CAPTOGP_USECAPVERIFY_OTHER_ERR,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41047,ERROR_CODE_GP_CAPTOGP_USECAPVERIFY_ANALYZER_GET_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41048,ERROR_CODE_GP_CAPTOGP_CAPTOGPHISTORIES_INSERT_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41049,ERROR_CODE_GP_CAPTOGP_USECAPEXECUTE_REQ_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41050,ERROR_CODE_GP_CAPTOGP_USECAPEXECUTE_ANALYZE_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41051,ERROR_CODE_GP_CAPTOGP_USECAPEXECUTE_SESSIONKEY_API_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41052,ERROR_CODE_GP_CAPTOGP_USECAPEXECUTE_ACCESSTOKEN_GET_DB_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41053,ERROR_CODE_GP_CAPTOGP_USECAPEXECUTE_SESSIONKEY_REQ_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41054,ERROR_CODE_GP_CAPTOGP_USECAPEXECUTE_OTHER_ERR,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41055,ERROR_CODE_GP_CAPTOGP_USECAPEXECUTE_ANALYZER_GET_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41056,ERROR_CODE_GP_CAPTOGP_BEGIN_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41057,ERROR_CODE_GP_CAPTOGP_CAPTOGP_UPDATE_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41058,ERROR_CODE_GP_CAPTOGP_COMMIT_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41059,ERROR_CODE_GP_CAPTOGP_SESSIONKEY_ANALYZE_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41060,ERROR_CODE_GP_CAPTOGP_SESSIONKEY_GET_API_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,41061,ERROR_CODE_GP_CAPTOGP_SESSIONKEY_ANALYZER_GET_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41062,ERROR_CODE_GP_CAPTOGP_SESSIONKEY_USECAPVERIFY_REQ_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41063,ERROR_CODE_GP_CAPTOGP_SESSIONKEY_USECAPEXECUTE_REQ_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41064,ERROR_CODE_GP_SESSIONKEY_ACCESSTOKEN_GET_DB_FAILED,"カプリンクの処理に失敗しました。
 カプリンクの機能を利用するには
-ゲームに再度ログインし直してください。",
+ゲームに再度ログインし直してください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41065,ERROR_CODE_GP_SESSIONKEY_SESSIONKEY_API_FAILED,"カプリンクの処理に失敗しました。
 カプリンクの機能を利用するには
-ゲームに再度ログインし直してください。",
+ゲームに再度ログインし直してください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,41066,ERROR_CODE_GP_SESSIONKEY_SESSIONKEY_GET_API_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,41067,ERROR_CODE_GP_SESSIONKEY_SESSIONKEY_ANALYZE_FAILED,"カプリンクの処理に失敗しました。
 カプリンクの機能を利用するには
-ゲームに再度ログインし直してください。",
+ゲームに再度ログインし直してください。","Failed to process Caplink. In order to use caplink feature, please try to re-log into the game."
 1,41068,ERROR_CODE_GP_SESSIONKEY_SESSIONKEY_ANALYZER_GET_FAILED,"カプリンクの処理に失敗しました。
 カプリンクの機能を利用するには
-ゲームに再度ログインし直してください。",
+ゲームに再度ログインし直してください。","Failed to process Caplink. In order to use caplink feature, please try to re-log into the game."
 1,41069,ERROR_CODE_GP_AUTHCOG_NONE,通信エラーが発生しました。,A communication error has occurred.
 1,41070,ERROR_CODE_GP_CAPTOGP_HISTORIES_FAILED,"黄金石の購入に失敗しました。
 ※購入は行われておりません。
 
-お手数ですが再度購入をお試しください。",
+お手数ですが再度購入をお試しください。",Failed to purchase Golden Gemstones. *Purchase did not complete. We apologize but please try purchasing again.
 1,41071,ERROR_CODE_GP_CAPTOGP_INSURANCE_FAILED,"黄金石の購入処理に失敗しました。
 再度オンラインショップを開き直し、
-黄金石の状態をご確認ください。",
+黄金石の状態をご確認ください。",Failed to process Golden Gemstone purchase. Please reopen the online shop and check the status of your Golden Gemstones.
 1,11021,ERROR_CODE_PAWN_SERACH_NOT_SUPPORTED,通信エラーが発生しました。,A communication error has occurred.
 1,11022,ERROR_CODE_PAWN_CHARACTER_NAME_SERACH_NOT_SUPPORTED,通信エラーが発生しました。,A communication error has occurred.
 1,11023,ERROR_CODE_PAWN_NAME_SERACH_NOT_SUPPORTED,ポーン名検索の機能は使用できません。,
@@ -716,30 +717,30 @@ CAPの取得を再試行します。",
 1,11025,ERROR_CODE_PAWN_CLAN_SERACH_NOT_SUPPORTED,通信エラーが発生しました。,A communication error has occurred.
 1,11026,ERROR_CODE_PAWN_FAVORITE_SERACH_NOT_SUPPORTED,通信エラーが発生しました。,A communication error has occurred.
 1,14020,ERROR_CODE_ITEM_INVALID_SLOT_USE,"有効期限が切れているため、
-アイテムを送れませんでした。",
+アイテムを送れませんでした。",Item has expired so unable to send.
 1,41072,ERROR_CODE_GP_COG_SESSIONKEY_GET_FAILED_LOGIN_REQ,"通信エラーが発生しました。
 一度ゲームを終了してランチャーより
-ログインし直してください。",
-1,41073,ERROR_CODE_GP_ISENABLEINSERTGP_FAILED,黄金石を追加できませんでした。,
+ログインし直してください。",A communication error has occurred. Please close out of the game and re-log in from the launcher.
+1,41073,ERROR_CODE_GP_ISENABLEINSERTGP_FAILED,黄金石を追加できませんでした。,Unable to add Golden Gemstones.
 1,41074,ERROR_CODE_GP_INSERTGP_LIMIT_OVER,"黄金石が上限を超えてしまう為、
-追加できませんでした。",
+追加できませんでした。",Unable to add Golden Gemstones because you have reached the maximum amount.
 1,30019,ERROR_CODE_ENTRY_BOARD_ITEM_LIST_REQUEST_OVER,"エントリーボードの検索が混雑しています。
-しばらくしてから、もう一度お試しください。",
+しばらくしてから、もう一度お試しください。",Entry board search requests are at maximum capacity. Please wait and try again.
 1,30020,ERROR_CODE_ENTRY_BOARD_ITEM_CREATE_OVER,"エントリーボードの作成が混雑しています。
-しばらくしてから、もう一度お試しください。",
-1,14021,ERROR_CODE_ITEM_INVALID_STORAGE_TYPE_EQUIP,保管ボックスに装備品を送れませんでした。,
-1,28003,ERROR_CODE_BAZAAR_EXHIBIT_ITEM_STACK_OVER,出品数の制限中です。詳しくはお知らせをご覧ください。,
+しばらくしてから、もう一度お試しください。",Entry board rooms are at maximum capacity. Please wait and try again.
+1,14021,ERROR_CODE_ITEM_INVALID_STORAGE_TYPE_EQUIP,保管ボックスに装備品を送れませんでした。,Unable to send equipment to storage box.
+1,28003,ERROR_CODE_BAZAAR_EXHIBIT_ITEM_STACK_OVER,出品数の制限中です。詳しくはお知らせをご覧ください。,Submissions are currently restricted. For more information please check announcements.
 1,30021,ERROR_CODE_ENTRY_BOARD_ITEM_SEARCH_ZERO,"エントリーボードの検索結果は０件でした。
 
 フレンドリストやクランメンバーで
 検索できない場合は、キャラクター名による
-検索（完全一致）をお試しください。",
-1,11027,ERROR_CODE_PAWN_CANNOT_REVIVE,すでにロストしているポーンです。,
+検索（完全一致）をお試しください。","Found 0 entry boards matching that criteria. If you can not search via friend list or clan member list, Try searching by character name (Case sensitive)."
+1,11027,ERROR_CODE_PAWN_CANNOT_REVIVE,すでにロストしているポーンです。,Pawn is already lost.
 1,16015,ERROR_CODE_INSTANCE_AREA_GATHERING_ITEM_SHORT_INTERVAL,"直前のアイテムの取得中です。
-しばらくしてから、もう一度お試しください。",
+しばらくしてから、もう一度お試しください。",Still gathering previous item. Please wait and try again.
 1,1000,ERROR_CODE_DB_DUPLICATE_ENTRY,通信エラーが発生しました。,A communication error has occurred.
 1,1001,ERROR_CODE_DB_DEAD_LOCK,通信エラーが発生しました。,A communication error has occurred.
-1,25011,ERROR_CODE_AREAMASTER_STOP_SUPPLY_DISCARD,エリアマスターの支援品は捨てられません。,
+1,25011,ERROR_CODE_AREAMASTER_STOP_SUPPLY_DISCARD,エリアマスターの支援品は捨てられません。,Can not discard area master supplies.
 1,41075,ERROR_CODE_GP_GP_COURCE_NOT_AVAILABLE,通信エラーが発生しました。,A communication error has occurred.
 1,53000,ERROR_CODE_NET_CAFE_SET_LOGIN_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,53001,ERROR_CODE_NET_CAFE_SET_LOGOUT_FAILED,通信エラーが発生しました。,A communication error has occurred.
@@ -748,37 +749,37 @@ CAPの取得を再試行します。",
 1,53004,ERROR_CODE_NET_CAFE_REQ_SEND_MAIL_FAILED,通信エラーが発生しました。,A communication error has occurred.
 1,54000,ERROR_CODE_DISPEL_BASE_NOT_MATCH,通信エラーが発生しました。,A communication error has occurred.
 1,54001,ERROR_CODE_DISPEL_BASE_NUM_MATCH,通信エラーが発生しました。,A communication error has occurred.
-1,54002,ERROR_CODE_DISPEL_LACK_MONEY,所持金が不足しています。,
+1,54002,ERROR_CODE_DISPEL_LACK_MONEY,所持金が不足しています。,Insufficient funds.
 1,28004,ERROR_CODE_BAZAAR_BUY_NUM_LIMIT,"バザーで一定時間内に購入できる回数を超えました。
-しばらくたってから、再度お試しください。",
+しばらくたってから、再度お試しください。",Already reached limit of purchases on ther server at the moment. Please try again later.
 1,28005,ERROR_CODE_BAZAAR_BUY_PRICE_LIMIT,"バザーで一定時間内に購入できる価格を超えました。
-しばらくたってから、再度お試しください。 ",
+しばらくたってから、再度お試しください。 ",Already reached limit for gold spent on the server at the moment. Please try again later.
 1,13006,ERROR_CODE_CYCLE_CONTENTS_PLAY_START_INVALID_SITUATION_LEVEL,"参加している戦況の配信が終了しました。
 現在のパーティーを解散して
-配信中の戦況にエントリーしてください。",
+配信中の戦況にエントリーしてください。",War mission period has ended. Please disband current party and re-enter current war mission.
 1,12044,ERROR_CODE_QUEST_SCRIPT_RESULT_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,12045,ERROR_CODE_QUEST_SEQUENCE_NOT_MATCH,通信エラーが発生しました。,A communication error has occurred.
 1,6010,ERROR_CODE_AUTH_INVALID_IP_ADDRESS,通信エラーが発生しました。,A communication error has occurred.
 1,18025,ERROR_CODE_CRAFT_COLOR_RAGULETE_ITEM,通信エラーが発生しました。,A communication error has occurred.
 1,41076,ERROR_CODE_GP_EFFECT_BUY_MAX,通信エラーが発生しました。,A communication error has occurred.
 1,14022,ERROR_CODE_ITEM_CANNOT_LOAD_STORAGE,"有効期限が切れているため、
-保管ボックスからアイテムを取り出せませんでした。",
-1,40019,ERROR_CODE_CLAN_INTERVAL,インターバル期間のためできません。,
+保管ボックスからアイテムを取り出せませんでした。",Item has expired so unable to retrieve from storage box.
+1,40019,ERROR_CODE_CLAN_INTERVAL,インターバル期間のためできません。,Unable because it is currently an interval.
 1,30022,ERROR_CODE_ENTRY_BOARD_RECREATE_ENTRY,"参加条件を満たしていないため
-再エントリーに失敗しました。",
-1,9012,ERROR_CODE_MATCHING_PLAY_START_ERROR,コンテンツの出撃に失敗しました。,
+再エントリーに失敗しました。",Entry requirements are not met so re-entry has failed.
+1,9012,ERROR_CODE_MATCHING_PLAY_START_ERROR,コンテンツの出撃に失敗しました。,Failed to start content.
 1,25012,ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE,"シーズン1.3で支援品の内容が変更されます。
 変更前の支援品を受け取る場合は、
-支援品の受け取りをもう一度実行してください。",
+支援品の受け取りをもう一度実行してください。",Supplies have been changed in season 1.3. If you are recieving items from before the change please try to retrieve items again.
 1,9013,ERROR_CODE_MATCHING_PLAY_ENTRY_IS_NOT_READY,"準備完了できなかったメンバーがいるため
-コンテンツの出撃に失敗しました。 ",
+コンテンツの出撃に失敗しました。 ",Unable to start content because there is a member that is not ready.
 1,18028,ERROR_CODE_CRAFT_SKILL_RESET_ZERO_POINT,"クラフトポイントが割り振られていないため
-リセットできません。",
+リセットできません。",Can not reset because there are unspent clan points.
 1,14023,ERROR_CODE_ITEM_ALREADY_HAVING,通信エラーが発生しました。,A communication error has occurred.
 1,14024,ERROR_CODE_ITEM_NO_SELL_STORAGE,通信エラーが発生しました。,A communication error has occurred.
 1,14025,ERROR_CODE_ITEM_EQUIP_JEWELRY_NUM_OVER,"プリセット適用に失敗しました。
 装備しているジュエリーをはずして
-保管ボックスに格納してください。",
+保管ボックスに格納してください。",Couldn't apply the Present. Please unequip all jewelry and place in the Storage Box.
 1,15023,ERROR_CODE_CHARACTER_OFFLINE,通信エラーが発生しました。,A communication error has occurred.
 1,16016,ERROR_CODE_INSTANCE_AREA_ENEMY_NOT_CREATED,通信エラーが発生しました。,A communication error has occurred.
 1,16017,ERROR_CODE_INSTANCE_AREA_ENEMY_UNIT_DATA_NONE,通信エラーが発生しました。,A communication error has occurred.
@@ -787,11 +788,11 @@ CAPの取得を再試行します。",
 1,18027,ERROR_CODE_CRAFT_SAME_ITEM_AT_WORK,通信エラーが発生しました。,A communication error has occurred.
 1,29008,ERROR_CODE_ORB_DEVOTE_NOT_OPEN_ORB_TREE,通信エラーが発生しました。,A communication error has occurred.
 1,40020,ERROR_CODE_CLAN_NOT_LOADED,通信エラーが発生しました。,A communication error has occurred.
-1,40021,ERROR_CODE_CLAN_NOT_PERMISSION,権限がありません。,
+1,40021,ERROR_CODE_CLAN_NOT_PERMISSION,権限がありません。,You have no authority.
 1,40022,ERROR_CODE_CLAN_NOT_INVITE_JOIN_REQUEST,通信エラーが発生しました。,A communication error has occurred.
 1,40023,ERROR_CODE_CLAN_NOT_INVITE_ACCEPT_JOIN_REQUEST,通信エラーが発生しました。,A communication error has occurred.
 1,41077,ERROR_CODE_GP_GP_COURSE_LINEUP_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
-1,41078,ERROR_CODE_GP_CHARACTER_CREATED_TIME_OVER,購入可能な期間を過ぎています。,
+1,41078,ERROR_CODE_GP_CHARACTER_CREATED_TIME_OVER,購入可能な期間を過ぎています。,Purchasing period has expired.
 1,42036,ERROR_CODE_CONTENTS_RELEASE_NOT_JOB_ORB_TREE_SHIELD_SAGE,通信エラーが発生しました。,A communication error has occurred.
 1,42037,ERROR_CODE_CONTENTS_RELEASE_NOT_JOB_ORB_TREE_SEEKER,通信エラーが発生しました。,A communication error has occurred.
 1,42038,ERROR_CODE_CONTENTS_RELEASE_NOT_JOB_ORB_TREE_SORCERER,通信エラーが発生しました。,A communication error has occurred.
@@ -850,7 +851,7 @@ CAPの取得を再試行します。",
 1,56005,ERROR_CODE_MY_ROOM_NOT_PRESENT_ITEM,通信エラーが発生しました。,A communication error has occurred.
 1,56006,ERROR_CODE_MY_ROOM_NOT_PRESENT_ITEM_NUM,通信エラーが発生しました。,A communication error has occurred.
 1,56007,ERROR_CODE_MY_ROOM_LOST_PAWN_NOT_PARTNER,"ロスト中のポーンは
-パートナーには設定できません。",
+パートナーには設定できません。",A lost Pawn is not able to be established as a Partner 
 1,57000,ERROR_CODE_TREE_RELEASE_INVALID_ELEMENT_ID,通信エラーが発生しました。,A communication error has occurred.
 1,57001,ERROR_CODE_TREE_RELEASE_REQUIREMENT_LACK,通信エラーが発生しました。,A communication error has occurred.
 1,57002,ERROR_CODE_TREE_RELEASE_COST_LACK,通信エラーが発生しました。,A communication error has occurred.
@@ -859,54 +860,54 @@ CAPの取得を再試行します。",
 1,57005,ERROR_CODE_TREE_RELEASE_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,57006,ERROR_CODE_TREE_RELEASE_NOT_OPEN_TREE,通信エラーが発生しました。,A communication error has occurred.
 1,40024,ERROR_CODE_CLAN_NOT_MASTER_AUTO_CHANGE,"前回ログイン日から時間がたっているため
-マスター権限を委譲できません。",
+マスター権限を委譲できません。","Since it's been awhile since last login date, The Master Authourity could not be transferred."
 1,11028,ERROR_CODE_PAWN_CANNOT_DELETE_PARTNER,通信エラーが発生しました。,A communication error has occurred.
 1,14026,ERROR_CODE_ITEM_BAG_CAPACITY_OVER,通信エラーが発生しました。,A communication error has occurred.
 1,14027,ERROR_CODE_ITEM_STORAGE_CAPACITY_OVER,通信エラーが発生しました。,A communication error has occurred.
 1,14028,ERROR_CODE_ITEM_POST_CAPACITY_OVER,通信エラーが発生しました。,A communication error has occurred.
 1,14029,ERROR_CODE_ITEM_CAPACITY_OVER,通信エラーが発生しました。,A communication error has occurred.
 1,18029,ERROR_CODE_CRAFT_TIME_SAVE_NO_REMAIN_TIME,"まもなくアイテムの作成が完了するため
-黄金石は使用できません。",
+黄金石は使用できません。","Your made item will be done shortly, Golden Gemstones are not necessary."
 1,18030,ERROR_CODE_CRAFT_TIME_SAVE_COST_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,2003,ERROR_CODE_SYSTEM_MASTERDATA_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,42046,ERROR_CODE_CONTENTS_RELEASE_NOT_HIGH_LEVEL_JOB_ORDER_FOR_JOB_10,通信エラーが発生しました。,A communication error has occurred.
 1,42047,ERROR_CODE_CONTENTS_RELEASE_NOT_JOB_ORB_TREE_JOB_10,通信エラーが発生しました。,A communication error has occurred.
 1,58000,ERROR_CODE_BOX_GACHA_NOT_EXIST_ID,"トレジャーズロットの開催が終了しているため
-ロットすることができません。",
+ロットすることができません。","The Treasure Lot has ended, as the lot has ended too."
 1,58001,ERROR_CODE_BOX_GACHA_CLOSED,"トレジャーズロットの開催が終了しているため
-ロットすることができません。",
+ロットすることができません。","The Treasure Lot has ended, as the lot has ended too."
 1,58002,ERROR_CODE_BOX_GACHA_MORE_CAN_NOT_DRAW,"指定のプレイ回数では
 ロットすることができません。
 
 （残りのアイテム数が少ない、もしくは
 対象ロットに特殊条件がある等の
 可能性があります）
-",
+","The lot cannot be played after a designated amount of times (Could be the amount of Remnents remaining is too low, otherwise The target Lot potentially has special conditions to be met)"
 1,12046,ERROR_CODE_QUEST_CANT_MAIN_QUEST_JUMP,通信エラーが発生しました。,A communication error has occurred.
 1,38001,ERROR_CODE_STAMP_BONUS_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,38002,ERROR_CODE_STAMP_BONUS_GET_ITEM,"アイテムポストに空きがないため、
-ログインボーナスを受け取れませんでした。",
+ログインボーナスを受け取れませんでした。","The Item Box has no empty spaces, the login bonus was not accepted."
 1,12047,ERROR_CODE_QUEST_DUMMY_COMMAND_NOT_PROGRESS,"クエストの進行に失敗しました。
 ゲームに再度ログインし直してください。
-",
+",The quest progress has failed. Please login to game again.
 1,12048,ERROR_CODE_QUEST_SET_BAN_ABILITIES,"以下のアビリティを装着中は出撃できません。
 
 　新攻　新防
 　月攻　月防
-　雨攻　雨防",
+　雨攻　雨防","Cannot execute an Assault with these following abilities: New Moon Call, New Moon Cover; Heavy Rain, Umbrella; Full Moon Strength, Full Moon Cover."
 1,12049,ERROR_CODE_QUEST_NOT_ENABLE_LIGHT_QUEST_GP,"現在は黄金石を使用して
-ボードクエストをクリアできません。",
+ボードクエストをクリアできません。",Golden Gemstones cannot currently be used to clear the Quest Board.
 1,18033,ERROR_CODE_CRAFT_CREATE_FINISHED,"アイテムの作成が完了しているため
-クラフトを中止できません。",
+クラフトを中止できません。",Item creation has been completed! Crafting can be stopped.
 1,59007,ERROR_CODE_PAWN_EXPEDITION_CANNOT_LEAVE_CLAN,"ポーン遠征隊に派遣中のためできません。
-ポーン遠征隊の報告を聞いてからお試しください。",
+ポーン遠征隊の報告を聞いてからお試しください。","Pawn Expedition is presently dispatched, Please look into the Pawn Expedition Report before trying again."
 1,16019,ERROR_CODE_INSTANCE_AREA_TRANING_ROOM_ENEMY_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,16020,ERROR_CODE_INSTANCE_AREA_CHARACTER_PARAM_NOT_FOUND,通信エラーが発生しました。,A communication error has occurred.
 1,16021,ERROR_CODE_INSTANCE_AREA_TREASURE_POINT_ALWAYS_DISCOVERED,通信エラーが発生しました。,A communication error has occurred.
 1,18031,ERROR_CODE_CRAFT_ELEMENT_SLOT_IS_LOCKED,通信エラーが発生しました。,A communication error has occurred.
 1,18032,ERROR_CODE_CRAFT_CREATE_COUNT,通信エラーが発生しました。,A communication error has occurred.
 1,34004,ERROR_CODE_GACHA_LIMIT,通信エラーが発生しました。,A communication error has occurred.
-1,41079,ERROR_CODE_GP_PERIOD_OVER,購入可能な期間を過ぎています。,
+1,41079,ERROR_CODE_GP_PERIOD_OVER,購入可能な期間を過ぎています。,Purchasing period has expired.
 1,42048,ERROR_CODE_CONTENTS_RELEASE_NOT_WORLD_QUEST_SINSYOKUMORI,通信エラーが発生しました。,A communication error has occurred.
 1,42049,ERROR_CODE_CONTENTS_RELEASE_NOT_WORLD_QUEST_KIREIMORI,通信エラーが発生しました。,A communication error has occurred.
 1,42050,ERROR_CODE_CONTENTS_RELEASE_NOT_WORLD_QUEST_HEIGEN,通信エラーが発生しました。,A communication error has occurred.
@@ -925,35 +926,35 @@ CAPの取得を再試行します。",
 1,60000,ERROR_CODE_JOB_VALUE_SHOP_INVALID_JOB,通信エラーが発生しました。,A communication error has occurred.
 1,60001,ERROR_CODE_JOB_VALUE_SHOP_INVALID_LINEUP_ID,通信エラーが発生しました。,A communication error has occurred.
 1,60002,ERROR_CODE_JOB_VALUE_SHOP_VALUE_LACK,通信エラーが発生しました。,A communication error has occurred.
-1,61000,ERROR_CODE_CLAN_SHOP_COST_LACK,クランポイントが足りないため購入できません。,
-1,61001,ERROR_CODE_CLAN_SHOP_ALREADY_BOUGHT,既に購入済みのため購入できません。,
+1,61000,ERROR_CODE_CLAN_SHOP_COST_LACK,クランポイントが足りないため購入できません。,Insufficient Clan Points
+1,61001,ERROR_CODE_CLAN_SHOP_ALREADY_BOUGHT,既に購入済みのため購入できません。,You cannot purchase that because it was already bought.
 1,61002,ERROR_CODE_CLAN_SHOP_INVALID_LINEUP_ID,通信エラーが発生しました。,A communication error has occurred.
 1,61003,ERROR_CODE_CLAN_SHOP_INTERNAL_ERROR,通信エラーが発生しました。,A communication error has occurred.
-1,61004,ERROR_CODE_CLAN_SHOP_NOT_PERMISSION,クランポイントを使用する権限がありません。,
-1,54003,ERROR_CODE_DISPEL_FURNITURE_DOUBLE,既に取得済みのため交換できません。,
+1,61004,ERROR_CODE_CLAN_SHOP_NOT_PERMISSION,クランポイントを使用する権限がありません。,You don't have the authority to use Clan Points
+1,54003,ERROR_CODE_DISPEL_FURNITURE_DOUBLE,既に取得済みのため交換できません。,It cannont be exchanged because it was already acquired.
 1,59009,ERROR_CODE_PAWN_EXPEDITION_ALREADY_RECIEVE,通信エラーが発生しました。,A communication error has occurred.
-1,59010,ERROR_CODE_PAWN_EXPEDITION_NOT_SALLY,ポーン遠征隊を派遣していません。,
-1,18034,ERROR_CODE_CRAFT_CRAFT_BAGGAGE_EXTEND,冒険パスポートの効果が切れています。,
+1,59010,ERROR_CODE_PAWN_EXPEDITION_NOT_SALLY,ポーン遠征隊を派遣していません。,The Pawn Expedition is not dispatching yet.
+1,18034,ERROR_CODE_CRAFT_CRAFT_BAGGAGE_EXTEND,冒険パスポートの効果が切れています。,The Adventure Passport effects are expiring soon.
 1,30023,,"同じクランメンバーでないか、
-クランに加入していないため参加できません。",
+クランに加入していないため参加できません。",Must be a Member of the same Clan in order to participate.
 1,14030,,"売却不可のアイテムが含まれているため
-売却できません。",
+売却できません。",The selected item is unsellable.
 1,59011,,通信エラーが発生しました。,A communication error has occurred.
 1,12050,,"ポーンとの絆が足りないため
-お願いを聞く事ができません。",
+お願いを聞く事ができません。",The bond of you and the Pawn is not strong enough for them to grant that request.
 1,59012,,"現在、ポーン遠征隊の強化派遣はできません。
 ポーン遠征隊は既に派遣中です。
-黄金石は消費されません。",
+黄金石は消費されません。",A Pawn Expedition is a unable to execute because there is already a Pawn Expedition happening. You can't spend Golden Gemstones.
 1,14031,,"ここではアイテムポストから
-アイテムバッグにアイテムを移動できません。",
+アイテムバッグにアイテムを移動できません。",You cannot move that item into your bag because it's in your Mailbox
 1,16022,,通信エラーが発生しました。,A communication error has occurred.
 1,16023,,通信エラーが発生しました。,A communication error has occurred.
 1,16024,,通信エラーが発生しました。,A communication error has occurred.
-1,16025,,キャンセルできませんでした。,
+1,16025,,キャンセルできませんでした。,Canceling was not possible.
 1,16026,,"パーティーメンバーと入場状態が
-同期できていないため移動できませんでした。",
-1,22008,,購入可能な期間を過ぎています。,
-1,30024,,現在参加できません。,
+同期できていないため移動できませんでした。",You can't move because the entering party member hasn't synchronized yet.
+1,22008,,購入可能な期間を過ぎています。,The purchasing period has expired.
+1,30024,,現在参加できません。,There is nothing active to participate in.
 1,42053,,通信エラーが発生しました。,A communication error has occurred.
 1,42054,,通信エラーが発生しました。,A communication error has occurred.
 1,42055,,通信エラーが発生しました。,A communication error has occurred.
@@ -973,7 +974,7 @@ CAPの取得を再試行します。",
 1,62004,,通信エラーが発生しました。,A communication error has occurred.
 1,62005,,通信エラーが発生しました。,A communication error has occurred.
 1,62006,,通信エラーが発生しました。,A communication error has occurred.
-1,62007,,現在イベント開催中ではありません。,
+1,62007,,現在イベント開催中ではありません。,There are no events happening at the moment.
 1,62008,,通信エラーが発生しました。,A communication error has occurred.
 1,62009,,通信エラーが発生しました。,A communication error has occurred.
 1,63000,,通信エラーが発生しました。,A communication error has occurred.
@@ -986,7 +987,7 @@ CAPの取得を再試行します。",
 1,64005,,通信エラーが発生しました。,A communication error has occurred.
 1,64006,,通信エラーが発生しました。,A communication error has occurred.
 1,64007,,通信エラーが発生しました。,A communication error has occurred.
-1,64008,,この名前は使用できません。,
+1,64008,,この名前は使用できません。,This name is not available.
 1,64009,,通信エラーが発生しました。,A communication error has occurred.
 1,64010,,通信エラーが発生しました。,A communication error has occurred.
 1,64011,,通信エラーが発生しました。,A communication error has occurred.
@@ -994,7 +995,7 @@ CAPの取得を再試行します。",
 1,64013,,通信エラーが発生しました。,A communication error has occurred.
 1,64014,,通信エラーが発生しました。,A communication error has occurred.
 1,64015,,"まもなくアイテムの作成が完了するため
-黄金石は使用できません。 ",
+黄金石は使用できません。 ",The effect is expiring because the choosen Treasure Lockbox will not be available.
 1,64016,,通信エラーが発生しました。,A communication error has occurred.
 1,64017,,通信エラーが発生しました。,A communication error has occurred.
 1,64018,,通信エラーが発生しました。,A communication error has occurred.
@@ -1034,39 +1035,39 @@ CAPの取得を再試行します。",
 1,68000,,通信エラーが発生しました。,A communication error has occurred.
 1,68001,,通信エラーが発生しました。,A communication error has occurred.
 1,34005,,"効能が切れているため、
-対象のトレジャーズロットはご利用になれません。",
+対象のトレジャーズロットはご利用になれません。",The effect is almost expiring because the choosen Treasure Lot will not be available.
 1,58005,,"効能が切れているため、
-対象のトレジャーズロットはご利用になれません。",
+対象のトレジャーズロットはご利用になれません。",The effect is almost expiring because the choosen Treasure Lot will not be available.
 1,48014,,"購入情報の更新処理に失敗しました。
 しばらくしてからDLCステーションを
-更新してください。",
+更新してください。",Updating Purchase Information has failed. Please reload the DLC station and try again in a little bit.
 1,48015,,"購入情報の更新処理に失敗しました。
 しばらくしてからDLCステーションを
-更新してください。",
+更新してください。",Updating Purchase Information has failed. Please reload the DLC station and try again in a little bit.
 1,48016,,"購入情報の更新処理に失敗しました。
 しばらくしてからDLCステーションを
-更新してください。",
+更新してください。",Updating Purchase Information has failed. Please reload the DLC station and try again in a little bit.
 1,48017,,"購入情報の更新処理に失敗しました。
 しばらくしてからDLCステーションを
-更新してください。",
+更新してください。",Updating Purchase Information has failed. Please reload the DLC station and try again in a little bit.
 1,48018,,"購入情報の更新処理に失敗しました。
 しばらくしてからDLCステーションを
-更新してください。",
+更新してください。",Updating Purchase Information has failed. Please reload the DLC station and try again in a little bit.
 1,48019,,"購入情報の更新処理に失敗しました。
 しばらくしてからDLCステーションを
-更新してください。",
+更新してください。",Updating Purchase Information has failed. Please reload the DLC station and try again in a little bit.
 1,48020,,"PlayStation™Networkが
 メンテナンス中のため
 購入情報を更新できませんでした。
 メンテナンス情報をご確認ください。
-",
+","Playstation™ Network is currently under maintenance, please check the Maintenance Information; The purchase information could not be processed."
 1,48021,,"購入情報の更新処理に失敗しました。
 しばらくしてからDLCステーションを
-更新してください。",
+更新してください。",Processing Purchase Information has failed. Please reload the DLC station and try again in a little bit.
 1,48022,,"購入情報の更新処理に失敗しました。
 しばらくしてからDLCステーションを
 更新してください。
-",
+",Processing Purchase Information has failed. Please reload the DLC station and try again in a little bit.
 1,42064,,通信エラーが発生しました。,A communication error has occurred.
 1,42065,,通信エラーが発生しました。,A communication error has occurred.
 1,57007,,通信エラーが発生しました。,A communication error has occurred.
@@ -1077,13 +1078,13 @@ CAPの取得を再試行します。",
 1,64021,,通信エラーが発生しました。,A communication error has occurred.
 1,64022,,通信エラーが発生しました。,A communication error has occurred.
 1,65005,,"パーティー内で試練の起動状態が
-同期できていないため実行できませんでした。",
-1,67009,,黄金石が足りないため購入できません。,
+同期できていないため実行できませんでした。",You cannot execute this trail because the Party within already started it.
+1,67009,,黄金石が足りないため購入できません。,Insufficient amount of Golden Gemstones.
 1,64023,,通信エラーが発生しました。,A communication error has occurred.
 1,64024,,通信エラーが発生しました。,A communication error has occurred.
-1,64025,,冒険パスポートの効果が切れています。,
+1,64025,,冒険パスポートの効果が切れています。,Your Adventure Passport is expiring soon!
 1,65006,,"パーティー内で試練の起動状態が
-同期できていないため実行できませんでした。 ",
+同期できていないため実行できませんでした。 ",You cannot execute this trail because the Party within already started it.
 1,65007,,通信エラーが発生しました。,A communication error has occurred.
 1,69000,,通信エラーが発生しました。,A communication error has occurred.
 1,69001,,通信エラーが発生しました。,A communication error has occurred.
@@ -1102,7 +1103,7 @@ CAPの取得を再試行します。",
 
 魔界村アーサー装備
 魔界村プリンセス装備
-魔界村アンダーウェア",
+魔界村アンダーウェア","You cannot perform a tactical assault because of the equipment you have equipped currently:  Ghost n' Goblins Arthur Equipment, Ghost n' Goblins Princess Equipment, Ghost n' Goblin Underwear"
 1,15024,,通信エラーが発生しました。,A communication error has occurred.
 1,15025,,通信エラーが発生しました。,A communication error has occurred.
 1,18035,,通信エラーが発生しました。,A communication error has occurred.
@@ -1114,21 +1115,21 @@ CAPの取得を再試行します。",
 1,63002,,通信エラーが発生しました。,A communication error has occurred.
 1,64026,,通信エラーが発生しました。,A communication error has occurred.
 1,64027,,"黄金石の期限が切れているため
-処理が出来ませんでした。 ",
+処理が出来ませんでした。 ",Golden Gemstones are past expiry and cannot be processed.
 1,67010,,通信エラーが発生しました。,A communication error has occurred.
 1,68002,,通信エラーが発生しました。,A communication error has occurred.
-1,70005,,黄金石が足りないため購入できません。,
+1,70005,,黄金石が足りないため購入できません。,Insufficient amount of Golden Gemstones.
 1,70006,,"分解の残り回数を
-リセットする必要がありません。",
+リセットする必要がありません。",There is no need to reset your remaining Daily Remnents for disassemblies.
 1,70007,,"まもなくリセット回数がチャージされるため
-黄金石は使用できません。",
+黄金石は使用できません。",The number of resets need to be recharged. Gold Gemstones cannot be used.
 1,71000,,通信エラーが発生しました。,A communication error has occurred.
 1,71001,,通信エラーが発生しました。,A communication error has occurred.
-1,44006,,イベントコードの有効期限外のため使用できません。,
-1,12055,,現在、ミッションの配信期間外です。,
-1,54005,,規定の交換回数に達したため交換できません。,
-1,16027,,すべてのアイテムを受け取ってください。,
-1,62010,,納品の受付期間外です。,
+1,44006,,イベントコードの有効期限外のため使用できません。,The Event Code has expired and unusable. 
+1,12055,,現在、ミッションの配信期間外です。,The Missions delivery time period has past.
+1,54005,,規定の交換回数に達したため交換できません。,The exchange cannot be processed because the max amount of exchanges has been reached.
+1,16027,,すべてのアイテムを受け取ってください。,All of the items are ready to be recieved.
+1,62010,,納品の受付期間外です。,The time period of the delivery goods from the information desk have expired.
 1,54006,,通信エラーが発生しました。,A communication error has occurred.
 1,54007,,通信エラーが発生しました。,A communication error has occurred.
 1,11029,,通信エラーが発生しました。,A communication error has occurred.
@@ -1137,7 +1138,7 @@ CAPの取得を再試行します。",
 1,11032,,通信エラーが発生しました。,A communication error has occurred.
 1,12056,,通信エラーが発生しました。,A communication error has occurred.
 1,14032,,"セーフティ設定中のアイテムが
-含まれているためできません。",
+含まれているためできません。",That action cannot be done with this item because of a safety setting.
 1,15026,,通信エラーが発生しました。,A communication error has occurred.
 1,15027,,通信エラーが発生しました。,A communication error has occurred.
 1,15028,,通信エラーが発生しました。,A communication error has occurred.
@@ -1157,14 +1158,14 @@ CAPの取得を再試行します。",
 1,73003,,通信エラーが発生しました。,A communication error has occurred.
 1,73004,,通信エラーが発生しました。,A communication error has occurred.
 1,65008,,通信エラーが発生しました。,A communication error has occurred.
-1,8051,,現在このプレイヤーは誘えません。,
+1,8051,,現在このプレイヤーは誘えません。,This Player cannot be invited currently.
 1,42066,,通信エラーが発生しました。,A communication error has occurred.
 1,73005,,通信エラーが発生しました。,A communication error has occurred.
 1,73006,,通信エラーが発生しました。,A communication error has occurred.
 1,73007,,通信エラーが発生しました。,A communication error has occurred.
 1,73008,,通信エラーが発生しました。,A communication error has occurred.
 1,73009,,通信エラーが発生しました。,A communication error has occurred.
-1,73010,,現在このコンテンツはプレイできません。,
+1,73010,,現在このコンテンツはプレイできません。,This content is currently not playable.
 1,74000,,通信エラーが発生しました。,A communication error has occurred.
 1,74001,,通信エラーが発生しました。,A communication error has occurred.
 1,74002,,通信エラーが発生しました。,A communication error has occurred.
@@ -1180,23 +1181,23 @@ CAPの取得を再試行します。",
 1,75003,,通信エラーが発生しました。,A communication error has occurred.
 1,75004,,通信エラーが発生しました。,A communication error has occurred.
 1,76000,,通信エラーが発生しました。,A communication error has occurred.
-1,77000,,このジョブでは使用できません。,
+1,77000,,このジョブでは使用できません。,Unavailable for this job.
 1,54008,,"通信に失敗しました。
-しばらくしてから、もう一度お試しください。 ",
+しばらくしてから、もう一度お試しください。 ",Communication has failed. Please try again later.
 1,65009,,"この区画は大開拓が行われていないため
-試練が解放できません。",
+試練が解放できません。",You have yet to clear this area! The trials cannot release you.
 1,72008,,通信エラーが発生しました。,A communication error has occurred.
 1,73011,,"パーティーメンバー全員が
-拠点にいないためできません。",
-1,12057,,クエストを破棄できませんでした。,
-1,14033,,アイテムの更新情報がありません。,
+拠点にいないためできません。",All the Party members are not at the location!
+1,12057,,クエストを破棄できませんでした。,This quest cannot be cancelled.
+1,14033,,アイテムの更新情報がありません。,The item was not updated.
 1,62011,,"報酬受け取り期間ではないので
-受け取れません。",
+受け取れません。",This reward isn't ready to be recieved.
 1,14034,,"初期装備品以外を装備しているため
-ジョブチェンジに失敗しました。",
-1,65010,,パーティーリーダーが不在のためできません。,
+ジョブチェンジに失敗しました。",You are not equipped with the starting equipment for that job! JOB CHANGE FAILED
+1,65010,,パーティーリーダーが不在のためできません。,Cannot be done without the Party Leader!
 1,59013,,"ポーン遠征隊に派遣中のためできません。
-派遣後、30日以上経過すると除名できます。",
+派遣後、30日以上経過すると除名できます。",They are currently dispatched on a Pawn Exipedition; After 30 days they can be removed.
 1,18036,,通信エラーが発生しました。,A communication error has occurred.
 1,18037,,通信エラーが発生しました。,A communication error has occurred.
 1,18038,,通信エラーが発生しました。,A communication error has occurred.

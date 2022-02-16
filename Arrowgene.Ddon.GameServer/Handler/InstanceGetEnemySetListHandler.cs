@@ -22,7 +22,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
         {
-            // Hidell plains seems to be stageID 1, layerNo 0, and then every spawn is a different groupID
             StageId stageId = StageId.FromStageLayoutId(request.Structure.LayoutId);
             byte subGroupId = request.Structure.SubGroupId;
             client.Stage = stageId;

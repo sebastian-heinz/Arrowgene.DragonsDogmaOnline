@@ -335,6 +335,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_LOBBY_LOBBY_CHAT_MSG_REQ = new PacketId(3, 2, 1, "C2S_LOBBY_LOBBY_CHAT_MSG_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_LOBBY_LOBBY_CHAT_MSG_RES = new PacketId(3, 2, 2, "S2C_LOBBY_LOBBY_CHAT_MSG_RES", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_LOBBY_LOBBY_CHAT_MSG_NTC = new PacketId(3, 2, 16, "S2C_LOBBY_LOBBY_CHAT_MSG_NTC", ServerType.Game, PacketSource.Server, "S2C_LOBBY_3_2_16_NTC");
+        public static readonly PacketId C2S_LOBBY_3_3_16_NTC = new PacketId(3, 3, 16, "C2S_LOBBY_3_3_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_LOBBY_3_4_16_NTC = new PacketId(3, 4, 16, "S2C_LOBBY_3_4_16_NTC", ServerType.Game, PacketSource.Server);
 
 // Group: 4 - (CHAT)

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Linq;
 using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
@@ -22,15 +24,45 @@ namespace Arrowgene.Ddon.Shared
             }
 
             ClientErrorCodes = new List<ClientErrorCode>();
+            _localEnemySpawns = new List<EnemySpawn>();
+            _spreadsheetEnemySpawns = new List<EnemySpawn>();
         }
-        
-        public List<ClientErrorCode> ClientErrorCodes { get; }
 
+        public List<ClientErrorCode> ClientErrorCodes { get; }
+        public List<EnemySpawn> EnemySpawns
+        {
+            get { return new List<EnemySpawn>(_localEnemySpawns.Concat(_spreadsheetEnemySpawns)); }
+        }
+
+        private List<EnemySpawn> _localEnemySpawns;
+        private List<EnemySpawn> _spreadsheetEnemySpawns;
 
         public void Initialize()
         {
             ClientErrorCodes.Clear();
             Load(ClientErrorCodes, "ClientErrorCodes.csv", new ClientErrorCodeCsvReader());
+            Load(_localEnemySpawns, "EnemySpawn.csv", new EnemySpawnCsvReader());
+            LoadSpreadsheet(_spreadsheetEnemySpawns, "1KmwWymqdMGtbRUqu9GvSi_97o-rBj5DJVn2hk7tvs-A", new EnemySpawnCsvReader());
+
+            // Listen for changes in the enemy csv file and update the spawns
+            FileSystemWatcher watcher = new FileSystemWatcher(_directory.FullName, "EnemySpawn.csv");
+            watcher.Changed += (object sender, FileSystemEventArgs e) => 
+            {
+                _localEnemySpawns = new List<EnemySpawn>();
+                Load(_localEnemySpawns, e.FullPath, new EnemySpawnCsvReader());
+            };
+
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void LoadSpreadsheet<T>(List<T> list, string key, CsvReader<T> reader)
+        {
+            // TODO temporary test google doc csv
+            return;
+            string url = $"https://docs.google.com/spreadsheets/d/{key}/export?format=csv";
+            using var client = new WebClient();
+            string csv = client.DownloadString(url);
+            list.AddRange(reader.ReadString(csv));
         }
 
         private void Load<T>(List<T> list, string fileName, CsvReader<T> reader)
@@ -42,7 +74,7 @@ namespace Arrowgene.Ddon.Shared
                 Logger.Error($"Could not load '{fileName}', file does not exist");
             }
 
-            list.AddRange(reader.Read(file.FullName));
+            list.AddRange(reader.ReadPath(file.FullName));
         }
 
         private void Load<T>(Dictionary<int, T> dictionary, string fileName, CsvReader<T> reader)
