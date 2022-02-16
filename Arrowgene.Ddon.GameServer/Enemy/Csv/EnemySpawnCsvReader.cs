@@ -15,8 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy.Csv
             if (!byte.TryParse(properties[1], out byte layerNo)) return null;
             if (!uint.TryParse(properties[2], out uint groupId)) return null;
             if (!byte.TryParse(properties[3], out byte subGroupId)) return null;
-            if (!uint.TryParse(properties[4], out uint positionIndex)) return null;
-            if (!uint.TryParse(properties[5].Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint enemyId)) return null;
+            if (!uint.TryParse(properties[4].Substring(2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uint enemyId)) return null;
             
             EnemySpawn enemySpawn = new EnemySpawn();
             enemySpawn.StageId = new StageId(stageId, layerNo, groupId);
