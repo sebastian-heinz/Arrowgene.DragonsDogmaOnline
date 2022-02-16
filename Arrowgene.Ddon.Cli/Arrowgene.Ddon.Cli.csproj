@@ -10,6 +10,7 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
     </PropertyGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.LoginServer\Arrowgene.Ddon.LoginServer.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Rpc.Web\Arrowgene.Ddon.Rpc.Web.csproj" />
