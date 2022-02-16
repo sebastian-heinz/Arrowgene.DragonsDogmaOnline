@@ -13,6 +13,9 @@ namespace Arrowgene.Ddon.Shared
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
         private readonly DirectoryInfo _directory;
+        private List<EnemySpawn> _localEnemySpawns;
+        private List<EnemySpawn> _spreadsheetEnemySpawns;
+        private EnemySpawnCsvReader _enemySpawnCsvReader;
 
         public AssetRepository(string folder)
         {
@@ -26,6 +29,9 @@ namespace Arrowgene.Ddon.Shared
             ClientErrorCodes = new List<ClientErrorCode>();
             _localEnemySpawns = new List<EnemySpawn>();
             _spreadsheetEnemySpawns = new List<EnemySpawn>();
+
+            _enemySpawnCsvReader = new EnemySpawnCsvReader();
+            _enemySpawnCsvReader.EnforceCRLF = false;
         }
 
         public List<ClientErrorCode> ClientErrorCodes { get; }
@@ -34,22 +40,21 @@ namespace Arrowgene.Ddon.Shared
             get { return new List<EnemySpawn>(_localEnemySpawns.Concat(_spreadsheetEnemySpawns)); }
         }
 
-        private List<EnemySpawn> _localEnemySpawns;
-        private List<EnemySpawn> _spreadsheetEnemySpawns;
-
         public void Initialize()
         {
             ClientErrorCodes.Clear();
             Load(ClientErrorCodes, "ClientErrorCodes.csv", new ClientErrorCodeCsvReader());
-            Load(_localEnemySpawns, "EnemySpawn.csv", new EnemySpawnCsvReader());
-            LoadSpreadsheet(_spreadsheetEnemySpawns, "1KmwWymqdMGtbRUqu9GvSi_97o-rBj5DJVn2hk7tvs-A", new EnemySpawnCsvReader());
+            Load(_localEnemySpawns, "EnemySpawn.csv", _enemySpawnCsvReader);
+            LoadSpreadsheet(_spreadsheetEnemySpawns, "1KmwWymqdMGtbRUqu9GvSi_97o-rBj5DJVn2hk7tvs-A", _enemySpawnCsvReader);
 
             // Listen for changes in the enemy csv file and update the spawns
             FileSystemWatcher watcher = new FileSystemWatcher(_directory.FullName, "EnemySpawn.csv");
+            watcher.NotifyFilter = NotifyFilters.LastWrite;
             watcher.Changed += (object sender, FileSystemEventArgs e) => 
             {
+                Logger.Debug($"Reloading enemy sets from {e.FullPath}");
                 _localEnemySpawns = new List<EnemySpawn>();
-                Load(_localEnemySpawns, e.FullPath, new EnemySpawnCsvReader());
+                Load(_localEnemySpawns, e.FullPath, _enemySpawnCsvReader);
             };
 
             watcher.EnableRaisingEvents = true;
