@@ -1,0 +1,2 @@
+StageId,LayerNo,GroupId,SubGroupId,EnemyId,NamedEnemyParamsId,RaidBossId,Scale,Lv,HmPresetNo,StartThinkTblNo,RepopNum,RepopCount,EnemyTargetTypesId,MontageFixNo,SetType,InfectionType,IsBossGauge,IsBossBGM,IsManualSet,IsAreaBoss,IsBloodEnemy,Unk0
+1,0,0,0,0x010100,0x8FA,0,100,10,0,0,0,0,1,0,0,0,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE

@@ -1,8 +1,7 @@
 ﻿using System;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 
-namespace Arrowgene.Ddon.GameServer.Enemy
+namespace Arrowgene.Ddon.Shared.Model
 {
     public class EnemySpawn
     {

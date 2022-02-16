@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -9,8 +10,13 @@ namespace Arrowgene.Ddon.GameServer.Enemy
     {
         private readonly Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>> _spawns;
 
-        public EnemyManager()
+        private readonly AssetRepository _assetRepository;
+        private readonly IDatabase _database;
+
+        public EnemyManager(AssetRepository assetRepository, IDatabase database)
         {
+            _assetRepository = assetRepository;
+            _database = database;
             _spawns = new Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>>();
         }
 
@@ -21,15 +27,6 @@ namespace Arrowgene.Ddon.GameServer.Enemy
 
         public List<EnemySpawn> GetSpawns(StageId stageId, byte subGroupId)
         {
-            // TODO populate _spawns
-            EnemySpawn es = new EnemySpawn();
-            es.Enemy.EnemyId = 0x010100;
-            es.Enemy.NamedEnemyParamsId = 0x8FA;
-            es.Enemy.Scale = 100;
-            es.Enemy.Lv = 66;
-            es.Enemy.EnemyTargetTypesId = 1;
-            return new List<EnemySpawn> {es};
-
             if (!_spawns.ContainsKey(stageId))
             {
                 return new List<EnemySpawn>();
@@ -42,16 +39,38 @@ namespace Arrowgene.Ddon.GameServer.Enemy
             }
 
             // TODO check time of day
-            
+
             return new List<EnemySpawn>(stageSpawns[subGroupId]);
         }
 
-        public void Load(IDatabase database)
+        public void Load()
         {
-        }
+            foreach (EnemySpawn spawn in _assetRepository.EnemySpawns)
+            {
+                Dictionary<byte, List<EnemySpawn>> stageSpawns;
+                if (_spawns.ContainsKey(spawn.StageId))
+                {
+                    stageSpawns = _spawns[spawn.StageId];
+                }
+                else
+                {
+                    stageSpawns = new Dictionary<byte, List<EnemySpawn>>();
+                    _spawns.Add(spawn.StageId, stageSpawns);
+                }
 
-        public void Save(IDatabase database)
-        {
+                List<EnemySpawn> spawns;
+                if (stageSpawns.ContainsKey(spawn.SubGroupId))
+                {
+                    spawns = stageSpawns[spawn.SubGroupId];
+                }
+                else
+                {
+                    spawns = new List<EnemySpawn>();
+                    stageSpawns.Add(spawn.SubGroupId, spawns);
+                }
+
+                spawns.Add(spawn);
+            }
         }
     }
 }

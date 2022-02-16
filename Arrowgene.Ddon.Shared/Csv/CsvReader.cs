@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using Arrowgene.Logging;
@@ -13,19 +14,36 @@ namespace Arrowgene.Ddon.Shared.Csv
 
         protected abstract int NumExpectedItems { get; }
 
-        public List<T> Read(string path)
+        public List<T> ReadString(string csv)
+        {
+            using Stream stream = new MemoryStream();
+            using StreamWriter writer = new StreamWriter(stream);
+            writer.Write(csv);
+            writer.Flush();
+            stream.Position = 0;
+            return Read(stream);
+        }
+
+        public List<T> ReadPath(string path)
         {
             Logger.Info($"Reading {path}");
-            List<T> items = new List<T>();
+
             FileInfo file = new FileInfo(path);
             if (!file.Exists)
             {
-                return items;
+                return new List<T>();
             }
 
-            using FileStream fileStream = File.OpenRead(file.FullName);
+            using FileStream stream = File.OpenRead(file.FullName);
+            return Read(stream);
+        }
+
+        public List<T> Read(Stream stream)
+        {
+            List<T> items = new List<T>();
+
             using StreamReader streamReader = new StreamReader(
-                fileStream,
+                stream,
                 Encoding.UTF8,
                 true,
                 BufferSize
@@ -57,10 +75,11 @@ namespace Arrowgene.Ddon.Shared.Csv
                     continue;
                 }
 
-                sb.Append((char)c);
+                sb.Append((char) c);
                 previousCr = false;
             }
 
+            ProcessLine(sb.ToString(), items);
 
             return items;
         }
@@ -123,6 +142,17 @@ namespace Arrowgene.Ddon.Shared.Csv
 
             value = null;
             return false;
+        }
+
+        protected bool TryParseHexUInt(string str, out uint value)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                value = 0;
+                return false;
+            }
+            str = str.TrimStart('0', 'x');
+            return uint.TryParse(str, NumberStyles.HexNumber, null, out value);
         }
     }
 }

@@ -14,6 +14,12 @@ namespace Arrowgene.Ddon.Client.Resource
             public uint VersionId { get; set; }
             public uint LandId  { get; set; }
             public uint AreaId { get; set; }
+            
+            public FieldAreaInfo()
+            {
+                StageNoList = new List<uint>();
+                BelongStageNoList = new List<uint>();
+            }
         }
 
         public List<FieldAreaInfo> FieldAreaInfos { get; }

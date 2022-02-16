@@ -7,7 +7,14 @@ namespace Arrowgene.Ddon.Client.Resource
     {
         public class Info
         {
+            public uint LandId { get; set; }
+            public ushort Unk { get; set; }
+            public List<uint> AreaIds { get; set; }
 
+            public Info()
+            {
+                AreaIds = new List<uint>();
+            }
         }
 
         public List<Info> Infos { get; }
@@ -27,7 +34,15 @@ namespace Arrowgene.Ddon.Client.Resource
         private Info ReadEntry(IBuffer buffer)
         {
             Info entry = new Info();
+            entry.LandId = ReadUInt32(buffer);
+            entry.Unk = ReadUInt16(buffer);
+            entry.AreaIds = ReadMtArray(buffer, ReadAreaId);
             return entry;
+        }
+
+        private uint ReadAreaId(IBuffer buffer)
+        {
+            return ReadUInt32(buffer);
         }
     }
 }

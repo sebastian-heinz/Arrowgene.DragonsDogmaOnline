@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
@@ -22,15 +23,29 @@ namespace Arrowgene.Ddon.Shared
             }
 
             ClientErrorCodes = new List<ClientErrorCode>();
+            EnemySpawns = new List<EnemySpawn>();
         }
-        
+
         public List<ClientErrorCode> ClientErrorCodes { get; }
+        public List<EnemySpawn> EnemySpawns { get; }
 
 
         public void Initialize()
         {
             ClientErrorCodes.Clear();
             Load(ClientErrorCodes, "ClientErrorCodes.csv", new ClientErrorCodeCsvReader());
+            Load(EnemySpawns, "EnemySpawn.csv", new EnemySpawnCsvReader());
+            LoadSpreadsheet(EnemySpawns, "1KmwWymqdMGtbRUqu9GvSi_97o-rBj5DJVn2hk7tvs-A", new EnemySpawnCsvReader());
+        }
+
+        private void LoadSpreadsheet<T>(List<T> list, string key, CsvReader<T> reader)
+        {
+            // TODO temporary test google doc csv
+            return;
+            string url = $"https://docs.google.com/spreadsheets/d/{key}/export?format=csv";
+            using var client = new WebClient();
+            string csv = client.DownloadString(url);
+            list.AddRange(reader.ReadString(csv));
         }
 
         private void Load<T>(List<T> list, string fileName, CsvReader<T> reader)
@@ -42,7 +57,7 @@ namespace Arrowgene.Ddon.Shared
                 Logger.Error($"Could not load '{fileName}', file does not exist");
             }
 
-            list.AddRange(reader.Read(file.FullName));
+            list.AddRange(reader.ReadPath(file.FullName));
         }
 
         private void Load<T>(Dictionary<int, T> dictionary, string fileName, CsvReader<T> reader)
