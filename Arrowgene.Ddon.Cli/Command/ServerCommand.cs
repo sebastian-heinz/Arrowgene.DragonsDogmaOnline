@@ -3,6 +3,7 @@ using System.IO;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
+using Arrowgene.Ddon.Rpc.Web;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.WebServer;
@@ -19,6 +20,7 @@ namespace Arrowgene.Ddon.Cli.Command
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
         private DdonWebServer _webServer;
+        private RpcWebServer _rpcWebServer;
         private IDatabase _database;
         private AssetRepository _assetRepository;
 
@@ -70,6 +72,12 @@ namespace Arrowgene.Ddon.Cli.Command
             if (_gameServer == null)
             {
                 _gameServer = new DdonGameServer(_setting.GameServerSetting, _database, _assetRepository);
+            }
+
+            if (_rpcWebServer == null)
+            {
+                _rpcWebServer = new RpcWebServer(_webServer, _gameServer);
+                _rpcWebServer.Init();
             }
 
             if (parameter.Arguments.Contains("start"))

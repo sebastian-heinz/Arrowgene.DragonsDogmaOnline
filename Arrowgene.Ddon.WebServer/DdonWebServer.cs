@@ -2,6 +2,7 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
+using Arrowgene.WebServer.Route;
 using Arrowgene.WebServer.Server;
 using Arrowgene.WebServer.Server.Kestrel;
 using Arrowgene.WebServer.WebMiddleware;
@@ -31,6 +32,8 @@ namespace Arrowgene.Ddon.WebServer
             _webService.AddRoute(new IndexRoute());
             _webService.AddRoute(new AccountRoute(_database));
         }
+
+        public void AddRoute(IWebRoute route) => _webService.AddRoute(route);
 
         public async Task Start()
         {

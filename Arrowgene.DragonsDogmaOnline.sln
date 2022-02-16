@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.GameServer",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Test", "Arrowgene.Ddon.Test\Arrowgene.Ddon.Test.csproj", "{86D48D8F-AA02-4BB8-9B5C-1313C8310F5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Rpc", "Arrowgene.Ddon.Rpc\Arrowgene.Ddon.Rpc.csproj", "{2DE5385B-B8ED-491D-AC6C-895DC154C79E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Rpc.Web", "Arrowgene.Ddon.Rpc.Web\Arrowgene.Ddon.Rpc.Web.csproj", "{A98B686D-6C3D-473D-B69D-940ED343D7AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{86D48D8F-AA02-4BB8-9B5C-1313C8310F5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86D48D8F-AA02-4BB8-9B5C-1313C8310F5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86D48D8F-AA02-4BB8-9B5C-1313C8310F5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE5385B-B8ED-491D-AC6C-895DC154C79E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE5385B-B8ED-491D-AC6C-895DC154C79E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE5385B-B8ED-491D-AC6C-895DC154C79E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE5385B-B8ED-491D-AC6C-895DC154C79E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A98B686D-6C3D-473D-B69D-940ED343D7AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A98B686D-6C3D-473D-B69D-940ED343D7AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A98B686D-6C3D-473D-B69D-940ED343D7AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A98B686D-6C3D-473D-B69D-940ED343D7AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
