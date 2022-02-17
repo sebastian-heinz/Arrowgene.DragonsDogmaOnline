@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Linq;
@@ -12,7 +13,10 @@ namespace Arrowgene.Ddon.Shared
     {
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
+        public event EventHandler UpdatedEnemySpawnsEvent;
+
         private readonly DirectoryInfo _directory;
+        private Dictionary<string, FileSystemWatcher> _fileSystemWatchers;
         private List<EnemySpawn> _localEnemySpawns;
         private List<EnemySpawn> _spreadsheetEnemySpawns;
         private EnemySpawnCsvReader _enemySpawnCsvReader;
@@ -26,7 +30,11 @@ namespace Arrowgene.Ddon.Shared
                 return;
             }
 
+            _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
+
             ClientErrorCodes = new List<ClientErrorCode>();
+            EnemySpawns = new List<EnemySpawn>();
+
             _localEnemySpawns = new List<EnemySpawn>();
             _spreadsheetEnemySpawns = new List<EnemySpawn>();
 
@@ -35,29 +43,52 @@ namespace Arrowgene.Ddon.Shared
         }
 
         public List<ClientErrorCode> ClientErrorCodes { get; }
-        public List<EnemySpawn> EnemySpawns
-        {
-            get { return new List<EnemySpawn>(_localEnemySpawns.Concat(_spreadsheetEnemySpawns)); }
-        }
+        public IEnumerable<EnemySpawn> EnemySpawns { get; private set; }
 
         public void Initialize()
         {
             ClientErrorCodes.Clear();
-            Load(ClientErrorCodes, "ClientErrorCodes.csv", new ClientErrorCodeCsvReader());
-            Load(_localEnemySpawns, "EnemySpawn.csv", _enemySpawnCsvReader);
-            LoadSpreadsheet(_spreadsheetEnemySpawns, "1KmwWymqdMGtbRUqu9GvSi_97o-rBj5DJVn2hk7tvs-A", _enemySpawnCsvReader);
+            RegisterAsset(ClientErrorCodes, "ClientErrorCodes.csv", new ClientErrorCodeCsvReader());
+            RegisterAsset(_localEnemySpawns, "EnemySpawn.csv", _enemySpawnCsvReader, _ => UpdateEnemySets());
+            RegisterSpreadsheet(_spreadsheetEnemySpawns, "1KmwWymqdMGtbRUqu9GvSi_97o-rBj5DJVn2hk7tvs-A", _enemySpawnCsvReader);
+        }
 
-            // Listen for changes in the enemy csv file and update the spawns
-            FileSystemWatcher watcher = new FileSystemWatcher(_directory.FullName, "EnemySpawn.csv");
-            watcher.NotifyFilter = NotifyFilters.LastWrite;
-            watcher.Changed += (object sender, FileSystemEventArgs e) => 
+        private void RegisterAsset<T>(List<T> list, string key, CsvReader<T> reader, Action<List<T>> afterLoadAction = null)
+        {
+            Load(list, key, reader);
+            if(afterLoadAction != null)
             {
-                Logger.Debug($"Reloading enemy sets from {e.FullPath}");
-                _localEnemySpawns = new List<EnemySpawn>();
-                Load(_localEnemySpawns, e.FullPath, _enemySpawnCsvReader);
-            };
+                afterLoadAction.Invoke(list);
+            }
 
-            watcher.EnableRaisingEvents = true;
+            if(!_fileSystemWatchers.ContainsKey(key))
+            {
+                // Listen for changes in the enemy csv file and update the spawns
+                FileSystemWatcher watcher = new FileSystemWatcher(_directory.FullName, key);
+                watcher.NotifyFilter = NotifyFilters.LastWrite;
+                watcher.Changed += (object sender, FileSystemEventArgs e) => 
+                {
+                    Logger.Debug($"Reloading assets from file '{e.FullPath}'");
+                    list.Clear();
+                    Load(list, e.FullPath, reader);
+                    if(afterLoadAction != null)
+                    {
+                        afterLoadAction.Invoke(list);
+                    }
+                };
+                watcher.EnableRaisingEvents = true;
+                _fileSystemWatchers.Add(key, watcher);
+            }
+        }
+
+        private void RegisterSpreadsheet<T>(List<T> list, string key, CsvReader<T> reader, Action<List<T>> afterLoadAction = null)
+        {
+            LoadSpreadsheet(list, key, reader);
+
+            if(afterLoadAction != null)
+            {
+                afterLoadAction.Invoke(list);
+            }
         }
 
         private void LoadSpreadsheet<T>(List<T> list, string key, CsvReader<T> reader)
@@ -100,6 +131,16 @@ namespace Arrowgene.Ddon.Shared
                 }
 
                 dictionary.Add(repositoryItem.Id, item);
+            }
+        }
+
+        private void UpdateEnemySets()
+        {
+            this.EnemySpawns = _localEnemySpawns.Concat(_spreadsheetEnemySpawns);
+
+            if(UpdatedEnemySpawnsEvent != null)
+            {
+                UpdatedEnemySpawnsEvent(this, EventArgs.Empty);
             }
         }
     }
