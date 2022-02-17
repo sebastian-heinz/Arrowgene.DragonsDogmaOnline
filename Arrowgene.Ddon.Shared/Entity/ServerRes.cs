@@ -5,6 +5,11 @@ namespace Arrowgene.Ddon.Shared.Entity
 {
     public class ServerRes : ServerResponse
     {
+        public ServerRes()
+        {
+            Id = PacketId.UNKNOWN;
+        }
+
         public ServerRes(PacketId packetId)
         {
             Id = packetId;

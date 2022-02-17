@@ -31,8 +31,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteBool(buffer, obj.IsBase);
                 WriteEntityList(buffer, obj.StageFeatureList);
                 // TODO: Unk0 and Unk1
-                WriteEntityList(buffer, new List<IPacketStructure>());
-                WriteEntityList(buffer, new List<IPacketStructure>());
             }
 
             public override S2CStageAreaChangeRes Read(IBuffer buffer)

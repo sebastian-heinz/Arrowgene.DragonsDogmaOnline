@@ -49,7 +49,11 @@ namespace Arrowgene.Ddon.Cli
         private static HashSet<PacketId> IgnorePacketIds = new HashSet<PacketId>()
         {
             new PacketId(3, 3, 16, ""),
-            new PacketId(6, 25, 16, "")
+            new PacketId(6, 25, 16, ""),
+            PacketId.C2S_CONNECTION_PING_REQ,
+            PacketId.S2C_CONNECTION_PING_RES,
+            PacketId.C2L_PING_REQ,
+            PacketId.L2C_PING_RES,
         };
 
         private static void Main(string[] args)
