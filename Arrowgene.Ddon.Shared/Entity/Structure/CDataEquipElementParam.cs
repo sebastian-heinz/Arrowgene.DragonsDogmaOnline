@@ -2,7 +2,7 @@
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataEquipElementParam
+    public class CDataEquipElementParam
     {
         public byte u0;
         public uint u1;

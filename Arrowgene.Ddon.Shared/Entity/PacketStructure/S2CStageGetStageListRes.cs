@@ -13,6 +13,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<S2CStageGetStageListRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_STAGE_GET_STAGE_LIST_RES;
+            }
+            
             public override void Write(IBuffer buffer, S2CStageGetStageListRes obj)
             {
                 WriteServerResponse(buffer, obj);

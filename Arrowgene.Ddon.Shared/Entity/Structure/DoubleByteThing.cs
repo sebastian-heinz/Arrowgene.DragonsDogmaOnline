@@ -2,7 +2,7 @@
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct DoubleByteThing
+    public class DoubleByteThing
     {
         public byte unk1;
         public byte unk2;

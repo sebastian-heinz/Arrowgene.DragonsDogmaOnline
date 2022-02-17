@@ -9,6 +9,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<C2SStageGetStageListReq>
         {
+            static Serializer()
+            {
+                Id = PacketId.C2S_STAGE_GET_STAGE_LIST_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2SStageGetStageListReq obj)
             {
             }

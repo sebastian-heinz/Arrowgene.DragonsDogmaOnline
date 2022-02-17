@@ -2,7 +2,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataAchievementIdentifier
+    public class CDataAchievementIdentifier
     {
         public uint UID;
         public uint Index;

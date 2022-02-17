@@ -18,6 +18,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public class Serializer : EntitySerializer<C2SWarpWarpReq> {
+            
+            static Serializer()
+            {
+                Id = PacketId.C2S_WARP_WARP_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2SWarpWarpReq obj)
             {
                 WriteUInt32(buffer, obj.CurrentPointID);

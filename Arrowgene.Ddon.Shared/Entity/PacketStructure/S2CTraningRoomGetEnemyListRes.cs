@@ -20,6 +20,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         
         public class Serializer : EntitySerializer<S2CTraningRoomGetEnemyListRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_INSTANCE_TRANING_ROOM_GET_ENEMY_LIST_RES;
+            }
+            
             public override void Write(IBuffer buffer, S2CTraningRoomGetEnemyListRes obj)
             {
                 WriteServerResponse(buffer, obj);

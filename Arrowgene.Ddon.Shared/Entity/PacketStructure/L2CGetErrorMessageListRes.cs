@@ -9,6 +9,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<L2CGetErrorMessageListRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.L2C_GET_ERROR_MESSAGE_LIST_RES;
+            }
+            
             public override void Write(IBuffer buffer, L2CGetErrorMessageListRes obj)
             {
                 WriteServerResponse(buffer, obj);

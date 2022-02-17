@@ -8,6 +8,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure {
 
         public class Serializer : EntitySerializer<S2CLobbyChatMsgRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_LOBBY_LOBBY_CHAT_MSG_RES;
+            }
+            
             public override void Write(IBuffer buffer, S2CLobbyChatMsgRes obj)
             {
                 WriteServerResponse(buffer, obj);

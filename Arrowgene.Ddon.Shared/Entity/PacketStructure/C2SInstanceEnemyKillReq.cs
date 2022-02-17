@@ -33,6 +33,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<C2SInstanceEnemyKillReq>
         {
+            static Serializer()
+            {
+                Id = PacketId.C2S_INSTANCE_ENEMY_KILL_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2SInstanceEnemyKillReq obj)
             {
                 WriteEntity<CStageLayoutID>(buffer, obj.LayoutId);

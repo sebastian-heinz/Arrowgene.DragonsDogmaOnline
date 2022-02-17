@@ -2,7 +2,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataEquipJobItem
+    public class CDataEquipJobItem
     {
         public uint JobItemID;
         public byte EquipSlotNo;

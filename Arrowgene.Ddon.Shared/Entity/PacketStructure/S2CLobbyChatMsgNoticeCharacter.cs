@@ -16,25 +16,26 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public string strFirstName;
         public string strLastName;
         public string strClanName;
-    }
 
-    public class S2CLobbyChatMsgNoticeCharacterSerializer : EntitySerializer<S2CLobbyChatMsgNoticeCharacterBaseInfo> {
-        public override void Write(IBuffer buffer, S2CLobbyChatMsgNoticeCharacterBaseInfo obj)
+        public class Serializer : EntitySerializer<S2CLobbyChatMsgNoticeCharacterBaseInfo>
         {
-            WriteUInt32(buffer, obj.characterId);
-            WriteMtString(buffer, obj.strFirstName);
-            WriteMtString(buffer, obj.strLastName);
-            WriteMtString(buffer, obj.strClanName);
-        }
+            public override void Write(IBuffer buffer, S2CLobbyChatMsgNoticeCharacterBaseInfo obj)
+            {
+                WriteUInt32(buffer, obj.characterId);
+                WriteMtString(buffer, obj.strFirstName);
+                WriteMtString(buffer, obj.strLastName);
+                WriteMtString(buffer, obj.strClanName);
+            }
 
-        public override S2CLobbyChatMsgNoticeCharacterBaseInfo Read(IBuffer buffer)
-        {
-            S2CLobbyChatMsgNoticeCharacterBaseInfo obj = new S2CLobbyChatMsgNoticeCharacterBaseInfo();
-            obj.characterId = ReadByte(buffer);
-            obj.strFirstName = ReadMtString(buffer);
-            obj.strLastName = ReadMtString(buffer);
-            obj.strClanName = ReadMtString(buffer);
-            return obj;
+            public override S2CLobbyChatMsgNoticeCharacterBaseInfo Read(IBuffer buffer)
+            {
+                S2CLobbyChatMsgNoticeCharacterBaseInfo obj = new S2CLobbyChatMsgNoticeCharacterBaseInfo();
+                obj.characterId = ReadByte(buffer);
+                obj.strFirstName = ReadMtString(buffer);
+                obj.strLastName = ReadMtString(buffer);
+                obj.strClanName = ReadMtString(buffer);
+                return obj;
+            }
         }
     }
 }

@@ -64,6 +64,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new DoubleByteThingSerializer());
             Create(new UnkownCharacterData0Serializer());
             Create(new UnkownCharacterData1Serializer());
+            Create(new S2CLobbyChatMsgNoticeCharacterBaseInfo.Serializer());
 
             // Packet structure serializers
             Create(new C2LCreateCharacterDataReq.Serializer());
@@ -80,7 +81,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SConnectionMoveOutServerReq.Serializer());
             Create(new C2SContextGetSetContextReq.Serializer());
             Create(new C2SInstanceEnemyKillReq.Serializer());
-            Create(new C2SInstanceGetEnemySetListReqSerializer());
+            Create(new C2SInstanceGetEnemySetListReq.Serializer());
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
@@ -115,7 +116,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceGetEnemySetListRes.Serializer());
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
-            Create(new S2CLobbyChatMsgNoticeCharacterSerializer());
             Create(new S2CLobbyJoinRes.Serializer());
             Create(new S2CStageAreaChangeRes.Serializer());
             Create(new S2CStageGetStageListRes.Serializer());
@@ -129,7 +129,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new ServerRes.Serializer());
         }
 
-        private static void Create<T>(EntitySerializer<T> serializer) where T : new()
+        private static void Create<T>(EntitySerializer<T> serializer) where T : class, new()
         {
             Type type = serializer.GetEntityType();
             PacketId packetId = EntitySerializer<T>.Id;
@@ -148,7 +148,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Serializers.Add(type, serializer);
         }
 
-        public static EntitySerializer<T> Get<T>() where T : new()
+        public static EntitySerializer<T> Get<T>() where T : class, new()
         {
             Type type = typeof(T);
             if (!Serializers.ContainsKey(type))
@@ -176,12 +176,27 @@ namespace Arrowgene.Ddon.Shared.Entity
             return null;
         }
 
+        public abstract void WriteObj(IBuffer buffer, object obj);
+        public abstract object ReadObj(IBuffer buffer);
         protected abstract Type GetEntityType();
     }
 
-    public abstract class EntitySerializer<T> : EntitySerializer where T : new()
+    public abstract class EntitySerializer<T> : EntitySerializer where T : class, new()
     {
         public static PacketId Id = PacketId.UNKNOWN;
+
+        public override void WriteObj(IBuffer buffer, object obj)
+        {
+            if (obj is T t)
+            {
+                Write(buffer, t);
+            }
+        }
+
+        public override object ReadObj(IBuffer buffer)
+        {
+            return Read(buffer);
+        }
 
         public abstract void Write(IBuffer buffer, T obj);
         public abstract T Read(IBuffer buffer);
@@ -332,7 +347,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             value.Result = buffer.ReadUInt32(Endianness.Big);
         }
 
-        protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity) where TEntity : new()
+        protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity) where TEntity : class, new()
         {
             EntitySerializer<TEntity> serializer = Get<TEntity>();
             if (serializer == null)
@@ -344,7 +359,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             serializer.Write(buffer, entity);
         }
 
-        protected void WriteEntityList<TEntity>(IBuffer buffer, List<TEntity> entities) where TEntity : new()
+        protected void WriteEntityList<TEntity>(IBuffer buffer, List<TEntity> entities) where TEntity : class, new()
         {
             WriteUInt32(buffer, (uint) entities.Count);
             for (int i = 0; i < entities.Count; i++)
@@ -353,7 +368,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             }
         }
 
-        protected List<TEntity> ReadEntityList<TEntity>(IBuffer buffer) where TEntity : new()
+        protected List<TEntity> ReadEntityList<TEntity>(IBuffer buffer) where TEntity : class, new()
         {
             List<TEntity> entities = new List<TEntity>();
             uint len = ReadUInt32(buffer);
@@ -365,7 +380,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             return entities;
         }
 
-        protected TEntity ReadEntity<TEntity>(IBuffer buffer) where TEntity : new()
+        protected TEntity ReadEntity<TEntity>(IBuffer buffer) where TEntity : class, new()
         {
             EntitySerializer<TEntity> serializer = Get<TEntity>();
             if (serializer == null)

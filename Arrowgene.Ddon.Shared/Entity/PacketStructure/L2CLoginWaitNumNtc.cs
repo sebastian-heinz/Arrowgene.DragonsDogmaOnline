@@ -11,6 +11,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         
         public class Serializer : EntitySerializer<L2CLoginWaitNumNtc>
         {
+            static Serializer()
+            {
+                Id = PacketId.L2C_LOGIN_WAIT_NUM_NTC;
+            }
+            
             public override void Write(IBuffer buffer, L2CLoginWaitNumNtc obj)
             {
                 WriteUInt32(buffer, obj.Unknown);

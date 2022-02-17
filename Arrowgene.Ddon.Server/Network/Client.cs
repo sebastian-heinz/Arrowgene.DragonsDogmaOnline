@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.Server.Network
         /// <summary>
         /// Send a Structure
         /// </summary>
-        public void Send<TResStruct>(TResStruct res) where TResStruct : IPacketStructure, new()
+        public void Send<TResStruct>(TResStruct res) where TResStruct : class, IPacketStructure, new()
         {
             StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
 

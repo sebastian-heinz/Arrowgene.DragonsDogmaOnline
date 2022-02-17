@@ -16,7 +16,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public class Serializer : EntitySerializer<S2CWarpGetReturnLocationRes>
-        {
+        {            
+            static Serializer()
+            {
+                Id = PacketId.S2C_WARP_GET_RETURN_LOCATION_RES;
+            }
+            
             public override void Write(IBuffer buffer, S2CWarpGetReturnLocationRes obj)
             {
                 WriteServerResponse(buffer, obj);

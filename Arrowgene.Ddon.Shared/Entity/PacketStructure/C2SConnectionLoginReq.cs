@@ -14,6 +14,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<C2SConnectionLoginReq>
         {
+            static Serializer()
+            {
+                Id = PacketId.C2S_CONNECTION_LOGIN_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2SConnectionLoginReq obj)
             {
                 WriteMtString(buffer, obj.SessionKey);

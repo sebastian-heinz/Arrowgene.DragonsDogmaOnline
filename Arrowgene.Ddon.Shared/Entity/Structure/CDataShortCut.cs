@@ -2,7 +2,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataShortCut
+    public class CDataShortCut
     {
         public uint PageNo;
         public uint ButtonNo;

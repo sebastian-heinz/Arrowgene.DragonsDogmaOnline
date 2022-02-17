@@ -9,6 +9,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<C2LGetErrorMessageListReq>
         {
+            static Serializer()
+            {
+                Id = PacketId.C2L_GET_ERROR_MESSAGE_LIST_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2LGetErrorMessageListReq obj)
             {
             }

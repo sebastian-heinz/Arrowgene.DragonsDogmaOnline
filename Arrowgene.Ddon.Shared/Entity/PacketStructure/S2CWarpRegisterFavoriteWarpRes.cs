@@ -10,13 +10,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint SlotNo { get; set; }
         public uint WarpPointID { get; set; }
 
-        public S2CWarpRegisterFavoriteWarpRes() {
+        public S2CWarpRegisterFavoriteWarpRes()
+        {
             SlotNo = 0;
             WarpPointID = 0;
         }
 
         public class Serializer : EntitySerializer<S2CWarpRegisterFavoriteWarpRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_WARP_REGISTER_FAVORITE_WARP_RES;
+            }
+
             public override void Write(IBuffer buffer, S2CWarpRegisterFavoriteWarpRes obj)
             {
                 WriteServerResponse(buffer, obj);
@@ -33,7 +39,5 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 return obj;
             }
         }
-
     }
-
 }

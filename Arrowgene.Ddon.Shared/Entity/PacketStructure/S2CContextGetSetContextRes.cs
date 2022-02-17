@@ -9,6 +9,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<S2CContextGetSetContextRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_CONTEXT_GET_SET_CONTEXT_RES;
+            }
+            
             public override void Write(IBuffer buffer, S2CContextGetSetContextRes obj)
             {
                 WriteServerResponse(buffer, obj);

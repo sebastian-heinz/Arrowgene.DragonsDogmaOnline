@@ -30,6 +30,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public class Serializer : EntitySerializer<S2CLobbyChatMsgNotice> {
+            static Serializer()
+            {
+                Id = PacketId.S2C_LOBBY_LOBBY_CHAT_MSG_NTC;
+            }
+            
             public override void Write(IBuffer buffer, S2CLobbyChatMsgNotice obj)
             {
                 WriteByte(buffer, obj.Unk0);

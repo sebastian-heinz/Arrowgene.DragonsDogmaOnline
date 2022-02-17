@@ -16,6 +16,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<C2SCharacterCharacterGoldenReviveReq>
         {
+            static Serializer()
+            {
+                Id = PacketId.C2S_CHARACTER_CHARACTER_GOLDEN_REVIVE_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2SCharacterCharacterGoldenReviveReq obj)
             {
                 WriteUInt32(buffer, obj.HpMax);

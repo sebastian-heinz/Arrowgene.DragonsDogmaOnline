@@ -21,6 +21,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<S2CInstanceEnemyRepopNtc>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_INSTANCE_13_40_16_NTC;
+            }
+            
             public override void Write(IBuffer buffer, S2CInstanceEnemyRepopNtc obj)
             {
                 WriteEntity<CStageLayoutID>(buffer, obj.LayoutId);
