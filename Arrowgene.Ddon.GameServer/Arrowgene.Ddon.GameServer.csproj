@@ -11,10 +11,4 @@
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
     </ItemGroup>
-    <ItemGroup>
-        <ContentWithTargetPath Include="Files\**">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
-        </ContentWithTargetPath>
-    </ItemGroup>
 </Project>
