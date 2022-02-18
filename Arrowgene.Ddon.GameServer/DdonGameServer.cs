@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This file is part of Arrowgene.Ddon.GameServer
  *
  * Arrowgene.Ddon.GameServer is a server implementation for the game "Dragons Dogma Online".
@@ -77,7 +77,6 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
-            EnemyManager.Load();
             LoadStages();
             LoadChatHandler();
             LoadPacketHandler();
@@ -168,9 +167,12 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemGetStorageItemListHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
 
+            AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobGetJobChangeListHandler(this));
+
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
+            AddHandler(new Lobby_3_3_16_Handler(this));
             AddHandler(new LobbyLobbyChatMsgHandler(this));
             AddHandler(new LobbyLobbyJoinHandler(this));
 
@@ -189,9 +191,11 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new PartyPartyCreateHandler(this));
 
+            AddHandler(new PawnGetMypawnDataHandler(this));
             AddHandler(new PawnGetMyPawnListHandler(this));
             AddHandler(new PawnGetNoraPawnListHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
+            AddHandler(new PawnJoinPartyMypawnHandler(this));
 
             AddHandler(new QuestGetAdventureGuideQuestListHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
@@ -214,7 +218,14 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetRealTimeHandler(this));
             AddHandler(new ServerGetServerListHandler(this));
 
+            AddHandler(new SkillGetAbilityCostHandler(this));
             AddHandler(new SkillGetCurrentSetSkillListHandler(this));
+            AddHandler(new SkillGetLearnedAbilityListHandler(this));
+            AddHandler(new SkillGetLearnedNormalSkillListHandler(this));
+            AddHandler(new SkillGetLearnedSkillListHandler(this));
+            AddHandler(new SkillGetPresetAbilityListHandler(this));
+            AddHandler(new SkillGetSetAbilityListHandler(this));
+            AddHandler(new SkillGetSetSkillListHandler(this));
 
             AddHandler(new StageAreaChangeHandler(this));
             AddHandler(new StageGetStageListHandler(this));

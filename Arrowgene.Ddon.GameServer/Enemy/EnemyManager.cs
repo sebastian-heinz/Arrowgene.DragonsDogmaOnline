@@ -1,23 +1,30 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Enemy
 {
     public class EnemyManager
     {
-        private readonly Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>> _spawns;
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EnemyManager));
 
+        private readonly Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>> _spawns;
         private readonly AssetRepository _assetRepository;
-        private readonly IDatabase _database;
+        private readonly IDatabase _database;        
 
         public EnemyManager(AssetRepository assetRepository, IDatabase database)
         {
             _assetRepository = assetRepository;
             _database = database;
             _spawns = new Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>>();
+
+            Load();
+            _assetRepository.UpdatedEnemySpawnsEvent += (sender, e) => Load();
         }
 
         public List<EnemySpawn> GetSpawns(CStageLayoutID stageLayoutId, byte subGroupId)
@@ -45,6 +52,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy
 
         public void Load()
         {
+            _spawns.Clear();
             foreach (EnemySpawn spawn in _assetRepository.EnemySpawns)
             {
                 Dictionary<byte, List<EnemySpawn>> stageSpawns;

@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterEquipViewDataList = new List<CDataCharacterEquipData>();
             CharacterEquipJobItemList = new List<CDataEquipJobItem>();
             JewelrySlotNum = 0;
-            CharacterItemSlotInfoList = new List<CDataEquipElementUnkType2>();
+            CharacterItemSlotInfoList = new List<CDataEquipElementParam>();
             UnkCharData0 = new List<UnknownCharacterData0>();
             UnkCharData1 = new List<UnknownCharacterData1>();
             MyPawnSlotNum = 0;
@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataCharacterEquipData> CharacterEquipViewDataList;
         public List<CDataEquipJobItem> CharacterEquipJobItemList;
         public byte JewelrySlotNum;
-        public List<CDataEquipElementUnkType2> CharacterItemSlotInfoList;
+        public List<CDataEquipElementParam> CharacterItemSlotInfoList;
 
         // One of these is CDataWalletPoint, can't determine which.
         public List<UnknownCharacterData0> UnkCharData0;
@@ -129,7 +129,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.CharacterEquipViewDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
             obj.CharacterEquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
             obj.JewelrySlotNum = ReadByte(buffer);
-            obj.CharacterItemSlotInfoList = ReadEntityList<CDataEquipElementUnkType2>(buffer);
+            obj.CharacterItemSlotInfoList = ReadEntityList<CDataEquipElementParam>(buffer);
             obj.UnkCharData0 = ReadEntityList<UnknownCharacterData0>(buffer);
             obj.UnkCharData1 = ReadEntityList<UnknownCharacterData1>(buffer);
             obj.MyPawnSlotNum = ReadByte(buffer);
