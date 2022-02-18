@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>Arrowgene.Ddon.PacketLibrary</RootNamespace>
-        <ImplicitUsings>disabled</ImplicitUsings>
-        <Nullable>disable</Nullable>
-        <LangVersion>10</LangVersion>
-    </PropertyGroup>
-</Project>
