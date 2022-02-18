@@ -50,8 +50,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.IsBase = ReadBool(buffer);
                 obj.StageFeatureList = ReadEntityList<CDataCommonU32>(buffer);
                 // TODO: Unk0 and Unk1
-                obj.Unk0 = null;
-                obj.Unk1 = null;
+                obj.Unk0 = new List<object>();
+                obj.Unk1 = new List<object>();
                 return obj;
             }
         }
