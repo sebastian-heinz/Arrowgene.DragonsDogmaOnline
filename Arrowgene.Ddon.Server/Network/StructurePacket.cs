@@ -2,7 +2,6 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
@@ -11,17 +10,12 @@ using YamlDotNet.Serialization.TypeInspectors;
 
 namespace Arrowgene.Ddon.Server.Network
 {
-    public class StructurePacket<TStruct> : Packet, IStructurePacket where TStruct : IPacketStructure
+    public class StructurePacket<TStruct> : StructurePacket where TStruct : class, IPacketStructure, new()
     {
-        private static readonly ISerializer Serializer = new SerializerBuilder()
-            .WithTypeInspector(inspector => new MyTypeInspector(inspector))
-            .Build();
-
         private TStruct _structure;
 
-        public StructurePacket(Packet packet) : base(packet.Id, packet.Data, packet.Source, packet.Count)
+        public StructurePacket(Packet packet) : base(packet)
         {
-            _structure = default;
         }
 
         public StructurePacket(TStruct structure) : base(structure.Id, null)
@@ -49,6 +43,47 @@ namespace Arrowgene.Ddon.Server.Network
             }
 
             return _structure;
+        }
+    }
+
+    public class StructurePacket : Packet, IStructurePacket
+    {
+        private static readonly ISerializer Serializer = new SerializerBuilder()
+            .WithTypeInspector(inspector => new MyTypeInspector(inspector))
+            .Build();
+
+        private static readonly Dictionary<PacketId, IStructurePacketFactory> LoginPacketFactories;
+        private static readonly Dictionary<PacketId, IStructurePacketFactory> GamePacketFactories;
+
+        static StructurePacket()
+        {
+            LoginPacketFactories = new Dictionary<PacketId, IStructurePacketFactory>();
+            
+            GamePacketFactories = new Dictionary<PacketId, IStructurePacketFactory>();
+        }
+        
+        public static StructurePacket Make(Packet packet)
+        {
+            PacketId packetId = packet.Id;
+            if (packetId.ServerType == ServerType.Login && LoginPacketFactories.ContainsKey(packetId))
+            {
+                return LoginPacketFactories[packetId].Create(packet);
+            }
+
+            if (packetId.ServerType == ServerType.Game && GamePacketFactories.ContainsKey(packetId))
+            {
+                return GamePacketFactories[packetId].Create(packet);
+            }
+
+            return null;
+        }
+
+        protected StructurePacket(Packet packet) : base(packet.Id, packet.Data, packet.Source, packet.Count)
+        {
+        }
+
+        protected StructurePacket(PacketId id, byte[] data) : base(id, data)
+        {
         }
 
         public string PrintStructure()
@@ -82,19 +117,23 @@ namespace Arrowgene.Ddon.Server.Network
                     {
                         structure = prop;
                     }
+
                     if (prop.Name == "Data")
                     {
                         hasData = true;
                     }
+
                     if (prop.Name == "Count")
                     {
                         hasCount = true;
                     }
+
                     if (prop.Type == typeof(PacketId) && prop.Name == "Id")
                     {
                         // exclude PacketIds from serialisation
                         continue;
                     }
+
                     filtered.Add(prop);
                 }
 

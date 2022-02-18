@@ -19,6 +19,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
         public class Serializer : EntitySerializer<S2CCharacterCharacterPointReviveRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_CHARACTER_CHARACTER_POINT_REVIVE_RES;
+            }
+            
             public override void Write(IBuffer buffer, S2CCharacterCharacterPointReviveRes obj)
             {
                 WriteServerResponse(buffer, obj);

@@ -14,6 +14,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<L2CCreateCharacterDataRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.L2C_CREATE_CHARACTER_DATA_RES;
+            }
+            
             public override void Write(IBuffer buffer, L2CCreateCharacterDataRes obj)
             {
                 WriteServerResponse(buffer, obj);

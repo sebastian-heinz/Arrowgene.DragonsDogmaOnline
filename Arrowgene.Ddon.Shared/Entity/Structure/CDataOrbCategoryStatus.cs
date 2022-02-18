@@ -2,7 +2,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataOrbCategoryStatus
+    public class CDataOrbCategoryStatus
     {
         public byte CategoryID;
         public byte ReleaseNum;

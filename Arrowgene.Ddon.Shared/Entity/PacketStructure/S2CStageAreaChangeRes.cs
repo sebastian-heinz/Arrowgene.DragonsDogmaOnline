@@ -24,6 +24,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<S2CStageAreaChangeRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_STAGE_AREA_CHANGE_RES;
+            }
+            
             public override void Write(IBuffer buffer, S2CStageAreaChangeRes obj)
             {
                 WriteServerResponse(buffer, obj);
@@ -31,8 +36,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteBool(buffer, obj.IsBase);
                 WriteEntityList(buffer, obj.StageFeatureList);
                 // TODO: Unk0 and Unk1
-                WriteEntityList(buffer, new List<IPacketStructure>());
-                WriteEntityList(buffer, new List<IPacketStructure>());
             }
 
             public override S2CStageAreaChangeRes Read(IBuffer buffer)

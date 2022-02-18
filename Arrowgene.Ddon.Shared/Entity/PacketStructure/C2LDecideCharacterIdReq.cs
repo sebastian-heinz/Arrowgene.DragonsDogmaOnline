@@ -17,6 +17,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<C2LDecideCharacterIdReq>
         {
+            static Serializer()
+            {
+                Id = PacketId.C2L_DECIDE_CHARACTER_ID_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2LDecideCharacterIdReq obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);

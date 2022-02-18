@@ -15,6 +15,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<L2CNextConnectionServerNtc>
         {
+            static Serializer()
+            {
+                Id = PacketId.L2C_NEXT_CONNECT_SERVER_NTC;
+            }
+            
             public override void Write(IBuffer buffer, L2CNextConnectionServerNtc obj)
             {
                 WriteUInt32(buffer, obj.Error);

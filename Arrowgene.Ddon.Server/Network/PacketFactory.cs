@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -247,6 +248,13 @@ namespace Arrowgene.Ddon.Server.Network
                     }
 
                     Packet packet = new Packet(packetId, payload, packetSource, packetCount);
+
+                  //  EntitySerializer serializer = EntitySerializer.Get(packetId);
+                  //  if (serializer != null)
+                  //  {
+                  //      serializer.ReadObj()
+                  //  }
+                    
                     packets.Add(packet);
                     _readHeader = false;
                     read = _buffer.Position != _buffer.Size;

@@ -2,7 +2,7 @@
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataJobInfo
+    public class CDataJobInfo
     {
         public byte job;
         public byte level;

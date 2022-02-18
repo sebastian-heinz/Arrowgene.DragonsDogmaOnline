@@ -10,6 +10,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.C2S_CONNECTION_MOVE_IN_SERVER_REQ;
         public class Serializer : EntitySerializer<C2SConnectionMoveInServerReq>
         {
+            static Serializer()
+            {
+                Id = PacketId.C2S_CONNECTION_MOVE_IN_SERVER_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2SConnectionMoveInServerReq obj)
             {
                 WriteMtString(buffer, obj.SessionKey);

@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.GameServer
     /// </summary>
     public class GameRouter
     {
-        public void Send<TResStruct>(Client client, TResStruct res) where TResStruct : IPacketStructure
+        public void Send<TResStruct>(Client client, TResStruct res) where TResStruct : class, IPacketStructure, new ()
         {
             client.Send(res);
         }

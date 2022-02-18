@@ -13,6 +13,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<C2LLoginReq>
         {
+            static Serializer()
+            {
+                Id = PacketId.C2L_LOGIN_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2LLoginReq obj)
             {
                 WriteMtString(buffer, obj.OneTimeToken);

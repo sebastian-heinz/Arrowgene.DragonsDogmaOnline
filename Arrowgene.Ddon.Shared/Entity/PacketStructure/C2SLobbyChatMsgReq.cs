@@ -25,6 +25,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public class Serializer : EntitySerializer<C2SLobbyChatMsgReq> {
+            
+            static Serializer()
+            {
+                Id = PacketId.C2S_LOBBY_LOBBY_CHAT_MSG_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2SLobbyChatMsgReq obj)
             {
                 WriteByte(buffer, (byte) obj.Type);

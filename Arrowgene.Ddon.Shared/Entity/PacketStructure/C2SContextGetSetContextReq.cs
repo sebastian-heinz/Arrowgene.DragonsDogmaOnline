@@ -25,7 +25,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint Unk0 { get; set; }
 
         public class Serializer : EntitySerializer<C2SContextGetSetContextReq>
-        {
+        {            
+            static Serializer()
+            {
+                Id = PacketId.C2S_CONTEXT_GET_SET_CONTEXT_REQ;
+            }
+            
             public override void Write(IBuffer buffer, C2SContextGetSetContextReq obj)
             {
                 WriteUInt32(buffer, obj.ContextId);

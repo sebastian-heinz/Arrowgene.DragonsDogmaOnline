@@ -21,6 +21,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : EntitySerializer<S2CLobbyJoinRes>
         {
+            static Serializer()
+            {
+                Id = PacketId.S2C_LOBBY_LOBBY_JOIN_RES;
+            }
+            
             public override void Write(IBuffer buffer, S2CLobbyJoinRes obj)
             {
                 WriteServerResponse(buffer, obj);

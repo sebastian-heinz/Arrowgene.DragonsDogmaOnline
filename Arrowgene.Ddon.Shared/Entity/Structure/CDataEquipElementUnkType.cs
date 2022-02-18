@@ -2,7 +2,7 @@
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataEquipElementUnkType
+    public class CDataEquipElementUnkType
     {
         public byte u0;
         public byte u1;

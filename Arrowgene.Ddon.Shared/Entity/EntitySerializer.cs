@@ -4,183 +4,234 @@ using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity
 {
     public abstract class EntitySerializer
     {
-        private static readonly Dictionary<Type, EntitySerializer> Serializers =
-            new Dictionary<Type, EntitySerializer>(
-                new[]
+        private static readonly Dictionary<PacketId, EntitySerializer> LoginPacketSerializers;
+        private static readonly Dictionary<PacketId, EntitySerializer> GamePacketSerializers;
+        private static readonly Dictionary<Type, EntitySerializer> Serializers;
+
+        static EntitySerializer()
+        {
+            LoginPacketSerializers = new Dictionary<PacketId, EntitySerializer>();
+            GamePacketSerializers = new Dictionary<PacketId, EntitySerializer>();
+            Serializers = new Dictionary<Type, EntitySerializer>();
+            
+            // Data structure serializers
+            Create(new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
+            Create(new S2CLobbyChatMsgNoticeCharacterBaseInfo.Serializer()); // TODO naming convention S2C -> not a packet
+            Create(new CData_35_14_16.Serializer());
+            Create(new CDataAchievementIdentifierSerializer());
+            Create(new CDataArisenProfileSerializer());
+            Create(new CDataCharacterEquipDataSerializer());
+            Create(new CDataCharacterEquipInfo.Serializer());
+            Create(new CDataCharacterInfoSerializer());
+            Create(new CDataCharacterJobDataSerializer());
+            Create(new CDataCharacterListElementSerializer());
+            Create(new CDataCharacterListInfoSerializer());
+            Create(new CDataCharacterMessageSerializer());
+            Create(new CDataCharacterMsgSetSerializer());
+            Create(new CDataCommonU32.Serializer());
+            Create(new CDataCommunicationShortCutSerializer());
+            Create(new CDataDropItemSetInfo.Serializer());
+            Create(new CDataEditInfoSerializer());
+            Create(new CDataEquipElementParam.Serializer());
+            Create(new CDataEquipElementUnkTypeSerializer());
+            Create(new CDataEquipElementUnkType2Serializer());
+            Create(new CDataEquipItemInfo.Serializer());
+            Create(new CDataEquipJobItemSerializer());
+            Create(new CDataGameServerListInfoSerializer());
+            Create(new CDataGPCourseValidSerializer());
+            Create(new CDataItemList.Serializer());
+            Create(new CDataItemUpdateResult.Serializer());
+            Create(new CDataJobChangeInfo.Serializer());
+            Create(new CDataJobChangeJobResUnk0.Serializer());
+            Create(new CDataJobChangeJobResUnk0Unk1.Serializer());
+            Create(new CDataJobInfo.Serializer());
+            Create(new CDataJobPlayPointSerializer());
+            Create(new CDataJumpLocationSerializer());
+            Create(new CDataLayoutEnemyData.Serializer());
+            Create(new CDataLearnedSetAcquirementParam.Serializer());
+            Create(new CDataLearnNormalSkillParam.Serializer());
+            Create(new CDataLobbyMemberInfoSerializer());
+            Create(new CDataLoginSettingSerializer());
+            Create(new CDataMatchingProfileSerializer());
+            Create(new CDataNamedEnemyParamClient.Serializer());
+            Create(new CDataNormalSkillParam.Serializer());
+            Create(new CDataOrbCategoryStatusSerializer());
+            Create(new CDataOrbPageStatusSerializer());
+            Create(new CDataPawnJobChangeInfo.Serializer());
+            Create(new CDataPlayPointDataSerializer());
+            Create(new CDataPresetAbilityParam.Serializer());
+            Create(new CDataSetAcquirementParam.Serializer());
+            Create(new CDataShortCutSerializer());
+            Create(new CDataStageAttribute.Serializer());
+            Create(new CDataStageInfo.Serializer());
+            Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer());
+            Create(new CDataStatusInfoSerializer());
+            Create(new CDataTraningRoomEnemyHeader.Serializer());
+            Create(new CDataUpdateWalletPoint.Serializer());
+            Create(new CDataURLInfoSerializer());
+            Create(new CDataWarpPointSerializer());
+            Create(new CStageLayoutID.Serializer());
+            Create(new UnkownCharacterData0Serializer());
+            Create(new UnkownCharacterData1Serializer());
+
+            // Packet structure serializers
+            Create(new C2LCreateCharacterDataReq.Serializer());
+            Create(new C2LDecideCharacterIdReq.Serializer());
+            Create(new C2LGetErrorMessageListReq.Serializer());
+            Create(new C2LLoginReq.Serializer());
+            Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
+            Create(new C2SCharacterCharacterGoldenReviveReq.Serializer());
+            Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
+            Create(new C2SCharacterCharacterPointReviveReq.Serializer());
+            Create(new C2SConnectionLoginReq.Serializer());
+            Create(new C2SConnectionMoveInServerReq.Serializer());
+            Create(new C2SConnectionMoveOutServerReq.Serializer());
+            Create(new C2SContextGetSetContextReq.Serializer());
+            Create(new C2SInstanceEnemyKillReq.Serializer());
+            Create(new C2SInstanceGetEnemySetListReq.Serializer());
+            Create(new C2SJobChangeJobReq.Serializer());
+            Create(new C2SJobGetJobChangeListReq.Serializer());
+            Create(new C2SLobbyChatMsgReq.Serializer());
+            Create(new C2SLobbyJoinReq.Serializer());
+            Create(new C2SQuestGetTutorialQuestListRes.Serializer());
+            Create(new C2SSkillGetAbilityCostReq.Serializer());
+            Create(new C2SSkillGetLearnedAbilityListReq.Serializer());
+            Create(new C2SSkillGetLearnedNormalSkillListReq.Serializer());
+            Create(new C2SSkillGetLearnedSkillListReq.Serializer());
+            Create(new C2SSkillGetPresetAbilityListReq.Serializer());
+            Create(new C2SSkillGetSetAbilityListReq.Serializer());
+            Create(new C2SSkillGetSetSkillListReq.Serializer());
+            Create(new C2SStageAreaChangeReq.Serializer());
+            Create(new C2SStageGetStageListReq.Serializer());
+            Create(new C2STraningRoomGetEnemyListReq.Serializer());
+            Create(new C2STraningRoomSetEnemyReq.Serializer());
+            Create(new C2SWarpGetReturnLocationReq.Serializer());
+            Create(new C2SWarpRegisterFavoriteWarpReq.Serializer());
+            Create(new C2SWarpWarpReq.Serializer());
+            Create(new L2CCreateCharacterDataNtc.Serializer());
+            Create(new L2CCreateCharacterDataRes.Serializer());
+            Create(new L2CGetErrorMessageListNtc.Serializer());
+            Create(new L2CGetErrorMessageListRes.Serializer());
+            Create(new L2CDecideCharacterIdRes.Serializer());
+            Create(new L2CGetGameSessionKeyRes.Serializer());
+            Create(new L2CGetLoginSettingsRes.Serializer());
+            Create(new L2CLoginRes.Serializer());
+            Create(new L2CLoginWaitNumNtc.Serializer());
+            Create(new L2CNextConnectionServerNtc.Serializer());
+            Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
+            Create(new S2CChangeCharacterEquipLobbyNotice.Serializer());
+            Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
+            Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
+            Create(new S2CCharacterCharacterPointReviveRes.Serializer());
+            Create(new S2CConnectionLoginRes.Serializer());
+            Create(new S2CConnectionLogoutRes.Serializer());
+            Create(new S2CConnectionMoveOutServerRes.Serializer());
+            Create(new S2CContext_35_14_16_Ntc.Serializer());
+            Create(new S2CContextGetSetContextRes.Serializer());
+            Create(new S2CInstanceEnemyKillRes.Serializer());
+            Create(new S2CInstanceEnemyRepopNtc.Serializer());
+            Create(new S2CInstanceGetEnemySetListRes.Serializer());
+            Create(new S2CItemUpdateCharacterItemNtc.Serializer());
+            Create(new S2CJobChangeJobNtc.Serializer());
+            Create(new S2CJobChangeJobRes.Serializer());
+            Create(new S2CJobGetJobChangeListRes.Serializer());
+            Create(new S2CLobbyChatMsgRes.Serializer());
+            Create(new S2CLobbyChatMsgNotice.Serializer());
+            Create(new S2CLobbyJoinRes.Serializer());
+            Create(new S2CSkillGetAbilityCostRes.Serializer());
+            Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
+            Create(new S2CSkillGetLearnedAbilityListRes.Serializer());
+            Create(new S2CSkillGetLearnedNormalSkillListRes.Serializer());
+            Create(new S2CSkillGetLearnedSkillListRes.Serializer());
+            Create(new S2CSkillGetPresetAbilityListRes.Serializer());
+            Create(new S2CSkillGetSetAbilityListRes.Serializer());
+            Create(new S2CSkillGetSetSkillListRes.Serializer());
+            Create(new S2CStageAreaChangeRes.Serializer());
+            Create(new S2CStageGetStageListRes.Serializer());
+            Create(new S2CTraningRoomGetEnemyListRes.Serializer());
+            Create(new S2CTraningRoomSetEnemyRes.Serializer());
+            Create(new S2CWarpGetReturnLocationRes.Serializer());
+            Create(new S2CWarpRegisterFavoriteWarpRes.Serializer());
+            Create(new S2CWarpWarpRes.Serializer());
+
+            Create(new ServerRes.Serializer());
+        }
+
+        private static void Create<T>(EntitySerializer<T> serializer) where T : class, new()
+        {
+            Type type = serializer.GetEntityType();
+            PacketId packetId = EntitySerializer<T>.Id;
+            if (packetId != PacketId.UNKNOWN)
+            {
+                if (packetId.ServerType == ServerType.Login)
                 {
-                    // Data structure serializers
-                    Create(new CData_35_14_16.Serializer()),
-                    Create(new CDataAchievementIdentifierSerializer()),
-                    Create(new CDataArisenProfileSerializer()),
-                    Create(new CDataCharacterEquipDataSerializer()),
-                    Create(new CDataCharacterEquipInfo.Serializer()),
-                    Create(new CDataCharacterInfoSerializer()),
-                    Create(new CDataCharacterJobDataSerializer()),
-                    Create(new CDataCharacterListElementSerializer()),
-                    Create(new CDataCharacterListInfoSerializer()),
-                    Create(new CDataCharacterMessageSerializer()),
-                    Create(new CDataCharacterMsgSetSerializer()),
-                    Create(new CDataCommonU32.Serializer()),
-                    Create(new CDataCommunicationShortCutSerializer()),
-                    Create(new CDataDropItemSetInfo.Serializer()),
-                    Create(new CDataEditInfoSerializer()),
-                    Create(new CDataEquipElementParam.Serializer()),
-                    Create(new CDataEquipElementUnkTypeSerializer()),
-                    Create(new CDataEquipElementUnkType2Serializer()),
-                    Create(new CDataEquipItemInfo.Serializer()),
-                    Create(new CDataEquipJobItemSerializer()),
-                    Create(new CDataGameServerListInfoSerializer()),
-                    Create(new CDataGPCourseValidSerializer()),
-                    Create(new CDataItemList.Serializer()),
-                    Create(new CDataItemUpdateResult.Serializer()),
-                    Create(new CDataJobChangeInfo.Serializer()),
-                    Create(new CDataJobChangeJobResUnk0.Serializer()),
-                    Create(new CDataJobChangeJobResUnk0Unk1.Serializer()),
-                    Create(new CDataJobInfo.Serializer()),
-                    Create(new CDataJobPlayPointSerializer()),
-                    Create(new CDataJumpLocationSerializer()),
-                    Create(new CDataLayoutEnemyData.Serializer()),
-                    Create(new CDataLearnedSetAcquirementParam.Serializer()),
-                    Create(new CDataLearnNormalSkillParam.Serializer()),
-                    Create(new CDataLobbyMemberInfoSerializer()),
-                    Create(new CDataLoginSettingSerializer()),
-                    Create(new CDataMatchingProfileSerializer()),
-                    Create(new CDataNamedEnemyParamClient.Serializer()),
-                    Create(new CDataNormalSkillParam.Serializer()),
-                    Create(new CDataOrbCategoryStatusSerializer()),
-                    Create(new CDataOrbPageStatusSerializer()),
-                    Create(new CDataPawnJobChangeInfo.Serializer()),
-                    Create(new CDataPlayPointDataSerializer()),
-                    Create(new CDataPresetAbilityParam.Serializer()),
-                    Create(new CDataSetAcquirementParam.Serializer()),
-                    Create(new CDataShortCutSerializer()),
-                    Create(new CDataStageAttribute.Serializer()),
-                    Create(new CDataStageInfo.Serializer()),
-                    Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer()),
-                    Create(new CDataStatusInfoSerializer()),
-                    Create(new CDataTraningRoomEnemyHeader.Serializer()),
-                    Create(new CDataUpdateWalletPoint.Serializer()),
-                    Create(new CDataURLInfoSerializer()),
-                    Create(new CDataWarpPointSerializer()),
-                    Create(new CStageLayoutID.Serializer()),
-                    Create(new UnkownCharacterData0Serializer()),
-                    Create(new UnkownCharacterData1Serializer()),
-
-
-                    // Packet structure serializers
-                    Create(new C2LCreateCharacterDataReq.Serializer()),
-                    Create(new C2LDecideCharacterIdReq.Serializer()),
-                    Create(new C2LGetErrorMessageListReq.Serializer()),
-                    Create(new C2LLoginReq.Serializer()),
-                    Create(new C2SActionSetPlayerActionHistoryReq.Serializer()),
-                    Create(new C2SActionSetPlayerActionHistoryReqElement.Serializer()),
-                    Create(new C2SCharacterCharacterGoldenReviveReq.Serializer()),
-                    Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer()),
-                    Create(new C2SCharacterCharacterPointReviveReq.Serializer()),
-                    Create(new C2SConnectionLoginReq.Serializer()),
-                    Create(new C2SConnectionMoveInServerReq.Serializer()),
-                    Create(new C2SConnectionMoveOutServerReq.Serializer()),
-                    Create(new C2SContextGetSetContextReq.Serializer()),
-                    Create(new C2SInstanceEnemyKillReq.Serializer()),
-                    Create(new C2SInstanceGetEnemySetListReqSerializer()),
-                    Create(new C2SJobChangeJobReq.Serializer()),
-                    Create(new C2SJobGetJobChangeListReq.Serializer()),
-                    Create(new C2SLobbyChatMsgReq.Serializer()),
-                    Create(new C2SLobbyJoinReq.Serializer()),
-                    Create(new C2SQuestGetTutorialQuestListRes.Serializer()),
-                    Create(new C2SSkillGetAbilityCostReq.Serializer()),
-                    Create(new C2SSkillGetLearnedAbilityListReq.Serializer()),
-                    Create(new C2SSkillGetLearnedNormalSkillListReq.Serializer()),
-                    Create(new C2SSkillGetLearnedSkillListReq.Serializer()),
-                    Create(new C2SSkillGetPresetAbilityListReq.Serializer()),
-                    Create(new C2SSkillGetSetAbilityListReq.Serializer()),
-                    Create(new C2SSkillGetSetSkillListReq.Serializer()),
-                    Create(new C2SStageAreaChangeReq.Serializer()),
-                    Create(new C2SStageGetStageListReq.Serializer()),
-                    Create(new C2STraningRoomGetEnemyListReq.Serializer()),
-                    Create(new C2STraningRoomSetEnemyReq.Serializer()),
-                    Create(new C2SWarpGetReturnLocationReq.Serializer()),
-                    Create(new C2SWarpRegisterFavoriteWarpReq.Serializer()),
-                    Create(new C2SWarpWarpReq.Serializer()),
-                    Create(new L2CCreateCharacterDataNtc.Serializer()),
-                    Create(new L2CCreateCharacterDataRes.Serializer()),
-                    Create(new L2CGetErrorMessageListNtc.Serializer()),
-                    Create(new L2CGetErrorMessageListRes.Serializer()),
-                    Create(new L2CDecideCharacterIdRes.Serializer()),
-                    Create(new L2CGetGameSessionKeyRes.Serializer()),
-                    Create(new L2CGetLoginSettingsRes.Serializer()),
-                    Create(new L2CLoginRes.Serializer()),
-                    Create(new L2CLoginWaitNumNtc.Serializer()),
-                    Create(new L2CNextConnectionServerNtc.Serializer()),
-                    Create(new S2CActionSetPlayerActionHistoryRes.Serializer()),
-                    Create(new S2CChangeCharacterEquipLobbyNotice.Serializer()),
-                    Create(new S2CCharacterCharacterGoldenReviveRes.Serializer()),
-                    Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer()),
-                    Create(new S2CCharacterCharacterPointReviveRes.Serializer()),
-                    Create(new S2CConnectionLoginRes.Serializer()),
-                    Create(new S2CConnectionLogoutRes.Serializer()),
-                    Create(new S2CConnectionMoveOutServerRes.Serializer()),
-                    Create(new S2CContext_35_14_16_Ntc.Serializer()),
-                    Create(new S2CContextGetSetContextRes.Serializer()),
-                    Create(new S2CInstanceEnemyKillRes.Serializer()),
-                    Create(new S2CInstanceEnemyRepopNtc.Serializer()),
-                    Create(new S2CInstanceGetEnemySetListRes.Serializer()),
-                    Create(new S2CItemUpdateCharacterItemNtc.Serializer()),
-                    Create(new S2CJobChangeJobNtc.Serializer()),
-                    Create(new S2CJobChangeJobRes.Serializer()),
-                    Create(new S2CJobGetJobChangeListRes.Serializer()),
-                    Create(new S2CLobbyChatMsgRes.Serializer()),
-                    Create(new S2CLobbyChatMsgNotice.Serializer()),
-                    Create(new S2CLobbyChatMsgNoticeCharacterSerializer()),
-                    Create(new S2CLobbyJoinRes.Serializer()),
-                    Create(new S2CSkillGetAbilityCostRes.Serializer()),
-                    Create(new S2CSkillGetCurrentSetSkillListRes.Serializer()),
-                    Create(new S2CSkillGetLearnedAbilityListRes.Serializer()),
-                    Create(new S2CSkillGetLearnedNormalSkillListRes.Serializer()),
-                    Create(new S2CSkillGetLearnedSkillListRes.Serializer()),
-                    Create(new S2CSkillGetPresetAbilityListRes.Serializer()),
-                    Create(new S2CSkillGetSetAbilityListRes.Serializer()),
-                    Create(new S2CSkillGetSetSkillListRes.Serializer()),
-                    Create(new S2CStageAreaChangeRes.Serializer()),
-                    Create(new S2CStageGetStageListRes.Serializer()),
-                    Create(new S2CTraningRoomGetEnemyListRes.Serializer()),
-                    Create(new S2CTraningRoomSetEnemyRes.Serializer()),
-                    Create(new S2CWarpGetReturnLocationRes.Serializer()),
-                    Create(new S2CWarpRegisterFavoriteWarpRes.Serializer()),
-                    Create(new S2CWarpWarpRes.Serializer()),
-                    
-                    Create(new ServerRes.Serializer()),
+                    LoginPacketSerializers.Add(packetId, serializer);
                 }
-            );
+                else if (packetId.ServerType == ServerType.Game)
+                {
+                    GamePacketSerializers.Add(packetId, serializer);
+                }
+            }
 
-        private static KeyValuePair<Type, EntitySerializer> Create(EntitySerializer serializer)
-        {
-            return new KeyValuePair<Type, EntitySerializer>(serializer.GetEntityType(), serializer);
+            Serializers.Add(type, serializer);
         }
 
-        public static void RegisterReader(EntitySerializer reader)
-        {
-            Serializers.Add(reader.GetEntityType(), reader);
-        }
-
-        public static EntitySerializer<T> Get<T>()
+        public static EntitySerializer<T> Get<T>() where T : class, new()
         {
             Type type = typeof(T);
+            if (!Serializers.ContainsKey(type))
+            {
+                return null;
+            }
+
             object obj = Serializers[type];
             EntitySerializer<T> serializer = obj as EntitySerializer<T>;
             return serializer;
         }
 
+        public static EntitySerializer Get(PacketId packetId)
+        {
+            if (packetId.ServerType == ServerType.Login && LoginPacketSerializers.ContainsKey(packetId))
+            {
+                return LoginPacketSerializers[packetId];
+            }
+
+            if (packetId.ServerType == ServerType.Game && GamePacketSerializers.ContainsKey(packetId))
+            {
+                return GamePacketSerializers[packetId];
+            }
+
+            return null;
+        }
+
+        public abstract void WriteObj(IBuffer buffer, object obj);
+        public abstract object ReadObj(IBuffer buffer);
         protected abstract Type GetEntityType();
     }
 
-    public abstract class EntitySerializer<T> : EntitySerializer
+    public abstract class EntitySerializer<T> : EntitySerializer where T : class, new()
     {
+        public static PacketId Id = PacketId.UNKNOWN;
+
+        public override void WriteObj(IBuffer buffer, object obj)
+        {
+            if (obj is T t)
+            {
+                Write(buffer, t);
+            }
+        }
+
+        public override object ReadObj(IBuffer buffer)
+        {
+            return Read(buffer);
+        }
+
         public abstract void Write(IBuffer buffer, T obj);
         public abstract T Read(IBuffer buffer);
 
@@ -330,7 +381,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             value.Result = buffer.ReadUInt32(Endianness.Big);
         }
 
-        protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity)
+        protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity) where TEntity : class, new()
         {
             EntitySerializer<TEntity> serializer = Get<TEntity>();
             if (serializer == null)
@@ -342,7 +393,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             serializer.Write(buffer, entity);
         }
 
-        protected void WriteEntityList<TEntity>(IBuffer buffer, List<TEntity> entities)
+        protected void WriteEntityList<TEntity>(IBuffer buffer, List<TEntity> entities) where TEntity : class, new()
         {
             WriteUInt32(buffer, (uint) entities.Count);
             for (int i = 0; i < entities.Count; i++)
@@ -351,7 +402,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             }
         }
 
-        protected List<TEntity> ReadEntityList<TEntity>(IBuffer buffer)
+        protected List<TEntity> ReadEntityList<TEntity>(IBuffer buffer) where TEntity : class, new()
         {
             List<TEntity> entities = new List<TEntity>();
             uint len = ReadUInt32(buffer);
@@ -363,7 +414,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             return entities;
         }
 
-        protected TEntity ReadEntity<TEntity>(IBuffer buffer)
+        protected TEntity ReadEntity<TEntity>(IBuffer buffer) where TEntity : class, new()
         {
             EntitySerializer<TEntity> serializer = Get<TEntity>();
             if (serializer == null)
