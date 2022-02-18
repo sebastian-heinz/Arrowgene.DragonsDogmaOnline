@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.Rpc</RootNamespace>
         <Title>Dragons Dogma Online - Remote Procedure Call</Title>
         <Company>DDON Team</Company>
         <Product>Ddon.Rpc</Product>
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />

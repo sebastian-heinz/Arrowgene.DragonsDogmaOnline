@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.PacketLibrary</RootNamespace>
         <ImplicitUsings>disabled</ImplicitUsings>
         <Nullable>disable</Nullable>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
-    <ItemGroup>
-      <PackageReference Include="KaitaiStruct.Runtime.CSharp" Version="0.9.0" />
-    </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.Cli</RootNamespace>
         <Title>Dragons Dogma Online - Command Line Interface</Title>
         <Company>Ddon Team</Company>
@@ -16,7 +16,6 @@
         <ProjectReference Include="..\Arrowgene.Ddon.Rpc.Web\Arrowgene.Ddon.Rpc.Web.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj" />
-        <ProjectReference Include="..\Arrowgene.Ddon.PacketLibrary\Arrowgene.Ddon.PacketLibrary.csproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />

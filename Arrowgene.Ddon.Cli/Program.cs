@@ -91,8 +91,6 @@ namespace Arrowgene.Ddon.Cli
             AddCommand(new ShowCommand());
             AddCommand(new ServerCommand());
             AddCommand(new HelpCommand(_commands));
-            AddCommand(new BruteForceCommand());
-            AddCommand(new PcapDecryptCommand());
             AddCommand(new ClientCommand());
         }
 

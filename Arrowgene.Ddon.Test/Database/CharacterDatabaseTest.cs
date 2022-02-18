@@ -17,7 +17,10 @@ namespace Arrowgene.Ddon.Test.Database
         public void TestCharacterOperations()
         {
             DatabaseSetting setting = new DatabaseSetting();
-            IDatabase database = DdonDatabaseBuilder.BuildSqLite(setting.SqLiteFolder, "character.test");
+            setting.WipeOnStartup = true;
+            IDatabase database = DdonDatabaseBuilder.BuildSqLite(setting.SqLiteFolder, "character.test", true);
+            
+            
 
             Account account = database.CreateAccount("test", "test", "test");
             Assert.NotNull(account);
@@ -31,20 +34,21 @@ namespace Arrowgene.Ddon.Test.Database
 
             List<Character> characters = database.SelectCharactersByAccountId(account.Id);
             Assert.NotEmpty(characters);
-            Assert.True(characters.Count == 1);
+            Assert.True(characters.Count == 2);  // TODO Rumi Injected
 
             c.FirstName = "NewName";
             Assert.True(database.UpdateCharacter(c));
 
             characters = database.SelectCharactersByAccountId(account.Id);
             Assert.NotEmpty(characters);
-            Assert.True(characters.Count == 1);
-            Assert.Equal("NewName", characters[0].FirstName);
+            Assert.True(characters.Count == 2);  // TODO Rumi Injected
+            Assert.Equal("NewName", characters[1].FirstName); // TODO Rumi Injected at [0]
 
             Assert.True(database.DeleteCharacter(c.Id));
             
             characters = database.SelectCharactersByAccountId(account.Id);
-            Assert.Empty(characters);
+            Assert.True(characters.Count == 1);  // TODO Rumi Injected
+            //Assert.Empty(characters);
         }
     }
 }
