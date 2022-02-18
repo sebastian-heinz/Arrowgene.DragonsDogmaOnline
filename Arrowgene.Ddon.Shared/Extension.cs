@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Arrowgene.Buffers;
 
@@ -6,6 +7,27 @@ namespace Arrowgene.Ddon.Shared
 {
     public static class Extension
     {
+        public static void WriteMtArray<T>(this IBuffer buffer, List<T> entities, Action<IBuffer, T> writer, Endianness endianness)
+        {
+            buffer.WriteUInt32((uint) entities.Count, endianness);
+            for (int i = 0; i < entities.Count; i++)
+            {
+                writer.Invoke(buffer, entities[i]);
+            }
+        }
+
+        public static List<T> ReadMtArray<T>(this IBuffer buffer, Func<IBuffer, T> reader, Endianness endianness)
+        {
+            List<T> entities = new List<T>();
+            uint len = buffer.ReadUInt32(endianness);
+            for (int i = 0; i < len; i++)
+            {
+                entities.Add(reader.Invoke(buffer));
+            }
+
+            return entities;
+        }
+        
         public static void WriteMtString(this IBuffer buffer, string str)
         {
             byte[] utf8 = Encoding.UTF8.GetBytes(str);

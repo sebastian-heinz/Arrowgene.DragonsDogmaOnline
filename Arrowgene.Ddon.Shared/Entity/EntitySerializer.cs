@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             LoginPacketSerializers = new Dictionary<PacketId, EntitySerializer>();
             GamePacketSerializers = new Dictionary<PacketId, EntitySerializer>();
             Serializers = new Dictionary<Type, EntitySerializer>();
-            
+
             // Data structure serializers
             Create(new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
             Create(new S2CLobbyChatMsgNoticeCharacterBaseInfo.Serializer()); // TODO naming convention S2C -> not a packet
@@ -391,6 +391,16 @@ namespace Arrowgene.Ddon.Shared.Entity
             }
 
             serializer.Write(buffer, entity);
+        }
+
+        public static void WriteMtArray<TEntity>(IBuffer buffer, List<TEntity> entities, Action<IBuffer, TEntity> writer)
+        {
+            buffer.WriteMtArray(entities, writer, Endianness.Big);
+        }
+
+        public static List<TEntity> ReadMtArray<TEntity>(IBuffer buffer, Func<IBuffer, TEntity> reader)
+        {
+            return buffer.ReadMtArray(reader, Endianness.Big);
         }
 
         protected void WriteEntityList<TEntity>(IBuffer buffer, List<TEntity> entities) where TEntity : class, new()
