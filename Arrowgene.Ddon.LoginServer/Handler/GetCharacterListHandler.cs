@@ -3,6 +3,7 @@ using Arrowgene.Buffers;
 using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -37,6 +38,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.Element.CharacterID = (uint)c.Id;
                 cResponse.Element.FirstName = c.FirstName;
                 cResponse.Element.LastName = c.LastName;
+                cResponse.Element.jobInfo0.job = 1;
+                cResponse.Element.jobInfo0.level = 1;
                 cResponse.EditInfo = c.Visual;
                 characterListResponse.Add(cResponse);
             }
