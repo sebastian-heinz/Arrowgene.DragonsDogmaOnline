@@ -20,6 +20,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             StageNo=0;
             IsBase=false;
             StageFeatureList=new List<CDataCommonU32>();
+            Unk0 = new List<object>();
+            Unk1 = new List<object>();
         }
 
         public class Serializer : EntitySerializer<S2CStageAreaChangeRes>
@@ -36,6 +38,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteBool(buffer, obj.IsBase);
                 WriteEntityList(buffer, obj.StageFeatureList);
                 // TODO: Unk0 and Unk1
+                WriteMtArray(buffer, obj.Unk0, (buf, objEntry) => { });
+                WriteMtArray(buffer, obj.Unk1, (buf, objEntry) => { });
             }
 
             public override S2CStageAreaChangeRes Read(IBuffer buffer)
@@ -46,6 +50,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.IsBase = ReadBool(buffer);
                 obj.StageFeatureList = ReadEntityList<CDataCommonU32>(buffer);
                 // TODO: Unk0 and Unk1
+                obj.Unk0 = null;
+                obj.Unk1 = null;
                 return obj;
             }
         }
