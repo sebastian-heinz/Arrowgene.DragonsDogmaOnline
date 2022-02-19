@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             IsManualSet = false;
             IsAreaBoss = false;
             IsBloodEnemy = false;
-            Unk0 = false;
+            IsHighOrbEnemy = false;
         }
 
         public uint EnemyId { get; set; }
@@ -48,7 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool IsManualSet { get; set; }
         public bool IsAreaBoss { get; set; }
         public bool IsBloodEnemy { get; set; }
-        public bool Unk0 { get; set; } // Unknown. Not in PS4. The last was BloodEnemy, this could be High Orbs?
+        public bool IsHighOrbEnemy { get; set; } // Unknown. Not in PS4. The last was BloodEnemy, this could be High Orbs?
 
         public class Serializer : EntitySerializer<CDataStageLayoutEnemyPresetEnemyInfoClient>
         {
@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteBool(buffer, obj.IsManualSet);
                 WriteBool(buffer, obj.IsAreaBoss);
                 WriteBool(buffer, obj.IsBloodEnemy);
-                WriteBool(buffer, obj.Unk0);
+                WriteBool(buffer, obj.IsHighOrbEnemy);
             }
 
             public override CDataStageLayoutEnemyPresetEnemyInfoClient Read(IBuffer buffer)
@@ -96,7 +96,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.IsManualSet = ReadBool(buffer);
                 obj.IsAreaBoss = ReadBool(buffer);
                 obj.IsBloodEnemy = ReadBool(buffer);
-                obj.Unk0 = ReadBool(buffer);
+                obj.IsHighOrbEnemy = ReadBool(buffer);
                 return obj;
             }
         }
