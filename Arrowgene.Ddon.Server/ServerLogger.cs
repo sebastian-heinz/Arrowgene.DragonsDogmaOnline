@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.Server
             }
         }
         
-        public void LogPacket(Client client, Packet packet)
+        public void LogPacket(Client client, IPacket packet)
         {
             switch (packet.Source)
             {

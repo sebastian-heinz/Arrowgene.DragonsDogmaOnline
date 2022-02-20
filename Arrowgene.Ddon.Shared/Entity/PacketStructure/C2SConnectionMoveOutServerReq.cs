@@ -7,13 +7,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_CONNECTION_MOVE_OUT_SERVER_REQ;
 
-        public class Serializer : EntitySerializer<C2SConnectionMoveOutServerReq>
+        public class Serializer : PacketEntitySerializer<C2SConnectionMoveOutServerReq>
         {
-            static Serializer()
-            {
-                Id = PacketId.C2S_CONNECTION_MOVE_OUT_SERVER_REQ;
-            }
-            
+
             public override void Write(IBuffer buffer, C2SConnectionMoveOutServerReq obj)
             {
                 // No Data

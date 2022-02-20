@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataPawnJobChangeInfo> PawnJobChangeInfoList { get; set; }
         public List<CDataJobPlayPoint> PlayPointList { get; set; }
 
-        public class Serializer : EntitySerializer<S2CJobGetJobChangeListRes>
+        public class Serializer : PacketEntitySerializer<S2CJobGetJobChangeListRes>
         {
             public override void Write(IBuffer buffer, S2CJobGetJobChangeListRes obj)
             {

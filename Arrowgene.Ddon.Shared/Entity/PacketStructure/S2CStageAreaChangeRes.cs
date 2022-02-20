@@ -24,13 +24,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Unk1 = new List<object>();
         }
 
-        public class Serializer : EntitySerializer<S2CStageAreaChangeRes>
+        public class Serializer : PacketEntitySerializer<S2CStageAreaChangeRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.S2C_STAGE_AREA_CHANGE_RES;
-            }
-            
+
             public override void Write(IBuffer buffer, S2CStageAreaChangeRes obj)
             {
                 WriteServerResponse(buffer, obj);

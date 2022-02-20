@@ -7,13 +7,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_CONNECTION_LOGOUT_RES;
 
-        public class Serializer : EntitySerializer<S2CConnectionLogoutRes>
+        public class Serializer : PacketEntitySerializer<S2CConnectionLogoutRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.S2C_CONNECTION_LOGOUT_RES;
-            }
-            
+
             public override void Write(IBuffer buffer, S2CConnectionLogoutRes obj)
             {
                 WriteServerResponse(buffer, obj);

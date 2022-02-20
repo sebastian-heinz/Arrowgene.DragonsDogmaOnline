@@ -111,6 +111,11 @@ namespace Arrowgene.Ddon.Shared.Network
             }
         }
 
+        public override string ToString()
+        {
+            return $"{GroupId}.{HandlerId}.{HandlerSubId}";
+        }
+
         public bool Equals(PacketId other)
         {
             return GroupId == other.GroupId && HandlerId == other.HandlerId && HandlerSubId == other.HandlerSubId;

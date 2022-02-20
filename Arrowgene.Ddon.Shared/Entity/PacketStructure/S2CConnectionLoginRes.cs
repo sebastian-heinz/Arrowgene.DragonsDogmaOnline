@@ -10,13 +10,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public string OneTimeToken { get; set; }
         public bool IsCogLogin { get; set; }
 
-        public class Serializer : EntitySerializer<S2CConnectionLoginRes>
+        public class Serializer : PacketEntitySerializer<S2CConnectionLoginRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.S2C_CONNECTION_LOGIN_RES;
-            }
-            
+
             public override void Write(IBuffer buffer, S2CConnectionLoginRes obj)
             {
                 WriteServerResponse(buffer, obj);

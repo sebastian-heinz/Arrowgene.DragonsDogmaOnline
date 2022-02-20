@@ -1,12 +1,9 @@
 ﻿using System;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Network;
-using YamlDotNet.Serialization;
 
-namespace Arrowgene.Ddon.Server.Network
+namespace Arrowgene.Ddon.Shared.Network
 {
-    public class Packet
+    public class Packet : IPacket
     {
         public Packet(PacketId id, byte[] data, PacketSource source, uint count)
         {

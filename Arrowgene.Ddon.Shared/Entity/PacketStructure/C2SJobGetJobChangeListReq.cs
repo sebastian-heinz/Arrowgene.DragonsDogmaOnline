@@ -11,8 +11,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
         
-        public class Serializer : EntitySerializer<C2SJobGetJobChangeListReq>
+        public class Serializer : PacketEntitySerializer<C2SJobGetJobChangeListReq>
         {
+
             public override void Write(IBuffer buffer, C2SJobGetJobChangeListReq obj)
             {
             }

@@ -27,13 +27,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataDropItemSetInfo> DropItemSetList { get; set; }
         public List<CDataNamedEnemyParamClient> NamedParamList { get; set; }
 
-        public class Serializer : EntitySerializer<S2CInstanceGetEnemySetListRes> {
+        public class Serializer : PacketEntitySerializer<S2CInstanceGetEnemySetListRes> {
             
-            static Serializer()
-            {
-                Id = PacketId.S2C_INSTANCE_GET_ENEMY_SET_LIST_RES;
-            }
-            
+
             public override void Write(IBuffer buffer, S2CInstanceGetEnemySetListRes obj)
             {
                 WriteServerResponse(buffer, obj);

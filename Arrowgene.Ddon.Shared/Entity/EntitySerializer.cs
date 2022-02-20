@@ -5,24 +5,33 @@ using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Shared.Entity
 {
     public abstract class EntitySerializer
     {
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(EntitySerializer));
+
         private static readonly Dictionary<PacketId, EntitySerializer> LoginPacketSerializers;
         private static readonly Dictionary<PacketId, EntitySerializer> GamePacketSerializers;
         private static readonly Dictionary<Type, EntitySerializer> Serializers;
+        private static readonly Dictionary<PacketId, IStructurePacketFactory> LoginStructurePacketFactories;
+        private static readonly Dictionary<PacketId, IStructurePacketFactory> GameStructurePacketFactories;
 
         static EntitySerializer()
         {
             LoginPacketSerializers = new Dictionary<PacketId, EntitySerializer>();
             GamePacketSerializers = new Dictionary<PacketId, EntitySerializer>();
             Serializers = new Dictionary<Type, EntitySerializer>();
+            LoginStructurePacketFactories = new Dictionary<PacketId, IStructurePacketFactory>();
+            GameStructurePacketFactories = new Dictionary<PacketId, IStructurePacketFactory>();
 
             // Data structure serializers
-            Create(new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
-            Create(new S2CLobbyChatMsgNoticeCharacterBaseInfo.Serializer()); // TODO naming convention S2C -> not a packet
+            Create(
+                new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
+            Create(
+                new S2CLobbyChatMsgNoticeCharacterBaseInfo.Serializer()); // TODO naming convention S2C -> not a packet
             Create(new CData_35_14_16.Serializer());
             Create(new CDataAchievementIdentifierSerializer());
             Create(new CDataArisenProfileSerializer());
@@ -163,25 +172,74 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new ServerRes.Serializer());
         }
 
-        private static void Create<T>(EntitySerializer<T> serializer) where T : class, new()
+        private static void Create<T>(PacketEntitySerializer<T> serializer) where T : class, IPacketStructure, new()
         {
             Type type = serializer.GetEntityType();
-            PacketId packetId = EntitySerializer<T>.Id;
+            Serializers.Add(type, serializer);
+
+            PacketId packetId = new T().Id;
             if (packetId != PacketId.UNKNOWN)
             {
                 if (packetId.ServerType == ServerType.Login)
                 {
-                    LoginPacketSerializers.Add(packetId, serializer);
+                    if (LoginPacketSerializers.ContainsKey(packetId))
+                    {
+                        Logger.Error($"PacketId:{packetId}({packetId.Name}) has already been added to `LoginPacketSerializers` lookup");
+                    }
+                    else
+                    {
+                        LoginPacketSerializers.Add(packetId, serializer);
+                    }
+
+                    if (LoginStructurePacketFactories.ContainsKey(packetId))
+                    {
+                        Logger.Error(
+                            $"PacketId:{packetId}({packetId.Name}) has already been added to `LoginStructurePacketFactories` lookup");
+                    }
+                    else
+                    {
+                        LoginStructurePacketFactories.Add(packetId, serializer);
+                    }
                 }
                 else if (packetId.ServerType == ServerType.Game)
                 {
-                    GamePacketSerializers.Add(packetId, serializer);
+                    if (GamePacketSerializers.ContainsKey(packetId))
+                    {
+                        Logger.Error($"PacketId:{packetId}({packetId.Name}) has already been added to `GamePacketSerializers` lookup");
+                    }
+                    else
+                    {
+                        GamePacketSerializers.Add(packetId, serializer);
+                    }
+
+                    if (GameStructurePacketFactories.ContainsKey(packetId))
+                    {
+                        Logger.Error(
+                            $"PacketId:{packetId}({packetId.Name}) has already been added to `GameStructurePacketFactories` lookup");
+                    }
+                    else
+                    {
+                        GameStructurePacketFactories.Add(packetId, serializer);
+                    }
                 }
+            }
+        }
+
+        private static void Create<T>(EntitySerializer<T> serializer) where T : class, new()
+        {
+            Type type = serializer.GetEntityType();
+            if (Serializers.ContainsKey(type))
+            {
+                Logger.Error($"Type:{type} has already been added to `Serializers` lookup");
+                return;
             }
 
             Serializers.Add(type, serializer);
         }
 
+        /// <summary>
+        /// Provides a Serializer for a specific type of Structure
+        /// </summary>
         public static EntitySerializer<T> Get<T>() where T : class, new()
         {
             Type type = typeof(T);
@@ -195,6 +253,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             return serializer;
         }
 
+        /// <summary>
+        /// Provides a Serializer for a PacketId
+        /// </summary>
         public static EntitySerializer Get(PacketId packetId)
         {
             if (packetId.ServerType == ServerType.Login && LoginPacketSerializers.ContainsKey(packetId))
@@ -210,15 +271,47 @@ namespace Arrowgene.Ddon.Shared.Entity
             return null;
         }
 
+        /// <summary>
+        /// Creates a StructuredPacket from a Packet
+        /// </summary>
+        public static IStructurePacket CreateStructurePacket(Packet packet)
+        {
+            PacketId packetId = packet.Id;
+            if (packetId.ServerType == ServerType.Login && LoginStructurePacketFactories.ContainsKey(packetId))
+            {
+                return LoginStructurePacketFactories[packetId].Create(packet);
+            }
+
+            if (packetId.ServerType == ServerType.Game && GameStructurePacketFactories.ContainsKey(packetId))
+            {
+                return GameStructurePacketFactories[packetId].Create(packet);
+            }
+
+            return null;
+        }
+
         public abstract void WriteObj(IBuffer buffer, object obj);
         public abstract object ReadObj(IBuffer buffer);
         protected abstract Type GetEntityType();
     }
 
+    /// <summary>
+    /// PacketStructure Serializer
+    /// </summary>
+    public abstract class PacketEntitySerializer<T> : EntitySerializer<T>, IStructurePacketFactory
+        where T : class, IPacketStructure, new()
+    {
+        public IStructurePacket Create(Packet packet)
+        {
+            return new StructurePacket<T>(packet);
+        }
+    }
+
+    /// <summary>
+    /// Generic Object Serializer
+    /// </summary>
     public abstract class EntitySerializer<T> : EntitySerializer where T : class, new()
     {
-        public static PacketId Id = PacketId.UNKNOWN;
-
         public override void WriteObj(IBuffer buffer, object obj)
         {
             if (obj is T t)
@@ -393,7 +486,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             serializer.Write(buffer, entity);
         }
 
-        public static void WriteMtArray<TEntity>(IBuffer buffer, List<TEntity> entities, Action<IBuffer, TEntity> writer)
+        public static void WriteMtArray<TEntity>(IBuffer buffer, List<TEntity> entities,
+            Action<IBuffer, TEntity> writer)
         {
             buffer.WriteMtArray(entities, writer, Endianness.Big);
         }

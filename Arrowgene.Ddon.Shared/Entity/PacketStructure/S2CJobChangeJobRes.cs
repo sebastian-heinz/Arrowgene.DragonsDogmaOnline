@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataPlayPointData> PlayPointDataList { get; set; }
         public CDataJobChangeJobResUnk0 Unk0 { get; set; }
 
-        public class Serializer : EntitySerializer<S2CJobChangeJobRes>
+        public class Serializer : PacketEntitySerializer<S2CJobChangeJobRes>
         {
             public override void Write(IBuffer buffer, S2CJobChangeJobRes obj)
             {

@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataEquipItemInfo> EquipItemList { get; set; }
         public List<CDataEquipItemInfo> VisualEquipItemList { get; set; }
 
-        public class Serializer : EntitySerializer<S2CChangeCharacterEquipLobbyNotice>
+        public class Serializer : PacketEntitySerializer<S2CChangeCharacterEquipLobbyNotice>
         {
             public override void Write(IBuffer buffer, S2CChangeCharacterEquipLobbyNotice obj)
             {

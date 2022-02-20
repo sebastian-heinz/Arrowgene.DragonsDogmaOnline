@@ -4,17 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Ddon.Shared.Network;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.TypeInspectors;
 
-namespace Arrowgene.Ddon.Server.Network
+namespace Arrowgene.Ddon.Shared.Network
 {
-    public class StructurePacket<TStruct> : StructurePacket where TStruct : class, IPacketStructure, new()
+    public class StructurePacket<TStruct> : StructurePacket, IStructurePacket<TStruct> where TStruct : class, IPacketStructure, new()
     {
         private TStruct _structure;
 
-        public StructurePacket(Packet packet) : base(packet)
+        public StructurePacket(IPacket packet) : base(packet)
         {
         }
 
@@ -22,7 +21,7 @@ namespace Arrowgene.Ddon.Server.Network
         {
             SetStructure(structure);
         }
-
+        
         public TStruct Structure
         {
             get => GetStructure();
@@ -46,46 +45,20 @@ namespace Arrowgene.Ddon.Server.Network
         }
     }
 
-    public class StructurePacket : Packet, IStructurePacket
+    public abstract class StructurePacket : Packet, IStructurePacket
     {
         private static readonly ISerializer Serializer = new SerializerBuilder()
             .WithTypeInspector(inspector => new MyTypeInspector(inspector))
             .Build();
-
-        private static readonly Dictionary<PacketId, IStructurePacketFactory> LoginPacketFactories;
-        private static readonly Dictionary<PacketId, IStructurePacketFactory> GamePacketFactories;
-
-        static StructurePacket()
-        {
-            LoginPacketFactories = new Dictionary<PacketId, IStructurePacketFactory>();
-            
-            GamePacketFactories = new Dictionary<PacketId, IStructurePacketFactory>();
-        }
         
-        public static StructurePacket Make(Packet packet)
-        {
-            PacketId packetId = packet.Id;
-            if (packetId.ServerType == ServerType.Login && LoginPacketFactories.ContainsKey(packetId))
-            {
-                return LoginPacketFactories[packetId].Create(packet);
-            }
-
-            if (packetId.ServerType == ServerType.Game && GamePacketFactories.ContainsKey(packetId))
-            {
-                return GamePacketFactories[packetId].Create(packet);
-            }
-
-            return null;
-        }
-
-        protected StructurePacket(Packet packet) : base(packet.Id, packet.Data, packet.Source, packet.Count)
+        protected StructurePacket(IPacket packet) : base(packet.Id, packet.Data, packet.Source, packet.Count)
         {
         }
 
         protected StructurePacket(PacketId id, byte[] data) : base(id, data)
         {
         }
-
+        
         public string PrintStructure()
         {
             StringBuilder stringBuilder = new StringBuilder();

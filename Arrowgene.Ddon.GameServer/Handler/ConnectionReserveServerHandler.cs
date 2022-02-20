@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_CONNECTION_RESERVE_SERVER_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             
             IBuffer buffer = new StreamBuffer();

@@ -16,13 +16,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Lv = 0;
         }
 
-        public class Serializer : EntitySerializer<C2STraningRoomSetEnemyReq>
+        public class Serializer : PacketEntitySerializer<C2STraningRoomSetEnemyReq>
         {
-            static Serializer()
-            {
-                Id = PacketId.C2S_INSTANCE_TRANING_ROOM_SET_ENEMY_REQ;
-            }
-            
+
             public override void Write(IBuffer buffer, C2STraningRoomSetEnemyReq obj)
             {
                 WriteUInt32(buffer, obj.ID);

@@ -24,12 +24,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             StrMessage = string.Empty;
         }
 
-        public class Serializer : EntitySerializer<C2SLobbyChatMsgReq> {
+        public class Serializer : PacketEntitySerializer<C2SLobbyChatMsgReq> {
             
-            static Serializer()
-            {
-                Id = PacketId.C2S_LOBBY_LOBBY_CHAT_MSG_REQ;
-            }
             
             public override void Write(IBuffer buffer, C2SLobbyChatMsgReq obj)
             {

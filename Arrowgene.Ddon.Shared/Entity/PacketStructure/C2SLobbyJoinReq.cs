@@ -10,13 +10,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint CharacterID;
         public uint UserListMaxNum;
 
-        public class Serializer : EntitySerializer<C2SLobbyJoinReq>
+        public class Serializer : PacketEntitySerializer<C2SLobbyJoinReq>
         {
-            static Serializer()
-            {
-                Id = PacketId.C2S_LOBBY_LOBBY_JOIN_REQ;
-            }
-            
+
             public override void Write(IBuffer buffer, C2SLobbyJoinReq obj)
             {
                 WriteUInt32(buffer, obj.CharacterID);

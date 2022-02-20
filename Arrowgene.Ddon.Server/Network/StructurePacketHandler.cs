@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public abstract void Handle(TClient client, StructurePacket<TReqStruct> packet);
 
-        public void Handle(TClient client, Packet packet)
+        public void Handle(TClient client, IPacket packet)
         {
             Handle(client, new StructurePacket<TReqStruct>(packet));
         }

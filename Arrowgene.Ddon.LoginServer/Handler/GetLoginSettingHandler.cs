@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override PacketId Id => PacketId.C2L_GET_LOGIN_SETTING_REQ;
 
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, IPacket packet)
         {
             L2CGetLoginSettingsRes entity = new L2CGetLoginSettingsRes
             {

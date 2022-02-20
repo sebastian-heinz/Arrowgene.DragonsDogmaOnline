@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public uint CostMax { get; set; }
 
-        public class Serializer : EntitySerializer<S2CSkillGetAbilityCostRes>
+        public class Serializer : PacketEntitySerializer<S2CSkillGetAbilityCostRes>
         {
             public override void Write(IBuffer buffer, S2CSkillGetAbilityCostRes obj)
             {

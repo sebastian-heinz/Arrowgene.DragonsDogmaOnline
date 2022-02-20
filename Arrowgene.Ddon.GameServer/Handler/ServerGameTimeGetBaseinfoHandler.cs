@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_SERVER_GAME_TIME_GET_BASEINFO_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(InGameDump.Dump_29);
         }

@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -29,12 +30,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             StrMessage = string.Empty;
         }
 
-        public class Serializer : EntitySerializer<S2CLobbyChatMsgNotice> {
-            static Serializer()
-            {
-                Id = PacketId.S2C_LOBBY_LOBBY_CHAT_MSG_NTC;
-            }
-            
+        public class Serializer : PacketEntitySerializer<S2CLobbyChatMsgNotice> {
+
             public override void Write(IBuffer buffer, S2CLobbyChatMsgNotice obj)
             {
                 WriteByte(buffer, obj.Unk0);
