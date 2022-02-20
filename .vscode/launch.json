@@ -11,7 +11,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/netcoreapp3.0/Arrowgene.Ddon.Cli.dll",
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -32,7 +32,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/netcoreapp3.0/Arrowgene.Ddon.Cli.dll",
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
             "args": ["server", "start"],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -51,7 +51,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/netcoreapp3.0/Arrowgene.Ddon.Cli.dll",
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
             "args": ["client"],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
