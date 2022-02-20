@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Shared.Entity.Structure;
+﻿using System;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -31,19 +32,15 @@ namespace Arrowgene.Ddon.Shared.Model
                 GroupId = GroupId
             };
         }
+        
+        public bool Equals(StageId other)
+        {
+            return Id == other.Id && LayerNo == other.LayerNo && GroupId == other.GroupId;
+        }
 
-        // override object.Equals
-        public override bool Equals(object obj)
-        {            
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-            
-            StageId objStageId = (StageId) obj;
-            return Id == objStageId.Id
-                && LayerNo == objStageId.LayerNo
-                && GroupId == objStageId.GroupId;
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, LayerNo, GroupId);
         }
     }
 }
