@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_INSTANCE_SET_OM_INSTANT_KEY_VALUE_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(SelectedDump.AntiDC_Test1);
         }
