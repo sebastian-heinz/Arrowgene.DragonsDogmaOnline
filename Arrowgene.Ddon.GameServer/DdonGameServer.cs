@@ -160,8 +160,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
 
             AddHandler(new InstanceEnemyKillHandler(this));
+            AddHandler(new InstanceExchangeOmInstantKeyValueHandler(this));
             AddHandler(new InstanceGetEnemySetListHandler(this));
             AddHandler(new InstanceGetItemSetListHandler(this));
+            AddHandler(new InstanceSetOmInstantKeyValueHandler(this));
 
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
 
