@@ -29,7 +29,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             // Data structure serializers
             Create(
-                new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
+                new C2SActionSetPlayerActionHistoryReqElement.
+                    Serializer()); // TODO naming convention C2S -> not a packet
             Create(
                 new S2CLobbyChatMsgNoticeCharacterBaseInfo.Serializer()); // TODO naming convention S2C -> not a packet
             Create(new CData_35_14_16.Serializer());
@@ -184,7 +185,8 @@ namespace Arrowgene.Ddon.Shared.Entity
                 {
                     if (LoginPacketSerializers.ContainsKey(packetId))
                     {
-                        Logger.Error($"PacketId:{packetId}({packetId.Name}) has already been added to `LoginPacketSerializers` lookup");
+                        Logger.Error(
+                            $"PacketId:{packetId}({packetId.Name}) has already been added to `LoginPacketSerializers` lookup");
                     }
                     else
                     {
@@ -205,7 +207,8 @@ namespace Arrowgene.Ddon.Shared.Entity
                 {
                     if (GamePacketSerializers.ContainsKey(packetId))
                     {
-                        Logger.Error($"PacketId:{packetId}({packetId.Name}) has already been added to `GamePacketSerializers` lookup");
+                        Logger.Error(
+                            $"PacketId:{packetId}({packetId.Name}) has already been added to `GamePacketSerializers` lookup");
                     }
                     else
                     {
@@ -227,6 +230,13 @@ namespace Arrowgene.Ddon.Shared.Entity
 
         private static void Create<T>(EntitySerializer<T> serializer) where T : class, new()
         {
+            if (typeof(IPacketStructure).IsAssignableFrom(typeof(T))
+                && typeof(T) != typeof(ServerRes)) // ServerRes is exception to this rule as it is a generic response.
+            {
+                Logger.Error($"EntitySerializer<{typeof(T)}> should be PacketEntitySerializer<{typeof(T)}> " +
+                             $"because {typeof(T)} is assignable from `IPacketStructure`, indicating it is a PacketStructure");
+            }
+
             Type type = serializer.GetEntityType();
             if (Serializers.ContainsKey(type))
             {
