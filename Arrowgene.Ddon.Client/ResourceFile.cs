@@ -11,6 +11,7 @@ namespace Arrowgene.Ddon.Client
         {
             MagicTag = buffer.ReadFixedString(4);
             MagicId = buffer.ReadUInt32(Endianness.Little);
+            ReadResource(buffer);
         }
 
         protected abstract void ReadResource(IBuffer buffer);
