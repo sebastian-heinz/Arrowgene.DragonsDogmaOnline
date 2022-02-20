@@ -1,5 +1,7 @@
-﻿using System.Runtime.Serialization;
+﻿using System.IO;
+using System.Runtime.Serialization;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.GameServer
 {

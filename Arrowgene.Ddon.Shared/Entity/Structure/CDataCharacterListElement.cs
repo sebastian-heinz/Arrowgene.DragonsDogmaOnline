@@ -12,8 +12,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ClanName = "";
             ServerID = 0;
             OnlineStatus = 0;
-            jobInfo0 = new DoubleByteThing();
-            jobInfo1 = new DoubleByteThing();
+            jobInfo0 = new CDataJobInfo();
+            jobInfo1 = new CDataJobInfo();
             m_wstrMatchingPlofile = "";
             unk2 = 0;
         }
@@ -24,8 +24,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public string ClanName;
         public ushort ServerID;
         public byte OnlineStatus;
-        public DoubleByteThing jobInfo0;
-        public DoubleByteThing jobInfo1;
+        public CDataJobInfo jobInfo0;
+        public CDataJobInfo jobInfo1;
 
         /*
         Represents:
@@ -63,8 +63,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.ClanName = ReadMtString(buffer);
             obj.ServerID = ReadUInt16(buffer);
             obj.OnlineStatus = ReadByte(buffer);
-            obj.jobInfo0 = ReadEntity<DoubleByteThing>(buffer);
-            obj.jobInfo1 = ReadEntity<DoubleByteThing>(buffer);
+            obj.jobInfo0 = ReadEntity<CDataJobInfo>(buffer);
+            obj.jobInfo1 = ReadEntity<CDataJobInfo>(buffer);
             obj.m_wstrMatchingPlofile = ReadMtString(buffer);
             obj.unk2 = ReadByte(buffer);
             return obj;

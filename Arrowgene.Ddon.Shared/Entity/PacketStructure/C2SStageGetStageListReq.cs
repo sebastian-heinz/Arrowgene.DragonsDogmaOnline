@@ -7,8 +7,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_STAGE_GET_STAGE_LIST_REQ;
 
-        public class Serializer : EntitySerializer<C2SStageGetStageListReq>
+        public class Serializer : PacketEntitySerializer<C2SStageGetStageListReq>
         {
+
             public override void Write(IBuffer buffer, C2SStageGetStageListReq obj)
             {
             }

@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_ITEM_GET_STORAGE_ITEM_LIST_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(InGameDump.Dump_40);
             client.Send(InGameDump.Dump_42);

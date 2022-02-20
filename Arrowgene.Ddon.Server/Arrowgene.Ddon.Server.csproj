@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.Server</RootNamespace>
         <Title>Dragons Dogma Online - Server</Title>
         <Company>DDON Team</Company>
         <Product>Ddon.Server</Product>
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.1" />

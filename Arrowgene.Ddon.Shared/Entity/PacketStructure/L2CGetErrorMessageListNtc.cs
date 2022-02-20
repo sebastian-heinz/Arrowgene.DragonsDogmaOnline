@@ -20,8 +20,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<ClientErrorCode> ErrorCodes { get; set; }
         public PacketId Id => PacketId.L2C_GET_ERROR_MESSAGE_LIST_NTC;
 
-        public class Serializer : EntitySerializer<L2CGetErrorMessageListNtc>
+        public class Serializer : PacketEntitySerializer<L2CGetErrorMessageListNtc>
         {
+
             public override void Write(IBuffer buffer, L2CGetErrorMessageListNtc obj)
             {
                 WriteUInt32(buffer, (uint) obj.ErrorCodes.Count);

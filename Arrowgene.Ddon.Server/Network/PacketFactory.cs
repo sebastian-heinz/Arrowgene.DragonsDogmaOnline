@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -84,7 +85,7 @@ namespace Arrowgene.Ddon.Server.Network
             return buffer.GetAllBytes();
         }
 
-        public byte[] Write(Packet packet)
+        public byte[] Write(IPacket packet)
         {
             packet.Source = PacketSource.Server;
             byte[] data = packet.Data;
@@ -108,14 +109,16 @@ namespace Arrowgene.Ddon.Server.Network
             if (true)
             {
                 // temporary solution to attach original packet name to custom packet names
-                PacketId knownPacketId = _packetIdResolver.Get(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId);
+                PacketId knownPacketId =
+                    _packetIdResolver.Get(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId);
                 if (knownPacketId != PacketId.UNKNOWN
                     && !packet.Id.Name.Contains("->")
                     && knownPacketId.Name != packet.Id.Name
-                )
+                   )
                 {
                     string combinedName = knownPacketId.Name + "->" + packet.Id.Name;
-                    packet.Id = new PacketId(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId, combinedName, _packetIdResolver.ServerType, packet.Source);
+                    packet.Id = new PacketId(packet.Id.GroupId, packet.Id.HandlerId, packet.Id.HandlerSubId,
+                        combinedName, _packetIdResolver.ServerType, packet.Source);
                 }
             }
 
@@ -152,9 +155,9 @@ namespace Arrowgene.Ddon.Server.Network
             return buffer.GetAllBytes();
         }
 
-        public List<Packet> Read(byte[] data)
+        public List<IPacket> Read(byte[] data)
         {
-            List<Packet> packets = new List<Packet>();
+            List<IPacket> packets = new List<IPacket>();
             if (_buffer == null)
             {
                 _buffer = Util.Buffer.Provide(data);
@@ -247,7 +250,17 @@ namespace Arrowgene.Ddon.Server.Network
                     }
 
                     Packet packet = new Packet(packetId, payload, packetSource, packetCount);
-                    packets.Add(packet);
+
+                    IStructurePacket structurePacket = EntitySerializer.CreateStructurePacket(packet);
+                    if (structurePacket != null)
+                    {
+                        packets.Add(structurePacket);
+                    }
+                    else
+                    {
+                        packets.Add(packet);
+                    }
+
                     _readHeader = false;
                     read = _buffer.Position != _buffer.Size;
                 }

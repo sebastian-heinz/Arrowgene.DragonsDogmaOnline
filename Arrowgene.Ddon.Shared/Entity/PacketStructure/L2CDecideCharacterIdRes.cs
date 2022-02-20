@@ -10,8 +10,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint CharacterId { get; set; }
         public uint WaitNum { get; set; }
         
-        public class Serializer : EntitySerializer<L2CDecideCharacterIdRes>
+        public class Serializer : PacketEntitySerializer<L2CDecideCharacterIdRes>
         {
+
             public override void Write(IBuffer buffer, L2CDecideCharacterIdRes obj)
             {
                 WriteServerResponse(buffer, obj);

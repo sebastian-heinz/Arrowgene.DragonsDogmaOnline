@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_AREA_GET_AREA_BASE_INFO_LIST_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(InGameDump.Dump_58);
         }

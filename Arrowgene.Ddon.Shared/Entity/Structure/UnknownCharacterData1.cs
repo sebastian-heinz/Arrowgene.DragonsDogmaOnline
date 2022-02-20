@@ -2,7 +2,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct UnknownCharacterData1
+    public class UnknownCharacterData1
     {
         public byte u0;
         public uint u1;

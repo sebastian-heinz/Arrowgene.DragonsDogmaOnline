@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             if (!bool.TryParse(properties[19], out bool isManualSet)) return null;
             if (!bool.TryParse(properties[20], out bool isAreaBoss)) return null;
             if (!bool.TryParse(properties[21], out bool isBloodEnemy)) return null;
-            if (!bool.TryParse(properties[22], out bool unk0)) return null;
+            if (!bool.TryParse(properties[22], out bool isHighOrbEnemy)) return null;
 
             return new EnemySpawn
             {
@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     IsManualSet = isManualSet,
                     IsAreaBoss = isAreaBoss,
                     IsBloodEnemy = isBloodEnemy,
-                    Unk0 = unk0,
+                    IsHighOrbEnemy = isHighOrbEnemy,
                 }
             };
         }

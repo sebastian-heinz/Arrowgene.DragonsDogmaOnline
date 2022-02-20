@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_NPC_GET_NPC_EXTENDED_FACILITY_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(GameFull.Dump_202);
         }

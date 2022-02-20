@@ -19,8 +19,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public CDataLayoutEnemyData EnemyData { get; set; }
         public uint WaitSecond { get; set; }
 
-        public class Serializer : EntitySerializer<S2CInstanceEnemyRepopNtc>
+        public class Serializer : PacketEntitySerializer<S2CInstanceEnemyRepopNtc>
         {
+
             public override void Write(IBuffer buffer, S2CInstanceEnemyRepopNtc obj)
             {
                 WriteEntity<CStageLayoutID>(buffer, obj.LayoutId);

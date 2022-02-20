@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override PacketId Id => PacketId.C2L_GET_GAME_SESSION_KEY_REQ;
 
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, IPacket packet)
         {
             // Request packet C2L_GET_GAME_SESSION_KEY_REQ has no data aside from header,
             // the rest is just padding/alignment to 16-byte boundary.

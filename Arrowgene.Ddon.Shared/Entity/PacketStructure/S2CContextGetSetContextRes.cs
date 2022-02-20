@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_CONTEXT_GET_SET_CONTEXT_RES;
 
-        public class Serializer : EntitySerializer<S2CContextGetSetContextRes>
+        public class Serializer : PacketEntitySerializer<S2CContextGetSetContextRes>
         {
             public override void Write(IBuffer buffer, S2CContextGetSetContextRes obj)
             {

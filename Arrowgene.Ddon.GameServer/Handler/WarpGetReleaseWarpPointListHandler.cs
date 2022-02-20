@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_WARP_GET_RELEASE_WARP_POINT_LIST_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(InGameDump.Dump_56);
         }

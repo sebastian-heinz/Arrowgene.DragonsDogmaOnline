@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override PacketId Id => PacketId.C2L_PING_REQ;
 
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, IPacket packet)
         {
             client.PingTime = DateTime.Now;
             ServerRes res = new ServerRes(PacketId.L2C_PING_RES);

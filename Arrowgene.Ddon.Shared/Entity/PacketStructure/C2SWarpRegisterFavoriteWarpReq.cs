@@ -15,8 +15,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             WarpPointID = 0;
         }
 
-        public class Serializer : EntitySerializer<C2SWarpRegisterFavoriteWarpReq>
+        public class Serializer : PacketEntitySerializer<C2SWarpRegisterFavoriteWarpReq>
         {
+
             public override void Write(IBuffer buffer, C2SWarpRegisterFavoriteWarpReq obj)
             {
                 WriteUInt32(buffer, obj.SlotNo);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -31,9 +32,9 @@ namespace Arrowgene.Ddon.Server.Network
             Socket.Close();
         }
 
-        public List<Packet> Receive(byte[] data)
+        public List<IPacket> Receive(byte[] data)
         {
-            List<Packet> packets;
+            List<IPacket> packets;
             try
             {
                 packets = _packetFactory.Read(data);
@@ -41,10 +42,10 @@ namespace Arrowgene.Ddon.Server.Network
             catch (Exception ex)
             {
                 Logger.Exception(this, ex);
-                packets = new List<Packet>();
+                packets = new List<IPacket>();
             }
 
-            foreach (Packet packet in packets)
+            foreach (IPacket packet in packets)
             {
                 Logger.LogPacket(this, packet);
             }
@@ -55,10 +56,10 @@ namespace Arrowgene.Ddon.Server.Network
         /// <summary>
         /// Send a Structure
         /// </summary>
-        public void Send<TResStruct>(TResStruct res) where TResStruct : IPacketStructure
+        public void Send<TResStruct>(TResStruct res) where TResStruct : class, IPacketStructure, new()
         {
             StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
-            
+
             Send(packet);
         }
 

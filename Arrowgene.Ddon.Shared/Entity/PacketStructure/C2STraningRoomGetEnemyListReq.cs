@@ -6,8 +6,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     public class C2STraningRoomGetEnemyListReq : IPacketStructure
     {
         public PacketId Id => PacketId.C2S_INSTANCE_TRANING_ROOM_GET_ENEMY_LIST_REQ;
-        public class Serializer : EntitySerializer<C2STraningRoomGetEnemyListReq>
+        public class Serializer : PacketEntitySerializer<C2STraningRoomGetEnemyListReq>
         {
+
             public override void Write(IBuffer buffer, C2STraningRoomGetEnemyListReq obj)
             {
             }

@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             JumpType=0;
         }
 
-        public class Serializer : EntitySerializer<C2SStageAreaChangeReq>
+        public class Serializer : PacketEntitySerializer<C2SStageAreaChangeReq>
         {
             public override void Write(IBuffer buffer, C2SStageAreaChangeReq obj)
             {

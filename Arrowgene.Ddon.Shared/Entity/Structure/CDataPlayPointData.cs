@@ -2,7 +2,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataPlayPointData
+    public class CDataPlayPointData
     {
         public byte ExpMode;
         public uint PlayPoint;

@@ -24,8 +24,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public int MasterIndex { get; set; }
         public uint Unk0 { get; set; }
 
-        public class Serializer : EntitySerializer<C2SContextGetSetContextReq>
-        {
+        public class Serializer : PacketEntitySerializer<C2SContextGetSetContextReq>
+        {            
+
             public override void Write(IBuffer buffer, C2SContextGetSetContextReq obj)
             {
                 WriteUInt32(buffer, obj.ContextId);

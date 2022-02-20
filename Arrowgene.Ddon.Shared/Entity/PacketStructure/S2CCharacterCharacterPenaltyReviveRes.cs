@@ -11,8 +11,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public class Serializer : EntitySerializer<S2CCharacterCharacterPenaltyReviveRes>
+        public class Serializer : PacketEntitySerializer<S2CCharacterCharacterPenaltyReviveRes>
         {
+
             public override void Write(IBuffer buffer, S2CCharacterCharacterPenaltyReviveRes obj)
             {
                 WriteServerResponse(buffer, obj);

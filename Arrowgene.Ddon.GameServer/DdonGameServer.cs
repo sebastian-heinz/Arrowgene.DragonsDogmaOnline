@@ -77,7 +77,6 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
-            EnemyManager.Load();
             LoadStages();
             LoadChatHandler();
             LoadPacketHandler();
@@ -170,9 +169,12 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemGetStorageItemListHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
 
+            AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobGetJobChangeListHandler(this));
+
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
+            AddHandler(new Lobby_3_3_16_Handler(this));
             AddHandler(new LobbyLobbyChatMsgHandler(this));
             AddHandler(new LobbyLobbyJoinHandler(this));
 
@@ -218,7 +220,14 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetRealTimeHandler(this));
             AddHandler(new ServerGetServerListHandler(this));
 
+            AddHandler(new SkillGetAbilityCostHandler(this));
             AddHandler(new SkillGetCurrentSetSkillListHandler(this));
+            AddHandler(new SkillGetLearnedAbilityListHandler(this));
+            AddHandler(new SkillGetLearnedNormalSkillListHandler(this));
+            AddHandler(new SkillGetLearnedSkillListHandler(this));
+            AddHandler(new SkillGetPresetAbilityListHandler(this));
+            AddHandler(new SkillGetSetAbilityListHandler(this));
+            AddHandler(new SkillGetSetSkillListHandler(this));
 
             AddHandler(new StageAreaChangeHandler(this));
             AddHandler(new StageGetStageListHandler(this));

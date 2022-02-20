@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataLobbyMemberInfo> LobbyMemberInfoList;
 
 
-        public class Serializer : EntitySerializer<S2CLobbyJoinRes>
+        public class Serializer : PacketEntitySerializer<S2CLobbyJoinRes>
         {
             public override void Write(IBuffer buffer, S2CLobbyJoinRes obj)
             {

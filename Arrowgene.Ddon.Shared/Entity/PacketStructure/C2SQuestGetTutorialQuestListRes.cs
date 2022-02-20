@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             StageNo = 0;
         }
 
-        public class Serializer : EntitySerializer<C2SQuestGetTutorialQuestListRes>
+        public class Serializer : PacketEntitySerializer<C2SQuestGetTutorialQuestListRes>
         {
             public override void Write(IBuffer buffer, C2SQuestGetTutorialQuestListRes obj)
             {

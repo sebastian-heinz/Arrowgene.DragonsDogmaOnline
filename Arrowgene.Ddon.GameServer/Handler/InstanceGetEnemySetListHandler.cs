@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -27,7 +28,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Stage = stageId;
 
             List<EnemySpawn> spawns = _enemyManager.GetSpawns(stageId, subGroupId);
-
 
             S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes();
             response.LayoutId = stageId.ToStageLayoutId();

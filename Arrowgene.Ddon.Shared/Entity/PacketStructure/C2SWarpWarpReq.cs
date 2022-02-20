@@ -17,7 +17,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Price = 0;
         }
 
-        public class Serializer : EntitySerializer<C2SWarpWarpReq> {
+        public class Serializer : PacketEntitySerializer<C2SWarpWarpReq> {
+            
             public override void Write(IBuffer buffer, C2SWarpWarpReq obj)
             {
                 WriteUInt32(buffer, obj.CurrentPointID);

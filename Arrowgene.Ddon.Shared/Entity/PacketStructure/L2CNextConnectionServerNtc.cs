@@ -13,8 +13,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public byte Counter { get; set; }
 
-        public class Serializer : EntitySerializer<L2CNextConnectionServerNtc>
+        public class Serializer : PacketEntitySerializer<L2CNextConnectionServerNtc>
         {
+
             public override void Write(IBuffer buffer, L2CNextConnectionServerNtc obj)
             {
                 WriteUInt32(buffer, obj.Error);

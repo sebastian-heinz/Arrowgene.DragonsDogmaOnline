@@ -17,8 +17,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Unk1 = 0;
         }
 
-        public class Serializer : EntitySerializer<C2SCharacterCharacterPenaltyReviveReq>
+        public class Serializer : PacketEntitySerializer<C2SCharacterCharacterPenaltyReviveReq>
         {
+
             public override void Write(IBuffer buffer, C2SCharacterCharacterPenaltyReviveReq obj)
             {
                 WriteUInt32(buffer, obj.Unk0);

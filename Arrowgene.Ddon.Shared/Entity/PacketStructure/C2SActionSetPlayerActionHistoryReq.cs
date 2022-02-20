@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Unk0 = new List<C2SActionSetPlayerActionHistoryReqElement>();
         }
 
-        public class Serializer : EntitySerializer<C2SActionSetPlayerActionHistoryReq>
+        public class Serializer : PacketEntitySerializer<C2SActionSetPlayerActionHistoryReq>
         {
             public override void Write(IBuffer buffer, C2SActionSetPlayerActionHistoryReq obj)
             {
@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
     }
 
+    // TODO separate file?
     public class C2SActionSetPlayerActionHistoryReqElement
     {
         public byte Unk0 { get; set; }

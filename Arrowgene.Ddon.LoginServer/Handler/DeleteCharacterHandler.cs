@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override PacketId Id => PacketId.C2L_DELETE_CHARACTER_INFO_REQ;
 
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, IPacket packet)
         {
             IBuffer recv = packet.AsBuffer();
             uint characterID = recv.ReadUInt32(Endianness.Big);
