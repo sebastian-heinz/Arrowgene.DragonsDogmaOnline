@@ -19,13 +19,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataLobbyMemberInfo> LobbyMemberInfoList;
 
 
-        public class Serializer : EntitySerializer<S2CLobbyJoinRes>
+        public class Serializer : PacketEntitySerializer<S2CLobbyJoinRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.S2C_LOBBY_LOBBY_JOIN_RES;
-            }
-            
             public override void Write(IBuffer buffer, S2CLobbyJoinRes obj)
             {
                 WriteServerResponse(buffer, obj);

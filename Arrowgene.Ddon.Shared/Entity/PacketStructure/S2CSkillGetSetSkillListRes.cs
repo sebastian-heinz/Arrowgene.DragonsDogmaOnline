@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CSkillGetSetSkillListRes : ServerResponse
     {
-        public override PacketId Id => PacketId.S2C_SKILL_GET_LEARNED_SKILL_LIST_RES;
+        public override PacketId Id => PacketId.S2C_SKILL_GET_SET_SKILL_LIST_RES;
 
         public S2CSkillGetSetSkillListRes()
         {
@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public List<CDataLearnedSetAcquirementParam> SetAcquierementParam { get; set; }
 
-        public class Serializer : EntitySerializer<S2CSkillGetSetSkillListRes>
+        public class Serializer : PacketEntitySerializer<S2CSkillGetSetSkillListRes>
         {
             public override void Write(IBuffer buffer, S2CSkillGetSetSkillListRes obj)
             {

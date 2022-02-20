@@ -66,14 +66,14 @@ namespace Arrowgene.Ddon.Server.Network
                 client = _clients[socket];
             }
 
-            List<Packet> packets = client.Receive(data);
-            foreach (Packet packet in packets)
+            List<IPacket> packets = client.Receive(data);
+            foreach (IPacket packet in packets)
             {
                 HandlePacket(client, packet);
             }
         }
 
-        private void HandlePacket(TClient client, Packet packet)
+        private void HandlePacket(TClient client, IPacket packet)
         {
             if (!_packetHandlerLookup.ContainsKey(packet.Id))
             {

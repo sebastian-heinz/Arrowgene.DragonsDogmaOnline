@@ -16,12 +16,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             WarpPointID = 0;
         }
 
-        public class Serializer : EntitySerializer<S2CWarpRegisterFavoriteWarpRes>
+        public class Serializer : PacketEntitySerializer<S2CWarpRegisterFavoriteWarpRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.S2C_WARP_REGISTER_FAVORITE_WARP_RES;
-            }
 
             public override void Write(IBuffer buffer, S2CWarpRegisterFavoriteWarpRes obj)
             {

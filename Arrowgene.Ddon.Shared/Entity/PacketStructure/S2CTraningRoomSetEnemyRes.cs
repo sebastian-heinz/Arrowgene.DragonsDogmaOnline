@@ -7,13 +7,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_INSTANCE_TRANING_ROOM_SET_ENEMY_RES;
 
-        public class Serializer : EntitySerializer<S2CTraningRoomSetEnemyRes>
+        public class Serializer : PacketEntitySerializer<S2CTraningRoomSetEnemyRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.S2C_INSTANCE_TRANING_ROOM_SET_ENEMY_RES;
-            }
-            
+
             public override void Write(IBuffer buffer, S2CTraningRoomSetEnemyRes obj)
             {
                 WriteServerResponse(buffer, obj);

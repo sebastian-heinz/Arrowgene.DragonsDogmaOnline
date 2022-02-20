@@ -19,12 +19,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint WaitNum;
         public byte RotationServerId;
 
-        public class Serializer : EntitySerializer<C2LCreateCharacterDataReq>
+        public class Serializer : PacketEntitySerializer<C2LCreateCharacterDataReq>
         {
-            static Serializer()
-            {
-                Id = PacketId.C2L_CREATE_CHARACTER_DATA_REQ;
-            }
             
             public override void Write(IBuffer buffer, C2LCreateCharacterDataReq obj)
             {

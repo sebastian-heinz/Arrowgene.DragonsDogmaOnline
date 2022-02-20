@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_PAWN_JOIN_PARTY_MYPAWN_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(SelectedDump.Pawn8_37_16);
             client.Send(SelectedDump.Pawn35_3_16);

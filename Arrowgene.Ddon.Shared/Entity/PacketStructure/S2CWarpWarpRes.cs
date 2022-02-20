@@ -16,12 +16,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Rim = 0;
         }
 
-        public class Serializer : EntitySerializer<S2CWarpWarpRes>
+        public class Serializer : PacketEntitySerializer<S2CWarpWarpRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.S2C_WARP_WARP_RES;
-            }
 
             public override void Write(IBuffer buffer, S2CWarpWarpRes obj)
             {

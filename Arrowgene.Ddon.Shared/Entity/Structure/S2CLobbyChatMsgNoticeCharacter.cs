@@ -1,6 +1,6 @@
 using Arrowgene.Buffers;
 
-namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
+namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class S2CLobbyChatMsgNoticeCharacterBaseInfo
     {

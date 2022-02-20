@@ -1,2 +1,0 @@
-pushd "%~dp0"
-kaitai-struct-compiler-0.9/bin/kaitai-struct-compiler kaitai-struct-compiler-0.9/formats/network/pcap.ksy -t csharp -d ./KaitaiModel --dotnet-namespace Arrowgene.Ddon.PacketLibrary.KaitaiModel

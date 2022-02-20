@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
             if (_databasePath == MemoryDatabasePath)
             {
-                throw new NotSupportedException("Connections are utilzied via `using`, disposing the connection. In Memory DB only available for lifetime of connection");
+                throw new NotSupportedException("Connections are utilized via `using`, disposing the connection. In Memory DB only available for lifetime of connection");
                 _memoryConnection = new SQLiteConnection(_connectionString);
                 _memoryConnection.Open();
                 return true;

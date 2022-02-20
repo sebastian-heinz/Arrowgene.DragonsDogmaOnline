@@ -7,13 +7,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_ACTION_SET_PLAYER_ACTION_HISTORY_RES;
 
-        public class Serializer : EntitySerializer<S2CActionSetPlayerActionHistoryRes>
+        public class Serializer : PacketEntitySerializer<S2CActionSetPlayerActionHistoryRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.S2C_ACTION_SET_PLAYER_ACTION_HISTORY_RES;
-            }
-            
+
             public override void Write(IBuffer buffer, S2CActionSetPlayerActionHistoryRes obj)
             {
                 WriteServerResponse(buffer, obj);

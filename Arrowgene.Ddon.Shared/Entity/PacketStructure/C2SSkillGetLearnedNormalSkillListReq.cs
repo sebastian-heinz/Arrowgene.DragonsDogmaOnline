@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_SKILL_GET_LEARNED_NORMAL_SKILL_LIST_REQ;
 
-        public class Serializer : EntitySerializer<C2SSkillGetLearnedNormalSkillListReq>
+        public class Serializer : PacketEntitySerializer<C2SSkillGetLearnedNormalSkillListReq>
         {
             public override void Write(IBuffer buffer, C2SSkillGetLearnedNormalSkillListReq obj)
             {

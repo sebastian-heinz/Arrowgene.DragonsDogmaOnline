@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_LOBBY_3_3_16_NTC;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             IBuffer requestBuffer = packet.AsBuffer();
             byte unk0 = requestBuffer.ReadByte();

@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_CERT_CLIENT_CHALLENGE_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             Challenge.Response challenge = client.HandleChallenge(packet.Data);
             if (challenge.Error)

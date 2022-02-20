@@ -15,13 +15,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Unk0 = new List<C2SActionSetPlayerActionHistoryReqElement>();
         }
 
-        public class Serializer : EntitySerializer<C2SActionSetPlayerActionHistoryReq>
+        public class Serializer : PacketEntitySerializer<C2SActionSetPlayerActionHistoryReq>
         {
-            static Serializer()
-            {
-                Id = PacketId.C2S_ACTION_SET_PLAYER_ACTION_HISTORY_REQ;
-            }
-            
             public override void Write(IBuffer buffer, C2SActionSetPlayerActionHistoryReq obj)
             {
                 WriteEntityList<C2SActionSetPlayerActionHistoryReqElement>(buffer, obj.Unk0);

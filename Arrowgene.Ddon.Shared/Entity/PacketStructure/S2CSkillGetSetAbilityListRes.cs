@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public List<CDataSetAcquirementParam> SetAcquierementParam { get; set; }
 
-        public class Serializer : EntitySerializer<S2CSkillGetSetAbilityListRes>
+        public class Serializer : PacketEntitySerializer<S2CSkillGetSetAbilityListRes>
         {
             public override void Write(IBuffer buffer, S2CSkillGetSetAbilityListRes obj)
             {

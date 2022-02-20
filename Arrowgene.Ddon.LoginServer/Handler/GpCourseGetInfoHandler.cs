@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override PacketId Id => PacketId.C2L_GP_COURSE_GET_INFO_REQ;
 
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, IPacket packet)
         {
             client.Send(LoginDump.Dump_22);
         }

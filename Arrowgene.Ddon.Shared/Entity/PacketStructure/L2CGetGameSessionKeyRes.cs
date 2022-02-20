@@ -10,13 +10,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public string SessionKey { get; set; }
         public uint Unknown { get; set; }
 
-        public class Serializer : EntitySerializer<L2CGetGameSessionKeyRes>
+        public class Serializer : PacketEntitySerializer<L2CGetGameSessionKeyRes>
         {
-            static Serializer()
-            {
-                Id = PacketId.L2C_GET_GAME_SESSION_KEY_RES;
-            }
-            
+
             public override void Write(IBuffer buffer, L2CGetGameSessionKeyRes obj)
             {
                 WriteServerResponse(buffer, obj);

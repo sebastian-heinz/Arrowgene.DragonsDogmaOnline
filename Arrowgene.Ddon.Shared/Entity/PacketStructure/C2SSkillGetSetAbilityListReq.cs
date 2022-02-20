@@ -7,8 +7,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_SKILL_GET_SET_ABILITY_LIST_REQ;
 
-        public class Serializer : EntitySerializer<C2SSkillGetSetAbilityListReq>
+        public class Serializer : PacketEntitySerializer<C2SSkillGetSetAbilityListReq>
         {
+
             public override void Write(IBuffer buffer, C2SSkillGetSetAbilityListReq obj)
             {
             }

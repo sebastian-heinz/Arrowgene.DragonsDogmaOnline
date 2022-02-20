@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataItemUpdateResult> ItemUpdateResultList;
         public List<CDataUpdateWalletPoint> UpdateWalletPointList;
 
-        public class Serializer : EntitySerializer<S2CItemUpdateCharacterItemNtc>
+        public class Serializer : PacketEntitySerializer<S2CItemUpdateCharacterItemNtc>
         {
             public override void Write(IBuffer buffer, S2CItemUpdateCharacterItemNtc obj)
             {

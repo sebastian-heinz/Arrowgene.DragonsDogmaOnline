@@ -14,8 +14,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public byte JobId { get; set; }
 
-        public class Serializer : EntitySerializer<C2SJobChangeJobReq>
+        public class Serializer : PacketEntitySerializer<C2SJobChangeJobReq>
         {
+
             public override void Write(IBuffer buffer, C2SJobChangeJobReq obj)
             {
                 WriteByte(buffer, obj.JobId);

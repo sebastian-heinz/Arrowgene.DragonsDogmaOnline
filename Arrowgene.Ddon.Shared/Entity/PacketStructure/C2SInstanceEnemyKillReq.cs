@@ -31,13 +31,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public bool Unk0 { get; set; } // It's possible that IsNoBattleReword is this data instead
         public uint RegionFlag { get; set; }
 
-        public class Serializer : EntitySerializer<C2SInstanceEnemyKillReq>
+        public class Serializer : PacketEntitySerializer<C2SInstanceEnemyKillReq>
         {
-            static Serializer()
-            {
-                Id = PacketId.C2S_INSTANCE_ENEMY_KILL_REQ;
-            }
-            
+
             public override void Write(IBuffer buffer, C2SInstanceEnemyKillReq obj)
             {
                 WriteEntity<CStageLayoutID>(buffer, obj.LayoutId);

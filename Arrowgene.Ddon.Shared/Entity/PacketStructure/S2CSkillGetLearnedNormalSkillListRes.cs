@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public List<CDataNormalSkillParam> NormalSkillParamList { get; set; }
 
-        public class Serializer : EntitySerializer<S2CSkillGetLearnedNormalSkillListRes>
+        public class Serializer : PacketEntitySerializer<S2CSkillGetLearnedNormalSkillListRes>
         {
             public override void Write(IBuffer buffer, S2CSkillGetLearnedNormalSkillListRes obj)
             {

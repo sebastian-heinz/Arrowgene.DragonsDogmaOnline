@@ -17,12 +17,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public CStageLayoutID LayoutId { get; set; }
         public byte SubGroupId { get; set; }
 
-        public class Serializer : EntitySerializer<C2SInstanceGetEnemySetListReq>
+        public class Serializer : PacketEntitySerializer<C2SInstanceGetEnemySetListReq>
         {
-            static Serializer()
-            {
-                Id = PacketId.C2S_INSTANCE_GET_ENEMY_SET_LIST_REQ;
-            }
 
             public override void Write(IBuffer buffer, C2SInstanceGetEnemySetListReq obj)
             {

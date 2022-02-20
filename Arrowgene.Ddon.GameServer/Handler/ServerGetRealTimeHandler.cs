@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_SERVER_GET_REAL_TIME_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
             IBuffer buffer = new StreamBuffer();
             buffer.WriteUInt32(0, Endianness.Big);

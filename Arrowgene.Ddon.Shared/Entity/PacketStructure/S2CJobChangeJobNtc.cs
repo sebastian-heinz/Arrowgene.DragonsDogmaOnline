@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public byte Unk0 { get; set; }
         public List<CDataEquipElementParam> Unk1 { get; set; }
 
-        public class Serializer : EntitySerializer<S2CJobChangeJobNtc>
+        public class Serializer : PacketEntitySerializer<S2CJobChangeJobNtc>
         {
             public override void Write(IBuffer buffer, S2CJobChangeJobNtc obj)
             {

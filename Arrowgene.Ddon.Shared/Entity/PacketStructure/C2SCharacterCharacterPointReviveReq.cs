@@ -14,13 +14,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             HpMax = 0;
         }
 
-        public class Serializer : EntitySerializer<C2SCharacterCharacterPointReviveReq>
+        public class Serializer : PacketEntitySerializer<C2SCharacterCharacterPointReviveReq>
         {
-            static Serializer()
-            {
-                Id = PacketId.C2S_CHARACTER_CHARACTER_POINT_REVIVE_REQ;
-            }
-            
+
             public override void Write(IBuffer buffer, C2SCharacterCharacterPointReviveReq obj)
             {
                 WriteUInt32(buffer, obj.HpMax);
