@@ -294,5 +294,13 @@ namespace Arrowgene.Ddon.GameServer.Dump
 
         public static Packet AntiDC_Test2 = new Packet(new PacketId(13, 23, 2, "S2C_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_RES"), data_Dump_AntiDC_Test2);
 
+        public static byte[] data_Dump_AntiDC_NoOpe = new byte[] /* 2.38.2 */
+        {
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
+            0x10, 0x0C, 0x34, 0xDA, 0x40, 0x01, 0x00
+        };
+
+        public static Packet AntiDC_NoOpe = new Packet(new PacketId(2, 38, 2, "S2C_CHARACTER_SET_ONLINE_STATUS_RES"), data_Dump_AntiDC_NoOpe);
+
     }
 }
