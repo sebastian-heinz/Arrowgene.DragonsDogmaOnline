@@ -8,8 +8,8 @@ namespace Arrowgene.Ddon.Client.Resource
         public class AreaInfo
         {
             public uint AreaId { get; set; }
-            public uint PosX { get; set; }
-            public uint PosY { get; set; }
+            public int PosX { get; set; }
+            public int PosY { get; set; }
         }
 
         public List<AreaInfo> AreaInfos { get; }
@@ -29,8 +29,8 @@ namespace Arrowgene.Ddon.Client.Resource
         {
             AreaInfo ai = new AreaInfo();
             ai.AreaId = ReadUInt32(buffer);
-            ai.PosX = ReadUInt32(buffer);
-            ai.PosY = ReadUInt32(buffer);
+            ai.PosX = ReadInt32(buffer);
+            ai.PosY = ReadInt32(buffer);
             return ai;
         }
     }

@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Client
 
         protected override void Read(IBuffer buffer)
         {
-            MagicTag = buffer.ReadFixedString(4);
+            MagicTag = buffer.ReadCString();
             MagicId = buffer.ReadUInt32(Endianness.Little);
             ReadResource(buffer);
         }
