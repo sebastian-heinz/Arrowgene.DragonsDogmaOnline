@@ -1,14 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Arrowgene.Buffers;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Client
 {
     public abstract class ClientFile
     {
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ClientFile));
+
+        public FileInfo FilePath { get; protected set; }
+        
+        public ClientFile()
+        {
+            FilePath = null;
+        }
+        
         public void Open(string path)
         {
+            FilePath = new FileInfo(path);
+            if (!FilePath.Exists)
+            {
+                Logger.Error($"File does not exists: {path}");
+                return;
+            }
+
             IBuffer buffer = new StreamBuffer(path);
             buffer.SetPositionStart();
             if (buffer.Size < 4)
@@ -70,12 +88,12 @@ namespace Arrowgene.Ddon.Client
         {
             return buffer.ReadUInt16(Endianness.Little);
         }
-        
+
         protected bool ReadBool(IBuffer buffer)
         {
             return buffer.ReadByte() != 0;
         }
-        
+
         protected byte ReadByte(IBuffer buffer)
         {
             return buffer.ReadByte();

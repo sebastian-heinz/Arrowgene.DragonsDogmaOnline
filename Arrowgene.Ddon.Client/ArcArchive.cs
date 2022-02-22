@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Crypto;
@@ -8,15 +11,57 @@ namespace Arrowgene.Ddon.Client
     public class ArcArchive : ClientFile
     {
         private const string Key = "ABB(DF2I8[{Y-oS_CCMy(@<}qR}WYX11M)w[5V.~CbjwM5q<F1Iab+-";
-        private const int EntrySize = 80;
+        private const int FileIndexSize = 80;
+        private const int FileNameSize = 64;
 
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ResourceFile));
+        private static readonly BlowFish BlowFish = new BlowFish(Encoding.UTF8.GetBytes(Key), true);
+        private static readonly JamCrc32 JamCrc32 = new JamCrc32();
+        private static readonly Dictionary<uint, ArcExt> JamCrcLookup = new Dictionary<uint, ArcExt>();
 
-        private static BlowFish BlowFish
-            = new BlowFish(Encoding.UTF8.GetBytes(Key), true);
+
+        private readonly List<FileIndex> _fileIndices;
+
+        public ArcArchive()
+        {
+            _fileIndices = new List<FileIndex>();
+        }
 
         public string MagicTag { get; set; }
         public ushort MagicId { get; set; }
+
+        public List<FileIndex> GetFileIndices()
+        {
+            return new List<FileIndex>(_fileIndices);
+        }
+
+        public File GetFile(FileIndex fileIndex)
+        {
+            if (fileIndex.Offset > int.MaxValue)
+            {
+                Logger.Error($"Unsupported Offset (offset:{fileIndex.Offset} > MaxValue:{int.MaxValue})");
+                return null;
+            }
+
+            if (fileIndex.CompressedSize > int.MaxValue)
+            {
+                Logger.Error(
+                    $"Unsupported Compressed Size (compressedSize:{fileIndex.CompressedSize} > MaxValue:{int.MaxValue})");
+                return null;
+            }
+
+            IBuffer buffer = new StreamBuffer(FilePath.FullName);
+            
+            // TODO check compression / decompress
+            
+            byte[] fileData = buffer.GetBytes((int) fileIndex.Offset, (int) fileIndex.CompressedSize);
+            fileData = BlowFish.Decrypt_ECB(fileData);
+
+            File file = new File();
+            file.Data = fileData;
+            file.Index = fileIndex;
+            return file;
+        }
 
         protected override void Read(IBuffer buffer)
         {
@@ -32,24 +77,519 @@ namespace Arrowgene.Ddon.Client
             if (MagicTag != "ARCC" || MagicId != 0x07)
             {
                 Logger.Error("Invalid .arc File");
+                return;
             }
 
-            int count = ReadInt16(buffer);
-
-            for (int i = 0; i < count; i++)
+            int entries = ReadInt16(buffer);
+            for (int i = 0; i < entries; i++)
             {
-                byte[] entry = buffer.ReadBytes(EntrySize);
+                FileIndex fileIndex = new FileIndex();
+
+                byte[] entry = buffer.ReadBytes(FileIndexSize);
                 entry = BlowFish.Decrypt_ECB(entry);
                 IBuffer entryBuffer = new StreamBuffer(entry);
                 entryBuffer.Position = 0;
-                string fileName = entryBuffer.ReadFixedString(64);
+                fileIndex.Path = entryBuffer.ReadFixedString(FileNameSize);
+                fileIndex.Name = Path.GetFileName(fileIndex.Path);
+                fileIndex.Directory = Path.GetDirectoryName(fileIndex.Path);
+                fileIndex.JamCrc = ReadUInt32(entryBuffer);
+                if (JamCrcLookup.ContainsKey(fileIndex.JamCrc))
+                {
+                    fileIndex.ArcExt = JamCrcLookup[fileIndex.JamCrc];
+                    fileIndex.Extension = fileIndex.ArcExt.Extension;
+                }
+                else
+                {
+                    fileIndex.Extension = $"{fileIndex.JamCrc:X8}";
+                }
+
+                fileIndex.CompressedSize = ReadUInt32(entryBuffer);
+                uint flags = ReadUInt32(entryBuffer);
+                fileIndex.Compression = (Compression) ((flags >> 0x1D) & 0x07);
+                fileIndex.Size = flags & 0x1FFFFFFFU;
+                fileIndex.Offset = ReadUInt32(entryBuffer);
+                _fileIndices.Add(fileIndex);
             }
-            
-            if (buffer.Position != buffer.Size)
-            {
-                Logger.Debug(
-                    $"It looks like there is more data available (Position:{buffer.Position} != Size:{buffer.Size})");
-            }
+        }
+
+        public class FileIndex
+        {
+            public string Name { get; set; }
+            public string Directory { get; set; }
+            public string Path { get; set; }
+            public string Extension { get; set; }
+            public uint JamCrc { get; set; }
+            public uint Offset { get; set; }
+            public uint CompressedSize { get; set; }
+            public uint Size { get; set; }
+            public Compression Compression { get; set; }
+            public ArcExt ArcExt { get; set; }
+        }
+
+        public enum Compression
+        {
+            Lowest = 0,
+            Low,
+            Normal,
+            High,
+            Highest,
+            StreamLow,
+            StreamHigh,
+            Invalid,
+        }
+
+        public class File
+        {
+            public string Name { get; set; }
+            public string Extension { get; set; }
+            public FileIndex Index { get; set; }
+            public byte[] Data { get; set; }
+        }
+
+        public struct ArcExt
+        {
+            public string Class;
+            public string Extension;
+            public uint JamCrc;
+            public byte[] JamCrcBytes;
+            public string JamCrcStr;
+        }
+
+        private static void Register(string className, string extension)
+        {
+            ArcExt arcExt = new ArcExt();
+            byte[] classBytes = Encoding.UTF8.GetBytes(className);
+            arcExt.Class = className;
+            arcExt.Extension = extension;
+            arcExt.JamCrcBytes = JamCrc32.ComputeHash(classBytes);
+            arcExt.JamCrc = BitConverter.ToUInt32(arcExt.JamCrcBytes);
+            arcExt.JamCrcStr = $"{arcExt.JamCrcBytes:X8}";
+            JamCrcLookup.Add(arcExt.JamCrc, arcExt);
+        }
+
+        static ArcArchive()
+        {
+            Register("rAI", "ais");
+            Register("rAIConditionTree", "cdt");
+            Register("rAIDynamicLayout", "dpth"); // CRC32:0x7BBF5CB0
+            Register("rAIFSM", "fsm");
+            Register("rAIFSMList", "fsl");
+            Register("rAIPathBase", "are");
+            Register("rAIPathBaseXml", "are.xml");
+            Register("rAIPawnActNoSwitch", "pas");
+            Register("rAIPawnAutoMotionTbl", "pam");
+            Register("rAIPawnAutoWordTbl", "paw");
+            Register("rAIPawnCulPrioThinkCategory", "pc_ptkc");
+            Register("rAIPawnEmParam", "pep");
+            Register("rAIPawnOrder", "pao");
+            Register("rAIPawnSkillParamTbl", "aps");
+            Register("rAIPawnSpecialityInfo", "ps_info");
+            Register("rAISensor", "sn2");
+            Register("rAIWayPoint", "way");
+            Register("rAIWayPointGraph", "gway");
+            Register("rAbilityList", "abl");
+            Register("rAchievement", "acv");
+            Register("rAchievementHeader", "ach");
+            Register("rAcquirement::rAbilityAddData", "aad");
+            Register("rAcquirement::rAbilityData", "abd");
+            Register("rAcquirement::rCustomSkillData", "csd");
+            Register("rAcquirement::rNormalSkillData", "nsd");
+            Register("rActionParamList", "acp");
+            Register("rActivateDragonSkill", "ads");
+            Register("rActorLight", "ali");
+            Register("rAdjLimitParam", "alp");
+            Register("rAdjustParam", "ajp");
+            Register("rAnimalData", "aml");
+            Register("rArchive", "arc");
+            Register("rArchiveImport", "aimp");
+            Register("rArchiveListArray", "ala");
+            Register("rAreaHitShape", "ahs");
+            Register("rAreaInfo", "ari");
+            Register("rAreaInfoJointArea", "arj");
+            Register("rAreaInfoStage", "ars");
+            Register("rAreaMasterRankData", "amr");
+            Register("rAreaMasterSpotData", "ams");
+            Register("rAreaMasterSpotDetailData", "amsd");
+            Register("rArmedEnemyInfo", "aeminfo");
+            Register("rAtDfRateRaid", "atdf_raid");
+            Register("rAttackParam", "atk");
+            Register("rBakeJoint", "bjt");
+            Register("rBitTable", "btb");
+            Register("rBlazeEnemyInfo", "beminfo");
+            Register("rBlowSaveEmLvParam", "blow_save");
+            Register("rBowActParamList", "bap");
+            Register("rBrowserFont", "bft");
+            Register("rBrowserUITableData", "but");
+            Register("rCalcDamageAtdmAdj", "cda");
+            Register("rCalcDamageAtdmAdjRate", "cdarate");
+            Register("rCalcDamageLvAdj", "cdl");
+            Register("rCameraList", "lcm");
+            Register("rCameraParamList", "cpl");
+            Register("rCameraQuakeList", "cql");
+            Register("rCatchInfoParam", "cip");
+            Register("rCaughtDamageRateRefTbl", "cdrr");
+            Register("rCaughtDamageRateTbl", "cdrt");
+            Register("rCaughtInfoParam", "caip");
+            Register("rCharParamEnemy", "cpe");
+            Register("rCharacterEdit", "edt");
+            Register("rCharacterEditCameraParam", "cecp");
+            Register("rCharacterEditColorDef", "edt_color_def");
+            Register("rCharacterEditModelPalette", "edt_mod_pal");
+            Register("rCharacterEditMuscle", "edt_muscle");
+            Register("rCharacterEditPersonalityPalette", "edt_personality_pal");
+            Register("rCharacterEditPresetPalette", "edt_pset_pal");
+            Register("rCharacterEditTalkLvPalette", "edt_talk_pal");
+            Register("rCharacterEditTexturePalette", "edt_tex_pal");
+            Register("rCharacterEditVoicePalette", "edt_voice_pal");
+            Register("rChildRegionStatusParam", "crs");
+            Register("rChildRegionStatusParamList", "rsl");
+            Register("rCnsIK", "ik");
+            Register("rCnsJointOffset", "jof");
+            Register("rCnsLookAt", "lat");
+            Register("rCnsMatrix", "mtx");
+            Register("rCnsTinyChain", "ctc");
+            Register("rCnsTinyIK", "tik");
+            Register("rCollGeom", "coll_geom");
+            Register("rCollIndex", "coll_idx");
+            Register("rCollNode", "coll_node");
+            Register("rCollision", "sbc");
+            Register("rCollisionHeightField", "sbch");
+            Register("rCollisionObj", "obc");
+            Register("rConstModelParam", "cmp");
+            Register("rConvexHull", "hul");
+            Register("rCraftCapPass", "ccp");
+            Register("rCraftElementExp", "cee");
+            Register("rCraftQuality", "cqr");
+            Register("rCraftRecipe", "");
+            Register("rCraftSkillCost", "ckc");
+            Register("rCraftSkillSpd", "cks");
+            Register("rCraftUpGradeExp", "cuex");
+            Register("rCustimShlLimit", "csl");
+            Register("rCycleContentsSortieInfo", "csi");
+            Register("rCycleQuestInfo", "cqi");
+            Register("rDDOBenchmark", "bmk");
+            Register("rDDOModelMontage", "dmt");
+            Register("rDDOModelMontageEm", "dme");
+            Register("rDamageCounterInfo", "counter_Adj");
+            Register("rDamageSaveEmLvParam", "damage_save");
+            Register("rDamageSpecialAdj", "damage_spAdj");
+            Register("rDarkSkyParam", "dsp");
+            Register("rDeformWeightMap", "dwm");
+            Register("rDmJobAdjParam", "dja");
+            Register("rDmJobPawnAdjParam", "dja_pawn");
+            Register("rDmLvPawnAdjParam", "cdl_pawn");
+            Register("rDmVecWeightParam", "dvw");
+            Register("rDragonSkillColorParam", "dscp");
+            Register("rDragonSkillEnhanceParam", "dse");
+            Register("rDragonSkillLevelParam", "dsl");
+            Register("rDragonSkillParam", "dsd");
+            Register("rDungeonMarker", "dmi");
+            Register("rDynamicSbc", "dsc");
+            Register("rEditConvert", "edc");
+            Register("rEditStageParam", "esp");
+            Register("rEffect2D", "e2d");
+            Register("rEffectAnim", "ean");
+            Register("rEffectList", "efl");
+            Register("rEffectProvider", "epv");
+            Register("rEffectStrip", "efs");
+            Register("rEmBaseInfoSv", "ebi_sv");
+            Register("rEmCategory", "ecg");
+            Register("rEmDamageDirInfo", "edv");
+            Register("rEmDmgTimerTbl", "dtt");
+            Register("rEmEffectTable", "eef");
+            Register("rEmLvUpParam", "lup");
+            Register("rEmMsgTable", "emt");
+            Register("rEmScaleTable", "esl");
+            Register("rEmScrAdjust", "em_scr_adj");
+            Register("rEmSoundTable", "esn");
+            Register("rEmStatusAdj", "esa");
+            Register("rEmWarpParam", "ewp");
+            Register("rEmWeakSafe", "wallmaria");
+            Register("rEmWorkRateTable", "ewk");
+            Register("rEmblemColorTable", "ect");
+            Register("rEmoteGroup", "peg");
+            Register("rEmparam", "emparam");
+            Register("rEndContentsSortieInfo", "esi");
+            Register("rEnemyBloodStain", "ebs");
+            Register("rEnemyGroup", "emg");
+            Register("rEnemyLocalEst", "ele");
+            Register("rEnemyLocalShelTable", "esh");
+            Register("rEnemyMaterialTable", "ema");
+            Register("rEnemyReactResEx", "era");
+            Register("rEnemyStatusChange", "est");
+            Register("rEnhancedParamList", "epl");
+            Register("rEnumDef", "edf");
+            Register("rEquipCaptureList", "ecl");
+            Register("rEquipPartsInfo", "epi");
+            Register("rEquipPreset", "equip_preset");
+            Register("rEquipPresetPalette", "epp");
+            Register("rErosionInfoRes", "reg_info");
+            Register("rErosionRegion", "reg_ersion");
+            Register("rErosionRegionScaleChange", "scl_change");
+            Register("rErosionShakeConvert", "ero_addTime");
+            Register("rErosionSmallInfoRes", "eroSmall_info");
+            Register("rErosionSuperInfoRes", "eroSuper_info");
+            Register("rEvaluationTable", "evl");
+            Register("rEventParam", "evp");
+            Register("rEventResTable", "evtr");
+            Register("rEventViewerList", "evlst");
+            Register("rEventViewerSetInfo", "evsi");
+            Register("rEvidenceList", "evd");
+            Register("rFacialEditJointPreset", "fedt_jntpreset");
+            Register("rFatAdjust", "fat_adjust");
+            Register("rFieldAreaAdjoinList", "faa");
+            Register("rFieldAreaList", "fal");
+            Register("rFieldAreaMarkerInfo", "fmi");
+            Register("rFieldMapData", "fmd");
+            Register("rFreeF32Tbl", "f2p");
+            Register("rFullbodyIKHuman2", "fbik_human2");
+            Register("rFunctionList", "ftl");
+            Register("rFurnitureAccessories", "fad");
+            Register("rFurnitureData", "fnd");
+            Register("rFurnitureGroup", "fng");
+            Register("rFurnitureItem", "fni");
+            Register("rFurnitureLayout", "fnl");
+            Register("rGUI", "gui");
+            Register("rGUIDogmaOrb", "dgm");
+            Register("rGUIFont", "gfd");
+            Register("rGUIIconInfo", "gii");
+            Register("rGUIMapSetting", "gmp");
+            Register("rGUIMessage", "gmd");
+            Register("rGUIPhotoFrame", "pho");
+            Register("rGatheringItem", "gat");
+            Register("rGeometry2", "geo2");
+            Register("rGeometry2Group", "geog");
+            Register("rGeometry3", "geo3");
+            Register("rGraphPatch", "gpt");
+            Register("rGrass", "grs");
+            Register("rGrass2", "gr2");
+            Register("rGrass2Setting", "gr2s");
+            Register("rGrassWind", "grw");
+            Register("rHeadCtrl", "head_ctrl");
+            Register("rHideNpcNameInfo", "hni");
+            Register("rHumanEnemyCustomSkill", "hmcs");
+            Register("rHumanEnemyEquip", "hmeq");
+            Register("rHumanEnemyParam", "hmeparam");
+            Register("rHumanEnemyPreset", "hmpre");
+            Register("rIKCtrl", "ikctrl");
+            Register("rISC", "isc");
+            Register("rImplicitSurface", "is");
+            Register("rIniLocal", "ini");
+            Register("rIsEquipOneOfSeveral", "ieo");
+            Register("rItemEquipJobInfoList", "eir");
+            Register("rItemList", "ipa");
+            Register("rJobBaseParam", "jobbase");
+            Register("rJobCustomParam", "jcp");
+            Register("rJobLevelUpTbl2", "jlt2");
+            Register("rJobMasterCtrl", "jmc");
+            Register("rJobTutorialQuestList", "jtq");
+            Register("rJointEx2", "jex2");
+            Register("rJointInfo", "jnt_info");
+            Register("rJointOrder", "jnt_order");
+            Register("rJukeBoxItem", "jbi");
+            Register("rJumpParamTbl", "jmp");
+            Register("rKeyCommand", "kcm");
+            Register("rKeyConfigTextTable", "kctt");
+            Register("rKeyCustomParam", "kcp");
+            Register("rLandInfo", "lai");
+            Register("rLanguageResIDConverter", "lrc");
+            Register("rLargeCameraParam", "lcp");
+            Register("rLayout", "lot");
+            Register("rLayoutGroupParam", "lgp");
+            Register("rLayoutGroupParamList", "gpl");
+            Register("rLayoutPreset", "lop");
+            Register("rLegCtrl", "leg_ctrl");
+            Register("rLineBuilder", "mlb");
+            Register("rLinkageEnemy", "lae");
+            Register("rLinkageEnemyXml", "lae.xml");
+            Register("rLoadingParam", "ldp");
+            Register("rLocationData", "lcd");
+            Register("rMagicChantParam", "chant");
+            Register("rMagicCommandList", "mgcc");
+            Register("rMagicCommandWord", "mcw");
+            Register("rMandraActionParam", "map");
+            Register("rMandraCharaMake", "mcm");
+            Register("rMandraMotCombine", "mmc");
+            Register("rMandraReaction", "mdr");
+            Register("rMapSpotData", "msd");
+            Register("rMapSpotStageList", "msl");
+            Register("rMaterial", "mrl");
+            Register("rModel", "mod");
+            Register("rMotionFilter", "mot_filter");
+            Register("rMotionList", "lmt");
+            Register("rMotionParam", "motparam");
+            Register("rMovieOnDisk", "wmv");
+            Register("rMovieOnDiskInterMediate", "wmv");
+            Register("rMovieOnMemory", "mem.wmv");
+            Register("rMovieOnMemoryInterMediate", "mem.wmv");
+            Register("rMsgSet", "mss");
+            Register("rMyRoomActParam", "mra");
+            Register("rNPCEmoMyRoom", "nem");
+            Register("rNPCMotMyRoom", "nmm");
+            Register("rNPCMotionSet", "nms");
+            Register("rNamedParam", "ndp");
+            Register("rNavConnect", "nvc");
+            Register("rNavigationMesh", "nav");
+            Register("rNpcConstItem", "nci");
+            Register("rNpcCustomSkill", "ncs");
+            Register("rNpcEditData", "ned");
+            Register("rNpcIsNoSetPS3", "nsp");
+            Register("rNpcIsUseJobParamEx", "ujp");
+            Register("rNpcLedgerList", "nll");
+            Register("rNpcMeetingPlace", "nmp");
+            Register("rNulls", "nls");
+            Register("rObjCollision", "col");
+            Register("rOccluder", "occ");
+            Register("rOccluderEx", "oce");
+            Register("rOcdElectricParam", "eoc");
+            Register("rOcdImmuneParamRes", "oIp");
+            Register("rOcdIrAdj", "ir_adj");
+            Register("rOcdIrAdjPL", "ir_adj_pl");
+            Register("rOcdPriorityParam", "opp");
+            Register("rOcdStatusParamRes", "osp");
+            Register("rOmKey", "omk");
+            Register("rOmLoadList", "oll");
+            Register("rOmParam", "omp");
+            Register("rOmParamEx", "ompe");
+            Register("rOmParamPart", "ompp");
+            Register("rOutfitInfo", "ofi");
+            Register("rOutlineParamList", "olp");
+            Register("rPCSimpleDebuggerTarget", "pdd");
+            Register("rPackageQuestInfo", "pqi");
+            Register("rParentRegionStatusParam", "prs");
+            Register("rPartnerPawnTalk", "ppt");
+            Register("rPartnerReactParam", "ppr");
+            Register("rPartsCtrlTable", "ptc");
+            Register("rPawnAIAction", "paa");
+            Register("rPawnQuestTalk", "pqt");
+            Register("rPawnSpSkillCategoryUI", "pssc");
+            Register("rPawnSpSkillLevelUI", "pssl");
+            Register("rPawnThinkControl", "ptc");
+            Register("rPawnThinkLevelUp", "plu");
+            Register("rPhoteNGItem", "pni");
+            Register("rPlPartsInfo", "psi");
+            Register("rPlanetariumItem", "planet");
+            Register("rPlantTree", "plt");
+            Register("rPriorityThink", "ptk");
+            Register("rPrologueHmStatus", "phs");
+            Register("rPushRate", "push_rate");
+            Register("rQuestHistoryData", "qhd");
+            Register("rQuestList", "qst");
+            Register("rQuestMarkerInfo", "qmi");
+            Register("rQuestSequenceList", "qsq");
+            Register("rQuestTextData", "qtd");
+            Register("rRagdoll", "rdd");
+            Register("rRageTable", "rag");
+            Register("rReaction", "rac");
+            Register("rRecommendDragonSkill", "rds");
+            Register("rRegionBreakInfo", "erb");
+            Register("rRegionStatusCtrlTable", "rsc");
+            Register("rRenderTargetTexture", "rtex");
+            Register("rReplaceWardGmdList", "repgmdlist");
+            Register("rRigidBody", "rbd");
+            Register("rRoomWearParam", "rwr");
+            Register("rScenario", "sce");
+            Register("rSceneTexture", "stex");
+            Register("rScheduler", "sdl");
+            Register("rShader2", "mfx");
+            Register("rShaderCache", "sch");
+            Register("rShaderPackage", "spkg");
+            Register("rShakeCtrl", "shake_ctrl");
+            Register("rShlLimit", "slm");
+            Register("rShlParamList", "shl");
+            Register("rShopGoods", "spg_tbl");
+            Register("rShotReqInfo", "sri");
+            Register("rShotReqInfo2", "sri2");
+            Register("rShrinkBlowValue", "sbv");
+            Register("rSimpleCom::rChatComData", "ccd");
+            Register("rSitePack", "sit");
+            Register("rSituationMsgCtrl", "smc");
+            Register("rSky", "sky");
+            Register("rSndPitchLimit", "spl");
+            Register("rSoundAreaInfo", "sar");
+            Register("rSoundAttributeSe", "aser");
+            Register("rSoundBank", "sbkr");
+            Register("rSoundBossBgm", "sbb");
+            Register("rSoundCurveSet", "scsr");
+            Register("rSoundCurveXml", "scvr.xml");
+            Register("rSoundDirectionalCurveXml", "sdcr.xml");
+            Register("rSoundDirectionalSet", "sdsr");
+            Register("rSoundEQ", "equr");
+            Register("rSoundHitInfo", "shi");
+            Register("rSoundMotionSe", "mser");
+            Register("rSoundOptData", "sot");
+            Register("rSoundParamOfs", "spo");
+            Register("rSoundPhysicsJoint", "spjr");
+            Register("rSoundPhysicsList", "splr");
+            Register("rSoundPhysicsRigidBody", "sprr");
+            Register("rSoundPhysicsSoftBody", "spsr");
+            Register("rSoundRangeEqSet", "sreq");
+            Register("rSoundRequest", "srqr");
+            Register("rSoundReverb", "revr");
+            Register("rSoundSequenceSe", "ssqr");
+            Register("rSoundSimpleCurve", "sscr");
+            Register("rSoundSourceMSADPCM", "xsew");
+            Register("rSoundSourceOggVorbis", "sngw");
+            Register("rSoundSourcePC", "");
+            Register("rSoundSpeakerSetXml", "sssr.xml");
+            Register("rSoundStreamRequest", "stqr");
+            Register("rSoundSubMixer", "smxr");
+            Register("rSoundSubMixerSet", "sms");
+            Register("rStageAdjoinList", "sal");
+            Register("rStageAdjoinList2", "sal2");
+            Register("rStageConnect", "scc");
+            Register("rStageCustom", "sca");
+            Register("rStageCustomParts", "scp");
+            Register("rStageCustomPartsEx", "scpx");
+            Register("rStageInfo", "sti");
+            Register("rStageJoint", "sja");
+            Register("rStageList", "slt");
+            Register("rStageMap", "smp");
+            Register("rStageToSpot", "sts");
+            Register("rStaminaDecTbl", "sdt");
+            Register("rStarCatalog", "stc");
+            Register("rStartPos", "stp");
+            Register("rStartPosArea", "sta");
+            Register("rStatusCheck", "sck");
+            Register("rStatusGainTable", "sg_tbl");
+            Register("rSwingModel", "swm");
+            Register("rTable", "");
+            Register("rTargetCursorOffset", "tco");
+            Register("rTbl2Base", "");
+            Register("rTbl2ChatMacro", "tcm");
+            Register("rTbl2ClanEmblemTextureId", "ceti_tbl");
+            Register("rTbl2ItemIconId", "tii");
+            Register("rTblMenuComm", "tmc");
+            Register("rTblMenuOption", "tmo");
+            Register("rTexDetailEdit", "tde");
+            Register("rTexture", "tex");
+            Register("rTextureJpeg", "tex");
+            Register("rTextureMemory", "tex");
+            Register("rTexturePNG", "tex");
+            Register("rThinkParamRange", "thp_range");
+            Register("rThinkParamTimer", "thp_timer");
+            Register("rTutorialDialogMessage", "tdm");
+            Register("rTutorialList", "tlt");
+            Register("rTutorialQuestGroup", "tqg");
+            Register("rTutorialTargetList", "ttl");
+            Register("rVertices", "vts");
+            Register("rVfxLightInfluence", "eli");
+            Register("rVibration", "vib");
+            Register("rWarpLocation", "wal");
+            Register("rWaypoint", "wpt");
+            Register("rWaypoint2", "wp2");
+            Register("rWeaponOffset", "wpn_ofs");
+            Register("rWeaponResTable", "wrt");
+            Register("rWeatherEffectParam", "wep");
+            Register("rWeatherFogInfo", "wtf");
+            Register("rWeatherInfoTbl", "wta");
+            Register("rWeatherParamEfcInfo", "wte");
+            Register("rWeatherParamInfoTbl", "wtl");
+            Register("rWeatherStageInfo", "wsi");
+            Register("rWepCateResTbl", "wcrt");
+            Register("rZone", "zon");
+            Register("rkThinkData", "pen");
+            Register("uSoundSubMixer::CurrentSubMixer", "smxr");
         }
     }
 }
