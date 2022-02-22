@@ -5,6 +5,7 @@ using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
+using ICSharpCode.SharpZipLib.Zip.Compression;
 
 namespace Arrowgene.Ddon.Client
 {
@@ -35,7 +36,38 @@ namespace Arrowgene.Ddon.Client
             return new List<FileIndex>(_fileIndices);
         }
 
-        public File GetFile(FileIndex fileIndex)
+        public void ExtractArchive(string rootPath)
+        {
+            foreach (FileIndex fileIndex in _fileIndices)
+            {
+                ExtractFile(rootPath, fileIndex);
+            }
+        }
+
+        public void ExtractFile(string rootPath, FileIndex fileIndex)
+        {
+            ArcFile f = GetFile(fileIndex);
+            if (f == null)
+            {
+                Logger.Error($"Failed to extract file (ArcPath:{fileIndex.ArcPath})");
+                return;
+            }
+            FileInfo fileInfo = new FileInfo(Path.Combine(rootPath, f.Index.Path));
+            if (fileInfo.DirectoryName == null)
+            {
+                Logger.Error("Failed to extract file (fileInfo.DirectoryName == null)");
+                return;
+            }
+
+            if (!Directory.Exists(fileInfo.DirectoryName))
+            {
+                Directory.CreateDirectory(fileInfo.DirectoryName);
+            }
+            
+            File.WriteAllBytes(fileInfo.FullName, f.Data);
+        }
+
+        public ArcFile GetFile(FileIndex fileIndex)
         {
             if (fileIndex.Offset > int.MaxValue)
             {
@@ -50,14 +82,48 @@ namespace Arrowgene.Ddon.Client
                 return null;
             }
 
-            IBuffer buffer = new StreamBuffer(FilePath.FullName);
-            
-            // TODO check compression / decompress
-            
-            byte[] fileData = buffer.GetBytes((int) fileIndex.Offset, (int) fileIndex.CompressedSize);
-            fileData = BlowFish.Decrypt_ECB(fileData);
+            if (FilePath == null)
+            {
+                Logger.Error("No File Open (FilePath == null)");
+                return null;
+            }
 
-            File file = new File();
+            if (!FilePath.Exists)
+            {
+                Logger.Error($"File does not exists: {FilePath.FullName}");
+                return null;
+            }
+
+            var fileData = new byte[fileIndex.CompressedSize];
+            int remaining = (int) fileIndex.CompressedSize;
+            int offset = 0;
+            using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open);
+            if (fileIndex.Offset + remaining > fs.Length)
+            {
+                Logger.Error(
+                    $"Not enough data available: (Index:{fileIndex.Offset + remaining} > Length:{fs.Length})");
+                return null;
+            }
+
+            fs.Position = fileIndex.Offset;
+            while (remaining > 0)
+            {
+                int read = fs.Read(fileData, offset, remaining);
+                offset += read;
+                remaining -= read;
+            }
+
+            fileData = BlowFish.Decrypt_ECB(fileData);
+            fileData = Decompress(fileData);
+
+            if (fileData.Length != fileIndex.Size)
+            {
+                Logger.Error(
+                    $"File Length does not match expected: (Data Length:{fileData.Length} != Index Length:{fileIndex.Size})");
+                return null;
+            }
+
+            ArcFile file = new ArcFile();
             file.Data = fileData;
             file.Index = fileIndex;
             return file;
@@ -89,9 +155,13 @@ namespace Arrowgene.Ddon.Client
                 entry = BlowFish.Decrypt_ECB(entry);
                 IBuffer entryBuffer = new StreamBuffer(entry);
                 entryBuffer.Position = 0;
-                fileIndex.Path = entryBuffer.ReadFixedString(FileNameSize);
-                fileIndex.Name = Path.GetFileName(fileIndex.Path);
-                fileIndex.Directory = Path.GetDirectoryName(fileIndex.Path);
+                fileIndex.ArcPath = entryBuffer.ReadFixedString(FileNameSize);
+                fileIndex.Directory = Path.GetDirectoryName(fileIndex.ArcPath);
+                if (fileIndex.Directory == null)
+                {
+                    fileIndex.Directory = "";
+                }
+
                 fileIndex.JamCrc = ReadUInt32(entryBuffer);
                 if (JamCrcLookup.ContainsKey(fileIndex.JamCrc))
                 {
@@ -103,45 +173,78 @@ namespace Arrowgene.Ddon.Client
                     fileIndex.Extension = $"{fileIndex.JamCrc:X8}";
                 }
 
+                fileIndex.Name = $"{Path.GetFileName(fileIndex.ArcPath)}.{fileIndex.Extension}";
+                fileIndex.Path = Path.Combine(fileIndex.Directory, fileIndex.Name);
                 fileIndex.CompressedSize = ReadUInt32(entryBuffer);
                 uint flags = ReadUInt32(entryBuffer);
-                fileIndex.Compression = (Compression) ((flags >> 0x1D) & 0x07);
+                fileIndex.Compression = (ArcCompression) ((flags >> 0x1D) & 0x07);
                 fileIndex.Size = flags & 0x1FFFFFFFU;
                 fileIndex.Offset = ReadUInt32(entryBuffer);
                 _fileIndices.Add(fileIndex);
             }
         }
 
+        private byte[] Compress(byte[] input, int level = Deflater.BEST_COMPRESSION)
+        {
+            Deflater compressor = new Deflater();
+            compressor.SetLevel(level);
+            compressor.SetInput(input);
+            compressor.Finish();
+            using MemoryStream bos = new MemoryStream(input.Length);
+            byte[] buf = new byte[1024];
+            while (!compressor.IsFinished)
+            {
+                int count = compressor.Deflate(buf);
+                bos.Write(buf, 0, count);
+            }
+
+            return bos.ToArray();
+        }
+
+        private byte[] Decompress(byte[] input)
+        {
+            Inflater decompressor = new Inflater();
+            decompressor.SetInput(input);
+            using MemoryStream bos = new MemoryStream(input.Length);
+            byte[] buf = new byte[1024];
+            while (!decompressor.IsFinished)
+            {
+                int count = decompressor.Inflate(buf);
+                bos.Write(buf, 0, count);
+            }
+
+            return bos.ToArray();
+        }
+
         public class FileIndex
         {
             public string Name { get; set; }
             public string Directory { get; set; }
+            public string ArcPath { get; set; }
             public string Path { get; set; }
             public string Extension { get; set; }
             public uint JamCrc { get; set; }
             public uint Offset { get; set; }
             public uint CompressedSize { get; set; }
             public uint Size { get; set; }
-            public Compression Compression { get; set; }
+            public ArcCompression Compression { get; set; }
             public ArcExt ArcExt { get; set; }
         }
 
-        public enum Compression
+        public enum ArcCompression
         {
             Lowest = 0,
-            Low,
-            Normal,
-            High,
-            Highest,
-            StreamLow,
-            StreamHigh,
-            Invalid,
+            Low = 1,
+            Normal = 2,
+            High = 3,
+            Highest = 4,
+            StreamLow = 5,
+            StreamHigh = 6,
+            Invalid = 7,
         }
 
-        public class File
+        public class ArcFile
         {
-            public string Name { get; set; }
-            public string Extension { get; set; }
             public FileIndex Index { get; set; }
             public byte[] Data { get; set; }
         }
@@ -171,7 +274,7 @@ namespace Arrowgene.Ddon.Client
         {
             Register("rAI", "ais");
             Register("rAIConditionTree", "cdt");
-            Register("rAIDynamicLayout", "dpth"); // CRC32:0x7BBF5CB0
+            Register("rAIDynamicLayout", "dpth");
             Register("rAIFSM", "fsm");
             Register("rAIFSMList", "fsl");
             Register("rAIPathBase", "are");

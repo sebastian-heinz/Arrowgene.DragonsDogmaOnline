@@ -32,7 +32,10 @@ namespace Arrowgene.Ddon.Client
 
         public void Load()
         {
-            new ArcArchive().Open(GetPath("st0100.arc"));
+            ArcArchive test = new ArcArchive();
+            test.Open(GetPath("st0100.arc"));
+            //test.ExtractArchive("F:/test");
+         
             
             LandListLal.Open(GetPath("land_list.00E36E23"));
             FieldAreaListFal.Open(GetPath("field_area_list.4114AC4C"));
