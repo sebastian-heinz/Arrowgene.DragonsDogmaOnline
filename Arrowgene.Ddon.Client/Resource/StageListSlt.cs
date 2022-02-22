@@ -5,6 +5,7 @@ namespace Arrowgene.Ddon.Client.Resource
 {
     public class StageListSlt : ResourceFile
     {
+        // rStageList::Info vftable:0x1C6EF0C, Size:0x18, CRC32:0x43B85BE0
         public class Info
         {
             public uint StageNo { get; set; }
@@ -33,7 +34,7 @@ namespace Arrowgene.Ddon.Client.Resource
             Info entry = new Info();
             entry.StageNo = ReadUInt32(buffer);
             entry.Type = ReadUInt32(buffer);
-            entry.RecommendLevel = buffer.ReadByte();
+            entry.RecommendLevel = ReadByte(buffer);
             entry.MessageId = ReadUInt32(buffer);
             entry.Version = ReadUInt32(buffer);
             return entry;

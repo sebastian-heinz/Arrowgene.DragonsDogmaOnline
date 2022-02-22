@@ -13,7 +13,6 @@
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.1" />
         <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
         <PackageReference Include="Arrowgene.Networking" Version="1.0.6" />
-        <PackageReference Include="YamlDotNet" Version="11.2.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj" />

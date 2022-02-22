@@ -70,6 +70,16 @@ namespace Arrowgene.Ddon.Client
         {
             return buffer.ReadUInt16(Endianness.Little);
         }
+        
+        protected bool ReadBool(IBuffer buffer)
+        {
+            return buffer.ReadByte() != 0;
+        }
+        
+        protected byte ReadByte(IBuffer buffer)
+        {
+            return buffer.ReadByte();
+        }
 
         protected void WriteInt32(IBuffer buffer, int value)
         {

@@ -5,6 +5,7 @@ namespace Arrowgene.Ddon.Client.Resource
 {
     public class FieldAreaListFal : ResourceFile
     {
+        //  rFieldAreaList::cFieldAreaInfo vftable:0x1C5F6D0, Size:0x3C, CRC32:0x2B8194
         public class FieldAreaInfo
         {
             public List<uint> StageNoList { get; set; }
@@ -12,8 +13,8 @@ namespace Arrowgene.Ddon.Client.Resource
             public uint FieldAreaId { get; set; }
             public uint GmdIdx { get; set; }
             public uint VersionId { get; set; }
-            public uint LandId  { get; set; }
-            public uint AreaId { get; set; }
+            public ushort LandId  { get; set; }
+            public ushort AreaId { get; set; }
             
             public FieldAreaInfo()
             {
@@ -35,14 +36,15 @@ namespace Arrowgene.Ddon.Client.Resource
             List<FieldAreaInfo> infos = ReadMtArray(buffer, ReadEntry);
             FieldAreaInfos.AddRange(infos);
         }
-
+        
         private FieldAreaInfo ReadEntry(IBuffer buffer)
         {
             FieldAreaInfo entry = new FieldAreaInfo();
-            // TODO verify - Structure different from debug symbols
             entry.FieldAreaId = ReadUInt32(buffer); 
-            entry.AreaId = ReadUInt32(buffer);
-            entry.LandId = ReadUInt32(buffer);
+            entry.GmdIdx = ReadUInt32(buffer);
+            entry.VersionId = 0x00009900;
+            entry.LandId = ReadUInt16(buffer);
+            entry.AreaId = ReadUInt16(buffer);
             entry.StageNoList = ReadMtArray(buffer, ReadStageNo);
             entry.BelongStageNoList = ReadMtArray(buffer, ReadStageNo);
             return entry;
