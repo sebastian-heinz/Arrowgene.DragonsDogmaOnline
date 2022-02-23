@@ -17,7 +17,29 @@ namespace Arrowgene.Ddon.Client
         {
             FilePath = null;
         }
+
+        public void Open(IBuffer buffer)
+        {
+            buffer.SetPositionStart();
+            if (buffer.Size < 4)
+            {
+                return;
+            }
+
+            Read(buffer);
+        }
         
+        public void Open(byte[] data)
+        {
+            if (data == null)
+            {
+                Logger.Error("Invalid data (data == null)");
+                return;
+            }
+            IBuffer buffer = new StreamBuffer(data);
+            Open(buffer);
+        }
+
         public void Open(string path)
         {
             FilePath = new FileInfo(path);
@@ -28,13 +50,7 @@ namespace Arrowgene.Ddon.Client
             }
 
             IBuffer buffer = new StreamBuffer(path);
-            buffer.SetPositionStart();
-            if (buffer.Size < 4)
-            {
-                return;
-            }
-
-            Read(buffer);
+            Open(buffer);
         }
 
         protected abstract void Read(IBuffer buffer);

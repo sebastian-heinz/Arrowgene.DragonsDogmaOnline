@@ -3,7 +3,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class StageListSlt : ResourceFile
+    public class StageList : ResourceFile
     {
         // rStageList::Info vftable:0x1C6EF0C, Size:0x18, CRC32:0x43B85BE0
         public class Info
@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public List<Info> AreaInfos { get; }
 
-        public StageListSlt()
+        public StageList()
         {
             AreaInfos = new List<Info>();
         }

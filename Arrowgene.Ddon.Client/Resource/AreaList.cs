@@ -3,7 +3,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class AreaListAri : ResourceFile
+    public class AreaList : ResourceFile
     {
         public class AreaInfo
         {
@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public List<AreaInfo> AreaInfos { get; }
 
-        public AreaListAri()
+        public AreaList()
         {
             AreaInfos = new List<AreaInfo>();
         }

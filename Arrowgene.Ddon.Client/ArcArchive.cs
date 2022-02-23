@@ -20,6 +20,35 @@ namespace Arrowgene.Ddon.Client
         private static readonly JamCrc32 JamCrc32 = new JamCrc32();
         private static readonly Dictionary<uint, ArcExt> JamCrcLookup = new Dictionary<uint, ArcExt>();
 
+        private static void Register(string className, string extension)
+        {
+            ArcExt arcExt = new ArcExt();
+            byte[] classBytes = Encoding.UTF8.GetBytes(className);
+            arcExt.Class = className;
+            arcExt.Extension = extension;
+            arcExt.JamCrcBytes = JamCrc32.ComputeHash(classBytes);
+            arcExt.JamCrc = BitConverter.ToUInt32(arcExt.JamCrcBytes);
+            arcExt.JamCrcStr = $"{arcExt.JamCrcBytes:X8}";
+            JamCrcLookup.Add(arcExt.JamCrc, arcExt);
+        }
+
+        public static FileIndexSearch Search()
+        {
+            return new FileIndexSearch();
+        }
+
+        /// <summary>
+        /// Path inside .arc files use `\` to separate directories.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string ToArcPath(string path)
+        {
+            path = path.Replace('/', '\\');
+            path = path.Replace(Path.DirectorySeparatorChar, '\\');
+            path = path.Replace(Path.AltDirectorySeparatorChar, '\\');
+            return path;
+        }
 
         private readonly List<FileIndex> _fileIndices;
 
@@ -31,11 +60,74 @@ namespace Arrowgene.Ddon.Client
         public string MagicTag { get; set; }
         public ushort MagicId { get; set; }
 
+        /// <summary>
+        /// Returns all file indices from this archive.
+        /// </summary>
         public List<FileIndex> GetFileIndices()
         {
             return new List<FileIndex>(_fileIndices);
         }
 
+        /// <summary>
+        /// Returns a list of all matching FileIndices.
+        /// </summary>
+        public List<FileIndex> GetFileIndices(FileIndexSearch search)
+        {
+            List<FileIndex> fileIndices = new List<FileIndex>();
+            if (search != null)
+            {
+                foreach (FileIndex index in _fileIndices)
+                {
+                    if (search.Match(index))
+                    {
+                        fileIndices.Add(index);
+                    }
+                }
+            }
+
+            return fileIndices;
+        }
+
+        /// <summary>
+        /// Returns a list of all matching files.
+        /// </summary>
+        public List<ArcFile> GetFiles(FileIndexSearch search)
+        {
+            List<ArcFile> files = new List<ArcFile>();
+            foreach (FileIndex index in GetFileIndices(search))
+            {
+                files.Add(GetFile(index));
+            }
+
+            return files;
+        }
+
+        /// <summary>
+        /// Returns the first file that matches the search criteria.
+        /// </summary>
+        public ArcFile GetFile(FileIndexSearch search)
+        {
+            if (search == null)
+            {
+                return null;
+            }
+
+            foreach (FileIndex index in _fileIndices)
+            {
+                if (search.Match(index))
+                {
+                    return GetFile(index);
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Extract all files into the given rootPath.
+        /// Preserving the arc directory structure.
+        /// Directories that do not exists will be created.
+        /// </summary>
         public void ExtractArchive(string rootPath)
         {
             foreach (FileIndex fileIndex in _fileIndices)
@@ -44,6 +136,11 @@ namespace Arrowgene.Ddon.Client
             }
         }
 
+        /// <summary>
+        /// Extract a single file to the given root path.
+        /// Preserving the arc directory structure.
+        /// Directories that do not exists will be created.
+        /// </summary>
         public void ExtractFile(string rootPath, FileIndex fileIndex)
         {
             ArcFile f = GetFile(fileIndex);
@@ -52,6 +149,7 @@ namespace Arrowgene.Ddon.Client
                 Logger.Error($"Failed to extract file (ArcPath:{fileIndex.ArcPath})");
                 return;
             }
+
             FileInfo fileInfo = new FileInfo(Path.Combine(rootPath, f.Index.Path));
             if (fileInfo.DirectoryName == null)
             {
@@ -63,10 +161,13 @@ namespace Arrowgene.Ddon.Client
             {
                 Directory.CreateDirectory(fileInfo.DirectoryName);
             }
-            
+
             File.WriteAllBytes(fileInfo.FullName, f.Data);
         }
 
+        /// <summary>
+        /// Retrieve a ArcFile from an index
+        /// </summary>
         public ArcFile GetFile(FileIndex fileIndex)
         {
             if (fileIndex.Offset > int.MaxValue)
@@ -84,6 +185,8 @@ namespace Arrowgene.Ddon.Client
 
             if (FilePath == null)
             {
+                // TODO assumed to be backed by a file, if Open(byte[]) or Open(IBuffer) is used retrieving files will fail.
+                // At the moment there should not be a need to keep the .arc in memory
                 Logger.Error("No File Open (FilePath == null)");
                 return null;
             }
@@ -216,6 +319,170 @@ namespace Arrowgene.Ddon.Client
             return bos.ToArray();
         }
 
+        [Flags]
+        public enum SearchOption : ushort
+        {
+            None = 0,
+            Class = 1 << 0,
+            Extension = 1 << 1,
+            JamCrc = 1 << 2,
+            JamCrcStr = 1 << 3,
+            Name = 1 << 4,
+            ArcPath = 1 << 5
+        }
+
+        public class FileIndexSearch
+        {
+            private string _arcPath;
+
+            public FileIndexSearch()
+            {
+                Option = SearchOption.None;
+            }
+
+            public FileIndexSearch(FileIndexSearch fis)
+            {
+                Option = fis.Option;
+                Class = fis.Class;
+                Extension = fis.Extension;
+                JamCrc = fis.JamCrc;
+                JamCrcStr = fis.JamCrcStr;
+                Name = fis.Name;
+            }
+
+            public SearchOption Option { get; private set; }
+            public string Class { get; set; }
+            public string Extension { get; set; }
+            public uint JamCrc { get; set; }
+            public string JamCrcStr { get; set; }
+            public string Name { get; set; }
+
+            public string ArcPath
+            {
+                get => _arcPath;
+                set => _arcPath = ToArcPath(value);
+            }
+
+            public bool Match(FileIndex fileIndex)
+            {
+                if (fileIndex == null)
+                {
+                    return false;
+                }
+
+                if (Option == SearchOption.None)
+                {
+                    return true;
+                }
+
+                //  int intVal = ((int)Option);
+                //  bool singleBitIsSet = intVal != 0 && (intVal & (intVal-1)) == 0;
+
+                if (Option.HasFlag(SearchOption.ArcPath))
+                {
+                    if (fileIndex.ArcPath != null
+                        && fileIndex.ArcPath == ArcPath)
+                    {
+                        return Resolve(SearchOption.ArcPath).Match(fileIndex);
+                    }
+
+                    return false;
+                }
+
+                if (Option.HasFlag(SearchOption.JamCrc))
+                {
+                    if (fileIndex.JamCrc == JamCrc)
+                    {
+                        return Resolve(SearchOption.JamCrc).Match(fileIndex);
+                    }
+
+                    return false;
+                }
+
+                if (Option.HasFlag(SearchOption.Name))
+                {
+                    if (fileIndex.Name == Name)
+                    {
+                        return Resolve(SearchOption.Name).Match(fileIndex);
+                    }
+
+                    return false;
+                }
+
+                if (Option.HasFlag(SearchOption.Class))
+                {
+                    if (fileIndex.ArcExt.Class == Class)
+                    {
+                        return Resolve(SearchOption.Class).Match(fileIndex);
+                    }
+
+                    return false;
+                }
+
+                if (Option.HasFlag(SearchOption.Extension))
+                {
+                    if (fileIndex.ArcExt.Extension == Extension)
+                    {
+                        return Resolve(SearchOption.Extension).Match(fileIndex);
+                    }
+
+                    return false;
+                }
+
+                if (Option.HasFlag(SearchOption.JamCrcStr))
+                {
+                    if (fileIndex.ArcExt.JamCrcStr == JamCrcStr)
+                    {
+                        return Resolve(SearchOption.JamCrcStr).Match(fileIndex);
+                    }
+
+                    return false;
+                }
+
+                return false;
+            }
+
+            public FileIndexSearch Resolve(SearchOption option)
+            {
+                FileIndexSearch fis = new FileIndexSearch(this);
+                return fis.RemoveCriteria(option);
+            }
+
+            public FileIndexSearch AddCriteria(SearchOption option)
+            {
+                Option |= option;
+                return this;
+            }
+
+            public FileIndexSearch RemoveCriteria(SearchOption option)
+            {
+                Option &= ~option;
+                return this;
+            }
+
+            public FileIndexSearch ByArcPath(string arcPath)
+            {
+                if (arcPath == null)
+                {
+                    return this;
+                }
+
+                ArcPath = arcPath;
+                return AddCriteria(SearchOption.ArcPath);
+            }
+
+            public FileIndexSearch ByExtension(string extension)
+            {
+                if (extension == null)
+                {
+                    return this;
+                }
+
+                Extension = extension;
+                return AddCriteria(SearchOption.Extension);
+            }
+        }
+
         public class FileIndex
         {
             public string Name { get; set; }
@@ -256,18 +523,6 @@ namespace Arrowgene.Ddon.Client
             public uint JamCrc;
             public byte[] JamCrcBytes;
             public string JamCrcStr;
-        }
-
-        private static void Register(string className, string extension)
-        {
-            ArcExt arcExt = new ArcExt();
-            byte[] classBytes = Encoding.UTF8.GetBytes(className);
-            arcExt.Class = className;
-            arcExt.Extension = extension;
-            arcExt.JamCrcBytes = JamCrc32.ComputeHash(classBytes);
-            arcExt.JamCrc = BitConverter.ToUInt32(arcExt.JamCrcBytes);
-            arcExt.JamCrcStr = $"{arcExt.JamCrcBytes:X8}";
-            JamCrcLookup.Add(arcExt.JamCrc, arcExt);
         }
 
         static ArcArchive()

@@ -3,7 +3,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class FieldAreaListFal : ResourceFile
+    public class FieldAreaList : ResourceFile
     {
         //  rFieldAreaList::cFieldAreaInfo vftable:0x1C5F6D0, Size:0x3C, CRC32:0x2B8194
         public class FieldAreaInfo
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public List<FieldAreaInfo> FieldAreaInfos { get; }
 
-        public FieldAreaListFal()
+        public FieldAreaList()
         {
             FieldAreaInfos = new List<FieldAreaInfo>();
         }
