@@ -16,7 +16,6 @@ namespace Arrowgene.Ddon.Client
         public StageList StageList { get; private set; }
         public LandListLal LandList { get; private set; }
         public StageToSpot StageToSpot { get; private set; }
-        public MsgSet MsgSet { get; private set; }
 
         private DirectoryInfo _directory;
 
@@ -28,7 +27,6 @@ namespace Arrowgene.Ddon.Client
             FieldAreaList = new FieldAreaList();
             LandList = new LandListLal();
             StageToSpot = new StageToSpot();
-            MsgSet = new MsgSet();
         }
 
         public void Load(string romDirectory)
@@ -47,10 +45,19 @@ namespace Arrowgene.Ddon.Client
             FieldAreaList = GetResource<FieldAreaList>("game_common.arc", "etc/FieldArea/field_area_list");
             StageToSpot = GetFile<StageToSpot>("game_common.arc", "param/stage_to_spot");
 
-           // MsgSet = GetResource<MsgSet>("stage/st0100/st0100.arc",
-           //     "ui/00_message/examine_message/stage/stage_examine_st0100", "mss");
+            // MsgSet = GetResource<MsgSet>("stage/st0100/st0100.arc",
+            //     "ui/00_message/examine_message/stage/stage_examine_st0100", "mss");
 
-            MsgSet = GetResource<MsgSet>("game_common.arc", "ui/00_message/pw/pwtlk05", "mss");
+            // MsgSet msgSet = GetResource<MsgSet>("game_common.arc", "ui/00_message/pw/pwtlk05", "mss");
+            //Gmd gmd = GetResource<Gmd>("game_common.arc", "ui/00_message/pw/pwtlk05", "gmd");
+
+
+            //   var fas = GetArcFile("game_common.arc", "ui/00_message/pw/pwtlk05", "gmd");
+            //   File.WriteAllBytes("F:\\asda",fas.Data);
+            Gmd gmd = new Gmd();
+            // gmd.Open("F:\\asda.gmd");
+            //   gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\npc\\func_select_name.gmd");
+            //  gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\common\\field_area_name.gmd");
         }
 
         public void DumpPaths(string outPath)

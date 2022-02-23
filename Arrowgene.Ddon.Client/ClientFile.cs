@@ -62,10 +62,17 @@ namespace Arrowgene.Ddon.Client
             buffer.WriteBytes(utf8);
         }
 
-        protected string ReadMtString(IBuffer buffer)
+        protected string ReadMtString16(IBuffer buffer)
         {
             ushort len = buffer.ReadUInt16(Endianness.Little);
             string str = buffer.ReadString(len, Encoding.UTF8);
+            return str;
+        }
+        
+        protected string ReadMtString32(IBuffer buffer)
+        {
+            uint len = buffer.ReadUInt32(Endianness.Little);
+            string str = buffer.ReadString((int)len, Encoding.UTF8);
             return str;
         }
 
