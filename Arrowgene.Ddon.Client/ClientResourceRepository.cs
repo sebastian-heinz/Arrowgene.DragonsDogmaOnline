@@ -55,7 +55,8 @@ namespace Arrowgene.Ddon.Client
             //   var fas = GetArcFile("game_common.arc", "ui/00_message/pw/pwtlk05", "gmd");
             //   File.WriteAllBytes("F:\\asda",fas.Data);
             Gmd gmd = new Gmd();
-            // gmd.Open("F:\\asda.gmd");
+
+            gmd.Open("E:\\Games\\ARCtool\\st0100\\ui\\00_message\\examine_message\\stage\\stage_examine_st0100.gmd");
             //   gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\npc\\func_select_name.gmd");
             //  gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\common\\field_area_name.gmd");
         }
