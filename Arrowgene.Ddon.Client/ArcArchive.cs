@@ -374,10 +374,7 @@ namespace Arrowgene.Ddon.Client
                 {
                     return true;
                 }
-
-                //  int intVal = ((int)Option);
-                //  bool singleBitIsSet = intVal != 0 && (intVal & (intVal-1)) == 0;
-
+                
                 if (Option.HasFlag(SearchOption.ArcPath))
                 {
                     if (fileIndex.ArcPath != null
@@ -523,6 +520,15 @@ namespace Arrowgene.Ddon.Client
             public uint JamCrc;
             public byte[] JamCrcBytes;
             public string JamCrcStr;
+
+            public ArcExt()
+            {
+                Class = "";
+                Extension = "";
+                JamCrcStr = "";
+                JamCrc = 0;
+                JamCrcBytes = null;
+            }
         }
 
         static ArcArchive()

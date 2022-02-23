@@ -5,7 +5,6 @@ namespace Arrowgene.Ddon.Client.Resource
 {
     public class LandListLal : ResourceFile
     {
-        // rLandInfo::cLandInfo vftable:0x1C649D8, Size:0x20, CRC32:0x176A37C8
         public class LandInfo
         {
             public uint LandId { get; set; }
@@ -25,7 +24,9 @@ namespace Arrowgene.Ddon.Client.Resource
         {
             LandInfos = new List<LandInfo>();
         }
-
+        
+        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
+        
         protected override void ReadResource(IBuffer buffer)
         {
             LandInfos.Clear();

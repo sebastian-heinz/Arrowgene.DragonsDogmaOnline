@@ -5,7 +5,6 @@ namespace Arrowgene.Ddon.Client.Resource
 {
     public class FieldAreaList : ResourceFile
     {
-        //  rFieldAreaList::cFieldAreaInfo vftable:0x1C5F6D0, Size:0x3C, CRC32:0x2B8194
         public class FieldAreaInfo
         {
             public List<uint> StageNoList { get; set; }
@@ -30,6 +29,8 @@ namespace Arrowgene.Ddon.Client.Resource
             FieldAreaInfos = new List<FieldAreaInfo>();
         }
 
+        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
+        
         protected override void ReadResource(IBuffer buffer)
         {
             FieldAreaInfos.Clear();

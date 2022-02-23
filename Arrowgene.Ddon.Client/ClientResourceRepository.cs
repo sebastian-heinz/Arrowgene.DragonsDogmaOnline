@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Text;
 using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Logging;
 
@@ -44,9 +46,35 @@ namespace Arrowgene.Ddon.Client
             StageList = GetResource<StageList>("base.arc", "scr/stage_list");
             FieldAreaList = GetResource<FieldAreaList>("game_common.arc", "etc/FieldArea/field_area_list");
             StageToSpot = GetFile<StageToSpot>("game_common.arc", "param/stage_to_spot");
-            
-            MsgSet = GetResource<MsgSet>("stage/st0100/st0100.arc",
-                "ui/00_message/examine_message/stage/stage_examine_st0100", "mss");
+
+           // MsgSet = GetResource<MsgSet>("stage/st0100/st0100.arc",
+           //     "ui/00_message/examine_message/stage/stage_examine_st0100", "mss");
+
+            MsgSet = GetResource<MsgSet>("game_common.arc", "ui/00_message/pw/pwtlk05", "mss");
+        }
+
+        public void DumpPaths(string outPath)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"Path,ArcPath,JamCrc{Environment.NewLine}");
+            string[] files = Directory.GetFiles(_directory.FullName, "*.arc", SearchOption.AllDirectories);
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                string filePath = files[i];
+                string relativePath = filePath.Substring(_directory.FullName.Length);
+                ArcArchive archive = new ArcArchive();
+                archive.Open(filePath);
+                foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
+                {
+                    sb.Append($"{relativePath},{fi.ArcPath}.{fi.ArcExt.Extension},{fi.JamCrc}{Environment.NewLine}");
+                }
+
+                Logger.Info($"Processing {i}/{files.Length} {filePath}");
+            }
+
+            File.WriteAllText(outPath, sb.ToString());
+            Logger.Info($"Done: {outPath}");
         }
 
         private T GetFile<T>(string arcPath, string filePath, string ext = null) where T : ClientFile, new()
@@ -74,7 +102,7 @@ namespace Arrowgene.Ddon.Client
             resource.Open(arcFile.Data);
             return resource;
         }
-        
+
         private ArcArchive.ArcFile GetArcFile(string arcPath, string filePath, string ext = null)
         {
             string path = Path.Combine(_directory.FullName, arcPath);

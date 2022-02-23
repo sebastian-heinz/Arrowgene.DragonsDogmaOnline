@@ -18,6 +18,8 @@ namespace Arrowgene.Ddon.Client.Resource
             AreaInfoStages = new List<AreaInfoStage>();
         }
 
+        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
+
         protected override void ReadResource(IBuffer buffer)
         {
             AreaInfoStages.Clear();
