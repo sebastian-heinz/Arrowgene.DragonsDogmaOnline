@@ -15,20 +15,20 @@ namespace Arrowgene.Ddon.Client.Resource
             public uint Version { get; set; }
         }
 
-        public List<Info> AreaInfos { get; }
+        public List<Info> StageInfos { get; }
 
         public StageList()
         {
-            AreaInfos = new List<Info>();
+            StageInfos = new List<Info>();
         }
         
         protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
         
         protected override void ReadResource(IBuffer buffer)
         {
-            AreaInfos.Clear();
+            StageInfos.Clear();
             List<Info> infos = ReadMtArray(buffer, ReadEntry);
-            AreaInfos.AddRange(infos);
+            StageInfos.AddRange(infos);
         }
 
         private Info ReadEntry(IBuffer buffer)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Arrowgene.Ddon.Client.Resource;
@@ -45,6 +46,60 @@ namespace Arrowgene.Ddon.Client
             FieldAreaList = GetResource<FieldAreaList>("game_common.arc", "etc/FieldArea/field_area_list");
             StageToSpot = GetFile<StageToSpot>("game_common.arc", "param/stage_to_spot");
 
+
+            // for each land
+            foreach (LandListLal.LandInfo land in LandList.LandInfos)
+            {
+                // for each area in the land
+                foreach (uint landAreaId in land.AreaIds)
+                {
+                    //lookup stages and spots for area
+                    List<StageList.Info> stageInfos = new List<StageList.Info>();
+                    List<StageToSpot.Entry> spots = new List<StageToSpot.Entry>();
+                    foreach (AreaStageList.AreaInfoStage ais in AreaStageList.AreaInfoStages)
+                    {
+                        if (ais.AreaId == landAreaId)
+                        {
+                            foreach (StageList.Info sli in StageList.StageInfos)
+                            {
+                                if (sli.StageNo == ais.StageNo)
+                                {
+                                    stageInfos.Add(sli);
+                                    foreach (StageToSpot.Entry sts in StageToSpot.Entries)
+                                    {
+                                        if (sts.StageNo == sli.StageNo)
+                                        {
+                                            spots.Add(sts);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // lookup area info for area
+                    AreaList.AreaInfo areaInfo;
+                    foreach (AreaList.AreaInfo ai in AreaList.AreaInfos)
+                    {
+                        if (ai.AreaId == landAreaId)
+                        {
+                            areaInfo = ai;
+                        }
+                    }
+
+                    // unsure what field area is
+                    // FieldAreaList.FieldAreaInfo  fieldAreaInfo;
+                    // foreach (FieldAreaList.FieldAreaInfo fai in FieldAreaList.FieldAreaInfos)
+                    // {
+                    //     if (fai.AreaId == landAreaId)
+                    //     {
+                    //         fieldAreaInfo = fai;
+                    //     }
+                    // }
+                }
+            }
+
+
             // MsgSet = GetResource<MsgSet>("stage/st0100/st0100.arc",
             //     "ui/00_message/examine_message/stage/stage_examine_st0100", "mss");
 
@@ -56,9 +111,15 @@ namespace Arrowgene.Ddon.Client
             //   File.WriteAllBytes("F:\\asda",fas.Data);
             Gmd gmd = new Gmd();
 
-            gmd.Open("E:\\Games\\ARCtool\\st0100\\ui\\00_message\\examine_message\\stage\\stage_examine_st0100.gmd");
+            // LandList -> AreaList 
+            //           -> AreaStageList -> stage no  -> stage list
+            //           -> FieldAreaList -> stagNo list  -> stage list
+
+
+            // gmd.Open("E:\\Games\\ARCtool\\st0100\\ui\\00_message\\examine_message\\stage\\stage_examine_st0100.gmd");
             //   gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\npc\\func_select_name.gmd");
-            //  gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\common\\field_area_name.gmd");
+            gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\common\\field_area_name.gmd");
+            int i = 1;
         }
 
         public void DumpPaths(string outPath)
