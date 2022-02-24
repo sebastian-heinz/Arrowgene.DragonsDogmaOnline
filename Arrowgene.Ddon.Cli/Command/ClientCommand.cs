@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
+            // TODO for testing purpose at the moment
             ClientResourceRepository repo = new ClientResourceRepository();
             repo.Load(romDirectory);
             return CommandResultType.Exit;

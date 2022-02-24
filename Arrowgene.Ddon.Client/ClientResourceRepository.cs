@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Logging;
 
@@ -45,10 +43,10 @@ namespace Arrowgene.Ddon.Client
             StageList = GetResource<StageList>("base.arc", "scr/stage_list");
             FieldAreaList = GetResource<FieldAreaList>("game_common.arc", "etc/FieldArea/field_area_list");
             StageToSpot = GetFile<StageToSpot>("game_common.arc", "param/stage_to_spot");
-            
+
             // Land has areas, area has stages, and stages have spots
             // Land -> Area -> Stage -> Spot
-            
+
             // for each land
             foreach (LandListLal.LandInfo land in LandList.LandInfos)
             {
@@ -88,40 +86,44 @@ namespace Arrowgene.Ddon.Client
                             areaInfo = ai;
                         }
                     }
-
-                    // unsure what field area is
-                    // FieldAreaList.FieldAreaInfo  fieldAreaInfo;
-                    // foreach (FieldAreaList.FieldAreaInfo fai in FieldAreaList.FieldAreaInfos)
-                    // {
-                    //     if (fai.AreaId == landAreaId)
-                    //     {
-                    //         fieldAreaInfo = fai;
-                    //     }
-                    // }
                 }
             }
 
 
-            // MsgSet = GetResource<MsgSet>("stage/st0100/st0100.arc",
-            //     "ui/00_message/examine_message/stage/stage_examine_st0100", "mss");
+            Gmd fieldAreaNames = GetResource<Gmd>("game_common.arc", "etc/FieldArea/field_area_list");
+            foreach (FieldAreaList.FieldAreaInfo fai in FieldAreaList.FieldAreaInfos)
+            {
+                Gmd.Entry areaName = fieldAreaNames.Entries[(int) fai.GmdIdx];
+                int index = 0;
+                FieldAreaMarkerInfo omMarker = GetResource<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{index:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{index:000}_marker_ect",
+                    "fmi"
+                );
+                FieldAreaMarkerInfo sceMarker = GetResource<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{index:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{index:000}_marker_ect",
+                    "fmi"
+                );
+                FieldAreaMarkerInfo npcMarker = GetResource<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{index:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{index:000}_marker_ect",
+                    "fmi"
+                );
+                FieldAreaMarkerInfo ectMarker = GetResource<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{index:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{index:000}_marker_ect",
+                    "fmi"
+                );
+                // transition points
+                FieldAreaMarkerInfo adjoin = GetResource<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{index:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{index:000}_adjoin",
+                    "faa"
+                );
 
-            // MsgSet msgSet = GetResource<MsgSet>("game_common.arc", "ui/00_message/pw/pwtlk05", "mss");
-            //Gmd gmd = GetResource<Gmd>("game_common.arc", "ui/00_message/pw/pwtlk05", "gmd");
-
-
-            //   var fas = GetArcFile("game_common.arc", "ui/00_message/pw/pwtlk05", "gmd");
-            //   File.WriteAllBytes("F:\\asda",fas.Data);
-            Gmd gmd = new Gmd();
-
-            // LandList -> AreaList 
-            //           -> AreaStageList -> stage no  -> stage list
-            //           -> FieldAreaList -> stagNo list  -> stage list
-
-
-            // gmd.Open("E:\\Games\\ARCtool\\st0100\\ui\\00_message\\examine_message\\stage\\stage_examine_st0100.gmd");
-            //   gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\npc\\func_select_name.gmd");
-            gmd.Open("E:\\Games\\ARCtool\\game_common\\ui\\00_message\\common\\field_area_name.gmd");
-            int i = 1;
+                int sdsda = 1;
+            }
         }
 
 

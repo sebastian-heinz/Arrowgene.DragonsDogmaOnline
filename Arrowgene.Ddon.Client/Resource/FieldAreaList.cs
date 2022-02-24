@@ -3,12 +3,15 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
+    /// <summary>
+    /// StageNo = signed int 32
+    /// </summary>
     public class FieldAreaList : ResourceFile
     {
         public class FieldAreaInfo
         {
-            public List<uint> StageNoList { get; set; }
-            public List<uint> BelongStageNoList { get; set; }
+            public List<int> StageNoList { get; set; }
+            public List<int> BelongStageNoList { get; set; }
             public uint FieldAreaId { get; set; }
             public uint GmdIdx { get; set; }
             public uint VersionId { get; set; }
@@ -17,8 +20,8 @@ namespace Arrowgene.Ddon.Client.Resource
             
             public FieldAreaInfo()
             {
-                StageNoList = new List<uint>();
-                BelongStageNoList = new List<uint>();
+                StageNoList = new List<int>();
+                BelongStageNoList = new List<int>();
             }
         }
 
@@ -51,9 +54,9 @@ namespace Arrowgene.Ddon.Client.Resource
             return entry;
         }
 
-        private uint ReadStageNo(IBuffer buffer)
+        private int ReadStageNo(IBuffer buffer)
         {
-            return ReadUInt32(buffer);
+            return ReadInt32(buffer);
         }
     }
 }
