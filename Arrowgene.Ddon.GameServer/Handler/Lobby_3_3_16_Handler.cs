@@ -1,3 +1,4 @@
+using System;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -18,15 +19,45 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
+            Logger.Error(packet.PrintData());
+
             IBuffer requestBuffer = packet.AsBuffer();
             byte unk0 = requestBuffer.ReadByte();
             uint unk1 = requestBuffer.ReadUInt32(Endianness.Big);
             int unk2length = requestBuffer.ReadInt32(Endianness.Big);
             byte[] unk2content = requestBuffer.ReadBytes(unk2length);
 
-            foreach(GameClient otherClient in Server.Clients)
+            IBuffer test = new StreamBuffer(unk2content);
+            test.SetPositionStart();
+            if (test.Size > 56)
             {
-                if(otherClient != client)
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32(); //16
+                test.ReadUInt32();
+                test.ReadUInt32();
+                //   uint asdaa = test.ReadUInt32();
+                //  uint asda = test.ReadUInt32(); //32
+
+                byte[] b0 = test.ReadBytes(8);
+                byte[] x = test.ReadBytes(8);
+                byte[] b2 = test.ReadBytes(8);
+                byte[] b3 = test.ReadBytes(8);
+                byte[] b4 = test.ReadBytes(8);
+                Array.Reverse(b0);
+                Array.Reverse(x);
+                Array.Reverse(b2);
+                Array.Reverse(b3);
+                Array.Reverse(b4);
+                Logger.Info(
+                    $"a0:{BitConverter.ToDouble(b0)} x:{BitConverter.ToDouble(x)} a2:{BitConverter.ToDouble(b2)} a3:{BitConverter.ToDouble(b3)} a4:{BitConverter.ToDouble(b4)}");
+            }
+
+
+            foreach (GameClient otherClient in Server.Clients)
+            {
+                if (otherClient != client)
                 {
                     IBuffer responseBuffer = new StreamBuffer();
                     responseBuffer.WriteByte(unk0);
