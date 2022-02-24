@@ -42,16 +42,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 byte[] b0 = test.ReadBytes(8);
                 byte[] x = test.ReadBytes(8);
-                byte[] b2 = test.ReadBytes(8);
+                byte[] c0 = test.ReadBytes(4);
+                byte[] y = test.ReadBytes(8);
+                byte[] c1 = test.ReadBytes(4);
                 byte[] b3 = test.ReadBytes(8);
                 byte[] b4 = test.ReadBytes(8);
                 Array.Reverse(b0);
                 Array.Reverse(x);
-                Array.Reverse(b2);
+                Array.Reverse(y);
                 Array.Reverse(b3);
-                Array.Reverse(b4);
+                Array.Reverse(b4);  
+                Array.Reverse(c0);    
+                Array.Reverse(c1);          
+                // North = Y-
+                // SOUTH = Y+
+                // EAST = X+
+                // WEST = X-
+                Logger.Info($"X:{BitConverter.ToDouble(x)} Y:{BitConverter.ToDouble(y)}");
+                
                 Logger.Info(
-                    $"a0:{BitConverter.ToDouble(b0)} x:{BitConverter.ToDouble(x)} a2:{BitConverter.ToDouble(b2)} a3:{BitConverter.ToDouble(b3)} a4:{BitConverter.ToDouble(b4)}");
+                    $"c0:{BitConverter.ToSingle(c0)} c1:{BitConverter.ToSingle(c1)}");
+                Logger.Info(
+                    $"a0:{BitConverter.ToDouble(b0)} a3:{BitConverter.ToDouble(b3)} a4:{BitConverter.ToDouble(b4)}");
             }
 
 
