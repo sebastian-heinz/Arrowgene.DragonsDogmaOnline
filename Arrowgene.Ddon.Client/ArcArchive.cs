@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Client
             arcExt.Extension = extension;
             arcExt.JamCrcBytes = JamCrc32.ComputeHash(classBytes);
             arcExt.JamCrc = BitConverter.ToUInt32(arcExt.JamCrcBytes);
-            arcExt.JamCrcStr = $"{arcExt.JamCrcBytes:X8}";
+            arcExt.JamCrcStr = $"0x{arcExt.JamCrc:X8}";
             JamCrcLookup.Add(arcExt.JamCrc, arcExt);
         }
 

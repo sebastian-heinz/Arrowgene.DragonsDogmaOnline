@@ -30,9 +30,9 @@ namespace Arrowgene.Ddon.Client
             StageToSpot = new StageToSpot();
         }
 
-        public void Load(string romDirectory)
+        public void Load(DirectoryInfo romDirectory)
         {
-            _directory = new DirectoryInfo(romDirectory);
+            _directory = romDirectory;
             if (_directory == null || !_directory.Exists)
             {
                 Logger.Error("Rom Path Invalid");
@@ -45,8 +45,10 @@ namespace Arrowgene.Ddon.Client
             StageList = GetResource<StageList>("base.arc", "scr/stage_list");
             FieldAreaList = GetResource<FieldAreaList>("game_common.arc", "etc/FieldArea/field_area_list");
             StageToSpot = GetFile<StageToSpot>("game_common.arc", "param/stage_to_spot");
-
-
+            
+            // Land has areas, area has stages, and stages have spots
+            // Land -> Area -> Stage -> Spot
+            
             // for each land
             foreach (LandListLal.LandInfo land in LandList.LandInfos)
             {
@@ -122,29 +124,6 @@ namespace Arrowgene.Ddon.Client
             int i = 1;
         }
 
-        public void DumpPaths(string outPath)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"Path,ArcPath,JamCrc{Environment.NewLine}");
-            string[] files = Directory.GetFiles(_directory.FullName, "*.arc", SearchOption.AllDirectories);
-
-            for (int i = 0; i < files.Length; i++)
-            {
-                string filePath = files[i];
-                string relativePath = filePath.Substring(_directory.FullName.Length);
-                ArcArchive archive = new ArcArchive();
-                archive.Open(filePath);
-                foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
-                {
-                    sb.Append($"{relativePath},{fi.ArcPath}.{fi.ArcExt.Extension},{fi.JamCrc}{Environment.NewLine}");
-                }
-
-                Logger.Info($"Processing {i}/{files.Length} {filePath}");
-            }
-
-            File.WriteAllText(outPath, sb.ToString());
-            Logger.Info($"Done: {outPath}");
-        }
 
         private T GetFile<T>(string arcPath, string filePath, string ext = null) where T : ClientFile, new()
         {
