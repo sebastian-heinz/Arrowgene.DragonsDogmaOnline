@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
@@ -90,7 +91,7 @@ namespace Arrowgene.Ddon.Client
                 }
             }
 
-
+            List<JsonTest> tests = new List<JsonTest>();
             Gmd fieldAreaNames = GetResource<Gmd>(
                 "game_common.arc",
                 "ui/00_message/common/field_area_name",
@@ -101,19 +102,25 @@ namespace Arrowgene.Ddon.Client
                 Gmd.Entry areaName = fieldAreaNames.Entries[(int) fai.GmdIdx];
                 FieldAreaMarkerInfo omMarker = GetResource<FieldAreaMarkerInfo>(
                     $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_om",
                     "fmi"
                 );
                 FieldAreaMarkerInfo sceMarker = GetResource<FieldAreaMarkerInfo>(
                     $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_sce",
                     "fmi"
                 );
                 FieldAreaMarkerInfo npcMarker = GetResource<FieldAreaMarkerInfo>(
                     $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_npc",
                     "fmi"
                 );
+                if (npcMarker == null)
+                {
+                    // no npcs
+                    continue;
+                }
+                
                 FieldAreaMarkerInfo ectMarker = GetResource<FieldAreaMarkerInfo>(
                     $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
                     $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
@@ -126,9 +133,55 @@ namespace Arrowgene.Ddon.Client
                     "faa"
                 );
 
+                JsonTest test = new JsonTest();
+                test.name = areaName.Msg;
+
+                // lets try to build npc spots
+                foreach (int stageNo in fai.StageNoList)
+                {
+                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in npcMarker.MarkerInfos)
+                    {
+                        if (npc.StageNo == stageNo)
+                        {
+                            JsonTestNpc nt = new JsonTestNpc();
+                            nt.x = npc.Pos.X;
+                            nt.y = npc.Pos.Y;
+                            nt.z = npc.Pos.Z;
+                            nt.stage_no = npc.StageNo;
+                            nt.group_no = npc.GroupNo;
+                            nt.unique_id = npc.UniqueId;
+                            test.npcs.Add(nt);
+                        }
+                    }
+                }
+
+                tests.Add(test);
             }
+
+            string json = JsonSerializer.Serialize(tests);
+            File.WriteAllText("F:\\npcs.json", json);
         }
 
+        public class JsonTestNpc
+        {
+            public float x{ get; set; }
+            public float y{ get; set; }
+            public float z{ get; set; }
+            public int stage_no{ get; set; }
+            public uint group_no{ get; set; }
+            public uint unique_id{ get; set; }
+        }
+
+        public class JsonTest
+        {
+            public List<JsonTestNpc> npcs{ get; set; }
+            public string name{ get; set; }
+
+            public JsonTest()
+            {
+                npcs = new List<JsonTestNpc>();
+            }
+        }
 
         private T GetFile<T>(string arcPath, string filePath, string ext = null) where T : ClientFile, new()
         {
