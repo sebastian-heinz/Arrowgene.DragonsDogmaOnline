@@ -19,8 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            Logger.Error(packet.PrintData());
-
             IBuffer requestBuffer = packet.AsBuffer();
             byte unk0 = requestBuffer.ReadByte();
             uint unk1 = requestBuffer.ReadUInt32(Endianness.Big);
