@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using Arrowgene.Ddon.Client.Resource;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Client
@@ -90,39 +91,41 @@ namespace Arrowgene.Ddon.Client
             }
 
 
-            Gmd fieldAreaNames = GetResource<Gmd>("game_common.arc", "etc/FieldArea/field_area_list");
+            Gmd fieldAreaNames = GetResource<Gmd>(
+                "game_common.arc",
+                "ui/00_message/common/field_area_name",
+                "gmd"
+            );
             foreach (FieldAreaList.FieldAreaInfo fai in FieldAreaList.FieldAreaInfos)
             {
                 Gmd.Entry areaName = fieldAreaNames.Entries[(int) fai.GmdIdx];
-                int index = 0;
                 FieldAreaMarkerInfo omMarker = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{index:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{index:000}_marker_ect",
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
                     "fmi"
                 );
                 FieldAreaMarkerInfo sceMarker = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{index:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{index:000}_marker_ect",
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
                     "fmi"
                 );
                 FieldAreaMarkerInfo npcMarker = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{index:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{index:000}_marker_ect",
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
                     "fmi"
                 );
                 FieldAreaMarkerInfo ectMarker = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{index:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{index:000}_marker_ect",
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
                     "fmi"
                 );
                 // transition points
-                FieldAreaMarkerInfo adjoin = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{index:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{index:000}_adjoin",
+                FieldAreaAdjoinList adjoin = GetResource<FieldAreaAdjoinList>(
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_adjoin",
                     "faa"
                 );
 
-                int sdsda = 1;
             }
         }
 
@@ -155,7 +158,7 @@ namespace Arrowgene.Ddon.Client
 
         private ArcArchive.ArcFile GetArcFile(string arcPath, string filePath, string ext = null)
         {
-            string path = Path.Combine(_directory.FullName, arcPath);
+            string path = Path.Combine(_directory.FullName, Util.UnrootPath(arcPath));
             FileInfo file = new FileInfo(path);
             if (!file.Exists)
             {

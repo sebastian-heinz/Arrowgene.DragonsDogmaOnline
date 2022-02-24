@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Client
@@ -105,6 +106,20 @@ namespace Arrowgene.Ddon.Client
         protected uint ReadUInt32(IBuffer buffer)
         {
             return buffer.ReadUInt32(Endianness.Little);
+        }
+        
+        protected float ReadFloat(IBuffer buffer)
+        {
+            return buffer.ReadFloat(Endianness.Little);
+        }
+
+        protected MtVector3 ReadMtVector3(IBuffer buffer)
+        {
+            MtVector3 vec = new MtVector3();
+            vec.X = ReadFloat(buffer);
+            vec.Y = ReadFloat(buffer);
+            vec.Z = ReadFloat(buffer);
+            return vec;
         }
 
         protected ushort ReadUInt16(IBuffer buffer)

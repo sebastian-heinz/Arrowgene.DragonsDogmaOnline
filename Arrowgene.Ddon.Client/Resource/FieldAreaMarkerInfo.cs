@@ -25,5 +25,17 @@ public class FieldAreaMarkerInfo : ResourceFile
 
     protected override void ReadResource(IBuffer buffer)
     {
+        MarkerInfos.Clear();
+        uint unk = ReadUInt32(buffer);
+        uint count = ReadUInt32(buffer);
+        for (int i = 0; i < count; i++)
+        {
+            MarkerInfo markerInfo = new MarkerInfo();
+            markerInfo.Pos = ReadMtVector3(buffer);
+            markerInfo.StageNo = ReadInt32(buffer);
+            markerInfo.GroupNo = ReadUInt32(buffer);
+            markerInfo.UniqueId = ReadUInt32(buffer);
+            MarkerInfos.Add(markerInfo);
+        }
     }
 }

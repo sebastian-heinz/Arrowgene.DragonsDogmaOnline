@@ -37,5 +37,26 @@ public class FieldAreaAdjoinList : ResourceFile
 
     protected override void ReadResource(IBuffer buffer)
     {
+        AdjoinInfos.Clear();
+        uint unk = ReadUInt16(buffer);
+        uint count = ReadUInt32(buffer);
+        for (int i = 0; i < count; i++)
+        {
+            AdjoinInfo adjoinInfo = new AdjoinInfo();
+            adjoinInfo.DestinationStageNo = ReadInt16(buffer);
+            adjoinInfo.NextStageNo = ReadInt16(buffer);
+            adjoinInfo.Positions = ReadMtArray(buffer, ReadVector3);
+            adjoinInfo.Priority = ReadByte(buffer);
+            AdjoinInfos.Add(adjoinInfo);
+        }
+    }
+
+    private Vector3 ReadVector3(IBuffer buffer)
+    {
+        Vector3 vec = new Vector3();
+        vec.Pos = ReadMtVector3(buffer);
+        vec.QuestId = ReadUInt32(buffer);
+        vec.FlagId = ReadUInt32(buffer);
+        return vec;
     }
 }
