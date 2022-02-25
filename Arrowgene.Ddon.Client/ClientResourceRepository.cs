@@ -118,7 +118,7 @@ namespace Arrowgene.Ddon.Client
                 if (npcMarker == null)
                 {
                     // no npcs
-                    continue;
+                   // continue;
                 }
                 
                 FieldAreaMarkerInfo ectMarker = GetResource<FieldAreaMarkerInfo>(
@@ -135,14 +135,30 @@ namespace Arrowgene.Ddon.Client
 
                 JsonTest test = new JsonTest();
                 test.name = areaName.Msg;
-
-                // lets try to build npc spots
-                foreach (int stageNo in fai.StageNoList)
+                List<FieldAreaMarkerInfo.MarkerInfo> joined = new List<FieldAreaMarkerInfo.MarkerInfo>();
+                if (omMarker != null)
                 {
-                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in npcMarker.MarkerInfos)
+                    joined.AddRange(omMarker.MarkerInfos);
+                }
+                if (sceMarker != null)
+                {
+                    joined.AddRange(sceMarker.MarkerInfos);
+                }
+                if (npcMarker != null)
+                {
+                    joined.AddRange(npcMarker.MarkerInfos);
+                }
+                if (ectMarker != null)
+                {
+                    joined.AddRange(ectMarker.MarkerInfos);
+                }
+                // lets try to build npc spots
+            //    foreach (int stageNo in fai.StageNoList)
+              //  {
+                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in joined)
                     {
-                        if (npc.StageNo == stageNo)
-                        {
+                      //  if (npc.StageNo == 211)
+                        //{
                             JsonTestNpc nt = new JsonTestNpc();
                             nt.x = npc.Pos.X;
                             nt.y = npc.Pos.Y;
@@ -151,8 +167,8 @@ namespace Arrowgene.Ddon.Client
                             nt.group_no = npc.GroupNo;
                             nt.unique_id = npc.UniqueId;
                             test.npcs.Add(nt);
-                        }
-                    }
+                      //  }
+                 //   }
                 }
 
                 tests.Add(test);

@@ -19,12 +19,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
+           // Logger.Error(Environment.NewLine + packet.PrintData());
+
             IBuffer requestBuffer = packet.AsBuffer();
             byte unk0 = requestBuffer.ReadByte();
             uint unk1 = requestBuffer.ReadUInt32(Endianness.Big);
             int unk2length = requestBuffer.ReadInt32(Endianness.Big);
             byte[] unk2content = requestBuffer.ReadBytes(unk2length);
+            
+           // Logger.Info($"LEN:{unk2length}");
 
+            
             IBuffer test = new StreamBuffer(unk2content);
             test.SetPositionStart();
             if (test.Size > 56)
@@ -35,10 +40,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 test.ReadUInt32(); //16
                 test.ReadUInt32();
                 test.ReadUInt32();
-                byte[] b0 = test.ReadBytes(8);
+                test.ReadUInt32();
+                test.ReadUInt32();
+                
                 byte[] x = test.ReadBytes(8);
-                byte[] z = test.ReadBytes(4);
-                byte[] y = test.ReadBytes(8);
+                byte[] y = test.ReadBytes(4);
+                byte[] z = test.ReadBytes(8);
                 Array.Reverse(x);
                 Array.Reverse(y);
                 Array.Reverse(z);
@@ -46,7 +53,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // SOUTH = Y+
                 // EAST = X+
                 // WEST = X-
-                Logger.Info($"X:{BitConverter.ToDouble(x)} Y:{BitConverter.ToDouble(y)} Z:{BitConverter.ToSingle(z)}");
+                //Logger.Info($"X:{BitConverter.ToDouble(x)} Y:{BitConverter.ToSingle(y)} Z:{BitConverter.ToDouble(z)}");
+
+                client.X = BitConverter.ToDouble(x);
+                client.Y = BitConverter.ToSingle(y);
+                client.Z = BitConverter.ToDouble(z);
+                
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                test.ReadUInt32();
+                
+             //   byte[] x1 = test.ReadBytes(8);
+             //   byte[] z1 = test.ReadBytes(4);
+             //   byte[] y1 = test.ReadBytes(8);
+             //   Array.Reverse(x1);
+             //   Array.Reverse(y1);
+             //   Array.Reverse(z1);
+             //   Logger.Info($"X1:{BitConverter.ToDouble(x1)} Y1:{BitConverter.ToDouble(y1)} Z1:{BitConverter.ToSingle(z1)}");
+
             }
 
 

@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -22,6 +23,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
             res.StageNo = convertIdToStageNo(packet.Structure.StageId);
             res.IsBase = false;
+
+            client.StageNo = res.StageNo;
+            client.Stage = new StageId(packet.Structure.StageId, 0, 0);
+            
+            Logger.Info($"StageNo:{client.StageNo} StageId{packet.Structure.StageId}");
             
             client.Send(res);
         }
