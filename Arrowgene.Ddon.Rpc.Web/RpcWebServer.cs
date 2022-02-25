@@ -1,4 +1,5 @@
 ﻿using Arrowgene.Ddon.GameServer;
+using Arrowgene.Ddon.Rpc.Web.Route;
 using Arrowgene.Ddon.WebServer;
 
 namespace Arrowgene.Ddon.Rpc.Web
@@ -18,6 +19,7 @@ namespace Arrowgene.Ddon.Rpc.Web
         public void Init()
         {
             _webServer.AddRoute(new SpawnRoute(this));
+            _webServer.AddRoute(new InfoRoute(this));
         }
     }
 }

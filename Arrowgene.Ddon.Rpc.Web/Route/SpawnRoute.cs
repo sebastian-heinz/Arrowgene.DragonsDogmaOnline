@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Arrowgene.Ddon.Rpc.Command;
 using Arrowgene.WebServer;
 
-namespace Arrowgene.Ddon.Rpc.Web
+namespace Arrowgene.Ddon.Rpc.Web.Route
 {
     public class SpawnRoute : RpcWebRoute
     {

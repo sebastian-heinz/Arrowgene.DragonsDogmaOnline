@@ -5,16 +5,16 @@ namespace Arrowgene.Ddon.Rpc.Web
 {
     public abstract class RpcWebRoute : WebRoute, IRpcExecuter
     {
-        private readonly IRpcExecuter _executer;
+        protected readonly IRpcExecuter Executer;
 
-        public RpcWebRoute(IRpcExecuter executer)
+        protected RpcWebRoute(IRpcExecuter executer)
         {
-            _executer = executer;
+            Executer = executer;
         }
 
         public RpcCommandResult Execute(IRpcCommand command)
         {
-           return _executer.Execute(command);
+           return Executer.Execute(command);
         }
     }
 }
