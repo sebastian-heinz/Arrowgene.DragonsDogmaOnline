@@ -6,6 +6,7 @@ using System.Linq;
 using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Threading;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -70,7 +71,31 @@ namespace Arrowgene.Ddon.Shared
                 {
                     Logger.Debug($"Reloading assets from file '{e.FullPath}'");
                     list.Clear();
-                    Load(list, e.FullPath, reader);
+
+                    // Try reloading file
+                    int attempts = 0;
+                    while(true)
+                    {
+                        try
+                        {
+                            Load(list, e.FullPath, reader);
+                            break;
+                        }
+                        catch (IOException ex)
+                        {
+                            // File isn't ready yet, so we need to keep on waiting until it is.
+                            attempts++;
+                            Logger.Write(LogLevel.Error, $"Failed to reload {e.FullPath}. {attempts} attempts", ex);
+
+                            if(attempts > 10)
+                            {
+                                Logger.Write(LogLevel.Error, $"Failed to reload {e.FullPath} after {attempts} attempts. Giving up.", ex);
+                                break;
+                            }
+                        }
+                        Thread.Sleep(1000);
+                    }
+                    
                     if(afterLoadAction != null)
                     {
                         afterLoadAction.Invoke(list);
