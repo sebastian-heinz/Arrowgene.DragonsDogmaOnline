@@ -48,6 +48,12 @@ namespace Arrowgene.Ddon.Client
 
             // Land has areas, area has stages, and stages have spots
             // Land -> Area -> Stage -> Spot
+            
+            // \stage\st0100\st0100.arc,scr\st0100\etc\st0100.lcd,lcd,0x68BFA317,rLocationData,1757389591,2949,1952,139728
+            LocationData st0100 = GetResource<LocationData>("stage/st0100/st0100.arc", "scr/st0100/etc/st0100","lcd");
+            string json1 = JsonSerializer.Serialize(st0100.Entries);
+            File.WriteAllText("F:\\st0100.json", json1);
+            
 
             // for each land
             foreach (LandListLal.LandInfo land in LandList.LandInfos)
@@ -139,35 +145,95 @@ namespace Arrowgene.Ddon.Client
                 if (omMarker != null)
                 {
                     joined.AddRange(omMarker.MarkerInfos);
+                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in omMarker.MarkerInfos)
+                    {
+                        if (npc.StageNo == 100)
+                        {
+                            JsonTestNpc nt = new JsonTestNpc();
+                            nt.Type = "om";
+                            nt.X = npc.Pos.X;
+                            nt.Y = npc.Pos.Y;
+                            nt.Z = npc.Pos.Z;
+                            nt.StageNo = npc.StageNo;
+                            nt.GroupNo = npc.GroupNo;
+                            nt.UniqueId = npc.UniqueId;
+                            test.npcs.Add(nt);
+                        }
+                    }
                 }
                 if (sceMarker != null)
                 {
                     joined.AddRange(sceMarker.MarkerInfos);
+                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in sceMarker.MarkerInfos)
+                    {
+                        if (npc.StageNo == 100)
+                        {
+                            JsonTestNpc nt = new JsonTestNpc();
+                            nt.Type = "sce";
+                            nt.X = npc.Pos.X;
+                            nt.Y = npc.Pos.Y;
+                            nt.Z = npc.Pos.Z;
+                            nt.StageNo = npc.StageNo;
+                            nt.GroupNo = npc.GroupNo;
+                            nt.UniqueId = npc.UniqueId;
+                            test.npcs.Add(nt);
+                        }
+                    }
                 }
                 if (npcMarker != null)
                 {
                     joined.AddRange(npcMarker.MarkerInfos);
+                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in npcMarker.MarkerInfos)
+                    {
+                        if (npc.StageNo == 100)
+                        {
+                            JsonTestNpc nt = new JsonTestNpc();
+                            nt.Type = "npc";
+                            nt.X = npc.Pos.X;
+                            nt.Y = npc.Pos.Y;
+                            nt.Z = npc.Pos.Z;
+                            nt.StageNo = npc.StageNo;
+                            nt.GroupNo = npc.GroupNo;
+                            nt.UniqueId = npc.UniqueId;
+                            test.npcs.Add(nt);
+                        }
+                    }
                 }
                 if (ectMarker != null)
                 {
                     joined.AddRange(ectMarker.MarkerInfos);
+                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in ectMarker.MarkerInfos)
+                    {
+                        if (npc.StageNo == 100)
+                        {
+                            JsonTestNpc nt = new JsonTestNpc();
+                            nt.Type = "ect";
+                            nt.X = npc.Pos.X;
+                            nt.Y = npc.Pos.Y;
+                            nt.Z = npc.Pos.Z;
+                            nt.StageNo = npc.StageNo;
+                            nt.GroupNo = npc.GroupNo;
+                            nt.UniqueId = npc.UniqueId;
+                            test.npcs.Add(nt);
+                        }
+                    }
                 }
                 // lets try to build npc spots
             //    foreach (int stageNo in fai.StageNoList)
               //  {
                     foreach (FieldAreaMarkerInfo.MarkerInfo npc in joined)
                     {
-                      //  if (npc.StageNo == 211)
-                        //{
+                        if (npc.StageNo == 100)
+                        {
                             JsonTestNpc nt = new JsonTestNpc();
-                            nt.x = npc.Pos.X;
-                            nt.y = npc.Pos.Y;
-                            nt.z = npc.Pos.Z;
-                            nt.stage_no = npc.StageNo;
-                            nt.group_no = npc.GroupNo;
-                            nt.unique_id = npc.UniqueId;
-                            test.npcs.Add(nt);
-                      //  }
+                            nt.X = npc.Pos.X;
+                            nt.Y = npc.Pos.Y;
+                            nt.Z = npc.Pos.Z;
+                            nt.StageNo = npc.StageNo;
+                            nt.GroupNo = npc.GroupNo;
+                            nt.UniqueId = npc.UniqueId;
+                         //   test.npcs.Add(nt);
+                        }
                  //   }
                 }
 
@@ -180,12 +246,13 @@ namespace Arrowgene.Ddon.Client
 
         public class JsonTestNpc
         {
-            public float x{ get; set; }
-            public float y{ get; set; }
-            public float z{ get; set; }
-            public int stage_no{ get; set; }
-            public uint group_no{ get; set; }
-            public uint unique_id{ get; set; }
+            public string Type{ get; set; }
+            public float X{ get; set; }
+            public float Y{ get; set; }
+            public float Z{ get; set; }
+            public int StageNo{ get; set; }
+            public uint GroupNo{ get; set; }
+            public uint UniqueId{ get; set; }
         }
 
         public class JsonTest
