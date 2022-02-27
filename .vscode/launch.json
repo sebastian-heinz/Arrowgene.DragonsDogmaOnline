@@ -52,7 +52,7 @@
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
-            "args": ["client"],
+            "args": ["client", "J:\\Juegos\\Dragon's Dogma Online\\nativePC\\rom"],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "integratedTerminal",
