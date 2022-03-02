@@ -1,6 +1,7 @@
 ﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -13,14 +14,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public PartyPartyCreateHandler(DdonGameServer server) : base(server)
         {
+                              
         }
 
         public override PacketId Id => PacketId.C2S_PARTY_PARTY_CREATE_REQ;
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(InGameDump.Dump_103);
-            client.Send(InGameDump.Dump_104);
+            S2CParty_6_8_16_Ntc ntc_6_8_16 = new S2CParty_6_8_16_Ntc();
+            ntc_6_8_16.CharacterId = client.Character.Id;
+            ntc_6_8_16.FirstName = client.Character.FirstName;
+            ntc_6_8_16.LastName = client.Character.LastName;
+           // client.Send(ntc_6_8_16);
+           
+           // client.Send(InGameDump.Dump_103);
+            
+          //  client.Send(InGameDump.Dump_104);
             client.Send(InGameDump.Dump_105);
         }
     }

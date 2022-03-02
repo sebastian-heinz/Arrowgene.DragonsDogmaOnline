@@ -139,6 +139,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
             Create(new S2CCharacterCharacterPointReviveRes.Serializer());
+            Create(new S2CCharacterDecideCharacterIdRes.Serializer());
+            Create(new S2CClanClanGetMyMemberListRes.Serializer());
             Create(new S2CConnectionLoginRes.Serializer());
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
@@ -154,6 +156,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
             Create(new S2CLobbyJoinRes.Serializer());
+            Create(new S2CParty_6_8_16_Ntc.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
             Create(new S2CSkillGetLearnedAbilityListRes.Serializer());

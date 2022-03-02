@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.Shared.Network
 
         public override string ToString()
         {
-            return $"{PrintHeader()}{Environment.NewLine}{PrintHeaderBytes()}{Environment.NewLine}{PrintData()}";
+            return $"{PrintHeader()}{Environment.NewLine}{PrintHeaderBytes()}{PrintData()}";
         }
     }
 }

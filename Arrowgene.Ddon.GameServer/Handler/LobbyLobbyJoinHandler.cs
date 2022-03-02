@@ -23,36 +23,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var resp = new S2CLobbyJoinRes()
             {
-                CharacterID = 0x20FD8,
+                CharacterID = client.Character.Id,
                 LobbyMemberInfoList = new List<CDataLobbyMemberInfo>()
                 {
                    new CDataLobbyMemberInfo()
                    {
-                       CharacterID = 0x20FD8,
-                       FirstName = "Rumi",
-                       LastName = "Amestris",
-                       ClanName = "S;R",
-                       PawnID = 0,
-                       Unk0 = 1,
-                       Unk1 = 0,
-                       Unk2 = 1,
+                       CharacterID = client.Character.Id,
+                       FirstName = client.Character.FirstName,
+                       LastName =  client.Character.LastName,
                    },
 
-                   //new CDataLobbyMemberInfo()
-                   //{
-                   //    CharacterID = 0xDEADBEEF,
-                   //    FirstName = "Example",
-                   //    LastName = "SecondLobbyMember",
-                   //    ClanName = "S;R",
-                   //    PawnID = 0,
-                   //    Unk0 = 1,
-                   //    Unk1 = 0,
-                   //    Unk2 = 1,
-                   //},
                 }
             };
             client.Send(resp);
-            client.Send(InGameDump.Dump_13);
             
             // NTC
             client.Send(GameFull.Dump_14);
