@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using Arrowgene.Ddon.Client;
 using Arrowgene.Logging;
 
@@ -37,13 +38,25 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
-            // TODO for testing purpose at the moment
-            ClientResourceRepository repo = new ClientResourceRepository();
-            repo.Load(romDirectory);
+            if (parameter.ArgumentMap.ContainsKey("export"))
+            {
+                DirectoryInfo outDirectory = new DirectoryInfo(parameter.ArgumentMap["export"]);
+                ExportResourceRepository(romDirectory, outDirectory);
+                return CommandResultType.Exit;
+            }
             return CommandResultType.Exit;
         }
 
-
+        public void ExportResourceRepository(DirectoryInfo romDirectory, DirectoryInfo outDir)
+        {
+            ClientResourceRepository repo = new ClientResourceRepository();
+            repo.Load(romDirectory);
+            string json = JsonSerializer.Serialize(repo);
+            string outPath = Path.Combine(outDir.FullName, "repo.json");
+            File.WriteAllText(outPath, json);
+            Logger.Info($"Done: {outPath}");
+        }
+        
         public void DumpPaths(DirectoryInfo romDirectory, DirectoryInfo outDir)
         {
             if (outDir == null)

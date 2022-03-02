@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
+using Arrowgene.Ddon.Client.Data;
 using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
@@ -17,11 +17,33 @@ namespace Arrowgene.Ddon.Client
         public StageList StageList { get; private set; }
         public LandListLal LandList { get; private set; }
         public StageToSpot StageToSpot { get; private set; }
+        public Gmd FieldAreaNames { get; private set; }
+        public Dictionary<uint, LocationData> StageLocations { get; private set; }
+        public Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>> StageOmMarker { get; private set; }
+        public Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>> StageSceMarker { get; private set; }
+        public Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>> StageNpcMarker { get; private set; }
+        public Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>> StageEctMarker { get; private set; }
+        public Dictionary<uint, List<FieldAreaAdjoinList.AdjoinInfo>> StageAdJoin { get; private set; }
+        public Dictionary<uint, List<StageToSpot.Entry>> StageSpots { get; private set; }
+        public ClientData Data { get; private set; }
 
         private DirectoryInfo _directory;
 
         public ClientResourceRepository()
         {
+            // Nested
+            Data = new ClientData();
+
+            // Flat Lookup
+            StageLocations = new Dictionary<uint, LocationData>();
+            StageOmMarker = new Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>>();
+            StageSceMarker = new Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>>();
+            StageNpcMarker = new Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>>();
+            StageEctMarker = new Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>>();
+            StageAdJoin = new Dictionary<uint, List<FieldAreaAdjoinList.AdjoinInfo>>();
+            StageSpots = new Dictionary<uint, List<StageToSpot.Entry>>();
+
+            // Client Resources
             AreaStageList = new AreaStageList();
             AreaList = new AreaList();
             StageList = new StageList();
@@ -45,230 +67,156 @@ namespace Arrowgene.Ddon.Client
             StageList = GetResource<StageList>("base.arc", "scr/stage_list");
             FieldAreaList = GetResource<FieldAreaList>("game_common.arc", "etc/FieldArea/field_area_list");
             StageToSpot = GetFile<StageToSpot>("game_common.arc", "param/stage_to_spot");
+            FieldAreaNames = GetResource<Gmd>("game_common.arc", "ui/00_message/common/field_area_name", "gmd");
 
-            // Land has areas, area has stages, and stages have spots
+            foreach (StageList.Info sli in StageList.StageInfos)
+            {
+                LocationData lcd = GetResource_NoLog<LocationData>(
+                    $"stage/st{sli.StageNo:0000}/st{sli.StageNo:0000}.arc",
+                    $"scr/st{sli.StageNo:0000}/etc/st{sli.StageNo:0000}",
+                    "lcd"
+                );
+                if (lcd != null)
+                {
+                    if (!StageLocations.ContainsKey(sli.StageNo))
+                    {
+                        StageLocations.Add(sli.StageNo, lcd);
+                    }
+                }
+            }
+
+            foreach (FieldAreaList.FieldAreaInfo fai in FieldAreaList.FieldAreaInfos)
+            {
+                Gmd.Entry areaName = FieldAreaNames.Entries[(int) fai.GmdIdx];
+                FieldAreaMarkerInfo omMarker = GetResource_NoLog<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_om",
+                    "fmi"
+                );
+                if (omMarker != null)
+                {
+                    AddMarker(omMarker.MarkerInfos, StageOmMarker);
+                }
+
+                FieldAreaMarkerInfo sceMarker = GetResource_NoLog<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_sce",
+                    "fmi"
+                );
+                if (sceMarker != null)
+                {
+                    AddMarker(sceMarker.MarkerInfos, StageSceMarker);
+                }
+
+                FieldAreaMarkerInfo npcMarker = GetResource_NoLog<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_npc",
+                    "fmi"
+                );
+                if (npcMarker != null)
+                {
+                    AddMarker(npcMarker.MarkerInfos, StageNpcMarker);
+                }
+
+                FieldAreaMarkerInfo ectMarker = GetResource_NoLog<FieldAreaMarkerInfo>(
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
+                    "fmi"
+                );
+                if (ectMarker != null)
+                {
+                    AddMarker(ectMarker.MarkerInfos, StageEctMarker);
+                }
+
+                FieldAreaAdjoinList adjoin = GetResource_NoLog<FieldAreaAdjoinList>(
+                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
+                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_adjoin",
+                    "faa"
+                );
+                if (adjoin != null)
+                {
+                    AddAdjoin(adjoin.AdjoinInfos, StageAdJoin);
+                }
+            }
+
+            foreach (StageToSpot.Entry sts in StageToSpot.Entries)
+            {
+                if (!StageSpots.ContainsKey(sts.StageNo))
+                {
+                    StageSpots[sts.StageNo] = new List<StageToSpot.Entry>();
+                }
+
+                StageSpots[sts.StageNo].Add(sts);
+            }
+
             // Land -> Area -> Stage -> Spot
-            
-            // \stage\st0100\st0100.arc,scr\st0100\etc\st0100.lcd,lcd,0x68BFA317,rLocationData,1757389591,2949,1952,139728
-            LocationData st0100 = GetResource<LocationData>("stage/st0100/st0100.arc", "scr/st0100/etc/st0100","lcd");
-            string json1 = JsonSerializer.Serialize(st0100.Entries);
-            File.WriteAllText("F:\\st0100.json", json1);
-            
-
             // for each land
             foreach (LandListLal.LandInfo land in LandList.LandInfos)
             {
+                LandData landData = Data.ProvideLand(land.LandId);
                 // for each area in the land
-                foreach (uint landAreaId in land.AreaIds)
+                foreach (uint areaId in land.AreaIds)
                 {
-                    //lookup stages and spots for area
-                    List<StageList.Info> stageInfos = new List<StageList.Info>();
-                    List<StageToSpot.Entry> spots = new List<StageToSpot.Entry>();
+                    AreaData areaData = Data.ProvideArea(areaId);
+                    landData.AddArea(areaData);
                     foreach (AreaStageList.AreaInfoStage ais in AreaStageList.AreaInfoStages)
                     {
-                        if (ais.AreaId == landAreaId)
+                        // find stages that belong to this area
+                        if (ais.AreaId == areaId)
                         {
                             foreach (StageList.Info sli in StageList.StageInfos)
                             {
                                 if (sli.StageNo == ais.StageNo)
                                 {
-                                    stageInfos.Add(sli);
-                                    foreach (StageToSpot.Entry sts in StageToSpot.Entries)
-                                    {
-                                        if (sts.StageNo == sli.StageNo)
-                                        {
-                                            spots.Add(sts);
-                                        }
-                                    }
+                                    StageData stageData = Data.ProvideStage(sli.StageNo);
+                                    stageData.AddOmMarker(StageOmMarker);
+                                    stageData.AddEctMarker(StageEctMarker);
+                                    stageData.AddNpcMarker(StageNpcMarker);
+                                    stageData.AddSceMarker(StageSceMarker);
+                                    stageData.AddAdJoin(StageAdJoin);
+                                    stageData.AddLocations(StageLocations);
+                                    stageData.AddSpots(StageSpots);
+
+                                    areaData.AddStage(stageData);
                                 }
                             }
                         }
                     }
-
-                    // lookup area info for area
-                    AreaList.AreaInfo areaInfo;
-                    foreach (AreaList.AreaInfo ai in AreaList.AreaInfos)
-                    {
-                        if (ai.AreaId == landAreaId)
-                        {
-                            areaInfo = ai;
-                        }
-                    }
                 }
             }
+        }
 
-            List<JsonTest> tests = new List<JsonTest>();
-            Gmd fieldAreaNames = GetResource<Gmd>(
-                "game_common.arc",
-                "ui/00_message/common/field_area_name",
-                "gmd"
-            );
-            foreach (FieldAreaList.FieldAreaInfo fai in FieldAreaList.FieldAreaInfos)
+        private void AddMarker(List<FieldAreaMarkerInfo.MarkerInfo> markers,
+            Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>> dst)
+        {
+            foreach (FieldAreaMarkerInfo.MarkerInfo marker in markers)
             {
-                Gmd.Entry areaName = fieldAreaNames.Entries[(int) fai.GmdIdx];
-                FieldAreaMarkerInfo omMarker = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_om",
-                    "fmi"
-                );
-                FieldAreaMarkerInfo sceMarker = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_sce",
-                    "fmi"
-                );
-                FieldAreaMarkerInfo npcMarker = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_npc",
-                    "fmi"
-                );
-                if (npcMarker == null)
+                if (!dst.ContainsKey((uint) marker.StageNo))
                 {
-                    // no npcs
-                   // continue;
-                }
-                
-                FieldAreaMarkerInfo ectMarker = GetResource<FieldAreaMarkerInfo>(
-                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_ect",
-                    "fmi"
-                );
-                // transition points
-                FieldAreaAdjoinList adjoin = GetResource<FieldAreaAdjoinList>(
-                    $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
-                    $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_adjoin",
-                    "faa"
-                );
-
-                JsonTest test = new JsonTest();
-                test.name = areaName.Msg;
-                List<FieldAreaMarkerInfo.MarkerInfo> joined = new List<FieldAreaMarkerInfo.MarkerInfo>();
-                if (omMarker != null)
-                {
-                    joined.AddRange(omMarker.MarkerInfos);
-                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in omMarker.MarkerInfos)
-                    {
-                        if (npc.StageNo == 100)
-                        {
-                            JsonTestNpc nt = new JsonTestNpc();
-                            nt.Type = "om";
-                            nt.X = npc.Pos.X;
-                            nt.Y = npc.Pos.Y;
-                            nt.Z = npc.Pos.Z;
-                            nt.StageNo = npc.StageNo;
-                            nt.GroupNo = npc.GroupNo;
-                            nt.UniqueId = npc.UniqueId;
-                            test.npcs.Add(nt);
-                        }
-                    }
-                }
-                if (sceMarker != null)
-                {
-                    joined.AddRange(sceMarker.MarkerInfos);
-                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in sceMarker.MarkerInfos)
-                    {
-                        if (npc.StageNo == 100)
-                        {
-                            JsonTestNpc nt = new JsonTestNpc();
-                            nt.Type = "sce";
-                            nt.X = npc.Pos.X;
-                            nt.Y = npc.Pos.Y;
-                            nt.Z = npc.Pos.Z;
-                            nt.StageNo = npc.StageNo;
-                            nt.GroupNo = npc.GroupNo;
-                            nt.UniqueId = npc.UniqueId;
-                            test.npcs.Add(nt);
-                        }
-                    }
-                }
-                if (npcMarker != null)
-                {
-                    joined.AddRange(npcMarker.MarkerInfos);
-                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in npcMarker.MarkerInfos)
-                    {
-                        if (npc.StageNo == 100)
-                        {
-                            JsonTestNpc nt = new JsonTestNpc();
-                            nt.Type = "npc";
-                            nt.X = npc.Pos.X;
-                            nt.Y = npc.Pos.Y;
-                            nt.Z = npc.Pos.Z;
-                            nt.StageNo = npc.StageNo;
-                            nt.GroupNo = npc.GroupNo;
-                            nt.UniqueId = npc.UniqueId;
-                            test.npcs.Add(nt);
-                        }
-                    }
-                }
-                if (ectMarker != null)
-                {
-                    joined.AddRange(ectMarker.MarkerInfos);
-                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in ectMarker.MarkerInfos)
-                    {
-                        if (npc.StageNo == 100)
-                        {
-                            JsonTestNpc nt = new JsonTestNpc();
-                            nt.Type = "ect";
-                            nt.X = npc.Pos.X;
-                            nt.Y = npc.Pos.Y;
-                            nt.Z = npc.Pos.Z;
-                            nt.StageNo = npc.StageNo;
-                            nt.GroupNo = npc.GroupNo;
-                            nt.UniqueId = npc.UniqueId;
-                            test.npcs.Add(nt);
-                        }
-                    }
-                }
-                // lets try to build npc spots
-            //    foreach (int stageNo in fai.StageNoList)
-              //  {
-                    foreach (FieldAreaMarkerInfo.MarkerInfo npc in joined)
-                    {
-                        if (npc.StageNo == 100)
-                        {
-                            JsonTestNpc nt = new JsonTestNpc();
-                            nt.X = npc.Pos.X;
-                            nt.Y = npc.Pos.Y;
-                            nt.Z = npc.Pos.Z;
-                            nt.StageNo = npc.StageNo;
-                            nt.GroupNo = npc.GroupNo;
-                            nt.UniqueId = npc.UniqueId;
-                         //   test.npcs.Add(nt);
-                        }
-                 //   }
+                    dst[(uint) marker.StageNo] = new List<FieldAreaMarkerInfo.MarkerInfo>();
                 }
 
-                tests.Add(test);
+                dst[(uint) marker.StageNo].Add(marker);
             }
-
-            string json = JsonSerializer.Serialize(tests);
-            File.WriteAllText("F:\\npcs.json", json);
         }
 
-        public class JsonTestNpc
+        private void AddAdjoin(List<FieldAreaAdjoinList.AdjoinInfo> adjoins,
+            Dictionary<uint, List<FieldAreaAdjoinList.AdjoinInfo>> dst)
         {
-            public string Type{ get; set; }
-            public float X{ get; set; }
-            public float Y{ get; set; }
-            public float Z{ get; set; }
-            public int StageNo{ get; set; }
-            public uint GroupNo{ get; set; }
-            public uint UniqueId{ get; set; }
-        }
-
-        public class JsonTest
-        {
-            public List<JsonTestNpc> npcs{ get; set; }
-            public string name{ get; set; }
-
-            public JsonTest()
+            foreach (FieldAreaAdjoinList.AdjoinInfo adjoin in adjoins)
             {
-                npcs = new List<JsonTestNpc>();
+                if (!dst.ContainsKey((uint) adjoin.DestinationStageNo))
+                {
+                    dst[(uint) adjoin.DestinationStageNo] = new List<FieldAreaAdjoinList.AdjoinInfo>();
+                }
+
+                dst[(uint) adjoin.DestinationStageNo].Add(adjoin);
             }
         }
 
         private T GetFile<T>(string arcPath, string filePath, string ext = null) where T : ClientFile, new()
         {
-            ArcArchive.ArcFile arcFile = GetArcFile(arcPath, filePath, ext);
+            ArcArchive.ArcFile arcFile = GetArcFile(arcPath, filePath, ext, true);
             if (arcFile == null)
             {
                 return null;
@@ -281,7 +229,7 @@ namespace Arrowgene.Ddon.Client
 
         private T GetResource<T>(string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
         {
-            ArcArchive.ArcFile arcFile = GetArcFile(arcPath, filePath, ext);
+            ArcArchive.ArcFile arcFile = GetArcFile(arcPath, filePath, ext, true);
             if (arcFile == null)
             {
                 return null;
@@ -292,13 +240,30 @@ namespace Arrowgene.Ddon.Client
             return resource;
         }
 
-        private ArcArchive.ArcFile GetArcFile(string arcPath, string filePath, string ext = null)
+        private T GetResource_NoLog<T>(string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
+        {
+            ArcArchive.ArcFile arcFile = GetArcFile(arcPath, filePath, ext, false);
+            if (arcFile == null)
+            {
+                return null;
+            }
+
+            T resource = new T();
+            resource.Open(arcFile.Data);
+            return resource;
+        }
+
+        private ArcArchive.ArcFile GetArcFile(string arcPath, string filePath, string ext, bool log)
         {
             string path = Path.Combine(_directory.FullName, Util.UnrootPath(arcPath));
             FileInfo file = new FileInfo(path);
             if (!file.Exists)
             {
-                Logger.Error($"File does not exist. ({path})");
+                if (log)
+                {
+                    Logger.Error($"File does not exist. ({path})");
+                }
+
                 return null;
             }
 
@@ -310,7 +275,11 @@ namespace Arrowgene.Ddon.Client
             ArcArchive.ArcFile arcFile = archive.GetFile(search);
             if (arcFile == null)
             {
-                Logger.Error($"File:{filePath} could not be located in archive:{path}");
+                if (log)
+                {
+                    Logger.Error($"File:{filePath} could not be located in archive:{path}");
+                }
+
                 return null;
             }
 
