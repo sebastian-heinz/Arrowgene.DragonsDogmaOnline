@@ -1,12 +1,13 @@
 ﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class WarpGetWarpPointListHandler : PacketHandler<GameClient>
+    public class WarpGetWarpPointListHandler : StructurePacketHandler<GameClient, C2SWarpGetWarpPointListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WarpGetWarpPointListHandler));
 
@@ -15,11 +16,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_WARP_GET_WARP_POINT_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SWarpGetWarpPointListReq> packet)
         {
-            client.Send(GameFull.Dump_140);
+            S2CWarpGetWarpPointListRes res = new S2CWarpGetWarpPointListRes();
+            client.Send(res);
         }
     }
 }
