@@ -4,6 +4,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataWarpPoint
     {
+        public CDataWarpPoint(uint id, uint rimPrice)
+        {
+            ID=id;
+            RimPrice=rimPrice;
+        }
+
         public CDataWarpPoint()
         {
             ID=0;

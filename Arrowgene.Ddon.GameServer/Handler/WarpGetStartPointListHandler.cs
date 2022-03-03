@@ -20,8 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SWarpGetStartPointListReq> packet)
         {
             S2CWarpGetStartPointListRes res = new S2CWarpGetStartPointListRes();
-            res.Unk.Add(new CDataCommonU32(2));
-            res.Unk.Add(new CDataCommonU32(1));
+            res.WarpPointIDList.Add(new CDataCommonU32(0x01)); // White Dragon Temple
+            res.WarpPointIDList.Add(new CDataCommonU32(0x57)); // Megadosis
             client.Send(res);
         }
     }
