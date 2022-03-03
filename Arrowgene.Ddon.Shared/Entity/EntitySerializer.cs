@@ -31,8 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(
                 new C2SActionSetPlayerActionHistoryReqElement.
                     Serializer()); // TODO naming convention C2S -> not a packet
-            Create(
-                new S2CLobbyChatMsgNoticeCharacterBaseInfo.Serializer()); // TODO naming convention S2C -> not a packet
+            Create(new CCommunityCharacterBaseInfo.Serializer());
             Create(new CData_35_14_16.Serializer());
             Create(new CDataAchievementIdentifierSerializer());
             Create(new CDataArisenProfileSerializer());
@@ -113,6 +112,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobGetJobChangeListReq.Serializer());
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
+            Create(new C2SLobbyLobbyDataMsgReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
             Create(new C2SSkillGetLearnedAbilityListReq.Serializer());
@@ -166,6 +166,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
             Create(new S2CLobbyJoinRes.Serializer());
+            Create(new S2CLobbyLobbyDataMsgNotice.Serializer());
             Create(new S2CParty_6_8_16_Ntc.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
@@ -470,6 +471,11 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected bool ReadBool(IBuffer buffer)
         {
             return buffer.ReadBool();
+        }
+
+        protected byte[] ReadByteArray(IBuffer buffer, int length)
+        {
+            return buffer.ReadBytes(length);
         }
 
         protected byte ReadByte(IBuffer buffer)

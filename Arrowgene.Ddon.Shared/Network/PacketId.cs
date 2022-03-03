@@ -340,8 +340,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_LOBBY_LOBBY_CHAT_MSG_REQ = new PacketId(3, 2, 1, "C2S_LOBBY_LOBBY_CHAT_MSG_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_LOBBY_LOBBY_CHAT_MSG_RES = new PacketId(3, 2, 2, "S2C_LOBBY_LOBBY_CHAT_MSG_RES", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_LOBBY_LOBBY_CHAT_MSG_NTC = new PacketId(3, 2, 16, "S2C_LOBBY_LOBBY_CHAT_MSG_NTC", ServerType.Game, PacketSource.Server, "S2C_LOBBY_3_2_16_NTC");
-        public static readonly PacketId C2S_LOBBY_3_3_16_NTC = new PacketId(3, 3, 16, "C2S_LOBBY_3_3_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_LOBBY_3_4_16_NTC = new PacketId(3, 4, 16, "S2C_LOBBY_3_4_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId C2S_LOBBY_LOBBY_DATA_MSG_REQ = new PacketId(3, 3, 16, "C2S_LOBBY_LOBBY_DATA_MSG_REQ", ServerType.Game, PacketSource.Server, "C2S_LOBBY_3_3_16_NTC"); // Even though its SubID is 16, it's called REQ in the PS4 build
+        public static readonly PacketId S2C_LOBBY_LOBBY_DATA_MSG_NOTICE = new PacketId(3, 4, 16, "S2C_LOBBY_LOBBY_DATA_MSG_NOTICE", ServerType.Game, PacketSource.Server, "S2C_LOBBY_3_4_16_NTC");
 
 // Group: 4 - (CHAT)
         public static readonly PacketId C2S_CHAT_SEND_TELL_MSG_REQ = new PacketId(4, 0, 1, "C2S_CHAT_SEND_TELL_MSG_REQ", ServerType.Game, PacketSource.Client);
@@ -2239,7 +2239,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_LOBBY_LOBBY_CHAT_MSG_REQ);
             AddPacketIdEntry(packetIds, S2C_LOBBY_LOBBY_CHAT_MSG_RES);
             AddPacketIdEntry(packetIds, S2C_LOBBY_LOBBY_CHAT_MSG_NTC);
-            AddPacketIdEntry(packetIds, S2C_LOBBY_3_4_16_NTC);
+            AddPacketIdEntry(packetIds, C2S_LOBBY_LOBBY_DATA_MSG_REQ);
+            AddPacketIdEntry(packetIds, S2C_LOBBY_LOBBY_DATA_MSG_NOTICE);
 
 // Group: 4 - (CHAT)
             AddPacketIdEntry(packetIds, C2S_CHAT_SEND_TELL_MSG_REQ);
