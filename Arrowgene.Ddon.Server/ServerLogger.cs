@@ -143,5 +143,15 @@ namespace Arrowgene.Ddon.Server
 
             Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{packet}", packet);
         }
+
+        public void LogPacketError<TClient>(TClient client, IPacket packet) where TClient : Client
+        {  
+            Write(LogLevel.Error, $"PACKET ERROR:{Environment.NewLine}{client.Identity}{Environment.NewLine}{packet}", packet);
+        }
+        
+        public void LogUnhandledPacket<TClient>(TClient client, IPacket packet) where TClient : Client
+        {  
+            Write(LogLevel.Error, $"UNHANDLED PACKET:{Environment.NewLine}{client.Identity}{Environment.NewLine}{packet}", packet);
+        }
     }
 }

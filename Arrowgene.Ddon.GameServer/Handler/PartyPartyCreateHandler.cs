@@ -24,9 +24,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CParty_6_8_16_Ntc ntc_6_8_16 = new S2CParty_6_8_16_Ntc();
             CDataPartyMember partyMember = new CDataPartyMember();
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId =  client.Character.Id;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName =  client.Character.FirstName;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName =  client.Character.LastName;
+            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
+            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.FirstName;
+            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
             ntc_6_8_16.PartyMembers.Add(partyMember);
             client.Send(ntc_6_8_16);
            
