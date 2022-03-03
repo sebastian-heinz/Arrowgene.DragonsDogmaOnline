@@ -40,12 +40,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterEquipInfo.Serializer());
             Create(new CDataCharacterInfoSerializer());
             Create(new CDataCharacterJobDataSerializer());
-            Create(new CDataCharacterListElementSerializer());
+            Create(new CDataCharacterListElement.Serializer());
             Create(new CDataCharacterListInfoSerializer());
             Create(new CDataCharacterMessageSerializer());
             Create(new CDataCharacterMsgSetSerializer());
+            Create(new CDataCharacterName.Serializer());
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommunicationShortCutSerializer());
+            Create(new CDataCommunityCharacterBaseInfo.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
             Create(new CDataEditInfoSerializer());
             Create(new CDataEquipElementParam.Serializer());
@@ -60,7 +62,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataJobChangeInfo.Serializer());
             Create(new CDataJobChangeJobResUnk0.Serializer());
             Create(new CDataJobChangeJobResUnk0Unk1.Serializer());
-            Create(new CDataJobInfo.Serializer());
+            Create(new CDataJobBaseInfo.Serializer());
             Create(new CDataJobPlayPointSerializer());
             Create(new CDataJumpLocationSerializer());
             Create(new CDataLayoutEnemyData.Serializer());
@@ -73,6 +75,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataNormalSkillParam.Serializer());
             Create(new CDataOrbCategoryStatusSerializer());
             Create(new CDataOrbPageStatusSerializer());
+            Create(new CDataPartyMember.Serializer());
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
