@@ -38,9 +38,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(resp);
             
             // NTC
-            client.Send(GameFull.Dump_14);
-            client.Send(InGameDump.Dump_15);
-            client.Send(InGameDump.Dump_16);
+           // client.Send(GameFull.Dump_14);
+           // client.Send(InGameDump.Dump_15);
+           // client.Send(InGameDump.Dump_16);
         }
     }
 }

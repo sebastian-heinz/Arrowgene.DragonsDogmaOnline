@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommunicationShortCutSerializer());
             Create(new CDataCommunityCharacterBaseInfo.Serializer());
+            Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
             Create(new CDataEditInfoSerializer());
             Create(new CDataEquipElementParam.Serializer());
@@ -79,6 +80,18 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
+            Create(new CDataQuestAnnounce.Serializer());
+            Create(new CDataQuestEnemyInfo.Serializer());
+            Create(new CDataQuestFlag.Serializer());
+            Create(new CDataQuestIdScheduleId.Serializer());
+            Create(new CDataQuestKeyItemPointRecord.Serializer());
+            Create(new CDataQuestLayoutFlag.Serializer());
+            Create(new CDataQuestLayoutFlagSetInfo.Serializer());
+            Create(new CDataQuestOrderConditionParam.Serializer());
+            Create(new CDataQuestOrderList.Serializer());
+            Create(new CDataQuestProcessState.Serializer());
+            Create(new CDataQuestTalkInfo.Serializer());
+            Create(new CDataRewardItem.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
             Create(new CDataShortCutSerializer());
             Create(new CDataStageAttribute.Serializer());
@@ -160,6 +173,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CLobbyChatMsgNotice.Serializer());
             Create(new S2CLobbyJoinRes.Serializer());
             Create(new S2CParty_6_8_16_Ntc.Serializer());
+            Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
             Create(new S2CSkillGetLearnedAbilityListRes.Serializer());
