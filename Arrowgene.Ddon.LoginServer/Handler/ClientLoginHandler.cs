@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -65,6 +66,19 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         }
 
                         Logger.Info(client, "Created new account from OneTimeToken");
+                        
+                        // TODO remove temporary create a character
+                        Character character = new Character();
+                        character.AccountId = account.Id;
+                        character.FirstName = "Rumi";
+                        character.LastName = "Ghost";
+  
+                        if (!Database.CreateCharacter(character))
+                        {
+                            Logger.Error(client, "Failed to create character for new account");
+                        }
+                        // TODO remove
+
                     }
 
                     account.LoginToken = packet.Structure.OneTimeToken;

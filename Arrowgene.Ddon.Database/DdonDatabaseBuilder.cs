@@ -49,7 +49,6 @@ namespace Arrowgene.Ddon.Database
             {
                 ScriptRunner scriptRunner = new ScriptRunner(db);
                 scriptRunner.Run(Path.Combine(sqLiteFolder, "Script/schema_sqlite.sql"));
-                scriptRunner.Run(Path.Combine(sqLiteFolder, "Script/data_account.sql"));
             }
 
             return db;
