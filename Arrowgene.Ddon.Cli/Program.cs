@@ -280,6 +280,21 @@ namespace Arrowgene.Ddon.Cli
         {
             Log log = e.Log;
             LogLevel logLevel = log.LogLevel;
+            
+            
+            if (logLevel == LogLevel.Debug || logLevel == LogLevel.Info)
+            {
+                if(log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Server.Kestrel"))
+                {
+                    // ignore internal web server logs
+                    return; 
+                }
+                if (log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Route.WebRouter"))
+                {
+                    // ignore web route logs
+                    return;
+                }
+            }
 
             ConsoleColor consoleColor;
             switch (logLevel)
@@ -313,7 +328,12 @@ namespace Arrowgene.Ddon.Cli
                         break;
                 }
 
-                if (IgnorePacketIds.Contains(structurePacket.Id))
+                if (logLevel == LogLevel.Error)
+                {
+                    consoleColor = ConsoleColor.Red;
+                }
+
+                if (logLevel == LogLevel.Debug && IgnorePacketIds.Contains(structurePacket.Id))
                 {
                     return;
                 }
@@ -337,8 +357,13 @@ namespace Arrowgene.Ddon.Cli
                         consoleColor = ConsoleColor.DarkRed;
                         break;
                 }
+                
+                if (logLevel == LogLevel.Error)
+                {
+                    consoleColor = ConsoleColor.Red;
+                }
 
-                if (IgnorePacketIds.Contains(packet.Id))
+                if (logLevel == LogLevel.Debug && IgnorePacketIds.Contains(packet.Id))
                 {
                     return;
                 }

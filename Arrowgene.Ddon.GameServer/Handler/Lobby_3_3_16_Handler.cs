@@ -21,22 +21,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
             IBuffer buffer = packet.AsBuffer();
             byte unk0 = buffer.ReadByte();
             uint unk1 = buffer.ReadUInt32(Endianness.Big);
-            int unk2length = buffer.ReadInt32(Endianness.Big);
-            buffer.ReadUInt32();
-            buffer.ReadUInt32();
-            buffer.ReadUInt32();
-            buffer.ReadUInt32();
-            buffer.ReadUInt32();
-            buffer.ReadUInt32();
-            buffer.ReadUInt32();
-            buffer.ReadUInt32();
-            client.X = buffer.ReadDouble(Endianness.Big); //m_CliffPosX
-            client.Y = buffer.ReadFloat(Endianness.Big);
-            client.Z = buffer.ReadDouble(Endianness.Big);
+            int length = buffer.ReadInt32(Endianness.Big);
+            if (length > 52)
+            {
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32(); // 20
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32(); // 32
+                client.X = buffer.ReadDouble(Endianness.Big); //m_CliffPosX
+                client.Y = buffer.ReadFloat(Endianness.Big);
+                client.Z = buffer.ReadDouble(Endianness.Big); //52
+            }
 
-            float m_CliffNormalX = buffer.ReadFloat(Endianness.Big);
-            float m_CliffNormalY = buffer.ReadFloat(Endianness.Big);
-            float m_CliffNormalZ = buffer.ReadFloat(Endianness.Big);
+            // float m_CliffNormalX = buffer.ReadFloat(Endianness.Big);
+            // float m_CliffNormalY = buffer.ReadFloat(Endianness.Big);
+            // float m_CliffNormalZ = buffer.ReadFloat(Endianness.Big);
 
             // double m_CliffStartPosX = buffer.ReadDouble(Endianness.Big);
             // float m_CliffStartPosY = buffer.ReadFloat(Endianness.Big);

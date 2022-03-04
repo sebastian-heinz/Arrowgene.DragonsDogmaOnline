@@ -200,6 +200,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnGetRentedPawnListHandler(this));
             AddHandler(new PawnJoinPartyMypawnHandler(this));
 
+            AddHandler(new QuestEndDistributionQuestCancelHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestListHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
             AddHandler(new QuestGetAreaBonusListHandler(this));
