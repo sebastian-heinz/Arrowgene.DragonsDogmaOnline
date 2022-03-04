@@ -1,4 +1,3 @@
-using System;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -19,92 +18,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-           // Logger.Error(Environment.NewLine + packet.PrintData());
-
-            IBuffer requestBuffer = packet.AsBuffer();
-            byte unk0 = requestBuffer.ReadByte();
-            uint unk1 = requestBuffer.ReadUInt32(Endianness.Big);
-            int unk2length = requestBuffer.ReadInt32(Endianness.Big);
-            byte[] unk2content = requestBuffer.ReadBytes(unk2length);
-            
-           // Logger.Info($"LEN:{unk2length}");
-
-            
-            IBuffer test = new StreamBuffer(unk2content);
-            test.SetPositionStart();
-            if (test.Size > 56)
+            IBuffer buffer = packet.AsBuffer();
+            byte unk0 = buffer.ReadByte();
+            uint unk1 = buffer.ReadUInt32(Endianness.Big);
+            int length = buffer.ReadInt32(Endianness.Big);
+            if (length > 52)
             {
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32(); //16
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                
-                byte[] x = test.ReadBytes(8);
-                byte[] y = test.ReadBytes(4);
-                byte[] z = test.ReadBytes(8);
-                Array.Reverse(x);
-                Array.Reverse(y);
-                Array.Reverse(z);
-                // North = Y-
-                // SOUTH = Y+
-                // EAST = X+
-                // WEST = X-
-                //Logger.Info($"X:{BitConverter.ToDouble(x)} Y:{BitConverter.ToSingle(y)} Z:{BitConverter.ToDouble(z)}");
-
-                client.X = BitConverter.ToDouble(x);
-                client.Y = BitConverter.ToSingle(y);
-                client.Z = BitConverter.ToDouble(z);
-                
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                test.ReadUInt32();
-                
-             //   byte[] x1 = test.ReadBytes(8);
-             //   byte[] z1 = test.ReadBytes(4);
-             //   byte[] y1 = test.ReadBytes(8);
-             //   Array.Reverse(x1);
-             //   Array.Reverse(y1);
-             //   Array.Reverse(z1);
-             //   Logger.Info($"X1:{BitConverter.ToDouble(x1)} Y1:{BitConverter.ToDouble(y1)} Z1:{BitConverter.ToSingle(z1)}");
-
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32(); // 20
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32(); // 32
+                client.X = buffer.ReadDouble(Endianness.Big); //m_CliffPosX
+                client.Y = buffer.ReadFloat(Endianness.Big);
+                client.Z = buffer.ReadDouble(Endianness.Big); //52
             }
+
+            // float m_CliffNormalX = buffer.ReadFloat(Endianness.Big);
+            // float m_CliffNormalY = buffer.ReadFloat(Endianness.Big);
+            // float m_CliffNormalZ = buffer.ReadFloat(Endianness.Big);
+
+            // double m_CliffStartPosX = buffer.ReadDouble(Endianness.Big);
+            // float m_CliffStartPosY = buffer.ReadFloat(Endianness.Big);
+            // double m_CliffStartPosZ = buffer.ReadDouble(Endianness.Big);
+            // 
+            // double m_CliffStartOldPosX = buffer.ReadDouble(Endianness.Big);
+            // float m_CliffStartOldPosY = buffer.ReadFloat(Endianness.Big);
+            // double m_CliffStartOldPosZ = buffer.ReadDouble(Endianness.Big);
 
 
             foreach (GameClient otherClient in Server.Clients)
             {
                 if (otherClient != client)
                 {
-                    IBuffer responseBuffer = new StreamBuffer();
-                    responseBuffer.WriteByte(unk0);
-                    responseBuffer.WriteUInt32(client.Character.Id, Endianness.Big);
-                    responseBuffer.WriteInt32(unk2length, Endianness.Big);
-                    responseBuffer.WriteBytes(unk2content);
-                    responseBuffer.WriteByte(0); // idk either
-
-                    Packet response = new Packet(PacketId.S2C_LOBBY_3_4_16_NTC, responseBuffer.GetAllBytes());
+                    Packet response = new Packet(PacketId.S2C_LOBBY_3_4_16_NTC, buffer.GetAllBytes());
                     client.Send(response);
                 }
             }

@@ -35,21 +35,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             foreach (Character c in characters)
             {
                 CDataCharacterListInfo cResponse = new CDataCharacterListInfo();
-                cResponse.Element.CharacterID = (uint)c.Id;
-                cResponse.Element.FirstName = c.FirstName;
-                cResponse.Element.LastName = c.LastName;
-                cResponse.Element.jobInfo0.job = 1;
-                cResponse.Element.jobInfo0.level = 1;
+                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = (uint)c.Id;
+                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = c.FirstName;
+                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = c.LastName;
+                cResponse.CharacterListElement.CurrentJobBaseInfo.Job = 1;
+                cResponse.CharacterListElement.CurrentJobBaseInfo.Level = 1;
                 cResponse.EditInfo = c.Visual;
                 characterListResponse.Add(cResponse);
             }
-            
-            // TODO TEMP RUMI - ADD Dump Character for entering world
-            IBuffer dumpBuffer = LoginDump.Dump_24.AsBuffer();
-            dumpBuffer.Position = 8;
-            List<CDataCharacterListInfo> dumpChars = EntitySerializer.Get<CDataCharacterListInfo>().ReadList(dumpBuffer);
-            characterListResponse.Add(dumpChars[0]);
-            // TODO TEMP RUMI
             
             EntitySerializer.Get<CDataCharacterListInfo>().WriteList(buffer, characterListResponse);
             Packet response = new Packet(PacketId.L2C_GET_CHARACTER_LIST_RES, buffer.GetAllBytes());

@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataCharacterListInfo()
         {
-            Element = new CDataCharacterListElement();
+            CharacterListElement = new CDataCharacterListElement();
             EditInfo = new CDataEditInfo();
             MatchingProfile = new CDataMatchingProfile();
             EquipItemInfo = new List<CDataEquipItemInfo>();
@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             IsClanMemberNotice = 0;
         }
 
-        public CDataCharacterListElement Element;
+        public CDataCharacterListElement CharacterListElement;
         public CDataEditInfo EditInfo;
         public CDataMatchingProfile MatchingProfile;
         public List<CDataEquipItemInfo> EquipItemInfo;
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataCharacterListInfo obj)
         {
-            WriteEntity(buffer, obj.Element);
+            WriteEntity(buffer, obj.CharacterListElement);
             WriteEntity(buffer, obj.EditInfo);
             WriteEntity(buffer, obj.MatchingProfile);
             WriteEntityList(buffer, obj.EquipItemInfo);
@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public override CDataCharacterListInfo Read(IBuffer buffer)
         {
             CDataCharacterListInfo obj = new CDataCharacterListInfo();
-            obj.Element = ReadEntity<CDataCharacterListElement>(buffer);
+            obj.CharacterListElement = ReadEntity<CDataCharacterListElement>(buffer);
             obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
             obj.MatchingProfile = ReadEntity<CDataMatchingProfile>(buffer);
             obj.EquipItemInfo = ReadEntityList<CDataEquipItemInfo>(buffer);

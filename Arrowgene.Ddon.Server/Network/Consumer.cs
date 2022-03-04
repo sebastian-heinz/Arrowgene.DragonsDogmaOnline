@@ -77,12 +77,11 @@ namespace Arrowgene.Ddon.Server.Network
         {
             if (!_packetHandlerLookup.ContainsKey(packet.Id))
             {
-                //Logger.LogUnknownIncomingPacket(client, packet);
+                Logger.LogUnhandledPacket(client, packet);
                 return;
             }
 
             IPacketHandler<TClient> packetHandler = _packetHandlerLookup[packet.Id];
-            //Logger.LogIncomingPacket(client, packet);
             try
             {
                 packetHandler.Handle(client, packet);
@@ -90,6 +89,7 @@ namespace Arrowgene.Ddon.Server.Network
             catch (Exception ex)
             {
                 Logger.Exception(client, ex);
+                Logger.LogPacketError(client, packet);
             }
         }
 
