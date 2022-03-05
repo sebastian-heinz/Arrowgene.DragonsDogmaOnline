@@ -537,7 +537,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_ITEM_SELL_ITEM_RES = new PacketId(10, 8, 2, "S2C_ITEM_SELL_ITEM_RES", ServerType.Game, PacketSource.Server); // アイテム売却に
         public static readonly PacketId C2S_ITEM_GET_ITEM_STORAGE_INFO_REQ = new PacketId(10, 9, 1, "C2S_ITEM_GET_ITEM_STORAGE_INFO_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_ITEM_GET_ITEM_STORAGE_INFO_RES = new PacketId(10, 9, 2, "S2C_ITEM_GET_ITEM_STORAGE_INFO_RES", ServerType.Game, PacketSource.Server); // アイテムストレージ情報取得に
-        public static readonly PacketId S2C_ITEM_10_10_16_NTC = new PacketId(10, 10, 16, "S2C_ITEM_10_10_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_ITEM_EXTEND_ITEM_SLOT_NTC = new PacketId(10, 10, 16, "S2C_ITEM_EXTEND_ITEM_SLOT_NTC", ServerType.Game, PacketSource.Server, "S2C_ITEM_10_10_16_NTC");
         public static readonly PacketId S2C_ITEM_10_11_16_NTC = new PacketId(10, 11, 16, "S2C_ITEM_10_11_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_ITEM_UPDATE_CHARACTER_ITEM_NOTICE = new PacketId(10, 12, 16, "S2C_ITEM_UPDATE_CHARACTER_ITEM_NOTICE", ServerType.Game, PacketSource.Server, "S2C_ITEM_10_12_16_NTC");
         public static readonly PacketId S2C_ITEM_10_13_16_NTC = new PacketId(10, 13, 16, "S2C_ITEM_10_13_16_NTC", ServerType.Game, PacketSource.Server);
@@ -1745,7 +1745,7 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 50 - (ITEM)
         public static readonly PacketId C2S_ITEM_SORT_GET_ITEM_SORTDATA_BIN_REQ = new PacketId(50, 0, 1, "C2S_ITEM_SORT_GET_ITEM_SORTDATA_BIN_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_ITEM_SORT_GET_ITEM_SORTDATA_BIN_RES = new PacketId(50, 0, 2, "S2C_ITEM_SORT_GET_ITEM_SORTDATA_BIN_RES", ServerType.Game, PacketSource.Server); // アイテムソートデータ取得要求に
-        public static readonly PacketId S2C_ITEM_50_0_16_NTC = new PacketId(50, 0, 16, "S2C_ITEM_50_0_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_ITEM_SORT_GET_ITEM_SORTDATA_BIN_NTC = new PacketId(50, 0, 16, "S2C_ITEM_SORT_GET_ITEM_SORTDATA_BIN_NTC", ServerType.Game, PacketSource.Server, "S2C_ITEM_50_0_16_NTC");
         public static readonly PacketId C2S_ITEM_SORT_SET_ITEM_SORTDATA_BIN_REQ = new PacketId(50, 1, 1, "C2S_ITEM_SORT_SET_ITEM_SORTDATA_BIN_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_ITEM_SORT_SET_ITEM_SORTDATA_BIN_RES = new PacketId(50, 1, 2, "S2C_ITEM_SORT_SET_ITEM_SORTDATA_BIN_RES", ServerType.Game, PacketSource.Server); // アイテムソートデータ保存要求に
 
@@ -2436,7 +2436,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_ITEM_SELL_ITEM_RES);
             AddPacketIdEntry(packetIds, C2S_ITEM_GET_ITEM_STORAGE_INFO_REQ);
             AddPacketIdEntry(packetIds, S2C_ITEM_GET_ITEM_STORAGE_INFO_RES);
-            AddPacketIdEntry(packetIds, S2C_ITEM_10_10_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_ITEM_EXTEND_ITEM_SLOT_NTC);
             AddPacketIdEntry(packetIds, S2C_ITEM_10_11_16_NTC);
             AddPacketIdEntry(packetIds, S2C_ITEM_UPDATE_CHARACTER_ITEM_NOTICE);
             AddPacketIdEntry(packetIds, S2C_ITEM_10_13_16_NTC);
@@ -3644,7 +3644,7 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 50 - (ITEM)
             AddPacketIdEntry(packetIds, C2S_ITEM_SORT_GET_ITEM_SORTDATA_BIN_REQ);
             AddPacketIdEntry(packetIds, S2C_ITEM_SORT_GET_ITEM_SORTDATA_BIN_RES);
-            AddPacketIdEntry(packetIds, S2C_ITEM_50_0_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_ITEM_SORT_GET_ITEM_SORTDATA_BIN_NTC);
             AddPacketIdEntry(packetIds, C2S_ITEM_SORT_SET_ITEM_SORTDATA_BIN_REQ);
             AddPacketIdEntry(packetIds, S2C_ITEM_SORT_SET_ITEM_SORTDATA_BIN_RES);
 

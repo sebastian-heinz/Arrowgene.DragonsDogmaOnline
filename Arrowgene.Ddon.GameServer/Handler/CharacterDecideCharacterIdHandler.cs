@@ -2,6 +2,7 @@
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -28,7 +29,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
             
             // client.Send(GameDump.Dump_13);
-            client.Send(GameFull.Dump_20);
+
+            S2CCharacterContentsReleaseElementNotice contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNotice>().Read(GameFull.data_Dump_20);
+            client.Send(contentsReleaseElementNotice);
         }
     }
 }
