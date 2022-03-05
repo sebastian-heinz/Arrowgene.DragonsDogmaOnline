@@ -4,6 +4,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCommonU32
     {
+        public CDataCommonU32(uint value)
+        {
+            Value = value;
+        }
+
         public CDataCommonU32()
         {
             Value=0;
