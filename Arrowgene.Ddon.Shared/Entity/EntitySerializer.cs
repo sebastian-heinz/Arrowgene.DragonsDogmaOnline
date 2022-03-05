@@ -44,6 +44,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterMessageSerializer());
             Create(new CDataCharacterMsgSetSerializer());
             Create(new CDataCharacterName.Serializer());
+            Create(new CDataCharacterReleaseElement.Serializer());
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommunicationShortCutSerializer());
             Create(new CDataCommunityCharacterBaseInfo.Serializer());
@@ -58,6 +59,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGameServerListInfoSerializer());
             Create(new CDataGPCourseValidSerializer());
             Create(new CDataItemList.Serializer());
+            Create(new CDataItemSort.Serializer());
             Create(new CDataItemUpdateResult.Serializer());
             Create(new CDataJobChangeInfo.Serializer());
             Create(new CDataJobChangeJobResUnk0.Serializer());
@@ -150,16 +152,21 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
             Create(new S2CCharacterCharacterPointReviveRes.Serializer());
             Create(new S2CCharacterDecideCharacterIdRes.Serializer());
+            Create(new S2CCharacterContentsReleaseElementNotice.Serializer());
             Create(new S2CClanClanGetMyMemberListRes.Serializer());
             Create(new S2CConnectionLoginRes.Serializer());
             Create(new S2CConnectionLogoutRes.Serializer());
+            Create(new S2CConnectionMoveInServerRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
             Create(new S2CContext_35_14_16_Ntc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
             Create(new S2CInstanceEnemyKillRes.Serializer());
             Create(new S2CInstanceEnemyRepopNtc.Serializer());
             Create(new S2CInstanceGetEnemySetListRes.Serializer());
+            Create(new S2CItemExtendItemSlotNtc.Serializer());
             Create(new S2CItemUpdateCharacterItemNtc.Serializer());
+            Create(new S2CItemSortGetItemSortdataBinRes.Serializer());
+            Create(new S2CItemSortGetItemSortdataBinNtc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());
             Create(new S2CJobChangeJobRes.Serializer());
             Create(new S2CJobGetJobChangeListRes.Serializer());
