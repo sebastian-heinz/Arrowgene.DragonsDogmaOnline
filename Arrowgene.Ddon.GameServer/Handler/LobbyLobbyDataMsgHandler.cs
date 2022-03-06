@@ -19,9 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CLobbyLobbyDataMsgNotice res = new S2CLobbyLobbyDataMsgNotice();
             res.Type = packet.Structure.Type;
-            res.CharacterID = packet.Structure.CharacterID;
+            res.CharacterID = client.Character.Id;
             res.RpcPacket = packet.Structure.RpcPacket;
-            res.OnlineStatus = 1; // TODO: Figure out OnlineStatus values
+            res.OnlineStatus = 0x08; // TODO: Figure out OnlineStatus values
 
             foreach (GameClient otherClient in Server.Clients)
             {
@@ -31,31 +31,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            IBuffer rpcPacketBuffer = new StreamBuffer(packet.Structure.RpcPacket);
-            rpcPacketBuffer.SetPositionStart();
-            rpcPacketBuffer.ReadUInt32();
-            rpcPacketBuffer.ReadUInt32();
-            rpcPacketBuffer.ReadUInt32();
-            rpcPacketBuffer.ReadUInt32();
-            rpcPacketBuffer.ReadUInt32();
-            rpcPacketBuffer.ReadUInt32();
-            rpcPacketBuffer.ReadUInt32();
-            rpcPacketBuffer.ReadUInt32();
-            client.X = rpcPacketBuffer.ReadDouble(Endianness.Big); //m_CliffPosX
-            client.Y = rpcPacketBuffer.ReadFloat(Endianness.Big);
-            client.Z = rpcPacketBuffer.ReadDouble(Endianness.Big);
+            IBuffer buffer = packet.AsBuffer();
+            byte unk0 = buffer.ReadByte();
+            uint unk1 = buffer.ReadUInt32(Endianness.Big);
+            int length = buffer.ReadInt32(Endianness.Big);
+            if (length > 52)
+            {
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32(); // 20
+                buffer.ReadUInt32();
+                buffer.ReadUInt32();
+                buffer.ReadUInt32(); // 32
+                client.X = buffer.ReadDouble(Endianness.Big); //m_CliffPosX
+                client.Y = buffer.ReadFloat(Endianness.Big);
+                client.Z = buffer.ReadDouble(Endianness.Big); //52
+            }
 
-            float m_CliffNormalX = rpcPacketBuffer.ReadFloat(Endianness.Big);
-            float m_CliffNormalY = rpcPacketBuffer.ReadFloat(Endianness.Big);
-            float m_CliffNormalZ = rpcPacketBuffer.ReadFloat(Endianness.Big);
+            // float m_CliffNormalX = buffer.ReadFloat(Endianness.Big);
+            // float m_CliffNormalY = buffer.ReadFloat(Endianness.Big);
+            // float m_CliffNormalZ = buffer.ReadFloat(Endianness.Big);
 
-            // double m_CliffStartPosX = rpcPacketBuffer.ReadDouble(Endianness.Big);
-            // float m_CliffStartPosY = rpcPacketBuffer.ReadFloat(Endianness.Big);
-            // double m_CliffStartPosZ = rpcPacketBuffer.ReadDouble(Endianness.Big);
+            // double m_CliffStartPosX = buffer.ReadDouble(Endianness.Big);
+            // float m_CliffStartPosY = buffer.ReadFloat(Endianness.Big);
+            // double m_CliffStartPosZ = buffer.ReadDouble(Endianness.Big);
             // 
-            // double m_CliffStartOldPosX = rpcPacketBuffer.ReadDouble(Endianness.Big);
-            // float m_CliffStartOldPosY = rpcPacketBuffer.ReadFloat(Endianness.Big);
-            // double m_CliffStartOldPosZ = rpcPacketBuffer.ReadDouble(Endianness.Big);
+            // double m_CliffStartOldPosX = buffer.ReadDouble(Endianness.Big);
+            // float m_CliffStartOldPosY = buffer.ReadFloat(Endianness.Big);
+            // double m_CliffStartOldPosZ = buffer.ReadDouble(Endianness.Big);
         }
     }
 }

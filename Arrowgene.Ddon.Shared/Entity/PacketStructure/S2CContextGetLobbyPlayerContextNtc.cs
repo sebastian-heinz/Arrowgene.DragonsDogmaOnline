@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint CharacterId { get; set; }
         public CDataLobbyContextPlayer Context { get; set; }
 
-        public class Serializer : EntitySerializer<S2CContextGetLobbyPlayerContextNtc>
+        public class Serializer : PacketEntitySerializer<S2CContextGetLobbyPlayerContextNtc>
         {
             public override void Write(IBuffer buffer, S2CContextGetLobbyPlayerContextNtc obj)
             {

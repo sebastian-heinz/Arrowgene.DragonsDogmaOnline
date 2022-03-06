@@ -171,6 +171,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContext_35_14_16_Ntc.Serializer());
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
+            Create(new S2CContextSetContextBaseNotice.Serializer());
             Create(new S2CInstanceEnemyKillRes.Serializer());
             Create(new S2CInstanceEnemyRepopNtc.Serializer());
             Create(new S2CInstanceGetEnemySetListRes.Serializer());
