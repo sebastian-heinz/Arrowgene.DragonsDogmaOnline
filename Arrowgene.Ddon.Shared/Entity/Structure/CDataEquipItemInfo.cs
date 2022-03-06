@@ -13,8 +13,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ItemID = 0;
             Color = 0;
             PlusValue = 0;
-            U6 = new List<CDataEquipElementUnkType2>();
-            U7 = new List<CDataEquipElementUnkType>();
+            U6 = new List<CDataWeaponCrestData>();
+            U7 = new List<CDataArmorCrestData>();
             EquipElementParamList = new List<CDataEquipElementParam>();
         }
 
@@ -24,8 +24,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public ushort ItemID { get; set; }
         public byte Color { get; set; }
         public byte PlusValue { get; set; }
-        public List<CDataEquipElementUnkType2> U6 { get; set; } // Maybe weapon crests
-        public List<CDataEquipElementUnkType> U7 { get; set; } // Maybe armor crests
+        public List<CDataWeaponCrestData> U6 { get; set; } // Maybe weapon crests
+        public List<CDataArmorCrestData> U7 { get; set; } // Maybe armor crests
         public List<CDataEquipElementParam> EquipElementParamList { get; set; } // Not 100% sure about this one
         
         public class Serializer : EntitySerializer<CDataEquipItemInfo>
@@ -52,8 +52,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ItemID = ReadUInt16(buffer);
                 obj.Color = ReadByte(buffer);
                 obj.PlusValue = ReadByte(buffer);
-                obj.U6 = ReadEntityList<CDataEquipElementUnkType2>(buffer);
-                obj.U7 = ReadEntityList<CDataEquipElementUnkType>(buffer);
+                obj.U6 = ReadEntityList<CDataWeaponCrestData>(buffer);
+                obj.U7 = ReadEntityList<CDataArmorCrestData>(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 return obj;
             }

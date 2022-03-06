@@ -353,8 +353,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_USER_LIST_GET_USER_LIST_RES = new PacketId(5, 0, 2, "S2C_USER_LIST_GET_USER_LIST_RES", ServerType.Game, PacketSource.Server); // ユーザーリストの取得に
         public static readonly PacketId C2S_USER_LIST_USER_LIST_MAX_NUM_REQ = new PacketId(5, 1, 1, "C2S_USER_LIST_USER_LIST_MAX_NUM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_USER_LIST_USER_LIST_MAX_NUM_RES = new PacketId(5, 1, 2, "S2C_USER_LIST_USER_LIST_MAX_NUM_RES", ServerType.Game, PacketSource.Server); // ユーザーリストの最大人数指定に
-        public static readonly PacketId S2C_USER_5_2_16_NTC = new PacketId(5, 2, 16, "S2C_USER_5_2_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_USER_5_3_16_NTC = new PacketId(5, 3, 16, "S2C_USER_5_3_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_USER_LIST_JOIN_NTC = new PacketId(5, 2, 16, "S2C_USER_LIST_JOIN_NTC", ServerType.Game, PacketSource.Server, "S2C_USER_5_2_16_NTC");
+        public static readonly PacketId S2C_USER_LIST_LEAVE_NTC = new PacketId(5, 3, 16, "S2C_USER_LIST_LEAVE_NTC", ServerType.Game, PacketSource.Server, "S2C_USER_5_3_16_NTC");
 
 // Group: 6 - (PARTY)
         public static readonly PacketId C2S_PARTY_PARTY_CREATE_REQ = new PacketId(6, 0, 1, "C2S_PARTY_PARTY_CREATE_REQ", ServerType.Game, PacketSource.Client);
@@ -1570,7 +1570,7 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 35 - (CONTEXT)
         public static readonly PacketId C2S_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_REQ = new PacketId(35, 0, 1, "C2S_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_RES = new PacketId(35, 0, 2, "S2C_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_RES", ServerType.Game, PacketSource.Server); // ロビープレイヤーコンテキスト取得に
-        public static readonly PacketId S2C_CONTEXT_35_0_16_NTC = new PacketId(35, 0, 16, "S2C_CONTEXT_35_0_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_NTC = new PacketId(35, 0, 16, "S2C_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_NTC", ServerType.Game, PacketSource.Server, "S2C_CONTEXT_35_0_16_NTC");
         public static readonly PacketId C2S_CONTEXT_GET_PARTY_PLAYER_CONTEXT_REQ = new PacketId(35, 1, 1, "C2S_CONTEXT_GET_PARTY_PLAYER_CONTEXT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONTEXT_GET_PARTY_PLAYER_CONTEXT_RES = new PacketId(35, 1, 2, "S2C_CONTEXT_GET_PARTY_PLAYER_CONTEXT_RES", ServerType.Game, PacketSource.Server); // パーティプレイヤーコンテキスト取得に
         public static readonly PacketId S2C_CONTEXT_35_1_16_NTC = new PacketId(35, 1, 16, "S2C_CONTEXT_35_1_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2252,8 +2252,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_USER_LIST_GET_USER_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_USER_LIST_USER_LIST_MAX_NUM_REQ);
             AddPacketIdEntry(packetIds, S2C_USER_LIST_USER_LIST_MAX_NUM_RES);
-            AddPacketIdEntry(packetIds, S2C_USER_5_2_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_USER_5_3_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_USER_LIST_JOIN_NTC);
+            AddPacketIdEntry(packetIds, S2C_USER_LIST_LEAVE_NTC);
 
 // Group: 6 - (PARTY)
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_CREATE_REQ);
@@ -3469,7 +3469,7 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 35 - (CONTEXT)
             AddPacketIdEntry(packetIds, C2S_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_REQ);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_RES);
-            AddPacketIdEntry(packetIds, S2C_CONTEXT_35_0_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_LOBBY_PLAYER_CONTEXT_NTC);
             AddPacketIdEntry(packetIds, C2S_CONTEXT_GET_PARTY_PLAYER_CONTEXT_REQ);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_PARTY_PLAYER_CONTEXT_RES);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_35_1_16_NTC);
