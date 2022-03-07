@@ -1,23 +1,36 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class Lobby_3_3_16_Handler : PacketHandler<GameClient>
+    public class LobbyLobbyDataMsgHandler : StructurePacketHandler<GameClient, C2SLobbyLobbyDataMsgReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Lobby_3_3_16_Handler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LobbyLobbyDataMsgHandler));
 
-        public Lobby_3_3_16_Handler(DdonGameServer server) : base(server)
+        public LobbyLobbyDataMsgHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_LOBBY_3_3_16_NTC;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SLobbyLobbyDataMsgReq> packet)
         {
+            S2CLobbyLobbyDataMsgNotice res = new S2CLobbyLobbyDataMsgNotice();
+            res.Type = packet.Structure.Type;
+            res.CharacterID = client.Character.Id;
+            res.RpcPacket = packet.Structure.RpcPacket;
+            res.OnlineStatus = 0x08; // TODO: Figure out OnlineStatus values
+
+            foreach (GameClient otherClient in Server.Clients)
+            {
+                if (otherClient != client)
+                {
+                    client.Send(res);
+                }
+            }
+
             IBuffer buffer = packet.AsBuffer();
             byte unk0 = buffer.ReadByte();
             uint unk1 = buffer.ReadUInt32(Endianness.Big);
@@ -48,16 +61,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // double m_CliffStartOldPosX = buffer.ReadDouble(Endianness.Big);
             // float m_CliffStartOldPosY = buffer.ReadFloat(Endianness.Big);
             // double m_CliffStartOldPosZ = buffer.ReadDouble(Endianness.Big);
-
-
-            foreach (GameClient otherClient in Server.Clients)
-            {
-                if (otherClient != client)
-                {
-                    Packet response = new Packet(PacketId.S2C_LOBBY_3_4_16_NTC, buffer.GetAllBytes());
-                    client.Send(response);
-                }
-            }
         }
     }
 }

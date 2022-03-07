@@ -24,11 +24,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CData_35_14_16 ntcData = new CData_35_14_16();
             ntcData.UniqueId = packet.Structure.UniqueId;
             ntcData.Unk0 = 0;
-
             S2CContext_35_14_16_Ntc ntc = new S2CContext_35_14_16_Ntc();
             ntc.Unk0.Add(ntcData);
-
             client.Send(ntc);
+
+            S2CContextSetContextBaseNotice baseNtc = new S2CContextSetContextBaseNotice();
+            baseNtc.ContextId = packet.Structure.ContextId;
+            baseNtc.UniqueId = packet.Structure.UniqueId;
+            baseNtc.StageNo = packet.Structure.StageNo;
+            baseNtc.EncountArea = packet.Structure.EncountArea;
+            baseNtc.MasterIndex = packet.Structure.MasterIndex;
+            baseNtc.Unk0 = packet.Structure.Unk0;
+            client.Send(baseNtc);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Arrowgene.Ddon.Shared.Entity;
+using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.TypeInspectors;
 
@@ -49,6 +50,7 @@ namespace Arrowgene.Ddon.Shared.Network
     {
         private static readonly ISerializer Serializer = new SerializerBuilder()
             .WithTypeInspector(inspector => new MyTypeInspector(inspector))
+            .WithTypeConverter(new ByteArrayConverter())
             .Build();
         
         protected StructurePacket(IPacket packet) : base(packet.Id, packet.Data, packet.Source, packet.Count)
@@ -120,6 +122,35 @@ namespace Arrowgene.Ddon.Shared.Network
 
                 return filtered;
             }
+        }
+    }
+
+    public class ByteArrayConverter : IYamlTypeConverter
+    {
+        public bool Accepts(Type type)
+        {
+            return type == typeof(byte[]);
+        }
+
+        public object ReadYaml(IParser parser, Type type)
+        {
+            var scalar = (YamlDotNet.Core.Events.Scalar)parser.Current;
+            var bytes = Util.FromHexString(scalar.Value);
+            parser.MoveNext();
+            return bytes;
+        }
+
+        public void WriteYaml(IEmitter emitter, object value, Type type)
+        {
+            var bytes = (byte[])value;
+            emitter.Emit(new YamlDotNet.Core.Events.Scalar(
+                null,
+                "tag:yaml.org,2002:binary",
+                Util.ToHexString(bytes),
+                ScalarStyle.Plain,
+                false,
+                false
+            ));
         }
     }
 }

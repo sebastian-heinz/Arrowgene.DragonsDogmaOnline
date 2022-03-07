@@ -1,7 +1,8 @@
-﻿using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
+﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -20,9 +21,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            
-            client.Send(InGameDump.Dump_37);
-            client.Send(InGameDump.Dump_38);
+            client.Send(EntitySerializer.Get<S2CItemSortGetItemSortdataBinNtc>().Read(InGameDump.data_Dump_37));
+            client.Send(EntitySerializer.Get<S2CItemSortGetItemSortdataBinRes>().Read(InGameDump.data_Dump_38));
         }
     }
 }

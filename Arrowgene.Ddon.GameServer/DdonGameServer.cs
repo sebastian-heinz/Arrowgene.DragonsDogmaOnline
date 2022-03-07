@@ -175,9 +175,9 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
-            AddHandler(new Lobby_3_3_16_Handler(this));
-            AddHandler(new LobbyLobbyChatMsgHandler(this));
             AddHandler(new LobbyLobbyJoinHandler(this));
+            AddHandler(new LobbyLobbyChatMsgHandler(this));
+            AddHandler(new LobbyLobbyDataMsgHandler(this));
 
             AddHandler(new MailMailGetListDataHandler(this));
             AddHandler(new MailMailGetListFootHandler(this));
@@ -243,6 +243,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new WarpGetStartPointListHandler(this));
             AddHandler(new WarpGetWarpPointListHandler(this));
             AddHandler(new WarpRegisterFavoriteWarpHandler(this));
+            AddHandler(new WarpReleaseWarpPointHandler(this));
             AddHandler(new WarpWarpHandler(this));
         }
     }

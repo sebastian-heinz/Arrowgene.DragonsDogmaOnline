@@ -17,8 +17,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint Unk9 { get; set; }
         public uint Unk10 { get; set; }
         public uint Unk11 { get; set; }
-        public List<CDataEquipElementUnkType2> Unk12 { get; set; } // Maybe weapon crests?
-        public List<CDataEquipElementUnkType> Unk13 { get; set; } // Maybe armor crests?
+        public List<CDataWeaponCrestData> Unk12 { get; set; } // Maybe weapon crests?
+        public List<CDataArmorCrestData> Unk13 { get; set; } // Maybe armor crests?
         public List<CDataEquipElementParam> Unk14 { get; set; } // EquipElementParamList?
         
         public class Serializer : EntitySerializer<CDataItemList>
@@ -37,8 +37,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.Unk9);
                 WriteUInt32(buffer, obj.Unk10);
                 WriteUInt32(buffer, obj.Unk11);
-                WriteEntityList<CDataEquipElementUnkType2>(buffer, obj.Unk12);
-                WriteEntityList<CDataEquipElementUnkType>(buffer, obj.Unk13);
+                WriteEntityList<CDataWeaponCrestData>(buffer, obj.Unk12);
+                WriteEntityList<CDataArmorCrestData>(buffer, obj.Unk13);
                 WriteEntityList<CDataEquipElementParam>(buffer, obj.Unk14);
             }
 
@@ -57,8 +57,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Unk9 = ReadUInt32(buffer);
                 obj.Unk10 = ReadUInt32(buffer);
                 obj.Unk11 = ReadUInt32(buffer);
-                obj.Unk12 = ReadEntityList<CDataEquipElementUnkType2>(buffer);
-                obj.Unk13 = ReadEntityList<CDataEquipElementUnkType>(buffer);
+                obj.Unk12 = ReadEntityList<CDataWeaponCrestData>(buffer);
+                obj.Unk13 = ReadEntityList<CDataArmorCrestData>(buffer);
                 obj.Unk14 = ReadEntityList<CDataEquipElementParam>(buffer);
                 return obj;
             }

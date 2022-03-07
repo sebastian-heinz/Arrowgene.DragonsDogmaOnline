@@ -25,12 +25,12 @@ namespace Arrowgene.Ddon.GameServer
             //  requestingClient.Send(response);
 
             S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice();
-            notice.Unk0 = (byte) response.Type;
+            notice.Type = (byte) response.Type;
             notice.StrMessage = response.Message;
-            notice.CharacterBaseInfo.characterId = response.CharacterId;
-            notice.CharacterBaseInfo.strFirstName = response.FirstName;
-            notice.CharacterBaseInfo.strLastName = response.LastName;
-            notice.CharacterBaseInfo.strClanName = response.ClanName;
+            notice.CharacterBaseInfo.CharacterId = response.CharacterId;
+            notice.CharacterBaseInfo.StrFirstName = response.FirstName;
+            notice.CharacterBaseInfo.StrLastName = response.LastName;
+            notice.CharacterBaseInfo.StrClanName = response.ClanName;
             foreach (GameClient client in Unique(response.Recipients))
             {
                 client.Send(notice);
