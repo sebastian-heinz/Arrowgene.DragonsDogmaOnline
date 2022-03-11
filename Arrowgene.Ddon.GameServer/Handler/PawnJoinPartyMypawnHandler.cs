@@ -1,14 +1,13 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.GameServer.Dump;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnJoinPartyMypawnHandler : PacketHandler<GameClient>
+    public class PawnJoinPartyMypawnHandler : StructurePacketHandler<GameClient, C2SPawnJoinPartyMypawnReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnJoinPartyMypawnHandler));
 
@@ -17,14 +16,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_PAWN_JOIN_PARTY_MYPAWN_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SPawnJoinPartyMypawnReq> req)
         {
-            client.Send(SelectedDump.Pawn8_37_16);
-            client.Send(SelectedDump.Pawn35_3_16);
-            client.Send(SelectedDump.Pawn_Res);
-            
+                S2CPawn_8_37_16_Ntc ntc8_37_16 = new S2CPawn_8_37_16_Ntc(Server.AssetRepository.MyPawnAsset, req.Structure);
+                client.Send(ntc8_37_16);
+
+                S2CContext_35_3_16_Ntc ntc35_3_16 = new S2CContext_35_3_16_Ntc(Server.AssetRepository.MyPawnAsset, req.Structure);
+                client.Send(ntc35_3_16);
+
+                S2CPawnJoinPartyMypawnRes res = new S2CPawnJoinPartyMypawnRes();
+                client.Send(res);
         }
     }
 }
