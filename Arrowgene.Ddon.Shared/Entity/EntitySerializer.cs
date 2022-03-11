@@ -56,6 +56,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataContextNormalSkillData.Serializer());
             Create(new CDataContextPlayerInfo.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
+            Create(new CDataDeliveryItem.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
             Create(new CDataEditInfoSerializer());
             Create(new CDataEquipElementParam.Serializer());
@@ -199,6 +200,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CLobbyJoinRes.Serializer());
             Create(new S2CLobbyLobbyDataMsgNotice.Serializer());
             Create(new S2CParty_6_8_16_Ntc.Serializer());
+            Create(new S2CQuestGetMainQuestListRes.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
