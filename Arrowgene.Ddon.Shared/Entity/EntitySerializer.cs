@@ -148,7 +148,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SStageAreaChangeReq.Serializer());
             Create(new C2SStageGetStageListReq.Serializer());
             Create(new C2STraningRoomGetEnemyListReq.Serializer());
-            Create(new C2STraningRoomSetEnemyReq.Serializer());
+            Create(new C2STrainingRoomSetEnemyReq.Serializer());
             Create(new C2SWarpAreaWarpReq.Serializer());
             Create(new C2SWarpGetFavoriteWarpPointListReq.Serializer());
             Create(new C2SWarpGetReleaseWarpPointListReq.Serializer());

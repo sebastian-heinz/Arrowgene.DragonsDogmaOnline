@@ -5,7 +5,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
-    public class Gmd : ResourceFile
+    public class GuiMessage : ResourceFile
     {
         public class Entry
         {
@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public List<Entry> Entries { get; }
 
-        public Gmd()
+        public GuiMessage()
         {
             Entries = new List<Entry>();
         }
@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Client.Resource
                     entry.a5 = ReadUInt32(buffer);
                 }
 
-                byte[] unk = buffer.ReadBytes(1024);
+                byte[] unk = buffer.ReadBytes(1024); // hashTable?
 
                 for (int i = 0; i < keyCount; i++)
                 {
