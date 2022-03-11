@@ -51,6 +51,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             );
 
             int c;
+            int line = 1;
             StringBuilder sb = new StringBuilder();
             bool previousCr = false;
             while ((c = streamReader.Read()) > 0)
@@ -68,7 +69,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     //line feed 
                     if (!EnforceCRLF || previousCr)
                     {
-                        ProcessLine(sb.ToString(), items);
+                        ProcessLine(sb.ToString(), items, line++);
                         sb.Clear();
                     }
 
@@ -80,31 +81,31 @@ namespace Arrowgene.Ddon.Shared.Csv
                 previousCr = false;
             }
 
-            ProcessLine(sb.ToString(), items);
+            ProcessLine(sb.ToString(), items, line++);
 
             return items;
         }
 
         protected abstract T CreateInstance(string[] properties);
 
-        private void ProcessLine(string line, ICollection<T> items)
+        private void ProcessLine(string lineContents, ICollection<T> items, int lineNumber)
         {
-            if (string.IsNullOrEmpty(line)) return;
+            if (string.IsNullOrEmpty(lineContents)) return;
 
-            if (line.StartsWith('#'))
+            if (lineContents.StartsWith('#'))
                 // Ignoring Comment
                 return;
-            if (line.StartsWith(','))
+            if (lineContents.StartsWith(','))
                 // Ignoring null ID
                 return;
 
-            string[] properties = line.Split(",");
+            string[] properties = lineContents.Split(",");
             if (properties.Length <= 0) return;
 
             if (properties.Length < NumExpectedItems)
             {
                 Logger.Error(
-                    $"Skipping Line: '{line}' expected {NumExpectedItems} values but got {properties.Length}");
+                    $"Skipping Line {lineNumber}: '{lineContents}' expected {NumExpectedItems} values but got {properties.Length}");
                 return;
             }
 
@@ -118,9 +119,15 @@ namespace Arrowgene.Ddon.Shared.Csv
                 Logger.Exception(ex);
             }
 
+            if (item == null && lineNumber == 1)
+            {
+                Logger.Info($"Skipping Line {lineNumber}: '{lineContents}' could not be converted. Assuming it's the CSV header.");
+                return;
+            }
+
             if (item == null)
             {
-                Logger.Error($"Skipping Line: '{line}' could not be converted");
+                Logger.Error($"Skipping Line {lineNumber}: '{lineContents}' could not be converted");
                 return;
             }
 

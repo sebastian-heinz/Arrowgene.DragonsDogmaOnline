@@ -31,8 +31,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(
                 new C2SActionSetPlayerActionHistoryReqElement.
                     Serializer()); // TODO naming convention C2S -> not a packet
-            Create(
-                new S2CLobbyChatMsgNoticeCharacterBaseInfo.Serializer()); // TODO naming convention S2C -> not a packet
             Create(new CData_35_14_16.Serializer());
             Create(new CDataAchievementIdentifierSerializer());
             Create(new CDataArisenProfileSerializer());
@@ -45,20 +43,31 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterMessageSerializer());
             Create(new CDataCharacterMsgSetSerializer());
             Create(new CDataCharacterName.Serializer());
+            Create(new CDataCharacterReleaseElement.Serializer());
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommunicationShortCutSerializer());
             Create(new CDataCommunityCharacterBaseInfo.Serializer());
+            Create(new CDataContextAcquirementData.Serializer());
+            Create(new CDataContextBase.Serializer());
+            Create(new CDataContextBaseUnk0.Serializer());
+            Create(new CDataContextEquipData.Serializer());
+            Create(new CDataContextEquipJobItemData.Serializer());
+            Create(new CDataContextJobData.Serializer());
+            Create(new CDataContextNormalSkillData.Serializer());
+            Create(new CDataContextPlayerInfo.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
             Create(new CDataEditInfoSerializer());
             Create(new CDataEquipElementParam.Serializer());
-            Create(new CDataEquipElementUnkTypeSerializer());
-            Create(new CDataEquipElementUnkType2Serializer());
+            Create(new CDataWeaponCrestData.Serializer());
+            Create(new CDataArmorCrestData.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
-            Create(new CDataEquipJobItemSerializer());
+            Create(new CDataEquipJobItem.Serializer());
+            Create(new CDataFavoriteWarpPoint.Serializer());
             Create(new CDataGameServerListInfoSerializer());
             Create(new CDataGPCourseValidSerializer());
             Create(new CDataItemList.Serializer());
+            Create(new CDataItemSort.Serializer());
             Create(new CDataItemUpdateResult.Serializer());
             Create(new CDataJobChangeInfo.Serializer());
             Create(new CDataJobChangeJobResUnk0.Serializer());
@@ -69,11 +78,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataLayoutEnemyData.Serializer());
             Create(new CDataLearnedSetAcquirementParam.Serializer());
             Create(new CDataLearnNormalSkillParam.Serializer());
+            Create(new CDataLobbyContextPlayer.Serializer());
             Create(new CDataLobbyMemberInfoSerializer());
             Create(new CDataLoginSettingSerializer());
             Create(new CDataMatchingProfileSerializer());
             Create(new CDataNamedEnemyParamClient.Serializer());
             Create(new CDataNormalSkillParam.Serializer());
+            Create(new CDataOcdActive.Serializer());
             Create(new CDataOrbCategoryStatusSerializer());
             Create(new CDataOrbPageStatusSerializer());
             Create(new CDataPartyMember.Serializer());
@@ -101,7 +112,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataTraningRoomEnemyHeader.Serializer());
             Create(new CDataUpdateWalletPoint.Serializer());
             Create(new CDataURLInfoSerializer());
-            Create(new CDataWarpPointSerializer());
+            Create(new CDataWarpPoint.Serializer());
             Create(new CStageLayoutID.Serializer());
             Create(new UnkownCharacterData0Serializer());
             Create(new UnkownCharacterData1Serializer());
@@ -125,6 +136,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobGetJobChangeListReq.Serializer());
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
+            Create(new C2SLobbyLobbyDataMsgReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
             Create(new C2SSkillGetLearnedAbilityListReq.Serializer());
@@ -137,8 +149,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SStageGetStageListReq.Serializer());
             Create(new C2STraningRoomGetEnemyListReq.Serializer());
             Create(new C2STraningRoomSetEnemyReq.Serializer());
+            Create(new C2SWarpAreaWarpReq.Serializer());
+            Create(new C2SWarpGetFavoriteWarpPointListReq.Serializer());
+            Create(new C2SWarpGetReleaseWarpPointListReq.Serializer());
             Create(new C2SWarpGetReturnLocationReq.Serializer());
+            Create(new C2SWarpGetStartPointListReq.Serializer());
+            Create(new C2SWarpGetWarpPointListReq.Serializer());
             Create(new C2SWarpRegisterFavoriteWarpReq.Serializer());
+            Create(new C2SWarpReleaseWarpPointReq.Serializer());
             Create(new C2SWarpWarpReq.Serializer());
             Create(new L2CCreateCharacterDataNtc.Serializer());
             Create(new L2CCreateCharacterDataRes.Serializer());
@@ -156,22 +174,30 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
             Create(new S2CCharacterCharacterPointReviveRes.Serializer());
             Create(new S2CCharacterDecideCharacterIdRes.Serializer());
+            Create(new S2CCharacterContentsReleaseElementNotice.Serializer());
             Create(new S2CClanClanGetMyMemberListRes.Serializer());
             Create(new S2CConnectionLoginRes.Serializer());
             Create(new S2CConnectionLogoutRes.Serializer());
+            Create(new S2CConnectionMoveInServerRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
             Create(new S2CContext_35_14_16_Ntc.Serializer());
+            Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
+            Create(new S2CContextSetContextBaseNotice.Serializer());
             Create(new S2CInstanceEnemyKillRes.Serializer());
             Create(new S2CInstanceEnemyRepopNtc.Serializer());
             Create(new S2CInstanceGetEnemySetListRes.Serializer());
+            Create(new S2CItemExtendItemSlotNtc.Serializer());
             Create(new S2CItemUpdateCharacterItemNtc.Serializer());
+            Create(new S2CItemSortGetItemSortdataBinRes.Serializer());
+            Create(new S2CItemSortGetItemSortdataBinNtc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());
             Create(new S2CJobChangeJobRes.Serializer());
             Create(new S2CJobGetJobChangeListRes.Serializer());
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
             Create(new S2CLobbyJoinRes.Serializer());
+            Create(new S2CLobbyLobbyDataMsgNotice.Serializer());
             Create(new S2CParty_6_8_16_Ntc.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
@@ -186,8 +212,16 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CStageGetStageListRes.Serializer());
             Create(new S2CTraningRoomGetEnemyListRes.Serializer());
             Create(new S2CTraningRoomSetEnemyRes.Serializer());
+            Create(new S2CUserListJoinNtc.Serializer());
+            Create(new S2CUserListLeaveNtc.Serializer());
+            Create(new S2CWarpAreaWarpRes.Serializer());
+            Create(new S2CWarpGetFavoriteWarpPointListRes.Serializer());
+            Create(new S2CWarpGetReleaseWarpPointListRes.Serializer());
             Create(new S2CWarpGetReturnLocationRes.Serializer());
+            Create(new S2CWarpGetStartPointListRes.Serializer());
+            Create(new S2CWarpGetWarpPointListRes.Serializer());
             Create(new S2CWarpRegisterFavoriteWarpRes.Serializer());
+            Create(new S2CWarpReleaseWarpPointRes.Serializer());
             Create(new S2CWarpWarpRes.Serializer());
 
             Create(new ServerRes.Serializer());
@@ -471,6 +505,11 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected bool ReadBool(IBuffer buffer)
         {
             return buffer.ReadBool();
+        }
+
+        protected byte[] ReadByteArray(IBuffer buffer, int length)
+        {
+            return buffer.ReadBytes(length);
         }
 
         protected byte ReadByte(IBuffer buffer)

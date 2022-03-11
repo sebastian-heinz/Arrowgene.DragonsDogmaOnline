@@ -1,12 +1,14 @@
 ﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class WarpGetStartPointListHandler : PacketHandler<GameClient>
+    public class WarpGetStartPointListHandler : StructurePacketHandler<GameClient, C2SWarpGetStartPointListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WarpGetStartPointListHandler));
 
@@ -15,11 +17,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_WARP_GET_START_POINT_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SWarpGetStartPointListReq> packet)
         {
-            client.Send(GameDump.Dump_25);
+            S2CWarpGetStartPointListRes res = new S2CWarpGetStartPointListRes();
+            res.WarpPointIDList.Add(new CDataCommonU32(0x01)); // White Dragon Temple
+            res.WarpPointIDList.Add(new CDataCommonU32(0x57)); // Megadosis
+            client.Send(res);
         }
     }
 }

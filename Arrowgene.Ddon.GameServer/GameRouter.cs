@@ -19,18 +19,13 @@ namespace Arrowgene.Ddon.GameServer
 
         public void Send(ChatResponse response)
         {
-            //   Logger.Debug(requestingClient, $"{request.Structure.Type}, {request.Structure.Unk2}, {request.Structure.Unk3}, {request.Structure.Unk4}, {request.Structure.Unk5}: {request.Structure.StrMessage}"); // Log chat message
-
-            //  S2CLobbyChatMsgRes response = new S2CLobbyChatMsgRes();
-            //  requestingClient.Send(response);
-
             S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice();
-            notice.Unk0 = (byte) response.Type;
+            notice.Type = (byte) response.Type;
             notice.StrMessage = response.Message;
-            notice.CharacterBaseInfo.characterId = response.CharacterId;
-            notice.CharacterBaseInfo.strFirstName = response.FirstName;
-            notice.CharacterBaseInfo.strLastName = response.LastName;
-            notice.CharacterBaseInfo.strClanName = response.ClanName;
+            notice.CharacterBaseInfo.CharacterId = response.CharacterId;
+            notice.CharacterBaseInfo.CharacterName.FirstName = response.FirstName;
+            notice.CharacterBaseInfo.CharacterName.LastName = response.LastName;
+            notice.CharacterBaseInfo.ClanName = response.ClanName;
             foreach (GameClient client in Unique(response.Recipients))
             {
                 client.Send(notice);
