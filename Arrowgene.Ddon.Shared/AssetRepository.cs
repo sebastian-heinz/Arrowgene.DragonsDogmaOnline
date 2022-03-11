@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -41,10 +41,13 @@ namespace Arrowgene.Ddon.Shared
 
             _enemySpawnCsvReader = new EnemySpawnCsvReader();
             _enemySpawnCsvReader.EnforceCRLF = false;
+
+            MyPawnAsset = new List<MyPawnCsv>();
         }
 
         public List<ClientErrorCode> ClientErrorCodes { get; }
         public IEnumerable<EnemySpawn> EnemySpawns { get; private set; }
+        public List<MyPawnCsv> MyPawnAsset { get; }
 
         public void Initialize()
         {
@@ -52,6 +55,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(ClientErrorCodes, "ClientErrorCodes.csv", new ClientErrorCodeCsvReader());
             RegisterAsset(_localEnemySpawns, "EnemySpawn.csv", _enemySpawnCsvReader, _ => UpdateEnemySets());
             RegisterSpreadsheet(_spreadsheetEnemySpawns, "1KmwWymqdMGtbRUqu9GvSi_97o-rBj5DJVn2hk7tvs-A", _enemySpawnCsvReader);
+            MyPawnAsset.Clear();
+            RegisterAsset(MyPawnAsset, "MyPawn.csv", new MyPawnCsvReader());
         }
 
         private void RegisterAsset<T>(List<T> list, string key, CsvReader<T> reader, Action<List<T>> afterLoadAction = null)

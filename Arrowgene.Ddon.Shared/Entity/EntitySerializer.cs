@@ -137,6 +137,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
             Create(new C2SLobbyLobbyDataMsgReq.Serializer());
+            Create(new C2SPawnGetMypawnDataReq.Serializer());
+            Create(new C2SPawnJoinPartyMypawnReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
             Create(new C2SSkillGetLearnedAbilityListReq.Serializer());
@@ -181,6 +183,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CConnectionMoveInServerRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
             Create(new S2CContext_35_14_16_Ntc.Serializer());
+            Create(new S2CContext_35_3_16_Ntc.Serializer());
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
             Create(new S2CContextSetContextBaseNotice.Serializer());
@@ -199,6 +202,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CLobbyJoinRes.Serializer());
             Create(new S2CLobbyLobbyDataMsgNotice.Serializer());
             Create(new S2CParty_6_8_16_Ntc.Serializer());
+            Create(new S2CPawn_8_37_16_Ntc.Serializer());
+            Create(new S2CPawnGetMypawnDataRes.Serializer());
+            Create(new S2CPawnJoinPartyMypawnRes.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
