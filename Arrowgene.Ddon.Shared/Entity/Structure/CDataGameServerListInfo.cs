@@ -4,23 +4,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataGameServerListInfo
     {
-        public CDataGameServerListInfo(ushort id, string name, string brief, string trafficName, uint trafficLevel, uint maxLoginNum, uint loginNum, string addr, ushort port, bool isHide)
-        {
-            ID = id;
-            Name = name;
-            Brief = brief;
-            TrafficName = trafficName;
-            TrafficLevel = trafficLevel;
-            MaxLoginNum = maxLoginNum;
-            LoginNum = loginNum;
-            Addr = addr;
-            Port = port;
-            IsHide = isHide;
-        }
-
         public CDataGameServerListInfo()
         {
-            ID = 0;
+            Id = 0;
             Name = "";
             Brief = "";
             TrafficName = "";
@@ -32,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             IsHide = false;
         }
 
-        public ushort ID;
+        public ushort Id;
         public string Name;
         public string Brief;
         public string TrafficName;
@@ -48,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataGameServerListInfo obj)
         {
-            WriteUInt16(buffer, obj.ID);
+            WriteUInt16(buffer, obj.Id);
             WriteMtString(buffer, obj.Name);
             WriteMtString(buffer, obj.Brief);
             WriteMtString(buffer, obj.TrafficName);
@@ -63,7 +49,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public override CDataGameServerListInfo Read(IBuffer buffer)
         {
             CDataGameServerListInfo obj = new CDataGameServerListInfo();
-            obj.ID = ReadUInt16(buffer);
+            obj.Id = ReadUInt16(buffer);
             obj.Name = ReadMtString(buffer);
             obj.Brief = ReadMtString(buffer);
             obj.TrafficName = ReadMtString(buffer);

@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy
             _assetRepository.UpdatedEnemySpawnsEvent += (sender, e) => Load();
         }
 
-        public List<EnemySpawn> GetSpawns(CStageLayoutID stageLayoutId, byte subGroupId)
+        public List<EnemySpawn> GetSpawns(CStageLayoutId stageLayoutId, byte subGroupId)
         {
             return GetSpawns(StageId.FromStageLayoutId(stageLayoutId), subGroupId);
         }

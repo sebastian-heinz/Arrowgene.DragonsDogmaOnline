@@ -7,14 +7,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataContextEquipData()
         {
-            ItemID=0;
+            ItemId=0;
             ColorNo=0;
             QualityParam=0;
             WeaponCrestDataList=new List<CDataWeaponCrestData>();
             ArmorCrestDataList=new List<CDataArmorCrestData>();
         }
 
-        public ushort ItemID { get; set; }
+        public ushort ItemId { get; set; }
         public byte ColorNo { get; set; }
         public uint QualityParam { get; set; }
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataContextEquipData obj)
             {
-                WriteUInt16(buffer, obj.ItemID);
+                WriteUInt16(buffer, obj.ItemId);
                 WriteByte(buffer, obj.ColorNo);
                 WriteUInt32(buffer, obj.QualityParam);
                 WriteEntityList<CDataWeaponCrestData>(buffer, obj.WeaponCrestDataList);
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataContextEquipData Read(IBuffer buffer)
             {
                 CDataContextEquipData obj = new CDataContextEquipData();
-                obj.ItemID = ReadUInt16(buffer);
+                obj.ItemId = ReadUInt16(buffer);
                 obj.ColorNo = ReadByte(buffer);
                 obj.QualityParam = ReadUInt32(buffer);
                 obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);

@@ -6,18 +6,18 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataLearnedSetAcquirementParam()
         {
-            Job=0;
-            Type=0;
-            AcquirementNo=0;
-            AcquirementLv=0;
-            AcquirementParamID=0;
+            Job = 0;
+            Type = 0;
+            AcquirementNo = 0;
+            AcquirementLv = 0;
+            AcquirementParamId = 0;
         }
 
         public byte Job { get; set; }
         public byte Type { get; set; }
         public uint AcquirementNo { get; set; }
         public byte AcquirementLv { get; set; }
-        public uint AcquirementParamID { get; set; }
+        public uint AcquirementParamId { get; set; }
 
         public class Serializer : EntitySerializer<CDataLearnedSetAcquirementParam>
         {
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.Type);
                 WriteUInt32(buffer, obj.AcquirementNo);
                 WriteByte(buffer, obj.AcquirementLv);
-                WriteUInt32(buffer, obj.AcquirementParamID);
+                WriteUInt32(buffer, obj.AcquirementParamId);
             }
 
             public override CDataLearnedSetAcquirementParam Read(IBuffer buffer)
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Type = ReadByte(buffer);
                 obj.AcquirementNo = ReadUInt32(buffer);
                 obj.AcquirementLv = ReadByte(buffer);
-                obj.AcquirementParamID = ReadUInt32(buffer);
+                obj.AcquirementParamId = ReadUInt32(buffer);
                 return obj;
             }
         }

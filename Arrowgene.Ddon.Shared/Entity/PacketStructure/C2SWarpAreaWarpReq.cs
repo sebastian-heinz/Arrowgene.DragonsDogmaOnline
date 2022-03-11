@@ -11,24 +11,24 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public uint CurrentAreaID { get; set; }
-        public uint WarpPointID { get; set; }
+        public uint CurrentAreaId { get; set; }
+        public uint WarpPointId { get; set; }
         public uint Price { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SWarpAreaWarpReq>
         {
             public override void Write(IBuffer buffer, C2SWarpAreaWarpReq obj)
             {
-                WriteUInt32(buffer, obj.CurrentAreaID);
-                WriteUInt32(buffer, obj.WarpPointID);
+                WriteUInt32(buffer, obj.CurrentAreaId);
+                WriteUInt32(buffer, obj.WarpPointId);
                 WriteUInt32(buffer, obj.Price);
             }
 
             public override C2SWarpAreaWarpReq Read(IBuffer buffer)
             {
                 C2SWarpAreaWarpReq obj = new C2SWarpAreaWarpReq();
-                obj.CurrentAreaID = ReadUInt32(buffer);
-                obj.WarpPointID = ReadUInt32(buffer);
+                obj.CurrentAreaId = ReadUInt32(buffer);
+                obj.WarpPointId = ReadUInt32(buffer);
                 obj.Price = ReadUInt32(buffer);
                 return obj;
             }

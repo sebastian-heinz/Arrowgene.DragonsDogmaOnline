@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Logging;
 
@@ -8,6 +9,7 @@ namespace Arrowgene.Ddon.Client
     {
         public enum MagicIdWidth
         {
+            Zero,
             UShort,
             UInt
         }
@@ -31,6 +33,11 @@ namespace Arrowgene.Ddon.Client
             MagicTag = Encoding.UTF8.GetString(magicTag);
             switch (IdWidth)
             {
+                case MagicIdWidth.Zero:
+                {
+                    MagicId = BitConverter.ToUInt32(magicTag);
+                    break;
+                }
                 case MagicIdWidth.UShort:
                 {
                     MagicId = buffer.ReadUInt16(Endianness.Little);

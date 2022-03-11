@@ -17,7 +17,9 @@ namespace Arrowgene.Ddon.Client
         public StageList StageList { get; private set; }
         public LandListLal LandList { get; private set; }
         public StageToSpot StageToSpot { get; private set; }
-        public Gmd FieldAreaNames { get; private set; }
+        public GuiMessage FieldAreaNames { get; private set; }
+        public WarpLocationList WarpLocationList { get; private set; }
+        public WarpLocationList WarpLocationListRim { get; private set; }
         public Dictionary<uint, LocationData> StageLocations { get; private set; }
         public Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>> StageOmMarker { get; private set; }
         public Dictionary<uint, List<FieldAreaMarkerInfo.MarkerInfo>> StageSceMarker { get; private set; }
@@ -60,14 +62,16 @@ namespace Arrowgene.Ddon.Client
                 Logger.Error("Rom Path Invalid");
                 return;
             }
-
+            
+            WarpLocationList = GetResource<WarpLocationList>("ui/gui_cmn.arc", "ui/03_warp/warpLocationList", "wal");
+            WarpLocationListRim = GetResource<WarpLocationList>("ui/uGUIRimWarp.arc", "ui/03_warp/lobbyWarpLocationList", "wal");
             LandList = GetResource<LandListLal>("base.arc", "scr/land_list");
             AreaStageList = GetResource<AreaStageList>("base.arc", "scr/area_stage_list");
             AreaList = GetResource<AreaList>("base.arc", "scr/area_list");
             StageList = GetResource<StageList>("base.arc", "scr/stage_list");
             FieldAreaList = GetResource<FieldAreaList>("game_common.arc", "etc/FieldArea/field_area_list");
             StageToSpot = GetFile<StageToSpot>("game_common.arc", "param/stage_to_spot");
-            FieldAreaNames = GetResource<Gmd>("game_common.arc", "ui/00_message/common/field_area_name", "gmd");
+            FieldAreaNames = GetResource<GuiMessage>("game_common.arc", "ui/00_message/common/field_area_name", "gmd");
 
             foreach (StageList.Info sli in StageList.StageInfos)
             {
@@ -87,7 +91,7 @@ namespace Arrowgene.Ddon.Client
 
             foreach (FieldAreaList.FieldAreaInfo fai in FieldAreaList.FieldAreaInfos)
             {
-                Gmd.Entry areaName = FieldAreaNames.Entries[(int) fai.GmdIdx];
+                GuiMessage.Entry areaName = FieldAreaNames.Entries[(int) fai.GmdIdx];
                 FieldAreaMarkerInfo omMarker = GetResource_NoLog<FieldAreaMarkerInfo>(
                     $"/FieldArea/FieldArea{fai.FieldAreaId:000}_marker.arc",
                     $"etc/FieldArea/FieldArea{fai.FieldAreaId:000}_marker_om",
@@ -184,6 +188,7 @@ namespace Arrowgene.Ddon.Client
                     }
                 }
             }
+
         }
 
         private void AddMarker(List<FieldAreaMarkerInfo.MarkerInfo> markers,

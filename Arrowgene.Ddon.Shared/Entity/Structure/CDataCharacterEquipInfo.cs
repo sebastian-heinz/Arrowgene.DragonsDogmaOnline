@@ -6,19 +6,19 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataCharacterEquipInfo(CDataEquipItemInfo equipItemInfo)
         {
-            EquipItemUID=equipItemInfo.ItemID.ToString(); // Perhaps?
+            EquipItemUId=equipItemInfo.ItemId.ToString(); // Perhaps?
             EquipCategory=equipItemInfo.EquipSlot; // Maybe?
             EquipType=equipItemInfo.EquipType;
         }
 
         public CDataCharacterEquipInfo()
         {
-            EquipItemUID=string.Empty;
+            EquipItemUId=string.Empty;
             EquipCategory=0;
             EquipType=0;
         }
 
-        public string EquipItemUID { get; set; }
+        public string EquipItemUId { get; set; }
         public byte EquipCategory { get; set; }
         public byte EquipType { get; set; }
 
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataCharacterEquipInfo obj)
             {
-                WriteMtString(buffer, obj.EquipItemUID);
+                WriteMtString(buffer, obj.EquipItemUId);
                 WriteByte(buffer, obj.EquipCategory);
                 WriteByte(buffer, obj.EquipType);
             }
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataCharacterEquipInfo Read(IBuffer buffer)
             {
                 CDataCharacterEquipInfo obj = new CDataCharacterEquipInfo();
-                obj.EquipItemUID = ReadMtString(buffer);
+                obj.EquipItemUId = ReadMtString(buffer);
                 obj.EquipCategory = ReadByte(buffer);
                 obj.EquipType = ReadByte(buffer);
                 return obj;

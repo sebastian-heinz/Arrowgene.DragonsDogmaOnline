@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             U0 = 0;
             EquipType = 0;
             EquipSlot = 0;
-            ItemID = 0;
+            ItemId = 0;
             Color = 0;
             PlusValue = 0;
             U6 = new List<CDataWeaponCrestData>();
@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint U0 { get; set; } // Probably the preset? 0 being normal equipment, 1 alt, 2+ presets
         public byte EquipType { get; set; }
         public byte EquipSlot { get; set; }
-        public ushort ItemID { get; set; }
+        public ushort ItemId { get; set; }
         public byte Color { get; set; }
         public byte PlusValue { get; set; }
         public List<CDataWeaponCrestData> U6 { get; set; } // Maybe weapon crests
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.U0);
                 WriteByte(buffer, obj.EquipType);
                 WriteByte(buffer, obj.EquipSlot);
-                WriteUInt16(buffer, obj.ItemID);
+                WriteUInt16(buffer, obj.ItemId);
                 WriteByte(buffer, obj.Color);
                 WriteByte(buffer, obj.PlusValue);
                 WriteEntityList(buffer, obj.U6);
@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.U0 = ReadUInt32(buffer);
                 obj.EquipType = ReadByte(buffer);
                 obj.EquipSlot = ReadByte(buffer);
-                obj.ItemID = ReadUInt16(buffer);
+                obj.ItemId = ReadUInt16(buffer);
                 obj.Color = ReadByte(buffer);
                 obj.PlusValue = ReadByte(buffer);
                 obj.U6 = ReadEntityList<CDataWeaponCrestData>(buffer);

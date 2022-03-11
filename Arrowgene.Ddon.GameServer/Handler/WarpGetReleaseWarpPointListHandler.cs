@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // When a player interacts with a TP that isn't in this list
             // a C2S_WARP_RELEASE_WARP_POINT_REQ request is sent.
             S2CWarpGetReleaseWarpPointListRes res = new S2CWarpGetReleaseWarpPointListRes();
-            res.WarpPointIDList.Add(new CDataCommonU32(0x01)); // White Dragon Temple
+            res.WarpPointIdList.Add(new CDataCommonU32(0x01)); // White Dragon Temple
             client.Send(res);
         }
     }

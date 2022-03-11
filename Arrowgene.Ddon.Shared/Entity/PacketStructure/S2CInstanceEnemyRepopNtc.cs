@@ -10,12 +10,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CInstanceEnemyRepopNtc()
         {
-            LayoutId = new CStageLayoutID();
+            LayoutId = new CStageLayoutId();
             EnemyData = new CDataLayoutEnemyData();
             WaitSecond = 0;
         }
 
-        public CStageLayoutID LayoutId { get; set; }
+        public CStageLayoutId LayoutId { get; set; }
         public CDataLayoutEnemyData EnemyData { get; set; }
         public uint WaitSecond { get; set; }
 
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
             public override void Write(IBuffer buffer, S2CInstanceEnemyRepopNtc obj)
             {
-                WriteEntity<CStageLayoutID>(buffer, obj.LayoutId);
+                WriteEntity<CStageLayoutId>(buffer, obj.LayoutId);
                 WriteEntity<CDataLayoutEnemyData>(buffer, obj.EnemyData);
                 WriteUInt32(buffer, obj.WaitSecond);
             }
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CInstanceEnemyRepopNtc Read(IBuffer buffer)
             {
                 S2CInstanceEnemyRepopNtc obj = new S2CInstanceEnemyRepopNtc();
-                obj.LayoutId = ReadEntity<CStageLayoutID>(buffer);
+                obj.LayoutId = ReadEntity<CStageLayoutId>(buffer);
                 obj.EnemyData = ReadEntity<CDataLayoutEnemyData>(buffer);
                 obj.WaitSecond = ReadUInt32(buffer);
                 return obj;

@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public static StageId Invalid = new StageId(0, 0, 0);
 
-        public static StageId FromStageLayoutId(CStageLayoutID stageLayoutId)
+        public static StageId FromStageLayoutId(CStageLayoutId stageLayoutId)
         {
             return new StageId(stageLayoutId.StageId, stageLayoutId.LayerNo, stageLayoutId.GroupId);
         }
@@ -23,9 +23,9 @@ namespace Arrowgene.Ddon.Shared.Model
             GroupId = groupId;
         }
 
-        public CStageLayoutID ToStageLayoutId()
+        public CStageLayoutId ToStageLayoutId()
         {
-            return new CStageLayoutID
+            return new CStageLayoutId
             {
                 StageId = Id,
                 LayerNo = LayerNo,

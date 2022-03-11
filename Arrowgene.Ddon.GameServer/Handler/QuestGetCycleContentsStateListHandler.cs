@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(InGameDump.Dump_20);
+           // client.Send(InGameDump.Dump_20);
             client.Send(InGameDump.Dump_24);
         }
     }

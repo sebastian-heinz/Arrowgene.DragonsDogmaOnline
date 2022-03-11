@@ -31,7 +31,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(
                 new C2SActionSetPlayerActionHistoryReqElement.
                     Serializer()); // TODO naming convention C2S -> not a packet
-            Create(new CCommunityCharacterBaseInfo.Serializer());
             Create(new CData_35_14_16.Serializer());
             Create(new CDataAchievementIdentifierSerializer());
             Create(new CDataArisenProfileSerializer());
@@ -56,6 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataContextJobData.Serializer());
             Create(new CDataContextNormalSkillData.Serializer());
             Create(new CDataContextPlayerInfo.Serializer());
+            Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
             Create(new CDataEditInfoSerializer());
             Create(new CDataEquipElementParam.Serializer());
@@ -91,6 +91,18 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
+            Create(new CDataQuestAnnounce.Serializer());
+            Create(new CDataQuestEnemyInfo.Serializer());
+            Create(new CDataQuestFlag.Serializer());
+            Create(new CDataQuestIdScheduleId.Serializer());
+            Create(new CDataQuestKeyItemPointRecord.Serializer());
+            Create(new CDataQuestLayoutFlag.Serializer());
+            Create(new CDataQuestLayoutFlagSetInfo.Serializer());
+            Create(new CDataQuestOrderConditionParam.Serializer());
+            Create(new CDataQuestOrderList.Serializer());
+            Create(new CDataQuestProcessState.Serializer());
+            Create(new CDataQuestTalkInfo.Serializer());
+            Create(new CDataRewardItem.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
             Create(new CDataShortCutSerializer());
             Create(new CDataStageAttribute.Serializer());
@@ -101,7 +113,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataUpdateWalletPoint.Serializer());
             Create(new CDataURLInfoSerializer());
             Create(new CDataWarpPoint.Serializer());
-            Create(new CStageLayoutID.Serializer());
+            Create(new CStageLayoutId.Serializer());
             Create(new UnkownCharacterData0Serializer());
             Create(new UnkownCharacterData1Serializer());
 
@@ -136,7 +148,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SStageAreaChangeReq.Serializer());
             Create(new C2SStageGetStageListReq.Serializer());
             Create(new C2STraningRoomGetEnemyListReq.Serializer());
-            Create(new C2STraningRoomSetEnemyReq.Serializer());
+            Create(new C2STrainingRoomSetEnemyReq.Serializer());
             Create(new C2SWarpAreaWarpReq.Serializer());
             Create(new C2SWarpGetFavoriteWarpPointListReq.Serializer());
             Create(new C2SWarpGetReleaseWarpPointListReq.Serializer());
@@ -187,6 +199,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CLobbyJoinRes.Serializer());
             Create(new S2CLobbyLobbyDataMsgNotice.Serializer());
             Create(new S2CParty_6_8_16_Ntc.Serializer());
+            Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
             Create(new S2CSkillGetLearnedAbilityListRes.Serializer());

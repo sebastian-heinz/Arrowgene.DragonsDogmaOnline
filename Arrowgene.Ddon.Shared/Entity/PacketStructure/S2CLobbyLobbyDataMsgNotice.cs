@@ -9,14 +9,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CLobbyLobbyDataMsgNotice()
         {
-            Type=0;
-            CharacterID=0;
-            RpcPacket=new byte[0];
-            OnlineStatus=0;
+            Type = 0;
+            CharacterId = 0;
+            RpcPacket = new byte[0];
+            OnlineStatus = 0;
         }
 
         public byte Type { get; set; }
-        public uint CharacterID { get; set; }
+        public uint CharacterId { get; set; }
         public byte[] RpcPacket { get; set; }
         public byte OnlineStatus { get; set; }
 
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CLobbyLobbyDataMsgNotice obj)
             {
                 WriteByte(buffer, obj.Type);
-                WriteUInt32(buffer, obj.CharacterID);
+                WriteUInt32(buffer, obj.CharacterId);
                 WriteInt32(buffer, obj.RpcPacket.Length);
                 WriteByteArray(buffer, obj.RpcPacket);
                 WriteByte(buffer, obj.OnlineStatus);
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CLobbyLobbyDataMsgNotice obj = new S2CLobbyLobbyDataMsgNotice();
                 obj.Type = ReadByte(buffer);
-                obj.CharacterID = ReadUInt32(buffer);
+                obj.CharacterId = ReadUInt32(buffer);
                 int rpcPacketLength = ReadInt32(buffer);
                 obj.RpcPacket = ReadByteArray(buffer, rpcPacketLength);
                 obj.OnlineStatus = ReadByte(buffer);

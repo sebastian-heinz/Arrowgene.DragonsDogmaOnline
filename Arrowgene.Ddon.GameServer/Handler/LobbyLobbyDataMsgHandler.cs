@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CLobbyLobbyDataMsgNotice res = new S2CLobbyLobbyDataMsgNotice();
             res.Type = packet.Structure.Type;
-            res.CharacterID = client.Character.Id;
+            res.CharacterId = client.Character.Id;
             res.RpcPacket = packet.Structure.RpcPacket;
             res.OnlineStatus = 0x08; // TODO: Figure out OnlineStatus values
 

@@ -11,24 +11,24 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CWarpGetReleaseWarpPointListRes()
         {
-            WarpPointIDList = new List<CDataCommonU32>();
+            WarpPointIdList = new List<CDataCommonU32>();
         }
 
-        public List<CDataCommonU32> WarpPointIDList { get; set; }
+        public List<CDataCommonU32> WarpPointIdList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CWarpGetReleaseWarpPointListRes>
         {
             public override void Write(IBuffer buffer, S2CWarpGetReleaseWarpPointListRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntityList<CDataCommonU32>(buffer, obj.WarpPointIDList);
+                WriteEntityList<CDataCommonU32>(buffer, obj.WarpPointIdList);
             }
 
             public override S2CWarpGetReleaseWarpPointListRes Read(IBuffer buffer)
             {
                 S2CWarpGetReleaseWarpPointListRes obj = new S2CWarpGetReleaseWarpPointListRes();
                 ReadServerResponse(buffer, obj);
-                obj.WarpPointIDList = ReadEntityList<CDataCommonU32>(buffer);
+                obj.WarpPointIdList = ReadEntityList<CDataCommonU32>(buffer);
                 return obj;
             }
         }

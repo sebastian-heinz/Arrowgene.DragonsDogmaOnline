@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ButtonNo;
         public byte Type;
         public byte Category;
-        public uint ID;
+        public uint Id;
     }
 
     public class CDataCommunicationShortCutSerializer : EntitySerializer<CDataCommunicationShortCut>
@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteUInt32(buffer, obj.ButtonNo);
             WriteByte(buffer, obj.Type);
             WriteByte(buffer, obj.Category);
-            WriteUInt32(buffer, obj.ID);
+            WriteUInt32(buffer, obj.Id);
         }
 
         public override CDataCommunicationShortCut Read(IBuffer buffer)
@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.ButtonNo = ReadUInt32(buffer);
             obj.Type = ReadByte(buffer);
             obj.Category = ReadByte(buffer);
-            obj.ID = ReadUInt32(buffer);
+            obj.Id = ReadUInt32(buffer);
             return obj;
         }
     }
