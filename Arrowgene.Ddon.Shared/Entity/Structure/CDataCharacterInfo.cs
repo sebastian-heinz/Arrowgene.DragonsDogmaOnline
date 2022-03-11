@@ -7,8 +7,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataCharacterInfo()
         {
-            CharacterID = 0;
-            UserID = 0;
+            CharacterId = 0;
+            UserId = 0;
             Version = 0;
             FirstName = "";
             LastName = "";
@@ -40,8 +40,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             OnlineStatus = 0;
         }
 
-        public uint CharacterID;
-        public uint UserID;
+        public uint CharacterId;
+        public uint UserId;
         public uint Version;
         public string FirstName;
         public string LastName;
@@ -79,8 +79,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataCharacterInfo obj)
         {
-            WriteUInt32(buffer, obj.CharacterID);
-            WriteUInt32(buffer, obj.UserID);
+            WriteUInt32(buffer, obj.CharacterId);
+            WriteUInt32(buffer, obj.UserId);
             WriteUInt32(buffer, obj.Version);
             WriteMtString(buffer, obj.FirstName);
             WriteMtString(buffer, obj.LastName);
@@ -115,8 +115,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public override CDataCharacterInfo Read(IBuffer buffer)
         {
             CDataCharacterInfo obj = new CDataCharacterInfo();
-            obj.CharacterID = ReadUInt32(buffer);
-            obj.UserID = ReadUInt32(buffer);
+            obj.CharacterId = ReadUInt32(buffer);
+            obj.UserId = ReadUInt32(buffer);
             obj.Version = ReadUInt32(buffer);
             obj.FirstName = ReadMtString(buffer);
             obj.LastName = ReadMtString(buffer);

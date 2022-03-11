@@ -7,26 +7,26 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataTraningRoomEnemyHeader()
         {
-            ID = 0;
-            StrName = string.Empty;
+            Id = 0;
+            Name = string.Empty;
         }
 
-        public uint ID { get; set; }
-        public string StrName { get; set; }
+        public uint Id { get; set; }
+        public string Name { get; set; }
 
         public class Serializer : EntitySerializer<CDataTraningRoomEnemyHeader>
         {
             public override void Write(IBuffer buffer, CDataTraningRoomEnemyHeader obj)
             {
-                WriteUInt32(buffer, obj.ID);
-                WriteMtString(buffer, obj.StrName);
+                WriteUInt32(buffer, obj.Id);
+                WriteMtString(buffer, obj.Name);
             }
 
             public override CDataTraningRoomEnemyHeader Read(IBuffer buffer)
             {
                 CDataTraningRoomEnemyHeader obj = new CDataTraningRoomEnemyHeader();
-                obj.ID = ReadUInt32(buffer);
-                obj.StrName = ReadMtString(buffer);
+                obj.Id = ReadUInt32(buffer);
+                obj.Name = ReadMtString(buffer);
                 return obj;
             }
         }

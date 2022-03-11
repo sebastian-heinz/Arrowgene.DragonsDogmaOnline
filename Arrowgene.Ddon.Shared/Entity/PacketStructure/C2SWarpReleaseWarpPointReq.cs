@@ -9,22 +9,22 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SWarpReleaseWarpPointReq()
         {
-            WarpPointID=0;
+            WarpPointId=0;
         }
 
-        public uint WarpPointID { get; set; }
+        public uint WarpPointId { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SWarpReleaseWarpPointReq>
         {
             public override void Write(IBuffer buffer, C2SWarpReleaseWarpPointReq obj)
             {
-                WriteUInt32(buffer, obj.WarpPointID);
+                WriteUInt32(buffer, obj.WarpPointId);
             }
 
             public override C2SWarpReleaseWarpPointReq Read(IBuffer buffer)
             {
                 C2SWarpReleaseWarpPointReq obj = new C2SWarpReleaseWarpPointReq();
-                obj.WarpPointID = ReadUInt32(buffer);
+                obj.WarpPointId = ReadUInt32(buffer);
                 return obj;
             }
         }

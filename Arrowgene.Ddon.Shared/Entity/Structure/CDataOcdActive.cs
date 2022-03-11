@@ -6,25 +6,25 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataOcdActive()
         {
-            OcdUID=0;
+            OcdUId=0;
             OcdActiveLv=0;
         }
 
-        public byte OcdUID { get; set; }
+        public byte OcdUId { get; set; }
         public byte OcdActiveLv { get; set; }
 
         public class Serializer : EntitySerializer<CDataOcdActive>
         {
             public override void Write(IBuffer buffer, CDataOcdActive obj)
             {
-                WriteByte(buffer, obj.OcdUID);
+                WriteByte(buffer, obj.OcdUId);
                 WriteByte(buffer, obj.OcdActiveLv);
             }
 
             public override CDataOcdActive Read(IBuffer buffer)
             {
                 CDataOcdActive obj = new CDataOcdActive();
-                obj.OcdUID = ReadByte(buffer);
+                obj.OcdUId = ReadByte(buffer);
                 obj.OcdActiveLv = ReadByte(buffer);
                 return obj;
             }

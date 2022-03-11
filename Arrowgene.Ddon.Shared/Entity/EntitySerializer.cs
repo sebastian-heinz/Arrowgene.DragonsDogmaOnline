@@ -113,7 +113,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataUpdateWalletPoint.Serializer());
             Create(new CDataURLInfoSerializer());
             Create(new CDataWarpPoint.Serializer());
-            Create(new CStageLayoutID.Serializer());
+            Create(new CStageLayoutId.Serializer());
             Create(new UnkownCharacterData0Serializer());
             Create(new UnkownCharacterData1Serializer());
 

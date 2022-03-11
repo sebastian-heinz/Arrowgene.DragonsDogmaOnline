@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public byte Unk2 { get; set; }
         public uint Unk3 { get; set; }
         public uint Unk4 { get; set; }
-        public string StrMessage { get; set; }
+        public string Message { get; set; }
 
         public S2CLobbyChatMsgNotice() {
             Type = 0;
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Unk2 = 0;
             Unk3 = 0;
             Unk4 = 0;
-            StrMessage = string.Empty;
+            Message = string.Empty;
         }
 
         public class Serializer : PacketEntitySerializer<S2CLobbyChatMsgNotice> {
@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteByte(buffer, obj.Unk2);
                 WriteUInt32(buffer, obj.Unk3);
                 WriteUInt32(buffer, obj.Unk4);
-                WriteMtString(buffer, obj.StrMessage);
+                WriteMtString(buffer, obj.Message);
             }
 
             public override S2CLobbyChatMsgNotice Read(IBuffer buffer)
@@ -52,7 +52,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Unk2 = ReadByte(buffer);
                 obj.Unk3 = ReadUInt32(buffer);
                 obj.Unk4 = ReadUInt32(buffer);
-                obj.StrMessage = ReadMtString(buffer);
+                obj.Message = ReadMtString(buffer);
                 return obj;
             }
         }

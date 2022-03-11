@@ -7,12 +7,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_WARP_WARP_RES;
 
-        public uint WarpPointID { get; set; }
+        public uint WarpPointId { get; set; }
         public uint Rim { get; set; }
 
         public S2CWarpWarpRes()
         {
-            WarpPointID = 0;
+            WarpPointId = 0;
             Rim = 0;
         }
 
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CWarpWarpRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt32(buffer, obj.WarpPointID);
+                WriteUInt32(buffer, obj.WarpPointId);
                 WriteUInt32(buffer, obj.Rim);
             }
 
@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CWarpWarpRes obj = new S2CWarpWarpRes();
                 ReadServerResponse(buffer, obj);
-                obj.WarpPointID = ReadUInt32(buffer);
+                obj.WarpPointId = ReadUInt32(buffer);
                 obj.Rim = ReadUInt32(buffer);
                 return obj;
             }

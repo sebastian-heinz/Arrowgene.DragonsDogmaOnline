@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Figure out what they do
             S2CWarpRegisterFavoriteWarpRes response = new S2CWarpRegisterFavoriteWarpRes();
             response.SlotNo = 0;
-            response.WarpPointID = 0;
+            response.WarpPointId = 0;
 
             client.Send(response);
         }

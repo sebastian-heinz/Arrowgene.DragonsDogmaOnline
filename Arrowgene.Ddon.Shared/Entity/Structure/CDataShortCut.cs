@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public uint PageNo;
         public uint ButtonNo;
-        public uint ShortcutID;
+        public uint ShortcutId;
         public uint U32Data;
         public uint F32Data;
         public byte ExexType;
@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             WriteUInt32(buffer, obj.PageNo);
             WriteUInt32(buffer, obj.ButtonNo);
-            WriteUInt32(buffer, obj.ShortcutID);
+            WriteUInt32(buffer, obj.ShortcutId);
             WriteUInt32(buffer, obj.U32Data);
             WriteUInt32(buffer, obj.F32Data);
             WriteByte(buffer, obj.ExexType);
@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CDataShortCut obj = new CDataShortCut();
             obj.PageNo = ReadUInt32(buffer);
             obj.ButtonNo = ReadUInt32(buffer);
-            obj.ShortcutID = ReadUInt32(buffer);
+            obj.ShortcutId = ReadUInt32(buffer);
             obj.U32Data = ReadUInt32(buffer);
             obj.F32Data = ReadUInt32(buffer);
             obj.ExexType = ReadByte(buffer);

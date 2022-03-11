@@ -12,11 +12,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public S2CWarpGetFavoriteWarpPointListRes()
         {
             FavoriteWarpPointList = new List<CDataFavoriteWarpPoint>();
-            SlotIDMax = 0;
+            SlotIdMax = 0;
         }
 
         public List<CDataFavoriteWarpPoint> FavoriteWarpPointList { get; set; }
-        public uint SlotIDMax { get; set; }
+        public uint SlotIdMax { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CWarpGetFavoriteWarpPointListRes>
         {
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntityList<CDataFavoriteWarpPoint>(buffer, obj.FavoriteWarpPointList);
-                WriteUInt32(buffer, obj.SlotIDMax);
+                WriteUInt32(buffer, obj.SlotIdMax);
             }
 
             public override S2CWarpGetFavoriteWarpPointListRes Read(IBuffer buffer)
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CWarpGetFavoriteWarpPointListRes obj = new S2CWarpGetFavoriteWarpPointListRes();
                 ReadServerResponse(buffer, obj);
                 obj.FavoriteWarpPointList = ReadEntityList<CDataFavoriteWarpPoint>(buffer);
-                obj.SlotIDMax = ReadUInt32(buffer);
+                obj.SlotIdMax = ReadUInt32(buffer);
                 return obj;
             }
         }

@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SWarpReleaseWarpPointReq> packet)
         {
             S2CWarpReleaseWarpPointRes res = new S2CWarpReleaseWarpPointRes();
-            res.WarpPointID = packet.Structure.WarpPointID;
+            res.WarpPointId = packet.Structure.WarpPointId;
             client.Send(res);
             
             // TODO: Send S2C_WARP_14_0_16_NTC

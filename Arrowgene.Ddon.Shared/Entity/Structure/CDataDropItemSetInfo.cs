@@ -6,14 +6,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataDropItemSetInfo()
         {
-            ID=0;
-            MdlType=0;
-            X=0;
-            Y=0;
-            Z=0;
+            Id = 0;
+            MdlType = 0;
+            X = 0;
+            Y = 0;
+            Z = 0;
         }
 
-        public byte ID { get; set; }
+        public byte Id { get; set; }
         public byte MdlType { get; set; } // Model Type?
         public double X { get; set; }
         public float Y { get; set; }
@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataDropItemSetInfo obj)
             {
-                WriteByte(buffer, obj.ID);
+                WriteByte(buffer, obj.Id);
                 WriteByte(buffer, obj.MdlType);
                 WriteDouble(buffer, obj.X);
                 WriteFloat(buffer, obj.Y);
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataDropItemSetInfo Read(IBuffer buffer)
             {
                 CDataDropItemSetInfo obj = new CDataDropItemSetInfo();
-                obj.ID = ReadByte(buffer);
+                obj.Id = ReadByte(buffer);
                 obj.MdlType = ReadByte(buffer);
                 obj.X = ReadDouble(buffer);
                 obj.Y = ReadFloat(buffer);

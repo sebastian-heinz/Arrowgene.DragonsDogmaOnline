@@ -11,11 +11,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CLobbyJoinRes()
         {
-            CharacterID = 0;
+            CharacterId = 0;
             LobbyMemberInfoList = new List<CDataLobbyMemberInfo>();
         }
 
-        public uint CharacterID;
+        public uint CharacterId;
         public List<CDataLobbyMemberInfo> LobbyMemberInfoList;
 
 
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CLobbyJoinRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt32(buffer, obj.CharacterID);
+                WriteUInt32(buffer, obj.CharacterId);
                 WriteEntityList(buffer, obj.LobbyMemberInfoList);
             }
 
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CLobbyJoinRes obj = new S2CLobbyJoinRes();
                 ReadServerResponse(buffer, obj);
-                obj.CharacterID = ReadUInt32(buffer);
+                obj.CharacterId = ReadUInt32(buffer);
                 obj.LobbyMemberInfoList = ReadEntityList<CDataLobbyMemberInfo>(buffer);
                 return obj;
             }

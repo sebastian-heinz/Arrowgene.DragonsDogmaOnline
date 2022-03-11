@@ -9,21 +9,21 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataLobbyMemberInfo()
         {
-            CharacterID = 0;
+            CharacterId = 0;
             FirstName = "";
             LastName = "";
             ClanName = "";
-            PawnID = 0;
+            PawnId = 0;
             Unk0 = 0;
             Unk1 = 0;
             Unk2 = 0;
         }
 
-        public uint CharacterID;
+        public uint CharacterId;
         public string FirstName;
         public string LastName;
         public string ClanName;
-        public uint PawnID;
+        public uint PawnId;
 
         /*
         Possible names:
@@ -41,11 +41,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataLobbyMemberInfo obj)
         {
-            WriteUInt32(buffer, obj.CharacterID);
+            WriteUInt32(buffer, obj.CharacterId);
             WriteMtString(buffer, obj.FirstName);
             WriteMtString(buffer, obj.LastName);
             WriteMtString(buffer, obj.ClanName);
-            WriteUInt32(buffer, obj.PawnID);
+            WriteUInt32(buffer, obj.PawnId);
             WriteByte(buffer, obj.Unk0);
             WriteByte(buffer, obj.Unk1);
             WriteByte(buffer, obj.Unk2);
@@ -54,11 +54,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public override CDataLobbyMemberInfo Read(IBuffer buffer)
         {
             CDataLobbyMemberInfo obj = new CDataLobbyMemberInfo();
-            obj.CharacterID = ReadUInt32(buffer);
+            obj.CharacterId = ReadUInt32(buffer);
             obj.FirstName = ReadMtString(buffer);
             obj.LastName = ReadMtString(buffer);
             obj.ClanName = ReadMtString(buffer);
-            obj.PawnID = ReadUInt32(buffer);
+            obj.PawnId = ReadUInt32(buffer);
             obj.Unk0 = ReadByte(buffer);
             obj.Unk1 = ReadByte(buffer);
             obj.Unk2 = ReadByte(buffer);

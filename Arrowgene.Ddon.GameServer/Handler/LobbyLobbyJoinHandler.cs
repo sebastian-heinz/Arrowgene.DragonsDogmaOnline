@@ -24,12 +24,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var resp = new S2CLobbyJoinRes()
             {
-                CharacterID = client.Character.Id,
+                CharacterId = client.Character.Id,
                 LobbyMemberInfoList = new List<CDataLobbyMemberInfo>()
                 {
                    new CDataLobbyMemberInfo()
                    {
-                       CharacterID = client.Character.Id,
+                       CharacterId = client.Character.Id,
                        FirstName = client.Character.FirstName,
                        LastName =  client.Character.LastName,
                    },
@@ -54,11 +54,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     (
                         new CDataLobbyMemberInfo()
                         {
-                            CharacterID = otherClient.Character.Id,
+                            CharacterId = otherClient.Character.Id,
                             FirstName = otherClient.Character.FirstName,
                             LastName =  otherClient.Character.LastName,
                             ClanName = "WUT",
-                            PawnID = 0,
+                            PawnId = 0,
                             Unk0 = 3,
                             Unk1 = 0,
                             Unk2 = 8

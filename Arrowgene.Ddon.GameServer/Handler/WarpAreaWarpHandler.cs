@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO 2: Don't trust packet.Structure.Price and actually check it in DB
 
             S2CWarpAreaWarpRes obj = new S2CWarpAreaWarpRes();
-            obj.WarpPointID = packet.Structure.WarpPointID;
+            obj.WarpPointId = packet.Structure.WarpPointId;
             obj.Rim = 42069; // TODO: Set obj.Rim as the substraction result
             client.Send(obj);
         }

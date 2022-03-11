@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_INSTANCE_TRANING_ROOM_SET_ENEMY_REQ;
 
-        public uint ID { get; set; }
+        public uint ID { get; set; } // TODO is this enemyId ?
         public uint Lv { get; set; }
 
         public C2STraningRoomSetEnemyReq()

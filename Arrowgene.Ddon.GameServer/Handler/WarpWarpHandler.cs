@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SWarpWarpReq> request)
         {
             S2CWarpWarpRes response = new S2CWarpWarpRes();
-            response.WarpPointID = 0;
+            response.WarpPointId = 0;
             response.Rim = 0;
 
             client.Send(response);

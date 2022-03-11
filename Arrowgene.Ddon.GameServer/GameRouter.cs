@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer
         {
             S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice();
             notice.Type = (byte) response.Type;
-            notice.StrMessage = response.Message;
+            notice.Message = response.Message;
             notice.CharacterBaseInfo.CharacterId = response.CharacterId;
             notice.CharacterBaseInfo.CharacterName.FirstName = response.FirstName;
             notice.CharacterBaseInfo.CharacterName.LastName = response.LastName;

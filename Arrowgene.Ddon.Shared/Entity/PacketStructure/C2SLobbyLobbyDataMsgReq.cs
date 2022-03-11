@@ -10,12 +10,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public C2SLobbyLobbyDataMsgReq()
         {
             Type=0;
-            CharacterID=0;
+            CharacterId=0;
             RpcPacket=new byte[0];
         }
 
         public byte Type { get; set; }
-        public uint CharacterID { get; set; }
+        public uint CharacterId { get; set; }
         public byte[] RpcPacket { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SLobbyLobbyDataMsgReq>
@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, C2SLobbyLobbyDataMsgReq obj)
             {
                 WriteByte(buffer, obj.Type);
-                WriteUInt32(buffer, obj.CharacterID);
+                WriteUInt32(buffer, obj.CharacterId);
                 WriteInt32(buffer, obj.RpcPacket.Length);
                 WriteByteArray(buffer, obj.RpcPacket);
             }
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 C2SLobbyLobbyDataMsgReq obj = new C2SLobbyLobbyDataMsgReq();
                 obj.Type = ReadByte(buffer);
-                obj.CharacterID = ReadUInt32(buffer);
+                obj.CharacterId = ReadUInt32(buffer);
                 int rpcPacketLength = ReadInt32(buffer);
                 obj.RpcPacket = ReadByteArray(buffer, rpcPacketLength);
                 return obj;
