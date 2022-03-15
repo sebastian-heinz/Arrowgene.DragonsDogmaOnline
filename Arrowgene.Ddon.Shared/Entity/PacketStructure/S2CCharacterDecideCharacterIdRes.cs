@@ -1,5 +1,6 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -17,77 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint CharacterId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public byte Sex { get; set; }
-        public byte Voice { get; set; }
-        public ushort VoicePitch { get; set; }
-        public byte Personality { get; set; }
-        public byte SpeechFreq { get; set; }
-        public byte BodyType { get; set; }
-        public byte Hair { get; set; }
-        public byte Beard { get; set; }
-        public byte Makeup { get; set; }
-        public byte Scar { get; set; }
-        public byte EyePresetNo { get; set; }
-        public byte NosePresetNo { get; set; }
-        public byte MouthPresetNo { get; set; }
-        public byte EyebrowTexNo { get; set; }
-        public byte ColorSkin { get; set; }
-        public byte ColorHair { get; set; }
-        public byte ColorBeard { get; set; }
-        public byte ColorEyebrow { get; set; }
-        public byte ColorREye { get; set; }
-        public byte ColorLEye { get; set; }
-        public byte ColorMakeup { get; set; }
-        public ushort Sokutobu { get; set; }
-        public ushort Hitai { get; set; }
-        public ushort MimiJyouge { get; set; }
-        public ushort Kannkaku { get; set; }
-        public ushort MabisasiJyouge { get; set; }
-        public ushort HanakuchiJyouge { get; set; }
-        public ushort AgoSakiHaba { get; set; }
-        public ushort AgoZengo { get; set; }
-        public ushort AgoSakiJyouge { get; set; }
-        public ushort HitomiOokisa { get; set; }
-        public ushort MeOokisa { get; set; }
-        public ushort MeKaiten { get; set; }
-        public ushort MayuKaiten { get; set; }
-        public ushort MimiOokisa { get; set; }
-        public ushort MimiMuki { get; set; }
-        public ushort ElfMimi { get; set; }
-        public ushort MikenTakasa { get; set; }
-        public ushort MikenHaba { get; set; }
-        public ushort HohoboneRyou { get; set; }
-        public ushort HohoboneJyouge { get; set; }
-        public ushort Hohoniku { get; set; }
-        public ushort ErahoneJyouge { get; set; }
-        public ushort ErahoneHaba { get; set; }
-        public ushort HanaJyouge { get; set; }
-        public ushort HanaHaba { get; set; }
-        public ushort HanaTakasa { get; set; }
-        public ushort HanaKakudo { get; set; }
-        public ushort KuchiHaba { get; set; }
-        public ushort KuchiAtsusa { get; set; }
-        public ushort EyebrowUVOffsetX { get; set; }
-        public ushort EyebrowUVOffsetY { get; set; }
-        public ushort Wrinkle { get; set; }
-        public ushort WrinkleAlbedoBlendRate { get; set; }
-        public ushort WrinkleDetailNormalPower { get; set; }
-        public ushort MuscleAlbedoBlendRate { get; set; }
-        public ushort MuscleDetailNormalPower { get; set; }
-        public ushort Height { get; set; }
-        public ushort HeadSize { get; set; }
-        public ushort NeckOffset { get; set; }
-        public ushort NeckScale { get; set; }
-        public ushort UpperBodyScaleX { get; set; }
-        public ushort BellySize { get; set; }
-        public ushort TeatScale { get; set; }
-        public ushort TekubiSize { get; set; }
-        public ushort KoshiOffset { get; set; }
-        public ushort KoshiSize { get; set; }
-        public ushort AnkleOffset { get; set; }
-        public ushort Fat { get; set; }
-        public ushort Muscle { get; set; }
-        public ushort MotionFilter { get; set; }
+        public CDataEditInfo Visual { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCharacterDecideCharacterIdRes>
         {
@@ -100,82 +31,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, 0);
                 WriteMtString(buffer, obj.FirstName);
                 WriteMtString(buffer, obj.LastName);
-                WriteByte(buffer, obj.Sex);
-                WriteByte(buffer, obj.Voice);
-                WriteUInt16(buffer, obj.VoicePitch);
-                WriteByte(buffer, obj.Personality);
-                WriteByte(buffer, obj.SpeechFreq);
-                WriteByte(buffer, obj.BodyType);
-                WriteByte(buffer, obj.Hair);
-                WriteByte(buffer, obj.Beard);
-                WriteByte(buffer, obj.Makeup);
-                WriteByte(buffer, obj.Scar);
-                WriteByte(buffer, obj.EyePresetNo);
-                WriteByte(buffer, obj.NosePresetNo);
-                WriteByte(buffer, obj.MouthPresetNo);
-                WriteByte(buffer, obj.EyebrowTexNo);
-                WriteByte(buffer, obj.ColorSkin);
-                WriteByte(buffer, obj.ColorHair);
-                WriteByte(buffer, obj.ColorBeard);
-                WriteByte(buffer, obj.ColorEyebrow);
-                WriteByte(buffer, obj.ColorREye);
-                WriteByte(buffer, obj.ColorLEye);
-                WriteByte(buffer, obj.ColorMakeup);
-                WriteUInt16(buffer, obj.Sokutobu);
-                WriteUInt16(buffer, obj.Hitai);
-                WriteUInt16(buffer, obj.MimiJyouge);
-                WriteUInt16(buffer, obj.Kannkaku);
-                WriteUInt16(buffer, obj.MabisasiJyouge);
-                WriteUInt16(buffer, obj.HanakuchiJyouge);
-                WriteUInt16(buffer, obj.AgoSakiHaba);
-                WriteUInt16(buffer, obj.AgoZengo);
-                WriteUInt16(buffer, obj.AgoSakiJyouge);
-                WriteUInt16(buffer, obj.HitomiOokisa);
-                WriteUInt16(buffer, obj.MeOokisa);
-                WriteUInt16(buffer, obj.MeKaiten);
-                WriteUInt16(buffer, obj.MayuKaiten);
-                WriteUInt16(buffer, obj.MimiOokisa);
-                WriteUInt16(buffer, obj.MimiMuki);
-                WriteUInt16(buffer, obj.ElfMimi);
-                WriteUInt16(buffer, obj.MikenTakasa);
-                WriteUInt16(buffer, obj.MikenHaba);
-                WriteUInt16(buffer, obj.HohoboneRyou);
-                WriteUInt16(buffer, obj.HohoboneJyouge);
-                WriteUInt16(buffer, obj.Hohoniku);
-                WriteUInt16(buffer, obj.ErahoneJyouge);
-                WriteUInt16(buffer, obj.ErahoneHaba);
-                WriteUInt16(buffer, obj.HanaJyouge);
-                WriteUInt16(buffer, obj.HanaHaba);
-                WriteUInt16(buffer, obj.HanaTakasa);
-                WriteUInt16(buffer, obj.HanaKakudo);
-                WriteUInt16(buffer, obj.KuchiHaba);
-                WriteUInt16(buffer, obj.KuchiAtsusa);
-                WriteUInt16(buffer, obj.EyebrowUVOffsetX);
-                WriteUInt16(buffer, obj.EyebrowUVOffsetY);
-                WriteUInt16(buffer, obj.Wrinkle);
-                WriteUInt16(buffer, obj.WrinkleAlbedoBlendRate);
-                WriteUInt16(buffer, obj.WrinkleDetailNormalPower);
-                WriteUInt16(buffer, obj.MuscleAlbedoBlendRate);
-                WriteUInt16(buffer, obj.MuscleDetailNormalPower);
-                WriteUInt16(buffer, obj.Height);
-                WriteUInt16(buffer, obj.HeadSize);
-                WriteUInt16(buffer, obj.NeckOffset);
-                WriteUInt16(buffer, obj.NeckScale);
-                WriteUInt16(buffer, obj.UpperBodyScaleX);
-                WriteUInt16(buffer, obj.BellySize);
-                WriteUInt16(buffer, obj.TeatScale);
-                WriteUInt16(buffer, obj.TekubiSize);
-                WriteUInt16(buffer, obj.KoshiOffset);
-                WriteUInt16(buffer, obj.KoshiSize);
-                WriteUInt16(buffer, obj.AnkleOffset);
-                WriteUInt16(buffer, obj.Fat);
-                WriteUInt16(buffer, obj.Muscle);
-                WriteUInt16(buffer, obj.MotionFilter);
+                WriteEntity<CDataEditInfo>(buffer, obj.Visual);
                 WriteByteArray(buffer, new byte[] /* 2.0.2 */
                 {
                     // Reference: GameDump.Dump_13
                     
-                    0x0, 0x0, 0x11, 09B, 0x0, 0x0, 0x1, 0xC2, 0x3, 0x0, 0x0, 0x2, 0xF8, 0x0,
+                    0x0, 0x0, 0x11, 0x9B, 0x0, 0x0, 0x1, 0xC2, 0x3, 0x0, 0x0, 0x2, 0xF8, 0x0,
                     0x0, 0x1, 0xC2, 0x0, 0x0, 0x11, 0xED, 0x0, 0x0, 0xA, 0xF, 0x0, 0x0, 0x3, 0xAC, 0x0,
                     0x0, 0x0, 0x3B, 0x0, 0x0, 0x0, 0x3A, 0x0, 0x0, 0x0, 0x41, 0x0, 0x0, 0x0, 0x39, 0x5,
                     0x0, 0x0, 0x0, 0xA, 0x9, 0x0, 0x84, 0x64, 0xA4, 0x0, 0x5, 0x3B, 0xD8, 0x0, 0x0, 0x0,
@@ -462,6 +323,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 ReadUInt32(buffer);
                 obj.FirstName = ReadMtString(buffer);
                 obj.LastName = ReadMtString(buffer);
+                obj.Visual = ReadEntity<CDataEditInfo>(buffer);
                 return obj;
             }
         }
