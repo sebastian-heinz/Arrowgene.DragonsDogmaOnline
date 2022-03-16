@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -26,6 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.CharacterId = client.Character.Id;
             res.FirstName = client.Character.FirstName;
             res.LastName = client.Character.LastName;
+            res.Visual = client.Character.Visual;
             client.Send(res);
             
             // client.Send(GameDump.Dump_13);
