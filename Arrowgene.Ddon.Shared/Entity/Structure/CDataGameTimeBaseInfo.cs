@@ -6,26 +6,26 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataGameTimeBaseInfo()
         {
-            GameTimeOneDayMin=0;
+            GameTimeOneDayMin=0x5A; // Taken from the pcaps
             GameTimeYearMonth=0;
             GameTimeMonthDay=0;
-            GameTimeDayHour=0;
+            GameTimeDayHour=0x18; // Taken from the pcaps
             GameTimeWeekDay=0;
             GameTimeMoonAge=0;
-            OriginalRealTimeSec=0;
-            OriginalGameTimeSec=0;
+            OriginalRealTimeSec=0x55DDD470; // Taken from the pcaps. A few days before DDOn release
+            OriginalGameTimeSec=0x22C2ED000; // Taken from the pcaps.
             OriginalWeek=0;
             OriginalMoonAge=0;
         }
 
-        public uint GameTimeOneDayMin { get; set; }
+        public uint GameTimeOneDayMin { get; set; } // RL minutes it takes for a GT day to pass? Can't be 0
         public uint GameTimeYearMonth { get; set; }
         public uint GameTimeMonthDay { get; set; }
-        public uint GameTimeDayHour { get; set; }
+        public uint GameTimeDayHour { get; set; } // Hours in a day. Can't be 0
         public uint GameTimeWeekDay { get; set; }
         public uint GameTimeMoonAge { get; set; }
-        public long OriginalRealTimeSec { get; set; } // In the pcaps this was set as a few days before DDOn release
-        public long OriginalGameTimeSec { get; set; } // Game time, in Unix time
+        public long OriginalRealTimeSec { get; set; } // Timestamp in unix time
+        public long OriginalGameTimeSec { get; set; } // Timestamp in unix time
         public uint OriginalWeek { get; set; }
         public uint OriginalMoonAge { get; set; }
 

@@ -151,6 +151,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnJoinPartyMypawnReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
+            Create(new C2SServerGetRealTimeReq.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
             Create(new C2SSkillGetLearnedAbilityListReq.Serializer());
             Create(new C2SSkillGetLearnedNormalSkillListReq.Serializer());
@@ -224,6 +225,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnJoinPartyMypawnRes.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
+            Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
             Create(new S2CSkillGetLearnedAbilityListRes.Serializer());
