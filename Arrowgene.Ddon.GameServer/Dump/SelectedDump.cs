@@ -412,5 +412,28 @@ namespace Arrowgene.Ddon.GameServer.Dump
 
         public static Packet Dump_32_A = new Packet(new PacketId(8, 2, 2, "Dump_32_A"), data_Dump_32_A);
 
+        public static byte[] data_Dump_AntiDc9_1_2 = new byte[] /* 9.1.2 */
+        {
+            0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0,
+            0x28, 0x1, 0x0, 0x1, 0x0, 0x2, 0x0
+        };
+
+        public static Packet AntiDc9_1_2 = new Packet(new PacketId(9, 1, 2, "S2C_BINARY_SAVE_SET_CHARACTER_BIN_SAVEDATA_RES"), data_Dump_AntiDc9_1_2);
+
+        public static byte[] data_Dump_AntiDcSortdataBin = new byte[] /* 50.1.2 */
+        {
+            0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0,
+            0x28, 0x1, 0x0, 0x1, 0x0, 0x2, 0x0
+        };
+
+        public static Packet AntiDcSortdataBin = new Packet(new PacketId(50, 1, 2, "S2C_ITEM_SORT_SET_ITEM_SORTDATA_BIN_RES"), data_Dump_AntiDcSortdataBin);
+
+        public static byte[] data_Dump_lantern2_27_16 = new byte[] /* 2.27.16 */
+        {
+            0x0, 0x0, 0x5, 0xDC, 0x0, 0x0, 0x0
+        };
+
+        public static Packet lantern2_27_16 = new Packet(new PacketId(2, 27, 16, "S2C_CHARACTER_2_27_16_NTC"), data_Dump_lantern2_27_16);
+
     }
 }

@@ -1,13 +1,12 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceSetOmInstantKeyValueHandler : PacketHandler<GameClient>
+    public class InstanceSetOmInstantKeyValueHandler : StructurePacketHandler<GameClient, C2SInstanceSetOmInstantKeyValueReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceSetOmInstantKeyValueHandler));
 
@@ -16,11 +15,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_INSTANCE_SET_OM_INSTANT_KEY_VALUE_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SInstanceSetOmInstantKeyValueReq> stageIdHandler)
         {
-            client.Send(SelectedDump.AntiDC_Test1);
+            S2CInstanceSetOmInstantKeyValueRes res = new S2CInstanceSetOmInstantKeyValueRes(stageIdHandler.Structure);
+            client.Send(res);
         }
     }
 }
