@@ -130,6 +130,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterCharacterGoldenReviveHandler(this));
             AddHandler(new CharacterCharacterPenaltyReviveHandler(this));
             AddHandler(new CharacterCharacterPointReviveHandler(this));
+            AddHandler(new CharacterPawnGoldenReviveHandler(this));
+            AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
 
             AddHandler(new ClanClanGetJoinRequestedListHandler(this));
