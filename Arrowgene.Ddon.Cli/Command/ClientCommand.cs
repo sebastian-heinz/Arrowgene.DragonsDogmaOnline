@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using Arrowgene.Ddon.Client;
+using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli.Command
@@ -44,6 +45,21 @@ namespace Arrowgene.Ddon.Cli.Command
                 ExportResourceRepository(romDirectory, outDirectory);
                 return CommandResultType.Exit;
             }
+
+            if (parameter.ArgumentMap.ContainsKey("extract"))
+            {
+                DirectoryInfo outDirectory = new DirectoryInfo(parameter.ArgumentMap["extract"]);
+                Extract(romDirectory, outDirectory);
+                return CommandResultType.Exit;
+            }
+            
+            if (parameter.ArgumentMap.ContainsKey("tex2dds"))
+            {
+                DirectoryInfo outDirectory = new DirectoryInfo(parameter.ArgumentMap["tex2dds"]);
+                TexToDds(romDirectory, outDirectory);
+                return CommandResultType.Exit;
+            }
+
             return CommandResultType.Exit;
         }
 
@@ -56,7 +72,7 @@ namespace Arrowgene.Ddon.Cli.Command
             File.WriteAllText(outPath, json);
             Logger.Info($"Done: {outPath}");
         }
-        
+
         public void DumpPaths(DirectoryInfo romDirectory, DirectoryInfo outDir)
         {
             if (outDir == null)
@@ -94,6 +110,73 @@ namespace Arrowgene.Ddon.Cli.Command
             string outPath = Path.Combine(outDir.FullName, "dump.csv");
             File.WriteAllText(outPath, sb.ToString());
             Logger.Info($"Done: {outPath}");
+        }
+
+        public void Extract(DirectoryInfo romDirectory, DirectoryInfo outDir)
+        {
+            if (outDir == null)
+            {
+                Logger.Error("Failed to extract. (outDir == null)");
+                return;
+            }
+
+            if (!outDir.Exists)
+            {
+                outDir.Create();
+                Logger.Info($"Created Dir: {outDir.FullName}");
+            }
+
+            string[] files = Directory.GetFiles(romDirectory.FullName, "*.arc", SearchOption.AllDirectories);
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                // TODO utput folder of .arc folder name
+                string filePath = files[i];
+                string relativePath = filePath.Substring(romDirectory.FullName.Length);
+                ArcArchive archive = new ArcArchive();
+                archive.Open(filePath);
+                foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
+                {
+                    ArcArchive.ArcFile af = archive.GetFile(fi);
+                    if (af == null)
+                    {
+                        continue;
+                    }
+
+                    string outDirectory = Path.Combine(outDir.FullName, fi.Directory);
+                    if (!Directory.Exists(outDirectory))
+                    {
+                        Directory.CreateDirectory(outDirectory);
+                    }
+
+                    string outPath = Path.Combine(outDirectory, fi.Name);
+                    File.WriteAllBytes(outPath, af.Data);
+                }
+
+                Logger.Info($"Processing {i}/{files.Length} {filePath}");
+            }
+        }
+
+        public void TexToDds(DirectoryInfo romDirectory, DirectoryInfo outDir)
+        {
+         //  Texture tex = ArcArchive.GetResource<Texture>(
+         //      romDirectory,
+         //      "game_common.arc",
+         //      "scr/sky/DDBaseCube4_CM",
+         //      "tex"
+         //  );
+         
+
+         string p0 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/sysfont_AM_NOMIP.tex";
+         Texture t0 = new Texture();
+         t0.Open(p0);
+         
+            string p1 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/detail_sysfont_AM_NOMIP.tex";
+            Texture t1 = new Texture();
+            t1.Open(p1);
+            
+            
+            int i = 1;
         }
 
         public void Shutdown()
