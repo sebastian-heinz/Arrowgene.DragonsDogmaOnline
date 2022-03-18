@@ -19,10 +19,9 @@ namespace Arrowgene.Ddon.Client.Resource
             AreaInfos = new List<AreaInfo>();
         }
 
-        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
-
         protected override void ReadResource(IBuffer buffer)
         {
+            uint version = ReadUInt32(buffer);
             AreaInfos.Clear();
             AreaInfos.AddRange(ReadMtArray(buffer, ReadEntry));
         }

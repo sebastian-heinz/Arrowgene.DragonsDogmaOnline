@@ -6,141 +6,163 @@ namespace Arrowgene.Ddon.Client.Resource
 {
     public class Texture : ResourceFile
     {
-        // [StructLayout(LayoutKind.Explicit)]
-        // struct WordUnion
-        // {
-        //     [FieldOffset(0)]
-        //     public uint Number;
-
-        //     [FieldOffset(0)]
-        //     public ushort Low;
-
-        //     [FieldOffset(2)]
-        //     public ushort High;
-        // }
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(Texture));
 
-        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
+        public TexHeader Header;
+        public byte[] HeaderA { get; set; }
+        public byte[] HeaderB { get; set; }
+        public byte[] Data { get; set; }
 
         protected override void ReadResource(IBuffer buffer)
         {
-            org = buffer.GetAllBytes();
-            
-            uint a = ReadUInt32(buffer);
-            uint b = ReadUInt32(buffer);
-            uint c = ReadUInt32(buffer);
+            //uint fileSize = (uint) org.Length;
 
-            uint t = MagicId >> 0x18;
+            uint header4 = ReadUInt32(buffer);
+            uint header8 = ReadUInt32(buffer);
+            uint header12 = ReadUInt32(buffer);
+
+            Header = new TexHeader();
+
+            // int version = (int) (header4 & 0xfff);
+            // int alpha_flag = (int) ((header4 >> 12) & 0xfff);
+            // int shift = (int) ((header4 >> 24) & 0xf);
+            // int unk2 = (int) ((header4 >> 28) & 0xf);
+            // int unk4 = (int) ((header12 >> 16) & 0x1fff);
+
+            uint t = header4 >> 0x18;
             uint t1 = t & 0xF;
 
-            uint a1 = a >> 0x6;
+            uint a1 = header8 >> 0x6;
             uint a2 = a1 & 0x1FFF;
-            uint mOrgWidth = a2 << (byte) t1;
+            Header.Width = a2 << (byte) t1;
 
-            uint aa1 = a >> 0x13;
-            uint mOrgHeight = aa1 << (byte) t1;
+            uint aa1 = header8 >> 0x13;
+            Header.Height = aa1 << (byte) t1;
 
-            uint aa2 = a >> 0x10;
+            uint aa2 = header12 >> 0x10;
             uint aa3 = aa2 & 0x1FFF;
-            uint mOrgDepth = aa3 << (byte) t1;
+            Header.Depth = aa3 << (byte) t1;
 
+            Header.PixelFormat = (TexPixelFormat) ((header12 >> (1 * 8)) & 0xFF);
 
-            byte drawFormatType = (byte) b;
-            FormatType formatType = (FormatType) drawFormatType;
-
-
-            if ((MagicId & 0xF0000000) == 0x60000000)
+            if ((header4 & 0xF0000000) == 0x60000000)
             {
-                Logger.Error("TODO");
-                // MtDataReader::read(&v250, &this->mSHFactor, 108u);
-                byte[] data = ReadBytes(buffer, 0x6C);
+                HeaderA = ReadBytes(buffer, 0x6C); // &this->mSHFactor,
             }
 
-            byte b1 = (byte) (b & 0xFF);
-            uint a11 = a & 0x3F;
-            uint ab11 = b1 * a11;
-            uint ab111 = ab11 << 0x2;
+            Header.TextureArraySize = (byte) (header12 & 0xFF);
+            Header.MipMapCount = header8 & 0x3F;
+            uint layerCount = Header.TextureArraySize * Header.MipMapCount; // layer count
+            // uint ab111 = ab11 << 0x2;
 
-            uint mipLevelCount = CalcMipLevelCount(mOrgWidth);
+            uint readCount = 4 * layerCount;
+            HeaderB = ReadBytes(buffer, (int) readCount);
 
-
-            uint tasd = MagicId >> 0x28;
-            // From https://raw.githubusercontent.com/FrozenFish24/TurnaboutTools/master/TEXporter/TEXporter/Program.cs
-
-            //00000070 mSHFactor       rTexture::SHFACTOR ?
-            //    000000DC                 db ? ; undefined
-            //    000000DD                 db ? ; undefined
-            //    000000DE                 db ? ; undefined
-            //    000000DF                 db ? ; undefined
-            //    000000E0 mpTexture       dq ?                    ; offset
-            //    000000E8 mOrgInvWidth    dd ?
-            //        000000EC mOrgInvHeight   dd ?
-            //        000000F0 mOrgWidth       dd ?
-            //        000000F4 mOrgHeight      dd ?
-            //        000000F8 mOrgDepth       dd ?
-            //        000000FC mDetailBias     dd ?
-
-
-            // Int32 magic = BitConverter.ToInt32(array_input, 0);
-            // uint[] header = new uint[3];
-            // for (int i = 0; i < 3; i++)
-            //     header[i] = BitConverter.ToUInt32(array_input, i * 4 + 4);
-
-            int version = (int) (MagicId & 0xfff); // First dword
-            int alpha_flag = (int) ((MagicId >> 12) & 0xfff);
-            int shift = (int) ((MagicId >> 24) & 0xf);
-            int unk2 = (int) ((MagicId >> 28) & 0xf);
-            int mipmapCount = (int) (a & 0x3f); // Second dword
-            int width = (int) ((a >> 6) & 0x1fff);
-            int height = (int) ((a >> 19) & 0x1fff);
-            int unk3 = (int) (b & 0xff); // Third dword  // pixel ordering? 0x01 == swizzled, 0x06 == linear?
-            int type = (int) ((b >> 8) & 0xff);
-            int unk4 = (int) ((b >> 16) & 0x1fff);
-
-            string string_type = "";
-            if (type == 20)
-                string_type = "DXT1";
-            else if (type == 24)
-                string_type = "DXT5";
-            else if (type == 25)
-                string_type = "DXT1";
-            else if (type == 31)
-                string_type = "DXT5";
-            else if (type == 47)
-                string_type = "DXT5";
-            else
-                string_type = type.ToString();
-
-            int headerLength = 0x10 + (4 * mipmapCount);
-
-            FormatType formatType1 = (FormatType) type;
-
-            DirectXTexUtility.DXGIFormat dxGiFormat = ToDxGiFormat(formatType);
-            DirectXTexUtility.DDSFlags flags = DirectXTexUtility.DDSFlags.NONE;
-            DirectXTexUtility.TexMetadata texMetadata = DirectXTexUtility.GenerateMataData(
-                (int) mOrgWidth,
-                (int) mOrgHeight,
-                mipmapCount,
-                dxGiFormat,
-                true
-            );
-            
-            DirectXTexUtility.GenerateDDSHeader(
-                texMetadata,
-                flags,
-                out DirectXTexUtility.DDSHeader ddsHeader,
-                out DirectXTexUtility.DX10Header dx10Header
-            );
-            ddsFileHeader = DirectXTexUtility.EncodeDDSHeader(ddsHeader, dx10Header);
-            
-       
-
-            int i = 1;
+            //  uint v19 = aa1;
+            //  if (a2 >= aa1)
+            //  {
+            //      v19 = a2;
+            //  }
+            //  uint mipLevelCount = CalcMipLevelCount(v19);
+            //  uint switchNum = MagicId >> 0x1C;
+            //  switch (switchNum)
+            //  {
+            //      case 1:
+            //      case 2:
+            //          break;
+            //      case 3:
+            //          break;
+            //      case 6:
+            //          break;
+            //  }
+            Data = buffer.ReadBytes(buffer.Size - buffer.Position);
         }
 
-        private byte[] ddsFileHeader;
-        private byte[] org;
-        
+        public void SaveDds(string path)
+        {
+            GenerateDdsHeader(out DirectXTexUtility.DDSHeader ddsHeader, out DirectXTexUtility.DX10Header dx10Header);
+            byte[] ddsFileHeader = DirectXTexUtility.EncodeDDSHeader(ddsHeader, dx10Header);
+            StreamBuffer sb = new StreamBuffer();
+            sb.WriteBytes(ddsFileHeader);
+            sb.WriteBytes(Data);
+            File.WriteAllBytes(path, sb.GetAllBytes());
+        }
+
+        private void GenerateDdsHeader(out DirectXTexUtility.DDSHeader ddsHeader,
+            out DirectXTexUtility.DX10Header dx10Header)
+        {
+            ddsHeader = new DirectXTexUtility.DDSHeader();
+            ddsHeader.Size = 0x7C; //(uint) Marshal.SizeOf<DirectXTexUtility.DDSHeader>();
+            ddsHeader.MipMapCount = Header.MipMapCount;
+            ddsHeader.Height = Header.Height;
+            ddsHeader.Width = Header.Width;
+            ddsHeader.Depth = Header.Depth;
+            ddsHeader.PixelFormat = ToDdsPixelFormat(Header.PixelFormat);
+            if (Header.MipMapCount > 0)
+            {
+                ddsHeader.Flags |= DirectXTexUtility.DDSHeader.HeaderFlags.MIPMAP;
+                ddsHeader.Caps |= (uint) DirectXTexUtility.DDSHeader.SurfaceFlags.MIPMAP;
+            }
+
+            dx10Header = new DirectXTexUtility.DX10Header();
+            if (Header.TextureArraySize > 1)
+            {
+                ddsHeader.PixelFormat = DirectXTexUtility.PixelFormats.DX10;
+                dx10Header.Format = ToDxGiFormat(Header.PixelFormat);
+                dx10Header.ResourceDimension = DirectXTexUtility.TexDimension.TEXTURE2D;
+                dx10Header.ArraySize = Header.TextureArraySize;
+                if (true) // TODO differentiate between cubemap and texture array
+                {
+                    dx10Header.MiscFlag |= DirectXTexUtility.TexMiscFlags.TEXTURECUBE;
+                }
+            }
+        }
+
+        private DirectXTexUtility.DDSHeader.DDSPixelFormat ToDdsPixelFormat(TexPixelFormat texPixelFormat)
+        {
+            // switch (type)
+            // {
+            //     case 20:
+            //         ddsHeader.PixelFormat = DirectXTexUtility.PixelFormats.DXT1;
+            //         break;
+            //     case 24:
+            //         ddsHeader.PixelFormat = DirectXTexUtility.PixelFormats.DXT5;
+            //         break;
+            //     case 25:
+            //         ddsHeader.PixelFormat = DirectXTexUtility.PixelFormats.DXT1;
+            //         break;
+            //     case 31:
+            //         ddsHeader.PixelFormat = DirectXTexUtility.PixelFormats.DXT5;
+            //         break;
+            //     case 47:
+            //         ddsHeader.PixelFormat = DirectXTexUtility.PixelFormats.DXT5;
+            //         break;
+            //     default:
+            //         break;
+            // }
+
+            switch (texPixelFormat)
+            {
+                case TexPixelFormat.FORMAT_BC1_UNORM_SRGB: return DirectXTexUtility.PixelFormats.DXT1;
+                case TexPixelFormat.FORMAT_BCX_RGBI_SRGB: return DirectXTexUtility.PixelFormats.DXT5;
+                default:
+                    Logger.Error($"ToDdsPixelFormat::TexPixelFormat:{texPixelFormat} not handled");
+                    return DirectXTexUtility.PixelFormats.DXT1;
+            }
+        }
+
+        private DirectXTexUtility.DXGIFormat ToDxGiFormat(TexPixelFormat texPixelFormat)
+        {
+            switch (texPixelFormat)
+            {
+                case TexPixelFormat.FORMAT_BC1_UNORM_SRGB: return DirectXTexUtility.DXGIFormat.BC1UNORMSRGB;
+                case TexPixelFormat.FORMAT_BCX_RGBI_SRGB: return DirectXTexUtility.DXGIFormat.BC3UNORMSRGB;
+                default:
+                    Logger.Error($"ToDxGiFormat::TexPixelFormat:{texPixelFormat} not handled");
+                    return DirectXTexUtility.DXGIFormat.UNKNOWN;
+            }
+        }
+
         private uint CalcMipLevelCount(uint size)
         {
             uint v1 = 0xFFFFFFFF;
@@ -150,26 +172,17 @@ namespace Arrowgene.Ddon.Client.Resource
             return v1;
         }
 
-        public void SaveDds(string path)
+        public struct TexHeader
         {
-            File.WriteAllBytes(path, ddsFileHeader);
-        }
-        
-        public void Save(string path)
-        {
-            File.WriteAllBytes(path, org);
-        }
-
-        private DirectXTexUtility.DXGIFormat ToDxGiFormat(FormatType fmt)
-        {
-            switch (fmt)
-            {
-                case FormatType.FORMAT_R8G8B8A8_UNORM: return DirectXTexUtility.DXGIFormat.R8G8B8A8UNORM;
-                default: return DirectXTexUtility.DXGIFormat.UNKNOWN;
-            }
+            public uint Height;
+            public uint Width;
+            public uint Depth;
+            public TexPixelFormat PixelFormat;
+            public byte TextureArraySize;
+            public uint MipMapCount;
         }
 
-        private enum FormatType
+        public enum TexPixelFormat
         {
             FORMAT_UNKNOWN = 0,
             FORMAT_R32G32B32A32_FLOAT = 1,

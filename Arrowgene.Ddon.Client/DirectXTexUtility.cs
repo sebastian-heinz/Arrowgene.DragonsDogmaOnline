@@ -398,9 +398,6 @@ namespace Arrowgene.Ddon.Client
                 public uint GBitMask;
                 public uint BBitMask;
                 public uint ABitMask;
-
-                public byte[] FourCCBytes => BitConverter.GetBytes(FourCC);
-                public string FourCCStr => $"{(char)FourCCBytes[0]}{(char)FourCCBytes[1]}{(char)FourCCBytes[2]}{(char)FourCCBytes[3]}";
                 
                 /// <summary>
                 /// Creates a new DDS Pixel Format
@@ -685,7 +682,7 @@ namespace Arrowgene.Ddon.Client
         /// <summary>
         /// Computes Row and Slice Pitch
         /// </summary>
-        private static void ComputePitch(DXGIFormat format, long width, long height, out long rowPitch,
+        public static void ComputePitch(DXGIFormat format, long width, long height, out long rowPitch,
             out long slicePitch, CPFLAGS flags)
         {
             switch (format)

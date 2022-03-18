@@ -24,11 +24,10 @@ namespace Arrowgene.Ddon.Client.Resource
         {
             LandInfos = new List<LandInfo>();
         }
-        
-        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
-        
+
         protected override void ReadResource(IBuffer buffer)
         {
+            uint version = ReadUInt32(buffer);
             LandInfos.Clear();
             List<LandInfo> infos = ReadMtArray(buffer, ReadEntry);
             LandInfos.AddRange(infos);

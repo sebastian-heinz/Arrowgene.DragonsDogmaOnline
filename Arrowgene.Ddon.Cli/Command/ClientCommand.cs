@@ -25,6 +25,16 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
+            FileInfo fileInfo = new FileInfo(parameter.Arguments[0]);
+            if (fileInfo.Exists)
+            {
+                if (".tex".Equals(fileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    TexToDds(fileInfo);
+                    return CommandResultType.Exit;
+                }
+            }
+            
             DirectoryInfo romDirectory = new DirectoryInfo(parameter.Arguments[0]);
             if (!romDirectory.Exists)
             {
@@ -53,13 +63,6 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
             
-            if (parameter.ArgumentMap.ContainsKey("tex2dds"))
-            {
-                DirectoryInfo outDirectory = new DirectoryInfo(parameter.ArgumentMap["tex2dds"]);
-                TexToDds(romDirectory, outDirectory);
-                return CommandResultType.Exit;
-            }
-
             return CommandResultType.Exit;
         }
 
@@ -157,32 +160,39 @@ namespace Arrowgene.Ddon.Cli.Command
             }
         }
 
-        public void TexToDds(DirectoryInfo romDirectory, DirectoryInfo outDir)
+        public void TexToDds(FileInfo fileInfo)
         {
-       Texture tex = ArcArchive.GetResource<Texture>(
-           romDirectory,
-           "game_common.arc",
-           "scr/sky/DDBaseCube4_CM",
-           "tex"
-       );
-       tex.SaveDds("E:/Games/ARCtool/DDBaseCube4_CM.tex.dds");
-       tex.Save("E:/Games/ARCtool/DDBaseCube4_CM.tex");
-       
-         
-      //  string p3 = "E:/Games/ARCtool/DefaultCube_CM.tex";
-      //  Texture t3 = new Texture();
-      //  t3.Open(p3);
-      //  t3.SaveDds(p3 + ".dds");
-      //  
-      //  string p0 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/sysfont_AM_NOMIP.tex";
-      //  Texture t0 = new Texture();
-      //  t0.Open(p0);
-      //  
-      //     string p1 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/detail_sysfont_AM_NOMIP.tex";
-      //     Texture t1 = new Texture();
-      //     t1.Open(p1);
+            Texture texture = new Texture();
+            texture.Open(fileInfo.FullName);
+            texture.SaveDds($"{fileInfo.FullName}.dds");
             
-            
+            //   Texture tex = ArcArchive.GetResource<Texture>(
+            //       romDirectory,
+            //       "game_common.arc",
+            //       "scr/sky/DDBaseCube4_CM",
+            //       "tex"
+            //   );
+            //   tex.SaveDds("E:/Games/ARCtool/DDBaseCube4_CM.tex.dds");
+            //   tex.Save("E:/Games/ARCtool/DDBaseCube4_CM.tex");
+
+
+            //     string p3 = "E:/Games/ARCtool/DefaultCube_CM.tex";
+            //     Texture t3 = new Texture();
+            //     t3.Open(p3);
+            //     t3.SaveDds(p3 + ".dds");
+
+
+            //    string p0 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/sysfont_AM_NOMIP.tex";
+            //    Texture t0 = new Texture();
+            //    t0.Open(p0);
+            //    t0.SaveDds("E:/Games/ARCtool/sysfont_AM_NOMIP.tex" + ".dds");
+
+
+            //   string p1 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/detail_sysfont_AM_NOMIP.tex";
+            //   Texture t1 = new Texture();
+            //   t1.Open(p1);
+
+
             int i = 1;
         }
 

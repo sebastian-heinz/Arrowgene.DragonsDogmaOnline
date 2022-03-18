@@ -22,10 +22,9 @@ namespace Arrowgene.Ddon.Client.Resource
             StageInfos = new List<Info>();
         }
         
-        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
-        
         protected override void ReadResource(IBuffer buffer)
         {
+            uint version = ReadUInt32(buffer);
             StageInfos.Clear();
             List<Info> infos = ReadMtArray(buffer, ReadEntry);
             StageInfos.AddRange(infos);

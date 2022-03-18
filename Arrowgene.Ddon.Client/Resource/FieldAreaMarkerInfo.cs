@@ -6,8 +6,6 @@ namespace Arrowgene.Ddon.Client.Resource;
 
 public class FieldAreaMarkerInfo : ResourceFile
 {
-    protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
-
     public class MarkerInfo
     {
         public MtVector3 Pos { get; set; }
@@ -25,6 +23,7 @@ public class FieldAreaMarkerInfo : ResourceFile
 
     protected override void ReadResource(IBuffer buffer)
     {
+        uint version = ReadUInt32(buffer);
         MarkerInfos.Clear();
         uint unk = ReadUInt32(buffer);
         uint count = ReadUInt32(buffer);

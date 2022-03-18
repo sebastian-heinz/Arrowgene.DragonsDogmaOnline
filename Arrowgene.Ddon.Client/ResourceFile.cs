@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Logging;
 
@@ -7,19 +6,12 @@ namespace Arrowgene.Ddon.Client
 {
     public abstract class ResourceFile : ClientFile
     {
-        public enum MagicIdWidth
-        {
-            Zero,
-            UShort,
-            UInt
-        }
-
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ResourceFile));
 
-        public string MagicTag { get; set; }
-        public uint MagicId { get; set; }
+        public string Magic { get; set; }
 
-        protected abstract MagicIdWidth IdWidth { get; }
+        // TODO Magic Validation
+        // protected abstract string ExpectedMagic { get; }
 
         protected override void Read(IBuffer buffer)
         {
@@ -30,26 +22,8 @@ namespace Arrowgene.Ddon.Client
             }
 
             byte[] magicTag = buffer.ReadBytes(4);
-            MagicTag = Encoding.UTF8.GetString(magicTag);
-            switch (IdWidth)
-            {
-                case MagicIdWidth.Zero:
-                {
-                    MagicId = BitConverter.ToUInt32(magicTag);
-                    break;
-                }
-                case MagicIdWidth.UShort:
-                {
-                    MagicId = buffer.ReadUInt16(Endianness.Little);
-                    break;
-                }
-                case MagicIdWidth.UInt:
-                {
-                    MagicId = buffer.ReadUInt32(Endianness.Little);
-                    break;
-                }
-            }
-
+            Magic = Encoding.UTF8.GetString(magicTag);
+            // TODO Magic Validation
             ReadResource(buffer);
             if (buffer.Position != buffer.Size)
             {
