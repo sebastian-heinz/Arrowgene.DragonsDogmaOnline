@@ -56,6 +56,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataContextNormalSkillData.Serializer());
             Create(new CDataContextPlayerInfo.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
+            Create(new CDataDeliveryItem.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
             Create(new CDataEditInfoSerializer());
             Create(new CDataEquipElementParam.Serializer());
@@ -227,6 +228,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawn_8_37_16_Ntc.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());
             Create(new S2CPawnJoinPartyMypawnRes.Serializer());
+            Create(new S2CQuestGetMainQuestListRes.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());

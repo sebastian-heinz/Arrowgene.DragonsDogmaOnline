@@ -6,8 +6,6 @@ namespace Arrowgene.Ddon.Client.Resource;
 
 public class FieldAreaAdjoinList : ResourceFile
 {
-    protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
-
     public class Vector3
     {
         public MtVector3 Pos { get; set; }
@@ -37,6 +35,7 @@ public class FieldAreaAdjoinList : ResourceFile
 
     protected override void ReadResource(IBuffer buffer)
     {
+        uint version = ReadUInt32(buffer);
         AdjoinInfos.Clear();
         uint unk = ReadUInt16(buffer);
         uint count = ReadUInt32(buffer);

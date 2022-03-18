@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
 using ICSharpCode.SharpZipLib.Zip.Compression;
@@ -31,7 +32,79 @@ namespace Arrowgene.Ddon.Client
             arcExt.JamCrcStr = $"0x{arcExt.JamCrc:X8}";
             JamCrcLookup.Add(arcExt.JamCrc, arcExt);
         }
+        
+        public static T GetFile<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ClientFile, new()
+        {
+            ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, true);
+            if (arcFile == null)
+            {
+                return null;
+            }
 
+            T file = new T();
+            file.Open(arcFile.Data);
+            return file;
+        }
+
+        public static T GetResource<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
+        {
+            ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, true);
+            if (arcFile == null)
+            {
+                return null;
+            }
+
+            T resource = new T();
+            resource.Open(arcFile.Data);
+            return resource;
+        }
+
+        public static T GetResource_NoLog<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
+        {
+            ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, false);
+            if (arcFile == null)
+            {
+                return null;
+            }
+
+            T resource = new T();
+            resource.Open(arcFile.Data);
+            return resource;
+        }
+
+        public static ArcFile GetArcFile(DirectoryInfo romDir, string arcPath, string filePath, string ext, bool log)
+        {
+            string path = Path.Combine(romDir.FullName, Util.UnrootPath(arcPath));
+            FileInfo file = new FileInfo(path);
+            if (!file.Exists)
+            {
+                if (log)
+                {
+                    Logger.Error($"File does not exist. ({path})");
+                }
+
+                return null;
+            }
+
+            ArcArchive archive = new ArcArchive();
+            archive.Open(file.FullName);
+            FileIndexSearch search = Search()
+                .ByArcPath(filePath)
+                .ByExtension(ext);
+            ArcFile arcFile = archive.GetFile(search);
+            if (arcFile == null)
+            {
+                if (log)
+                {
+                    Logger.Error($"File:{filePath} could not be located in archive:{path}");
+                }
+
+                return null;
+            }
+
+            return arcFile;
+        }
+        
         public static FileIndexSearch Search()
         {
             return new FileIndexSearch();

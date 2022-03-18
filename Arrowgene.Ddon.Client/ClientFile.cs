@@ -98,6 +98,11 @@ namespace Arrowgene.Ddon.Client
             return entities;
         }
 
+        protected byte[] ReadBytes(IBuffer buffer, int length)
+        {
+            return buffer.ReadBytes(length);
+        }
+
         protected void WriteUInt32(IBuffer buffer, uint value)
         {
             buffer.WriteUInt32(value, Endianness.Little);

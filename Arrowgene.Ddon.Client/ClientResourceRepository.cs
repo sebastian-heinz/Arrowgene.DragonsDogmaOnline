@@ -221,74 +221,17 @@ namespace Arrowgene.Ddon.Client
 
         private T GetFile<T>(string arcPath, string filePath, string ext = null) where T : ClientFile, new()
         {
-            ArcArchive.ArcFile arcFile = GetArcFile(arcPath, filePath, ext, true);
-            if (arcFile == null)
-            {
-                return null;
-            }
-
-            T file = new T();
-            file.Open(arcFile.Data);
-            return file;
+            return ArcArchive.GetFile<T>(_directory, arcPath, filePath, ext);
         }
 
         private T GetResource<T>(string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
         {
-            ArcArchive.ArcFile arcFile = GetArcFile(arcPath, filePath, ext, true);
-            if (arcFile == null)
-            {
-                return null;
-            }
-
-            T resource = new T();
-            resource.Open(arcFile.Data);
-            return resource;
+            return ArcArchive.GetResource<T>(_directory, arcPath, filePath, ext);
         }
 
         private T GetResource_NoLog<T>(string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
         {
-            ArcArchive.ArcFile arcFile = GetArcFile(arcPath, filePath, ext, false);
-            if (arcFile == null)
-            {
-                return null;
-            }
-
-            T resource = new T();
-            resource.Open(arcFile.Data);
-            return resource;
-        }
-
-        private ArcArchive.ArcFile GetArcFile(string arcPath, string filePath, string ext, bool log)
-        {
-            string path = Path.Combine(_directory.FullName, Util.UnrootPath(arcPath));
-            FileInfo file = new FileInfo(path);
-            if (!file.Exists)
-            {
-                if (log)
-                {
-                    Logger.Error($"File does not exist. ({path})");
-                }
-
-                return null;
-            }
-
-            ArcArchive archive = new ArcArchive();
-            archive.Open(file.FullName);
-            ArcArchive.FileIndexSearch search = ArcArchive.Search()
-                .ByArcPath(filePath)
-                .ByExtension(ext);
-            ArcArchive.ArcFile arcFile = archive.GetFile(search);
-            if (arcFile == null)
-            {
-                if (log)
-                {
-                    Logger.Error($"File:{filePath} could not be located in archive:{path}");
-                }
-
-                return null;
-            }
-
-            return arcFile;
+           return ArcArchive.GetResource_NoLog<T>(_directory, arcPath, filePath, ext);
         }
     }
 }

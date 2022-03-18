@@ -26,11 +26,10 @@ namespace Arrowgene.Ddon.Client.Resource
         {
             Entries = new List<Entry>();
         }
-
-        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
-
+        
         protected override void ReadResource(IBuffer buffer)
         {
+            uint version = ReadUInt32(buffer);
             Entries.Clear();
             uint count = ReadUInt32(buffer);
             for (int i = 0; i < count; i++)

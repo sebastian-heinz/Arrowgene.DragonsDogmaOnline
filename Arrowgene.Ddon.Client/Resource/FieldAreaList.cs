@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Client.Resource
                 BelongStageNoList = new List<int>();
             }
         }
-        
+
         public static FieldAreaInfo Get(List<FieldAreaInfo> fieldAreaInfos, ushort areaId, ushort landId, int stageNo)
         {
             foreach (FieldAreaInfo fai in fieldAreaInfos)
@@ -51,10 +51,9 @@ namespace Arrowgene.Ddon.Client.Resource
             FieldAreaInfos = new List<FieldAreaInfo>();
         }
 
-        protected override MagicIdWidth IdWidth => MagicIdWidth.UInt;
-
         protected override void ReadResource(IBuffer buffer)
         {
+            uint version = ReadUInt32(buffer);
             FieldAreaInfos.Clear();
             List<FieldAreaInfo> infos = ReadMtArray(buffer, ReadEntry);
             FieldAreaInfos.AddRange(infos);

@@ -36,10 +36,9 @@ namespace Arrowgene.Ddon.Client.Resource
             MsgGroups = new List<MsgGroup>();
         }
         
-        protected override MagicIdWidth IdWidth => MagicIdWidth.UShort;
-        
         protected override void ReadResource(IBuffer buffer)
         {
+            ushort version = ReadUInt16(buffer);
             MsgGroups.Clear();
             uint countA = ReadUInt32(buffer);
             uint countB = ReadUInt32(buffer);

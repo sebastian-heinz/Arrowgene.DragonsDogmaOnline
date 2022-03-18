@@ -24,9 +24,7 @@ namespace Arrowgene.Ddon.Client.Resource
         {
             Entries = new List<Entry>();
         }
-
-        protected override MagicIdWidth IdWidth => MagicIdWidth.Zero;
-
+        
         protected override void ReadResource(IBuffer buffer)
         {
             Entries.Clear();
