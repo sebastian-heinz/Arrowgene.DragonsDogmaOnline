@@ -43,40 +43,17 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public void SaveTex(string path)
         {
+            uint header4 = Header.Version & 0xfff;
+            uint header8 = 0;
+            uint header12 = 0;
+
+            uint t = 0;
+
             StreamBuffer sb = new StreamBuffer();
             sb.WriteBytes(Encoding.UTF8.GetBytes(TexHeaderMagic));
-
-            uint header4 = Header.Version & 0xfff;
-
-
-            //Header.Version = header4 & 0xfff;
-            //   uint a1 = header8 >> 0x6;
-            //   uint t = header4 >> 0x18;
-            //   uint t1 = t & 0xF;
-
-            //   uint a1 = header8 >> 0x6;
-            //   uint a2 = a1 & 0x1FFF;
-            //   Header.Width = a2 << (byte) t1;
-
-            //   uint aa1 = header8 >> 0x13;
-            //   Header.Height = aa1 << (byte) t1;
-
-            //   uint aa2 = header12 >> 0x10;
-            //   uint aa3 = aa2 & 0x1FFF;
-            //   Header.Depth = aa3 << (byte) t1;
-
-            //   Header.PixelFormat = (TexPixelFormat) ((header12 >> (1 * 8)) & 0xFF);
-
-            //   if ((header4 & 0xF0000000) == 0x60000000)
-            //   {
-            //       HeaderA = ReadBytes(buffer, 0x6C); // &this->mSHFactor,
-            //   }
-
-            //      Header.TextureArraySize = (byte) (header12 & 0xFF);
-            //      Header.MipMapCount = header8 & 0x3F;
-            //      uint layerCount = Header.TextureArraySize * Header.MipMapCount; // layer count
-
-
+            sb.WriteUInt32(header4);
+            sb.WriteUInt32(header8);
+            sb.WriteUInt32(header12);
             sb.WriteBytes(HeaderA);
             sb.WriteBytes(HeaderB);
             sb.WriteBytes(Data);
@@ -91,35 +68,38 @@ namespace Arrowgene.Ddon.Client.Resource
 
             Header = new TexHeader();
 
-            Header.Version = header4 & 0xfff;
-            // int alpha_flag = (int) ((header4 >> 12) & 0xfff);
-            // int shift = (int) ((header4 >> 24) & 0xf);
-            // int unk2 = (int) ((header4 >> 28) & 0xf);
-            // int unk4 = (int) ((header12 >> 16) & 0x1fff);
 
-            uint t = header4 >> 0x18;
-            uint t1 = t & 0xF;
+            // ulong packed = (bits27) | ((ulong)bits25 << 27) | ((ulong)bits7 << 52) | ((ulong)bits5 << 59);
+           // uint packed = 0;
+           
+            uint versionBits12__0_11 =  header4 & ((1 << 12) - 1);
+            uint alphaBits12__12_23 =  (header4 >> 12) & ((1 << 12) - 1);
+            uint shiftBits4__24_27 =  (header4 >> 24) & ((1 << 4) - 1);
+            uint unkBits4__28_31 =  (header4 >> 28) & ((1 << 4) - 1); // switchNum 1,2|3|6
 
-            uint a1 = header8 >> 0x6;
-            uint a2 = a1 & 0x1FFF;
-            Header.Width = a2 << (byte) t1;
-
-            uint aa1 = header8 >> 0x13;
-            Header.Height = aa1 << (byte) t1;
-
-            uint aa2 = header12 >> 0x10;
-            uint aa3 = aa2 & 0x1FFF;
-            Header.Depth = aa3 << (byte) t1;
-
-            Header.PixelFormat = (TexPixelFormat) ((header12 >> (1 * 8)) & 0xFF);
-
+            uint mipMapCountBits6_0__5 =  header8 & ((1 << 6) - 1);
+            uint widthBits13_6__18 =  (header8 >> 6) & ((1 << 13) - 1);
+            uint heightBits13_19__31 =  (header8 >> 19) & ((1 << 13) - 1);
+            
+            uint textureArraySizeBits8__0_7 =  header12 & ((1 << 8) - 1);
+            uint pixelFormatBits8__8_15 =  (header12 >> 8) & ((1 << 8) - 1);
+            uint depthBits13__16_28 =  (header12 >> 16) & ((1 << 13) - 1);
+            uint unkBits3__29_31 =  (header12 >> 29) & ((1 << 3) - 1);
+            
+            Header.Version = versionBits12__0_11;
+            Header.Width = widthBits13_6__18 << (byte) shiftBits4__24_27;
+            Header.Height = heightBits13_19__31 << (byte) shiftBits4__24_27;
+            Header.Depth = depthBits13__16_28 << (byte) shiftBits4__24_27;
+            Header.PixelFormat = (TexPixelFormat) pixelFormatBits8__8_15;
+            Header.TextureArraySize = (byte) textureArraySizeBits8__0_7;
+            Header.MipMapCount = mipMapCountBits6_0__5;
+            
             if ((header4 & 0xF0000000) == 0x60000000)
             {
                 HeaderA = ReadBytes(buffer, 0x6C); // &this->mSHFactor,
             }
 
-            Header.TextureArraySize = (byte) (header12 & 0xFF);
-            Header.MipMapCount = header8 & 0x3F;
+   
             uint layerCount = Header.TextureArraySize * Header.MipMapCount; // layer count
             // uint ab111 = ab11 << 0x2;
 
