@@ -120,6 +120,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AreaGetLeaderAreaReleaseListHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
+            AddHandler(new BinarySaveSetCharacterBinSavedataHandler(this));
             AddHandler(new BlackListGetBlackListHandler(this));
 
             AddHandler(new ActionSetPlayerActionHistoryHandler(this));
@@ -129,6 +130,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterCharacterGoldenReviveHandler(this));
             AddHandler(new CharacterCharacterPenaltyReviveHandler(this));
             AddHandler(new CharacterCharacterPointReviveHandler(this));
+            AddHandler(new CharacterPawnGoldenReviveHandler(this));
+            AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
 
             AddHandler(new ClanClanGetJoinRequestedListHandler(this));
@@ -162,6 +165,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceEnemyKillHandler(this));
             AddHandler(new InstanceExchangeOmInstantKeyValueHandler(this));
             AddHandler(new InstanceGetEnemySetListHandler(this));
+            AddHandler(new InstanceGetGatheringItemHandler(this));
+            AddHandler(new InstanceGetGatheringItemListHandler(this));
             AddHandler(new InstanceGetItemSetListHandler(this));
             AddHandler(new InstanceSetOmInstantKeyValueHandler(this));
 
@@ -169,6 +174,8 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new ItemGetStorageItemListHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
+            AddHandler(new ItemSortSetItemSortdataBinHandler(this));
+            AddHandler(new ItemUseBagItemHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobGetJobChangeListHandler(this));

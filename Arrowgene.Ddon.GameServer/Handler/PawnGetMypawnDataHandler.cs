@@ -1,13 +1,13 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.GameServer.Dump;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetMypawnDataHandler : PacketHandler<GameClient>
+    public class PawnGetMypawnDataHandler : StructurePacketHandler<GameClient, C2SPawnGetMypawnDataReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMypawnDataHandler));
 
@@ -16,11 +16,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_PAWN_GET_MYPAWN_DATA_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SPawnGetMypawnDataReq> req)
         {
-            client.Send(SelectedDump.PawnTest);
+                S2CPawnGetMypawnDataRes res = new S2CPawnGetMypawnDataRes(Server.AssetRepository.MyPawnAsset, req.Structure);
+                client.Send(res);
         }
     }
 }
