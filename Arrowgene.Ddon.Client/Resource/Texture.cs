@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Logging;
 
@@ -8,6 +9,11 @@ namespace Arrowgene.Ddon.Client.Resource
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(Texture));
 
+        public const string DdsHeaderMagic = "DDS ";
+        public const string TexHeaderMagic = "TEX\0";
+        public const ushort DdonTexHeaderVersion = 0x9D;
+        public const ushort DddaTexHeaderVersion = 0x99;
+
         public TexHeader Header;
         public byte[] HeaderA { get; set; }
         public byte[] HeaderB { get; set; }
@@ -15,15 +21,77 @@ namespace Arrowgene.Ddon.Client.Resource
 
         protected override void ReadResource(IBuffer buffer)
         {
-            //uint fileSize = (uint) org.Length;
+            if (Magic == TexHeaderMagic)
+            {
+                ReadTex(buffer);
+            }
+            else if (Magic == DdsHeaderMagic)
+            {
+                ReadDds(buffer);
+            }
+        }
 
+        public void SaveDds(string path)
+        {
+            GenerateDdsHeader(out DirectXTexUtility.DDSHeader ddsHeader, out DirectXTexUtility.DX10Header dx10Header);
+            byte[] ddsFileHeader = DirectXTexUtility.EncodeDDSHeader(ddsHeader, dx10Header);
+            StreamBuffer sb = new StreamBuffer();
+            sb.WriteBytes(ddsFileHeader);
+            sb.WriteBytes(Data);
+            File.WriteAllBytes(path, sb.GetAllBytes());
+        }
+
+        public void SaveTex(string path)
+        {
+            StreamBuffer sb = new StreamBuffer();
+            sb.WriteBytes(Encoding.UTF8.GetBytes(TexHeaderMagic));
+
+            uint header4 = Header.Version & 0xfff;
+
+
+            //Header.Version = header4 & 0xfff;
+            //   uint a1 = header8 >> 0x6;
+            //   uint t = header4 >> 0x18;
+            //   uint t1 = t & 0xF;
+
+            //   uint a1 = header8 >> 0x6;
+            //   uint a2 = a1 & 0x1FFF;
+            //   Header.Width = a2 << (byte) t1;
+
+            //   uint aa1 = header8 >> 0x13;
+            //   Header.Height = aa1 << (byte) t1;
+
+            //   uint aa2 = header12 >> 0x10;
+            //   uint aa3 = aa2 & 0x1FFF;
+            //   Header.Depth = aa3 << (byte) t1;
+
+            //   Header.PixelFormat = (TexPixelFormat) ((header12 >> (1 * 8)) & 0xFF);
+
+            //   if ((header4 & 0xF0000000) == 0x60000000)
+            //   {
+            //       HeaderA = ReadBytes(buffer, 0x6C); // &this->mSHFactor,
+            //   }
+
+            //      Header.TextureArraySize = (byte) (header12 & 0xFF);
+            //      Header.MipMapCount = header8 & 0x3F;
+            //      uint layerCount = Header.TextureArraySize * Header.MipMapCount; // layer count
+
+
+            sb.WriteBytes(HeaderA);
+            sb.WriteBytes(HeaderB);
+            sb.WriteBytes(Data);
+            File.WriteAllBytes(path, sb.GetAllBytes());
+        }
+
+        private void ReadTex(IBuffer buffer)
+        {
             uint header4 = ReadUInt32(buffer);
             uint header8 = ReadUInt32(buffer);
             uint header12 = ReadUInt32(buffer);
 
             Header = new TexHeader();
 
-            // int version = (int) (header4 & 0xfff);
+            Header.Version = header4 & 0xfff;
             // int alpha_flag = (int) ((header4 >> 12) & 0xfff);
             // int shift = (int) ((header4 >> 24) & 0xf);
             // int unk2 = (int) ((header4 >> 28) & 0xf);
@@ -78,14 +146,38 @@ namespace Arrowgene.Ddon.Client.Resource
             Data = buffer.ReadBytes(buffer.Size - buffer.Position);
         }
 
-        public void SaveDds(string path)
+        private void ReadDds(IBuffer buffer)
         {
-            GenerateDdsHeader(out DirectXTexUtility.DDSHeader ddsHeader, out DirectXTexUtility.DX10Header dx10Header);
-            byte[] ddsFileHeader = DirectXTexUtility.EncodeDDSHeader(ddsHeader, dx10Header);
-            StreamBuffer sb = new StreamBuffer();
-            sb.WriteBytes(ddsFileHeader);
-            sb.WriteBytes(Data);
-            File.WriteAllBytes(path, sb.GetAllBytes());
+            Header = new TexHeader();
+            Header.Version = DdonTexHeaderVersion; // TODO support DDDA ?
+
+
+            byte[] ddsHeaderByes = buffer.ReadBytes(0x7C);
+            DirectXTexUtility.DDSHeader ddsHeader = DirectXTexUtility.FromBytes<DirectXTexUtility.DDSHeader>(
+                ddsHeaderByes
+            );
+            Header.Width = ddsHeader.Width;
+            Header.Height = ddsHeader.Height;
+            Header.Depth = ddsHeader.Depth;
+            Header.MipMapCount = ddsHeader.MipMapCount;
+
+            if (ddsHeader.PixelFormat.FourCC == DirectXTexUtility.PixelFormats.DX10.FourCC)
+            {
+                byte[] dx10HeaderByes = buffer.ReadBytes(0x14);
+                DirectXTexUtility.DX10Header dx10Header = DirectXTexUtility.FromBytes<DirectXTexUtility.DX10Header>(
+                    dx10HeaderByes
+                );
+                Header.PixelFormat = FromDxGiFormat(dx10Header.Format);
+                Header.TextureArraySize = (byte) dx10Header.ArraySize;
+            }
+            else
+            {
+                Header.PixelFormat = FromDdsPixelFormat(ddsHeader.PixelFormat);
+            }
+
+            HeaderA = new byte[0];
+            HeaderB = new byte[0];
+            Data = buffer.ReadBytes(buffer.Size - buffer.Position);
         }
 
         private void GenerateDdsHeader(out DirectXTexUtility.DDSHeader ddsHeader,
@@ -151,6 +243,22 @@ namespace Arrowgene.Ddon.Client.Resource
             }
         }
 
+        private TexPixelFormat FromDdsPixelFormat(DirectXTexUtility.DDSHeader.DDSPixelFormat ddsPixelFormat)
+        {
+            if (ddsPixelFormat.FourCC == DirectXTexUtility.PixelFormats.DXT1.FourCC)
+            {
+                return TexPixelFormat.FORMAT_BC1_UNORM_SRGB;
+            }
+
+            if (ddsPixelFormat.FourCC == DirectXTexUtility.PixelFormats.DXT5.FourCC)
+            {
+                return TexPixelFormat.FORMAT_BCX_RGBI_SRGB;
+            }
+
+            Logger.Error($"FromDdsPixelFormat::DDSPixelFormat:{ddsPixelFormat} not handled");
+            return TexPixelFormat.FORMAT_UNKNOWN;
+        }
+
         private DirectXTexUtility.DXGIFormat ToDxGiFormat(TexPixelFormat texPixelFormat)
         {
             switch (texPixelFormat)
@@ -160,6 +268,18 @@ namespace Arrowgene.Ddon.Client.Resource
                 default:
                     Logger.Error($"ToDxGiFormat::TexPixelFormat:{texPixelFormat} not handled");
                     return DirectXTexUtility.DXGIFormat.UNKNOWN;
+            }
+        }
+
+        private TexPixelFormat FromDxGiFormat(DirectXTexUtility.DXGIFormat dxgiFormat)
+        {
+            switch (dxgiFormat)
+            {
+                case DirectXTexUtility.DXGIFormat.BC1UNORMSRGB: return TexPixelFormat.FORMAT_BC1_UNORM_SRGB;
+                case DirectXTexUtility.DXGIFormat.BC3UNORMSRGB: return TexPixelFormat.FORMAT_BCX_RGBI_SRGB;
+                default:
+                    Logger.Error($"FromDxGiFormat::DXGIFormat:{dxgiFormat} not handled");
+                    return TexPixelFormat.FORMAT_UNKNOWN;
             }
         }
 
@@ -174,6 +294,7 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public struct TexHeader
         {
+            public uint Version;
             public uint Height;
             public uint Width;
             public uint Depth;

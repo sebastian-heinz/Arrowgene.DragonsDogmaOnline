@@ -177,7 +177,7 @@ namespace Arrowgene.Ddon.Client
         /// <summary>
         /// Texture Dimension
         /// </summary>
-        public enum TexDimension
+        public enum TexDimension : uint
         {
             TEXTURE1D = 2,
             TEXTURE2D = 3,
@@ -398,7 +398,7 @@ namespace Arrowgene.Ddon.Client
                 public uint GBitMask;
                 public uint BBitMask;
                 public uint ABitMask;
-                
+
                 /// <summary>
                 /// Creates a new DDS Pixel Format
                 /// </summary>
@@ -531,6 +531,48 @@ namespace Arrowgene.Ddon.Client
             // Done
             return destination;
         }
+
+        public static T FromBytes<T>(byte[] arr) where T : struct
+        {
+            T str = default(T);
+            GCHandle h = default(GCHandle);
+            try
+            {
+                h = GCHandle.Alloc(arr, GCHandleType.Pinned);
+                str = Marshal.PtrToStructure<T>(h.AddrOfPinnedObject());
+            }
+            finally
+            {
+                if (h.IsAllocated)
+                {
+                    h.Free();
+                }
+            }
+
+            return str;
+        }
+
+        public static byte[] GetBytes<T>(T str)
+        {
+            int size = Marshal.SizeOf(str);
+            byte[] arr = new byte[size];
+            GCHandle h = default(GCHandle);
+            try
+            {
+                h = GCHandle.Alloc(arr, GCHandleType.Pinned);
+                Marshal.StructureToPtr<T>(str, h.AddrOfPinnedObject(), false);
+            }
+            finally
+            {
+                if (h.IsAllocated)
+                {
+                    h.Free();
+                }
+            }
+
+            return arr;
+        }
+
 
         /// <summary>
         /// Generates a FourCC Integer from Pixel Format Characters

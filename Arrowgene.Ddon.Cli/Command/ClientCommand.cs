@@ -33,6 +33,11 @@ namespace Arrowgene.Ddon.Cli.Command
                     TexToDds(fileInfo);
                     return CommandResultType.Exit;
                 }
+                if (".dds".Equals(fileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    DdsToTex(fileInfo);
+                    return CommandResultType.Exit;
+                }
             }
             
             DirectoryInfo romDirectory = new DirectoryInfo(parameter.Arguments[0]);
@@ -165,7 +170,14 @@ namespace Arrowgene.Ddon.Cli.Command
             Texture texture = new Texture();
             texture.Open(fileInfo.FullName);
             texture.SaveDds($"{fileInfo.FullName}.dds");
-            
+        }
+
+        public void DdsToTex(FileInfo fileInfo)
+        {
+            Texture texture = new Texture();
+            texture.Open(fileInfo.FullName);
+            texture.SaveTex($"{fileInfo.FullName}.tex");
+                    
             //   Texture tex = ArcArchive.GetResource<Texture>(
             //       romDirectory,
             //       "game_common.arc",
@@ -191,9 +203,6 @@ namespace Arrowgene.Ddon.Cli.Command
             //   string p1 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/detail_sysfont_AM_NOMIP.tex";
             //   Texture t1 = new Texture();
             //   t1.Open(p1);
-
-
-            int i = 1;
         }
 
         public void Shutdown()
