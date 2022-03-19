@@ -6,16 +6,16 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataGPCourseValid()
         {
-            ID = 0;
-            CourseID = 0;
+            Id = 0;
+            CourseId = 0;
             NameA = "";
             NameB = "";
             StartTime = 0;
             EndTime = 0;
         }
 
-        public uint ID;
-        public uint CourseID;
+        public uint Id;
+        public uint CourseId;
         public string NameA;
         public string NameB;
         public ulong StartTime;
@@ -26,8 +26,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataGPCourseValid obj)
         {
-            WriteUInt32(buffer, obj.ID);
-            WriteUInt32(buffer, obj.CourseID);
+            WriteUInt32(buffer, obj.Id);
+            WriteUInt32(buffer, obj.CourseId);
             WriteMtString(buffer, obj.NameA);
             WriteMtString(buffer, obj.NameB);
             WriteUInt64(buffer, obj.StartTime); // TODO verify endianness big
@@ -37,8 +37,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public override CDataGPCourseValid Read(IBuffer buffer)
         {
             CDataGPCourseValid obj = new CDataGPCourseValid();
-            obj.ID = ReadUInt32(buffer);
-            obj.CourseID = ReadUInt32(buffer);
+            obj.Id = ReadUInt32(buffer);
+            obj.CourseId = ReadUInt32(buffer);
             obj.NameA = ReadMtString(buffer);
             obj.NameB = ReadMtString(buffer);
             obj.StartTime = ReadUInt64(buffer);

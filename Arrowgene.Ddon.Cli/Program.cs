@@ -45,6 +45,17 @@ namespace Arrowgene.Ddon.Cli
             PacketId.L2C_CLIENT_CHALLENGE_RES
         };
 
+        // A list of packet Ids to always ignore, regardless of setting
+        private static HashSet<PacketId> IgnorePacketIds = new HashSet<PacketId>()
+        {
+            new PacketId(3, 3, 16, ""),
+            new PacketId(6, 25, 16, ""),
+            PacketId.C2S_CONNECTION_PING_REQ,
+            PacketId.S2C_CONNECTION_PING_RES,
+            PacketId.C2L_PING_REQ,
+            PacketId.L2C_PING_RES,
+        };
+
         private static void Main(string[] args)
         {
             Console.WriteLine("Program started");
@@ -80,8 +91,7 @@ namespace Arrowgene.Ddon.Cli
             AddCommand(new ShowCommand());
             AddCommand(new ServerCommand());
             AddCommand(new HelpCommand(_commands));
-            AddCommand(new BruteForceCommand());
-            AddCommand(new PcapDecryptCommand());
+            AddCommand(new ClientCommand());
         }
 
         private void RunArguments(string[] arguments)
@@ -270,6 +280,21 @@ namespace Arrowgene.Ddon.Cli
         {
             Log log = e.Log;
             LogLevel logLevel = log.LogLevel;
+            
+            
+            if (logLevel == LogLevel.Debug || logLevel == LogLevel.Info)
+            {
+                if(log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Server.Kestrel"))
+                {
+                    // ignore internal web server logs
+                    return; 
+                }
+                if (log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Route.WebRouter"))
+                {
+                    // ignore web route logs
+                    return;
+                }
+            }
 
             ConsoleColor consoleColor;
             switch (logLevel)
@@ -288,8 +313,37 @@ namespace Arrowgene.Ddon.Cli
                     break;
             }
 
-            Packet packet = e.Log.Tag as Packet;
-            if (packet != null)
+            if (e.Log.Tag is IStructurePacket structurePacket)
+            {
+                switch (structurePacket.Source)
+                {
+                    case PacketSource.Client:
+                        consoleColor = ConsoleColor.Green;
+                        break;
+                    case PacketSource.Server:
+                        consoleColor = ConsoleColor.Yellow;
+                        break;
+                    case PacketSource.Unknown:
+                        consoleColor = ConsoleColor.DarkRed;
+                        break;
+                }
+
+                if (logLevel == LogLevel.Error)
+                {
+                    consoleColor = ConsoleColor.Red;
+                }
+
+                if (logLevel == LogLevel.Debug && IgnorePacketIds.Contains(structurePacket.Id))
+                {
+                    return;
+                }
+
+                if (PrintPacketIds.Contains(structurePacket.Id))
+                {
+                    log = new Log(log.LogLevel, structurePacket.ToString(), log.Tag, log.LoggerIdentity, log.LoggerName);
+                }
+            }
+            else if (e.Log.Tag is Packet packet)
             {
                 switch (packet.Source)
                 {
@@ -302,6 +356,16 @@ namespace Arrowgene.Ddon.Cli
                     case PacketSource.Unknown:
                         consoleColor = ConsoleColor.DarkRed;
                         break;
+                }
+                
+                if (logLevel == LogLevel.Error)
+                {
+                    consoleColor = ConsoleColor.Red;
+                }
+
+                if (logLevel == LogLevel.Debug && IgnorePacketIds.Contains(packet.Id))
+                {
+                    return;
                 }
 
                 if (PrintPacketIds.Contains(packet.Id))
@@ -322,7 +386,7 @@ namespace Arrowgene.Ddon.Cli
                 Console.WriteLine(text);
                 Console.ResetColor();
                 string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
-                File.WriteAllText(filePath, text);
+                File.AppendAllText(filePath, text);
             }
         }
     }

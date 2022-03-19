@@ -15,8 +15,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             JumpLocation = new CDataJumpLocation();
         }
 
-        public class Serializer : EntitySerializer<S2CWarpGetReturnLocationRes>
-        {
+        public class Serializer : PacketEntitySerializer<S2CWarpGetReturnLocationRes>
+        {            
+
             public override void Write(IBuffer buffer, S2CWarpGetReturnLocationRes obj)
             {
                 WriteServerResponse(buffer, obj);

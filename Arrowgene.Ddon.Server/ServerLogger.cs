@@ -80,7 +80,7 @@ namespace Arrowgene.Ddon.Server
             }
         }
 
-        public void LogPacket(Client client, Packet packet)
+        public void LogPacket(Client client, IPacket packet)
         {
             switch (packet.Source)
             {
@@ -89,6 +89,15 @@ namespace Arrowgene.Ddon.Server
                     if (!_setting.LogIncomingPackets)
                     {
                         return;
+                    }
+
+                    if (_setting.LogIncomingPacketStructure)
+                    {
+                        if (packet is IStructurePacket structurePacket)
+                        {
+                            Write(LogLevel.Debug,
+                                $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                        }
                     }
 
                     if (!_setting.LogIncomingPacketPayload)
@@ -104,6 +113,15 @@ namespace Arrowgene.Ddon.Server
                     if (!_setting.LogOutgoingPackets)
                     {
                         return;
+                    }
+
+                    if (_setting.LogOutgoingPacketStructure)
+                    {
+                        if (packet is IStructurePacket structurePacket)
+                        {
+                            Write(LogLevel.Debug,
+                                $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                        }
                     }
 
                     if (!_setting.LogOutgoingPacketPayload)
@@ -125,6 +143,18 @@ namespace Arrowgene.Ddon.Server
 
 
             Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{packet}", packet);
+        }
+
+        public void LogPacketError<TClient>(TClient client, IPacket packet) where TClient : Client
+        {
+            Write(LogLevel.Error, $"PACKET ERROR:{Environment.NewLine}{client.Identity}{Environment.NewLine}{packet}",
+                packet);
+        }
+
+        public void LogUnhandledPacket<TClient>(TClient client, IPacket packet) where TClient : Client
+        {
+            Write(LogLevel.Error,
+                $"UNHANDLED PACKET:{Environment.NewLine}{client.Identity}{Environment.NewLine}{packet}", packet);
         }
     }
 }

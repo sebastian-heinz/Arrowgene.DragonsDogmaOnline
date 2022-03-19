@@ -9,8 +9,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public override PacketId Id => PacketId.S2C_CONNECTION_MOVE_OUT_SERVER_RES;
 
-        public class Serializer : EntitySerializer<S2CConnectionMoveOutServerRes>
+        public class Serializer : PacketEntitySerializer<S2CConnectionMoveOutServerRes>
         {
+
             public override void Write(IBuffer buffer, S2CConnectionMoveOutServerRes obj)
             {
                 WriteServerResponse(buffer, obj);

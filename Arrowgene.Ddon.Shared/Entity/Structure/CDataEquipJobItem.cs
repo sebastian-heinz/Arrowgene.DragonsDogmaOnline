@@ -2,26 +2,32 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataEquipJobItem
+    public class CDataEquipJobItem
     {
-        public uint JobItemID;
-        public byte EquipSlotNo;
-    }
-
-    public class CDataEquipJobItemSerializer : EntitySerializer<CDataEquipJobItem>
-    {
-        public override void Write(IBuffer buffer, CDataEquipJobItem obj)
+        public CDataEquipJobItem()
         {
-            WriteUInt32(buffer, obj.JobItemID);
-            WriteByte(buffer, obj.EquipSlotNo);
+            JobItemId = 0;
+            EquipSlotNo = 0;
         }
 
-        public override CDataEquipJobItem Read(IBuffer buffer)
+        public uint JobItemId { get; set; }
+        public byte EquipSlotNo { get; set; }
+
+        public class Serializer : EntitySerializer<CDataEquipJobItem>
         {
-            CDataEquipJobItem obj = new CDataEquipJobItem();
-            obj.JobItemID = ReadUInt32(buffer);
-            obj.EquipSlotNo = ReadByte(buffer);
-            return obj;
+            public override void Write(IBuffer buffer, CDataEquipJobItem obj)
+            {
+                WriteUInt32(buffer, obj.JobItemId);
+                WriteByte(buffer, obj.EquipSlotNo);
+            }
+
+            public override CDataEquipJobItem Read(IBuffer buffer)
+            {
+                CDataEquipJobItem obj = new CDataEquipJobItem();
+                obj.JobItemId = ReadUInt32(buffer);
+                obj.EquipSlotNo = ReadByte(buffer);
+                return obj;
+            }
         }
     }
 }

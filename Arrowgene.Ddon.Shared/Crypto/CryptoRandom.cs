@@ -229,7 +229,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
         /// <summary>
         /// Gets one random unsigned 32bit integer in a thread safe manner.
         /// </summary>
-        private uint GetRandomUInt32()
+        public uint GetRandomUInt32()
         {
             lock (this)
             {

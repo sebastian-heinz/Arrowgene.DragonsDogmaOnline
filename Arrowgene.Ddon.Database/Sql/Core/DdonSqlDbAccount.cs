@@ -57,21 +57,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
 
             account.Id = (int) autoIncrement;
-
-            // TODO TEMP RUMI - ADD Dump Character for entering world
-            Rumi(account.Id);
-            // TODO TEMP RUMI
-
+            
             return account;
         }
-
-        private void Rumi(int accountId)
-        {
-            string sql = "INSERT INTO `ddon_character` (id,account_id,first_name,last_name,created,sex,voice,voice_pitch,personality,speech_freq,body_type,hair,beard,makeup,scar,eye_preset_no,nose_preset_no,mouth_preset_no,eyebrow_tex_no,color_skin,color_hair,color_beard,color_eyebrow,color_r_eye,color_l_eye,color_makeup,sokutobu,hitai,mimi_jyouge,kannkaku,mabisasi_jyouge,hanakuchi_jyouge,ago_saki_haba,ago_zengo,ago_saki_jyouge,hitomi_ookisa,me_ookisa,me_kaiten,mayu_kaiten,mimi_ookisa,mimi_muki,elf_mimi,miken_takasa,miken_haba,hohobone_ryou,hohobone_jyouge,hohoniku,erahone_jyouge,erahone_haba,hana_jyouge,hana_haba,hana_takasa,hana_kakudo,kuchi_haba,kuchi_atsusa,eyebrow_uv_offset_x,eyebrow_uv_offset_y,wrinkle,wrinkle_albedo_blend_rate,wrinkle_detail_normal_power,muscle_albedo_blend_rate,muscle_detail_normal_power,height,head_size,neck_offset,neck_scale,upper_body_scale_x,belly_size,teat_scale,tekubi_size,koshi_offset,koshi_size,ankle_offset,fat,muscle,motion_filter,hp,stamina,revive_point,max_hp,max_stamina,white_hp,gain_hp,gain_stamina,gain_attack,gain_defense,gain_magic_attack,gain_magic_defense)" +
-                         "VALUES (2117592," + accountId + ",'Asd','Sdf','2022-01-20 20:50:42.7662046',1,1,30000,1,1,0,25,18,0,0,0,0,0,0,0,41,0,41,18,18,0,30000,30000,30000,29720,29701,30002,29999,29997,30000,29998,29885,30000,30000,29850,30000,30000,30000,29997,29950,29999,29899,30280,29640,30002,29919,30000,30000,29653,29891,30001,29610,30000,30000,30000,30000,30000,48000,40603,30020,38500,40510,39803,40000,40000,28000,29100,29599,29500,31500,29000,0,0,0,0,0,0,0,0,0,0,0,0);";
-            Execute(sql);
-        }
-
+        
         public Account SelectAccountByName(string accountName)
         {
             accountName = accountName.ToLowerInvariant();

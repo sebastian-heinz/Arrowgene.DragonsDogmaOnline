@@ -1,5 +1,5 @@
-using System;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public PacketId Id => PacketId.C2S_LOBBY_LOBBY_CHAT_MSG_REQ;
 
-        public Structure.CDataLobbyChatMsgType.Type Type { get; set; } 
+        public LobbyChatMsgType Type { get; set; } 
         public uint Unk2 { get; set; } // Target ID?
         public byte Unk3 { get; set; }
         public uint Unk4 { get; set; }
@@ -24,7 +24,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             StrMessage = string.Empty;
         }
 
-        public class Serializer : EntitySerializer<C2SLobbyChatMsgReq> {
+        public class Serializer : PacketEntitySerializer<C2SLobbyChatMsgReq> {
+            
+            
             public override void Write(IBuffer buffer, C2SLobbyChatMsgReq obj)
             {
                 WriteByte(buffer, (byte) obj.Type);
@@ -38,7 +40,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SLobbyChatMsgReq Read(IBuffer buffer)
             {
                 C2SLobbyChatMsgReq obj = new C2SLobbyChatMsgReq();
-                obj.Type = (Structure.CDataLobbyChatMsgType.Type) ReadByte(buffer);
+                obj.Type = (LobbyChatMsgType) ReadByte(buffer);
                 obj.Unk2 = ReadUInt32(buffer);
                 obj.Unk3 = ReadByte(buffer);
                 obj.Unk4 = ReadUInt32(buffer);

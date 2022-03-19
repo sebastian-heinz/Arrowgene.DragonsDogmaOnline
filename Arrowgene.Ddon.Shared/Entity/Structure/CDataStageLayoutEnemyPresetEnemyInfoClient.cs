@@ -1,30 +1,33 @@
 using Arrowgene.Buffers;
 
-namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
+namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
+    /// <summary>
+    /// CDataStageLayoutEnemyPresetEnemyInfoClient
+    /// </summary>
     public class CDataStageLayoutEnemyPresetEnemyInfoClient
     {
         public CDataStageLayoutEnemyPresetEnemyInfoClient()
         {
-            EnemyId=0;
-            NamedEnemyParamsId=0;
-            RaidBossId=0;
-            Scale=0;
-            Lv=0;
-            HmPresetNo=0;
-            StartThinkTblNo=0;
-            RepopNum=0;
-            RepopCount=0;
-            EnemyTargetTypesId=0;
-            MontageFixNo=0;
-            SetType=0;
-            InfectionType=0;
-            IsBossGauge=false;
-            IsBossBGM=false;
-            IsManualSet=false;
-            IsAreaBoss=false;
-            IsBloodEnemy=false;
-            Unk0=false;
+            EnemyId = 0;
+            NamedEnemyParamsId = 0;
+            RaidBossId = 0;
+            Scale = 0;
+            Lv = 0;
+            HmPresetNo = 0;
+            StartThinkTblNo = 0;
+            RepopNum = 0;
+            RepopCount = 0;
+            EnemyTargetTypesId = 0;
+            MontageFixNo = 0;
+            SetType = 0;
+            InfectionType = 0;
+            IsBossGauge = false;
+            IsBossBGM = false;
+            IsManualSet = false;
+            IsAreaBoss = false;
+            IsBloodEnemy = false;
+            IsHighOrbEnemy = false;
         }
 
         public uint EnemyId { get; set; }
@@ -45,7 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public bool IsManualSet { get; set; }
         public bool IsAreaBoss { get; set; }
         public bool IsBloodEnemy { get; set; }
-        public bool Unk0 { get; set; } // Unknown. Not in PS4. The last was BloodEnemy, this could be High Orbs?
+        public bool IsHighOrbEnemy { get; set; } // Unknown. Not in PS4. The last was BloodEnemy, this could be High Orbs?
 
         public class Serializer : EntitySerializer<CDataStageLayoutEnemyPresetEnemyInfoClient>
         {
@@ -69,7 +72,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteBool(buffer, obj.IsManualSet);
                 WriteBool(buffer, obj.IsAreaBoss);
                 WriteBool(buffer, obj.IsBloodEnemy);
-                WriteBool(buffer, obj.Unk0);
+                WriteBool(buffer, obj.IsHighOrbEnemy);
             }
 
             public override CDataStageLayoutEnemyPresetEnemyInfoClient Read(IBuffer buffer)
@@ -93,7 +96,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.IsManualSet = ReadBool(buffer);
                 obj.IsAreaBoss = ReadBool(buffer);
                 obj.IsBloodEnemy = ReadBool(buffer);
-                obj.Unk0 = ReadBool(buffer);
+                obj.IsHighOrbEnemy = ReadBool(buffer);
                 return obj;
             }
         }

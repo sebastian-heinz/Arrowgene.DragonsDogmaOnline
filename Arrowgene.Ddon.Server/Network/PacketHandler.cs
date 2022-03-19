@@ -15,6 +15,6 @@ namespace Arrowgene.Ddon.Server.Network
         protected IDatabase Database { get; }
 
         public abstract PacketId Id { get; }
-        public abstract void Handle(TClient client, Packet packet);
+        public abstract void Handle(TClient client, IPacket packet);
     }
 }

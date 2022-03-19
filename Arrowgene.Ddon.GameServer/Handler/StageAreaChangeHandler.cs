@@ -4,6 +4,8 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -19,23 +21,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SStageAreaChangeReq> packet)
         {
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
-            res.StageNo = convertIdToStageNo(packet.Structure.StageId);
+            res.StageNo = ConvertIdToStageNo(packet.Structure.StageId);
             res.IsBase = false;
 
-            Logger.Debug(client, Util.ToXML(res));
-
+            client.StageNo = res.StageNo;
+            client.Stage = new StageId(packet.Structure.StageId, 0, 0);
+            
+            Logger.Info($"StageNo:{client.StageNo} StageId{packet.Structure.StageId}");
+            
             client.Send(res);
         }
 
-        private uint convertIdToStageNo(uint stageId)
+        private uint ConvertIdToStageNo(uint stageId)
         {
             foreach(CDataStageInfo stageInfo in (Server as DdonGameServer).StageList)
             {
-                if(stageInfo.ID == stageId)
+                if(stageInfo.Id == stageId)
                     return stageInfo.StageNo;
             }
 
-            Logger.Error($"No stage found with ID ${stageId}");
+            Logger.Error($"No stage found with Id:{stageId}");
             return 0; // TODO: Maybe throw an exception?
         }
     }

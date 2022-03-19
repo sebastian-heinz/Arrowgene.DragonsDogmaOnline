@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public CDataLoginSetting LoginSetting;
 
-        public class Serializer : EntitySerializer<L2CGetLoginSettingsRes>
+        public class Serializer : PacketEntitySerializer<L2CGetLoginSettingsRes>
         {
             public override void Write(IBuffer buffer, L2CGetLoginSettingsRes obj)
             {

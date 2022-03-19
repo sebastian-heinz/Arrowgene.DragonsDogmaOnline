@@ -11,8 +11,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public List<CDataStageInfo> StageList { get; set; }
 
-        public class Serializer : EntitySerializer<S2CStageGetStageListRes>
+        public class Serializer : PacketEntitySerializer<S2CStageGetStageListRes>
         {
+
             public override void Write(IBuffer buffer, S2CStageGetStageListRes obj)
             {
                 WriteServerResponse(buffer, obj);

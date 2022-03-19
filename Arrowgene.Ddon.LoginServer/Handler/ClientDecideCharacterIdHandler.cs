@@ -2,6 +2,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
@@ -18,10 +19,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         {
             Logger.Debug(client,
                 $"C2L_DECIDE_CHARACTER_ID_REQ:\n" +
-                $"    CharacterID: {packet.Structure.CharacterId}\n" +
+                $"    CharacterId: {packet.Structure.CharacterId}\n" +
                 $"    ClientVersion: {packet.Structure.ClientVersion}\n" +
                 $"    Type: {packet.Structure.Type}\n" +
-                $"    RotationServerID: {packet.Structure.RotationServerId}\n" +
+                $"    RotationServerId: {packet.Structure.RotationServerId}\n" +
                 $"    WaitNum: {packet.Structure.WaitNum}\n" +
                 $"    Counter: {packet.Structure.Counter}\n"
             );
@@ -43,7 +44,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             L2CNextConnectionServerNtc serverNtc = new L2CNextConnectionServerNtc();
             serverNtc.ServerList = new CDataGameServerListInfo
             {
-                ID = 17,
+                Id = 17,
                 Name = "サーバー017",
                 Brief = "",
                 TrafficName = "少なめ",

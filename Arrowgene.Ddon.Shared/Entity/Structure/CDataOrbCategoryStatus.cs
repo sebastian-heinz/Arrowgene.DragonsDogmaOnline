@@ -2,9 +2,9 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public struct CDataOrbCategoryStatus
+    public class CDataOrbCategoryStatus
     {
-        public byte CategoryID;
+        public byte CategoryId;
         public byte ReleaseNum;
     }
 
@@ -12,14 +12,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataOrbCategoryStatus obj)
         {
-            WriteByte(buffer, obj.CategoryID);
+            WriteByte(buffer, obj.CategoryId);
             WriteByte(buffer, obj.ReleaseNum);
         }
 
         public override CDataOrbCategoryStatus Read(IBuffer buffer)
         {
             CDataOrbCategoryStatus obj = new CDataOrbCategoryStatus();
-            obj.CategoryID = ReadByte(buffer);
+            obj.CategoryId = ReadByte(buffer);
             obj.ReleaseNum = ReadByte(buffer);
             return obj;
         }

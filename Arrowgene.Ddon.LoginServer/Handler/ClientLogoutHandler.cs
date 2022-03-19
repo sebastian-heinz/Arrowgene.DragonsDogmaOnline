@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override PacketId Id => PacketId.C2L_LOGOUT_REQ;
 
-        public override void Handle(LoginClient client, Packet packet)
+        public override void Handle(LoginClient client, IPacket packet)
         {
             ServerRes res = new ServerRes(PacketId.L2C_LOGOUT_RES);
             client.Send(res);

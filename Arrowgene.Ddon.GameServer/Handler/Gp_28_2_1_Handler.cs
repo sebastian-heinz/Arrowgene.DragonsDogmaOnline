@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
@@ -17,9 +17,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketId Id => PacketId.C2S_GP_28_2_1_REQ;
 
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(InGameDump.Dump_46);
+            //client.Send(InGameDump.Dump_46);
+            client.Send(SelectedDump.Dump_46_A);
         }
     }
 }

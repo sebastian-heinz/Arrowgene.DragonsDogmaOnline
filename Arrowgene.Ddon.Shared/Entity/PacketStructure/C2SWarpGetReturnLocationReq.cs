@@ -8,8 +8,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         // Doesn't have any fields
         public PacketId Id => PacketId.C2S_WARP_GET_RETURN_LOCATION_REQ;
 
-        public class Serializer : EntitySerializer<C2SWarpGetReturnLocationReq>
+        public class Serializer : PacketEntitySerializer<C2SWarpGetReturnLocationReq>
         {
+
             public override void Write(IBuffer buffer, C2SWarpGetReturnLocationReq obj)
             {
             }

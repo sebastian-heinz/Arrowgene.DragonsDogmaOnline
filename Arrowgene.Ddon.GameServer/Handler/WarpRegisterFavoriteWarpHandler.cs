@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -18,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Figure out what they do
             S2CWarpRegisterFavoriteWarpRes response = new S2CWarpRegisterFavoriteWarpRes();
             response.SlotNo = 0;
-            response.WarpPointID = 0;
+            response.WarpPointId = 0;
 
             client.Send(response);
         }

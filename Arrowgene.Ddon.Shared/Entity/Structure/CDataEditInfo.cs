@@ -4,6 +4,81 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataEditInfo
     {
+        public CDataEditInfo()
+        {
+            Sex = 1;
+            Voice = 1;
+            VoicePitch = 30000;
+            Personality = 1;
+            SpeechFreq = 1;
+            BodyType = 0;
+            Hair = 25;
+            Beard = 18;
+            Makeup = 0;
+            Scar = 0;
+            EyePresetNo = 0;
+            NosePresetNo = 0;
+            MouthPresetNo = 0;
+            EyebrowTexNo = 0;
+            ColorSkin = 0;
+            ColorHair = 41;
+            ColorBeard = 0;
+            ColorEyebrow = 41;
+            ColorREye = 18;
+            ColorLEye = 18;
+            ColorMakeup = 0;
+            Sokutobu = 30000;
+            Hitai = 30000;
+            MimiJyouge = 30000;
+            Kannkaku = 30000;
+            MabisasiJyouge = 30000;
+            HanakuchiJyouge = 30000;
+            AgoSakiHaba = 30000;
+            AgoZengo = 30000;
+            AgoSakiJyouge = 30000;
+            HitomiOokisa = 30000;
+            MeOokisa = 30000;
+            MeKaiten = 30000;
+            MayuKaiten = 30000;
+            MimiOokisa = 30000;
+            MimiMuki = 30000;
+            ElfMimi = 30000;
+            MikenTakasa = 30000;
+            MikenHaba = 30000;
+            HohoboneRyou = 30000;
+            HohoboneJyouge = 30000;
+            Hohoniku = 30000;
+            ErahoneJyouge = 30280;
+            ErahoneHaba = 29640;
+            HanaJyouge = 30002;
+            HanaHaba = 29919;
+            HanaTakasa = 30000;
+            HanaKakudo = 30000;
+            KuchiHaba = 29653;
+            KuchiAtsusa = 29891;
+            EyebrowUVOffsetX = 30001;
+            EyebrowUVOffsetY = 29610;
+            Wrinkle = 30000;
+            WrinkleAlbedoBlendRate = 30000;
+            WrinkleDetailNormalPower = 30000;
+            MuscleAlbedoBlendRate = 30000;
+            MuscleDetailNormalPower = 30000;
+            Height = 48000;
+            HeadSize = 40603;
+            NeckOffset = 30020;
+            NeckScale = 38500;
+            UpperBodyScaleX = 40510;
+            BellySize = 39803;
+            TeatScale = 40000;
+            TekubiSize = 40000;
+            KoshiOffset = 28000;
+            KoshiSize = 29100;
+            AnkleOffset = 29599;
+            Fat = 29500;
+            Muscle = 31500;
+            MotionFilter = 29000;
+        }
+
         public byte Sex;
         public byte Voice;
         public ushort VoicePitch;
@@ -101,7 +176,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteByte(buffer, obj.ColorEyebrow);
             WriteByte(buffer, obj.ColorREye); //20
             WriteByte(buffer, obj.ColorLEye);
-            WriteByte(buffer, obj.ColorMakeup); 
+            WriteByte(buffer, obj.ColorMakeup);
             WriteUInt16(buffer, obj.Sokutobu);
             WriteUInt16(buffer, obj.Hitai);
             WriteUInt16(buffer, obj.MimiJyouge);

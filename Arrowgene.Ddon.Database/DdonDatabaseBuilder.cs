@@ -17,19 +17,7 @@ namespace Arrowgene.Ddon.Database
             {
                 case DatabaseType.SQLite:
                     string sqLitePath = Path.Combine(settings.SqLiteFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
-                    if (settings.WipeOnStartup)
-                    {
-                        try
-                        {
-                            File.Delete(sqLitePath);
-                        }
-                        catch (Exception)
-                        {
-                            // ignored
-                        }
-                    }
-
-                    database = BuildSqLite(settings.SqLiteFolder, sqLitePath);
+                    database = BuildSqLite(settings.SqLiteFolder, sqLitePath, settings.WipeOnStartup);
                     break;
             }
 
@@ -42,14 +30,25 @@ namespace Arrowgene.Ddon.Database
             return database;
         }
 
-        public static DdonSqLiteDb BuildSqLite(string sqLiteFolder, string sqLitePath)
+        public static DdonSqLiteDb BuildSqLite(string sqLiteFolder, string sqLitePath, bool deleteIfExists)
         {
+            if (deleteIfExists)
+            {
+                try
+                {
+                    File.Delete(sqLitePath);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+
             DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath);
             if (db.CreateDatabase())
             {
                 ScriptRunner scriptRunner = new ScriptRunner(db);
                 scriptRunner.Run(Path.Combine(sqLiteFolder, "Script/schema_sqlite.sql"));
-                scriptRunner.Run(Path.Combine(sqLiteFolder, "Script/data_account.sql"));
             }
 
             return db;

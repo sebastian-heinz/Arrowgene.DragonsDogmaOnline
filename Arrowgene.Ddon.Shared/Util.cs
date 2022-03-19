@@ -127,6 +127,18 @@ namespace Arrowgene.Ddon.Shared
             ret = ret += Environment.NewLine;
             return ret;
         }
+        
+        public static string UnrootPath(string path)
+        {
+            // https://stackoverflow.com/questions/53102/why-does-path-combine-not-properly-concatenate-filenames-that-start-with-path-di
+            if (Path.IsPathRooted(path))
+            {
+                path = path.TrimStart(Path.DirectorySeparatorChar);
+                path = path.TrimStart(Path.AltDirectorySeparatorChar);
+            }
+
+            return path;
+        }
 
         public static string ExecutingDirectory()
         {
@@ -322,23 +334,6 @@ namespace Arrowgene.Ddon.Shared
             }
 
             return dst;
-        }
-
-        public static string ToXML(object obj)
-        {
-            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(obj.GetType());
-            using (System.IO.StringWriter sw = new System.IO.StringWriter())
-            {
-                try
-                {
-                    xs.Serialize(sw, obj);
-                    return sw.ToString();
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-            }
         }
     }
 }

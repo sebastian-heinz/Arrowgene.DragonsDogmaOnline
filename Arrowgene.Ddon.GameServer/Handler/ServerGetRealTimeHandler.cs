@@ -1,12 +1,14 @@
-﻿using Arrowgene.Buffers;
+﻿using System;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ServerGetRealTimeHandler : PacketHandler<GameClient>
+    public class ServerGetRealTimeHandler : StructurePacketHandler<GameClient, C2SServerGetRealTimeReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ServerGetRealTimeHandler));
 
@@ -15,15 +17,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_SERVER_GET_REAL_TIME_REQ;
-
-        public override void Handle(GameClient client, Packet packet)
+        public override void Handle(GameClient client, StructurePacket<C2SServerGetRealTimeReq> packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteBytes(new byte[15]);
-            client.Send(new Packet(PacketId.S2C_SERVER_GET_REAL_TIME_RES, buffer.GetAllBytes()));
+            client.Send(new S2CServerGetRealTimeRes(DateTimeOffset.UtcNow));
         }
     }
 }

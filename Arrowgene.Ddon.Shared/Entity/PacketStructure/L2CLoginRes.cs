@@ -9,8 +9,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public override PacketId Id => PacketId.L2C_LOGIN_RES;
 
-        public class Serializer : EntitySerializer<L2CLoginRes>
+        public class Serializer : PacketEntitySerializer<L2CLoginRes>
         {
+
             public override void Write(IBuffer buffer, L2CLoginRes obj)
             {
                 WriteServerResponse(buffer, obj);

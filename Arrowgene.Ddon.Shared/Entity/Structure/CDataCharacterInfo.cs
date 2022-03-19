@@ -7,8 +7,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataCharacterInfo()
         {
-            CharacterID = 0;
-            UserID = 0;
+            CharacterId = 0;
+            UserId = 0;
             Version = 0;
             FirstName = "";
             LastName = "";
@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterEquipViewDataList = new List<CDataCharacterEquipData>();
             CharacterEquipJobItemList = new List<CDataEquipJobItem>();
             JewelrySlotNum = 0;
-            CharacterItemSlotInfoList = new List<CDataEquipElementUnkType2>();
+            CharacterItemSlotInfoList = new List<CDataEquipElementParam>();
             UnkCharData0 = new List<UnknownCharacterData0>();
             UnkCharData1 = new List<UnknownCharacterData1>();
             MyPawnSlotNum = 0;
@@ -40,8 +40,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             OnlineStatus = 0;
         }
 
-        public uint CharacterID;
-        public uint UserID;
+        public uint CharacterId;
+        public uint UserId;
         public uint Version;
         public string FirstName;
         public string LastName;
@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataCharacterEquipData> CharacterEquipViewDataList;
         public List<CDataEquipJobItem> CharacterEquipJobItemList;
         public byte JewelrySlotNum;
-        public List<CDataEquipElementUnkType2> CharacterItemSlotInfoList;
+        public List<CDataEquipElementParam> CharacterItemSlotInfoList;
 
         // One of these is CDataWalletPoint, can't determine which.
         public List<UnknownCharacterData0> UnkCharData0;
@@ -79,8 +79,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataCharacterInfo obj)
         {
-            WriteUInt32(buffer, obj.CharacterID);
-            WriteUInt32(buffer, obj.UserID);
+            WriteUInt32(buffer, obj.CharacterId);
+            WriteUInt32(buffer, obj.UserId);
             WriteUInt32(buffer, obj.Version);
             WriteMtString(buffer, obj.FirstName);
             WriteMtString(buffer, obj.LastName);
@@ -115,8 +115,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public override CDataCharacterInfo Read(IBuffer buffer)
         {
             CDataCharacterInfo obj = new CDataCharacterInfo();
-            obj.CharacterID = ReadUInt32(buffer);
-            obj.UserID = ReadUInt32(buffer);
+            obj.CharacterId = ReadUInt32(buffer);
+            obj.UserId = ReadUInt32(buffer);
             obj.Version = ReadUInt32(buffer);
             obj.FirstName = ReadMtString(buffer);
             obj.LastName = ReadMtString(buffer);
@@ -129,7 +129,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.CharacterEquipViewDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
             obj.CharacterEquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
             obj.JewelrySlotNum = ReadByte(buffer);
-            obj.CharacterItemSlotInfoList = ReadEntityList<CDataEquipElementUnkType2>(buffer);
+            obj.CharacterItemSlotInfoList = ReadEntityList<CDataEquipElementParam>(buffer);
             obj.UnkCharData0 = ReadEntityList<UnknownCharacterData0>(buffer);
             obj.UnkCharData1 = ReadEntityList<UnknownCharacterData1>(buffer);
             obj.MyPawnSlotNum = ReadByte(buffer);

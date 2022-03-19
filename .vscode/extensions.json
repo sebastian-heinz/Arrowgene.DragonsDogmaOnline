@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "fudge.auto-using",
+        "jeff-hykin.better-cpp-syntax",
+        "ms-dotnettools.csharp",
+        "jchannon.csharpextensions",
+        "notblank00.hexeditor"
+    ]
+}

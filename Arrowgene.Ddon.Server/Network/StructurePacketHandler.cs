@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Server.Network
 {
     public abstract class StructurePacketHandler<TClient, TReqStruct> : IPacketHandler<TClient>
         where TClient : Client
-        where TReqStruct : IPacketStructure, new()
+        where TReqStruct : class, IPacketStructure, new()
     {
         protected StructurePacketHandler(DdonServer<TClient> server)
         {
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public abstract void Handle(TClient client, StructurePacket<TReqStruct> packet);
 
-        public void Handle(TClient client, Packet packet)
+        public void Handle(TClient client, IPacket packet)
         {
             Handle(client, new StructurePacket<TReqStruct>(packet));
         }

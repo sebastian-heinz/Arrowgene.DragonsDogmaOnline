@@ -6,15 +6,15 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataArisenProfile()
         {
-            BackgroundID = 0;
+            BackgroundId = 0;
             Title = new CDataAchievementIdentifier();
-            MotionID = 0;
+            MotionId = 0;
             MotionFrameNo = 0;
         }
 
-        public byte BackgroundID;
+        public byte BackgroundId;
         public CDataAchievementIdentifier Title;
-        public ushort MotionID;
+        public ushort MotionId;
         public uint MotionFrameNo;
     }
 
@@ -22,18 +22,18 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataArisenProfile obj)
         {
-            WriteByte(buffer, obj.BackgroundID);
+            WriteByte(buffer, obj.BackgroundId);
             WriteEntity(buffer, obj.Title);
-            WriteUInt16(buffer, obj.MotionID);
+            WriteUInt16(buffer, obj.MotionId);
             WriteUInt32(buffer, obj.MotionFrameNo);
         }
 
         public override CDataArisenProfile Read(IBuffer buffer)
         {
             CDataArisenProfile obj = new CDataArisenProfile();
-            obj.BackgroundID = ReadByte(buffer);
+            obj.BackgroundId = ReadByte(buffer);
             obj.Title = ReadEntity<CDataAchievementIdentifier>(buffer);
-            obj.MotionID = ReadUInt16(buffer);
+            obj.MotionId = ReadUInt16(buffer);
             obj.MotionFrameNo = ReadUInt32(buffer);
             return obj;
         }

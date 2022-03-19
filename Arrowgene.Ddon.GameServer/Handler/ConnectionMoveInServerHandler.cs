@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -54,11 +55,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             // NTC
-            client.Send(GameFull.Dump_4);
+            client.Send(new S2CItemExtendItemSlotNtc());
             // client.Send(GameFull.Dump_5);
             //  client.Send(GameFull.Dump_6);
 
-            client.Send(GameFull.Dump_7);
+            client.Send(new S2CConnectionMoveInServerRes());
         }
     }
 }

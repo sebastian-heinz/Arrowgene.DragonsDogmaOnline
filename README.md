@@ -22,14 +22,14 @@ The project is intended for educational purpose only.
 ## 1) Clone the repository  
 `git clone https://github.com/sebastian-heinz/ddo-server.git`
 
-## 2) Install .Net Core 3.0 SDK or later  
+## 2) Install .Net 6.0 SDK or later  
 https://dotnet.microsoft.com/download
 
 ## 3) Use your IDE of choice:
 
 ## 3.1) Visual Studio
 ### Notice:
-Minimum version of "Visual Studio 2019 v16.3" or later.
+Minimum version of "Visual Studio 2022" or later.
 
 ### Open Project:
 Open the `DragonsDogmaOnline.sln`-file
@@ -44,6 +44,8 @@ Open the Project Folder:
 
 ## 3.3) IntelliJ Rider
 https://www.jetbrains.com/rider/
+### Notice:
+Minimum version of "IntelliJ Rider 2021.3" or later.
 
 ### Open Project:  
 Open the `DragonsDogmaOnline.sln`-file

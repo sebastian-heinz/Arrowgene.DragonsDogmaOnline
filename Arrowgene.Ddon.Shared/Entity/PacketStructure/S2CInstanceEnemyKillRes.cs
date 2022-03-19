@@ -16,8 +16,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint EnemyId { get; set; }
         public uint KillNum { get; set; }
 
-        public class Serializer : EntitySerializer<S2CInstanceEnemyKillRes>
+        public class Serializer : PacketEntitySerializer<S2CInstanceEnemyKillRes>
         {
+
             public override void Write(IBuffer buffer, S2CInstanceEnemyKillRes obj)
             {
                 WriteUInt32(buffer, obj.EnemyId);

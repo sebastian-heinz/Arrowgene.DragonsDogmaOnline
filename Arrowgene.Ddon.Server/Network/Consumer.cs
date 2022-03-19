@@ -66,23 +66,22 @@ namespace Arrowgene.Ddon.Server.Network
                 client = _clients[socket];
             }
 
-            List<Packet> packets = client.Receive(data);
-            foreach (Packet packet in packets)
+            List<IPacket> packets = client.Receive(data);
+            foreach (IPacket packet in packets)
             {
                 HandlePacket(client, packet);
             }
         }
 
-        private void HandlePacket(TClient client, Packet packet)
+        private void HandlePacket(TClient client, IPacket packet)
         {
             if (!_packetHandlerLookup.ContainsKey(packet.Id))
             {
-                //Logger.LogUnknownIncomingPacket(client, packet);
+                Logger.LogUnhandledPacket(client, packet);
                 return;
             }
 
             IPacketHandler<TClient> packetHandler = _packetHandlerLookup[packet.Id];
-            //Logger.LogIncomingPacket(client, packet);
             try
             {
                 packetHandler.Handle(client, packet);
@@ -90,6 +89,7 @@ namespace Arrowgene.Ddon.Server.Network
             catch (Exception ex)
             {
                 Logger.Exception(client, ex);
+                Logger.LogPacketError(client, packet);
             }
         }
 
