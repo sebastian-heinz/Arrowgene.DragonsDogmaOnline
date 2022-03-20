@@ -18,6 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public byte Unk2 { get; set; }
         public uint Unk3 { get; set; }
         public uint Unk4 { get; set; }
+        public uint Unk5 { get; set; }
         public string Message { get; set; }
 
         public S2CLobbyChatMsgNotice() {
@@ -27,6 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Unk2 = 0;
             Unk3 = 0;
             Unk4 = 0;
+            Unk5 = 0;
             Message = string.Empty;
         }
 
@@ -34,13 +36,30 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
             public override void Write(IBuffer buffer, S2CLobbyChatMsgNotice obj)
             {
-                WriteByte(buffer, obj.Type);
-                WriteUInt32(buffer, obj.Unk1);
-                WriteEntity<CDataCommunityCharacterBaseInfo>(buffer, obj.CharacterBaseInfo);
-                WriteByte(buffer, obj.Unk2);
-                WriteUInt32(buffer, obj.Unk3);
-                WriteUInt32(buffer, obj.Unk4);
-                WriteMtString(buffer, obj.Message);
+                if (obj.Unk3 == 2)
+                {
+                    uint ui = obj.Unk3; byte b = (byte)ui;
+                    WriteByte(buffer, obj.Type);
+                    WriteUInt32(buffer, obj.Unk1);
+                    WriteUInt32(buffer, obj.CharacterBaseInfo.CharacterId);
+                    WriteMtString(buffer, obj.CharacterBaseInfo.CharacterName.FirstName);
+                    WriteMtString(buffer, obj.CharacterBaseInfo.CharacterName.LastName);
+                    WriteMtString(buffer, "BSP");
+                    WriteByte(buffer, b);
+                    WriteUInt32(buffer, obj.Unk4);
+                    WriteUInt32(buffer, obj.Unk5);
+                    WriteMtString(buffer, obj.Message);
+                }
+                else
+                {
+                    WriteByte(buffer, obj.Type);
+                    WriteUInt32(buffer, obj.Unk1);
+                    WriteEntity<CDataCommunityCharacterBaseInfo>(buffer, obj.CharacterBaseInfo);
+                    WriteByte(buffer, obj.Unk2);
+                    WriteUInt32(buffer, obj.Unk3);
+                    WriteUInt32(buffer, obj.Unk4);
+                    WriteMtString(buffer, obj.Message);
+                }
             }
 
             public override S2CLobbyChatMsgNotice Read(IBuffer buffer)
