@@ -23,6 +23,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             ChatMessage message = new ChatMessage(
                 request.Structure.Type,
+                request.Structure.Unk3,
+                request.Structure.Unk4,
+                request.Structure.Unk5,
                 request.Structure.StrMessage
             );
             _chatManager.Handle(client, message);
