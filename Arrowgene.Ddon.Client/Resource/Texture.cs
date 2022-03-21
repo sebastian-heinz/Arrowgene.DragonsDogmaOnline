@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Client.Resource
         public const ushort DddaTexHeaderVersion = 0x99;
 
         public TexHeader Header;
-        public byte[] HeaderA { get; set; }
+        public TexSphericalHarmonics SphericalHarmonics;
         public byte[] HeaderB { get; set; }
         public byte[] Data { get; set; }
 
@@ -40,15 +40,22 @@ namespace Arrowgene.Ddon.Client.Resource
             sb.WriteBytes(ddsFileHeader);
             sb.WriteBytes(Data);
             File.WriteAllBytes(path, sb.GetAllBytes());
+            if (Header.HasSphericalHarmonicsFactor)
+            {
+                File.WriteAllBytes($"{path}.shfactor", SphericalHarmonics.Encode());
+            }
         }
 
         public void SaveTex(string path)
         {
-            byte[] texHeader = Header.Encode();
             StreamBuffer sb = new StreamBuffer();
             sb.WriteBytes(Encoding.UTF8.GetBytes(TexHeaderMagic));
-            sb.WriteBytes(texHeader);
-            sb.WriteBytes(HeaderA);
+            sb.WriteBytes(Header.Encode());
+            if (Header.HasSphericalHarmonicsFactor)
+            {
+                sb.WriteBytes(SphericalHarmonics.Encode());
+            }
+
             sb.WriteBytes(HeaderB);
             sb.WriteBytes(Data);
             File.WriteAllBytes(path, sb.GetAllBytes());
@@ -56,39 +63,135 @@ namespace Arrowgene.Ddon.Client.Resource
 
         private void ReadTex(IBuffer buffer)
         {
-            byte[] texHeader = ReadBytes(buffer, 12);
-
+            byte[] texHeader = ReadBytes(buffer, TexHeader.Size);
             Header = new TexHeader();
             Header.Decode(texHeader);
 
-            if (Header.HasShFactor)
+            if (Header.HasSphericalHarmonicsFactor)
             {
-                HeaderA = ReadBytes(buffer, 0x6C); // &this->mSHFactor,
+                byte[] sphericalHarmonics = ReadBytes(buffer, TexSphericalHarmonics.Size);
+                SphericalHarmonics = new TexSphericalHarmonics();
+                SphericalHarmonics.Decode(sphericalHarmonics);
             }
-            
-            uint layerCount = Header.TextureArraySize * Header.MipMapCount; // layer count
-            // uint ab111 = ab11 << 0x2;
 
-            uint readCount = 4 * layerCount;
+            uint readCount = 4 * Header.LayerCount;
             HeaderB = ReadBytes(buffer, (int) readCount);
 
-            //  uint v19 = aa1;
-            //  if (a2 >= aa1)
-            //  {
-            //      v19 = a2;
-            //  }
-            //  uint mipLevelCount = CalcMipLevelCount(v19);
-            //  uint switchNum = MagicId >> 0x1C;
-            //  switch (switchNum)
-            //  {
-            //      case 1:
-            //      case 2:
-            //          break;
-            //      case 3:
-            //          break;
-            //      case 6:
-            //          break;
-            //  }
+
+            uint v19 = Header.Height; // originally without shift
+            if (Header.Width >= Header.Height)
+            {
+                v19 = Header.Width;
+            }
+
+            uint mipLevelCount = CalcMipLevelCount(v19);
+
+
+            uint v80 = 0;
+            if (mipLevelCount != 0)
+            {
+                uint v81 = mipLevelCount;
+                do
+                {
+                    // if (_bittest(&_EBX, v81))
+                    {
+                        break;
+                    }
+                    ++v80;
+                    --v81;
+                } while (mipLevelCount > v80);
+            }
+
+            switch (Header.UnknownA)
+            {
+                case 1:
+                case 2:
+                    // Position = MtDataReader::getPosition(&v250);
+                    // MtDataReader::skip(&v250, ddb - Position);
+                    // do
+                    // {
+                    //     sub_19416E0(&v245, &bytes, v249, (unsigned int)varTexture, 0LL);
+                    //     MtDataReader::read(&v250, &v213[v245], bytes);
+                    //     LODWORD(varTexture) = (_DWORD)varTexture + 1;
+                    // }
+                    // while ( (unsigned int)varTexture < mp_miplevels );
+                    // varTexture = (nDraw::Texture *)nDraw::Texture::operator_new(0x90uLL, 0x10u);
+                    // ((void (__fastcall *)(nDraw::Texture *, u32, u32, u32, u32, nDraw::FORMAT_TYPE, nDraw::USAGE_TYPE, u32, nDraw::Texture *, u32, void *, nDraw::TEXMEMORY_TYPE))nDraw::Texture::Texture_0)(
+                    //     varTexture,
+                    //     dw_width,
+                    //     dh_height,
+                    //     mp_miplevels,
+                    //     1u,
+                    //     (nDraw::FORMAT_TYPE)BYTE1(draw_format_type),
+                    //     USAGE_DEFAULT,
+                    //     0,
+                    //     0LL,
+                    // 0,
+                    // v213,
+                    // TEXMEMORY_VRAM);
+                    break;
+                case 3:
+                    //  v219 = MtDataReader::getPosition(&v250);
+                    //  MtDataReader::skip(&v250, v218 - v219);
+                    //  for ( i = 0; i < mp_miplevels; ++i )
+                    //  {
+                    //      sub_19416E0(&v239, &v238, v247, i, 0LL);
+                    //      MtDataReader::read(&v250, &p_initvalues[v239], v238);
+                    //  }
+                    //  varTexture = (nDraw::Texture *)nDraw::Texture::operator_new(144uLL, 0x10u);
+                    //  nDraw::Texture::Texture_1(
+                    //      varTexture,
+                    //      dw_width,
+                    //      dh_height,
+                    //      dd_depth,
+                    //      mp_miplevels,
+                    //      1u,                                       // arraysize
+                    //      // 
+                    //      (nDraw::FORMAT_TYPE)BYTE1(draw_format_type),
+                    //      USAGE_DEFAULT,
+                    //      0,
+                    //      0LL,
+                    //      0,
+                    //      p_initvalues);
+                    break;
+                case 6:
+                    //   if ( (_BYTE)draw_format_type )
+                    //   {
+                    //       v224 = HIDWORD(first_16_bytes);
+                    //       do
+                    //       {
+                    //           dda = v222;
+                    //           v225 = *((_DWORD *)v233 + 2 * v144 + 2 * v222 * (v224 & 0x3F));
+                    //           v226 = MtDataReader::getPosition(&v250);
+                    //           MtDataReader::skip(&v250, v225 - v226);
+                    //           for ( j = 0; j < miplevels; ++j )
+                    //           {
+                    //               sub_19416E0(&v242, &v241, v248, j, v222);
+                    //               MtDataReader::read(&v250, &v232[v242], v241);
+                    //           }
+                    //           LOBYTE(v224) = BYTE4(first_16_bytes);
+                    //           ++v222;
+                    //       }
+                    //       while ( dda + 1 < (unsigned __int8)draw_format_type );
+                    //   }
+                    //   varTexture = (nDraw::Texture *)nDraw::Texture::operator_new(144uLL, 0x10u);
+                    //   v213 = v232;
+                    //   ((void (__fastcall *)(nDraw::Texture *, u32, u32, u32, u32, nDraw::FORMAT_TYPE, nDraw::USAGE_TYPE, u32, nDraw::Texture *, u32, void *, nDraw::TEXMEMORY_TYPE))nDraw::Texture::Texture_0)(
+                    //       varTexture,
+                    //       dw_width,
+                    //       dh_height,
+                    //       miplevels,
+                    //       6u,
+                    //       (nDraw::FORMAT_TYPE)BYTE1(draw_format_type),
+                    //       USAGE_DEFAULT,
+                    //       8u,
+                    //       0LL,
+                    //   0,
+                    //   v232,
+                    //   TEXMEMORY_VRAM);
+                    break;
+            }
+
             Data = buffer.ReadBytes(buffer.Size - buffer.Position);
         }
 
@@ -124,7 +227,13 @@ namespace Arrowgene.Ddon.Client.Resource
                 Header.PixelFormat = FromDdsPixelFormat(ddsHeader.PixelFormat);
             }
 
-            HeaderA = new byte[0];
+            if (Header.TextureArraySize > 1)
+            {
+                // if cubemap
+                SphericalHarmonics = new TexSphericalHarmonics();
+                // TODO
+            }
+
             HeaderB = new byte[0];
             Data = buffer.ReadBytes(buffer.Size - buffer.Position);
         }
@@ -132,6 +241,8 @@ namespace Arrowgene.Ddon.Client.Resource
         private void GenerateDdsHeader(out DirectXTexUtility.DDSHeader ddsHeader,
             out DirectXTexUtility.DX10Header dx10Header)
         {
+            int gpuFormat = (int) GetGpuFormatType(Header.PixelFormat);
+
             ddsHeader = new DirectXTexUtility.DDSHeader();
             ddsHeader.Size = 0x7C; //(uint) Marshal.SizeOf<DirectXTexUtility.DDSHeader>();
             ddsHeader.MipMapCount = Header.MipMapCount;
@@ -145,17 +256,39 @@ namespace Arrowgene.Ddon.Client.Resource
                 ddsHeader.Caps |= (uint) DirectXTexUtility.DDSHeader.SurfaceFlags.MIPMAP;
             }
 
+            DirectXTexUtility.DXGIFormat dxGiFormat = ToDxGiFormat(Header.PixelFormat);
             dx10Header = new DirectXTexUtility.DX10Header();
             if (Header.TextureArraySize > 1)
             {
                 ddsHeader.PixelFormat = DirectXTexUtility.PixelFormats.DX10;
-                dx10Header.Format = ToDxGiFormat(Header.PixelFormat);
+                dx10Header.Format = dxGiFormat;
                 dx10Header.ResourceDimension = DirectXTexUtility.TexDimension.TEXTURE2D;
                 dx10Header.ArraySize = Header.TextureArraySize;
                 if (true) // TODO differentiate between cubemap and texture array
                 {
                     dx10Header.MiscFlag |= DirectXTexUtility.TexMiscFlags.TEXTURECUBE;
                 }
+            }
+
+
+            // Calculate the Pitch
+            DirectXTexUtility.ComputePitch(dxGiFormat, ddsHeader.Width, ddsHeader.Height, out long rowPitch,
+                out long slicePitch,
+                DirectXTexUtility.CPFLAGS.NONE);
+            // Validate results
+            if (slicePitch > UInt32.MaxValue || rowPitch > UInt32.MaxValue)
+                throw new ArgumentException(
+                    "Failed to calculate row and/or slice pitch, values returned were too large");
+
+            if (DirectXTexUtility.IsCompressed(dxGiFormat))
+            {
+                ddsHeader.Flags |= DirectXTexUtility.DDSHeader.HeaderFlags.LINEARSIZE;
+                ddsHeader.PitchOrLinearSize = (uint) slicePitch;
+            }
+            else
+            {
+                ddsHeader.Flags |= DirectXTexUtility.DDSHeader.HeaderFlags.PITCH;
+                ddsHeader.PitchOrLinearSize = (uint) rowPitch;
             }
         }
 
@@ -185,7 +318,7 @@ namespace Arrowgene.Ddon.Client.Resource
             switch (texPixelFormat)
             {
                 case TexPixelFormat.FORMAT_BC1_UNORM_SRGB: return DirectXTexUtility.PixelFormats.DXT1;
-                case TexPixelFormat.FORMAT_BCX_RGBI_SRGB: return DirectXTexUtility.PixelFormats.DXT5;
+                case TexPixelFormat.FORMAT_BCX_RGBI_SRGB: return DirectXTexUtility.PixelFormats.BC5UNORM;
                 default:
                     Logger.Error($"ToDdsPixelFormat::TexPixelFormat:{texPixelFormat} not handled");
                     return DirectXTexUtility.PixelFormats.DXT1;
@@ -241,8 +374,159 @@ namespace Arrowgene.Ddon.Client.Resource
             return v1;
         }
 
+        private uint GetGpuFormatType(TexPixelFormat fmt)
+        {
+            uint[] gpuFormats = new uint[55];
+            gpuFormats[0] = 0;
+            gpuFormats[1] = 0xFAC70E;
+            gpuFormats[2] = 0xFAC70C;
+            gpuFormats[3] = 0xFAC00C;
+            gpuFormats[4] = 0xFAC10C;
+            gpuFormats[5] = 2279179;
+            gpuFormats[6] = 16433161;
+            gpuFormats[7] = 0xFAC00A;
+            gpuFormats[8] = 16433418;
+            gpuFormats[9] = 16433162;
+            gpuFormats[10] = 16433171;
+            gpuFormats[11] = 2279173;
+            gpuFormats[12] = 2277381;
+            gpuFormats[13] = 2277637;
+            gpuFormats[14] = 2115332;
+            //*((unsigned __int8 *)qword_1F7FBC0 + 4 * a1) | ((*((_DWORD *)&qword_1F7FBD0 + a1) & 0xF) << 8) | 0x924000u;
+            //gpuFormats[15]= sub_1931990(3u);
+            gpuFormats[16] = 2115330;
+            gpuFormats[17] = 2113538;
+            gpuFormats[18] = 8388609;
+            gpuFormats[19] = 0xFAC023;
+            gpuFormats[20] = 16433187;
+            gpuFormats[21] = 16433188;
+            gpuFormats[22] = 16433188;
+            gpuFormats[23] = 16433189;
+            gpuFormats[24] = 16433189;
+            gpuFormats[25] = 2113574;
+            gpuFormats[26] = 2113830;
+            gpuFormats[27] = 2277671;
+            gpuFormats[28] = 3334160;
+            gpuFormats[29] = 15917073;
+            gpuFormats[30] = 16433187;
+            gpuFormats[31] = 2277415;
+            gpuFormats[32] = 16433189;
+            gpuFormats[33] = 16433189;
+            gpuFormats[34] = 3334154;
+            gpuFormats[35] = 16433189;
+            gpuFormats[36] = 0xFAC025;
+            gpuFormats[37] = 16433189;
+            gpuFormats[38] = 3852038;
+            gpuFormats[38] = 15917066;
+            gpuFormats[40] = 15917066;
+            gpuFormats[41] = 16433187;
+            gpuFormats[42] = 16433189;
+            gpuFormats[43] = 16433189;
+            gpuFormats[44] = 2113537;
+            gpuFormats[45] = 15917066;
+            gpuFormats[46] = 15917065;
+            gpuFormats[47] = 16433189;
+            gpuFormats[48] = 16433193;
+            gpuFormats[49] = 16433193;
+            gpuFormats[50] = 0x3AC722;
+            gpuFormats[51] = 0;
+            gpuFormats[52] = 0;
+            gpuFormats[53] = 0;
+            gpuFormats[54] = 8687617;
+            return gpuFormats[(byte) fmt];
+        }
+
+        public struct TexSphericalHarmonics
+        {
+            public const int Size = 0x6C;
+
+            public TexSphericalHarmonicsVector Y00;
+            public TexSphericalHarmonicsVector Y11;
+            public TexSphericalHarmonicsVector Y10;
+            public TexSphericalHarmonicsVector Y1_1;
+            public TexSphericalHarmonicsVector Y21;
+            public TexSphericalHarmonicsVector Y2_1;
+            public TexSphericalHarmonicsVector Y2_2;
+            public TexSphericalHarmonicsVector Y20;
+            public TexSphericalHarmonicsVector Y22;
+
+            public void Decode(byte[] bytes)
+            {
+                Y00.R = BitConverter.ToSingle(bytes, 4 * 0);
+                Y00.G = BitConverter.ToSingle(bytes, 4 * 1);
+                Y00.B = BitConverter.ToSingle(bytes, 4 * 2);
+                Y11.R = BitConverter.ToSingle(bytes, 4 * 3);
+                Y11.G = BitConverter.ToSingle(bytes, 4 * 4);
+                Y11.B = BitConverter.ToSingle(bytes, 4 * 5);
+                Y10.R = BitConverter.ToSingle(bytes, 4 * 6);
+                Y10.G = BitConverter.ToSingle(bytes, 4 * 7);
+                Y10.B = BitConverter.ToSingle(bytes, 4 * 8);
+                Y1_1.R = BitConverter.ToSingle(bytes, 4 * 9);
+                Y1_1.G = BitConverter.ToSingle(bytes, 4 * 10);
+                Y1_1.B = BitConverter.ToSingle(bytes, 4 * 11);
+                Y21.R = BitConverter.ToSingle(bytes, 4 * 12);
+                Y21.G = BitConverter.ToSingle(bytes, 4 * 13);
+                Y21.B = BitConverter.ToSingle(bytes, 4 * 14);
+                Y2_1.R = BitConverter.ToSingle(bytes, 4 * 15);
+                Y2_1.G = BitConverter.ToSingle(bytes, 4 * 16);
+                Y2_1.B = BitConverter.ToSingle(bytes, 4 * 17);
+                Y2_2.R = BitConverter.ToSingle(bytes, 4 * 18);
+                Y2_2.G = BitConverter.ToSingle(bytes, 4 * 19);
+                Y2_2.B = BitConverter.ToSingle(bytes, 4 * 20);
+                Y20.R = BitConverter.ToSingle(bytes, 4 * 21);
+                Y20.G = BitConverter.ToSingle(bytes, 4 * 22);
+                Y20.B = BitConverter.ToSingle(bytes, 4 * 23);
+                Y22.R = BitConverter.ToSingle(bytes, 4 * 24);
+                Y22.G = BitConverter.ToSingle(bytes, 4 * 25);
+                Y22.B = BitConverter.ToSingle(bytes, 4 * 26);
+            }
+
+            public byte[] Encode()
+            {
+                using MemoryStream m = new MemoryStream();
+                using BinaryWriter w = new BinaryWriter(m);
+                w.Write(Y00.R);
+                w.Write(Y00.G);
+                w.Write(Y00.B);
+                w.Write(Y11.R);
+                w.Write(Y11.G);
+                w.Write(Y11.B);
+                w.Write(Y10.R);
+                w.Write(Y10.G);
+                w.Write(Y10.B);
+                w.Write(Y1_1.R);
+                w.Write(Y1_1.G);
+                w.Write(Y1_1.B);
+                w.Write(Y21.R);
+                w.Write(Y21.G);
+                w.Write(Y21.B);
+                w.Write(Y2_1.R);
+                w.Write(Y2_1.G);
+                w.Write(Y2_1.B);
+                w.Write(Y2_2.R);
+                w.Write(Y2_2.G);
+                w.Write(Y2_2.B);
+                w.Write(Y20.R);
+                w.Write(Y20.G);
+                w.Write(Y20.B);
+                w.Write(Y22.R);
+                w.Write(Y22.G);
+                w.Write(Y22.B);
+                return m.ToArray();
+            }
+        }
+
+        public struct TexSphericalHarmonicsVector
+        {
+            public float R;
+            public float G;
+            public float B;
+        }
+
         public struct TexHeader
         {
+            public const int Size = 12;
+
             public uint Version;
             public uint Height;
             public uint Width;
@@ -254,7 +538,9 @@ namespace Arrowgene.Ddon.Client.Resource
             public uint MipMapCount;
             public uint UnknownA;
             public uint UnknownB;
-            public bool HasShFactor;
+            public bool HasSphericalHarmonicsFactor;
+
+            public uint LayerCount => TextureArraySize * MipMapCount;
 
             public void Decode(byte[] bytes)
             {
@@ -262,7 +548,7 @@ namespace Arrowgene.Ddon.Client.Resource
                 uint header8 = BitConverter.ToUInt32(bytes, 4);
                 uint header12 = BitConverter.ToUInt32(bytes, 8);
 
-                HasShFactor = (header4 & 0xF0000000) == 0x60000000;
+                HasSphericalHarmonicsFactor = (header4 & 0xF0000000) == 0x60000000;
 
                 uint versionBits12__0_11 = header4 & ((1 << 12) - 1);
                 uint alphaBits12__12_23 = (header4 >> 12) & ((1 << 12) - 1);

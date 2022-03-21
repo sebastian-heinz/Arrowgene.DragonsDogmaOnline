@@ -869,7 +869,7 @@ namespace Arrowgene.Ddon.Client
         /// <summary>
         /// Checks is the given format compressed
         /// </summary>
-        private static bool IsCompressed(DXGIFormat format)
+        public static bool IsCompressed(DXGIFormat format)
         {
             switch (format)
             {
