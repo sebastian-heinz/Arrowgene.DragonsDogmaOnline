@@ -133,6 +133,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCharacterCharacterPointReviveReq.Serializer());
             Create(new C2SCharacterPawnGoldenReviveReq.Serializer());
             Create(new C2SCharacterPawnPointReviveReq.Serializer());
+            Create(new C2SClanClanBaseGetInfoReq.Serializer());
+            Create(new C2SClanClanConciergeGetListReq.Serializer());
+            Create(new C2SClanClanConciergeUpdateReq.Serializer());
+            Create(new C2SClanClanPartnerPawnDataGetReq.Serializer());
+            Create(new C2SClanGetFurnitureReq.Serializer());
+            Create(new C2SClanSetFurnitureReq.Serializer());
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
             Create(new C2SConnectionMoveOutServerReq.Serializer());
@@ -196,7 +202,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterContentsReleaseElementNotice.Serializer());
             Create(new S2CCharacterPawnGoldenReviveRes.Serializer());
             Create(new S2CCharacterPawnPointReviveRes.Serializer());
+            Create(new S2CClanClanBaseGetInfoRes.Serializer());
+            Create(new S2CClanClanConciergeGetListRes.Serializer());
+            Create(new S2CClanClanConciergeUpdateRes.Serializer());
             Create(new S2CClanClanGetMyMemberListRes.Serializer());
+            Create(new S2CClanClanPartnerPawnDataGetRes.Serializer());
+            Create(new S2CClanGetFurnitureRes.Serializer());
+            Create(new S2CClanSetFurnitureRes.Serializer());
             Create(new S2CConnectionLoginRes.Serializer());
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveInServerRes.Serializer());

@@ -134,10 +134,16 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
 
+            AddHandler(new ClanClanBaseGetInfoHandler(this));
+            AddHandler(new ClanClanConciergeGetListHandler(this));
+            AddHandler(new ClanClanConciergeUpdateHandler(this));
             AddHandler(new ClanClanGetJoinRequestedListHandler(this));
             AddHandler(new ClanClanGetMyInfoHandler(this));
             AddHandler(new ClanClanGetMyMemberListHandler(this));
+            AddHandler(new ClanClanPartnerPawnDataGetHandler(this));
             AddHandler(new ClanClanSettingUpdateHandler(this));
+            AddHandler(new ClanGetFurnitureHandler(this));
+            AddHandler(new ClanSetFurnitureHandler(this));
 
             AddHandler(new ClientChallengeHandler(this));
 
