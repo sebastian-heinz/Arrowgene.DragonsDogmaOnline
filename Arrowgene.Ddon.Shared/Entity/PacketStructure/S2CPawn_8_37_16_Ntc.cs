@@ -12,6 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             MyPawnCsvData = new List<MyPawnCsv>();
             Req = new C2SPawnJoinPartyMypawnReq();
+            CharacterId = 0;
         }
 
         public S2CPawn_8_37_16_Ntc(List<MyPawnCsv> myPawnCsvData, C2SPawnJoinPartyMypawnReq req)
@@ -22,6 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public List<MyPawnCsv> MyPawnCsvData { get; set; }
         public C2SPawnJoinPartyMypawnReq Req { get; set; }
+        public uint CharacterId { get; set; }
         public PacketId Id => PacketId.S2C_PAWN_8_37_16_NTC;
 
         private class MyPawnMemberIndex
@@ -58,7 +60,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
                 MyPawnMemberIndex myPawnMemberIndex = new MyPawnMemberIndex();
                 MyPawnCsv myPawnCsvData = obj.MyPawnCsvData[n];
-                WriteUInt32(buffer, myPawnCsvData.CharacterId);
+                if (myPawnCsvData.CharacterId == 0)
+                { WriteUInt32(buffer, obj.CharacterId); }
+                else
+                { WriteUInt32(buffer, myPawnCsvData.CharacterId); }
                 WriteMtString(buffer, myPawnCsvData.Name);
                 WriteByteArray(buffer, obj.Pad7);
                 WriteByte(buffer, myPawnCsvData.Job);
