@@ -8,7 +8,7 @@ Server Emulator for the Game Dragons Dogma Online.
   - [Visual Studio](#visual-studio)
   - [VS Code](#vs-code)
   - [IntelliJ Rider](#intellij-rider)
-- [Sever](#server)
+- [Server](#server)
 - [Client](#client)
 - [Guidelines](#guidelines)
 - [Attribution](#attribution)
