@@ -43,11 +43,13 @@ namespace Arrowgene.Ddon.Shared
             _enemySpawnCsvReader.EnforceCRLF = false;
 
             MyPawnAsset = new List<MyPawnCsv>();
+            MyRoomAsset = new List<MyRoomCsv>();
         }
 
         public List<ClientErrorCode> ClientErrorCodes { get; }
         public IEnumerable<EnemySpawn> EnemySpawns { get; private set; }
         public List<MyPawnCsv> MyPawnAsset { get; }
+        public List<MyRoomCsv> MyRoomAsset { get; }
 
         public void Initialize()
         {
@@ -57,6 +59,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterSpreadsheet(_spreadsheetEnemySpawns, "1KmwWymqdMGtbRUqu9GvSi_97o-rBj5DJVn2hk7tvs-A", _enemySpawnCsvReader);
             MyPawnAsset.Clear();
             RegisterAsset(MyPawnAsset, "MyPawn.csv", new MyPawnCsvReader());
+            MyRoomAsset.Clear();
+            RegisterAsset(MyRoomAsset, "MyRoom.csv", new MyRoomCsvReader());
         }
 
         private void RegisterAsset<T>(List<T> list, string key, CsvReader<T> reader, Action<List<T>> afterLoadAction = null)

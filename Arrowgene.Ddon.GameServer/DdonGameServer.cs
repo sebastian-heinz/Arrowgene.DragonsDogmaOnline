@@ -199,26 +199,37 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MailSystemMailGetListFootHandler(this));
             AddHandler(new MailSystemMailGetListHeadHandler(this));
 
+            AddHandler(new MandragoraGetMyMandragoraHandler(this));
+
+            AddHandler(new MyRoomFurnitureListGetHandler(this));
+            AddHandler(new MyRoomMyRoomBgmUpdateHandler(this));
+            AddHandler(new MyRoomUpdatePlanetariumHandler(this));
+
             AddHandler(new NpcGetExtendedFacilityHandler(this));
 
             AddHandler(new OrbDevoteGetOrbGainExtendParamHandler(this));
 
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
+            AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
 
             AddHandler(new PartyPartyCreateHandler(this));
 
             AddHandler(new PawnGetMypawnDataHandler(this));
             AddHandler(new PawnGetMyPawnListHandler(this));
             AddHandler(new PawnGetNoraPawnListHandler(this));
+            AddHandler(new PawnGetPawnHistoryListHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
             AddHandler(new PawnJoinPartyMypawnHandler(this));
+            AddHandler(new PawnTrainingGetPreparetionInfoToAdviceHandler(this));
 
+            AddHandler(new PawnGetLostPawnListHandler(this));
             AddHandler(new QuestEndDistributionQuestCancelHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestListHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
             AddHandler(new QuestGetAreaBonusListHandler(this));
             AddHandler(new QuestGetCycleContentsStateListHandler(this));
             AddHandler(new QuestGetLevelBonusListHandler(this));
+            AddHandler(new QuestGetLotQuestListHandler(this));
             AddHandler(new QuestGetMainQuestListHandler(this));
             AddHandler(new QuestGetPackageQuestListHandler(this));
             AddHandler(new QuestGetPartyQuestProgressInfoHandler(this));
