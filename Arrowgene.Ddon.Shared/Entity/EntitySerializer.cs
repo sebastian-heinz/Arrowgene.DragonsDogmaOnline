@@ -143,6 +143,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SConnectionMoveInServerReq.Serializer());
             Create(new C2SConnectionMoveOutServerReq.Serializer());
             Create(new C2SContextGetSetContextReq.Serializer());
+            Create(new C2SInnGetStayPriceReq.Serializer());
+            Create(new C2SInnStayInnReq.Serializer());
             Create(new C2SInstanceEnemyKillReq.Serializer());
             Create(new C2SInstanceExchangeOmInstantKeyValueReq.Serializer());
             Create(new C2SInstanceGetEnemySetListReq.Serializer());
@@ -150,6 +152,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstanceGetGatheringItemReq.Serializer());
             Create(new C2SInstanceGetItemSetListReq.Serializer());
             Create(new C2SInstanceSetOmInstantKeyValueReq.Serializer());
+            Create(new C2SInstanceTreasurePointGetCategoryListReq.Serializer());
+            Create(new C2SInstanceTreasurePointGetListReq.Serializer());
             Create(new C2SItemUseBagItemReq.Serializer());
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobGetJobChangeListReq.Serializer());
@@ -227,6 +231,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
             Create(new S2CContextSetContextBaseNotice.Serializer());
+            Create(new S2CInnGetStayPriceRes.Serializer());
+            Create(new S2CInnStayInnRes.Serializer());
             Create(new S2CInstanceEnemyKillRes.Serializer());
             Create(new S2CInstanceEnemyRepopNtc.Serializer());
             Create(new S2CInstanceExchangeOmInstantKeyValueRes.Serializer());
@@ -235,6 +241,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceGetGatheringItemRes.Serializer());
             Create(new S2CInstanceGetItemSetListRes.Serializer());
             Create(new S2CInstanceSetOmInstantKeyValueRes.Serializer());
+            Create(new S2CInstanceTreasurePointGetCategoryListRes.Serializer());
+            Create(new S2CInstanceTreasurePointGetListRes.Serializer());
             Create(new S2CItemExtendItemSlotNtc.Serializer());
             Create(new S2CItemUpdateCharacterItemNtc.Serializer());
             Create(new S2CItemSortGetItemSortdataBinRes.Serializer());
