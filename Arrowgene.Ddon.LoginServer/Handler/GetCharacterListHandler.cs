@@ -38,9 +38,65 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = (uint)c.Id;
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = c.FirstName;
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = c.LastName;
-                cResponse.CharacterListElement.CurrentJobBaseInfo.Job = 1;
-                cResponse.CharacterListElement.CurrentJobBaseInfo.Level = 1;
+                cResponse.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
+                cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
                 cResponse.EditInfo = c.Visual;
+                cResponse.EquipItemInfo = new List<CDataEquipItemInfo>() { // Probably wrong since im only sending visual equipment
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VPrimaryWeapon,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 1
+                    },
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VSecondaryWeapon,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 2
+                    },
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VHead,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 3
+                    },
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VBody,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 4
+                    },
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VClothing,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 5
+                    },
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VArm,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 6
+                    },
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VLeg,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 7
+                    },
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VLegwear,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 8
+                    },
+                    new CDataEquipItemInfo {
+                        U0 = Server.AssetRepository.ArisenAsset[0].VOverwear,
+                        EquipType = 0,
+                        EquipSlot = 2,
+                        ItemId = 9
+                    }
+                };
                 characterListResponse.Add(cResponse);
             }
             
