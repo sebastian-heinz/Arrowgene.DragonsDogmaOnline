@@ -44,12 +44,14 @@ namespace Arrowgene.Ddon.Shared
 
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
+            ArisenAsset = new List<ArisenCsv>();
         }
 
         public List<ClientErrorCode> ClientErrorCodes { get; }
         public IEnumerable<EnemySpawn> EnemySpawns { get; private set; }
         public List<MyPawnCsv> MyPawnAsset { get; }
         public List<MyRoomCsv> MyRoomAsset { get; }
+        public List<ArisenCsv> ArisenAsset { get; }
 
         public void Initialize()
         {
@@ -61,6 +63,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(MyPawnAsset, "MyPawn.csv", new MyPawnCsvReader());
             MyRoomAsset.Clear();
             RegisterAsset(MyRoomAsset, "MyRoom.csv", new MyRoomCsvReader());
+            ArisenAsset.Clear();
+            RegisterAsset(ArisenAsset, "Arisen.csv", new ArisenCsvReader());
         }
 
         private void RegisterAsset<T>(List<T> list, string key, CsvReader<T> reader, Action<List<T>> afterLoadAction = null)

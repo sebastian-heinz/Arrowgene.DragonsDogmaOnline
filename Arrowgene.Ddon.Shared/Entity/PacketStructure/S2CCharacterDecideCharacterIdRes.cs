@@ -1,6 +1,8 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using System.Collections.Generic;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -46,6 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Unk1 = ReadByte(buffer);
                 return obj;
             }
+            private readonly byte[] Pad14 = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
         }
     }
 }
