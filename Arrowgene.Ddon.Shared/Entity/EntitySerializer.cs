@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataItemUpdateResult.Serializer());
             Create(new CDataJobChangeInfo.Serializer());
             Create(new CDataJobChangeJobResUnk0.Serializer());
-            Create(new CDataJobChangeJobResUnk0Unk1.Serializer());
+            Create(new CDataCharacterItemSlotInfo.Serializer());
             Create(new CDataJobBaseInfo.Serializer());
             Create(new CDataJobPlayPointSerializer());
             Create(new CDataJumpLocationSerializer());

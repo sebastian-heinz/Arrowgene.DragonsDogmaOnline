@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             SetAbilityParamList=new List<CDataSetAcquirementParam>();
             LearnNormalSkillParamList=new List<CDataLearnNormalSkillParam>();
             EquipJobItemList=new List<CDataEquipJobItem>();
-            PlayPointDataList=new List<CDataPlayPointData>();
+            PlayPointData=new CDataPlayPointData();
             Unk0=new CDataJobChangeJobResUnk0();
         }
 
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataSetAcquirementParam> SetAbilityParamList { get; set; }
         public List<CDataLearnNormalSkillParam> LearnNormalSkillParamList { get; set; }
         public List<CDataEquipJobItem> EquipJobItemList { get; set; }
-        public List<CDataPlayPointData> PlayPointDataList { get; set; }
+        public CDataPlayPointData PlayPointData { get; set; }
         public CDataJobChangeJobResUnk0 Unk0 { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CJobChangeJobRes>
@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataSetAcquirementParam>(buffer, obj.SetAbilityParamList);
                 WriteEntityList<CDataLearnNormalSkillParam>(buffer, obj.LearnNormalSkillParamList);
                 WriteEntityList<CDataEquipJobItem>(buffer, obj.EquipJobItemList);
-                WriteEntityList<CDataPlayPointData>(buffer, obj.PlayPointDataList);
+                WriteEntity<CDataPlayPointData>(buffer, obj.PlayPointData);
                 WriteEntity<CDataJobChangeJobResUnk0>(buffer, obj.Unk0);
             }
 
@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.SetAbilityParamList = ReadEntityList<CDataSetAcquirementParam>(buffer);
                 obj.LearnNormalSkillParamList = ReadEntityList<CDataLearnNormalSkillParam>(buffer);
                 obj.EquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
-                obj.PlayPointDataList = ReadEntityList<CDataPlayPointData>(buffer);
+                obj.PlayPointData = ReadEntity<CDataPlayPointData>(buffer);
                 obj.Unk0 = ReadEntity<CDataJobChangeJobResUnk0>(buffer);
                 return obj;
             }

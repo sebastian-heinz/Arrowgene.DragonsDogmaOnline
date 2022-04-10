@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(InGameDump.Dump_20);
+            client.Send(InGameDump.Dump_20); // Commenting this makes the Vocation change option not show up and some paths are blocked
             client.Send(InGameDump.Dump_24);
         }
     }
