@@ -65,14 +65,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CItemUpdateCharacterItemNtc updateCharacterItemNotice = new S2CItemUpdateCharacterItemNtc();
             client.Send(updateCharacterItemNotice);
 
-            IBuffer packet_S2C_JOB_33_20_16_NTC_buffer = new StreamBuffer();
-            packet_S2C_JOB_33_20_16_NTC_buffer.WriteByte(packet.Structure.JobId);
-            packet_S2C_JOB_33_20_16_NTC_buffer.WriteUInt32(0x24, Endianness.Big);
-            packet_S2C_JOB_33_20_16_NTC_buffer.WriteUInt32(0, Endianness.Big);
-            packet_S2C_JOB_33_20_16_NTC_buffer.WriteUInt32(0x333, Endianness.Big);
-            packet_S2C_JOB_33_20_16_NTC_buffer.WriteByte(0x4);
-            Packet packet_S2C_JOB_33_20_16_NTC = new Packet(PacketId.S2C_JOB_33_11_16_NTC, packet_S2C_JOB_33_20_16_NTC_buffer.GetAllBytes());
-            client.Send(packet_S2C_JOB_33_20_16_NTC);
+            IBuffer characterJobExpUpNtc = new StreamBuffer();
+            characterJobExpUpNtc.WriteByte(packet.Structure.JobId);
+            characterJobExpUpNtc.WriteUInt32(0x24, Endianness.Big);
+            characterJobExpUpNtc.WriteUInt32(0, Endianness.Big);
+            characterJobExpUpNtc.WriteUInt32(0x333, Endianness.Big);
+            characterJobExpUpNtc.WriteByte(0x4);
+            Packet characterJobExpUpNtcPacket = new Packet(PacketId.S2C_JOB_CHARACTER_JOB_EXP_UP_NTC, characterJobExpUpNtc.GetAllBytes());
+            client.Send(characterJobExpUpNtcPacket);
 
             client.Send(GameFull.Dump_20);
 
@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             response.SetAbilityParamList = response.SetAbilityParamList;
             response.SetAcquirementParamList = response.SetAcquirementParamList;
             response.CharacterEquipList = new List<CDataCharacterEquipInfo>(requestedJobChangeInfo.EquipItemList.Select(x => new CDataCharacterEquipInfo(x)));
-            response.PlayPointDataList = new List<CDataPlayPointData> { requestedJobPlayPoint.PlayPoint };
+            response.PlayPointData = requestedJobPlayPoint.PlayPoint;
             client.Send(response);
         }
     }
