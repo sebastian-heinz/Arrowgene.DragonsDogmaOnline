@@ -22,15 +22,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
+            S2CCharacterDecideCharacterIdRes res = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             res.CharacterId = client.Character.Id;
-            res.FirstName = client.Character.FirstName;
-            res.LastName = client.Character.LastName;
-            res.Visual = client.Character.Visual;
+            res.CharacterInfo.CharacterId = client.Character.Id;
+            res.CharacterInfo.FirstName = client.Character.FirstName;
+            res.CharacterInfo.LastName = client.Character.LastName;
+            res.CharacterInfo.EditInfo = client.Character.Visual;
             client.Send(res);
             
-            // client.Send(GameDump.Dump_13);
-
             S2CCharacterContentsReleaseElementNotice contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNotice>().Read(GameFull.data_Dump_20);
             client.Send(contentsReleaseElementNotice);
         }
