@@ -27,6 +27,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.FirstName = client.Character.FirstName;
             res.LastName = client.Character.LastName;
             res.Visual = client.Character.Visual;
+            res.ArisenCsv = Server.AssetRepository.ArisenAsset;
+            res.PawnCsv = Server.AssetRepository.MyPawnAsset;
             client.Send(res);
             
             // client.Send(GameDump.Dump_13);
