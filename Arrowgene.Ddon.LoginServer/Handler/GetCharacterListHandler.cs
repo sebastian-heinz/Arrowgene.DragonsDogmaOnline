@@ -46,62 +46,71 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         U0 = Server.AssetRepository.ArisenAsset[0].VPrimaryWeapon,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 1
+                        ItemId = 1,
+                        Color = Server.AssetRepository.ArisenAsset[0].VPrimaryWeaponColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].VSecondaryWeapon,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 2
+                        ItemId = 2,
+                        Color = Server.AssetRepository.ArisenAsset[0].VSecondaryWeaponColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].VHead,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 3
+                        ItemId = 3,
+                        Color = Server.AssetRepository.ArisenAsset[0].VHeadColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].VBody,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 4
+                        ItemId = 4,
+                        Color = Server.AssetRepository.ArisenAsset[0].VBodyColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].VClothing,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 5
+                        ItemId = 5,
+                        Color = Server.AssetRepository.ArisenAsset[0].VClothingColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].VArm,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 6
+                        ItemId = 6,
+                        Color = Server.AssetRepository.ArisenAsset[0].VArmColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].VLeg,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 7
+                        ItemId = 7,
+                        Color = Server.AssetRepository.ArisenAsset[0].VLegColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].VLegwear,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 8
+                        ItemId = 8,
+                        Color = Server.AssetRepository.ArisenAsset[0].VLegwearColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].VOverwear,
                         EquipType = 0,
                         EquipSlot = 2,
-                        ItemId = 9
+                        ItemId = 9,
+                        Color = Server.AssetRepository.ArisenAsset[0].VOverwearColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].PrimaryWeapon,
                         EquipType = 0,
                         EquipSlot = 1,
                         ItemId = 1,
-                        Color = 6,
+                        Color = Server.AssetRepository.ArisenAsset[0].PrimaryWeaponColour,
                         PlusValue = 0,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                             new CDataWeaponCrestData {
@@ -139,14 +148,15 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         U0 = Server.AssetRepository.ArisenAsset[0].SecondaryWeapon,
                         EquipType = 0,
                         EquipSlot = 1,
-                        ItemId = 2
+                        ItemId = 2,
+                        Color = Server.AssetRepository.ArisenAsset[0].SecondaryWeaponColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].Head,
                         EquipType = 0,
                         EquipSlot = 1,
                         ItemId = 3,
-                        Color = 0,
+                        Color = Server.AssetRepository.ArisenAsset[0].HeadColour,
                         PlusValue = 3,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                             new CDataWeaponCrestData {
@@ -180,7 +190,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         EquipType = 0,
                         EquipSlot = 1,
                         ItemId = 4,
-                        Color = 0,
+                        Color = Server.AssetRepository.ArisenAsset[0].BodyColour,
                         PlusValue = 4,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                             new CDataWeaponCrestData {
@@ -218,14 +228,15 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         U0 = Server.AssetRepository.ArisenAsset[0].Clothing,
                         EquipType = 0,
                         EquipSlot = 1,
-                        ItemId = 5
+                        ItemId = 5,
+                        Color = Server.AssetRepository.ArisenAsset[0].ClothingColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].Arm,
                         EquipType = 0,
                         EquipSlot = 1,
                         ItemId = 6,
-                        Color = 0,
+                        Color = Server.AssetRepository.ArisenAsset[0].ArmColour,
                         PlusValue = 3,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                             new CDataWeaponCrestData {
@@ -259,7 +270,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         EquipType = 0,
                         EquipSlot = 1,
                         ItemId = 7,
-                        Color = 0,
+                        Color = Server.AssetRepository.ArisenAsset[0].LegColour,
                         PlusValue = 3,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                             new CDataWeaponCrestData {
@@ -292,13 +303,15 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         U0 = Server.AssetRepository.ArisenAsset[0].Legwear,
                         EquipType = 0,
                         EquipSlot = 1,
-                        ItemId = 8
+                        ItemId = 8,
+                        Color = Server.AssetRepository.ArisenAsset[0].LegwearColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].Overwear,
                         EquipType = 0,
                         EquipSlot = 1,
-                        ItemId = 9
+                        ItemId = 9,
+                        Color = Server.AssetRepository.ArisenAsset[0].OverwearColour
                     },
                     new CDataEquipItemInfo {
                         U0 = Server.AssetRepository.ArisenAsset[0].Jewelry1,
