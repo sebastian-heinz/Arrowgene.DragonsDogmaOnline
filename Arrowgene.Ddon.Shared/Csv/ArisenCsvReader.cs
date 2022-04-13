@@ -61,188 +61,206 @@ namespace Arrowgene.Ddon.Shared.Csv
             if (!ushort.TryParse(properties[50], out ushort mAtk)) return null;
             if (!ushort.TryParse(properties[51], out ushort mDef)) return null;
             if (!uint.TryParse(properties[52], out uint primaryWeapon)) return null;
-            if (!uint.TryParse(properties[53], out uint pWCrest1)) return null;
-            if (!byte.TryParse(properties[54], out byte pWC1Add1)) return null;
-            if (!byte.TryParse(properties[55], out byte pWC1Add2)) return null;
-            if (!uint.TryParse(properties[56], out uint pWCrest2)) return null;
-            if (!byte.TryParse(properties[57], out byte pWC2Add1)) return null;
-            if (!byte.TryParse(properties[58], out byte pWC2Add2)) return null;
-            if (!uint.TryParse(properties[59], out uint pWCrest3)) return null;
-            if (!byte.TryParse(properties[60], out byte pWC3Add1)) return null;
-            if (!byte.TryParse(properties[61], out byte pWC3Add2)) return null;
-            if (!uint.TryParse(properties[62], out uint pWCrest4)) return null;
-            if (!byte.TryParse(properties[63], out byte pWC4Add1)) return null;
-            if (!byte.TryParse(properties[64], out byte pWC4Add2)) return null;
-            if (!uint.TryParse(properties[65], out uint secondaryWeapon)) return null;
-            if (!uint.TryParse(properties[66], out uint head)) return null;
-            if (!uint.TryParse(properties[67], out uint headCrest1)) return null;
-            if (!byte.TryParse(properties[68], out byte hC1Add1)) return null;
-            if (!byte.TryParse(properties[69], out byte hC1Add2)) return null;
-            if (!uint.TryParse(properties[70], out uint headCrest2)) return null;
-            if (!byte.TryParse(properties[71], out byte hC2Add1)) return null;
-            if (!byte.TryParse(properties[72], out byte hC2Add2)) return null;
-            if (!uint.TryParse(properties[73], out uint headCrest3)) return null;
-            if (!byte.TryParse(properties[74], out byte hC3Add1)) return null;
-            if (!byte.TryParse(properties[75], out byte hC3Add2)) return null;
-            if (!uint.TryParse(properties[76], out uint body)) return null;
-            if (!uint.TryParse(properties[77], out uint bodyCrest1)) return null;
-            if (!byte.TryParse(properties[78], out byte bC1Add1)) return null;
-            if (!byte.TryParse(properties[79], out byte bC1Add2)) return null;
-            if (!uint.TryParse(properties[80], out uint bodyCrest2)) return null;
-            if (!byte.TryParse(properties[81], out byte bC2Add1)) return null;
-            if (!byte.TryParse(properties[82], out byte bC2Add2)) return null;
-            if (!uint.TryParse(properties[83], out uint bodyCrest3)) return null;
-            if (!byte.TryParse(properties[84], out byte bC3Add1)) return null;
-            if (!byte.TryParse(properties[85], out byte bC3Add2)) return null;
-            if (!uint.TryParse(properties[86], out uint bodyCrest4)) return null;
-            if (!byte.TryParse(properties[87], out byte bC4Add1)) return null;
-            if (!byte.TryParse(properties[88], out byte bC4Add2)) return null;
-            if (!uint.TryParse(properties[89], out uint clothing)) return null;
-            if (!uint.TryParse(properties[90], out uint arm)) return null;
-            if (!uint.TryParse(properties[91], out uint armCrest1)) return null;
-            if (!byte.TryParse(properties[92], out byte aC1Add1)) return null;
-            if (!byte.TryParse(properties[93], out byte aC1Add2)) return null;
-            if (!uint.TryParse(properties[94], out uint armCrest2)) return null;
-            if (!byte.TryParse(properties[95], out byte aC2Add1)) return null;
-            if (!byte.TryParse(properties[96], out byte aC2Add2)) return null;
-            if (!uint.TryParse(properties[97], out uint armCrest3)) return null;
-            if (!byte.TryParse(properties[98], out byte aC3Add1)) return null;
-            if (!byte.TryParse(properties[99], out byte aC3Add2)) return null;
-            if (!uint.TryParse(properties[100], out uint leg)) return null;
-            if (!uint.TryParse(properties[101], out uint legCrest1)) return null;
-            if (!byte.TryParse(properties[102], out byte lC1Add1)) return null;
-            if (!byte.TryParse(properties[103], out byte lC1Add2)) return null;
-            if (!uint.TryParse(properties[104], out uint legCrest2)) return null;
-            if (!byte.TryParse(properties[105], out byte lC2Add1)) return null;
-            if (!byte.TryParse(properties[106], out byte lC2Add2)) return null;
-            if (!uint.TryParse(properties[107], out uint legCrest3)) return null;
-            if (!byte.TryParse(properties[108], out byte lC3Add1)) return null;
-            if (!byte.TryParse(properties[109], out byte lC3Add2)) return null;
-            if (!uint.TryParse(properties[110], out uint legwear)) return null;
-            if (!uint.TryParse(properties[111], out uint overwear)) return null;
-            if (!uint.TryParse(properties[112], out uint lantern)) return null;
-            if (!bool.TryParse(properties[113], out bool displayHelmet)) return null;
-            if (!bool.TryParse(properties[114], out bool displayLantern)) return null;
-            if (!uint.TryParse(properties[115], out uint vPrimaryWeapon)) return null;
-            if (!uint.TryParse(properties[116], out uint vSecondaryWeapon)) return null;
-            if (!uint.TryParse(properties[117], out uint vHead)) return null;
-            if (!uint.TryParse(properties[118], out uint vBody)) return null;
-            if (!uint.TryParse(properties[119], out uint vClothing)) return null;
-            if (!uint.TryParse(properties[120], out uint vArm)) return null;
-            if (!uint.TryParse(properties[121], out uint vLeg)) return null;
-            if (!uint.TryParse(properties[122], out uint vLegwear)) return null;
-            if (!uint.TryParse(properties[123], out uint vOverwear)) return null;
-            if (!uint.TryParse(properties[124], out uint classItem1)) return null;
-            if (!uint.TryParse(properties[125], out uint classItem2)) return null;
-            if (!uint.TryParse(properties[126], out uint jewelry1)) return null;
-            if (!uint.TryParse(properties[127], out uint j1Crest1)) return null;
-            if (!byte.TryParse(properties[128], out byte j1C1Add1)) return null;
-            if (!byte.TryParse(properties[129], out byte j1C1Add2)) return null;
-            if (!uint.TryParse(properties[130], out uint j1Crest2)) return null;
-            if (!byte.TryParse(properties[131], out byte j1C2Add1)) return null;
-            if (!byte.TryParse(properties[132], out byte j1C2Add2)) return null;
-            if (!uint.TryParse(properties[133], out uint j1Crest3)) return null;
-            if (!byte.TryParse(properties[134], out byte j1C3Add1)) return null;
-            if (!byte.TryParse(properties[135], out byte j1C3Add2)) return null;
-            if (!uint.TryParse(properties[136], out uint j1Crest4)) return null;
-            if (!byte.TryParse(properties[137], out byte j1C4Add1)) return null;
-            if (!byte.TryParse(properties[138], out byte j1C4Add2)) return null;
-            if (!uint.TryParse(properties[139], out uint jewelry2)) return null;
-            if (!uint.TryParse(properties[140], out uint j2Crest1)) return null;
-            if (!byte.TryParse(properties[141], out byte j2C1Add1)) return null;
-            if (!byte.TryParse(properties[142], out byte j2C1Add2)) return null;
-            if (!uint.TryParse(properties[143], out uint j2Crest2)) return null;
-            if (!byte.TryParse(properties[144], out byte j2C2Add1)) return null;
-            if (!byte.TryParse(properties[145], out byte j2C2Add2)) return null;
-            if (!uint.TryParse(properties[146], out uint j2Crest3)) return null;
-            if (!byte.TryParse(properties[147], out byte j2C3Add1)) return null;
-            if (!byte.TryParse(properties[148], out byte j2C3Add2)) return null;
-            if (!uint.TryParse(properties[149], out uint j2Crest4)) return null;
-            if (!byte.TryParse(properties[150], out byte j2C4Add1)) return null;
-            if (!byte.TryParse(properties[151], out byte j2C4Add2)) return null;
-            if (!uint.TryParse(properties[152], out uint jewelry3)) return null;
-            if (!uint.TryParse(properties[153], out uint j3Crest1)) return null;
-            if (!byte.TryParse(properties[154], out byte j3C1Add1)) return null;
-            if (!byte.TryParse(properties[155], out byte j3C1Add2)) return null;
-            if (!uint.TryParse(properties[156], out uint j3Crest2)) return null;
-            if (!byte.TryParse(properties[157], out byte j3C2Add1)) return null;
-            if (!byte.TryParse(properties[158], out byte j3C2Add2)) return null;
-            if (!uint.TryParse(properties[159], out uint j3Crest3)) return null;
-            if (!byte.TryParse(properties[160], out byte j3C3Add1)) return null;
-            if (!byte.TryParse(properties[161], out byte j3C3Add2)) return null;
-            if (!uint.TryParse(properties[162], out uint j3Crest4)) return null;
-            if (!byte.TryParse(properties[163], out byte j3C4Add1)) return null;
-            if (!byte.TryParse(properties[164], out byte j3C4Add2)) return null;
-            if (!uint.TryParse(properties[165], out uint jewelry4)) return null;
-            if (!uint.TryParse(properties[166], out uint j4Crest1)) return null;
-            if (!byte.TryParse(properties[167], out byte j4C1Add1)) return null;
-            if (!byte.TryParse(properties[168], out byte j4C1Add2)) return null;
-            if (!uint.TryParse(properties[169], out uint j4Crest2)) return null;
-            if (!byte.TryParse(properties[170], out byte j4C2Add1)) return null;
-            if (!byte.TryParse(properties[171], out byte j4C2Add2)) return null;
-            if (!uint.TryParse(properties[172], out uint j4Crest3)) return null;
-            if (!byte.TryParse(properties[173], out byte j4C3Add1)) return null;
-            if (!byte.TryParse(properties[174], out byte j4C3Add2)) return null;
-            if (!uint.TryParse(properties[175], out uint j4Crest4)) return null;
-            if (!byte.TryParse(properties[176], out byte j4C4Add1)) return null;
-            if (!byte.TryParse(properties[177], out byte j4C4Add2)) return null;
-            if (!uint.TryParse(properties[178], out uint jewelry5)) return null;
-            if (!uint.TryParse(properties[179], out uint j5Crest1)) return null;
-            if (!byte.TryParse(properties[180], out byte j5C1Add1)) return null;
-            if (!byte.TryParse(properties[181], out byte j5C1Add2)) return null;
-            if (!uint.TryParse(properties[182], out uint j5Crest2)) return null;
-            if (!byte.TryParse(properties[183], out byte j5C2Add1)) return null;
-            if (!byte.TryParse(properties[184], out byte j5C2Add2)) return null;
-            if (!uint.TryParse(properties[185], out uint j5Crest3)) return null;
-            if (!byte.TryParse(properties[186], out byte j5C3Add1)) return null;
-            if (!byte.TryParse(properties[187], out byte j5C3Add2)) return null;
-            if (!uint.TryParse(properties[188], out uint j5Crest4)) return null;
-            if (!byte.TryParse(properties[189], out byte j5C4Add1)) return null;
-            if (!byte.TryParse(properties[190], out byte j5C4Add2)) return null;
-            if (!uint.TryParse(properties[191], out uint exp)) return null;
-            if (!uint.TryParse(properties[192], out uint jobPoint)) return null;
-            if (!ushort.TryParse(properties[193], out ushort strength)) return null;
-            if (!ushort.TryParse(properties[194], out ushort downPower)) return null;
-            if (!ushort.TryParse(properties[195], out ushort shakePower)) return null;
-            if (!ushort.TryParse(properties[196], out ushort stunPower)) return null;
-            if (!ushort.TryParse(properties[197], out ushort consitution)) return null;
-            if (!ushort.TryParse(properties[198], out ushort guts)) return null;
-            if (!byte.TryParse(properties[199], out byte fireResist)) return null;
-            if (!byte.TryParse(properties[200], out byte iceResist)) return null;
-            if (!byte.TryParse(properties[201], out byte thunderResist)) return null;
-            if (!byte.TryParse(properties[202], out byte holyResist)) return null;
-            if (!byte.TryParse(properties[203], out byte darkResist)) return null;
-            if (!byte.TryParse(properties[204], out byte spreadResist)) return null;
-            if (!byte.TryParse(properties[205], out byte freezeResist)) return null;
-            if (!byte.TryParse(properties[206], out byte shockResist)) return null;
-            if (!byte.TryParse(properties[207], out byte absorbResist)) return null;
-            if (!byte.TryParse(properties[208], out byte darkElmResist)) return null;
-            if (!byte.TryParse(properties[209], out byte poisonResist)) return null;
-            if (!byte.TryParse(properties[210], out byte slowResist)) return null;
-            if (!byte.TryParse(properties[211], out byte sleepResist)) return null;
-            if (!byte.TryParse(properties[212], out byte stunResist)) return null;
-            if (!byte.TryParse(properties[213], out byte wetResist)) return null;
-            if (!byte.TryParse(properties[214], out byte oilResist)) return null;
-            if (!byte.TryParse(properties[215], out byte sealResist)) return null;
-            if (!byte.TryParse(properties[216], out byte curseResist)) return null;
-            if (!byte.TryParse(properties[217], out byte softResist)) return null;
-            if (!byte.TryParse(properties[218], out byte stoneResist)) return null;
-            if (!byte.TryParse(properties[219], out byte goldResist)) return null;
-            if (!byte.TryParse(properties[220], out byte fireReduceResist)) return null;
-            if (!byte.TryParse(properties[221], out byte iceReduceResist)) return null;
-            if (!byte.TryParse(properties[222], out byte thunderReduceResist)) return null;
-            if (!byte.TryParse(properties[223], out byte holyReduceResist)) return null;
-            if (!byte.TryParse(properties[224], out byte darkReduceResist)) return null;
-            if (!byte.TryParse(properties[225], out byte atkDownResist)) return null;
-            if (!byte.TryParse(properties[226], out byte defDownResist)) return null;
-            if (!byte.TryParse(properties[227], out byte mAtkDownResist)) return null;
-            if (!byte.TryParse(properties[228], out byte mDefDownResist)) return null;
-            if (!uint.TryParse(properties[229], out uint normalSkill1A)) return null;
-            if (!uint.TryParse(properties[230], out uint normalSkill1B)) return null;
-            if (!uint.TryParse(properties[231], out uint normalSkill2A)) return null;
-            if (!uint.TryParse(properties[232], out uint normalSkill2B)) return null;
-            if (!uint.TryParse(properties[233], out uint normalSkill3A)) return null;
-            if (!uint.TryParse(properties[234], out uint normalSkill3B)) return null;
+            if (!byte.TryParse(properties[53], out byte primaryWeaponColour)) return null;
+            if (!uint.TryParse(properties[54], out uint pWCrest1)) return null;
+            if (!byte.TryParse(properties[55], out byte pWC1Add1)) return null;
+            if (!byte.TryParse(properties[56], out byte pWC1Add2)) return null;
+            if (!uint.TryParse(properties[57], out uint pWCrest2)) return null;
+            if (!byte.TryParse(properties[58], out byte pWC2Add1)) return null;
+            if (!byte.TryParse(properties[59], out byte pWC2Add2)) return null;
+            if (!uint.TryParse(properties[60], out uint pWCrest3)) return null;
+            if (!byte.TryParse(properties[61], out byte pWC3Add1)) return null;
+            if (!byte.TryParse(properties[62], out byte pWC3Add2)) return null;
+            if (!uint.TryParse(properties[63], out uint pWCrest4)) return null;
+            if (!byte.TryParse(properties[64], out byte pWC4Add1)) return null;
+            if (!byte.TryParse(properties[65], out byte pWC4Add2)) return null;
+            if (!uint.TryParse(properties[66], out uint secondaryWeapon)) return null;
+            if (!byte.TryParse(properties[67], out byte secondaryWeaponColour)) return null;
+            if (!uint.TryParse(properties[68], out uint head)) return null;
+            if (!byte.TryParse(properties[69], out byte headColour)) return null;
+            if (!uint.TryParse(properties[70], out uint headCrest1)) return null;
+            if (!byte.TryParse(properties[71], out byte hC1Add1)) return null;
+            if (!byte.TryParse(properties[72], out byte hC1Add2)) return null;
+            if (!uint.TryParse(properties[73], out uint headCrest2)) return null;
+            if (!byte.TryParse(properties[74], out byte hC2Add1)) return null;
+            if (!byte.TryParse(properties[75], out byte hC2Add2)) return null;
+            if (!uint.TryParse(properties[76], out uint headCrest3)) return null;
+            if (!byte.TryParse(properties[77], out byte hC3Add1)) return null;
+            if (!byte.TryParse(properties[78], out byte hC3Add2)) return null;
+            if (!uint.TryParse(properties[79], out uint body)) return null;
+            if (!byte.TryParse(properties[80], out byte bodyColour)) return null;
+            if (!uint.TryParse(properties[81], out uint bodyCrest1)) return null;
+            if (!byte.TryParse(properties[82], out byte bC1Add1)) return null;
+            if (!byte.TryParse(properties[83], out byte bC1Add2)) return null;
+            if (!uint.TryParse(properties[84], out uint bodyCrest2)) return null;
+            if (!byte.TryParse(properties[85], out byte bC2Add1)) return null;
+            if (!byte.TryParse(properties[86], out byte bC2Add2)) return null;
+            if (!uint.TryParse(properties[87], out uint bodyCrest3)) return null;
+            if (!byte.TryParse(properties[88], out byte bC3Add1)) return null;
+            if (!byte.TryParse(properties[89], out byte bC3Add2)) return null;
+            if (!uint.TryParse(properties[90], out uint bodyCrest4)) return null;
+            if (!byte.TryParse(properties[91], out byte bC4Add1)) return null;
+            if (!byte.TryParse(properties[92], out byte bC4Add2)) return null;
+            if (!uint.TryParse(properties[93], out uint clothing)) return null;
+            if (!byte.TryParse(properties[94], out byte clothingColour)) return null;
+            if (!uint.TryParse(properties[95], out uint arm)) return null;
+            if (!byte.TryParse(properties[96], out byte armColour)) return null;
+            if (!uint.TryParse(properties[97], out uint armCrest1)) return null;
+            if (!byte.TryParse(properties[98], out byte aC1Add1)) return null;
+            if (!byte.TryParse(properties[99], out byte aC1Add2)) return null;
+            if (!uint.TryParse(properties[100], out uint armCrest2)) return null;
+            if (!byte.TryParse(properties[101], out byte aC2Add1)) return null;
+            if (!byte.TryParse(properties[102], out byte aC2Add2)) return null;
+            if (!uint.TryParse(properties[103], out uint armCrest3)) return null;
+            if (!byte.TryParse(properties[104], out byte aC3Add1)) return null;
+            if (!byte.TryParse(properties[105], out byte aC3Add2)) return null;
+            if (!uint.TryParse(properties[106], out uint leg)) return null;
+            if (!byte.TryParse(properties[107], out byte legColour)) return null;
+            if (!uint.TryParse(properties[108], out uint legCrest1)) return null;
+            if (!byte.TryParse(properties[109], out byte lC1Add1)) return null;
+            if (!byte.TryParse(properties[110], out byte lC1Add2)) return null;
+            if (!uint.TryParse(properties[111], out uint legCrest2)) return null;
+            if (!byte.TryParse(properties[112], out byte lC2Add1)) return null;
+            if (!byte.TryParse(properties[113], out byte lC2Add2)) return null;
+            if (!uint.TryParse(properties[114], out uint legCrest3)) return null;
+            if (!byte.TryParse(properties[115], out byte lC3Add1)) return null;
+            if (!byte.TryParse(properties[116], out byte lC3Add2)) return null;
+            if (!uint.TryParse(properties[117], out uint legwear)) return null;
+            if (!byte.TryParse(properties[118], out byte legwearColour)) return null;
+            if (!uint.TryParse(properties[119], out uint overwear)) return null;
+            if (!byte.TryParse(properties[120], out byte overwearColour)) return null;
+            if (!uint.TryParse(properties[121], out uint lantern)) return null;
+            if (!bool.TryParse(properties[122], out bool displayHelmet)) return null;
+            if (!bool.TryParse(properties[123], out bool displayLantern)) return null;
+            if (!uint.TryParse(properties[124], out uint vPrimaryWeapon)) return null;
+            if (!byte.TryParse(properties[125], out byte vPrimaryWeaponColour)) return null;
+            if (!uint.TryParse(properties[126], out uint vSecondaryWeapon)) return null;
+            if (!byte.TryParse(properties[127], out byte vSecondaryWeaponColour)) return null;
+            if (!uint.TryParse(properties[128], out uint vHead)) return null;
+            if (!byte.TryParse(properties[129], out byte vHeadColour)) return null;
+            if (!uint.TryParse(properties[130], out uint vBody)) return null;
+            if (!byte.TryParse(properties[131], out byte vBodyColour)) return null;
+            if (!uint.TryParse(properties[132], out uint vClothing)) return null;
+            if (!byte.TryParse(properties[133], out byte vClothingColour)) return null;
+            if (!uint.TryParse(properties[134], out uint vArm)) return null;
+            if (!byte.TryParse(properties[135], out byte vArmColour)) return null;
+            if (!uint.TryParse(properties[136], out uint vLeg)) return null;
+            if (!byte.TryParse(properties[137], out byte vLegColour)) return null;
+            if (!uint.TryParse(properties[138], out uint vLegwear)) return null;
+            if (!byte.TryParse(properties[139], out byte vLegwearColour)) return null;
+            if (!uint.TryParse(properties[140], out uint vOverwear)) return null;
+            if (!byte.TryParse(properties[141], out byte vOverwearColour)) return null;
+            if (!uint.TryParse(properties[142], out uint classItem1)) return null;
+            if (!uint.TryParse(properties[143], out uint classItem2)) return null;
+            if (!uint.TryParse(properties[144], out uint jewelry1)) return null;
+            if (!uint.TryParse(properties[145], out uint j1Crest1)) return null;
+            if (!byte.TryParse(properties[146], out byte j1C1Add1)) return null;
+            if (!byte.TryParse(properties[147], out byte j1C1Add2)) return null;
+            if (!uint.TryParse(properties[148], out uint j1Crest2)) return null;
+            if (!byte.TryParse(properties[149], out byte j1C2Add1)) return null;
+            if (!byte.TryParse(properties[150], out byte j1C2Add2)) return null;
+            if (!uint.TryParse(properties[151], out uint j1Crest3)) return null;
+            if (!byte.TryParse(properties[152], out byte j1C3Add1)) return null;
+            if (!byte.TryParse(properties[153], out byte j1C3Add2)) return null;
+            if (!uint.TryParse(properties[154], out uint j1Crest4)) return null;
+            if (!byte.TryParse(properties[155], out byte j1C4Add1)) return null;
+            if (!byte.TryParse(properties[156], out byte j1C4Add2)) return null;
+            if (!uint.TryParse(properties[157], out uint jewelry2)) return null;
+            if (!uint.TryParse(properties[158], out uint j2Crest1)) return null;
+            if (!byte.TryParse(properties[159], out byte j2C1Add1)) return null;
+            if (!byte.TryParse(properties[160], out byte j2C1Add2)) return null;
+            if (!uint.TryParse(properties[161], out uint j2Crest2)) return null;
+            if (!byte.TryParse(properties[162], out byte j2C2Add1)) return null;
+            if (!byte.TryParse(properties[163], out byte j2C2Add2)) return null;
+            if (!uint.TryParse(properties[164], out uint j2Crest3)) return null;
+            if (!byte.TryParse(properties[165], out byte j2C3Add1)) return null;
+            if (!byte.TryParse(properties[166], out byte j2C3Add2)) return null;
+            if (!uint.TryParse(properties[167], out uint j2Crest4)) return null;
+            if (!byte.TryParse(properties[168], out byte j2C4Add1)) return null;
+            if (!byte.TryParse(properties[169], out byte j2C4Add2)) return null;
+            if (!uint.TryParse(properties[170], out uint jewelry3)) return null;
+            if (!uint.TryParse(properties[171], out uint j3Crest1)) return null;
+            if (!byte.TryParse(properties[172], out byte j3C1Add1)) return null;
+            if (!byte.TryParse(properties[173], out byte j3C1Add2)) return null;
+            if (!uint.TryParse(properties[174], out uint j3Crest2)) return null;
+            if (!byte.TryParse(properties[175], out byte j3C2Add1)) return null;
+            if (!byte.TryParse(properties[176], out byte j3C2Add2)) return null;
+            if (!uint.TryParse(properties[177], out uint j3Crest3)) return null;
+            if (!byte.TryParse(properties[178], out byte j3C3Add1)) return null;
+            if (!byte.TryParse(properties[179], out byte j3C3Add2)) return null;
+            if (!uint.TryParse(properties[180], out uint j3Crest4)) return null;
+            if (!byte.TryParse(properties[181], out byte j3C4Add1)) return null;
+            if (!byte.TryParse(properties[182], out byte j3C4Add2)) return null;
+            if (!uint.TryParse(properties[183], out uint jewelry4)) return null;
+            if (!uint.TryParse(properties[184], out uint j4Crest1)) return null;
+            if (!byte.TryParse(properties[185], out byte j4C1Add1)) return null;
+            if (!byte.TryParse(properties[186], out byte j4C1Add2)) return null;
+            if (!uint.TryParse(properties[187], out uint j4Crest2)) return null;
+            if (!byte.TryParse(properties[188], out byte j4C2Add1)) return null;
+            if (!byte.TryParse(properties[189], out byte j4C2Add2)) return null;
+            if (!uint.TryParse(properties[190], out uint j4Crest3)) return null;
+            if (!byte.TryParse(properties[191], out byte j4C3Add1)) return null;
+            if (!byte.TryParse(properties[192], out byte j4C3Add2)) return null;
+            if (!uint.TryParse(properties[193], out uint j4Crest4)) return null;
+            if (!byte.TryParse(properties[194], out byte j4C4Add1)) return null;
+            if (!byte.TryParse(properties[195], out byte j4C4Add2)) return null;
+            if (!uint.TryParse(properties[196], out uint jewelry5)) return null;
+            if (!uint.TryParse(properties[197], out uint j5Crest1)) return null;
+            if (!byte.TryParse(properties[198], out byte j5C1Add1)) return null;
+            if (!byte.TryParse(properties[199], out byte j5C1Add2)) return null;
+            if (!uint.TryParse(properties[200], out uint j5Crest2)) return null;
+            if (!byte.TryParse(properties[201], out byte j5C2Add1)) return null;
+            if (!byte.TryParse(properties[202], out byte j5C2Add2)) return null;
+            if (!uint.TryParse(properties[203], out uint j5Crest3)) return null;
+            if (!byte.TryParse(properties[204], out byte j5C3Add1)) return null;
+            if (!byte.TryParse(properties[205], out byte j5C3Add2)) return null;
+            if (!uint.TryParse(properties[206], out uint j5Crest4)) return null;
+            if (!byte.TryParse(properties[207], out byte j5C4Add1)) return null;
+            if (!byte.TryParse(properties[208], out byte j5C4Add2)) return null;
+            if (!uint.TryParse(properties[209], out uint exp)) return null;
+            if (!uint.TryParse(properties[210], out uint jobPoint)) return null;
+            if (!ushort.TryParse(properties[211], out ushort strength)) return null;
+            if (!ushort.TryParse(properties[212], out ushort downPower)) return null;
+            if (!ushort.TryParse(properties[213], out ushort shakePower)) return null;
+            if (!ushort.TryParse(properties[214], out ushort stunPower)) return null;
+            if (!ushort.TryParse(properties[215], out ushort consitution)) return null;
+            if (!ushort.TryParse(properties[216], out ushort guts)) return null;
+            if (!byte.TryParse(properties[217], out byte fireResist)) return null;
+            if (!byte.TryParse(properties[218], out byte iceResist)) return null;
+            if (!byte.TryParse(properties[219], out byte thunderResist)) return null;
+            if (!byte.TryParse(properties[220], out byte holyResist)) return null;
+            if (!byte.TryParse(properties[221], out byte darkResist)) return null;
+            if (!byte.TryParse(properties[222], out byte spreadResist)) return null;
+            if (!byte.TryParse(properties[223], out byte freezeResist)) return null;
+            if (!byte.TryParse(properties[224], out byte shockResist)) return null;
+            if (!byte.TryParse(properties[225], out byte absorbResist)) return null;
+            if (!byte.TryParse(properties[226], out byte darkElmResist)) return null;
+            if (!byte.TryParse(properties[227], out byte poisonResist)) return null;
+            if (!byte.TryParse(properties[228], out byte slowResist)) return null;
+            if (!byte.TryParse(properties[229], out byte sleepResist)) return null;
+            if (!byte.TryParse(properties[230], out byte stunResist)) return null;
+            if (!byte.TryParse(properties[231], out byte wetResist)) return null;
+            if (!byte.TryParse(properties[232], out byte oilResist)) return null;
+            if (!byte.TryParse(properties[233], out byte sealResist)) return null;
+            if (!byte.TryParse(properties[234], out byte curseResist)) return null;
+            if (!byte.TryParse(properties[235], out byte softResist)) return null;
+            if (!byte.TryParse(properties[236], out byte stoneResist)) return null;
+            if (!byte.TryParse(properties[237], out byte goldResist)) return null;
+            if (!byte.TryParse(properties[238], out byte fireReduceResist)) return null;
+            if (!byte.TryParse(properties[239], out byte iceReduceResist)) return null;
+            if (!byte.TryParse(properties[240], out byte thunderReduceResist)) return null;
+            if (!byte.TryParse(properties[241], out byte holyReduceResist)) return null;
+            if (!byte.TryParse(properties[242], out byte darkReduceResist)) return null;
+            if (!byte.TryParse(properties[243], out byte atkDownResist)) return null;
+            if (!byte.TryParse(properties[244], out byte defDownResist)) return null;
+            if (!byte.TryParse(properties[245], out byte mAtkDownResist)) return null;
+            if (!byte.TryParse(properties[246], out byte mDefDownResist)) return null;
+            if (!uint.TryParse(properties[247], out uint normalSkill1A)) return null;
+            if (!uint.TryParse(properties[248], out uint normalSkill1B)) return null;
+            if (!uint.TryParse(properties[249], out uint normalSkill2A)) return null;
+            if (!uint.TryParse(properties[250], out uint normalSkill2B)) return null;
+            if (!uint.TryParse(properties[251], out uint normalSkill3A)) return null;
+            if (!uint.TryParse(properties[252], out uint normalSkill3B)) return null;
 
             return new ArisenCsv
             {
@@ -299,6 +317,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 MAtk = mAtk,
                 MDef = mDef,
                 PrimaryWeapon = primaryWeapon,
+                PrimaryWeaponColour = primaryWeaponColour,
                 PWCrest1 = pWCrest1,
                 PWC1Add1 = pWC1Add1,
                 PWC1Add2 = pWC1Add2,
@@ -312,7 +331,9 @@ namespace Arrowgene.Ddon.Shared.Csv
                 PWC4Add1 = pWC4Add1,
                 PWC4Add2 = pWC4Add2,
                 SecondaryWeapon = secondaryWeapon,
+                SecondaryWeaponColour = secondaryWeaponColour,
                 Head = head,
+                HeadColour = headColour,
                 HeadCrest1 = headCrest1,
                 HC1Add1 = hC1Add1,
                 HC1Add2 = hC1Add2,
@@ -323,6 +344,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 HC3Add1 = hC3Add1,
                 HC3Add2 = hC3Add2,
                 Body = body,
+                BodyColour = bodyColour,
                 BodyCrest1 = bodyCrest1,
                 BC1Add1 = bC1Add1,
                 BC1Add2 = bC1Add2,
@@ -336,7 +358,9 @@ namespace Arrowgene.Ddon.Shared.Csv
                 BC4Add1 = bC4Add1,
                 BC4Add2 = bC4Add2,
                 Clothing = clothing,
+                ClothingColour = clothingColour,
                 Arm = arm,
+                ArmColour = armColour,
                 ArmCrest1 = armCrest1,
                 AC1Add1 = aC1Add1,
                 AC1Add2 = aC1Add2,
@@ -347,6 +371,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 AC3Add1 = aC3Add1,
                 AC3Add2 = aC3Add2,
                 Leg = leg,
+                LegColour = legColour,
                 LegCrest1 = legCrest1,
                 LC1Add1 = lC1Add1,
                 LC1Add2 = lC1Add2,
@@ -357,19 +382,30 @@ namespace Arrowgene.Ddon.Shared.Csv
                 LC3Add1 = lC3Add1,
                 LC3Add2 = lC3Add2,
                 Legwear = legwear,
+                LegwearColour = legwearColour,
                 Overwear = overwear,
+                OverwearColour = overwearColour,
                 Lantern = lantern,
                 DisplayHelmet = displayHelmet,
                 DisplayLantern = displayLantern,
                 VPrimaryWeapon = vPrimaryWeapon,
+                VPrimaryWeaponColour = vPrimaryWeaponColour,
                 VSecondaryWeapon = vSecondaryWeapon,
+                VSecondaryWeaponColour = vSecondaryWeaponColour,
                 VHead = vHead,
+                VHeadColour = vHeadColour,
                 VBody = vBody,
+                VBodyColour = vBodyColour,
                 VClothing = vClothing,
+                VClothingColour = vClothingColour,
                 VArm = vArm,
+                VArmColour = vArmColour,
                 VLeg = vLeg,
+                VLegColour = vLegColour,
                 VLegwear = vLegwear,
+                VLegwearColour = vLegwearColour,
                 VOverwear = vOverwear,
+                VOverwearColour = vOverwearColour,
                 ClassItem1 = classItem1,
                 ClassItem2 = classItem2,
                 Jewelry1 = jewelry1,
