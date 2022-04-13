@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -15,10 +16,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceSetOmInstantKeyValueReq> stageIdHandler)
+        public override void Handle(GameClient client, StructurePacket<C2SInstanceSetOmInstantKeyValueReq> req)
         {
-            S2CInstanceSetOmInstantKeyValueRes res = new S2CInstanceSetOmInstantKeyValueRes(stageIdHandler.Structure);
+            S2CInstanceSetOmInstantKeyValueRes res = new S2CInstanceSetOmInstantKeyValueRes(req.Structure);
+            res.StageId = client.Stage.Id;
             client.Send(res);
+
+            S2CInstance_13_20_16_Ntc ntc = new S2CInstance_13_20_16_Ntc();
+            ntc.StageId = client.Stage.Id;
+            ntc.Data0 = req.Structure.Data0;
+            ntc.Data1 = req.Structure.Data1;
+            client.Send(ntc);
         }
     }
 }

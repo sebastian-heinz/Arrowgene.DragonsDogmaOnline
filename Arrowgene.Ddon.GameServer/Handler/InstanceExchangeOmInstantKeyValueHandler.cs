@@ -16,10 +16,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
 
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceExchangeOmInstantKeyValueReq> stageIdHandler)
+        public override void Handle(GameClient client, StructurePacket<C2SInstanceExchangeOmInstantKeyValueReq> req)
         {
-            S2CInstanceExchangeOmInstantKeyValueRes res = new S2CInstanceExchangeOmInstantKeyValueRes(stageIdHandler.Structure);
+            S2CInstanceExchangeOmInstantKeyValueRes res = new S2CInstanceExchangeOmInstantKeyValueRes();
+            res.StageId = client.Stage.Id;
+            res.Data0 = req.Structure.Data0;
+            res.Data1 = req.Structure.Data1;
             client.Send(res);
+
+            S2CInstance_13_23_16_Ntc ntc = new S2CInstance_13_23_16_Ntc();
+            ntc.StageId = client.Stage.Id;
+            ntc.Data0 = req.Structure.Data0;
+            ntc.Data1 = req.Structure.Data1;
+            client.Send(ntc);
         }
     }
 }
