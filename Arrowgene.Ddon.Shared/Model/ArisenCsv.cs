@@ -57,6 +57,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public ushort MAtk { get; set; }
         public ushort MDef { get; set; }
         public uint PrimaryWeapon { get; set; }
+        public byte PrimaryWeaponColour { get; set; }
         public uint PWCrest1 { get; set; }
         public byte PWC1Add1 { get; set; }
         public byte PWC1Add2 { get; set; }
@@ -70,7 +71,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte PWC4Add1 { get; set; }
         public byte PWC4Add2 { get; set; }
         public uint SecondaryWeapon { get; set; }
+        public byte SecondaryWeaponColour { get; set; }
         public uint Head { get; set; }
+        public byte HeadColour { get; set; }
         public uint HeadCrest1 { get; set; }
         public byte HC1Add1 { get; set; }
         public byte HC1Add2 { get; set; }
@@ -81,6 +84,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte HC3Add1 { get; set; }
         public byte HC3Add2 { get; set; }
         public uint Body { get; set; }
+        public byte BodyColour { get; set; }
         public uint BodyCrest1 { get; set; }
         public byte BC1Add1 { get; set; }
         public byte BC1Add2 { get; set; }
@@ -94,7 +98,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte BC4Add1 { get; set; }
         public byte BC4Add2 { get; set; }
         public uint Clothing { get; set; }
+        public byte ClothingColour { get; set; }
         public uint Arm { get; set; }
+        public byte ArmColour { get; set; }
         public uint ArmCrest1 { get; set; }
         public byte AC1Add1 { get; set; }
         public byte AC1Add2 { get; set; }
@@ -105,6 +111,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte AC3Add1 { get; set; }
         public byte AC3Add2 { get; set; }
         public uint Leg { get; set; }
+        public byte LegColour { get; set; }
         public uint LegCrest1 { get; set; }
         public byte LC1Add1 { get; set; }
         public byte LC1Add2 { get; set; }
@@ -115,19 +122,30 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte LC3Add1 { get; set; }
         public byte LC3Add2 { get; set; }
         public uint Legwear { get; set; }
+        public byte LegwearColour { get; set; }
         public uint Overwear { get; set; }
+        public byte OverwearColour { get; set; }
         public uint Lantern { get; set; }
         public bool DisplayHelmet { get; set; }
         public bool DisplayLantern { get; set; }
         public uint VPrimaryWeapon { get; set; }
+        public byte VPrimaryWeaponColour { get; set; }
         public uint VSecondaryWeapon { get; set; }
+        public byte VSecondaryWeaponColour { get; set; }
         public uint VHead { get; set; }
+        public byte VHeadColour { get; set; }
         public uint VBody { get; set; }
+        public byte VBodyColour { get; set; }
         public uint VClothing { get; set; }
+        public byte VClothingColour { get; set; }
         public uint VArm { get; set; }
+        public byte VArmColour { get; set; }
         public uint VLeg { get; set; }
+        public byte VLegColour { get; set; }
         public uint VLegwear { get; set; }
+        public byte VLegwearColour { get; set; }
         public uint VOverwear { get; set; }
+        public byte VOverwearColour { get; set; }
         public uint ClassItem1 { get; set; }
         public uint ClassItem2 { get; set; }
         public uint Jewelry1 { get; set; }
