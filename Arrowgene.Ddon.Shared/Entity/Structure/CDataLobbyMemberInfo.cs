@@ -32,9 +32,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             SessionStatus
             OnlineStatus
         */
-        public byte Unk0;
-        public byte Unk1;
-        public byte Unk2;
+        public byte Unk0; // Most likely Platform
+        public byte Unk1; // Seems to always be 0 in the pcaps
+        public byte Unk2; // Most likely OnlineStatus
     }
 
     public class CDataLobbyMemberInfoSerializer : EntitySerializer<CDataLobbyMemberInfo>
