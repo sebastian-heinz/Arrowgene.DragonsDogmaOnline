@@ -1,4 +1,5 @@
-﻿using Arrowgene.Buffers;
+﻿using System.Net;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
@@ -34,8 +35,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.WriteUInt32(0, Endianness.Big);
                 res.WriteUInt32(0, Endianness.Big);
                 res.WriteUInt32(0, Endianness.Big);
-                res.WriteMtString("127.0.0.1" + i);
-                res.WriteUInt16(52000, Endianness.Big);
+                res.WriteMtString(((DdonGameServer) Server).Setting.ServerSetting.ServerIpAddress.ToString());
+                res.WriteUInt16(((DdonGameServer) Server).Setting.ServerSetting.ServerPort, Endianness.Big);
                 res.WriteByte(0);
             }
             client.Send(new Packet(PacketId.S2C_SERVER_GET_SERVER_LIST_RES, res.GetAllBytes()));
