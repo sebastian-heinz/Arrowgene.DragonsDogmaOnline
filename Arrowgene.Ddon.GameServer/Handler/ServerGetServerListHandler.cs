@@ -21,6 +21,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
+            IPAddress[] gameServerHostAddresses = Dns.GetHostAddresses(((DdonGameServer) Server).Setting.ServerSetting.ServerIpAddress.ToString());
+
             IBuffer res = new StreamBuffer();
             res.WriteUInt32(0, Endianness.Big);
             res.WriteUInt32(0, Endianness.Big);
@@ -35,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.WriteUInt32(0, Endianness.Big);
                 res.WriteUInt32(0, Endianness.Big);
                 res.WriteUInt32(0, Endianness.Big);
-                res.WriteMtString(((DdonGameServer) Server).Setting.ServerSetting.ServerIpAddress.ToString());
+                res.WriteMtString(gameServerHostAddresses[0].ToString());
                 res.WriteUInt16(((DdonGameServer) Server).Setting.ServerSetting.ServerPort, Endianness.Big);
                 res.WriteByte(0);
             }
