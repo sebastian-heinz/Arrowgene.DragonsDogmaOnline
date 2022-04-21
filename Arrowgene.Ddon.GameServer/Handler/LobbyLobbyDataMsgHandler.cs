@@ -18,23 +18,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SLobbyLobbyDataMsgReq> packet)
         {
             // In the pcaps ive only seen 3.4.16 packets whose RpcPacket length is either of these
-            if(packet.Structure.RpcPacket.Length is 0x1C or 0x3E or 0x9B or 0x9A or 0x9B or 0x9D)
-            {
-                S2CLobbyLobbyDataMsgNotice res = new S2CLobbyLobbyDataMsgNotice();
-                res.Type = packet.Structure.Type; // I haven't seen any values other than 0x02
-                res.CharacterId = client.Character.Id; // Has to be overwritten since the request has the id set to 0
-                res.RpcPacket = packet.Structure.RpcPacket;
-                res.OnlineStatus = 0x08; // TODO: Figure out OnlineStatus values
+            S2CLobbyLobbyDataMsgNotice res = new S2CLobbyLobbyDataMsgNotice();
+            res.Type = packet.Structure.Type; // I haven't seen any values other than 0x02
+            res.CharacterId = client.Character.Id; // Has to be overwritten since the request has the id set to 0
+            res.RpcPacket = packet.Structure.RpcPacket;
+            res.OnlineStatus = 0x08; // TODO: Figure out OnlineStatus values
 
-                foreach (GameClient otherClient in Server.Clients)
+            foreach (GameClient otherClient in Server.Clients)
+            {
+                if (otherClient != client)
                 {
-                    if (otherClient != client)
-                    {
-                        otherClient.Send(res);
-                    }
+                    otherClient.Send(res);
                 }
             }
-
+            
             if(packet.Structure.RpcPacket.Length > 52)
             {
                 IBuffer rpcPacketBuffer = new StreamBuffer(packet.Structure.RpcPacket);
@@ -63,10 +60,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 // From now on, the contents (subpackets) depend on MsgId, a set of flags
                 if((msgIdFull & 1) != 0) { // This is incomplete, msgIdFull is converted through a function first, (0x5FE8D0) but should work for most cases
-                    double X = rpcPacketBuffer.ReadDouble(Endianness.Big);
-                    float Y = rpcPacketBuffer.ReadFloat(Endianness.Big);
-                    double Z = rpcPacketBuffer.ReadDouble(Endianness.Big);
-                    client.setPosition(X, Y, Z);
+                    client.X = rpcPacketBuffer.ReadDouble(Endianness.Big);
+                    client.Y = rpcPacketBuffer.ReadFloat(Endianness.Big);
+                    client.Z = rpcPacketBuffer.ReadDouble(Endianness.Big);
                 }
             }
         }
