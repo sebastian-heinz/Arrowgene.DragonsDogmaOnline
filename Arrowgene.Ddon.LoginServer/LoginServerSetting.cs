@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Arrowgene.Ddon.Server;
 
 namespace Arrowgene.Ddon.LoginServer
@@ -7,19 +6,7 @@ namespace Arrowgene.Ddon.LoginServer
     [DataContract]
     public class LoginServerSetting
     {
-        [IgnoreDataMember] public IPAddress GameServerIpAddress { get; set; }
-
-
         [DataMember(Order = 1)] public ServerSetting ServerSetting { get; set; }
-
-        [DataMember(Name = "GameServerIpAddress", Order = 5)]
-        public string DataGameServerIpAddress
-        {
-            get => GameServerIpAddress.ToString();
-            set => GameServerIpAddress = string.IsNullOrEmpty(value) ? null : IPAddress.Parse(value);
-        }
-
-        [DataMember(Order = 6)] public ushort GameServerPort { get; set; }
         [DataMember(Order = 10)] public bool AccountRequired { get; set; }
         [DataMember(Order = 100)] public uint JobLevelMax { get; set; }
         [DataMember(Order = 101)] public uint ClanMemberMax { get; set; }
@@ -53,9 +40,6 @@ namespace Arrowgene.Ddon.LoginServer
             ServerSetting.ServerPort = 52100;
             ServerSetting.Name = "Login";
             
-            GameServerIpAddress = IPAddress.Loopback;
-            GameServerPort = 52000;
-
             AccountRequired = false;
             
             JobLevelMax = 65;
@@ -91,9 +75,6 @@ namespace Arrowgene.Ddon.LoginServer
         {
             ServerSetting = new ServerSetting(setting.ServerSetting);
             
-            GameServerIpAddress = setting.GameServerIpAddress;
-            GameServerPort = setting.GameServerPort;
-
             AccountRequired = setting.AccountRequired;
             
             JobLevelMax = setting.JobLevelMax;

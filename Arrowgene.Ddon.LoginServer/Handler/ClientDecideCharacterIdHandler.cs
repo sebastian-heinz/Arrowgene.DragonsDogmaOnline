@@ -50,8 +50,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 TrafficName = "少なめ",
                 MaxLoginNum = 1000, // Player cap
                 LoginNum = 0x1C, // Current players
-                Addr = ((DdonLoginServer) Server).Setting.GameServerIpAddress.ToString(),
-                Port = ((DdonLoginServer) Server).Setting.GameServerPort,
+                Addr = "127.0.0.1",
+                Port = 52000,
                 IsHide = false
             };
             serverNtc.Counter = packet.Structure.Counter;
