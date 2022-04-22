@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
@@ -12,7 +13,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EnemyManager));
 
-        private readonly Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>> _spawns;
+        private readonly Dictionary<Tuple<StageId, byte>, List<EnemySpawn>> _spawns;
         private readonly AssetRepository _assetRepository;
         private readonly IDatabase _database;
 
@@ -20,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy
         {
             _assetRepository = assetRepository;
             _database = database;
-            _spawns = new Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>>();
+            _spawns = new Dictionary<Tuple<StageId, byte>, List<EnemySpawn>>();
 
             Load();
             _assetRepository.AssetChanged += AssetRepositoryOnAssetChanged;
@@ -33,20 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Enemy
 
         public List<EnemySpawn> GetSpawns(StageId stageId, byte subGroupId)
         {
-            if (!_spawns.ContainsKey(stageId))
-            {
-                return new List<EnemySpawn>();
-            }
-
-            Dictionary<byte, List<EnemySpawn>> stageSpawns = _spawns[stageId];
-            if (!stageSpawns.ContainsKey(subGroupId))
-            {
-                return new List<EnemySpawn>();
-            }
-
-            // TODO check time of day
-
-            return new List<EnemySpawn>(stageSpawns[subGroupId]);
+            // TODO check time of day, area rank, and other parameters
+            return _spawns.GetValueOrDefault(new Tuple<StageId, byte>(stageId, subGroupId), new List<EnemySpawn>());
         }
 
         public void Load()
@@ -54,29 +43,10 @@ namespace Arrowgene.Ddon.GameServer.Enemy
             _spawns.Clear();
             foreach (EnemySpawn spawn in _assetRepository.EnemySpawns)
             {
-                Dictionary<byte, List<EnemySpawn>> stageSpawns;
-                if (_spawns.ContainsKey(spawn.StageId))
-                {
-                    stageSpawns = _spawns[spawn.StageId];
-                }
-                else
-                {
-                    stageSpawns = new Dictionary<byte, List<EnemySpawn>>();
-                    _spawns.Add(spawn.StageId, stageSpawns);
-                }
-
-                List<EnemySpawn> spawns;
-                if (stageSpawns.ContainsKey(spawn.SubGroupId))
-                {
-                    spawns = stageSpawns[spawn.SubGroupId];
-                }
-                else
-                {
-                    spawns = new List<EnemySpawn>();
-                    stageSpawns.Add(spawn.SubGroupId, spawns);
-                }
-
-                spawns.Add(spawn);
+                Tuple<StageId, byte> tuple = new Tuple<StageId, byte>(spawn.StageId, spawn.SubGroupId);
+                List<EnemySpawn> spawnsForTuple = _spawns.GetValueOrDefault(tuple, new List<EnemySpawn>());
+                spawnsForTuple.Add(spawn);
+                _spawns[tuple] =  spawnsForTuple; // Adds or updates if the tuple is already present
             }
         }
         
