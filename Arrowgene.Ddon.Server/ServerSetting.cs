@@ -17,16 +17,6 @@ namespace Arrowgene.Ddon.Server
             set => ListenIpAddress = string.IsNullOrEmpty(value) ? null : IPAddress.Parse(value);
         }
 
-        [IgnoreDataMember] public IPAddress ServerIpAddress { get; set; }
-
-
-        [DataMember(Name = "ServerIpAddress", Order = 1)]
-        public string DataServerIpAddress
-        {
-            get => ServerIpAddress.ToString();
-            set => ServerIpAddress = string.IsNullOrEmpty(value) ? null : IPAddress.Parse(value);
-        }
-
         [DataMember(Order = 2)] public ushort ServerPort { get; set; }
         [DataMember(Order = 3)] public string Name { get; set; }
         [DataMember(Order = 20)] public int LogLevel { get; set; }
@@ -42,7 +32,6 @@ namespace Arrowgene.Ddon.Server
         public ServerSetting()
         {
             ListenIpAddress = IPAddress.Any;
-            ServerIpAddress = IPAddress.Loopback;
             ServerPort = 52100;
             Name = "Unknown";
             LogLevel = 0;
@@ -60,7 +49,6 @@ namespace Arrowgene.Ddon.Server
         public ServerSetting(ServerSetting setting)
         {
             ListenIpAddress = setting.ListenIpAddress;
-            ServerIpAddress = setting.ServerIpAddress;
             ServerPort = setting.ServerPort;
             Name = setting.Name;
             LogLevel = setting.LogLevel;

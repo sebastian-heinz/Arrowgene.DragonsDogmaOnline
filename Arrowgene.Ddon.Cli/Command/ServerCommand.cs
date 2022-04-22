@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Cli.Command
         {
             if (_setting == null)
             {
-                string settingPath = Path.Combine(Util.ExecutingDirectory(), "Arrowgene.Ddon.config.json");
+                string settingPath = Path.Combine(Util.ExecutingDirectory(), "Files/Arrowgene.Ddon.config.json");
                 _setting = Setting.Load(settingPath);
                 if (_setting == null)
                 {

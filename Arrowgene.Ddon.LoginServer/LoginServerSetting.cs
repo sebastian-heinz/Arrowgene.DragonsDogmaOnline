@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.LoginServer
             FriendListMax = 200;
             NoOperationTimeOutTime = 14400;
 
-            string urlDomain = "http://localhost";
+            string urlDomain = $"http://localhost:{52099}";
             UrlManual = $"{urlDomain}/manual_nfb/";
             UrlShopDetail = $"{urlDomain}/shop/ingame/stone/detail";
             UrlShopCounterA = $"{urlDomain}/shop/ingame/counter?";
