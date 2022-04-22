@@ -69,7 +69,7 @@ git clone --single-branch -b feature/deploy "$server_git" "$tmp_server_dir"
 dotnet publish "$tmp_server_dir/Arrowgene.Ddon.Cli/Arrowgene.Ddon.Cli.csproj" /p:Version=1 --runtime linux-x64 --configuration Release --output $tmp_server_dir/publish
 cp -r "$tmp_server_dir/publish/." "$server_dir/."
 cp "$tmp_server_dir/deploy/Arrowgene.Ddon.config.json" "$server_dir/Files/Arrowgene.Ddon.config.json"
-cp "$tmp_server_dir/deploy/GameServerList.csv" "$server_dir/Files/GameServerList.csv"
+cp "$tmp_server_dir/deploy/GameServerList.csv" "$server_dir/Files/Assets/GameServerList.csv"
 
 
 echo "Creating Ddon Server Service"
