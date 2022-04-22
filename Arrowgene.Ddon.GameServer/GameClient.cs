@@ -30,21 +30,6 @@ namespace Arrowgene.Ddon.GameServer
             Identity = newIdentity;
         }
 
-        // TODO do this in a more proper way so you cant change XYZ manually without emitting the event
-        public void setPosition(double X, float Y, double Z)
-        {
-            this.X = X;
-            this.Y = Y;
-            this.Z = Z;
-
-            if(CharacterUpdatedEvent != null)
-            {
-                CharacterUpdatedEvent(this, EventArgs.Empty);
-            }
-        }
-
-        public event EventHandler CharacterUpdatedEvent;
-
         public Account Account { get; set; }
 
         public Character Character { get; set; }
