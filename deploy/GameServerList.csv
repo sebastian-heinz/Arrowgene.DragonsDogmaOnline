@@ -1,3 +1,2 @@
 ﻿#Id,Name,Brief,TrafficName,TrafficLevel,MaxLoginNum,IpAddress,Port,IsHide
 0,Arrowgene,Brief,Traffic Name,0,1000,35.241.103.147,52000,false
-1,Local Host,Brief,Traffic Name,0,1000,127.0.0.1,52000,false
