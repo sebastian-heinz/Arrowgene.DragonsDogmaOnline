@@ -33,8 +33,8 @@ if ! which git > /dev/null 2>&1; then
     apt-get install -y git
 fi
 
-if ! which dotnet > /dev/null 2>&1 || ! dotnet --list-sdks | grep -q '6.0.200'; then  
-    echo "Installing dotnet 6.0.200"
+if ! which dotnet > /dev/null 2>&1 || ! dotnet --list-sdks | grep -q '6.0.202'; then  
+    echo "Installing dotnet 6.0.202"
     
     wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
     dpkg -i packages-microsoft-prod.deb
@@ -42,7 +42,7 @@ if ! which dotnet > /dev/null 2>&1 || ! dotnet --list-sdks | grep -q '6.0.200'; 
     
     apt-get install -y apt-transport-https
     apt-get update
-    apt-get install -y dotnet-sdk-6.0
+    apt-get install -y dotnet-sdk-6.0.202
 fi
 
 systemctl stop ddon-server
@@ -87,7 +87,7 @@ After=network.target
 [Service]
 Type=simple
 User=ddon_server
-ExecStart=$server_dir/Necromancy.Cli server start --service --max-packet-size=16 --b-list=3:0x2E64,0xFFFC,0xFFFD,0xFFFE,0xFFFF,3:0x6A72,3:0xE4AE,3:0x8D92,3:0x6B6A,0x8BB4,0x2470,0x2BA4,0x6A7A,0xEEF0,0xFDB8,0xB3F7,0xFC75,0x1DBE,0x179D,0xD133,0x904,0x7CB2 --log-level=20
+ExecStart=$server_dir/Arrowgene.Ddon.Cli server start --service
 WorkingDirectory=$server_dir
 Restart=on-failure
 RestartSec=600
