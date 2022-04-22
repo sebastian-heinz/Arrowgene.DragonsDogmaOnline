@@ -67,6 +67,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 return;
             }
 
+            Logger.Info(client, $"Connecting To: {serverList.Addr}:{serverList.Port}");
+            
             L2CNextConnectionServerNtc serverNtc = new L2CNextConnectionServerNtc();
             serverNtc.ServerList = serverList;
             serverNtc.Counter = packet.Structure.Counter;
