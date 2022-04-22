@@ -10,7 +10,7 @@
         {
           "match":
           {
-            "type": "payload-hash-sha1",
+            "type": "payload-hmac-sha1",
             "secret": "ddon-deploy",
             "parameter":
             {
@@ -23,7 +23,7 @@
           "match":
           {
             "type": "value",
-            "value": "refs/heads/master",
+            "value": "refs/heads/live",
             "parameter":
             {
               "source": "payload",
