@@ -9,7 +9,7 @@
       "HttpsPort": 443,
       "HttpsCertPath": "",
       "HttpsCertPw": "",
-      "WebFolder": "C:\\Users\\railgun\\dev\\ddo-server\\Arrowgene.Ddon.Cli\\bin\\Debug\\net6.0\\Files\/www"
+      "WebFolder": "\/var\/ddon\/server\/Files\/www"
     }
   },
   "GameServerSetting": {
@@ -134,13 +134,13 @@
   },
   "DatabaseSetting": {
     "Type": 0,
-    "SqLiteFolder": "C:\\Users\\railgun\\dev\\ddo-server\\Arrowgene.Ddon.Cli\\bin\\Debug\\net6.0\\Files\/Database",
+    "SqLiteFolder": "\/var\/ddon\/server\/Files\/Database",
     "Host": "localhost",
     "Port": 3306,
     "User": "",
     "Password": "",
     "Database": "Ddon",
-    "WipeOnStartup": false
+    "WipeOnStartup": true
   },
-  "AssetPath": "C:\\Users\\railgun\\dev\\ddo-server\\Arrowgene.Ddon.Cli\\bin\\Debug\\net6.0\\Files\/Assets"
+  "AssetPath": "\/var\/ddon\/server\/Files\/Assets"
 }

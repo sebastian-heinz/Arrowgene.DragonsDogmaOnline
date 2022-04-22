@@ -58,7 +58,7 @@ echo "Cleaning /tmp Files"
 rm -rf "$tmp_dir"
 
 ## setup ddon server
-echo "Installing Necromancy Server"
+echo "Installing Ddon Server"
 
 ## delete all server files
 rm -rf $server_dir/
