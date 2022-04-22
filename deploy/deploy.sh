@@ -52,12 +52,6 @@ systemctl stop webhook
 mkdir -p "$server_dir"
 mkdir -p "$webhook_dir"
 
-## copy files
-#cp -R "$work_dir/nginx/." "$nginx_dir"
-#cp -R "$work_dir/sendmail/." "$sendmail_dir"
-#cp "$work_dir/opendkim/opendkim.conf" /etc/opendkim.conf
-#cp "$work_dir/opendkim/opendkim" /etc/default/opendkim
-
 ## delete temp files
 echo "Cleaning /tmp Files"
 rm -rf "$tmp_dir"
