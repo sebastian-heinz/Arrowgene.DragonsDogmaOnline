@@ -11,6 +11,7 @@ server_git="https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline.git"
 
 domain_name="ddon.arrowgene.net"
 
+root_dir="/var/ddon"
 server_dir="/var/ddon/server"
 webhook_dir="/var/ddon/webhook"
 
@@ -119,5 +120,9 @@ systemctl restart ddon-server
 
 systemctl enable webhook
 systemctl restart webhook
+
+# self update
+mv "$root_dir/deploy.sh" "$root_dir/deploy.sh.old"
+mv "$tmp_server_dir/deploy/deploy.sh" "$root_dir/deploy.sh"
 
 echo "Setup Completed"
