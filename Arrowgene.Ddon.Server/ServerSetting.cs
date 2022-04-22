@@ -37,10 +37,10 @@ namespace Arrowgene.Ddon.Server
             LogLevel = 0;
             LogUnknownPackets = true;
             LogOutgoingPackets = true;
-            LogOutgoingPacketStructure = true;
+            LogOutgoingPacketStructure = false;
             LogOutgoingPacketPayload = false;
             LogIncomingPackets = true;
-            LogIncomingPacketStructure = true;
+            LogIncomingPacketStructure = false;
             LogIncomingPacketPayload = false;
             ServerSocketSettings = new AsyncEventSettings();
             ServerSocketSettings.MaxUnitOfOrder = 1;
