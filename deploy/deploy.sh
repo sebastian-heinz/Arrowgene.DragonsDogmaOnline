@@ -92,7 +92,7 @@ EOF
 
 
 ##setup webhook
-cp "$work_dir/webhook/hooks.json" "$webhook_dir/hooks.json"
+cp "$tmp_server_dir/deploy/hooks.json" "$webhook_dir/hooks.json"
 
 chown -R root:root "$webhook_dir"
 rm /lib/systemd/system/webhook.service
@@ -109,7 +109,6 @@ RestartSec=600
 [Install]
 WantedBy=multi-user.target
 EOF
-
 
 ## update services
 echo "Enabling services"
