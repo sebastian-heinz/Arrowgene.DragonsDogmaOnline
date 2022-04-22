@@ -5,6 +5,11 @@ namespace Arrowgene.Ddon.Shared.Csv
 {
     public class EnemySpawnCsvReader : CsvReader<EnemySpawn>
     {
+        public EnemySpawnCsvReader() : base(true)
+        {
+            
+        }
+        
         protected override int NumExpectedItems => 5;
 
         protected override EnemySpawn CreateInstance(string[] properties)

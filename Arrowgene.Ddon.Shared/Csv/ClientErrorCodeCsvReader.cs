@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             string msgEn = properties[3];
             return new ClientErrorCode
             {
-                Id = (int)errorId,
+                ErrorId = errorId,
                 MessageId = messageId,
                 ErrorCode = errorCode,
                 MessageJp = msgJp,
