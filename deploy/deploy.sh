@@ -47,7 +47,6 @@ if ! which dotnet > /dev/null 2>&1 || ! dotnet --list-sdks | grep -q '6.0.202'; 
 fi
 
 systemctl stop ddon-server
-systemctl stop webhook
 
 ## ensure directories
 mkdir -p "$server_dir"
@@ -117,12 +116,12 @@ systemctl daemon-reload
 systemctl enable ddon-server
 systemctl restart ddon-server
 
-systemctl enable webhook
-systemctl restart webhook
-
 # self update
 mv "$root_dir/deploy.sh" "$root_dir/deploy.sh.old"
 mv "$tmp_server_dir/deploy/deploy.sh" "$root_dir/deploy.sh"
 chmod +x "$root_dir/deploy.sh"
+dos2unix "$root_dir/deploy.sh"
 
 echo "Setup Completed"
+
+systemctl restart webhook
