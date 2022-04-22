@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Csv
     public class ClientErrorCodeCsvReader : CsvReader<ClientErrorCode>
     {
         protected override int NumExpectedItems => 5;
-
+        
         protected override ClientErrorCode CreateInstance(string[] properties)
         {
             if (!uint.TryParse(properties[0], out uint messageId)) return null;

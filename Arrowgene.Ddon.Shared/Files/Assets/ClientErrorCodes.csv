@@ -1,4 +1,4 @@
-Message ID,Error ID,PS4 Error Code,Message,English
+#Message ID,Error ID,PS4 Error Code,Message,English
 1,2000,ERROR_CODE_SYSTEM_NOT_DEBUG,通信エラーが発生しました。,A communication error has occurred.
 1,3000,ERROR_CODE_NET_WRITE_PACKET_ERROR,通信エラーが発生しました。,A communication error has occurred.
 1,3001,ERROR_CODE_NET_READ_PACKET_ERROR,通信エラーが発生しました。,A communication error has occurred.
