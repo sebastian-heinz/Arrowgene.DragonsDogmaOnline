@@ -51,11 +51,13 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             List<CDataGameServerListInfo> serverLists = new List<CDataGameServerListInfo>(_assets.ServerList);
 
             CDataGameServerListInfo serverList;
-            if (serverLists.Count > packet.Structure.RotationServerId)
-            {
-                serverList = serverLists[packet.Structure.RotationServerId];
-            }
-            else if (serverLists.Count > 0)
+            // if (serverLists.Count > packet.Structure.RotationServerId)
+           // {
+           //     serverList = serverLists[packet.Structure.RotationServerId];
+           // }
+           // else
+           // TODO figure out RotationServerId, at the moment always value 2?
+            if (serverLists.Count > 0)
             {
                 serverList = serverLists[0];
             }
@@ -65,6 +67,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 return;
             }
 
+            Logger.Info(client, $"Connecting To: {serverList.Addr}:{serverList.Port}");
+            
             L2CNextConnectionServerNtc serverNtc = new L2CNextConnectionServerNtc();
             serverNtc.ServerList = serverList;
             serverNtc.Counter = packet.Structure.Counter;
