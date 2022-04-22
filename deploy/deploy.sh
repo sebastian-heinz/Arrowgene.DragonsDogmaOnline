@@ -123,5 +123,6 @@ systemctl restart webhook
 # self update
 mv "$root_dir/deploy.sh" "$root_dir/deploy.sh.old"
 mv "$tmp_server_dir/deploy/deploy.sh" "$root_dir/deploy.sh"
+chmod +x "$root_dir/deploy.sh"
 
 echo "Setup Completed"
