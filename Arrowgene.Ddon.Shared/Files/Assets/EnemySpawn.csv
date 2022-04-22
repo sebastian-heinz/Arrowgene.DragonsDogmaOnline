@@ -1,4 +1,4 @@
-StageId,LayerNo,GroupId,SubGroupId,EnemyId,NamedEnemyParamsId,RaidBossId,Scale,Lv,HmPresetNo,StartThinkTblNo,RepopNum,RepopCount,EnemyTargetTypesId,MontageFixNo,SetType,InfectionType,IsBossGauge,IsBossBGM,IsManualSet,IsAreaBoss,IsBloodEnemy,Unk0
+#StageId,LayerNo,GroupId,SubGroupId,EnemyId,NamedEnemyParamsId,RaidBossId,Scale,Lv,HmPresetNo,StartThinkTblNo,RepopNum,RepopCount,EnemyTargetTypesId,MontageFixNo,SetType,InfectionType,IsBossGauge,IsBossBGM,IsManualSet,IsAreaBoss,IsBloodEnemy,Unk0
 1,0,0,0,0x10100,0x8,0,100,1,0,0,0,0,1,0,0,0,False,False,False,False,False,False
 1,0,1,0,0x11200,0x8,0,100,1,0,0,0,0,1,0,0,0,False,False,False,False,False,False
 1,0,1,0,0x11200,0x8,0,100,1,0,0,0,0,1,0,0,0,False,False,False,False,False,False

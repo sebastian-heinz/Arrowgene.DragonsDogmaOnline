@@ -1,0 +1,146 @@
+{
+  "WebServerSetting": {
+    "WebSetting": {
+      "ServerHeader": "",
+      "HttpPorts": [
+        52099
+      ],
+      "HttpsEnabled": false,
+      "HttpsPort": 443,
+      "HttpsCertPath": "",
+      "HttpsCertPw": "",
+      "WebFolder": "\/var\/ddon\/server\/Files\/www"
+    }
+  },
+  "GameServerSetting": {
+    "ServerSetting": {
+      "ListenIpAddress": "0.0.0.0",
+      "ServerPort": 52000,
+      "Name": "Game",
+      "LogLevel": 0,
+      "LogUnknownPackets": false,
+      "LogOutgoingPackets": false,
+      "LogOutgoingPacketPayload": false,
+      "LogIncomingPackets": false,
+      "LogIncomingPacketPayload": false,
+      "LogIncomingPacketStructure": false,
+      "LogOutgoingPacketStructure": false,
+      "ServerSocketSettings": {
+        "Identity": "",
+        "MaxConnections": 100,
+        "NumSimultaneouslyWriteOperations": 100,
+        "BufferSize": 2000,
+        "Retries": 10,
+        "MaxUnitOfOrder": 1,
+        "MaxSimultaneousSendsPerClient": 1,
+        "SocketTimeoutSeconds": -1,
+        "SocketSettings": {
+          "Backlog": 5,
+          "DontFragment": true,
+          "DualMode": false,
+          "ExclusiveAddressUse": false,
+          "NoDelay": false,
+          "UseOnlyOverlappedIo": false,
+          "ReceiveBufferSize": 8192,
+          "ReceiveTimeout": 0,
+          "SendBufferSize": 8192,
+          "SendTimeout": 0,
+          "Ttl": 32,
+          "LingerEnabled": false,
+          "LingerTime": 30,
+          "SocketOptions": [
+            {
+              "Level": "Socket",
+              "Name": 4,
+              "Value": false
+            }
+          ]
+        }
+      }
+    }
+  },
+  "LoginServerSetting": {
+    "ServerSetting": {
+      "ListenIpAddress": "0.0.0.0",
+      "ServerPort": 52100,
+      "Name": "Login",
+      "LogLevel": 0,
+      "LogUnknownPackets": false,
+      "LogOutgoingPackets": false,
+      "LogOutgoingPacketPayload": false,
+      "LogIncomingPackets": false,
+      "LogIncomingPacketPayload": false,
+      "LogIncomingPacketStructure": false,
+      "LogOutgoingPacketStructure": false,
+      "ServerSocketSettings": {
+        "Identity": "",
+        "MaxConnections": 100,
+        "NumSimultaneouslyWriteOperations": 100,
+        "BufferSize": 2000,
+        "Retries": 10,
+        "MaxUnitOfOrder": 1,
+        "MaxSimultaneousSendsPerClient": 1,
+        "SocketTimeoutSeconds": -1,
+        "SocketSettings": {
+          "Backlog": 5,
+          "DontFragment": true,
+          "DualMode": false,
+          "ExclusiveAddressUse": false,
+          "NoDelay": false,
+          "UseOnlyOverlappedIo": false,
+          "ReceiveBufferSize": 8192,
+          "ReceiveTimeout": 0,
+          "SendBufferSize": 8192,
+          "SendTimeout": 0,
+          "Ttl": 32,
+          "LingerEnabled": false,
+          "LingerTime": 30,
+          "SocketOptions": [
+            {
+              "Level": "Socket",
+              "Name": 4,
+              "Value": false
+            }
+          ]
+        }
+      }
+    },
+    "AccountRequired": false,
+    "JobLevelMax": 65,
+    "ClanMemberMax": 100,
+    "CharacterNumMax": 4,
+    "EnableVisualEquip": true,
+    "FriendListMax": 200,
+    "NoOperationTimeOutTime": 14400,
+    "UrlApiA": "http:\/\/localhost:52099\/link\/api",
+    "UrlApiB": "http:\/\/localhost:52099\/link\/api",
+    "UrlCampaign": "http:\/\/localhost:52099\/sp_ingame\/campaign\/bnr\/slide.html",
+    "UrlCampaignBanner": "http:\/\/localhost:52099\/sp_ingame\/campaign\/bnr\/bnr01.html?",
+    "UrlChargeA": "http:\/\/localhost:52099\/sp_ingame\/charge\/",
+    "UrlChargeB": "http:\/\/localhost:52099\/sp_ingame\/charge\/",
+    "UrlChargeCallback": "http:\/\/localhost:52099\/opening\/entry\/ddo\/cog_callback\/charge",
+    "UrlCompanionImage": "http:\/\/localhost:52099\/",
+    "UrlIndex": "http:\/\/localhost:52099\/sp_ingame\/link\/index.html",
+    "UrlManual": "http:\/\/localhost:52099\/manual_nfb\/",
+    "UrlPhotoupAuthorize": "http:\/\/localhost:52099\/api\/photoup\/authorize",
+    "UrlSample10": "http:\/\/sample10.html",
+    "UrlSample9": "http:\/\/sample09.html",
+    "UrlShopAttention": "http:\/\/localhost:52099\/shop\/ingame\/attention?",
+    "UrlShopCounterA": "http:\/\/localhost:52099\/shop\/ingame\/counter?",
+    "UrlShopCounterB": "http:\/\/localhost:52099\/shop\/ingame\/counter?",
+    "UrlShopDetail": "http:\/\/localhost:52099\/shop\/ingame\/stone\/detail",
+    "UrlShopStoneLimit": "http:\/\/localhost:52099\/shop\/ingame\/stone\/limit",
+    "UrlSupportIndex": "http:\/\/localhost:52099\/sp_ingame\/support\/index.html"
+  },
+  "DatabaseSetting": {
+    "Type": 0,
+    "SqLiteFolder": "\/var\/ddon\/server\/Files\/Database",
+    "Host": "localhost",
+    "Port": 3306,
+    "User": "",
+    "Password": "",
+    "Database": "Ddon",
+    "WipeOnStartup": true
+  },
+  "AssetPath": "\/var\/ddon\/server\/Files\/Assets"
+}

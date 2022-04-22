@@ -274,6 +274,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
+            Create(new S2CServerGetServerListRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
             Create(new S2CSkillGetLearnedAbilityListRes.Serializer());

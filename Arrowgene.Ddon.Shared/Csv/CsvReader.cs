@@ -12,8 +12,18 @@ namespace Arrowgene.Ddon.Shared.Csv
         private const int BufferSize = 128;
         private static readonly ILogger Logger = LogProvider.Logger(typeof(CsvReader<T>));
 
-        public bool EnforceCRLF = true;
+        private readonly bool _treatLfAsEndOfLine;
         protected abstract int NumExpectedItems { get; }
+
+        public CsvReader()
+        {
+            _treatLfAsEndOfLine = false;
+        }
+        
+        public CsvReader(bool treatLfAsEndOfLine)
+        {
+            _treatLfAsEndOfLine = treatLfAsEndOfLine;
+        }
 
         public List<T> ReadString(string csv)
         {
@@ -59,15 +69,15 @@ namespace Arrowgene.Ddon.Shared.Csv
                 // only treat \r\n as line endings
                 if (c == '\r')
                 {
-                    //carriage return
+                    //carriage return (The Carriage Return (CR) character (0x0D, \r))
                     previousCr = true;
                     continue;
                 }
 
                 if (c == '\n')
                 {
-                    //line feed 
-                    if (!EnforceCRLF || previousCr)
+                    //line feed (The Line Feed (LF) character (0x0A, \n))
+                    if (previousCr || _treatLfAsEndOfLine)
                     {
                         ProcessLine(sb.ToString(), items, line++);
                         sb.Clear();
@@ -95,9 +105,6 @@ namespace Arrowgene.Ddon.Shared.Csv
             if (lineContents.StartsWith('#'))
                 // Ignoring Comment
                 return;
-            if (lineContents.StartsWith(','))
-                // Ignoring null ID
-                return;
 
             string[] properties = lineContents.Split(",");
             if (properties.Length <= 0) return;
@@ -118,12 +125,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             {
                 Logger.Exception(ex);
             }
-
-            if (item == null && lineNumber == 1)
-            {
-                Logger.Info($"Skipping Line {lineNumber}: '{lineContents}' could not be converted. Assuming it's the CSV header.");
-                return;
-            }
+            
 
             if (item == null)
             {
