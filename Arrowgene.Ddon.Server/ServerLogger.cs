@@ -153,6 +153,10 @@ namespace Arrowgene.Ddon.Server
 
         public void LogUnhandledPacket<TClient>(TClient client, IPacket packet) where TClient : Client
         {
+            if (!_setting.LogUnknownPackets)
+            {
+                return;
+            }
             Write(LogLevel.Error,
                 $"UNHANDLED PACKET:{Environment.NewLine}{client.Identity}{Environment.NewLine}{packet}", packet);
         }
