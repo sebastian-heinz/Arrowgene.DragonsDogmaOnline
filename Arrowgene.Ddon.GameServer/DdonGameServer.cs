@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer
             _stages = new Dictionary<StageId, Stage>();
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
-            ChatManager = new ChatManager(Router);
+            ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
 
             S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
