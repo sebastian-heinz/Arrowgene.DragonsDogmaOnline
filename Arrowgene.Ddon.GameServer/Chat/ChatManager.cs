@@ -63,6 +63,8 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
                 Deliver(client, response);
             }
+
+            client.Send(new S2CLobbyChatMsgRes());
         }
 
         private void Deliver(GameClient client, ChatResponse response)
@@ -77,7 +79,6 @@ namespace Arrowgene.Ddon.GameServer.Chat
                     break;
             }
 
-            client.Send(new S2CLobbyChatMsgRes());
             _router.Send(response);
         }
     }

@@ -36,10 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteByte(buffer, obj.Type);
                 WriteUInt32(buffer, obj.Unk1);
-                WriteUInt32(buffer, obj.CharacterBaseInfo.CharacterId);
-                WriteMtString(buffer, obj.CharacterBaseInfo.CharacterName.FirstName);
-                WriteMtString(buffer, obj.CharacterBaseInfo.CharacterName.LastName);
-                WriteMtString(buffer, "BSP");
+                WriteEntity<CDataCommunityCharacterBaseInfo>(buffer, obj.CharacterBaseInfo);
                 WriteByte(buffer, obj.Unk2);
                 WriteUInt32(buffer, obj.Unk3);
                 WriteUInt32(buffer, obj.Unk4);
