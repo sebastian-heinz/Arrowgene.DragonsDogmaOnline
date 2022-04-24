@@ -184,6 +184,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new Gp_28_2_1_Handler(this));
             AddHandler(new GpGetUpdateAppCourseBonusFlagHandler(this));
+            AddHandler(new GpGetValidChatComGroupHandler(this));
 
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
 
