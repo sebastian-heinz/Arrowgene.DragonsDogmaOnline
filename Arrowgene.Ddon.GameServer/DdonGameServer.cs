@@ -20,6 +20,7 @@
  * along with Arrowgene.Ddon.GameServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Chat;
@@ -61,6 +62,8 @@ namespace Arrowgene.Ddon.GameServer
             StageList = stageListPacket.StageList;
         }
 
+        public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
+
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
         public EnemyManager EnemyManager { get; }
@@ -86,11 +89,27 @@ namespace Arrowgene.Ddon.GameServer
         protected override void ClientConnected(GameClient client)
         {
             client.InitializeChallenge();
+
+            EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
+            if (connectionChangeEvent != null)
+            {
+                ClientConnectionChangeArgs connectionChangeEventArgs
+                    = new ClientConnectionChangeArgs(ClientConnectionChangeArgs.EventType.CONNECT, client);
+                connectionChangeEvent(this, connectionChangeEventArgs);
+            }
         }
 
         protected override void ClientDisconnected(GameClient client)
         {
             _clients.Remove(client);
+
+            EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
+            if (connectionChangeEvent != null)
+            {
+                ClientConnectionChangeArgs connectionChangeEventArgs
+                    = new ClientConnectionChangeArgs(ClientConnectionChangeArgs.EventType.DISCONNECT, client);
+                connectionChangeEvent(this, connectionChangeEventArgs);
+            }
         }
 
         public override GameClient NewClient(ITcpSocket socket)
@@ -194,6 +213,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
             AddHandler(new LobbyLobbyJoinHandler(this));
+            AddHandler(new LobbyLobbyLeaveHandler(this));
             AddHandler(new LobbyLobbyChatMsgHandler(this));
             AddHandler(new LobbyLobbyDataMsgHandler(this));
 

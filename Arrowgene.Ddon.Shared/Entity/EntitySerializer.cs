@@ -159,6 +159,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobGetJobChangeListReq.Serializer());
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
+            Create(new C2SLobbyLeaveReq.Serializer());
             Create(new C2SLobbyLobbyDataMsgReq.Serializer());
             Create(new C2SMandragoraGetMyMandragoraReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
@@ -256,6 +257,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
             Create(new S2CLobbyJoinRes.Serializer());
+            Create(new S2CLobbyLeaveRes.Serializer());
             Create(new S2CLobbyLobbyDataMsgNotice.Serializer());
             Create(new S2CMandragoraGetMyMandragoraRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
