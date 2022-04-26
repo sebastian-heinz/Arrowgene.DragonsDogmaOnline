@@ -90,6 +90,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataOcdActive.Serializer());
             Create(new CDataOrbCategoryStatusSerializer());
             Create(new CDataOrbPageStatusSerializer());
+            Create(new CDataPartyListInfo.Serializer());
             Create(new CDataPartyMember.Serializer());
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPlayPointDataSerializer());
@@ -167,6 +168,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
             Create(new C2SPartnerPawnPawnLikabilityRewardListGetReq.Serializer());
+            Create(new C2SPartyPartyCreateReq.Serializer());
+            Create(new C2SPartyPartyInviteCharacterReq.Serializer());
+            Create(new C2SPartyPartyInviteEntryReq.Serializer());
+            Create(new C2SPartyPartyInvitePrepareAcceptReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
             Create(new C2SPawnGetPawnHistoryListReq.Serializer());
@@ -266,7 +271,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
             Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
-            Create(new S2CParty_6_8_16_Ntc.Serializer());
+            Create(new S2CPartyPartyCreateRes.Serailizer());
+            Create(new S2CPartyPartyInviteCharacterRes.Serializer());
+            Create(new S2CPartyPartyInviteEntryNtc.Serializer());
+            Create(new S2CPartyPartyInviteEntryRes.Serializer());
+            Create(new S2CPartyPartyInviteNtc.Serializer());
+            Create(new S2CPartyPartyInvitePrepareAcceptNtc.Serializer());
+            Create(new S2CPartyPartyInvitePrepareAcceptRes.Serializer());
+            Create(new S2CPartyPartyJoinNtc.Serializer());
             Create(new S2CPawn_8_37_16_Ntc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());
