@@ -63,9 +63,9 @@ ensure that no other local services listen on these ports.
 
 # Client
 Launch the client with the following args:
-`"DDO.exe" "addr=localhost port=52100 token=00000000000000000000 DL=http://127.0.0.1/win/ LVer=03.04.003.20181115.0 RVer=3040008"`
+`"DDO.exe" "addr=localhost port=52100 token=00000000000000000000 DL=http://127.0.0.1:52099/win/ LVer=03.04.003.20181115.0 RVer=3040008"`
 
-#Development
+# Development
 ## Project
 ### Cli
 Entrypoint to the application, allows to start different components via parameters

@@ -20,6 +20,7 @@
  * along with Arrowgene.Ddon.GameServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Chat;
@@ -54,12 +55,14 @@ namespace Arrowgene.Ddon.GameServer
             _stages = new Dictionary<StageId, Stage>();
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
-            ChatManager = new ChatManager(Router);
+            ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
 
             S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
             StageList = stageListPacket.StageList;
         }
+
+        public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
 
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
@@ -86,11 +89,27 @@ namespace Arrowgene.Ddon.GameServer
         protected override void ClientConnected(GameClient client)
         {
             client.InitializeChallenge();
+
+            EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
+            if (connectionChangeEvent != null)
+            {
+                ClientConnectionChangeArgs connectionChangeEventArgs
+                    = new ClientConnectionChangeArgs(ClientConnectionChangeArgs.EventType.CONNECT, client);
+                connectionChangeEvent(this, connectionChangeEventArgs);
+            }
         }
 
         protected override void ClientDisconnected(GameClient client)
         {
             _clients.Remove(client);
+
+            EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
+            if (connectionChangeEvent != null)
+            {
+                ClientConnectionChangeArgs connectionChangeEventArgs
+                    = new ClientConnectionChangeArgs(ClientConnectionChangeArgs.EventType.DISCONNECT, client);
+                connectionChangeEvent(this, connectionChangeEventArgs);
+            }
         }
 
         public override GameClient NewClient(ITcpSocket socket)
@@ -165,6 +184,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new Gp_28_2_1_Handler(this));
             AddHandler(new GpGetUpdateAppCourseBonusFlagHandler(this));
+            AddHandler(new GpGetValidChatComGroupHandler(this));
 
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
 
@@ -194,6 +214,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
             AddHandler(new LobbyLobbyJoinHandler(this));
+            AddHandler(new LobbyLobbyLeaveHandler(this));
             AddHandler(new LobbyLobbyChatMsgHandler(this));
             AddHandler(new LobbyLobbyDataMsgHandler(this));
 
@@ -218,6 +239,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
 
             AddHandler(new PartyPartyCreateHandler(this));
+            AddHandler(new PartyPartyInviteCharacterHandler(this));
+            AddHandler(new PartyPartyInviteEntryHandler(this));
+            AddHandler(new PartyPartyInvitePrepareAcceptHandler(this));
 
             AddHandler(new PawnGetMypawnDataHandler(this));
             AddHandler(new PawnGetMyPawnListHandler(this));

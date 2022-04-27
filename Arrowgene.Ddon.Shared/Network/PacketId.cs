@@ -361,7 +361,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PARTY_PARTY_CREATE_RES = new PacketId(6, 0, 2, "S2C_PARTY_PARTY_CREATE_RES", ServerType.Game, PacketSource.Server); // パーティ作成に
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_REQ = new PacketId(6, 1, 1, "C2S_PARTY_PARTY_INVITE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_RES = new PacketId(6, 1, 2, "S2C_PARTY_PARTY_INVITE_RES", ServerType.Game, PacketSource.Server); // パーティ要請（要請側）に
-        public static readonly PacketId S2C_PARTY_6_1_16_NTC = new PacketId(6, 1, 16, "S2C_PARTY_6_1_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTY_PARTY_INVITE_NTC = new PacketId(6, 1, 16, "S2C_PARTY_PARTY_INVITE_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_1_16_NTC");
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_CHARACTER_REQ = new PacketId(6, 2, 1, "C2S_PARTY_PARTY_INVITE_CHARACTER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_CHARACTER_RES = new PacketId(6, 2, 2, "S2C_PARTY_PARTY_INVITE_CHARACTER_RES", ServerType.Game, PacketSource.Server); // パーティ要請（キャラ）（要請側）に
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_CANCEL_REQ = new PacketId(6, 3, 1, "C2S_PARTY_PARTY_INVITE_CANCEL_REQ", ServerType.Game, PacketSource.Client);
@@ -371,16 +371,16 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_REFUSE_RES = new PacketId(6, 4, 2, "S2C_PARTY_PARTY_INVITE_REFUSE_RES", ServerType.Game, PacketSource.Server); // パーティ要請拒否（要請受ける側）に
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_PREPARE_ACCEPT_REQ = new PacketId(6, 5, 1, "C2S_PARTY_PARTY_INVITE_PREPARE_ACCEPT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_PREPARE_ACCEPT_RES = new PacketId(6, 5, 2, "S2C_PARTY_PARTY_INVITE_PREPARE_ACCEPT_RES", ServerType.Game, PacketSource.Server); // パーティ要請受諾（要請受ける側）に
-        public static readonly PacketId S2C_PARTY_6_5_16_NTC = new PacketId(6, 5, 16, "S2C_PARTY_6_5_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTY_PARTY_INVITE_PREPARE_ACCEPT_NTC = new PacketId(6, 5, 16, "S2C_PARTY_PARTY_INVITE_PREPARE_ACCEPT_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_5_16_NTC");
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_ENTRY_REQ = new PacketId(6, 6, 1, "C2S_PARTY_PARTY_INVITE_ENTRY_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_ENTRY_RES = new PacketId(6, 6, 2, "S2C_PARTY_PARTY_INVITE_ENTRY_RES", ServerType.Game, PacketSource.Server); // 要請受諾エントリーに
-        public static readonly PacketId S2C_PARTY_6_6_16_NTC = new PacketId(6, 6, 16, "S2C_PARTY_6_6_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTY_PARTY_INVITE_ENTRY_NTC = new PacketId(6, 6, 16, "S2C_PARTY_PARTY_INVITE_ENTRY_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_6_16_NTC");
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_ENTRY_CANCEL_REQ = new PacketId(6, 7, 1, "C2S_PARTY_PARTY_INVITE_ENTRY_CANCEL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_ENTRY_CANCEL_RES = new PacketId(6, 7, 2, "S2C_PARTY_PARTY_INVITE_ENTRY_CANCEL_RES", ServerType.Game, PacketSource.Server); // 要請受諾エントリーキャンセルに
         public static readonly PacketId S2C_PARTY_6_7_16_NTC = new PacketId(6, 7, 16, "S2C_PARTY_6_7_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_PARTY_PARTY_JOIN_REQ = new PacketId(6, 8, 1, "C2S_PARTY_PARTY_JOIN_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_JOIN_RES = new PacketId(6, 8, 2, "S2C_PARTY_PARTY_JOIN_RES", ServerType.Game, PacketSource.Server); // パーティ参加に
-        public static readonly PacketId S2C_PARTY_6_8_16_NTC = new PacketId(6, 8, 16, "S2C_PARTY_6_8_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTY_PARTY_JOIN_NTC = new PacketId(6, 8, 16, "S2C_PARTY_PARTY_JOIN_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_8_16_NTC");
         public static readonly PacketId C2S_PARTY_PARTY_GET_CONTENT_NUMBER_REQ = new PacketId(6, 9, 1, "C2S_PARTY_PARTY_GET_CONTENT_NUMBER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_GET_CONTENT_NUMBER_RES = new PacketId(6, 9, 2, "S2C_PARTY_PARTY_GET_CONTENT_NUMBER_RES", ServerType.Game, PacketSource.Server); // パーティコンテンツ情報取得に
         public static readonly PacketId C2S_PARTY_6_10_1_REQ = new PacketId(6, 10, 1, "C2S_PARTY_6_10_1_REQ", ServerType.Game, PacketSource.Client);
@@ -2262,7 +2262,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_CREATE_RES);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_RES);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_1_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_CHARACTER_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_CHARACTER_RES);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_CANCEL_REQ);
@@ -2272,16 +2272,16 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_REFUSE_RES);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_PREPARE_ACCEPT_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_PREPARE_ACCEPT_RES);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_5_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_PREPARE_ACCEPT_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_ENTRY_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_ENTRY_RES);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_6_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_ENTRY_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_ENTRY_CANCEL_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_ENTRY_CANCEL_RES);
             AddPacketIdEntry(packetIds, S2C_PARTY_6_7_16_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_JOIN_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_JOIN_RES);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_8_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_JOIN_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_GET_CONTENT_NUMBER_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_GET_CONTENT_NUMBER_RES);
             AddPacketIdEntry(packetIds, C2S_PARTY_6_10_1_REQ);
