@@ -237,12 +237,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContext_35_3_16_Ntc.Serializer());
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
-            Create(new S2CContextSetContextBaseNotice.Serializer());
+            Create(new S2CContextSetContextBaseNtc.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
             Create(new S2CInnStayInnRes.Serializer());
             Create(new S2CInstance_13_20_16_Ntc.Serializer());
             Create(new S2CInstance_13_23_16_Ntc.Serializer());
+            Create(new S2CInstance_13_42_16_Ntc.Serializer());
             Create(new S2CInstanceEnemyKillRes.Serializer());
             Create(new S2CInstanceEnemyRepopNtc.Serializer());
             Create(new S2CInstanceExchangeOmInstantKeyValueRes.Serializer());
