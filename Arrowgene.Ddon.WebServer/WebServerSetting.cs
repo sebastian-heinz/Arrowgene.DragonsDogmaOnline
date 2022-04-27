@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.WebServer
             WebSetting = new WebSetting();
             WebSetting.ServerHeader = "";
             WebSetting.WebFolder = Path.Combine(Util.ExecutingDirectory(), "Files/www");
-            WebSetting.HttpPorts = new List<ushort>() {80};
+            WebSetting.HttpPorts = new List<ushort>() {52099};
             WebSetting.HttpsEnabled = false;
             WebSetting.HttpsPort = 443;
             WebSetting.HttpsCertPath = "";

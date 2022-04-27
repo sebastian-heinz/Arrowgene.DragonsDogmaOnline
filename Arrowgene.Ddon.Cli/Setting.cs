@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Cli
             GameServerSetting = new GameServerSetting();
             LoginServerSetting = new LoginServerSetting();
             DatabaseSetting = new DatabaseSetting();
-            AssetPath = Path.Combine(Util.RelativeExecutingDirectory(), "Files/Assets");
+            AssetPath = Path.Combine(Util.ExecutingDirectory(), "Files/Assets");
         }
 
         public Setting(Setting setting)

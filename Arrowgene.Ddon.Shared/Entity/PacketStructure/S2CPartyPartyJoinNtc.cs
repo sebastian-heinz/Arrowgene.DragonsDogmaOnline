@@ -5,11 +5,11 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CParty_6_8_16_Ntc : IPacketStructure
+    public class S2CPartyPartyJoinNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_PARTY_6_8_16_NTC;
+        public PacketId Id => PacketId.S2C_PARTY_PARTY_JOIN_NTC;
         
-        public S2CParty_6_8_16_Ntc()
+        public S2CPartyPartyJoinNtc()
         {
             Error = 0;
             LeaderCharacterId = 0;
@@ -24,18 +24,18 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataPartyMember> PartyMembers { get; set; }
         public bool IsReceived { get; set; }
 
-        public class Serializer : PacketEntitySerializer<S2CParty_6_8_16_Ntc>
+        public class Serializer : PacketEntitySerializer<S2CPartyPartyJoinNtc>
         {
-            public override void Write(IBuffer buffer, S2CParty_6_8_16_Ntc obj)
+            public override void Write(IBuffer buffer, S2CPartyPartyJoinNtc obj)
             {
                 WriteUInt32(buffer, obj.LeaderCharacterId);
                 WriteUInt32(buffer, obj.HostCharacterId);
                 WriteEntityList(buffer, obj.PartyMembers);
             }
 
-            public override S2CParty_6_8_16_Ntc Read(IBuffer buffer)
+            public override S2CPartyPartyJoinNtc Read(IBuffer buffer)
             {
-                S2CParty_6_8_16_Ntc obj = new S2CParty_6_8_16_Ntc();
+                S2CPartyPartyJoinNtc obj = new S2CPartyPartyJoinNtc();
                 obj.LeaderCharacterId = ReadUInt32(buffer);
                 obj.HostCharacterId = ReadUInt32(buffer);
                 obj.PartyMembers = ReadEntityList<CDataPartyMember>(buffer);

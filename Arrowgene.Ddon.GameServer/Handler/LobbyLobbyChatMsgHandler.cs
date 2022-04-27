@@ -23,27 +23,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             ChatMessage message = new ChatMessage(
                 request.Structure.Type,
+                request.Structure.Unk2,
+                request.Structure.Unk3,
+                request.Structure.Unk4,
                 request.Structure.StrMessage
             );
             _chatManager.Handle(client, message);
-            
-            
-         //   Logger.Debug(requestingClient, $"{request.Structure.Type}, {request.Structure.Unk2}, {request.Structure.Unk3}, {request.Structure.Unk4}, {request.Structure.Unk5}: {request.Structure.StrMessage}"); // Log chat message
-
-         //  S2CLobbyChatMsgRes response = new S2CLobbyChatMsgRes();
-         //  requestingClient.Send(response);
-
-         //  // Notify all players
-         //  S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice();
-         //  notice.Unk0 = (byte) request.Structure.Type;
-         //  notice.StrMessage = request.Structure.StrMessage;
-         //  notice.CharacterBaseInfo.strFirstName = requestingClient.Character.FirstName;
-         //  notice.CharacterBaseInfo.strLastName = requestingClient.Character.LastName;
-         //  notice.CharacterBaseInfo.strClanName = "ClanName";
-         //  foreach (GameClient client in Server.Clients)
-         //  {
-         //      client.Send(notice);
-         //  }
         }
     }
 }

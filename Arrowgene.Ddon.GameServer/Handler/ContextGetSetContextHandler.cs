@@ -35,7 +35,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             baseNtc.EncountArea = packet.Structure.EncountArea;
             baseNtc.MasterIndex = packet.Structure.MasterIndex;
             baseNtc.Unk0 = packet.Structure.Unk0;
-            client.Send(baseNtc);
+            //client.Send(baseNtc); // Uncommenting this makes enemies not respawn ever, even if you go back to town
+            // We believe it may be telling the client to load a persistent context. If it's not sent, it will load a new context.
         }
     }
 }

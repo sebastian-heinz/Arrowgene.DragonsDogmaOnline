@@ -18,8 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             SetAbilityParamList=new List<CDataSetAcquirementParam>();
             LearnNormalSkillParamList=new List<CDataLearnNormalSkillParam>();
             EquipJobItemList=new List<CDataEquipJobItem>();
-            Unk0=0;
-            Unk1=new List<CDataEquipElementParam>();
+            Unk0=new CDataJobChangeJobResUnk0();
         }
 
         public uint CharacterId { get; set; }
@@ -29,8 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataSetAcquirementParam> SetAbilityParamList { get; set; }
         public List<CDataLearnNormalSkillParam> LearnNormalSkillParamList { get; set; }
         public List<CDataEquipJobItem> EquipJobItemList { get; set; }
-        public byte Unk0 { get; set; }
-        public List<CDataEquipElementParam> Unk1 { get; set; }
+        public CDataJobChangeJobResUnk0 Unk0 { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CJobChangeJobNtc>
         {
@@ -43,8 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataSetAcquirementParam>(buffer, obj.SetAbilityParamList);
                 WriteEntityList<CDataLearnNormalSkillParam>(buffer, obj.LearnNormalSkillParamList);
                 WriteEntityList<CDataEquipJobItem>(buffer, obj.EquipJobItemList);
-                WriteByte(buffer, obj.Unk0);
-                WriteEntityList<CDataEquipElementParam>(buffer, obj.Unk1);
+                WriteEntity<CDataJobChangeJobResUnk0>(buffer, obj.Unk0);
             }
 
             public override S2CJobChangeJobNtc Read(IBuffer buffer)
@@ -57,8 +54,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.SetAbilityParamList = ReadEntityList<CDataSetAcquirementParam>(buffer);
                 obj.LearnNormalSkillParamList = ReadEntityList<CDataLearnNormalSkillParam>(buffer);
                 obj.EquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
-                obj.Unk0 = ReadByte(buffer);
-                obj.Unk1 = ReadEntityList<CDataEquipElementParam>(buffer);
+                obj.Unk0 = ReadEntity<CDataJobChangeJobResUnk0>(buffer);
                 return obj;
             }
         }

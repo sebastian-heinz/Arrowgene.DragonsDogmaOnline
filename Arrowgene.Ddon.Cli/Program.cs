@@ -97,16 +97,17 @@ namespace Arrowgene.Ddon.Cli
         private void RunArguments(string[] arguments)
         {
             LogProvider.Start();
-            Logger.Info("Argument Mode");
             if (arguments.Length <= 0)
             {
-                Logger.Error("Invalid input");
+                Logger.Error("No Arguments Provided");
                 return;
             }
 
             LoadCommands();
             ShowCopyright();
-            CommandResultType result = ProcessArguments(arguments);
+            CommandParameter parameter = ParseParameter(arguments);
+            CommandResultType result = ProcessArguments(parameter);
+            
             if (result != CommandResultType.Exit)
             {
                 Logger.Info("Press `e'-key to exit.");
@@ -125,25 +126,8 @@ namespace Arrowgene.Ddon.Cli
             LogProvider.Stop();
         }
 
-        private void RunInteractive()
+        private CommandResultType ProcessArguments(CommandParameter parameter)
         {
-            CommandResultType result = CommandResultType.Continue;
-            while (result != CommandResultType.Exit)
-            {
-                string input = Console.ReadLine();
-                if (input == null || input.Length <= 0)
-                {
-                    continue;
-                }
-
-                string[] arguments = input.Split(CliSeparator);
-                result = ProcessArguments(arguments);
-            }
-        }
-
-        private CommandResultType ProcessArguments(string[] arguments)
-        {
-            CommandParameter parameter = ParseParameter(arguments);
             if (!_commands.ContainsKey(parameter.Key))
             {
                 Logger.Error(
