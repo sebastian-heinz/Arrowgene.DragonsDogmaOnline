@@ -3,11 +3,11 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CContextSetContextBaseNotice : IPacketStructure
+    public class S2CContextSetContextBaseNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_CONTEXT_35_11_16_NTC;
+        public PacketId Id => PacketId.S2C_CONTEXT_SET_CONTEXT_BASE_NTC;
 
-        public S2CContextSetContextBaseNotice()
+        public S2CContextSetContextBaseNtc()
         {
             ContextId=0;
             UniqueId=0;
@@ -24,9 +24,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public int MasterIndex { get; set; }
         public uint Unk0 { get; set; }
 
-        public class Serializer : PacketEntitySerializer<S2CContextSetContextBaseNotice>
+        public class Serializer : PacketEntitySerializer<S2CContextSetContextBaseNtc>
         {
-            public override void Write(IBuffer buffer, S2CContextSetContextBaseNotice obj)
+            public override void Write(IBuffer buffer, S2CContextSetContextBaseNtc obj)
             {
                 WriteUInt32(buffer, obj.ContextId);
                 WriteUInt64(buffer, obj.UniqueId);
@@ -36,9 +36,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.Unk0);
             }
 
-            public override S2CContextSetContextBaseNotice Read(IBuffer buffer)
+            public override S2CContextSetContextBaseNtc Read(IBuffer buffer)
             {
-                S2CContextSetContextBaseNotice obj = new S2CContextSetContextBaseNotice();
+                S2CContextSetContextBaseNtc obj = new S2CContextSetContextBaseNtc();
                 obj.ContextId = ReadUInt32(buffer);
                 obj.UniqueId = ReadUInt64(buffer);
                 obj.StageNo = ReadInt32(buffer);
