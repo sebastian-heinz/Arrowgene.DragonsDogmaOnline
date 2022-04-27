@@ -41,5 +41,9 @@ namespace Arrowgene.Ddon.GameServer
         public float Y { get; set; }
         public double Z { get; set; }
         // ---
+
+        public Party PendingInvitedParty { get; set; } // Maybe its more clean to store this in the handlers ?
+        public Party Party { get; set; }
+
     }
 }
