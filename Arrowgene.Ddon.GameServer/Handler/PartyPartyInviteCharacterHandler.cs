@@ -51,6 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             targetClient.Send(ntc);
 
             S2CPartyPartyInviteCharacterRes response = new S2CPartyPartyInviteCharacterRes();
+            response.TimeoutSec = ntc.TimeoutSec;
             response.Info = ntc.PartyListInfo;
             client.Send(response);
         }

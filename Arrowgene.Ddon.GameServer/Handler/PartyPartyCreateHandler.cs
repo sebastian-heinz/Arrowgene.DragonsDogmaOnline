@@ -23,8 +23,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Party = new Party();
             client.Party.Members.Add(client);
+            client.Party.Host = client;
+            client.Party.Leader = client;
             
             S2CPartyPartyJoinNtc partyJoinNtc = new S2CPartyPartyJoinNtc();
+            partyJoinNtc.HostCharacterId = client.Character.Id;
+            partyJoinNtc.LeaderCharacterId = client.Character.Id;
             CDataPartyMember partyMember = new CDataPartyMember();
             partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
             partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;

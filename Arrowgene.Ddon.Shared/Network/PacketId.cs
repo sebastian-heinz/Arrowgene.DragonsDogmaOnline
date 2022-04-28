@@ -401,9 +401,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PARTY_PARTY_MEMBER_SET_VALUE_RES = new PacketId(6, 15, 2, "S2C_PARTY_PARTY_MEMBER_SET_VALUE_RES", ServerType.Game, PacketSource.Server); // パーティメンバー汎用フラグ操作に
         public static readonly PacketId S2C_PARTY_6_15_16_NTC = new PacketId(6, 15, 16, "S2C_PARTY_6_15_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_PARTY_6_16_16_NTC = new PacketId(6, 16, 16, "S2C_PARTY_6_16_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_PARTY_6_17_16_NTC = new PacketId(6, 17, 16, "S2C_PARTY_6_17_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_PARTY_6_18_16_NTC = new PacketId(6, 18, 16, "S2C_PARTY_6_18_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_PARTY_6_19_16_NTC = new PacketId(6, 19, 16, "S2C_PARTY_6_19_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTY_PARTY_INVITE_SUCCESS_NTC = new PacketId(6, 17, 16, "S2C_PARTY_PARTY_INVITE_SUCCESS_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_17_16_NTC");
+        public static readonly PacketId S2C_PARTY_PARTY_INVITE_ACCEPT_NTC = new PacketId(6, 18, 16, "S2C_PARTY_PARTY_INVITE_ACCEPT_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_18_16_NTC");
+        public static readonly PacketId S2C_PARTY_PARTY_INVITE_JOIN_MEMBER_NTC = new PacketId(6, 19, 16, "S2C_PARTY_PARTY_INVITE_JOIN_MEMBER_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_19_16_NTC");
         public static readonly PacketId S2C_PARTY_6_20_16_NTC = new PacketId(6, 20, 16, "S2C_PARTY_6_20_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_PARTY_6_21_16_NTC = new PacketId(6, 21, 16, "S2C_PARTY_6_21_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_PARTY_6_22_16_NTC = new PacketId(6, 22, 16, "S2C_PARTY_6_22_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2302,9 +2302,9 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_MEMBER_SET_VALUE_RES);
             AddPacketIdEntry(packetIds, S2C_PARTY_6_15_16_NTC);
             AddPacketIdEntry(packetIds, S2C_PARTY_6_16_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_17_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_18_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_19_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_SUCCESS_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_ACCEPT_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_JOIN_MEMBER_NTC);
             AddPacketIdEntry(packetIds, S2C_PARTY_6_20_16_NTC);
             AddPacketIdEntry(packetIds, S2C_PARTY_6_21_16_NTC);
             AddPacketIdEntry(packetIds, S2C_PARTY_6_22_16_NTC);

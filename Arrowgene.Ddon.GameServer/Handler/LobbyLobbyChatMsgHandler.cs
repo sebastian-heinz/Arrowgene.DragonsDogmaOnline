@@ -23,6 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             ChatMessage message = new ChatMessage(
                 request.Structure.Type,
+                // Unk1?
                 request.Structure.Unk2,
                 request.Structure.Unk3,
                 request.Structure.Unk4,

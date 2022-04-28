@@ -92,6 +92,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataOrbPageStatusSerializer());
             Create(new CDataPartyListInfo.Serializer());
             Create(new CDataPartyMember.Serializer());
+            Create(new CDataPartyMemberMinimum.Serializer());
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
@@ -272,9 +273,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
             Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
             Create(new S2CPartyPartyCreateRes.Serailizer());
+            Create(new S2CPartyPartyInviteAcceptNtc.Serializer());
             Create(new S2CPartyPartyInviteCharacterRes.Serializer());
             Create(new S2CPartyPartyInviteEntryNtc.Serializer());
             Create(new S2CPartyPartyInviteEntryRes.Serializer());
+            Create(new S2CPartyPartyInviteJoinMemberNtc.Serializer());
             Create(new S2CPartyPartyInviteNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptRes.Serializer());

@@ -8,7 +8,13 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_PARTY_PARTY_INVITE_CHARACTER_RES;
 
-        public ushort Unk0 { get; set; } // In the PS4 version has no name and its not even used
+        public S2CPartyPartyInviteCharacterRes()
+        {
+            TimeoutSec = 0;
+            Info = new CDataPartyListInfo();
+        }
+
+        public ushort TimeoutSec { get; set; } // In the PS4 version has no name and its not even used
         public CDataPartyListInfo Info { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CPartyPartyInviteCharacterRes>
@@ -16,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CPartyPartyInviteCharacterRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt16(buffer, obj.Unk0);
+                WriteUInt16(buffer, obj.TimeoutSec);
                 WriteEntity<CDataPartyListInfo>(buffer, obj.Info);
             }
 
@@ -24,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CPartyPartyInviteCharacterRes obj = new S2CPartyPartyInviteCharacterRes();
                 ReadServerResponse(buffer, obj);
-                obj.Unk0 = ReadUInt16(buffer);
+                obj.TimeoutSec = ReadUInt16(buffer);
                 obj.Info = ReadEntity<CDataPartyListInfo>(buffer);
                 return obj;
             }
