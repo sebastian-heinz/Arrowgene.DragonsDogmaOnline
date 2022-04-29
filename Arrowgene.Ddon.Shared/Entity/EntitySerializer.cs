@@ -55,6 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataContextJobData.Serializer());
             Create(new CDataContextNormalSkillData.Serializer());
             Create(new CDataContextPlayerInfo.Serializer());
+            Create(new CDataContextResist.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDeliveryItem.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
@@ -93,6 +94,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPartyListInfo.Serializer());
             Create(new CDataPartyMember.Serializer());
             Create(new CDataPartyMemberMinimum.Serializer());
+            Create(new CDataPartyPlayerContext.Serializer());
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
@@ -173,6 +175,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPartyPartyInviteCharacterReq.Serializer());
             Create(new C2SPartyPartyInviteEntryReq.Serializer());
             Create(new C2SPartyPartyInvitePrepareAcceptReq.Serializer());
+            Create(new C2SPartyPartyJoinReq.Serializer());
+            Create(new C2SPartyPartyLeaveReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
             Create(new C2SPawnGetPawnHistoryListReq.Serializer());
@@ -237,6 +241,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContext_35_14_16_Ntc.Serializer());
             Create(new S2CContext_35_3_16_Ntc.Serializer());
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
+            Create(new S2CContextGetPartyPlayerContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
             Create(new S2CContextSetContextBaseNotice.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
@@ -282,6 +287,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyInvitePrepareAcceptNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptRes.Serializer());
             Create(new S2CPartyPartyJoinNtc.Serializer());
+            Create(new S2CPartyPartyJoinRes.Serializer());
+            Create(new S2CPartyPartyLeaveNtc.Serializer());
+            Create(new S2CPartyPartyLeaveRes.Serializer());
             Create(new S2CPawn_8_37_16_Ntc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());

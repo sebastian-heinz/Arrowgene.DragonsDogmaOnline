@@ -20,11 +20,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+        // When a player is invited:
+        // 1.   S->C    S2CPartyPartyInviteNtc to the player
+        // 2.   C->S    The player accepts the invite, sending a C2SPartyPartyInvitePrepareAcceptReq
+        // 3.   S->C    S2CPartyPartyInviteAcceptNtc to the player. 
+        // 4.   C->S    The player teleports to the party leader and leaves the previous party, sending a C2SPartyPartyLeaveReq
+        // 5.   S->C    S2CPartyPartyLeaveNtc to the old party members
+        // 6.   C->S    The player requests to join the new party, sending a C2SPartyPartyJoinReq
+        // 7. To determine
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteCharacterReq> packet)
         {
             // TODO: Optimize this lmao
             GameClient targetClient = Server.Clients.Where(x => x.Character.Id == packet.Structure.CharacterId).First();
-
             // TODO: What would happen if two parties are trying to invite the same character?
             targetClient.PendingInvitedParty = client.Party;
 

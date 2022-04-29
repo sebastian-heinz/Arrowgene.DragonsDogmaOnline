@@ -242,6 +242,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartyPartyInviteCharacterHandler(this));
             AddHandler(new PartyPartyInviteEntryHandler(this));
             AddHandler(new PartyPartyInvitePrepareAcceptHandler(this));
+            AddHandler(new PartyPartyJoinHandler(this));
+            AddHandler(new PartyPartyLeaveHandler(this));
 
             AddHandler(new PawnGetMypawnDataHandler(this));
             AddHandler(new PawnGetMyPawnListHandler(this));
