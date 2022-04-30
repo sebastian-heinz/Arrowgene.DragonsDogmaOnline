@@ -27,7 +27,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         // 4.   C->S    The player teleports to the party leader and leaves the previous party, sending a C2SPartyPartyLeaveReq
         // 5.   S->C    S2CPartyPartyLeaveNtc to the old party members
         // 6.   C->S    The player requests to join the new party, sending a C2SPartyPartyJoinReq
-        // 7. To determine
+        // 7.   S->C    S2CPartyPartyJoinNtc to the new party member
+        //              S2CContextGetPartyPlayerContextNtc of the new member to the old party members
+        //              S2CContextGetLobbyPlayerContextNtc of the old members to the new party member
+        //              More stuff to determine
+        // TODO: Figure out just how much packets/data within those packets we can do without while keeping everything functioning.
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteCharacterReq> packet)
         {
             // TODO: Optimize this lmao
@@ -39,7 +43,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.TimeoutSec = TimeoutSec; // TODO: Implement timeout, send an NTC cancelling the party invite if the timeout is reached
             ntc.PartyListInfo.PartyId = client.Party.Id;
             ntc.PartyListInfo.ServerId = Server.AssetRepository.ServerList[0].Id;
-            ntc.PartyListInfo.PartyId = client.Party.Id;
             for(int i = 0; i < client.Party.Members.Count; i++)
             {
                 GameClient member = client.Party.Members[i];
@@ -52,7 +55,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
                 partyMember.CharacterListElement.EntryJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
                 partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
-                partyMember.IsLeader = member == client.Party.Leader;
+                partyMember.IsLeader = member.Character.Id == client.Party.Leader.Character.Id;
+                partyMember.MemberIndex = (byte) i;
                 ntc.PartyListInfo.MemberList.Add(partyMember);
             }
             targetClient.Send(ntc);

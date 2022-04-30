@@ -46,12 +46,14 @@ namespace Arrowgene.Ddon.GameServer
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
         private readonly List<GameClient> _clients;
+        private readonly List<Party> _parties;
         private readonly Dictionary<StageId, Stage> _stages;
 
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
             _clients = new List<GameClient>();
+            _parties = new List<Party>();
             _stages = new Dictionary<StageId, Stage>();
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
@@ -74,6 +76,12 @@ namespace Arrowgene.Ddon.GameServer
         /// To prevent modifications of affecting the original list.
         /// </summary>
         public override List<GameClient> Clients => new List<GameClient>(_clients);
+
+        /// <summary>
+        /// Returns a copy of the party list.
+        /// To prevent modifications of affecting the original list.
+        /// </summary>
+        public List<Party> Parties => new List<Party>(_parties);
 
         public List<CDataStageInfo> StageList { get; }
 
@@ -117,6 +125,13 @@ namespace Arrowgene.Ddon.GameServer
             GameClient newClient = new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
             _clients.Add(newClient);
             return newClient;
+        }
+
+        public Party NewParty()
+        {
+            Party newParty = new Party();
+            _parties.Add(newParty);
+            return newParty;
         }
 
         private void LoadStages()
@@ -244,6 +259,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartyPartyInvitePrepareAcceptHandler(this));
             AddHandler(new PartyPartyJoinHandler(this));
             AddHandler(new PartyPartyLeaveHandler(this));
+            AddHandler(new PartySendBinaryMsgHandler(this));
 
             AddHandler(new PawnGetMypawnDataHandler(this));
             AddHandler(new PawnGetMyPawnListHandler(this));

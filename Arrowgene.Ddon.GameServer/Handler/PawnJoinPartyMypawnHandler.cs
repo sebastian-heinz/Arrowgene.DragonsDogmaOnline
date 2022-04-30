@@ -22,9 +22,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc8_37_16.CharacterId = client.Character.Id;
                 client.Send(ntc8_37_16);
 
-                S2CContext_35_3_16_Ntc ntc35_3_16 = new S2CContext_35_3_16_Ntc(Server.AssetRepository.MyPawnAsset, req.Structure);
-                ntc35_3_16.CharacterId = client.Character.Id;
-                client.Send(ntc35_3_16);
+                S2CContextGetPartyMypawnContextNtc mypawnContextNtc = new S2CContextGetPartyMypawnContextNtc(Server.AssetRepository.MyPawnAsset, req.Structure);
+                mypawnContextNtc.CharacterId = client.Character.Id;
+                client.Send(mypawnContextNtc);
 
                 S2CPawnJoinPartyMypawnRes res = new S2CPawnJoinPartyMypawnRes();
                 client.Send(res);

@@ -21,10 +21,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyCreateReq> packet)
         {
-            client.Party = new Party();
-            client.Party.Members.Add(client);
-            client.Party.Host = client;
-            client.Party.Leader = client;
+            Party newParty = ((DdonGameServer) Server).NewParty();
+            newParty.Members.Add(client);
+            newParty.Host = client;
+            newParty.Leader = client;
+            client.Party = newParty;
             
             S2CPartyPartyJoinNtc partyJoinNtc = new S2CPartyPartyJoinNtc();
             partyJoinNtc.HostCharacterId = client.Character.Id;
@@ -38,11 +39,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
             partyMember.CharacterListElement.EntryJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
             partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
+            partyMember.IsLeader = newParty.Leader == client;
             partyJoinNtc.PartyMembers.Add(partyMember);
             client.Send(partyJoinNtc);
            
             S2CPartyPartyCreateRes partyCreateRes = new S2CPartyPartyCreateRes();
-            partyCreateRes.PartyId = client.Party.Id;
+            partyCreateRes.PartyId = newParty.Id;
             client.Send(partyCreateRes);
 
             //client.Send(InGameDump.Dump_103);
