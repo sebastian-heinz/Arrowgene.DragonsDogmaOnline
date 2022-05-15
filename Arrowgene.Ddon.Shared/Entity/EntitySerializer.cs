@@ -32,6 +32,8 @@ namespace Arrowgene.Ddon.Shared.Entity
                 new C2SActionSetPlayerActionHistoryReqElement.
                     Serializer()); // TODO naming convention C2S -> not a packet
             Create(new CData_35_14_16.Serializer());
+            Create(new CDataAbilityLevelParam.Serializer());
+            Create(new CDataAbilityParam.Serializer());
             Create(new CDataAchievementIdentifierSerializer());
             Create(new CDataArisenProfileSerializer());
             Create(new CDataCharacterEquipDataSerializer());
@@ -112,6 +114,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataRewardItem.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
             Create(new CDataShortCutSerializer());
+            Create(new CDataSkillLevelParam.Serializer());
+            Create(new CDataSkillParam.Serializer());
             Create(new CDataStageAttribute.Serializer());
             Create(new CDataStageInfo.Serializer());
             Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer());
@@ -189,12 +193,16 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
+            Create(new C2SSkillGetAcquirableAbilityListReq.Serializer());
+            Create(new C2SSkillGetAcquirableSkillListReq.Serializer());
             Create(new C2SSkillGetLearnedAbilityListReq.Serializer());
             Create(new C2SSkillGetLearnedNormalSkillListReq.Serializer());
             Create(new C2SSkillGetLearnedSkillListReq.Serializer());
             Create(new C2SSkillGetPresetAbilityListReq.Serializer());
             Create(new C2SSkillGetSetAbilityListReq.Serializer());
             Create(new C2SSkillGetSetSkillListReq.Serializer());
+            Create(new C2SSkillSetOffSkillReq.Serializer());
+            Create(new C2SSkillSetSkillReq.Serializer());
             Create(new C2SSetShortcutReq.Serializer());
             Create(new C2SSetCommunicationShortcutReq.Serializer());
             Create(new C2SStageAreaChangeReq.Serializer());
@@ -309,6 +317,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CServerGetServerListRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
+            Create(new S2CSkillGetAcquirableAbilityListRes.Serializer());
+            Create(new S2CSkillGetAcquirableSkillListRes.Serializer());
             Create(new S2CSkillGetCurrentSetSkillListRes.Serializer());
             Create(new S2CSkillGetLearnedAbilityListRes.Serializer());
             Create(new S2CSkillGetLearnedNormalSkillListRes.Serializer());
@@ -316,6 +326,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillGetPresetAbilityListRes.Serializer());
             Create(new S2CSkillGetSetAbilityListRes.Serializer());
             Create(new S2CSkillGetSetSkillListRes.Serializer());
+            Create(new S2CSkillSetOffSkillRes.Serializer());
+            Create(new S2CSkillSetSkillRes.Serializer());
             Create(new S2CSetCommunicationShortcutRes.Serializer());
             Create(new S2CSetShortcutRes.Serializer());
             Create(new S2CStageAreaChangeRes.Serializer());

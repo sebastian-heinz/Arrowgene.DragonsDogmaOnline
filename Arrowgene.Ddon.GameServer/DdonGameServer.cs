@@ -294,6 +294,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetServerListHandler(this));
 
             AddHandler(new SkillGetAbilityCostHandler(this));
+            AddHandler(new SkillGetAcquirableAbilityListHandler(this));
+            AddHandler(new SkillGetAcquirableSkillListHandler(this));
             AddHandler(new SkillGetCurrentSetSkillListHandler(this));
             AddHandler(new SkillGetLearnedAbilityListHandler(this));
             AddHandler(new SkillGetLearnedNormalSkillListHandler(this));
@@ -301,6 +303,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new SkillGetPresetAbilityListHandler(this));
             AddHandler(new SkillGetSetAbilityListHandler(this));
             AddHandler(new SkillGetSetSkillListHandler(this));
+            AddHandler(new SkillSetOffSkillHandler(this));
+            AddHandler(new SkillSetSkillHandler(this));
             AddHandler(new SetShortcutHandler(this));
             AddHandler(new SetCommunicationShortcutHandler(this));
 
