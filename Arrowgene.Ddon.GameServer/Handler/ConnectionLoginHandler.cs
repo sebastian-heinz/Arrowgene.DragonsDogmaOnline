@@ -94,29 +94,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Job = Server.AssetRepository.ArisenAsset[0].Job,
                     Type = 0,
                     SlotNo = (1<<4) | 1,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs1MpId,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs1MpLv
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs1SpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs1SpLv
                 },
                 new CDataSetAcquirementParam() {
                     Job = Server.AssetRepository.ArisenAsset[0].Job,
                     Type = 0,
                     SlotNo = (1<<4) | 2,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs2MpId,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs2MpLv
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs2SpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs2SpLv
                 },
                 new CDataSetAcquirementParam() {
                     Job = Server.AssetRepository.ArisenAsset[0].Job,
                     Type = 0,
                     SlotNo = (1<<4) | 3,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs3MpId,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs3MpLv
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs3SpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs3SpLv
                 },
                 new CDataSetAcquirementParam() {
                     Job = Server.AssetRepository.ArisenAsset[0].Job,
                     Type = 0,
                     SlotNo = (1<<4) | 4,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs4MpId,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs4MpLv
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs4SpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs4SpLv
                 },
                 new CDataSetAcquirementParam() {
                     Job = Server.AssetRepository.ArisenAsset[0].Ab1Jb,
