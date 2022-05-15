@@ -6,6 +6,7 @@ using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -13,6 +14,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageAreaChangeHandler));
 
+        // List of "safe" areas, where the context reset NTC will be sent.
+        // TODO: Complete with all the safe areas. Maybe move it to DB or config?
+        private static readonly HashSet<uint> SafeStageIds = new HashSet<uint>(){
+            2 // White Dragon Temple
+        };
 
         public StageAreaChangeHandler(DdonGameServer server) : base(server)
         {
@@ -29,6 +35,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             Logger.Info($"StageNo:{client.StageNo} StageId{packet.Structure.StageId}");
             
+            // TODO: Only send it when the party leader moves to a safe stage
+            if(SafeStageIds.Contains(packet.Structure.StageId))
+            {
+                client.Send(new S2CInstance_13_42_16_Ntc());
+            }
+
             client.Send(res);
         }
 
