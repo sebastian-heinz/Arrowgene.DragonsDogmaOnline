@@ -8,28 +8,29 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyInvitePrepareAcceptHandler : StructurePacketHandler<GameClient, C2SPartyPartyInvitePrepareAcceptReq>
+    public class PartyPartyLeaveHandler : StructurePacketHandler<GameClient, C2SPartyPartyLeaveReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyInvitePrepareAcceptHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyLeaveHandler));
 
-        public PartyPartyInvitePrepareAcceptHandler(DdonGameServer server) : base(server)
+        public PartyPartyLeaveHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInvitePrepareAcceptReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SPartyPartyLeaveReq> packet)
         {
-            Party newParty = client.PendingInvitedParty; // In case some other thread changes the value
-            client.PendingInvitedParty = null;
+            Party oldParty = client.Party;
 
-            client.Send(new S2CPartyPartyInvitePrepareAcceptRes());
+            client.Send(new S2CPartyPartyLeaveRes());
 
-            S2CPartyPartyInviteAcceptNtc inviteAcceptNtc = new S2CPartyPartyInviteAcceptNtc();
-            inviteAcceptNtc.ServerId = Server.AssetRepository.ServerList[0].Id; // TODO: Get from config, or from DdonGameServer instance
-            inviteAcceptNtc.PartyId = newParty.Id;
-            inviteAcceptNtc.StageId = newParty.Leader.Stage.Id;
-            inviteAcceptNtc.PositionId = 0; // TODO: Figure what this is about
-            inviteAcceptNtc.MemberIndex = (byte) newParty.Members.Count;
-            client.Send(inviteAcceptNtc);
+            S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
+            partyLeaveNtc.CharacterId = client.Character.Id;
+            foreach (GameClient member in oldParty.Members)
+            {
+                member.Send(partyLeaveNtc);
+            }
+
+            oldParty.Members.Remove(client);
+            client.Party = null;
 
             CDataCharacterListElement characterListElement = new CDataCharacterListElement();
             characterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
