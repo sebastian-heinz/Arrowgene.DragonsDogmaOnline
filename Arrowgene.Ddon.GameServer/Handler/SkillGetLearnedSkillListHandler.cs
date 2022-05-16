@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Select(skill => new CDataLearnedSetAcquirementParam() {
                         Job = skill.Job,
                         AcquirementNo = skill.SkillNo,
-                        AcquirementLv = 1
+                        AcquirementLv = 10
                     }).ToList()
             });
         }

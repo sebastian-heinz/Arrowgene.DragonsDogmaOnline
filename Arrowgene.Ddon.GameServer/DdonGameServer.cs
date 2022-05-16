@@ -293,6 +293,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetRealTimeHandler(this));
             AddHandler(new ServerGetServerListHandler(this));
 
+            AddHandler(new SkillChangeExSkillHandler(this));
             AddHandler(new SkillGetAbilityCostHandler(this));
             AddHandler(new SkillGetAcquirableAbilityListHandler(this));
             AddHandler(new SkillGetAcquirableSkillListHandler(this));
