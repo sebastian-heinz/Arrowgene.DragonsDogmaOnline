@@ -6,26 +6,26 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataCharacterItemSlotInfo()
         {
-            Unk0=0;
-            Unk1=0;
+            StorageType=0;
+            SlotMax=0;
         }
 
-        public byte Unk0;
-        public ushort Unk1;
+        public byte StorageType { get; set; }
+        public ushort SlotMax { get; set; }
 
         public class Serializer : EntitySerializer<CDataCharacterItemSlotInfo>
         {
             public override void Write(IBuffer buffer, CDataCharacterItemSlotInfo obj)
             {
-                WriteByte(buffer, obj.Unk0);
-                WriteUInt16(buffer, obj.Unk1);
+                WriteByte(buffer, obj.StorageType);
+                WriteUInt16(buffer, obj.SlotMax);
             }
 
             public override CDataCharacterItemSlotInfo Read(IBuffer buffer)
             {
                 CDataCharacterItemSlotInfo obj = new CDataCharacterItemSlotInfo();
-                obj.Unk0 = ReadByte(buffer);
-                obj.Unk1 = ReadUInt16(buffer);
+                obj.StorageType = ReadByte(buffer);
+                obj.SlotMax = ReadUInt16(buffer);
                 return obj;
             }
         }

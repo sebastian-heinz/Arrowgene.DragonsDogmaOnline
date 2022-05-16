@@ -47,6 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterName.Serializer());
             Create(new CDataCharacterReleaseElement.Serializer());
             Create(new CDataCommonU32.Serializer());
+            Create(new CDataCommonU8.Serializer());
             Create(new CDataCommunicationShortCutSerializer());
             Create(new CDataCommunityCharacterBaseInfo.Serializer());
             Create(new CDataContextAcquirementData.Serializer());
@@ -192,6 +193,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
+            Create(new C2SSkillChangeExSkillReq.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
             Create(new C2SSkillGetAcquirableAbilityListReq.Serializer());
             Create(new C2SSkillGetAcquirableSkillListReq.Serializer());
@@ -317,6 +319,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CServerGetServerListRes.Serializer());
+            Create(new S2CSkillChangeExSkillRes.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetAcquirableAbilityListRes.Serializer());
             Create(new S2CSkillGetAcquirableSkillListRes.Serializer());
