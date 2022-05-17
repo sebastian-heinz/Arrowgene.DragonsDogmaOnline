@@ -1122,7 +1122,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_AREA_23_15_2_RES = new PacketId(23, 15, 2, "S2C_AREA_23_15_2_RES", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_AREA_23_16_16_NTC = new PacketId(23, 16, 16, "S2C_AREA_23_16_16_NTC", ServerType.Game, PacketSource.Server);
 
-// Group: 24 - (JOB)
+// Group: 24 - (JOB_MASTER)
         public static readonly PacketId C2S_JOB_MASTER_GET_JOB_MASTER_ORDER_PROGRESS_REQ = new PacketId(24, 0, 1, "C2S_JOB_MASTER_GET_JOB_MASTER_ORDER_PROGRESS_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_JOB_MASTER_GET_JOB_MASTER_ORDER_PROGRESS_RES = new PacketId(24, 0, 2, "S2C_JOB_MASTER_GET_JOB_MASTER_ORDER_PROGRESS_RES", ServerType.Game, PacketSource.Server); // ジョブマスター課題進捗取得に
         public static readonly PacketId C2S_JOB_MASTER_REPORT_JOB_ORDER_PROGRESS_REQ = new PacketId(24, 1, 1, "C2S_JOB_MASTER_REPORT_JOB_ORDER_PROGRESS_REQ", ServerType.Game, PacketSource.Client);
@@ -1675,7 +1675,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_40_2_1_REQ = new PacketId(40, 2, 1, "C2S_40_2_1_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_40_2_2_RES = new PacketId(40, 2, 2, "S2C_40_2_2_RES", ServerType.Game, PacketSource.Server);
 
-// Group: 41 - (CHARACTER)
+// Group: 41 - (CHARACTER_EDIT)
         public static readonly PacketId C2S_CHARACTER_EDIT_GET_UNLOCKED_EDIT_PARTS_LIST_REQ = new PacketId(41, 0, 1, "C2S_CHARACTER_EDIT_GET_UNLOCKED_EDIT_PARTS_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_EDIT_GET_UNLOCKED_EDIT_PARTS_LIST_RES = new PacketId(41, 0, 2, "S2C_CHARACTER_EDIT_GET_UNLOCKED_EDIT_PARTS_LIST_RES", ServerType.Game, PacketSource.Server); // 使用可能エディットパーツリスト取得に
         public static readonly PacketId C2S_CHARACTER_EDIT_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_REQ = new PacketId(41, 1, 1, "C2S_CHARACTER_EDIT_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -1813,7 +1813,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_REQ = new PacketId(54, 2, 1, "C2S_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_RES = new PacketId(54, 2, 2, "S2C_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_RES", ServerType.Game, PacketSource.Server); // クラフト強化レシピ取得に
 
-// Group: 55 - (JOB)
+// Group: 55 - (JOB_ORB_TREE)
         public static readonly PacketId C2S_JOB_ORB_TREE_GET_JOB_ORB_TREE_STATUS_LIST_REQ = new PacketId(55, 0, 1, "C2S_JOB_ORB_TREE_GET_JOB_ORB_TREE_STATUS_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_JOB_ORB_TREE_GET_JOB_ORB_TREE_STATUS_LIST_RES = new PacketId(55, 0, 2, "S2C_JOB_ORB_TREE_GET_JOB_ORB_TREE_STATUS_LIST_RES", ServerType.Game, PacketSource.Server); // 全ジョブオーブツリーの状態リスト取得に
         public static readonly PacketId C2S_JOB_ORB_TREE_GET_ALL_JOB_ORB_ELEMENT_LIST_REQ = new PacketId(55, 1, 1, "C2S_JOB_ORB_TREE_GET_ALL_JOB_ORB_ELEMENT_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -2017,7 +2017,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_EQUIP_ENHANCED_ENHANCE_ITEM_REQ = new PacketId(65, 4, 1, "C2S_EQUIP_ENHANCED_ENHANCE_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_EQUIP_ENHANCED_ENHANCE_ITEM_RES = new PacketId(65, 4, 2, "S2C_EQUIP_ENHANCED_ENHANCE_ITEM_RES", ServerType.Game, PacketSource.Server); // 進化リクエストの通知
 
-// Group: 66 - (JOB)
+// Group: 66 - (JOB_EMBLEM)
         public static readonly PacketId C2S_JOB_EMBLEM_GET_EMBLEM_LIST_REQ = new PacketId(66, 0, 1, "C2S_JOB_EMBLEM_GET_EMBLEM_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_JOB_EMBLEM_GET_EMBLEM_LIST_RES = new PacketId(66, 0, 2, "S2C_JOB_EMBLEM_GET_EMBLEM_LIST_RES", ServerType.Game, PacketSource.Server); // 全ジョブの証情報取得
         public static readonly PacketId C2S_JOB_EMBLEM_GET_EMBLEM_REQ = new PacketId(66, 1, 1, "C2S_JOB_EMBLEM_GET_EMBLEM_REQ", ServerType.Game, PacketSource.Client);
@@ -3023,7 +3023,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_AREA_23_15_2_RES);
             AddPacketIdEntry(packetIds, S2C_AREA_23_16_16_NTC);
 
-// Group: 24 - (JOB)
+// Group: 24 - (JOB_MASTER)
             AddPacketIdEntry(packetIds, C2S_JOB_MASTER_GET_JOB_MASTER_ORDER_PROGRESS_REQ);
             AddPacketIdEntry(packetIds, S2C_JOB_MASTER_GET_JOB_MASTER_ORDER_PROGRESS_RES);
             AddPacketIdEntry(packetIds, C2S_JOB_MASTER_REPORT_JOB_ORDER_PROGRESS_REQ);
@@ -3576,7 +3576,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_40_2_1_REQ);
             AddPacketIdEntry(packetIds, S2C_40_2_2_RES);
 
-// Group: 41 - (CHARACTER)
+// Group: 41 - (CHARACTER_EDIT)
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_GET_UNLOCKED_EDIT_PARTS_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_GET_UNLOCKED_EDIT_PARTS_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_REQ);
@@ -3714,7 +3714,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_REQ);
             AddPacketIdEntry(packetIds, S2C_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_RES);
 
-// Group: 55 - (JOB)
+// Group: 55 - (JOB_ORB_TREE)
             AddPacketIdEntry(packetIds, C2S_JOB_ORB_TREE_GET_JOB_ORB_TREE_STATUS_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_JOB_ORB_TREE_GET_JOB_ORB_TREE_STATUS_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_JOB_ORB_TREE_GET_ALL_JOB_ORB_ELEMENT_LIST_REQ);
@@ -3918,7 +3918,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_EQUIP_ENHANCED_ENHANCE_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_EQUIP_ENHANCED_ENHANCE_ITEM_RES);
 
-// Group: 66 - (JOB)
+// Group: 66 - (JOB_EMBLEM)
             AddPacketIdEntry(packetIds, C2S_JOB_EMBLEM_GET_EMBLEM_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_JOB_EMBLEM_GET_EMBLEM_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_JOB_EMBLEM_GET_EMBLEM_REQ);

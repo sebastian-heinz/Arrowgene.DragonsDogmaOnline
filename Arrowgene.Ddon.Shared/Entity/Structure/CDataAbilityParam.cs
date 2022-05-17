@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataAbilityParam
     {
         public uint AbilityNo { get; set; }
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public byte Category { get; set; }
         public byte SortCategory { get; set; }
         public byte Type { get; set; }
@@ -23,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataAbilityParam obj)
             {
                 WriteUInt32(buffer, obj.AbilityNo);
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteByte(buffer, obj.Category);
                 WriteByte(buffer, obj.SortCategory);
                 WriteByte(buffer, obj.Type);
@@ -35,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataAbilityParam obj = new CDataAbilityParam();
                 obj.AbilityNo = ReadUInt32(buffer);
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.Category = ReadByte(buffer);
                 obj.SortCategory = ReadByte(buffer);
                 obj.Type = ReadByte(buffer);

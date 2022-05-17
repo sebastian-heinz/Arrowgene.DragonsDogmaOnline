@@ -224,7 +224,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, myPawnCsvData.AbilityId10);
                 WriteByte(buffer, myPawnCsvData.AbilityLv10);
                 WriteByteArray(buffer, obj.Pad12);
-                WriteByte(buffer, myPawnCsvData.Job);
+                WriteByte(buffer, (byte) myPawnCsvData.Job);
                 WriteByteArray(buffer, obj.JobIdLv);
                 WriteByte(buffer, myPawnCsvData.JobLv);
                 WriteByteArray(buffer, obj.LvReaction);
