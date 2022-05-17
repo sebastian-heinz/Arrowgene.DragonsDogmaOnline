@@ -27,12 +27,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (CDataSetAcquirementParam skillSlot in skillSlots)
             {
                 skillSlot.AcquirementNo = packet.Structure.SkillId;
+                skillSlot.AcquirementLv = 1; // Must be 1 otherwise they do 0 damage
             }
 
             client.Send(new S2CSkillChangeExSkillRes() {
                 Job = packet.Structure.Job,
                 SkillId = packet.Structure.SkillId,
-                SkillLv = 10, 
+                SkillLv = 1, // Must be 1 otherwise they do 0 damage
                 Unk3 = packet.Structure.Unk0,
                 SlotsToUpdate = skillSlots.Select(skill => new CDataCommonU8(skill.SlotNo)).ToList()
             });
