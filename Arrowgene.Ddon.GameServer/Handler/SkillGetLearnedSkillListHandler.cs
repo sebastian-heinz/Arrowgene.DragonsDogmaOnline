@@ -23,9 +23,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Select(skill => new CDataLearnedSetAcquirementParam() {
                         Job = skill.Job,
                         AcquirementNo = skill.SkillNo,
-                        AcquirementLv = 10
+                        AcquirementLv = (byte) (IsSkillEX(skill.SkillNo) ? 1 : 10) // EX skills must be Lv 1 to work, otherwise use Lv 10 (Max level)
                     }).ToList()
             });
+        }
+
+        private bool IsSkillEX(uint skillNo)
+        {
+            return skillNo >= 100;
         }
     }
 }
