@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -59,7 +60,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Unk2=0;
         }
 
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public float HP { get; set; }
         public float MaxHP { get; set; }
         public float WhiteHP { get; set; }
@@ -114,7 +115,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataContextPlayerInfo obj)
             {
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteFloat(buffer, obj.HP);
                 WriteFloat(buffer, obj.MaxHP);
                 WriteFloat(buffer, obj.WhiteHP);
@@ -169,7 +170,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataContextPlayerInfo Read(IBuffer buffer)
             {
                 CDataContextPlayerInfo obj = new CDataContextPlayerInfo();
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.HP = ReadFloat(buffer);
                 obj.MaxHP = ReadFloat(buffer);
                 obj.WhiteHP = ReadFloat(buffer);

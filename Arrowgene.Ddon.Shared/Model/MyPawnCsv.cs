@@ -127,7 +127,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint AbilityId10 { get; set; }
         public byte AbilityLv10 { get; set; }
         //Vocation
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public byte JobLv { get; set; }
         //PawnReaction
         public byte MetPartyMembers { get; set; }

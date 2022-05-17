@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -7,14 +8,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_SKILL_SET_OFF_SKILL_REQ;
 
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public byte SlotNo { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SSkillSetOffSkillReq>
         {
             public override void Write(IBuffer buffer, C2SSkillSetOffSkillReq obj)
             {
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteByte(buffer, obj.SlotNo);
             }
 
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 return new C2SSkillSetOffSkillReq()
                 {
-                    Job = ReadByte(buffer),
+                    Job = (JobId) ReadByte(buffer),
                     SlotNo = ReadByte(buffer)
                 };
             }

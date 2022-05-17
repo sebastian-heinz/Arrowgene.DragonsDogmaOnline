@@ -116,11 +116,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 //MaxStamina
                 WriteUInt32(buffer, 451);
                 //Job
-                WriteByte(buffer, myPawnCsvData.Job);
+                WriteByte(buffer, (byte) myPawnCsvData.Job);
                 //Count(JobArray - 11)
                 WriteUInt32(buffer, 1);
                 //WriteByteArray(buffer, obj.JobArray);
-                WriteByte(buffer, myPawnCsvData.Job);
+                WriteByte(buffer, (byte) myPawnCsvData.Job);
                 WriteByteArray(buffer, obj.JobDummy1);
                 WriteByte(buffer, myPawnCsvData.JobLv);
                 WriteByteArray(buffer, obj.JobDummy2);

@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -25,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     new CDataAbilityParam()
                     {
                         AbilityNo = 1,
-                        Job = 1,
+                        Job = JobId.Fighter,
                         Type = 1,
                         Params = new List<CDataAbilityLevelParam>()
                         {

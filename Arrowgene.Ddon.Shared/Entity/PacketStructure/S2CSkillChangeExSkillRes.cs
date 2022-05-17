@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -15,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         // These are all guesses
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public uint SkillId { get; set; }
         public byte SkillLv { get; set; }
         public uint Unk3 { get; set; }
@@ -26,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CSkillChangeExSkillRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteUInt32(buffer, obj.SkillId);
                 WriteByte(buffer, obj.SkillLv);
                 WriteUInt32(buffer, obj.Unk3);
@@ -37,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CSkillChangeExSkillRes obj = new S2CSkillChangeExSkillRes();
                 ReadServerResponse(buffer, obj);
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.SkillId = ReadUInt32(buffer);
                 obj.SkillLv = ReadByte(buffer);
                 obj.Unk3 = ReadUInt32(buffer);

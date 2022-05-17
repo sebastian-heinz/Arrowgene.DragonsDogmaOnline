@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 { WriteUInt32(buffer, myPawnCsvData.CharacterId); }
                 WriteMtString(buffer, myPawnCsvData.Name);
                 WriteByteArray(buffer, obj.Pad7);
-                WriteByte(buffer, myPawnCsvData.Job);
+                WriteByte(buffer, (byte) myPawnCsvData.Job);
                 WriteByte(buffer, myPawnCsvData.JobLv);
                 WriteByteArray(buffer, obj.Pad5);
                 WriteByte(buffer, 2);

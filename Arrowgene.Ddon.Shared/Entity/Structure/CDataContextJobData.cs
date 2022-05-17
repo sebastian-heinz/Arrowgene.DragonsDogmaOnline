@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -12,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             JobPoint=0;
         }
 
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public ushort Lv { get; set; }
         public ulong Exp { get; set; }
         public ulong JobPoint { get; set; }
@@ -21,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataContextJobData obj)
             {
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteUInt16(buffer, obj.Lv);
                 WriteUInt64(buffer, obj.Exp);
                 WriteUInt64(buffer, obj.JobPoint);
@@ -30,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataContextJobData Read(IBuffer buffer)
             {
                 CDataContextJobData obj = new CDataContextJobData();
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.Lv = ReadUInt16(buffer);
                 obj.Exp = ReadUInt64(buffer);
                 obj.JobPoint = ReadUInt64(buffer);

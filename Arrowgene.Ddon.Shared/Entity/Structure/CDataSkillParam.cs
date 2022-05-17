@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -11,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public uint SkillNo { get; set; }
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public byte Type { get; set; }
         public List<CDataSkillLevelParam> Params { get; set; }
 
@@ -20,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataSkillParam obj)
             {
                 WriteUInt32(buffer, obj.SkillNo);
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteByte(buffer, obj.Type);
                 WriteEntityList<CDataSkillLevelParam>(buffer, obj.Params);
             }
@@ -29,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataSkillParam obj = new CDataSkillParam();
                 obj.SkillNo = ReadUInt32(buffer);
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.Type = ReadByte(buffer);
                 obj.Params = ReadEntityList<CDataSkillLevelParam>(buffer);
                 return obj;
