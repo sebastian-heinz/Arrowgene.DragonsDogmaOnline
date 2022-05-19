@@ -501,7 +501,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PAWN_8_34_16_NTC = new PacketId(8, 34, 16, "S2C_PAWN_8_34_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_PAWN_8_35_16_NTC = new PacketId(8, 35, 16, "S2C_PAWN_8_35_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_PAWN_8_36_16_NTC = new PacketId(8, 36, 16, "S2C_PAWN_8_36_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_PAWN_8_37_16_NTC = new PacketId(8, 37, 16, "S2C_PAWN_8_37_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PAWN_JOIN_PARTY_PAWN_NTC = new PacketId(8, 37, 16, "S2C_PAWN_JOIN_PARTY_PAWN_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_37_16_NTC");
         public static readonly PacketId S2C_PAWN_8_38_16_NTC = new PacketId(8, 38, 16, "S2C_PAWN_8_38_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_PAWN_8_39_16_NTC = new PacketId(8, 39, 16, "S2C_PAWN_8_39_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_PAWN_8_40_16_NTC = new PacketId(8, 40, 16, "S2C_PAWN_8_40_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2402,7 +2402,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PAWN_8_34_16_NTC);
             AddPacketIdEntry(packetIds, S2C_PAWN_8_35_16_NTC);
             AddPacketIdEntry(packetIds, S2C_PAWN_8_36_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_PAWN_8_37_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PAWN_JOIN_PARTY_PAWN_NTC);
             AddPacketIdEntry(packetIds, S2C_PAWN_8_38_16_NTC);
             AddPacketIdEntry(packetIds, S2C_PAWN_8_39_16_NTC);
             AddPacketIdEntry(packetIds, S2C_PAWN_8_40_16_NTC);
