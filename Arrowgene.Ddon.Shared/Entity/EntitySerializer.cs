@@ -318,7 +318,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyLeaveNtc.Serializer());
             Create(new S2CPartyPartyLeaveRes.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
-            Create(new S2CPawn_8_37_16_Ntc.Serializer());
+            Create(new S2CPawnJoinPartyPawnNtc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());
             Create(new S2CPawnGetMypawnListRes.Serializer());

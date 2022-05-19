@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_PAWN_GET_MYPAWN_LIST_REQ;
 
-        public class Serializer : EntitySerializer<C2SPawnGetMypawnListReq>
+        public class Serializer : PacketEntitySerializer<C2SPawnGetMypawnListReq>
         {
             public override void Write(IBuffer buffer, C2SPawnGetMypawnListReq obj)
             {
