@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ExtendParam = new CDataOrbGainExtendParam();
             Unk0 = new byte[64];
             Unk1 = new CData_772E80();
-            Unk2 = new List<CData_772950>();
+            Unk2 = new List<CDataSpSkill>();
         }
 
         public uint Version { get; set; }
@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint Likability { get; set; }
         public byte[] Unk0 { get; set; }
         public CData_772E80 Unk1 { get; set; }
-        public List<CData_772950> Unk2 { get; set; }
+        public List<CDataSpSkill> Unk2 { get; set; }
 
         public class Serializer : EntitySerializer<CDataPawnInfo>
         {
@@ -94,7 +94,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.Likability);
                 WriteByteArray(buffer, obj.Unk0);
                 WriteEntity<CData_772E80>(buffer, obj.Unk1);
-                WriteEntityList<CData_772950>(buffer, obj.Unk2);
+                WriteEntityList<CDataSpSkill>(buffer, obj.Unk2);
             }
 
             public override CDataPawnInfo Read(IBuffer buffer)
@@ -131,7 +131,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Likability = ReadUInt32(buffer);
                 obj.Unk0 = ReadByteArray(buffer, 64);
                 obj.Unk1 = ReadEntity<CData_772E80>(buffer);
-                obj.Unk2 = ReadEntityList<CData_772950>(buffer);
+                obj.Unk2 = ReadEntityList<CDataSpSkill>(buffer);
                 return obj ;
             }
         }

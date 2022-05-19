@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity
                     Serializer()); // TODO naming convention C2S -> not a packet
             Create(new CData_35_14_16.Serializer());
             Create(new CData_772E80.Serializer());
-            Create(new CData_772950.Serializer());
+            Create(new CDataSpSkill.Serializer());
             Create(new CDataAbilityLevelParam.Serializer());
             Create(new CDataAbilityParam.Serializer());
             Create(new CDataAchievementIdentifierSerializer());
