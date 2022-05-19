@@ -97,6 +97,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataOrbCategoryStatusSerializer());
             Create(new CDataOrbGainExtendParam.Serializer());
             Create(new CDataOrbPageStatusSerializer());
+            Create(new CDataPartnerPawnInfo.Serializer());
             Create(new CDataPartyListInfo.Serializer());
             Create(new CDataPartyMember.Serializer());
             Create(new CDataPartyMemberMinimum.Serializer());
@@ -105,6 +106,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnCraftSkill.Serializer());
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPawnInfo.Serializer());
+            Create(new CDataPawnList.Serializer());
+            Create(new CDataPawnListData.Serializer());
             Create(new CDataPawnReaction.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
@@ -193,6 +196,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPartySendBinaryMsgNtc.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
+            Create(new C2SPawnGetMypawnListReq.Serializer());
             Create(new C2SPawnGetPawnHistoryListReq.Serializer());
             Create(new C2SPawnGetRegisteredPawnDataReq.Serializer());
             Create(new C2SPawnJoinPartyMypawnReq.Serializer());
@@ -317,6 +321,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawn_8_37_16_Ntc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());
+            Create(new S2CPawnGetMypawnListRes.Serializer());
             Create(new S2CPawnGetPawnHistoryListRes.Serializer());
             Create(new S2CPawnGetRegisteredPawnDataRes.Serializer());
             Create(new S2CPawnJoinPartyMypawnRes.Serializer());

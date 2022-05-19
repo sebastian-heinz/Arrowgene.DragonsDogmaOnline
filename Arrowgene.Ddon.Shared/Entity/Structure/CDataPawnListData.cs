@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -10,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             PawnCraftSkillList = new List<CDataPawnCraftSkill>();
         }
 
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public uint Level { get; set; }
         public uint CraftRank { get; set; }
         public List<CDataPawnCraftSkill> PawnCraftSkillList { get; set; }
@@ -21,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataPawnListData obj)
             {
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteUInt32(buffer, obj.Level);
                 WriteUInt32(buffer, obj.CraftRank);
                 WriteEntityList<CDataPawnCraftSkill>(buffer, obj.PawnCraftSkillList);
@@ -32,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataPawnListData Read(IBuffer buffer)
             {
                 CDataPawnListData obj = new CDataPawnListData();
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.Level = ReadUInt32(buffer);
                 obj.CraftRank = ReadUInt32(buffer);
                 obj.PawnCraftSkillList = ReadEntityList<CDataPawnCraftSkill>(buffer);
