@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 joinPartyPawnNtc.PartyMember.IsLeader = false;
                 joinPartyPawnNtc.PartyMember.IsPawn = true;
                 joinPartyPawnNtc.PartyMember.IsPlayEntry = false;
-                joinPartyPawnNtc.PartyMember.JoinState = 2;
+                joinPartyPawnNtc.PartyMember.JoinState = JoinState.On;
                 joinPartyPawnNtc.PartyMember.AnyValueList = new byte[] {0x0, 0xDA, 0x5D, 0x4E, 0x0, 0x1, 0x0, 0x2};
                 joinPartyPawnNtc.PartyMember.SessionStatus = 0;
                 client.Send(joinPartyPawnNtc);

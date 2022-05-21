@@ -32,9 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         FirstName = client.Character.FirstName,
                         LastName = client.Character.LastName,
                         ClanName = "ABC",
-                        Unk0 = 1, // Platform PC
+                        Unk0 = 1, // Platform PC?
                         Unk1 = 0,
-                        Unk2 = 8  // OnlineStatus
+                        Unk2 = 8  // OnlineStatus?
                     },
                 }
             };

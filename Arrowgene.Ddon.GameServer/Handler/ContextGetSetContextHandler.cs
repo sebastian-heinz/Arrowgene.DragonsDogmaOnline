@@ -26,7 +26,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntcData.Unk0 = 0;
             S2CContext_35_14_16_Ntc ntc = new S2CContext_35_14_16_Ntc();
             ntc.Unk0.Add(ntcData);
-            client.Send(ntc);
 
             // We believe it may be telling the client to load a persistent context.
             // If it's not sent, it will load a new context.
@@ -38,7 +37,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             baseNtc.EncountArea = packet.Structure.EncountArea;
             baseNtc.MasterIndex = packet.Structure.MasterIndex;
             baseNtc.Unk0 = packet.Structure.Unk0;
-            client.Send(baseNtc);
+
+            foreach(GameClient member in client.Party.Members)
+            {
+                client.Send(ntc);
+                client.Send(baseNtc);
+            }
         }
     }
 }

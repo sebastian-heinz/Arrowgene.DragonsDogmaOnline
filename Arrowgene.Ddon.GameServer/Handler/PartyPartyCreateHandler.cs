@@ -37,9 +37,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
             partyMember.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
             partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
-            partyMember.CharacterListElement.EntryJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-            partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
+            partyMember.CharacterListElement.OnlineStatus = client.OnlineStatus;
+            partyMember.CharacterListElement.unk2 = 1;
+            partyMember.MemberType = 1;
             partyMember.IsLeader = newParty.Leader == client;
+            partyMember.JoinState = JoinState.On;
             partyJoinNtc.PartyMembers.Add(partyMember);
             client.Send(partyJoinNtc);
            

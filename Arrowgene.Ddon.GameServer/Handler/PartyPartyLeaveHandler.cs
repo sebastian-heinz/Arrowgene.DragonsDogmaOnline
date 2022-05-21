@@ -20,8 +20,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Party oldParty = client.Party;
 
-            client.Send(new S2CPartyPartyLeaveRes());
-
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
             partyLeaveNtc.CharacterId = client.Character.Id;
             foreach (GameClient member in oldParty.Members)
@@ -32,22 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             oldParty.Members.Remove(client);
             client.Party = null;
 
-            CDataCharacterListElement characterListElement = new CDataCharacterListElement();
-            characterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
-            characterListElement.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
-            characterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.FirstName;
-            characterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
-            characterListElement.CommunityCharacterBaseInfo.ClanName = "123";
-            characterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-            characterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
-            characterListElement.EntryJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-            characterListElement.EntryJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
-            CDataUpdateMatchingProfileInfo updateMatchingProfileInfo = new CDataUpdateMatchingProfileInfo();
-            updateMatchingProfileInfo.CharacterId = client.Character.Id;
-            S2CCharacterCommunityCharacterStatusUpdateNtc statusUpdateNtc = new S2CCharacterCommunityCharacterStatusUpdateNtc();
-            statusUpdateNtc.UpdateCharacterList.Add(characterListElement);
-            statusUpdateNtc.UpdateMatchingProfileList.Add(updateMatchingProfileInfo);
-            client.Send(statusUpdateNtc);  
+            client.Send(new S2CPartyPartyLeaveRes());
         }
     }
 }
