@@ -194,6 +194,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPartyPartyInvitePrepareAcceptReq.Serializer());
             Create(new C2SPartyPartyJoinReq.Serializer());
             Create(new C2SPartyPartyLeaveReq.Serializer());
+            Create(new C2SPartySendBinaryMsgAllNtc.Serializer());
             Create(new C2SPartySendBinaryMsgNtc.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
@@ -204,6 +205,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnTrainingGetPreparetionInfoToAdviceReq.Serializer());
             Create(new C2SQuestGetLotQuestListReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
+            Create(new C2SQuestSendLeaderQuestOrderConditionInfoReq.Serializer());
+            Create(new C2SQuestSendLeaderWaitOrderQuestListReq.Serializer());
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
             Create(new C2SSkillChangeExSkillReq.Serializer());
@@ -319,6 +322,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyJoinRes.Serializer());
             Create(new S2CPartyPartyLeaveNtc.Serializer());
             Create(new S2CPartyPartyLeaveRes.Serializer());
+            Create(new S2CPartyRecvBinaryMsgAllNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
@@ -332,6 +336,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestGetMainQuestListRes.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CQuestPartyQuestProgressNtc.Serializer());
+            Create(new S2CQuestSendLeaderQuestOrderConditionInfoNtc.Serializer());
+            Create(new S2CQuestSendLeaderQuestOrderConditionInfoRes.Serializer());
+            Create(new S2CQuestSendLeaderWaitOrderQuestListNtc.Serializer());
+            Create(new S2CQuestSendLeaderWaitOrderQuestListRes.Serializer());
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CServerGetServerListRes.Serializer());
