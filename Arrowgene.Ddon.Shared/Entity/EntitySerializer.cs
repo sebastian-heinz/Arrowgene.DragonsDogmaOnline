@@ -153,6 +153,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCharacterCharacterPointReviveReq.Serializer());
             Create(new C2SCharacterPawnGoldenReviveReq.Serializer());
             Create(new C2SCharacterPawnPointReviveReq.Serializer());
+            Create(new C2SCharacterSetOnlineStatusReq.Serializer());
             Create(new C2SClanClanBaseGetInfoReq.Serializer());
             Create(new C2SClanClanConciergeGetListReq.Serializer());
             Create(new C2SClanClanConciergeUpdateReq.Serializer());
@@ -252,6 +253,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterContentsReleaseElementNotice.Serializer());
             Create(new S2CCharacterPawnGoldenReviveRes.Serializer());
             Create(new S2CCharacterPawnPointReviveRes.Serializer());
+            Create(new S2CCharacterSetOnlineStatusRes.Serializer());
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
             Create(new S2CClanClanConciergeGetListRes.Serializer());
             Create(new S2CClanClanConciergeUpdateRes.Serializer());

@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -9,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public uint CharacterId { get; set; }
         public byte[] Data { get; set; }
-        public byte OnlineStatus { get; set; }
+        public OnlineStatus OnlineStatus { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CPartyRecvBinaryMsgNtc>
         {
@@ -18,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteInt32(buffer, obj.Data.Length);
                 WriteByteArray(buffer, obj.Data);
-                WriteByte(buffer, obj.OnlineStatus);
+                WriteByte(buffer, (byte) obj.OnlineStatus);
             }
 
             public override S2CPartyRecvBinaryMsgNtc Read(IBuffer buffer)
@@ -27,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.CharacterId = ReadUInt32(buffer);
                 int dataLength = ReadInt32(buffer);
                 obj.Data = ReadByteArray(buffer, dataLength);
-                obj.OnlineStatus = ReadByte(buffer);
+                obj.OnlineStatus = (OnlineStatus) ReadByte(buffer);
                 return obj;
             }
         }

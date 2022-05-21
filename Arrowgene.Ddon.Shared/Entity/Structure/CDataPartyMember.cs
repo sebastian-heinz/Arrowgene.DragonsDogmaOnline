@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool IsLeader { get; set; }
         public bool IsPawn { get; set; }
         public bool IsPlayEntry { get; set; }
-        public byte JoinState { get; set; }
+        public JoinState JoinState { get; set; }
         public byte[] AnyValueList { get; set; }
         public byte SessionStatus { get; set; }
 
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteBool(buffer, obj.IsLeader);
                 WriteBool(buffer, obj.IsPawn);
                 WriteBool(buffer, obj.IsPlayEntry);
-                WriteByte(buffer, obj.JoinState);
+                WriteByte(buffer, (byte) obj.JoinState);
                 for (int i = 0; i < obj.AnyValueList.Length; i++)
                 {
                     WriteByte(buffer, obj.AnyValueList[i]);
@@ -52,7 +52,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.IsLeader = ReadBool(buffer);
                 obj.IsPawn = ReadBool(buffer);
                 obj.IsPlayEntry = ReadBool(buffer);
-                obj.JoinState = ReadByte(buffer);
+                obj.JoinState = (JoinState) ReadByte(buffer);
                 for (int i = 0; i < obj.AnyValueList.Length; i++)
                 {
                     obj.AnyValueList[i] = ReadByte(buffer);

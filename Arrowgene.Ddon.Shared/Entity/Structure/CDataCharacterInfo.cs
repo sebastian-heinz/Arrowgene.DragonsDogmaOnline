@@ -74,7 +74,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool HideEquipHeadPawn;
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
-        public byte OnlineStatus;
+        public OnlineStatus OnlineStatus;
     }
     public class CDataCharacterInfoSerializer : EntitySerializer<CDataCharacterInfo>
     {
@@ -110,7 +110,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteBool(buffer, obj.HideEquipHeadPawn);
             WriteBool(buffer, obj.HideEquipLanternPawn);
             WriteByte(buffer, obj.ArisenProfileShareRange);
-            WriteByte(buffer, obj.OnlineStatus);
+            WriteByte(buffer, (byte) obj.OnlineStatus);
         }
 
         public override CDataCharacterInfo Read(IBuffer buffer)
@@ -146,7 +146,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.HideEquipHeadPawn = ReadBool(buffer);
             obj.HideEquipLanternPawn = ReadBool(buffer);
             obj.ArisenProfileShareRange = ReadByte(buffer);
-            obj.OnlineStatus = ReadByte(buffer);
+            obj.OnlineStatus = (OnlineStatus) ReadByte(buffer);
             return obj;
         }
     }
