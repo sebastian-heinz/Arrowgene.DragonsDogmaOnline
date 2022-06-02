@@ -171,14 +171,14 @@ namespace Arrowgene.Ddon.Cli.Command
         {
             Texture texture = new Texture();
             texture.Open(fileInfo.FullName);
-            texture.SaveDds($"{fileInfo.FullName}.out.dds");
+            texture.SaveDds($"{fileInfo.FullName}.dds");
         }
 
         public void DdsToTex(FileInfo fileInfo)
         {
             Texture texture = new Texture();
             texture.Open(fileInfo.FullName);
-            texture.SaveTex($"{fileInfo.FullName}.out.tex");
+            texture.SaveTex($"{fileInfo.FullName}.tex");
                     
             //   Texture tex = ArcArchive.GetResource<Texture>(
             //       romDirectory,

@@ -6,6 +6,9 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
+    /// <summary>
+    /// https://github.com/microsoft/DirectXTex/blob/9c72f2c6cdbe3cc9e33ec55f1b15cee356c4ecf6/DirectXTex/DirectXTexImage.cpp#L82
+    /// </summary>
     public class Texture : ResourceFile
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(Texture));
@@ -46,35 +49,37 @@ namespace Arrowgene.Ddon.Client.Resource
             File.WriteAllBytes(path, sb.GetAllBytes());
             if (Header.HasSphericalHarmonicsFactor)
             {
-                File.WriteAllBytes($"{path}.shfactor", SphericalHarmonics.Encode());
+                string shFactorFile = $"{path}.shfactor";;
+                File.WriteAllBytes(shFactorFile, SphericalHarmonics.Encode());
             }
         }
 
         public void SaveTex(string path)
         {
+
+            string shFactorFile = null;
+            if (path.LastIndexOf('.') > 0)
+            {
+                shFactorFile = path.Substring(0, path.LastIndexOf('.'));
+                shFactorFile += ".shfactor";
+            }
+            
+            if (!Header.HasSphericalHarmonicsFactor && File.Exists(shFactorFile))
+            {
+                Header.HasSphericalHarmonicsFactor = true;
+                byte[] shFactor = File.ReadAllBytes(shFactorFile);
+                SphericalHarmonics.Decode(shFactor);
+            }
+
             StreamBuffer sb = new StreamBuffer();
             sb.WriteBytes(Encoding.UTF8.GetBytes(TexHeaderMagic));
             sb.WriteBytes(Header.Encode());
+            
             if (Header.HasSphericalHarmonicsFactor)
             {
-                if (!SphericalHarmonics.Loaded)
-                {
-                    if (File.Exists($"{path}.shfactor"))
-                    {
-                        byte[] shFactor = File.ReadAllBytes($"{path}.shfactor");
-                        SphericalHarmonics.Decode(shFactor);
-                        Logger.Info($"Using ShFactor file: {path}.shfactor");
-                    }
-                    else
-                    {
-                        Logger.Error(
-                            $"Missing ShFactor file: {path}.shfactor or Loaded flag not set, no SphericalHarmonics will be encoded");
-                    }
-                }
-
                 sb.WriteBytes(SphericalHarmonics.Encode());
             }
-
+            
             int offsetByteLength = (int) Header.LayerCount * 4;
             int offsetBytePosition = sb.Position;
             sb.WriteBytes(new byte[offsetByteLength]);
@@ -150,10 +155,11 @@ namespace Arrowgene.Ddon.Client.Resource
             Header.Depth = ddsHeader.Depth;
             Header.MipMapCount = ddsHeader.MipMapCount;
 
+            DirectXTexUtility.DX10Header dx10Header = new DirectXTexUtility.DX10Header();
             if (ddsHeader.PixelFormat.FourCC == DirectXTexUtility.PixelFormats.DX10.FourCC)
             {
                 byte[] dx10HeaderByes = buffer.ReadBytes(0x14);
-                DirectXTexUtility.DX10Header dx10Header = DirectXTexUtility.FromBytes<DirectXTexUtility.DX10Header>(
+                dx10Header = DirectXTexUtility.FromBytes<DirectXTexUtility.DX10Header>(
                     dx10HeaderByes
                 );
                 Header.PixelFormat = FromDxGiFormat(dx10Header.Format);
@@ -169,16 +175,37 @@ namespace Arrowgene.Ddon.Client.Resource
                 // if cubemap
                 SphericalHarmonics = new TexSphericalHarmonics();
 
-                for (int mipMap = 0; mipMap < ddsHeader.MipMapCount; mipMap++)
-                {
-                    for (int layer = 0; layer < Header.TextureArraySize; layer++)
-                    {
-                        int w = 0;
-                        int h = 0;
-                        int s = 0;
+                uint t = ddsHeader.PitchOrLinearSize * ddsHeader.Height;
 
-                    }
-                }
+                DetermineImageArray(dx10Header.Format,
+                    DirectXTexUtility.CPFLAGS.NONE,
+                    Header.TextureArraySize,
+                    ddsHeader.MipMapCount,
+                    ddsHeader.Width,
+                    ddsHeader.Height,
+                    out uint nImages,
+                    out uint pixelSize
+                );
+
+              Layers =  SetupImageArray(dx10Header.Format,
+                    DirectXTexUtility.CPFLAGS.NONE,
+                    Header.TextureArraySize,
+                    ddsHeader.MipMapCount,
+                    ddsHeader.Width,
+                    ddsHeader.Height,
+                    pixelSize,
+                    nImages);
+
+              
+              for (int layerIndex = 0; layerIndex < Header.LayerCount - 1; layerIndex++)
+              {
+                  Layers[layerIndex].Size = Layers[layerIndex + 1].Offset - Layers[layerIndex].Offset;
+                  Layers[layerIndex].Data = ReadBytes(buffer, (int) Layers[layerIndex].Size);
+              }
+
+              Layers[Header.LayerCount - 1].Size = (uint) buffer.Size - Layers[Header.LayerCount - 1].Offset;
+              Layers[Header.LayerCount - 1].Data = ReadBytes(buffer, (int) Layers[Header.LayerCount - 1].Size);
+              
             }
             else
             {
@@ -274,6 +301,147 @@ namespace Arrowgene.Ddon.Client.Resource
                     Logger.Error($"ToDdsPixelFormat::TexPixelFormat:{texPixelFormat} not handled");
                     return DirectXTexUtility.PixelFormats.DXT1;
             }
+        }
+
+        private TexLayer[] SetupImageArray(
+            DirectXTexUtility.DXGIFormat format,
+            DirectXTexUtility.CPFLAGS flags,
+            uint arraySize,
+            uint mipLevels,
+            uint width,
+            uint height,
+            uint pixelSize,
+            uint nImages)
+        {
+            TexLayer[] layers = new TexLayer[arraySize * mipLevels];
+            uint index = 0;
+            uint pixels = 0;
+            for (uint item = 0; item < arraySize; ++item)
+            {
+                uint w = width;
+                uint h = height;
+
+                for (uint level = 0; level < mipLevels; ++level)
+                {
+                    if (index >= nImages)
+                    {
+                        return layers;
+                    }
+
+                    DirectXTexUtility.ComputePitch(format, w, h, out long rowPitch, out long slicePitch, flags);
+
+                    //   size_t rowPitch, slicePitch;
+                    //   if (FAILED(ComputePitch(metadata.format, w, h, rowPitch, slicePitch, cpFlags)))
+                    //       return false;
+
+                    layers[index].Offset = pixels;
+                //    images[index].width = w;
+                //    images[index].height = h;
+                //    images[index].format = metadata.format;
+                //    images[index].rowPitch = rowPitch;
+                //    images[index].slicePitch = slicePitch;
+                //    images[index].pixels = pixels;
+                   ++index;
+//
+                   pixels += (uint)slicePitch;
+                 //  if (pixels > pEndBits)
+                 //  {
+                 //      return false;
+                 //  }
+
+                    if (h > 1)
+                        h >>= 1;
+
+                    if (w > 1)
+                        w >>= 1;
+                }
+            }
+
+            return layers;
+        }
+
+        private bool DetermineImageArray(
+            DirectXTexUtility.DXGIFormat format,
+            DirectXTexUtility.CPFLAGS flags,
+            uint arraySize,
+            uint mipLevels,
+            uint width,
+            uint height,
+            out uint nImages,
+            out uint pixelSize
+        )
+        {
+            ulong totalPixelSize = 0;
+            uint nimages = 0;
+
+            for (uint item = 0; item < arraySize; ++item)
+            {
+                uint w = width;
+                uint h = height;
+
+                for (uint level = 0; level < mipLevels; ++level)
+                {
+                    DirectXTexUtility.ComputePitch(format, w, h, out long rowPitch, out long slicePitch, flags);
+
+                    // if (FAILED(ComputePitch(metadata.format, w, h, rowPitch, slicePitch, cpFlags)))
+                    // {
+                    //     nImages = pixelSize = 0;
+                    //     return false;
+                    // }
+
+                    totalPixelSize += (uint) slicePitch;
+                    ++nimages;
+
+                    if (h > 1)
+                        h >>= 1;
+
+                    if (w > 1)
+                        w >>= 1;
+                }
+            }
+
+            nImages = nimages;
+            pixelSize = (uint) totalPixelSize;
+            return true;
+        }
+
+        private uint CalculateMipLevels(uint width, uint height, uint mipLevels)
+        {
+            if (mipLevels > 1)
+            {
+                uint maxMips = CountMips(width, height);
+                if (mipLevels > maxMips)
+                {
+                    throw new Exception("mipLevels > maxMips");
+                }
+            }
+            else if (mipLevels == 0)
+            {
+                mipLevels = CountMips(width, height);
+            }
+            else
+            {
+                mipLevels = 1;
+            }
+
+            return mipLevels;
+        }
+
+        private uint CountMips(uint width, uint height)
+        {
+            uint mipLevels = 1;
+            while (height > 1 || width > 1)
+            {
+                if (height > 1)
+                    height >>= 1;
+
+                if (width > 1)
+                    width >>= 1;
+
+                ++mipLevels;
+            }
+
+            return mipLevels;
         }
 
         private TexPixelFormat FromDdsPixelFormat(DirectXTexUtility.DDSHeader.DDSPixelFormat ddsPixelFormat)
@@ -536,6 +704,11 @@ namespace Arrowgene.Ddon.Client.Resource
                     | ((uint) Shift << 24)
                     | ((uint) UnknownA << 28);
 
+                if (HasSphericalHarmonicsFactor)
+                {
+                    header4 = (header4 | 0x60000000);
+                }
+                
                 uint header8 =
                     (uint) MipMapCount
                     | ((uint) Width << 6)
@@ -544,7 +717,7 @@ namespace Arrowgene.Ddon.Client.Resource
                 uint header12 =
                     (uint) TextureArraySize
                     | ((uint) PixelFormat << 8)
-                    | ((uint) Depth << 16)
+                    | ((uint) Depth << 16) 
                     | ((uint) UnknownB << 29);
                 byte[] bytes4 = BitConverter.GetBytes(header4);
                 byte[] bytes8 = BitConverter.GetBytes(header8);

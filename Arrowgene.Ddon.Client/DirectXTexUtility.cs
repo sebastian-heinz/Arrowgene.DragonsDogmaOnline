@@ -777,8 +777,10 @@ namespace Arrowgene.Ddon.Client
                     }
                     else
                     {
-                        long nbw = Clamp(1, (width + 3) / 4, Int64.MaxValue);
-                        long nbh = Clamp(1, (height + 3) / 4, Int64.MaxValue);
+                        long nbw = Math.Max(1, (width + 3) / 4);
+                        long nbh = Math.Max(1, (height + 3) / 4);
+                      //  long nbw = Clamp(1, (width + 3) / 4, Int64.MaxValue);
+                      //  long nbh = Clamp(1, (height + 3) / 4, Int64.MaxValue);
                         rowPitch = nbw * 16;
                         slicePitch = rowPitch * nbh;
                     }
