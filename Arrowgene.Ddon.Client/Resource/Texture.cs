@@ -17,8 +17,7 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public TexHeader Header;
         public TexSphericalHarmonics SphericalHarmonics;
-        public byte[] HeaderB { get; set; }
-        public byte[] Data { get; set; }
+        public TexLayer[] Layers;
 
         protected override void ReadResource(IBuffer buffer)
         {
@@ -38,7 +37,12 @@ namespace Arrowgene.Ddon.Client.Resource
             byte[] ddsFileHeader = DirectXTexUtility.EncodeDDSHeader(ddsHeader, dx10Header);
             StreamBuffer sb = new StreamBuffer();
             sb.WriteBytes(ddsFileHeader);
-            sb.WriteBytes(Data);
+
+            for (int layerIndex = 0; layerIndex < Header.LayerCount; layerIndex++)
+            {
+                sb.WriteBytes(Layers[layerIndex].Data);
+            }
+
             File.WriteAllBytes(path, sb.GetAllBytes());
             if (Header.HasSphericalHarmonicsFactor)
             {
@@ -53,11 +57,39 @@ namespace Arrowgene.Ddon.Client.Resource
             sb.WriteBytes(Header.Encode());
             if (Header.HasSphericalHarmonicsFactor)
             {
+                if (!SphericalHarmonics.Loaded)
+                {
+                    if (File.Exists($"{path}.shfactor"))
+                    {
+                        byte[] shFactor = File.ReadAllBytes($"{path}.shfactor");
+                        SphericalHarmonics.Decode(shFactor);
+                        Logger.Info($"Using ShFactor file: {path}.shfactor");
+                    }
+                    else
+                    {
+                        Logger.Error(
+                            $"Missing ShFactor file: {path}.shfactor or Loaded flag not set, no SphericalHarmonics will be encoded");
+                    }
+                }
+
                 sb.WriteBytes(SphericalHarmonics.Encode());
             }
 
-            sb.WriteBytes(HeaderB);
-            sb.WriteBytes(Data);
+            int offsetByteLength = (int) Header.LayerCount * 4;
+            int offsetBytePosition = sb.Position;
+            sb.WriteBytes(new byte[offsetByteLength]);
+            for (int layerIndex = 0; layerIndex < Header.LayerCount; layerIndex++)
+            {
+                Layers[layerIndex].Offset = (uint) sb.Position;
+                sb.WriteBytes(Layers[layerIndex].Data);
+            }
+
+            sb.Position = offsetBytePosition;
+            for (int layerIndex = 0; layerIndex < Header.LayerCount; layerIndex++)
+            {
+                sb.WriteUInt32(Layers[layerIndex].Offset);
+            }
+
             File.WriteAllBytes(path, sb.GetAllBytes());
         }
 
@@ -74,125 +106,30 @@ namespace Arrowgene.Ddon.Client.Resource
                 SphericalHarmonics.Decode(sphericalHarmonics);
             }
 
-            uint readCount = 4 * Header.LayerCount;
-            HeaderB = ReadBytes(buffer, (int) readCount);
-
-
-            uint v19 = Header.Height; // originally without shift
-            if (Header.Width >= Header.Height)
+            Layers = new TexLayer[Header.LayerCount];
+            for (int layerIndex = 0; layerIndex < Header.LayerCount; layerIndex++)
             {
-                v19 = Header.Width;
+                TexLayer layer = new TexLayer();
+                layer.Offset = ReadUInt32(buffer);
+                Layers[layerIndex] = layer;
             }
 
-            uint mipLevelCount = CalcMipLevelCount(v19);
-
-
-            uint v80 = 0;
-            if (mipLevelCount != 0)
+            for (int layerIndex = 0; layerIndex < Header.LayerCount - 1; layerIndex++)
             {
-                uint v81 = mipLevelCount;
-                do
-                {
-                    // if (_bittest(&_EBX, v81))
-                    {
-                        break;
-                    }
-                    ++v80;
-                    --v81;
-                } while (mipLevelCount > v80);
+                Layers[layerIndex].Size = Layers[layerIndex + 1].Offset - Layers[layerIndex].Offset;
+                Layers[layerIndex].Data = ReadBytes(buffer, (int) Layers[layerIndex].Size);
             }
 
-            switch (Header.UnknownA)
-            {
-                case 1:
-                case 2:
-                    // Position = MtDataReader::getPosition(&v250);
-                    // MtDataReader::skip(&v250, ddb - Position);
-                    // do
-                    // {
-                    //     sub_19416E0(&v245, &bytes, v249, (unsigned int)varTexture, 0LL);
-                    //     MtDataReader::read(&v250, &v213[v245], bytes);
-                    //     LODWORD(varTexture) = (_DWORD)varTexture + 1;
-                    // }
-                    // while ( (unsigned int)varTexture < mp_miplevels );
-                    // varTexture = (nDraw::Texture *)nDraw::Texture::operator_new(0x90uLL, 0x10u);
-                    // ((void (__fastcall *)(nDraw::Texture *, u32, u32, u32, u32, nDraw::FORMAT_TYPE, nDraw::USAGE_TYPE, u32, nDraw::Texture *, u32, void *, nDraw::TEXMEMORY_TYPE))nDraw::Texture::Texture_0)(
-                    //     varTexture,
-                    //     dw_width,
-                    //     dh_height,
-                    //     mp_miplevels,
-                    //     1u,
-                    //     (nDraw::FORMAT_TYPE)BYTE1(draw_format_type),
-                    //     USAGE_DEFAULT,
-                    //     0,
-                    //     0LL,
-                    // 0,
-                    // v213,
-                    // TEXMEMORY_VRAM);
-                    break;
-                case 3:
-                    //  v219 = MtDataReader::getPosition(&v250);
-                    //  MtDataReader::skip(&v250, v218 - v219);
-                    //  for ( i = 0; i < mp_miplevels; ++i )
-                    //  {
-                    //      sub_19416E0(&v239, &v238, v247, i, 0LL);
-                    //      MtDataReader::read(&v250, &p_initvalues[v239], v238);
-                    //  }
-                    //  varTexture = (nDraw::Texture *)nDraw::Texture::operator_new(144uLL, 0x10u);
-                    //  nDraw::Texture::Texture_1(
-                    //      varTexture,
-                    //      dw_width,
-                    //      dh_height,
-                    //      dd_depth,
-                    //      mp_miplevels,
-                    //      1u,                                       // arraysize
-                    //      // 
-                    //      (nDraw::FORMAT_TYPE)BYTE1(draw_format_type),
-                    //      USAGE_DEFAULT,
-                    //      0,
-                    //      0LL,
-                    //      0,
-                    //      p_initvalues);
-                    break;
-                case 6:
-                    //   if ( (_BYTE)draw_format_type )
-                    //   {
-                    //       v224 = HIDWORD(first_16_bytes);
-                    //       do
-                    //       {
-                    //           dda = v222;
-                    //           v225 = *((_DWORD *)v233 + 2 * v144 + 2 * v222 * (v224 & 0x3F));
-                    //           v226 = MtDataReader::getPosition(&v250);
-                    //           MtDataReader::skip(&v250, v225 - v226);
-                    //           for ( j = 0; j < miplevels; ++j )
-                    //           {
-                    //               sub_19416E0(&v242, &v241, v248, j, v222);
-                    //               MtDataReader::read(&v250, &v232[v242], v241);
-                    //           }
-                    //           LOBYTE(v224) = BYTE4(first_16_bytes);
-                    //           ++v222;
-                    //       }
-                    //       while ( dda + 1 < (unsigned __int8)draw_format_type );
-                    //   }
-                    //   varTexture = (nDraw::Texture *)nDraw::Texture::operator_new(144uLL, 0x10u);
-                    //   v213 = v232;
-                    //   ((void (__fastcall *)(nDraw::Texture *, u32, u32, u32, u32, nDraw::FORMAT_TYPE, nDraw::USAGE_TYPE, u32, nDraw::Texture *, u32, void *, nDraw::TEXMEMORY_TYPE))nDraw::Texture::Texture_0)(
-                    //       varTexture,
-                    //       dw_width,
-                    //       dh_height,
-                    //       miplevels,
-                    //       6u,
-                    //       (nDraw::FORMAT_TYPE)BYTE1(draw_format_type),
-                    //       USAGE_DEFAULT,
-                    //       8u,
-                    //       0LL,
-                    //   0,
-                    //   v232,
-                    //   TEXMEMORY_VRAM);
-                    break;
-            }
+            Layers[Header.LayerCount - 1].Size = (uint) buffer.Size - Layers[Header.LayerCount - 1].Offset;
+            Layers[Header.LayerCount - 1].Data = ReadBytes(buffer, (int) Layers[Header.LayerCount - 1].Size);
 
-            Data = buffer.ReadBytes(buffer.Size - buffer.Position);
+            // https://docs.microsoft.com/en-us/windows/win32/direct3ddds/dds-file-layout-for-cubic-environment-maps
+            // TODO differentiate between cube map, and texture layers, cube map has faces.
+
+            if (buffer.Size != buffer.Position)
+            {
+                Logger.Error($"buffer.Size()({buffer.Size}) != buffer.Position({buffer.Position})");
+            }
         }
 
         private void ReadDds(IBuffer buffer)
@@ -231,11 +168,25 @@ namespace Arrowgene.Ddon.Client.Resource
             {
                 // if cubemap
                 SphericalHarmonics = new TexSphericalHarmonics();
-                // TODO
-            }
 
-            HeaderB = new byte[0];
-            Data = buffer.ReadBytes(buffer.Size - buffer.Position);
+                for (int mipMap = 0; mipMap < ddsHeader.MipMapCount; mipMap++)
+                {
+                    for (int layer = 0; layer < Header.TextureArraySize; layer++)
+                    {
+                        int w = 0;
+                        int h = 0;
+                        int s = 0;
+
+                    }
+                }
+            }
+            else
+            {
+                Layers = new TexLayer[1];
+                Layers[0] = new TexLayer();
+                Layers[0].Data = buffer.ReadBytes(buffer.Size - buffer.Position);
+                Layers[0].Size = (uint) Layers[0].Data.Length;
+            }
         }
 
         private void GenerateDdsHeader(out DirectXTexUtility.DDSHeader ddsHeader,
@@ -365,15 +316,6 @@ namespace Arrowgene.Ddon.Client.Resource
             }
         }
 
-        private uint CalcMipLevelCount(uint size)
-        {
-            uint v1 = 0xFFFFFFFF;
-            do
-                ++v1;
-            while (1 << (int) v1 <= size);
-            return v1;
-        }
-
         private uint GetGpuFormatType(TexPixelFormat fmt)
         {
             uint[] gpuFormats = new uint[55];
@@ -436,10 +378,18 @@ namespace Arrowgene.Ddon.Client.Resource
             return gpuFormats[(byte) fmt];
         }
 
+        public struct TexLayer
+        {
+            public uint Offset;
+            public uint Size;
+            public byte[] Data;
+        }
+
         public struct TexSphericalHarmonics
         {
             public const int Size = 0x6C;
 
+            public bool Loaded;
             public TexSphericalHarmonicsVector Y00;
             public TexSphericalHarmonicsVector Y11;
             public TexSphericalHarmonicsVector Y10;
@@ -479,6 +429,7 @@ namespace Arrowgene.Ddon.Client.Resource
                 Y22.R = BitConverter.ToSingle(bytes, 4 * 24);
                 Y22.G = BitConverter.ToSingle(bytes, 4 * 25);
                 Y22.B = BitConverter.ToSingle(bytes, 4 * 26);
+                Loaded = true;
             }
 
             public byte[] Encode()

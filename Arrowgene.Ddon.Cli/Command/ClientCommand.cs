@@ -38,6 +38,8 @@ namespace Arrowgene.Ddon.Cli.Command
                     DdsToTex(fileInfo);
                     return CommandResultType.Exit;
                 }
+                Logger.Error("No available action for provided file");
+                return CommandResultType.Exit;
             }
             
             DirectoryInfo romDirectory = new DirectoryInfo(parameter.Arguments[0]);
@@ -169,14 +171,14 @@ namespace Arrowgene.Ddon.Cli.Command
         {
             Texture texture = new Texture();
             texture.Open(fileInfo.FullName);
-            texture.SaveDds($"{fileInfo.FullName}.dds");
+            texture.SaveDds($"{fileInfo.FullName}.out.dds");
         }
 
         public void DdsToTex(FileInfo fileInfo)
         {
             Texture texture = new Texture();
             texture.Open(fileInfo.FullName);
-            texture.SaveTex($"{fileInfo.FullName}.tex");
+            texture.SaveTex($"{fileInfo.FullName}.out.tex");
                     
             //   Texture tex = ArcArchive.GetResource<Texture>(
             //       romDirectory,

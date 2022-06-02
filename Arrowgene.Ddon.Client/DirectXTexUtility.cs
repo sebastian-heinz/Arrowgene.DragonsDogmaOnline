@@ -577,7 +577,7 @@ namespace Arrowgene.Ddon.Client
         /// <summary>
         /// Generates a FourCC Integer from Pixel Format Characters
         /// </summary>
-        private static uint MakePixelFormatFourCC(char char1, char char2, char char3, char char4)
+        public static uint MakePixelFormatFourCC(char char1, char char2, char char3, char char4)
         {
             return Convert.ToByte(char1) | (uint) Convert.ToByte(char2) << 8 | (uint) Convert.ToByte(char3) << 16 |
                    (uint) Convert.ToByte(char4) << 24;
