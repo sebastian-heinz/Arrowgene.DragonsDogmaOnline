@@ -1,586 +1,151 @@
-﻿// ------------------------------------------------------------------------
-// DirectXTex Utility - A simple class for generating DDS Headers
-// Copyright(c) 2018 Philip/Scobalula
-// 
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-// 
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-// 
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-// ------------------------------------------------------------------------
-// Author: Philip/Scobalula
-// Description: DirectXTex DDS Header Utilities
-
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Arrowgene.Ddon.Client
+namespace Arrowgene.Ddon.Client.Resource.Texture.Dds
 {
-    public class DirectXTexUtility
+    public static class DirectXTexUtility
     {
-        #region Enumerators
-
-        /// <summary>
-        /// DDS Formats
-        /// </summary>
-        public enum DXGIFormat : uint
+        
+        public static TexLayer[] SetupImageArray(
+            DirectXTexUtility.DXGIFormat format,
+            DirectXTexUtility.CPFLAGS flags,
+            uint arraySize,
+            uint mipLevels,
+            uint width,
+            uint height,
+            uint pixelSize,
+            uint nImages)
         {
-            UNKNOWN = 0,
-            R32G32B32A32TYPELESS = 1,
-            R32G32B32A32FLOAT = 2,
-            R32G32B32A32UINT = 3,
-            R32G32B32A32SINT = 4,
-            R32G32B32TYPELESS = 5,
-            R32G32B32FLOAT = 6,
-            R32G32B32UINT = 7,
-            R32G32B32SINT = 8,
-            R16G16B16A16TYPELESS = 9,
-            R16G16B16A16FLOAT = 10,
-            R16G16B16A16UNORM = 11,
-            R16G16B16A16UINT = 12,
-            R16G16B16A16SNORM = 13,
-            R16G16B16A16SINT = 14,
-            R32G32TYPELESS = 15,
-            R32G32FLOAT = 16,
-            R32G32UINT = 17,
-            R32G32SINT = 18,
-            R32G8X24TYPELESS = 19,
-            D32FLOATS8X24UINT = 20,
-            R32FLOATX8X24TYPELESS = 21,
-            X32TYPELESSG8X24UINT = 22,
-            R10G10B10A2TYPELESS = 23,
-            R10G10B10A2UNORM = 24,
-            R10G10B10A2UINT = 25,
-            R11G11B10FLOAT = 26,
-            R8G8B8A8TYPELESS = 27,
-            R8G8B8A8UNORM = 28,
-            R8G8B8A8UNORMSRGB = 29,
-            R8G8B8A8UINT = 30,
-            R8G8B8A8SNORM = 31,
-            R8G8B8A8SINT = 32,
-            R16G16TYPELESS = 33,
-            R16G16FLOAT = 34,
-            R16G16UNORM = 35,
-            R16G16UINT = 36,
-            R16G16SNORM = 37,
-            R16G16SINT = 38,
-            R32TYPELESS = 39,
-            D32FLOAT = 40,
-            R32FLOAT = 41,
-            R32UINT = 42,
-            R32SINT = 43,
-            R24G8TYPELESS = 44,
-            D24UNORMS8UINT = 45,
-            R24UNORMX8TYPELESS = 46,
-            X24TYPELESSG8UINT = 47,
-            R8G8TYPELESS = 48,
-            R8G8UNORM = 49,
-            R8G8UINT = 50,
-            R8G8SNORM = 51,
-            R8G8SINT = 52,
-            R16TYPELESS = 53,
-            R16FLOAT = 54,
-            D16UNORM = 55,
-            R16UNORM = 56,
-            R16UINT = 57,
-            R16SNORM = 58,
-            R16SINT = 59,
-            R8TYPELESS = 60,
-            R8UNORM = 61,
-            R8UINT = 62,
-            R8SNORM = 63,
-            R8SINT = 64,
-            A8UNORM = 65,
-            R1UNORM = 66,
-            R9G9B9E5SHAREDEXP = 67,
-            R8G8B8G8UNORM = 68,
-            G8R8G8B8UNORM = 69,
-            BC1TYPELESS = 70,
-            BC1UNORM = 71,
-            BC1UNORMSRGB = 72,
-            BC2TYPELESS = 73,
-            BC2UNORM = 74,
-            BC2UNORMSRGB = 75,
-            BC3TYPELESS = 76,
-            BC3UNORM = 77,
-            BC3UNORMSRGB = 78,
-            BC4TYPELESS = 79,
-            BC4UNORM = 80,
-            BC4SNORM = 81,
-            BC5TYPELESS = 82,
-            BC5UNORM = 83,
-            BC5SNORM = 84,
-            B5G6R5UNORM = 85,
-            B5G5R5A1UNORM = 86,
-            B8G8R8A8UNORM = 87,
-            B8G8R8X8UNORM = 88,
-            R10G10B10XRBIASA2UNORM = 89,
-            B8G8R8A8TYPELESS = 90,
-            B8G8R8A8UNORMSRGB = 91,
-            B8G8R8X8TYPELESS = 92,
-            B8G8R8X8UNORMSRGB = 93,
-            BC6HTYPELESS = 94,
-            BC6HUF16 = 95,
-            BC6HSF16 = 96,
-            BC7TYPELESS = 97,
-            BC7UNORM = 98,
-            BC7UNORMSRGB = 99,
-            AYUV = 100,
-            Y410 = 101,
-            Y416 = 102,
-            NV12 = 103,
-            P010 = 104,
-            P016 = 105,
-            OPAQUE420 = 106,
-            YUY2 = 107,
-            Y210 = 108,
-            Y216 = 109,
-            NV11 = 110,
-            AI44 = 111,
-            IA44 = 112,
-            P8 = 113,
-            A8P8 = 114,
-            B4G4R4A4UNORM = 115,
-            FORCEUINT = 0xffffffff
-        }
-
-        /// <summary>
-        /// DDS Flags
-        /// </summary>
-        public enum DDSFlags
-        {
-            NONE = 0x0,
-            LEGACYDWORD = 0x1,
-            NOLEGACYEXPANSION = 0x2,
-            NOR10B10G10A2FIXUP = 0x4,
-            FORCERGB = 0x8,
-            NO16BPP = 0x10,
-            EXPANDLUMINANCE = 0x20,
-            BADDXTNTAILS = 0x40,
-            FORCEDX10EXT = 0x10000,
-            FORCEDX10EXTMISC2 = 0x20000,
-        }
-
-        /// <summary>
-        /// Texture Dimension
-        /// </summary>
-        public enum TexDimension : uint
-        {
-            TEXTURE1D = 2,
-            TEXTURE2D = 3,
-            TEXTURE3D = 4,
-        }
-
-        /// <summary>
-        /// Misc. Texture Flags
-        /// </summary>
-        public enum TexMiscFlags : uint
-        {
-            TEXTURECUBE = 0x4,
-        };
-
-        /// <summary>
-        /// Misc. Texture Flags
-        /// </summary>
-        public enum TexMiscFlags2 : uint
-        {
-            TEXMISC2ALPHAMODEMASK = 0x7,
-        };
-
-        /// <summary>
-        /// Texture Alpha Modes
-        /// </summary>
-        public enum TexAlphaMode
-        {
-            UNKNOWN = 0,
-            STRAIGHT = 1,
-            PREMULTIPLIED = 2,
-            OPAQUE = 3,
-            CUSTOM = 4,
-        };
-
-        /// <summary>
-        /// CP Flags
-        /// </summary>
-        public enum CPFLAGS
-        {
-            NONE = 0x0, // Normal operation
-            LEGACYDWORD = 0x1, // Assume pitch is DWORD aligned instead of BYTE aligned
-            PARAGRAPH = 0x2, // Assume pitch is 16-byte aligned instead of BYTE aligned
-            YMM = 0x4, // Assume pitch is 32-byte aligned instead of BYTE aligned
-            ZMM = 0x8, // Assume pitch is 64-byte aligned instead of BYTE aligned
-            PAGE4K = 0x200, // Assume pitch is 4096-byte aligned instead of BYTE aligned
-            BADDXTNTAILS = 0x1000, // BC formats with malformed mipchain blocks smaller than 4x4
-            BPP24 = 0x10000, // Override with a legacy 24 bits-per-pixel format size
-            BPP16 = 0x20000, // Override with a legacy 16 bits-per-pixel format size
-            BPP8 = 0x40000, // Override with a legacy 8 bits-per-pixel format size
-        };
-
-        #endregion
-
-        #region Structs/Classes
-
-        /// <summary>
-        /// Common Pixel Formats
-        /// </summary>
-        public class PixelFormats
-        {
-            /// <summary>
-            /// DDS Pixel Format Size
-            /// </summary>
-            public static readonly uint Size = (uint) Marshal.SizeOf<DDSHeader.DDSPixelFormat>();
-
-            #region PixelFormatsConstants
-
-            public const uint DDSFOURCC = 0x00000004; // DDPFFOURCC
-            public const uint DDSRGB = 0x00000040; // DDPFRGB
-            public const uint DDSRGBA = 0x00000041; // DDPFRGB | DDPFALPHAPIXELS
-            public const uint DDSLUMINANCE = 0x00020000; // DDPFLUMINANCE
-            public const uint DDSLUMINANCEA = 0x00020001; // DDPFLUMINANCE | DDPFALPHAPIXELS
-            public const uint DDSALPHAPIXELS = 0x00000001; // DDPFALPHAPIXELS
-            public const uint DDSALPHA = 0x00000002; // DDPFALPHA
-            public const uint DDSPAL8 = 0x00000020; // DDPFPALETTEINDEXED8
-            public const uint DDSPAL8A = 0x00000021; // DDPFPALETTEINDEXED8 | DDPFALPHAPIXELS
-            public const uint DDSBUMPDUDV = 0x00080000; // DDPFBUMPDUDV
-
-            #endregion
-
-            #region DDSPixelFormats
-
-            public static DDSHeader.DDSPixelFormat DXT1 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('D', 'X', 'T', '1'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat DXT2 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('D', 'X', 'T', '2'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat DXT3 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('D', 'X', 'T', '3'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat DXT4 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('D', 'X', 'T', '4'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat DXT5 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('D', 'X', 'T', '5'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat BC4UNORM =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('B', 'C', '4', 'U'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat BC4SNORM =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('B', 'C', '4', 'S'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat BC5UNORM =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('B', 'C', '5', 'U'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat BC5SNORM =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('B', 'C', '5', 'S'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat R8G8B8G8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('R', 'G', 'B', 'G'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat G8R8G8B8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('G', 'R', 'G', 'B'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat YUY2 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('Y', 'U', 'Y', '2'), 0, 0, 0, 0, 0);
-
-            public static DDSHeader.DDSPixelFormat A8R8G8B8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGBA, 0, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000);
-
-            public static DDSHeader.DDSPixelFormat X8R8G8B8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGB, 0, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000);
-
-            public static DDSHeader.DDSPixelFormat A8B8G8R8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGBA, 0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-
-            public static DDSHeader.DDSPixelFormat X8B8G8R8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGB, 0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000);
-
-            public static DDSHeader.DDSPixelFormat G16R16 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGB, 0, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000);
-
-            public static DDSHeader.DDSPixelFormat R5G6B5 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGB, 0, 16, 0x0000f800, 0x000007e0, 0x0000001f, 0x00000000);
-
-            public static DDSHeader.DDSPixelFormat A1R5G5B5 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGBA, 0, 16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000);
-
-            public static DDSHeader.DDSPixelFormat A4R4G4B4 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGBA, 0, 16, 0x00000f00, 0x000000f0, 0x0000000f, 0x0000f000);
-
-            public static DDSHeader.DDSPixelFormat R8G8B8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSRGB, 0, 24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000);
-
-            public static DDSHeader.DDSPixelFormat L8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSLUMINANCE, 0, 8, 0xff, 0x00, 0x00, 0x00);
-
-            public static DDSHeader.DDSPixelFormat L16 =
-                new DDSHeader.DDSPixelFormat(Size, DDSLUMINANCE, 0, 16, 0xffff, 0x0000, 0x0000, 0x0000);
-
-            public static DDSHeader.DDSPixelFormat A8L8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSLUMINANCEA, 0, 16, 0x00ff, 0x0000, 0x0000, 0xff00);
-
-            public static DDSHeader.DDSPixelFormat A8L8ALT =
-                new DDSHeader.DDSPixelFormat(Size, DDSLUMINANCEA, 0, 8, 0x00ff, 0x0000, 0x0000, 0xff00);
-
-            public static DDSHeader.DDSPixelFormat A8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSALPHA, 0, 8, 0x00, 0x00, 0x00, 0xff);
-
-            public static DDSHeader.DDSPixelFormat V8U8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSBUMPDUDV, 0, 16, 0x00ff, 0xff00, 0x0000, 0x0000);
-
-            public static DDSHeader.DDSPixelFormat Q8W8V8U8 =
-                new DDSHeader.DDSPixelFormat(Size, DDSBUMPDUDV, 0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
-
-            public static DDSHeader.DDSPixelFormat V16U16 =
-                new DDSHeader.DDSPixelFormat(Size, DDSBUMPDUDV, 0, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000);
-
-            public static DDSHeader.DDSPixelFormat DX10 =
-                new DDSHeader.DDSPixelFormat(Size, DDSFOURCC, MakePixelFormatFourCC('D', 'X', '1', '0'), 0, 0, 0, 0, 0);
-
-            #endregion
-        }
-
-        /// <summary>
-        /// DDS Header
-        /// </summary>
-        public struct DDSHeader
-        {
-            /// <summary>
-            /// DDS Header Flags
-            /// </summary>
-            public enum HeaderFlags : uint
+            TexLayer[] layers = new TexLayer[arraySize * mipLevels];
+            uint index = 0;
+            uint pixels = 0;
+            for (uint item = 0; item < arraySize; ++item)
             {
-                TEXTURE = 0x00001007, // DDSDCAPS | DDSDHEIGHT | DDSDWIDTH | DDSDPIXELFORMAT 
-                MIPMAP = 0x00020000, // DDSDMIPMAPCOUNT
-                VOLUME = 0x00800000, // DDSDDEPTH
-                PITCH = 0x00000008, // DDSDPITCH
-                LINEARSIZE = 0x00080000, // DDSDLINEARSIZE
-            }
+                uint w = width;
+                uint h = height;
 
-            /// <summary>
-            /// DDS Surface Flags
-            /// </summary>
-            public enum SurfaceFlags : uint
-            {
-                TEXTURE = 0x00001000, // DDSCAPSTEXTURE
-                MIPMAP = 0x00400008, // DDSCAPSCOMPLEX | DDSCAPSMIPMAP
-                CUBEMAP = 0x00000008, // DDSCAPSCOMPLEX
-            }
-
-            /// <summary>
-            /// DDS Magic/Four CC
-            /// </summary>
-            public const uint DDSMagic = 0x20534444;
-
-            /// <summary>
-            /// DDS Pixel Format
-            /// </summary>
-            public struct DDSPixelFormat
-            {
-                public uint Size;
-                public uint Flags;
-                public uint FourCC;
-                public uint RGBBitCount;
-                public uint RBitMask;
-                public uint GBitMask;
-                public uint BBitMask;
-                public uint ABitMask;
-
-                /// <summary>
-                /// Creates a new DDS Pixel Format
-                /// </summary>
-                public DDSPixelFormat(uint size, uint flags, uint fourCC, uint rgbBitCount, uint rBitMask,
-                    uint gBitMask, uint bBitMask, uint aBitMask)
+                for (uint level = 0; level < mipLevels; ++level)
                 {
-                    Size = size;
-                    Flags = flags;
-                    FourCC = fourCC;
-                    RGBBitCount = rgbBitCount;
-                    RBitMask = rBitMask;
-                    GBitMask = gBitMask;
-                    BBitMask = bBitMask;
-                    ABitMask = aBitMask;
+                    if (index >= nImages)
+                    {
+                        return layers;
+                    }
+
+                    DirectXTexUtility.ComputePitch(format, w, h, out long rowPitch, out long slicePitch, flags);
+
+                    //   size_t rowPitch, slicePitch;
+                    //   if (FAILED(ComputePitch(metadata.format, w, h, rowPitch, slicePitch, cpFlags)))
+                    //       return false;
+
+                    layers[index].Offset = pixels;
+                    //    images[index].width = w;
+                    //    images[index].height = h;
+                    //    images[index].format = metadata.format;
+                    //    images[index].rowPitch = rowPitch;
+                    //    images[index].slicePitch = slicePitch;
+                    //    images[index].pixels = pixels;
+                    ++index;
+//
+                    pixels += (uint) slicePitch;
+                    //  if (pixels > pEndBits)
+                    //  {
+                    //      return false;
+                    //  }
+
+                    if (h > 1)
+                        h >>= 1;
+
+                    if (w > 1)
+                        w >>= 1;
                 }
             }
 
-            public uint Size;
-            public HeaderFlags Flags;
-            public uint Height;
-            public uint Width;
-            public uint PitchOrLinearSize;
-            public uint Depth; // only if DDSHEADERFLAGSVOLUME is set in flags
-            public uint MipMapCount;
-
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 11)]
-            public uint[] Reserved1;
-
-            public DDSPixelFormat PixelFormat;
-            public uint Caps;
-            public uint Caps2;
-            public uint Caps3;
-            public uint Caps4;
-            public uint Reserved2;
+            return layers;
         }
 
-        /// <summary>
-        /// DDS DX10 Header
-        /// </summary>
-        public struct DX10Header
+        public static bool DetermineImageArray(
+            DirectXTexUtility.DXGIFormat format,
+            DirectXTexUtility.CPFLAGS flags,
+            uint arraySize,
+            uint mipLevels,
+            uint width,
+            uint height,
+            out uint nImages,
+            out uint pixelSize
+        )
         {
-            public DXGIFormat Format;
-            public TexDimension ResourceDimension;
-            public TexMiscFlags MiscFlag; // see D3D11RESOURCEMISCFLAG
-            public uint ArraySize;
-            public uint MiscFlags2; // see DDSMISCFLAGS2
-        }
+            ulong totalPixelSize = 0;
+            uint nimages = 0;
 
-        /// <summary>
-        /// Texture Metadata
-        /// </summary>
-        public struct TexMetadata
-        {
-            #region Properties
-
-            public long Width;
-            public long Height; // Should be 1 for 1D textures
-            public long Depth; // Should be 1 for 1D or 2D textures
-            public long ArraySize; // For cubemap, this is a multiple of 6
-            public long MipLevels;
-            public TexMiscFlags MiscFlags;
-            public TexMiscFlags2 MiscFlags2;
-            public DXGIFormat Format;
-            public TexDimension Dimension;
-
-            #endregion
-
-            /// <summary>
-            /// Creates a new Texture Metadata Structe
-            /// </summary>
-            public TexMetadata(long width, long height, long depth, long arraySize, long mipLevels, TexMiscFlags flags,
-                TexMiscFlags2 flags2, DXGIFormat format, TexDimension dimension)
+            for (uint item = 0; item < arraySize; ++item)
             {
-                Width = width;
-                Height = height;
-                Depth = depth;
-                ArraySize = arraySize;
-                MipLevels = mipLevels;
-                MiscFlags = flags;
-                MiscFlags2 = flags2;
-                Format = format;
-                Dimension = dimension;
-            }
+                uint w = width;
+                uint h = height;
 
-            /// <summary>
-            /// Checks Alpha Mode
-            /// </summary>
-            public bool IsPMAlpha()
-            {
-                return (TexAlphaMode) (MiscFlags2 & TexMiscFlags2.TEXMISC2ALPHAMODEMASK) == TexAlphaMode.PREMULTIPLIED;
-            }
-
-            public bool IsCubeMap()
-            {
-                return (MiscFlags & TexMiscFlags.TEXTURECUBE) == TexMiscFlags.TEXTURECUBE;
-            }
-        }
-
-        #endregion
-
-        #region HelperMethods
-
-        /// <summary>
-        /// Clamps Value to a range.
-        /// </summary>
-        /// <param name="value">Value to Clamp</param>
-        /// <param name="max">Max value</param>
-        /// <param name="min">Min value</param>
-        /// <returns>Clamped Value</returns>
-        private static T Clamp<T>(T value, T max, T min) where T : IComparable<T>
-        {
-            return value.CompareTo(min) < 0 ? min : value.CompareTo(max) > 0 ? max : value;
-        }
-
-        /// <summary>
-        /// Converts a Struct to a Byte array
-        /// </summary>
-        private static byte[] StructToBytes<T>(T value)
-        {
-            // Size of Struct
-            int length = Marshal.SizeOf<T>();
-            // Destination
-            byte[] destination = new byte[length];
-            // Get Pointer
-            IntPtr pointer = Marshal.AllocHGlobal(length);
-            // Convert it
-            Marshal.StructureToPtr(value, pointer, false);
-            Marshal.Copy(pointer, destination, 0, length);
-            Marshal.FreeHGlobal(pointer);
-            // Done
-            return destination;
-        }
-
-        public static T FromBytes<T>(byte[] arr) where T : struct
-        {
-            T str = default(T);
-            GCHandle h = default(GCHandle);
-            try
-            {
-                h = GCHandle.Alloc(arr, GCHandleType.Pinned);
-                str = Marshal.PtrToStructure<T>(h.AddrOfPinnedObject());
-            }
-            finally
-            {
-                if (h.IsAllocated)
+                for (uint level = 0; level < mipLevels; ++level)
                 {
-                    h.Free();
+                    DirectXTexUtility.ComputePitch(format, w, h, out long rowPitch, out long slicePitch, flags);
+
+                    // if (FAILED(ComputePitch(metadata.format, w, h, rowPitch, slicePitch, cpFlags)))
+                    // {
+                    //     nImages = pixelSize = 0;
+                    //     return false;
+                    // }
+
+                    totalPixelSize += (uint) slicePitch;
+                    ++nimages;
+
+                    if (h > 1)
+                        h >>= 1;
+
+                    if (w > 1)
+                        w >>= 1;
                 }
             }
 
-            return str;
+            nImages = nimages;
+            pixelSize = (uint) totalPixelSize;
+            return true;
         }
 
-        public static byte[] GetBytes<T>(T str)
+        public static uint CalculateMipLevels(uint width, uint height, uint mipLevels)
         {
-            int size = Marshal.SizeOf(str);
-            byte[] arr = new byte[size];
-            GCHandle h = default(GCHandle);
-            try
+            if (mipLevels > 1)
             {
-                h = GCHandle.Alloc(arr, GCHandleType.Pinned);
-                Marshal.StructureToPtr<T>(str, h.AddrOfPinnedObject(), false);
-            }
-            finally
-            {
-                if (h.IsAllocated)
+                uint maxMips = CountMips(width, height);
+                if (mipLevels > maxMips)
                 {
-                    h.Free();
+                    throw new Exception("mipLevels > maxMips");
                 }
             }
+            else if (mipLevels == 0)
+            {
+                mipLevels = CountMips(width, height);
+            }
+            else
+            {
+                mipLevels = 1;
+            }
 
-            return arr;
+            return mipLevels;
         }
-
-
-        /// <summary>
-        /// Generates a FourCC Integer from Pixel Format Characters
-        /// </summary>
-        public static uint MakePixelFormatFourCC(char char1, char char2, char char3, char char4)
+        
+        public static uint CountMips(uint width, uint height)
         {
-            return Convert.ToByte(char1) | (uint) Convert.ToByte(char2) << 8 | (uint) Convert.ToByte(char3) << 16 |
-                   (uint) Convert.ToByte(char4) << 24;
+            uint mipLevels = 1;
+            while (height > 1 || width > 1)
+            {
+                if (height > 1)
+                    height >>= 1;
+
+                if (width > 1)
+                    width >>= 1;
+
+                ++mipLevels;
+            }
+
+            return mipLevels;
         }
 
         /// <summary>
@@ -745,8 +310,10 @@ namespace Arrowgene.Ddon.Client
                     }
                     else
                     {
-                        long nbw = Clamp(1, (width + 3) / 4, Int64.MaxValue);
-                        long nbh = Clamp(1, (height + 3) / 4, Int64.MaxValue);
+                        long nbw = Math.Max(1, (width + 3) / 4);
+                        long nbh = Math.Max(1, (height + 3) / 4);
+                        // long nbw = Clamp(1, (width + 3) / 4, Int64.MaxValue);
+                        //  long nbh = Clamp(1, (height + 3) / 4, Int64.MaxValue);
                         rowPitch = nbw * 8;
                         slicePitch = rowPitch * nbh;
                     }
@@ -779,8 +346,8 @@ namespace Arrowgene.Ddon.Client
                     {
                         long nbw = Math.Max(1, (width + 3) / 4);
                         long nbh = Math.Max(1, (height + 3) / 4);
-                      //  long nbw = Clamp(1, (width + 3) / 4, Int64.MaxValue);
-                      //  long nbh = Clamp(1, (height + 3) / 4, Int64.MaxValue);
+                        //  long nbw = Clamp(1, (width + 3) / 4, Int64.MaxValue);
+                        //  long nbh = Clamp(1, (height + 3) / 4, Int64.MaxValue);
                         rowPitch = nbw * 16;
                         slicePitch = rowPitch * nbh;
                     }
@@ -902,10 +469,6 @@ namespace Arrowgene.Ddon.Client
                     return false;
             }
         }
-
-        #endregion
-
-        #region MainMethods
 
         /// <summary>
         /// Encodes the DDS Header and if DX10, the DX10 Header
@@ -1223,7 +786,5 @@ namespace Arrowgene.Ddon.Client
                     dx10Header.MiscFlags2 = (uint) metaData.MiscFlags2;
             }
         }
-
-        #endregion
     }
 }

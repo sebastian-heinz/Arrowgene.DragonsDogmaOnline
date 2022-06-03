@@ -3,7 +3,9 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using Arrowgene.Ddon.Client;
-using Arrowgene.Ddon.Client.Resource;
+using Arrowgene.Ddon.Client.Resource.Texture;
+using Arrowgene.Ddon.Client.Resource.Texture.Dds;
+using Arrowgene.Ddon.Client.Resource.Texture.Tex;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli.Command
@@ -33,15 +35,17 @@ namespace Arrowgene.Ddon.Cli.Command
                     TexToDds(fileInfo);
                     return CommandResultType.Exit;
                 }
+
                 if (".dds".Equals(fileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
                 {
                     DdsToTex(fileInfo);
                     return CommandResultType.Exit;
                 }
+
                 Logger.Error("No available action for provided file");
                 return CommandResultType.Exit;
             }
-            
+
             DirectoryInfo romDirectory = new DirectoryInfo(parameter.Arguments[0]);
             if (!romDirectory.Exists)
             {
@@ -69,7 +73,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 Extract(romDirectory, outDirectory);
                 return CommandResultType.Exit;
             }
-            
+
             return CommandResultType.Exit;
         }
 
@@ -169,17 +173,19 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public void TexToDds(FileInfo fileInfo)
         {
-            Texture texture = new Texture();
-            texture.Open(fileInfo.FullName);
-            texture.SaveDds($"{fileInfo.FullName}.dds");
+            TexTexture texTexture = new TexTexture();
+            texTexture.Open(fileInfo.FullName);
+            DdsTexture ddsTexture = TexConvert.ToDdsTexture(texTexture);
+            ddsTexture.Save($"{fileInfo.FullName}.dds");
         }
 
         public void DdsToTex(FileInfo fileInfo)
         {
-            Texture texture = new Texture();
-            texture.Open(fileInfo.FullName);
-            texture.SaveTex($"{fileInfo.FullName}.tex");
-                    
+            DdsTexture ddsTexture = new DdsTexture();
+            ddsTexture.Open(fileInfo.FullName);
+            TexTexture texTexture = TexConvert.ToTexTexture(ddsTexture);
+            texTexture.Save($"{fileInfo.FullName}.tex");
+
             //   Texture tex = ArcArchive.GetResource<Texture>(
             //       romDirectory,
             //       "game_common.arc",
