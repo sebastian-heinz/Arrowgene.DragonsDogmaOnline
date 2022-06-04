@@ -2,7 +2,7 @@
 
 namespace Arrowgene.Ddon.Client.Resource.Texture.Dds
 {
-    public static class DirectXTexUtility
+    public static class DxTexUtil
     {
         public static LegacyDds[] LegacyDdsMap = new LegacyDds[]
         {

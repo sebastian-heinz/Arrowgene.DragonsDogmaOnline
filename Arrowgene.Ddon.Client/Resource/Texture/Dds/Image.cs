@@ -9,4 +9,5 @@ public struct Image
     public ulong SlicePitch;
     public ulong PixelsOffset;
     public ulong PixelsSize;
+    public byte[] Data;
 }

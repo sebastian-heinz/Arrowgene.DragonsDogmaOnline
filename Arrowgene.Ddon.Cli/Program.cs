@@ -121,7 +121,9 @@ namespace Arrowgene.Ddon.Cli
             {
                 _lastCommand.Shutdown();
             }
-
+            
+            // Wait for logs to be flushed to console
+            Thread.Sleep(1000);
             LogProvider.Stop();
         }
 

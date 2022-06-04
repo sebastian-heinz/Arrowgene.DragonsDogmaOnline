@@ -27,6 +27,44 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
+            if (parameter.ArgumentMap.ContainsKey("extract"))
+            {
+                string extract = parameter.ArgumentMap["extract"];
+                extract = extract.TrimEnd(Path.DirectorySeparatorChar);
+                extract = extract.TrimEnd(Path.AltDirectorySeparatorChar);
+                DirectoryInfo outDirectory = new DirectoryInfo(extract);
+                if (!outDirectory.Exists)
+                {
+                    Logger.Error($"extract directory does not exists ({outDirectory.FullName})");
+                    return CommandResultType.Exit;
+                }
+
+                string source = parameter.Arguments[0];
+                if (File.Exists(source))
+                {
+                    FileInfo arcFile = new FileInfo(source);
+                    if (arcFile.Extension != ".arc")
+                    {
+                        Logger.Error($"Source file is not a .arc file. ({source})");
+                        return CommandResultType.Exit;
+                    }
+
+                    Extract(arcFile, outDirectory);
+                    return CommandResultType.Exit;
+                }
+
+                if (Directory.Exists(source))
+                {
+                    DirectoryInfo directoryInfo = new DirectoryInfo(source);
+                    Extract(directoryInfo, outDirectory);
+                    return CommandResultType.Exit;
+                }
+
+                Logger.Error($"Source file or folder does not exist. ({outDirectory.FullName})");
+                return CommandResultType.Exit;
+            }
+
+
             FileInfo fileInfo = new FileInfo(parameter.Arguments[0]);
             if (fileInfo.Exists)
             {
@@ -38,7 +76,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
                 if (".dds".Equals(fileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    DdsToTex(fileInfo);
+                    DdsToTex(fileInfo, parameter);
                     return CommandResultType.Exit;
                 }
 
@@ -46,6 +84,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
+            // assuming first parameter is rom dir for these actions
             DirectoryInfo romDirectory = new DirectoryInfo(parameter.Arguments[0]);
             if (!romDirectory.Exists)
             {
@@ -64,13 +103,6 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 DirectoryInfo outDirectory = new DirectoryInfo(parameter.ArgumentMap["export"]);
                 ExportResourceRepository(romDirectory, outDirectory);
-                return CommandResultType.Exit;
-            }
-
-            if (parameter.ArgumentMap.ContainsKey("extract"))
-            {
-                DirectoryInfo outDirectory = new DirectoryInfo(parameter.ArgumentMap["extract"]);
-                Extract(romDirectory, outDirectory);
                 return CommandResultType.Exit;
             }
 
@@ -126,7 +158,7 @@ namespace Arrowgene.Ddon.Cli.Command
             Logger.Info($"Done: {outPath}");
         }
 
-        public void Extract(DirectoryInfo romDirectory, DirectoryInfo outDir)
+        public void Extract(DirectoryInfo source, DirectoryInfo outDir)
         {
             if (outDir == null)
             {
@@ -137,37 +169,48 @@ namespace Arrowgene.Ddon.Cli.Command
             if (!outDir.Exists)
             {
                 outDir.Create();
-                Logger.Info($"Created Dir: {outDir.FullName}");
+                Logger.Info($"Created Output Directory: {outDir.FullName}");
             }
 
-            string[] files = Directory.GetFiles(romDirectory.FullName, "*.arc", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(source.FullName, "*.arc", SearchOption.AllDirectories);
+
+            if (files.Length <= 0)
+            {
+                Logger.Error($"No *.arc files found in source directory. ({source.FullName})");
+                return;
+            }
 
             for (int i = 0; i < files.Length; i++)
             {
-                // TODO utput folder of .arc folder name
                 string filePath = files[i];
-                string relativePath = filePath.Substring(romDirectory.FullName.Length);
-                ArcArchive archive = new ArcArchive();
-                archive.Open(filePath);
-                foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
+                FileInfo fi = new FileInfo(filePath);
+                Extract(fi, outDir);
+                Logger.Info($"Processing {i}/{files.Length} {filePath}");
+            }
+        }
+
+        public void Extract(FileInfo fileInfo, DirectoryInfo outDir)
+        {
+            ArcArchive archive = new ArcArchive();
+            archive.Open(fileInfo.FullName);
+            foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
+            {
+                ArcArchive.ArcFile af = archive.GetFile(fi);
+                if (af == null)
                 {
-                    ArcArchive.ArcFile af = archive.GetFile(fi);
-                    if (af == null)
-                    {
-                        continue;
-                    }
-
-                    string outDirectory = Path.Combine(outDir.FullName, fi.Directory);
-                    if (!Directory.Exists(outDirectory))
-                    {
-                        Directory.CreateDirectory(outDirectory);
-                    }
-
-                    string outPath = Path.Combine(outDirectory, fi.Name);
-                    File.WriteAllBytes(outPath, af.Data);
+                    continue;
                 }
 
-                Logger.Info($"Processing {i}/{files.Length} {filePath}");
+                string outDirectory = Path.Combine(outDir.FullName, fileInfo.Name, fi.Directory);
+                if (!Directory.Exists(outDirectory))
+                {
+                    Directory.CreateDirectory(outDirectory);
+                }
+
+                string outPath = Path.Combine(outDirectory, fi.Name);
+                File.WriteAllBytes(outPath, af.Data);
+
+                Logger.Info($"Written: {outPath}");
             }
         }
 
@@ -176,41 +219,29 @@ namespace Arrowgene.Ddon.Cli.Command
             TexTexture texTexture = new TexTexture();
             texTexture.Open(fileInfo.FullName);
             DdsTexture ddsTexture = TexConvert.ToDdsTexture(texTexture);
-            ddsTexture.Save($"{fileInfo.FullName}.dds");
+            string outPath = $"{fileInfo.FullName}.dds";
+            ddsTexture.Save(outPath);
+            Logger.Info($"Written: {outPath}");
         }
 
-        public void DdsToTex(FileInfo fileInfo)
+        public void DdsToTex(FileInfo fileInfo, CommandParameter parameter)
         {
+            TexHeaderVersion headerVersion = TexHeaderVersion.Ddon;
+            if (parameter.Switches.Contains("--ddda"))
+            {
+                headerVersion = TexHeaderVersion.Ddda;
+            }
+            else if (parameter.Switches.Contains("--ddon"))
+            {
+                headerVersion = TexHeaderVersion.Ddon;
+            }
+
             DdsTexture ddsTexture = new DdsTexture();
             ddsTexture.Open(fileInfo.FullName);
-            TexTexture texTexture = TexConvert.ToTexTexture(ddsTexture);
-            texTexture.Save($"{fileInfo.FullName}.tex");
-
-            //   Texture tex = ArcArchive.GetResource<Texture>(
-            //       romDirectory,
-            //       "game_common.arc",
-            //       "scr/sky/DDBaseCube4_CM",
-            //       "tex"
-            //   );
-            //   tex.SaveDds("E:/Games/ARCtool/DDBaseCube4_CM.tex.dds");
-            //   tex.Save("E:/Games/ARCtool/DDBaseCube4_CM.tex");
-
-
-            //     string p3 = "E:/Games/ARCtool/DefaultCube_CM.tex";
-            //     Texture t3 = new Texture();
-            //     t3.Open(p3);
-            //     t3.SaveDds(p3 + ".dds");
-
-
-            //    string p0 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/sysfont_AM_NOMIP.tex";
-            //    Texture t0 = new Texture();
-            //    t0.Open(p0);
-            //    t0.SaveDds("E:/Games/ARCtool/sysfont_AM_NOMIP.tex" + ".dds");
-
-
-            //   string p1 = "E:/Games/Dragon's Dogma Online/nativePC/system/texture/detail_sysfont_AM_NOMIP.tex";
-            //   Texture t1 = new Texture();
-            //   t1.Open(p1);
+            TexTexture texTexture = TexConvert.ToTexTexture(ddsTexture, headerVersion);
+            string outPath = $"{fileInfo.FullName}.tex";
+            texTexture.Save(outPath);
+            Logger.Info($"Written: {outPath}");
         }
 
         public void Shutdown()

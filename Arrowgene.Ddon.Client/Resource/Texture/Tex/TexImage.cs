@@ -1,6 +1,6 @@
 ﻿namespace Arrowgene.Ddon.Client.Resource.Texture.Tex;
 
-public struct TexLayer
+public struct TexImage
 {
     public uint Offset;
     public uint Size;

@@ -6,7 +6,7 @@ public struct TexHeader
 {
     public const int Size = 12;
 
-    public uint Version;
+    public TexHeaderVersion Version;
     public uint Height;
     public uint Width;
     public uint Shift;
@@ -43,7 +43,7 @@ public struct TexHeader
         uint depthBits13__16_28 = (header12 >> 16) & ((1 << 13) - 1);
         uint unkBits3__29_31 = (header12 >> 29) & ((1 << 3) - 1);
 
-        Version = versionBits12__0_11;
+        Version = (TexHeaderVersion)versionBits12__0_11;
         Alpha = alphaBits12__12_23;
         Shift = shiftBits4__24_27;
         UnknownA = unkBits4__28_31;

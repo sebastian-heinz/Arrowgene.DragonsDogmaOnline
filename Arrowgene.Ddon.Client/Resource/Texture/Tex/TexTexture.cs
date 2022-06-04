@@ -10,12 +10,10 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(TexTexture));
 
         public const string TexHeaderMagic = "TEX\0";
-        public const ushort DdonTexHeaderVersion = 0x9D;
-        public const ushort DddaTexHeaderVersion = 0x99;
 
         public TexHeader Header;
         public TexSphericalHarmonics SphericalHarmonics;
-        public TexLayer[] Layers;
+        public TexImage[] Images;
 
         protected override void ReadResource(IBuffer buffer)
         {
@@ -36,20 +34,20 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
                 SphericalHarmonics.Decode(sphericalHarmonics);
             }
 
-            Layers = new TexLayer[Header.LayerCount];
+            Images = new TexImage[Header.LayerCount];
             for (int layerIndex = 0; layerIndex < Header.LayerCount; layerIndex++)
             {
-                Layers[layerIndex].Offset = ReadUInt32(buffer);
+                Images[layerIndex].Offset = ReadUInt32(buffer);
             }
 
             for (int layerIndex = 0; layerIndex < Header.LayerCount - 1; layerIndex++)
             {
-                Layers[layerIndex].Size = Layers[layerIndex + 1].Offset - Layers[layerIndex].Offset;
-                Layers[layerIndex].Data = ReadBytes(buffer, (int) Layers[layerIndex].Size);
+                Images[layerIndex].Size = Images[layerIndex + 1].Offset - Images[layerIndex].Offset;
+                Images[layerIndex].Data = ReadBytes(buffer, (int) Images[layerIndex].Size);
             }
 
-            Layers[Header.LayerCount - 1].Size = (uint) buffer.Size - Layers[Header.LayerCount - 1].Offset;
-            Layers[Header.LayerCount - 1].Data = ReadBytes(buffer, (int) Layers[Header.LayerCount - 1].Size);
+            Images[Header.LayerCount - 1].Size = (uint) buffer.Size - Images[Header.LayerCount - 1].Offset;
+            Images[Header.LayerCount - 1].Data = ReadBytes(buffer, (int) Images[Header.LayerCount - 1].Size);
 
             // https://docs.microsoft.com/en-us/windows/win32/direct3ddds/dds-file-layout-for-cubic-environment-maps
             // TODO differentiate between cube map, and texture layers, cube map has faces.
@@ -62,11 +60,11 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
 
         public void Save(string path)
         {
-            if (Header.Version == DddaTexHeaderVersion)
+            if (Header.Version == TexHeaderVersion.Ddda)
             {
                 Logger.Info("Saving TEX for DDDA");
             }
-            else if (Header.Version == DdonTexHeaderVersion)
+            else if (Header.Version == TexHeaderVersion.Ddon)
             {
                 Logger.Info("Saving TEX for DDON");
             }
@@ -105,15 +103,15 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
                 sb.WriteBytes(SphericalHarmonics.Encode());
             }
 
-            if (Layers == null)
+            if (Images == null)
             {
                 Logger.Error("No Layers");
                 return;
             }
 
-            if (Header.LayerCount != Layers.Length)
+            if (Header.LayerCount != Images.Length)
             {
-                Logger.Error($"Header.LayerCount{Header.LayerCount} != Layers.Length{Layers.Length}");
+                Logger.Error($"Header.LayerCount{Header.LayerCount} != Layers.Length{Images.Length}");
                 return;
             }
 
@@ -124,8 +122,8 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
                  layerIndex < Header.LayerCount;
                  layerIndex++)
             {
-                Layers[layerIndex].Offset = (uint) sb.Position;
-                sb.WriteBytes(Layers[layerIndex].Data);
+                Images[layerIndex].Offset = (uint) sb.Position;
+                sb.WriteBytes(Images[layerIndex].Data);
             }
 
             sb.Position = offsetBytePosition;
@@ -133,7 +131,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
                  layerIndex < Header.LayerCount;
                  layerIndex++)
             {
-                sb.WriteUInt32(Layers[layerIndex].Offset);
+                sb.WriteUInt32(Images[layerIndex].Offset);
             }
 
             File.WriteAllBytes(path, sb.GetAllBytes());

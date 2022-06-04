@@ -5,6 +5,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Dds;
 public struct DdsHeader
 {
     public const string Magic = "DDS ";
+    public const int StructSize = 124;
     
     public uint Size;
     public DdsHeaderFlags Flags;
