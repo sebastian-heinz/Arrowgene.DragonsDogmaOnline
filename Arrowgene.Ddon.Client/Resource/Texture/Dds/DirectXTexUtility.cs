@@ -1,122 +1,567 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
 
 namespace Arrowgene.Ddon.Client.Resource.Texture.Dds
 {
     public static class DirectXTexUtility
     {
-        
-        public static TexLayer[] SetupImageArray(
-            DirectXTexUtility.DXGIFormat format,
-            DirectXTexUtility.CPFLAGS flags,
-            uint arraySize,
-            uint mipLevels,
-            uint width,
-            uint height,
-            uint pixelSize,
-            uint nImages)
+        public static LegacyDds[] LegacyDdsMap = new LegacyDds[]
         {
-            TexLayer[] layers = new TexLayer[arraySize * mipLevels];
-            uint index = 0;
-            uint pixels = 0;
-            for (uint item = 0; item < arraySize; ++item)
+            new LegacyDds()
             {
-                uint w = width;
-                uint h = height;
+                Format = DxGiFormat.DXGI_FORMAT_BC1_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_DXT1
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC2_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_DXT3
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC3_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_DXT5
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC2_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_PMALPHA,
+                PixelFormat = DDSPixelFormat.DDSPF_DXT2
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC3_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_PMALPHA,
+                PixelFormat = DDSPixelFormat.DDSPF_DXT4
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC4_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_BC4_UNORM
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC4_SNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_BC4_SNORM
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC5_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_BC5_UNORM
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC5_SNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_BC5_SNORM
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC4_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC,
+                    DDSPixelFormat.MakeFourCc('A', 'T', 'I', '1'), 0, 0, 0, 0, 0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC5_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC,
+                    DDSPixelFormat.MakeFourCc('A', 'T', 'I', '2'), 0, 0, 0, 0, 0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC6H_UF16, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC,
+                    DDSPixelFormat.MakeFourCc('B', 'C', '6', 'H'), 0, 0, 0, 0, 0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC7_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC,
+                    DDSPixelFormat.MakeFourCc('B', 'C', '7', 'L'), 0, 0, 0, 0, 0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_BC7_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC,
+                    DDSPixelFormat.MakeFourCc('B', 'C', '7', '\0'), 0, 0, 0, 0, 0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8_B8G8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_R8G8_B8G8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_G8R8_G8B8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_G8R8_G8B8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B8G8R8A8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_A8R8G8B8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B8G8R8X8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_X8R8G8B8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_A8B8G8R8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NOALPHA,
+                PixelFormat = DDSPixelFormat.DDSPF_X8B8G8R8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16G16_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_G16R16
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R10G10B10A2_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_SWIZZLE,
+                PixelFormat = DDSPixelFormat.DDSPF_A2R10G10B10
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R10G10B10A2_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_A2B10G10R10
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM,
+                ConvFlags = ConversionFlags.CONV_FLAGS_EXPAND | ConversionFlags.CONV_FLAGS_NOALPHA |
+                            ConversionFlags.CONV_FLAGS_888,
+                PixelFormat = DDSPixelFormat.DDSPF_R8G8B8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B5G6R5_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_565,
+                PixelFormat = DDSPixelFormat.DDSPF_R5G6B5
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B5G5R5A1_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_5551,
+                PixelFormat = DDSPixelFormat.DDSPF_A1R5G5B5
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B5G5R5A1_UNORM,
+                ConvFlags = ConversionFlags.CONV_FLAGS_5551 | ConversionFlags.CONV_FLAGS_NOALPHA,
+                PixelFormat = DDSPixelFormat.DDSPF_X1R5G5B5
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM,
+                ConvFlags = ConversionFlags.CONV_FLAGS_EXPAND | ConversionFlags.CONV_FLAGS_8332,
+                PixelFormat = DDSPixelFormat.DDSPF_A8R3G3B2
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B5G6R5_UNORM,
+                ConvFlags = ConversionFlags.CONV_FLAGS_EXPAND | ConversionFlags.CONV_FLAGS_332,
+                PixelFormat = DDSPixelFormat.DDSPF_R3G3B2
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_L8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_L16
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_A8L8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_A8L8_ALT
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_L8_NVTT1
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_L16_NVTT1
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_A8L8_NVTT1
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_A8_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_A8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16G16B16A16_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC, 36, 0, 0, 0,
+                    0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16G16B16A16_SNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC, 110, 0, 0, 0,
+                    0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16_FLOAT, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC, 111, 0, 0, 0,
+                    0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16G16_FLOAT, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC, 112, 0, 0, 0,
+                    0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16G16B16A16_FLOAT, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC, 113, 0, 0, 0,
+                    0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R32_FLOAT, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC, 114, 0, 0, 0,
+                    0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R32G32_FLOAT, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC, 115, 0, 0, 0,
+                    0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R32G32B32A32_FLOAT, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_FOURCC, 116, 0, 0, 0,
+                    0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R32_FLOAT, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_RGB, 0, 32,
+                    0xffffffff,
+                    0,
+                    0, 0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM,
+                ConvFlags = ConversionFlags.CONV_FLAGS_EXPAND | ConversionFlags.CONV_FLAGS_PAL8 |
+                            ConversionFlags.CONV_FLAGS_A8P8,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDSPAL8A, 0, 16, 0, 0, 0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM,
+                ConvFlags = ConversionFlags.CONV_FLAGS_EXPAND | ConversionFlags.CONV_FLAGS_PAL8,
+                PixelFormat = new DDSPixelFormat(DDSPixelFormat.StructSize, DdsPixelFormatFlag.DDS_PAL8, 0, 8, 0, 0, 0,
+                    0)
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B4G4R4A4_UNORM, ConvFlags = ConversionFlags.CONV_FLAGS_4444,
+                PixelFormat = DDSPixelFormat.DDSPF_A4R4G4B4
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B4G4R4A4_UNORM,
+                ConvFlags = ConversionFlags.CONV_FLAGS_NOALPHA | ConversionFlags.CONV_FLAGS_4444,
+                PixelFormat = DDSPixelFormat.DDSPF_X4R4G4B4
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_B4G4R4A4_UNORM,
+                ConvFlags = ConversionFlags.CONV_FLAGS_EXPAND | ConversionFlags.CONV_FLAGS_44,
+                PixelFormat = DDSPixelFormat.DDSPF_A4L4
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_YUY2, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_YUY2
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_YUY2, ConvFlags = ConversionFlags.CONV_FLAGS_SWIZZLE,
+                PixelFormat = DDSPixelFormat.DDSPF_UYVY
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8_SNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_V8U8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R8G8B8A8_SNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_Q8W8V8U8
+            },
+            new LegacyDds()
+            {
+                Format = DxGiFormat.DXGI_FORMAT_R16G16_SNORM, ConvFlags = ConversionFlags.CONV_FLAGS_NONE,
+                PixelFormat = DDSPixelFormat.DDSPF_V16U16
+            },
+        };
 
-                for (uint level = 0; level < mipLevels; ++level)
+
+        public static bool SetupImageArray(
+            out Image[] images,
+            ulong pixelSize,
+            TexMetadata metadata,
+            CpFlags cpFlags,
+            ulong numberImages)
+        {
+            images = null;
+            ulong index = 0;
+            ulong pixels = 0;
+
+            switch (metadata.Dimension)
+            {
+                case TexDimension.Texture1D:
+                case TexDimension.Texture2D:
                 {
-                    if (index >= nImages)
+                    if (metadata.ArraySize == 0 || metadata.MipLevels == 0)
                     {
-                        return layers;
+                        return false;
                     }
 
-                    DirectXTexUtility.ComputePitch(format, w, h, out long rowPitch, out long slicePitch, flags);
+                    images = new Image[metadata.ArraySize * metadata.MipLevels];
 
-                    //   size_t rowPitch, slicePitch;
-                    //   if (FAILED(ComputePitch(metadata.format, w, h, rowPitch, slicePitch, cpFlags)))
-                    //       return false;
+                    for (ulong item = 0; item < metadata.ArraySize; ++item)
+                    {
+                        ulong w = metadata.Width;
+                        ulong h = metadata.Height;
 
-                    layers[index].Offset = pixels;
-                    //    images[index].width = w;
-                    //    images[index].height = h;
-                    //    images[index].format = metadata.format;
-                    //    images[index].rowPitch = rowPitch;
-                    //    images[index].slicePitch = slicePitch;
-                    //    images[index].pixels = pixels;
-                    ++index;
-//
-                    pixels += (uint) slicePitch;
-                    //  if (pixels > pEndBits)
-                    //  {
-                    //      return false;
-                    //  }
+                        for (ulong level = 0; level < metadata.MipLevels; ++level)
+                        {
+                            if (index >= numberImages)
+                            {
+                                return false;
+                            }
 
-                    if (h > 1)
-                        h >>= 1;
+                            if (!ComputePitch(metadata.Format, w, h, out ulong rowPitch, out ulong slicePitch, cpFlags))
+                            {
+                                return false;
+                            }
 
-                    if (w > 1)
-                        w >>= 1;
+                            images[index].Width = w;
+                            images[index].Height = h;
+                            images[index].Format = metadata.Format;
+                            images[index].RowPitch = rowPitch;
+                            images[index].SlicePitch = slicePitch;
+                            images[index].PixelsOffset = pixels;
+                            images[index].PixelsSize = slicePitch;
+                            ++index;
+
+                            pixels += slicePitch;
+                            if (pixels > pixelSize)
+                            {
+                                return false;
+                            }
+
+                            if (h > 1)
+                            {
+                                h >>= 1;
+                            }
+
+                            if (w > 1)
+                            {
+                                w >>= 1;
+                            }
+                        }
+                    }
+
+                    return true;
+                }
+                case TexDimension.Texture3D:
+                {
+                    if (metadata.MipLevels == 0 || metadata.Depth == 0)
+                    {
+                        return false;
+                    }
+
+                    ulong w = metadata.Width;
+                    ulong h = metadata.Height;
+                    ulong d = metadata.Depth;
+
+                    for (ulong level = 0; level < metadata.MipLevels; ++level)
+                    {
+                        if (!ComputePitch(metadata.Format, w, h, out ulong rowPitch, out ulong slicePitch, cpFlags))
+                        {
+                            return false;
+                        }
+
+                        for (ulong slice = 0; slice < d; ++slice)
+                        {
+                            if (index >= numberImages)
+                            {
+                                return false;
+                            }
+
+                            // We use the same memory organization that Direct3D 11 needs for D3D11_SUBRESOURCE_DATA
+                            // with all slices of a given miplevel being continuous in memory
+                            images[index].Width = w;
+                            images[index].Height = h;
+                            images[index].Format = metadata.Format;
+                            images[index].RowPitch = rowPitch;
+                            images[index].SlicePitch = slicePitch;
+                            images[index].PixelsOffset = pixels;
+                            images[index].PixelsSize = slicePitch;
+                            ++index;
+
+                            pixels += slicePitch;
+                            if (pixels > pixelSize)
+                            {
+                                return false;
+                            }
+                        }
+
+                        if (h > 1)
+                        {
+                            h >>= 1;
+                        }
+
+                        if (w > 1)
+                        {
+                            w >>= 1;
+                        }
+
+                        if (d > 1)
+                        {
+                            d >>= 1;
+                        }
+                    }
+
+                    return true;
                 }
             }
 
-            return layers;
+            return false;
         }
 
         public static bool DetermineImageArray(
-            DirectXTexUtility.DXGIFormat format,
-            DirectXTexUtility.CPFLAGS flags,
-            uint arraySize,
-            uint mipLevels,
-            uint width,
-            uint height,
-            out uint nImages,
-            out uint pixelSize
+            TexMetadata metadata,
+            CpFlags cpFlags,
+            out ulong numberImages,
+            out ulong pixelSize
         )
         {
             ulong totalPixelSize = 0;
-            uint nimages = 0;
+            ulong nImages = 0;
 
-            for (uint item = 0; item < arraySize; ++item)
+
+            switch (metadata.Dimension)
             {
-                uint w = width;
-                uint h = height;
-
-                for (uint level = 0; level < mipLevels; ++level)
+                case TexDimension.Texture1D:
+                case TexDimension.Texture2D:
                 {
-                    DirectXTexUtility.ComputePitch(format, w, h, out long rowPitch, out long slicePitch, flags);
+                    for (uint item = 0; item < metadata.ArraySize; ++item)
+                    {
+                        ulong w = metadata.Width;
+                        ulong h = metadata.Height;
 
-                    // if (FAILED(ComputePitch(metadata.format, w, h, rowPitch, slicePitch, cpFlags)))
-                    // {
-                    //     nImages = pixelSize = 0;
-                    //     return false;
-                    // }
+                        for (ulong level = 0; level < metadata.MipLevels; ++level)
+                        {
+                            if (!ComputePitch(metadata.Format, w, h, out ulong rowPitch, out ulong slicePitch, cpFlags))
+                            {
+                                numberImages = 0;
+                                pixelSize = 0;
+                                return false;
+                            }
 
-                    totalPixelSize += (uint) slicePitch;
-                    ++nimages;
 
-                    if (h > 1)
-                        h >>= 1;
+                            totalPixelSize += slicePitch;
+                            ++nImages;
 
-                    if (w > 1)
-                        w >>= 1;
+                            if (h > 1)
+                            {
+                                h >>= 1;
+                            }
+
+                            if (w > 1)
+                            {
+                                w >>= 1;
+                            }
+                        }
+                    }
+
+                    break;
+                }
+                case TexDimension.Texture3D:
+                {
+                    ulong w = metadata.Width;
+                    ulong h = metadata.Height;
+                    ulong d = metadata.Depth;
+
+                    for (ulong level = 0; level < metadata.MipLevels; ++level)
+                    {
+                        if (!ComputePitch(metadata.Format, w, h, out ulong rowPitch, out ulong slicePitch, cpFlags))
+                        {
+                            numberImages = 0;
+                            pixelSize = 0;
+                            return false;
+                        }
+
+                        for (ulong slice = 0; slice < d; ++slice)
+                        {
+                            totalPixelSize += slicePitch;
+                            ++nImages;
+                        }
+
+                        if (h > 1)
+                        {
+                            h >>= 1;
+                        }
+
+                        if (w > 1)
+                        {
+                            w >>= 1;
+                        }
+
+                        if (d > 1)
+                        {
+                            d >>= 1;
+                        }
+                    }
+
+                    break;
                 }
             }
 
-            nImages = nimages;
-            pixelSize = (uint) totalPixelSize;
+            numberImages = nImages;
+            pixelSize = totalPixelSize;
             return true;
         }
 
-        public static uint CalculateMipLevels(uint width, uint height, uint mipLevels)
+        public static bool CalculateMipLevels(uint width, uint height, ref uint mipLevels)
         {
             if (mipLevels > 1)
             {
                 uint maxMips = CountMips(width, height);
                 if (mipLevels > maxMips)
                 {
-                    throw new Exception("mipLevels > maxMips");
+                    return false;
                 }
             }
             else if (mipLevels == 0)
@@ -128,9 +573,9 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Dds
                 mipLevels = 1;
             }
 
-            return mipLevels;
+            return true;
         }
-        
+
         public static uint CountMips(uint width, uint height)
         {
             uint mipLevels = 1;
@@ -148,642 +593,511 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Dds
             return mipLevels;
         }
 
-        /// <summary>
-        /// Gets the Bits Per Pixel for the given format
-        /// </summary>
-        private static long BitsPerPixel(DXGIFormat format)
+        public static bool ComputePitch(DxGiFormat fmt, ulong width, ulong height,
+            out ulong rowPitch, out ulong slicePitch, CpFlags flags)
         {
-            switch (format)
-            {
-                case DXGIFormat.R32G32B32A32TYPELESS:
-                case DXGIFormat.R32G32B32A32FLOAT:
-                case DXGIFormat.R32G32B32A32UINT:
-                case DXGIFormat.R32G32B32A32SINT:
-                    return 128;
-                case DXGIFormat.R32G32B32TYPELESS:
-                case DXGIFormat.R32G32B32FLOAT:
-                case DXGIFormat.R32G32B32UINT:
-                case DXGIFormat.R32G32B32SINT:
-                    return 96;
-                case DXGIFormat.R16G16B16A16TYPELESS:
-                case DXGIFormat.R16G16B16A16FLOAT:
-                case DXGIFormat.R16G16B16A16UNORM:
-                case DXGIFormat.R16G16B16A16UINT:
-                case DXGIFormat.R16G16B16A16SNORM:
-                case DXGIFormat.R16G16B16A16SINT:
-                case DXGIFormat.R32G32TYPELESS:
-                case DXGIFormat.R32G32FLOAT:
-                case DXGIFormat.R32G32UINT:
-                case DXGIFormat.R32G32SINT:
-                case DXGIFormat.R32G8X24TYPELESS:
-                case DXGIFormat.D32FLOATS8X24UINT:
-                case DXGIFormat.R32FLOATX8X24TYPELESS:
-                case DXGIFormat.X32TYPELESSG8X24UINT:
-                case DXGIFormat.Y416:
-                case DXGIFormat.Y210:
-                case DXGIFormat.Y216:
-                    return 64;
-                case DXGIFormat.R10G10B10A2TYPELESS:
-                case DXGIFormat.R10G10B10A2UNORM:
-                case DXGIFormat.R10G10B10A2UINT:
-                case DXGIFormat.R11G11B10FLOAT:
-                case DXGIFormat.R8G8B8A8TYPELESS:
-                case DXGIFormat.R8G8B8A8UNORM:
-                case DXGIFormat.R8G8B8A8UNORMSRGB:
-                case DXGIFormat.R8G8B8A8UINT:
-                case DXGIFormat.R8G8B8A8SNORM:
-                case DXGIFormat.R8G8B8A8SINT:
-                case DXGIFormat.R16G16TYPELESS:
-                case DXGIFormat.R16G16FLOAT:
-                case DXGIFormat.R16G16UNORM:
-                case DXGIFormat.R16G16UINT:
-                case DXGIFormat.R16G16SNORM:
-                case DXGIFormat.R16G16SINT:
-                case DXGIFormat.R32TYPELESS:
-                case DXGIFormat.D32FLOAT:
-                case DXGIFormat.R32FLOAT:
-                case DXGIFormat.R32UINT:
-                case DXGIFormat.R32SINT:
-                case DXGIFormat.R24G8TYPELESS:
-                case DXGIFormat.D24UNORMS8UINT:
-                case DXGIFormat.R24UNORMX8TYPELESS:
-                case DXGIFormat.X24TYPELESSG8UINT:
-                case DXGIFormat.R9G9B9E5SHAREDEXP:
-                case DXGIFormat.R8G8B8G8UNORM:
-                case DXGIFormat.G8R8G8B8UNORM:
-                case DXGIFormat.B8G8R8A8UNORM:
-                case DXGIFormat.B8G8R8X8UNORM:
-                case DXGIFormat.R10G10B10XRBIASA2UNORM:
-                case DXGIFormat.B8G8R8A8TYPELESS:
-                case DXGIFormat.B8G8R8A8UNORMSRGB:
-                case DXGIFormat.B8G8R8X8TYPELESS:
-                case DXGIFormat.B8G8R8X8UNORMSRGB:
-                case DXGIFormat.AYUV:
-                case DXGIFormat.Y410:
-                case DXGIFormat.YUY2:
-                    return 32;
-                case DXGIFormat.P010:
-                case DXGIFormat.P016:
-                    return 24;
-                case DXGIFormat.R8G8TYPELESS:
-                case DXGIFormat.R8G8UNORM:
-                case DXGIFormat.R8G8UINT:
-                case DXGIFormat.R8G8SNORM:
-                case DXGIFormat.R8G8SINT:
-                case DXGIFormat.R16TYPELESS:
-                case DXGIFormat.R16FLOAT:
-                case DXGIFormat.D16UNORM:
-                case DXGIFormat.R16UNORM:
-                case DXGIFormat.R16UINT:
-                case DXGIFormat.R16SNORM:
-                case DXGIFormat.R16SINT:
-                case DXGIFormat.B5G6R5UNORM:
-                case DXGIFormat.B5G5R5A1UNORM:
-                case DXGIFormat.A8P8:
-                case DXGIFormat.B4G4R4A4UNORM:
-                    return 16;
-                case DXGIFormat.NV12:
-                case DXGIFormat.OPAQUE420:
-                case DXGIFormat.NV11:
-                    return 12;
-                case DXGIFormat.R8TYPELESS:
-                case DXGIFormat.R8UNORM:
-                case DXGIFormat.R8UINT:
-                case DXGIFormat.R8SNORM:
-                case DXGIFormat.R8SINT:
-                case DXGIFormat.A8UNORM:
-                case DXGIFormat.AI44:
-                case DXGIFormat.IA44:
-                case DXGIFormat.P8:
-                    return 8;
-                case DXGIFormat.R1UNORM:
-                    return 1;
-                case DXGIFormat.BC1TYPELESS:
-                case DXGIFormat.BC1UNORM:
-                case DXGIFormat.BC1UNORMSRGB:
-                case DXGIFormat.BC4TYPELESS:
-                case DXGIFormat.BC4UNORM:
-                case DXGIFormat.BC4SNORM:
-                    return 4;
-                case DXGIFormat.BC2TYPELESS:
-                case DXGIFormat.BC2UNORM:
-                case DXGIFormat.BC2UNORMSRGB:
-                case DXGIFormat.BC3TYPELESS:
-                case DXGIFormat.BC3UNORM:
-                case DXGIFormat.BC3UNORMSRGB:
-                case DXGIFormat.BC5TYPELESS:
-                case DXGIFormat.BC5UNORM:
-                case DXGIFormat.BC5SNORM:
-                case DXGIFormat.BC6HTYPELESS:
-                case DXGIFormat.BC6HUF16:
-                case DXGIFormat.BC6HSF16:
-                case DXGIFormat.BC7TYPELESS:
-                case DXGIFormat.BC7UNORM:
-                case DXGIFormat.BC7UNORMSRGB:
-                    return 8;
-                default:
-                    return 0;
-            }
-        }
+            ulong pitch = 0;
+            ulong slice = 0;
 
-        /// <summary>
-        /// Computes Row and Slice Pitch
-        /// </summary>
-        public static void ComputePitch(DXGIFormat format, long width, long height, out long rowPitch,
-            out long slicePitch, CPFLAGS flags)
-        {
-            switch (format)
+            switch (fmt)
             {
-                case DXGIFormat.BC1TYPELESS:
-                case DXGIFormat.BC1UNORM:
-                case DXGIFormat.BC1UNORMSRGB:
-                case DXGIFormat.BC4TYPELESS:
-                case DXGIFormat.BC4UNORM:
-                case DXGIFormat.BC4SNORM:
+                case DxGiFormat.DXGI_FORMAT_BC1_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC1_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC1_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_BC4_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC4_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC4_SNORM:
+                    //assert(IsCompressed(fmt));
                 {
-                    if (flags.HasFlag(CPFLAGS.BADDXTNTAILS))
+                    if (flags.HasFlag(CpFlags.BadDxtnTails))
                     {
-                        long nbw = width >> 2;
-                        long nbh = height >> 2;
-                        rowPitch = Clamp(1, nbw * 8, Int64.MaxValue);
-                        slicePitch = Clamp(1, rowPitch * nbh, Int64.MaxValue);
+                        ulong nbw = width >> 2;
+                        ulong nbh = height >> 2;
+                        pitch = Math.Max(1u, nbw * 8u);
+                        slice = Math.Max(1u, pitch * nbh);
                     }
                     else
                     {
-                        long nbw = Math.Max(1, (width + 3) / 4);
-                        long nbh = Math.Max(1, (height + 3) / 4);
-                        // long nbw = Clamp(1, (width + 3) / 4, Int64.MaxValue);
-                        //  long nbh = Clamp(1, (height + 3) / 4, Int64.MaxValue);
-                        rowPitch = nbw * 8;
-                        slicePitch = rowPitch * nbh;
+                        ulong nbw = Math.Max(1u, (width + 3u) / 4u);
+                        ulong nbh = Math.Max(1u, (height + 3u) / 4u);
+                        pitch = nbw * 8u;
+                        slice = pitch * nbh;
                     }
-                }
+
                     break;
-                case DXGIFormat.BC2TYPELESS:
-                case DXGIFormat.BC2UNORM:
-                case DXGIFormat.BC2UNORMSRGB:
-                case DXGIFormat.BC3TYPELESS:
-                case DXGIFormat.BC3UNORM:
-                case DXGIFormat.BC3UNORMSRGB:
-                case DXGIFormat.BC5TYPELESS:
-                case DXGIFormat.BC5UNORM:
-                case DXGIFormat.BC5SNORM:
-                case DXGIFormat.BC6HTYPELESS:
-                case DXGIFormat.BC6HUF16:
-                case DXGIFormat.BC6HSF16:
-                case DXGIFormat.BC7TYPELESS:
-                case DXGIFormat.BC7UNORM:
-                case DXGIFormat.BC7UNORMSRGB:
+                }
+                case DxGiFormat.DXGI_FORMAT_BC2_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC2_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC2_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_BC3_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC3_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC3_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_BC5_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC5_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC5_SNORM:
+                case DxGiFormat.DXGI_FORMAT_BC6H_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC6H_UF16:
+                case DxGiFormat.DXGI_FORMAT_BC6H_SF16:
+                case DxGiFormat.DXGI_FORMAT_BC7_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC7_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC7_UNORM_SRGB:
+                    //assert(IsCompressed(fmt));
                 {
-                    if (flags.HasFlag(CPFLAGS.BADDXTNTAILS))
+                    if (flags.HasFlag(CpFlags.BadDxtnTails))
                     {
-                        long nbw = width >> 2;
-                        long nbh = height >> 2;
-                        rowPitch = Clamp(1, nbw * 16, Int64.MaxValue);
-                        slicePitch = Clamp(1, rowPitch * nbh, Int64.MaxValue);
+                        ulong nbw = width >> 2;
+                        ulong nbh = height >> 2;
+                        pitch = Math.Max(1u, nbw * 16u);
+                        slice = Math.Max(1u, pitch * nbh);
                     }
                     else
                     {
-                        long nbw = Math.Max(1, (width + 3) / 4);
-                        long nbh = Math.Max(1, (height + 3) / 4);
-                        //  long nbw = Clamp(1, (width + 3) / 4, Int64.MaxValue);
-                        //  long nbh = Clamp(1, (height + 3) / 4, Int64.MaxValue);
-                        rowPitch = nbw * 16;
-                        slicePitch = rowPitch * nbh;
+                        ulong nbw = Math.Max(1u, (width + 3u) / 4u);
+                        ulong nbh = Math.Max(1u, (height + 3u) / 4u);
+                        pitch = nbw * 16u;
+                        slice = pitch * nbh;
                     }
+
+                    break;
                 }
+                case DxGiFormat.DXGI_FORMAT_R8G8_B8G8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_G8R8_G8B8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_YUY2:
+                {
+                    // assert(IsPacked(fmt));
+                    pitch = ((width + 1u) >> 1) * 4u;
+                    slice = pitch * height;
                     break;
-                case DXGIFormat.R8G8B8G8UNORM:
-                case DXGIFormat.G8R8G8B8UNORM:
-                case DXGIFormat.YUY2:
-                    rowPitch = ((width + 1) >> 1) * 4;
-                    slicePitch = rowPitch * height;
+                }
+                case DxGiFormat.DXGI_FORMAT_Y210:
+                case DxGiFormat.DXGI_FORMAT_Y216:
+                {
+                    // assert(IsPacked(fmt));
+                    pitch = ((width + 1u) >> 1) * 8u;
+                    slice = pitch * height;
                     break;
-                case DXGIFormat.Y210:
-                case DXGIFormat.Y216:
-                    rowPitch = ((width + 1) >> 1) * 8;
-                    slicePitch = rowPitch * height;
-                    break;
+                }
 
-                case DXGIFormat.NV12:
-                case DXGIFormat.OPAQUE420:
-                    rowPitch = ((width + 1) >> 1) * 2;
-                    slicePitch = rowPitch * (height + ((height + 1) >> 1));
+                case DxGiFormat.DXGI_FORMAT_NV12:
+                case DxGiFormat.DXGI_FORMAT_420_OPAQUE:
+                {
+                    //  assert(IsPlanar(fmt));
+                    pitch = ((width + 1u) >> 1) * 2u;
+                    slice = pitch * (height + ((height + 1u) >> 1));
                     break;
-
-                case DXGIFormat.P010:
-                case DXGIFormat.P016:
-                    rowPitch = ((width + 1) >> 1) * 4;
-                    slicePitch = rowPitch * (height + ((height + 1) >> 1));
+                }
+                case DxGiFormat.DXGI_FORMAT_P010:
+                case DxGiFormat.DXGI_FORMAT_P016:
+                case DxGiFormat.XBOX_DXGI_FORMAT_D16_UNORM_S8_UINT:
+                case DxGiFormat.XBOX_DXGI_FORMAT_R16_UNORM_X8_TYPELESS:
+                case DxGiFormat.XBOX_DXGI_FORMAT_X16_TYPELESS_G8_UINT:
+                {
+                    //assert(IsPlanar(fmt));
+                    pitch = ((width + 1u) >> 1) * 4u;
+                    slice = pitch * (height + ((height + 1u) >> 1));
                     break;
-                case DXGIFormat.NV11:
-                    rowPitch = ((width + 3) >> 2) * 4;
-                    slicePitch = rowPitch * height * 2;
+                }
+                case DxGiFormat.DXGI_FORMAT_NV11:
+                {
+                    //   assert(IsPlanar(fmt));
+                    pitch = ((width + 3u) >> 2) * 4u;
+                    slice = pitch * height * 2u;
                     break;
+                }
+                case DxGiFormat.WIN10_DXGI_FORMAT_P208:
+                {
+                    //    assert(IsPlanar(fmt));
+                    pitch = ((width + 1u) >> 1) * 2u;
+                    slice = pitch * height * 2u;
+                    break;
+                }
+                case DxGiFormat.WIN10_DXGI_FORMAT_V208:
+                {
+                    //    assert(IsPlanar(fmt));
+                    pitch = width;
+                    slice = pitch * (height + (((height + 1u) >> 1) * 2u));
+                    break;
+                }
+                case DxGiFormat.WIN10_DXGI_FORMAT_V408:
+                {
+                    //  assert(IsPlanar(fmt));
+                    pitch = width;
+                    slice = pitch * (height + (height >> 1) * 4u);
+                    break;
+                }
                 default:
                 {
-                    long bpp;
+                    //    assert(!IsCompressed(fmt) && !IsPacked(fmt) && !IsPlanar(fmt));
+                    ulong bpp;
 
-                    if (flags.HasFlag(CPFLAGS.BPP24))
+                    if (flags.HasFlag(CpFlags._24BPP))
                         bpp = 24;
-                    else if (flags.HasFlag(CPFLAGS.BPP16))
+                    else if (flags.HasFlag(CpFlags._16BPP))
                         bpp = 16;
-                    else if (flags.HasFlag(CPFLAGS.BPP8))
+                    else if (flags.HasFlag(CpFlags._8BPP))
                         bpp = 8;
                     else
-                        bpp = BitsPerPixel(format);
+                        bpp = BitsPerPixel(fmt);
 
-                    if (flags.HasFlag(CPFLAGS.LEGACYDWORD | CPFLAGS.PARAGRAPH | CPFLAGS.YMM | CPFLAGS.ZMM |
-                                      CPFLAGS.PAGE4K))
+                    if (bpp == 0)
                     {
-                        if (flags.HasFlag(CPFLAGS.PAGE4K))
+                        rowPitch = 0;
+                        slicePitch = 0;
+                        return false;
+                    }
+
+                    if (flags.HasFlag(CpFlags.LegacyDword
+                                      | CpFlags.Paragraph
+                                      | CpFlags.Ymm
+                                      | CpFlags.Zmm
+                                      | CpFlags.Page4K)
+                       )
+                    {
+                        if (flags.HasFlag(CpFlags.Page4K))
                         {
-                            rowPitch = ((width * bpp + 32767) / 32768) * 4096;
-                            slicePitch = rowPitch * height;
+                            pitch = ((width * bpp + 32767u) / 32768u) * 4096u;
+                            slice = pitch * height;
                         }
-                        else if (flags.HasFlag(CPFLAGS.ZMM))
+                        else if (flags.HasFlag(CpFlags.Zmm))
                         {
-                            rowPitch = ((width * bpp + 511) / 512) * 64;
-                            slicePitch = rowPitch * height;
+                            pitch = ((width * bpp + 511u) / 512u) * 64u;
+                            slice = pitch * height;
                         }
-                        else if (flags.HasFlag(CPFLAGS.YMM))
+                        else if (flags.HasFlag(CpFlags.Ymm))
                         {
-                            rowPitch = ((width * bpp + 255) / 256) * 32;
-                            slicePitch = rowPitch * height;
+                            pitch = ((width * bpp + 255u) / 256u) * 32u;
+                            slice = pitch * height;
                         }
-                        else if (flags.HasFlag(CPFLAGS.PARAGRAPH))
+                        else if (flags.HasFlag(CpFlags.Paragraph))
                         {
-                            rowPitch = ((width * bpp + 127) / 128) * 16;
-                            slicePitch = rowPitch * height;
+                            pitch = ((width * bpp + 127u) / 128u) * 16u;
+                            slice = pitch * height;
                         }
                         else // DWORD alignment
                         {
                             // Special computation for some incorrectly created DDS files based on
                             // legacy DirectDraw assumptions about pitch alignment
-                            rowPitch = ((width * bpp + 31) / 32) * 4;
-                            slicePitch = rowPitch * height;
+                            pitch = ((width * bpp + 31u) / 32u) * sizeof(uint);
+                            slice = pitch * height;
                         }
                     }
                     else
                     {
                         // Default byte alignment
-                        rowPitch = (width * bpp + 7) / 8;
-                        slicePitch = rowPitch * height;
+                        pitch = (width * bpp + 7u) / 8u;
+                        slice = pitch * height;
+                    }
+
+                    break;
+                }
+            }
+
+            rowPitch = pitch;
+            slicePitch = slice;
+
+            return true;
+        }
+
+        public static uint BitsPerPixel(DxGiFormat fmt)
+        {
+            switch (fmt)
+            {
+                case DxGiFormat.DXGI_FORMAT_R32G32B32A32_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R32G32B32A32_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_R32G32B32A32_UINT:
+                case DxGiFormat.DXGI_FORMAT_R32G32B32A32_SINT:
+                    return 128;
+
+                case DxGiFormat.DXGI_FORMAT_R32G32B32_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R32G32B32_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_R32G32B32_UINT:
+                case DxGiFormat.DXGI_FORMAT_R32G32B32_SINT:
+                    return 96;
+
+                case DxGiFormat.DXGI_FORMAT_R16G16B16A16_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R16G16B16A16_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_R16G16B16A16_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R16G16B16A16_UINT:
+                case DxGiFormat.DXGI_FORMAT_R16G16B16A16_SNORM:
+                case DxGiFormat.DXGI_FORMAT_R16G16B16A16_SINT:
+                case DxGiFormat.DXGI_FORMAT_R32G32_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R32G32_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_R32G32_UINT:
+                case DxGiFormat.DXGI_FORMAT_R32G32_SINT:
+                case DxGiFormat.DXGI_FORMAT_R32G8X24_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
+                case DxGiFormat.DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_X32_TYPELESS_G8X24_UINT:
+                case DxGiFormat.DXGI_FORMAT_Y416:
+                case DxGiFormat.DXGI_FORMAT_Y210:
+                case DxGiFormat.DXGI_FORMAT_Y216:
+                    return 64;
+
+                case DxGiFormat.DXGI_FORMAT_R10G10B10A2_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R10G10B10A2_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R10G10B10A2_UINT:
+                case DxGiFormat.DXGI_FORMAT_R11G11B10_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_R8G8B8A8_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_R8G8B8A8_UINT:
+                case DxGiFormat.DXGI_FORMAT_R8G8B8A8_SNORM:
+                case DxGiFormat.DXGI_FORMAT_R8G8B8A8_SINT:
+                case DxGiFormat.DXGI_FORMAT_R16G16_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R16G16_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_R16G16_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R16G16_UINT:
+                case DxGiFormat.DXGI_FORMAT_R16G16_SNORM:
+                case DxGiFormat.DXGI_FORMAT_R16G16_SINT:
+                case DxGiFormat.DXGI_FORMAT_R32_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_D32_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_R32_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_R32_UINT:
+                case DxGiFormat.DXGI_FORMAT_R32_SINT:
+                case DxGiFormat.DXGI_FORMAT_R24G8_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_D24_UNORM_S8_UINT:
+                case DxGiFormat.DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_X24_TYPELESS_G8_UINT:
+                case DxGiFormat.DXGI_FORMAT_R9G9B9E5_SHAREDEXP:
+                case DxGiFormat.DXGI_FORMAT_R8G8_B8G8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_G8R8_G8B8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_B8G8R8A8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_B8G8R8X8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM:
+                case DxGiFormat.DXGI_FORMAT_B8G8R8A8_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_B8G8R8X8_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_AYUV:
+                case DxGiFormat.DXGI_FORMAT_Y410:
+                case DxGiFormat.DXGI_FORMAT_YUY2:
+                case DxGiFormat.XBOX_DXGI_FORMAT_R10G10B10_7E3_A2_FLOAT:
+                case DxGiFormat.XBOX_DXGI_FORMAT_R10G10B10_6E4_A2_FLOAT:
+                case DxGiFormat.XBOX_DXGI_FORMAT_R10G10B10_SNORM_A2_UNORM:
+                    return 32;
+
+                case DxGiFormat.DXGI_FORMAT_P010:
+                case DxGiFormat.DXGI_FORMAT_P016:
+                case DxGiFormat.XBOX_DXGI_FORMAT_D16_UNORM_S8_UINT:
+                case DxGiFormat.XBOX_DXGI_FORMAT_R16_UNORM_X8_TYPELESS:
+                case DxGiFormat.XBOX_DXGI_FORMAT_X16_TYPELESS_G8_UINT:
+                case DxGiFormat.WIN10_DXGI_FORMAT_V408:
+                    return 24;
+
+                case DxGiFormat.DXGI_FORMAT_R8G8_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R8G8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R8G8_UINT:
+                case DxGiFormat.DXGI_FORMAT_R8G8_SNORM:
+                case DxGiFormat.DXGI_FORMAT_R8G8_SINT:
+                case DxGiFormat.DXGI_FORMAT_R16_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R16_FLOAT:
+                case DxGiFormat.DXGI_FORMAT_D16_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R16_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R16_UINT:
+                case DxGiFormat.DXGI_FORMAT_R16_SNORM:
+                case DxGiFormat.DXGI_FORMAT_R16_SINT:
+                case DxGiFormat.DXGI_FORMAT_B5G6R5_UNORM:
+                case DxGiFormat.DXGI_FORMAT_B5G5R5A1_UNORM:
+                case DxGiFormat.DXGI_FORMAT_A8P8:
+                case DxGiFormat.DXGI_FORMAT_B4G4R4A4_UNORM:
+                case DxGiFormat.WIN10_DXGI_FORMAT_P208:
+                case DxGiFormat.WIN10_DXGI_FORMAT_V208:
+                    return 16;
+
+                case DxGiFormat.DXGI_FORMAT_NV12:
+                case DxGiFormat.DXGI_FORMAT_420_OPAQUE:
+                case DxGiFormat.DXGI_FORMAT_NV11:
+                    return 12;
+
+                case DxGiFormat.DXGI_FORMAT_R8_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_R8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_R8_UINT:
+                case DxGiFormat.DXGI_FORMAT_R8_SNORM:
+                case DxGiFormat.DXGI_FORMAT_R8_SINT:
+                case DxGiFormat.DXGI_FORMAT_A8_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC2_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC2_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC2_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_BC3_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC3_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC3_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_BC5_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC5_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC5_SNORM:
+                case DxGiFormat.DXGI_FORMAT_BC6H_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC6H_UF16:
+                case DxGiFormat.DXGI_FORMAT_BC6H_SF16:
+                case DxGiFormat.DXGI_FORMAT_BC7_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC7_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC7_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_AI44:
+                case DxGiFormat.DXGI_FORMAT_IA44:
+                case DxGiFormat.DXGI_FORMAT_P8:
+                case DxGiFormat.XBOX_DXGI_FORMAT_R4G4_UNORM:
+                    return 8;
+
+                case DxGiFormat.DXGI_FORMAT_R1_UNORM:
+                    return 1;
+
+                case DxGiFormat.DXGI_FORMAT_BC1_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC1_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC1_UNORM_SRGB:
+                case DxGiFormat.DXGI_FORMAT_BC4_TYPELESS:
+                case DxGiFormat.DXGI_FORMAT_BC4_UNORM:
+                case DxGiFormat.DXGI_FORMAT_BC4_SNORM:
+                    return 4;
+
+                default:
+                    return 0;
+            }
+        }
+
+        public static DxGiFormat GetDxGiFormat(DdsHeader hdr, DDSPixelFormat ddpf, DdsFlags flags,
+            out ConversionFlags convFlags)
+        {
+            DdsPixelFormatFlag ddpfFlags = ddpf.Flags;
+            if (hdr.Reserved1[9] == DDSPixelFormat.MakeFourCc('N', 'V', 'T', 'T'))
+            {
+                // Clear out non-standard nVidia DDS flags
+                ddpfFlags &= ~(DdsPixelFormatFlag) 0xC0000000 /* DDPF_SRGB | DDPF_NORMAL */;
+            }
+
+            uint index = 0;
+            for (index = 0; index < LegacyDdsMap.Length; ++index)
+            {
+                LegacyDds entry = LegacyDdsMap[index];
+
+
+                if (ddpfFlags.HasFlag(DdsPixelFormatFlag.DDS_FOURCC) &&
+                    entry.PixelFormat.Flags.HasFlag(DdsPixelFormatFlag.DDS_FOURCC))
+                {
+                    // In case of FourCC codes, ignore any other bits in ddpf.flags
+                    if (ddpf.FourCc == entry.PixelFormat.FourCc)
+                        break;
+                }
+                else if (ddpfFlags == entry.PixelFormat.Flags)
+                {
+                    if (entry.PixelFormat.Flags.HasFlag(DdsPixelFormatFlag.DDS_PAL8))
+                    {
+                        if (ddpf.RgbBitCount == entry.PixelFormat.RgbBitCount)
+                            break;
+                    }
+                    else if (entry.PixelFormat.Flags.HasFlag(DdsPixelFormatFlag.DDS_ALPHA))
+                    {
+                        if (ddpf.RgbBitCount == entry.PixelFormat.RgbBitCount
+                            && ddpf.ABitMask == entry.PixelFormat.ABitMask)
+                            break;
+                    }
+                    else if (entry.PixelFormat.Flags.HasFlag(DdsPixelFormatFlag.DDS_LUMINANCE))
+                    {
+                        if (entry.PixelFormat.Flags.HasFlag(DdsPixelFormatFlag.DDS_ALPHAPIXELS))
+                        {
+                            // LUMINANCEA
+                            if (ddpf.RgbBitCount == entry.PixelFormat.RgbBitCount
+                                && ddpf.RBitMask == entry.PixelFormat.RBitMask
+                                && ddpf.ABitMask == entry.PixelFormat.ABitMask)
+                                break;
+                        }
+                        else
+                        {
+                            // LUMINANCE
+                            if (ddpf.RgbBitCount == entry.PixelFormat.RgbBitCount
+                                && ddpf.RBitMask == entry.PixelFormat.RBitMask)
+                                break;
+                        }
+                    }
+                    else if (entry.PixelFormat.Flags.HasFlag(DdsPixelFormatFlag.DDS_BUMPDUDV))
+                    {
+                        if (ddpf.RgbBitCount == entry.PixelFormat.RgbBitCount
+                            && ddpf.RBitMask == entry.PixelFormat.RBitMask
+                            && ddpf.GBitMask == entry.PixelFormat.GBitMask
+                            && ddpf.BBitMask == entry.PixelFormat.BBitMask
+                            && ddpf.ABitMask == entry.PixelFormat.ABitMask)
+                            break;
+                    }
+                    else if (ddpf.RgbBitCount == entry.PixelFormat.RgbBitCount)
+                    {
+                        if (entry.PixelFormat.Flags.HasFlag(DdsPixelFormatFlag.DDS_ALPHAPIXELS))
+                        {
+                            // RGBA
+                            if (ddpf.RBitMask == entry.PixelFormat.RBitMask
+                                && ddpf.GBitMask == entry.PixelFormat.GBitMask
+                                && ddpf.BBitMask == entry.PixelFormat.BBitMask
+                                && ddpf.ABitMask == entry.PixelFormat.ABitMask)
+                                break;
+                        }
+                        else
+                        {
+                            // RGB
+                            if (ddpf.RBitMask == entry.PixelFormat.RBitMask
+                                && ddpf.GBitMask == entry.PixelFormat.GBitMask
+                                && ddpf.BBitMask == entry.PixelFormat.BBitMask)
+                                break;
+                        }
                     }
                 }
-                    break;
             }
-        }
 
-        /// <summary>
-        /// Checks is the given format compressed
-        /// </summary>
-        public static bool IsCompressed(DXGIFormat format)
-        {
-            switch (format)
+            if (index >= LegacyDdsMap.Length)
             {
-                case DXGIFormat.BC1TYPELESS:
-                case DXGIFormat.BC1UNORM:
-                case DXGIFormat.BC1UNORMSRGB:
-                case DXGIFormat.BC2TYPELESS:
-                case DXGIFormat.BC2UNORM:
-                case DXGIFormat.BC2UNORMSRGB:
-                case DXGIFormat.BC3TYPELESS:
-                case DXGIFormat.BC3UNORM:
-                case DXGIFormat.BC3UNORMSRGB:
-                case DXGIFormat.BC4TYPELESS:
-                case DXGIFormat.BC4UNORM:
-                case DXGIFormat.BC4SNORM:
-                case DXGIFormat.BC5TYPELESS:
-                case DXGIFormat.BC5UNORM:
-                case DXGIFormat.BC5SNORM:
-                case DXGIFormat.BC6HTYPELESS:
-                case DXGIFormat.BC6HUF16:
-                case DXGIFormat.BC6HSF16:
-                case DXGIFormat.BC7TYPELESS:
-                case DXGIFormat.BC7UNORM:
-                case DXGIFormat.BC7UNORMSRGB:
-                    return true;
+                convFlags = 0;
+                return DxGiFormat.DXGI_FORMAT_UNKNOWN;
+            }
+
+
+            ConversionFlags cflags = LegacyDdsMap[index].ConvFlags;
+            DxGiFormat format = LegacyDdsMap[index].Format;
+
+            if (cflags.HasFlag(ConversionFlags.CONV_FLAGS_EXPAND) && flags.HasFlag(DdsFlags.NoLegacyExpansion))
+            {
+                convFlags = 0;
+                return DxGiFormat.DXGI_FORMAT_UNKNOWN;
+            }
+
+
+            if (format == DxGiFormat.DXGI_FORMAT_R10G10B10A2_UNORM && flags.HasFlag(DdsFlags.NoR10B10G10A2Fixup))
+            {
+                cflags ^= ConversionFlags.CONV_FLAGS_SWIZZLE;
+            }
+
+            if (hdr.Reserved1[9] == DDSPixelFormat.MakeFourCc('N', 'V', 'T', 'T')
+                && ddpf.Flags.HasFlag((DdsPixelFormatFlag) 0x40000000)) /* DDPF_SRGB */
+            {
+                format = MakeSRGB(format);
+            }
+
+            convFlags = cflags;
+
+            return format;
+        }
+        
+        public static DxGiFormat MakeSRGB(DxGiFormat fmt)
+        {
+            switch (fmt)
+            {
+                case DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM:
+                    return DxGiFormat.DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+
+                case DxGiFormat.DXGI_FORMAT_BC1_UNORM:
+                    return DxGiFormat.DXGI_FORMAT_BC1_UNORM_SRGB;
+
+                case DxGiFormat.DXGI_FORMAT_BC2_UNORM:
+                    return DxGiFormat.DXGI_FORMAT_BC2_UNORM_SRGB;
+
+                case DxGiFormat.DXGI_FORMAT_BC3_UNORM:
+                    return DxGiFormat.DXGI_FORMAT_BC3_UNORM_SRGB;
+
+                case DxGiFormat.DXGI_FORMAT_B8G8R8A8_UNORM:
+                    return DxGiFormat.DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
+
+                case DxGiFormat.DXGI_FORMAT_B8G8R8X8_UNORM:
+                    return DxGiFormat.DXGI_FORMAT_B8G8R8X8_UNORM_SRGB;
+
+                case DxGiFormat.DXGI_FORMAT_BC7_UNORM:
+                    return DxGiFormat.DXGI_FORMAT_BC7_UNORM_SRGB;
 
                 default:
-                    return false;
-            }
-        }
-
-        /// <summary>
-        /// Encodes the DDS Header and if DX10, the DX10 Header
-        /// </summary>
-        /// <param name="header">DDS Header</param>
-        /// <param name="dx10Header">DX10 Header</param>
-        /// <returns>Resulting DDS File Header in bytes</returns>
-        public static byte[] EncodeDDSHeader(DDSHeader header, DX10Header dx10Header)
-        {
-            // Create stream
-            using (var output = new BinaryWriter(new MemoryStream()))
-            {
-                // Write DDS Magic
-                output.Write(DDSHeader.DDSMagic);
-                // Write Header
-                output.Write(StructToBytes(header));
-                // Check for DX10 Header
-                if (header.PixelFormat.FourCC == PixelFormats.DX10.FourCC)
-                    // Write Header
-                    output.Write(StructToBytes(dx10Header));
-                // Done
-                return ((MemoryStream) (output.BaseStream)).ToArray();
-            }
-        }
-
-        /// <summary>
-        /// Generates DirectXTex Meta Data
-        /// </summary>
-        /// <param name="width">Image Width</param>
-        /// <param name="height">Image Height</param>
-        /// <param name="mipMapLevels">Number of Mip Maps</param>
-        /// <param name="format">Compression Format</param>
-        /// <param name="isCubeMap">Whether or not this is a cube map</param>
-        /// <returns>Resulting TexMetaData Object</returns>
-        public static TexMetadata GenerateMataData(int width, int height, int mipMapLevels, DXGIFormat format,
-            bool isCubeMap)
-        {
-            // Create Texture MetaData
-            return new TexMetadata(
-                width,
-                height,
-                1,
-                isCubeMap ? 6 : 1,
-                mipMapLevels,
-                isCubeMap ? TexMiscFlags.TEXTURECUBE : 0,
-                0,
-                format,
-                TexDimension.TEXTURE2D
-            );
-        }
-
-        /// <summary>
-        /// Generates a DDS Header, and if requires, a DX10 Header
-        /// </summary>
-        /// <param name="metaData">Meta Data</param>
-        /// <param name="flags">Flags</param>
-        /// <param name="header">DDS Header Output</param>
-        /// <param name="dx10Header">DX10 Header Output</param>
-        public static void GenerateDDSHeader(TexMetadata metaData, DDSFlags flags, out DDSHeader header,
-            out DX10Header dx10Header)
-        {
-            // Check array size
-            if (metaData.ArraySize > 1)
-                // Check if we have an array and whether we're cube maps/non-2D
-                if (metaData.ArraySize != 6 || metaData.Dimension != TexDimension.TEXTURE2D || !metaData.IsCubeMap())
-                    // Texture1D arrays, Texture2D arrays, and Cubemap arrays must be stored using 'DX10' extended header
-                    flags |= DDSFlags.FORCEDX10EXT;
-
-            // Check for DX10 Ext
-            if (flags.HasFlag(DDSFlags.FORCEDX10EXTMISC2))
-                flags |= DDSFlags.FORCEDX10EXT;
-            // Create DDS Header
-            header = new DDSHeader
-            {
-                // Set Data
-                Size = (uint) Marshal.SizeOf<DDSHeader>(),
-                Flags = DDSHeader.HeaderFlags.TEXTURE,
-                Caps = (uint) DDSHeader.SurfaceFlags.TEXTURE,
-                PixelFormat = new DDSHeader.DDSPixelFormat(0, 0, 0, 0, 0, 0, 0, 0)
-            };
-            // Create DX10 Header
-            dx10Header = new DX10Header();
-            // Switch format
-            switch (metaData.Format)
-            {
-                case DXGIFormat.R8G8B8A8UNORM:
-                    header.PixelFormat = PixelFormats.A8B8G8R8;
-                    break;
-                case DXGIFormat.R16G16UNORM:
-                    header.PixelFormat = PixelFormats.G16R16;
-                    break;
-                case DXGIFormat.R8G8UNORM:
-                    header.PixelFormat = PixelFormats.A8L8;
-                    break;
-                case DXGIFormat.R16UNORM:
-                    header.PixelFormat = PixelFormats.L16;
-                    break;
-                case DXGIFormat.R8UNORM:
-                    header.PixelFormat = PixelFormats.L8;
-                    break;
-                case DXGIFormat.A8UNORM:
-                    header.PixelFormat = PixelFormats.A8;
-                    break;
-                case DXGIFormat.R8G8B8G8UNORM:
-                    header.PixelFormat = PixelFormats.R8G8B8G8;
-                    break;
-                case DXGIFormat.G8R8G8B8UNORM:
-                    header.PixelFormat = PixelFormats.G8R8G8B8;
-                    break;
-                case DXGIFormat.BC1UNORM:
-                    header.PixelFormat = PixelFormats.DXT1;
-                    break;
-                case DXGIFormat.BC2UNORM:
-                    header.PixelFormat = metaData.IsPMAlpha() ? (PixelFormats.DXT2) : (PixelFormats.DXT3);
-                    break;
-                case DXGIFormat.BC3UNORM:
-                    header.PixelFormat = metaData.IsPMAlpha() ? (PixelFormats.DXT4) : (PixelFormats.DXT5);
-                    break;
-                case DXGIFormat.BC4UNORM:
-                    header.PixelFormat = PixelFormats.BC4UNORM;
-                    break;
-                case DXGIFormat.BC4SNORM:
-                    header.PixelFormat = PixelFormats.BC4SNORM;
-                    break;
-                case DXGIFormat.BC5UNORM:
-                    header.PixelFormat = PixelFormats.BC5UNORM;
-                    break;
-                case DXGIFormat.BC5SNORM:
-                    header.PixelFormat = PixelFormats.BC5SNORM;
-                    break;
-                case DXGIFormat.B5G6R5UNORM:
-                    header.PixelFormat = PixelFormats.R5G6B5;
-                    break;
-                case DXGIFormat.B5G5R5A1UNORM:
-                    header.PixelFormat = PixelFormats.A1R5G5B5;
-                    break;
-                case DXGIFormat.R8G8SNORM:
-                    header.PixelFormat = PixelFormats.V8U8;
-                    break;
-                case DXGIFormat.R8G8B8A8SNORM:
-                    header.PixelFormat = PixelFormats.Q8W8V8U8;
-                    break;
-                case DXGIFormat.R16G16SNORM:
-                    header.PixelFormat = PixelFormats.V16U16;
-                    break;
-                case DXGIFormat.B8G8R8A8UNORM:
-                    header.PixelFormat = PixelFormats.A8R8G8B8;
-                    break;
-                case DXGIFormat.B8G8R8X8UNORM:
-                    header.PixelFormat = PixelFormats.X8R8G8B8;
-                    break;
-                case DXGIFormat.B4G4R4A4UNORM:
-                    header.PixelFormat = PixelFormats.A4R4G4B4;
-                    break;
-                case DXGIFormat.YUY2:
-                    header.PixelFormat = PixelFormats.YUY2;
-                    break;
-                // Legacy D3DX formats using D3DFMT enum value as FourCC
-                case DXGIFormat.R32G32B32A32FLOAT:
-                    header.PixelFormat.Flags = PixelFormats.DDSFOURCC;
-                    header.PixelFormat.FourCC = 116; // D3DFMTA32B32G32R32F
-                    break;
-                case DXGIFormat.R16G16B16A16FLOAT:
-                    header.PixelFormat.Flags = PixelFormats.DDSFOURCC;
-                    header.PixelFormat.FourCC = 113; // D3DFMTA16B16G16R16F
-                    break;
-                case DXGIFormat.R16G16B16A16UNORM:
-                    header.PixelFormat.Flags = PixelFormats.DDSFOURCC;
-                    header.PixelFormat.FourCC = 36; // D3DFMTA16B16G16R16
-                    break;
-                case DXGIFormat.R16G16B16A16SNORM:
-                    header.PixelFormat.Flags = PixelFormats.DDSFOURCC;
-                    header.PixelFormat.FourCC = 110; // D3DFMTQ16W16V16U16
-                    break;
-                case DXGIFormat.R32G32FLOAT:
-                    header.PixelFormat.Flags = PixelFormats.DDSFOURCC;
-                    header.PixelFormat.FourCC = 115; // D3DFMTG32R32F
-                    break;
-                case DXGIFormat.R16G16FLOAT:
-                    header.PixelFormat.Flags = PixelFormats.DDSFOURCC;
-                    header.PixelFormat.FourCC = 112; // D3DFMTG16R16F
-                    break;
-                case DXGIFormat.R32FLOAT:
-                    header.PixelFormat.Flags = PixelFormats.DDSFOURCC;
-                    header.PixelFormat.FourCC = 114; // D3DFMTR32F
-                    break;
-                case DXGIFormat.R16FLOAT:
-                    header.PixelFormat.Flags = PixelFormats.DDSFOURCC;
-                    header.PixelFormat.FourCC = 111; // D3DFMTR16F
-                    break;
-                default:
-                    break;
-            }
-
-            // Check for mips
-            if (metaData.MipLevels > 0)
-            {
-                // Set flag
-                header.Flags |= DDSHeader.HeaderFlags.MIPMAP;
-                // Check size
-                if (metaData.MipLevels > UInt16.MaxValue)
-                    throw new ArgumentException(String.Format("Too many mipmaps: {0}. Max: {1}", metaData.MipLevels,
-                        UInt16.MaxValue));
-                // Set
-                header.MipMapCount = (uint) metaData.MipLevels;
-                // Check count
-                if (header.MipMapCount > 1)
-                    header.Caps |= (uint) DDSHeader.SurfaceFlags.MIPMAP;
-            }
-
-            // Switch Dimension
-            switch (metaData.Dimension)
-            {
-                case TexDimension.TEXTURE1D:
-                {
-                    // Check size
-                    if (metaData.Width > Int32.MaxValue)
-                        throw new ArgumentException(String.Format("Image Width too large: {0}. Max: {1}",
-                            metaData.Width, Int32.MaxValue));
-                    // Set
-                    header.Width = (uint) metaData.Width;
-                    header.Height = header.Depth = 1;
-                    // Check size
-                    break;
-                }
-                case TexDimension.TEXTURE2D:
-                {
-                    // Check size
-                    if (metaData.Width > Int32.MaxValue || metaData.Height > Int32.MaxValue)
-                        throw new ArgumentException(String.Format(
-                            "Image Width and/or Height too large: {0}x{1}. Max: {2}",
-                            metaData.Width,
-                            metaData.Height,
-                            Int32.MaxValue));
-                    // Set
-                    header.Width = (uint) metaData.Width;
-                    header.Height = (uint) metaData.Height;
-                    header.Depth = 1;
-                    // Check size
-                    break;
-                }
-                case TexDimension.TEXTURE3D:
-                {
-                    // Check size
-                    if (metaData.Width > Int32.MaxValue || metaData.Height > Int32.MaxValue)
-                        throw new ArgumentException(String.Format(
-                            "Image Width and/or Height too large: {0}x{1}. Max: {2}",
-                            metaData.Width,
-                            metaData.Height,
-                            Int32.MaxValue));
-                    // Check size
-                    if (metaData.Depth > UInt16.MaxValue)
-                        throw new ArgumentException(String.Format("Image Depth too large: {0}. Max: {1}",
-                            metaData.Depth, UInt16.MaxValue));
-                    // Set
-                    header.Flags |= DDSHeader.HeaderFlags.VOLUME;
-                    header.Caps2 |= 0x00200000;
-                    header.Width = (uint) metaData.Width;
-                    header.Height = (uint) metaData.Height;
-                    header.Depth = (uint) metaData.Depth;
-                    // Check size
-                    break;
-                }
-                default:
-                    throw new ArgumentException("Invalid Texture Dimension.");
-            }
-
-            // Calculate the Pitch
-            ComputePitch(metaData.Format, metaData.Width, metaData.Height, out long rowPitch, out long slicePitch,
-                CPFLAGS.NONE);
-            // Validate results
-            if (slicePitch > UInt32.MaxValue || rowPitch > UInt32.MaxValue)
-                throw new ArgumentException(
-                    "Failed to calculate row and/or slice pitch, values returned were too large");
-            // Check is it compressed
-            if (IsCompressed(metaData.Format))
-            {
-                header.Flags |= DDSHeader.HeaderFlags.LINEARSIZE;
-                header.PitchOrLinearSize = (uint) slicePitch;
-            }
-            else
-            {
-                header.Flags |= DDSHeader.HeaderFlags.PITCH;
-                header.PitchOrLinearSize = (uint) rowPitch;
-            }
-
-            // Check for do we need to create the DX10 Header
-            if (header.PixelFormat.Size == 0)
-            {
-                // Check size
-                if (metaData.ArraySize > UInt16.MaxValue)
-                    throw new ArgumentException(String.Format("Array Size too large: {0}. Max: {1}", metaData.ArraySize,
-                        UInt16.MaxValue));
-                // Set Pixel format
-                header.PixelFormat = PixelFormats.DX10;
-                // Set Data
-                dx10Header.Format = metaData.Format;
-                dx10Header.ResourceDimension = metaData.Dimension;
-                dx10Header.MiscFlag = metaData.MiscFlags & ~TexMiscFlags.TEXTURECUBE;
-                dx10Header.ArraySize = (uint) metaData.ArraySize;
-                // Check for Cube Maps
-                if (metaData.MiscFlags.HasFlag(TexMiscFlags.TEXTURECUBE))
-                {
-                    // Check array size, must be a multiple of 6 for cube maps
-                    if ((metaData.ArraySize % 6) != 0)
-                        throw new ArgumentException("Array size must be a multiple of 6");
-                    // Set Flag
-                    dx10Header.MiscFlag |= TexMiscFlags.TEXTURECUBE;
-                    dx10Header.ArraySize /= 6;
-                }
-
-                // Check for mist flags
-                if (flags.HasFlag(DDSFlags.FORCEDX10EXTMISC2))
-                    // This was formerly 'reserved'. D3DX10 and D3DX11 will fail if this value is anything other than 0
-                    dx10Header.MiscFlags2 = (uint) metaData.MiscFlags2;
+                    return fmt;
             }
         }
     }
