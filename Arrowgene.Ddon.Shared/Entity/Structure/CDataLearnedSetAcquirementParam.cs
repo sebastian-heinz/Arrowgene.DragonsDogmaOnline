@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -13,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             AcquirementParamId = 0;
         }
 
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public byte Type { get; set; }
         public uint AcquirementNo { get; set; }
         public byte AcquirementLv { get; set; }
@@ -23,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataLearnedSetAcquirementParam obj)
             {
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteByte(buffer, obj.Type);
                 WriteUInt32(buffer, obj.AcquirementNo);
                 WriteByte(buffer, obj.AcquirementLv);
@@ -33,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataLearnedSetAcquirementParam Read(IBuffer buffer)
             {
                 CDataLearnedSetAcquirementParam obj = new CDataLearnedSetAcquirementParam();
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.Type = ReadByte(buffer);
                 obj.AcquirementNo = ReadUInt32(buffer);
                 obj.AcquirementLv = ReadByte(buffer);

@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CInstanceEnemyRepopNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_INSTANCE_13_40_16_NTC;
+        public PacketId Id => PacketId.S2C_INSTANCE_ENEMY_REPOP_NTC;
 
         public S2CInstanceEnemyRepopNtc()
         {

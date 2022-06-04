@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -15,9 +16,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             SetCustomSkillList=new List<CDataSetAcquirementParam>();
             SetAbilityList=new List<CDataSetAcquirementParam>();
         }
-        public List<CDataNormalSkillParam> NormalSkillList;
-        public List<CDataSetAcquirementParam> SetCustomSkillList;
-        public List<CDataSetAcquirementParam> SetAbilityList;
+        public List<CDataNormalSkillParam> NormalSkillList { get; set; } // Ingame: Core Skills
+        public List<CDataSetAcquirementParam> SetCustomSkillList { get; set; }
+        public List<CDataSetAcquirementParam> SetAbilityList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CSkillGetCurrentSetSkillListRes>
         {

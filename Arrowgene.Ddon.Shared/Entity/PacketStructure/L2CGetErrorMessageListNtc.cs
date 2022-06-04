@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 {
                     ClientErrorCode errorCode = new ClientErrorCode();
                     errorCode.MessageId = ReadUInt32(buffer);
-                    errorCode.Id = (int) ReadUInt32(buffer);
+                    errorCode.ErrorId = ReadUInt32(buffer);
                     errorCode.ErrorCode = ReadMtString(buffer);
                     ReadUInt16(buffer);
                     obj.ErrorCodes.Add(errorCode);

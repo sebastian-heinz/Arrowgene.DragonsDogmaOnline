@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
@@ -21,6 +21,9 @@ namespace Arrowgene.Ddon.GameServer
         {
             S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice();
             notice.Type = (byte) response.Type;
+            notice.Unk2 = response.Unk2;
+            notice.Unk3 = response.Unk3;
+            notice.Unk4 = response.Unk4;
             notice.Message = response.Message;
             notice.CharacterBaseInfo.CharacterId = response.CharacterId;
             notice.CharacterBaseInfo.CharacterName.FirstName = response.FirstName;

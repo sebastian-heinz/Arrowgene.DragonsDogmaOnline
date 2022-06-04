@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
 using Arrowgene.Ddon.Rpc.Web;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.WebServer;
 using Arrowgene.Logging;
 
@@ -14,7 +14,6 @@ namespace Arrowgene.Ddon.Cli.Command
     public class ServerCommand : ICommand
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ServerCommand));
-
 
         private Setting _setting;
         private DdonLoginServer _loginServer;
@@ -28,12 +27,15 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public string Description =>
             $"Dragons Dogma Online Server. Ex.:{Environment.NewLine}server start{Environment.NewLine}server stop";
-        
+
+
         public CommandResultType Run(CommandParameter parameter)
         {
+            bool isService = parameter.Switches.Contains("--service");
+
             if (_setting == null)
             {
-                string settingPath = Path.Combine(Util.ExecutingDirectory(), "Arrowgene.Ddon.config.json");
+                string settingPath = Path.Combine(Util.ExecutingDirectory(), "Files/Arrowgene.Ddon.config.json");
                 _setting = Setting.Load(settingPath);
                 if (_setting == null)
                 {
@@ -60,7 +62,6 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_loginServer == null)
             {
-                
                 _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _database, _assetRepository);
             }
 
@@ -85,6 +86,33 @@ namespace Arrowgene.Ddon.Cli.Command
                 _webServer.Start();
                 _gameServer.Start();
                 _loginServer.Start();
+
+                if (isService)
+                {
+                    AutoResetEvent waitHandle = new AutoResetEvent(false);
+                    bool sigintReceived = false;
+                    Console.CancelKeyPress += (_, ea) =>
+                    {
+                        ea.Cancel = true;
+                        Logger.Info("Received SIGINT (Ctrl+C)");
+                        sigintReceived = true;
+                        waitHandle.Set();
+                    };
+                    AppDomain.CurrentDomain.ProcessExit += (_, _) =>
+                    {
+                        if (sigintReceived)
+                        {
+                            return;
+                        }
+
+                        Logger.Info("Received SIGTERM");
+                        waitHandle.Set();
+                    };
+
+                    waitHandle.WaitOne();
+                    return CommandResultType.Exit;
+                }
+                
                 return CommandResultType.Completed;
             }
 

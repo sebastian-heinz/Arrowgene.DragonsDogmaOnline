@@ -9,31 +9,24 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         
         public S2CInstanceExchangeOmInstantKeyValueRes()
         {
+            StageId = 0;
             Data0 = 0;
             Data1 = 0;
         }
 
-        public S2CInstanceExchangeOmInstantKeyValueRes(C2SInstanceExchangeOmInstantKeyValueReq data01)
-        {
-            Data01 = data01;
-        }
-
+        public uint StageId { get; set; }
         public ulong Data0 { get; set; }
         public uint Data1 { get; set; }
-
-        public C2SInstanceExchangeOmInstantKeyValueReq Data01 { get; set; }
-
 
         public class Serializer : PacketEntitySerializer<S2CInstanceExchangeOmInstantKeyValueRes>
         {
             public override void Write(IBuffer buffer, S2CInstanceExchangeOmInstantKeyValueRes obj)
             {
                 WriteUInt64(buffer, 0);
-                C2SInstanceExchangeOmInstantKeyValueReq reqData01 = obj.Data01;
-                WriteUInt32(buffer, 0); //DummyStageId
-                WriteUInt64(buffer, reqData01.Data0);
-                WriteUInt32(buffer, reqData01.Data1);
-                WriteByteArray(buffer, obj.Pad15);
+                WriteUInt32(buffer, obj.StageId);
+                WriteUInt64(buffer, obj.Data0);
+                WriteUInt32(buffer, obj.Data1);
+                WriteByteArray(buffer, obj.ResData);
             }
 
             public override S2CInstanceExchangeOmInstantKeyValueRes Read(IBuffer buffer)
@@ -43,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             }
         }
 
-        private readonly byte[] Pad15 = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
+        private readonly byte[] ResData = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
 
     }
 }

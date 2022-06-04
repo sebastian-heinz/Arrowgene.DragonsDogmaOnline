@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
@@ -9,10 +11,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 {
     public class ClientDecideCharacterIdHandler : StructurePacketHandler<LoginClient, C2LDecideCharacterIdReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientDecideCharacterIdHandler));
+        private static readonly ServerLogger Logger =
+            LogProvider.Logger<ServerLogger>(typeof(ClientDecideCharacterIdHandler));
+
+        private AssetRepository _assets;
 
         public ClientDecideCharacterIdHandler(DdonLoginServer server) : base(server)
         {
+            _assets = server.AssetRepository;
         }
 
         public override void Handle(LoginClient client, StructurePacket<C2LDecideCharacterIdReq> packet)
@@ -41,19 +47,30 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             waitNumNtc.Unknown = 100;
             client.Send(waitNumNtc);
 
-            L2CNextConnectionServerNtc serverNtc = new L2CNextConnectionServerNtc();
-            serverNtc.ServerList = new CDataGameServerListInfo
+
+            List<CDataGameServerListInfo> serverLists = new List<CDataGameServerListInfo>(_assets.ServerList);
+
+            CDataGameServerListInfo serverList;
+            // if (serverLists.Count > packet.Structure.RotationServerId)
+           // {
+           //     serverList = serverLists[packet.Structure.RotationServerId];
+           // }
+           // else
+           // TODO figure out RotationServerId, at the moment always value 2?
+            if (serverLists.Count > 0)
             {
-                Id = 17,
-                Name = "サーバー017",
-                Brief = "",
-                TrafficName = "少なめ",
-                MaxLoginNum = 1000, // Player cap
-                LoginNum = 0x1C, // Current players
-                Addr = "127.0.0.1",
-                Port = 52000,
-                IsHide = false
-            };
+                serverList = serverLists[0];
+            }
+            else
+            {
+                Logger.Error(client, "Server List not available in asset repository");
+                return;
+            }
+
+            Logger.Info(client, $"Connecting To: {serverList.Addr}:{serverList.Port}");
+            
+            L2CNextConnectionServerNtc serverNtc = new L2CNextConnectionServerNtc();
+            serverNtc.ServerList = serverList;
             serverNtc.Counter = packet.Structure.Counter;
             client.Send(serverNtc);
         }

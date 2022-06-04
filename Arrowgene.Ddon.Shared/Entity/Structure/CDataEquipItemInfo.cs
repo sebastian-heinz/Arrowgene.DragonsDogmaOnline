@@ -3,57 +3,58 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
+    // This is very different from the PS4, everything could be wrong
     public class CDataEquipItemInfo
     {
         public CDataEquipItemInfo()
         {
-            U0 = 0;
+            ItemId = 0;
+            Unk0 = 0;
             EquipType = 0;
             EquipSlot = 0;
-            ItemId = 0;
             Color = 0;
             PlusValue = 0;
-            U6 = new List<CDataWeaponCrestData>();
-            U7 = new List<CDataArmorCrestData>();
+            WeaponCrestDataList = new List<CDataWeaponCrestData>();
+            ArmorCrestDataList = new List<CDataArmorCrestData>();
             EquipElementParamList = new List<CDataEquipElementParam>();
         }
 
-        public uint U0 { get; set; } // Probably the preset? 0 being normal equipment, 1 alt, 2+ presets
-        public byte EquipType { get; set; }
-        public byte EquipSlot { get; set; }
-        public ushort ItemId { get; set; }
+        public uint ItemId { get; set; }
+        public byte Unk0 { get; set; }
+        public byte EquipType { get; set; } // 1 = Equipment, 2 = Visual?
+        public ushort EquipSlot { get; set; }
         public byte Color { get; set; }
         public byte PlusValue { get; set; }
-        public List<CDataWeaponCrestData> U6 { get; set; } // Maybe weapon crests
-        public List<CDataArmorCrestData> U7 { get; set; } // Maybe armor crests
-        public List<CDataEquipElementParam> EquipElementParamList { get; set; } // Not 100% sure about this one
+        public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
+        public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
+        public List<CDataEquipElementParam> EquipElementParamList { get; set; }
         
         public class Serializer : EntitySerializer<CDataEquipItemInfo>
         {
             public override void Write(IBuffer buffer, CDataEquipItemInfo obj)
             {
-                WriteUInt32(buffer, obj.U0);
+                WriteUInt32(buffer, obj.ItemId);
+                WriteByte(buffer, obj.Unk0);
                 WriteByte(buffer, obj.EquipType);
-                WriteByte(buffer, obj.EquipSlot);
-                WriteUInt16(buffer, obj.ItemId);
+                WriteUInt16(buffer, obj.EquipSlot);
                 WriteByte(buffer, obj.Color);
                 WriteByte(buffer, obj.PlusValue);
-                WriteEntityList(buffer, obj.U6);
-                WriteEntityList(buffer, obj.U7);
+                WriteEntityList(buffer, obj.WeaponCrestDataList);
+                WriteEntityList(buffer, obj.ArmorCrestDataList);
                 WriteEntityList(buffer, obj.EquipElementParamList);
             }
 
             public override CDataEquipItemInfo Read(IBuffer buffer)
             {
                 CDataEquipItemInfo obj = new CDataEquipItemInfo();
-                obj.U0 = ReadUInt32(buffer);
+                obj.ItemId = ReadUInt32(buffer);
+                obj.Unk0 = ReadByte(buffer);
                 obj.EquipType = ReadByte(buffer);
-                obj.EquipSlot = ReadByte(buffer);
-                obj.ItemId = ReadUInt16(buffer);
+                obj.EquipSlot = ReadUInt16(buffer);
                 obj.Color = ReadByte(buffer);
                 obj.PlusValue = ReadByte(buffer);
-                obj.U6 = ReadEntityList<CDataWeaponCrestData>(buffer);
-                obj.U7 = ReadEntityList<CDataArmorCrestData>(buffer);
+                obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);
+                obj.ArmorCrestDataList = ReadEntityList<CDataArmorCrestData>(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 return obj;
             }

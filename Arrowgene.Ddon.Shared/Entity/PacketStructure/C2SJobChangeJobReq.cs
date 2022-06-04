@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -12,20 +13,20 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             JobId=0;
         }
 
-        public byte JobId { get; set; }
+        public JobId JobId { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SJobChangeJobReq>
         {
 
             public override void Write(IBuffer buffer, C2SJobChangeJobReq obj)
             {
-                WriteByte(buffer, obj.JobId);
+                WriteByte(buffer, (byte) obj.JobId);
             }
 
             public override C2SJobChangeJobReq Read(IBuffer buffer)
             {
                 C2SJobChangeJobReq obj = new C2SJobChangeJobReq();
-                obj.JobId = ReadByte(buffer);
+                obj.JobId = (JobId) ReadByte(buffer);
                 return obj;
             }
         }
