@@ -15,7 +15,7 @@ public struct TexHeader
     public TexPixelFormat PixelFormat;
     public byte TextureArraySize;
     public uint MipMapCount;
-    public uint UnknownA;
+    public uint UnknownA; // (1,2),(3),(6) DDON
     public uint UnknownB;
     public bool HasSphericalHarmonicsFactor;
 

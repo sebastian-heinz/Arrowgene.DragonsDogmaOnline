@@ -1,6 +1,6 @@
 ﻿namespace Arrowgene.Ddon.Client.Resource.Texture.Tex;
 
-public enum TexPixelFormat
+public enum TexPixelFormat : uint
 {
     FORMAT_UNKNOWN = 0,
     FORMAT_R32G32B32A32_FLOAT = 1,
