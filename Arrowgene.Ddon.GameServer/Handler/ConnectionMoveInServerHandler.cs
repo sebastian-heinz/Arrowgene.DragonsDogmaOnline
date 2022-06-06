@@ -1,8 +1,9 @@
-﻿using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.GameServer.Dump;
+﻿using System.Collections.Generic;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -46,6 +47,68 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // TODO reply error
                 // return;
             }
+
+            // TODO: Move to DB
+            character.CustomSkills = new List<CDataSetAcquirementParam>() {
+                // Main Palette
+                new CDataSetAcquirementParam() {
+                    Job = Server.AssetRepository.ArisenAsset[0].Job,
+                    Type = 0,
+                    SlotNo = 1,
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs1MpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs1MpLv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = Server.AssetRepository.ArisenAsset[0].Job,
+                    Type = 0,
+                    SlotNo = 2,
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs2MpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs2MpLv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = Server.AssetRepository.ArisenAsset[0].Job,
+                    Type = 0,
+                    SlotNo = 3,
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs3MpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs3MpLv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = Server.AssetRepository.ArisenAsset[0].Job,
+                    Type = 0,
+                    SlotNo = 4,
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs4MpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs4MpLv
+                },
+                // Sub Palette
+                new CDataSetAcquirementParam() {
+                    Job = Server.AssetRepository.ArisenAsset[0].Job,
+                    Type = 0,
+                    SlotNo = (1<<4) | 1,
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs1SpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs1SpLv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = Server.AssetRepository.ArisenAsset[0].Job,
+                    Type = 0,
+                    SlotNo = (1<<4) | 2,
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs2SpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs2SpLv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = Server.AssetRepository.ArisenAsset[0].Job,
+                    Type = 0,
+                    SlotNo = (1<<4) | 3,
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs3SpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs3SpLv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = Server.AssetRepository.ArisenAsset[0].Job,
+                    Type = 0,
+                    SlotNo = (1<<4) | 4,
+                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Cs4SpId,
+                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Cs4SpLv
+                }
+            };
 
             client.Account = account;
             client.Character = character;

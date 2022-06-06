@@ -31,6 +31,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         CharacterId = client.Character.Id,
                         FirstName = client.Character.FirstName,
                         LastName = client.Character.LastName,
+                        ClanName = "ABC",
+                        Unk0 = 1, // Platform PC
+                        Unk1 = 0,
+                        Unk2 = 8  // OnlineStatus
                     },
                 }
             };
@@ -56,9 +60,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             CharacterId = otherClient.Character.Id,
                             FirstName = otherClient.Character.FirstName,
                             LastName = otherClient.Character.LastName,
-                            ClanName = "WUT",
+                            ClanName = "XYZ",
                             PawnId = 0,
-                            Unk0 = 3,
+                            Unk0 = 1,
                             Unk1 = 0,
                             Unk2 = 8
                         }
@@ -70,9 +74,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     alreadyPresentPlayerContextNtc.Context.Base.CharacterId = otherClient.Character.Id;
                     alreadyPresentPlayerContextNtc.Context.Base.FirstName = otherClient.Character.FirstName;
                     alreadyPresentPlayerContextNtc.Context.Base.LastName = otherClient.Character.LastName;
-                    alreadyPresentPlayerContextNtc.Context.Base.PosX = otherClient.X;
-                    alreadyPresentPlayerContextNtc.Context.Base.PosY = otherClient.Y;
-                    alreadyPresentPlayerContextNtc.Context.Base.PosZ = otherClient.Z;
+                    alreadyPresentPlayerContextNtc.Context.Base.PosX = 0;
+                    alreadyPresentPlayerContextNtc.Context.Base.PosY = 0;
+                    alreadyPresentPlayerContextNtc.Context.Base.PosZ = 0;
+                    alreadyPresentPlayerContextNtc.Context.EditInfo = otherClient.Character.Visual;
                     alreadyPresentPlayerContextNtcs.Add(alreadyPresentPlayerContextNtc);
                 }
             }
@@ -80,12 +85,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(alreadyPresentUsersNtc);
 
             foreach (S2CContextGetLobbyPlayerContextNtc alreadyPresentPlayerContextNtc in
-                     alreadyPresentPlayerContextNtcs)
+                    alreadyPresentPlayerContextNtcs)
             {
                 client.Send(alreadyPresentPlayerContextNtc);
             }
 
-            // Notify other players of the new player
+            // Notify already present players of the new player
             S2CUserListJoinNtc newUserNtc = new S2CUserListJoinNtc();
             newUserNtc.UserList = resp.LobbyMemberInfoList;
 
@@ -95,9 +100,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             newUserContextNtc.Context.Base.CharacterId = client.Character.Id;
             newUserContextNtc.Context.Base.FirstName = client.Character.FirstName;
             newUserContextNtc.Context.Base.LastName = client.Character.LastName;
-            newUserContextNtc.Context.Base.PosX = client.X;
-            newUserContextNtc.Context.Base.PosY = client.Y;
-            newUserContextNtc.Context.Base.PosZ = client.Z;
+            newUserContextNtc.Context.Base.PosX = 0;
+            newUserContextNtc.Context.Base.PosY = 0;
+            newUserContextNtc.Context.Base.PosZ = 0;
+            newUserContextNtc.Context.EditInfo = client.Character.Visual;
 
             foreach (GameClient otherClient in Server.Clients)
             {

@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public CDataCharacterEquipInfo(CDataEquipItemInfo equipItemInfo)
         {
             EquipItemUId=equipItemInfo.ItemId.ToString(); // Perhaps?
-            EquipCategory=equipItemInfo.EquipSlot; // Maybe?
+            EquipCategory=equipItemInfo.Unk0; // Maybe?
             EquipType=equipItemInfo.EquipType;
         }
 

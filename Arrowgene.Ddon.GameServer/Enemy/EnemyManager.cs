@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
@@ -15,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy
 
         private readonly Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>> _spawns;
         private readonly AssetRepository _assetRepository;
-        private readonly IDatabase _database;        
+        private readonly IDatabase _database;
 
         public EnemyManager(AssetRepository assetRepository, IDatabase database)
         {
@@ -24,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy
             _spawns = new Dictionary<StageId, Dictionary<byte, List<EnemySpawn>>>();
 
             Load();
-            _assetRepository.UpdatedEnemySpawnsEvent += (sender, e) => Load();
+            _assetRepository.AssetChanged += AssetRepositoryOnAssetChanged;
         }
 
         public List<EnemySpawn> GetSpawns(CStageLayoutId stageLayoutId, byte subGroupId)
@@ -80,5 +79,14 @@ namespace Arrowgene.Ddon.GameServer.Enemy
                 spawns.Add(spawn);
             }
         }
+        
+        private void AssetRepositoryOnAssetChanged(object sender, AssetChangedEventArgs e)
+        {
+            if (e.Key == AssetRepository.EnemySpawnsKey)
+            {
+                Load();
+            }
+        }
+
     }
 }

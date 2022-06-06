@@ -1,13 +1,14 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetMyPawnListHandler : PacketHandler<GameClient>
+    public class PawnGetMyPawnListHandler : StructurePacketHandler<GameClient, C2SPawnGetMypawnListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMyPawnListHandler));
 
@@ -16,12 +17,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_PAWN_GET_MYPAWN_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SPawnGetMypawnListReq> packet)
         {
-            //client.Send(InGameDump.Dump_32);
-            client.Send(SelectedDump.Dump_32_A);
+            client.Send(new S2CPawnGetMypawnListRes() {
+                PawnList = Server.AssetRepository.MyPawnAsset.Select((asset, index) => new CDataPawnList() {
+                    PawnId = (int) asset.PawnId,
+                    SlotNo = (uint) (index+1),
+                    Name = asset.Name,
+                    Sex = asset.Sex,
+                    PawnListData = new CDataPawnListData() {
+                        Job = asset.Job,
+                        Level = asset.JobLv
+                    }
+                }).ToList(),
+                PartnerInfo = new CDataPartnerPawnInfo() {
+                    PawnId = Server.AssetRepository.MyPawnAsset[0].PawnId,
+                    Likability = 1,
+                    Personality = 1
+                },
+            });
         }
     }
 }

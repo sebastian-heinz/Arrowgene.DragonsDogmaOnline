@@ -17,9 +17,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SLobbyLobbyDataMsgReq> packet)
         {
+            // In the pcaps ive only seen 3.4.16 packets whose RpcPacket length is either of these
             S2CLobbyLobbyDataMsgNotice res = new S2CLobbyLobbyDataMsgNotice();
-            res.Type = packet.Structure.Type;
-            res.CharacterId = client.Character.Id;
+            res.Type = packet.Structure.Type; // I haven't seen any values other than 0x02
+            res.CharacterId = client.Character.Id; // Has to be overwritten since the request has the id set to 0
             res.RpcPacket = packet.Structure.RpcPacket;
             res.OnlineStatus = 0x08; // TODO: Figure out OnlineStatus values
 
@@ -27,40 +28,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 if (otherClient != client)
                 {
-                    client.Send(res);
+                    otherClient.Send(res);
                 }
             }
-
-            IBuffer buffer = packet.AsBuffer();
-            byte unk0 = buffer.ReadByte();
-            uint unk1 = buffer.ReadUInt32(Endianness.Big);
-            int length = buffer.ReadInt32(Endianness.Big);
-            if (length > 52)
+            
+            if(packet.Structure.RpcPacket.Length > 52)
             {
-                buffer.ReadUInt32();
-                buffer.ReadUInt32();
-                buffer.ReadUInt32();
-                buffer.ReadUInt32();
-                buffer.ReadUInt32(); // 20
-                buffer.ReadUInt32();
-                buffer.ReadUInt32();
-                buffer.ReadUInt32(); // 32
-                client.X = buffer.ReadDouble(Endianness.Big); //m_CliffPosX
-                client.Y = buffer.ReadFloat(Endianness.Big);
-                client.Z = buffer.ReadDouble(Endianness.Big); //52
+                IBuffer rpcPacketBuffer = new StreamBuffer(packet.Structure.RpcPacket);
+                rpcPacketBuffer.SetPositionStart();
+
+                // nNetMsgData::Head::deserialize
+                uint sessionId = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.SessionId
+                ulong rpcId = rpcPacketBuffer.ReadUInt64(Endianness.Big); // NetMsgData.Head.RpcId
+                uint msgIdFull = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.MsgIdFull
+                uint searchId = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.SearchId, seems to either a PawnId or 0
+                
+                // There is theoretically a nNetMsgData::Base, but i cant even see the code that deserializes it in the client
+
+                // nNetMsgData::CtrlBase::deserialize
+                rpcPacketBuffer.ReadUInt64(Endianness.Big); // nNetMsgData::CtrlBase::stMsgCtrlBaseData.mUniqueId ?
+
+                // Apparently all received 3.4.16s:
+                //  - Have searchID of 0 (aren't related to pawns)
+                //  - Have CtrlBaseData.mUniqueId of 0x8000000000000001
+
+                // nNetMsgData::CtrlAction::deserialize
+                bool isEnemy = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsEnemy
+                bool isCharacter = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsCharacter
+                bool isHuman = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsHuman
+                bool isEnemyLarge = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsEnemyLarge
+
+                // From now on, the contents (subpackets) depend on MsgId, a set of flags
+                if((msgIdFull & 1) != 0) { // This is incomplete, msgIdFull is converted through a function first, (0x5FE8D0) but should work for most cases
+                    client.X = rpcPacketBuffer.ReadDouble(Endianness.Big);
+                    client.Y = rpcPacketBuffer.ReadFloat(Endianness.Big);
+                    client.Z = rpcPacketBuffer.ReadDouble(Endianness.Big);
+                }
             }
-
-            // float m_CliffNormalX = buffer.ReadFloat(Endianness.Big);
-            // float m_CliffNormalY = buffer.ReadFloat(Endianness.Big);
-            // float m_CliffNormalZ = buffer.ReadFloat(Endianness.Big);
-
-            // double m_CliffStartPosX = buffer.ReadDouble(Endianness.Big);
-            // float m_CliffStartPosY = buffer.ReadFloat(Endianness.Big);
-            // double m_CliffStartPosZ = buffer.ReadDouble(Endianness.Big);
-            // 
-            // double m_CliffStartOldPosX = buffer.ReadDouble(Endianness.Big);
-            // float m_CliffStartOldPosY = buffer.ReadFloat(Endianness.Big);
-            // double m_CliffStartOldPosZ = buffer.ReadDouble(Endianness.Big);
         }
     }
 }

@@ -9,6 +9,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_STAGE_GET_STAGE_LIST_RES;
 
+        public S2CStageGetStageListRes()
+        {
+            StageList = new List<CDataStageInfo>();
+        }
+        
         public List<CDataStageInfo> StageList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CStageGetStageListRes>

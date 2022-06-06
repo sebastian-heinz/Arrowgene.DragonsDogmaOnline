@@ -12,9 +12,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
         private readonly List<IChatHandler> _handler;
         private readonly GameRouter _router;
+        private readonly DdonGameServer _server;
 
-        public ChatManager(GameRouter router)
+        public ChatManager(DdonGameServer server, GameRouter router)
         {
+            _server = server;
             _router = router;
             _handler = new List<IChatHandler>();
         }
@@ -61,6 +63,8 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
                 Deliver(client, response);
             }
+
+            client.Send(new S2CLobbyChatMsgRes());
         }
 
         private void Deliver(GameClient client, ChatResponse response)
@@ -68,14 +72,13 @@ namespace Arrowgene.Ddon.GameServer.Chat
             switch (response.Type)
             {
                 case LobbyChatMsgType.Say:
-                    response.Recipients.Add(client);
+                    response.Recipients.AddRange(_server.Clients);
                     break;
                 default:
                     response.Recipients.Add(client);
                     break;
             }
 
-            client.Send(new S2CLobbyChatMsgRes());
             _router.Send(response);
         }
     }

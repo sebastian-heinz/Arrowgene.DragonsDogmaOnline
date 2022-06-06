@@ -12,7 +12,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : PacketEntitySerializer<C2SLobbyJoinReq>
         {
-
             public override void Write(IBuffer buffer, C2SLobbyJoinReq obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);
