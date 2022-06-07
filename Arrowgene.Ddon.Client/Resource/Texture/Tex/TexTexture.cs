@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Logging;
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
         public TexHeader Header;
         public TexSphericalHarmonics SphericalHarmonics;
         public TexImage[] Images;
-
+        
         protected override void ReadResource(IBuffer buffer)
         {
             if (Magic != TexHeaderMagic)
@@ -48,10 +49,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
 
             Images[Header.LayerCount - 1].Size = (uint) buffer.Size - Images[Header.LayerCount - 1].Offset;
             Images[Header.LayerCount - 1].Data = ReadBytes(buffer, (int) Images[Header.LayerCount - 1].Size);
-
-            // https://docs.microsoft.com/en-us/windows/win32/direct3ddds/dds-file-layout-for-cubic-environment-maps
-            // TODO differentiate between cube map, and texture layers, cube map has faces.
-
+            
             if (buffer.Size != buffer.Position)
             {
                 Logger.Error($"buffer.Size()({buffer.Size}) != buffer.Position({buffer.Position})");
@@ -73,21 +71,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
                 Logger.Error("Invalid Version");
                 return;
             }
-
-            string shFactorFile = null;
-            if (path.LastIndexOf('.') > 0)
-            {
-                shFactorFile = path.Substring(0, path.LastIndexOf('.'));
-                shFactorFile += ".shfactor";
-            }
-
-            if (!Header.HasSphericalHarmonicsFactor && File.Exists(shFactorFile))
-            {
-                Header.HasSphericalHarmonicsFactor = true;
-                byte[] shFactor = File.ReadAllBytes(shFactorFile);
-                SphericalHarmonics.Decode(shFactor);
-            }
-
+            
             StreamBuffer sb = new StreamBuffer();
             sb.WriteBytes(Encoding.UTF8.GetBytes(TexHeaderMagic));
             sb.WriteBytes(Header.Encode());

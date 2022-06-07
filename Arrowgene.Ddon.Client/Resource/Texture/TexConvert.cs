@@ -50,6 +50,13 @@ public static class TexConvert
             ddsTexture.Header.Flags |= DdsHeaderFlags.MipMap;
         }
 
+        if (texTexture.Header.PixelFormat == TexPixelFormat.FORMAT_BC1_UNORM_SRGB)
+        {
+            // TODO exporting this with mipmaps causes GIMP not to show export Cubemap option
+            ddsTexture.Header.Caps &= ~(DdsCaps.MipMap | DdsCaps.Complex);
+            ddsTexture.Header.Flags &= ~DdsHeaderFlags.MipMap;
+        }
+
         if (texTexture.Header.UnknownA == 6)
         {
             // Assuming Cube Map
@@ -71,6 +78,7 @@ public static class TexConvert
 
         if (texTexture.Header.TextureArraySize > 1)
         {
+            // require DX10 header
             ddsTexture.Header.Caps |= DdsCaps.Complex;
 
             if (dxGiFormat == DxGiFormat.DXGI_FORMAT_UNKNOWN)
@@ -94,7 +102,6 @@ public static class TexConvert
             }
         }
 
-
         int imageCount = texTexture.Images.Length;
         ddsTexture.Images = new Image[imageCount];
         for (int i = 0; i < imageCount; i++)
@@ -105,7 +112,8 @@ public static class TexConvert
         return ddsTexture;
     }
 
-    public static TexTexture ToTexTexture(DdsTexture ddsTexture, TexHeaderVersion headerVersion)
+    public static TexTexture ToTexTexture(DdsTexture ddsTexture, TexHeaderVersion headerVersion,
+        TexSphericalHarmonics? sphericalHarmonics)
     {
         TexPixelFormat? texPixelFormat = ToTexPixelFormat(ddsTexture.Metadata.Format);
         if (texPixelFormat == TexPixelFormat.FORMAT_UNKNOWN)
@@ -117,15 +125,21 @@ public static class TexConvert
         texTexture.Header.Version = headerVersion;
         texTexture.Header.Height = (uint) ddsTexture.Metadata.Height;
         texTexture.Header.Width = (uint) ddsTexture.Metadata.Width;
-        texTexture.Header.Shift = 0; // TODO
-        texTexture.Header.Alpha = 0; // TODO
+        texTexture.Header.Shift = 0;
+        texTexture.Header.Alpha = 0;
         texTexture.Header.Depth = (uint) ddsTexture.Metadata.Depth;
         texTexture.Header.PixelFormat = texPixelFormat.Value;
         texTexture.Header.TextureArraySize = (byte) ddsTexture.Metadata.ArraySize;
         texTexture.Header.MipMapCount = (uint) ddsTexture.Metadata.MipLevels;
-        texTexture.Header.UnknownA = 0; // TODO
-        texTexture.Header.UnknownB = 0; // TODO
+        texTexture.Header.UnknownA = 0;
+        texTexture.Header.UnknownB = 0;
         texTexture.Header.HasSphericalHarmonicsFactor = false;
+
+        if (sphericalHarmonics.HasValue)
+        {
+            texTexture.Header.HasSphericalHarmonicsFactor = true;
+            texTexture.SphericalHarmonics = sphericalHarmonics.Value;
+        }
 
         int imageCount = ddsTexture.Images.Length;
         texTexture.Images = new TexImage[imageCount];
@@ -148,6 +162,9 @@ public static class TexConvert
         return DxGiFormat.DXGI_FORMAT_UNKNOWN;
     }
 
+    /**
+     * manual mapping
+     */
     public static DDSPixelFormat? ToDdsPixelFormat(TexPixelFormat texPixelFormat)
     {
         switch (texPixelFormat)
@@ -160,17 +177,25 @@ public static class TexConvert
         return null;
     }
 
+    /**
+     * manual mapping
+     */
     public static TexPixelFormat ToTexPixelFormat(DxGiFormat dxgi)
     {
         switch (dxgi)
         {
-            case DxGiFormat.DXGI_FORMAT_BC3_UNORM_SRGB:
-                return TexPixelFormat.FORMAT_BCX_RGBI_SRGB;
+            case DxGiFormat.DXGI_FORMAT_BC1_UNORM: // GIMP Bc1 / DXT
+                return TexPixelFormat.FORMAT_BC1_UNORM_SRGB;
+            case DxGiFormat.DXGI_FORMAT_BC1_UNORM_SRGB: return TexPixelFormat.FORMAT_BC1_UNORM_SRGB;
+            case DxGiFormat.DXGI_FORMAT_BC3_UNORM_SRGB: return TexPixelFormat.FORMAT_BCX_RGBI_SRGB;
         }
 
         return TexPixelFormat.FORMAT_UNKNOWN;
     }
 
+    /**
+     * Conversion based on format name, seems not to work
+     */
     public static TexPixelFormat ToTexPixelFormatEx(DxGiFormat dxgi)
     {
         switch (dxgi)
@@ -248,6 +273,9 @@ public static class TexConvert
         return TexPixelFormat.FORMAT_UNKNOWN;
     }
 
+    /**
+     * Conversion based on format name, seems not to work
+     */
     public static DxGiFormat ToDxGiFormatEx(TexPixelFormat texPixelFormat)
     {
         switch (texPixelFormat)

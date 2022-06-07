@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Arrowgene.Ddon.Client.Resource.Texture.Tex;
 
@@ -20,7 +21,25 @@ public struct TexHeader
     public bool HasSphericalHarmonicsFactor;
 
     public uint LayerCount => TextureArraySize * MipMapCount;
-
+    
+    public string GetMetadata()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine($"Version:{Version}");
+        sb.AppendLine($"Height:{Height}");
+        sb.AppendLine($"Width:{Width}");
+        sb.AppendLine($"Shift:{Shift}");
+        sb.AppendLine($"Alpha:{Alpha}");
+        sb.AppendLine($"Depth:{Depth}");
+        sb.AppendLine($"PixelFormat:{PixelFormat}");
+        sb.AppendLine($"TextureArraySize:{TextureArraySize}");
+        sb.AppendLine($"MipMapCount:{MipMapCount}");
+        sb.AppendLine($"UnknownA:{UnknownA}");
+        sb.AppendLine($"UnknownB:{UnknownB}");
+        sb.AppendLine($"HasSphericalHarmonicsFactor:{HasSphericalHarmonicsFactor}");
+        return sb.ToString();
+    }
+    
     public void Decode(byte[] bytes)
     {
         uint header4 = BitConverter.ToUInt32(bytes, 0);

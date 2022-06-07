@@ -201,7 +201,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     continue;
                 }
 
-                string outDirectory = Path.Combine(outDir.FullName, fileInfo.Name, fi.Directory);
+                string outDirectory = Path.Combine(outDir.FullName, $"{fileInfo.Name}.extract", fi.Directory);
                 if (!Directory.Exists(outDirectory))
                 {
                     Directory.CreateDirectory(outDirectory);
@@ -216,16 +216,40 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public void TexToDds(FileInfo fileInfo)
         {
+            string path = fileInfo.FullName;
+
             TexTexture texTexture = new TexTexture();
-            texTexture.Open(fileInfo.FullName);
+            texTexture.Open(path);
             DdsTexture ddsTexture = TexConvert.ToDdsTexture(texTexture);
-            string outPath = $"{fileInfo.FullName}.dds";
+            if (ddsTexture == null)
+            {
+                Logger.Error($"Failed to convert Tex->Dds. ({path})");
+                return;
+            }
+            
+            
+            string outPath = $"{path}.dds";
+
+            if (texTexture.Header.HasSphericalHarmonicsFactor)
+            {
+                if (!texTexture.SphericalHarmonics.Loaded)
+                {
+                    Logger.Error("HasSphericalHarmonicsFactor defined but not marked as loaded, writing anyways.");
+                }
+
+                File.WriteAllBytes($"{path}.shfactor", texTexture.SphericalHarmonics.Encode());
+            }
+
+            File.WriteAllText($"{path}.meta", texTexture.Header.GetMetadata());
+
             ddsTexture.Save(outPath);
             Logger.Info($"Written: {outPath}");
         }
 
         public void DdsToTex(FileInfo fileInfo, CommandParameter parameter)
         {
+            string path = fileInfo.FullName;
+
             TexHeaderVersion headerVersion = TexHeaderVersion.Ddon;
             if (parameter.Switches.Contains("--ddda"))
             {
@@ -237,8 +261,31 @@ namespace Arrowgene.Ddon.Cli.Command
             }
 
             DdsTexture ddsTexture = new DdsTexture();
-            ddsTexture.Open(fileInfo.FullName);
-            TexTexture texTexture = TexConvert.ToTexTexture(ddsTexture, headerVersion);
+            ddsTexture.Open(path);
+
+            TexSphericalHarmonics? sphericalHarmonics = null;
+            string shFactorFile = null;
+            if (path.LastIndexOf('.') > 0)
+            {
+                shFactorFile = path.Substring(0, path.LastIndexOf('.'));
+                shFactorFile += ".shfactor";
+            }
+
+            if (File.Exists(shFactorFile))
+            {
+                byte[] shFactor = File.ReadAllBytes(shFactorFile);
+                TexSphericalHarmonics tmpSphericalHarmonics = new TexSphericalHarmonics();
+                tmpSphericalHarmonics.Decode(shFactor);
+                sphericalHarmonics = tmpSphericalHarmonics;
+            }
+
+            TexTexture texTexture = TexConvert.ToTexTexture(ddsTexture, headerVersion, sphericalHarmonics);
+            if (texTexture == null)
+            {
+                Logger.Error($"Failed to convert Dds->Tex. ({path})");
+                return;
+            }
+
             string outPath = $"{fileInfo.FullName}.tex";
             texTexture.Save(outPath);
             Logger.Info($"Written: {outPath}");
