@@ -12,3 +12,6 @@ drag&drop a .dds file and it will be converted to DDON .tex
 
 ##tex2dds.cmd
 drag&drop a .tex file and it will be converted to .dss
+
+##tex_meta.cmd
+drag&drop a .tex file and a `.meta` file will be generated with the .tex header data decoded

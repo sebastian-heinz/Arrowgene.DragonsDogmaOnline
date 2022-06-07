@@ -43,6 +43,12 @@ public static class TexConvert
         ddsTexture.Header.Caps4 = 0;
         ddsTexture.Header.Reserved2 = 0;
 
+        if (ddsTexture.Header.Depth == 1)
+        {
+            // from testing 1D and 2D .tex files have always a depth of 1
+            ddsTexture.Header.Depth = 0;
+        }
+
         if (texTexture.Header.MipMapCount > 0)
         {
             // has mip maps
@@ -135,12 +141,32 @@ public static class TexConvert
         texTexture.Header.UnknownB = 0;
         texTexture.Header.HasSphericalHarmonicsFactor = false;
 
+        if (texTexture.Header.Depth == 0)
+        {
+            // from testing 1D and 2D .tex files have always a depth of 1
+            texTexture.Header.Depth = 1;
+        }
+
         if (sphericalHarmonics.HasValue)
         {
             texTexture.Header.HasSphericalHarmonicsFactor = true;
             texTexture.SphericalHarmonics = sphericalHarmonics.Value;
         }
-
+        
+        if (ddsTexture.Header.Caps2.HasFlag(DdsCaps2.CubeMap))
+        {
+            // Assuming Cube Map
+            texTexture.Header.UnknownA = 6;
+        }
+        
+        if (ddsTexture.Header.PixelFormat.FourCc == DDSPixelFormat.DX10.FourCc)
+        {
+            if (ddsTexture.Dx10Header.MiscFlag.HasFlag(TexMiscFlag.TextureCube))
+            {
+                texTexture.Header.UnknownA = 6;
+            }
+        }
+        
         int imageCount = ddsTexture.Images.Length;
         texTexture.Images = new TexImage[imageCount];
         for (int i = 0; i < imageCount; i++)

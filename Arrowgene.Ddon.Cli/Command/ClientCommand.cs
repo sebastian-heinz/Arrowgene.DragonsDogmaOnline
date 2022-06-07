@@ -70,6 +70,11 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 if (".tex".Equals(fileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
                 {
+                    if (parameter.Switches.Contains("--meta"))
+                    {
+                        WriteTexMeta(fileInfo);
+                        return CommandResultType.Exit;
+                    }
                     TexToDds(fileInfo);
                     return CommandResultType.Exit;
                 }
@@ -212,6 +217,14 @@ namespace Arrowgene.Ddon.Cli.Command
 
                 Logger.Info($"Written: {outPath}");
             }
+        }
+
+        public void WriteTexMeta(FileInfo fileInfo)
+        {
+            string path = fileInfo.FullName;
+            TexTexture texTexture = new TexTexture();
+            texTexture.Open(path);
+            File.WriteAllText($"{path}.meta", texTexture.Header.GetMetadata());
         }
 
         public void TexToDds(FileInfo fileInfo)
