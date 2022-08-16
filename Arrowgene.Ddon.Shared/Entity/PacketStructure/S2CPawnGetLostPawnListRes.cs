@@ -5,12 +5,13 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CPawnGetLostPawnListRes : IPacketStructure
+    public class S2CPawnGetLostPawnListRes : ServerResponse
     {
-        public PacketId Id => PacketId.S2C_PAWN_GET_LOST_PAWN_LIST_RES;
+        public override PacketId Id => PacketId.S2C_PAWN_GET_LOST_PAWN_LIST_RES;
 
         public S2CPawnGetLostPawnListRes()
         {
+            LostPawnList = new List<CDataLostPawn>();
         }
 
         public List<CDataLostPawn> LostPawnList { get; set; }
@@ -19,12 +20,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, S2CPawnGetLostPawnListRes obj)
             {
+                WriteServerResponse(buffer, obj);
                 WriteEntityList<CDataLostPawn>(buffer, obj.LostPawnList); 
             }
 
             public override S2CPawnGetLostPawnListRes Read(IBuffer buffer)
             {
                 S2CPawnGetLostPawnListRes obj = new S2CPawnGetLostPawnListRes();
+                ReadServerResponse(buffer, obj);
                 obj.LostPawnList = ReadEntityList<CDataLostPawn>(buffer);
                 return obj;
             }

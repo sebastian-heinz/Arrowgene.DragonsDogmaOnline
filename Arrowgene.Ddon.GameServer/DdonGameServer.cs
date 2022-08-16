@@ -259,6 +259,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartyPartyInvitePrepareAcceptHandler(this));
             AddHandler(new PartyPartyJoinHandler(this));
             AddHandler(new PartyPartyLeaveHandler(this));
+            AddHandler(new PartySendBinaryMsgAllHandler(this));
             AddHandler(new PartySendBinaryMsgHandler(this));
 
             AddHandler(new PawnGetMypawnDataHandler(this));
@@ -288,6 +289,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetTutorialQuestListHandler(this));
             AddHandler(new QuestGetWorldManageQuestListHandler(this));
             AddHandler(new QuestQuestProgressHandler(this));
+            AddHandler(new QuestSendLeaderQuestOrderConditionInfoHandler(this));
+            AddHandler(new QuestSendLeaderWaitOrderQuestListHandler(this));
 
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));
