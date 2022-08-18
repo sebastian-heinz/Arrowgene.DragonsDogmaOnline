@@ -1592,7 +1592,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CONTEXT_35_10_16_NTC = new PacketId(35, 10, 16, "S2C_CONTEXT_35_10_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CONTEXT_SET_CONTEXT_BASE_NTC = new PacketId(35, 11, 16, "S2C_CONTEXT_SET_CONTEXT_BASE_NTC", ServerType.Game, PacketSource.Server, "S2C_CONTEXT_35_11_16_NTC");
         public static readonly PacketId S2C_CONTEXT_35_12_16_NTC = new PacketId(35, 12, 16, "S2C_CONTEXT_35_12_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CONTEXT_35_13_16_NTC = new PacketId(35, 13, 16, "S2C_CONTEXT_35_13_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CONTEXT_SET_CONTEXT_NTC = new PacketId(35, 13, 16, "S2C_CONTEXT_SET_CONTEXT_NTC", ServerType.Game, PacketSource.Server, "S2C_CONTEXT_35_13_16_NTC");
         public static readonly PacketId S2C_CONTEXT_35_14_16_NTC = new PacketId(35, 14, 16, "S2C_CONTEXT_35_14_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CONTEXT_35_15_16_NTC = new PacketId(35, 15, 16, "S2C_CONTEXT_35_15_16_NTC", ServerType.Game, PacketSource.Server);
 
@@ -3493,7 +3493,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CONTEXT_35_10_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_SET_CONTEXT_BASE_NTC);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_35_12_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CONTEXT_35_13_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CONTEXT_SET_CONTEXT_NTC);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_35_14_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_35_15_16_NTC);
 
