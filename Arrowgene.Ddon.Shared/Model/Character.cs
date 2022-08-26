@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -9,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             Visual = new CDataEditInfo();
             Status = new CDataStatusInfo();
+            CustomSkills = new List<CDataSetAcquirementParam>();
         }
 
         public uint Id { get; set; }
@@ -18,5 +20,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public DateTime Created { get; set; }
         public CDataEditInfo Visual { get; set; }
         public CDataStatusInfo Status { get; set; }
+        public List<CDataSetAcquirementParam> CustomSkills { get; set; }
     }
 }

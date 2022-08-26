@@ -4,7 +4,7 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class ArisenCsv
     {
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public uint Lv { get; set; }
         public uint Cs1MpId { get; set; }
         public byte Cs1MpLv { get; set; }
@@ -22,34 +22,34 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte Cs3SpLv { get; set; }
         public uint Cs4SpId { get; set; }
         public byte Cs4SpLv { get; set; }
-        public byte Ab1Jb { get; set; }
+        public JobId Ab1Jb { get; set; }
         public uint Ab1Id { get; set; }
         public byte Ab1Lv { get; set; }
-        public byte Ab2Jb { get; set; }
+        public JobId Ab2Jb { get; set; }
         public uint Ab2Id { get; set; }
         public byte Ab2Lv { get; set; }
-        public byte Ab3Jb { get; set; }
+        public JobId Ab3Jb { get; set; }
         public uint Ab3Id { get; set; }
         public byte Ab3Lv { get; set; }
-        public byte Ab4Jb { get; set; }
+        public JobId Ab4Jb { get; set; }
         public uint Ab4Id { get; set; }
         public byte Ab4Lv { get; set; }
-        public byte Ab5Jb { get; set; }
+        public JobId Ab5Jb { get; set; }
         public uint Ab5Id { get; set; }
         public byte Ab5Lv { get; set; }
-        public byte Ab6Jb { get; set; }
+        public JobId Ab6Jb { get; set; }
         public uint Ab6Id { get; set; }
         public byte Ab6Lv { get; set; }
-        public byte Ab7Jb { get; set; }
+        public JobId Ab7Jb { get; set; }
         public uint Ab7Id { get; set; }
         public byte Ab7Lv { get; set; }
-        public byte Ab8Jb { get; set; }
+        public JobId Ab8Jb { get; set; }
         public uint Ab8Id { get; set; }
         public byte Ab8Lv { get; set; }
-        public byte Ab9Jb { get; set; }
+        public JobId Ab9Jb { get; set; }
         public uint Ab9Id { get; set; }
         public byte Ab9Lv { get; set; }
-        public byte Ab10Jb { get; set; }
+        public JobId Ab10Jb { get; set; }
         public uint Ab10Id { get; set; }
         public byte Ab10Lv { get; set; }
         public ushort PAtk { get; set; }

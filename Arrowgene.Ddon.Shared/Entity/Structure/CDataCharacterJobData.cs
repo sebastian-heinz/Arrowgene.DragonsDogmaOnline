@@ -1,10 +1,11 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCharacterJobData
     {
-        public byte Job;
+        public JobId Job;
         public uint Exp;
         public uint JobPoint;
         public uint Lv;
@@ -54,7 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataCharacterJobData obj)
         {
-            WriteByte(buffer, obj.Job);
+            WriteByte(buffer, (byte) obj.Job);
             WriteUInt32(buffer, obj.Exp);
             WriteUInt32(buffer, obj.JobPoint);
             WriteUInt32(buffer, obj.Lv);
@@ -103,7 +104,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public override CDataCharacterJobData Read(IBuffer buffer)
         {
             CDataCharacterJobData obj = new CDataCharacterJobData();
-            obj.Job = ReadByte(buffer);
+            obj.Job = (JobId) ReadByte(buffer);
             obj.Exp = ReadUInt32(buffer);
             obj.JobPoint = ReadUInt32(buffer);
             obj.Lv = ReadUInt32(buffer);

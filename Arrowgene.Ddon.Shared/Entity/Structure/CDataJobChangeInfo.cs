@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -11,21 +12,21 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             EquipItemList=new List<CDataEquipItemInfo>();
         }
 
-        public byte JobId { get; set; }
+        public JobId JobId { get; set; }
         public List<CDataEquipItemInfo> EquipItemList { get; set; }
 
         public class Serializer : EntitySerializer<CDataJobChangeInfo>
         {
             public override void Write(IBuffer buffer, CDataJobChangeInfo obj)
             {
-                WriteByte(buffer, obj.JobId);
+                WriteByte(buffer, (byte) obj.JobId);
                 WriteEntityList<CDataEquipItemInfo>(buffer, obj.EquipItemList);
             }
 
             public override CDataJobChangeInfo Read(IBuffer buffer)
             {
                 CDataJobChangeInfo obj = new CDataJobChangeInfo();
-                obj.JobId = ReadByte(buffer);
+                obj.JobId = (JobId) ReadByte(buffer);
                 obj.EquipItemList = ReadEntityList<CDataEquipItemInfo>(buffer);
                 return obj;                
             }

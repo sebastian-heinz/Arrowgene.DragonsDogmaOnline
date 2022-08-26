@@ -16,7 +16,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetSetSkillListReq> packet)
         {
-            client.Send(new S2CSkillGetSetSkillListRes());
+            // This response should return skills set for every job.
+            client.Send(new S2CSkillGetSetSkillListRes() {
+                SetAcquierementParam = client.Character.CustomSkills
+            });
         }
     }
 }

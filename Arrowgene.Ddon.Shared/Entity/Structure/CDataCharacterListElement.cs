@@ -1,4 +1,5 @@
 ﻿using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -17,11 +18,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CDataCommunityCharacterBaseInfo CommunityCharacterBaseInfo { get; set; }
         public ushort ServerId;
-        public byte OnlineStatus;
+        public OnlineStatus OnlineStatus;
         public CDataJobBaseInfo CurrentJobBaseInfo;
         public CDataJobBaseInfo EntryJobBaseInfo;
         public string MatchingProfile;
-        public byte unk2;
+        public byte unk2; // Party type?
         
         public class Serializer : EntitySerializer<CDataCharacterListElement>
         {
@@ -29,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteEntity(buffer, obj.CommunityCharacterBaseInfo);
                 WriteUInt16(buffer, obj.ServerId);
-                WriteByte(buffer, obj.OnlineStatus);
+                WriteByte(buffer, (byte) obj.OnlineStatus);
                 WriteEntity(buffer, obj.CurrentJobBaseInfo);
                 WriteEntity(buffer, obj.EntryJobBaseInfo);
                 WriteMtString(buffer, obj.MatchingProfile);
@@ -41,7 +42,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataCharacterListElement obj = new CDataCharacterListElement();
                 obj.CommunityCharacterBaseInfo = ReadEntity<CDataCommunityCharacterBaseInfo>(buffer);
                 obj.ServerId = ReadUInt16(buffer);
-                obj.OnlineStatus = ReadByte(buffer);
+                obj.OnlineStatus = (OnlineStatus) ReadByte(buffer);
                 obj.CurrentJobBaseInfo = ReadEntity<CDataJobBaseInfo>(buffer);
                 obj.EntryJobBaseInfo = ReadEntity<CDataJobBaseInfo>(buffer);
                 obj.MatchingProfile = ReadMtString(buffer);
