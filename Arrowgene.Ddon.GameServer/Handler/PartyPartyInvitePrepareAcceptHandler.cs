@@ -23,6 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(new S2CPartyPartyInvitePrepareAcceptRes());
 
+            // The invited player doesn't move to the new party leader's server until this packet is sent
+            // Why this wasn't included in the Response packet directly beats me
             S2CPartyPartyInviteAcceptNtc inviteAcceptNtc = new S2CPartyPartyInviteAcceptNtc();
             inviteAcceptNtc.ServerId = Server.AssetRepository.ServerList[0].Id; // TODO: Get from config, or from DdonGameServer instance
             inviteAcceptNtc.PartyId = newParty.Id;
@@ -30,6 +32,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             inviteAcceptNtc.PositionId = 0; // TODO: Figure what this is about
             inviteAcceptNtc.MemberIndex = (byte) newParty.Members.Count;
             client.Send(inviteAcceptNtc);
+
+            // Notify party leader of the accepted invitation
+            S2CPartyPartyInviteJoinMemberNtc inviteJoinMemberNtc = new S2CPartyPartyInviteJoinMemberNtc();
+            CDataPartyMemberMinimum newMemberMinimum = new CDataPartyMemberMinimum();
+            newMemberMinimum.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
+            newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.FirstName;
+            newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
+            newMemberMinimum.CommunityCharacterBaseInfo.ClanName = "SEX";
+            newMemberMinimum.IsLeader = client == newParty.Leader; // This could probably be just always false
+            newMemberMinimum.MemberIndex = inviteAcceptNtc.MemberIndex;
+            newMemberMinimum.MemberType = 1;
+            newMemberMinimum.PawnId = 0;
+            inviteJoinMemberNtc.MemberMinimumList.Add(newMemberMinimum);
+            newParty.Leader.Send(inviteJoinMemberNtc);
         }
     }
 }

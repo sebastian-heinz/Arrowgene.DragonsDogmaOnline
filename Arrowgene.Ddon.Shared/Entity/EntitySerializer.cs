@@ -61,6 +61,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataContextNormalSkillData.Serializer());
             Create(new CDataContextPlayerInfo.Serializer());
             Create(new CDataContextResist.Serializer());
+            Create(new CDataContextSetAdditional.Serializer());
+            Create(new CDataContextSetBase.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDeliveryItem.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
@@ -318,10 +320,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyInviteNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptRes.Serializer());
+            Create(new S2CPartyPartyInviteSuccessNtc.Serializer());
             Create(new S2CPartyPartyJoinNtc.Serializer());
             Create(new S2CPartyPartyJoinRes.Serializer());
             Create(new S2CPartyPartyLeaveNtc.Serializer());
             Create(new S2CPartyPartyLeaveRes.Serializer());
+            Create(new S2CPartyPartyMemberSessionStatusNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgAllNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
@@ -357,6 +361,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillSetOffSkillRes.Serializer());
             Create(new S2CSkillSetSkillRes.Serializer());
             Create(new S2CSetCommunicationShortcutRes.Serializer());
+            Create(new S2CSetContextNtc.Serializer());
             Create(new S2CSetShortcutRes.Serializer());
             Create(new S2CStageAreaChangeRes.Serializer());
             Create(new S2CStageGetStageListRes.Serializer());
@@ -577,9 +582,25 @@ namespace Arrowgene.Ddon.Shared.Entity
             return buffer.ReadDouble(Endianness.Big);
         }
 
+        protected void WriteUInt64Array(IBuffer buffer, ulong[] values)
+        {
+            for(int i=0; i<values.Length; i++) {
+                WriteUInt64(buffer, values[i]);
+            }
+        }
+
         protected void WriteUInt64(IBuffer buffer, ulong value)
         {
             buffer.WriteUInt64(value, Endianness.Big);
+        }
+
+        protected ulong[] ReadUInt64Array(IBuffer buffer, int length)
+        {
+            ulong[] values = new ulong[length];
+            for(int i=0; i<length; i++) {
+                values[i] = ReadUInt64(buffer);
+            }
+            return values;
         }
 
         protected ulong ReadUInt64(IBuffer buffer)
@@ -587,9 +608,25 @@ namespace Arrowgene.Ddon.Shared.Entity
             return buffer.ReadUInt64(Endianness.Big);
         }
 
+        protected void WriteUInt32Array(IBuffer buffer, uint[] values)
+        {
+            for(int i=0; i<values.Length; i++) {
+                WriteUInt32(buffer, values[i]);
+            }
+        }
+
         protected void WriteUInt32(IBuffer buffer, uint value)
         {
             buffer.WriteUInt32(value, Endianness.Big);
+        }
+
+        protected uint[] ReadUInt32Array(IBuffer buffer, int length)
+        {
+            uint[] values = new uint[length];
+            for(int i=0; i<length; i++) {
+                values[i] = ReadUInt32(buffer);
+            }
+            return values;
         }
 
         protected uint ReadUInt32(IBuffer buffer)
@@ -617,9 +654,25 @@ namespace Arrowgene.Ddon.Shared.Entity
             return buffer.ReadInt64(Endianness.Big);
         }
 
+        protected void WriteInt32Array(IBuffer buffer, int[] values)
+        {
+            for(int i=0; i<values.Length; i++) {
+                WriteInt32(buffer, values[i]);
+            }
+        }
+
         protected void WriteInt32(IBuffer buffer, int value)
         {
             buffer.WriteInt32(value, Endianness.Big);
+        }
+
+        protected int[] ReadInt32Array(IBuffer buffer, int length)
+        {
+            int[] values = new int[length];
+            for(int i=0; i<length; i++) {
+                values[i] = ReadInt32(buffer);
+            }
+            return values;
         }
 
         protected int ReadInt32(IBuffer buffer)

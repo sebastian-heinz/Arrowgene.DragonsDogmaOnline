@@ -48,11 +48,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CPartyPartyCreateRes partyCreateRes = new S2CPartyPartyCreateRes();
             partyCreateRes.PartyId = newParty.Id;
             client.Send(partyCreateRes);
-
-            //client.Send(InGameDump.Dump_103);
-            
-            //client.Send(InGameDump.Dump_104);
-            //client.Send(InGameDump.Dump_105);
         }
     }
 }
