@@ -404,7 +404,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_SUCCESS_NTC = new PacketId(6, 17, 16, "S2C_PARTY_PARTY_INVITE_SUCCESS_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_17_16_NTC");
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_ACCEPT_NTC = new PacketId(6, 18, 16, "S2C_PARTY_PARTY_INVITE_ACCEPT_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_18_16_NTC");
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_JOIN_MEMBER_NTC = new PacketId(6, 19, 16, "S2C_PARTY_PARTY_INVITE_JOIN_MEMBER_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_19_16_NTC");
-        public static readonly PacketId S2C_PARTY_6_20_16_NTC = new PacketId(6, 20, 16, "S2C_PARTY_6_20_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTY_PARTY_MEMBER_SESSION_STATUS_NTC = new PacketId(6, 20, 16, "S2C_PARTY_PARTY_MEMBER_SESSION_STATUS_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_20_16_NTC");
         public static readonly PacketId S2C_PARTY_6_21_16_NTC = new PacketId(6, 21, 16, "S2C_PARTY_6_21_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_PARTY_6_22_16_NTC = new PacketId(6, 22, 16, "S2C_PARTY_6_22_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_PARTY_SEND_BINARY_MSG_ALL_NOTICE = new PacketId(6, 23, 16, "C2S_PARTY_SEND_BINARY_MSG_ALL_NOTICE", ServerType.Game, PacketSource.Client, "C2S_PARTY_6_23_16_NTC");
@@ -2305,7 +2305,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_SUCCESS_NTC);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_ACCEPT_NTC);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_JOIN_MEMBER_NTC);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_20_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_MEMBER_SESSION_STATUS_NTC);
             AddPacketIdEntry(packetIds, S2C_PARTY_6_21_16_NTC);
             AddPacketIdEntry(packetIds, S2C_PARTY_6_22_16_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_SEND_BINARY_MSG_ALL_NOTICE);

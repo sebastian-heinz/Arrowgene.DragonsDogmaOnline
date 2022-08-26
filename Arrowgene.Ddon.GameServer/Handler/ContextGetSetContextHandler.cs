@@ -33,15 +33,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CContextSetContextBaseNtc baseNtc = new S2CContextSetContextBaseNtc();
             baseNtc.Base = packet.Structure.Base;
 
-            // lmao i aint filling all this stuff
-            S2CSetContextNtc setContextNtc = new S2CSetContextNtc();
-            setContextNtc.Base = packet.Structure.Base;
-
             foreach(GameClient member in client.Party.Members)
             {
                 client.Send(ntc);
                 client.Send(baseNtc);
-                client.Send(setContextNtc); // Sending this did nothing
             }
         }
     }

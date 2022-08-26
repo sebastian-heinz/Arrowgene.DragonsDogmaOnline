@@ -23,34 +23,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Optimize
             Party newParty = ((DdonGameServer) Server).Parties.Find(x => x.Id == packet.Structure.PartyId);
 
-            // Send new player to previous members
-            S2CPartyPartyJoinNtc partyJoinNtcForOldMembers = new S2CPartyPartyJoinNtc();
-            partyJoinNtcForOldMembers.HostCharacterId = newParty.Host.Character.Id;
-            partyJoinNtcForOldMembers.LeaderCharacterId = newParty.Leader.Character.Id;
-            {
-                CDataPartyMember partyMember = new CDataPartyMember();
-                partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.FirstName;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
-                partyMember.CharacterListElement.OnlineStatus = client.OnlineStatus;
-                partyMember.CharacterListElement.unk2 = 1;
-                partyMember.MemberType = 1;
-                partyMember.MemberIndex = newParty.Members.Count;
-                partyMember.IsLeader = client.Character.Id == newParty.Leader.Character.Id;
-                partyMember.JoinState = JoinState.On;
-                partyJoinNtcForOldMembers.PartyMembers.Add(partyMember);
-            }
-            foreach (GameClient member in newParty.Members)
-            {
-                member.Send(partyJoinNtcForOldMembers);
-            }
-            
             newParty.Members.Add(client);
             client.PendingInvitedParty = null;
             client.Party = newParty;
+
+            S2CPartyPartyJoinRes response = new S2CPartyPartyJoinRes();
+            response.PartyId = newParty.Id;
+            client.Send(response);
 
             // Send members to new member
             S2CPartyPartyJoinNtc partyJoinNtcForNewMember = new S2CPartyPartyJoinNtc();
@@ -74,8 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 partyMember.JoinState = JoinState.On;
                 partyJoinNtcForNewMember.PartyMembers.Add(partyMember);
             }
-            client.Send(partyJoinNtcForNewMember);
-
+            newParty.SendToAll(partyJoinNtcForNewMember);
 
             // Send party player context NTCs
             S2CContextGetLobbyPlayerContextNtc sampleData = EntitySerializer
@@ -91,16 +69,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 partyPlayerContextNtc.Context.PlayerInfo = sampleData.Context.PlayerInfo;
                 partyPlayerContextNtc.Context.ResistInfo = new CDataContextResist();
                 partyPlayerContextNtc.Context.EditInfo = member.Character.Visual;
-                
-                foreach (GameClient memberClient in newParty.Members)
-                {
-                    memberClient.Send(partyPlayerContextNtc);
-                }
+                client.Send(partyPlayerContextNtc);
             }
-
-            S2CPartyPartyJoinRes response = new S2CPartyPartyJoinRes();
-            response.PartyId = newParty.Id;
-            client.Send(response);
         }
     }
 }

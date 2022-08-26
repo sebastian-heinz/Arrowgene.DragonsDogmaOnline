@@ -320,10 +320,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyInviteNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptRes.Serializer());
+            Create(new S2CPartyPartyInviteSuccessNtc.Serializer());
             Create(new S2CPartyPartyJoinNtc.Serializer());
             Create(new S2CPartyPartyJoinRes.Serializer());
             Create(new S2CPartyPartyLeaveNtc.Serializer());
             Create(new S2CPartyPartyLeaveRes.Serializer());
+            Create(new S2CPartyPartyMemberSessionStatusNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgAllNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());

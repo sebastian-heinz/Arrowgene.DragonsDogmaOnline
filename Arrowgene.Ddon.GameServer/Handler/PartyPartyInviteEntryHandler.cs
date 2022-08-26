@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+        // No idea what this is for, i think for the extreme mission sorties
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteEntryReq> packet)
         {
             client.Send(new S2CPartyPartyInviteEntryRes());
@@ -24,10 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 NowMember = (uint) client.Party.Members.Count,
                 MaxMember = 4 // TODO: Check if i can place like 20 players or something
             };
-            foreach(GameClient member in client.Party.Members)
-            {
-                member.Send(ntc);
-            }
+            client.Party.SendToAll(ntc);
         }
     }
 }
