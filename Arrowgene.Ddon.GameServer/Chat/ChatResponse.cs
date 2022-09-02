@@ -33,8 +33,8 @@ namespace Arrowgene.Ddon.GameServer.Chat
             {
                 Deliver = true,
                 Message = message.Message,
-                FirstName = client.Character.FirstName,
-                LastName = client.Character.LastName,
+                FirstName = client.Character.CharacterInfo.FirstName,
+                LastName = client.Character.CharacterInfo.LastName,
                 CharacterId = client.Character.Id,
                 Type = message.Type,
                 Unk2 = message.Unk2,

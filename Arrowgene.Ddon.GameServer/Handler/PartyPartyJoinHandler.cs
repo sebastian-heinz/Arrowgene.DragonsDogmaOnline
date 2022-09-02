@@ -41,8 +41,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CDataPartyMember partyMember = new CDataPartyMember();
                 partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = member.Character.Id;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = member.Character.FirstName;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.LastName;
+                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = member.Character.CharacterInfo.FirstName;
+                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.CharacterInfo.LastName;
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
                 partyMember.CharacterListElement.OnlineStatus = member.OnlineStatus;
@@ -65,12 +65,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 partyPlayerContextNtc.CharacterId = member.Character.Id;
                 partyPlayerContextNtc.Context.Base = sampleData.Context.Base;
                 partyPlayerContextNtc.Context.Base.CharacterId = member.Character.Id;
-                partyPlayerContextNtc.Context.Base.FirstName = member.Character.FirstName;
-                partyPlayerContextNtc.Context.Base.LastName = member.Character.LastName;
+                partyPlayerContextNtc.Context.Base.FirstName = member.Character.CharacterInfo.FirstName;
+                partyPlayerContextNtc.Context.Base.LastName = member.Character.CharacterInfo.LastName;
                 partyPlayerContextNtc.Context.Base.MemberIndex = (byte) i;
                 partyPlayerContextNtc.Context.PlayerInfo = sampleData.Context.PlayerInfo;
                 partyPlayerContextNtc.Context.ResistInfo = new CDataContextResist();
-                partyPlayerContextNtc.Context.EditInfo = member.Character.Visual;
+                partyPlayerContextNtc.Context.EditInfo = member.Character.CharacterInfo.EditInfo;
                 newParty.SendToAll(partyPlayerContextNtc);
             }
         }

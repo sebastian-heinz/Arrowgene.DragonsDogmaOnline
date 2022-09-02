@@ -21,14 +21,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         {
             Logger.Debug(client, $"Created character '{packet.Structure.CharacterInfo.FirstName} {packet.Structure.CharacterInfo.LastName}'");
 
-            CDataCharacterInfo characterInfo = packet.Structure.CharacterInfo;
-
             Character character = new Character();
             character.AccountId = client.Account.Id;
-            character.FirstName = characterInfo.FirstName;
-            character.LastName = characterInfo.LastName;
-            character.Visual = characterInfo.EditInfo;
-            character.Status = characterInfo.StatusInfo;
+            character.CharacterInfo = packet.Structure.CharacterInfo;
 
             L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
             if (!Database.CreateCharacter(character))

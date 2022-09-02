@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public uint ItemId { get; set; }
-        public byte Unk0 { get; set; }
+        public byte Unk0 { get; set; } // Not stored in DB cause i dont know what its for
         public byte EquipType { get; set; } // 1 = Equipment, 2 = Visual?
         public ushort EquipSlot { get; set; }
         public byte Color { get; set; }

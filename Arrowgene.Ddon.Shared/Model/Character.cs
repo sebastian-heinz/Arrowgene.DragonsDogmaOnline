@@ -8,18 +8,13 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public Character()
         {
-            Visual = new CDataEditInfo();
-            Status = new CDataStatusInfo();
-            CustomSkills = new List<CDataSetAcquirementParam>();
+            CharacterInfo = new CDataCharacterInfo();
         }
 
         public uint Id { get; set; }
         public int AccountId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public DateTime Created { get; set; }
-        public CDataEditInfo Visual { get; set; }
-        public CDataStatusInfo Status { get; set; }
-        public List<CDataSetAcquirementParam> CustomSkills { get; set; }
+        public CDataCharacterInfo CharacterInfo { get; set; }
+        public List<CDataSetAcquirementParam> CustomSkills { get; set;}
     }
 }

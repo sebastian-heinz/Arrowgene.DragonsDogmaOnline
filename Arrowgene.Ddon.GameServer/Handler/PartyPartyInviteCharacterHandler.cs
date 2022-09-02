@@ -54,8 +54,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CDataPartyMember partyMember = new CDataPartyMember();
                 partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = member.Character.Id;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = member.Character.FirstName;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.LastName;
+                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = member.Character.CharacterInfo.FirstName;
+                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.CharacterInfo.LastName;
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
                 partyMember.CharacterListElement.EntryJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
@@ -73,8 +73,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataPartyMember otherPartyMember = new CDataPartyMember();
             otherPartyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
             otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = targetClient.Character.Id;
-            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = targetClient.Character.FirstName;
-            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = targetClient.Character.LastName;
+            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = targetClient.Character.CharacterInfo.FirstName;
+            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = targetClient.Character.CharacterInfo.LastName;
             otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
             otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
             otherPartyMember.CharacterListElement.EntryJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;

@@ -31,9 +31,19 @@ CREATE TABLE IF NOT EXISTS `ddon_character`
 (
     `id`                          INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     `account_id`                  INTEGER                           NOT NULL,
+    `version`                     INTEGER                           NOT NULL,
     `first_name`                  TEXT                              NOT NULL,
     `last_name`                   TEXT                              NOT NULL,
     `created`                     DATETIME                          NOT NULL,
+    `job`                         TINYINT                           NOT NULL,
+    `jewelry_slot_num`            TINYINT                           NOT NULL,
+    `my_pawn_slot_num`            TINYINT                           NOT NULL,
+    `rental_pawn_slot_num`        TINYINT                           NOT NULL,
+    `hide_equip_head`             BIT                               NOT NULL,
+    `hide_equip_lantern`          BIT                               NOT NULL,
+    `hide_equip_head_pawn`        BIT                               NOT NULL,
+    `hide_equip_lantern_pawn`     BIT                               NOT NULL,
+    `arisen_profile_share_range`  TINYINT                           NOT NULL,
     -- CDataEditInfo
     `sex`                         BIT                               NOT NULL,
     `voice`                       TINYINT                           NOT NULL,
@@ -119,7 +129,98 @@ CREATE TABLE IF NOT EXISTS `ddon_character`
     `gain_defense`                INT                               NOT NULL,
     `gain_magic_attack`           INT                               NOT NULL,
     `gain_magic_defense`          INT                               NOT NULL,
+    -- CDataMatchingProfile
+    `matching_profile_entry_job`         TINYINT                    NOT NULL,
+    `matching_profile_entry_job_level`   INT                        NOT NULL,
+    `matching_profile_current_job`       TINYINT                    NOT NULL,
+    `matching_profile_current_job_level` INT                        NOT NULL,
+    `matching_profile_objective_type1`   INT                        NOT NULL,
+    `matching_profile_objective_type2`   INT                        NOT NULL,
+    `matching_profile_play_style`        INT                        NOT NULL,
+    `matching_profile_comment`           TEXT                       NOT NULL,
+    `matching_profile_is_join_party`     TINYINT                    NOT NULL,
+    -- CDataArisenProfile  
+    `arisen_profile_background_id` TINYINT                          NOT NULL,
+    --  CDataAchievementIdentifier
+    `arisen_profile_title_uid`    INT                               NOT NULL,
+    `arisen_profile_title_index`  INT                               NOT NULL,
+    `arisen_profile_motion_id`    SMALLINT                          NOT NULL,
+    `arisen_profile_motion_frame_no` INT                            NOT NULL,
     CONSTRAINT `fk_character_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ddon_character_job_data`
+(
+    `character_id`                INTEGER                           NOT NULL,
+    `job`                         TINYINT                           NOT NULL,
+    `exp`                         INT                               NOT NULL,
+    `job_point`                   INT                               NOT NULL,
+    `lv`                          INT                               NOT NULL,
+    `atk`                         SMALLINT                          NOT NULL,
+    `def`                         SMALLINT                          NOT NULL,
+    `m_atk`                       SMALLINT                          NOT NULL,
+    `m_def`                       SMALLINT                          NOT NULL,
+    `strength`                    SMALLINT                          NOT NULL,
+    `down_power`                  SMALLINT                          NOT NULL,
+    `shake_power`                 SMALLINT                          NOT NULL,
+    `stun_power`                  SMALLINT                          NOT NULL,
+    `consitution`                 SMALLINT                          NOT NULL,
+    `guts`                        SMALLINT                          NOT NULL,
+    `fire_resist`                 TINYINT                           NOT NULL,
+    `ice_resist`                  TINYINT                           NOT NULL,
+    `thunder_resist`              TINYINT                           NOT NULL,
+    `holy_resist`                 TINYINT                           NOT NULL,
+    `dark_resist`                 TINYINT                           NOT NULL,
+    `spread_resist`               TINYINT                           NOT NULL,
+    `freeze_resist`               TINYINT                           NOT NULL,
+    `shock_resist`                TINYINT                           NOT NULL,
+    `absorb_resist`               TINYINT                           NOT NULL,
+    `dark_elm_resist`             TINYINT                           NOT NULL,
+    `poison_resist`               TINYINT                           NOT NULL,
+    `slow_resist`                 TINYINT                           NOT NULL,
+    `sleep_resist`                TINYINT                           NOT NULL,
+    `stun_resist`                 TINYINT                           NOT NULL,
+    `wet_resist`                  TINYINT                           NOT NULL,
+    `oil_resist`                  TINYINT                           NOT NULL,
+    `seal_resist`                 TINYINT                           NOT NULL,
+    `curse_resist`                TINYINT                           NOT NULL,
+    `soft_resist`                 TINYINT                           NOT NULL,
+    `stone_resist`                TINYINT                           NOT NULL,
+    `gold_resist`                 TINYINT                           NOT NULL,
+    `fire_reduce_resist`          TINYINT                           NOT NULL,
+    `ice_reduce_resist`           TINYINT                           NOT NULL,
+    `thunder_reduce_resist`       TINYINT                           NOT NULL,
+    `holy_reduce_resist`          TINYINT                           NOT NULL,
+    `dark_reduce_resist`          TINYINT                           NOT NULL,
+    `atk_down_resist`             TINYINT                           NOT NULL,
+    `def_down_resist`             TINYINT                           NOT NULL,
+    `m_atk_down_resist`           TINYINT                           NOT NULL,
+    `m_def_down_resist`           TINYINT                           NOT NULL,
+    PRIMARY KEY (`character_id`, `job`),
+    CONSTRAINT `fk_character_job_data_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `ddon_equip_item_info`
+(
+    `character_id`                INTEGER                           NOT NULL,
+    `job`                         TINYINT                           NOT NULL,
+    `item_id`                     INT                               NOT NULL,
+    `equip_type`                  TINYINT                           NOT NULL,
+    `equip_slot`                  SMALLINT                          NOT NULL,
+    `color`                       TINYINT                           NOT NULL,
+    `plus_value`                  TINYINT                           NOT NULL,
+    PRIMARY KEY (`character_id`, `job`, `equip_type`, `equip_slot`),
+    CONSTRAINT `fk_equip_item_info_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `ddon_equip_job_item`
+(
+    `character_id`                INTEGER                           NOT NULL,
+    `job`                         TINYINT                           NOT NULL,
+    `job_item_id`                 INT                               NOT NULL,
+    `equip_slot_no`               TINYINT                           NOT NULL,
+    PRIMARY KEY (`character_id`, `job`, `equip_slot_no`),
+    CONSTRAINT `fk_equip_item_info_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_game_token`
