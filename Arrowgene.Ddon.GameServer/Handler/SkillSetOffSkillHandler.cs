@@ -17,7 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetOffSkillReq> packet)
         {
             client.Character.CustomSkills.RemoveAll(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo);
-            
+            Database.UpdateCharacter(client.Character);
+
             client.Send(new S2CSkillSetOffSkillRes() {
                 Job = packet.Structure.Job,
                 SlotNo = packet.Structure.SlotNo

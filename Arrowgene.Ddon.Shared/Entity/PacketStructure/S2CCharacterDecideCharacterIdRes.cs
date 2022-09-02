@@ -48,7 +48,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Unk1 = ReadByte(buffer);
                 return obj;
             }
-            private readonly byte[] Pad14 = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
         }
     }
 }

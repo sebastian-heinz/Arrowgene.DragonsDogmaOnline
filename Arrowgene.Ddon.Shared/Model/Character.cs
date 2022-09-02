@@ -9,9 +9,15 @@ namespace Arrowgene.Ddon.Shared.Model
         public Character()
         {
             CharacterInfo = new CDataCharacterInfo();
+            CustomSkills = new List<CDataSetAcquirementParam>();
         }
 
-        public uint Id { get; set; }
+        public uint Id
+        { 
+            get { return CharacterInfo.CharacterId; }
+            set { this.CharacterInfo.CharacterId = value; }
+        }
+
         public int AccountId { get; set; }
         public DateTime Created { get; set; }
         public CDataCharacterInfo CharacterInfo { get; set; }

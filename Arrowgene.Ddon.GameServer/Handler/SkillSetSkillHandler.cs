@@ -35,6 +35,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             skillSlot.AcquirementNo = packet.Structure.SkillId;
             skillSlot.AcquirementLv = packet.Structure.SkillLv;
 
+            Database.UpdateCharacter(client.Character);
+
             client.Send(new S2CSkillSetSkillRes() {
                 Job = packet.Structure.Job,
                 SlotNo = packet.Structure.SlotNo,

@@ -20,10 +20,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSkillChangeExSkillReq> packet)
         {
             // Update all equiped skills of the type to the chosen EX skill
-            // TODO: Do this in DB instead of in memory
             IEnumerable<CDataSetAcquirementParam> skillSlots = client.Character.CustomSkills
                 .Where(skill => skill.Job == packet.Structure.Job && GetBaseSkillId(skill.AcquirementNo) == GetBaseSkillId(packet.Structure.SkillId));
-            
+            // TODO: Update only the skill itself rather than the entire character to avoid performance issues
+            Database.UpdateCharacter(client.Character);
+
             foreach (CDataSetAcquirementParam skillSlot in skillSlots)
             {
                 skillSlot.AcquirementNo = packet.Structure.SkillId;
