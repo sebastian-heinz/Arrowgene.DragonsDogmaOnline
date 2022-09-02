@@ -27,16 +27,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CCharacterDecideCharacterIdRes res = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             res.CharacterId = client.Character.Id;
             res.CharacterInfo = client.Character.CharacterInfo;
-            res.CharacterInfo.CharacterEquipJobItemList = new List<CDataEquipJobItem>() {
-                new CDataEquipJobItem {
-                    JobItemId = Server.AssetRepository.ArisenAsset[0].ClassItem1,
-                    EquipSlotNo = 1
-                },
-                new CDataEquipJobItem {
-                    JobItemId = Server.AssetRepository.ArisenAsset[0].ClassItem2,
-                    EquipSlotNo = 2
-                }
-            };
             client.Send(res);
             
             // Unlocks menu options such as inventory, warping, etc.
