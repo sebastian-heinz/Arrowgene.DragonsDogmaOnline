@@ -1,10 +1,8 @@
 using System.Linq;
-using System.Reflection.Metadata;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -56,10 +54,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = member.Character.Id;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = member.Character.CharacterInfo.FirstName;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.CharacterInfo.LastName;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
-                partyMember.CharacterListElement.EntryJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-                partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
+                partyMember.CharacterListElement.CurrentJobBaseInfo.Job = member.Character.CharacterInfo.Job;
+                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) member.Character.CharacterInfo.CharacterJobDataList
+                    .Where(x => x.Job == member.Character.CharacterInfo.Job)
+                    .Select(x => x.Lv)
+                    .SingleOrDefault();
+                partyMember.CharacterListElement.EntryJobBaseInfo.Job = member.Character.CharacterInfo.MatchingProfile.EntryJob;
+                partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) member.Character.CharacterInfo.MatchingProfile.EntryJobLevel;
                 partyMember.IsLeader = member.Character.Id == client.Party.Leader.Character.Id;
                 partyMember.MemberIndex = (byte) i;
                 ntc.PartyListInfo.MemberList.Add(partyMember);
@@ -75,10 +76,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = targetClient.Character.Id;
             otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = targetClient.Character.CharacterInfo.FirstName;
             otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = targetClient.Character.CharacterInfo.LastName;
-            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
-            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
+            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Job = targetClient.Character.CharacterInfo.Job;
+            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) targetClient.Character.CharacterInfo.CharacterJobDataList
+                    .Where(x => x.Job == targetClient.Character.CharacterInfo.Job)
+                    .Select(x => x.Lv)
+                    .SingleOrDefault();
+            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Job = targetClient.Character.CharacterInfo.MatchingProfile.EntryJob;
+            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) targetClient.Character.CharacterInfo.MatchingProfile.EntryJobLevel;
             otherPartyMember.IsLeader = targetClient.Character.Id == client.Party.Leader.Character.Id;
             otherPartyMember.MemberIndex = 0;
             response.Info.MemberList.Add(otherPartyMember);

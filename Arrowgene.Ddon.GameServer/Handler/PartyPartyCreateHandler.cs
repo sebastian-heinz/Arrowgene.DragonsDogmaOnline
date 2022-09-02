@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata;
-using Arrowgene.Ddon.GameServer.Dump;
+﻿using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -35,8 +34,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
             partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.CharacterInfo.FirstName;
             partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.CharacterInfo.LastName;
-            partyMember.CharacterListElement.CurrentJobBaseInfo.Job = Server.AssetRepository.ArisenAsset[0].Job;
-            partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) Server.AssetRepository.ArisenAsset[0].Lv;
+            partyMember.CharacterListElement.CurrentJobBaseInfo.Job = client.Character.CharacterInfo.Job;
+            partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) client.Character.CharacterInfo.CharacterJobDataList
+                    .Where(x => x.Job == client.Character.CharacterInfo.Job)
+                    .Select(x => x.Lv)
+                    .SingleOrDefault();
             partyMember.CharacterListElement.OnlineStatus = client.OnlineStatus;
             partyMember.CharacterListElement.unk2 = 1;
             partyMember.MemberType = 1;

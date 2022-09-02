@@ -74,7 +74,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private static readonly string[] CDataEquipItemInfoFields = new string[]
         {
-            "item_id", "equip_type", "equip_slot", "color", "plus_value"
+            "character_id", "job", "item_id", "equip_type", "equip_slot", "color", "plus_value"
         };
 
         private readonly string SqlInsertEquipItemInfo = $"INSERT OR REPLACE INTO `ddon_equip_item_info` ({BuildQueryField(CDataEquipItemInfoFields)}) VALUES ({BuildQueryInsert(CDataEquipItemInfoFields)});";
@@ -85,12 +85,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private static readonly string[] CDataEquipJobItemFields = new string[]
         {
-            "job_item_id", "equip_slot_no"
+            "character_id", "job", "job_item_id", "equip_slot_no"
         };
 
         private readonly string SqlInsertEquipJobItem = $"INSERT OR REPLACE INTO `ddon_equip_job_item` ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)});";
         private static readonly string SqlSelectEquipJobItem = $"SELECT {BuildQueryField(CDataEquipJobItemFields)} FROM `ddon_equip_job_item` WHERE `character_id` = @character_id AND `job` = @job;";
         private const string SqlDeleteEquipJobItem = "DELETE FROM `ddon_equip_job_item` WHERE `character_id`=@character_id AND `job`=@job AND `equip_slot_no`=@equip_slot_no;";
+
+
+        private static readonly string[] CDataSetAcquirementParamFields = new string[]
+        {
+            "character_id", "job", "type", "slot_no", "acquirement_no", "acquirement_lv"
+        };
+
+        private readonly string SqlInsertSetAcquirementParam = $"INSERT OR REPLACE INTO `ddon_set_acquirement_param` ({BuildQueryField(CDataSetAcquirementParamFields)}) VALUES ({BuildQueryInsert(CDataSetAcquirementParamFields)});";
+        private static readonly string SqlSelectSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id;";
+        private const string SqlDeleteSetAcquirementParam = "DELETE FROM `ddon_set_acquirement_param` WHERE `character_id`=@character_id AND `job`=@job AND `slot_no`=@slot_no;";
 
 
         public bool CreateCharacter(Character character)
@@ -101,10 +111,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 return false;
             }
+            character.Id = (uint) autoIncrement;
 
             StoreCharacterData(character);
 
-            character.Id = (uint) autoIncrement;
             return true;
         }
 
@@ -169,7 +179,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             ExecuteReader(SqlSelectCharacterJobDataByCharacter,
                 command => { AddParameter(command, "@character_id", character.Id); }, reader =>
                 {
-                    if(reader.Read())
+                    while (reader.Read())
                     {
                         character.CharacterInfo.CharacterJobDataList.Add(ReadCharacterJobData(reader));
                     }
@@ -185,7 +195,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }, 
                 reader =>
                 {
-                    if(reader.Read())
+                    while (reader.Read())
                     {
                         characterEquipData.Equips.Add(ReadEquipItemInfo(reader));
                     }
@@ -201,7 +211,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }, 
                 reader =>
                 {
-                    if(reader.Read())
+                    while (reader.Read())
                     {
                         characterEquipData.Equips.Add(ReadEquipItemInfo(reader));
                     }
@@ -217,9 +227,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }, 
                 reader =>
                 {
-                    if(reader.Read())
+                    while (reader.Read())
                     {
                         character.CharacterInfo.CharacterEquipJobItemList.Add(ReadEquipJobItem(reader));
+                    }
+                });
+
+            ExecuteReader(SqlSelectSetAcquirementParam,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.CustomSkills.Add(ReadSetAcquirementParam(reader));
                     }
                 });
         }
@@ -261,6 +281,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ExecuteNonQuery(SqlInsertEquipJobItem, command =>
                 {
                     AddParameter(command, character.Id, character.CharacterInfo.Job, equipJobItem);
+                });
+            }
+
+            foreach(CDataSetAcquirementParam setAcquirementParam in character.CustomSkills)
+            {
+                ExecuteNonQuery(SqlInsertSetAcquirementParam, command =>
+                {
+                    AddParameter(command, character.Id, setAcquirementParam);
                 });
             }
         }
@@ -643,6 +671,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "job", (byte) job);
             AddParameter(command, "job_item_id", equipJobItem.JobItemId);
             AddParameter(command, "equip_slot_no", equipJobItem.EquipSlotNo);
+        }
+
+        private CDataSetAcquirementParam ReadSetAcquirementParam(DbDataReader reader)
+        {
+            CDataSetAcquirementParam setAcquirementParam = new CDataSetAcquirementParam();
+            setAcquirementParam.Job = (JobId) GetByte(reader, "job");
+            setAcquirementParam.Type = GetByte(reader, "type");
+            setAcquirementParam.SlotNo = GetByte(reader, "slot_no");
+            setAcquirementParam.AcquirementNo = GetUInt32(reader, "acquirement_no");
+            setAcquirementParam.AcquirementLv = GetByte(reader, "acquirement_lv");
+            return setAcquirementParam;
+        }
+
+        private void AddParameter(TCom command, uint characterId, CDataSetAcquirementParam setAcquirementParam)
+        {
+            AddParameter(command, "character_id", characterId);
+            AddParameter(command, "job", (byte) setAcquirementParam.Job);
+            AddParameter(command, "type", setAcquirementParam.Type);
+            AddParameter(command, "slot_no", setAcquirementParam.SlotNo);
+            AddParameter(command, "acquirement_no", setAcquirementParam.AcquirementNo);
+            AddParameter(command, "acquirement_lv", setAcquirementParam.AcquirementLv);
         }
     }
 }
