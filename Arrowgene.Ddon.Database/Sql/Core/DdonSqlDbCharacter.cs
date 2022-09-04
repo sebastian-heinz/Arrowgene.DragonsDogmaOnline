@@ -213,7 +213,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     while (reader.Read())
                     {
-                        characterEquipData.Equips.Add(ReadEquipItemInfo(reader));
+                        characterVisualEquipData.Equips.Add(ReadEquipItemInfo(reader));
                     }
                 });
             character.CharacterInfo.CharacterEquipViewDataList.Add(characterVisualEquipData);
