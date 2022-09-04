@@ -32,7 +32,21 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             // Use the ArisenCsv row for the selected job as the preset equipment when the character is created
             ArisenCsv ArisenPreset = Server.AssetRepository.ArisenAsset.Where(x => x.Job == character.CharacterInfo.Job).Single();
             S2CCharacterDecideCharacterIdRes pcapCharacter = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(LoginDump.game_dump_data_Dump_13);
-            character.CharacterInfo.StatusInfo = pcapCharacter.CharacterInfo.StatusInfo; // TODO: Load if from somewhere
+            // PlayPointList will be empty when a character is created
+            character.CharacterInfo.StatusInfo = new CDataStatusInfo() {
+                HP = ArisenPreset.HP,
+                Stamina = ArisenPreset.Stamina,
+                RevivePoint = ArisenPreset.RevivePoint,
+                MaxHP = ArisenPreset.MaxHP,
+                MaxStamina = ArisenPreset.MaxStamina,
+                WhiteHP = ArisenPreset.WhiteHP,
+                GainHP = ArisenPreset.GainHP,
+                GainStamina = ArisenPreset.GainStamina,
+                GainAttack = ArisenPreset.GainAttack,
+                GainDefense = ArisenPreset.GainDefense,
+                GainMagicAttack = ArisenPreset.GainMagicAttack,
+                GainMagicDefense = ArisenPreset.GainMagicDefense
+            };
             character.CharacterInfo.CharacterJobDataList = new List<CDataCharacterJobData>() {
                 new CDataCharacterJobData {
                     Job = ArisenPreset.Job,
@@ -81,7 +95,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     MDefDownResist = ArisenPreset.MDefDownResist
                 }
             };
-            character.CharacterInfo.PlayPointList = pcapCharacter.CharacterInfo.PlayPointList; // TODO: ditto
             character.CharacterInfo.CharacterEquipDataList = new List<CDataCharacterEquipData>() {
                 new CDataCharacterEquipData {
                     Equips = new List<CDataEquipItemInfo>() {
