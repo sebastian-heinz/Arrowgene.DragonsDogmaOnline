@@ -24,102 +24,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            // TODO: Move this to DB
-            client.Character.NormalSkills = new List<CDataNormalSkillParam>() {
-                    new CDataNormalSkillParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Job,
-                    SkillNo = 1,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Job,
-                    SkillNo = 2,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Job,
-                    SkillNo = 3,
-                    Index = 0,
-                    PreSkillNo = 0
+            // TODO: Move to DB
+            client.Character.CharacterInfo.UnkCharData1 = new List<UnknownCharacterData1>()
+            {
+                // TODO: Figure out what other currencies there are.
+                // Pcap currencies:
+                //  1   9863202 (G?)
+                //  2   2096652 (RP?)
+                //  3   50000
+                //  4   5648
+                //  6   99999
+                //  9   5000
+                //  10  0
+                //  11  8
+                //  12  219
+                //  13  2
+                //  14  2
+                //  15  115
+                //  16  105
+                new UnknownCharacterData1()
+                {
+                    u0 = 2, // RP
+                    u1 = 42069
                 }
             };
-
-            // Ditto
-            client.Character.Abilities = new List<CDataSetAcquirementParam>() {
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab1Jb,
-                    Type = 0,
-                    SlotNo = 1,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab1Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab1Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab2Jb,
-                    Type = 0,
-                    SlotNo = 2,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab2Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab2Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab3Jb,
-                    Type = 0,
-                    SlotNo = 3,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab3Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab3Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab4Jb,
-                    Type = 0,
-                    SlotNo = 4,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab4Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab4Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab5Jb,
-                    Type = 0,
-                    SlotNo = 5,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab5Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab5Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab6Jb,
-                    Type = 0,
-                    SlotNo = 6,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab6Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab6Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab7Jb,
-                    Type = 0,
-                    SlotNo = 7,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab7Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab7Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab8Jb,
-                    Type = 0,
-                    SlotNo = 8,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab8Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab8Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab9Jb,
-                    Type = 0,
-                    SlotNo = 9,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab9Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab9Lv
-                },
-                new CDataSetAcquirementParam() {
-                    Job = Server.AssetRepository.ArisenAsset[0].Ab10Jb,
-                    Type = 0,
-                    SlotNo = 10,
-                    AcquirementNo = Server.AssetRepository.ArisenAsset[0].Ab10Id,
-                    AcquirementLv = Server.AssetRepository.ArisenAsset[0].Ab10Lv
-                }
-            };
-
+            
             S2CCharacterDecideCharacterIdRes res = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             res.CharacterId = client.Character.Id;
             res.CharacterInfo = client.Character.CharacterInfo;
