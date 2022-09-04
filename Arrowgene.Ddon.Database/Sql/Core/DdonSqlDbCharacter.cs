@@ -93,13 +93,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeleteEquipJobItem = "DELETE FROM `ddon_equip_job_item` WHERE `character_id`=@character_id AND `job`=@job AND `equip_slot_no`=@equip_slot_no;";
 
 
+        private static readonly string[] CDataNormalSkillParamFields = new string[]
+        {
+            "character_id", "job", "skill_no", "index", "pre_skill_no"
+        };
+
+        private readonly string SqlInsertNormalSkillParam = $"INSERT OR REPLACE INTO `ddon_normal_skill_param` ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)});";
+        private static readonly string SqlSelectNormalSkillParam = $"SELECT {BuildQueryField(CDataNormalSkillParamFields)} FROM `ddon_normal_skill_param` WHERE `character_id` = @character_id;";
+        private const string SqlDeleteNormalSkillParam = "DELETE FROM `ddon_normal_skill_param` WHERE `character_id`=@character_id AND `job`=@job AND `skill_no`=@skill_no;";
+
         private static readonly string[] CDataSetAcquirementParamFields = new string[]
         {
             "character_id", "job", "type", "slot_no", "acquirement_no", "acquirement_lv"
         };
 
         private readonly string SqlInsertSetAcquirementParam = $"INSERT OR REPLACE INTO `ddon_set_acquirement_param` ({BuildQueryField(CDataSetAcquirementParamFields)}) VALUES ({BuildQueryInsert(CDataSetAcquirementParamFields)});";
-        private static readonly string SqlSelectSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id;";
+        private static readonly string SqlSelectCustomSkillsSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `job` <> 0";
+        private static readonly string SqlSelectAbilitiesSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `job` = 0;";
         private const string SqlDeleteSetAcquirementParam = "DELETE FROM `ddon_set_acquirement_param` WHERE `character_id`=@character_id AND `job`=@job AND `slot_no`=@slot_no;";
 
 
@@ -233,13 +243,36 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
 
-            ExecuteReader(SqlSelectSetAcquirementParam,
+            // Normal Skills
+            ExecuteReader(SqlSelectNormalSkillParam,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.NormalSkills.Add(ReadNormalSkillParam(reader));
+                    }
+                });
+
+            // Custom Skills
+            ExecuteReader(SqlSelectCustomSkillsSetAcquirementParam,
                 command => { AddParameter(command, "@character_id", character.Id); },
                 reader =>
                 {
                     while (reader.Read())
                     {
                         character.CustomSkills.Add(ReadSetAcquirementParam(reader));
+                    }
+                });
+
+            // Abilities
+            ExecuteReader(SqlSelectAbilitiesSetAcquirementParam,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.Abilities.Add(ReadSetAcquirementParam(reader));
                     }
                 });
         }
@@ -284,7 +317,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
             }
 
+            foreach(CDataNormalSkillParam normalSkillParam in character.NormalSkills)
+            {
+                ExecuteNonQuery(SqlInsertNormalSkillParam, command =>
+                {
+                    AddParameter(command, character.Id, normalSkillParam);
+                });
+            }
+
             foreach(CDataSetAcquirementParam setAcquirementParam in character.CustomSkills)
+            {
+                ExecuteNonQuery(SqlInsertSetAcquirementParam, command =>
+                {
+                    AddParameter(command, character.Id, setAcquirementParam);
+                });
+            }
+
+            foreach(CDataSetAcquirementParam setAcquirementParam in character.Abilities)
             {
                 ExecuteNonQuery(SqlInsertSetAcquirementParam, command =>
                 {
@@ -671,6 +720,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "job", (byte) job);
             AddParameter(command, "job_item_id", equipJobItem.JobItemId);
             AddParameter(command, "equip_slot_no", equipJobItem.EquipSlotNo);
+        }
+
+        private CDataNormalSkillParam ReadNormalSkillParam(DbDataReader reader)
+        {
+            CDataNormalSkillParam normalSkillParam = new CDataNormalSkillParam();
+            normalSkillParam.Job = (JobId) GetByte(reader, "job");
+            normalSkillParam.SkillNo = GetUInt32(reader, "skill_no");
+            normalSkillParam.Index = GetUInt32(reader, "index");
+            normalSkillParam.PreSkillNo = GetUInt32(reader, "pre_skill_no");
+            return normalSkillParam;
+        }
+
+        private void AddParameter(TCom command, uint characterId, CDataNormalSkillParam normalSkillParam)
+        {
+            AddParameter(command, "character_id", characterId);
+            AddParameter(command, "job", (byte) normalSkillParam.Job);
+            AddParameter(command, "skill_no", normalSkillParam.SkillNo);
+            AddParameter(command, "index", normalSkillParam.Index);
+            AddParameter(command, "pre_skill_no", normalSkillParam.PreSkillNo);
         }
 
         private CDataSetAcquirementParam ReadSetAcquirementParam(DbDataReader reader)

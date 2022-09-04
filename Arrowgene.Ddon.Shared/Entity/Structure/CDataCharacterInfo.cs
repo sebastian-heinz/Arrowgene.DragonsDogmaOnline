@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             JewelrySlotNum = 0;
             CharacterItemSlotInfoList = new List<CDataEquipElementParam>();
             UnkCharData0 = new List<UnknownCharacterData0>();
-            UnkCharData1 = new List<UnknownCharacterData1>();
+            UnkCharData1 = new List<UnknownCharacterData1>(); // Currencies? 1 is G, 2 is RP...
             MyPawnSlotNum = 0;
             RentalPawnSlotNum = 0;
             OrbStatusList = new List<CDataOrbPageStatus>();

@@ -20,8 +20,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            //client.Send(InGameDump.Dump_54);
-
              // TODO: Filter so only the current job skills are sent?
             S2CSkillGetCurrentSetSkillListRes res = new S2CSkillGetCurrentSetSkillListRes();
             res.NormalSkillList = client.Character.NormalSkills;

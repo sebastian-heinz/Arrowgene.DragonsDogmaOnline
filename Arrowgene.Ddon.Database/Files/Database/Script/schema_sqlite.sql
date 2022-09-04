@@ -235,6 +235,17 @@ CREATE TABLE IF NOT EXISTS `ddon_set_acquirement_param`
     CONSTRAINT `fk_set_acquirement_param_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS `ddon_normal_skill_param`
+(
+    `character_id`                INTEGER                           NOT NULL,
+    `job`                         TINYINT                           NOT NULL,
+    `skill_no`                    INT                               NOT NULL,
+    `index`                       INT                               NOT NULL,
+    `pre_skill_no`                INT                               NOT NULL,
+    PRIMARY KEY (`character_id`, `job`, `skill_no`),
+    CONSTRAINT `fk_normal_skill_param_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS `ddon_game_token`
 (
     `account_id`   INTEGER PRIMARY KEY NOT NULL,

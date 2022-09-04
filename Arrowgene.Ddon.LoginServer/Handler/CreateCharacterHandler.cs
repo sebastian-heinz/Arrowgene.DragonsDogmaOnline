@@ -903,6 +903,27 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.CharacterInfo.HideEquipLantern = ArisenPreset.DisplayLantern;
             character.CharacterInfo.HideEquipHeadPawn = Server.AssetRepository.MyPawnAsset[0].HideEquipHead;
             character.CharacterInfo.HideEquipLanternPawn = Server.AssetRepository.MyPawnAsset[0].HideEquipLantern;
+            // TODO: Load from Arisen.csv or something
+            character.NormalSkills = new List<CDataNormalSkillParam>() {
+                    new CDataNormalSkillParam() {
+                    Job = ArisenPreset.Job,
+                    SkillNo = 1,
+                    Index = 0,
+                    PreSkillNo = 0
+                },
+                new CDataNormalSkillParam() {
+                    Job = ArisenPreset.Job,
+                    SkillNo = 2,
+                    Index = 0,
+                    PreSkillNo = 0
+                },
+                new CDataNormalSkillParam() {
+                    Job = ArisenPreset.Job,
+                    SkillNo = 3,
+                    Index = 0,
+                    PreSkillNo = 0
+                }
+            };
             character.CustomSkills = new List<CDataSetAcquirementParam>() {
                 // Main Palette
                 new CDataSetAcquirementParam() {
@@ -961,6 +982,78 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     SlotNo = (1<<4) | 4,
                     AcquirementNo = ArisenPreset.Cs4SpId,
                     AcquirementLv = ArisenPreset.Cs4SpLv
+                }
+            };
+            character.Abilities = new List<CDataSetAcquirementParam>() {
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab1Jb,
+                    Type = 0,
+                    SlotNo = 1,
+                    AcquirementNo = ArisenPreset.Ab1Id,
+                    AcquirementLv = ArisenPreset.Ab1Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab2Jb,
+                    Type = 0,
+                    SlotNo = 2,
+                    AcquirementNo = ArisenPreset.Ab2Id,
+                    AcquirementLv = ArisenPreset.Ab2Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab3Jb,
+                    Type = 0,
+                    SlotNo = 3,
+                    AcquirementNo = ArisenPreset.Ab3Id,
+                    AcquirementLv = ArisenPreset.Ab3Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab4Jb,
+                    Type = 0,
+                    SlotNo = 4,
+                    AcquirementNo = ArisenPreset.Ab4Id,
+                    AcquirementLv = ArisenPreset.Ab4Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab5Jb,
+                    Type = 0,
+                    SlotNo = 5,
+                    AcquirementNo = ArisenPreset.Ab5Id,
+                    AcquirementLv = ArisenPreset.Ab5Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab6Jb,
+                    Type = 0,
+                    SlotNo = 6,
+                    AcquirementNo = ArisenPreset.Ab6Id,
+                    AcquirementLv = ArisenPreset.Ab6Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab7Jb,
+                    Type = 0,
+                    SlotNo = 7,
+                    AcquirementNo = ArisenPreset.Ab7Id,
+                    AcquirementLv = ArisenPreset.Ab7Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab8Jb,
+                    Type = 0,
+                    SlotNo = 8,
+                    AcquirementNo = ArisenPreset.Ab8Id,
+                    AcquirementLv = ArisenPreset.Ab8Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab9Jb,
+                    Type = 0,
+                    SlotNo = 9,
+                    AcquirementNo = ArisenPreset.Ab9Id,
+                    AcquirementLv = ArisenPreset.Ab9Lv
+                },
+                new CDataSetAcquirementParam() {
+                    Job = ArisenPreset.Ab10Jb,
+                    Type = 0,
+                    SlotNo = 10,
+                    AcquirementNo = ArisenPreset.Ab10Id,
+                    AcquirementLv = ArisenPreset.Ab10Lv
                 }
             };
 
