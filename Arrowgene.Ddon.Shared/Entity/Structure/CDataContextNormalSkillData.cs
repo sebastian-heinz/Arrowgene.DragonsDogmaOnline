@@ -5,6 +5,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     // Ingame: Core Skills
     public class CDataContextNormalSkillData
     {
+
+        public CDataContextNormalSkillData(CDataNormalSkillParam normalSkillParam)
+        {
+            SkillNo = (byte) normalSkillParam.SkillNo;
+        }
+
         public CDataContextNormalSkillData()
         {
             SkillNo=0;

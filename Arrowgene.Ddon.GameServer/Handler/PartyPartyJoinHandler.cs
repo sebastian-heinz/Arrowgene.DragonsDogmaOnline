@@ -1,8 +1,6 @@
 using System.Linq;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -60,21 +58,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             newParty.SendToAll(partyJoinNtcForNewMember);
 
             // Send party player context NTCs to the new member
-            S2CContextGetLobbyPlayerContextNtc sampleData = EntitySerializer
-                        .Get<S2CContextGetLobbyPlayerContextNtc>().Read(SelectedDump.data_Dump_LobbyPlayerContext);
-            for(int i = 0; i < newParty.Members.Count; i++)
+            for(byte i = 0; i < newParty.Members.Count; i++)
             {
                 GameClient member = newParty.Members[i];
-                S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc();
-                partyPlayerContextNtc.CharacterId = member.Character.Id;
-                partyPlayerContextNtc.Context.Base = sampleData.Context.Base;
-                partyPlayerContextNtc.Context.Base.CharacterId = member.Character.Id;
-                partyPlayerContextNtc.Context.Base.FirstName = member.Character.CharacterInfo.FirstName;
-                partyPlayerContextNtc.Context.Base.LastName = member.Character.CharacterInfo.LastName;
-                partyPlayerContextNtc.Context.Base.MemberIndex = (byte) i;
-                partyPlayerContextNtc.Context.PlayerInfo = sampleData.Context.PlayerInfo;
-                partyPlayerContextNtc.Context.ResistInfo = new CDataContextResist();
-                partyPlayerContextNtc.Context.EditInfo = member.Character.CharacterInfo.EditInfo;
+                S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc(member.Character);
+                partyPlayerContextNtc.Context.Base.MemberIndex = i;
                 newParty.SendToAll(partyPlayerContextNtc);
             }
         }

@@ -1,9 +1,18 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataPartyPlayerContext
     {
+        public CDataPartyPlayerContext(Character character)
+        {
+            Base = new CDataContextBase(character);
+            PlayerInfo = new CDataContextPlayerInfo(character);
+            ResistInfo = new CDataContextResist(character);
+            EditInfo = character.CharacterInfo.EditInfo;
+        }
+        
         public CDataPartyPlayerContext()
         {
             Base = new CDataContextBase();
