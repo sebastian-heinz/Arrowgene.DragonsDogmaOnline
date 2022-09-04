@@ -12,6 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterId = character.Id;
             FirstName = character.CharacterInfo.FirstName;
             LastName = character.CharacterInfo.LastName;
+            StageNo = 200; // TODO: Replace with the actual stage the player is in. As it is right now it'll probably give issues when new players join outside of WDT
             Sex = character.CharacterInfo.EditInfo.Sex;
             HideEquipHead = character.CharacterInfo.HideEquipHead;
             HideEquipLantern = character.CharacterInfo.HideEquipLantern;
