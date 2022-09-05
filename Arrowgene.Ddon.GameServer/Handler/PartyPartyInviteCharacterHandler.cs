@@ -55,10 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = member.Character.CharacterInfo.FirstName;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.CharacterInfo.LastName;
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Job = member.Character.CharacterInfo.Job;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) member.Character.CharacterInfo.CharacterJobDataList
-                    .Where(x => x.Job == member.Character.CharacterInfo.Job)
-                    .Select(x => x.Lv)
-                    .SingleOrDefault();
+                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) member.Character.CharacterInfo.ActiveCharacterJobData.Lv;
                 partyMember.CharacterListElement.EntryJobBaseInfo.Job = member.Character.CharacterInfo.MatchingProfile.EntryJob;
                 partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) member.Character.CharacterInfo.MatchingProfile.EntryJobLevel;
                 partyMember.IsLeader = member.Character.Id == client.Party.Leader.Character.Id;
@@ -77,10 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = targetClient.Character.CharacterInfo.FirstName;
             otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = targetClient.Character.CharacterInfo.LastName;
             otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Job = targetClient.Character.CharacterInfo.Job;
-            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) targetClient.Character.CharacterInfo.CharacterJobDataList
-                    .Where(x => x.Job == targetClient.Character.CharacterInfo.Job)
-                    .Select(x => x.Lv)
-                    .SingleOrDefault();
+            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) targetClient.Character.CharacterInfo.ActiveCharacterJobData.Lv;
             otherPartyMember.CharacterListElement.EntryJobBaseInfo.Job = targetClient.Character.CharacterInfo.MatchingProfile.EntryJob;
             otherPartyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) targetClient.Character.CharacterInfo.MatchingProfile.EntryJobLevel;
             otherPartyMember.IsLeader = targetClient.Character.Id == client.Party.Leader.Character.Id;

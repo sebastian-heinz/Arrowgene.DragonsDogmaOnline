@@ -8,6 +8,7 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public Character()
         {
+            Created = DateTime.MinValue;
             CharacterInfo = new CDataCharacterInfo();
             NormalSkills = new List<CDataNormalSkillParam>();
             CustomSkills = new List<CDataSetAcquirementParam>();

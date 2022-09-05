@@ -9,9 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataContextPlayerInfo(Character character)
         {
-            CDataCharacterJobData characterJobData = character.CharacterInfo.CharacterJobDataList
-                .Where(x => x.Job == character.CharacterInfo.Job)
-                .Single();
+            CDataCharacterJobData characterJobData = character.CharacterInfo.ActiveCharacterJobData;
 
             Job = character.CharacterInfo.Job;
             HP = character.CharacterInfo.StatusInfo.HP;

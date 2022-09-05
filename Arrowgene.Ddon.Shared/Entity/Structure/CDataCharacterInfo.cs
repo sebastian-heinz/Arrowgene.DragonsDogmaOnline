@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -39,6 +40,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             HideEquipLanternPawn = false;
             ArisenProfileShareRange = 0;
             OnlineStatus = 0;
+        }
+
+        public CDataCharacterJobData ActiveCharacterJobData
+        {
+            get { return CharacterJobDataList.Where(x => x.Job == Job).Single(); }
         }
 
         public uint CharacterId;

@@ -38,10 +38,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = c.CharacterInfo.FirstName;
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = c.CharacterInfo.LastName;
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.CharacterInfo.Job;
-                cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.CharacterInfo.CharacterJobDataList
-                    .Where(x => x.Job == c.CharacterInfo.Job)
-                    .Select(x => x.Lv)
-                    .SingleOrDefault();
+                cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.CharacterInfo.ActiveCharacterJobData.Lv;
                 // maybe?
                 //cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.CharacterInfo.MatchingProfile.CurrentJob;
                 //cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.CharacterInfo.MatchingProfile.CurrentJobLevel;

@@ -43,10 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = member.Character.CharacterInfo.FirstName;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.CharacterInfo.LastName;
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Job = member.Character.CharacterInfo.Job;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) member.Character.CharacterInfo.CharacterJobDataList
-                    .Where(x => x.Job == member.Character.CharacterInfo.Job)
-                    .Select(x => x.Lv)
-                    .SingleOrDefault();
+                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) member.Character.CharacterInfo.ActiveCharacterJobData.Lv;
                 partyMember.CharacterListElement.OnlineStatus = member.OnlineStatus;
                 partyMember.CharacterListElement.unk2 = 1;
                 partyMember.MemberType = 1;
