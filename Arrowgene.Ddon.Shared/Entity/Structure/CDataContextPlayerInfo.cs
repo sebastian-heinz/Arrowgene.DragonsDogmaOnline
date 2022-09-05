@@ -1,65 +1,62 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextPlayerInfo
     {
+        public CDataContextPlayerInfo(Character character)
+        {
+            CDataCharacterJobData characterJobData = character.CharacterInfo.ActiveCharacterJobData;
+
+            Job = character.CharacterInfo.Job;
+            HP = character.CharacterInfo.StatusInfo.HP;
+            MaxHP = character.CharacterInfo.StatusInfo.MaxHP;
+            WhiteHP = character.CharacterInfo.StatusInfo.WhiteHP;
+            Stamina = character.CharacterInfo.StatusInfo.Stamina;
+            MaxStamina = character.CharacterInfo.StatusInfo.MaxStamina;
+            // Weight?
+            Lv = (ushort) characterJobData.Lv;
+            Exp = characterJobData.Exp;
+            Atk = characterJobData.Atk;
+            Def = characterJobData.Def;
+            MAtk = characterJobData.MAtk;
+            MDef = characterJobData.MDef;
+            Strength = characterJobData.Strength;
+            DownPower = characterJobData.DownPower;
+            ShakePower = characterJobData.ShakePower;
+            // StanPower?
+            // Constitution?
+            Guts = characterJobData.Guts;
+            JobPoint = characterJobData.JobPoint;
+            GainHp = character.CharacterInfo.StatusInfo.GainHP;
+            GainStamina = character.CharacterInfo.StatusInfo.GainStamina;
+            GainAttack = character.CharacterInfo.StatusInfo.GainAttack;
+            GainDefense = character.CharacterInfo.StatusInfo.GainDefense;
+            GainMagicAttack = character.CharacterInfo.StatusInfo.GainMagicAttack;
+            GainMagicDefense = character.CharacterInfo.StatusInfo.GainMagicDefense;
+            // ActNo?
+            RevivePoint = character.CharacterInfo.StatusInfo.RevivePoint;
+            // CustomSkillGroup?
+            JobList = character.CharacterInfo.CharacterJobDataList
+                .Select(x => new CDataContextJobData(x)).ToList();
+            ChargeEffectList=new List<CDataCommonU32>(); // TODO
+            OcdActiveList=new List<CDataOcdActive>(); // TODO
+            // CatchType?
+            // CatchJointNo?
+            // CustomWork?
+        }
+
         public CDataContextPlayerInfo()
         {
-            Job=0;
-            HP=0;
-            MaxHP=0;
-            WhiteHP=0;
-            Stamina=0;
-            MaxStamina=0;
-            Weight=0;
-            Lv=0;
-            Exp=0;
-            Atk=0;
-            Def=0;
-            MAtk=0;
-            MDef=0;
-            Strength=0;
-            DownPower=0;
-            ShakePower=0;
-            StanPower=0;
-            Constitution=0;
-            Guts=0;
-            JobPoint=0;
-            GainHp=0;
-            GainStamina=0;
-            GainAttack=0;
-            GainDefense=0;
-            GainMagicAttack=0;
-            GainMagicDefense=0;
-            ActNo=0;
-            RevivePoint=0;
-            CustomSkillGroup=0;
             JobList=new List<CDataContextJobData>();
             ChargeEffectList=new List<CDataCommonU32>();
             OcdActiveList=new List<CDataOcdActive>();
-            CliffX=0;
-            CliffY=0;
-            CliffZ=0;
-            CliffNormalX=0;
-            CliffNormalY=0;
-            CliffNormalZ=0;
-            CliffStartX=0;
-            CliffStartY=0;
-            CliffStartZ=0;
-            CliffStartOldX=0;
-            CliffStartOldY=0;
-            CliffStartOldZ=0;
-            CatchType=0;
-            CatchJointNo=0;
-            Unk0=0;
-            CustomWork=0;
-            Unk1=0;
-            Unk2=0;
         }
 
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public float HP { get; set; }
         public float MaxHP { get; set; }
         public float WhiteHP { get; set; }
@@ -114,7 +111,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataContextPlayerInfo obj)
             {
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteFloat(buffer, obj.HP);
                 WriteFloat(buffer, obj.MaxHP);
                 WriteFloat(buffer, obj.WhiteHP);
@@ -169,7 +166,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataContextPlayerInfo Read(IBuffer buffer)
             {
                 CDataContextPlayerInfo obj = new CDataContextPlayerInfo();
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.HP = ReadFloat(buffer);
                 obj.MaxHP = ReadFloat(buffer);
                 obj.WhiteHP = ReadFloat(buffer);

@@ -1,13 +1,11 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Network;
 
-namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
+namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public class S2CContextSetContextBaseNotice : IPacketStructure
+    public class CDataContextSetBase
     {
-        public PacketId Id => PacketId.S2C_CONTEXT_35_11_16_NTC;
 
-        public S2CContextSetContextBaseNotice()
+        public CDataContextSetBase()
         {
             ContextId=0;
             UniqueId=0;
@@ -23,10 +21,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public int EncountArea { get; set; }
         public int MasterIndex { get; set; }
         public uint Unk0 { get; set; }
+        
+        public class Serializer : EntitySerializer<CDataContextSetBase>
+        {            
 
-        public class Serializer : PacketEntitySerializer<S2CContextSetContextBaseNotice>
-        {
-            public override void Write(IBuffer buffer, S2CContextSetContextBaseNotice obj)
+            public override void Write(IBuffer buffer, CDataContextSetBase obj)
             {
                 WriteUInt32(buffer, obj.ContextId);
                 WriteUInt64(buffer, obj.UniqueId);
@@ -36,9 +35,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.Unk0);
             }
 
-            public override S2CContextSetContextBaseNotice Read(IBuffer buffer)
+            public override CDataContextSetBase Read(IBuffer buffer)
             {
-                S2CContextSetContextBaseNotice obj = new S2CContextSetContextBaseNotice();
+                CDataContextSetBase obj = new CDataContextSetBase();
                 obj.ContextId = ReadUInt32(buffer);
                 obj.UniqueId = ReadUInt64(buffer);
                 obj.StageNo = ReadInt32(buffer);

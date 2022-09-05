@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer
 
             if (Character != null)
             {
-                newIdentity += $"[Cha:({Character.Id}){Character.FirstName}]";
+                newIdentity += $"[Cha:({Character.Id}){Character.CharacterInfo.FirstName} {Character.CharacterInfo.LastName}]";
             }
 
             Identity = newIdentity;
@@ -33,6 +33,7 @@ namespace Arrowgene.Ddon.GameServer
         public Account Account { get; set; }
 
         public Character Character { get; set; }
+        public OnlineStatus OnlineStatus { get; set; }
 
         /// TODO combine into a location class ?
         public StageId Stage { get; set; }

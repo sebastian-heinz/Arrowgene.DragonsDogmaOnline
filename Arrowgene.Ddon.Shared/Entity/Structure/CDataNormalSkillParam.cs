@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -12,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             PreSkillNo=0;
         }
 
-        public byte Job { get; set; }
+        public JobId Job { get; set; }
         public uint SkillNo { get; set; }
         public uint Index { get; set; }
         public uint PreSkillNo { get; set; }
@@ -21,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataNormalSkillParam obj)
             {
-                WriteByte(buffer, obj.Job);
+                WriteByte(buffer, (byte) obj.Job);
                 WriteUInt32(buffer, obj.SkillNo);
                 WriteUInt32(buffer, obj.Index);
                 WriteUInt32(buffer, obj.PreSkillNo);
@@ -30,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataNormalSkillParam Read(IBuffer buffer)
             {
                 CDataNormalSkillParam obj = new CDataNormalSkillParam();
-                obj.Job = ReadByte(buffer);
+                obj.Job = (JobId) ReadByte(buffer);
                 obj.SkillNo = ReadUInt32(buffer);
                 obj.Index = ReadUInt32(buffer);
                 obj.PreSkillNo = ReadUInt32(buffer);

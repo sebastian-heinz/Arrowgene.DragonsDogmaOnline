@@ -34,14 +34,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private void NotifyDisconnect(GameClient client)
         {
-            // Notice all other users
-            S2CUserListLeaveNtc ntc = new S2CUserListLeaveNtc();
-            ntc.CharacterList.Add(new CDataCommonU32(client.Character.Id));
-            foreach (Client otherClient in Server.Clients)
-            {
-                if (otherClient != client)
+            if(client.Character != null) {
+                // Notice all other users
+                S2CUserListLeaveNtc ntc = new S2CUserListLeaveNtc();
+                ntc.CharacterList.Add(new CDataCommonU32(client.Character.Id));
+                foreach (Client otherClient in Server.Clients)
                 {
-                    otherClient.Send(ntc);
+                    if (otherClient != client)
+                    {
+                        otherClient.Send(ntc);
+                    }
                 }
             }
         }

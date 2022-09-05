@@ -22,21 +22,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
 
             CData_35_14_16 ntcData = new CData_35_14_16();
-            ntcData.UniqueId = packet.Structure.UniqueId;
+            ntcData.UniqueId = packet.Structure.Base.UniqueId;
             ntcData.Unk0 = 0;
             S2CContext_35_14_16_Ntc ntc = new S2CContext_35_14_16_Ntc();
             ntc.Unk0.Add(ntcData);
-            client.Send(ntc);
 
-            S2CContextSetContextBaseNotice baseNtc = new S2CContextSetContextBaseNotice();
-            baseNtc.ContextId = packet.Structure.ContextId;
-            baseNtc.UniqueId = packet.Structure.UniqueId;
-            baseNtc.StageNo = packet.Structure.StageNo;
-            baseNtc.EncountArea = packet.Structure.EncountArea;
-            baseNtc.MasterIndex = packet.Structure.MasterIndex;
-            baseNtc.Unk0 = packet.Structure.Unk0;
-            //client.Send(baseNtc); // Uncommenting this makes enemies not respawn ever, even if you go back to town
-            // We believe it may be telling the client to load a persistent context. If it's not sent, it will load a new context.
+            // We believe it may be telling the client to load a persistent context.
+            // If it's not sent, it will load a new context.
+            // Sending S2CInstance_13_42_16_Ntc resets it (Like its done in StageAreaChangeHandler)
+            S2CContextSetContextBaseNtc baseNtc = new S2CContextSetContextBaseNtc();
+            baseNtc.Base = packet.Structure.Base;
+
+            foreach(GameClient member in client.Party.Members)
+            {
+                client.Send(ntc);
+                client.Send(baseNtc);
+            }
         }
     }
 }

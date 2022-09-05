@@ -1,26 +1,29 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterSetOnlineStatusHandler : PacketHandler<GameClient>
+    public class CharacterSetOnlineStatusHandler : StructurePacketHandler<GameClient, C2SCharacterSetOnlineStatusReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterSetOnlineStatusHandler));
-
 
         public CharacterSetOnlineStatusHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_CHARACTER_SET_ONLINE_STATUS_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterSetOnlineStatusReq> packet)
         {
-            client.Send(SelectedDump.AntiDC_NoOpe);
+            client.OnlineStatus = packet.Structure.OnlineStatus;
+
+            // TODO: Figure out packet.Structure.IsSaveSetting
+
+            client.Send(new S2CCharacterSetOnlineStatusRes() {
+                OnlineStatus = packet.Structure.OnlineStatus
+            });
         }
     }
 }

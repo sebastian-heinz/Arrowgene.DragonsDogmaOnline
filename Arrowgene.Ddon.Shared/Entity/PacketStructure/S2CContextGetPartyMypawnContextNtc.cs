@@ -2,20 +2,19 @@ using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CContext_35_3_16_Ntc : IPacketStructure
+    public class S2CContextGetPartyMypawnContextNtc : IPacketStructure
     {
-        public S2CContext_35_3_16_Ntc()
+        public S2CContextGetPartyMypawnContextNtc()
         {
             MyPawnCsvData = new List<MyPawnCsv>();
             Req = new C2SPawnJoinPartyMypawnReq();
             CharacterId = 0;
         }
 
-        public S2CContext_35_3_16_Ntc(List<MyPawnCsv> myPawnCsvData, C2SPawnJoinPartyMypawnReq req)
+        public S2CContextGetPartyMypawnContextNtc(List<MyPawnCsv> myPawnCsvData, C2SPawnJoinPartyMypawnReq req)
         {
             MyPawnCsvData = myPawnCsvData;
             Req = req;
@@ -25,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public C2SPawnJoinPartyMypawnReq Req { get; set; }
         public uint CharacterId { get; set; }
 
-        public PacketId Id => PacketId.S2C_CONTEXT_35_3_16_NTC;
+        public PacketId Id => PacketId.S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_NTC;
 
         private class MyPawnMemberIndex
         {
@@ -50,10 +49,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         }
 
-        public class Serializer : PacketEntitySerializer<S2CContext_35_3_16_Ntc>
+        public class Serializer : PacketEntitySerializer<S2CContextGetPartyMypawnContextNtc>
         {
 
-            public override void Write(IBuffer buffer, S2CContext_35_3_16_Ntc obj)
+            public override void Write(IBuffer buffer, S2CContextGetPartyMypawnContextNtc obj)
             {
                 C2SPawnJoinPartyMypawnReq req = obj.Req;
                 int n = req.PawnNumber;
@@ -225,7 +224,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, myPawnCsvData.AbilityId10);
                 WriteByte(buffer, myPawnCsvData.AbilityLv10);
                 WriteByteArray(buffer, obj.Pad12);
-                WriteByte(buffer, myPawnCsvData.Job);
+                WriteByte(buffer, (byte) myPawnCsvData.Job);
                 WriteByteArray(buffer, obj.JobIdLv);
                 WriteByte(buffer, myPawnCsvData.JobLv);
                 WriteByteArray(buffer, obj.LvReaction);
@@ -343,9 +342,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteByteArray(buffer, obj.Base);
             }
 
-            public override S2CContext_35_3_16_Ntc Read(IBuffer buffer)
+            public override S2CContextGetPartyMypawnContextNtc Read(IBuffer buffer)
             {
-                S2CContext_35_3_16_Ntc obj = new S2CContext_35_3_16_Ntc();
+                S2CContextGetPartyMypawnContextNtc obj = new S2CContextGetPartyMypawnContextNtc();
                 MyPawnCsv myPawnCsvData = new MyPawnCsv();
 
                 return obj;

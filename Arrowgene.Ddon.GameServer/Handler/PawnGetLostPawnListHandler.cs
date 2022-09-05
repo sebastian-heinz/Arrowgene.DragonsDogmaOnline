@@ -18,8 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnGetLostPawnListReq> req)
         {
-            S2CPawnGetLostPawnListRes res = new S2CPawnGetLostPawnListRes();
-            client.Send(res);
+            client.Send(new S2CPawnGetLostPawnListRes());
         }
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -23,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             JewelrySlotNum = 0;
             CharacterItemSlotInfoList = new List<CDataEquipElementParam>();
             UnkCharData0 = new List<UnknownCharacterData0>();
-            UnkCharData1 = new List<UnknownCharacterData1>();
+            UnkCharData1 = new List<UnknownCharacterData1>(); // Currencies? 1 is G, 2 is RP...
             MyPawnSlotNum = 0;
             RentalPawnSlotNum = 0;
             OrbStatusList = new List<CDataOrbPageStatus>();
@@ -40,6 +42,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             OnlineStatus = 0;
         }
 
+        public CDataCharacterJobData ActiveCharacterJobData
+        {
+            get { return CharacterJobDataList.Where(x => x.Job == Job).Single(); }
+        }
+
         public uint CharacterId;
         public uint UserId;
         public uint Version;
@@ -47,7 +54,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public string LastName;
         public CDataEditInfo EditInfo;
         public CDataStatusInfo StatusInfo;
-        public byte Job;
+        public JobId Job;
         public List<CDataCharacterJobData> CharacterJobDataList;
         public List<CDataJobPlayPoint> PlayPointList;
         public List<CDataCharacterEquipData> CharacterEquipDataList;
@@ -73,7 +80,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool HideEquipHeadPawn;
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
-        public byte OnlineStatus;
+        public OnlineStatus OnlineStatus;
     }
     public class CDataCharacterInfoSerializer : EntitySerializer<CDataCharacterInfo>
     {
@@ -86,7 +93,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteMtString(buffer, obj.LastName);
             WriteEntity(buffer, obj.EditInfo);
             WriteEntity(buffer, obj.StatusInfo);
-            WriteByte(buffer, obj.Job);
+            WriteByte(buffer, (byte) obj.Job);
             WriteEntityList(buffer, obj.CharacterJobDataList);
             WriteEntityList(buffer, obj.PlayPointList);
             WriteEntityList(buffer, obj.CharacterEquipDataList);
@@ -109,7 +116,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteBool(buffer, obj.HideEquipHeadPawn);
             WriteBool(buffer, obj.HideEquipLanternPawn);
             WriteByte(buffer, obj.ArisenProfileShareRange);
-            WriteByte(buffer, obj.OnlineStatus);
+            WriteByte(buffer, (byte) obj.OnlineStatus);
         }
 
         public override CDataCharacterInfo Read(IBuffer buffer)
@@ -122,7 +129,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.LastName = ReadMtString(buffer);
             obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
             obj.StatusInfo = ReadEntity<CDataStatusInfo>(buffer);
-            obj.Job = ReadByte(buffer);
+            obj.Job = (JobId) ReadByte(buffer);
             obj.CharacterJobDataList = ReadEntityList<CDataCharacterJobData>(buffer);
             obj.PlayPointList = ReadEntityList<CDataJobPlayPoint>(buffer);
             obj.CharacterEquipDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
@@ -145,7 +152,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.HideEquipHeadPawn = ReadBool(buffer);
             obj.HideEquipLanternPawn = ReadBool(buffer);
             obj.ArisenProfileShareRange = ReadByte(buffer);
-            obj.OnlineStatus = ReadByte(buffer);
+            obj.OnlineStatus = (OnlineStatus) ReadByte(buffer);
             return obj;
         }
     }

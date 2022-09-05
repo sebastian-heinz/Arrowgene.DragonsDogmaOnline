@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -18,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public byte Type { get; set; }
         public uint CharacterId { get; set; }
         public byte[] RpcPacket { get; set; }
-        public byte OnlineStatus { get; set; }
+        public OnlineStatus OnlineStatus { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CLobbyLobbyDataMsgNotice>
         {
@@ -28,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteInt32(buffer, obj.RpcPacket.Length);
                 WriteByteArray(buffer, obj.RpcPacket);
-                WriteByte(buffer, obj.OnlineStatus);
+                WriteByte(buffer, (byte) obj.OnlineStatus);
             }
 
             public override S2CLobbyLobbyDataMsgNotice Read(IBuffer buffer)
@@ -38,7 +39,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.CharacterId = ReadUInt32(buffer);
                 int rpcPacketLength = ReadInt32(buffer);
                 obj.RpcPacket = ReadByteArray(buffer, rpcPacketLength);
-                obj.OnlineStatus = ReadByte(buffer);
+                obj.OnlineStatus = (OnlineStatus) ReadByte(buffer);
                 return obj;
             }
         }

@@ -11,18 +11,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         
         public S2CPartyPartyJoinNtc()
         {
-            Error = 0;
             LeaderCharacterId = 0;
             HostCharacterId = 0;
             PartyMembers = new List<CDataPartyMember>();
-            IsReceived = false;
         }
         
-        public uint Error { get; set; }
         public uint LeaderCharacterId { get; set; }
         public uint HostCharacterId { get; set; }
         public List<CDataPartyMember> PartyMembers { get; set; }
-        public bool IsReceived { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CPartyPartyJoinNtc>
         {

@@ -314,7 +314,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 AbilitySlot10 = abilitySlot10,
                 AbilityId10 = abilityId10,
                 AbilityLv10 = abilityLv10,
-                Job = job,
+                Job = (JobId) job,
                 JobLv = jobLv,
                 MetPartyMembers = metPartyMembers,
                 MetPartyMembersId = metPartyMembersId,

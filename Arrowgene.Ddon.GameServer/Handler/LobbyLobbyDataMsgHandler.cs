@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.Type = packet.Structure.Type; // I haven't seen any values other than 0x02
             res.CharacterId = client.Character.Id; // Has to be overwritten since the request has the id set to 0
             res.RpcPacket = packet.Structure.RpcPacket;
-            res.OnlineStatus = 0x08; // TODO: Figure out OnlineStatus values
+            res.OnlineStatus = client.OnlineStatus;
 
             foreach (GameClient otherClient in Server.Clients)
             {

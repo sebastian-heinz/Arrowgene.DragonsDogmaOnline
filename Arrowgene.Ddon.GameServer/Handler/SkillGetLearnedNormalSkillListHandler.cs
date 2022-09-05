@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -14,9 +16,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+        // Learned Core Skills
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetLearnedNormalSkillListReq> packet)
         {
-            client.Send(new S2CSkillGetLearnedNormalSkillListRes());
+            client.Send(new S2CSkillGetLearnedNormalSkillListRes() {
+                NormalSkillParamList = client.Character.NormalSkills
+            });
         }
     }
 }

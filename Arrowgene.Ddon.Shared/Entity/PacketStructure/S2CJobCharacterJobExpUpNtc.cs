@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -16,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Type=0;
         }
 
-        public byte JobId;
+        public JobId JobId;
         public uint AddExp;
         public uint ExtraBonusExp;
         public uint TotalExp;
@@ -26,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, S2CJobCharacterJobExpUpNtc obj)
             {
-                WriteByte(buffer, obj.JobId);
+                WriteByte(buffer, (byte) obj.JobId);
                 WriteUInt32(buffer, obj.AddExp);
                 WriteUInt32(buffer, obj.ExtraBonusExp);
                 WriteUInt32(buffer, obj.TotalExp);
@@ -36,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CJobCharacterJobExpUpNtc Read(IBuffer buffer)
             {
                 S2CJobCharacterJobExpUpNtc obj = new S2CJobCharacterJobExpUpNtc();
-                obj.JobId = ReadByte(buffer);
+                obj.JobId = (JobId) ReadByte(buffer);
                 obj.AddExp = ReadUInt32(buffer);
                 obj.ExtraBonusExp = ReadUInt32(buffer);
                 obj.TotalExp = ReadUInt32(buffer);
