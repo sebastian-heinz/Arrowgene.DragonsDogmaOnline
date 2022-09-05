@@ -37,8 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CPartyPartyInviteJoinMemberNtc inviteJoinMemberNtc = new S2CPartyPartyInviteJoinMemberNtc();
             CDataPartyMemberMinimum newMemberMinimum = new CDataPartyMemberMinimum();
             newMemberMinimum.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
-            newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.FirstName;
-            newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
+            newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.CharacterInfo.FirstName;
+            newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.CharacterInfo.LastName;
             newMemberMinimum.CommunityCharacterBaseInfo.ClanName = "SEX";
             newMemberMinimum.IsLeader = client == newParty.Leader; // This could probably be just always false
             newMemberMinimum.MemberIndex = inviteAcceptNtc.MemberIndex;

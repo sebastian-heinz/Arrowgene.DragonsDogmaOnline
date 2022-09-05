@@ -1,9 +1,17 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataLobbyContextPlayer
     {
+        public CDataLobbyContextPlayer(Character character)
+        {
+            Base = new CDataContextBase(character);
+            PlayerInfo = new CDataContextPlayerInfo(character);
+            EditInfo = character.CharacterInfo.EditInfo;
+        }
+
         public CDataLobbyContextPlayer()
         {
             Base=new CDataContextBase();

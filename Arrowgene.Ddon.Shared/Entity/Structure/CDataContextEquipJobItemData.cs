@@ -4,6 +4,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextEquipJobItemData
     {
+        public CDataContextEquipJobItemData(CDataEquipJobItem equipJobItem)
+        {
+            ItemId = (ushort) equipJobItem.JobItemId;
+            EquipSlotNo = equipJobItem.EquipSlotNo;
+        }
+
         public CDataContextEquipJobItemData()
         {
             ItemId=0;

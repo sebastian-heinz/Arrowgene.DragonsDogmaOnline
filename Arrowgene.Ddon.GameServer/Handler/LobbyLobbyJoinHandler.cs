@@ -21,6 +21,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SLobbyJoinReq> packet)
         {
+            
+            S2CContextGetLobbyPlayerContextNtc sampleData = EntitySerializer
+                        .Get<S2CContextGetLobbyPlayerContextNtc>().Read(SelectedDump.data_Dump_LobbyPlayerContext);
+
             var resp = new S2CLobbyJoinRes()
             {
                 CharacterId = client.Character.Id,
@@ -29,9 +33,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     new CDataLobbyMemberInfo()
                     {
                         CharacterId = client.Character.Id,
-                        FirstName = client.Character.FirstName,
-                        LastName = client.Character.LastName,
-                        ClanName = "ABC",
+                        FirstName = client.Character.CharacterInfo.FirstName,
+                        LastName = client.Character.CharacterInfo.LastName,
+                        ClanName = "",
                         Unk0 = 1, // Platform PC?
                         Unk1 = 0,
                         Unk2 = 8  // OnlineStatus?
@@ -39,11 +43,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             };
             client.Send(resp);
-
-            // NTC
-            //client.Send(GameFull.Dump_14);
-            //client.Send(InGameDump.Dump_15);
-            //client.Send(InGameDump.Dump_16);
 
             // Notify new player of already present players
             S2CUserListJoinNtc alreadyPresentUsersNtc = new S2CUserListJoinNtc();
@@ -58,9 +57,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         new CDataLobbyMemberInfo()
                         {
                             CharacterId = otherClient.Character.Id,
-                            FirstName = otherClient.Character.FirstName,
-                            LastName = otherClient.Character.LastName,
-                            ClanName = "XYZ",
+                            FirstName = otherClient.Character.CharacterInfo.FirstName,
+                            LastName = otherClient.Character.CharacterInfo.LastName,
+                            ClanName = "",
                             PawnId = 0,
                             Unk0 = 1,
                             Unk1 = 0,
@@ -68,17 +67,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     );
 
-                    S2CContextGetLobbyPlayerContextNtc alreadyPresentPlayerContextNtc = EntitySerializer
-                        .Get<S2CContextGetLobbyPlayerContextNtc>().Read(SelectedDump.data_Dump_LobbyPlayerContext);
-                    alreadyPresentPlayerContextNtc.CharacterId = otherClient.Character.Id;
-                    alreadyPresentPlayerContextNtc.Context.Base.CharacterId = otherClient.Character.Id;
-                    alreadyPresentPlayerContextNtc.Context.Base.FirstName = otherClient.Character.FirstName;
-                    alreadyPresentPlayerContextNtc.Context.Base.LastName = otherClient.Character.LastName;
-                    alreadyPresentPlayerContextNtc.Context.Base.PosX = 0;
-                    alreadyPresentPlayerContextNtc.Context.Base.PosY = 0;
-                    alreadyPresentPlayerContextNtc.Context.Base.PosZ = 0;
-                    alreadyPresentPlayerContextNtc.Context.EditInfo = otherClient.Character.Visual;
-                    alreadyPresentPlayerContextNtcs.Add(alreadyPresentPlayerContextNtc);
+                    S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc(otherClient.Character);
+                    alreadyPresentPlayerContextNtcs.Add(lobbyPlayerContextNtc);
                 }
             }
 
@@ -94,17 +84,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CUserListJoinNtc newUserNtc = new S2CUserListJoinNtc();
             newUserNtc.UserList = resp.LobbyMemberInfoList;
 
-            S2CContextGetLobbyPlayerContextNtc newUserContextNtc = EntitySerializer
-                .Get<S2CContextGetLobbyPlayerContextNtc>().Read(SelectedDump.data_Dump_LobbyPlayerContext);
-            newUserContextNtc.CharacterId = client.Character.Id;
-            newUserContextNtc.Context.Base.CharacterId = client.Character.Id;
-            newUserContextNtc.Context.Base.FirstName = client.Character.FirstName;
-            newUserContextNtc.Context.Base.LastName = client.Character.LastName;
-            newUserContextNtc.Context.Base.PosX = 0;
-            newUserContextNtc.Context.Base.PosY = 0;
-            newUserContextNtc.Context.Base.PosZ = 0;
-            newUserContextNtc.Context.EditInfo = client.Character.Visual;
-
+            S2CContextGetLobbyPlayerContextNtc newUserContextNtc = new S2CContextGetLobbyPlayerContextNtc(client.Character);
             foreach (GameClient otherClient in Server.Clients)
             {
                 if (otherClient != client)

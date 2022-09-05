@@ -4,6 +4,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextAcquirementData
     {
+        public CDataContextAcquirementData(CDataSetAcquirementParam setAcquirementParam)
+        {
+            SlotNo = setAcquirementParam.SlotNo;
+            AcquirementNo = setAcquirementParam.AcquirementNo;
+            AcquirementLv = setAcquirementParam.AcquirementLv;
+        }
+
         public CDataContextAcquirementData()
         {
             SlotNo = 0;

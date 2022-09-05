@@ -5,6 +5,15 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextEquipData
     {
+        public CDataContextEquipData(CDataEquipItemInfo equipItemInfo)
+        {
+            ItemId = (ushort) equipItemInfo.ItemId;
+            ColorNo = equipItemInfo.Color;
+            // QualityParam?
+            WeaponCrestDataList = equipItemInfo.WeaponCrestDataList;
+            ArmorCrestDataList = equipItemInfo.ArmorCrestDataList;
+        }
+
         public CDataContextEquipData()
         {
             ItemId=0;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -24,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             JewelrySlotNum = 0;
             CharacterItemSlotInfoList = new List<CDataEquipElementParam>();
             UnkCharData0 = new List<UnknownCharacterData0>();
-            UnkCharData1 = new List<UnknownCharacterData1>();
+            UnkCharData1 = new List<UnknownCharacterData1>(); // Currencies? 1 is G, 2 is RP...
             MyPawnSlotNum = 0;
             RentalPawnSlotNum = 0;
             OrbStatusList = new List<CDataOrbPageStatus>();
@@ -39,6 +40,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             HideEquipLanternPawn = false;
             ArisenProfileShareRange = 0;
             OnlineStatus = 0;
+        }
+
+        public CDataCharacterJobData ActiveCharacterJobData
+        {
+            get { return CharacterJobDataList.Where(x => x.Job == Job).Single(); }
         }
 
         public uint CharacterId;

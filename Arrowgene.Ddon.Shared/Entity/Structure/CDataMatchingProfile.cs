@@ -1,4 +1,5 @@
 ﻿using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -17,9 +18,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             IsJoinParty = 0;
         }
 
-        public byte EntryJob;
+        public JobId EntryJob;
         public uint EntryJobLevel;
-        public byte CurrentJob;
+        public JobId CurrentJob;
         public uint CurrentJobLevel;
         public uint ObjectiveType1;
         public uint ObjectiveType2;
@@ -32,9 +33,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataMatchingProfile obj)
         {
-            WriteByte(buffer, obj.EntryJob);
+            WriteByte(buffer, (byte) obj.EntryJob);
             WriteUInt32(buffer, obj.EntryJobLevel);
-            WriteByte(buffer, obj.CurrentJob);
+            WriteByte(buffer, (byte) obj.CurrentJob);
             WriteUInt32(buffer, obj.CurrentJobLevel);
             WriteUInt32(buffer, obj.ObjectiveType1);
             WriteUInt32(buffer, obj.ObjectiveType2);
@@ -46,9 +47,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public override CDataMatchingProfile Read(IBuffer buffer)
         {
             CDataMatchingProfile obj = new CDataMatchingProfile();
-            obj.EntryJob = ReadByte(buffer);
+            obj.EntryJob = (JobId) ReadByte(buffer);
             obj.EntryJobLevel = ReadUInt32(buffer);
-            obj.CurrentJob = ReadByte(buffer);
+            obj.CurrentJob = (JobId) ReadByte(buffer);
             obj.CurrentJobLevel = ReadUInt32(buffer);
             obj.ObjectiveType1 = ReadUInt32(buffer);
             obj.ObjectiveType2 = ReadUInt32(buffer);
