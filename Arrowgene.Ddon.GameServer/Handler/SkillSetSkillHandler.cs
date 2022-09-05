@@ -43,6 +43,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 SkillId = packet.Structure.SkillId,
                 SkillLv = packet.Structure.SkillLv
             });
+
+            // Inform party members of the change
+            S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc(client.Character);
+            partyPlayerContextNtc.Context.Base.MemberIndex = client.Party.Members.IndexOf(client);
+            client.Party.SendToAll(partyPlayerContextNtc);
         }
     }
 }
