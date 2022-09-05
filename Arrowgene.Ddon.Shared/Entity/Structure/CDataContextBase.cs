@@ -1,38 +1,52 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextBase
     {
+        public CDataContextBase(Character character)
+        {
+            CharacterId = character.Id;
+            FirstName = character.CharacterInfo.FirstName;
+            LastName = character.CharacterInfo.LastName;
+            StageNo = 200; // TODO: Replace with the actual stage the player is in. As it is right now it'll probably give issues when new players join outside of WDT
+            Sex = character.CharacterInfo.EditInfo.Sex;
+            HideEquipHead = character.CharacterInfo.HideEquipHead;
+            HideEquipLantern = character.CharacterInfo.HideEquipLantern;
+            // In the context equipment lists, the index is the slot. A 0,0,0 element has to be in place if a slot is not filled
+            ContextEquipPerformanceList = Enumerable.Range(1, 15)
+                .Select(i => new CDataContextEquipData(character.CharacterInfo.CharacterEquipDataList.SelectMany(x => x.Equips).Where(x => x.EquipSlot == i).SingleOrDefault(new CDataEquipItemInfo())))
+                .ToList();
+            ContextEquipVisualList = Enumerable.Range(1, 15)
+                .Select(i => new CDataContextEquipData(character.CharacterInfo.CharacterEquipViewDataList.SelectMany(x => x.Equips).Where(x => x.EquipSlot == i).SingleOrDefault(new CDataEquipItemInfo())))
+                .ToList();
+            ContextEquipJobItemList = character.CharacterInfo.CharacterEquipJobItemList
+                .Select(x => new CDataContextEquipJobItemData(x)).ToList();
+            ContextNormalSkillList = character.NormalSkills
+                .Where(x => x.Job == character.CharacterInfo.Job)
+                .Select(x => new CDataContextNormalSkillData(x)).ToList();
+            ContextSkillList = character.CustomSkills
+                .Where(x => x.Job == character.CharacterInfo.Job)
+                .Select(x => new CDataContextAcquirementData(x)).ToList();
+            ContextAbilityList = character.Abilities
+                .Where(x => x.Job == character.CharacterInfo.Job)
+                .Select(x => new CDataContextAcquirementData(x)).ToList();
+            Unk0List=new List<CDataContextBaseUnk0>(); // TODO: Figure this one out
+        }
+
         public CDataContextBase()
         {
-            MemberIndex=0;
-            PawnId=0;
-            StageNo=0;
-            StartPosNo=0;
-            PosX=0;
-            PosY=0;
-            PosZ=0;
-            AngleY=0;
-            Sex=0;
-            Color=0;
             FirstName=string.Empty;
             LastName=string.Empty;
             ContextEquipPerformanceList=new List<CDataContextEquipData>();
             ContextEquipVisualList=new List<CDataContextEquipData>();
             ContextEquipJobItemList=new List<CDataContextEquipJobItemData>();
-            HideEquipHead=false;
-            HideEquipLantern=false;
-            HmType=0;
-            PawnType=0;
-            CharacterId=0;
-            SetWaitFlag=false;
             ContextNormalSkillList=new List<CDataContextNormalSkillData>();
             ContextSkillList=new List<CDataContextAcquirementData>();
             ContextAbilityList=new List<CDataContextAcquirementData>();
-            AbilityCostSum=0;
-            AbilityCostMax=0;
             Unk0List=new List<CDataContextBaseUnk0>();
         }
 

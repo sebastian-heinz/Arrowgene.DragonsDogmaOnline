@@ -5,6 +5,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextJobData
     {
+        public CDataContextJobData(CDataCharacterJobData characterJobData)
+        {
+            Job = characterJobData.Job;
+            Lv = (ushort) characterJobData.Lv;
+            Exp = characterJobData.Exp;
+            JobPoint = characterJobData.JobPoint;
+        }
+
         public CDataContextJobData()
         {
             Job=0;

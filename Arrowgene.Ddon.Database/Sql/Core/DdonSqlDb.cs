@@ -20,10 +20,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public static string BuildQueryField(params string[][] fieldLists)
         {
+            return BuildQueryField(null, fieldLists);
+        }
+
+        public static string BuildQueryField(string table, params string[][] fieldLists)
+        {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < fieldLists.Length; i++)
             {
                 string[] fieldList = fieldLists[i];
+                if(table != null)
+                {
+                    sb.Append('`');
+                    sb.Append(table);
+                    sb.Append("`.");
+                }
                 sb.Append('`');
                 sb.Append(string.Join("`, `", fieldList));
                 sb.Append('`');

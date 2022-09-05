@@ -35,12 +35,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             skillSlot.AcquirementNo = packet.Structure.SkillId;
             skillSlot.AcquirementLv = packet.Structure.SkillLv;
 
+            Database.UpdateCharacter(client.Character);
+
             client.Send(new S2CSkillSetSkillRes() {
                 Job = packet.Structure.Job,
                 SlotNo = packet.Structure.SlotNo,
                 SkillId = packet.Structure.SkillId,
                 SkillLv = packet.Structure.SkillLv
             });
+
+            // Inform party members of the change
+            S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc(client.Character);
+            partyPlayerContextNtc.Context.Base.MemberIndex = client.Party.Members.IndexOf(client);
+            client.Party.SendToAll(partyPlayerContextNtc);
         }
     }
 }

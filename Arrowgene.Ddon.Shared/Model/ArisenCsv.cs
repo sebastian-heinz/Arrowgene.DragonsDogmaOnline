@@ -6,6 +6,18 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public JobId Job { get; set; }
         public uint Lv { get; set; }
+        public uint HP { get; set; }
+        public uint Stamina { get; set; }
+        public byte RevivePoint { get; set; }
+        public uint MaxHP { get; set; }
+        public uint MaxStamina { get; set; }
+        public uint WhiteHP { get; set; }
+        public uint GainHP { get; set; }
+        public uint GainStamina { get; set; }
+        public uint GainAttack { get; set; }
+        public uint GainDefense { get; set; }
+        public uint GainMagicAttack { get; set; }
+        public uint GainMagicDefense { get; set; }
         public uint Cs1MpId { get; set; }
         public byte Cs1MpLv { get; set; }
         public uint Cs2MpId { get; set; }

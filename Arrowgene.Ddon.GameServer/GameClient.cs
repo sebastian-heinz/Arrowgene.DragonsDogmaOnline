@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer
 
             if (Character != null)
             {
-                newIdentity += $"[Cha:({Character.Id}){Character.FirstName}]";
+                newIdentity += $"[Cha:({Character.Id}){Character.CharacterInfo.FirstName} {Character.CharacterInfo.LastName}]";
             }
 
             Identity = newIdentity;
