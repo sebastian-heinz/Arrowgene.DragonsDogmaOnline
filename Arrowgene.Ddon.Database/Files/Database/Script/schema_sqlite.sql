@@ -44,7 +44,12 @@ CREATE TABLE IF NOT EXISTS `ddon_character`
     `hide_equip_head_pawn`        BIT                               NOT NULL,
     `hide_equip_lantern_pawn`     BIT                               NOT NULL,
     `arisen_profile_share_range`  TINYINT                           NOT NULL,
-    -- CDataEditInfo
+    CONSTRAINT `fk_character_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `ddon_character_edit_info`
+(
+    `character_id`                INTEGER PRIMARY KEY               NOT NULL,
     `sex`                         BIT                               NOT NULL,
     `voice`                       TINYINT                           NOT NULL,
     `voice_pitch`                 SMALLINT                          NOT NULL,
@@ -116,7 +121,12 @@ CREATE TABLE IF NOT EXISTS `ddon_character`
     `fat`                         SMALLINT                          NOT NULL,
     `muscle`                      SMALLINT                          NOT NULL,
     `motion_filter`               SMALLINT                          NOT NULL,
-    -- CDataStatusInfo
+    CONSTRAINT `fk_edit_info_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `ddon_character_status_info`
+(
+    `character_id`                INTEGER PRIMARY KEY               NOT NULL,
     `hp`                          INT                               NOT NULL,
     `stamina`                     INT                               NOT NULL,
     `revive_point`                TINYINT                           NOT NULL,
@@ -129,24 +139,33 @@ CREATE TABLE IF NOT EXISTS `ddon_character`
     `gain_defense`                INT                               NOT NULL,
     `gain_magic_attack`           INT                               NOT NULL,
     `gain_magic_defense`          INT                               NOT NULL,
-    -- CDataMatchingProfile
-    `matching_profile_entry_job`         TINYINT                    NOT NULL,
-    `matching_profile_entry_job_level`   INT                        NOT NULL,
-    `matching_profile_current_job`       TINYINT                    NOT NULL,
-    `matching_profile_current_job_level` INT                        NOT NULL,
-    `matching_profile_objective_type1`   INT                        NOT NULL,
-    `matching_profile_objective_type2`   INT                        NOT NULL,
-    `matching_profile_play_style`        INT                        NOT NULL,
-    `matching_profile_comment`           TEXT                       NOT NULL,
-    `matching_profile_is_join_party`     TINYINT                    NOT NULL,
-    -- CDataArisenProfile  
-    `arisen_profile_background_id` TINYINT                          NOT NULL,
-    --  CDataAchievementIdentifier
-    `arisen_profile_title_uid`    INT                               NOT NULL,
-    `arisen_profile_title_index`  INT                               NOT NULL,
-    `arisen_profile_motion_id`    SMALLINT                          NOT NULL,
-    `arisen_profile_motion_frame_no` INT                            NOT NULL,
-    CONSTRAINT `fk_character_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+    CONSTRAINT `fk_status_info_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+    
+CREATE TABLE IF NOT EXISTS `ddon_character_matching_profile`
+(
+    `character_id`                INTEGER PRIMARY KEY               NOT NULL,
+    `entry_job`                   TINYINT                           NOT NULL,
+    `entry_job_level`             INT                               NOT NULL,
+    `current_job`                 TINYINT                           NOT NULL,
+    `current_job_level`           INT                               NOT NULL,
+    `objective_type1`             INT                               NOT NULL,
+    `objective_type2`             INT                               NOT NULL,
+    `play_style`                  INT                               NOT NULL,
+    `comment`                     TEXT                              NOT NULL,
+    `is_join_party`               TINYINT                           NOT NULL,
+    CONSTRAINT `fk_matching_profile_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+    
+CREATE TABLE IF NOT EXISTS `ddon_character_arisen_profile`
+(
+    `character_id`                INTEGER PRIMARY KEY               NOT NULL,
+    `background_id`               TINYINT                           NOT NULL,
+    `title_uid`                   INT                               NOT NULL,
+    `title_index`                 INT                               NOT NULL,
+    `motion_id`                   SMALLINT                          NOT NULL,
+    `motion_frame_no`             INT                               NOT NULL,
+    CONSTRAINT `fk_arisen_profile_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_character_job_data`

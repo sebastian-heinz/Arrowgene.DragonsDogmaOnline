@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -15,9 +15,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "version", "account_id", "first_name", "last_name", "created", "job", "jewelry_slot_num", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head", "hide_equip_lantern", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range"
         };
 
-        private static readonly string[] CDataEditInfoFields = new string[]
+                private static readonly string[] CDataEditInfoFields = new string[]
         {
-            "sex", "voice", "voice_pitch", "personality", "speech_freq", "body_type", "hair", "beard", "makeup", "scar",
+            "character_id", "sex", "voice", "voice_pitch", "personality", "speech_freq", "body_type", "hair", "beard", "makeup", "scar",
             "eye_preset_no", "nose_preset_no", "mouth_preset_no", "eyebrow_tex_no", "color_skin", "color_hair",
             "color_beard", "color_eyebrow", "color_r_eye", "color_l_eye", "color_makeup", "sokutobu", "hitai",
             "mimi_jyouge", "kannkaku", "mabisasi_jyouge", "hanakuchi_jyouge", "ago_saki_haba", "ago_zengo",
@@ -32,28 +32,64 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private static readonly string[] CDataStatusInfoFields = new string[]
         {
-            "hp", "stamina", "revive_point", "max_hp", "max_stamina", "white_hp", "gain_hp", "gain_stamina",
+            "character_id", "hp", "stamina", "revive_point", "max_hp", "max_stamina", "white_hp", "gain_hp", "gain_stamina",
             "gain_attack", "gain_defense", "gain_magic_attack", "gain_magic_defense"
         };
 
         private static readonly string[] CDataMatchingProfileFields = new string[]
         {
-            "matching_profile_entry_job", "matching_profile_entry_job_level", "matching_profile_current_job", 
-            "matching_profile_current_job_level", "matching_profile_objective_type1", "matching_profile_objective_type2", 
-            "matching_profile_play_style", "matching_profile_comment", "matching_profile_is_join_party"
+            "character_id", "entry_job", "entry_job_level", "current_job", "current_job_level", "objective_type1", "objective_type2", 
+            "play_style", "comment", "is_join_party"
         };
 
         private static readonly string[]  CDataArisenProfileFields = new string[]
         {
-            "arisen_profile_background_id", "arisen_profile_title_uid", "arisen_profile_title_index", "arisen_profile_motion_id", 
-            "arisen_profile_motion_frame_no"
+            "character_id", "background_id", "title_uid", "title_index", "motion_id", "motion_frame_no"
         };
 
-        private readonly string SqlInsertCharacter = $"INSERT INTO `ddon_character` ({BuildQueryField(CharacterFields, CDataEditInfoFields, CDataStatusInfoFields, CDataMatchingProfileFields, CDataArisenProfileFields)}) VALUES ({BuildQueryInsert(CharacterFields, CDataEditInfoFields, CDataStatusInfoFields, CDataMatchingProfileFields, CDataArisenProfileFields)});";
-        private static readonly string SqlUpdateCharacter = $"UPDATE `ddon_character` SET {BuildQueryUpdate(CharacterFields, CDataEditInfoFields, CDataStatusInfoFields, CDataMatchingProfileFields, CDataArisenProfileFields)} WHERE `id` = @id;";
-        private static readonly string SqlSelectCharacter = $"SELECT `id`, {BuildQueryField(CharacterFields, CDataEditInfoFields, CDataStatusInfoFields, CDataMatchingProfileFields, CDataArisenProfileFields)} FROM `ddon_character` WHERE `id` = @id;";
-        private static readonly string SqlSelectCharactersByAccountId = $"SELECT `id`, {BuildQueryField(CharacterFields, CDataEditInfoFields, CDataStatusInfoFields, CDataMatchingProfileFields, CDataArisenProfileFields)} FROM `ddon_character` WHERE `account_id` = @account_id;";
+        private readonly string SqlInsertCharacter = $"INSERT INTO `ddon_character` ({BuildQueryField(CharacterFields)}) VALUES ({BuildQueryInsert(CharacterFields)});";
+        private static readonly string SqlUpdateCharacter = $"UPDATE `ddon_character` SET {BuildQueryUpdate(CharacterFields)} WHERE `id` = @id;";
+        private static readonly string SqlSelectCharacter = $"SELECT `id`, {BuildQueryField(CharacterFields)} FROM `ddon_character` WHERE `id` = @id;";
+        private static readonly string SqlSelectCharactersByAccountId = $"SELECT `id`, {BuildQueryField(CharacterFields)} FROM `ddon_character` WHERE `account_id` = @account_id;";
+        private static readonly string SqlSelectAllCharacterData = $"SELECT `id`, {BuildQueryField("ddon_character", CharacterFields)}, {BuildQueryField("ddon_character_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_character_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+            + "FROM `ddon_character` "
+            + "LEFT JOIN `ddon_character_edit_info` ON `ddon_character_edit_info`.`character_id` = `ddon_character`.`id` "
+            + "LEFT JOIN `ddon_character_status_info` ON `ddon_character_status_info`.`character_id` = `ddon_character`.`id` "
+            + "LEFT JOIN `ddon_character_matching_profile` ON `ddon_character_matching_profile`.`character_id` = `ddon_character`.`id` "
+            + "LEFT JOIN `ddon_character_arisen_profile` ON `ddon_character_arisen_profile`.`character_id` = `ddon_character`.`id` "
+            + "WHERE `id` = @id";
+        private static readonly string SqlSelectAllCharactersDataByAccountId = $"SELECT `id`, {BuildQueryField("ddon_character", CharacterFields)}, {BuildQueryField("ddon_character_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_character_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+            + "FROM `ddon_character` "
+            + "LEFT JOIN `ddon_character_edit_info` ON `ddon_character_edit_info`.`character_id` = `ddon_character`.`id` "
+            + "LEFT JOIN `ddon_character_status_info` ON `ddon_character_status_info`.`character_id` = `ddon_character`.`id` "
+            + "LEFT JOIN `ddon_character_matching_profile` ON `ddon_character_matching_profile`.`character_id` = `ddon_character`.`id` "
+            + "LEFT JOIN `ddon_character_arisen_profile` ON `ddon_character_arisen_profile`.`character_id` = `ddon_character`.`id` "
+            + "WHERE `account_id` = @account_id";
         private const string SqlDeleteCharacter = "DELETE FROM `ddon_character` WHERE `id`=@id;";
+
+
+        private readonly string SqlInsertCharacterEditInfo = $"INSERT INTO `ddon_character_edit_info` ({BuildQueryField(CDataEditInfoFields)}) VALUES ({BuildQueryInsert(CDataEditInfoFields)});";
+        private static readonly string SqlUpdateCharacterEditInfo = $"UPDATE `ddon_character_edit_info` SET {BuildQueryUpdate(CDataEditInfoFields)} WHERE `character_id` = @character_id;";
+        private static readonly string SqlSelectCharacterEditInfo = $"SELECT {BuildQueryField(CDataEditInfoFields)} FROM `ddon_character_edit_info` WHERE `character_id` = @character_id;";
+        private const string SqlDeleteCharacterEditInfo = "DELETE FROM `ddon_character_edit_info` WHERE `character_id`=@character_id;";
+
+
+        private readonly string SqlInsertCharacterStatusInfo = $"INSERT INTO `ddon_character_status_info` ({BuildQueryField(CDataStatusInfoFields)}) VALUES ({BuildQueryInsert(CDataStatusInfoFields)});";
+        private static readonly string SqlUpdateCharacterStatusInfo = $"UPDATE `ddon_character_status_info` SET {BuildQueryUpdate(CDataStatusInfoFields)} WHERE `character_id` = @character_id;";
+        private static readonly string SqlSelectCharacterStatusInfo = $"SELECT {BuildQueryField(CDataStatusInfoFields)} FROM `ddon_character_status_info` WHERE `character_id` = @character_id;";
+        private const string SqlDeleteCharacterStatusInfo = "DELETE FROM `ddon_character_status_info` WHERE `character_id`=@character_id;";
+
+
+        private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO `ddon_character_matching_profile` ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
+        private static readonly string SqlUpdateCharacterMatchingProfile = $"UPDATE `ddon_character_matching_profile` SET {BuildQueryUpdate(CDataMatchingProfileFields)} WHERE `character_id` = @character_id;";
+        private static readonly string SqlSelectCharacterMatchingProfile = $"SELECT {BuildQueryField(CDataMatchingProfileFields)} FROM `ddon_character_matching_profile` WHERE `character_id` = @character_id;";
+        private const string SqlDeleteCharacterMatchingProfile = "DELETE FROM `ddon_character_matching_profile` WHERE `character_id`=@character_id;";
+
+
+        private readonly string SqlInsertCharacterArisenProfile = $"INSERT INTO `ddon_character_arisen_profile` ({BuildQueryField(CDataArisenProfileFields)}) VALUES ({BuildQueryInsert(CDataArisenProfileFields)});";
+        private static readonly string SqlUpdateCharacterArisenProfile = $"UPDATE `ddon_character_arisen_profile` SET {BuildQueryUpdate(CDataArisenProfileFields)} WHERE `character_id` = @character_id;";
+        private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM `ddon_character_arisen_profile` WHERE `character_id` = @character_id;";
+        private const string SqlDeleteCharacterArisenProfile = "DELETE FROM `ddon_character_arisen_profile` WHERE `character_id`=@character_id;";
 
 
         private static readonly string[] CDataCharacterJobDataFields = new string[]
@@ -133,6 +169,30 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
             character.Id = (uint) autoIncrement;
 
+            rowsAffected = ExecuteNonQuery(SqlInsertCharacterEditInfo, command => { AddParameter(command, character); });
+            if (rowsAffected <= NoRowsAffected)
+            {
+                return false;
+            }
+
+            rowsAffected = ExecuteNonQuery(SqlInsertCharacterStatusInfo, command => { AddParameter(command, character); });
+            if (rowsAffected <= NoRowsAffected)
+            {
+                return false;
+            }
+
+            rowsAffected = ExecuteNonQuery(SqlInsertCharacterMatchingProfile, command => { AddParameter(command, character); });
+            if (rowsAffected <= NoRowsAffected)
+            {
+                return false;
+            }
+
+            rowsAffected = ExecuteNonQuery(SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
+            if (rowsAffected <= NoRowsAffected)
+            {
+                return false;
+            }
+
             StoreCharacterData(character);
 
             return true;
@@ -146,6 +206,30 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, character);
             });
 
+            characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterEditInfo, command =>
+            {
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
+
+            characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterStatusInfo, command =>
+            {
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
+
+            characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterMatchingProfile, command =>
+            {
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
+
+            characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterArisenProfile, command =>
+            {
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
+
             StoreCharacterData(character);
 
             return characterUpdateRowsAffected > NoRowsAffected;
@@ -154,12 +238,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public Character SelectCharacter(uint characterId)
         {
             Character character = null;
-            ExecuteReader(SqlSelectCharacter,
+            ExecuteReader(SqlSelectAllCharacterData,
                 command => { AddParameter(command, "@id", characterId); }, reader =>
                 {
                     if (reader.Read())
                     {
-                        character = ReadCharacter(reader);
+                        character = ReadAllCharacterData(reader);
                     }
                 });
 
@@ -171,12 +255,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public List<Character> SelectCharactersByAccountId(int accountId)
         {
             List<Character> characters = new List<Character>();
-            ExecuteReader(SqlSelectCharactersByAccountId,
+            ExecuteReader(SqlSelectAllCharactersDataByAccountId,
                 command => { AddParameter(command, "@account_id", accountId); }, reader =>
                 {
                     while (reader.Read())
                     {
-                        Character character = ReadCharacter(reader);
+                        Character character = ReadAllCharacterData(reader);
                         characters.Add(character);
 
                         QueryCharacterData(character);
@@ -291,7 +375,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             foreach(CDataCharacterJobData characterJobData in character.CharacterInfo.CharacterJobDataList)
             {
-                ExecuteNonQuery(SqlInsertCharacterJobData, command =>
+                ExecuteNonQuery(SqlReplaceCharacterJobData, command =>
                 {
                     AddParameter(command, character.Id, characterJobData);
                 });
@@ -301,7 +385,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
                 {
-                    ExecuteNonQuery(SqlInsertEquipItemInfo, command =>
+                    ExecuteNonQuery(SqlReplaceEquipItemInfo, command =>
                     {
                         AddParameter(command, character.Id, character.CharacterInfo.Job, equipItemInfo);
                     });
@@ -312,7 +396,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
                 {
-                    ExecuteNonQuery(SqlInsertEquipItemInfo, command =>
+                    ExecuteNonQuery(SqlReplaceEquipItemInfo, command =>
                     {
                         AddParameter(command, character.Id, character.CharacterInfo.Job, equipItemInfo);
                     });
@@ -321,7 +405,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataEquipJobItem equipJobItem in character.CharacterInfo.CharacterEquipJobItemList)
             {
-                ExecuteNonQuery(SqlInsertEquipJobItem, command =>
+                ExecuteNonQuery(SqlReplaceEquipJobItem, command =>
                 {
                     AddParameter(command, character.Id, character.CharacterInfo.Job, equipJobItem);
                 });
@@ -329,7 +413,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataNormalSkillParam normalSkillParam in character.NormalSkills)
             {
-                ExecuteNonQuery(SqlInsertNormalSkillParam, command =>
+                ExecuteNonQuery(SqlReplaceNormalSkillParam, command =>
                 {
                     AddParameter(command, character.Id, normalSkillParam);
                 });
@@ -337,7 +421,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataSetAcquirementParam setAcquirementParam in character.CustomSkills)
             {
-                ExecuteNonQuery(SqlInsertSetAcquirementParam, command =>
+                ExecuteNonQuery(SqlReplaceSetAcquirementParam, command =>
                 {
                     AddParameter(command, character.Id, setAcquirementParam);
                 });
@@ -345,14 +429,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataSetAcquirementParam setAcquirementParam in character.Abilities)
             {
-                ExecuteNonQuery(SqlInsertSetAcquirementParam, command =>
+                ExecuteNonQuery(SqlReplaceSetAcquirementParam, command =>
                 {
                     AddParameter(command, character.Id, setAcquirementParam);
                 });
             }
         }
 
-        private Character ReadCharacter(DbDataReader reader)
+        private Character ReadAllCharacterData(DbDataReader reader)
         {
             Character character = new Character();
             character.Id = GetUInt32(reader, "id");
@@ -457,21 +541,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.CharacterInfo.StatusInfo.GainMagicAttack = GetUInt32(reader, "gain_magic_attack");
             character.CharacterInfo.StatusInfo.GainMagicDefense = GetUInt32(reader, "gain_magic_defense");
 
-            character.CharacterInfo.MatchingProfile.EntryJob = (JobId) GetByte(reader, "matching_profile_entry_job");
-            character.CharacterInfo.MatchingProfile.EntryJobLevel = GetUInt32(reader, "matching_profile_entry_job_level");
-            character.CharacterInfo.MatchingProfile.CurrentJob = (JobId) GetByte(reader, "matching_profile_current_job");
-            character.CharacterInfo.MatchingProfile.CurrentJobLevel = GetUInt32(reader, "matching_profile_current_job_level");
-            character.CharacterInfo.MatchingProfile.ObjectiveType1 = GetUInt32(reader, "matching_profile_objective_type1");
-            character.CharacterInfo.MatchingProfile.ObjectiveType2 = GetUInt32(reader, "matching_profile_objective_type2");
-            character.CharacterInfo.MatchingProfile.PlayStyle = GetUInt32(reader, "matching_profile_play_style");
-            character.CharacterInfo.MatchingProfile.Comment = GetString(reader, "matching_profile_comment");
-            character.CharacterInfo.MatchingProfile.IsJoinParty = GetByte(reader, "matching_profile_is_join_party");
+            character.CharacterInfo.MatchingProfile.EntryJob = (JobId) GetByte(reader, "entry_job");
+            character.CharacterInfo.MatchingProfile.EntryJobLevel = GetUInt32(reader, "entry_job_level");
+            character.CharacterInfo.MatchingProfile.CurrentJob = (JobId) GetByte(reader, "current_job");
+            character.CharacterInfo.MatchingProfile.CurrentJobLevel = GetUInt32(reader, "current_job_level");
+            character.CharacterInfo.MatchingProfile.ObjectiveType1 = GetUInt32(reader, "objective_type1");
+            character.CharacterInfo.MatchingProfile.ObjectiveType2 = GetUInt32(reader, "objective_type2");
+            character.CharacterInfo.MatchingProfile.PlayStyle = GetUInt32(reader, "play_style");
+            character.CharacterInfo.MatchingProfile.Comment = GetString(reader, "comment");
+            character.CharacterInfo.MatchingProfile.IsJoinParty = GetByte(reader, "is_join_party");
 
-            character.CharacterInfo.ArisenProfile.BackgroundId = GetByte(reader, "arisen_profile_background_id");
-            character.CharacterInfo.ArisenProfile.Title.UId = GetUInt32(reader, "arisen_profile_title_uid");
-            character.CharacterInfo.ArisenProfile.Title.Index = GetUInt32(reader, "arisen_profile_title_index");
-            character.CharacterInfo.ArisenProfile.MotionId = GetUInt16(reader, "arisen_profile_motion_id");
-            character.CharacterInfo.ArisenProfile.MotionFrameNo = GetUInt32(reader, "arisen_profile_motion_frame_no");
+            character.CharacterInfo.ArisenProfile.BackgroundId = GetByte(reader, "background_id");
+            character.CharacterInfo.ArisenProfile.Title.UId = GetUInt32(reader, "title_uid");
+            character.CharacterInfo.ArisenProfile.Title.Index = GetUInt32(reader, "title_index");
+            character.CharacterInfo.ArisenProfile.MotionId = GetUInt16(reader, "motion_id");
+            character.CharacterInfo.ArisenProfile.MotionFrameNo = GetUInt32(reader, "motion_frame_no");
 
             return character;
         }
@@ -480,19 +564,20 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             // CharacterFields
             AddParameter(command, "@account_id", character.AccountId);
+            AddParameter(command, "@character_id", character.Id);
             AddParameter(command, "@version", character.CharacterInfo.Version);
             AddParameter(command, "@first_name", character.CharacterInfo.FirstName);
             AddParameter(command, "@last_name", character.CharacterInfo.LastName);
             AddParameter(command, "@created", character.Created);
-            AddParameter(command, "job", (byte) character.CharacterInfo.Job);
-            AddParameter(command, "jewelry_slot_num", character.CharacterInfo.JewelrySlotNum);
-            AddParameter(command, "my_pawn_slot_num", character.CharacterInfo.MyPawnSlotNum);
-            AddParameter(command, "rental_pawn_slot_num", character.CharacterInfo.RentalPawnSlotNum);
-            AddParameter(command, "hide_equip_head", character.CharacterInfo.HideEquipHead);
-            AddParameter(command, "hide_equip_lantern", character.CharacterInfo.HideEquipLantern);
-            AddParameter(command, "hide_equip_head_pawn", character.CharacterInfo.HideEquipHeadPawn);
-            AddParameter(command, "hide_equip_lantern_pawn", character.CharacterInfo.HideEquipLanternPawn);
-            AddParameter(command, "arisen_profile_share_range", character.CharacterInfo.ArisenProfileShareRange);
+            AddParameter(command, "@job", (byte) character.CharacterInfo.Job);
+            AddParameter(command, "@jewelry_slot_num", character.CharacterInfo.JewelrySlotNum);
+            AddParameter(command, "@my_pawn_slot_num", character.CharacterInfo.MyPawnSlotNum);
+            AddParameter(command, "@rental_pawn_slot_num", character.CharacterInfo.RentalPawnSlotNum);
+            AddParameter(command, "@hide_equip_head", character.CharacterInfo.HideEquipHead);
+            AddParameter(command, "@hide_equip_lantern", character.CharacterInfo.HideEquipLantern);
+            AddParameter(command, "@hide_equip_head_pawn", character.CharacterInfo.HideEquipHeadPawn);
+            AddParameter(command, "@hide_equip_lantern_pawn", character.CharacterInfo.HideEquipLanternPawn);
+            AddParameter(command, "@arisen_profile_share_range", character.CharacterInfo.ArisenProfileShareRange);
             // CDataEditInfoFields
             AddParameter(command, "@sex", character.CharacterInfo.EditInfo.Sex);
             AddParameter(command, "@voice", character.CharacterInfo.EditInfo.Voice);
@@ -579,21 +664,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@gain_magic_attack", character.CharacterInfo.StatusInfo.GainMagicAttack);
             AddParameter(command, "@gain_magic_defense", character.CharacterInfo.StatusInfo.GainMagicDefense);
             // CDataMatchingProfile
-            AddParameter(command, "matching_profile_entry_job", (byte) character.CharacterInfo.MatchingProfile.EntryJob);
-            AddParameter(command, "matching_profile_entry_job_level", character.CharacterInfo.MatchingProfile.EntryJobLevel);
-            AddParameter(command, "matching_profile_current_job", (byte) character.CharacterInfo.MatchingProfile.CurrentJob);
-            AddParameter(command, "matching_profile_current_job_level", character.CharacterInfo.MatchingProfile.CurrentJobLevel);
-            AddParameter(command, "matching_profile_objective_type1", character.CharacterInfo.MatchingProfile.ObjectiveType1);
-            AddParameter(command, "matching_profile_objective_type2", character.CharacterInfo.MatchingProfile.ObjectiveType2);
-            AddParameter(command, "matching_profile_play_style", character.CharacterInfo.MatchingProfile.PlayStyle);
-            AddParameter(command, "matching_profile_comment", character.CharacterInfo.MatchingProfile.Comment);
-            AddParameter(command, "matching_profile_is_join_party", character.CharacterInfo.MatchingProfile.IsJoinParty);
+            AddParameter(command, "@entry_job", (byte) character.CharacterInfo.MatchingProfile.EntryJob);
+            AddParameter(command, "@entry_job_level", character.CharacterInfo.MatchingProfile.EntryJobLevel);
+            AddParameter(command, "@current_job", (byte) character.CharacterInfo.MatchingProfile.CurrentJob);
+            AddParameter(command, "@current_job_level", character.CharacterInfo.MatchingProfile.CurrentJobLevel);
+            AddParameter(command, "@objective_type1", character.CharacterInfo.MatchingProfile.ObjectiveType1);
+            AddParameter(command, "@objective_type2", character.CharacterInfo.MatchingProfile.ObjectiveType2);
+            AddParameter(command, "@play_style", character.CharacterInfo.MatchingProfile.PlayStyle);
+            AddParameter(command, "@comment", character.CharacterInfo.MatchingProfile.Comment);
+            AddParameter(command, "@is_join_party", character.CharacterInfo.MatchingProfile.IsJoinParty);
             // CDataArisenProfile
-            AddParameter(command, "arisen_profile_background_id", character.CharacterInfo.ArisenProfile.BackgroundId);
-            AddParameter(command, "arisen_profile_title_uid", character.CharacterInfo.ArisenProfile.Title.UId);
-            AddParameter(command, "arisen_profile_title_index", character.CharacterInfo.ArisenProfile.Title.Index);
-            AddParameter(command, "arisen_profile_motion_id", character.CharacterInfo.ArisenProfile.MotionId);
-            AddParameter(command, "arisen_profile_motion_frame_no", character.CharacterInfo.ArisenProfile.MotionFrameNo);
+            AddParameter(command, "@background_id", character.CharacterInfo.ArisenProfile.BackgroundId);
+            AddParameter(command, "@title_uid", character.CharacterInfo.ArisenProfile.Title.UId);
+            AddParameter(command, "@title_index", character.CharacterInfo.ArisenProfile.Title.Index);
+            AddParameter(command, "@motion_id", character.CharacterInfo.ArisenProfile.MotionId);
+            AddParameter(command, "@motion_frame_no", character.CharacterInfo.ArisenProfile.MotionFrameNo);
         }
         private CDataCharacterJobData ReadCharacterJobData(DbDataReader reader)
         {
