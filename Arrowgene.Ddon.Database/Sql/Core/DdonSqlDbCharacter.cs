@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -66,7 +66,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "m_atk_down_resist", "m_def_down_resist"
         };
 
-        private readonly string SqlInsertCharacterJobData = $"INSERT OR REPLACE INTO `ddon_character_job_data` ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+        private readonly string SqlInsertCharacterJobData = $"INSERT INTO `ddon_character_job_data` ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+        private readonly string SqlReplaceCharacterJobData = $"INSERT OR REPLACE INTO `ddon_character_job_data` ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+        private static readonly string SqlUpdateCharacterJobData = $"UPDATE `ddon_character_job_data` SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE `character_id` = @character_id AND `job` = @job;";
         private static readonly string SqlSelectCharacterJobData = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_id` = @character_id AND `job` = @job;";
         private static readonly string SqlSelectCharacterJobDataByCharacter = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_id` = @character_id;";
         private const string SqlDeleteCharacterJobData = "DELETE FROM `ddon_character_job_data` WHERE `character_id`=@character_id AND `job` = @job;";
@@ -77,7 +79,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "job", "item_id", "equip_type", "equip_slot", "color", "plus_value"
         };
 
-        private readonly string SqlInsertEquipItemInfo = $"INSERT OR REPLACE INTO `ddon_equip_item_info` ({BuildQueryField(CDataEquipItemInfoFields)}) VALUES ({BuildQueryInsert(CDataEquipItemInfoFields)});";
+        private readonly string SqlInsertEquipItemInfo = $"INSERT INTO `ddon_equip_item_info` ({BuildQueryField(CDataEquipItemInfoFields)}) VALUES ({BuildQueryInsert(CDataEquipItemInfoFields)});";
+        private readonly string SqlReplaceEquipItemInfo = $"INSERT OR REPLACE INTO `ddon_equip_item_info` ({BuildQueryField(CDataEquipItemInfoFields)}) VALUES ({BuildQueryInsert(CDataEquipItemInfoFields)});";
+        private static readonly string SqlUpdateEquipItemInfo = $"UPDATE `ddon_equip_item_info` SET {BuildQueryUpdate(CDataEquipItemInfoFields)} WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=@equip_type AND `equip_slot`=@equip_slot;";
         private static readonly string SqlSelectEquipItemInfo = $"SELECT {BuildQueryField(CDataEquipItemInfoFields)} FROM `ddon_equip_item_info` WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=1;";
         private static readonly string SqlSelectVisualEquipItemInfo = $"SELECT {BuildQueryField(CDataEquipItemInfoFields)} FROM `ddon_equip_item_info` WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=2;";
         private const string SqlDeleteEquipItemInfo = "DELETE FROM `ddon_equip_item_info` WHERE `character_id`=@character_id AND `job`=@job AND `equip_type`=@equip_type AND `equip_slot`=@equip_slot;";
@@ -88,7 +92,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "job", "job_item_id", "equip_slot_no"
         };
 
-        private readonly string SqlInsertEquipJobItem = $"INSERT OR REPLACE INTO `ddon_equip_job_item` ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)});";
+        private readonly string SqlInsertEquipJobItem = $"INSERT INTO `ddon_equip_job_item` ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)});";
+        private readonly string SqlReplaceEquipJobItem = $"INSERT OR REPLACE INTO `ddon_equip_job_item` ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)});";
+        private static readonly string SqlUpdateEquipJobItem = $"UPDATE `ddon_equip_job_item` SET {BuildQueryUpdate(CDataEquipJobItemFields)} WHERE `character_id` = @character_id AND `job` = @job AND `equip_slot_no`=@equip_slot_no;";
         private static readonly string SqlSelectEquipJobItem = $"SELECT {BuildQueryField(CDataEquipJobItemFields)} FROM `ddon_equip_job_item` WHERE `character_id` = @character_id AND `job` = @job;";
         private const string SqlDeleteEquipJobItem = "DELETE FROM `ddon_equip_job_item` WHERE `character_id`=@character_id AND `job`=@job AND `equip_slot_no`=@equip_slot_no;";
 
@@ -98,7 +104,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "job", "skill_no", "index", "pre_skill_no"
         };
 
-        private readonly string SqlInsertNormalSkillParam = $"INSERT OR REPLACE INTO `ddon_normal_skill_param` ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)});";
+        private readonly string SqlInsertNormalSkillParam = $"INSERT INTO `ddon_normal_skill_param` ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)});";
+        private readonly string SqlReplaceNormalSkillParam = $"INSERT OR REPLACE INTO `ddon_normal_skill_param` ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)});";
+        private static readonly string SqlUpdateNormalSkillParam = $"UPDATE `ddon_normal_skill_param` SET {BuildQueryUpdate(CDataNormalSkillParamFields)} WHERE `character_id` = @character_id AND `job` = @job AND `skill_no`=@skill_no;";
         private static readonly string SqlSelectNormalSkillParam = $"SELECT {BuildQueryField(CDataNormalSkillParamFields)} FROM `ddon_normal_skill_param` WHERE `character_id` = @character_id;";
         private const string SqlDeleteNormalSkillParam = "DELETE FROM `ddon_normal_skill_param` WHERE `character_id`=@character_id AND `job`=@job AND `skill_no`=@skill_no;";
 
@@ -107,7 +115,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "job", "type", "slot_no", "acquirement_no", "acquirement_lv"
         };
 
-        private readonly string SqlInsertSetAcquirementParam = $"INSERT OR REPLACE INTO `ddon_set_acquirement_param` ({BuildQueryField(CDataSetAcquirementParamFields)}) VALUES ({BuildQueryInsert(CDataSetAcquirementParamFields)});";
+        private readonly string SqlInsertSetAcquirementParam = $"INSERT INTO `ddon_set_acquirement_param` ({BuildQueryField(CDataSetAcquirementParamFields)}) VALUES ({BuildQueryInsert(CDataSetAcquirementParamFields)});";
+        private readonly string SqlReplaceSetAcquirementParam = $"INSERT OR REPLACE INTO `ddon_set_acquirement_param` ({BuildQueryField(CDataSetAcquirementParamFields)}) VALUES ({BuildQueryInsert(CDataSetAcquirementParamFields)});";
+        private static readonly string SqlUpdateSetAcquirementParam = $"UPDATE `ddon_set_acquirement_param` SET {BuildQueryUpdate(CDataSetAcquirementParamFields)} WHERE `character_id` = @character_id AND `job` = @job AND `slot_no`=@slot_no;";
         private static readonly string SqlSelectCustomSkillsSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `job` <> 0";
         private static readonly string SqlSelectAbilitiesSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `job` = 0;";
         private const string SqlDeleteSetAcquirementParam = "DELETE FROM `ddon_set_acquirement_param` WHERE `character_id`=@character_id AND `job`=@job AND `slot_no`=@slot_no;";
