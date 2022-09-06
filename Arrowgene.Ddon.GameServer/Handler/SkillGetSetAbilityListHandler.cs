@@ -16,7 +16,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetSetAbilityListReq> packet)
         {
-            client.Send(new S2CSkillGetSetAbilityListRes());
+            client.Send(new S2CSkillGetSetAbilityListRes() {
+                SetAcquierementParam = client.Character.Abilities
+            });
         }
     }
 }
