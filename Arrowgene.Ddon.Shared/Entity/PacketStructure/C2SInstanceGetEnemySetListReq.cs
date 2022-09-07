@@ -10,11 +10,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SInstanceGetEnemySetListReq()
         {
-            LayoutId = new CStageLayoutId();
+            LayoutId = new CDataStageLayoutId();
             SubGroupId = 0;
         }
 
-        public CStageLayoutId LayoutId { get; set; }
+        public CDataStageLayoutId LayoutId { get; set; }
         public byte SubGroupId { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SInstanceGetEnemySetListReq>
@@ -22,14 +22,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
             public override void Write(IBuffer buffer, C2SInstanceGetEnemySetListReq obj)
             {
-                WriteEntity<CStageLayoutId>(buffer, obj.LayoutId);
+                WriteEntity<CDataStageLayoutId>(buffer, obj.LayoutId);
                 WriteByte(buffer, obj.SubGroupId);
             }
 
             public override C2SInstanceGetEnemySetListReq Read(IBuffer buffer)
             {
                 C2SInstanceGetEnemySetListReq obj = new C2SInstanceGetEnemySetListReq();
-                obj.LayoutId = ReadEntity<CStageLayoutId>(buffer);
+                obj.LayoutId = ReadEntity<CDataStageLayoutId>(buffer);
                 obj.SubGroupId = ReadByte(buffer);
                 return obj;
             }

@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SInstanceEnemyKillReq()
         {
-            LayoutId=new CStageLayoutId();
+            LayoutId=new CDataStageLayoutId();
             SetId=0;
             InnerId=0;
             DropPosX=0;
@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             RegionFlag=0;
         }
 
-        public CStageLayoutId LayoutId { get; set; }
+        public CDataStageLayoutId LayoutId { get; set; }
         public uint SetId { get; set; }
         public uint InnerId { get; set; }
         public double DropPosX { get; set; }
@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
             public override void Write(IBuffer buffer, C2SInstanceEnemyKillReq obj)
             {
-                WriteEntity<CStageLayoutId>(buffer, obj.LayoutId);
+                WriteEntity<CDataStageLayoutId>(buffer, obj.LayoutId);
                 WriteUInt32(buffer, obj.SetId);
                 WriteUInt32(buffer, obj.InnerId);
                 WriteDouble(buffer, obj.DropPosX);
@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SInstanceEnemyKillReq Read(IBuffer buffer)
             {
                 C2SInstanceEnemyKillReq obj = new C2SInstanceEnemyKillReq();
-                obj.LayoutId = ReadEntity<CStageLayoutId>(buffer);
+                obj.LayoutId = ReadEntity<CDataStageLayoutId>(buffer);
                 obj.SetId = ReadUInt32(buffer);
                 obj.InnerId = ReadUInt32(buffer);
                 obj.DropPosX = ReadDouble(buffer);
