@@ -45,6 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             });
 
             // Inform party members of the change
+            // There's probably a different, smaller packet precisely for this purpose (S2C_CUSTOM_SKILL_SET_NTC?)
             S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc(client.Character);
             partyPlayerContextNtc.Context.Base.MemberIndex = client.Party.Members.IndexOf(client);
             client.Party.SendToAll(partyPlayerContextNtc);
