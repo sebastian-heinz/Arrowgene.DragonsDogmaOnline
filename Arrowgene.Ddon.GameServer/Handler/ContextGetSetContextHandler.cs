@@ -40,12 +40,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Party.SendToAll(new S2CContextSetContextBaseNtc() {
                 Base = packet.Structure.Base
             });
-
-            foreach(GameClient member in client.Party.Members)
-            {
-                client.Send(ntc);
-                client.Send(baseNtc);
-            }
         }
     }
 }
