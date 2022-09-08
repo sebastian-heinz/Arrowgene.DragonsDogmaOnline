@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Only send it when the party leader moves to a safe stage
             if(SafeStageIds.Contains(packet.Structure.StageId))
             {
-                client.Send(new S2CInstance_13_42_16_Ntc());
+                client.Send(new S2CInstanceAreaResetNtc());
             }
 
             client.Send(res);

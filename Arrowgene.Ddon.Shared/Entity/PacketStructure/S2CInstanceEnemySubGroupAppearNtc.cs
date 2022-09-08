@@ -4,31 +4,29 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class C2SInstanceGetEnemySetListReq : IPacketStructure
+    public class S2CInstanceEnemySubGroupAppearNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.C2S_INSTANCE_GET_ENEMY_SET_LIST_REQ;
+        public PacketId Id => PacketId.S2C_INSTANCE_ENEMY_SUB_GROUP_APPEAR_NTC;
 
-        public C2SInstanceGetEnemySetListReq()
+        public S2CInstanceEnemySubGroupAppearNtc()
         {
             LayoutId = new CDataStageLayoutId();
-            SubGroupId = 0;
         }
 
         public CDataStageLayoutId LayoutId { get; set; }
         public byte SubGroupId { get; set; }
 
-        public class Serializer : PacketEntitySerializer<C2SInstanceGetEnemySetListReq>
+        public class Serializer : PacketEntitySerializer<S2CInstanceEnemySubGroupAppearNtc>
         {
-
-            public override void Write(IBuffer buffer, C2SInstanceGetEnemySetListReq obj)
+            public override void Write(IBuffer buffer, S2CInstanceEnemySubGroupAppearNtc obj)
             {
                 WriteEntity<CDataStageLayoutId>(buffer, obj.LayoutId);
                 WriteByte(buffer, obj.SubGroupId);
             }
 
-            public override C2SInstanceGetEnemySetListReq Read(IBuffer buffer)
+            public override S2CInstanceEnemySubGroupAppearNtc Read(IBuffer buffer)
             {
-                C2SInstanceGetEnemySetListReq obj = new C2SInstanceGetEnemySetListReq();
+                S2CInstanceEnemySubGroupAppearNtc obj = new S2CInstanceEnemySubGroupAppearNtc();
                 obj.LayoutId = ReadEntity<CDataStageLayoutId>(buffer);
                 obj.SubGroupId = ReadByte(buffer);
                 return obj;

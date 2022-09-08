@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CPartyRecvBinaryMsgNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_PARTY_RECV_BINARY_MSG_NOTICE;
+        public PacketId Id => PacketId.S2C_PARTY_RECV_BINARY_MSG_NTC;
 
         public uint CharacterId { get; set; }
         public byte[] Data { get; set; }

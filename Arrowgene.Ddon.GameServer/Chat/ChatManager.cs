@@ -72,7 +72,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
             switch (response.Type)
             {
                 case LobbyChatMsgType.Say:
+                case LobbyChatMsgType.Shout:
                     response.Recipients.AddRange(_server.Clients);
+                    break;
+                case LobbyChatMsgType.Party:
+                    response.Recipients.AddRange(client.Party.Members);
                     break;
                 default:
                     response.Recipients.Add(client);

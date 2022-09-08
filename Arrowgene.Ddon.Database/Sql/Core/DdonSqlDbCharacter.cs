@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "koshi_offset", "koshi_size", "ankle_offset", "fat", "muscle", "motion_filter"
         };
 
+        // Im not convinced most of these fields has to be stored in DB
         private static readonly string[] CDataStatusInfoFields = new string[]
         {
             "character_id", "hp", "stamina", "revive_point", "max_hp", "max_stamina", "white_hp", "gain_hp", "gain_stamina",
@@ -218,55 +219,63 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     while (reader.Read())
                     {
-                        character.CharacterInfo.CharacterJobDataList.Add(ReadCharacterJobData(reader));
+                        character.CharacterJobDataList.Add(ReadCharacterJobData(reader));
                     }
                 });
 
             // Equips
-            CDataCharacterEquipData characterEquipData = new CDataCharacterEquipData();
-            ExecuteReader(SqlSelectEquipItemInfo,
-                command => 
-                { 
-                    AddParameter(command, "@character_id", character.Id); 
-                    AddParameter(command, "@job", (byte) character.CharacterInfo.Job); 
-                }, 
+            ExecuteReader(SqlSelectEquipItemInfoByCharacter,
+                command => { AddParameter(command, "@character_id", character.Id); }, 
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        characterEquipData.Equips.Add(ReadEquipItemInfo(reader));
+                        JobId job = (JobId) GetByte(reader, "job");
+                        CDataEquipItemInfo equipItemInfo = ReadEquipItemInfo(reader);
+                        if(!character.CharacterEquipDataListDictionary.ContainsKey(job))
+                        {
+                            List<CDataCharacterEquipData> characterEquipDataList = new List<CDataCharacterEquipData>();
+                            characterEquipDataList.Add(new CDataCharacterEquipData());
+                            character.CharacterEquipDataListDictionary.Add(job, characterEquipDataList);
+                        }
+                        character.CharacterEquipDataListDictionary[job][0].Equips.Add(equipItemInfo);
                     }
                 });
-            character.CharacterInfo.CharacterEquipDataList.Add(characterEquipData);
 
-            CDataCharacterEquipData characterVisualEquipData = new CDataCharacterEquipData();
-            ExecuteReader(SqlSelectVisualEquipItemInfo,
-                command => 
-                { 
-                    AddParameter(command, "@character_id", character.Id); 
-                    AddParameter(command, "@job", (byte) character.CharacterInfo.Job); 
-                }, 
+            ExecuteReader(SqlSelectVisualEquipItemInfoByCharacter,
+                command => { AddParameter(command, "@character_id", character.Id); }, 
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        characterVisualEquipData.Equips.Add(ReadEquipItemInfo(reader));
+                        JobId job = (JobId) GetByte(reader, "job");
+                        CDataEquipItemInfo equipItemInfo = ReadEquipItemInfo(reader);
+                        if(!character.CharacterEquipViewDataListDictionary.ContainsKey(job))
+                        {
+                            List<CDataCharacterEquipData> characterEquipDataList = new List<CDataCharacterEquipData>();
+                            characterEquipDataList.Add(new CDataCharacterEquipData());
+                            character.CharacterEquipViewDataListDictionary.Add(job, characterEquipDataList);
+                        }
+                        character.CharacterEquipViewDataListDictionary[job][0].Equips.Add(equipItemInfo);
                     }
                 });
-            character.CharacterInfo.CharacterEquipViewDataList.Add(characterVisualEquipData);
+
+            
 
             // Job Items
-            ExecuteReader(SqlSelectEquipJobItem,
-                command => 
-                { 
-                    AddParameter(command, "@character_id", character.Id); 
-                    AddParameter(command, "@job", (byte) character.CharacterInfo.Job); 
-                }, 
+            ExecuteReader(SqlSelectEquipJobItemByCharacter,
+                command => { AddParameter(command, "@character_id", character.Id); }, 
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        character.CharacterInfo.CharacterEquipJobItemList.Add(ReadEquipJobItem(reader));
+                        JobId job = (JobId) GetByte(reader, "job");
+                        CDataEquipJobItem equipJobItem = ReadEquipJobItem(reader);
+                        if(!character.CharacterEquipJobItemListDictionary.ContainsKey(job))
+                        {
+                            character.CharacterEquipJobItemListDictionary.Add(job, new List<CDataEquipJobItem>());
+                        }
+                        character.CharacterEquipJobItemListDictionary[job].Add(equipJobItem);
                     }
                 });
 
@@ -306,7 +315,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private void StoreCharacterData(Character character)
         {
-            foreach(CDataCharacterJobData characterJobData in character.CharacterInfo.CharacterJobDataList)
+            foreach(CDataCharacterJobData characterJobData in character.CharacterJobDataList)
             {
                 ExecuteNonQuery(SqlReplaceCharacterJobData, command =>
                 {
@@ -314,34 +323,43 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
             }
 
-            foreach(CDataCharacterEquipData characterEquipData in character.CharacterInfo.CharacterEquipDataList)
+            foreach(KeyValuePair<JobId, List<CDataCharacterEquipData>> characterEquipDataListByJob in character.CharacterEquipDataListDictionary)
             {
-                foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
+                foreach(CDataCharacterEquipData characterEquipData in characterEquipDataListByJob.Value)
                 {
-                    ExecuteNonQuery(SqlReplaceEquipItemInfo, command =>
+                    foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
                     {
-                        AddParameter(command, character.Id, character.CharacterInfo.Job, equipItemInfo);
-                    });
+                        ExecuteNonQuery(SqlReplaceEquipItemInfo, command =>
+                        {
+                            AddParameter(command, character.Id, characterEquipDataListByJob.Key, equipItemInfo);
+                        });
+                    }
                 }
             }
 
-            foreach(CDataCharacterEquipData characterEquipData in character.CharacterInfo.CharacterEquipViewDataList)
+            foreach(KeyValuePair<JobId, List<CDataCharacterEquipData>> characterEquipViewDataListByJob in character.CharacterEquipViewDataListDictionary)
             {
-                foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
+                foreach(CDataCharacterEquipData characterEquipData in characterEquipViewDataListByJob.Value)
                 {
-                    ExecuteNonQuery(SqlReplaceEquipItemInfo, command =>
+                    foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
                     {
-                        AddParameter(command, character.Id, character.CharacterInfo.Job, equipItemInfo);
-                    });
+                        ExecuteNonQuery(SqlReplaceEquipItemInfo, command =>
+                        {
+                            AddParameter(command, character.Id, characterEquipViewDataListByJob.Key, equipItemInfo);
+                        });
+                    }
                 }
             }
 
-            foreach(CDataEquipJobItem equipJobItem in character.CharacterInfo.CharacterEquipJobItemList)
+            foreach(KeyValuePair<JobId, List<CDataEquipJobItem>> characterEquipJobItemListByJob in character.CharacterEquipJobItemListDictionary)
             {
-                ExecuteNonQuery(SqlReplaceEquipJobItem, command =>
+                foreach(CDataEquipJobItem equipJobItem in characterEquipJobItemListByJob.Value)
                 {
-                    AddParameter(command, character.Id, character.CharacterInfo.Job, equipJobItem);
-                });
+                    ExecuteNonQuery(SqlReplaceEquipJobItem, command =>
+                    {
+                        AddParameter(command, character.Id, characterEquipJobItemListByJob.Key, equipJobItem);
+                    });
+                }
             }
 
             foreach(CDataNormalSkillParam normalSkillParam in character.NormalSkills)
@@ -375,120 +393,120 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.Id = GetUInt32(reader, "id");
 
             character.AccountId = GetInt32(reader, "account_id");
-            character.CharacterInfo.Version = GetUInt32(reader, "version");
-            character.CharacterInfo.FirstName = GetString(reader, "first_name");
-            character.CharacterInfo.LastName = GetString(reader, "last_name");
+            character.Version = GetUInt32(reader, "version");
+            character.FirstName = GetString(reader, "first_name");
+            character.LastName = GetString(reader, "last_name");
             character.Created = GetDateTime(reader, "created");
-            character.CharacterInfo.Job = (JobId) GetByte(reader, "job");
-            character.CharacterInfo.JewelrySlotNum = GetByte(reader, "jewelry_slot_num");
-            character.CharacterInfo.MyPawnSlotNum = GetByte(reader, "my_pawn_slot_num");
-            character.CharacterInfo.RentalPawnSlotNum = GetByte(reader, "rental_pawn_slot_num");
-            character.CharacterInfo.HideEquipHead = GetBoolean(reader, "hide_equip_head");
-            character.CharacterInfo.HideEquipLantern = GetBoolean(reader, "hide_equip_lantern");
-            character.CharacterInfo.HideEquipHeadPawn = GetBoolean(reader, "hide_equip_head_pawn");
-            character.CharacterInfo.HideEquipLanternPawn = GetBoolean(reader, "hide_equip_lantern_pawn");
-            character.CharacterInfo.ArisenProfileShareRange = GetByte(reader, "arisen_profile_share_range");
+            character.Job = (JobId) GetByte(reader, "job");
+            character.JewelrySlotNum = GetByte(reader, "jewelry_slot_num");
+            character.MyPawnSlotNum = GetByte(reader, "my_pawn_slot_num");
+            character.RentalPawnSlotNum = GetByte(reader, "rental_pawn_slot_num");
+            character.HideEquipHead = GetBoolean(reader, "hide_equip_head");
+            character.HideEquipLantern = GetBoolean(reader, "hide_equip_lantern");
+            character.HideEquipHeadPawn = GetBoolean(reader, "hide_equip_head_pawn");
+            character.HideEquipLanternPawn = GetBoolean(reader, "hide_equip_lantern_pawn");
+            character.ArisenProfileShareRange = GetByte(reader, "arisen_profile_share_range");
 
-            character.CharacterInfo.EditInfo.Sex = GetByte(reader, "sex");
-            character.CharacterInfo.EditInfo.Voice = GetByte(reader, "voice");
-            character.CharacterInfo.EditInfo.VoicePitch = GetUInt16(reader, "voice_pitch");
-            character.CharacterInfo.EditInfo.Personality = GetByte(reader, "personality");
-            character.CharacterInfo.EditInfo.SpeechFreq = GetByte(reader, "speech_freq");
-            character.CharacterInfo.EditInfo.BodyType = GetByte(reader, "body_type");
-            character.CharacterInfo.EditInfo.Hair = GetByte(reader, "hair");
-            character.CharacterInfo.EditInfo.Beard = GetByte(reader, "beard");
-            character.CharacterInfo.EditInfo.Makeup = GetByte(reader, "makeup");
-            character.CharacterInfo.EditInfo.Scar = GetByte(reader, "scar");
-            character.CharacterInfo.EditInfo.EyePresetNo = GetByte(reader, "eye_preset_no");
-            character.CharacterInfo.EditInfo.NosePresetNo = GetByte(reader, "nose_preset_no");
-            character.CharacterInfo.EditInfo.MouthPresetNo = GetByte(reader, "mouth_preset_no");
-            character.CharacterInfo.EditInfo.EyebrowTexNo = GetByte(reader, "eyebrow_tex_no");
-            character.CharacterInfo.EditInfo.ColorSkin = GetByte(reader, "color_skin");
-            character.CharacterInfo.EditInfo.ColorHair = GetByte(reader, "color_hair");
-            character.CharacterInfo.EditInfo.ColorBeard = GetByte(reader, "color_beard");
-            character.CharacterInfo.EditInfo.ColorEyebrow = GetByte(reader, "color_eyebrow");
-            character.CharacterInfo.EditInfo.ColorREye = GetByte(reader, "color_r_eye");
-            character.CharacterInfo.EditInfo.ColorLEye = GetByte(reader, "color_l_eye");
-            character.CharacterInfo.EditInfo.ColorMakeup = GetByte(reader, "color_makeup");
-            character.CharacterInfo.EditInfo.Sokutobu = GetUInt16(reader, "sokutobu");
-            character.CharacterInfo.EditInfo.Hitai = GetUInt16(reader, "hitai");
-            character.CharacterInfo.EditInfo.MimiJyouge = GetUInt16(reader, "mimi_jyouge");
-            character.CharacterInfo.EditInfo.Kannkaku = GetUInt16(reader, "kannkaku");
-            character.CharacterInfo.EditInfo.MabisasiJyouge = GetUInt16(reader, "mabisasi_jyouge");
-            character.CharacterInfo.EditInfo.HanakuchiJyouge = GetUInt16(reader, "hanakuchi_jyouge");
-            character.CharacterInfo.EditInfo.AgoSakiHaba = GetUInt16(reader, "ago_saki_haba");
-            character.CharacterInfo.EditInfo.AgoZengo = GetUInt16(reader, "ago_zengo");
-            character.CharacterInfo.EditInfo.AgoSakiJyouge = GetUInt16(reader, "ago_saki_jyouge");
-            character.CharacterInfo.EditInfo.HitomiOokisa = GetUInt16(reader, "hitomi_ookisa");
-            character.CharacterInfo.EditInfo.MeOokisa = GetUInt16(reader, "me_ookisa");
-            character.CharacterInfo.EditInfo.MeKaiten = GetUInt16(reader, "me_kaiten");
-            character.CharacterInfo.EditInfo.MayuKaiten = GetUInt16(reader, "mayu_kaiten");
-            character.CharacterInfo.EditInfo.MimiOokisa = GetUInt16(reader, "mimi_ookisa");
-            character.CharacterInfo.EditInfo.MimiMuki = GetUInt16(reader, "mimi_muki");
-            character.CharacterInfo.EditInfo.ElfMimi = GetUInt16(reader, "elf_mimi");
-            character.CharacterInfo.EditInfo.MikenTakasa = GetUInt16(reader, "miken_takasa");
-            character.CharacterInfo.EditInfo.MikenHaba = GetUInt16(reader, "miken_haba");
-            character.CharacterInfo.EditInfo.HohoboneRyou = GetUInt16(reader, "hohobone_ryou");
-            character.CharacterInfo.EditInfo.HohoboneJyouge = GetUInt16(reader, "hohobone_jyouge");
-            character.CharacterInfo.EditInfo.Hohoniku = GetUInt16(reader, "hohoniku");
-            character.CharacterInfo.EditInfo.ErahoneJyouge = GetUInt16(reader, "erahone_jyouge");
-            character.CharacterInfo.EditInfo.ErahoneHaba = GetUInt16(reader, "erahone_haba");
-            character.CharacterInfo.EditInfo.HanaJyouge = GetUInt16(reader, "hana_jyouge");
-            character.CharacterInfo.EditInfo.HanaHaba = GetUInt16(reader, "hana_haba");
-            character.CharacterInfo.EditInfo.HanaTakasa = GetUInt16(reader, "hana_takasa");
-            character.CharacterInfo.EditInfo.HanaKakudo = GetUInt16(reader, "hana_kakudo");
-            character.CharacterInfo.EditInfo.KuchiHaba = GetUInt16(reader, "kuchi_haba");
-            character.CharacterInfo.EditInfo.KuchiAtsusa = GetUInt16(reader, "kuchi_atsusa");
-            character.CharacterInfo.EditInfo.EyebrowUVOffsetX = GetUInt16(reader, "eyebrow_uv_offset_x");
-            character.CharacterInfo.EditInfo.EyebrowUVOffsetY = GetUInt16(reader, "eyebrow_uv_offset_y");
-            character.CharacterInfo.EditInfo.Wrinkle = GetUInt16(reader, "wrinkle");
-            character.CharacterInfo.EditInfo.WrinkleAlbedoBlendRate = GetUInt16(reader, "wrinkle_albedo_blend_rate");
-            character.CharacterInfo.EditInfo.WrinkleDetailNormalPower = GetUInt16(reader, "wrinkle_detail_normal_power");
-            character.CharacterInfo.EditInfo.MuscleAlbedoBlendRate = GetUInt16(reader, "muscle_albedo_blend_rate");
-            character.CharacterInfo.EditInfo.MuscleDetailNormalPower = GetUInt16(reader, "muscle_detail_normal_power");
-            character.CharacterInfo.EditInfo.Height = GetUInt16(reader, "height");
-            character.CharacterInfo.EditInfo.HeadSize = GetUInt16(reader, "head_size");
-            character.CharacterInfo.EditInfo.NeckOffset = GetUInt16(reader, "neck_offset");
-            character.CharacterInfo.EditInfo.NeckScale = GetUInt16(reader, "neck_scale");
-            character.CharacterInfo.EditInfo.UpperBodyScaleX = GetUInt16(reader, "upper_body_scale_x");
-            character.CharacterInfo.EditInfo.BellySize = GetUInt16(reader, "belly_size");
-            character.CharacterInfo.EditInfo.TeatScale = GetUInt16(reader, "teat_scale");
-            character.CharacterInfo.EditInfo.TekubiSize = GetUInt16(reader, "tekubi_size");
-            character.CharacterInfo.EditInfo.KoshiOffset = GetUInt16(reader, "koshi_offset");
-            character.CharacterInfo.EditInfo.KoshiSize = GetUInt16(reader, "koshi_size");
-            character.CharacterInfo.EditInfo.AnkleOffset = GetUInt16(reader, "ankle_offset");
-            character.CharacterInfo.EditInfo.Fat = GetUInt16(reader, "fat");
-            character.CharacterInfo.EditInfo.Muscle = GetUInt16(reader, "muscle");
-            character.CharacterInfo.EditInfo.MotionFilter = GetUInt16(reader, "motion_filter");
+            character.EditInfo.Sex = GetByte(reader, "sex");
+            character.EditInfo.Voice = GetByte(reader, "voice");
+            character.EditInfo.VoicePitch = GetUInt16(reader, "voice_pitch");
+            character.EditInfo.Personality = GetByte(reader, "personality");
+            character.EditInfo.SpeechFreq = GetByte(reader, "speech_freq");
+            character.EditInfo.BodyType = GetByte(reader, "body_type");
+            character.EditInfo.Hair = GetByte(reader, "hair");
+            character.EditInfo.Beard = GetByte(reader, "beard");
+            character.EditInfo.Makeup = GetByte(reader, "makeup");
+            character.EditInfo.Scar = GetByte(reader, "scar");
+            character.EditInfo.EyePresetNo = GetByte(reader, "eye_preset_no");
+            character.EditInfo.NosePresetNo = GetByte(reader, "nose_preset_no");
+            character.EditInfo.MouthPresetNo = GetByte(reader, "mouth_preset_no");
+            character.EditInfo.EyebrowTexNo = GetByte(reader, "eyebrow_tex_no");
+            character.EditInfo.ColorSkin = GetByte(reader, "color_skin");
+            character.EditInfo.ColorHair = GetByte(reader, "color_hair");
+            character.EditInfo.ColorBeard = GetByte(reader, "color_beard");
+            character.EditInfo.ColorEyebrow = GetByte(reader, "color_eyebrow");
+            character.EditInfo.ColorREye = GetByte(reader, "color_r_eye");
+            character.EditInfo.ColorLEye = GetByte(reader, "color_l_eye");
+            character.EditInfo.ColorMakeup = GetByte(reader, "color_makeup");
+            character.EditInfo.Sokutobu = GetUInt16(reader, "sokutobu");
+            character.EditInfo.Hitai = GetUInt16(reader, "hitai");
+            character.EditInfo.MimiJyouge = GetUInt16(reader, "mimi_jyouge");
+            character.EditInfo.Kannkaku = GetUInt16(reader, "kannkaku");
+            character.EditInfo.MabisasiJyouge = GetUInt16(reader, "mabisasi_jyouge");
+            character.EditInfo.HanakuchiJyouge = GetUInt16(reader, "hanakuchi_jyouge");
+            character.EditInfo.AgoSakiHaba = GetUInt16(reader, "ago_saki_haba");
+            character.EditInfo.AgoZengo = GetUInt16(reader, "ago_zengo");
+            character.EditInfo.AgoSakiJyouge = GetUInt16(reader, "ago_saki_jyouge");
+            character.EditInfo.HitomiOokisa = GetUInt16(reader, "hitomi_ookisa");
+            character.EditInfo.MeOokisa = GetUInt16(reader, "me_ookisa");
+            character.EditInfo.MeKaiten = GetUInt16(reader, "me_kaiten");
+            character.EditInfo.MayuKaiten = GetUInt16(reader, "mayu_kaiten");
+            character.EditInfo.MimiOokisa = GetUInt16(reader, "mimi_ookisa");
+            character.EditInfo.MimiMuki = GetUInt16(reader, "mimi_muki");
+            character.EditInfo.ElfMimi = GetUInt16(reader, "elf_mimi");
+            character.EditInfo.MikenTakasa = GetUInt16(reader, "miken_takasa");
+            character.EditInfo.MikenHaba = GetUInt16(reader, "miken_haba");
+            character.EditInfo.HohoboneRyou = GetUInt16(reader, "hohobone_ryou");
+            character.EditInfo.HohoboneJyouge = GetUInt16(reader, "hohobone_jyouge");
+            character.EditInfo.Hohoniku = GetUInt16(reader, "hohoniku");
+            character.EditInfo.ErahoneJyouge = GetUInt16(reader, "erahone_jyouge");
+            character.EditInfo.ErahoneHaba = GetUInt16(reader, "erahone_haba");
+            character.EditInfo.HanaJyouge = GetUInt16(reader, "hana_jyouge");
+            character.EditInfo.HanaHaba = GetUInt16(reader, "hana_haba");
+            character.EditInfo.HanaTakasa = GetUInt16(reader, "hana_takasa");
+            character.EditInfo.HanaKakudo = GetUInt16(reader, "hana_kakudo");
+            character.EditInfo.KuchiHaba = GetUInt16(reader, "kuchi_haba");
+            character.EditInfo.KuchiAtsusa = GetUInt16(reader, "kuchi_atsusa");
+            character.EditInfo.EyebrowUVOffsetX = GetUInt16(reader, "eyebrow_uv_offset_x");
+            character.EditInfo.EyebrowUVOffsetY = GetUInt16(reader, "eyebrow_uv_offset_y");
+            character.EditInfo.Wrinkle = GetUInt16(reader, "wrinkle");
+            character.EditInfo.WrinkleAlbedoBlendRate = GetUInt16(reader, "wrinkle_albedo_blend_rate");
+            character.EditInfo.WrinkleDetailNormalPower = GetUInt16(reader, "wrinkle_detail_normal_power");
+            character.EditInfo.MuscleAlbedoBlendRate = GetUInt16(reader, "muscle_albedo_blend_rate");
+            character.EditInfo.MuscleDetailNormalPower = GetUInt16(reader, "muscle_detail_normal_power");
+            character.EditInfo.Height = GetUInt16(reader, "height");
+            character.EditInfo.HeadSize = GetUInt16(reader, "head_size");
+            character.EditInfo.NeckOffset = GetUInt16(reader, "neck_offset");
+            character.EditInfo.NeckScale = GetUInt16(reader, "neck_scale");
+            character.EditInfo.UpperBodyScaleX = GetUInt16(reader, "upper_body_scale_x");
+            character.EditInfo.BellySize = GetUInt16(reader, "belly_size");
+            character.EditInfo.TeatScale = GetUInt16(reader, "teat_scale");
+            character.EditInfo.TekubiSize = GetUInt16(reader, "tekubi_size");
+            character.EditInfo.KoshiOffset = GetUInt16(reader, "koshi_offset");
+            character.EditInfo.KoshiSize = GetUInt16(reader, "koshi_size");
+            character.EditInfo.AnkleOffset = GetUInt16(reader, "ankle_offset");
+            character.EditInfo.Fat = GetUInt16(reader, "fat");
+            character.EditInfo.Muscle = GetUInt16(reader, "muscle");
+            character.EditInfo.MotionFilter = GetUInt16(reader, "motion_filter");
 
-            character.CharacterInfo.StatusInfo.HP = GetUInt32(reader, "hp");
-            character.CharacterInfo.StatusInfo.Stamina = GetUInt32(reader, "stamina");
-            character.CharacterInfo.StatusInfo.RevivePoint = GetByte(reader, "revive_point");
-            character.CharacterInfo.StatusInfo.MaxHP = GetUInt32(reader, "max_hp");
-            character.CharacterInfo.StatusInfo.MaxStamina = GetUInt32(reader, "max_stamina");
-            character.CharacterInfo.StatusInfo.WhiteHP = GetUInt32(reader, "white_hp");
-            character.CharacterInfo.StatusInfo.GainHP = GetUInt32(reader, "gain_hp");
-            character.CharacterInfo.StatusInfo.GainStamina = GetUInt32(reader, "gain_stamina");
-            character.CharacterInfo.StatusInfo.GainAttack = GetUInt32(reader, "gain_attack");
-            character.CharacterInfo.StatusInfo.GainDefense = GetUInt32(reader, "gain_defense");
-            character.CharacterInfo.StatusInfo.GainMagicAttack = GetUInt32(reader, "gain_magic_attack");
-            character.CharacterInfo.StatusInfo.GainMagicDefense = GetUInt32(reader, "gain_magic_defense");
+            character.StatusInfo.HP = GetUInt32(reader, "hp");
+            character.StatusInfo.Stamina = GetUInt32(reader, "stamina");
+            character.StatusInfo.RevivePoint = GetByte(reader, "revive_point");
+            character.StatusInfo.MaxHP = GetUInt32(reader, "max_hp");
+            character.StatusInfo.MaxStamina = GetUInt32(reader, "max_stamina");
+            character.StatusInfo.WhiteHP = GetUInt32(reader, "white_hp");
+            character.StatusInfo.GainHP = GetUInt32(reader, "gain_hp");
+            character.StatusInfo.GainStamina = GetUInt32(reader, "gain_stamina");
+            character.StatusInfo.GainAttack = GetUInt32(reader, "gain_attack");
+            character.StatusInfo.GainDefense = GetUInt32(reader, "gain_defense");
+            character.StatusInfo.GainMagicAttack = GetUInt32(reader, "gain_magic_attack");
+            character.StatusInfo.GainMagicDefense = GetUInt32(reader, "gain_magic_defense");
 
-            character.CharacterInfo.MatchingProfile.EntryJob = (JobId) GetByte(reader, "entry_job");
-            character.CharacterInfo.MatchingProfile.EntryJobLevel = GetUInt32(reader, "entry_job_level");
-            character.CharacterInfo.MatchingProfile.CurrentJob = (JobId) GetByte(reader, "current_job");
-            character.CharacterInfo.MatchingProfile.CurrentJobLevel = GetUInt32(reader, "current_job_level");
-            character.CharacterInfo.MatchingProfile.ObjectiveType1 = GetUInt32(reader, "objective_type1");
-            character.CharacterInfo.MatchingProfile.ObjectiveType2 = GetUInt32(reader, "objective_type2");
-            character.CharacterInfo.MatchingProfile.PlayStyle = GetUInt32(reader, "play_style");
-            character.CharacterInfo.MatchingProfile.Comment = GetString(reader, "comment");
-            character.CharacterInfo.MatchingProfile.IsJoinParty = GetByte(reader, "is_join_party");
+            character.MatchingProfile.EntryJob = (JobId) GetByte(reader, "entry_job");
+            character.MatchingProfile.EntryJobLevel = GetUInt32(reader, "entry_job_level");
+            character.MatchingProfile.CurrentJob = (JobId) GetByte(reader, "current_job");
+            character.MatchingProfile.CurrentJobLevel = GetUInt32(reader, "current_job_level");
+            character.MatchingProfile.ObjectiveType1 = GetUInt32(reader, "objective_type1");
+            character.MatchingProfile.ObjectiveType2 = GetUInt32(reader, "objective_type2");
+            character.MatchingProfile.PlayStyle = GetUInt32(reader, "play_style");
+            character.MatchingProfile.Comment = GetString(reader, "comment");
+            character.MatchingProfile.IsJoinParty = GetByte(reader, "is_join_party");
 
-            character.CharacterInfo.ArisenProfile.BackgroundId = GetByte(reader, "background_id");
-            character.CharacterInfo.ArisenProfile.Title.UId = GetUInt32(reader, "title_uid");
-            character.CharacterInfo.ArisenProfile.Title.Index = GetUInt32(reader, "title_index");
-            character.CharacterInfo.ArisenProfile.MotionId = GetUInt16(reader, "motion_id");
-            character.CharacterInfo.ArisenProfile.MotionFrameNo = GetUInt32(reader, "motion_frame_no");
+            character.ArisenProfile.BackgroundId = GetByte(reader, "background_id");
+            character.ArisenProfile.Title.UId = GetUInt32(reader, "title_uid");
+            character.ArisenProfile.Title.Index = GetUInt32(reader, "title_index");
+            character.ArisenProfile.MotionId = GetUInt16(reader, "motion_id");
+            character.ArisenProfile.MotionFrameNo = GetUInt32(reader, "motion_frame_no");
 
             return character;
         }
@@ -498,120 +516,120 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             // CharacterFields
             AddParameter(command, "@account_id", character.AccountId);
             AddParameter(command, "@character_id", character.Id);
-            AddParameter(command, "@version", character.CharacterInfo.Version);
-            AddParameter(command, "@first_name", character.CharacterInfo.FirstName);
-            AddParameter(command, "@last_name", character.CharacterInfo.LastName);
+            AddParameter(command, "@version", character.Version);
+            AddParameter(command, "@first_name", character.FirstName);
+            AddParameter(command, "@last_name", character.LastName);
             AddParameter(command, "@created", character.Created);
-            AddParameter(command, "@job", (byte) character.CharacterInfo.Job);
-            AddParameter(command, "@jewelry_slot_num", character.CharacterInfo.JewelrySlotNum);
-            AddParameter(command, "@my_pawn_slot_num", character.CharacterInfo.MyPawnSlotNum);
-            AddParameter(command, "@rental_pawn_slot_num", character.CharacterInfo.RentalPawnSlotNum);
-            AddParameter(command, "@hide_equip_head", character.CharacterInfo.HideEquipHead);
-            AddParameter(command, "@hide_equip_lantern", character.CharacterInfo.HideEquipLantern);
-            AddParameter(command, "@hide_equip_head_pawn", character.CharacterInfo.HideEquipHeadPawn);
-            AddParameter(command, "@hide_equip_lantern_pawn", character.CharacterInfo.HideEquipLanternPawn);
-            AddParameter(command, "@arisen_profile_share_range", character.CharacterInfo.ArisenProfileShareRange);
+            AddParameter(command, "@job", (byte) character.Job);
+            AddParameter(command, "@jewelry_slot_num", character.JewelrySlotNum);
+            AddParameter(command, "@my_pawn_slot_num", character.MyPawnSlotNum);
+            AddParameter(command, "@rental_pawn_slot_num", character.RentalPawnSlotNum);
+            AddParameter(command, "@hide_equip_head", character.HideEquipHead);
+            AddParameter(command, "@hide_equip_lantern", character.HideEquipLantern);
+            AddParameter(command, "@hide_equip_head_pawn", character.HideEquipHeadPawn);
+            AddParameter(command, "@hide_equip_lantern_pawn", character.HideEquipLanternPawn);
+            AddParameter(command, "@arisen_profile_share_range", character.ArisenProfileShareRange);
             // CDataEditInfoFields
-            AddParameter(command, "@sex", character.CharacterInfo.EditInfo.Sex);
-            AddParameter(command, "@voice", character.CharacterInfo.EditInfo.Voice);
-            AddParameter(command, "@voice_pitch", character.CharacterInfo.EditInfo.VoicePitch);
-            AddParameter(command, "@personality", character.CharacterInfo.EditInfo.Personality);
-            AddParameter(command, "@speech_freq", character.CharacterInfo.EditInfo.SpeechFreq);
-            AddParameter(command, "@body_type", character.CharacterInfo.EditInfo.BodyType);
-            AddParameter(command, "@hair", character.CharacterInfo.EditInfo.Hair);
-            AddParameter(command, "@beard", character.CharacterInfo.EditInfo.Beard);
-            AddParameter(command, "@makeup", character.CharacterInfo.EditInfo.Makeup);
-            AddParameter(command, "@scar", character.CharacterInfo.EditInfo.Scar);
-            AddParameter(command, "@eye_preset_no", character.CharacterInfo.EditInfo.EyePresetNo);
-            AddParameter(command, "@nose_preset_no", character.CharacterInfo.EditInfo.NosePresetNo);
-            AddParameter(command, "@mouth_preset_no", character.CharacterInfo.EditInfo.MouthPresetNo);
-            AddParameter(command, "@eyebrow_tex_no", character.CharacterInfo.EditInfo.EyebrowTexNo);
-            AddParameter(command, "@color_skin", character.CharacterInfo.EditInfo.ColorSkin);
-            AddParameter(command, "@color_hair", character.CharacterInfo.EditInfo.ColorHair);
-            AddParameter(command, "@color_beard", character.CharacterInfo.EditInfo.ColorBeard);
-            AddParameter(command, "@color_eyebrow", character.CharacterInfo.EditInfo.ColorEyebrow);
-            AddParameter(command, "@color_r_eye", character.CharacterInfo.EditInfo.ColorREye);
-            AddParameter(command, "@color_l_eye", character.CharacterInfo.EditInfo.ColorLEye);
-            AddParameter(command, "@color_makeup", character.CharacterInfo.EditInfo.ColorMakeup);
-            AddParameter(command, "@sokutobu", character.CharacterInfo.EditInfo.Sokutobu);
-            AddParameter(command, "@hitai", character.CharacterInfo.EditInfo.Hitai);
-            AddParameter(command, "@mimi_jyouge", character.CharacterInfo.EditInfo.MimiJyouge);
-            AddParameter(command, "@kannkaku", character.CharacterInfo.EditInfo.Kannkaku);
-            AddParameter(command, "@mabisasi_jyouge", character.CharacterInfo.EditInfo.MabisasiJyouge);
-            AddParameter(command, "@hanakuchi_jyouge", character.CharacterInfo.EditInfo.HanakuchiJyouge);
-            AddParameter(command, "@ago_saki_haba", character.CharacterInfo.EditInfo.AgoSakiHaba);
-            AddParameter(command, "@ago_zengo", character.CharacterInfo.EditInfo.AgoZengo);
-            AddParameter(command, "@ago_saki_jyouge", character.CharacterInfo.EditInfo.AgoSakiJyouge);
-            AddParameter(command, "@hitomi_ookisa", character.CharacterInfo.EditInfo.HitomiOokisa);
-            AddParameter(command, "@me_ookisa", character.CharacterInfo.EditInfo.MeOokisa);
-            AddParameter(command, "@me_kaiten", character.CharacterInfo.EditInfo.MeKaiten);
-            AddParameter(command, "@mayu_kaiten", character.CharacterInfo.EditInfo.MayuKaiten);
-            AddParameter(command, "@mimi_ookisa", character.CharacterInfo.EditInfo.MimiOokisa);
-            AddParameter(command, "@mimi_muki", character.CharacterInfo.EditInfo.MimiMuki);
-            AddParameter(command, "@elf_mimi", character.CharacterInfo.EditInfo.ElfMimi);
-            AddParameter(command, "@miken_takasa", character.CharacterInfo.EditInfo.MikenTakasa);
-            AddParameter(command, "@miken_haba", character.CharacterInfo.EditInfo.MikenHaba);
-            AddParameter(command, "@hohobone_ryou", character.CharacterInfo.EditInfo.HohoboneRyou);
-            AddParameter(command, "@hohobone_jyouge", character.CharacterInfo.EditInfo.HohoboneJyouge);
-            AddParameter(command, "@hohoniku", character.CharacterInfo.EditInfo.Hohoniku);
-            AddParameter(command, "@erahone_jyouge", character.CharacterInfo.EditInfo.ErahoneJyouge);
-            AddParameter(command, "@erahone_haba", character.CharacterInfo.EditInfo.ErahoneHaba);
-            AddParameter(command, "@hana_jyouge", character.CharacterInfo.EditInfo.HanaJyouge);
-            AddParameter(command, "@hana_haba", character.CharacterInfo.EditInfo.HanaHaba);
-            AddParameter(command, "@hana_takasa", character.CharacterInfo.EditInfo.HanaTakasa);
-            AddParameter(command, "@hana_kakudo", character.CharacterInfo.EditInfo.HanaKakudo);
-            AddParameter(command, "@kuchi_haba", character.CharacterInfo.EditInfo.KuchiHaba);
-            AddParameter(command, "@kuchi_atsusa", character.CharacterInfo.EditInfo.KuchiAtsusa);
-            AddParameter(command, "@eyebrow_uv_offset_x", character.CharacterInfo.EditInfo.EyebrowUVOffsetX);
-            AddParameter(command, "@eyebrow_uv_offset_y", character.CharacterInfo.EditInfo.EyebrowUVOffsetY);
-            AddParameter(command, "@wrinkle", character.CharacterInfo.EditInfo.Wrinkle);
-            AddParameter(command, "@wrinkle_albedo_blend_rate", character.CharacterInfo.EditInfo.WrinkleAlbedoBlendRate);
-            AddParameter(command, "@wrinkle_detail_normal_power", character.CharacterInfo.EditInfo.WrinkleDetailNormalPower);
-            AddParameter(command, "@muscle_albedo_blend_rate", character.CharacterInfo.EditInfo.MuscleAlbedoBlendRate);
-            AddParameter(command, "@muscle_detail_normal_power", character.CharacterInfo.EditInfo.MuscleDetailNormalPower);
-            AddParameter(command, "@height", character.CharacterInfo.EditInfo.Height);
-            AddParameter(command, "@head_size", character.CharacterInfo.EditInfo.HeadSize);
-            AddParameter(command, "@neck_offset", character.CharacterInfo.EditInfo.NeckOffset);
-            AddParameter(command, "@neck_scale", character.CharacterInfo.EditInfo.NeckScale);
-            AddParameter(command, "@upper_body_scale_x", character.CharacterInfo.EditInfo.UpperBodyScaleX);
-            AddParameter(command, "@belly_size", character.CharacterInfo.EditInfo.BellySize);
-            AddParameter(command, "@teat_scale", character.CharacterInfo.EditInfo.TeatScale);
-            AddParameter(command, "@tekubi_size", character.CharacterInfo.EditInfo.TekubiSize);
-            AddParameter(command, "@koshi_offset", character.CharacterInfo.EditInfo.KoshiOffset);
-            AddParameter(command, "@koshi_size", character.CharacterInfo.EditInfo.KoshiSize);
-            AddParameter(command, "@ankle_offset", character.CharacterInfo.EditInfo.AnkleOffset);
-            AddParameter(command, "@fat", character.CharacterInfo.EditInfo.Fat);
-            AddParameter(command, "@muscle", character.CharacterInfo.EditInfo.Muscle);
-            AddParameter(command, "@motion_filter", character.CharacterInfo.EditInfo.MotionFilter);
+            AddParameter(command, "@sex", character.EditInfo.Sex);
+            AddParameter(command, "@voice", character.EditInfo.Voice);
+            AddParameter(command, "@voice_pitch", character.EditInfo.VoicePitch);
+            AddParameter(command, "@personality", character.EditInfo.Personality);
+            AddParameter(command, "@speech_freq", character.EditInfo.SpeechFreq);
+            AddParameter(command, "@body_type", character.EditInfo.BodyType);
+            AddParameter(command, "@hair", character.EditInfo.Hair);
+            AddParameter(command, "@beard", character.EditInfo.Beard);
+            AddParameter(command, "@makeup", character.EditInfo.Makeup);
+            AddParameter(command, "@scar", character.EditInfo.Scar);
+            AddParameter(command, "@eye_preset_no", character.EditInfo.EyePresetNo);
+            AddParameter(command, "@nose_preset_no", character.EditInfo.NosePresetNo);
+            AddParameter(command, "@mouth_preset_no", character.EditInfo.MouthPresetNo);
+            AddParameter(command, "@eyebrow_tex_no", character.EditInfo.EyebrowTexNo);
+            AddParameter(command, "@color_skin", character.EditInfo.ColorSkin);
+            AddParameter(command, "@color_hair", character.EditInfo.ColorHair);
+            AddParameter(command, "@color_beard", character.EditInfo.ColorBeard);
+            AddParameter(command, "@color_eyebrow", character.EditInfo.ColorEyebrow);
+            AddParameter(command, "@color_r_eye", character.EditInfo.ColorREye);
+            AddParameter(command, "@color_l_eye", character.EditInfo.ColorLEye);
+            AddParameter(command, "@color_makeup", character.EditInfo.ColorMakeup);
+            AddParameter(command, "@sokutobu", character.EditInfo.Sokutobu);
+            AddParameter(command, "@hitai", character.EditInfo.Hitai);
+            AddParameter(command, "@mimi_jyouge", character.EditInfo.MimiJyouge);
+            AddParameter(command, "@kannkaku", character.EditInfo.Kannkaku);
+            AddParameter(command, "@mabisasi_jyouge", character.EditInfo.MabisasiJyouge);
+            AddParameter(command, "@hanakuchi_jyouge", character.EditInfo.HanakuchiJyouge);
+            AddParameter(command, "@ago_saki_haba", character.EditInfo.AgoSakiHaba);
+            AddParameter(command, "@ago_zengo", character.EditInfo.AgoZengo);
+            AddParameter(command, "@ago_saki_jyouge", character.EditInfo.AgoSakiJyouge);
+            AddParameter(command, "@hitomi_ookisa", character.EditInfo.HitomiOokisa);
+            AddParameter(command, "@me_ookisa", character.EditInfo.MeOokisa);
+            AddParameter(command, "@me_kaiten", character.EditInfo.MeKaiten);
+            AddParameter(command, "@mayu_kaiten", character.EditInfo.MayuKaiten);
+            AddParameter(command, "@mimi_ookisa", character.EditInfo.MimiOokisa);
+            AddParameter(command, "@mimi_muki", character.EditInfo.MimiMuki);
+            AddParameter(command, "@elf_mimi", character.EditInfo.ElfMimi);
+            AddParameter(command, "@miken_takasa", character.EditInfo.MikenTakasa);
+            AddParameter(command, "@miken_haba", character.EditInfo.MikenHaba);
+            AddParameter(command, "@hohobone_ryou", character.EditInfo.HohoboneRyou);
+            AddParameter(command, "@hohobone_jyouge", character.EditInfo.HohoboneJyouge);
+            AddParameter(command, "@hohoniku", character.EditInfo.Hohoniku);
+            AddParameter(command, "@erahone_jyouge", character.EditInfo.ErahoneJyouge);
+            AddParameter(command, "@erahone_haba", character.EditInfo.ErahoneHaba);
+            AddParameter(command, "@hana_jyouge", character.EditInfo.HanaJyouge);
+            AddParameter(command, "@hana_haba", character.EditInfo.HanaHaba);
+            AddParameter(command, "@hana_takasa", character.EditInfo.HanaTakasa);
+            AddParameter(command, "@hana_kakudo", character.EditInfo.HanaKakudo);
+            AddParameter(command, "@kuchi_haba", character.EditInfo.KuchiHaba);
+            AddParameter(command, "@kuchi_atsusa", character.EditInfo.KuchiAtsusa);
+            AddParameter(command, "@eyebrow_uv_offset_x", character.EditInfo.EyebrowUVOffsetX);
+            AddParameter(command, "@eyebrow_uv_offset_y", character.EditInfo.EyebrowUVOffsetY);
+            AddParameter(command, "@wrinkle", character.EditInfo.Wrinkle);
+            AddParameter(command, "@wrinkle_albedo_blend_rate", character.EditInfo.WrinkleAlbedoBlendRate);
+            AddParameter(command, "@wrinkle_detail_normal_power", character.EditInfo.WrinkleDetailNormalPower);
+            AddParameter(command, "@muscle_albedo_blend_rate", character.EditInfo.MuscleAlbedoBlendRate);
+            AddParameter(command, "@muscle_detail_normal_power", character.EditInfo.MuscleDetailNormalPower);
+            AddParameter(command, "@height", character.EditInfo.Height);
+            AddParameter(command, "@head_size", character.EditInfo.HeadSize);
+            AddParameter(command, "@neck_offset", character.EditInfo.NeckOffset);
+            AddParameter(command, "@neck_scale", character.EditInfo.NeckScale);
+            AddParameter(command, "@upper_body_scale_x", character.EditInfo.UpperBodyScaleX);
+            AddParameter(command, "@belly_size", character.EditInfo.BellySize);
+            AddParameter(command, "@teat_scale", character.EditInfo.TeatScale);
+            AddParameter(command, "@tekubi_size", character.EditInfo.TekubiSize);
+            AddParameter(command, "@koshi_offset", character.EditInfo.KoshiOffset);
+            AddParameter(command, "@koshi_size", character.EditInfo.KoshiSize);
+            AddParameter(command, "@ankle_offset", character.EditInfo.AnkleOffset);
+            AddParameter(command, "@fat", character.EditInfo.Fat);
+            AddParameter(command, "@muscle", character.EditInfo.Muscle);
+            AddParameter(command, "@motion_filter", character.EditInfo.MotionFilter);
             // CDataStatusInfoFields
-            AddParameter(command, "@hp", character.CharacterInfo.StatusInfo.HP);
-            AddParameter(command, "@stamina", character.CharacterInfo.StatusInfo.Stamina);
-            AddParameter(command, "@revive_point", character.CharacterInfo.StatusInfo.RevivePoint);
-            AddParameter(command, "@max_hp", character.CharacterInfo.StatusInfo.MaxHP);
-            AddParameter(command, "@max_stamina", character.CharacterInfo.StatusInfo.MaxStamina);
-            AddParameter(command, "@white_hp", character.CharacterInfo.StatusInfo.WhiteHP);
-            AddParameter(command, "@gain_hp", character.CharacterInfo.StatusInfo.GainHP);
-            AddParameter(command, "@gain_stamina", character.CharacterInfo.StatusInfo.GainStamina);
-            AddParameter(command, "@gain_attack", character.CharacterInfo.StatusInfo.GainAttack);
-            AddParameter(command, "@gain_defense", character.CharacterInfo.StatusInfo.GainDefense);
-            AddParameter(command, "@gain_magic_attack", character.CharacterInfo.StatusInfo.GainMagicAttack);
-            AddParameter(command, "@gain_magic_defense", character.CharacterInfo.StatusInfo.GainMagicDefense);
+            AddParameter(command, "@hp", character.StatusInfo.HP);
+            AddParameter(command, "@stamina", character.StatusInfo.Stamina);
+            AddParameter(command, "@revive_point", character.StatusInfo.RevivePoint);
+            AddParameter(command, "@max_hp", character.StatusInfo.MaxHP);
+            AddParameter(command, "@max_stamina", character.StatusInfo.MaxStamina);
+            AddParameter(command, "@white_hp", character.StatusInfo.WhiteHP);
+            AddParameter(command, "@gain_hp", character.StatusInfo.GainHP);
+            AddParameter(command, "@gain_stamina", character.StatusInfo.GainStamina);
+            AddParameter(command, "@gain_attack", character.StatusInfo.GainAttack);
+            AddParameter(command, "@gain_defense", character.StatusInfo.GainDefense);
+            AddParameter(command, "@gain_magic_attack", character.StatusInfo.GainMagicAttack);
+            AddParameter(command, "@gain_magic_defense", character.StatusInfo.GainMagicDefense);
             // CDataMatchingProfile
-            AddParameter(command, "@entry_job", (byte) character.CharacterInfo.MatchingProfile.EntryJob);
-            AddParameter(command, "@entry_job_level", character.CharacterInfo.MatchingProfile.EntryJobLevel);
-            AddParameter(command, "@current_job", (byte) character.CharacterInfo.MatchingProfile.CurrentJob);
-            AddParameter(command, "@current_job_level", character.CharacterInfo.MatchingProfile.CurrentJobLevel);
-            AddParameter(command, "@objective_type1", character.CharacterInfo.MatchingProfile.ObjectiveType1);
-            AddParameter(command, "@objective_type2", character.CharacterInfo.MatchingProfile.ObjectiveType2);
-            AddParameter(command, "@play_style", character.CharacterInfo.MatchingProfile.PlayStyle);
-            AddParameter(command, "@comment", character.CharacterInfo.MatchingProfile.Comment);
-            AddParameter(command, "@is_join_party", character.CharacterInfo.MatchingProfile.IsJoinParty);
+            AddParameter(command, "@entry_job", (byte) character.MatchingProfile.EntryJob);
+            AddParameter(command, "@entry_job_level", character.MatchingProfile.EntryJobLevel);
+            AddParameter(command, "@current_job", (byte) character.MatchingProfile.CurrentJob);
+            AddParameter(command, "@current_job_level", character.MatchingProfile.CurrentJobLevel);
+            AddParameter(command, "@objective_type1", character.MatchingProfile.ObjectiveType1);
+            AddParameter(command, "@objective_type2", character.MatchingProfile.ObjectiveType2);
+            AddParameter(command, "@play_style", character.MatchingProfile.PlayStyle);
+            AddParameter(command, "@comment", character.MatchingProfile.Comment);
+            AddParameter(command, "@is_join_party", character.MatchingProfile.IsJoinParty);
             // CDataArisenProfile
-            AddParameter(command, "@background_id", character.CharacterInfo.ArisenProfile.BackgroundId);
-            AddParameter(command, "@title_uid", character.CharacterInfo.ArisenProfile.Title.UId);
-            AddParameter(command, "@title_index", character.CharacterInfo.ArisenProfile.Title.Index);
-            AddParameter(command, "@motion_id", character.CharacterInfo.ArisenProfile.MotionId);
-            AddParameter(command, "@motion_frame_no", character.CharacterInfo.ArisenProfile.MotionFrameNo);
+            AddParameter(command, "@background_id", character.ArisenProfile.BackgroundId);
+            AddParameter(command, "@title_uid", character.ArisenProfile.Title.UId);
+            AddParameter(command, "@title_index", character.ArisenProfile.Title.Index);
+            AddParameter(command, "@motion_id", character.ArisenProfile.MotionId);
+            AddParameter(command, "@motion_frame_no", character.ArisenProfile.MotionFrameNo);
         }
     }
 }

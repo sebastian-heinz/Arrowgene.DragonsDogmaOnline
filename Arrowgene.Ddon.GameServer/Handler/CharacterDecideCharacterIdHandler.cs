@@ -23,9 +23,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override PacketId Id => PacketId.C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ;
 
         public override void Handle(GameClient client, IPacket packet)
-        {
-            // TODO: Move to DB
-            client.Character.CharacterInfo.UnkCharData1 = new List<UnknownCharacterData1>()
+        {            
+            S2CCharacterDecideCharacterIdRes res = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
+            res.CharacterId = client.Character.Id;
+            res.CharacterInfo = new CDataCharacterInfo(client.Character);
+            res.CharacterInfo.UnkCharData1 = new List<UnknownCharacterData1>()
             {
                 // TODO: Figure out what other currencies there are.
                 // Pcap currencies:
@@ -48,14 +50,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     u1 = 42069
                 }
             };
-            
-            S2CCharacterDecideCharacterIdRes res = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
-            res.CharacterId = client.Character.Id;
-            res.CharacterInfo = client.Character.CharacterInfo;
             client.Send(res);
             
             // Unlocks menu options such as inventory, warping, etc.
-            S2CCharacterContentsReleaseElementNotice contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNotice>().Read(GameFull.data_Dump_20);
+            S2CCharacterContentsReleaseElementNtc contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNtc>().Read(GameFull.data_Dump_20);
             client.Send(contentsReleaseElementNotice);
         }
     }

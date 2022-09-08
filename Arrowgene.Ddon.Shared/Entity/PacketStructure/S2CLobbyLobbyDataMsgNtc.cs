@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CLobbyLobbyDataMsgNotice : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_LOBBY_LOBBY_DATA_MSG_NOTICE;
+        public PacketId Id => PacketId.S2C_LOBBY_LOBBY_DATA_MSG_NTC;
 
         public S2CLobbyLobbyDataMsgNotice()
         {

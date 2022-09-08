@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CItemUpdateCharacterItemNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_ITEM_UPDATE_CHARACTER_ITEM_NOTICE;
+        public PacketId Id => PacketId.S2C_ITEM_UPDATE_CHARACTER_ITEM_NTC;
 
         public S2CItemUpdateCharacterItemNtc()
         {

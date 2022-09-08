@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Base = new CDataContextBase(character);
             PlayerInfo = new CDataContextPlayerInfo(character);
             ResistInfo = new CDataContextResist(character);
-            EditInfo = character.CharacterInfo.EditInfo;
+            EditInfo = character.EditInfo;
         }
         
         public CDataPartyPlayerContext()

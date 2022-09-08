@@ -9,14 +9,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataContextPlayerInfo(Character character)
         {
-            CDataCharacterJobData characterJobData = character.CharacterInfo.ActiveCharacterJobData;
+            CDataCharacterJobData characterJobData = character.ActiveCharacterJobData;
 
-            Job = character.CharacterInfo.Job;
-            HP = character.CharacterInfo.StatusInfo.HP;
-            MaxHP = character.CharacterInfo.StatusInfo.MaxHP;
-            WhiteHP = character.CharacterInfo.StatusInfo.WhiteHP;
-            Stamina = character.CharacterInfo.StatusInfo.Stamina;
-            MaxStamina = character.CharacterInfo.StatusInfo.MaxStamina;
+            Job = character.Job;
+            HP = character.StatusInfo.HP;
+            MaxHP = character.StatusInfo.MaxHP;
+            WhiteHP = character.StatusInfo.WhiteHP;
+            Stamina = character.StatusInfo.Stamina;
+            MaxStamina = character.StatusInfo.MaxStamina;
             // Weight?
             Lv = (ushort) characterJobData.Lv;
             Exp = characterJobData.Exp;
@@ -31,16 +31,16 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             // Constitution?
             Guts = characterJobData.Guts;
             JobPoint = characterJobData.JobPoint;
-            GainHp = character.CharacterInfo.StatusInfo.GainHP;
-            GainStamina = character.CharacterInfo.StatusInfo.GainStamina;
-            GainAttack = character.CharacterInfo.StatusInfo.GainAttack;
-            GainDefense = character.CharacterInfo.StatusInfo.GainDefense;
-            GainMagicAttack = character.CharacterInfo.StatusInfo.GainMagicAttack;
-            GainMagicDefense = character.CharacterInfo.StatusInfo.GainMagicDefense;
+            GainHp = character.StatusInfo.GainHP;
+            GainStamina = character.StatusInfo.GainStamina;
+            GainAttack = character.StatusInfo.GainAttack;
+            GainDefense = character.StatusInfo.GainDefense;
+            GainMagicAttack = character.StatusInfo.GainMagicAttack;
+            GainMagicDefense = character.StatusInfo.GainMagicDefense;
             // ActNo?
-            RevivePoint = character.CharacterInfo.StatusInfo.RevivePoint;
+            RevivePoint = character.StatusInfo.RevivePoint;
             // CustomSkillGroup?
-            JobList = character.CharacterInfo.CharacterJobDataList
+            JobList = character.CharacterJobDataList
                 .Select(x => new CDataContextJobData(x)).ToList();
             ChargeEffectList=new List<CDataCommonU32>(); // TODO
             OcdActiveList=new List<CDataOcdActive>(); // TODO

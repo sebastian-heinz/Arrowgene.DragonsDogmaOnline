@@ -5,30 +5,30 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     /// <summary>
     /// CStageLayoutID
     /// </summary>
-    public class CStageLayoutId
+    public class CDataStageLayoutId
     {
         public uint StageId { get; set; }
         public byte LayerNo { get; set; }
         public uint GroupId { get; set; }
 
-        public CStageLayoutId() {
+        public CDataStageLayoutId() {
             StageId = 0;
             LayerNo = 0;
             GroupId = 0;
         }
 
-        public class Serializer : EntitySerializer<CStageLayoutId>
+        public class Serializer : EntitySerializer<CDataStageLayoutId>
         {
-            public override void Write(IBuffer buffer, CStageLayoutId obj)
+            public override void Write(IBuffer buffer, CDataStageLayoutId obj)
             {
                 WriteUInt32(buffer, obj.StageId);
                 WriteByte(buffer, obj.LayerNo);
                 WriteUInt32(buffer, obj.GroupId);
             }
 
-            public override CStageLayoutId Read(IBuffer buffer)
+            public override CDataStageLayoutId Read(IBuffer buffer)
             {
-                CStageLayoutId obj = new CStageLayoutId();
+                CDataStageLayoutId obj = new CDataStageLayoutId();
                 obj.StageId = ReadUInt32(buffer);
                 obj.LayerNo = ReadByte(buffer);
                 obj.GroupId = ReadUInt32(buffer);

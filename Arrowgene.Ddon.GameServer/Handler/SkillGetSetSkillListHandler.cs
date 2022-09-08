@@ -1,3 +1,4 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -16,9 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetSetSkillListReq> packet)
         {
-            // This response should return skills set for every job.
             client.Send(new S2CSkillGetSetSkillListRes() {
-                SetAcquierementParam = client.Character.CustomSkills
+                SetAcquierementParam = client.Character.CustomSkills.Where(x => x.Job == packet.Structure.Job).ToList()
             });
         }
     }

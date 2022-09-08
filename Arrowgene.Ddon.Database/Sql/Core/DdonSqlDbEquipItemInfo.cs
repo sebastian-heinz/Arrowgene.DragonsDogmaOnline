@@ -18,6 +18,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateEquipItemInfo = $"UPDATE `ddon_equip_item_info` SET {BuildQueryUpdate(CDataEquipItemInfoFields)} WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=@equip_type AND `equip_slot`=@equip_slot;";
         private static readonly string SqlSelectEquipItemInfo = $"SELECT {BuildQueryField(CDataEquipItemInfoFields)} FROM `ddon_equip_item_info` WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=1;";
         private static readonly string SqlSelectVisualEquipItemInfo = $"SELECT {BuildQueryField(CDataEquipItemInfoFields)} FROM `ddon_equip_item_info` WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=2;";
+        private static readonly string SqlSelectEquipItemInfoByCharacter = $"SELECT {BuildQueryField(CDataEquipItemInfoFields)} FROM `ddon_equip_item_info` WHERE `character_id` = @character_id AND `equip_type`=1;";
+        private static readonly string SqlSelectVisualEquipItemInfoByCharacter = $"SELECT {BuildQueryField(CDataEquipItemInfoFields)} FROM `ddon_equip_item_info` WHERE `character_id` = @character_id AND `equip_type`=2;";
         private const string SqlDeleteEquipItemInfo = "DELETE FROM `ddon_equip_item_info` WHERE `character_id`=@character_id AND `job`=@job AND `equip_type`=@equip_type AND `equip_slot`=@equip_slot;";
 
         private CDataEquipItemInfo ReadEquipItemInfo(DbDataReader reader)
