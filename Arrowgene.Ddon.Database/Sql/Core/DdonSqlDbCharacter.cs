@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "koshi_offset", "koshi_size", "ankle_offset", "fat", "muscle", "motion_filter"
         };
 
+        // Im not convinced most of these fields has to be stored in DB
         private static readonly string[] CDataStatusInfoFields = new string[]
         {
             "character_id", "hp", "stamina", "revive_point", "max_hp", "max_stamina", "white_hp", "gain_hp", "gain_stamina",

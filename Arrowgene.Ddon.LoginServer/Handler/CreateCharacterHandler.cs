@@ -338,72 +338,72 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty ArmorCrestDataList
                             EquipElementParamList = new List<CDataEquipElementParam>() {
                                 new CDataEquipElementParam {
-                                    u0 = 0x2,
-                                    u2 = 0x02
+                                    SlotNo = 0x2,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x3,
-                                    u2 = 0x02
+                                    SlotNo = 0x3,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x4,
-                                    u2 = 0x02
+                                    SlotNo = 0x4,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x5,
-                                    u2 = 0x02
+                                    SlotNo = 0x5,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x6,
-                                    u2 = 0x50
+                                    SlotNo = 0x6,
+                                    ItemId = 0x50
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x7,
-                                    u2 = 0x3C
+                                    SlotNo = 0x7,
+                                    ItemId = 0x3C
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x8,
-                                    u2 = 0x05
+                                    SlotNo = 0x8,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x9,
-                                    u2 = 0x07
+                                    SlotNo = 0x9,
+                                    ItemId = 0x07
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xA,
-                                    u2 = 0x04
+                                    SlotNo = 0xA,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xB,
-                                    u2 = 0x04
+                                    SlotNo = 0xB,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xC,
-                                    u2 = 0x04
+                                    SlotNo = 0xC,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xD,
-                                    u2 = 0x04
+                                    SlotNo = 0xD,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xE,
-                                    u2 = 0x00
+                                    SlotNo = 0xE,
+                                    ItemId = 0x00
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xF,
-                                    u2 = 0x05
+                                    SlotNo = 0xF,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x10,
-                                    u2 = 0x05
+                                    SlotNo = 0x10,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x11,
-                                    u2 = 0x05
+                                    SlotNo = 0x11,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x12,
-                                    u2 = 0x05
+                                    SlotNo = 0x12,
+                                    ItemId = 0x05
                                 },
                             }
                         },
@@ -439,72 +439,72 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty ArmorCrestDataList
                             EquipElementParamList = new List<CDataEquipElementParam>() {
                                 new CDataEquipElementParam {
-                                    u0 = 0x2,
-                                    u2 = 0x02
+                                    SlotNo = 0x2,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x3,
-                                    u2 = 0x02
+                                    SlotNo = 0x3,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x4,
-                                    u2 = 0x02
+                                    SlotNo = 0x4,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x5,
-                                    u2 = 0x02
+                                    SlotNo = 0x5,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x6,
-                                    u2 = 0x50
+                                    SlotNo = 0x6,
+                                    ItemId = 0x50
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x7,
-                                    u2 = 0x3C
+                                    SlotNo = 0x7,
+                                    ItemId = 0x3C
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x8,
-                                    u2 = 0x05
+                                    SlotNo = 0x8,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x9,
-                                    u2 = 0x07
+                                    SlotNo = 0x9,
+                                    ItemId = 0x07
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xA,
-                                    u2 = 0x04
+                                    SlotNo = 0xA,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xB,
-                                    u2 = 0x04
+                                    SlotNo = 0xB,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xC,
-                                    u2 = 0x04
+                                    SlotNo = 0xC,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xD,
-                                    u2 = 0x04
+                                    SlotNo = 0xD,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xE,
-                                    u2 = 0x00
+                                    SlotNo = 0xE,
+                                    ItemId = 0x00
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xF,
-                                    u2 = 0x05
+                                    SlotNo = 0xF,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x10,
-                                    u2 = 0x05
+                                    SlotNo = 0x10,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x11,
-                                    u2 = 0x05
+                                    SlotNo = 0x11,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x12,
-                                    u2 = 0x05
+                                    SlotNo = 0x12,
+                                    ItemId = 0x05
                                 },
                             }
                         },
@@ -540,72 +540,72 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty ArmorCrestDataList
                             EquipElementParamList = new List<CDataEquipElementParam>() {
                                 new CDataEquipElementParam {
-                                    u0 = 0x2,
-                                    u2 = 0x02
+                                    SlotNo = 0x2,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x3,
-                                    u2 = 0x02
+                                    SlotNo = 0x3,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x4,
-                                    u2 = 0x02
+                                    SlotNo = 0x4,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x5,
-                                    u2 = 0x02
+                                    SlotNo = 0x5,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x6,
-                                    u2 = 0x50
+                                    SlotNo = 0x6,
+                                    ItemId = 0x50
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x7,
-                                    u2 = 0x3C
+                                    SlotNo = 0x7,
+                                    ItemId = 0x3C
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x8,
-                                    u2 = 0x05
+                                    SlotNo = 0x8,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x9,
-                                    u2 = 0x07
+                                    SlotNo = 0x9,
+                                    ItemId = 0x07
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xA,
-                                    u2 = 0x04
+                                    SlotNo = 0xA,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xB,
-                                    u2 = 0x04
+                                    SlotNo = 0xB,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xC,
-                                    u2 = 0x04
+                                    SlotNo = 0xC,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xD,
-                                    u2 = 0x04
+                                    SlotNo = 0xD,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xE,
-                                    u2 = 0x00
+                                    SlotNo = 0xE,
+                                    ItemId = 0x00
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xF,
-                                    u2 = 0x05
+                                    SlotNo = 0xF,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x10,
-                                    u2 = 0x05
+                                    SlotNo = 0x10,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x11,
-                                    u2 = 0x05
+                                    SlotNo = 0x11,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x12,
-                                    u2 = 0x05
+                                    SlotNo = 0x12,
+                                    ItemId = 0x05
                                 },
                             }
                         },
@@ -641,72 +641,72 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty ArmorCrestDataList
                             EquipElementParamList = new List<CDataEquipElementParam>() {
                                 new CDataEquipElementParam {
-                                    u0 = 0x2,
-                                    u2 = 0x02
+                                    SlotNo = 0x2,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x3,
-                                    u2 = 0x02
+                                    SlotNo = 0x3,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x4,
-                                    u2 = 0x02
+                                    SlotNo = 0x4,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x5,
-                                    u2 = 0x02
+                                    SlotNo = 0x5,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x6,
-                                    u2 = 0x50
+                                    SlotNo = 0x6,
+                                    ItemId = 0x50
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x7,
-                                    u2 = 0x3C
+                                    SlotNo = 0x7,
+                                    ItemId = 0x3C
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x8,
-                                    u2 = 0x05
+                                    SlotNo = 0x8,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x9,
-                                    u2 = 0x07
+                                    SlotNo = 0x9,
+                                    ItemId = 0x07
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xA,
-                                    u2 = 0x04
+                                    SlotNo = 0xA,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xB,
-                                    u2 = 0x04
+                                    SlotNo = 0xB,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xC,
-                                    u2 = 0x04
+                                    SlotNo = 0xC,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xD,
-                                    u2 = 0x04
+                                    SlotNo = 0xD,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xE,
-                                    u2 = 0x00
+                                    SlotNo = 0xE,
+                                    ItemId = 0x00
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xF,
-                                    u2 = 0x05
+                                    SlotNo = 0xF,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x10,
-                                    u2 = 0x05
+                                    SlotNo = 0x10,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x11,
-                                    u2 = 0x05
+                                    SlotNo = 0x11,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x12,
-                                    u2 = 0x05
+                                    SlotNo = 0x12,
+                                    ItemId = 0x05
                                 },
                             }
                         },
@@ -742,72 +742,72 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty ArmorCrestDataList
                             EquipElementParamList = new List<CDataEquipElementParam>() {
                                 new CDataEquipElementParam {
-                                    u0 = 0x2,
-                                    u2 = 0x02
+                                    SlotNo = 0x2,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x3,
-                                    u2 = 0x02
+                                    SlotNo = 0x3,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x4,
-                                    u2 = 0x02
+                                    SlotNo = 0x4,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x5,
-                                    u2 = 0x02
+                                    SlotNo = 0x5,
+                                    ItemId = 0x02
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x6,
-                                    u2 = 0x50
+                                    SlotNo = 0x6,
+                                    ItemId = 0x50
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x7,
-                                    u2 = 0x3C
+                                    SlotNo = 0x7,
+                                    ItemId = 0x3C
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x8,
-                                    u2 = 0x05
+                                    SlotNo = 0x8,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x9,
-                                    u2 = 0x07
+                                    SlotNo = 0x9,
+                                    ItemId = 0x07
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xA,
-                                    u2 = 0x04
+                                    SlotNo = 0xA,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xB,
-                                    u2 = 0x04
+                                    SlotNo = 0xB,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xC,
-                                    u2 = 0x04
+                                    SlotNo = 0xC,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xD,
-                                    u2 = 0x04
+                                    SlotNo = 0xD,
+                                    ItemId = 0x04
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xE,
-                                    u2 = 0x00
+                                    SlotNo = 0xE,
+                                    ItemId = 0x00
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0xF,
-                                    u2 = 0x05
+                                    SlotNo = 0xF,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x10,
-                                    u2 = 0x05
+                                    SlotNo = 0x10,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x11,
-                                    u2 = 0x05
+                                    SlotNo = 0x11,
+                                    ItemId = 0x05
                                 },
                                 new CDataEquipElementParam {
-                                    u0 = 0x12,
-                                    u2 = 0x05
+                                    SlotNo = 0x12,
+                                    ItemId = 0x05
                                 },
                             }
                         },
