@@ -572,10 +572,10 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_GET_LIGHT_QUEST_LIST_RES = new PacketId(11, 0, 2, "S2C_QUEST_GET_LIGHT_QUEST_LIST_RES", ServerType.Game, PacketSource.Server); // ライトクエストリストの取得に
         public static readonly PacketId C2S_QUEST_GET_SET_QUEST_LIST_REQ = new PacketId(11, 1, 1, "C2S_QUEST_GET_SET_QUEST_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_SET_QUEST_LIST_RES = new PacketId(11, 1, 2, "S2C_QUEST_GET_SET_QUEST_LIST_RES", ServerType.Game, PacketSource.Server); // セットクエストリストの取得に
-        public static readonly PacketId S2C_QUEST_11_1_16_NTC = new PacketId(11, 1, 16, "S2C_QUEST_11_1_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_GET_SET_QUEST_LIST_NTC = new PacketId(11, 1, 16, "S2C_QUEST_GET_SET_QUEST_LIST_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_1_16_NTC");
         public static readonly PacketId C2S_QUEST_GET_MAIN_QUEST_LIST_REQ = new PacketId(11, 2, 1, "C2S_QUEST_GET_MAIN_QUEST_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_MAIN_QUEST_LIST_RES = new PacketId(11, 2, 2, "S2C_QUEST_GET_MAIN_QUEST_LIST_RES", ServerType.Game, PacketSource.Server); // メインクエストリストの取得に
-        public static readonly PacketId S2C_QUEST_11_2_16_NTC = new PacketId(11, 2, 16, "S2C_QUEST_11_2_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_GET_MAIN_QUEST_LIST_NTC = new PacketId(11, 2, 16, "S2C_QUEST_GET_MAIN_QUEST_LIST_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_2_16_NTC");
         public static readonly PacketId C2S_QUEST_GET_TUTORIAL_QUEST_LIST_REQ = new PacketId(11, 3, 1, "C2S_QUEST_GET_TUTORIAL_QUEST_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_TUTORIAL_QUEST_LIST_RES = new PacketId(11, 3, 2, "S2C_QUEST_GET_TUTORIAL_QUEST_LIST_RES", ServerType.Game, PacketSource.Server); // チュートリアルクエストリストに
         public static readonly PacketId C2S_QUEST_GET_LOT_QUEST_LIST_REQ = new PacketId(11, 4, 1, "C2S_QUEST_GET_LOT_QUEST_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -2476,10 +2476,10 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_LIGHT_QUEST_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_SET_QUEST_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_SET_QUEST_LIST_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_1_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_GET_SET_QUEST_LIST_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_MAIN_QUEST_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_MAIN_QUEST_LIST_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_2_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_GET_MAIN_QUEST_LIST_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_TUTORIAL_QUEST_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_TUTORIAL_QUEST_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_LOT_QUEST_LIST_REQ);

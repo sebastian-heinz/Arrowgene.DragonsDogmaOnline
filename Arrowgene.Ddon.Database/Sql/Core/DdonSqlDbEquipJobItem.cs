@@ -17,6 +17,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlReplaceEquipJobItem = $"INSERT OR REPLACE INTO `ddon_equip_job_item` ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)});";
         private static readonly string SqlUpdateEquipJobItem = $"UPDATE `ddon_equip_job_item` SET {BuildQueryUpdate(CDataEquipJobItemFields)} WHERE `character_id` = @character_id AND `job` = @job AND `equip_slot_no`=@equip_slot_no;";
         private static readonly string SqlSelectEquipJobItem = $"SELECT {BuildQueryField(CDataEquipJobItemFields)} FROM `ddon_equip_job_item` WHERE `character_id` = @character_id AND `job` = @job;";
+        private static readonly string SqlSelectEquipJobItemByCharacter = $"SELECT {BuildQueryField(CDataEquipJobItemFields)} FROM `ddon_equip_job_item` WHERE `character_id` = @character_id;";
         private const string SqlDeleteEquipJobItem = "DELETE FROM `ddon_equip_job_item` WHERE `character_id`=@character_id AND `job`=@job AND `equip_slot_no`=@equip_slot_no;";
 
         private CDataEquipJobItem ReadEquipJobItem(DbDataReader reader)

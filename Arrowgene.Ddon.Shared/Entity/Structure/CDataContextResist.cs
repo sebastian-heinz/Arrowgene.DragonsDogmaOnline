@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CDataContextResist(Character character)
         {
-            CDataCharacterJobData characterJobData = character.CharacterInfo.ActiveCharacterJobData;
+            CDataCharacterJobData characterJobData = character.ActiveCharacterJobData;
 
             FireResist = characterJobData.FireResist;
             IceResist = characterJobData.IceResist;

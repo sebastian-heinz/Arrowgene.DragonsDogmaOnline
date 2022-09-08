@@ -35,19 +35,19 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 CDataCharacterListInfo cResponse = new CDataCharacterListInfo();
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = (uint)c.Id;
-                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = c.CharacterInfo.FirstName;
-                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = c.CharacterInfo.LastName;
-                cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.CharacterInfo.Job;
-                cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.CharacterInfo.ActiveCharacterJobData.Lv;
+                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = c.FirstName;
+                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = c.LastName;
+                cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.Job;
+                cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.ActiveCharacterJobData.Lv;
                 // maybe?
                 //cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.CharacterInfo.MatchingProfile.CurrentJob;
                 //cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.CharacterInfo.MatchingProfile.CurrentJobLevel;
                 //cResponse.CharacterListElement.EntryJobBaseInfo.Job = c.CharacterInfo.MatchingProfile.EntryJob;
                 //cResponse.CharacterListElement.EntryJobBaseInfo.Level = (byte) c.CharacterInfo.MatchingProfile.EntryJobLevel;
-                cResponse.EditInfo = c.CharacterInfo.EditInfo;
-                cResponse.MatchingProfile = c.CharacterInfo.MatchingProfile;
-                cResponse.EquipItemInfo = c.CharacterInfo.CharacterEquipViewDataList
-                    .Union(c.CharacterInfo.CharacterEquipDataList)
+                cResponse.EditInfo = c.EditInfo;
+                cResponse.MatchingProfile = c.MatchingProfile;
+                cResponse.EquipItemInfo = c.CharacterEquipViewDataListDictionary[c.Job]
+                    .Union(c.CharacterEquipDataListDictionary[c.Job])
                     .SelectMany(x => x.Equips)
                     .ToList();
                     

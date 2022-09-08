@@ -32,10 +32,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataPartyMember partyMember = new CDataPartyMember();
             partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
             partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.CharacterInfo.FirstName;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.CharacterInfo.LastName;
-            partyMember.CharacterListElement.CurrentJobBaseInfo.Job = client.Character.CharacterInfo.Job;
-            partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) client.Character.CharacterInfo.ActiveCharacterJobData.Lv;
+            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.FirstName;
+            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
+            partyMember.CharacterListElement.CurrentJobBaseInfo.Job = client.Character.Job;
+            partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) client.Character.ActiveCharacterJobData.Lv;
             partyMember.CharacterListElement.OnlineStatus = client.OnlineStatus;
             partyMember.CharacterListElement.unk2 = 1;
             partyMember.MemberType = 1;

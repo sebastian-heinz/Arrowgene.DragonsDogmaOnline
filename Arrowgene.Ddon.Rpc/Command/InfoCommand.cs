@@ -60,8 +60,8 @@ namespace Arrowgene.Ddon.Rpc.Command
                 if (character != null)
                 {
                     info.CharacterId = character.Id;
-                    info.FirstName = character.CharacterInfo.FirstName;
-                    info.LastName = character.CharacterInfo.LastName;
+                    info.FirstName = character.FirstName;
+                    info.LastName = character.LastName;
                 }
 
                 Infos.Add(info);
