@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
             
             // Unlocks menu options such as inventory, warping, etc.
-            S2CCharacterContentsReleaseElementNotice contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNotice>().Read(GameFull.data_Dump_20);
+            S2CCharacterContentsReleaseElementNtc contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNtc>().Read(GameFull.data_Dump_20);
             client.Send(contentsReleaseElementNotice);
         }
     }
