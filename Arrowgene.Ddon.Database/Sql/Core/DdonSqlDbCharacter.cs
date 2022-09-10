@@ -132,13 +132,20 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return true;
         }
 
-        public bool UpdateCharacter(Character character)
+        public bool UpdateCharacterBaseInfo(Character character)
         {
             int characterUpdateRowsAffected = ExecuteNonQuery(SqlUpdateCharacter, command =>
             {
                 AddParameter(command, "@id", character.Id);
                 AddParameter(command, character);
             });
+
+            return characterUpdateRowsAffected > NoRowsAffected;
+        }
+
+        public bool UpdateCharacter(Character character)
+        {
+            int characterUpdateRowsAffected = UpdateCharacterBaseInfo(character) ? 1 : 0;
 
             characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterEditInfo, command =>
             {
@@ -372,18 +379,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataSetAcquirementParam setAcquirementParam in character.CustomSkills)
             {
-                ExecuteNonQuery(SqlReplaceSetAcquirementParam, command =>
-                {
-                    AddParameter(command, character.Id, setAcquirementParam);
-                });
+                ReplaceSetAcquirementParam(character.Id, setAcquirementParam);
             }
 
             foreach(CDataSetAcquirementParam setAcquirementParam in character.Abilities)
             {
-                ExecuteNonQuery(SqlReplaceSetAcquirementParam, command =>
-                {
-                    AddParameter(command, character.Id, setAcquirementParam);
-                });
+                ReplaceSetAcquirementParam(character.Id, setAcquirementParam);
             }
         }
 

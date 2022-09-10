@@ -358,6 +358,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CServerGetServerListRes.Serializer());
             Create(new S2CSkillChangeExSkillRes.Serializer());
+            Create(new S2CSkillCustomSkillSetNtc.Serializer());
             Create(new S2CSkillGetAbilityCostRes.Serializer());
             Create(new S2CSkillGetAcquirableAbilityListRes.Serializer());
             Create(new S2CSkillGetAcquirableSkillListRes.Serializer());
