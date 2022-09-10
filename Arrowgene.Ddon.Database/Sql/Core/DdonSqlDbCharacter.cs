@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteInTransaction(conn =>
                 {
                     character.Created = DateTime.Now;
-                    ExecuteNonQuery(SqlInsertCharacter, command => { AddParameter(command, character); }, out long autoIncrement);
+                    ExecuteNonQuery(conn, SqlInsertCharacter, command => { AddParameter(command, character); }, out long autoIncrement);
                     character.Id = (uint) autoIncrement;
 
                     ExecuteNonQuery(conn, SqlInsertCharacterEditInfo, command => { AddParameter(command, character); });
