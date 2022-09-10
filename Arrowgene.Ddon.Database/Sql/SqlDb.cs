@@ -25,19 +25,55 @@ namespace Arrowgene.Ddon.Database.Sql
         public abstract int Upsert(string table, string[] columns, object[] values, string whereColumn,
             object whereValue, out long autoIncrement);
 
+        public bool ExecuteInTransaction(Action<TCon> action)
+        {
+            using(TCon connection = Connection())
+            {
+                try {
+                    Execute(connection, "BEGIN TRANSACTION");
+                    action(connection);
+                    Execute(connection, "COMMIT");
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Execute(connection, "ROLLBACK");
+                    Exception(ex);
+                    return false;
+                }
+            }
+        }
+
         public int ExecuteNonQuery(string query, Action<TCom> nonQueryAction)
+        {
+            return ExecuteNonQuery(null, query, nonQueryAction);
+        }
+
+        public int ExecuteNonQuery(TCon conn, string query, Action<TCom> nonQueryAction)
         {
             try
             {
-                using (TCon connection = Connection())
+                bool autoCloseConnection = false;
+                TCon connection = conn;
+                if(connection == null)
                 {
-                    using (TCom command = Command(query, connection))
-                    {
-                        nonQueryAction(command);
-                        int rowsAffected = command.ExecuteNonQuery();
-                        return rowsAffected;
-                    }
+                    autoCloseConnection = true;
+                    connection = Connection();
                 }
+
+                int rowsAffected = 0;
+                using (TCom command = Command(query, connection))
+                {
+                    nonQueryAction(command);
+                    rowsAffected = command.ExecuteNonQuery();
+                }
+
+                if(autoCloseConnection)
+                {
+                    connection.Close();
+                }
+
+                return rowsAffected;
             }
             catch (Exception ex)
             {
@@ -48,18 +84,35 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public int ExecuteNonQuery(string query, Action<TCom> nonQueryAction, out long autoIncrement)
         {
+            return ExecuteNonQuery(null, query, nonQueryAction, out autoIncrement);
+        }
+
+        public int ExecuteNonQuery(TCon conn, string query, Action<TCom> nonQueryAction, out long autoIncrement)
+        {
             try
             {
-                using (TCon connection = Connection())
+                bool autoCloseConnection = false;
+                TCon connection = conn;
+                if(connection == null)
                 {
-                    using (TCom command = Command(query, connection))
-                    {
-                        nonQueryAction(command);
-                        int rowsAffected = command.ExecuteNonQuery();
-                        autoIncrement = AutoIncrement(connection, command);
-                        return rowsAffected;
-                    }
+                    autoCloseConnection = true;
+                    connection = Connection();
                 }
+
+                int rowsAffected = 0;
+                using (TCom command = Command(query, connection))
+                {
+                    nonQueryAction(command);
+                    rowsAffected = command.ExecuteNonQuery();
+                    autoIncrement = AutoIncrement(connection, command);
+                }
+
+                if(autoCloseConnection)
+                {
+                    connection.Close();
+                }
+
+                return rowsAffected;
             }
             catch (Exception ex)
             {
@@ -71,18 +124,33 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void ExecuteReader(string query, Action<TCom> nonQueryAction, Action<DbDataReader> readAction)
         {
+            ExecuteReader(null, query, nonQueryAction, readAction);
+        }
+
+        public void ExecuteReader(TCon conn, string query, Action<TCom> nonQueryAction, Action<DbDataReader> readAction)
+        {
             try
             {
-                using (TCon connection = Connection())
+                bool autoCloseConnection = false;
+                TCon connection = conn;
+                if(connection == null)
                 {
-                    using (TCom command = Command(query, connection))
+                    autoCloseConnection = true;
+                    connection = Connection();
+                }
+
+                using (TCom command = Command(query, connection))
+                {
+                    nonQueryAction(command);
+                    using (DbDataReader reader = command.ExecuteReader())
                     {
-                        nonQueryAction(command);
-                        using (DbDataReader reader = command.ExecuteReader())
-                        {
-                            readAction(reader);
-                        }
+                        readAction(reader);
                     }
+                }
+
+                if(autoCloseConnection)
+                {
+                    connection.Close();
                 }
             }
             catch (Exception ex)
@@ -93,17 +161,32 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void ExecuteReader(string query, Action<DbDataReader> readAction)
         {
+            ExecuteReader(null, query, readAction);
+        }
+
+        public void ExecuteReader(TCon conn, string query, Action<DbDataReader> readAction)
+        {
             try
             {
-                using (TCon connection = Connection())
+                bool autoCloseConnection = false;
+                TCon connection = conn;
+                if(connection == null)
                 {
-                    using (TCom command = Command(query, connection))
+                    autoCloseConnection = true;
+                    connection = Connection();
+                }
+
+                using (TCom command = Command(query, connection))
+                {
+                    using (DbDataReader reader = command.ExecuteReader())
                     {
-                        using (DbDataReader reader = command.ExecuteReader())
-                        {
-                            readAction(reader);
-                        }
+                        readAction(reader);
                     }
+                }
+
+                if(autoCloseConnection)
+                {
+                    connection.Close();
                 }
             }
             catch (Exception ex)
@@ -114,14 +197,29 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void Execute(string query)
         {
+            Execute(null, query);
+        }
+
+        public void Execute(TCon conn, string query)
+        {
             try
             {
-                using (TCon connection = Connection())
+                bool autoCloseConnection = false;
+                TCon connection = conn;
+                if(connection == null)
                 {
-                    using (TCom command = Command(query, connection))
-                    {
-                        command.ExecuteNonQuery();
-                    }
+                    autoCloseConnection = true;
+                    connection = Connection();
+                }
+
+                using (TCom command = Command(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                if(autoCloseConnection)
+                {
+                    connection.Close();
                 }
             }
             catch (Exception ex)
@@ -132,12 +230,29 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public string ServerVersion()
         {
+            return ServerVersion(null);
+        }
+
+        public string ServerVersion(TCon conn)
+        {
             try
             {
-                using (TCon connection = Connection())
+                bool autoCloseConnection = false;
+                TCon connection = conn;
+                if(connection == null)
                 {
-                    return connection.ServerVersion;
+                    autoCloseConnection = true;
+                    connection = Connection();
                 }
+
+                string serverVersion = connection.ServerVersion;
+
+                if(autoCloseConnection)
+                {
+                    connection.Close();
+                }
+
+                return serverVersion;
             }
             catch (Exception ex)
             {
