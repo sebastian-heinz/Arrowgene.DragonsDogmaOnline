@@ -101,6 +101,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataOrbGainExtendParam.Serializer());
             Create(new CDataOrbPageStatusSerializer());
             Create(new CDataPartnerPawnInfo.Serializer());
+            Create(new CDataPartyContextPawn.Serializer());
             Create(new CDataPartyListInfo.Serializer());
             Create(new CDataPartyMember.Serializer());
             Create(new CDataPartyMemberMinimum.Serializer());
