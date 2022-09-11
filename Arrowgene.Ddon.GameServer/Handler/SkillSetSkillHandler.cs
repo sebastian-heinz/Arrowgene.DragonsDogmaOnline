@@ -35,20 +35,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
             skillSlot.AcquirementNo = packet.Structure.SkillId;
             skillSlot.AcquirementLv = packet.Structure.SkillLv;
 
-            Database.UpdateCharacter(client.Character);
+            Database.ReplaceSetAcquirementParam(client.Character.Id, skillSlot);
 
             client.Send(new S2CSkillSetSkillRes() {
-                Job = packet.Structure.Job,
-                SlotNo = packet.Structure.SlotNo,
-                SkillId = packet.Structure.SkillId,
-                SkillLv = packet.Structure.SkillLv
+                Job = skillSlot.Job,
+                SlotNo = skillSlot.SlotNo,
+                SkillId = skillSlot.AcquirementNo,
+                SkillLv = skillSlot.AcquirementLv
             });
 
             // Inform party members of the change
-            // There's probably a different, smaller packet precisely for this purpose (S2C_CUSTOM_SKILL_SET_NTC?)
-            S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc(client.Character);
-            partyPlayerContextNtc.Context.Base.MemberIndex = client.Party.Members.IndexOf(client);
-            client.Party.SendToAll(partyPlayerContextNtc);
+            if(packet.Structure.Job == client.Character.Job)
+            {
+                client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
+                {
+                    CharacterId = client.Character.Id,
+                    SlotNo = skillSlot.SlotNo,
+                    AcquirementNo = skillSlot.AcquirementNo,
+                    AcquirementLv = skillSlot.AcquirementLv
+                });
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+﻿using System.Linq;
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
@@ -24,14 +25,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            S2CJobGetJobChangeListRes jobChangeList = EntitySerializer.Get<S2CJobGetJobChangeListRes>().Read(InGameDump.Dump_52.AsBuffer());
-            // Add Hunter info so you can see the hunter job on the skill change menu.
-            jobChangeList.JobReleaseInfo.Add(new CDataJobChangeInfo() {
-                JobId = JobId.Hunter
-            });
-            jobChangeList.JobChangeInfo.Add(new CDataJobChangeInfo() {
-                JobId = JobId.Hunter
-            });
+            S2CJobGetJobChangeListRes jobChangeList = new S2CJobGetJobChangeListRes();
+            jobChangeList.JobChangeInfo = client.Character.CharacterEquipDataListDictionary
+                .Union(client.Character.CharacterEquipViewDataListDictionary)
+                .GroupBy(x => x.Key)
+                .Select(x => new CDataJobChangeInfo() {
+                    JobId = x.Key,
+                    EquipItemList = x.SelectMany(x => x.Value).SelectMany(x => x.Equips).ToList() // Flatten group by and CDataCharacterEquipData
+                })
+                .ToList();
+            jobChangeList.JobReleaseInfo = jobChangeList.JobReleaseInfo;
+            // TODO: jobChangeList.PawnJobChangeInfoList
+            jobChangeList.PlayPointList = client.Character.PlayPointList;
             client.Send(jobChangeList);
         }
     }

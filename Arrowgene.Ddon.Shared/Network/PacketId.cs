@@ -1048,7 +1048,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_SKILL_GET_PAWN_ABILITY_COST_RES = new PacketId(19, 40, 2, "S2C_SKILL_GET_PAWN_ABILITY_COST_RES", ServerType.Game, PacketSource.Server); // ポーンアビリティセット用コストの取得に
         public static readonly PacketId S2C_SKILL_19_41_16_NTC = new PacketId(19, 41, 16, "S2C_SKILL_19_41_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_SKILL_19_42_16_NTC = new PacketId(19, 42, 16, "S2C_SKILL_19_42_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_SKILL_19_43_16_NTC = new PacketId(19, 43, 16, "S2C_SKILL_19_43_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_SKILL_CUSTOM_SKILL_SET_NTC = new PacketId(19, 43, 16, "S2C_SKILL_CUSTOM_SKILL_SET_NTC", ServerType.Game, PacketSource.Server, "S2C_SKILL_19_43_16_NTC");
         public static readonly PacketId S2C_SKILL_19_44_16_NTC = new PacketId(19, 44, 16, "S2C_SKILL_19_44_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_SKILL_19_45_16_NTC = new PacketId(19, 45, 16, "S2C_SKILL_19_45_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_SKILL_19_46_16_NTC = new PacketId(19, 46, 16, "S2C_SKILL_19_46_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2952,7 +2952,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_SKILL_GET_PAWN_ABILITY_COST_RES);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_41_16_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_42_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_SKILL_19_43_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_SKILL_CUSTOM_SKILL_SET_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_44_16_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_45_16_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_46_16_NTC);

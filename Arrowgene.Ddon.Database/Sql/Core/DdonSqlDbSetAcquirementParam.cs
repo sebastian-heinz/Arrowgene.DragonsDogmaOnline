@@ -20,6 +20,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectAbilitiesSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `job` = 0;";
         private const string SqlDeleteSetAcquirementParam = "DELETE FROM `ddon_set_acquirement_param` WHERE `character_id`=@character_id AND `job`=@job AND `slot_no`=@slot_no;";
 
+        public bool ReplaceSetAcquirementParam(uint characterId, CDataSetAcquirementParam setAcquirementParam)
+        {
+            ExecuteNonQuery(SqlReplaceSetAcquirementParam, command =>
+            {
+                AddParameter(command, characterId, setAcquirementParam);
+            });
+            return true;
+        }
+
+        public bool DeleteSetAcquirementParam(uint characterId, JobId job, byte slotNo)
+        {
+            return ExecuteNonQuery(SqlDeleteSetAcquirementParam, command =>
+            {
+                AddParameter(command, "@character_id", characterId);
+                AddParameter(command, "@job", (byte) job);
+                AddParameter(command, "@slot_no", slotNo);
+            }) == 1;
+        }
+
         private CDataSetAcquirementParam ReadSetAcquirementParam(DbDataReader reader)
         {
             CDataSetAcquirementParam setAcquirementParam = new CDataSetAcquirementParam();

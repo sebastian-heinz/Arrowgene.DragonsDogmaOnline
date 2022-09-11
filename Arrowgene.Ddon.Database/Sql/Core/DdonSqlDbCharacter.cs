@@ -95,84 +95,73 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool CreateCharacter(Character character)
         {
-            character.Created = DateTime.Now;
-            int rowsAffected = ExecuteNonQuery(SqlInsertCharacter, command => { AddParameter(command, character); }, out long autoIncrement);
-            if (rowsAffected <= NoRowsAffected || autoIncrement <= NoAutoIncrement)
+            return ExecuteInTransaction(conn =>
+                {
+                    character.Created = DateTime.Now;
+                    ExecuteNonQuery(conn, SqlInsertCharacter, command => { AddParameter(command, character); }, out long autoIncrement);
+                    character.Id = (uint) autoIncrement;
+
+                    ExecuteNonQuery(conn, SqlInsertCharacterEditInfo, command => { AddParameter(command, character); });
+                    ExecuteNonQuery(conn, SqlInsertCharacterStatusInfo, command => { AddParameter(command, character); });
+                    ExecuteNonQuery(conn, SqlInsertCharacterMatchingProfile, command => { AddParameter(command, character); });
+                    ExecuteNonQuery(conn, SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
+
+                    StoreCharacterData(conn, character);
+                });
+        }
+
+        public bool UpdateCharacterBaseInfo(Character character)
+        {
+            return UpdateCharacterBaseInfo(null, character);
+        }
+
+        public bool UpdateCharacterBaseInfo(TCon conn, Character character)
+        {
+            int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacter, command =>
             {
-                return false;
-            }
-            character.Id = (uint) autoIncrement;
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
 
-            rowsAffected = ExecuteNonQuery(SqlInsertCharacterEditInfo, command => { AddParameter(command, character); });
-            if (rowsAffected <= NoRowsAffected)
-            {
-                return false;
-            }
-
-            rowsAffected = ExecuteNonQuery(SqlInsertCharacterStatusInfo, command => { AddParameter(command, character); });
-            if (rowsAffected <= NoRowsAffected)
-            {
-                return false;
-            }
-
-            rowsAffected = ExecuteNonQuery(SqlInsertCharacterMatchingProfile, command => { AddParameter(command, character); });
-            if (rowsAffected <= NoRowsAffected)
-            {
-                return false;
-            }
-
-            rowsAffected = ExecuteNonQuery(SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
-            if (rowsAffected <= NoRowsAffected)
-            {
-                return false;
-            }
-
-            StoreCharacterData(character);
-
-            return true;
+            return characterUpdateRowsAffected > NoRowsAffected;
         }
 
         public bool UpdateCharacter(Character character)
         {
-            int characterUpdateRowsAffected = ExecuteNonQuery(SqlUpdateCharacter, command =>
-            {
-                AddParameter(command, "@id", character.Id);
-                AddParameter(command, character);
-            });
+            return ExecuteInTransaction(conn =>
+                {
+                    UpdateCharacterBaseInfo(character);
 
-            characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterEditInfo, command =>
-            {
-                AddParameter(command, "@id", character.Id);
-                AddParameter(command, character);
-            });
+                    ExecuteNonQuery(conn, SqlUpdateCharacterEditInfo, command =>
+                    {
+                        AddParameter(command, "@id", character.Id);
+                        AddParameter(command, character);
+                    });
+                    ExecuteNonQuery(conn, SqlUpdateCharacterStatusInfo, command =>
+                    {
+                        AddParameter(command, "@id", character.Id);
+                        AddParameter(command, character);
+                    });
+                    ExecuteNonQuery(conn, SqlUpdateCharacterMatchingProfile, command =>
+                    {
+                        AddParameter(command, "@id", character.Id);
+                        AddParameter(command, character);
+                    });
+                    ExecuteNonQuery(conn, SqlUpdateCharacterArisenProfile, command =>
+                    {
+                        AddParameter(command, "@id", character.Id);
+                        AddParameter(command, character);
+                    });
 
-            characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterStatusInfo, command =>
-            {
-                AddParameter(command, "@id", character.Id);
-                AddParameter(command, character);
-            });
-
-            characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterMatchingProfile, command =>
-            {
-                AddParameter(command, "@id", character.Id);
-                AddParameter(command, character);
-            });
-
-            characterUpdateRowsAffected += ExecuteNonQuery(SqlUpdateCharacterArisenProfile, command =>
-            {
-                AddParameter(command, "@id", character.Id);
-                AddParameter(command, character);
-            });
-
-            StoreCharacterData(character);
-
-            return characterUpdateRowsAffected > NoRowsAffected;
+                    StoreCharacterData(conn, character);
+                });
         }
 
         public Character SelectCharacter(uint characterId)
         {
             Character character = null;
-            ExecuteReader(SqlSelectAllCharacterData,
+            ExecuteInTransaction(conn => {
+                ExecuteReader(conn, SqlSelectAllCharacterData,
                 command => { AddParameter(command, "@id", characterId); }, reader =>
                 {
                     if (reader.Read())
@@ -181,26 +170,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
 
-            QueryCharacterData(character);
-
+                QueryCharacterData(conn, character);
+            });
             return character;
         }
 
         public List<Character> SelectCharactersByAccountId(int accountId)
         {
             List<Character> characters = new List<Character>();
-            ExecuteReader(SqlSelectAllCharactersDataByAccountId,
-                command => { AddParameter(command, "@account_id", accountId); }, reader =>
-                {
-                    while (reader.Read())
+            ExecuteInTransaction(conn => {
+                ExecuteReader(conn, SqlSelectAllCharactersDataByAccountId,
+                    command => { AddParameter(command, "@account_id", accountId); }, reader =>
                     {
-                        Character character = ReadAllCharacterData(reader);
-                        characters.Add(character);
+                        while (reader.Read())
+                        {
+                            Character character = ReadAllCharacterData(reader);
+                            characters.Add(character);
 
-                        QueryCharacterData(character);
-                    }
-                });
-
+                            QueryCharacterData(conn, character);
+                        }
+                    });
+            });
             return characters;
         }
 
@@ -211,10 +201,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return rowsAffected > NoRowsAffected;
         }
 
-        private void QueryCharacterData(Character character)
+        private void QueryCharacterData(TCon conn, Character character)
         {
             // Job data
-            ExecuteReader(SqlSelectCharacterJobDataByCharacter,
+            ExecuteReader(conn, SqlSelectCharacterJobDataByCharacter,
                 command => { AddParameter(command, "@character_id", character.Id); }, reader =>
                 {
                     while (reader.Read())
@@ -224,7 +214,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Equips
-            ExecuteReader(SqlSelectEquipItemInfoByCharacter,
+            ExecuteReader(conn, SqlSelectEquipItemInfoByCharacter,
                 command => { AddParameter(command, "@character_id", character.Id); }, 
                 reader =>
                 {
@@ -242,7 +232,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
 
-            ExecuteReader(SqlSelectVisualEquipItemInfoByCharacter,
+            ExecuteReader(conn, SqlSelectVisualEquipItemInfoByCharacter,
                 command => { AddParameter(command, "@character_id", character.Id); }, 
                 reader =>
                 {
@@ -263,7 +253,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             
 
             // Job Items
-            ExecuteReader(SqlSelectEquipJobItemByCharacter,
+            ExecuteReader(conn, SqlSelectEquipJobItemByCharacter,
                 command => { AddParameter(command, "@character_id", character.Id); }, 
                 reader =>
                 {
@@ -280,7 +270,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Normal Skills
-            ExecuteReader(SqlSelectNormalSkillParam,
+            ExecuteReader(conn, SqlSelectNormalSkillParam,
                 command => { AddParameter(command, "@character_id", character.Id); },
                 reader =>
                 {
@@ -291,7 +281,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Custom Skills
-            ExecuteReader(SqlSelectCustomSkillsSetAcquirementParam,
+            ExecuteReader(conn, SqlSelectCustomSkillsSetAcquirementParam,
                 command => { AddParameter(command, "@character_id", character.Id); },
                 reader =>
                 {
@@ -302,7 +292,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Abilities
-            ExecuteReader(SqlSelectAbilitiesSetAcquirementParam,
+            ExecuteReader(conn, SqlSelectAbilitiesSetAcquirementParam,
                 command => { AddParameter(command, "@character_id", character.Id); },
                 reader =>
                 {
@@ -313,11 +303,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
         }
 
-        private void StoreCharacterData(Character character)
+        private void StoreCharacterData(TCon conn, Character character)
         {
             foreach(CDataCharacterJobData characterJobData in character.CharacterJobDataList)
             {
-                ExecuteNonQuery(SqlReplaceCharacterJobData, command =>
+                ExecuteNonQuery(conn, SqlReplaceCharacterJobData, command =>
                 {
                     AddParameter(command, character.Id, characterJobData);
                 });
@@ -329,7 +319,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
                     {
-                        ExecuteNonQuery(SqlReplaceEquipItemInfo, command =>
+                        ExecuteNonQuery(conn, SqlReplaceEquipItemInfo, command =>
                         {
                             AddParameter(command, character.Id, characterEquipDataListByJob.Key, equipItemInfo);
                         });
@@ -343,7 +333,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
                     {
-                        ExecuteNonQuery(SqlReplaceEquipItemInfo, command =>
+                        ExecuteNonQuery(conn, SqlReplaceEquipItemInfo, command =>
                         {
                             AddParameter(command, character.Id, characterEquipViewDataListByJob.Key, equipItemInfo);
                         });
@@ -355,7 +345,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 foreach(CDataEquipJobItem equipJobItem in characterEquipJobItemListByJob.Value)
                 {
-                    ExecuteNonQuery(SqlReplaceEquipJobItem, command =>
+                    ExecuteNonQuery(conn, SqlReplaceEquipJobItem, command =>
                     {
                         AddParameter(command, character.Id, characterEquipJobItemListByJob.Key, equipJobItem);
                     });
@@ -364,7 +354,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataNormalSkillParam normalSkillParam in character.NormalSkills)
             {
-                ExecuteNonQuery(SqlReplaceNormalSkillParam, command =>
+                ExecuteNonQuery(conn, SqlReplaceNormalSkillParam, command =>
                 {
                     AddParameter(command, character.Id, normalSkillParam);
                 });
@@ -372,7 +362,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataSetAcquirementParam setAcquirementParam in character.CustomSkills)
             {
-                ExecuteNonQuery(SqlReplaceSetAcquirementParam, command =>
+                ExecuteNonQuery(conn, SqlReplaceSetAcquirementParam, command =>
                 {
                     AddParameter(command, character.Id, setAcquirementParam);
                 });
@@ -380,7 +370,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataSetAcquirementParam setAcquirementParam in character.Abilities)
             {
-                ExecuteNonQuery(SqlReplaceSetAcquirementParam, command =>
+                ExecuteNonQuery(conn, SqlReplaceSetAcquirementParam, command =>
                 {
                     AddParameter(command, character.Id, setAcquirementParam);
                 });

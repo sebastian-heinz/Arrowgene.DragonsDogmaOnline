@@ -17,18 +17,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetOffSkillReq> packet)
         {
             client.Character.CustomSkills.RemoveAll(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo);
-            Database.UpdateCharacter(client.Character);
+
+            // TODO: Error handling
+            Database.DeleteSetAcquirementParam(client.Character.Id, packet.Structure.Job, packet.Structure.SlotNo);
 
             client.Send(new S2CSkillSetOffSkillRes() {
                 Job = packet.Structure.Job,
                 SlotNo = packet.Structure.SlotNo
             });
 
-            // Inform party members of the change
-            // There's probably a different, smaller packet precisely for this purpose (S2C_CUSTOM_SKILL_SET_NTC?)
-            S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc(client.Character);
-            partyPlayerContextNtc.Context.Base.MemberIndex = client.Party.Members.IndexOf(client);
-            client.Party.SendToAll(partyPlayerContextNtc);
+            // I haven't found a packet to notify this to other players
+            // From what I tested it doesn't seem to be necessary
         }
     }
 }

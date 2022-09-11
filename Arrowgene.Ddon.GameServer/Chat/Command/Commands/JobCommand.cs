@@ -74,8 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             {
                 client.Character.Job = (JobId) job;
 
-                // TODO: Optimize this
-                _server.Database.UpdateCharacter(client.Character);
+                _server.Database.UpdateCharacterBaseInfo(client.Character);
 
                 S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
                 notice.CharacterId = client.Character.Id;

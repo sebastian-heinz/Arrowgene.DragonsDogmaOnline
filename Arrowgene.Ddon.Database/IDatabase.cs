@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database
@@ -27,6 +28,12 @@ namespace Arrowgene.Ddon.Database
         public Character SelectCharacter(uint characterId);
         List<Character> SelectCharactersByAccountId(int accountId);
         public bool DeleteCharacter(uint characterId);
+
+        public bool UpdateCharacterBaseInfo(Character character);
+
+        // Acquirements
+        public bool ReplaceSetAcquirementParam(uint characterId, CDataSetAcquirementParam setAcquirementParam);
+        public bool DeleteSetAcquirementParam(uint characterId, JobId job, byte slotNo);
 
         // GameToken
         bool SetToken(GameToken token);
