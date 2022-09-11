@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             partyJoinNtcForNewMember.LeaderCharacterId = newParty.Leader.Character.Id;
             for(int i = 0; i < newParty.Members.Count; i++)
             {
-                GameClient member = newParty.Members[i];
+                IPartyMember member = newParty.Members[i];
                 CDataPartyMember partyMember = new CDataPartyMember();
                 partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = member.Character.Id;
@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.LastName;
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Job = member.Character.Job;
                 partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) member.Character.ActiveCharacterJobData.Lv;
-                partyMember.CharacterListElement.OnlineStatus = member.OnlineStatus;
+                partyMember.CharacterListElement.OnlineStatus = member.Character.OnlineStatus;
                 partyMember.CharacterListElement.unk2 = 1;
                 partyMember.MemberType = 1;
                 partyMember.MemberIndex = (byte) i;
@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Send party player context NTCs to the new member
             for(byte i = 0; i < newParty.Members.Count; i++)
             {
-                GameClient member = newParty.Members[i];
+                IPartyMember member = newParty.Members[i];
                 S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc(member.Character);
                 partyPlayerContextNtc.Context.Base.MemberIndex = i;
                 newParty.SendToAll(partyPlayerContextNtc);

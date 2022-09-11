@@ -9,6 +9,8 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public Character()
         {
+            FirstName = string.Empty;
+            LastName = string.Empty;
             Created = DateTime.MinValue;
             EditInfo = new CDataEditInfo();
             StatusInfo = new CDataStatusInfo();
@@ -70,9 +72,18 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipHeadPawn;
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
+
         public OnlineStatus OnlineStatus;
         public List<CDataNormalSkillParam> NormalSkills { get; set; }
         public List<CDataSetAcquirementParam> CustomSkills { get; set;}
         public List<CDataSetAcquirementParam> Abilities { get; set; }
+        
+        /// TODO combine into a location class ?
+        public StageId Stage { get; set; }
+        public uint StageNo { get; set; }
+        public double X { get; set; }
+        public float Y { get; set; }
+        public double Z { get; set; }
+        // ---
     }
 }

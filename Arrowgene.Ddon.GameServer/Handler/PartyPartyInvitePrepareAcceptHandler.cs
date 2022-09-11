@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CPartyPartyInviteAcceptNtc inviteAcceptNtc = new S2CPartyPartyInviteAcceptNtc();
             inviteAcceptNtc.ServerId = Server.AssetRepository.ServerList[0].Id; // TODO: Get from config, or from DdonGameServer instance
             inviteAcceptNtc.PartyId = newParty.Id;
-            inviteAcceptNtc.StageId = newParty.Leader.Stage.Id;
+            inviteAcceptNtc.StageId = newParty.Leader.Character.Stage.Id;
             inviteAcceptNtc.PositionId = 0; // TODO: Figure what this is about
             inviteAcceptNtc.MemberIndex = (byte) newParty.Members.Count;
             client.Send(inviteAcceptNtc);

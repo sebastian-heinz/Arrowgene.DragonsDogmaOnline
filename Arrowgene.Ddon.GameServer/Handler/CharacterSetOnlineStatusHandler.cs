@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCharacterSetOnlineStatusReq> packet)
         {
-            client.OnlineStatus = packet.Structure.OnlineStatus;
+            client.Character.OnlineStatus = packet.Structure.OnlineStatus;
 
             // TODO: Figure out packet.Structure.IsSaveSetting
 

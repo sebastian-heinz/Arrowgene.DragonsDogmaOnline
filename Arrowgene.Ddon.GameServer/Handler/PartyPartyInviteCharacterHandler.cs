@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -48,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.PartyListInfo.ServerId = Server.AssetRepository.ServerList[0].Id;
             for(int i = 0; i < client.Party.Members.Count; i++)
             {
-                GameClient member = client.Party.Members[i];
+                IPartyMember member = client.Party.Members[i];
                 CDataPartyMember partyMember = new CDataPartyMember();
                 partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = member.Character.Id;
