@@ -85,5 +85,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public float Y { get; set; }
         public double Z { get; set; }
         // ---
+
+        public CDataGameServerListInfo Server;
     }
 }

@@ -27,6 +27,11 @@ namespace Arrowgene.Ddon.Shared.Model
         public void SendToAll<TResStruct>(TResStruct res) where TResStruct : class, IPacketStructure, new()
         {
             StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            SendToAll(packet);
+        }
+
+        public void SendToAll(Packet packet)
+        {
             foreach(IPartyMember member in Members) {
                 member.Send(packet);
             }

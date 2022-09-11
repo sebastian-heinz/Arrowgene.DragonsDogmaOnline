@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
             newMemberMinimum.CommunityCharacterBaseInfo.ClanName = "SEX";
             newMemberMinimum.IsLeader = client == newParty.Leader; // This could probably be just always false
-            newMemberMinimum.MemberIndex = inviteAcceptNtc.MemberIndex;
+            newMemberMinimum.MemberIndex = newParty.Members.Count;
             newMemberMinimum.MemberType = 1;
             newMemberMinimum.PawnId = 0;
             inviteJoinMemberNtc.MemberMinimumList.Add(newMemberMinimum);

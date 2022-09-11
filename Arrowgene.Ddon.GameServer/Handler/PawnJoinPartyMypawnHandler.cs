@@ -976,25 +976,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Party.Members.Add(pawn);
 
-            S2CPawnJoinPartyPawnNtc joinPartyPawnNtc = new S2CPawnJoinPartyPawnNtc();
-            joinPartyPawnNtc.PartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
-            joinPartyPawnNtc.PartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = pawn.Character.FirstName;
-            joinPartyPawnNtc.PartyMember.CharacterListElement.CurrentJobBaseInfo.Job = pawn.Character.Job;
-            joinPartyPawnNtc.PartyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) pawn.Character.ActiveCharacterJobData.Lv;
-            joinPartyPawnNtc.PartyMember.MemberType = 2;
-            joinPartyPawnNtc.PartyMember.MemberIndex = client.Party.Members.IndexOf(pawn);
-            joinPartyPawnNtc.PartyMember.PawnId = pawn.Character.Id;
-            joinPartyPawnNtc.PartyMember.IsLeader = false;
-            joinPartyPawnNtc.PartyMember.IsPawn = true;
-            joinPartyPawnNtc.PartyMember.IsPlayEntry = false;
-            joinPartyPawnNtc.PartyMember.JoinState = JoinState.On;
-            joinPartyPawnNtc.PartyMember.AnyValueList = new byte[] {0x0, 0xDA, 0x5D, 0x4E, 0x0, 0x1, 0x0, 0x2}; // Taken from pcaps
-            joinPartyPawnNtc.PartyMember.SessionStatus = 0;
-            client.Party.SendToAll(joinPartyPawnNtc);
-
-            S2CContextGetPartyMypawnContextNtc mypawnContextNtc = new S2CContextGetPartyMypawnContextNtc(pawn);
-            mypawnContextNtc.Context.Base.MemberIndex = client.Party.Members.IndexOf(pawn);
-            client.Party.SendToAll(mypawnContextNtc);
+            client.Party.SendToAll(new S2CPawnJoinPartyPawnNtc() { PartyMember = pawn.AsCDataPartyMember() });
+            client.Party.SendToAll(pawn.AsContextPacket());
 
             S2CPawnJoinPartyMypawnRes res = new S2CPawnJoinPartyMypawnRes();
             client.Send(res);
