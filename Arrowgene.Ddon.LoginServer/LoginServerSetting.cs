@@ -39,6 +39,7 @@ namespace Arrowgene.Ddon.LoginServer
             ServerSetting = new ServerSetting();
             ServerSetting.ServerPort = 52100;
             ServerSetting.Name = "Login";
+            ServerSetting.ServerSocketSettings.Identity = "Login";
             
             AccountRequired = false;
             

@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Server
         {
             ListenIpAddress = IPAddress.Any;
             ServerPort = 52100;
-            Name = "Unknown";
+            Name = "";
             LogLevel = 0;
             LogUnknownPackets = true;
             LogOutgoingPackets = true;

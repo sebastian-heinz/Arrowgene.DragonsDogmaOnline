@@ -68,6 +68,7 @@ namespace Arrowgene.Ddon.Server
 
         public virtual void Start()
         {
+            Logger.Info($"[{_setting.ServerSocketSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
             _server.Start();
         }
 

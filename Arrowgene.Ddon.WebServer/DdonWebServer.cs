@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
@@ -27,18 +28,38 @@ namespace Arrowgene.Ddon.WebServer
             _webService = new WebService(core);
 
             IFileProvider webFileProvider = new PhysicalFileProvider(_setting.WebSetting.WebFolder);
+            Logger.Info($"Serving Directory: {_setting.WebSetting.WebFolder}");
             _webService.AddMiddleware(new StaticFileMiddleware("", webFileProvider));
 
-            _webService.AddRoute(new IndexRoute());
-            _webService.AddRoute(new AccountRoute(_database));
+            AddRoute(new IndexRoute());
+            AddRoute(new AccountRoute(_database));
         }
 
-        public void AddRoute(IWebRoute route) => _webService.AddRoute(route);
+        public void AddRoute(IWebRoute route)
+        {
+            Logger.Info($"Registered Route: {route.Route}");
+            _webService.AddRoute(route);
+        }
 
         public async Task Start()
         {
+            // TODO update `Arrowgene.WebServer` to expose bound ports after startup, expose route METHOD
+            // current implementations does not allow to specify interface
+            // uses IPAddress.IPv6Any or IPAddress.Any
+            foreach (uint port in _setting.WebSetting.HttpPorts)
+            {
+                Logger.Info($"Listening: {IPAddress.Any}:{port}");
+                // Logger.Info($"Listening: {IPAddress.IPv6Any}:{port}");
+            }
+
+            if (_setting.WebSetting.HttpsEnabled)
+            {
+                Logger.Info($"Listening: {IPAddress.Any}:{_setting.WebSetting.HttpsPort}");
+                // Logger.Info($"Listening: {IPAddress.IPv6Any}:{_setting.WebSetting.HttpsPort}");
+            }
+
             await _webService.Start();
-            Logger.Info($"Running Web Server http://localhost/web/index.html");
+            // only returns once webserver stopped
         }
 
         public async Task Stop()
