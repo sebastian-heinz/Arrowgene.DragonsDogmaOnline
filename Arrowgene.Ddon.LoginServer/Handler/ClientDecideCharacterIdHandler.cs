@@ -19,6 +19,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         public ClientDecideCharacterIdHandler(DdonLoginServer server) : base(server)
         {
             _assets = server.AssetRepository;
+
+            foreach (CDataGameServerListInfo serverListInfo in _assets.ServerList)
+            {
+                Logger.Info(
+                    $"Asset GameServer Entry:{serverListInfo.Id} \"{serverListInfo.Name}\" {serverListInfo.Addr}:{serverListInfo.Port}");
+            }
         }
 
         public override void Handle(LoginClient client, StructurePacket<C2LDecideCharacterIdReq> packet)
@@ -52,11 +58,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
             CDataGameServerListInfo serverList;
             // if (serverLists.Count > packet.Structure.RotationServerId)
-           // {
-           //     serverList = serverLists[packet.Structure.RotationServerId];
-           // }
-           // else
-           // TODO figure out RotationServerId, at the moment always value 2?
+            // {
+            //     serverList = serverLists[packet.Structure.RotationServerId];
+            // }
+            // else
+            // TODO figure out RotationServerId, at the moment always value 2?
             if (serverLists.Count > 0)
             {
                 serverList = serverLists[0];
@@ -68,7 +74,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
 
             Logger.Info(client, $"Connecting To: {serverList.Addr}:{serverList.Port}");
-            
+
             L2CNextConnectionServerNtc serverNtc = new L2CNextConnectionServerNtc();
             serverNtc.ServerList = serverList;
             serverNtc.Counter = packet.Structure.Counter;

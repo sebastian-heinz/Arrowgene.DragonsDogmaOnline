@@ -43,7 +43,8 @@ namespace Arrowgene.Ddon.WebServer
 
         public async Task Start()
         {
-            // TODO update `Arrowgene.WebServer` to expose bound ports after startup, expose route METHOD
+            // TODO update `Arrowgene.WebServer` to expose bound ports after startup, expose route METHOD, 
+            // TODO static file server -> enumerate files and folders served, remove _root
             // current implementations does not allow to specify interface
             // uses IPAddress.IPv6Any or IPAddress.Any
             foreach (uint port in _setting.WebSetting.HttpPorts)
