@@ -8,23 +8,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCon : DbConnection
         where TCom : DbCommand
     {
-        private const string SqlInsertAccount =
-            "INSERT INTO `account` (`name`, `normal_name`, `hash`, `mail`, `mail_verified`, `mail_verified_at`, `mail_token`, `password_token`, `login_token`, `login_token_created`, `state`, `last_login`, `created`) VALUES (@name, @normal_name, @hash, @mail, @mail_verified, @mail_verified_at, @mail_token, @password_token, @login_token, @login_token_created, @state, @last_login, @created);";
-
-        private const string SqlSelectAccountById =
-            "SELECT `id`, `name`, `normal_name`, `hash`, `mail`, `mail_verified`, `mail_verified_at`, `mail_token`, `password_token`, `login_token`, `login_token_created`, `state`, `last_login`, `created` FROM `account` WHERE `id`=@id;";
-
-        private const string SqlSelectAccountByName =
-            "SELECT `id`, `name`, `normal_name`, `hash`, `mail`, `mail_verified`, `mail_verified_at`, `mail_token`, `password_token`, `login_token`, `login_token_created`, `state`, `last_login`, `created` FROM `account` WHERE `normal_name`=@normal_name;";
-
-        private const string SqlSelectAccountByLoginToken =
-            "SELECT `id`, `name`, `normal_name`, `hash`, `mail`, `mail_verified`, `mail_verified_at`, `mail_token`, `password_token`, `login_token`, `login_token_created`, `state`, `last_login`, `created` FROM `account` WHERE `login_token`=@login_token;";
-
-        private const string SqlUpdateAccount =
-            "UPDATE `account` SET `name`=@name, `normal_name`=@normal_name, `hash`=@hash, `mail`=@mail, `mail_verified`=@mail_verified, `mail_verified_at`=@mail_verified_at, `mail_token`=@mail_token, `password_token`=@password_token, `login_token`=@login_token, `login_token_created`=@login_token_created, `state`=@state, `last_login`=@last_login, `created`=@created WHERE `id`=@id;";
-
-        private const string SqlDeleteAccount =
-            "DELETE FROM `account` WHERE `id`=@id;";
+        private static readonly string[] AccountFields = new string[]
+        {
+            "name", "normal_name", "hash", "mail", "mail_verified", "mail_verified_at", "mail_token", "password_token", "logged_in", "login_token", "login_token_created", "state", "last_login", "created"
+        };
+        
+        private static readonly string SqlInsertAccount = $"INSERT INTO `account` ({BuildQueryField(AccountFields)}) VALUES ({BuildQueryInsert(AccountFields)});";
+        private static readonly string SqlSelectAccountById = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `id`=@id;";
+        private static readonly string SqlSelectAccountByName = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `normal_name`=@normal_name;";
+        private static readonly string SqlSelectAccountByLoginToken = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `login_token`=@login_token;";
+        private static readonly string SqlUpdateAccount = $"UPDATE `account` SET {BuildQueryUpdate(AccountFields)} WHERE `id`=@id;";
+        private const string SqlDeleteAccount = "DELETE FROM `account` WHERE `id`=@id;";
 
         public Account CreateAccount(string name, string mail, string hash)
         {
@@ -45,6 +39,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "@mail_verified_at", account.MailVerifiedAt);
                 AddParameter(command, "@mail_token", account.MailToken);
                 AddParameter(command, "@password_token", account.PasswordToken);
+                AddParameter(command, "@logged_in", account.LoggedIn);
                 AddParameter(command, "@login_token", account.LoginToken);
                 AddParameter(command, "@login_token_created", account.LoginTokenCreated);
                 AddParameterEnumInt32(command, "@state", account.State);
@@ -117,6 +112,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "@mail_verified_at", account.MailVerifiedAt);
                 AddParameter(command, "@mail_token", account.MailToken);
                 AddParameter(command, "@password_token", account.PasswordToken);
+                AddParameter(command, "@logged_in", account.LoggedIn);
                 AddParameter(command, "@login_token", account.LoginToken);
                 AddParameter(command, "@login_token_created", account.LoginTokenCreated);
                 AddParameterEnumInt32(command, "@state", account.State);
@@ -146,6 +142,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             account.MailVerifiedAt = GetDateTimeNullable(reader, "mail_verified_at");
             account.MailToken = GetStringNullable(reader, "mail_token");
             account.PasswordToken = GetStringNullable(reader, "password_token");
+            account.LoggedIn = GetBoolean(reader, "logged_in");
             account.LoginToken = GetStringNullable(reader, "login_token");
             account.LoginTokenCreated = GetDateTime(reader, "login_token_created");
             account.State = (AccountStateType) GetInt32(reader, "state");

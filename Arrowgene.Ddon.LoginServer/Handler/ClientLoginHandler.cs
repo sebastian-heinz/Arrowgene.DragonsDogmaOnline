@@ -29,8 +29,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             string oneTimeToken = packet.Structure.OneTimeToken;
 
             Logger.Debug(client, $"Received LoginToken:{oneTimeToken} for platform:{packet.Structure.PlatformType}");
-
-
+            
             L2CLoginRes res = new L2CLoginRes();
             res.OneTimeToken = oneTimeToken;
             if (!LockToken(oneTimeToken))
@@ -53,6 +52,13 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     return;
                 }
 
+                
+                // TODO check after
+                if (account.LoggedIn)
+                {
+                    // already logged in
+                }
+
                 TimeSpan loginTokenAge = account.LoginTokenCreated - DateTime.Now;
                 if (loginTokenAge > TimeSpan.FromDays(1)) // TODO convert to setting
                 {
@@ -62,6 +68,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     ReleaseToken(oneTimeToken);
                     return;
                 }
+                // TODO check after
+                
             }
             else
             {
@@ -91,6 +99,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
 
             account.LastLogin = DateTime.Now;
+            account.LoggedIn = true;
             Database.UpdateAccount(account);
 
             client.Account = account;
@@ -128,11 +137,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 {
                     return false;
                 }
-                else
-                {
-                    _tokensInFlight.Add(token);
-                    return true;
-                }
+
+                _tokensInFlight.Add(token);
+                return true;
             }
         }
     }

@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `account`
     `mail_verified_at`    DATETIME DEFAULT NULL,
     `mail_token`          TEXT     DEFAULT NULL,
     `password_token`      TEXT     DEFAULT NULL,
+    `logged_in`           BIT                               NOT NULL,
     `login_token`         TEXT     DEFAULT NULL,
     `login_token_created` DATETIME                          NOT NULL,
     `state`               INTEGER                           NOT NULL,
