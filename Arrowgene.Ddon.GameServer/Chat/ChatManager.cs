@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using static Arrowgene.Ddon.Shared.Util;
 
 namespace Arrowgene.Ddon.GameServer.Chat
 {
@@ -10,15 +12,21 @@ namespace Arrowgene.Ddon.GameServer.Chat
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ChatManager));
 
+        public IEnumerable<ChatMessageLogEntry> ChatMessageLog { get => _chatMessageLog; }
+
         private readonly List<IChatHandler> _handler;
         private readonly GameRouter _router;
         private readonly DdonGameServer _server;
+        private readonly RollingList<ChatMessageLogEntry> _chatMessageLog;
+
+        public event EventHandler<ChatMessageLogEntry> ChatMessageEvent;
 
         public ChatManager(DdonGameServer server, GameRouter router)
         {
             _server = server;
             _router = router;
             _handler = new List<IChatHandler>();
+            _chatMessageLog = new RollingList<ChatMessageLogEntry>(100); // TODO: Move to server config
         }
 
         public void AddHandler(IChatHandler handler)
@@ -39,6 +47,14 @@ namespace Arrowgene.Ddon.GameServer.Chat
                 Logger.Debug(client, "Chat Message is Null");
                 return;
             }
+
+            ChatMessageLogEntry logEntry = new ChatMessageLogEntry(message);
+            _chatMessageLog.Add(logEntry);
+
+            // Event will be null if there are no subscribers
+            EventHandler<ChatMessageLogEntry> raiseEvent = ChatMessageEvent;
+            if (raiseEvent != null)
+                raiseEvent(this, logEntry);
 
             List<ChatResponse> responses = new List<ChatResponse>();
             foreach (IChatHandler handler in _handler)
@@ -84,6 +100,19 @@ namespace Arrowgene.Ddon.GameServer.Chat
             }
 
             _router.Send(response);
+        }
+
+        
+        public class ChatMessageLogEntry : EventArgs
+        {
+            public ChatMessageLogEntry(ChatMessage chatMessage)
+            {
+                DateTime = DateTime.Now;
+                ChatMessage = chatMessage;
+            }
+
+            public DateTime DateTime { get; set; }
+            public ChatMessage ChatMessage { get; set; }
         }
     }
 }
