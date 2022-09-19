@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
                 return;
             }
 
-            ChatMessageLogEntry logEntry = new ChatMessageLogEntry(message);
+            ChatMessageLogEntry logEntry = new ChatMessageLogEntry(client.Character, message);
             _chatMessageLog.Add(logEntry);
 
             // Event will be null if there are no subscribers
@@ -108,13 +108,19 @@ namespace Arrowgene.Ddon.GameServer.Chat
         
         public class ChatMessageLogEntry : EventArgs
         {
-            public ChatMessageLogEntry(ChatMessage chatMessage)
+            public ChatMessageLogEntry(Character character, ChatMessage chatMessage)
             {
                 DateTime = DateTime.Now;
+                FirstName = character.FirstName;
+                LastName = character.LastName;
+                CharacterId = character.Id;
                 ChatMessage = chatMessage;
             }
 
             public DateTime DateTime { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public uint CharacterId { get; set; }            
             public ChatMessage ChatMessage { get; set; }
         }
     }

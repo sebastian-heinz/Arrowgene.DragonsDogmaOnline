@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Rpc.Command
             }
         }
 
-        public string Name => "SpawnCommand";
+        public string Name => "InfoCommand";
 
         public InfoCommand()
         {

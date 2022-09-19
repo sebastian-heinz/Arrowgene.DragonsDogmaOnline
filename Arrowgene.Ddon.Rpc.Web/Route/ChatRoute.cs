@@ -1,11 +1,17 @@
+using System.Globalization;
+using System;
 using System.Threading.Tasks;
 using Arrowgene.Ddon.Rpc.Command;
+using Arrowgene.Logging;
 using Arrowgene.WebServer;
+using System.Text.Json;
 
 namespace Arrowgene.Ddon.Rpc.Web.Route
 {
     public class ChatRoute : RpcWebRoute
     {
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ChatRoute));
+
         public override string Route => "/rpc/chat";
 
         public ChatRoute(IRpcExecuter executer) : base(executer)
@@ -15,7 +21,26 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
         public override async Task<WebResponse> Get(WebRequest request)
         {
             WebResponse response = new WebResponse();
-            ChatCommand chat = new ChatCommand();
+            ChatCommand chat;
+            if(request.QueryParameter.ContainsKey("since"))
+            {
+                string dateString = request.QueryParameter.Get("since");
+                try {
+                    chat = new ChatCommand(DateTime.Parse(dateString));
+                }
+                catch(FormatException e)
+                {
+                    Logger.Error($"Invalid date format: {dateString}");
+                    response.StatusCode = 400;
+                    await response.WriteAsync("Invalid date format. Dates can be in UTC in a format like this: 2022-09-19T22:04:04.9860144Z");
+                    return response;
+                }
+            }
+            else
+            {
+                chat = new ChatCommand();
+            }
+            
             RpcCommandResult result = Executer.Execute(chat);
             if (!result.Success)
             {
