@@ -32,7 +32,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 .Where(x => x.Job == character.Job)
                 .Select(x => new CDataContextAcquirementData(x)).ToList();
             ContextAbilityList = character.Abilities
-                .Where(x => x.Job == character.Job)
                 .Select(x => new CDataContextAcquirementData(x)).ToList();
             Unk0List=new List<CDataContextBaseUnk0>(); // TODO: Figure this one out
         }

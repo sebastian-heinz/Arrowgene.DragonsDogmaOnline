@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -92,7 +93,9 @@ namespace Arrowgene.Ddon.GameServer.Chat
                     response.Recipients.AddRange(_server.Clients);
                     break;
                 case LobbyChatMsgType.Party:
-                    response.Recipients.AddRange(client.Party.Members);
+                    response.Recipients.AddRange(client.Party.Members
+                        .Where(x => x is GameClient)
+                        .Select(x => x as GameClient));
                     break;
                 default:
                     response.Recipients.Add(client);

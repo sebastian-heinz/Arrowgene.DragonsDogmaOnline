@@ -50,6 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Account = account;
             client.Character = character;
+            client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
 
             Logger.Info(client, "Moved Into GameServer");
