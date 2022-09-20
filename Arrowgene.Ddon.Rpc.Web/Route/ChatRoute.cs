@@ -1,10 +1,10 @@
-using System.Globalization;
 using System;
 using System.Threading.Tasks;
 using Arrowgene.Ddon.Rpc.Command;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
 using System.Text.Json;
+using static Arrowgene.Ddon.GameServer.Chat.ChatManager;
 
 namespace Arrowgene.Ddon.Rpc.Web.Route
 {
@@ -51,6 +51,37 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
             response.StatusCode = 200;
             await response.WriteJsonAsync(chat.ChatMessageLog);
             return response;
+        }
+
+        public override async Task<WebResponse> Post(WebRequest request)
+        {
+            try
+            {
+                ChatMessageLogEntry entry = JsonSerializer.Deserialize<ChatMessageLogEntry>(request.Body);
+                ChatPostCommand chat = new ChatPostCommand(entry);
+                RpcCommandResult result = Executer.Execute(chat);
+                if(!result.Success)
+                {
+                    WebResponse response = new WebResponse();
+                    response.StatusCode = 500;
+                    await response.WriteAsync("Error");
+                    return response;
+                }
+                else
+                {
+                    WebResponse response = new WebResponse();
+                    response.StatusCode = 201;
+                    return response;
+                }
+            }
+            catch(JsonException e)
+            {
+                WebResponse response = new WebResponse();
+                Logger.Error($"Invalid request body");
+                response.StatusCode = 400;
+                await response.WriteAsync("Invalid request body");
+                return response;
+            }
         }
 
     }
