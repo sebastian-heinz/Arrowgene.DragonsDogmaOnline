@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -40,6 +40,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Party.SendToAll(new S2CContextSetContextBaseNtc() {
                 Base = packet.Structure.Base
             });
+
+            if(client.Party.Contexts.ContainsKey(packet.Structure.Base.UniqueId))
+            {
+                Tuple<CDataContextSetBase, CDataContextSetAdditional> context = client.Party.Contexts[packet.Structure.Base.UniqueId];
+                // Send to all or just the host?
+                client.Party.SendToAll(new S2CContextSetContextNtc() {
+                    Base = context.Item1,
+                    Additional = context.Item2
+                });
+            }
         }
     }
 }
