@@ -371,8 +371,11 @@ namespace Arrowgene.Ddon.Cli
                 Console.ForegroundColor = consoleColor;
                 Console.WriteLine(text);
                 Console.ResetColor();
+                
+                // TODO perhaps some buffering and only flush after X logs
                 string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
-                File.AppendAllText(filePath, text);
+                using StreamWriter sw = new StreamWriter(filePath, append: true);
+                sw.WriteLine(text);
             }
         }
     }
