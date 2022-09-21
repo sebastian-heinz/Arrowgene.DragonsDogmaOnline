@@ -79,7 +79,10 @@ namespace Arrowgene.Ddon.Server.Network
 
         public void Send(Packet packet)
         {
-            if (!_challengeCompleted && packet.Id != PacketId.S2C_CERT_CLIENT_CHALLENGE_RES)
+            if (!_challengeCompleted 
+                && packet.Id != PacketId.S2C_CERT_CLIENT_CHALLENGE_RES
+                && packet.Id != PacketId.L2C_CLIENT_CHALLENGE_RES
+                )
             {
                 // at this point in time we only allow to send S2C_CERT_CLIENT_CHALLENGE_RES
                 // only after receiving the first client packet, we can assume the client is able
