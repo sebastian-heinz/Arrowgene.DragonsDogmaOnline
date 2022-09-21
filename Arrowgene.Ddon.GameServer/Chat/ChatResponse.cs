@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
 {
     public class ChatResponse
     {
-        public static ChatResponse CommandError(GameClient client, string message)
+        public static ChatResponse CommandError(IPartyMember client, string message)
         {
             return new ChatResponse()
             {
@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             };
         }
 
-        public static ChatResponse ServerMessage(GameClient client, string message)
+        public static ChatResponse ServerMessage(IPartyMember client, string message)
         {
             return new ChatResponse()
             {
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             };
         }
 
-        public static ChatResponse FromMessage(GameClient client, ChatMessage message)
+        public static ChatResponse FromMessage(IPartyMember client, ChatMessage message)
         {
             return new ChatResponse()
             {
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
         public ChatResponse()
         {
-            Recipients = new List<GameClient>();
+            Recipients = new List<IPartyMember>();
             Deliver = true;
             Type = LobbyChatMsgType.Say;
             Unk2 = 0;
@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             ClanName = "";
         }
 
-        public List<GameClient> Recipients { get; }
+        public List<IPartyMember> Recipients { get; }
         public bool Deliver { get; set; }
         public LobbyChatMsgType Type { get; set; }
         public byte Unk2 { get; set; }

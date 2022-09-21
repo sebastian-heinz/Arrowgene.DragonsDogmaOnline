@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using static Arrowgene.Ddon.Shared.Util;
+using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer.Chat
 {
@@ -10,15 +12,19 @@ namespace Arrowgene.Ddon.GameServer.Chat
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ChatManager));
 
+        public IEnumerable<ChatMessageLogEntry> ChatMessageLog { get => _chatMessageLog; }
+
         private readonly List<IChatHandler> _handler;
         private readonly GameRouter _router;
         private readonly DdonGameServer _server;
+        private readonly RollingList<ChatMessageLogEntry> _chatMessageLog;
 
         public ChatManager(DdonGameServer server, GameRouter router)
         {
             _server = server;
             _router = router;
             _handler = new List<IChatHandler>();
+            _chatMessageLog = new RollingList<ChatMessageLogEntry>(100); // TODO: Move to server config
         }
 
         public void AddHandler(IChatHandler handler)
@@ -26,9 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Chat
             _handler.Add(handler);
         }
 
-        public void Handle(GameClient client, ChatMessage message)
+        public void Handle(IPartyMember messageSender, ChatMessage message)
         {
-            if (client == null)
+            if (messageSender == null)
             {
                 Logger.Debug("Client is Null");
                 return;
@@ -36,21 +42,31 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
             if (message == null)
             {
-                Logger.Debug(client, "Chat Message is Null");
+                if(messageSender is GameClient)
+                {
+                    Logger.Debug(messageSender as GameClient, "Chat Message is Null");
+                }
+                else
+                {
+                    Logger.Debug("Chat Message is Null");
+                }
                 return;
             }
+
+            ChatMessageLogEntry logEntry = new ChatMessageLogEntry(messageSender.Character, message);
+            _chatMessageLog.Add(logEntry);
 
             List<ChatResponse> responses = new List<ChatResponse>();
             foreach (IChatHandler handler in _handler)
             {
-                handler.Handle(client, message, responses);
+                handler.Handle(messageSender, message, responses);
             }
 
             if (message.Deliver)
             {
                 // deliver original chat message
-                ChatResponse response = ChatResponse.FromMessage(client, message);
-                Deliver(client, response);
+                ChatResponse response = ChatResponse.FromMessage(messageSender, message);
+                Deliver(messageSender, response);
             }
 
             foreach (ChatResponse response in responses)
@@ -61,13 +77,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
                     continue;
                 }
 
-                Deliver(client, response);
+                Deliver(messageSender, response);
             }
-
-            client.Send(new S2CLobbyChatMsgRes());
         }
 
-        private void Deliver(GameClient client, ChatResponse response)
+        private void Deliver(IPartyMember messageSender, ChatResponse response)
         {
             switch (response.Type)
             {
@@ -76,14 +90,39 @@ namespace Arrowgene.Ddon.GameServer.Chat
                     response.Recipients.AddRange(_server.Clients);
                     break;
                 case LobbyChatMsgType.Party:
-                    response.Recipients.AddRange(client.Party.Members);
+                    if(messageSender.Party != null)
+                        response.Recipients.AddRange(messageSender.Party.Members);
                     break;
                 default:
-                    response.Recipients.Add(client);
+                    response.Recipients.Add(messageSender);
                     break;
             }
 
             _router.Send(response);
+        }
+
+        
+        public class ChatMessageLogEntry
+        {
+            // For the JSON deserializer
+            public ChatMessageLogEntry()
+            {
+            }
+
+            public ChatMessageLogEntry(Character character, ChatMessage chatMessage)
+            {
+                DateTime = DateTime.Now;
+                FirstName = character.FirstName;
+                LastName = character.LastName;
+                CharacterId = character.Id;
+                ChatMessage = chatMessage;
+            }
+
+            public DateTime DateTime { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public uint CharacterId { get; set; }            
+            public ChatMessage ChatMessage { get; set; }
         }
     }
 }

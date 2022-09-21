@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Chat.Command.Commands;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command
@@ -89,6 +90,14 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             }
 
             chatCommand.Execute(subCommand, client, message, responses);
+        }
+
+        public void Handle(IPartyMember client, ChatMessage message, List<ChatResponse> responses)
+        {
+            if(client is GameClient)
+            {
+                Handle(client as GameClient, message, responses);
+            }
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 request.Structure.StrMessage
             );
             _chatManager.Handle(client, message);
+            client.Send(new S2CLobbyChatMsgRes());
         }
     }
 }

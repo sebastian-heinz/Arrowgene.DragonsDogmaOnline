@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.Rpc.Web
         {
             _webServer.AddRoute(new SpawnRoute(this));
             _webServer.AddRoute(new InfoRoute(this));
+            _webServer.AddRoute(new ChatRoute(this));
         }
     }
 }
