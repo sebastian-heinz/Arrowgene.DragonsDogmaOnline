@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
@@ -17,54 +16,66 @@ namespace Arrowgene.Ddon.WebServer
 
         private readonly WebService _webService;
         private readonly WebServerSetting _setting;
-        private readonly IDatabase _database;
+        private bool _running;
 
         public DdonWebServer(WebServerSetting setting, IDatabase database)
         {
             _setting = setting;
-            _database = database;
+            _running = false;
 
             IWebServerCore core = new KestrelWebServer(_setting.WebSetting);
             _webService = new WebService(core);
 
-            IFileProvider webFileProvider = new PhysicalFileProvider(_setting.WebSetting.WebFolder);
             Logger.Info($"Serving Directory: {_setting.WebSetting.WebFolder}");
-            _webService.AddMiddleware(new StaticFileMiddleware("", webFileProvider));
+            var staticFile = new StaticFileMiddleware(new PhysicalFileProvider(_setting.WebSetting.WebFolder));
+            foreach (string servingFile in staticFile.GetServingFilesUrl(_setting.PublicWebEndPoint))
+            {
+                Logger.Info(servingFile);
+            }
+
+            _webService.AddMiddleware(staticFile);
 
             AddRoute(new IndexRoute());
-            AddRoute(new AccountRoute(_database));
+            AddRoute(new AccountRoute(database));
         }
 
         public void AddRoute(IWebRoute route)
         {
-            Logger.Info($"Registered Route: {route.Route}");
             _webService.AddRoute(route);
+            if (_running)
+            {
+                Logger.Info($"Registered new route `{route.Route}`, now serving endpoints:");
+                foreach (WebRequestMethod method in route.GetMethods())
+                {
+                    Logger.Info($"[{method}] {_setting.PublicWebEndPoint.GetUrl()}{route.Route}");
+                }
+            }
         }
 
         public async Task Start()
         {
-            // TODO update `Arrowgene.WebServer` to expose bound ports after startup, expose route METHOD, 
-            // TODO static file server -> enumerate files and folders served, remove _root
-            // current implementations does not allow to specify interface
-            // uses IPAddress.IPv6Any or IPAddress.Any
-            foreach (uint port in _setting.WebSetting.HttpPorts)
+            Logger.Info($"Serving Routes:");
+            foreach (string servingRoute in _webService.GetServingRoutes(_setting.PublicWebEndPoint))
             {
-                Logger.Info($"Listening: {IPAddress.Any}:{port}");
-                // Logger.Info($"Listening: {IPAddress.IPv6Any}:{port}");
+                Logger.Info(servingRoute);
             }
 
-            if (_setting.WebSetting.HttpsEnabled)
+            _running = true;
+
+            foreach (WebEndPoint webEndPoint in _setting.WebSetting.WebEndpoints)
             {
-                Logger.Info($"Listening: {IPAddress.Any}:{_setting.WebSetting.HttpsPort}");
-                // Logger.Info($"Listening: {IPAddress.IPv6Any}:{_setting.WebSetting.HttpsPort}");
+                Logger.Info($"Listening: {webEndPoint.IpAddress}:{webEndPoint.Port}");
             }
 
             await _webService.Start();
             // only returns once webserver stopped
+
+            _running = false;
         }
 
         public async Task Stop()
         {
+            _running = false;
             await _webService.Stop();
         }
     }

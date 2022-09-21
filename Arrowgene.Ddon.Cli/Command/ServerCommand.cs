@@ -7,7 +7,6 @@ using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
 using Arrowgene.Ddon.Rpc.Web;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.WebServer;
 using Arrowgene.Logging;
 
