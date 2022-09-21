@@ -21,7 +21,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            Logger.Debug(client, $"Received LoginToken:{packet.Structure.OneTimeToken} for platform:{packet.Structure.PlatformType}");
+            client.SetChallengeCompleted(true);
+
+            Logger.Debug(client,
+                $"Received LoginToken:{packet.Structure.OneTimeToken} for platform:{packet.Structure.PlatformType}");
 
             L2CLoginRes res = new L2CLoginRes();
             res.OneTimeToken = packet.Structure.OneTimeToken;
@@ -55,7 +58,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     account = Database.SelectAccountByName(packet.Structure.OneTimeToken);
                     if (account == null)
                     {
-                        account = Database.CreateAccount(packet.Structure.OneTimeToken, packet.Structure.OneTimeToken, packet.Structure.OneTimeToken);
+                        account = Database.CreateAccount(packet.Structure.OneTimeToken, packet.Structure.OneTimeToken,
+                            packet.Structure.OneTimeToken);
                         if (account == null)
                         {
                             Logger.Error(client, "Could not create account from OneTimeToken, choose another token");
