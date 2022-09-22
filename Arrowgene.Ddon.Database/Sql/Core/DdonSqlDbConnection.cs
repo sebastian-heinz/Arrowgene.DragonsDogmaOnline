@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeleteConnections = "DELETE FROM `ddon_connection` WHERE `account_id`=@account_id;";
 
         private const string SqlDeleteConnection =
-            "DELETE FROM `ddon_connection` WHERE `account_id`=@account_id AND `connection_type`=@accounconnection_typet_id ;";
+            "DELETE FROM `ddon_connection` WHERE `account_id`=@account_id AND `connection_type`=@connection_type ;";
 
         public bool InsertConnection(Connection connection)
         {
