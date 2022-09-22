@@ -3,6 +3,7 @@ using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -29,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer
             notice.CharacterBaseInfo.CharacterName.FirstName = response.FirstName;
             notice.CharacterBaseInfo.CharacterName.LastName = response.LastName;
             notice.CharacterBaseInfo.ClanName = response.ClanName;
-            foreach (GameClient client in Unique(response.Recipients))
+            foreach (IPartyMember client in Unique(response.Recipients))
             {
                 client.Send(notice);
             }

@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.Type = packet.Structure.Type; // I haven't seen any values other than 0x02
             res.CharacterId = client.Character.Id; // Has to be overwritten since the request has the id set to 0
             res.RpcPacket = packet.Structure.RpcPacket;
-            res.OnlineStatus = client.OnlineStatus;
+            res.OnlineStatus = client.Character.OnlineStatus;
 
             foreach (GameClient otherClient in Server.Clients)
             {
@@ -60,9 +60,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 // From now on, the contents (subpackets) depend on MsgId, a set of flags
                 if((msgIdFull & 1) != 0) { // This is incomplete, msgIdFull is converted through a function first, (0x5FE8D0) but should work for most cases
-                    client.X = rpcPacketBuffer.ReadDouble(Endianness.Big);
-                    client.Y = rpcPacketBuffer.ReadFloat(Endianness.Big);
-                    client.Z = rpcPacketBuffer.ReadDouble(Endianness.Big);
+                    client.Character.X = rpcPacketBuffer.ReadDouble(Endianness.Big);
+                    client.Character.Y = rpcPacketBuffer.ReadFloat(Endianness.Big);
+                    client.Character.Z = rpcPacketBuffer.ReadDouble(Endianness.Big);
                 }
             }
         }

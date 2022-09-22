@@ -187,6 +187,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ConnectionReserveServerHandler(this));
 
             AddHandler(new ContextGetSetContextHandler(this));
+            AddHandler(new ContextSetContextHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
 
@@ -203,6 +204,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InnGetStayPriceHandler(this));
             AddHandler(new InnStayInnHandler(this));
 
+            AddHandler(new InstanceEnemyGroupEntryHandler(this));
+            AddHandler(new InstanceEnemyGroupLeaveHandler(this));
             AddHandler(new InstanceEnemyKillHandler(this));
             AddHandler(new InstanceExchangeOmInstantKeyValueHandler(this));
             AddHandler(new InstanceGetEnemySetListHandler(this));

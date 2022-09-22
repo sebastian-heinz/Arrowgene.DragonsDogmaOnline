@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Rpc.Command
             }
         }
 
-        public string Name => "SpawnCommand";
+        public string Name => "InfoCommand";
 
         public InfoCommand()
         {
@@ -43,13 +43,13 @@ namespace Arrowgene.Ddon.Rpc.Command
             foreach (GameClient client in gameServer.Clients)
             {
                 Info info = new Info();
-                info.X = client.X;
-                info.Y = client.Y;
-                info.Z = client.Z;
-                info.StageNo = client.StageNo;
-                info.StageId = client.Stage.Id;
-                info.GroupId = client.Stage.GroupId;
-                info.LayerNo = client.Stage.LayerNo;
+                info.X = client.Character.X;
+                info.Y = client.Character.Y;
+                info.Z = client.Character.Z;
+                info.StageNo = client.Character.StageNo;
+                info.StageId = client.Character.Stage.Id;
+                info.GroupId = client.Character.Stage.GroupId;
+                info.LayerNo = client.Character.Stage.LayerNo;
                 Account account = client.Account;
                 if (account != null)
                 {

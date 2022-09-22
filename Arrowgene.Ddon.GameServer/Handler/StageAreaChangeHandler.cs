@@ -30,10 +30,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.StageNo = ConvertIdToStageNo(packet.Structure.StageId);
             res.IsBase = false;
 
-            client.StageNo = res.StageNo;
-            client.Stage = new StageId(packet.Structure.StageId, 0, 0);
+            client.Character.StageNo = res.StageNo;
+            client.Character.Stage = new StageId(packet.Structure.StageId, 0, 0);
             
-            Logger.Info($"StageNo:{client.StageNo} StageId{packet.Structure.StageId}");
+            Logger.Info($"StageNo:{client.Character.StageNo} StageId{packet.Structure.StageId}");
             
             // TODO: Only send it when the party leader moves to a safe stage
             if(SafeStageIds.Contains(packet.Structure.StageId))

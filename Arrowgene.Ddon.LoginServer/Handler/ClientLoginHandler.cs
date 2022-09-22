@@ -25,8 +25,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            string oneTimeToken = packet.Structure.OneTimeToken;
+            client.SetChallengeCompleted(true);
 
+            string oneTimeToken = packet.Structure.OneTimeToken;
             Logger.Debug(client, $"Received LoginToken:{oneTimeToken} for platform:{packet.Structure.PlatformType}");
 
             L2CLoginRes res = new L2CLoginRes();
@@ -90,14 +91,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         // see if the client has a active login connection and close it
                         loggedInClient.Close();
                     }
-                    
+
                     if (!account.LastLogin.HasValue)
                     {
                         Logger.Error(client, "has no last log in, despite flagged as logged in");
                         account.LastLogin = DateTime.Now;
                         Database.UpdateAccount(account);
                     }
-                    
+
                     TimeSpan lastLoginAge = account.LastLogin.Value - DateTime.Now;
                     if (lastLoginAge < TimeSpan.FromMinutes(1)) // TODO convert to setting
                     {
@@ -108,7 +109,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         ReleaseToken(oneTimeToken);
                         return;
                     }
-                    
+
                     Logger.Error(client, $"already logged in");
                     res.Error = 1;
                     client.Send(res);

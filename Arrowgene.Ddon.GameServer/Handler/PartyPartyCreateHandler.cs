@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
             partyMember.CharacterListElement.CurrentJobBaseInfo.Job = client.Character.Job;
             partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) client.Character.ActiveCharacterJobData.Lv;
-            partyMember.CharacterListElement.OnlineStatus = client.OnlineStatus;
+            partyMember.CharacterListElement.OnlineStatus = client.Character.OnlineStatus;
             partyMember.CharacterListElement.unk2 = 1;
             partyMember.MemberType = 1;
             partyMember.IsLeader = newParty.Leader == client;

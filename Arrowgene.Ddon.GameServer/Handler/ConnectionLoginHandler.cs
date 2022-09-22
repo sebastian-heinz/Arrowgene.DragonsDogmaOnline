@@ -22,6 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SConnectionLoginReq> packet)
         {
+            client.SetChallengeCompleted(true);
+            
             Logger.Debug(client, $"Received SessionKey:{packet.Structure.SessionKey} for platform:{packet.Structure.PlatformType}");
 
             S2CConnectionLoginRes res = new S2CConnectionLoginRes();
@@ -60,6 +62,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Account = account;
             client.Character = character;
+            client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
             Logger.Info(client, "Logged Into GameServer");
 
