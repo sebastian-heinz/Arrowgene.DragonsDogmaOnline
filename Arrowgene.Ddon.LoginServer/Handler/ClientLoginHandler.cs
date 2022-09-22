@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientLoginHandler : StructurePacketHandler<LoginClient, C2LLoginReq>
+    public class ClientLoginHandler : LoginStructurePacketHandler<C2LLoginReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientLoginHandler));
 
@@ -29,9 +28,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             string oneTimeToken = packet.Structure.OneTimeToken;
 
             Logger.Debug(client, $"Received LoginToken:{oneTimeToken} for platform:{packet.Structure.PlatformType}");
-            
+
             L2CLoginRes res = new L2CLoginRes();
             res.OneTimeToken = oneTimeToken;
+
             if (!LockToken(oneTimeToken))
             {
                 Logger.Error(client, $"OneTimeToken {oneTimeToken} is in process.");
@@ -40,23 +40,68 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 return;
             }
 
-            Account account = Database.SelectAccountByLoginToken(oneTimeToken);
-            if (_setting.AccountRequired)
+            try
             {
-                if (account == null)
+                Account account = Database.SelectAccountByLoginToken(oneTimeToken);
+                if (_setting.AccountRequired)
                 {
-                    Logger.Error(client, "Invalid OneTimeToken");
+                    if (account == null)
+                    {
+                        Logger.Error(client, "Invalid OneTimeToken");
+                        res.Error = 1;
+                        client.Send(res);
+                        ReleaseToken(oneTimeToken);
+                        return;
+                    }
+                }
+                else
+                {
+                    // allow easy access
+                    // assume token as account name, password & email
+                    if (account == null)
+                    {
+                        account = Database.SelectAccountByName(oneTimeToken);
+                        if (account == null)
+                        {
+                            account = Database.CreateAccount(oneTimeToken, oneTimeToken, oneTimeToken);
+                            if (account == null)
+                            {
+                                Logger.Error(client,
+                                    "Could not create account from OneTimeToken, choose another token");
+                                res.Error = 2;
+                                client.Send(res);
+                                ReleaseToken(oneTimeToken);
+                                return;
+                            }
+
+                            Logger.Info(client, "Created new account from OneTimeToken");
+                        }
+
+                        account.LoginToken = oneTimeToken;
+                        account.LoginTokenCreated = DateTime.Now;
+                    }
+                }
+
+                if (account.LoggedIn)
+                {
+                    LoginClient loggedInClient = Server.ClientLookup.GetClientByAccountId(account.Id);
+                    if (loggedInClient != null)
+                    {
+                        // see if the client has a active login connection and close it
+                        loggedInClient.Close();
+                    }
+
+                    // TODO communicate to GS to close client
+                    // since login and game server can run on different physical boxes
+                    // this can only be done if a inter-server-communication system is in place.
+                    // or it needs to be handled if the same client shows up again in GS
+                    // for now, just deny another connection - this will ease finding bugs where
+                    // the state of logged in is not properly updated.
+                    Logger.Error(client, $"already logged in");
                     res.Error = 1;
                     client.Send(res);
                     ReleaseToken(oneTimeToken);
                     return;
-                }
-
-                
-                // TODO check after
-                if (account.LoggedIn)
-                {
-                    // already logged in
                 }
 
                 TimeSpan loginTokenAge = account.LoginTokenCreated - DateTime.Now;
@@ -68,47 +113,22 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     ReleaseToken(oneTimeToken);
                     return;
                 }
-                // TODO check after
-                
+
+                account.LastLogin = DateTime.Now;
+                account.LoggedIn = true;
+                Database.UpdateAccount(account);
+
+                client.Account = account;
+                client.UpdateIdentity();
+                Logger.Info(client, "Logged In");
+
+                client.Send(res);
             }
-            else
+            finally
             {
-                // allow easy access
-                // assume token as account name & password
-                if (account == null)
-                {
-                    account = Database.SelectAccountByName(oneTimeToken);
-                    if (account == null)
-                    {
-                        account = Database.CreateAccount(oneTimeToken, oneTimeToken, oneTimeToken);
-                        if (account == null)
-                        {
-                            Logger.Error(client, "Could not create account from OneTimeToken, choose another token");
-                            res.Error = 2;
-                            client.Send(res);
-                            ReleaseToken(oneTimeToken);
-                            return;
-                        }
-
-                        Logger.Info(client, "Created new account from OneTimeToken");
-                    }
-
-                    account.LoginToken = oneTimeToken;
-                    account.LoginTokenCreated = DateTime.Now;
-                }
+                // in case of a exception, ensure our token is not locked up forever
+                ReleaseToken(oneTimeToken);
             }
-
-            account.LastLogin = DateTime.Now;
-            account.LoggedIn = true;
-            Database.UpdateAccount(account);
-
-            client.Account = account;
-            client.UpdateIdentity();
-            Logger.Info(client, "Logged In");
-
-            client.Send(res);
-
-            ReleaseToken(oneTimeToken);
         }
 
         private void ReleaseToken(string token)

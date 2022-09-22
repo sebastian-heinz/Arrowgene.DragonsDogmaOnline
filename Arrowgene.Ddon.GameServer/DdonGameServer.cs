@@ -45,22 +45,22 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        private readonly List<GameClient> _clients;
-        private readonly List<Party> _parties;
+        private readonly List<Party> _parties; // TODO not thread safe
         private readonly Dictionary<StageId, Stage> _stages;
 
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
-            _clients = new List<GameClient>();
             _parties = new List<Party>();
             _stages = new Dictionary<StageId, Stage>();
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
+            ClientLookup = new GameClientLookup();
 
-            S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
+            S2CStageGetStageListRes stageListPacket =
+                EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
             StageList = stageListPacket.StageList;
         }
 
@@ -72,12 +72,6 @@ namespace Arrowgene.Ddon.GameServer
         public GameRouter Router { get; }
 
         /// <summary>
-        /// Returns a copy of the client list.
-        /// To prevent modifications of affecting the original list.
-        /// </summary>
-        public override List<GameClient> Clients => new List<GameClient>(_clients);
-
-        /// <summary>
         /// Returns a copy of the party list.
         /// To prevent modifications of affecting the original list.
         /// </summary>
@@ -85,6 +79,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public List<CDataStageInfo> StageList { get; }
 
+        public override GameClientLookup ClientLookup { get; }
 
         public override void Start()
         {
@@ -109,7 +104,7 @@ namespace Arrowgene.Ddon.GameServer
 
         protected override void ClientDisconnected(GameClient client)
         {
-            _clients.Remove(client);
+            ClientLookup.Remove(client);
 
             EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
             if (connectionChangeEvent != null)
@@ -122,10 +117,12 @@ namespace Arrowgene.Ddon.GameServer
 
         public override GameClient NewClient(ITcpSocket socket)
         {
-            GameClient newClient = new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
-            _clients.Add(newClient);
+            GameClient newClient = new GameClient(socket,
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+            ClientLookup.Add(newClient);
             return newClient;
         }
+
 
         public Party NewParty()
         {

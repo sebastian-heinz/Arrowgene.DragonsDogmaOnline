@@ -20,7 +20,6 @@
  * along with Arrowgene.Ddon.LoginServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.LoginServer.Handler;
 using Arrowgene.Ddon.Server;
@@ -34,36 +33,36 @@ namespace Arrowgene.Ddon.LoginServer
     public class DdonLoginServer : DdonServer<LoginClient>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonLoginServer));
-        
-        private readonly List<LoginClient> _clients;
 
         public DdonLoginServer(LoginServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
             Setting = new LoginServerSetting(setting);
-            _clients = new List<LoginClient>();
+            ClientLookup = new LoginClientLookup();
             LoadPacketHandler();
         }
 
         public LoginServerSetting Setting { get; }
 
-        public override List<LoginClient> Clients => new List<LoginClient>(_clients);
+        public override LoginClientLookup ClientLookup { get; }
 
         protected override void ClientConnected(LoginClient client)
         {
             client.InitializeChallenge();
-            _clients.Add(client);
+            ClientLookup.Add(client);
         }
 
         protected override void ClientDisconnected(LoginClient client)
         {
-            _clients.Remove(client);
+            ClientLookup.Remove(client);
         }
 
         public override LoginClient NewClient(ITcpSocket socket)
         {
-            return new LoginClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.LoginPacketIdResolver));
+            return new LoginClient(socket,
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.LoginPacketIdResolver));
         }
+
 
         private void LoadPacketHandler()
         {
