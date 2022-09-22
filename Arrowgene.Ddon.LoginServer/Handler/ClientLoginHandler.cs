@@ -90,13 +90,25 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         // see if the client has a active login connection and close it
                         loggedInClient.Close();
                     }
-
-                    // TODO communicate to GS to close client
-                    // since login and game server can run on different physical boxes
-                    // this can only be done if a inter-server-communication system is in place.
-                    // or it needs to be handled if the same client shows up again in GS
-                    // for now, just deny another connection - this will ease finding bugs where
-                    // the state of logged in is not properly updated.
+                    
+                    if (!account.LastLogin.HasValue)
+                    {
+                        Logger.Error(client, "has no last log in, despite flagged as logged in");
+                        account.LastLogin = DateTime.Now;
+                        Database.UpdateAccount(account);
+                    }
+                    
+                    TimeSpan lastLoginAge = account.LastLogin.Value - DateTime.Now;
+                    if (lastLoginAge < TimeSpan.FromMinutes(1)) // TODO convert to setting
+                    {
+                        // 
+                        Logger.Error(client, $"LastLogin at: {account.LastLogin.Value} is to early");
+                        res.Error = 1;
+                        client.Send(res);
+                        ReleaseToken(oneTimeToken);
+                        return;
+                    }
+                    
                     Logger.Error(client, $"already logged in");
                     res.Error = 1;
                     client.Send(res);

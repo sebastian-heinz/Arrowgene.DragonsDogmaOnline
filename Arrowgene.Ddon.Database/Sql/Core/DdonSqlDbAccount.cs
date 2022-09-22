@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] AccountFields = new string[]
         {
-            "name", "normal_name", "hash", "mail", "mail_verified", "mail_verified_at", "mail_token", "password_token", "logged_in", "login_token", "login_token_created", "state", "last_login", "created"
+            "name", "normal_name", "hash", "mail", "mail_verified", "mail_verified_at", "mail_token", "password_token", "logged_in", "server_transition", "login_token", "login_token_created", "state", "last_login", "created"
         };
         
         private static readonly string SqlInsertAccount = $"INSERT INTO `account` ({BuildQueryField(AccountFields)}) VALUES ({BuildQueryInsert(AccountFields)});";
@@ -40,6 +40,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "@mail_token", account.MailToken);
                 AddParameter(command, "@password_token", account.PasswordToken);
                 AddParameter(command, "@logged_in", account.LoggedIn);
+                AddParameter(command, "@server_transition", account.ServerTransition);
                 AddParameter(command, "@login_token", account.LoginToken);
                 AddParameter(command, "@login_token_created", account.LoginTokenCreated);
                 AddParameterEnumInt32(command, "@state", account.State);
@@ -113,6 +114,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "@mail_token", account.MailToken);
                 AddParameter(command, "@password_token", account.PasswordToken);
                 AddParameter(command, "@logged_in", account.LoggedIn);
+                AddParameter(command, "@server_transition", account.ServerTransition);
                 AddParameter(command, "@login_token", account.LoginToken);
                 AddParameter(command, "@login_token_created", account.LoginTokenCreated);
                 AddParameterEnumInt32(command, "@state", account.State);
@@ -143,6 +145,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             account.MailToken = GetStringNullable(reader, "mail_token");
             account.PasswordToken = GetStringNullable(reader, "password_token");
             account.LoggedIn = GetBoolean(reader, "logged_in");
+            account.ServerTransition = GetDateTimeNullable(reader, "server_transition");
             account.LoginToken = GetStringNullable(reader, "login_token");
             account.LoginTokenCreated = GetDateTime(reader, "login_token_created");
             account.State = (AccountStateType) GetInt32(reader, "state");
