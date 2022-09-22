@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.GameServer.Chat.Log;
@@ -105,6 +106,12 @@ namespace Arrowgene.Ddon.GameServer
         protected override void ClientDisconnected(GameClient client)
         {
             ClientLookup.Remove(client);
+
+            Account account = client.Account;
+            if (account != null)
+            {
+                Database.DeleteConnection(client.Account.Id, ConnectionType.GameServer);
+            }
 
             EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
             if (connectionChangeEvent != null)

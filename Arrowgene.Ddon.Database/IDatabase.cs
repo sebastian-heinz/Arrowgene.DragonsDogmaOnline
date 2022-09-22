@@ -41,5 +41,11 @@ namespace Arrowgene.Ddon.Database
         GameToken SelectToken(string tokenStr);
         bool DeleteTokenByAccountId(int accountId);
         bool DeleteToken(string token);
+
+        // Connections
+        bool InsertConnection(Connection connection);
+        List<Connection> SelectConnections(int accountId);
+        bool DeleteConnection(int accountId, ConnectionType connectionType);
+        bool DeleteConnections(int accountId);
     }
 }

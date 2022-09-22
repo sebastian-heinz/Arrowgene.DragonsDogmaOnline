@@ -25,6 +25,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
+            DateTime now = DateTime.Now;
             client.SetChallengeCompleted(true);
 
             string oneTimeToken = packet.Structure.OneTimeToken;
@@ -51,7 +52,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         Logger.Error(client, "Invalid OneTimeToken");
                         res.Error = 1;
                         client.Send(res);
-                        ReleaseToken(oneTimeToken);
                         return;
                     }
                 }
@@ -71,7 +71,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                     "Could not create account from OneTimeToken, choose another token");
                                 res.Error = 2;
                                 client.Send(res);
-                                ReleaseToken(oneTimeToken);
                                 return;
                             }
 
@@ -79,56 +78,50 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         }
 
                         account.LoginToken = oneTimeToken;
-                        account.LoginTokenCreated = DateTime.Now;
+                        account.LoginTokenCreated = now;
                     }
                 }
 
-                if (account.LoggedIn)
+                if (!account.LoginTokenCreated.HasValue)
                 {
-                    LoginClient loggedInClient = Server.ClientLookup.GetClientByAccountId(account.Id);
-                    if (loggedInClient != null)
-                    {
-                        // see if the client has a active login connection and close it
-                        loggedInClient.Close();
-                    }
-
-                    if (!account.LastLogin.HasValue)
-                    {
-                        Logger.Error(client, "has no last log in, despite flagged as logged in");
-                        account.LastLogin = DateTime.Now;
-                        Database.UpdateAccount(account);
-                    }
-
-                    TimeSpan lastLoginAge = account.LastLogin.Value - DateTime.Now;
-                    if (lastLoginAge < TimeSpan.FromMinutes(1)) // TODO convert to setting
-                    {
-                        // 
-                        Logger.Error(client, $"LastLogin at: {account.LastLogin.Value} is to early");
-                        res.Error = 1;
-                        client.Send(res);
-                        ReleaseToken(oneTimeToken);
-                        return;
-                    }
-
-                    Logger.Error(client, $"already logged in");
-                    res.Error = 1;
+                    Logger.Error(client, "No login token exists");
+                    res.Error = 2;
                     client.Send(res);
-                    ReleaseToken(oneTimeToken);
                     return;
                 }
 
-                TimeSpan loginTokenAge = account.LoginTokenCreated - DateTime.Now;
+                TimeSpan loginTokenAge = account.LoginTokenCreated.Value - now;
                 if (loginTokenAge > TimeSpan.FromDays(1)) // TODO convert to setting
                 {
                     Logger.Error(client, $"OneTimeToken Created at: {account.LoginTokenCreated} expired.");
                     res.Error = 1;
                     client.Send(res);
-                    ReleaseToken(oneTimeToken);
                     return;
                 }
 
-                account.LastLogin = DateTime.Now;
-                account.LoggedIn = true;
+                List<Connection> connections = Database.SelectConnections(account.Id);
+                if (connections.Count > 0)
+                {
+                    // todo check connection age?
+                    Logger.Error(client, $"Already logged in");
+                    res.Error = 1;
+                    client.Send(res);
+                    return;
+                }
+
+                Connection connection = new Connection();
+                connection.Created = now;
+                connection.AccountId = account.Id;
+                connection.ConnectionType = ConnectionType.LoginServer;
+                if (!Database.InsertConnection(connection))
+                {
+                    Logger.Error(client, $"Failed to register login connection");
+                    res.Error = 1;
+                    client.Send(res);
+                    return;
+                }
+
+                account.LastAuthentication = now;
                 Database.UpdateAccount(account);
 
                 client.Account = account;
@@ -139,7 +132,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
             finally
             {
-                // in case of a exception, ensure our token is not locked up forever
                 ReleaseToken(oneTimeToken);
             }
         }

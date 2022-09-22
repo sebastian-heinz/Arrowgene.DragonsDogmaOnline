@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] AccountFields = new string[]
         {
-            "name", "normal_name", "hash", "mail", "mail_verified", "mail_verified_at", "mail_token", "password_token", "logged_in", "server_transition", "login_token", "login_token_created", "state", "last_login", "created"
+            "name", "normal_name", "hash", "mail", "mail_verified", "mail_verified_at", "mail_token", "password_token", "login_token", "login_token_created", "state", "last_login", "created"
         };
         
         private static readonly string SqlInsertAccount = $"INSERT INTO `account` ({BuildQueryField(AccountFields)}) VALUES ({BuildQueryInsert(AccountFields)});";
@@ -39,12 +39,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "@mail_verified_at", account.MailVerifiedAt);
                 AddParameter(command, "@mail_token", account.MailToken);
                 AddParameter(command, "@password_token", account.PasswordToken);
-                AddParameter(command, "@logged_in", account.LoggedIn);
-                AddParameter(command, "@server_transition", account.ServerTransition);
                 AddParameter(command, "@login_token", account.LoginToken);
                 AddParameter(command, "@login_token_created", account.LoginTokenCreated);
                 AddParameterEnumInt32(command, "@state", account.State);
-                AddParameter(command, "@last_login", account.LastLogin);
+                AddParameter(command, "@last_login", account.LastAuthentication);
                 AddParameter(command, "@created", account.Created);
             }, out long autoIncrement);
             if (rowsAffected <= NoRowsAffected || autoIncrement <= NoAutoIncrement)
@@ -113,12 +111,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "@mail_verified_at", account.MailVerifiedAt);
                 AddParameter(command, "@mail_token", account.MailToken);
                 AddParameter(command, "@password_token", account.PasswordToken);
-                AddParameter(command, "@logged_in", account.LoggedIn);
-                AddParameter(command, "@server_transition", account.ServerTransition);
                 AddParameter(command, "@login_token", account.LoginToken);
                 AddParameter(command, "@login_token_created", account.LoginTokenCreated);
                 AddParameterEnumInt32(command, "@state", account.State);
-                AddParameter(command, "@last_login", account.LastLogin);
+                AddParameter(command, "@last_login", account.LastAuthentication);
                 AddParameter(command, "@created", account.Created);
                 AddParameter(command, "@id", account.Id);
             });
@@ -144,12 +140,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             account.MailVerifiedAt = GetDateTimeNullable(reader, "mail_verified_at");
             account.MailToken = GetStringNullable(reader, "mail_token");
             account.PasswordToken = GetStringNullable(reader, "password_token");
-            account.LoggedIn = GetBoolean(reader, "logged_in");
-            account.ServerTransition = GetDateTimeNullable(reader, "server_transition");
             account.LoginToken = GetStringNullable(reader, "login_token");
-            account.LoginTokenCreated = GetDateTime(reader, "login_token_created");
+            account.LoginTokenCreated = GetDateTimeNullable(reader, "login_token_created");
             account.State = (AccountStateType) GetInt32(reader, "state");
-            account.LastLogin = GetDateTimeNullable(reader, "last_login");
+            account.LastAuthentication = GetDateTimeNullable(reader, "last_login");
             account.Created = GetDateTime(reader, "created");
             return account;
         }

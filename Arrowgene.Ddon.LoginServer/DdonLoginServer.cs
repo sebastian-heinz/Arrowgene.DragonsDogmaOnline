@@ -21,6 +21,7 @@
  */
 
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.LoginServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -55,6 +56,12 @@ namespace Arrowgene.Ddon.LoginServer
         protected override void ClientDisconnected(LoginClient client)
         {
             ClientLookup.Remove(client);
+
+            Account account = client.Account;
+            if (account != null)
+            {
+                Database.DeleteConnection(client.Account.Id, ConnectionType.LoginServer);
+            }
         }
 
         public override LoginClient NewClient(ITcpSocket socket)

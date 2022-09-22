@@ -89,9 +89,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return sb.ToString();
         }
 
-        protected override void Exception(Exception ex)
+        protected override void Exception(Exception ex, string query)
         {
             Logger.Exception(ex);
+            if (query != null)
+            {
+                Logger.Error($"Exception during query: {query}");
+            }
         }
     }
 }
