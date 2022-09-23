@@ -64,11 +64,15 @@ namespace Arrowgene.Ddon.Server
             );
         }
 
+        public int Id => _setting.Id;
+        public string Name => _setting.Name;
+
         public AssetRepository AssetRepository { get; }
         public IDatabase Database { get; }
 
         public virtual void Start()
         {
+            Database.DeleteConnectionsByServerId(Id);
             Logger.Info($"[{_setting.ServerSocketSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
             _server.Start();
         }

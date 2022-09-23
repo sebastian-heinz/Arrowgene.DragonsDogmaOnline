@@ -53,12 +53,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             DateTime now = DateTime.Now;
 
-            List<Connection> connections = Database.SelectConnections(account.Id);
+            List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
             if (connections.Count > 0)
             {
                 foreach (Connection con in connections)
                 {
-                    if (con.ConnectionType == ConnectionType.GameServer)
+                    if (con.Type == ConnectionType.GameServer)
                     {
                         Logger.Error(client, $"game server connection already exists");
                         res.Error = 1;
@@ -69,9 +69,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             Connection connection = new Connection();
-            connection.Created = now;
+            connection.ServerId = Server.Id;
             connection.AccountId = account.Id;
-            connection.ConnectionType = ConnectionType.GameServer;
+            connection.Type = ConnectionType.GameServer;
+            connection.Created = now;
             if (!Database.InsertConnection(connection))
             {
                 Logger.Error(client, $"Failed to register game connection");

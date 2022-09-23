@@ -7,18 +7,20 @@ namespace Arrowgene.Ddon.Server
     [DataContract]
     public class ServerSetting
     {
+        public const int InvalidId = -1;
+
+        [DataMember(Order = 0)] public int Id { get; set; }
+        [DataMember(Order = 1)] public string Name { get; set; }
         [IgnoreDataMember] public IPAddress ListenIpAddress { get; set; }
 
-
-        [DataMember(Name = "ListenIpAddress", Order = 0)]
+        [DataMember(Name = "ListenIpAddress", Order = 5)]
         public string DataListenIpAddress
         {
             get => ListenIpAddress.ToString();
             set => ListenIpAddress = string.IsNullOrEmpty(value) ? null : IPAddress.Parse(value);
         }
 
-        [DataMember(Order = 2)] public ushort ServerPort { get; set; }
-        [DataMember(Order = 3)] public string Name { get; set; }
+        [DataMember(Order = 6)] public ushort ServerPort { get; set; }
         [DataMember(Order = 20)] public int LogLevel { get; set; }
         [DataMember(Order = 21)] public bool LogUnknownPackets { get; set; }
         [DataMember(Order = 22)] public bool LogOutgoingPackets { get; set; }
@@ -31,9 +33,10 @@ namespace Arrowgene.Ddon.Server
 
         public ServerSetting()
         {
+            Id = InvalidId;
+            Name = "";
             ListenIpAddress = IPAddress.Any;
             ServerPort = 52100;
-            Name = "";
             LogLevel = 0;
             LogUnknownPackets = true;
             LogOutgoingPackets = true;
@@ -48,9 +51,10 @@ namespace Arrowgene.Ddon.Server
 
         public ServerSetting(ServerSetting setting)
         {
+            Id = setting.Id;
+            Name = setting.Name;
             ListenIpAddress = setting.ListenIpAddress;
             ServerPort = setting.ServerPort;
-            Name = setting.Name;
             LogLevel = setting.LogLevel;
             LogUnknownPackets = setting.LogUnknownPackets;
             LogOutgoingPackets = setting.LogOutgoingPackets;

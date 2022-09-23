@@ -44,8 +44,9 @@ namespace Arrowgene.Ddon.Database
 
         // Connections
         bool InsertConnection(Connection connection);
-        List<Connection> SelectConnections(int accountId);
-        bool DeleteConnection(int accountId, ConnectionType connectionType);
-        bool DeleteConnections(int accountId);
+        List<Connection> SelectConnectionsByAccountId(int accountId);
+        bool DeleteConnection(int serverId, int accountId);
+        bool DeleteConnectionsByAccountId(int accountId);
+        bool DeleteConnectionsByServerId(int serverId);
     }
 }

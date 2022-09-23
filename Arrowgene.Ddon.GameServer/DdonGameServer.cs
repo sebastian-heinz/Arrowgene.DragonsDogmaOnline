@@ -66,7 +66,6 @@ namespace Arrowgene.Ddon.GameServer
         }
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
-
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
         public EnemyManager EnemyManager { get; }
@@ -90,6 +89,7 @@ namespace Arrowgene.Ddon.GameServer
             base.Start();
         }
 
+
         protected override void ClientConnected(GameClient client)
         {
             client.InitializeChallenge();
@@ -110,7 +110,7 @@ namespace Arrowgene.Ddon.GameServer
             Account account = client.Account;
             if (account != null)
             {
-                Database.DeleteConnection(client.Account.Id, ConnectionType.GameServer);
+                Database.DeleteConnection(Id, client.Account.Id);
             }
 
             EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
@@ -129,7 +129,6 @@ namespace Arrowgene.Ddon.GameServer
             ClientLookup.Add(newClient);
             return newClient;
         }
-
 
         public Party NewParty()
         {

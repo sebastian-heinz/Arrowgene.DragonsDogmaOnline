@@ -278,9 +278,10 @@ CREATE TABLE IF NOT EXISTS `ddon_game_token`
 
 CREATE TABLE IF NOT EXISTS `ddon_connection`
 (
-    `account_id`      INTEGER  NOT NULL,
-    `connection_type` INTEGER  NOT NULL,
-    `created`         DATETIME NOT NULL,
-    CONSTRAINT `uq_connection_account_id_created` UNIQUE (`account_id`, `connection_type`),
+    `server_id`  INTEGER  NOT NULL,
+    `account_id` INTEGER  NOT NULL,
+    `type`       INTEGER  NOT NULL,
+    `created`    DATETIME NOT NULL,
+    CONSTRAINT `uq_connection_server_id_account_d` UNIQUE (`server_id`, `account_id`),
     CONSTRAINT `fk_game_token_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
 );

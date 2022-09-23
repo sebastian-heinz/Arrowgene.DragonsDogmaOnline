@@ -99,7 +99,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     return;
                 }
 
-                List<Connection> connections = Database.SelectConnections(account.Id);
+                List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
                 if (connections.Count > 0)
                 {
                     // todo check connection age?
@@ -110,9 +110,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 }
 
                 Connection connection = new Connection();
-                connection.Created = now;
+                connection.ServerId = Server.Id;
                 connection.AccountId = account.Id;
-                connection.ConnectionType = ConnectionType.LoginServer;
+                connection.Type = ConnectionType.LoginServer;
+                connection.Created = now;
                 if (!Database.InsertConnection(connection))
                 {
                     Logger.Error(client, $"Failed to register login connection");

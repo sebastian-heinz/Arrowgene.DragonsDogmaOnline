@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.LoginServer
             Account account = client.Account;
             if (account != null)
             {
-                Database.DeleteConnection(client.Account.Id, ConnectionType.LoginServer);
+                Database.DeleteConnection(Id, client.Account.Id);
             }
         }
 

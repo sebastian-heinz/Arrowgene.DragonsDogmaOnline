@@ -11,8 +11,9 @@ namespace Arrowgene.Ddon.GameServer
         public GameServerSetting()
         {
             ServerSetting = new ServerSetting();
-            ServerSetting.ServerPort = 52000;
+            ServerSetting.Id = 10;
             ServerSetting.Name = "Game";
+            ServerSetting.ServerPort = 52000;
             ServerSetting.ServerSocketSettings.Identity = "Game";
         }
 

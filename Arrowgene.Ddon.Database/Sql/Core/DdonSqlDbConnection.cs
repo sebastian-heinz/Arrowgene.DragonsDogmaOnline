@@ -9,39 +9,46 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCom : DbCommand
     {
         private const string SqlInsertConnection =
-            "INSERT INTO `ddon_connection` (`account_id`, `connection_type`, `created`) VALUES (@account_id, @connection_type, @created);";
+            "INSERT INTO `ddon_connection` (`server_id`, `account_id`, `type`, `created`) VALUES (@server_id, @account_id, @type, @created);";
 
-        private const string SqlSelectConnection =
-            "SELECT `account_id`, `connection_type`, `created` FROM `ddon_connection` WHERE `account_id` = @account_id;";
+        private const string SqlSelectConnectionsByAccountId =
+            "SELECT `server_id`, `account_id`, `type`, `created` FROM `ddon_connection` WHERE `account_id` = @account_id;";
 
-        private const string SqlDeleteConnections = "DELETE FROM `ddon_connection` WHERE `account_id`=@account_id;";
+        private const string SqlDeleteConnectionsByAccountId =
+            "DELETE FROM `ddon_connection` WHERE `account_id`=@account_id;";
+        
+        private const string SqlDeleteConnectionsByServerId =
+            "DELETE FROM `ddon_connection` WHERE `server_id`=@server_id;";
 
         private const string SqlDeleteConnection =
-            "DELETE FROM `ddon_connection` WHERE `account_id`=@account_id AND `connection_type`=@connection_type ;";
+            "DELETE FROM `ddon_connection` WHERE `server_id`=@server_id AND `account_id`=@account_id;";
 
         public bool InsertConnection(Connection connection)
         {
             int rowsAffected = ExecuteNonQuery(SqlInsertConnection, command =>
             {
+                AddParameter(command, "@server_id", connection.ServerId);
                 AddParameter(command, "@account_id", connection.AccountId);
-                AddParameterEnumInt32(command, "@connection_type", connection.ConnectionType);
+                AddParameterEnumInt32(command, "@type", connection.Type);
                 AddParameter(command, "@created", connection.Created);
             });
 
             return rowsAffected > NoRowsAffected;
         }
 
-        public List<Connection> SelectConnections(int accountId)
+        public List<Connection> SelectConnectionsByAccountId(int accountId)
         {
             List<Connection> connections = new List<Connection>();
-            ExecuteReader(SqlSelectConnection, command => { AddParameter(command, "@account_id", accountId); },
+            ExecuteReader(SqlSelectConnectionsByAccountId,
+                command => { AddParameter(command, "@account_id", accountId); },
                 reader =>
                 {
                     while (reader.Read())
                     {
                         Connection connection = new Connection();
+                        connection.ServerId = GetInt32(reader, "server_id");
                         connection.AccountId = GetInt32(reader, "account_id");
-                        connection.ConnectionType = GetEnumInt32<ConnectionType>(reader, "connection_type");
+                        connection.Type = GetEnumInt32<ConnectionType>(reader, "type");
                         connection.Created = GetDateTime(reader, "created");
                         connections.Add(connection);
                     }
@@ -49,20 +56,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return connections;
         }
 
-        public bool DeleteConnection(int accountId, ConnectionType connectionType)
+        public bool DeleteConnection(int serverId, int accountId)
         {
             int rowsAffected = ExecuteNonQuery(SqlDeleteConnection, command =>
             {
+                AddParameter(command, "@server_id", serverId);
                 AddParameter(command, "@account_id", accountId);
-                AddParameterEnumInt32(command, "@connection_type", connectionType);
             });
             return rowsAffected > NoRowsAffected;
         }
 
-        public bool DeleteConnections(int accountId)
+        public bool DeleteConnectionsByAccountId(int accountId)
         {
-            int rowsAffected = ExecuteNonQuery(SqlDeleteConnections,
+            int rowsAffected = ExecuteNonQuery(SqlDeleteConnectionsByAccountId,
                 command => { AddParameter(command, "@account_id", accountId); });
+            return rowsAffected > NoRowsAffected;
+        }
+        
+        public bool DeleteConnectionsByServerId(int serverId)
+        {
+            int rowsAffected = ExecuteNonQuery(SqlDeleteConnectionsByServerId,
+                command => { AddParameter(command, "@server_id", serverId); });
             return rowsAffected > NoRowsAffected;
         }
     }
