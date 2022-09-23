@@ -67,7 +67,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
             }
-
+            
+            // Order Important,
+            // account need to be only assigned after
+            // verification that no connection exists, and before
+            // registering the connection
+            client.Account = account;
+            
             Connection connection = new Connection();
             connection.ServerId = Server.Id;
             connection.AccountId = account.Id;
@@ -90,7 +96,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            client.Account = account;
+
             client.Character = character;
             client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();

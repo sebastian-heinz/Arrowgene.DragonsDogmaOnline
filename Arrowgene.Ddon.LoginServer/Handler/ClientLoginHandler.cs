@@ -108,7 +108,13 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     client.Send(res);
                     return;
                 }
-
+                
+                // Order Important,
+                // account need to be only assigned after
+                // verification that no connection exists, and before
+                // registering the connection
+                client.Account = account;
+                
                 Connection connection = new Connection();
                 connection.ServerId = Server.Id;
                 connection.AccountId = account.Id;
@@ -122,13 +128,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     return;
                 }
 
-                account.LastAuthentication = now;
-                Database.UpdateAccount(account);
-
-                client.Account = account;
+                client.Account.LastAuthentication = now;
                 client.UpdateIdentity();
-                Logger.Info(client, "Logged In");
+                Database.UpdateAccount(client.Account);
 
+                Logger.Info(client, "Logged In");
                 client.Send(res);
             }
             finally
