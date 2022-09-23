@@ -27,15 +27,16 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public bool ExecuteInTransaction(Action<TCon> action)
         {
-            using(TCon connection = Connection())
+            using (TCon connection = Connection())
             {
-                try {
+                try
+                {
                     Execute(connection, "BEGIN TRANSACTION");
                     action(connection);
                     Execute(connection, "COMMIT");
                     return true;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Execute(connection, "ROLLBACK");
                     Exception(ex);
@@ -55,7 +56,7 @@ namespace Arrowgene.Ddon.Database.Sql
             {
                 bool autoCloseConnection = false;
                 TCon connection = conn;
-                if(connection == null)
+                if (connection == null)
                 {
                     autoCloseConnection = true;
                     connection = Connection();
@@ -68,7 +69,7 @@ namespace Arrowgene.Ddon.Database.Sql
                     rowsAffected = command.ExecuteNonQuery();
                 }
 
-                if(autoCloseConnection)
+                if (autoCloseConnection)
                 {
                     connection.Close();
                 }
@@ -77,7 +78,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
             catch (Exception ex)
             {
-                Exception(ex);
+                Exception(ex, query);
                 return NoRowsAffected;
             }
         }
@@ -93,7 +94,7 @@ namespace Arrowgene.Ddon.Database.Sql
             {
                 bool autoCloseConnection = false;
                 TCon connection = conn;
-                if(connection == null)
+                if (connection == null)
                 {
                     autoCloseConnection = true;
                     connection = Connection();
@@ -107,7 +108,7 @@ namespace Arrowgene.Ddon.Database.Sql
                     autoIncrement = AutoIncrement(connection, command);
                 }
 
-                if(autoCloseConnection)
+                if (autoCloseConnection)
                 {
                     connection.Close();
                 }
@@ -116,7 +117,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
             catch (Exception ex)
             {
-                Exception(ex);
+                Exception(ex, query);
                 autoIncrement = NoAutoIncrement;
                 return NoRowsAffected;
             }
@@ -133,7 +134,7 @@ namespace Arrowgene.Ddon.Database.Sql
             {
                 bool autoCloseConnection = false;
                 TCon connection = conn;
-                if(connection == null)
+                if (connection == null)
                 {
                     autoCloseConnection = true;
                     connection = Connection();
@@ -148,14 +149,14 @@ namespace Arrowgene.Ddon.Database.Sql
                     }
                 }
 
-                if(autoCloseConnection)
+                if (autoCloseConnection)
                 {
                     connection.Close();
                 }
             }
             catch (Exception ex)
             {
-                Exception(ex);
+                Exception(ex, query);
             }
         }
 
@@ -170,7 +171,7 @@ namespace Arrowgene.Ddon.Database.Sql
             {
                 bool autoCloseConnection = false;
                 TCon connection = conn;
-                if(connection == null)
+                if (connection == null)
                 {
                     autoCloseConnection = true;
                     connection = Connection();
@@ -184,14 +185,14 @@ namespace Arrowgene.Ddon.Database.Sql
                     }
                 }
 
-                if(autoCloseConnection)
+                if (autoCloseConnection)
                 {
                     connection.Close();
                 }
             }
             catch (Exception ex)
             {
-                Exception(ex);
+                Exception(ex, query);
             }
         }
 
@@ -206,7 +207,7 @@ namespace Arrowgene.Ddon.Database.Sql
             {
                 bool autoCloseConnection = false;
                 TCon connection = conn;
-                if(connection == null)
+                if (connection == null)
                 {
                     autoCloseConnection = true;
                     connection = Connection();
@@ -217,14 +218,14 @@ namespace Arrowgene.Ddon.Database.Sql
                     command.ExecuteNonQuery();
                 }
 
-                if(autoCloseConnection)
+                if (autoCloseConnection)
                 {
                     connection.Close();
                 }
             }
             catch (Exception ex)
             {
-                Exception(ex);
+                Exception(ex, query);
             }
         }
 
@@ -239,7 +240,7 @@ namespace Arrowgene.Ddon.Database.Sql
             {
                 bool autoCloseConnection = false;
                 TCon connection = conn;
-                if(connection == null)
+                if (connection == null)
                 {
                     autoCloseConnection = true;
                     connection = Connection();
@@ -247,7 +248,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
                 string serverVersion = connection.ServerVersion;
 
-                if(autoCloseConnection)
+                if (autoCloseConnection)
                 {
                     connection.Close();
                 }
@@ -261,7 +262,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        protected virtual void Exception(Exception ex)
+        protected virtual void Exception(Exception ex, string query = null)
         {
             throw ex;
         }
@@ -313,7 +314,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected void AddParameterEnumInt32<T>(TCom command, string name, T value) where T : Enum
         {
-            AddParameter(command, name, (Int32) (object) value, DbType.Int32);
+            AddParameter(command, name, (Int32)(object)value, DbType.Int32);
         }
 
         protected void AddParameter(TCom command, string name, DateTime? value)
@@ -373,7 +374,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected ushort GetUInt16(DbDataReader reader, string column)
         {
-            return (ushort) reader.GetInt16(reader.GetOrdinal(column));
+            return (ushort)reader.GetInt16(reader.GetOrdinal(column));
         }
 
         protected float GetFloat(DbDataReader reader, string column)
@@ -389,6 +390,11 @@ namespace Arrowgene.Ddon.Database.Sql
         protected bool GetBoolean(DbDataReader reader, string column)
         {
             return reader.GetBoolean(reader.GetOrdinal(column));
+        }
+
+        protected T GetEnumInt32<T>(DbDataReader reader, string column) where T : Enum
+        {
+            return (T)(object)reader.GetInt32(reader.GetOrdinal(column));
         }
 
         protected DateTime GetDateTime(DbDataReader reader, string column)

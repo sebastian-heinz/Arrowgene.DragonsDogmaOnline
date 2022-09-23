@@ -4,7 +4,6 @@ using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -23,8 +22,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SConnectionLoginReq> packet)
         {
             client.SetChallengeCompleted(true);
-            
-            Logger.Debug(client, $"Received SessionKey:{packet.Structure.SessionKey} for platform:{packet.Structure.PlatformType}");
+
+            Logger.Debug(client,
+                $"Received SessionKey:{packet.Structure.SessionKey} for platform:{packet.Structure.PlatformType}");
 
             S2CConnectionLoginRes res = new S2CConnectionLoginRes();
             GameToken token = Database.SelectToken(packet.Structure.SessionKey);
@@ -51,6 +51,42 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            DateTime now = DateTime.Now;
+
+            List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
+            if (connections.Count > 0)
+            {
+                foreach (Connection con in connections)
+                {
+                    if (con.Type == ConnectionType.GameServer)
+                    {
+                        Logger.Error(client, $"game server connection already exists");
+                        res.Error = 1;
+                        client.Send(res);
+                        return;
+                    }
+                }
+            }
+            
+            // Order Important,
+            // account need to be only assigned after
+            // verification that no connection exists, and before
+            // registering the connection
+            client.Account = account;
+            
+            Connection connection = new Connection();
+            connection.ServerId = Server.Id;
+            connection.AccountId = account.Id;
+            connection.Type = ConnectionType.GameServer;
+            connection.Created = now;
+            if (!Database.InsertConnection(connection))
+            {
+                Logger.Error(client, $"Failed to register game connection");
+                res.Error = 1;
+                client.Send(res);
+                return;
+            }
+
             Character character = Database.SelectCharacter(token.CharacterId);
             if (character == null)
             {
@@ -60,7 +96,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            client.Account = account;
+
             client.Character = character;
             client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
@@ -68,7 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // update login token for client
             client.Account.LoginToken = GameToken.GenerateLoginToken();
-            client.Account.LoginTokenCreated = DateTime.Now;
+            client.Account.LoginTokenCreated = now;
             if (!Database.UpdateAccount(client.Account))
             {
                 Logger.Error(client, "Failed to update OneTimeToken");
@@ -76,6 +112,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(res);
                 return;
             }
+
 
             Logger.Debug(client, $"Updated OneTimeToken:{client.Account.LoginToken}");
 
