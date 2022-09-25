@@ -23,6 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 SetAcquierementParam = SkillGetAcquirableSkillListHandler.AllSkills
                     .Select(skill => new CDataLearnedSetAcquirementParam() {
                         Job = skill.Job,
+                        Type = skill.Type,
                         AcquirementNo = skill.SkillNo,
                         AcquirementLv = (byte) (IsSkillEX(skill.SkillNo) ? 1 : 10) // EX skills must be Lv 1 to work, otherwise use Lv 10 (Max level)
                     }).ToList()

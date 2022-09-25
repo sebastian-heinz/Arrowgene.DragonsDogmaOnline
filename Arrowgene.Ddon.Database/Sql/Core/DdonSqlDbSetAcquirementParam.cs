@@ -15,10 +15,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlInsertSetAcquirementParam = $"INSERT INTO `ddon_set_acquirement_param` ({BuildQueryField(CDataSetAcquirementParamFields)}) VALUES ({BuildQueryInsert(CDataSetAcquirementParamFields)});";
         private readonly string SqlReplaceSetAcquirementParam = $"INSERT OR REPLACE INTO `ddon_set_acquirement_param` ({BuildQueryField(CDataSetAcquirementParamFields)}) VALUES ({BuildQueryInsert(CDataSetAcquirementParamFields)});";
-        private static readonly string SqlUpdateSetAcquirementParam = $"UPDATE `ddon_set_acquirement_param` SET {BuildQueryUpdate(CDataSetAcquirementParamFields)} WHERE `character_id` = @character_id AND `job` = @job AND `slot_no`=@slot_no;";
-        private static readonly string SqlSelectCustomSkillsSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `job` <> 0";
-        private static readonly string SqlSelectAbilitiesSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `job` = 0;";
-        private const string SqlDeleteSetAcquirementParam = "DELETE FROM `ddon_set_acquirement_param` WHERE `character_id`=@character_id AND `job`=@job AND `slot_no`=@slot_no;";
+        private static readonly string SqlUpdateSetAcquirementParam = $"UPDATE `ddon_set_acquirement_param` SET {BuildQueryUpdate(CDataSetAcquirementParamFields)} WHERE `character_id`=@character_id AND `job`=@job AND `type`=@type AND `slot_no`=@slot_no;";
+        private static readonly string SqlSelectCustomSkillsSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `type` = 0";
+        private static readonly string SqlSelectAbilitiesSetAcquirementParam = $"SELECT {BuildQueryField(CDataSetAcquirementParamFields)} FROM `ddon_set_acquirement_param` WHERE `character_id` = @character_id AND `type` = 1;";
+        private const string SqlDeleteSetAcquirementParam = "DELETE FROM `ddon_set_acquirement_param` WHERE `character_id`=@character_id AND `job`=@job AND `type`=@type AND `slot_no`=@slot_no;";
 
         public bool ReplaceSetAcquirementParam(uint characterId, CDataSetAcquirementParam setAcquirementParam)
         {

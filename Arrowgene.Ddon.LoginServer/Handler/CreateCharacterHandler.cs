@@ -1022,71 +1022,71 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }).ToList();
             character.Abilities = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CDataSetAcquirementParam>() {
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab1Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 1,
                     AcquirementNo = arisenPreset.Ab1Id,
                     AcquirementLv = arisenPreset.Ab1Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab2Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 2,
                     AcquirementNo = arisenPreset.Ab2Id,
                     AcquirementLv = arisenPreset.Ab2Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab3Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 3,
                     AcquirementNo = arisenPreset.Ab3Id,
                     AcquirementLv = arisenPreset.Ab3Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab4Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 4,
                     AcquirementNo = arisenPreset.Ab4Id,
                     AcquirementLv = arisenPreset.Ab4Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab5Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 5,
                     AcquirementNo = arisenPreset.Ab5Id,
                     AcquirementLv = arisenPreset.Ab5Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab6Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 6,
                     AcquirementNo = arisenPreset.Ab6Id,
                     AcquirementLv = arisenPreset.Ab6Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab7Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 7,
                     AcquirementNo = arisenPreset.Ab7Id,
                     AcquirementLv = arisenPreset.Ab7Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab8Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 8,
                     AcquirementNo = arisenPreset.Ab8Id,
                     AcquirementLv = arisenPreset.Ab8Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab9Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 9,
                     AcquirementNo = arisenPreset.Ab9Id,
                     AcquirementLv = arisenPreset.Ab9Lv
                 },
                 new CDataSetAcquirementParam() {
-                    Job = arisenPreset.Ab10Jb,
-                    Type = 0,
+                    Job = arisenPreset.Job,
+                    Type = 1,
                     SlotNo = 10,
                     AcquirementNo = arisenPreset.Ab10Id,
                     AcquirementLv = arisenPreset.Ab10Lv
