@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public JobId Job { get; set; }
-        public byte Type { get; set; }
+        public byte Type { get; set; } // We're abusing this field for abilities to store the job the ability is equipped to
         public byte SlotNo { get; set; }
         public uint AcquirementNo { get; set; }
         public byte AcquirementLv { get; set; }
