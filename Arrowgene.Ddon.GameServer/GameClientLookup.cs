@@ -1,4 +1,6 @@
-﻿using Arrowgene.Ddon.Server;
+﻿using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -12,12 +14,32 @@ namespace Arrowgene.Ddon.GameServer
         {
             foreach (GameClient client in GetAll())
             {
-                if (client.Account == null)
+                Account account = client.Account;
+                if (account == null)
                 {
                     continue;
                 }
 
-                if (client.Account.Id == accountId)
+                if (account.Id == accountId)
+                {
+                    return client;
+                }
+            }
+
+            return null;
+        }
+        
+        public GameClient GetClientByCharacterId(uint characterId)
+        {
+            foreach (GameClient client in GetAll())
+            {
+                Character character = client.Character;
+                if (character == null)
+                {
+                    continue;
+                }
+
+                if (character.Id == characterId)
                 {
                     return client;
                 }

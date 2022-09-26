@@ -1,6 +1,5 @@
-﻿using System.Linq;
+﻿using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -9,7 +8,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyCreateHandler : StructurePacketHandler<GameClient, C2SPartyPartyCreateReq>
+    public class PartyPartyCreateHandler : GameStructurePacketHandler<C2SPartyPartyCreateReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyCreateHandler));
 
@@ -20,12 +19,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyCreateReq> packet)
         {
-            Party newParty = ((DdonGameServer) Server).NewParty();
-            newParty.Members.Add(client);
-            newParty.Host = client;
-            newParty.Leader = client;
-            client.Party = newParty;
-            
+            PartyGroup newParty = Server.PartyManager.NewParty(client);
+            if (newParty == null)
+            {
+                Logger.Error(client, "Failed to create party");
+                // TODO return error
+                return;
+            }
+
             S2CPartyPartyJoinNtc partyJoinNtc = new S2CPartyPartyJoinNtc();
             partyJoinNtc.HostCharacterId = client.Character.Id;
             partyJoinNtc.LeaderCharacterId = client.Character.Id;

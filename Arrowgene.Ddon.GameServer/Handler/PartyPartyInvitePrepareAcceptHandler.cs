@@ -1,14 +1,13 @@
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyInvitePrepareAcceptHandler : StructurePacketHandler<GameClient, C2SPartyPartyInvitePrepareAcceptReq>
+    public class PartyPartyInvitePrepareAcceptHandler : GameStructurePacketHandler<C2SPartyPartyInvitePrepareAcceptReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyInvitePrepareAcceptHandler));
 
@@ -18,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInvitePrepareAcceptReq> packet)
         {
-            Party newParty = client.PendingInvitedParty; // In case some other thread changes the value
+            PartyGroup newParty = client.PendingInvitedParty; // In case some other thread changes the value
             client.PendingInvitedParty = null;
 
             client.Send(new S2CPartyPartyInvitePrepareAcceptRes());

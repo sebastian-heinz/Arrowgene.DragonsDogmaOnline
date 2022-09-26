@@ -30,13 +30,13 @@ using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Enemy;
 using Arrowgene.Ddon.GameServer.Handler;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -46,19 +46,16 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        private readonly List<Party> _parties; // TODO not thread safe
-        private readonly Dictionary<StageId, Stage> _stages;
-
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
-            _parties = new List<Party>();
-            _stages = new Dictionary<StageId, Stage>();
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
+            PartyManager = new PartyManager();
             ClientLookup = new GameClientLookup();
+            ChatLogHandler = new ChatLogHandler();
 
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
@@ -69,13 +66,10 @@ namespace Arrowgene.Ddon.GameServer
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
         public EnemyManager EnemyManager { get; }
+        public PartyManager PartyManager { get; }
         public GameRouter Router { get; }
 
-        /// <summary>
-        /// Returns a copy of the party list.
-        /// To prevent modifications of affecting the original list.
-        /// </summary>
-        public List<Party> Parties => new List<Party>(_parties);
+        public ChatLogHandler ChatLogHandler { get; }
 
         public List<CDataStageInfo> StageList { get; }
 
@@ -83,12 +77,10 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
-            LoadStages();
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
         }
-
 
         protected override void ClientConnected(GameClient client)
         {
@@ -130,21 +122,9 @@ namespace Arrowgene.Ddon.GameServer
             return newClient;
         }
 
-        public Party NewParty()
-        {
-            Party newParty = new Party();
-            _parties.Add(newParty);
-            return newParty;
-        }
-
-        private void LoadStages()
-        {
-            _stages.Add(new StageId(0, 0, 0), new Stage(StageId.Invalid));
-        }
-
         private void LoadChatHandler()
         {
-            ChatManager.AddHandler(new ChatLogHandler());
+            ChatManager.AddHandler(ChatLogHandler);
             ChatManager.AddHandler(new ChatCommandHandler(this));
         }
 

@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -7,11 +6,12 @@ using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Shared.Entity;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnJoinPartyMypawnHandler : StructurePacketHandler<GameClient, C2SPawnJoinPartyMypawnReq>
+    public class PawnJoinPartyMypawnHandler : GameStructurePacketHandler<C2SPawnJoinPartyMypawnReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnJoinPartyMypawnHandler));
 
@@ -25,9 +25,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CContextGetPartyMypawnContextNtc pcapPawn = EntitySerializer.Get<S2CContextGetPartyMypawnContextNtc>().Read(SelectedDump.data_Dump_Pawn35_3_16);
 
             MyPawnCsv myPawnCsvData = Server.AssetRepository.MyPawnAsset[req.Structure.PawnNumber-1];
-            Pawn pawn = new Pawn();
-            pawn.Owner = client;
-            pawn.Party = client.Party;
+            
+            Pawn pawn = new Pawn(client.Character.Id);
+
             pawn.HmType = myPawnCsvData.HmType;
             pawn.PawnType = myPawnCsvData.PawnType;
             pawn.Character.Stage = pawn.Character.Stage;
@@ -974,7 +974,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             };
 
-            client.Party.Members.Add(pawn);
+            client.Party.Pawns.Add(pawn);
 
             client.Party.SendToAll(new S2CPawnJoinPartyPawnNtc() { PartyMember = pawn.AsCDataPartyMember() });
             client.Party.SendToAll(pawn.AsContextPacket());

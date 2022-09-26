@@ -1,4 +1,5 @@
 ﻿using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -8,7 +9,7 @@ using Arrowgene.Networking.Tcp;
 
 namespace Arrowgene.Ddon.GameServer
 {
-    public class GameClient : Client, IPartyMember
+    public class GameClient : Client
     {
         public GameClient(ITcpSocket socket, PacketFactory packetFactory) : base(socket, packetFactory)
         {
@@ -35,8 +36,11 @@ namespace Arrowgene.Ddon.GameServer
 
         public Character Character { get; set; }
 
-        public Party PendingInvitedParty { get; set; } // Maybe its more clean to store this in the handlers ?
-        public Party Party { get; set; }
+        
+        
+        
+        public PartyGroup PendingInvitedParty { get; set; } // Maybe its more clean to store this in the handlers ?
+        public PartyGroup Party { get; set; }
 
         public CDataPartyMember AsCDataPartyMember()
         {

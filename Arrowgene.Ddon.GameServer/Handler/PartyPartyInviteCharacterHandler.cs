@@ -9,7 +9,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyInviteCharacterHandler : StructurePacketHandler<GameClient, C2SPartyPartyInviteCharacterReq>
+    public class PartyPartyInviteCharacterHandler : GameStructurePacketHandler<C2SPartyPartyInviteCharacterReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyInviteCharacterHandler));
 
@@ -38,8 +38,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         // TODO: Figure out just how much packets/data within those packets we can do without while keeping everything functioning.
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteCharacterReq> packet)
         {
-            // TODO: Optimize this lmao
-            GameClient targetClient = Server.Clients.Where(x => x.Character.Id == packet.Structure.CharacterId).First();
+            GameClient targetClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
+            if (targetClient == null)
+            {
+                Logger.Error(client, $"Could not locate CharacterId:{packet.Structure.CharacterId} for party invitation");
+                // TODO error response
+                return;
+            }
+            
             // TODO: What would happen if two parties are trying to invite the same character?
             targetClient.PendingInvitedParty = client.Party;
 
@@ -49,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.PartyListInfo.ServerId = Server.AssetRepository.ServerList[0].Id;
             for(int i = 0; i < client.Party.Members.Count; i++)
             {
-                IPartyMember member = client.Party.Members[i];
+                GameClient member = client.Party.Members[i];
                 CDataPartyMember partyMember = new CDataPartyMember();
                 partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = member.Character.Id;

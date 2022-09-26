@@ -91,13 +91,5 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
 
             chatCommand.Execute(subCommand, client, message, responses);
         }
-
-        public void Handle(IPartyMember client, ChatMessage message, List<ChatResponse> responses)
-        {
-            if(client is GameClient)
-            {
-                Handle(client as GameClient, message, responses);
-            }
-        }
     }
 }

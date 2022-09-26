@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
