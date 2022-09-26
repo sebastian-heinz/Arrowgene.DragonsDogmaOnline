@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Or should it be sent immediately?
             // To the client or to all party?
             Tuple<CDataContextSetBase, CDataContextSetAdditional> context = new Tuple<CDataContextSetBase, CDataContextSetAdditional>(packet.Structure.Base, packet.Structure.Additional);
-            client.Party.Contexts.Add(packet.Structure.Base.UniqueId, context);
+            client.Party.Contexts[packet.Structure.Base.UniqueId] = context;
         }        
     }
 }

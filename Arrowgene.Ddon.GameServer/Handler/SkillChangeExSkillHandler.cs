@@ -36,9 +36,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
                     {
                         CharacterId = client.Character.Id,
-                        SlotNo = skillSlot.SlotNo,
-                        AcquirementNo = skillSlot.AcquirementNo,
-                        AcquirementLv = skillSlot.AcquirementLv
+                        ContextAcquirementData = new CDataContextAcquirementData()
+                        {
+                            SlotNo = skillSlot.SlotNo,
+                            AcquirementNo = skillSlot.AcquirementNo,
+                            AcquirementLv = skillSlot.AcquirementLv
+                        }
                     });
                 }
             }

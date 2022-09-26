@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `ddon_set_acquirement_param`
     `slot_no`        TINYINT NOT NULL,
     `acquirement_no` INT     NOT NULL,
     `acquirement_lv` TINYINT NOT NULL,
-    PRIMARY KEY (`character_id`, `job`, `slot_no`),
+    PRIMARY KEY (`character_id`, `job`, `type`, `slot_no`),
     CONSTRAINT `fk_set_acquirement_param_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 

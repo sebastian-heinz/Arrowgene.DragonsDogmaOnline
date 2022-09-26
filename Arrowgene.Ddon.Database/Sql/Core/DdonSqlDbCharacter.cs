@@ -281,7 +281,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Custom Skills
-            ExecuteReader(conn, SqlSelectCustomSkillsSetAcquirementParam,
+            ExecuteReader(conn, SqlSelectCustomSkills,
                 command => { AddParameter(command, "@character_id", character.Id); },
                 reader =>
                 {
@@ -292,7 +292,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Abilities
-            ExecuteReader(conn, SqlSelectAbilitiesSetAcquirementParam,
+            ExecuteReader(conn, SqlSelectAbilities,
                 command => { AddParameter(command, "@character_id", character.Id); },
                 reader =>
                 {

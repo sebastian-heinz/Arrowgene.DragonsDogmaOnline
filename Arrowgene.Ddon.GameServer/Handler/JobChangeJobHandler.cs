@@ -34,8 +34,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Union(client.Character.CharacterEquipDataListDictionary[client.Character.Job])
                 .SelectMany(x => x.Equips)
                 .ToList();
-            notice.SetAcquirementParamList = client.Character.CustomSkills;
-            notice.SetAbilityParamList = client.Character.Abilities;
+            notice.SetAcquirementParamList = client.Character.CustomSkills
+                .Where(x => x.Job == packet.Structure.JobId)
+                .ToList();
+            notice.SetAbilityParamList = client.Character.Abilities
+                .Where(x => x.Job == packet.Structure.JobId)
+                .ToList();
             notice.LearnNormalSkillParamList = client.Character.NormalSkills
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();

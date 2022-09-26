@@ -1,3 +1,4 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
@@ -21,8 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
              // TODO: Filter so only the current job skills are sent? Not sure
             S2CSkillGetCurrentSetSkillListRes res = new S2CSkillGetCurrentSetSkillListRes();
             res.NormalSkillList = client.Character.NormalSkills;
-            res.SetCustomSkillList = client.Character.CustomSkills;
-            res.SetAbilityList = client.Character.Abilities;
+            res.SetCustomSkillList = client.Character.CustomSkills.Where(x => x.Job == client.Character.Job).ToList(); // Doesn't seem to be necessary for skills
+            res.SetAbilityList = client.Character.Abilities.Where(x => x.Job == client.Character.Job).ToList(); // But it seems so for abilities
             client.Send(res);
         }
     }

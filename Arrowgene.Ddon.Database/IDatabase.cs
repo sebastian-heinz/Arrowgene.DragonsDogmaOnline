@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Database
 
         // Acquirements
         public bool ReplaceSetAcquirementParam(uint characterId, CDataSetAcquirementParam setAcquirementParam);
-        public bool DeleteSetAcquirementParam(uint characterId, JobId job, byte slotNo);
+        public bool DeleteSetAcquirementParam(uint characterId, JobId job, byte type, byte slotNo);
 
         // GameToken
         bool SetToken(GameToken token);

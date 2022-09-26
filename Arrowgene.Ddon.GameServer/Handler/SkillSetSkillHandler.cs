@@ -18,6 +18,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetSkillReq> packet)
         {
+            // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
+            
             CDataSetAcquirementParam skillSlot = client.Character.CustomSkills
                 .Where(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo)
                 .FirstOrDefault();
@@ -50,9 +52,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
                 {
                     CharacterId = client.Character.Id,
-                    SlotNo = skillSlot.SlotNo,
-                    AcquirementNo = skillSlot.AcquirementNo,
-                    AcquirementLv = skillSlot.AcquirementLv
+                    ContextAcquirementData = new CDataContextAcquirementData()
+                    {
+                        SlotNo = skillSlot.SlotNo,
+                        AcquirementNo = skillSlot.AcquirementNo,
+                        AcquirementLv = skillSlot.AcquirementLv
+                    }
                 });
             }
         }
