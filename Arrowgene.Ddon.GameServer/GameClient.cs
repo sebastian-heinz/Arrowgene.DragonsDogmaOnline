@@ -1,10 +1,7 @@
 ﻿using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Networking.Tcp;
 
 namespace Arrowgene.Ddon.GameServer
@@ -36,12 +33,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public Character Character { get; set; }
 
-        
-        
-        
         public PartyGroup PendingInvitedParty { get; set; } // Maybe its more clean to store this in the handlers ?
         public PartyGroup Party { get; set; }
-
-
     }
 }

@@ -47,7 +47,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Send party player context NTCs to the new member
             foreach (Character character in party.Characters)
             {
-                // pawn
                 CDataPartyMember partyMember = new CDataPartyMember();
                 partyMember.CharacterListElement.ServerId = character.Server.Id;
                 partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = character.Id;

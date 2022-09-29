@@ -1,6 +1,4 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -11,7 +9,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class PartyPartyInviteCharacterHandler : GameStructurePacketHandler<C2SPartyPartyInviteCharacterReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyInviteCharacterHandler));
+        private static readonly ServerLogger Logger =
+            LogProvider.Logger<ServerLogger>(typeof(PartyPartyInviteCharacterHandler));
 
         private static readonly ushort TimeoutSec = 30; // TODO: Move to config?
 
@@ -41,34 +40,38 @@ namespace Arrowgene.Ddon.GameServer.Handler
             GameClient targetClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
             if (targetClient == null)
             {
-                Logger.Error(client, $"Could not locate CharacterId:{packet.Structure.CharacterId} for party invitation");
+                Logger.Error(client,
+                    $"Could not locate CharacterId:{packet.Structure.CharacterId} for party invitation");
                 // TODO error response
                 return;
             }
-            
+
             // TODO: What would happen if two parties are trying to invite the same character?
             targetClient.PendingInvitedParty = client.Party;
 
             S2CPartyPartyInviteNtc ntc = new S2CPartyPartyInviteNtc();
-            ntc.TimeoutSec = TimeoutSec; // TODO: Implement timeout, send an NTC cancelling the party invite if the timeout is reached
+            ntc.TimeoutSec =
+                TimeoutSec; // TODO: Implement timeout, send an NTC cancelling the party invite if the timeout is reached
             ntc.PartyListInfo.PartyId = client.Party.Id;
             ntc.PartyListInfo.ServerId = Server.AssetRepository.ServerList[0].Id;
-            for(int i = 0; i < client.Party.Members.Count; i++)
+
+            foreach (Character character in client.Party.Characters)
             {
-                GameClient member = client.Party.Members[i];
                 CDataPartyMember partyMember = new CDataPartyMember();
                 partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = member.Character.Id;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = member.Character.FirstName;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = member.Character.LastName;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Job = member.Character.Job;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) member.Character.ActiveCharacterJobData.Lv;
-                partyMember.CharacterListElement.EntryJobBaseInfo.Job = member.Character.MatchingProfile.EntryJob;
-                partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) member.Character.MatchingProfile.EntryJobLevel;
-                partyMember.IsLeader = member.Character.Id == client.Party.Leader.Character.Id;
-                partyMember.MemberIndex = (byte) i;
+                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = character.Id;
+                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName =
+                    character.FirstName;
+                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = character.LastName;
+                partyMember.CharacterListElement.CurrentJobBaseInfo.Job = character.Job;
+                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte)character.ActiveCharacterJobData.Lv;
+                partyMember.CharacterListElement.EntryJobBaseInfo.Job = character.MatchingProfile.EntryJob;
+                partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte)character.MatchingProfile.EntryJobLevel;
+                partyMember.IsLeader = character.Id == client.Party.Leader.Character.Id;
+                partyMember.MemberIndex = (byte)client.Party.GetSlotIndex(character);
                 ntc.PartyListInfo.MemberList.Add(partyMember);
             }
+
             targetClient.Send(ntc);
 
             S2CPartyPartyInviteCharacterRes response = new S2CPartyPartyInviteCharacterRes();
@@ -78,12 +81,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataPartyMember otherPartyMember = new CDataPartyMember();
             otherPartyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
             otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = targetClient.Character.Id;
-            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = targetClient.Character.FirstName;
-            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = targetClient.Character.LastName;
+            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName =
+                targetClient.Character.FirstName;
+            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName =
+                targetClient.Character.LastName;
             otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Job = targetClient.Character.Job;
-            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) targetClient.Character.ActiveCharacterJobData.Lv;
-            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Job = targetClient.Character.MatchingProfile.EntryJob;
-            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte) targetClient.Character.MatchingProfile.EntryJobLevel;
+            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Level =
+                (byte)targetClient.Character.ActiveCharacterJobData.Lv;
+            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Job =
+                targetClient.Character.MatchingProfile.EntryJob;
+            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Level =
+                (byte)targetClient.Character.MatchingProfile.EntryJobLevel;
             otherPartyMember.IsLeader = targetClient.Character.Id == client.Party.Leader.Character.Id;
             otherPartyMember.MemberIndex = 0;
             response.Info.MemberList.Add(otherPartyMember);

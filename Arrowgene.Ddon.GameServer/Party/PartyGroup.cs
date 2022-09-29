@@ -299,6 +299,26 @@ namespace Arrowgene.Ddon.GameServer.Party
             return GetSlotIndex((object)pawn);
         }
 
+        /// <summary>
+        /// Intended to hold a free slot, but makes no guarantee whatsoever at the moment.
+        /// </summary>
+        /// <returns></returns>
+        public int RegisterSlot()
+        {
+            lock (_lock)
+            {
+                for (int i = 0; i < MaxPartyMembers; i++)
+                {
+                    if (_slots[i] == null)
+                    {
+                        return i;
+                    }
+                }
+            }
+
+            return InvalidSlotIndex;
+        }
+
         private object GetSlot(Character character)
         {
             lock (_lock)

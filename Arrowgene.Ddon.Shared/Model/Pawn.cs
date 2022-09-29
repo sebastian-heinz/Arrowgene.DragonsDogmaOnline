@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -15,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Model
             PawnReactionList = new List<CDataPawnReaction>();
             SpSkillList = new List<CDataSpSkill>();
         }
-        
+
         public uint OwnerCharacterId { get; set; }
         public Character Character { get; set; }
         public byte HmType { get; set; }
@@ -24,6 +22,5 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public List<CDataPawnReaction> PawnReactionList { get; set; }
         public List<CDataSpSkill> SpSkillList { get; set; }
-        
     }
 }
