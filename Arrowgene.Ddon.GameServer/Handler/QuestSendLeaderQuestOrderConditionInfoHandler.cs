@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 S2CQuestSendLeaderQuestOrderConditionInfoNtc ntc = new S2CQuestSendLeaderQuestOrderConditionInfoNtc() {
                     OrderConditionInfoList = packet.Structure.OrderConditionInfoList
                 };
-                foreach(GameClient member in client.Party.Members)
+                foreach(GameClient member in client.Party.Clients)
                 {
                     if(member.Character.Id != member.Party.Leader.Character.Id)
                     {

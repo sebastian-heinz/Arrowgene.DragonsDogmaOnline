@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 S2CQuestSendLeaderWaitOrderQuestListNtc ntc = new S2CQuestSendLeaderWaitOrderQuestListNtc() {
                     QuestScheduleIdList = packet.Structure.QuestScheduleIdList
                 };
-                foreach(GameClient member in client.Party.Members)
+                foreach(GameClient member in client.Party.Clients)
                 {
                     if(member.Character.Id != member.Party.Leader.Character.Id)
                     {

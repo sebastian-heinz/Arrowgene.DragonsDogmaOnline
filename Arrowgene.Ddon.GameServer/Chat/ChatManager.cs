@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
                     PartyGroup party = client.Party;
                     if (party != null)
                     {
-                        response.Recipients.AddRange(party.Members);
+                        response.Recipients.AddRange(party.Clients);
                     }
                     break;
                 default:

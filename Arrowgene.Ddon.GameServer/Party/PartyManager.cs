@@ -6,6 +6,9 @@ namespace Arrowgene.Ddon.GameServer.Party;
 
 public class PartyManager
 {
+    public const uint MaxNumParties = 100;
+    public const uint InvalidPartyId = 0;
+
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyManager));
 
     private readonly ConcurrentStack<uint> _idPool;
@@ -14,7 +17,7 @@ public class PartyManager
     public PartyManager()
     {
         _idPool = new ConcurrentStack<uint>();
-        for (uint i = 1; i < 100; i++)
+        for (uint i = 1; i < MaxNumParties + 1; i++)
         {
             _idPool.Push(i);
         }
@@ -32,6 +35,18 @@ public class PartyManager
         }
 
         return party;
+    }
+
+    public bool DisbandParty(uint partyId)
+    {
+        if (!_parties.TryRemove(partyId, out PartyGroup party))
+        {
+            Logger.Error($"Failed to remove partyId:{partyId} (!_parties.TryRemove(partyId, out PartyGroup party)");
+            return false;
+        }
+
+        _idPool.Push(party.Id);
+        return true;
     }
 
     public PartyGroup NewParty(GameClient creator)
