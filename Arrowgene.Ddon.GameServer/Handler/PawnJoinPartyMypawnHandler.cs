@@ -32,6 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             pawn.HmType = myPawnCsvData.HmType;
             pawn.PawnType = myPawnCsvData.PawnType;
+
+            pawn.Character.Server = Server.AssetRepository.ServerList[0];
+
             pawn.Character.Stage = pawn.Character.Stage;
             pawn.Character.StageNo = pawn.Character.StageNo;
             pawn.Character.X = pawn.Character.X;
