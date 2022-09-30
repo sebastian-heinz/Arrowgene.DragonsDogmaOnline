@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Linq;
 using System.Linq;
 using Arrowgene.Ddon.Server;
@@ -6,6 +7,8 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -19,14 +22,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetOffAbilityReq> packet)
         {
-            CDataSetAcquirementParam ability = client.Character.Abilities
-                .Where(skill => skill.Type == (byte) client.Character.Job && skill.SlotNo == packet.Structure.SlotNo)
-                .Single();
+            // TODO: Performance
+            List<Ability> newAbilities = new List<Ability>();
+            lock(client.Character.Abilities)
+            {
+                byte removedAbilitySlotNo = Byte.MaxValue;
+                for(int i=0; i<client.Character.Abilities.Count; i++)
+                {
+                    Ability ability = client.Character.Abilities[i];
+                    if(ability.EquippedToJob == client.Character.Job && ability.SlotNo == packet.Structure.SlotNo)
+                    {
+                        client.Character.Abilities.RemoveAt(i);
+                        removedAbilitySlotNo = ability.SlotNo;
+                        break;
+                    }
+                }
 
-            client.Character.Abilities.Remove(ability);
+                for(int i=0; i<client.Character.Abilities.Count; i++)
+                {
+                    Ability ability = client.Character.Abilities[i];
+                    if(ability.EquippedToJob == client.Character.Job && ability.SlotNo > removedAbilitySlotNo)
+                    {
+                        ability.SlotNo--;
+                        newAbilities.Add(ability);
+                    }
+                }
+            }
 
-            // TODO: Error handling
-            Database.DeleteSetAcquirementParam(client.Character.Id, ability.Job, (byte) client.Character.Job, packet.Structure.SlotNo);
+            Database.ReplaceEquippedAbilities(client.Character.Id, client.Character.Job, newAbilities);
 
             client.Send(new S2CSkillSetOffAbilityRes() {
                 SlotNo = packet.Structure.SlotNo

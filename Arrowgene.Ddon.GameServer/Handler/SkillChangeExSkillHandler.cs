@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -20,15 +21,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSkillChangeExSkillReq> packet)
         {
             // Update all equiped skills of the type to the chosen EX skill
-            IEnumerable<CDataSetAcquirementParam> skillSlots = client.Character.CustomSkills
-                .Where(skill => skill.Job == packet.Structure.Job && GetBaseSkillId(skill.AcquirementNo) == GetBaseSkillId(packet.Structure.SkillId));
+            IEnumerable<CustomSkill> skillSlots = client.Character.CustomSkills
+                .Where(skill => skill.Job == packet.Structure.Job && GetBaseSkillId(skill.SkillId) == GetBaseSkillId(packet.Structure.SkillId));
 
-            foreach (CDataSetAcquirementParam skillSlot in skillSlots)
+            foreach (CustomSkill skillSlot in skillSlots)
             {
-                skillSlot.AcquirementNo = packet.Structure.SkillId;
-                skillSlot.AcquirementLv = 1; // Must be 1 otherwise they do 0 damage
+                skillSlot.SkillId = packet.Structure.SkillId;
+                skillSlot.SkillLv = 1; // Must be 1 otherwise they do 0 damage
 
-                Database.ReplaceSetAcquirementParam(client.Character.Id, skillSlot);
+                Database.ReplaceEquippedCustomSkill(client.Character.Id, skillSlot);
 
                 // Inform party members of the change
                 if(packet.Structure.Job == client.Character.Job)
@@ -39,8 +40,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ContextAcquirementData = new CDataContextAcquirementData()
                         {
                             SlotNo = skillSlot.SlotNo,
-                            AcquirementNo = skillSlot.AcquirementNo,
-                            AcquirementLv = skillSlot.AcquirementLv
+                            AcquirementNo = skillSlot.SkillId,
+                            AcquirementLv = skillSlot.SkillLv
                         }
                     });
                 }
