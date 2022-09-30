@@ -19,7 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Send(new S2CSkillGetSetAbilityListRes() {
                 SetAcquierementParam = client.Character.Abilities
-                    .Where(ability => ability.Type == (byte) client.Character.Job)
+                    .Where(ability => ability.EquippedToJob == client.Character.Job)
+                    .Select(x => x.AsCDataSetAcquirementParam())
                     .ToList()
             });
         }

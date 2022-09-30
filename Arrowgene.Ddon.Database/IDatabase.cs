@@ -24,16 +24,26 @@ namespace Arrowgene.Ddon.Database
 
         // Character
         bool CreateCharacter(Character character);
-        public bool UpdateCharacter(Character character);
-        public Character SelectCharacter(uint characterId);
+        bool UpdateCharacter(Character character);
+        Character SelectCharacter(uint characterId);
         List<Character> SelectCharactersByAccountId(int accountId);
-        public bool DeleteCharacter(uint characterId);
+        bool DeleteCharacter(uint characterId);
 
-        public bool UpdateCharacterBaseInfo(Character character);
+        bool UpdateCharacterBaseInfo(Character character);
 
-        // Acquirements
-        public bool ReplaceSetAcquirementParam(uint characterId, CDataSetAcquirementParam setAcquirementParam);
-        public bool DeleteSetAcquirementParam(uint characterId, JobId job, byte type, byte slotNo);
+        // CustomSkills
+        bool InsertEquippedCustomSkill(uint characterId, CustomSkill skill);
+        bool ReplaceEquippedCustomSkill(uint characterId, CustomSkill skill);
+        bool UpdateEquippedCustomSkill(uint characterId, JobId oldJob, byte oldSlotNo, CustomSkill skill);
+        bool DeleteEquippedCustomSkill(uint characterId, JobId job, byte slotNo);
+
+        // Abilities
+        bool InsertEquippedAbility(uint characterId, Ability skill);
+        bool ReplaceEquippedAbility(uint characterId, Ability skill);
+        bool ReplaceEquippedAbilities(uint characterId, JobId equippedToJob, List<Ability> abilities);
+        bool UpdateEquippedAbility(uint characterId, JobId oldEquippedToJob, byte oldSlotNo, Ability skill);
+        bool DeleteEquippedAbility(uint characterId, JobId equippedToJob, byte slotNo);
+        bool DeleteEquippedAbilities(uint characterId, JobId equippedToJob);
 
         // GameToken
         bool SetToken(GameToken token);

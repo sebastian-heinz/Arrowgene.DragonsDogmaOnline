@@ -29,8 +29,8 @@ namespace Arrowgene.Ddon.Shared.Model
             MatchingProfile = new CDataMatchingProfile();
             ArisenProfile = new CDataArisenProfile();
             NormalSkills = new List<CDataNormalSkillParam>();
-            CustomSkills = new List<CDataSetAcquirementParam>();
-            Abilities = new List<CDataSetAcquirementParam>();
+            CustomSkills = new List<CustomSkill>();
+            Abilities = new List<Ability>();
         }
 
         public CDataCharacterJobData ActiveCharacterJobData
@@ -75,8 +75,8 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public OnlineStatus OnlineStatus;
         public List<CDataNormalSkillParam> NormalSkills { get; set; }
-        public List<CDataSetAcquirementParam> CustomSkills { get; set;}
-        public List<CDataSetAcquirementParam> Abilities { get; set; }
+        public List<CustomSkill> CustomSkills { get; set;}
+        public List<Ability> Abilities { get; set; }
         
         /// TODO combine into a location class ?
         public StageId Stage { get; set; }

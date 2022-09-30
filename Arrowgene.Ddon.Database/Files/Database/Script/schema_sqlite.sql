@@ -242,18 +242,6 @@ CREATE TABLE IF NOT EXISTS `ddon_equip_job_item`
     CONSTRAINT `fk_equip_job_item_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `ddon_set_acquirement_param`
-(
-    `character_id`   INTEGER NOT NULL,
-    `job`            TINYINT NOT NULL,
-    `type`           TINYINT NOT NULL,
-    `slot_no`        TINYINT NOT NULL,
-    `acquirement_no` INT     NOT NULL,
-    `acquirement_lv` TINYINT NOT NULL,
-    PRIMARY KEY (`character_id`, `job`, `type`, `slot_no`),
-    CONSTRAINT `fk_set_acquirement_param_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS `ddon_normal_skill_param`
 (
     `character_id` INTEGER NOT NULL,
@@ -263,6 +251,29 @@ CREATE TABLE IF NOT EXISTS `ddon_normal_skill_param`
     `pre_skill_no` INT     NOT NULL,
     PRIMARY KEY (`character_id`, `job`, `skill_no`),
     CONSTRAINT `fk_normal_skill_param_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `ddon_equipped_custom_skill`
+(
+    `character_id`   INTEGER NOT NULL,
+    `job`            TINYINT NOT NULL,
+    `slot_no`        TINYINT NOT NULL,
+    `skill_id` INT     NOT NULL,
+    `skill_lv` TINYINT NOT NULL,
+    PRIMARY KEY (`character_id`, `job`, `slot_no`),
+    CONSTRAINT `fk_set_acquirement_param_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `ddon_equipped_ability`
+(
+    `character_id`    INTEGER NOT NULL,
+    `equipped_to_job` TINYINT NOT NULL,
+    `job`             TINYINT NOT NULL,
+    `slot_no`         TINYINT NOT NULL,
+    `ability_id` INT     NOT NULL,
+    `ability_lv` TINYINT NOT NULL,
+    PRIMARY KEY (`character_id`, `equipped_to_job`, `slot_no`),
+    CONSTRAINT `fk_set_acquirement_param_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_game_token`

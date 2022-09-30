@@ -85,9 +85,11 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     .ToList();
                 notice.SetAcquirementParamList = client.Character.CustomSkills
                     .Where(x => x.Job == job)
+                    .Select(x => x.AsCDataSetAcquirementParam())
                     .ToList();
                 notice.SetAbilityParamList = client.Character.Abilities
-                    .Where(x => x.Job == job)
+                    .Where(x => x.EquippedToJob == job)
+                    .Select(x => x.AsCDataSetAcquirementParam())
                     .ToList();
                 notice.LearnNormalSkillParamList = client.Character.NormalSkills
                     .Select(x => new CDataLearnNormalSkillParam(x))

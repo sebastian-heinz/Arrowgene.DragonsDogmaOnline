@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -18,32 +19,37 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetAbilityReq> packet)
         {
+            if(packet.Structure.SlotNo == 0)
+            {
+                Logger.Error(client, $"Requesting to set a skill to slot 0\n{client.Character.Abilities}");
+            }
             // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
             
-            CDataSetAcquirementParam abilitySlot = client.Character.Abilities
-                .Where(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo)
+            Ability abilitySlot = client.Character.Abilities
+                .Where(ability => ability.EquippedToJob == client.Character.Job && ability.SlotNo == packet.Structure.SlotNo)
                 .FirstOrDefault();
             
             if(abilitySlot == null)
             {
-                abilitySlot = new CDataSetAcquirementParam()
+                abilitySlot = new Ability()
                 {
+                    EquippedToJob = client.Character.Job,
                     Job = packet.Structure.Job,
                     SlotNo = packet.Structure.SlotNo,
-                    Type = (byte) client.Character.Job
                 };
                 client.Character.Abilities.Add(abilitySlot);
             }
+            
+            abilitySlot.Job = packet.Structure.Job;
+            abilitySlot.AbilityId = packet.Structure.SkillId;
+            abilitySlot.AbilityLv = packet.Structure.SkillLv;
 
-            abilitySlot.AcquirementNo = packet.Structure.SkillId;
-            abilitySlot.AcquirementLv = packet.Structure.SkillLv;
-
-            Database.ReplaceSetAcquirementParam(client.Character.Id, abilitySlot);
+            Database.ReplaceEquippedAbility(client.Character.Id, abilitySlot);
 
             client.Send(new S2CSkillSetAbilityRes() {
                 SlotNo = abilitySlot.SlotNo,
-                AbilityId = abilitySlot.AcquirementNo,
-                AbilityLv = abilitySlot.AcquirementLv
+                AbilityId = abilitySlot.AbilityId,
+                AbilityLv = abilitySlot.AbilityLv
             });
 
             // Inform party members of the change
@@ -53,8 +59,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ContextAcquirementData = new CDataContextAcquirementData()
                 {
                     SlotNo = abilitySlot.SlotNo,
-                    AcquirementNo = abilitySlot.AcquirementNo,
-                    AcquirementLv = abilitySlot.AcquirementLv
+                    AcquirementNo = abilitySlot.AbilityId,
+                    AcquirementLv = abilitySlot.AbilityLv
                 }
             });
         }

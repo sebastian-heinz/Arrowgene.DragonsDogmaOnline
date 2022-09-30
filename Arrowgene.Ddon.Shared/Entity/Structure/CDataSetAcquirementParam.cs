@@ -5,17 +5,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataSetAcquirementParam
     {
-        public CDataSetAcquirementParam()
-        {
-            Job=0;
-            Type=0;
-            SlotNo=0;
-            AcquirementNo=0;
-            AcquirementLv=0;
-        }
-
         public JobId Job { get; set; }
-        public byte Type { get; set; } // We're abusing this field for abilities to store the job the ability is equipped to
+        public byte Type { get; set; }
         public byte SlotNo { get; set; }
         public uint AcquirementNo { get; set; }
         public byte AcquirementLv { get; set; }

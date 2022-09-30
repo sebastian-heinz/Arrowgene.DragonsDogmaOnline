@@ -804,107 +804,103 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     PreSkillNo = 0
                 }
             };
-            pawn.Character.CustomSkills = new List<CDataSetAcquirementParam>() {
+            pawn.Character.CustomSkills = new List<CustomSkill>() {
                 // Main Palette
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = myPawnCsvData.Job,
-                    Type = 0,
                     SlotNo = 1,
-                    AcquirementNo = myPawnCsvData.CustomSkillId1,
-                    AcquirementLv = myPawnCsvData.CustomSkillLv1
+                    SkillId = myPawnCsvData.CustomSkillId1,
+                    SkillLv = myPawnCsvData.CustomSkillLv1
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = myPawnCsvData.Job,
-                    Type = 0,
                     SlotNo = 2,
-                    AcquirementNo = myPawnCsvData.CustomSkillId2,
-                    AcquirementLv = myPawnCsvData.CustomSkillLv2
+                    SkillId = myPawnCsvData.CustomSkillId2,
+                    SkillLv = myPawnCsvData.CustomSkillLv2
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = myPawnCsvData.Job,
-                    Type = 0,
                     SlotNo = 3,
-                    AcquirementNo = myPawnCsvData.CustomSkillId3,
-                    AcquirementLv = myPawnCsvData.CustomSkillLv3
+                    SkillId = myPawnCsvData.CustomSkillId3,
+                    SkillLv = myPawnCsvData.CustomSkillLv3
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = myPawnCsvData.Job,
-                    Type = 0,
                     SlotNo = 4,
-                    AcquirementNo = myPawnCsvData.CustomSkillId4,
-                    AcquirementLv = myPawnCsvData.CustomSkillLv4
+                    SkillId = myPawnCsvData.CustomSkillId4,
+                    SkillLv = myPawnCsvData.CustomSkillLv4
                 }
             };
-            pawn.Character.Abilities = new List<CDataSetAcquirementParam>() {
-                new CDataSetAcquirementParam() {
+            pawn.Character.Abilities = new List<Ability>() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 1,
-                    AcquirementNo = myPawnCsvData.AbilityId1,
-                    AcquirementLv = myPawnCsvData.AbilityLv1
+                    AbilityId = myPawnCsvData.AbilityId1,
+                    AbilityLv = myPawnCsvData.AbilityLv1
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 2,
-                    AcquirementNo = myPawnCsvData.AbilityId2,
-                    AcquirementLv = myPawnCsvData.AbilityLv2
+                    AbilityId = myPawnCsvData.AbilityId2,
+                    AbilityLv = myPawnCsvData.AbilityLv2
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 3,
-                    AcquirementNo = myPawnCsvData.AbilityId3,
-                    AcquirementLv = myPawnCsvData.AbilityLv3
+                    AbilityId = myPawnCsvData.AbilityId3,
+                    AbilityLv = myPawnCsvData.AbilityLv3
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 4,
-                    AcquirementNo = myPawnCsvData.AbilityId4,
-                    AcquirementLv = myPawnCsvData.AbilityLv4
+                    AbilityId = myPawnCsvData.AbilityId4,
+                    AbilityLv = myPawnCsvData.AbilityLv4
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 5,
-                    AcquirementNo = myPawnCsvData.AbilityId5,
-                    AcquirementLv = myPawnCsvData.AbilityLv5
+                    AbilityId = myPawnCsvData.AbilityId5,
+                    AbilityLv = myPawnCsvData.AbilityLv5
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 6,
-                    AcquirementNo = myPawnCsvData.AbilityId6,
-                    AcquirementLv = myPawnCsvData.AbilityLv6
+                    AbilityId = myPawnCsvData.AbilityId6,
+                    AbilityLv = myPawnCsvData.AbilityLv6
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 7,
-                    AcquirementNo = myPawnCsvData.AbilityId7,
-                    AcquirementLv = myPawnCsvData.AbilityLv7
+                    AbilityId = myPawnCsvData.AbilityId7,
+                    AbilityLv = myPawnCsvData.AbilityLv7
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 8,
-                    AcquirementNo = myPawnCsvData.AbilityId8,
-                    AcquirementLv = myPawnCsvData.AbilityLv8
+                    AbilityId = myPawnCsvData.AbilityId8,
+                    AbilityLv = myPawnCsvData.AbilityLv8
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 9,
-                    AcquirementNo = myPawnCsvData.AbilityId9,
-                    AcquirementLv = myPawnCsvData.AbilityLv9
+                    AbilityId = myPawnCsvData.AbilityId9,
+                    AbilityLv = myPawnCsvData.AbilityLv9
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = myPawnCsvData.Job,
                     Job = 0,
-                    Type = 0,
                     SlotNo = 10,
-                    AcquirementNo = myPawnCsvData.AbilityId10,
-                    AcquirementLv = myPawnCsvData.AbilityLv10
+                    AbilityId = myPawnCsvData.AbilityId10,
+                    AbilityLv = myPawnCsvData.AbilityLv10
                 }
             };
             pawn.PawnReactionList = new List<CDataPawnReaction>()
