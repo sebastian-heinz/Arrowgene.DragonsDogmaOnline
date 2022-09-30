@@ -34,8 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Party
             Id = id;
             _leader = creator;
             _host = creator;
-            _clients.Add(creator);
-            creator.Party = this;
+
+            Join(creator);
 
             // TODO 
             Contexts = new Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>>();
