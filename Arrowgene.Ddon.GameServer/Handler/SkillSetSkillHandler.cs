@@ -35,14 +35,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     SkillLv = packet.Structure.SkillLv
                 };
                 client.Character.CustomSkills.Add(skillSlot);
-                Database.InsertEquippedCustomSkill(client.Character.Id, skillSlot);
             }
             else
             {
                 skillSlot.SkillId = packet.Structure.SkillId;
                 skillSlot.SkillLv = packet.Structure.SkillLv;
-                Database.UpdateEquippedCustomSkill(client.Character.Id, skillSlot.Job, skillSlot.SlotNo, skillSlot);
             }
+
+            Database.ReplaceEquippedCustomSkill(client.Character.Id, skillSlot);
 
             client.Send(new S2CSkillSetSkillRes() {
                 Job = skillSlot.Job,
