@@ -21,7 +21,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure {
             {
                 S2CSetCommunicationShortcutRes obj = new S2CSetCommunicationShortcutRes();
                 ReadServerResponse(buffer, obj);
-
                 return obj;
             }
         }

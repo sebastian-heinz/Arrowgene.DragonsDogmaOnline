@@ -301,6 +301,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.Abilities.Add(ReadAbility(reader));
                     }
                 });
+
+            // Shortcuts
+            ExecuteReader(conn, SqlSelectShortcuts,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.ShortCutList.Add(ReadShortCut(reader));
+                    }
+                });
+
+            // CommunicationShortcuts
+            ExecuteReader(conn, SqlSelectCommunicationShortcuts,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.CommunicationShortCutList.Add(ReadCommunicationShortCut(reader));
+                    }
+                });
         }
 
         private void StoreCharacterData(TCon conn, Character character)
@@ -373,6 +395,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ExecuteNonQuery(conn, SqlReplaceEquippedAbility, command =>
                 {
                     AddParameter(command, character.Id, ability);
+                });
+            }
+
+            foreach(CDataShortCut shortcut in character.ShortCutList)
+            {
+                ExecuteNonQuery(conn, SqlReplaceShortcut, command =>
+                {
+                    AddParameter(command, character.Id, shortcut);
+                });
+            }
+
+            foreach(CDataCommunicationShortCut communicationShortcut in character.CommunicationShortCutList)
+            {
+                ExecuteNonQuery(conn, SqlReplaceCommunicationShortcut, command =>
+                {
+                    AddParameter(command, character.Id, communicationShortcut);
                 });
             }
         }
