@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterReleaseElement.Serializer());
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommonU8.Serializer());
-            Create(new CDataCommunicationShortCutSerializer());
+            Create(new CDataCommunicationShortCut.Serializer());
             Create(new CDataCommunityCharacterBaseInfo.Serializer());
             Create(new CDataContextAcquirementData.Serializer());
             Create(new CDataContextBase.Serializer());
@@ -129,7 +129,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataQuestTalkInfo.Serializer());
             Create(new CDataRewardItem.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
-            Create(new CDataShortCutSerializer());
+            Create(new CDataShortCut.Serializer());
             Create(new CDataSkillLevelParam.Serializer());
             Create(new CDataSkillParam.Serializer());
             Create(new CDataStageAttribute.Serializer());

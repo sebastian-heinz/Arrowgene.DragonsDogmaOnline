@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             if(packet.Structure.SlotNo == 0)
             {
-                Logger.Error(client, $"Requesting to set a skill to slot 0\n{client.Character.Abilities}");
+                Logger.Error(client, $"Requesting to set an ability to slot 0\n{client.Character.Abilities}");
             }
             // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
             

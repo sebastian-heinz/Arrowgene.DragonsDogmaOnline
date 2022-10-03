@@ -45,6 +45,18 @@ namespace Arrowgene.Ddon.Database
         bool DeleteEquippedAbility(uint characterId, JobId equippedToJob, byte slotNo);
         bool DeleteEquippedAbilities(uint characterId, JobId equippedToJob);
 
+        // Shortcut
+        bool InsertShortcut(uint characterId, CDataShortCut shortcut);
+        bool ReplaceShortcut(uint characterId, CDataShortCut shortcut);
+        bool UpdateShortcut(uint characterId, uint oldShortcutId, CDataShortCut updatedShortcut);
+        bool DeleteShortcut(uint characterId, uint shortcutId);
+
+        // CommunicationShortcut
+        bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+        bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+        bool UpdateCommunicationShortcut(uint characterId, uint oldId, CDataCommunicationShortCut updatedCommunicationShortcut);
+        bool DeleteCommunicationShortcut(uint characterId, uint id);
+
         // GameToken
         bool SetToken(GameToken token);
         GameToken SelectTokenByAccountId(int accountId);
