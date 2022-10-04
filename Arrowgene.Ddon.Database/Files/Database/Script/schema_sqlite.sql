@@ -285,7 +285,7 @@ CREATE TABLE IF NOT EXISTS `ddon_shortcut`
     `u32_data` INTEGER NOT NULL,
     `f32_data` INTEGER NOT NULL,
     `exex_type` TINYINT NOT NULL,
-    PRIMARY KEY (`character_id`, `shortcut_id`),
+    PRIMARY KEY (`character_id`, `page_no`, `button_no`),
     CONSTRAINT `fk_shortcut_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `ddon_communication_shortcut`
     `type` TINYINT NOT NULL,
     `category` TINYINT NOT NULL,
     `id` INTEGER NOT NULL,
-    PRIMARY KEY (`character_id`, `id`),
+    PRIMARY KEY (`character_id`, `page_no`, `button_no`),
     CONSTRAINT `fk_communication_shortcut_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
