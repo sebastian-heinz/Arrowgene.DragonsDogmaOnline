@@ -83,8 +83,14 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     .Union(client.Character.CharacterEquipDataListDictionary[client.Character.Job])
                     .SelectMany(x => x.Equips)
                     .ToList();
-                notice.SetAcquirementParamList = client.Character.CustomSkills;
-                notice.SetAbilityParamList = client.Character.Abilities;
+                notice.SetAcquirementParamList = client.Character.CustomSkills
+                    .Where(x => x.Job == job)
+                    .Select(x => x.AsCDataSetAcquirementParam())
+                    .ToList();
+                notice.SetAbilityParamList = client.Character.Abilities
+                    .Where(x => x.EquippedToJob == job)
+                    .Select(x => x.AsCDataSetAcquirementParam())
+                    .ToList();
                 notice.LearnNormalSkillParamList = client.Character.NormalSkills
                     .Select(x => new CDataLearnNormalSkillParam(x))
                     .ToList();

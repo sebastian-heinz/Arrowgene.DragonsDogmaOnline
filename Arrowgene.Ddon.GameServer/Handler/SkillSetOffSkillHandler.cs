@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.CustomSkills.RemoveAll(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo);
 
             // TODO: Error handling
-            Database.DeleteSetAcquirementParam(client.Character.Id, packet.Structure.Job, packet.Structure.SlotNo);
+            Database.DeleteEquippedCustomSkill(client.Character.Id, packet.Structure.Job, packet.Structure.SlotNo);
 
             client.Send(new S2CSkillSetOffSkillRes() {
                 Job = packet.Structure.Job,

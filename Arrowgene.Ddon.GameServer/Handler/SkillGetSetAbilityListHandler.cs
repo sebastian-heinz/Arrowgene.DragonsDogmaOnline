@@ -1,3 +1,4 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -18,6 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Send(new S2CSkillGetSetAbilityListRes() {
                 SetAcquierementParam = client.Character.Abilities
+                    .Where(ability => ability.EquippedToJob == client.Character.Job)
+                    .Select(x => x.AsCDataSetAcquirementParam())
+                    .ToList()
             });
         }
     }

@@ -34,14 +34,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Union(client.Character.CharacterEquipDataListDictionary[client.Character.Job])
                 .SelectMany(x => x.Equips)
                 .ToList();
-            notice.SetAcquirementParamList = client.Character.CustomSkills;
-            notice.SetAbilityParamList = client.Character.Abilities;
+            notice.SetAcquirementParamList = client.Character.CustomSkills
+                .Where(x => x.Job == packet.Structure.JobId)
+                .Select(x => x.AsCDataSetAcquirementParam())
+                .ToList();
+            notice.SetAbilityParamList = client.Character.Abilities
+                .Where(x => x.EquippedToJob == packet.Structure.JobId)
+                .Select(x => x.AsCDataSetAcquirementParam())
+                .ToList();
             notice.LearnNormalSkillParamList = client.Character.NormalSkills
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();
             notice.EquipJobItemList = client.Character.CharacterEquipJobItemListDictionary[client.Character.Job];
 
-            foreach(GameClient otherClient in Server.Clients)
+            foreach(GameClient otherClient in Server.ClientLookup.GetAll())
             {
                 otherClient.Send(notice); // This does the change itself (it does work)
             }
@@ -55,8 +61,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CJobChangeJobRes response = new S2CJobChangeJobRes();
             response.CharacterJobData = client.Character.ActiveCharacterJobData;
             response.CharacterEquipList = getCharacterEquipListRes.CharacterEquipList;
-            notice.SetAcquirementParamList = client.Character.CustomSkills;
-            notice.SetAbilityParamList = client.Character.Abilities;
+            notice.SetAcquirementParamList = client.Character.CustomSkills
+                .Select(x => x.AsCDataSetAcquirementParam())
+                .ToList();
+            notice.SetAbilityParamList = client.Character.Abilities
+                .Select(x => x.AsCDataSetAcquirementParam())
+                .ToList();
             notice.LearnNormalSkillParamList = client.Character.NormalSkills
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();

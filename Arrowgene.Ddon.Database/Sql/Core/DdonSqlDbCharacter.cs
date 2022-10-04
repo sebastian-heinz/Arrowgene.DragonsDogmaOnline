@@ -281,24 +281,46 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Custom Skills
-            ExecuteReader(conn, SqlSelectCustomSkillsSetAcquirementParam,
+            ExecuteReader(conn, SqlSelectEquippedCustomSkills,
                 command => { AddParameter(command, "@character_id", character.Id); },
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        character.CustomSkills.Add(ReadSetAcquirementParam(reader));
+                        character.CustomSkills.Add(ReadCustomSkill(reader));
                     }
                 });
 
             // Abilities
-            ExecuteReader(conn, SqlSelectAbilitiesSetAcquirementParam,
+            ExecuteReader(conn, SqlSelectEquippedAbilities,
                 command => { AddParameter(command, "@character_id", character.Id); },
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        character.Abilities.Add(ReadSetAcquirementParam(reader));
+                        character.Abilities.Add(ReadAbility(reader));
+                    }
+                });
+
+            // Shortcuts
+            ExecuteReader(conn, SqlSelectShortcuts,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.ShortCutList.Add(ReadShortCut(reader));
+                    }
+                });
+
+            // CommunicationShortcuts
+            ExecuteReader(conn, SqlSelectCommunicationShortcuts,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.CommunicationShortCutList.Add(ReadCommunicationShortCut(reader));
                     }
                 });
         }
@@ -360,19 +382,35 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
             }
 
-            foreach(CDataSetAcquirementParam setAcquirementParam in character.CustomSkills)
+            foreach(CustomSkill skill in character.CustomSkills)
             {
-                ExecuteNonQuery(conn, SqlReplaceSetAcquirementParam, command =>
+                ExecuteNonQuery(conn, SqlReplaceEquippedCustomSkill, command =>
                 {
-                    AddParameter(command, character.Id, setAcquirementParam);
+                    AddParameter(command, character.Id, skill);
                 });
             }
 
-            foreach(CDataSetAcquirementParam setAcquirementParam in character.Abilities)
+            foreach(Ability ability in character.Abilities)
             {
-                ExecuteNonQuery(conn, SqlReplaceSetAcquirementParam, command =>
+                ExecuteNonQuery(conn, SqlReplaceEquippedAbility, command =>
                 {
-                    AddParameter(command, character.Id, setAcquirementParam);
+                    AddParameter(command, character.Id, ability);
+                });
+            }
+
+            foreach(CDataShortCut shortcut in character.ShortCutList)
+            {
+                ExecuteNonQuery(conn, SqlReplaceShortcut, command =>
+                {
+                    AddParameter(command, character.Id, shortcut);
+                });
+            }
+
+            foreach(CDataCommunicationShortCut communicationShortcut in character.CommunicationShortCutList)
+            {
+                ExecuteNonQuery(conn, SqlReplaceCommunicationShortcut, command =>
+                {
+                    AddParameter(command, character.Id, communicationShortcut);
                 });
             }
         }

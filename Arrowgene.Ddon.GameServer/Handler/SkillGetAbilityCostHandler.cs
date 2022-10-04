@@ -16,7 +16,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetAbilityCostReq> packet)
         {
-            client.Send(new S2CSkillGetAbilityCostRes());
+            client.Send(new S2CSkillGetAbilityCostRes()
+            {
+                CostMax = 100
+            });
         }
     }
 }

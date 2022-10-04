@@ -960,136 +960,128 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     PreSkillNo = 0
                 }
             }).ToList();
-            character.CustomSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CDataSetAcquirementParam>() {
+            character.CustomSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CustomSkill>() {
                 // Main Palette
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = arisenPreset.Job,
-                    Type = 0,
                     SlotNo = 1,
-                    AcquirementNo = arisenPreset.Cs1MpId,
-                    AcquirementLv = arisenPreset.Cs1MpLv
+                    SkillId = arisenPreset.Cs1MpId,
+                    SkillLv = arisenPreset.Cs1MpLv
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = arisenPreset.Job,
-                    Type = 0,
                     SlotNo = 2,
-                    AcquirementNo = arisenPreset.Cs2MpId,
-                    AcquirementLv = arisenPreset.Cs2MpLv
+                    SkillId = arisenPreset.Cs2MpId,
+                    SkillLv = arisenPreset.Cs2MpLv
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = arisenPreset.Job,
-                    Type = 0,
                     SlotNo = 3,
-                    AcquirementNo = arisenPreset.Cs3MpId,
-                    AcquirementLv = arisenPreset.Cs3MpLv
+                    SkillId = arisenPreset.Cs3MpId,
+                    SkillLv = arisenPreset.Cs3MpLv
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = arisenPreset.Job,
-                    Type = 0,
                     SlotNo = 4,
-                    AcquirementNo = arisenPreset.Cs4MpId,
-                    AcquirementLv = arisenPreset.Cs4MpLv
+                    SkillId = arisenPreset.Cs4MpId,
+                    SkillLv = arisenPreset.Cs4MpLv
                 },
                 // Sub Palette
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = arisenPreset.Job,
-                    Type = 0,
                     SlotNo = (1<<4) | 1,
-                    AcquirementNo = arisenPreset.Cs1SpId,
-                    AcquirementLv = arisenPreset.Cs1SpLv
+                    SkillId = arisenPreset.Cs1SpId,
+                    SkillLv = arisenPreset.Cs1SpLv
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = arisenPreset.Job,
-                    Type = 0,
                     SlotNo = (1<<4) | 2,
-                    AcquirementNo = arisenPreset.Cs2SpId,
-                    AcquirementLv = arisenPreset.Cs2SpLv
+                    SkillId = arisenPreset.Cs2SpId,
+                    SkillLv = arisenPreset.Cs2SpLv
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = arisenPreset.Job,
-                    Type = 0,
                     SlotNo = (1<<4) | 3,
-                    AcquirementNo = arisenPreset.Cs3SpId,
-                    AcquirementLv = arisenPreset.Cs3SpLv
+                    SkillId = arisenPreset.Cs3SpId,
+                    SkillLv = arisenPreset.Cs3SpLv
                 },
-                new CDataSetAcquirementParam() {
+                new CustomSkill() {
                     Job = arisenPreset.Job,
-                    Type = 0,
                     SlotNo = (1<<4) | 4,
-                    AcquirementNo = arisenPreset.Cs4SpId,
-                    AcquirementLv = arisenPreset.Cs4SpLv
+                    SkillId = arisenPreset.Cs4SpId,
+                    SkillLv = arisenPreset.Cs4SpLv
                 }
             }).ToList();
-            character.Abilities = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CDataSetAcquirementParam>() {
-                new CDataSetAcquirementParam() {
+            character.Abilities = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<Ability>() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab1Jb,
-                    Type = 0,
                     SlotNo = 1,
-                    AcquirementNo = arisenPreset.Ab1Id,
-                    AcquirementLv = arisenPreset.Ab1Lv
+                    AbilityId = arisenPreset.Ab1Id,
+                    AbilityLv = arisenPreset.Ab1Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab2Jb,
-                    Type = 0,
                     SlotNo = 2,
-                    AcquirementNo = arisenPreset.Ab2Id,
-                    AcquirementLv = arisenPreset.Ab2Lv
+                    AbilityId = arisenPreset.Ab2Id,
+                    AbilityLv = arisenPreset.Ab2Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab3Jb,
-                    Type = 0,
                     SlotNo = 3,
-                    AcquirementNo = arisenPreset.Ab3Id,
-                    AcquirementLv = arisenPreset.Ab3Lv
+                    AbilityId = arisenPreset.Ab3Id,
+                    AbilityLv = arisenPreset.Ab3Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab4Jb,
-                    Type = 0,
                     SlotNo = 4,
-                    AcquirementNo = arisenPreset.Ab4Id,
-                    AcquirementLv = arisenPreset.Ab4Lv
+                    AbilityId = arisenPreset.Ab4Id,
+                    AbilityLv = arisenPreset.Ab4Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab5Jb,
-                    Type = 0,
                     SlotNo = 5,
-                    AcquirementNo = arisenPreset.Ab5Id,
-                    AcquirementLv = arisenPreset.Ab5Lv
+                    AbilityId = arisenPreset.Ab5Id,
+                    AbilityLv = arisenPreset.Ab5Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab6Jb,
-                    Type = 0,
                     SlotNo = 6,
-                    AcquirementNo = arisenPreset.Ab6Id,
-                    AcquirementLv = arisenPreset.Ab6Lv
+                    AbilityId = arisenPreset.Ab6Id,
+                    AbilityLv = arisenPreset.Ab6Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab7Jb,
-                    Type = 0,
                     SlotNo = 7,
-                    AcquirementNo = arisenPreset.Ab7Id,
-                    AcquirementLv = arisenPreset.Ab7Lv
+                    AbilityId = arisenPreset.Ab7Id,
+                    AbilityLv = arisenPreset.Ab7Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab8Jb,
-                    Type = 0,
                     SlotNo = 8,
-                    AcquirementNo = arisenPreset.Ab8Id,
-                    AcquirementLv = arisenPreset.Ab8Lv
+                    AbilityId = arisenPreset.Ab8Id,
+                    AbilityLv = arisenPreset.Ab8Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab9Jb,
-                    Type = 0,
                     SlotNo = 9,
-                    AcquirementNo = arisenPreset.Ab9Id,
-                    AcquirementLv = arisenPreset.Ab9Lv
+                    AbilityId = arisenPreset.Ab9Id,
+                    AbilityLv = arisenPreset.Ab9Lv
                 },
-                new CDataSetAcquirementParam() {
+                new Ability() {
+                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab10Jb,
-                    Type = 0,
                     SlotNo = 10,
-                    AcquirementNo = arisenPreset.Ab10Id,
-                    AcquirementLv = arisenPreset.Ab10Lv
+                    AbilityId = arisenPreset.Ab10Id,
+                    AbilityLv = arisenPreset.Ab10Lv
                 }
             }).ToList();
 

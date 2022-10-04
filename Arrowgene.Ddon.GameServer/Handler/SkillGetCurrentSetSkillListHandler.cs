@@ -1,3 +1,4 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
@@ -18,11 +19,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetCurrentSetSkillListReq> packet)
         {
-             // TODO: Filter so only the current job skills are sent? Not sure
+             // TODO: Check if its necessary to filter so only the current job skills are sent
             S2CSkillGetCurrentSetSkillListRes res = new S2CSkillGetCurrentSetSkillListRes();
             res.NormalSkillList = client.Character.NormalSkills;
-            res.SetCustomSkillList = client.Character.CustomSkills;
-            res.SetAbilityList = client.Character.Abilities;
+            res.SetCustomSkillList = client.Character.CustomSkills 
+                .Where(x => x.Job == client.Character.Job)
+                .Select(x => x.AsCDataSetAcquirementParam())
+                .ToList(); 
+            res.SetAbilityList = client.Character.Abilities
+                .Where(x => x.EquippedToJob == client.Character.Job)
+                .Select(x => x.AsCDataSetAcquirementParam())
+                .ToList();
             client.Send(res);
         }
     }

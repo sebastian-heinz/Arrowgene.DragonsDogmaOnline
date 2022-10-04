@@ -56,8 +56,9 @@ Run the `Ddon.Cli`-Project
 # Server
 With default configuration the server will listen on following ports:
 ```
-80 - http/download
-52100 - tcp/server
+52099 - http/download
+52000 - tcp/gameserver
+52100 - tcp/loginserver
 ```
 ensure that no other local services listen on these ports.
 

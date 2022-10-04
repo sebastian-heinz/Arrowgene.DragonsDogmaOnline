@@ -30,9 +30,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 .Select(x => new CDataContextNormalSkillData(x)).ToList();
             ContextSkillList = character.CustomSkills
                 .Where(x => x.Job == character.Job)
-                .Select(x => new CDataContextAcquirementData(x)).ToList();
+                .Select(x => x.AsCDataContextAcquirementData()).ToList();
             ContextAbilityList = character.Abilities
-                .Select(x => new CDataContextAcquirementData(x)).ToList();
+                .Where(x => x.Job == character.Job)
+                .Select(x => x.AsCDataContextAcquirementData()).ToList();
             Unk0List=new List<CDataContextBaseUnk0>(); // TODO: Figure this one out
         }
 
