@@ -14,6 +14,9 @@ namespace Arrowgene.Ddon.Shared.Model
             SpSkillList = new List<CDataSpSkill>();
         }
 
+        // TODO for now use character id
+        public uint Id => Character.Id;
+
         public uint OwnerCharacterId { get; set; }
         public Character Character { get; set; }
         public byte HmType { get; set; }

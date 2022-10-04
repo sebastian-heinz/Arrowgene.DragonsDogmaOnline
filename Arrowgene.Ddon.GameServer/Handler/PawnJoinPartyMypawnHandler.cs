@@ -1154,50 +1154,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
 
-            client.Party.Join(pawn);
+            PawnPartyMember partyMember = client.Party.Join(pawn);
+            if (partyMember == null)
+            {
+                Logger.Error(client,
+                    $"could not join pawn");
+                // TODO error response
+                return;
+            }
 
 
-            CDataPartyMember partyMember = new CDataPartyMember();
-            partyMember.CharacterListElement.ServerId = pawn.Character.Server.Id;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = pawn.Character.Id;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName =
-                pawn.Character.FirstName;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName =
-                pawn.Character.LastName;
-            partyMember.CharacterListElement.CurrentJobBaseInfo.Job = pawn.Character.Job;
-            partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte)pawn.Character.ActiveCharacterJobData.Lv;
-            partyMember.CharacterListElement.OnlineStatus = pawn.Character.OnlineStatus;
-            partyMember.CharacterListElement.unk2 = 1;
-            partyMember.MemberType = client.Party.GetMemberType(pawn.Character);
-            partyMember.MemberIndex = client.Party.GetSlotIndex(pawn.Character);
-            partyMember.PawnId = pawn.Character.Id; // TODO pawn.ID from DB 
-            partyMember.IsLeader = pawn.Character.Id == client.Party.Leader.Character.Id;
-            partyMember.IsPawn = true;
-            partyMember.IsPlayEntry = false;
-            partyMember.JoinState = JoinState.On;
-            partyMember.AnyValueList = new byte[] { 0x0, 0xDA, 0x5D, 0x4E, 0x0, 0x1, 0x0, 0x2 }; // Taken from pcaps
-            partyMember.SessionStatus = 0;
+            client.Party.SendToAll(new S2CPawnJoinPartyPawnNtc() { PartyMember = partyMember.GetCDataPartyMember() });
 
-            client.Party.SendToAll(new S2CPawnJoinPartyPawnNtc() { PartyMember = partyMember });
-
-
-            S2CContextGetPartyMypawnContextNtc mypawnContextNtc = new S2CContextGetPartyMypawnContextNtc();
-            mypawnContextNtc.PawnId = pawn.Character.Id;
-            mypawnContextNtc.Context = new CDataPartyContextPawn();
-            mypawnContextNtc.Context.Base.MemberIndex = (byte)client.Party.GetSlotIndex(pawn.Character);
-            mypawnContextNtc.Context.Base = new CDataContextBase(pawn.Character);
-            mypawnContextNtc.Context.Base.PawnId = pawn.Character.Id; // TODO pawnId
-            mypawnContextNtc.Context.Base.CharacterId = pawn.Character.Id; //pawn.Owner.Character.Id;
-            mypawnContextNtc.Context.Base.PawnType = pawn.PawnType;
-            mypawnContextNtc.Context.Base.HmType = pawn.HmType;
-            mypawnContextNtc.Context.PlayerInfo = new CDataContextPlayerInfo(pawn.Character);
-            mypawnContextNtc.Context.PawnReactionList = pawn.PawnReactionList;
-            mypawnContextNtc.Context.Unk0 = new byte[64];
-            mypawnContextNtc.Context.SpSkillList = pawn.SpSkillList;
-            mypawnContextNtc.Context.ResistInfo = new CDataContextResist(pawn.Character);
-            mypawnContextNtc.Context.EditInfo = pawn.Character.EditInfo;
-
-            client.Party.SendToAll(mypawnContextNtc);
+            
+            client.Party.SendToAll(partyMember.GetS2CContextGetParty_ContextNtc());
 
 
             S2CPawnJoinPartyMypawnRes res = new S2CPawnJoinPartyMypawnRes();

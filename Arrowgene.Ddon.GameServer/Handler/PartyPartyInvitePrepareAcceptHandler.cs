@@ -1,3 +1,4 @@
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -18,37 +19,57 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInvitePrepareAcceptReq> packet)
         {
-            PartyGroup newParty = client.PendingInvitedParty; // In case some other thread changes the value
-            client.PendingInvitedParty = null;
 
+            C2SPartyPartyInvitePrepareAcceptReq req = packet.Structure;
+
+            IBuffer buf = packet.AsBuffer();
+            Logger.Hex(packet.Data);
+            
+            // client == invited client
+            PartyGroup party = Server.PartyManager.GetInvitedParty(client);
+            if (party == null)
+            {
+                Logger.Error(client, "failed to find invited party");
+                // TODO error resp
+                return;
+            }
+
+            PlayerPartyMember partyMember = party.Accept(client);
+            if (partyMember == null)
+            {
+                Logger.Error(client, "failed to accept invite");
+                // TODO error resp
+                return;
+            }
+            
+            Logger.Info(client, $"Accepted Invite for PartyId:{party.Id}");
+
+            
             client.Send(new S2CPartyPartyInvitePrepareAcceptRes());
 
-            byte potentialFreeSlot = (byte)newParty.RegisterSlot();
 
             // The invited player doesn't move to the new party leader's server until this packet is sent
             // Why this wasn't included in the Response packet directly beats me
             S2CPartyPartyInviteAcceptNtc inviteAcceptNtc = new S2CPartyPartyInviteAcceptNtc();
             inviteAcceptNtc.ServerId =
                 Server.AssetRepository.ServerList[0].Id; // TODO: Get from config, or from DdonGameServer instance
-            inviteAcceptNtc.PartyId = newParty.Id;
-            inviteAcceptNtc.StageId = newParty.Leader.Character.Stage.Id;
+            inviteAcceptNtc.PartyId = party.Id;
+            inviteAcceptNtc.StageId = party.Leader.Character.Stage.Id;
             inviteAcceptNtc.PositionId = 0; // TODO: Figure what this is about
-            inviteAcceptNtc.MemberIndex = potentialFreeSlot;
+            inviteAcceptNtc.MemberIndex = (byte)partyMember.MemberIndex;
             client.Send(inviteAcceptNtc);
 
             // Notify party leader of the accepted invitation
             S2CPartyPartyInviteJoinMemberNtc inviteJoinMemberNtc = new S2CPartyPartyInviteJoinMemberNtc();
             CDataPartyMemberMinimum newMemberMinimum = new CDataPartyMemberMinimum();
-            newMemberMinimum.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
-            newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.FirstName;
-            newMemberMinimum.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.LastName;
-            newMemberMinimum.CommunityCharacterBaseInfo.ClanName = "SEX";
-            newMemberMinimum.IsLeader = client == newParty.Leader; // This could probably be just always false
-            newMemberMinimum.MemberIndex = potentialFreeSlot;
-            newMemberMinimum.MemberType = 1;
-            newMemberMinimum.PawnId = 0;
+            GameStructure.CDataCommunityCharacterBaseInfo(newMemberMinimum.CommunityCharacterBaseInfo,
+                partyMember.Character);
+            newMemberMinimum.IsLeader = partyMember.IsLeader;
+            newMemberMinimum.MemberIndex = partyMember.MemberIndex;
+            newMemberMinimum.MemberType = partyMember.MemberType;
+            newMemberMinimum.PawnId = partyMember.PawnId;
             inviteJoinMemberNtc.MemberMinimumList.Add(newMemberMinimum);
-            newParty.Leader.Send(inviteJoinMemberNtc);
+            party.Leader.Client.Send(inviteJoinMemberNtc);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 CharacterId = client.Character.Id,
                 NowMember = (uint)client.Party.MemberCount(),
-                MaxMember = PartyGroup.MaxPartyMembers // TODO: Check if i can place like 20 players or something
+                MaxMember = client.Party.MaxSlots // TODO: Check if i can place like 20 players or something
             };
             client.Party.SendToAll(ntc);
         }

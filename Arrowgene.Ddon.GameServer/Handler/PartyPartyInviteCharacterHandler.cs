@@ -1,7 +1,6 @@
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -35,10 +34,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         //              S2CContextGetLobbyPlayerContextNtc to the new party member, it should maybe also be sent to all members
         //              More stuff to determine
         // TODO: Figure out just how much packets/data within those packets we can do without while keeping everything functioning.
+        // TODO PartyGorup need invite management
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteCharacterReq> packet)
         {
-            GameClient targetClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
-            if (targetClient == null)
+            GameClient invitedClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
+            if (invitedClient == null)
             {
                 Logger.Error(client,
                     $"Could not locate CharacterId:{packet.Structure.CharacterId} for party invitation");
@@ -46,55 +46,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            // TODO: What would happen if two parties are trying to invite the same character?
-            targetClient.PendingInvitedParty = client.Party;
+            PartyGroup party = client.Party;
+            if (party == null)
+            {
+                Logger.Error(client,
+                    $"can not invite, as he is not inside party");
+                // TODO error response
+                return;
+            }
+
+            PlayerPartyMember invitedMember = party.Invite(invitedClient);
+            if (invitedMember == null)
+            {
+                Logger.Error(client,
+                    $"could not invite {invitedClient.Identity}, party did not accept invitiation");
+                // TODO error response
+                return;
+            }
+
+            Logger.Info(client, $"Invited Client:{invitedClient.Identity} to PartyId:{party.Id}");
 
             S2CPartyPartyInviteNtc ntc = new S2CPartyPartyInviteNtc();
             ntc.TimeoutSec =
                 TimeoutSec; // TODO: Implement timeout, send an NTC cancelling the party invite if the timeout is reached
-            ntc.PartyListInfo.PartyId = client.Party.Id;
+            ntc.PartyListInfo.PartyId = party.Id;
             ntc.PartyListInfo.ServerId = Server.AssetRepository.ServerList[0].Id;
-
-            foreach (Character character in client.Party.Characters)
+            foreach (PartyMember member in party.Members)
             {
-                CDataPartyMember partyMember = new CDataPartyMember();
-                partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = character.Id;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName =
-                    character.FirstName;
-                partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = character.LastName;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Job = character.Job;
-                partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte)character.ActiveCharacterJobData.Lv;
-                partyMember.CharacterListElement.EntryJobBaseInfo.Job = character.MatchingProfile.EntryJob;
-                partyMember.CharacterListElement.EntryJobBaseInfo.Level = (byte)character.MatchingProfile.EntryJobLevel;
-                partyMember.IsLeader = character.Id == client.Party.Leader.Character.Id;
-                partyMember.MemberIndex = (byte)client.Party.GetSlotIndex(character);
-                ntc.PartyListInfo.MemberList.Add(partyMember);
+                ntc.PartyListInfo.MemberList.Add(member.GetCDataPartyMember());
             }
+            invitedClient.Send(ntc);
 
-            targetClient.Send(ntc);
 
             S2CPartyPartyInviteCharacterRes response = new S2CPartyPartyInviteCharacterRes();
             response.TimeoutSec = TimeoutSec; // Same as above
-            response.Info.PartyId = targetClient.Party.Id;
+            response.Info.PartyId = party.Id;
             response.Info.ServerId = Server.AssetRepository.ServerList[0].Id;
-            CDataPartyMember otherPartyMember = new CDataPartyMember();
-            otherPartyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
-            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = targetClient.Character.Id;
-            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName =
-                targetClient.Character.FirstName;
-            otherPartyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName =
-                targetClient.Character.LastName;
-            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Job = targetClient.Character.Job;
-            otherPartyMember.CharacterListElement.CurrentJobBaseInfo.Level =
-                (byte)targetClient.Character.ActiveCharacterJobData.Lv;
-            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Job =
-                targetClient.Character.MatchingProfile.EntryJob;
-            otherPartyMember.CharacterListElement.EntryJobBaseInfo.Level =
-                (byte)targetClient.Character.MatchingProfile.EntryJobLevel;
-            otherPartyMember.IsLeader = targetClient.Character.Id == client.Party.Leader.Character.Id;
-            otherPartyMember.MemberIndex = 0;
-            response.Info.MemberList.Add(otherPartyMember);
+            response.Info.MemberList.Add(invitedMember.GetCDataPartyMember());
             client.Send(response);
         }
     }

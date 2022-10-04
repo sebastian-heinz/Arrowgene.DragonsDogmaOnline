@@ -11,31 +11,26 @@ namespace Arrowgene.Ddon.GameServer.Party
 {
     public class PartyGroup
     {
-        public const uint MaxPartyMembers = 4;
+        public const uint MaxPartyMember = 4;
         public const int InvalidSlotIndex = -1;
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyGroup));
 
         private readonly object _lock;
-        private readonly object[] _slots;
-        private readonly List<GameClient> _clients;
-        private readonly List<Pawn> _pawns;
+        private readonly PartyMember[] _slots;
+        private readonly PartyManager _partyManager;
 
-        private GameClient _leader;
-        private GameClient _host;
+        private PlayerPartyMember _leader;
+        private PlayerPartyMember _host;
 
-        public PartyGroup(uint id, GameClient creator)
+        public PartyGroup(uint id, PartyManager partyManager)
         {
+            MaxSlots = MaxPartyMember;
             _lock = new object();
-            _slots = new object[MaxPartyMembers];
-            _clients = new List<GameClient>();
-            _pawns = new List<Pawn>();
+            _slots = new PartyMember[MaxSlots];
+            _partyManager = partyManager;
 
             Id = id;
-            _leader = creator;
-            _host = creator;
-
-            Join(creator);
 
             // TODO 
             Contexts = new Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>>();
@@ -43,18 +38,10 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>> Contexts { get; set; }
 
-        public GameClient Leader
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _leader;
-                }
-            }
-        }
+        public uint MaxSlots { get; }
+        public uint Id { get; }
 
-        public GameClient Host
+        public PlayerPartyMember Host
         {
             get
             {
@@ -65,192 +52,242 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public uint Id { get; }
+        public PlayerPartyMember Leader
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    return _leader;
+                }
+            }
+        }
 
         public List<GameClient> Clients
         {
             get
             {
+                List<GameClient> clients = new List<GameClient>();
                 lock (_lock)
                 {
-                    return new List<GameClient>(_clients);
+                    for (int i = 0; i < MaxSlots; i++)
+                    {
+                        if (_slots[i] is PlayerPartyMember member)
+                        {
+                            clients.Add(member.Client);
+                        }
+                    }
                 }
+
+                return clients;
             }
         }
 
-        public List<Character> Characters
+        public List<PartyMember> Members
         {
             get
             {
+                List<PartyMember> members = new List<PartyMember>();
                 lock (_lock)
                 {
-                    List<Character> characters = new List<Character>();
-                    foreach (GameClient client in _clients)
+                    for (int i = 0; i < MaxSlots; i++)
                     {
-                        Character character = client.Character;
-                        if (character == null)
+                        if (_slots[i] != null)
                         {
-                            continue;
+                            members.Add(_slots[i]);
                         }
-
-                        characters.Add(character);
                     }
-
-                    foreach (Pawn pawn in _pawns)
-                    {
-                        Character character = pawn.Character;
-                        if (character == null)
-                        {
-                            continue;
-                        }
-
-                        characters.Add(character);
-                    }
-
-                    return characters;
                 }
+
+                return members;
             }
         }
 
-        public bool Join(GameClient client)
+        /// <summary>
+        /// Player has been invited and will be holding a slot for them.
+        /// However they are not assigned to this party until joined.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns>PlayerPartyMember if a slot could be secured, or null on failure</returns>
+        public PlayerPartyMember Invite(GameClient client)
         {
             if (client == null)
             {
-                return false;
+                return null;
             }
 
+            PlayerPartyMember partyMember = CreatePartyMember(client);
             lock (_lock)
             {
-                if (client.Party != null)
+                if (!_partyManager.AddInvitedParty(client, this))
                 {
-                    Logger.Error(client, "client already has a party assigned");
-                    return false;
+                    Logger.Error(client, "could not register client for invitation");
+                    return null;
                 }
 
-                int slotIndex = TakeSlot(client);
+                int slotIndex = TakeSlot(partyMember);
                 if (slotIndex <= InvalidSlotIndex)
                 {
                     Logger.Error(client, "No free slot available for client");
-                    return false;
+                    return null;
                 }
 
-                _clients.Add(client);
-                client.Party = this;
-                return true;
+                partyMember.JoinState = JoinState.Prepare;
+                return partyMember;
             }
         }
 
-        public bool Join(Pawn pawn)
+        /// <summary>
+        /// Player has accepted the invitation and will progress to joining the party.
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns>PlayerPartyMember on joining, or null on failure</returns>
+        public PlayerPartyMember Accept(GameClient client)
         {
-            if (pawn == null)
+            if (client == null)
             {
-                return false;
+                return null;
             }
 
             lock (_lock)
             {
-                int slotIndex = TakeSlot(pawn);
-                if (slotIndex <= InvalidSlotIndex)
+                PartyGroup invitedPartyGroup = _partyManager.RemoveInvitedParty(client);
+                if (invitedPartyGroup == null)
                 {
-                    Logger.Error("No free slot available for pawn");
-                    return false;
+                    Logger.Error(client, "client was not registered for party");
+                    return null;
                 }
 
-                _pawns.Add(pawn);
-                return true;
+                if (invitedPartyGroup != this)
+                {
+                    Logger.Error(client, "client was not invited to this party");
+                    return null;
+                }
+
+                PlayerPartyMember partyMember = GetPlayerPartyMember(client);
+                if (partyMember == null)
+                {
+                    Logger.Error(client, "client has no slot in this party");
+                    return null;
+                }
+
+                return partyMember;
             }
         }
 
-        public bool Leave(GameClient client)
+        public PlayerPartyMember Join(GameClient client)
         {
             if (client == null)
             {
-                return false;
+                return null;
             }
 
+            lock (_lock)
+            {
+                PlayerPartyMember partyMember = GetPlayerPartyMember(client);
+                if (partyMember == null)
+                {
+                    Logger.Error(client, "client has no slot in this party");
+                    return null;
+                }
+
+                client.Party = this;
+                if (_leader == null && _host == null)
+                {
+                    // first to join the party
+                    partyMember.IsLeader = true;
+                    _leader = partyMember;
+                    _host = partyMember;
+                }
+
+                partyMember.JoinState = JoinState.On;
+
+                return partyMember;
+            }
+        }
+
+        public PawnPartyMember Join(Pawn pawn)
+        {
+            if (pawn == null)
+            {
+                return null;
+            }
+
+            PawnPartyMember partyMember = CreatePartyMember(pawn);
+            lock (_lock)
+            {
+                int slotIndex = TakeSlot(partyMember);
+                if (slotIndex <= InvalidSlotIndex)
+                {
+                    Logger.Error("No free slot available for pawn");
+                    return null;
+                }
+
+                return partyMember;
+            }
+        }
+
+        public PlayerPartyMember Leave(GameClient client)
+        {
+            if (client == null)
+            {
+                return null;
+            }
+
+            Logger.Info(client, $"Leaving Party:{Id}");
             lock (_lock)
             {
                 if (client.Party != this)
                 {
-                    Logger.Error(client, "client not assigned to this group");
-                    return false;
+                    Logger.Error(client, "client not part of this party");
+                    return null;
                 }
 
-                client.Party = null;
-
-                if (!_clients.Remove(client))
+                PlayerPartyMember partyMember = GetPlayerPartyMember(client);
+                if (partyMember == null)
                 {
-                    Logger.Error(client, "client not part of this group");
-                    return false;
+                    Logger.Error(client, "client has no slot in this party");
+                    return null;
                 }
 
-                int slotIndex = GetSlotIndex(client);
-                if (slotIndex <= InvalidSlotIndex)
+                FreeSlot(partyMember.MemberIndex);
+
+                if (MemberCount() <= 0)
                 {
-                    Logger.Error(client, "client not occupied any slot");
-                    return false;
+                    Logger.Info(client, $"last person of party:{Id} left, disband party");
+                    _partyManager.DisbandParty(Id);
+                    return partyMember;
                 }
 
-                FreeSlot(slotIndex);
+                if (partyMember.IsLeader)
+                {
+                    Logger.Info(client, $"was leader of party:{Id}, leader left");
+                    // TODO designate new leader
+                }
+
+                return partyMember;
             }
-
-            return true;
         }
 
-        public bool Leave(Pawn pawn)
+        /// <summary>
+        /// Returns PlayerPartyMember for a given GameClient
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns>PlayerPartyMember or null on failure</returns>
+        public PlayerPartyMember GetPlayerPartyMember(GameClient client)
         {
-            if (pawn == null)
-            {
-                return false;
-            }
-
             lock (_lock)
             {
-                // TODO ? pawn.Party = null;
-                if (!_pawns.Remove(pawn))
+                for (int i = 0; i < MaxSlots; i++)
                 {
-                    Logger.Error("pawn not part of this group");
-                    return false;
+                    if (_slots[i] is PlayerPartyMember member && member.Client == client)
+                    {
+                        return member;
+                    }
                 }
-
-                int slotIndex = GetSlotIndex(pawn);
-                if (slotIndex <= InvalidSlotIndex)
-                {
-                    Logger.Error("pawn not occupied any slot");
-                    return false;
-                }
-
-                FreeSlot(slotIndex);
             }
 
-            return true;
-        }
-
-        public byte GetMemberType(Character character)
-        {
-            object obj = GetSlot(character);
-            if (obj is GameClient)
-            {
-                return 1;
-            }
-
-            if (obj is Pawn)
-            {
-                return 2;
-            }
-
-            Logger.Error($"no member type for character {character.Id}");
-            return 0;
-        }
-
-        public Pawn GetPawn(uint index)
-        {
-            return GetSlot(index) as Pawn;
-        }
-
-        public GameClient GetClient(uint index)
-        {
-            return GetSlot(index) as GameClient;
+            return null;
         }
 
         public void SendToAll<TResStruct>(TResStruct res) where TResStruct : class, IPacketStructure, new()
@@ -272,7 +309,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             lock (_lock)
             {
                 int count = 0;
-                for (int i = 0; i < MaxPartyMembers; i++)
+                for (int i = 0; i < MaxSlots; i++)
                 {
                     if (_slots[i] != null)
                     {
@@ -284,93 +321,9 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public int GetSlotIndex(Character character)
+        private int TakeSlot(PartyMember partyMember)
         {
-            return GetSlotIndex(GetSlot(character));
-        }
-
-        public int GetSlotIndex(GameClient client)
-        {
-            return GetSlotIndex((object)client);
-        }
-
-        public int GetSlotIndex(Pawn pawn)
-        {
-            return GetSlotIndex((object)pawn);
-        }
-
-        /// <summary>
-        /// Intended to hold a free slot, but makes no guarantee whatsoever at the moment.
-        /// </summary>
-        /// <returns></returns>
-        public int RegisterSlot()
-        {
-            lock (_lock)
-            {
-                for (int i = 0; i < MaxPartyMembers; i++)
-                {
-                    if (_slots[i] == null)
-                    {
-                        return i;
-                    }
-                }
-            }
-
-            return InvalidSlotIndex;
-        }
-
-        private object GetSlot(Character character)
-        {
-            lock (_lock)
-            {
-                foreach (GameClient client in _clients)
-                {
-                    Character clientCharacter = client.Character;
-                    if (clientCharacter == character)
-                    {
-                        return client;
-                    }
-                }
-
-                foreach (Pawn pawn in _pawns)
-                {
-                    Character pawnCharacter = pawn.Character;
-                    if (pawnCharacter == character)
-                    {
-                        return pawn;
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        private int GetSlotIndex(object obj)
-        {
-            if (obj == null)
-            {
-                return InvalidSlotIndex;
-            }
-
-            lock (_lock)
-            {
-                int slotIndex = InvalidSlotIndex;
-                for (int i = 0; i < MaxPartyMembers; i++)
-                {
-                    if (_slots[i] == obj)
-                    {
-                        slotIndex = i;
-                        break;
-                    }
-                }
-
-                return slotIndex;
-            }
-        }
-
-        private int TakeSlot(object obj)
-        {
-            if (obj == null)
+            if (partyMember == null)
             {
                 return InvalidSlotIndex;
             }
@@ -378,7 +331,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             int slotIndex = InvalidSlotIndex;
             lock (_lock)
             {
-                for (int i = 0; i < MaxPartyMembers; i++)
+                for (int i = 0; i < MaxSlots; i++)
                 {
                     if (_slots[i] == null)
                     {
@@ -387,7 +340,8 @@ namespace Arrowgene.Ddon.GameServer.Party
                     }
                 }
 
-                _slots[slotIndex] = obj;
+                partyMember.MemberIndex = slotIndex;
+                _slots[slotIndex] = partyMember;
             }
 
             return slotIndex;
@@ -401,18 +355,52 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        private object GetSlot(uint index)
+        private PartyMember GetSlot(uint index)
         {
-            if (index >= MaxPartyMembers)
+            if (index >= MaxSlots)
             {
                 Logger.Error(
-                    $"can not retrieve slot {index} is out of bounds for maximum party size of {MaxPartyMembers}");
+                    $"can not retrieve slot {index} is out of bounds for maximum party size of {MaxSlots}");
             }
 
             lock (_lock)
             {
                 return _slots[index];
             }
+        }
+
+        private PlayerPartyMember CreatePartyMember(GameClient client)
+        {
+            PlayerPartyMember partyMember = new PlayerPartyMember();
+            partyMember.Client = client;
+            partyMember.Character = client.Character;
+            partyMember.IsPawn = false;
+            partyMember.MemberType = 1;
+            partyMember.PawnId = 0;
+            partyMember.IsPlayEntry = false;
+            partyMember.AnyValueList = new byte[8];
+            partyMember.IsLeader = false;
+            partyMember.JoinState = JoinState.None;
+            partyMember.SessionStatus = 0;
+            partyMember.MemberIndex = InvalidSlotIndex;
+            return partyMember;
+        }
+
+        private PawnPartyMember CreatePartyMember(Pawn pawn)
+        {
+            PawnPartyMember partyMember = new PawnPartyMember();
+            partyMember.Pawn = pawn;
+            partyMember.Character = pawn.Character;
+            partyMember.IsPawn = true;
+            partyMember.MemberType = 2;
+            partyMember.PawnId = pawn.Id;
+            partyMember.IsPlayEntry = false;
+            partyMember.AnyValueList = new byte[8];
+            partyMember.IsLeader = false;
+            partyMember.JoinState = JoinState.None;
+            partyMember.SessionStatus = 0;
+            partyMember.MemberIndex = InvalidSlotIndex;
+            return partyMember;
         }
     }
 }

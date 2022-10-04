@@ -32,8 +32,7 @@ namespace Arrowgene.Ddon.GameServer
         public Account Account { get; set; }
 
         public Character Character { get; set; }
-
-        public PartyGroup PendingInvitedParty { get; set; } // Maybe its more clean to store this in the handlers ?
+        
         public PartyGroup Party { get; set; }
     }
 }

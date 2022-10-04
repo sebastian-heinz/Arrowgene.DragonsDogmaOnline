@@ -16,13 +16,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyLeaveReq> packet)
         {
-            PartyGroup oldParty = client.Party;
+            PartyGroup party = client.Party;
+
+            if (party == null)
+            {
+                Logger.Error(client, "Could not leave party, does not exist");
+                // todo return error
+                return;
+            }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
             partyLeaveNtc.CharacterId = client.Character.Id;
-            oldParty.SendToAll(partyLeaveNtc);
+            party.SendToAll(partyLeaveNtc);
 
-            oldParty.Leave(client);
+            party.Leave(client);
+            Logger.Info(client, $"Left PartyId:{party.Id}");
 
             client.Send(new S2CPartyPartyLeaveRes());
         }
