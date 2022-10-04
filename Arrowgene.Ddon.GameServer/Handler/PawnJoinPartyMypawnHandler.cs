@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             MyPawnCsv myPawnCsvData = Server.AssetRepository.MyPawnAsset[req.Structure.PawnNumber - 1];
 
             Pawn pawn = new Pawn(client.Character.Id);
+            pawn.Id = myPawnCsvData.PawnId;
 
             pawn.HmType = myPawnCsvData.HmType;
             pawn.PawnType = myPawnCsvData.PawnType;

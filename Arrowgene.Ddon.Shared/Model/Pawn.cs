@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         // TODO for now use character id
-        public uint Id => Character.Id;
+        public uint Id  { get; set; }
 
         public uint OwnerCharacterId { get; set; }
         public Character Character { get; set; }

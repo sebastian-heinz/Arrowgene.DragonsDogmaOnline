@@ -223,6 +223,9 @@ namespace Arrowgene.Ddon.GameServer.Party
                     return null;
                 }
 
+
+                partyMember.JoinState = JoinState.On;
+
                 return partyMember;
             }
         }
