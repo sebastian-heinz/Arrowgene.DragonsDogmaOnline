@@ -255,7 +255,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 FreeSlot(partyMember.MemberIndex);
 
-                if (MemberCount() <= 0)
+                if (Clients.Count <= 0)
                 {
                     Logger.Info(client, $"last person of party:{Id} left, disband party");
                     _partyManager.DisbandParty(Id);
@@ -269,6 +269,23 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 return partyMember;
+            }
+        }
+
+        public PartyMember Kick(byte memberIndex)
+        {
+            lock (_lock)
+            {
+                PartyMember member = GetSlot(memberIndex);
+                if (member == null)
+                {
+                    Logger.Error($"memberIndex:{memberIndex} not occupied in partyId:{Id}");
+                    return null;
+                }
+
+                FreeSlot(member.MemberIndex);
+
+                return member;
             }
         }
 

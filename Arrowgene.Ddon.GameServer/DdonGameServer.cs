@@ -251,6 +251,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartyPartyInvitePrepareAcceptHandler(this));
             AddHandler(new PartyPartyJoinHandler(this));
             AddHandler(new PartyPartyLeaveHandler(this));
+            AddHandler(new PartyPartyMemberKickHandler(this));
             AddHandler(new PartySendBinaryMsgAllHandler(this));
             AddHandler(new PartySendBinaryMsgHandler(this));
 
