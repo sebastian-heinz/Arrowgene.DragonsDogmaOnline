@@ -7,17 +7,23 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public Pawn(uint ownerCharacterId)
         {
-            OwnerCharacterId = ownerCharacterId;
+            CharacterId = ownerCharacterId;
             Character = new Character();
             OnlineStatus = OnlineStatus.None;
             PawnReactionList = new List<CDataPawnReaction>();
             SpSkillList = new List<CDataSpSkill>();
         }
 
-        // TODO for now use character id
+        /// <summary>
+        /// Id of Pawn
+        /// </summary>
         public uint Id  { get; set; }
-
-        public uint OwnerCharacterId { get; set; }
+        
+        /// <summary>
+        /// Id of character who this pawn belongs to
+        /// </summary>
+        public uint CharacterId { get; set; }
+        
         public Character Character { get; set; }
         public byte HmType { get; set; }
         public byte PawnType { get; set; }

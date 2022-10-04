@@ -30,7 +30,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Pawn pawn = new Pawn(client.Character.Id);
             pawn.Id = myPawnCsvData.PawnId;
-
+            pawn.Character.Id = client.Character.Id; // TODO
+            pawn.CharacterId = client.Character.Id; // pawns characterId, refers to the owner
             pawn.HmType = myPawnCsvData.HmType;
             pawn.PawnType = myPawnCsvData.PawnType;
 
@@ -38,10 +39,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             pawn.Character.Stage = pawn.Character.Stage;
             pawn.Character.StageNo = pawn.Character.StageNo;
-            pawn.Character.X = pawn.Character.X;
-            pawn.Character.Y = pawn.Character.Y;
-            pawn.Character.Z = pawn.Character.Z;
-            pawn.Character.Id = myPawnCsvData.PawnId;
             pawn.Character.FirstName = myPawnCsvData.Name;
             //pawn.Character.LastName = Pawns dont have Last Name
             pawn.Character.EditInfo = new CDataEditInfo()
