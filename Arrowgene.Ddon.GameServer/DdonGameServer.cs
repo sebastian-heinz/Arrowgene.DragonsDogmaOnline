@@ -246,6 +246,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
 
+            AddHandler(new PartyPartyBreakupHandler(this));
             AddHandler(new PartyPartyChangeLeaderHandler(this));
             AddHandler(new PartyPartyCreateHandler(this));
             AddHandler(new PartyPartyInviteCharacterHandler(this));

@@ -208,6 +208,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
             Create(new C2SPartnerPawnPawnLikabilityRewardListGetReq.Serializer());
 
+            Create(new C2SPartyPartyBreakupReq.Serializer());
             Create(new C2SPartyPartyChangeLeaderReq.Serializer());
             Create(new C2SPartyPartyCreateReq.Serializer());
             Create(new C2SPartyPartyInviteCharacterReq.Serializer());
@@ -273,10 +274,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CLoginRes.Serializer());
             Create(new L2CLoginWaitNumNtc.Serializer());
             Create(new L2CNextConnectionServerNtc.Serializer());
-            
+
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
             Create(new S2CChangeCharacterEquipLobbyNotice.Serializer());
-            
+
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
             Create(new S2CCharacterCharacterPointReviveRes.Serializer());
@@ -288,7 +289,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterPawnGoldenReviveRes.Serializer());
             Create(new S2CCharacterPawnPointReviveRes.Serializer());
             Create(new S2CCharacterSetOnlineStatusRes.Serializer());
-            
+
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
             Create(new S2CClanClanConciergeGetListRes.Serializer());
             Create(new S2CClanClanConciergeUpdateRes.Serializer());
@@ -344,7 +345,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
             Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
-            
+
+            Create(new S2CPartyPartyBreakupNtc.Serializer());
+            Create(new S2CPartyPartyBreakupRes.Serializer());
             Create(new S2CPartyPartyChangeLeaderNtc.Serializer());
             Create(new S2CPartyPartyChangeLeaderRes.Serializer());
             Create(new S2CPartyPartyCreateRes.Serializer());
@@ -366,7 +369,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyMemberSessionStatusNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgAllNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
-            
+
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());

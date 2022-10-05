@@ -74,7 +74,7 @@ Launch the client with the following args:
 - [x] Character Creation
 
 ## Game Server
-### Party List
+### Party Management (Party List)
 - [ ] Party Members
   - [ ] View Arisen Profile
   - [ ] Send Tell
@@ -83,12 +83,13 @@ Launch the client with the following args:
   - [x] Promote to Party Leader
   - [x] Kick from Party
   - [ ] Invite to Group Chat
-  - [ ] Disband Party
+  - [x] Disband Party
   - [ ] Invite to Entryboard
   - [ ] Follow with Autorun
   - [ ] Cancel Party Invite
   - [ ] View Party List
   - [x] Leave
+  - [ ] Invite Directly to Clan
 - [ ] Main Pawns
   - [ ] View Pawn Profile
   - [x] Invite to Party

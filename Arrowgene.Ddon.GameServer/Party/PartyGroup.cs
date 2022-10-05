@@ -23,6 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         private PlayerPartyMember _leader;
         private PlayerPartyMember _host;
+        private bool _isBreakup;
 
         public PartyGroup(uint id, PartyManager partyManager)
         {
@@ -30,6 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             _lock = new object();
             _slots = new PartyMember[MaxSlots];
             _partyManager = partyManager;
+            _isBreakup = false;
 
             Id = id;
 
@@ -238,11 +240,11 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public PlayerPartyMember Leave(GameClient client)
+        public void Leave(GameClient client)
         {
             if (client == null)
             {
-                return null;
+                return;
             }
 
             Logger.Info(client, $"Leaving Party:{Id}");
@@ -251,23 +253,29 @@ namespace Arrowgene.Ddon.GameServer.Party
                 if (client.Party != this)
                 {
                     Logger.Error(client, "client not part of this party");
-                    return null;
+                    return;
+                }
+
+                if (_isBreakup)
+                {
+                    return;
                 }
 
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client);
                 if (partyMember == null)
                 {
                     Logger.Error(client, "client has no slot in this party");
-                    return null;
+                    return;
                 }
 
                 FreeSlot(partyMember.MemberIndex);
+
 
                 if (Clients.Count <= 0)
                 {
                     Logger.Info(client, $"last person of party:{Id} left, disband party");
                     _partyManager.DisbandParty(Id);
-                    return partyMember;
+                    return;
                 }
 
                 if (partyMember.IsLeader)
@@ -275,8 +283,6 @@ namespace Arrowgene.Ddon.GameServer.Party
                     Logger.Info(client, $"was leader of party:{Id}, leader left");
                     // TODO designate new leader
                 }
-
-                return partyMember;
             }
         }
 
@@ -333,6 +339,45 @@ namespace Arrowgene.Ddon.GameServer.Party
                 newLeader.IsLeader = true;
                 _leader = newLeader;
                 return ErrorRes<PlayerPartyMember>.Success(newLeader);
+            }
+        }
+
+        public ErrorRes<List<PartyMember>> Breakup(GameClient client)
+        {
+            if (client == null)
+            {
+                return ErrorRes<List<PartyMember>>.Fail;
+            }
+
+            lock (_lock)
+            {
+                PlayerPartyMember currentLeader = GetPlayerPartyMember(client);
+                if (currentLeader == null)
+                {
+                    return ErrorRes<List<PartyMember>>.Error(ErrorCode.ERROR_CODE_PARTY_NOT_PARTY_JOIN);
+                }
+
+                if (!currentLeader.IsLeader)
+                {
+                    return ErrorRes<List<PartyMember>>.Error(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER);
+                }
+
+                if (!_partyManager.DisbandParty(Id))
+                {
+                    return ErrorRes<List<PartyMember>>.Error(ErrorCode.ERROR_CODE_FAIL);
+                }
+
+                List<PartyMember> members = Members;
+                for (int i = 0; i < MaxSlots; i++)
+                {
+                    FreeSlot(i);
+                }
+
+                _leader = null;
+                _host = null;
+                _isBreakup = true;
+
+                return ErrorRes<List<PartyMember>>.Success(members);
             }
         }
 
