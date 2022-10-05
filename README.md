@@ -70,21 +70,42 @@ Launch the client with the following args:
 # Progress
 
 ## Login Server
-
 - [x] Account
 - [x] Character Creation
 
-
 ## Game Server
-
-### Tutorial
-- [x] Entry
-### Party
-- [x] Invitation
-- [x] Kick
-- [ ] Change Leader
-### Pawn
-
+### Party List
+- [ ] Party Members
+  - [ ] View Arisen Profile
+  - [ ] Send Tell
+  - [ ] Send Friend Request
+  - [ ] View Status and Equipment
+  - [ ] Promote to Party Leader
+  - [x] Kick from Party
+  - [ ] Invite to Group Chat
+  - [ ] Disband Party
+  - [ ] Invite to Entryboard
+  - [ ] Follow with Autorun
+  - [ ] Cancel Party Invite
+  - [ ] View Party List
+  - [x] Leave
+- [ ] Main Pawns
+  - [ ] View Pawn Profile
+  - [x] Invite to Party
+  - [x] Kick from Party
+  - [ ] View Status and Equipment
+- [ ] Support Pawns
+- [ ] Party Search
+  - [ ] Search
+  - [ ] Simple Request
+- [ ] Player Search
+  - [ ] View Arisen Profile
+  - [x] Invite to Party
+  - [ ] Send Tell
+  - [ ] Send Friend Request
+  - [ ] Invite to Group Chat
+  - [ ] Invite to Entryboard
+  - [x] Search
 
 # Guidelines
 ## Git 
