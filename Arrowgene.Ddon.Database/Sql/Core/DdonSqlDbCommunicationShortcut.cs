@@ -14,9 +14,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlInsertCommunicationShortcut = $"INSERT INTO `ddon_communication_shortcut` ({BuildQueryField(CommunicationShortcutFields)}) VALUES ({BuildQueryInsert(CommunicationShortcutFields)});";
         private readonly string SqlReplaceCommunicationShortcut = $"INSERT OR REPLACE INTO `ddon_communication_shortcut` ({BuildQueryField(CommunicationShortcutFields)}) VALUES ({BuildQueryInsert(CommunicationShortcutFields)});";
-        private static readonly string SqlUpdateCommunicationShortcut = $"UPDATE `ddon_communication_shortcut` SET {BuildQueryUpdate(CommunicationShortcutFields)} WHERE `character_id`=@old_character_id AND `old_id`=@old_id;";
+        private static readonly string SqlUpdateCommunicationShortcut = $"UPDATE `ddon_communication_shortcut` SET {BuildQueryUpdate(CommunicationShortcutFields)} WHERE `character_id`=@old_character_id AND `page_no`=@old_page_no AND `button_no`=@old_button_no";
         private static readonly string SqlSelectCommunicationShortcuts = $"SELECT {BuildQueryField(CommunicationShortcutFields)} FROM `ddon_communication_shortcut` WHERE `character_id`=@character_id;";
-        private const string SqlDeleteCommunicationShortcut = "DELETE FROM `ddon_communication_shortcut` WHERE `character_id`=@character_id AND `id`=@id;";
+        private const string SqlDeleteCommunicationShortcut = "DELETE FROM `ddon_communication_shortcut` WHERE `character_id`=@character_id AND `page_no`=@page_no AND `button_no`=@button_no";
 
         public bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut)
         {
@@ -35,22 +35,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return true;
         }
 
-        public bool UpdateCommunicationShortcut(uint characterId, uint oldId, CDataCommunicationShortCut updatedCommunicationShortcut)
+        public bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut)
         {
             return ExecuteNonQuery(SqlDeleteCommunicationShortcut, command =>
             {
                 AddParameter(command, characterId, updatedCommunicationShortcut);
                 AddParameter(command, "@old_character_id", characterId);
-                AddParameter(command, "@old_id", oldId);
+                AddParameter(command, "@old_page_no", oldPageNo);
+                AddParameter(command, "@old_button_no", oldButtonNo);
             }) == 1;
         }
 
-        public bool DeleteCommunicationShortcut(uint characterId, uint id)
+        public bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo)
         {
             return ExecuteNonQuery(SqlDeleteCommunicationShortcut, command =>
             {
                 AddParameter(command, "@character_id", characterId);
-                AddParameter(command, "@id", id);
+                AddParameter(command, "@old_page_no", pageNo);
+                AddParameter(command, "@old_button_no", buttonNo);
             }) == 1;
         }
 
