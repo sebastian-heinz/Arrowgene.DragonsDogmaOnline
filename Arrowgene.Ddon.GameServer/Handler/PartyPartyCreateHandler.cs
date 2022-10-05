@@ -1,5 +1,6 @@
 ﻿using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -16,6 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyCreateReq> packet)
         {
+            S2CPartyPartyCreateRes partyCreateRes = new S2CPartyPartyCreateRes();
+
             PartyGroup party = Server.PartyManager.NewParty();
             if (party == null)
             {
@@ -32,11 +35,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            member = party.Accept(client);
-            if (member == null)
+            ErrorRes<PlayerPartyMember> memberRes = party.Accept(client);
+            if (memberRes.HasError)
             {
                 Logger.Error(client, "Failed to accept new party");
-                // TODO return error
+                partyCreateRes.Error = (uint)memberRes.ErrorCode;
+                client.Send(partyCreateRes);
                 return;
             }
 
@@ -56,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             partyJoinNtc.PartyMembers.Add(member.GetCDataPartyMember());
             client.Send(partyJoinNtc);
             
-            S2CPartyPartyCreateRes partyCreateRes = new S2CPartyPartyCreateRes();
+        
             partyCreateRes.PartyId = party.Id;
             client.Send(partyCreateRes);
 
