@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterMsgSetSerializer());
             Create(new CDataCharacterName.Serializer());
             Create(new CDataCharacterReleaseElement.Serializer());
+            Create(new CDataCharacterSearchParam.Serializer());
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommonU8.Serializer());
             Create(new CDataCommunicationShortCut.Serializer());
@@ -72,6 +73,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataArmorCrestData.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
             Create(new CDataEquipJobItem.Serializer());
+            Create(new CDataErrorMessage.Serializer());
             Create(new CDataFavoriteWarpPoint.Serializer());
             Create(new CDataGameServerListInfoSerializer());
             Create(new CDataGameTimeBaseInfo.Serializer());
@@ -156,6 +158,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCharacterCharacterGoldenReviveReq.Serializer());
             Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
             Create(new C2SCharacterCharacterPointReviveReq.Serializer());
+            Create(new C2SCharacterCharacterSearchReq.Serializer());
             Create(new C2SCharacterPawnGoldenReviveReq.Serializer());
             Create(new C2SCharacterPawnPointReviveReq.Serializer());
             Create(new C2SCharacterSetOnlineStatusReq.Serializer());
@@ -264,6 +267,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
             Create(new S2CCharacterCharacterPointReviveRes.Serializer());
+            Create(new S2CCharacterCharacterSearchRes.Serializer());
             Create(new S2CCharacterCommunityCharacterStatusUpdateNtc.Serializer());
             Create(new S2CCharacterDecideCharacterIdRes.Serializer());
             Create(new S2CCharacterGetCharacterStatusNtc.Serializer());

@@ -10,6 +10,7 @@ Server Emulator for the Game Dragons Dogma Online.
   - [IntelliJ Rider](#intellij-rider)
 - [Server](#server)
 - [Client](#client)
+- [Progress](#progress)
 - [Guidelines](#guidelines)
 - [Attribution](#attribution)
   - [Contributers](#contributers)
@@ -66,45 +67,23 @@ ensure that no other local services listen on these ports.
 Launch the client with the following args:
 `"DDO.exe" "addr=localhost port=52100 token=00000000000000000000 DL=http://127.0.0.1:52099/win/ LVer=03.04.003.20181115.0 RVer=3040008"`
 
-# Development
-## Project
-### Cli
-Entrypoint to the application, allows to start different components via parameters
-### Server
-- Read / Write network packages
-- Manage Connections
-#### Asset
-- Static Assets that can be loaded on startup
-### LoginServer
-- Handling of Login related packets
-### GameServer
-- Handling of Game related packets
-### WebServer
-- Handling http/https requests.
-- Client version request
-- Account creation API
-- Login / Token retrieval API
-### Database
-- Persistent storage
-- Supports different implementations via IDatabase interface
-- SQLite concrete implementation
-### Shared
-Extension.cs -> Useful C# extension methods
-Util.cs -> Static Utility functions
-#### Crypto
-Components related to cryptography, for network protocol, token generation or random oracle.
-#### Csv
-Reading and parsing of CSV files
-#### Entity
-Representing the packet structure of the network protocol, including serialization adn deserialization.
-#### Model
-Classes that can be used by multiple components, usually just to hold data in a structured way
-### PacketLibrary
-- Read pcap files (experimental)
-- Read (custom) json format of packet data
-- Format and annotate packets with internal packet names
-### Test
-- Unit test to lock in functionality
+# Progress
+
+## Login Server
+
+- [x] Account
+- [x] Character Creation
+
+
+## Game Server
+
+### Tutorial
+- [x] Entry
+### Party
+- [x] Invitation
+- [x] Kick
+- [ ] Change Leader
+### Pawn
 
 
 # Guidelines

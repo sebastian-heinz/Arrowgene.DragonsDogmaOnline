@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Database.Model;
+﻿using System.Collections.Generic;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -8,6 +9,23 @@ namespace Arrowgene.Ddon.GameServer
     {
         public GameClientLookup()
         {
+        }
+
+        public List<Character> GetAllCharacter()
+        {
+            List<Character> characters = new List<Character>();
+            foreach (GameClient client in GetAll())
+            {
+                Character character = client.Character;
+                if (character == null)
+                {
+                    continue;
+                }
+
+                characters.Add(character);
+            }
+
+            return characters;
         }
 
         public GameClient GetClientByAccountId(int accountId)
@@ -28,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer
 
             return null;
         }
-        
+
         public GameClient GetClientByCharacterId(uint characterId)
         {
             foreach (GameClient client in GetAll())

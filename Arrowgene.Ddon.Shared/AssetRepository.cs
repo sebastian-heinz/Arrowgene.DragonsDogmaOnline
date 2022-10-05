@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared
 
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
-            ClientErrorCodes = new List<ClientErrorCode>();
+            ClientErrorCodes = new List<CDataErrorMessage>();
             EnemySpawns = new List<EnemySpawn>();
             ServerList = new List<CDataGameServerListInfo>();
             MyPawnAsset = new List<MyPawnCsv>();
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Shared
             ArisenAsset = new List<ArisenCsv>();
         }
 
-        public List<ClientErrorCode> ClientErrorCodes { get; }
+        public List<CDataErrorMessage> ClientErrorCodes { get; }
         public List<EnemySpawn> EnemySpawns { get; }
         public List<CDataGameServerListInfo> ServerList { get; }
         public List<MyPawnCsv> MyPawnAsset { get; }
