@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 
@@ -8,12 +9,14 @@ public class PartyManager
 {
     public const uint MaxNumParties = 100;
     public const uint InvalidPartyId = 0;
+    public const ushort InvitationTimeoutSec = 30;
+
 
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyManager));
 
     private readonly ConcurrentStack<uint> _idPool;
     private readonly ConcurrentDictionary<uint, PartyGroup> _parties;
-    private readonly ConcurrentDictionary<GameClient, PartyGroup> _invites;
+    private readonly ConcurrentDictionary<GameClient, PartyInvitation> _invites;
 
     public PartyManager()
     {
@@ -24,12 +27,16 @@ public class PartyManager
         }
 
         _parties = new ConcurrentDictionary<uint, PartyGroup>();
-        _invites = new ConcurrentDictionary<GameClient, PartyGroup>();
+        _invites = new ConcurrentDictionary<GameClient, PartyInvitation>();
     }
 
-    public bool AddInvitedParty(GameClient client, PartyGroup party)
+    public bool InviteParty(GameClient client, PartyGroup party)
     {
-        if (!_invites.TryAdd(client, party))
+        PartyInvitation invitation = new PartyInvitation();
+        invitation.Client = client;
+        invitation.Party = party;
+        invitation.Date = DateTime.Now;
+        if (!_invites.TryAdd(client, invitation))
         {
             Logger.Error(client, $"Already has pending invite)");
             return false;
@@ -37,27 +44,27 @@ public class PartyManager
 
         return true;
     }
-    
-    public PartyGroup GetInvitedParty(GameClient client)
+
+    public PartyInvitation GetPartyInvitation(GameClient client)
     {
-        if (!_invites.TryGetValue(client, out PartyGroup party))
+        if (!_invites.TryGetValue(client, out PartyInvitation partyInvitation))
         {
             Logger.Error(client, $"invite not found, for get");
             return null;
         }
 
-        return party;
+        return partyInvitation;
     }
-    
-    public PartyGroup RemoveInvitedParty(GameClient client)
+
+    public PartyInvitation RemovePartyInvitation(GameClient client)
     {
-        if (!_invites.TryRemove(client, out PartyGroup party))
+        if (!_invites.TryRemove(client, out PartyInvitation partyInvitation))
         {
             Logger.Error(client, $"invite not found for remove");
             return null;
         }
 
-        return party;
+        return partyInvitation;
     }
 
     public PartyGroup GetParty(uint partyId)

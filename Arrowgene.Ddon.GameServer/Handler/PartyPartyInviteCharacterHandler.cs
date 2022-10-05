@@ -11,7 +11,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger =
             LogProvider.Logger<ServerLogger>(typeof(PartyPartyInviteCharacterHandler));
 
-        private static readonly ushort TimeoutSec = 30; // TODO: Move to config?
 
         public PartyPartyInviteCharacterHandler(DdonGameServer server) : base(server)
         {
@@ -67,8 +66,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Logger.Info(client, $"Invited Client:{invitedClient.Identity} to PartyId:{party.Id}");
 
             S2CPartyPartyInviteNtc ntc = new S2CPartyPartyInviteNtc();
-            ntc.TimeoutSec =
-                TimeoutSec; // TODO: Implement timeout, send an NTC cancelling the party invite if the timeout is reached
+            ntc.TimeoutSec = PartyManager.InvitationTimeoutSec;
             ntc.PartyListInfo.PartyId = party.Id;
             ntc.PartyListInfo.ServerId = Server.AssetRepository.ServerList[0].Id;
             foreach (PartyMember member in party.Members)
@@ -79,7 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             S2CPartyPartyInviteCharacterRes response = new S2CPartyPartyInviteCharacterRes();
-            response.TimeoutSec = TimeoutSec; // Same as above
+            response.TimeoutSec = PartyManager.InvitationTimeoutSec;
             response.Info.PartyId = party.Id;
             response.Info.ServerId = Server.AssetRepository.ServerList[0].Id;
             response.Info.MemberList.Add(invitedMember.GetCDataPartyMember());

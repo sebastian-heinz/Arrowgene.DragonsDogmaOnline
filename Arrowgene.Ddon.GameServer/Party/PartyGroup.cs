@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -119,7 +120,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             PlayerPartyMember partyMember = CreatePartyMember(client);
             lock (_lock)
             {
-                if (!_partyManager.AddInvitedParty(client, this))
+                if (!_partyManager.InviteParty(client, this))
                 {
                     Logger.Error(client, "could not register client for invitation");
                     return null;
@@ -142,36 +143,43 @@ namespace Arrowgene.Ddon.GameServer.Party
         /// </summary>
         /// <param name="client"></param>
         /// <returns>PlayerPartyMember on joining, or null on failure</returns>
-        public PlayerPartyMember Accept(GameClient client)
+        public ErrorRes<PlayerPartyMember> Accept(GameClient client)
         {
             if (client == null)
             {
-                return null;
+                return ErrorRes<PlayerPartyMember>.Fail;
             }
 
             lock (_lock)
             {
-                PartyGroup invitedPartyGroup = _partyManager.RemoveInvitedParty(client);
-                if (invitedPartyGroup == null)
+                PartyInvitation invitation = _partyManager.RemovePartyInvitation(client);
+                if (invitation == null)
                 {
                     Logger.Error(client, "client was not registered for party");
-                    return null;
+                    return ErrorRes<PlayerPartyMember>.Fail;
                 }
 
-                if (invitedPartyGroup != this)
+                if (invitation.Party != this)
                 {
                     Logger.Error(client, "client was not invited to this party");
-                    return null;
+                    return ErrorRes<PlayerPartyMember>.Fail;
+                }
+
+                TimeSpan invitationAge = DateTime.Now - invitation.Date;
+                if (invitationAge > TimeSpan.FromSeconds(PartyManager.InvitationTimeoutSec))
+                {
+                    Logger.Error(client, "invitation expired");
+                    return ErrorRes<PlayerPartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_TIMEOUT);
                 }
 
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client);
                 if (partyMember == null)
                 {
                     Logger.Error(client, "client has no slot in this party");
-                    return null;
+                    return ErrorRes<PlayerPartyMember>.Fail;
                 }
 
-                return partyMember;
+                return ErrorRes<PlayerPartyMember>.Success(partyMember);
             }
         }
 
