@@ -80,7 +80,7 @@ Launch the client with the following args:
   - [ ] Send Tell
   - [ ] Send Friend Request
   - [ ] View Status and Equipment
-  - [ ] Promote to Party Leader
+  - [x] Promote to Party Leader
   - [x] Kick from Party
   - [ ] Invite to Group Chat
   - [ ] Disband Party

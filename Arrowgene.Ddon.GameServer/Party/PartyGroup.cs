@@ -298,6 +298,45 @@ namespace Arrowgene.Ddon.GameServer.Party
         }
 
         /// <summary>
+        /// Changes to a new leader, returns new leader as value
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="leaderCharacterId"></param>
+        /// <returns></returns>
+        public ErrorRes<PlayerPartyMember> ChangeLeader(GameClient client, uint leaderCharacterId)
+        {
+            if (client == null)
+            {
+                return ErrorRes<PlayerPartyMember>.Fail;
+            }
+
+            lock (_lock)
+            {
+                PlayerPartyMember currentLeader = GetPlayerPartyMember(client);
+                if (currentLeader == null)
+                {
+                    return ErrorRes<PlayerPartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_NOT_PARTY_JOIN);
+                }
+
+                if (!currentLeader.IsLeader)
+                {
+                    return ErrorRes<PlayerPartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER);
+                }
+
+                PlayerPartyMember newLeader = GetByCharacterId(leaderCharacterId);
+                if (newLeader == null)
+                {
+                    return ErrorRes<PlayerPartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_NOT_PARTY_JOIN);
+                }
+
+                currentLeader.IsLeader = false;
+                newLeader.IsLeader = true;
+                _leader = newLeader;
+                return ErrorRes<PlayerPartyMember>.Success(newLeader);
+            }
+        }
+
+        /// <summary>
         /// Returns PlayerPartyMember for a given GameClient
         /// </summary>
         /// <param name="client"></param>
@@ -347,6 +386,31 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 return count;
             }
+        }
+
+        private PlayerPartyMember GetByCharacterId(uint characterId)
+        {
+            lock (_lock)
+            {
+                for (int i = 0; i < MaxSlots; i++)
+                {
+                    if (_slots[i] is PlayerPartyMember member)
+                    {
+                        Character character = member.Character;
+                        if (character == null)
+                        {
+                            continue;
+                        }
+
+                        if (character.Id == characterId)
+                        {
+                            return member;
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         private int TakeSlot(PartyMember partyMember)

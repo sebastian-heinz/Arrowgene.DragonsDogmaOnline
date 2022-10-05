@@ -388,13 +388,13 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PARTY_PARTY_LEAVE_NTC = new PacketId(6, 10, 16, "S2C_PARTY_PARTY_LEAVE_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_10_16_NTC");
         public static readonly PacketId C2S_PARTY_PARTY_MEMBER_KICK_REQ = new PacketId(6, 11, 1, "C2S_PARTY_PARTY_MEMBER_KICK_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_MEMBER_KICK_RES = new PacketId(6, 11, 2, "S2C_PARTY_PARTY_MEMBER_KICK_RES", ServerType.Game, PacketSource.Server); // パーティメンバーキックに
-        public static readonly PacketId S2C_PARTY_PARTY_MEMBER_KICK_NTC = new PacketId(6, 11, 16, "S2C_PARTY_6_11_16_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_11_16_NTC");
+        public static readonly PacketId S2C_PARTY_PARTY_MEMBER_KICK_NTC = new PacketId(6, 11, 16, "S2C_PARTY_PARTY_MEMBER_KICK_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_11_16_NTC");
         public static readonly PacketId C2S_PARTY_PARTY_BREAKUP_REQ = new PacketId(6, 12, 1, "C2S_PARTY_PARTY_BREAKUP_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_BREAKUP_RES = new PacketId(6, 12, 2, "S2C_PARTY_PARTY_BREAKUP_RES", ServerType.Game, PacketSource.Server); // パーティ解散に
         public static readonly PacketId S2C_PARTY_6_12_16_NTC = new PacketId(6, 12, 16, "S2C_PARTY_6_12_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_PARTY_PARTY_CHANGE_LEADER_REQ = new PacketId(6, 13, 1, "C2S_PARTY_PARTY_CHANGE_LEADER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_CHANGE_LEADER_RES = new PacketId(6, 13, 2, "S2C_PARTY_PARTY_CHANGE_LEADER_RES", ServerType.Game, PacketSource.Server); // パーティリーダー変更に
-        public static readonly PacketId S2C_PARTY_6_13_16_NTC = new PacketId(6, 13, 16, "S2C_PARTY_6_13_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTY_PARTY_CHANGE_LEADER_NTC = new PacketId(6, 13, 16, "S2C_PARTY_PARTY_CHANGE_LEADER_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_13_16_NTC");
         public static readonly PacketId C2S_PARTY_PARTY_SEARCH_REQ = new PacketId(6, 14, 1, "C2S_PARTY_PARTY_SEARCH_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_SEARCH_RES = new PacketId(6, 14, 2, "S2C_PARTY_PARTY_SEARCH_RES", ServerType.Game, PacketSource.Server); // パーティ検索に
         public static readonly PacketId C2S_PARTY_PARTY_MEMBER_SET_VALUE_REQ = new PacketId(6, 15, 1, "C2S_PARTY_PARTY_MEMBER_SET_VALUE_REQ", ServerType.Game, PacketSource.Client);
@@ -2298,7 +2298,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PARTY_6_12_16_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_CHANGE_LEADER_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_CHANGE_LEADER_RES);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_13_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_CHANGE_LEADER_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_SEARCH_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_SEARCH_RES);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_MEMBER_SET_VALUE_REQ);
