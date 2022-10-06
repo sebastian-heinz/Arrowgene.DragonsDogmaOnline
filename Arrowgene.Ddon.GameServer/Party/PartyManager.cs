@@ -30,15 +30,16 @@ public class PartyManager
         _invites = new ConcurrentDictionary<GameClient, PartyInvitation>();
     }
 
-    public bool InviteParty(GameClient client, PartyGroup party)
+    public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party)
     {
         PartyInvitation invitation = new PartyInvitation();
-        invitation.Client = client;
+        invitation.Invitee = invitee;
+        invitation.Host = host;
         invitation.Party = party;
         invitation.Date = DateTime.Now;
-        if (!_invites.TryAdd(client, invitation))
+        if (!_invites.TryAdd(invitee, invitation))
         {
-            Logger.Error(client, $"Already has pending invite)");
+            Logger.Error(invitee, $"Already has pending invite)");
             return false;
         }
 

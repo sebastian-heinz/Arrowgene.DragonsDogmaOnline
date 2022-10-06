@@ -87,6 +87,7 @@ Launch the client with the following args:
   - [ ] Invite to Entryboard
   - [ ] Follow with Autorun
   - [ ] Cancel Party Invite
+  - [ ] Decline Party Invite
   - [ ] View Party List
   - [x] Leave
   - [ ] Invite Directly to Clan

@@ -110,28 +110,27 @@ namespace Arrowgene.Ddon.GameServer.Party
         /// Player has been invited and will be holding a slot for them.
         /// However they are not assigned to this party until joined.
         /// </summary>
-        /// <param name="client"></param>
         /// <returns>PlayerPartyMember if a slot could be secured, or null on failure</returns>
-        public PlayerPartyMember Invite(GameClient client)
+        public PlayerPartyMember Invite(GameClient invitee, GameClient host)
         {
-            if (client == null)
+            if (invitee == null)
             {
                 return null;
             }
 
-            PlayerPartyMember partyMember = CreatePartyMember(client);
+            PlayerPartyMember partyMember = CreatePartyMember(invitee);
             lock (_lock)
             {
-                if (!_partyManager.InviteParty(client, this))
+                if (!_partyManager.InviteParty(invitee, host, this))
                 {
-                    Logger.Error(client, "could not register client for invitation");
+                    Logger.Error(invitee, "could not register client for invitation");
                     return null;
                 }
 
                 int slotIndex = TakeSlot(partyMember);
                 if (slotIndex <= InvalidSlotIndex)
                 {
-                    Logger.Error(client, "No free slot available for client");
+                    Logger.Error(invitee, "No free slot available for client");
                     return null;
                 }
 
@@ -139,6 +138,35 @@ namespace Arrowgene.Ddon.GameServer.Party
                 return partyMember;
             }
         }
+
+        public ErrorRes<PartyInvitation> RefuseInvite(GameClient client)
+        {
+            if (client == null)
+            {
+                return ErrorRes<PartyInvitation>.Fail;
+            }
+
+            lock (_lock)
+            {
+                PartyInvitation invitation = _partyManager.RemovePartyInvitation(client);
+                if (invitation == null)
+                {
+                    Logger.Error(client, "client was not registered for party");
+                    return ErrorRes<PartyInvitation>.Fail;
+                }
+
+                PlayerPartyMember partyMember = GetPlayerPartyMember(client);
+                if (partyMember == null)
+                {
+                    Logger.Error(client, "client has no slot in this party");
+                    return ErrorRes<PartyInvitation>.Fail;
+                }
+
+                FreeSlot(partyMember.MemberIndex);
+                return ErrorRes<PartyInvitation>.Success(invitation);
+            }
+        }
+
 
         /// <summary>
         /// Player has accepted the invitation and will progress to joining the party.

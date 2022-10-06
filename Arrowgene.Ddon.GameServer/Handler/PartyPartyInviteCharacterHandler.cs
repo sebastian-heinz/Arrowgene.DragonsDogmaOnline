@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            PlayerPartyMember invitedMember = party.Invite(invitedClient);
+            PlayerPartyMember invitedMember = party.Invite(invitedClient, client);
             if (invitedMember == null)
             {
                 Logger.Error(client,

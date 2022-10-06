@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            PlayerPartyMember member = party.Invite(client);
+            PlayerPartyMember member = party.Invite(client, client);
             if (member == null)
             {
                 Logger.Error(client, "Failed to join new party");
@@ -59,11 +59,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             partyJoinNtc.LeaderCharacterId = client.Character.Id;
             partyJoinNtc.PartyMembers.Add(member.GetCDataPartyMember());
             client.Send(partyJoinNtc);
-            
-        
+
+
             partyCreateRes.PartyId = party.Id;
             client.Send(partyCreateRes);
-
         }
     }
 }

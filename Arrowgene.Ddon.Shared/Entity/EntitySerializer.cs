@@ -29,8 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             // Data structure serializers
             Create(
-                new C2SActionSetPlayerActionHistoryReqElement.
-                    Serializer()); // TODO naming convention C2S -> not a packet
+                new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
             Create(new CData_772E80.Serializer());
             Create(new CDataSpSkill.Serializer());
             Create(new CDataAbilityLevelParam.Serializer());
@@ -211,9 +210,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPartyPartyBreakupReq.Serializer());
             Create(new C2SPartyPartyChangeLeaderReq.Serializer());
             Create(new C2SPartyPartyCreateReq.Serializer());
+            Create(new C2SPartyPartyInviteCancelReq.Serializer());
             Create(new C2SPartyPartyInviteCharacterReq.Serializer());
             Create(new C2SPartyPartyInviteEntryReq.Serializer());
             Create(new C2SPartyPartyInvitePrepareAcceptReq.Serializer());
+            Create(new C2SPartyPartyInviteRefuseReq.Serializer());
             Create(new C2SPartyPartyJoinReq.Serializer());
             Create(new C2SPartyPartyLeaveReq.Serializer());
             Create(new C2SPartyPartyMemberKickReq.Serializer());
@@ -352,6 +353,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyChangeLeaderRes.Serializer());
             Create(new S2CPartyPartyCreateRes.Serializer());
             Create(new S2CPartyPartyInviteAcceptNtc.Serializer());
+            Create(new S2CPartyPartyInviteCancelNtc.Serializer());
+            Create(new S2CPartyPartyInviteCancelRes.Serializer());
             Create(new S2CPartyPartyInviteCharacterRes.Serializer());
             Create(new S2CPartyPartyInviteEntryNtc.Serializer());
             Create(new S2CPartyPartyInviteEntryRes.Serializer());
@@ -359,6 +362,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyInviteNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptRes.Serializer());
+            Create(new S2CPartyPartyInviteRefuseRes.Serializer());
             Create(new S2CPartyPartyInviteSuccessNtc.Serializer());
             Create(new S2CPartyPartyJoinNtc.Serializer());
             Create(new S2CPartyPartyJoinRes.Serializer());

@@ -366,7 +366,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_CHARACTER_RES = new PacketId(6, 2, 2, "S2C_PARTY_PARTY_INVITE_CHARACTER_RES", ServerType.Game, PacketSource.Server); // パーティ要請（キャラ）（要請側）に
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_CANCEL_REQ = new PacketId(6, 3, 1, "C2S_PARTY_PARTY_INVITE_CANCEL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_CANCEL_RES = new PacketId(6, 3, 2, "S2C_PARTY_PARTY_INVITE_CANCEL_RES", ServerType.Game, PacketSource.Server); // パーティ要請キャンセル（要請側）に
-        public static readonly PacketId S2C_PARTY_6_3_16_NTC = new PacketId(6, 3, 16, "S2C_PARTY_6_3_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTY_PARTY_INVITE_CANCEL_NTC = new PacketId(6, 3, 16, "S2C_PARTY_PARTY_INVITE_CANCEL_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTY_6_3_16_NTC");
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_REFUSE_REQ = new PacketId(6, 4, 1, "C2S_PARTY_PARTY_INVITE_REFUSE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTY_PARTY_INVITE_REFUSE_RES = new PacketId(6, 4, 2, "S2C_PARTY_PARTY_INVITE_REFUSE_RES", ServerType.Game, PacketSource.Server); // パーティ要請拒否（要請受ける側）に
         public static readonly PacketId C2S_PARTY_PARTY_INVITE_PREPARE_ACCEPT_REQ = new PacketId(6, 5, 1, "C2S_PARTY_PARTY_INVITE_PREPARE_ACCEPT_REQ", ServerType.Game, PacketSource.Client);
@@ -2270,7 +2270,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_CHARACTER_RES);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_CANCEL_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_CANCEL_RES);
-            AddPacketIdEntry(packetIds, S2C_PARTY_6_3_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_CANCEL_NTC);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_REFUSE_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTY_PARTY_INVITE_REFUSE_RES);
             AddPacketIdEntry(packetIds, C2S_PARTY_PARTY_INVITE_PREPARE_ACCEPT_REQ);
