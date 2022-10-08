@@ -118,6 +118,11 @@ namespace Arrowgene.Ddon.GameServer.Party
                 return null;
             }
 
+            if (host == null)
+            {
+                return null;
+            }
+
             PlayerPartyMember partyMember = CreatePartyMember(invitee);
             lock (_lock)
             {
@@ -134,6 +139,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     return null;
                 }
 
+                Logger.Info(host, $"[PartyId:{Id}][Invite] invited {invitee.Identity}");
                 partyMember.JoinState = JoinState.Prepare;
                 return partyMember;
             }
@@ -163,6 +169,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 FreeSlot(partyMember.MemberIndex);
+                Logger.Info(client, $"[PartyId:{Id}][RefuseInvite] refused invite");
                 return ErrorRes<PartyInvitation>.Success(invitation);
             }
         }
@@ -209,6 +216,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     return ErrorRes<PlayerPartyMember>.Fail;
                 }
 
+                Logger.Info(client, $"[PartyId:{Id}][Accept] accepted invite");
                 return ErrorRes<PlayerPartyMember>.Success(partyMember);
             }
         }
@@ -239,7 +247,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 partyMember.JoinState = JoinState.On;
-
+                Logger.Info(client, $"[PartyId:{Id}][Join(GameClient)] joined");
                 return partyMember;
             }
         }
@@ -257,13 +265,13 @@ namespace Arrowgene.Ddon.GameServer.Party
                 int slotIndex = TakeSlot(partyMember);
                 if (slotIndex <= InvalidSlotIndex)
                 {
-                    Logger.Error($"[PartyId:{Id}][Join(Pawn)] no slot available");
+                    Logger.Error($"[PartyId:{Id}][Join(PawnId:{pawn.Id})] no slot available");
                     return null;
                 }
 
 
                 partyMember.JoinState = JoinState.On;
-
+                Logger.Info($"[PartyId:{Id}][Join(PawnId:{pawn.Id})] joined");
                 return partyMember;
             }
         }
@@ -275,7 +283,6 @@ namespace Arrowgene.Ddon.GameServer.Party
                 return;
             }
 
-            Logger.Info(client, $"[PartyId:{Id}][Leave(GameClient)]");
             lock (_lock)
             {
                 if (client.Party != this)
@@ -297,6 +304,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 FreeSlot(partyMember.MemberIndex);
+                Logger.Info(client, $"[PartyId:{Id}][Leave(GameClient)] left");
 
 
                 if (Clients.Count <= 0)
@@ -314,20 +322,57 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public PartyMember Kick(byte memberIndex)
+        public ErrorRes<PartyMember> Kick(GameClient client, byte memberIndex)
         {
+            if (client == null)
+            {
+                return ErrorRes<PartyMember>.Fail;
+            }
+
             lock (_lock)
             {
+                PlayerPartyMember changeRequester = GetPlayerPartyMember(client);
+                if (changeRequester == null)
+                {
+                    Logger.Error(client, $"[PartyId:{Id}][Kick] has no slot");
+                    return ErrorRes<PartyMember>.Fail;
+                }
+
                 PartyMember member = GetSlot(memberIndex);
                 if (member == null)
                 {
-                    Logger.Error($"[PartyId:{Id}][Kick] memberIndex:{memberIndex} not occupied");
-                    return null;
+                    Logger.Error(client, $"[PartyId:{Id}][Kick] memberIndex:{memberIndex} not occupied");
+                    return ErrorRes<PartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_NOT_PARTY_JOIN);
                 }
 
-                FreeSlot(member.MemberIndex);
+                if (member is PlayerPartyMember player)
+                {
+                    if (!changeRequester.IsLeader)
+                    {
+                        Logger.Error(client, $"[PartyId:{Id}][Kick] is not authorized (not leader)");
+                        return ErrorRes<PartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER);
+                    }
 
-                return member;
+                    FreeSlot(member.MemberIndex);
+                    Logger.Info(client, $"[PartyId:{Id}][Kick] kicked player {player.Client.Identity}");
+                    return ErrorRes<PartyMember>.Success(member);
+                }
+                
+                if (member is PawnPartyMember pawn)
+                {
+                    if (pawn.Character.Id != changeRequester.Character.Id)
+                    {
+                        Logger.Error(client, $"[PartyId:{Id}][Kick] is not authorized (not pawn owner)");
+                        return ErrorRes<PartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER);
+                    }
+
+                    FreeSlot(member.MemberIndex);
+                    Logger.Info(client, $"[PartyId:{Id}][Kick] kicked pawnId: {pawn.PawnId}");
+                    return ErrorRes<PartyMember>.Success(member);
+                }
+
+                Logger.Error(client, $"[PartyId:{Id}][Kick] unknown object {member}");
+                return ErrorRes<PartyMember>.Fail;
             }
         }
 
@@ -349,22 +394,25 @@ namespace Arrowgene.Ddon.GameServer.Party
                 PlayerPartyMember changeRequestMember = GetPlayerPartyMember(changeRequester);
                 if (changeRequestMember == null)
                 {
+                    Logger.Error(changeRequester, $"[PartyId:{Id}][ChangeLeader] has no slot");
                     return ErrorRes<PlayerPartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_NOT_PARTY_JOIN);
                 }
 
                 if (_leader == null)
                 {
-                    // no leader at the moment, allow change
+                    Logger.Info(changeRequester, $"[PartyId:{Id}][ChangeLeader] has no leader, allow to change");
                 }
                 else if (_leader != changeRequestMember)
                 {
-                    // person who requested change is not the leader
+                    Logger.Error(changeRequester, $"[PartyId:{Id}][ChangeLeader] is not authorized");
                     return ErrorRes<PlayerPartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER);
                 }
 
                 PlayerPartyMember newLeader = GetByCharacterId(leaderCharacterId);
                 if (newLeader == null)
                 {
+                    Logger.Error(changeRequester,
+                        $"[PartyId:{Id}][ChangeLeader] new leader characterId:{leaderCharacterId} has no slot");
                     return ErrorRes<PlayerPartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_NOT_PARTY_JOIN);
                 }
 

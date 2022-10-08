@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            PartyMember member = party.Kick(packet.Structure.MemberIndex);
+            PartyMember member = party.Kick(client, packet.Structure.MemberIndex);
             if (member == null)
             {
                 Logger.Error(client, "failed to kick");
