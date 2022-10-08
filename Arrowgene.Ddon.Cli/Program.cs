@@ -54,6 +54,7 @@ namespace Arrowgene.Ddon.Cli
             PacketId.S2C_CONNECTION_PING_RES,
             PacketId.C2L_PING_REQ,
             PacketId.L2C_PING_RES,
+            PacketId.S2C_LOBBY_LOBBY_DATA_MSG_NTC,
         };
 
         private static void Main(string[] args)

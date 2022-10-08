@@ -1,27 +1,10 @@
-using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataPartyContextPawn
     {
-        public CDataPartyContextPawn(Pawn pawn)
-        {
-            Base = new CDataContextBase(pawn.Character);
-            Base.PawnId = pawn.Character.Id;
-            Base.CharacterId = pawn.Owner.Character.Id;
-            Base.PawnType = pawn.PawnType;
-            Base.HmType = pawn.HmType;
-            PlayerInfo = new CDataContextPlayerInfo(pawn.Character);
-            PawnReactionList = pawn.PawnReactionList;
-            Unk0 = new byte[64];
-            SpSkillList = pawn.SpSkillList;
-            ResistInfo = new CDataContextResist(pawn.Character);
-            EditInfo = pawn.Character.EditInfo;
-        }
-
         public CDataPartyContextPawn()
         {
             Base = new CDataContextBase();

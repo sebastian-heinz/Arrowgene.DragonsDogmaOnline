@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer
             notice.CharacterBaseInfo.CharacterName.FirstName = response.FirstName;
             notice.CharacterBaseInfo.CharacterName.LastName = response.LastName;
             notice.CharacterBaseInfo.ClanName = response.ClanName;
-            foreach (IPartyMember client in Unique(response.Recipients))
+            foreach (GameClient client in Unique(response.Recipients))
             {
                 client.Send(notice);
             }

@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Rpc.Command;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
 using System.Text.Json;
+using Arrowgene.Ddon.GameServer.Chat.Log;
 using static Arrowgene.Ddon.GameServer.Chat.ChatManager;
 
 namespace Arrowgene.Ddon.Rpc.Web.Route

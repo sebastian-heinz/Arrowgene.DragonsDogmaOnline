@@ -29,8 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             // Data structure serializers
             Create(
-                new C2SActionSetPlayerActionHistoryReqElement.
-                    Serializer()); // TODO naming convention C2S -> not a packet
+                new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
             Create(new CData_772E80.Serializer());
             Create(new CDataSpSkill.Serializer());
             Create(new CDataAbilityLevelParam.Serializer());
@@ -48,6 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterMsgSetSerializer());
             Create(new CDataCharacterName.Serializer());
             Create(new CDataCharacterReleaseElement.Serializer());
+            Create(new CDataCharacterSearchParam.Serializer());
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommonU8.Serializer());
             Create(new CDataCommunicationShortCut.Serializer());
@@ -72,6 +72,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataArmorCrestData.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
             Create(new CDataEquipJobItem.Serializer());
+            Create(new CDataErrorMessage.Serializer());
             Create(new CDataFavoriteWarpPoint.Serializer());
             Create(new CDataGameServerListInfoSerializer());
             Create(new CDataGameTimeBaseInfo.Serializer());
@@ -153,27 +154,34 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LGetErrorMessageListReq.Serializer());
             Create(new C2LLoginReq.Serializer());
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
+
             Create(new C2SCharacterCharacterGoldenReviveReq.Serializer());
             Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
             Create(new C2SCharacterCharacterPointReviveReq.Serializer());
+            Create(new C2SCharacterCharacterSearchReq.Serializer());
             Create(new C2SCharacterPawnGoldenReviveReq.Serializer());
             Create(new C2SCharacterPawnPointReviveReq.Serializer());
             Create(new C2SCharacterSetOnlineStatusReq.Serializer());
+
             Create(new C2SClanClanBaseGetInfoReq.Serializer());
             Create(new C2SClanClanConciergeGetListReq.Serializer());
             Create(new C2SClanClanConciergeUpdateReq.Serializer());
             Create(new C2SClanClanPartnerPawnDataGetReq.Serializer());
             Create(new C2SClanGetFurnitureReq.Serializer());
             Create(new C2SClanSetFurnitureReq.Serializer());
+
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
             Create(new C2SConnectionMoveOutServerReq.Serializer());
+
             Create(new C2SContextGetSetContextReq.Serializer());
             Create(new C2SContextSetContextNtc.Serializer());
+
             Create(new C2SEquipGetCharacterEquipListReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnStayInnReq.Serializer());
+
             Create(new C2SInstanceEnemyGroupEntryNtc.Serializer());
             Create(new C2SInstanceEnemyGroupLeaveNtc.Serializer());
             Create(new C2SInstanceEnemyKillReq.Serializer());
@@ -185,6 +193,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstanceSetOmInstantKeyValueReq.Serializer());
             Create(new C2SInstanceTreasurePointGetCategoryListReq.Serializer());
             Create(new C2SInstanceTreasurePointGetListReq.Serializer());
+
             Create(new C2SItemUseBagItemReq.Serializer());
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobGetJobChangeListReq.Serializer());
@@ -197,14 +206,21 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
             Create(new C2SPartnerPawnPawnLikabilityRewardListGetReq.Serializer());
+
+            Create(new C2SPartyPartyBreakupReq.Serializer());
+            Create(new C2SPartyPartyChangeLeaderReq.Serializer());
             Create(new C2SPartyPartyCreateReq.Serializer());
+            Create(new C2SPartyPartyInviteCancelReq.Serializer());
             Create(new C2SPartyPartyInviteCharacterReq.Serializer());
             Create(new C2SPartyPartyInviteEntryReq.Serializer());
             Create(new C2SPartyPartyInvitePrepareAcceptReq.Serializer());
+            Create(new C2SPartyPartyInviteRefuseReq.Serializer());
             Create(new C2SPartyPartyJoinReq.Serializer());
             Create(new C2SPartyPartyLeaveReq.Serializer());
+            Create(new C2SPartyPartyMemberKickReq.Serializer());
             Create(new C2SPartySendBinaryMsgAllNtc.Serializer());
             Create(new C2SPartySendBinaryMsgNtc.Serializer());
+
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
             Create(new C2SPawnGetMypawnListReq.Serializer());
@@ -212,6 +228,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnGetRegisteredPawnDataReq.Serializer());
             Create(new C2SPawnJoinPartyMypawnReq.Serializer());
             Create(new C2SPawnTrainingGetPreparetionInfoToAdviceReq.Serializer());
+
             Create(new C2SQuestGetLotQuestListReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
             Create(new C2SQuestSendLeaderQuestOrderConditionInfoReq.Serializer());
@@ -258,11 +275,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CLoginRes.Serializer());
             Create(new L2CLoginWaitNumNtc.Serializer());
             Create(new L2CNextConnectionServerNtc.Serializer());
+
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
             Create(new S2CChangeCharacterEquipLobbyNotice.Serializer());
+
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
             Create(new S2CCharacterCharacterPointReviveRes.Serializer());
+            Create(new S2CCharacterCharacterSearchRes.Serializer());
             Create(new S2CCharacterCommunityCharacterStatusUpdateNtc.Serializer());
             Create(new S2CCharacterDecideCharacterIdRes.Serializer());
             Create(new S2CCharacterGetCharacterStatusNtc.Serializer());
@@ -270,6 +290,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterPawnGoldenReviveRes.Serializer());
             Create(new S2CCharacterPawnPointReviveRes.Serializer());
             Create(new S2CCharacterSetOnlineStatusRes.Serializer());
+
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
             Create(new S2CClanClanConciergeGetListRes.Serializer());
             Create(new S2CClanClanConciergeUpdateRes.Serializer());
@@ -325,8 +346,15 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
             Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
-            Create(new S2CPartyPartyCreateRes.Serailizer());
+
+            Create(new S2CPartyPartyBreakupNtc.Serializer());
+            Create(new S2CPartyPartyBreakupRes.Serializer());
+            Create(new S2CPartyPartyChangeLeaderNtc.Serializer());
+            Create(new S2CPartyPartyChangeLeaderRes.Serializer());
+            Create(new S2CPartyPartyCreateRes.Serializer());
             Create(new S2CPartyPartyInviteAcceptNtc.Serializer());
+            Create(new S2CPartyPartyInviteCancelNtc.Serializer());
+            Create(new S2CPartyPartyInviteCancelRes.Serializer());
             Create(new S2CPartyPartyInviteCharacterRes.Serializer());
             Create(new S2CPartyPartyInviteEntryNtc.Serializer());
             Create(new S2CPartyPartyInviteEntryRes.Serializer());
@@ -334,14 +362,18 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyInviteNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptNtc.Serializer());
             Create(new S2CPartyPartyInvitePrepareAcceptRes.Serializer());
+            Create(new S2CPartyPartyInviteRefuseRes.Serializer());
             Create(new S2CPartyPartyInviteSuccessNtc.Serializer());
             Create(new S2CPartyPartyJoinNtc.Serializer());
             Create(new S2CPartyPartyJoinRes.Serializer());
             Create(new S2CPartyPartyLeaveNtc.Serializer());
             Create(new S2CPartyPartyLeaveRes.Serializer());
+            Create(new S2CPartyPartyMemberKickNtc.Serializer());
+            Create(new S2CPartyPartyMemberKickRes.Serializer());
             Create(new S2CPartyPartyMemberSessionStatusNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgAllNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
+
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());
@@ -601,7 +633,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
         protected void WriteUInt64Array(IBuffer buffer, ulong[] values)
         {
-            for(int i=0; i<values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 WriteUInt64(buffer, values[i]);
             }
         }
@@ -614,9 +647,11 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected ulong[] ReadUInt64Array(IBuffer buffer, int length)
         {
             ulong[] values = new ulong[length];
-            for(int i=0; i<length; i++) {
+            for (int i = 0; i < length; i++)
+            {
                 values[i] = ReadUInt64(buffer);
             }
+
             return values;
         }
 
@@ -627,7 +662,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
         protected void WriteUInt32Array(IBuffer buffer, uint[] values)
         {
-            for(int i=0; i<values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 WriteUInt32(buffer, values[i]);
             }
         }
@@ -640,9 +676,11 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected uint[] ReadUInt32Array(IBuffer buffer, int length)
         {
             uint[] values = new uint[length];
-            for(int i=0; i<length; i++) {
+            for (int i = 0; i < length; i++)
+            {
                 values[i] = ReadUInt32(buffer);
             }
+
             return values;
         }
 
@@ -673,7 +711,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
         protected void WriteInt32Array(IBuffer buffer, int[] values)
         {
-            for(int i=0; i<values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 WriteInt32(buffer, values[i]);
             }
         }
@@ -686,9 +725,11 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected int[] ReadInt32Array(IBuffer buffer, int length)
         {
             int[] values = new int[length];
-            for(int i=0; i<length; i++) {
+            for (int i = 0; i < length; i++)
+            {
                 values[i] = ReadInt32(buffer);
             }
+
             return values;
         }
 
@@ -740,7 +781,7 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected void WriteMtString(IBuffer buffer, string str)
         {
             byte[] utf8 = Encoding.UTF8.GetBytes(str);
-            buffer.WriteUInt16((ushort) utf8.Length, Endianness.Big);
+            buffer.WriteUInt16((ushort)utf8.Length, Endianness.Big);
             buffer.WriteBytes(utf8);
         }
 
@@ -788,7 +829,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
         protected void WriteEntityList<TEntity>(IBuffer buffer, List<TEntity> entities) where TEntity : class, new()
         {
-            WriteUInt32(buffer, (uint) entities.Count);
+            WriteUInt32(buffer, (uint)entities.Count);
             for (int i = 0; i < entities.Count; i++)
             {
                 WriteEntity(buffer, entities[i]);

@@ -1,8 +1,8 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.GameServer;
-using static Arrowgene.Ddon.GameServer.Chat.ChatManager;
+using Arrowgene.Ddon.GameServer.Chat.Log;
 
 namespace Arrowgene.Ddon.Rpc.Command
 {
@@ -22,11 +22,11 @@ namespace Arrowgene.Ddon.Rpc.Command
 
         public IEnumerable<ChatMessageLogEntry> ChatMessageLog { get; set; }
 
-        private DateTime _since;
+        private readonly DateTime _since;
 
         public RpcCommandResult Execute(DdonGameServer gameServer)
         {
-            ChatMessageLog = gameServer.ChatManager.ChatMessageLog
+            ChatMessageLog = gameServer.ChatLogHandler.ChatMessageLog
                 .Where(entry => entry.DateTime >= _since);
             return new RpcCommandResult(this, true);
         }

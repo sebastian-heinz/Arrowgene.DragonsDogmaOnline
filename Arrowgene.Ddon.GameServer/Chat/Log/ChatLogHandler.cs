@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Log
@@ -10,17 +10,24 @@ namespace Arrowgene.Ddon.GameServer.Chat.Log
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ChatCommandHandler));
 
+        private readonly RollingList<ChatMessageLogEntry> _chatMessageLog;
+        
+        public ChatLogHandler()
+        {
+            _chatMessageLog = new RollingList<ChatMessageLogEntry>(100); // TODO: Move to server config
+        }
+        
+        public IEnumerable<ChatMessageLogEntry> ChatMessageLog
+        {
+            get => _chatMessageLog;
+        }
+        
         public void Handle(GameClient client, ChatMessage message, List<ChatResponse> responses)
         {
             Logger.Info(client, message.Message);
-        }
-
-        public void Handle(IPartyMember client, ChatMessage message, List<ChatResponse> responses)
-        {
-            if(client is GameClient)
-            {
-                Handle(client as GameClient, message, responses);
-            }
+            
+            ChatMessageLogEntry logEntry = new ChatMessageLogEntry(client.Character, message);
+            _chatMessageLog.Add(logEntry);
         }
     }
 }

@@ -1,0 +1,481 @@
+[2021-03-05 22:48:09.916] [info] Ando's MTFClassPropDump Started!
+[2021-03-05 22:48:09.916] [info] Image Base: 400000
+[2021-03-05 22:48:09.930] [warning] CoprocessorObject::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:09.933] [warning] MtAllocator::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:09.937] [warning] MtCollisionUtil::MtArrayElement::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:09.967] [warning] MtGeomConvex::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:09.977] [warning] MtGeometry::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.035] [warning] cAIPathTrace::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.071] [warning] cAISvPathFinding::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.101] [warning] cArea::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.106] [warning] cArmedMultiBonusInfo::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.121] [warning] cCamExParam::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.125] [warning] cCamExParamLockCore<cCamExParamAnim>::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.126] [warning] cCamExParamLockCore<cCamExParamMot>::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.136] [warning] cCamImpBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.158] [warning] cCharacterBattleContentKokuju::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.162] [warning] cCharacterEditPaletteBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.183] [warning] cContext::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.191] [warning] cControl::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.192] [warning] cControl::cMouseExecution::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.193] [warning] cControl::cMouseExecution::cMouseTouchInfo::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.210] [warning] cCycleQuestManagerBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.273] [warning] cDurableInfoBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.286] [warning] cElement::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.627] [warning] cEmActCaughtCancel::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.627] [warning] cEmActCaughtEscape::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.628] [warning] cEmActCaughtFailed::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.629] [warning] cEmActCaughtLoop::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.630] [warning] cEmActCaughtStart::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.631] [warning] cEmActCaughtSuccess::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.797] [warning] cGUIFontFilter::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.803] [warning] cGUIInstance::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.811] [warning] cGUIObj2D::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.819] [warning] cGUIObject::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.819] [warning] cGUIPageList::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.827] [warning] cGUIVariable::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.889] [warning] cHorizontalList::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:10.991] [warning] cHumanCustomBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.010] [warning] cInstancingCulling::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.012] [warning] cInstancingDirect::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.014] [warning] cInstancingDynamic::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.052] [warning] cJob01Custom08_AirBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.094] [warning] cJob02Custom12SuccessBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.348] [warning] cJobLeoCustom08_AirBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.388] [warning] cMatrix::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.538] [warning] cNetBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.547] [warning] cNetMsgBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.548] [warning] cNetMsgCtrlBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.549] [warning] cNetMsgGameBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.553] [warning] cNetMsgSetBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.555] [warning] cNetMsgToolBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.665] [warning] cParticleGenerator::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.683] [warning] cParticleManager::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.819] [warning] cQuestManagerBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.858] [warning] cQuestSvNotice::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.893] [warning] cQuestSvRequest::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.905] [warning] cRemoteProcedure::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.911] [warning] cResource::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.935] [warning] cSeedServerConnection::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.937] [warning] cSetInfo::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:11.980] [warning] cShadowPriorityState::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.021] [warning] cShlParamCompSelector::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.114] [warning] cState::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.163] [warning] cStateLive::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.182] [warning] cSystem::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.184] [warning] cTalkState::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.206] [warning] cTalkStateJobChange::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.221] [warning] cTalkStatePotionBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.229] [warning] cTalkStateShop::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.232] [warning] cTalkStateSkillAbility::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.233] [warning] cTalkStateSkillShop::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.248] [warning] cUnit::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.252] [warning] cUnitTest::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.256] [warning] cUnitTestCase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.259] [warning] cUseComp::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.262] [warning] cVerticalList::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.305] [warning] cZoneListener::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.318] [warning] cpArmedEnemyBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.320] [warning] cpBakeJoint::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.321] [warning] cpBlazeEnemyBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.335] [warning] cpEnemyBloodStain::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.338] [warning] cpEnemyObjectManage::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.343] [warning] cpErosionEnemyBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.386] [warning] cpObjCollisionBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.454] [warning] cpOmSpAreaChangeBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.494] [warning] nCollision::cAllocaterIntermediate::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.508] [warning] nDraw class, skipping: nDraw::Animation
+[2021-03-05 22:48:12.509] [warning] nDraw class, skipping: nDraw::BlendState
+[2021-03-05 22:48:12.512] [warning] nDraw class, skipping: nDraw::Buffer
+[2021-03-05 22:48:12.514] [warning] nDraw class, skipping: nDraw::CBuffer
+[2021-03-05 22:48:12.517] [warning] nDraw class, skipping: nDraw::CBufferSystem
+[2021-03-05 22:48:12.519] [warning] nDraw class, skipping: nDraw::CommandCache
+[2021-03-05 22:48:12.520] [warning] nDraw class, skipping: nDraw::DDMrlStdEstObj
+[2021-03-05 22:48:12.521] [warning] nDraw class, skipping: nDraw::DDMrlStdEstScr
+[2021-03-05 22:48:12.522] [warning] nDraw class, skipping: nDraw::DDMrlStdEstScrVtxAlpBld
+[2021-03-05 22:48:12.524] [warning] nDraw class, skipping: nDraw::DDMrlStdEstScrWater
+[2021-03-05 22:48:12.525] [warning] nDraw class, skipping: nDraw::DDMrlStdEstVfx
+[2021-03-05 22:48:12.527] [warning] nDraw class, skipping: nDraw::DepthStencilState
+[2021-03-05 22:48:12.528] [warning] nDraw class, skipping: nDraw::DepthStencilView
+[2021-03-05 22:48:12.528] [warning] nDraw class, skipping: nDraw::ExternalRegion
+[2021-03-05 22:48:12.529] [warning] nDraw class, skipping: nDraw::IndexBuffer
+[2021-03-05 22:48:12.535] [warning] nDraw class, skipping: nDraw::InputLayout
+[2021-03-05 22:48:12.536] [warning] nDraw class, skipping: nDraw::Material
+[2021-03-05 22:48:12.537] [warning] nDraw class, skipping: nDraw::MaterialConstant
+[2021-03-05 22:48:12.538] [warning] nDraw class, skipping: nDraw::MaterialNull
+[2021-03-05 22:48:12.541] [warning] nDraw class, skipping: nDraw::MaterialSSS
+[2021-03-05 22:48:12.542] [warning] nDraw class, skipping: nDraw::MaterialStd
+[2021-03-05 22:48:12.543] [warning] nDraw class, skipping: nDraw::MaterialStdDM
+[2021-03-05 22:48:12.544] [warning] nDraw class, skipping: nDraw::MaterialStdEst
+[2021-03-05 22:48:12.546] [warning] nDraw class, skipping: nDraw::MaterialStdPN
+[2021-03-05 22:48:12.549] [warning] nDraw class, skipping: nDraw::OcclusionQuery
+[2021-03-05 22:48:12.551] [warning] nDraw class, skipping: nDraw::Query
+[2021-03-05 22:48:12.552] [warning] nDraw class, skipping: nDraw::RasterizerState
+[2021-03-05 22:48:12.553] [warning] nDraw class, skipping: nDraw::RenderTargetView
+[2021-03-05 22:48:12.555] [warning] nDraw class, skipping: nDraw::Resource
+[2021-03-05 22:48:12.556] [warning] nDraw class, skipping: nDraw::SamplerState
+[2021-03-05 22:48:12.557] [warning] nDraw class, skipping: nDraw::Scene
+[2021-03-05 22:48:12.559] [warning] nDraw class, skipping: nDraw::Texture
+[2021-03-05 22:48:12.560] [warning] nDraw class, skipping: nDraw::VertexBuffer
+[2021-03-05 22:48:12.569] [warning] nGraphComponent::Base::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.587] [warning] nNetwork::Protocol::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.613] [error] Got error instanciating nNetwork::nSharedMemory2::Object
+[2021-03-05 22:48:12.614] [warning] nPhysics::Base::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.617] [warning] nPhysics::Constraint::Object::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.647] [warning] nSoundGenerator::cCategory::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.650] [warning] nSoundOcclusion::cCategory::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.651] [warning] nSoundTrigger::cCategory::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.665] [warning] nZone::cAllocaterIntermediate::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.707] [error] Got error instanciating rArchive::DecompressStream
+[2021-03-05 22:48:12.740] [warning] rConstraint::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.885] [warning] rMovie::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:12.974] [warning] rSoundSource::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.044] [warning] singleton class, skipping: sAI
+[2021-03-05 22:48:13.047] [warning] singleton class, skipping: sAIExt
+[2021-03-05 22:48:13.048] [warning] singleton class, skipping: sAIPawnNotice
+[2021-03-05 22:48:13.049] [warning] singleton class, skipping: sAIPawnSys
+[2021-03-05 22:48:13.050] [warning] singleton class, skipping: sAIPawnTalkMgr
+[2021-03-05 22:48:13.051] [warning] singleton class, skipping: sAIPawnTalkMgr::cAIPawnTalkInfo
+[2021-03-05 22:48:13.052] [warning] singleton class, skipping: sAIPawnTalkMgr::cAIPawnTalkWaitNode
+[2021-03-05 22:48:13.053] [warning] singleton class, skipping: sApp
+[2021-03-05 22:48:13.057] [warning] singleton class, skipping: sApp::Item
+[2021-03-05 22:48:13.058] [warning] singleton class, skipping: sAppExt
+[2021-03-05 22:48:13.059] [warning] singleton class, skipping: sArchiveManager
+[2021-03-05 22:48:13.060] [warning] singleton class, skipping: sArchiveManager2
+[2021-03-05 22:48:13.063] [warning] singleton class, skipping: sArea
+[2021-03-05 22:48:13.064] [warning] singleton class, skipping: sArea::AreaInfo
+[2021-03-05 22:48:13.065] [warning] singleton class, skipping: sAreaExt
+[2021-03-05 22:48:13.066] [warning] singleton class, skipping: sAreaHit
+[2021-03-05 22:48:13.068] [warning] singleton class, skipping: sBakingJointOrder
+[2021-03-05 22:48:13.069] [warning] singleton class, skipping: sBazaarManager
+[2021-03-05 22:48:13.069] [warning] singleton class, skipping: sBazaarManager::cBazaarCharListCtrl
+[2021-03-05 22:48:13.070] [warning] singleton class, skipping: sBazaarManager::cBazaarCharListData
+[2021-03-05 22:48:13.071] [warning] singleton class, skipping: sBazaarManager::cBazaarExhibitItemCtrl
+[2021-03-05 22:48:13.072] [warning] singleton class, skipping: sBazaarManager::cBazaarItemHistoryData
+[2021-03-05 22:48:13.074] [warning] singleton class, skipping: sBazaarManager::cBazaarItemInfoCtrl
+[2021-03-05 22:48:13.075] [warning] singleton class, skipping: sBazaarManager::cBazaarItemInfoData
+[2021-03-05 22:48:13.076] [warning] singleton class, skipping: sBazaarManager::cBazaarItemListCtrl
+[2021-03-05 22:48:13.079] [warning] singleton class, skipping: sBazaarManager::cBazaarItemListData
+[2021-03-05 22:48:13.080] [warning] singleton class, skipping: sBazaarManager::cBazaarItemPrimLimit
+[2021-03-05 22:48:13.081] [warning] singleton class, skipping: sBazaarManager::cBazaarProceedsCtrl
+[2021-03-05 22:48:13.081] [warning] singleton class, skipping: sBenchmark
+[2021-03-05 22:48:13.082] [warning] singleton class, skipping: sBenchmark::BenchmarkInfo
+[2021-03-05 22:48:13.083] [warning] singleton class, skipping: sBrowser
+[2021-03-05 22:48:13.084] [warning] singleton class, skipping: sCamera
+[2021-03-05 22:48:13.085] [warning] singleton class, skipping: sCamera::Viewport
+[2021-03-05 22:48:13.086] [warning] singleton class, skipping: sCameraExt
+[2021-03-05 22:48:13.087] [warning] singleton class, skipping: sCameraExt::cShellCamWk
+[2021-03-05 22:48:13.087] [warning] singleton class, skipping: sCapture
+[2021-03-05 22:48:13.088] [warning] singleton class, skipping: sChat
+[2021-03-05 22:48:13.089] [warning] singleton class, skipping: sClanKyoten
+[2021-03-05 22:48:13.090] [warning] singleton class, skipping: sClanKyoten::cClanEmblemTextureCtrl
+[2021-03-05 22:48:13.091] [warning] singleton class, skipping: sCollision
+[2021-03-05 22:48:13.092] [warning] singleton class, skipping: sCollision::ActiveNodeInfo
+[2021-03-05 22:48:13.096] [warning] singleton class, skipping: sCollision::Collider
+[2021-03-05 22:48:13.097] [warning] singleton class, skipping: sCollision::Collider::cNodeListArray
+[2021-03-05 22:48:13.097] [warning] singleton class, skipping: sCollision::ColliderActiveNodeInfo
+[2021-03-05 22:48:13.098] [warning] singleton class, skipping: sCollision::ColliderPassiveNodeInfo
+[2021-03-05 22:48:13.099] [warning] singleton class, skipping: sCollision::Node
+[2021-03-05 22:48:13.100] [warning] singleton class, skipping: sCollision::NodeList
+[2021-03-05 22:48:13.101] [warning] singleton class, skipping: sCollision::Param
+[2021-03-05 22:48:13.101] [warning] singleton class, skipping: sCollision::Sbc
+[2021-03-05 22:48:13.102] [warning] singleton class, skipping: sCollision::Sbc::Parts
+[2021-03-05 22:48:13.103] [warning] singleton class, skipping: sCollision::SbcInfo
+[2021-03-05 22:48:13.104] [warning] singleton class, skipping: sCollision::SbcInfoBase
+[2021-03-05 22:48:13.104] [warning] singleton class, skipping: sCollision::SbcLockInfo
+[2021-03-05 22:48:13.106] [warning] singleton class, skipping: sCollision::SbcObject
+[2021-03-05 22:48:13.106] [warning] singleton class, skipping: sCollision::SbcObject::cRegisterInfo
+[2021-03-05 22:48:13.108] [warning] singleton class, skipping: sCollision::ScrCollisionInfo
+[2021-03-05 22:48:13.111] [warning] singleton class, skipping: sCollision::ScrCollisionInfoAdjustPosition
+[2021-03-05 22:48:13.112] [warning] singleton class, skipping: sCollision::ScrCollisionInfoBase
+[2021-03-05 22:48:13.113] [warning] singleton class, skipping: sCollision::ScrCollisionInfoCastConvex
+[2021-03-05 22:48:13.114] [warning] singleton class, skipping: sCollision::ScrCollisionInfoFind
+[2021-03-05 22:48:13.114] [warning] singleton class, skipping: sCollision::ScrCollisionInfoFind4
+[2021-03-05 22:48:13.115] [warning] singleton class, skipping: sCollision::ScrCollisionInfoGetAreaPoly
+[2021-03-05 22:48:13.116] [warning] singleton class, skipping: sCollision::ScrCollisionInfoOriginal
+[2021-03-05 22:48:13.117] [warning] singleton class, skipping: sCollision::ScrCollisionInfoPreTraverse
+[2021-03-05 22:48:13.118] [warning] singleton class, skipping: sCollision::TriangleInfo
+[2021-03-05 22:48:13.119] [warning] singleton class, skipping: sCollision::cColArray
+[2021-03-05 22:48:13.120] [warning] singleton class, skipping: sCollision::cSbcArrayBP
+[2021-03-05 22:48:13.120] [warning] singleton class, skipping: sCollision::cSbcArrayBP::cDBVTMaster
+[2021-03-05 22:48:13.121] [warning] singleton class, skipping: sCollision::cSbcHeightField
+[2021-03-05 22:48:13.122] [warning] singleton class, skipping: sCollision::cSbcHeightField::cHeightField
+[2021-03-05 22:48:13.123] [warning] singleton class, skipping: sCollision::cSbcMoveMatrix
+[2021-03-05 22:48:13.126] [warning] singleton class, skipping: sCollision::cSbcMoveReserveInfo
+[2021-03-05 22:48:13.127] [warning] singleton class, skipping: sCollision::cSbcMoveReserveInfoAll
+[2021-03-05 22:48:13.128] [warning] singleton class, skipping: sCollision::cSbcMoveResetReserveInfo
+[2021-03-05 22:48:13.129] [warning] singleton class, skipping: sCollision::cSbcMoveResetReserveInfoAll
+[2021-03-05 22:48:13.129] [warning] singleton class, skipping: sCollision::cSbcRegistReserveInfo
+[2021-03-05 22:48:13.130] [warning] singleton class, skipping: sCollision::cSbcSkinMesh
+[2021-03-05 22:48:13.131] [warning] singleton class, skipping: sCollision::cSbcSkinMesh::cRegisterInfo
+[2021-03-05 22:48:13.132] [warning] singleton class, skipping: sCollision::cSystemInitializeParam
+[2021-03-05 22:48:13.134] [warning] singleton class, skipping: sCollisionExt
+[2021-03-05 22:48:13.134] [warning] singleton class, skipping: sContextManager
+[2021-03-05 22:48:13.135] [warning] singleton class, skipping: sContextManager::List
+[2021-03-05 22:48:13.136] [warning] singleton class, skipping: sControlManager
+[2021-03-05 22:48:13.137] [warning] singleton class, skipping: sControlManager::cDispPriorityData
+[2021-03-05 22:48:13.137] [warning] singleton class, skipping: sCoprocessor
+[2021-03-05 22:48:13.138] [warning] singleton class, skipping: sCraftManager
+[2021-03-05 22:48:13.142] [warning] singleton class, skipping: sCraftManager::CreateItem
+[2021-03-05 22:48:13.143] [warning] singleton class, skipping: sCraftManager::PawnCost
+[2021-03-05 22:48:13.143] [warning] singleton class, skipping: sCraftManager::RecordRecipe
+[2021-03-05 22:48:13.144] [warning] singleton class, skipping: sCraftManager::cAddExp
+[2021-03-05 22:48:13.145] [warning] singleton class, skipping: sCraftManager::cCraftFinishNotice
+[2021-03-05 22:48:13.146] [warning] singleton class, skipping: sCraftManager::cCraftIrReductionData
+[2021-03-05 22:48:13.147] [warning] singleton class, skipping: sCraftManager::cCraftPawnCtrl
+[2021-03-05 22:48:13.148] [warning] singleton class, skipping: sCraftManager::cCraftRankUp
+[2021-03-05 22:48:13.149] [warning] singleton class, skipping: sCraftManager::cCraftRecipeControl
+[2021-03-05 22:48:13.150] [warning] singleton class, skipping: sCraftManager::cCraftUpGrade
+[2021-03-05 22:48:13.150] [warning] singleton class, skipping: sCraftManager::cCraftUpGradeItemList
+[2021-03-05 22:48:13.151] [warning] singleton class, skipping: sCraftManager::cEnhancedNeedItemData
+[2021-03-05 22:48:13.152] [warning] singleton class, skipping: sCraftManager::cEnhancedPack
+[2021-03-05 22:48:13.153] [warning] singleton class, skipping: sCraftManager::cEnhancedPackData
+[2021-03-05 22:48:13.154] [warning] singleton class, skipping: sCraftManager::stRecipeRequest
+[2021-03-05 22:48:13.157] [info] Loaded singleton class: sDDOMain
+[2021-03-05 22:48:13.158] [warning] singleton class, skipping: sDialogBase
+[2021-03-05 22:48:13.159] [warning] singleton class, skipping: sDragonSkill
+[2021-03-05 22:48:13.160] [warning] singleton class, skipping: sEffect
+[2021-03-05 22:48:13.161] [warning] singleton class, skipping: sEffectExt
+[2021-03-05 22:48:13.162] [warning] singleton class, skipping: sEffectExt::cEfcCameraQuakeData
+[2021-03-05 22:48:13.162] [warning] singleton class, skipping: sEffectExt::cEfcCameraQuakeDataLarge
+[2021-03-05 22:48:13.163] [warning] singleton class, skipping: sEffectExt::cEfcCameraQuakeDataMiddle
+[2021-03-05 22:48:13.164] [warning] singleton class, skipping: sEffectExt::cEfcCameraQuakeDataSmall
+[2021-03-05 22:48:13.165] [warning] singleton class, skipping: sEffectExt::cZoneEffectUnit
+[2021-03-05 22:48:13.166] [warning] singleton class, skipping: sEffectExt::cZoneEffectUnitLayout
+[2021-03-05 22:48:13.167] [warning] singleton class, skipping: sEffectExt::cZoneEpvStack
+[2021-03-05 22:48:13.167] [warning] singleton class, skipping: sEnemyManager
+[2021-03-05 22:48:13.168] [warning] singleton class, skipping: sEnvMapManager
+[2021-03-05 22:48:13.172] [warning] singleton class, skipping: sEnvMapManager::cManageEnvMapBase
+[2021-03-05 22:48:13.175] [warning] singleton class, skipping: sEnvMapManager::cManageEnvMapField
+[2021-03-05 22:48:13.176] [warning] singleton class, skipping: sEventManager
+[2021-03-05 22:48:13.179] [warning] singleton class, skipping: sEventManager::cNpcId
+[2021-03-05 22:48:13.180] [warning] singleton class, skipping: sFlag
+[2021-03-05 22:48:13.182] [warning] singleton class, skipping: sGUI
+[2021-03-05 22:48:13.183] [warning] singleton class, skipping: sGUIExt
+[2021-03-05 22:48:13.184] [warning] singleton class, skipping: sGUIExt::cChat
+[2021-03-05 22:48:13.184] [warning] singleton class, skipping: sGUIExt::cChatMacro
+[2021-03-05 22:48:13.187] [warning] singleton class, skipping: sGUIExt::cDivItemIcon
+[2021-03-05 22:48:13.188] [warning] singleton class, skipping: sGUIExt::cDlTicket
+[2021-03-05 22:48:13.189] [warning] singleton class, skipping: sGUIExt::cItemTmp
+[2021-03-05 22:48:13.190] [warning] singleton class, skipping: sGUIExt::cJpegDecode
+[2021-03-05 22:48:13.191] [warning] singleton class, skipping: sGUIExt::cMap
+[2021-03-05 22:48:13.192] [warning] singleton class, skipping: sGUIExt::cMap::cMarkerSave
+[2021-03-05 22:48:13.193] [warning] singleton class, skipping: sGUIExt::cMousePointer
+[2021-03-05 22:48:13.194] [warning] singleton class, skipping: sGUIExt::cPrioHandle
+[2021-03-05 22:48:13.194] [warning] singleton class, skipping: sGUIExt::cQueueAnnounceAfterParam
+[2021-03-05 22:48:13.196] [warning] singleton class, skipping: sGUIExt::cRatingEmoteInfo
+[2021-03-05 22:48:13.197] [warning] singleton class, skipping: sGUIExt::cSCM
+[2021-03-05 22:48:13.197] [warning] singleton class, skipping: sGUIExt::cSEPlayer
+[2021-03-05 22:48:13.198] [warning] singleton class, skipping: sGUIExt::cSameWordInfo
+[2021-03-05 22:48:13.199] [warning] singleton class, skipping: sGUIExt::cWordInfo
+[2021-03-05 22:48:13.200] [warning] singleton class, skipping: sGame
+[2021-03-05 22:48:13.204] [warning] singleton class, skipping: sGeneralPoint
+[2021-03-05 22:48:13.205] [warning] singleton class, skipping: sGpuParticle
+[2021-03-05 22:48:13.206] [warning] singleton class, skipping: sGrass
+[2021-03-05 22:48:13.207] [warning] singleton class, skipping: sGuideExt
+[2021-03-05 22:48:13.208] [warning] singleton class, skipping: sHttpClient
+[2021-03-05 22:48:13.209] [warning] singleton class, skipping: sHttpPatch
+[2021-03-05 22:48:13.210] [warning] singleton class, skipping: sInputManager
+[2021-03-05 22:48:13.211] [warning] singleton class, skipping: sInputText
+[2021-03-05 22:48:13.212] [warning] singleton class, skipping: sInputTextWin
+[2021-03-05 22:48:13.213] [warning] singleton class, skipping: sItemManager
+[2021-03-05 22:48:13.214] [warning] singleton class, skipping: sItemManager::cChangeJob
+[2021-03-05 22:48:13.214] [warning] singleton class, skipping: sItemManager::cEquipList
+[2021-03-05 22:48:13.217] [warning] singleton class, skipping: sItemManager::cEquipList::cEquipData
+[2021-03-05 22:48:13.218] [warning] singleton class, skipping: sItemManager::cEquipStatusUpdate
+[2021-03-05 22:48:13.220] [warning] singleton class, skipping: sItemManager::cFilterStorage
+[2021-03-05 22:48:13.220] [warning] singleton class, skipping: sItemManager::cGPDetail
+[2021-03-05 22:48:13.221] [warning] singleton class, skipping: sItemManager::cHideEquip
+[2021-03-05 22:48:13.222] [warning] singleton class, skipping: sItemManager::cItemBag
+[2021-03-05 22:48:13.223] [warning] singleton class, skipping: sItemManager::cItemBag::cAreaMasterSuppyData
+[2021-03-05 22:48:13.225] [warning] singleton class, skipping: sItemManager::cItemBag::cCraftColorChange
+[2021-03-05 22:48:13.225] [warning] singleton class, skipping: sItemManager::cItemBag::cCraftQualityUpData
+[2021-03-05 22:48:13.226] [warning] singleton class, skipping: sItemManager::cItemBag::cCraftStartData
+[2021-03-05 22:48:13.227] [warning] singleton class, skipping: sItemManager::cItemBag::cCraftSupportPawnData
+[2021-03-05 22:48:13.228] [warning] singleton class, skipping: sItemManager::cItemBag::cCraftUpGradeData
+[2021-03-05 22:48:13.229] [warning] singleton class, skipping: sItemManager::cItemBag::cDeliverData
+[2021-03-05 22:48:13.229] [warning] singleton class, skipping: sItemManager::cItemBag::cGatheringItemData
+[2021-03-05 22:48:13.230] [warning] singleton class, skipping: sItemManager::cItemBag::cGetItemListData
+[2021-03-05 22:48:13.234] [warning] singleton class, skipping: sItemManager::cItemList
+[2021-03-05 22:48:13.236] [warning] singleton class, skipping: sItemManager::cItemParamList
+[2021-03-05 22:48:13.237] [warning] singleton class, skipping: sItemManager::cItemTypeData
+[2021-03-05 22:48:13.238] [warning] singleton class, skipping: sItemManager::cSortParam
+[2021-03-05 22:48:13.239] [warning] singleton class, skipping: sItemManager::cStorage
+[2021-03-05 22:48:13.241] [warning] singleton class, skipping: sItemManager::stRequest
+[2021-03-05 22:48:13.242] [warning] singleton class, skipping: sKeyboard
+[2021-03-05 22:48:13.243] [warning] singleton class, skipping: sKeyboardExt
+[2021-03-05 22:48:13.243] [warning] singleton class, skipping: sKeyboardExt::cKeyArray
+[2021-03-05 22:48:13.244] [warning] singleton class, skipping: sKeyboardInterface
+[2021-03-05 22:48:13.245] [warning] singleton class, skipping: sLightExt
+[2021-03-05 22:48:13.246] [warning] singleton class, skipping: sLinkageEnemy
+[2021-03-05 22:48:13.249] [warning] singleton class, skipping: sLinkageEnemy::cLinkageEnemy
+[2021-03-05 22:48:13.252] [warning] singleton class, skipping: sLinkageEnemy::cLinkageEnemy::cLinkageEnemyNotice
+[2021-03-05 22:48:13.254] [warning] singleton class, skipping: sLockOnManager
+[2021-03-05 22:48:13.256] [warning] singleton class, skipping: sMain
+[2021-03-05 22:48:13.258] [warning] singleton class, skipping: sMarker
+[2021-03-05 22:48:13.259] [warning] singleton class, skipping: sMarker::cLoadResource
+[2021-03-05 22:48:13.261] [warning] singleton class, skipping: sMenu
+[2021-03-05 22:48:13.265] [warning] singleton class, skipping: sMouse
+[2021-03-05 22:48:13.266] [warning] singleton class, skipping: sMouseExt
+[2021-03-05 22:48:13.268] [warning] singleton class, skipping: sMyRoom
+[2021-03-05 22:48:13.269] [warning] singleton class, skipping: sNetwork
+[2021-03-05 22:48:13.270] [warning] singleton class, skipping: sNetworkExt
+[2021-03-05 22:48:13.272] [warning] singleton class, skipping: sNpcManager
+[2021-03-05 22:48:13.274] [warning] singleton class, skipping: sNpcManager::cAttendDamageInfo
+[2021-03-05 22:48:13.275] [warning] singleton class, skipping: sObjCollision
+[2021-03-05 22:48:13.276] [warning] singleton class, skipping: sObjCollision::cParamInfo<rAttackParam>
+[2021-03-05 22:48:13.278] [warning] singleton class, skipping: sObjCollision::cParamInfo<rCollNode>
+[2021-03-05 22:48:13.282] [warning] singleton class, skipping: sObjCollision::cParamInfoManager<rAttackParam>
+[2021-03-05 22:48:13.283] [warning] singleton class, skipping: sObjCollision::cParamInfoManager<rCollNode>
+[2021-03-05 22:48:13.284] [warning] singleton class, skipping: sObjCondition
+[2021-03-05 22:48:13.286] [warning] singleton class, skipping: sOccluder
+[2021-03-05 22:48:13.287] [warning] singleton class, skipping: sOccluderEx
+[2021-03-05 22:48:13.288] [warning] singleton class, skipping: sOccluderEx::Area
+[2021-03-05 22:48:13.289] [warning] singleton class, skipping: sOccluderEx::Shape
+[2021-03-05 22:48:13.290] [warning] singleton class, skipping: sOmManager
+[2021-03-05 22:48:13.291] [warning] singleton class, skipping: sOmManager::cInsValue
+[2021-03-05 22:48:13.292] [warning] singleton class, skipping: sOmManager::cInsValueSeq
+[2021-03-05 22:48:13.293] [warning] singleton class, skipping: sOmManager::cOmArcLoader
+[2021-03-05 22:48:13.294] [warning] singleton class, skipping: sOmManager::cRegOmDTI
+[2021-03-05 22:48:13.298] [warning] singleton class, skipping: sOmManager::cRegOmEtc
+[2021-03-05 22:48:13.299] [warning] singleton class, skipping: sOmManager::cRegOmMapIcon
+[2021-03-05 22:48:13.300] [warning] singleton class, skipping: sOmManager::cRegOmObjCol
+[2021-03-05 22:48:13.301] [warning] singleton class, skipping: sOmManager::cRegOmS32
+[2021-03-05 22:48:13.303] [warning] singleton class, skipping: sPad
+[2021-03-05 22:48:13.304] [warning] singleton class, skipping: sPad::Map
+[2021-03-05 22:48:13.305] [warning] singleton class, skipping: sPad::Pad
+[2021-03-05 22:48:13.307] [warning] singleton class, skipping: sPadExt
+[2021-03-05 22:48:13.309] [warning] singleton class, skipping: sPadExt::cPadInfo
+[2021-03-05 22:48:13.310] [warning] singleton class, skipping: sPhysicsExt
+[2021-03-05 22:48:13.313] [warning] singleton class, skipping: sPlatformUtil
+[2021-03-05 22:48:13.315] [warning] singleton class, skipping: sPlayerManager
+[2021-03-05 22:48:13.316] [warning] singleton class, skipping: sPrimitive
+[2021-03-05 22:48:13.317] [warning] singleton class, skipping: sQuestManagerExt
+[2021-03-05 22:48:13.318] [warning] singleton class, skipping: sQuestManagerExt::cCallQuestAnnounce
+[2021-03-05 22:48:13.318] [warning] singleton class, skipping: sQuestManagerExt::cClearedQuestInfo
+[2021-03-05 22:48:13.319] [warning] singleton class, skipping: sQuestManagerExt::cFunctionInfo
+[2021-03-05 22:48:13.320] [warning] singleton class, skipping: sQuestManagerExt::cKilledEnemy
+[2021-03-05 22:48:13.321] [warning] singleton class, skipping: sQuestManagerExt::cManagerInfo
+[2021-03-05 22:48:13.322] [warning] singleton class, skipping: sQuestManagerExt::cSayInfo
+[2021-03-05 22:48:13.323] [warning] singleton class, skipping: sQuestManagerExt::cSystemLogNode
+[2021-03-05 22:48:13.324] [warning] singleton class, skipping: sQuestManagerExt::cTimer
+[2021-03-05 22:48:13.324] [warning] singleton class, skipping: sQuestManagerExt::cTouchOmInfo
+[2021-03-05 22:48:13.325] [warning] singleton class, skipping: sQuestManagerExt::cUnreleasedArea
+[2021-03-05 22:48:13.326] [warning] singleton class, skipping: sQuestManagerExt::cWarMissionGauge
+[2021-03-05 22:48:13.331] [warning] singleton class, skipping: sRemoteProcedure
+[2021-03-05 22:48:13.332] [warning] singleton class, skipping: sRemoteProcedure::cTemporaryRemoteCall
+[2021-03-05 22:48:13.333] [warning] singleton class, skipping: sRemoteProcedureExt
+[2021-03-05 22:48:13.334] [warning] singleton class, skipping: sRender
+[2021-03-05 22:48:13.334] [warning] singleton class, skipping: sRenderExt
+[2021-03-05 22:48:13.335] [warning] singleton class, skipping: sResource
+[2021-03-05 22:48:13.336] [warning] singleton class, skipping: sResource::DecompressStream
+[2021-03-05 22:48:13.337] [warning] singleton class, skipping: sResource::RemoteInfo
+[2021-03-05 22:48:13.338] [warning] singleton class, skipping: sResource::TypeInfo
+[2021-03-05 22:48:13.339] [warning] singleton class, skipping: sResourceExt
+[2021-03-05 22:48:13.339] [warning] singleton class, skipping: sReward
+[2021-03-05 22:48:13.341] [warning] singleton class, skipping: sReward::cAvailableReward
+[2021-03-05 22:48:13.342] [warning] singleton class, skipping: sReward::cReleaseReward
+[2021-03-05 22:48:13.345] [warning] singleton class, skipping: sReward::cReleaseRewardEdit
+[2021-03-05 22:48:13.346] [warning] singleton class, skipping: sSIECommerceDialog
+[2021-03-05 22:48:13.347] [warning] singleton class, skipping: sSavedata
+[2021-03-05 22:48:13.348] [warning] singleton class, skipping: sSavedataExt
+[2021-03-05 22:48:13.349] [warning] singleton class, skipping: sScenario
+[2021-03-05 22:48:13.350] [warning] singleton class, skipping: sScene
+[2021-03-05 22:48:13.351] [warning] singleton class, skipping: sScene::TextureInfo
+[2021-03-05 22:48:13.352] [warning] singleton class, skipping: sSceneExt
+[2021-03-05 22:48:13.352] [warning] singleton class, skipping: sScreenShot
+[2021-03-05 22:48:13.353] [warning] singleton class, skipping: sSetManager
+[2021-03-05 22:48:13.354] [warning] singleton class, skipping: sSetManager::CreateContextParam
+[2021-03-05 22:48:13.355] [warning] singleton class, skipping: sSetManager::SetMgrFlag
+[2021-03-05 22:48:13.356] [warning] singleton class, skipping: sSetManager::cEnemyDie
+[2021-03-05 22:48:13.356] [warning] singleton class, skipping: sSetManager::cLotMgr<cLayoutSetEnemy>
+[2021-03-05 22:48:13.360] [warning] singleton class, skipping: sSetManager::cLotMgr<cLayoutSetGeneralPoint>
+[2021-03-05 22:48:13.361] [warning] singleton class, skipping: sSetManager::cLotMgr<cLayoutSetNpc>
+[2021-03-05 22:48:13.362] [warning] singleton class, skipping: sSetManager::cLotMgr<cLayoutSetOm>
+[2021-03-05 22:48:13.363] [warning] singleton class, skipping: sSetManager::cUnitData
+[2021-03-05 22:48:13.364] [warning] singleton class, skipping: sShader2
+[2021-03-05 22:48:13.365] [warning] singleton class, skipping: sShadow
+[2021-03-05 22:48:13.366] [warning] singleton class, skipping: sShadow::Node
+[2021-03-05 22:48:13.367] [warning] singleton class, skipping: sShadow::Resource
+[2021-03-05 22:48:13.368] [warning] singleton class, skipping: sShadow::ResourceGroup
+[2021-03-05 22:48:13.368] [warning] singleton class, skipping: sShadow::ViewConsistentResource
+[2021-03-05 22:48:13.369] [warning] singleton class, skipping: sShlManager
+[2021-03-05 22:48:13.370] [warning] singleton class, skipping: sShlManager::cShlLimitCnt
+[2021-03-05 22:48:13.371] [warning] singleton class, skipping: sShlManager::cShlLimitCtrl
+[2021-03-05 22:48:13.372] [warning] singleton class, skipping: sSiteManager
+[2021-03-05 22:48:13.373] [warning] singleton class, skipping: sSiteManager::cSiteLoader
+[2021-03-05 22:48:13.377] [warning] singleton class, skipping: sSkeletonTool
+[2021-03-05 22:48:13.378] [warning] singleton class, skipping: sSound
+[2021-03-05 22:48:13.379] [warning] singleton class, skipping: sSound::NativeSystemXAudio2::WinProperty
+[2021-03-05 22:48:13.379] [warning] singleton class, skipping: sSoundExt
+[2021-03-05 22:48:13.380] [warning] singleton class, skipping: sSoundExt::cNonStopStream
+[2021-03-05 22:48:13.381] [warning] singleton class, skipping: sSoundExt::cVoiceRequest
+[2021-03-05 22:48:13.382] [warning] singleton class, skipping: sSoundManager
+[2021-03-05 22:48:13.383] [warning] singleton class, skipping: sSoundManager::cEmSetState
+[2021-03-05 22:48:13.384] [warning] singleton class, skipping: sSyncPoint
+[2021-03-05 22:48:13.385] [warning] singleton class, skipping: sSyncPoint::syncPointElement
+[2021-03-05 22:48:13.385] [warning] singleton class, skipping: sTalkManager
+[2021-03-05 22:48:13.386] [warning] singleton class, skipping: sTalkManager::cTellQueueNode
+[2021-03-05 22:48:13.387] [warning] singleton class, skipping: sTool
+[2021-03-05 22:48:13.388] [warning] singleton class, skipping: sToolBase
+[2021-03-05 22:48:13.391] [warning] singleton class, skipping: sToolExt
+[2021-03-05 22:48:13.391] [warning] singleton class, skipping: sTutorialGuide
+[2021-03-05 22:48:13.392] [warning] singleton class, skipping: sTutorialGuide::cOpenGuideNo
+[2021-03-05 22:48:13.393] [warning] singleton class, skipping: sUnit
+[2021-03-05 22:48:13.394] [warning] singleton class, skipping: sUnit::MoveLine
+[2021-03-05 22:48:13.395] [warning] singleton class, skipping: sUnit::UnitGroup
+[2021-03-05 22:48:13.396] [warning] singleton class, skipping: sUnitExt
+[2021-03-05 22:48:13.397] [warning] singleton class, skipping: sUnitManager
+[2021-03-05 22:48:13.397] [warning] singleton class, skipping: sUnitManager::cLODDistData
+[2021-03-05 22:48:13.398] [warning] singleton class, skipping: sVibration
+[2021-03-05 22:48:13.399] [warning] singleton class, skipping: sVibrationExt
+[2021-03-05 22:48:13.400] [warning] singleton class, skipping: sWeatherManager
+[2021-03-05 22:48:13.401] [warning] singleton class, skipping: sWorkRate
+[2021-03-05 22:48:13.402] [warning] singleton class, skipping: sWorldOffset
+[2021-03-05 22:48:13.403] [warning] singleton class, skipping: sZone
+[2021-03-05 22:48:13.404] [warning] singleton class, skipping: sZoneStatus
+[2021-03-05 22:48:13.407] [warning] singleton class, skipping: sZoneUnitCtrl
+[2021-03-05 22:48:13.418] [warning] uBaseEffect::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.426] [warning] uCamera::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.429] [warning] uCharacterEditBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.455] [warning] uConstraint::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.458] [warning] uCoord::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.549] [warning] uEmDarkRimStone::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.554] [warning] uEnemy::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.556] [warning] uFilter::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.558] [warning] uFog::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.588] [warning] uGUIBase::cKeepInScreen::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.589] [warning] uGUIBase::cMaskScroll::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.589] [warning] uGUIBase::cMsgAnalyzer::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.626] [warning] uGUIBaseExt::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.627] [warning] uGUIBaseExtHud::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.628] [warning] uGUIBaseExtWindow::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.660] [warning] uGUICharacterEdit::cVerticalListEx::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.669] [warning] uGUIClanEditCommon::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.740] [warning] uGUIGPShop::cScrollStatusDispBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.795] [warning] uGUIItemBase01::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.822] [warning] uGUIKeyConfig::cKeyItem::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.873] [warning] uGUIPartyList::cGUIPageListCommon::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.887] [warning] uGUIPopBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.932] [warning] uGUIRimStone::cGUIPageListCommon::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.945] [warning] uGUIServerUIBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.965] [warning] uGUIUseItemBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.967] [warning] uGUIsMenuBase::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.968] [warning] uGeometry2Base::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.975] [warning] Skipping excluded class: uGraphPatch
+[2021-03-05 22:48:13.977] [warning] uGrassEffect::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.978] [warning] uGrassMark::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.980] [warning] uGrassWind::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:13.995] [warning] uLight::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:14.021] [warning] uModel::Constraint::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:14.031] [warning] uMultiFilter::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:14.044] [warning] uPhysics::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:14.062] [warning] uScrollCollision::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:14.066] [warning] uShadow::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:14.115] [warning] uShlKeepOwnerLog::DTI->NewInstance() == nullptr
+[2021-03-05 22:48:14.174] [info] Starting file dump.
+[2021-03-05 22:48:15.316] [info] Done dumping classes!
+[2021-03-05 22:48:15.403] [info] Starting python tuple list file dump.
+[2021-03-05 22:48:16.416] [info] Done dumping classes!
+[2021-03-05 22:48:16.423] [info] Dumping resource information classes!
+[2021-03-05 22:48:16.426] [info] Done dumping resource information classes!

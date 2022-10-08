@@ -1,6 +1,5 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -9,11 +8,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_NTC;
 
-        public S2CContextGetPartyMypawnContextNtc(Pawn pawn)
-        {
-            PawnId = pawn.Character.Id;
-            Context = new CDataPartyContextPawn(pawn);
-        }
 
         public S2CContextGetPartyMypawnContextNtc()
         {
@@ -38,7 +32,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Context = ReadEntity<CDataPartyContextPawn>(buffer);
                 return obj;
             }
-
         }
     }
 }

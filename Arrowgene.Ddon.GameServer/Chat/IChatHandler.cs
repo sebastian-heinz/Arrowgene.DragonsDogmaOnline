@@ -5,6 +5,6 @@ namespace Arrowgene.Ddon.GameServer.Chat
 {
     public interface IChatHandler
     {
-        void Handle(IPartyMember client, ChatMessage message, List<ChatResponse> responses);
+        void Handle(GameClient client, ChatMessage message, List<ChatResponse> responses);
     }
 }
