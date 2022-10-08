@@ -15,8 +15,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+        
+        /// <summary>
+        /// There seems to be no way to
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="packet"></param>
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteCancelReq> packet)
         {
+            Logger.Info(client, $"C2SPartyPartyInviteCancelReq -> ServerId:{packet.Structure.ServerId} PartyId:{packet.Structure.PartyId}");
             S2CPartyPartyInviteCancelRes res = new S2CPartyPartyInviteCancelRes();
             
             PartyGroup party = client.Party;
