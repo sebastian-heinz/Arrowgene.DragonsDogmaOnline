@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {       
-            //S2CCharacterDecideCharacterIdRes pcap = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
+            S2CCharacterDecideCharacterIdRes pcap = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.Id;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
@@ -59,6 +59,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Value = 42069
                 }
             };
+            res.Unk0 = pcap.Unk0; // Commenting this makes tons of tutorials pop up
+            
             client.Send(res);
             
             // Unlocks menu options such as inventory, warping, etc.
