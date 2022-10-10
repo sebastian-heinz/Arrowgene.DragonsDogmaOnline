@@ -141,12 +141,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataUpdateMatchingProfileInfo.Serializer());
             Create(new CDataUpdateWalletPoint.Serializer());
             Create(new CDataURLInfoSerializer());
+            Create(new CDataWalletPoint.Serializer());
             Create(new CDataWarpPoint.Serializer());
             Create(new CDataWeatherLoop.Serializer());
             Create(new CDataWeatherSchedule.Serializer());
             Create(new CDataStageLayoutId.Serializer());
             Create(new UnkownCharacterData0Serializer());
-            Create(new UnkownCharacterData1Serializer());
 
             // Packet structure serializers
             Create(new C2LCreateCharacterDataReq.Serializer());
