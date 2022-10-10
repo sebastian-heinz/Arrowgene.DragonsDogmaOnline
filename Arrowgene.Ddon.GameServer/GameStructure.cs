@@ -11,7 +11,7 @@ public static class GameStructure
         Character character)
     {
         CDataCommunityCharacterBaseInfo(cDataCharacterListElement.CommunityCharacterBaseInfo, character);
-        cDataCharacterListElement.ServerId = 0;
+        cDataCharacterListElement.ServerId = character.Server.Id;
         cDataCharacterListElement.OnlineStatus = 0;
         CDataJobBaseInfo(cDataCharacterListElement.CurrentJobBaseInfo, character.Job,
             (byte)character.ActiveCharacterJobData.Lv);

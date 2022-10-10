@@ -1,6 +1,8 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -33,37 +35,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
         //              S2CContextGetLobbyPlayerContextNtc to the new party member, it should maybe also be sent to all members
         //              More stuff to determine
         // TODO: Figure out just how much packets/data within those packets we can do without while keeping everything functioning.
-        // TODO PartyGorup need invite management
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteCharacterReq> packet)
         {
+            S2CPartyPartyInviteCharacterRes res = new S2CPartyPartyInviteCharacterRes();
+
             GameClient invitedClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
             if (invitedClient == null)
             {
-                Logger.Error(client,
-                    $"Could not locate CharacterId:{packet.Structure.CharacterId} for party invitation");
-                // TODO error response
+                Logger.Error(client, $"not found CharacterId:{packet.Structure.CharacterId} for party invitation");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
                 return;
             }
 
             PartyGroup party = client.Party;
             if (party == null)
             {
-                Logger.Error(client,
-                    $"can not invite, as he is not inside party");
-                // TODO error response
+                Logger.Error(client, "can not invite (client.Party == null)");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
                 return;
             }
 
-            PlayerPartyMember invitedMember = party.Invite(invitedClient, client);
-            if (invitedMember == null)
+            ErrorRes<PlayerPartyMember> invitedMember = party.Invite(invitedClient, client);
+            if (invitedMember.HasError)
             {
-                Logger.Error(client,
-                    $"could not invite {invitedClient.Identity}, party did not accept invitiation");
-                // TODO error response
+                Logger.Error(client, $"could not invite {invitedClient.Identity}");
+                res.Error = (uint)invitedMember.ErrorCode;
+                client.Send(res);
                 return;
             }
-
-            Logger.Info(client, $"Invited Client:{invitedClient.Identity} to PartyId:{party.Id}");
 
             S2CPartyPartyInviteNtc ntc = new S2CPartyPartyInviteNtc();
             ntc.TimeoutSec = PartyManager.InvitationTimeoutSec;
@@ -73,15 +74,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 ntc.PartyListInfo.MemberList.Add(member.GetCDataPartyMember());
             }
+
             invitedClient.Send(ntc);
 
 
-            S2CPartyPartyInviteCharacterRes response = new S2CPartyPartyInviteCharacterRes();
-            response.TimeoutSec = PartyManager.InvitationTimeoutSec;
-            response.Info.PartyId = party.Id;
-            response.Info.ServerId = Server.AssetRepository.ServerList[0].Id;
-            response.Info.MemberList.Add(invitedMember.GetCDataPartyMember());
-            client.Send(response);
+            res.TimeoutSec = PartyManager.InvitationTimeoutSec;
+            res.Info.PartyId = party.Id;
+            res.Info.ServerId = Server.AssetRepository.ServerList[0].Id;
+            res.Info.MemberList.Add(invitedMember.Value.GetCDataPartyMember());
+            client.Send(res);
+
+            Logger.Info(client, $"Invited Client:{invitedClient.Identity} to PartyId:{party.Id}");
         }
     }
 }

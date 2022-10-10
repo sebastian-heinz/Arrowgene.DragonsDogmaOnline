@@ -1,6 +1,8 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -16,40 +18,38 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyJoinReq> packet)
         {
+            S2CPartyPartyJoinRes res = new S2CPartyPartyJoinRes();
+
             PartyGroup party = Server.PartyManager.GetParty(packet.Structure.PartyId);
             if (party == null)
             {
-                Logger.Error(client, "Could not join party, does not exist");
-                // todo return error
+                Logger.Error(client, "failed to find party (Server.PartyManager.GetParty() == null)");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
                 return;
             }
 
-            PartyMember partyMember = party.Join(client);
-            if (partyMember == null)
+            ErrorRes<PlayerPartyMember> join = party.Join(client);
+            if (join.HasError)
             {
-                Logger.Error(client, "Could not join party, its full");
-                // todo return error
+                Logger.Error(client, "failed to join party");
+                res.Error = (uint)join.ErrorCode;
+                client.Send(res);
                 return;
             }
-            
-            Logger.Info(client, $"Joined PartyId:{party.Id}");
 
+            res.PartyId = party.Id;
+            client.Send(res);
 
-            S2CPartyPartyJoinRes response = new S2CPartyPartyJoinRes();
-            response.PartyId = party.Id;
-            client.Send(response);
-
-            // Send updated member list to all party members
-            S2CPartyPartyJoinNtc partyJoinNtc = new S2CPartyPartyJoinNtc();
-            partyJoinNtc.HostCharacterId = party.Host.Character.Id;
-            partyJoinNtc.LeaderCharacterId = party.Leader.Character.Id;
-            // Send party player context NTCs to the new member
+            S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
+            ntc.HostCharacterId = party.Host.Character.Id;
+            ntc.LeaderCharacterId = party.Leader.Character.Id;
             foreach (PartyMember member in party.Members)
             {
-                partyJoinNtc.PartyMembers.Add(member.GetCDataPartyMember());
+                ntc.PartyMembers.Add(member.GetCDataPartyMember());
             }
 
-            party.SendToAll(partyJoinNtc);
+            party.SendToAll(ntc);
 
 
             // Send party player context NTCs to the new member
@@ -58,6 +58,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 party.SendToAll(member.GetS2CContextGetParty_ContextNtc());
                 // TODO only new member or all ?
             }
+
+            Logger.Info(client, $"joined PartyId:{party.Id}");
         }
     }
 }

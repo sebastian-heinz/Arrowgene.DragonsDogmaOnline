@@ -1,6 +1,8 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -18,11 +20,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteRefuseReq> packet)
         {
             S2CPartyPartyInviteRefuseRes res = new S2CPartyPartyInviteRefuseRes();
-            
+
             PartyInvitation invitation = Server.PartyManager.GetPartyInvitation(client);
             if (invitation == null)
             {
                 Logger.Error(client, "failed to find invitation");
+                res.Error = (uint)ErrorCode.ERROR_CODE_PARTY_NOT_INVITED;
                 client.Send(res);
                 return;
             }
@@ -30,27 +33,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
             GameClient host = invitation.Host;
             if (host == null)
             {
-                Logger.Error(client, "host does not exist");
+                Logger.Error(client, "invitation has no host");
+                res.Error = (uint)ErrorCode.ERROR_CODE_PARTY_NOT_INVITED;
                 client.Send(res);
                 return;
             }
-
-   
 
             PartyGroup party = invitation.Party;
             if (party == null)
             {
-                Logger.Error(client, "failed to find invited party");
+                Logger.Error(client, "failed to find party");
+                res.Error = (uint)ErrorCode.ERROR_CODE_PARTY_NOT_INVITED;
                 client.Send(res);
                 return;
             }
 
-            party.RefuseInvite(client);
-            
-            // TODO update others about refuse
+            ErrorRes<PartyInvitation> refuse = party.RefuseInvite(client);
+            if (refuse.HasError)
+            {
+                res.Error = (uint)refuse.ErrorCode;
+                client.Send(res);
+                return;
+            }
 
             client.Send(res);
-            Logger.Info(client, $"refuse invite for PartyId:{invitation.Party.Id}");
         }
     }
 }
