@@ -1317,7 +1317,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_EQUIP_GET_CRAFT_LOCKED_ELEMENT_LIST_RES = new PacketId(29, 15, 2, "S2C_EQUIP_GET_CRAFT_LOCKED_ELEMENT_LIST_RES", ServerType.Game, PacketSource.Server); // ロックされているクレストリスト取得に
         public static readonly PacketId S2C_EQUIP_29_16_16_NTC = new PacketId(29, 16, 16, "S2C_EQUIP_29_16_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_EQUIP_29_17_16_NTC = new PacketId(29, 17, 16, "S2C_EQUIP_29_17_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_EQUIP_29_18_16_NTC = new PacketId(29, 18, 16, "S2C_EQUIP_29_18_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_EQUIP_UPDATE_EQUIP_HIDE_NTC = new PacketId(29, 18, 16, "S2C_EQUIP_29_18_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_EQUIP_29_19_1_REQ = new PacketId(29, 19, 1, "C2S_EQUIP_29_19_1_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_EQUIP_29_19_2_RES = new PacketId(29, 19, 2, "S2C_EQUIP_29_19_2_RES", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_EQUIP_29_20_1_REQ = new PacketId(29, 20, 1, "C2S_EQUIP_29_20_1_REQ", ServerType.Game, PacketSource.Client);
@@ -3221,7 +3221,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_EQUIP_GET_CRAFT_LOCKED_ELEMENT_LIST_RES);
             AddPacketIdEntry(packetIds, S2C_EQUIP_29_16_16_NTC);
             AddPacketIdEntry(packetIds, S2C_EQUIP_29_17_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_EQUIP_29_18_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_EQUIP_UPDATE_EQUIP_HIDE_NTC);
             AddPacketIdEntry(packetIds, C2S_EQUIP_29_19_1_REQ);
             AddPacketIdEntry(packetIds, S2C_EQUIP_29_19_2_RES);
             AddPacketIdEntry(packetIds, C2S_EQUIP_29_20_1_REQ);

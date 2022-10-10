@@ -182,7 +182,12 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ContextGetSetContextHandler(this));
             AddHandler(new ContextSetContextHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
+
             AddHandler(new EquipGetCharacterEquipListHandler(this));
+            AddHandler(new EquipUpdateHideCharacterHeadArmorHandler(this));
+            AddHandler(new EquipUpdateHideCharacterLanternHandler(this));
+            AddHandler(new EquipUpdateHidePawnHeadArmorHandler(this));
+            AddHandler(new EquipUpdateHidePawnLanternHandler(this));
 
             AddHandler(new FriendGetFriendListHandler(this));
             AddHandler(new FriendGetRecentCharacterListHandler(this));
