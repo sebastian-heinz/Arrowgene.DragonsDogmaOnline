@@ -1,6 +1,8 @@
 ﻿using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -16,31 +18,33 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyMemberKickReq> packet)
         {
+            S2CPartyPartyMemberKickRes res = new S2CPartyPartyMemberKickRes();
+
             PartyGroup party = client.Party;
             if (party == null)
             {
-                Logger.Error(client, "party null");
-                // TODO
+                Logger.Error(client, "(party == null)");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
                 return;
             }
 
-            PartyMember member = party.Kick(client, packet.Structure.MemberIndex);
-            if (member == null)
+            ErrorRes<PartyMember> member = party.Kick(client, packet.Structure.MemberIndex);
+            if (member.HasError)
             {
-                Logger.Error(client, "failed to kick");
-                // TODO
+                res.Error = (uint)member.ErrorCode;
+                client.Send(res);
                 return;
             }
 
             S2CPartyPartyMemberKickNtc ntc = new S2CPartyPartyMemberKickNtc();
-            ntc.MemberIndex = (byte)member.MemberIndex;
+            ntc.MemberIndex = (byte)member.Value.MemberIndex;
             party.SendToAll(ntc);
-            if (member is PlayerPartyMember playerMember)
+            if (member.Value is PlayerPartyMember playerMember)
             {
                 playerMember.Client.Send(ntc);
             }
-            
-            S2CPartyPartyMemberKickRes res = new S2CPartyPartyMemberKickRes();
+
             client.Send(res);
         }
     }

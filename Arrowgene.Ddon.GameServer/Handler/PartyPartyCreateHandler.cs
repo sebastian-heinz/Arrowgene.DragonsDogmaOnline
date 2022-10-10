@@ -2,6 +2,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -17,52 +18,54 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyCreateReq> packet)
         {
-            S2CPartyPartyCreateRes partyCreateRes = new S2CPartyPartyCreateRes();
+            S2CPartyPartyCreateRes res = new S2CPartyPartyCreateRes();
 
             PartyGroup party = Server.PartyManager.NewParty();
             if (party == null)
             {
-                Logger.Error(client, "Failed to create party");
-                // TODO return error
+                Logger.Error(client, "can not create party (Server.PartyManager.NewParty() == null)");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
                 return;
             }
 
-            PlayerPartyMember member = party.Invite(client, client);
-            if (member == null)
+            ErrorRes<PlayerPartyMember> invite = party.Invite(client, client);
+            if (invite.HasError)
+            {
+                Logger.Error(client, "failed to invite to new party");
+                res.Error = (uint)invite.ErrorCode;
+                client.Send(res);
+                return;
+            }
+
+            ErrorRes<PlayerPartyMember> accept = party.Accept(client);
+            if (accept.HasError)
+            {
+                Logger.Error(client, "failed to accept new party");
+                res.Error = (uint)accept.ErrorCode;
+                client.Send(res);
+                return;
+            }
+
+            ErrorRes<PlayerPartyMember> join = party.Join(client);
+            if (join.HasError)
             {
                 Logger.Error(client, "Failed to join new party");
-                // TODO return error
+                res.Error = (uint)join.ErrorCode;
+                client.Send(res);
                 return;
             }
 
-            ErrorRes<PlayerPartyMember> memberRes = party.Accept(client);
-            if (memberRes.HasError)
-            {
-                Logger.Error(client, "Failed to accept new party");
-                partyCreateRes.Error = (uint)memberRes.ErrorCode;
-                client.Send(partyCreateRes);
-                return;
-            }
+            S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
+            ntc.HostCharacterId = client.Character.Id;
+            ntc.LeaderCharacterId = client.Character.Id;
+            ntc.PartyMembers.Add(join.Value.GetCDataPartyMember());
+            client.Send(ntc);
 
-            member = party.Join(client);
-            if (member == null)
-            {
-                Logger.Error(client, "Failed to join new party");
-                // TODO return error
-                return;
-            }
+            res.PartyId = party.Id;
+            client.Send(res);
 
-            Logger.Info(client, $"Created Party with PartyId:{party.Id}");
-
-            S2CPartyPartyJoinNtc partyJoinNtc = new S2CPartyPartyJoinNtc();
-            partyJoinNtc.HostCharacterId = client.Character.Id;
-            partyJoinNtc.LeaderCharacterId = client.Character.Id;
-            partyJoinNtc.PartyMembers.Add(member.GetCDataPartyMember());
-            client.Send(partyJoinNtc);
-
-
-            partyCreateRes.PartyId = party.Id;
-            client.Send(partyCreateRes);
+            Logger.Info(client, $"created party with PartyId:{party.Id}");
         }
     }
 }
