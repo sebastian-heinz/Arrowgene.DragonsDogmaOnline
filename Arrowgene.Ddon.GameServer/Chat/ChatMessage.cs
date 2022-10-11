@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             Deliver = true;
         }
 
-        public LobbyChatMsgType Type { get; }
+        public LobbyChatMsgType Type { get; set; }
         public byte Unk2 { get; set; }
         public uint Unk3 { get; set; }
         public uint Unk4 { get; set; }
