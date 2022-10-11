@@ -141,12 +141,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataUpdateMatchingProfileInfo.Serializer());
             Create(new CDataUpdateWalletPoint.Serializer());
             Create(new CDataURLInfoSerializer());
+            Create(new CDataWalletPoint.Serializer());
             Create(new CDataWarpPoint.Serializer());
             Create(new CDataWeatherLoop.Serializer());
             Create(new CDataWeatherSchedule.Serializer());
             Create(new CDataStageLayoutId.Serializer());
             Create(new UnkownCharacterData0Serializer());
-            Create(new UnkownCharacterData1Serializer());
 
             // Packet structure serializers
             Create(new C2LCreateCharacterDataReq.Serializer());
@@ -178,6 +178,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SContextSetContextNtc.Serializer());
 
             Create(new C2SEquipGetCharacterEquipListReq.Serializer());
+            Create(new C2SEquipUpdateHideCharacterHeadArmorReq.Serializer());
+            Create(new C2SEquipUpdateHideCharacterLanternReq.Serializer());
+            Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
+            Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnStayInnReq.Serializer());
@@ -310,6 +314,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextMasterInfoNtc.Serializer());
             Create(new S2CContextSetContextBaseNtc.Serializer());
             Create(new S2CEquipGetCharacterEquipListRes.Serializer());
+            Create(new S2CEquipUpdateEquipHideNtc.Serializer());
+            Create(new S2CEquipUpdateHideCharacterHeadArmorRes.Serializer());
+            Create(new S2CEquipUpdateHideCharacterLanternRes.Serializer());
+            Create(new S2CEquipUpdateHidePawnHeadArmorRes.Serializer());
+            Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
             Create(new S2CInnStayInnRes.Serializer());

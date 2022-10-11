@@ -19,9 +19,9 @@ namespace Arrowgene.Ddon.Shared.Model
             CharacterEquipDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>();
             CharacterEquipViewDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>();
             CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>();
+            Unk0 = new List<UnknownCharacterData0>();
             CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
-            UnkCharData0 = new List<UnknownCharacterData0>();
-            UnkCharData1 = new List<UnknownCharacterData1>(); // Currencies? 1 is G, 2 is RP...
+            WalletPointList = new List<CDataWalletPoint>();
             OrbStatusList = new List<CDataOrbPageStatus>();
             MsgSetList = new List<CDataCharacterMsgSet>();
             ShortCutList = new List<CDataShortCut>();
@@ -54,11 +54,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<JobId, List<CDataCharacterEquipData>> CharacterEquipViewDataListDictionary;
         public Dictionary<JobId, List<CDataEquipJobItem>> CharacterEquipJobItemListDictionary;
         public byte JewelrySlotNum;
+        public List<UnknownCharacterData0> Unk0;
         public List<CDataCharacterItemSlotInfo> CharacterItemSlotInfoList;
-
-        // One of these is CDataWalletPoint, can't determine which.
-        public List<UnknownCharacterData0> UnkCharData0;
-        public List<UnknownCharacterData1> UnkCharData1;
+        public List<CDataWalletPoint> WalletPointList;
         public byte MyPawnSlotNum;
         public byte RentalPawnSlotNum;
         public List<CDataOrbPageStatus> OrbStatusList;
