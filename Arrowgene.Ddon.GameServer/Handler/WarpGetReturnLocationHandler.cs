@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SWarpGetReturnLocationReq> packet)
         {
             S2CWarpGetReturnLocationRes response = new S2CWarpGetReturnLocationRes();
-            response.JumpLocation.stageId = 0;
+            response.JumpLocation.stageId = 1; // White Dragon Temple
             response.JumpLocation.startPos = 0;
 
             client.Send(response);

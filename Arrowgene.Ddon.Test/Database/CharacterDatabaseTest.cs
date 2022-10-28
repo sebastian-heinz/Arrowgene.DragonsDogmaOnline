@@ -24,8 +24,8 @@ namespace Arrowgene.Ddon.Test.Database
             Assert.NotNull(account);
 
             Character c = new Character();
-            c.CharacterInfo.FirstName = "Foo";
-            c.CharacterInfo.LastName = "Bar";
+            c.FirstName = "Foo";
+            c.LastName = "Bar";
             c.AccountId = account.Id;
 
             Assert.True(database.CreateCharacter(c));
@@ -34,13 +34,13 @@ namespace Arrowgene.Ddon.Test.Database
             Assert.NotEmpty(characters);
             Assert.True(characters.Count == 1);
 
-            c.CharacterInfo.FirstName = "NewName";
+            c.FirstName = "NewName";
             Assert.True(database.UpdateCharacter(c));
 
             characters = database.SelectCharactersByAccountId(account.Id);
             Assert.NotEmpty(characters);
             Assert.True(characters.Count == 1);
-            Assert.Equal("NewName", characters[0].CharacterInfo.FirstName);
+            Assert.Equal("NewName", characters[0].FirstName);
 
             Assert.True(database.DeleteCharacter(c.Id));
             

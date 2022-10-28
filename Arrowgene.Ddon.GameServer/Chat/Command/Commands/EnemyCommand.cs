@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             b1.WriteByte(0x01);
             b1.WriteByte(0x00);
             b1.WriteByte(0x00);
-            Packet test1 = new Packet(PacketId.S2C_INSTANCE_13_42_16_NTC, b1.GetAllBytes());
+            Packet test1 = new Packet(PacketId.S2C_INSTANCE_AREA_RESET_NTC, b1.GetAllBytes());
            // client.Send(test1);
            
  

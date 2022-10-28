@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Chat
 {

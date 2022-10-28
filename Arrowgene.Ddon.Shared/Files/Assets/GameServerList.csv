@@ -1,2 +1,2 @@
 ﻿#Id,Name,Brief,TrafficName,TrafficLevel,MaxLoginNum,IpAddress,Port,IsHide
-0,Local Host,Brief,Traffic Name,0,1000,127.0.0.1,52000,false
+10,Local Host,Brief,Traffic Name,0,1000,127.0.0.1,52000,false

@@ -1,35 +1,34 @@
 ﻿using System.Collections.Generic;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Server
 {
-    public class ClientLookup
+    public class ClientLookup<TClient> where TClient : Client
     {
-        private readonly List<Client> _clients;
+        private readonly List<TClient> _clients;
 
         private readonly object _lock = new object();
 
         public ClientLookup()
         {
-            _clients = new List<Client>();
+            _clients = new List<TClient>();
         }
 
         /// <summary>
         /// Returns all Clients.
         /// </summary>
-        public List<Client> GetAll()
+        public List<TClient> GetAll()
         {
             lock (_lock)
             {
-                return new List<Client>(_clients);
+                return new List<TClient>(_clients);
             }
         }
 
         /// <summary>
         /// Adds a Client.
         /// </summary>
-        public void Add(Client client)
+        public void Add(TClient client)
         {
             if (client == null)
             {
@@ -45,7 +44,7 @@ namespace Arrowgene.Ddon.Server
         /// <summary>
         /// Removes the Client from all lists and lookup tables.
         /// </summary>
-        public void Remove(Client client)
+        public void Remove(TClient client)
         {
             lock (_lock)
             {

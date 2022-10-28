@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database
@@ -23,10 +24,38 @@ namespace Arrowgene.Ddon.Database
 
         // Character
         bool CreateCharacter(Character character);
-        public bool UpdateCharacter(Character character);
-        public Character SelectCharacter(uint characterId);
+        bool UpdateCharacter(Character character);
+        Character SelectCharacter(uint characterId);
         List<Character> SelectCharactersByAccountId(int accountId);
-        public bool DeleteCharacter(uint characterId);
+        bool DeleteCharacter(uint characterId);
+
+        bool UpdateCharacterBaseInfo(Character character);
+
+        // CustomSkills
+        bool InsertEquippedCustomSkill(uint characterId, CustomSkill skill);
+        bool ReplaceEquippedCustomSkill(uint characterId, CustomSkill skill);
+        bool UpdateEquippedCustomSkill(uint characterId, JobId oldJob, byte oldSlotNo, CustomSkill skill);
+        bool DeleteEquippedCustomSkill(uint characterId, JobId job, byte slotNo);
+
+        // Abilities
+        bool InsertEquippedAbility(uint characterId, Ability skill);
+        bool ReplaceEquippedAbility(uint characterId, Ability skill);
+        bool ReplaceEquippedAbilities(uint characterId, JobId equippedToJob, List<Ability> abilities);
+        bool UpdateEquippedAbility(uint characterId, JobId oldEquippedToJob, byte oldSlotNo, Ability skill);
+        bool DeleteEquippedAbility(uint characterId, JobId equippedToJob, byte slotNo);
+        bool DeleteEquippedAbilities(uint characterId, JobId equippedToJob);
+
+        // Shortcut
+        bool InsertShortcut(uint characterId, CDataShortCut shortcut);
+        bool ReplaceShortcut(uint characterId, CDataShortCut shortcut);
+        bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut);
+        bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo);
+
+        // CommunicationShortcut
+        bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+        bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+        bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut);
+        bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
 
         // GameToken
         bool SetToken(GameToken token);
@@ -34,5 +63,12 @@ namespace Arrowgene.Ddon.Database
         GameToken SelectToken(string tokenStr);
         bool DeleteTokenByAccountId(int accountId);
         bool DeleteToken(string token);
+
+        // Connections
+        bool InsertConnection(Connection connection);
+        List<Connection> SelectConnectionsByAccountId(int accountId);
+        bool DeleteConnection(int serverId, int accountId);
+        bool DeleteConnectionsByAccountId(int accountId);
+        bool DeleteConnectionsByServerId(int serverId);
     }
 }

@@ -33,8 +33,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     new CDataLobbyMemberInfo()
                     {
                         CharacterId = client.Character.Id,
-                        FirstName = client.Character.CharacterInfo.FirstName,
-                        LastName = client.Character.CharacterInfo.LastName,
+                        FirstName = client.Character.FirstName,
+                        LastName = client.Character.LastName,
                         ClanName = "",
                         Unk0 = 1, // Platform PC?
                         Unk1 = 0,
@@ -57,8 +57,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         new CDataLobbyMemberInfo()
                         {
                             CharacterId = otherClient.Character.Id,
-                            FirstName = otherClient.Character.CharacterInfo.FirstName,
-                            LastName = otherClient.Character.CharacterInfo.LastName,
+                            FirstName = otherClient.Character.FirstName,
+                            LastName = otherClient.Character.LastName,
                             ClanName = "",
                             PawnId = 0,
                             Unk0 = 1,

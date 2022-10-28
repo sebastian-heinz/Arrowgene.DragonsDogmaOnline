@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Chat.Command.Commands;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command
@@ -21,6 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             AddCommand(new TestCommand());
             AddCommand(new EnemyCommand());
             AddCommand(new InfoCommand());
+            AddCommand(new JobCommand(server));
         }
 
         public void AddCommand(ChatCommand command)

@@ -7,6 +7,41 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCharacterInfo
     {
+        public CDataCharacterInfo(Character character)
+        {
+            CharacterId = character.Id;
+            UserId = character.UserId;
+            Version = character.Version;
+            FirstName = character.FirstName;
+            LastName = character.LastName;
+            EditInfo = character.EditInfo;
+            StatusInfo = character.StatusInfo;
+            Job = character.Job;
+            CharacterJobDataList = character.CharacterJobDataList;
+            PlayPointList = character.PlayPointList;
+            CharacterEquipDataList = character.CharacterEquipDataListDictionary[character.Job];
+            CharacterEquipViewDataList = character.CharacterEquipViewDataListDictionary[character.Job];
+            CharacterEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job];
+            JewelrySlotNum = character.JewelrySlotNum;
+            Unk0 = character.Unk0;
+            CharacterItemSlotInfoList = character.CharacterItemSlotInfoList;
+            WalletPointList = character.WalletPointList;
+            MyPawnSlotNum = character.MyPawnSlotNum;
+            RentalPawnSlotNum = character.RentalPawnSlotNum;
+            OrbStatusList = character.OrbStatusList;
+            MsgSetList = character.MsgSetList;
+            ShortCutList = character.ShortCutList;
+            CommunicationShortCutList = character.CommunicationShortCutList;
+            MatchingProfile = character.MatchingProfile;
+            ArisenProfile = character.ArisenProfile;
+            HideEquipHead = character.HideEquipHead;
+            HideEquipLantern = character.HideEquipLantern;
+            HideEquipHeadPawn = character.HideEquipHeadPawn;
+            HideEquipLanternPawn = character.HideEquipLanternPawn;
+            ArisenProfileShareRange = character.ArisenProfileShareRange;
+            OnlineStatus = character.OnlineStatus;
+        }
+
         public CDataCharacterInfo()
         {
             CharacterId = 0;
@@ -23,9 +58,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterEquipViewDataList = new List<CDataCharacterEquipData>();
             CharacterEquipJobItemList = new List<CDataEquipJobItem>();
             JewelrySlotNum = 0;
-            CharacterItemSlotInfoList = new List<CDataEquipElementParam>();
-            UnkCharData0 = new List<UnknownCharacterData0>();
-            UnkCharData1 = new List<UnknownCharacterData1>(); // Currencies? 1 is G, 2 is RP...
+            Unk0 = new List<UnknownCharacterData0>();
+            CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>(); // Slots in each Item Bag and Storage
+            WalletPointList = new List<CDataWalletPoint>(); // Currencies? 1 is G, 2 is RP...
             MyPawnSlotNum = 0;
             RentalPawnSlotNum = 0;
             OrbStatusList = new List<CDataOrbPageStatus>();
@@ -42,11 +77,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             OnlineStatus = 0;
         }
 
-        public CDataCharacterJobData ActiveCharacterJobData
-        {
-            get { return CharacterJobDataList.Where(x => x.Job == Job).Single(); }
-        }
-
         public uint CharacterId;
         public uint UserId;
         public uint Version;
@@ -61,12 +91,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataCharacterEquipData> CharacterEquipViewDataList;
         public List<CDataEquipJobItem> CharacterEquipJobItemList;
         public byte JewelrySlotNum;
-        public List<CDataEquipElementParam> CharacterItemSlotInfoList;
-
-        // One of these is CDataWalletPoint, can't determine which.
-        public List<UnknownCharacterData0> UnkCharData0;
-        public List<UnknownCharacterData1> UnkCharData1;
-
+        public List<UnknownCharacterData0> Unk0;
+        public List<CDataCharacterItemSlotInfo> CharacterItemSlotInfoList;
+        public List<CDataWalletPoint> WalletPointList;
         public byte MyPawnSlotNum;
         public byte RentalPawnSlotNum;
         public List<CDataOrbPageStatus> OrbStatusList;
@@ -100,9 +127,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteEntityList(buffer, obj.CharacterEquipViewDataList);
             WriteEntityList(buffer, obj.CharacterEquipJobItemList);
             WriteByte(buffer, obj.JewelrySlotNum);
+            WriteEntityList(buffer, obj.Unk0);
             WriteEntityList(buffer, obj.CharacterItemSlotInfoList);
-            WriteEntityList(buffer, obj.UnkCharData0);
-            WriteEntityList(buffer, obj.UnkCharData1);
+            WriteEntityList(buffer, obj.WalletPointList);
             WriteByte(buffer, obj.MyPawnSlotNum);
             WriteByte(buffer, obj.RentalPawnSlotNum);
             WriteEntityList(buffer, obj.OrbStatusList);
@@ -136,9 +163,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.CharacterEquipViewDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
             obj.CharacterEquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
             obj.JewelrySlotNum = ReadByte(buffer);
-            obj.CharacterItemSlotInfoList = ReadEntityList<CDataEquipElementParam>(buffer);
-            obj.UnkCharData0 = ReadEntityList<UnknownCharacterData0>(buffer);
-            obj.UnkCharData1 = ReadEntityList<UnknownCharacterData1>(buffer);
+            obj.Unk0 = ReadEntityList<UnknownCharacterData0>(buffer);
+            obj.CharacterItemSlotInfoList = ReadEntityList<CDataCharacterItemSlotInfo>(buffer);
+            obj.WalletPointList = ReadEntityList<CDataWalletPoint>(buffer);
             obj.MyPawnSlotNum = ReadByte(buffer);
             obj.RentalPawnSlotNum = ReadByte(buffer);
             obj.OrbStatusList = ReadEntityList<CDataOrbPageStatus>(buffer);

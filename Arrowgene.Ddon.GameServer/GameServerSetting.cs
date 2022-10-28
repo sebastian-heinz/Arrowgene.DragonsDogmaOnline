@@ -1,7 +1,5 @@
-﻿using System.IO;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -13,8 +11,10 @@ namespace Arrowgene.Ddon.GameServer
         public GameServerSetting()
         {
             ServerSetting = new ServerSetting();
-            ServerSetting.ServerPort = 52000;
+            ServerSetting.Id = 10;
             ServerSetting.Name = "Game";
+            ServerSetting.ServerPort = 52000;
+            ServerSetting.ServerSocketSettings.Identity = "Game";
         }
 
         public GameServerSetting(GameServerSetting setting)

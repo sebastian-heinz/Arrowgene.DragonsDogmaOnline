@@ -444,7 +444,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Likability = 2,
                         Unk0 = new byte[64],
                         Unk1 = new CData_772E80() {Unk0 = 0x7530, Unk1 = 0x3, Unk2 = 0x3, Unk3 = 0x1, Unk4 = 0x3},
-                        Unk2 = new List<CDataSpSkill>() {
+                        SpSkillList = new List<CDataSpSkill>() {
                             new CDataSpSkill() {SpSkillId = myPawnCsvData.SpSkillSlot1Id, SpSkillLv = myPawnCsvData.SpSkillSlot1Lv},
                             new CDataSpSkill() {SpSkillId = myPawnCsvData.SpSkillSlot2Id, SpSkillLv = myPawnCsvData.SpSkillSlot2Lv},
                             new CDataSpSkill() {SpSkillId = myPawnCsvData.SpSkillSlot3Id, SpSkillLv = myPawnCsvData.SpSkillSlot3Lv}

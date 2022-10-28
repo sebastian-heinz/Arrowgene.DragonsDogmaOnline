@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Model
         Warrior = 7,
         ElementArcher = 8,
         Alchemist = 9,
-        SpiritLance = 10,
+        SpiritLancer = 10,
         HighScepter = 11,
     }
 }

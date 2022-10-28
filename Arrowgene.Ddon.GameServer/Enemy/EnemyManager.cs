@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Enemy
             _assetRepository.AssetChanged += AssetRepositoryOnAssetChanged;
         }
 
-        public List<EnemySpawn> GetSpawns(CStageLayoutId stageLayoutId, byte subGroupId)
+        public List<EnemySpawn> GetSpawns(CDataStageLayoutId stageLayoutId, byte subGroupId)
         {
             return GetSpawns(StageId.FromStageLayoutId(stageLayoutId), subGroupId);
         }

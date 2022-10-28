@@ -23,19 +23,20 @@
 using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Enemy;
 using Arrowgene.Ddon.GameServer.Handler;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -45,50 +46,37 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        private readonly List<GameClient> _clients;
-        private readonly List<Party> _parties;
-        private readonly Dictionary<StageId, Stage> _stages;
-
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
-            _clients = new List<GameClient>();
-            _parties = new List<Party>();
-            _stages = new Dictionary<StageId, Stage>();
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
+            PartyManager = new PartyManager();
+            ClientLookup = new GameClientLookup();
+            ChatLogHandler = new ChatLogHandler();
 
-            S2CStageGetStageListRes stageListPacket = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
+            S2CStageGetStageListRes stageListPacket =
+                EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
             StageList = stageListPacket.StageList;
         }
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
-
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
         public EnemyManager EnemyManager { get; }
+        public PartyManager PartyManager { get; }
         public GameRouter Router { get; }
 
-        /// <summary>
-        /// Returns a copy of the client list.
-        /// To prevent modifications of affecting the original list.
-        /// </summary>
-        public override List<GameClient> Clients => new List<GameClient>(_clients);
-
-        /// <summary>
-        /// Returns a copy of the party list.
-        /// To prevent modifications of affecting the original list.
-        /// </summary>
-        public List<Party> Parties => new List<Party>(_parties);
+        public ChatLogHandler ChatLogHandler { get; }
 
         public List<CDataStageInfo> StageList { get; }
 
+        public override GameClientLookup ClientLookup { get; }
 
         public override void Start()
         {
-            LoadStages();
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
@@ -109,7 +97,19 @@ namespace Arrowgene.Ddon.GameServer
 
         protected override void ClientDisconnected(GameClient client)
         {
-            _clients.Remove(client);
+            ClientLookup.Remove(client);
+
+            Account account = client.Account;
+            if (account != null)
+            {
+                Database.DeleteConnection(Id, client.Account.Id);
+            }
+
+            PartyGroup party = client.Party;
+            if (party != null)
+            {
+                party.Leave(client);
+            }
 
             EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
             if (connectionChangeEvent != null)
@@ -122,26 +122,15 @@ namespace Arrowgene.Ddon.GameServer
 
         public override GameClient NewClient(ITcpSocket socket)
         {
-            GameClient newClient = new GameClient(socket, new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
-            _clients.Add(newClient);
+            GameClient newClient = new GameClient(socket,
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+            ClientLookup.Add(newClient);
             return newClient;
-        }
-
-        public Party NewParty()
-        {
-            Party newParty = new Party();
-            _parties.Add(newParty);
-            return newParty;
-        }
-
-        private void LoadStages()
-        {
-            _stages.Add(new StageId(0, 0, 0), new Stage(StageId.Invalid));
         }
 
         private void LoadChatHandler()
         {
-            ChatManager.AddHandler(new ChatLogHandler());
+            ChatManager.AddHandler(ChatLogHandler);
             ChatManager.AddHandler(new ChatCommandHandler(this));
         }
 
@@ -164,6 +153,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterCharacterGoldenReviveHandler(this));
             AddHandler(new CharacterCharacterPenaltyReviveHandler(this));
             AddHandler(new CharacterCharacterPointReviveHandler(this));
+            AddHandler(new CharacterCharacterSearchHandler(this));
             AddHandler(new CharacterPawnGoldenReviveHandler(this));
             AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
@@ -190,8 +180,14 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ConnectionReserveServerHandler(this));
 
             AddHandler(new ContextGetSetContextHandler(this));
+            AddHandler(new ContextSetContextHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
+
             AddHandler(new EquipGetCharacterEquipListHandler(this));
+            AddHandler(new EquipUpdateHideCharacterHeadArmorHandler(this));
+            AddHandler(new EquipUpdateHideCharacterLanternHandler(this));
+            AddHandler(new EquipUpdateHidePawnHeadArmorHandler(this));
+            AddHandler(new EquipUpdateHidePawnLanternHandler(this));
 
             AddHandler(new FriendGetFriendListHandler(this));
             AddHandler(new FriendGetRecentCharacterListHandler(this));
@@ -206,6 +202,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InnGetStayPriceHandler(this));
             AddHandler(new InnStayInnHandler(this));
 
+            AddHandler(new InstanceEnemyGroupEntryHandler(this));
+            AddHandler(new InstanceEnemyGroupLeaveHandler(this));
             AddHandler(new InstanceEnemyKillHandler(this));
             AddHandler(new InstanceExchangeOmInstantKeyValueHandler(this));
             AddHandler(new InstanceGetEnemySetListHandler(this));
@@ -253,12 +251,17 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
 
+            AddHandler(new PartyPartyBreakupHandler(this));
+            AddHandler(new PartyPartyChangeLeaderHandler(this));
             AddHandler(new PartyPartyCreateHandler(this));
+            AddHandler(new PartyPartyInviteCancelHandler(this));
             AddHandler(new PartyPartyInviteCharacterHandler(this));
             AddHandler(new PartyPartyInviteEntryHandler(this));
             AddHandler(new PartyPartyInvitePrepareAcceptHandler(this));
+            AddHandler(new PartyPartyInviteRefuseHandler(this));
             AddHandler(new PartyPartyJoinHandler(this));
             AddHandler(new PartyPartyLeaveHandler(this));
+            AddHandler(new PartyPartyMemberKickHandler(this));
             AddHandler(new PartySendBinaryMsgAllHandler(this));
             AddHandler(new PartySendBinaryMsgHandler(this));
 
@@ -308,6 +311,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new SkillGetPresetAbilityListHandler(this));
             AddHandler(new SkillGetSetAbilityListHandler(this));
             AddHandler(new SkillGetSetSkillListHandler(this));
+            AddHandler(new SkillSetAbilityHandler(this));
+            AddHandler(new SkillSetOffAbilityHandler(this));
             AddHandler(new SkillSetOffSkillHandler(this));
             AddHandler(new SkillSetSkillHandler(this));
             AddHandler(new SetShortcutHandler(this));

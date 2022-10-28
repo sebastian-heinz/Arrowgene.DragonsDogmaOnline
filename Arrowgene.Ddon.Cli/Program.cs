@@ -54,6 +54,7 @@ namespace Arrowgene.Ddon.Cli
             PacketId.S2C_CONNECTION_PING_RES,
             PacketId.C2L_PING_REQ,
             PacketId.L2C_PING_RES,
+            PacketId.S2C_LOBBY_LOBBY_DATA_MSG_NTC,
         };
 
         private static void Main(string[] args)
@@ -371,8 +372,11 @@ namespace Arrowgene.Ddon.Cli
                 Console.ForegroundColor = consoleColor;
                 Console.WriteLine(text);
                 Console.ResetColor();
+                
+                // TODO perhaps some buffering and only flush after X logs
                 string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
-                File.AppendAllText(filePath, text);
+                using StreamWriter sw = new StreamWriter(filePath, append: true);
+                sw.WriteLine(text);
             }
         }
     }

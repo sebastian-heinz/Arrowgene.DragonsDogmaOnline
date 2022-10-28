@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class C2SPartySendBinaryMsgAllNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.C2S_PARTY_SEND_BINARY_MSG_ALL_NOTICE;
+        public PacketId Id => PacketId.C2S_PARTY_SEND_BINARY_MSG_ALL_NTC;
 
         public C2SPartySendBinaryMsgAllNtc()
         {

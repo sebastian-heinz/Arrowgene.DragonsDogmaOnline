@@ -17,12 +17,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetOffSkillReq> packet)
         {
             client.Character.CustomSkills.RemoveAll(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo);
-            Database.UpdateCharacter(client.Character);
+
+            // TODO: Error handling
+            Database.DeleteEquippedCustomSkill(client.Character.Id, packet.Structure.Job, packet.Structure.SlotNo);
 
             client.Send(new S2CSkillSetOffSkillRes() {
                 Job = packet.Structure.Job,
                 SlotNo = packet.Structure.SlotNo
             });
+
+            // I haven't found a packet to notify this to other players
+            // From what I tested it doesn't seem to be necessary
         }
     }
 }

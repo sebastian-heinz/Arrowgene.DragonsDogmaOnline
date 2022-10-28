@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint PartyId { get; set; }
         public ulong ContentNumber { get; set; }
 
-        public class Serailizer : PacketEntitySerializer<S2CPartyPartyCreateRes>
+        public class Serializer : PacketEntitySerializer<S2CPartyPartyCreateRes>
         {
             public override void Write(IBuffer buffer, S2CPartyPartyCreateRes obj)
             {
