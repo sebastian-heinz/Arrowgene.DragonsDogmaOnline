@@ -214,39 +214,35 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Equips
-            ExecuteReader(conn, SqlSelectEquipItemInfoByCharacter,
+            ExecuteReader(conn, SqlSelectEquipItemByCharacter,
                 command => { AddParameter(command, "@character_id", character.Id); }, 
                 reader =>
                 {
                     while (reader.Read())
                     {
                         JobId job = (JobId) GetByte(reader, "job");
-                        CDataEquipItemInfo equipItemInfo = ReadEquipItemInfo(reader);
-                        if(!character.CharacterEquipDataListDictionary.ContainsKey(job))
+                        EquipItem equipItem = ReadEquipItem(reader);
+                        if(!character.CharacterEquipItemListDictionary.ContainsKey(job))
                         {
-                            List<CDataCharacterEquipData> characterEquipDataList = new List<CDataCharacterEquipData>();
-                            characterEquipDataList.Add(new CDataCharacterEquipData());
-                            character.CharacterEquipDataListDictionary.Add(job, characterEquipDataList);
+                            character.CharacterEquipItemListDictionary.Add(job, new List<EquipItem>());
                         }
-                        character.CharacterEquipDataListDictionary[job][0].Equips.Add(equipItemInfo);
+                        character.CharacterEquipItemListDictionary[job].Add(equipItem);
                     }
                 });
 
-            ExecuteReader(conn, SqlSelectVisualEquipItemInfoByCharacter,
+            ExecuteReader(conn, SqlSelectVisualEquipItemByCharacter,
                 command => { AddParameter(command, "@character_id", character.Id); }, 
                 reader =>
                 {
                     while (reader.Read())
                     {
                         JobId job = (JobId) GetByte(reader, "job");
-                        CDataEquipItemInfo equipItemInfo = ReadEquipItemInfo(reader);
-                        if(!character.CharacterEquipViewDataListDictionary.ContainsKey(job))
+                        EquipItem equipItemInfo = ReadEquipItem(reader);
+                        if(!character.CharacterEquipViewItemListDictionary.ContainsKey(job))
                         {
-                            List<CDataCharacterEquipData> characterEquipDataList = new List<CDataCharacterEquipData>();
-                            characterEquipDataList.Add(new CDataCharacterEquipData());
-                            character.CharacterEquipViewDataListDictionary.Add(job, characterEquipDataList);
+                            character.CharacterEquipViewItemListDictionary.Add(job, new List<EquipItem>());
                         }
-                        character.CharacterEquipViewDataListDictionary[job][0].Equips.Add(equipItemInfo);
+                        character.CharacterEquipViewItemListDictionary[job].Add(equipItemInfo);
                     }
                 });
 
@@ -335,31 +331,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
             }
 
-            foreach(KeyValuePair<JobId, List<CDataCharacterEquipData>> characterEquipDataListByJob in character.CharacterEquipDataListDictionary)
+            foreach(KeyValuePair<JobId, List<EquipItem>> characterEquipDataListByJob in character.CharacterEquipItemListDictionary)
             {
-                foreach(CDataCharacterEquipData characterEquipData in characterEquipDataListByJob.Value)
-                {
-                    foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
+                foreach(EquipItem equipItem in characterEquipDataListByJob.Value)
+                {   
+                    ExecuteNonQuery(conn, SqlReplaceEquipItem, command =>
                     {
-                        ExecuteNonQuery(conn, SqlReplaceEquipItemInfo, command =>
-                        {
-                            AddParameter(command, character.Id, characterEquipDataListByJob.Key, equipItemInfo);
-                        });
-                    }
+                        AddParameter(command, character.Id, characterEquipDataListByJob.Key, equipItem);
+                    });
                 }
             }
 
-            foreach(KeyValuePair<JobId, List<CDataCharacterEquipData>> characterEquipViewDataListByJob in character.CharacterEquipViewDataListDictionary)
+            foreach(KeyValuePair<JobId, List<EquipItem>> characterEquipViewDataListByJob in character.CharacterEquipViewItemListDictionary)
             {
-                foreach(CDataCharacterEquipData characterEquipData in characterEquipViewDataListByJob.Value)
+                foreach(EquipItem equipItem in characterEquipViewDataListByJob.Value)
                 {
-                    foreach(CDataEquipItemInfo equipItemInfo in characterEquipData.Equips)
+                    ExecuteNonQuery(conn, SqlReplaceEquipItem, command =>
                     {
-                        ExecuteNonQuery(conn, SqlReplaceEquipItemInfo, command =>
-                        {
-                            AddParameter(command, character.Id, characterEquipViewDataListByJob.Key, equipItemInfo);
-                        });
-                    }
+                        AddParameter(command, character.Id, characterEquipViewDataListByJob.Key, equipItem);
+                    });
                 }
             }
 

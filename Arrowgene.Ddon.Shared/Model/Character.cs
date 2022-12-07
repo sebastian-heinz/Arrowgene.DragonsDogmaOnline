@@ -16,8 +16,8 @@ namespace Arrowgene.Ddon.Shared.Model
             StatusInfo = new CDataStatusInfo();
             CharacterJobDataList = new List<CDataCharacterJobData>();
             PlayPointList = new List<CDataJobPlayPoint>();
-            CharacterEquipDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>();
-            CharacterEquipViewDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>();
+            CharacterEquipItemListDictionary = new Dictionary<JobId, List<EquipItem>>();
+            CharacterEquipViewItemListDictionary = new Dictionary<JobId, List<EquipItem>>();
             CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>();
             Unk0 = new List<UnknownCharacterData0>();
             CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
@@ -50,8 +50,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public JobId Job;
         public List<CDataCharacterJobData> CharacterJobDataList;
         public List<CDataJobPlayPoint> PlayPointList;
-        public Dictionary<JobId, List<CDataCharacterEquipData>> CharacterEquipDataListDictionary;
-        public Dictionary<JobId, List<CDataCharacterEquipData>> CharacterEquipViewDataListDictionary;
+        public Dictionary<JobId, List<EquipItem>> CharacterEquipItemListDictionary;
+        public Dictionary<JobId, List<EquipItem>> CharacterEquipViewItemListDictionary;
         public Dictionary<JobId, List<CDataEquipJobItem>> CharacterEquipJobItemListDictionary;
         public byte JewelrySlotNum;
         public List<UnknownCharacterData0> Unk0;

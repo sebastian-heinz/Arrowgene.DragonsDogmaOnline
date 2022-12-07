@@ -30,9 +30,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
             notice.CharacterId = client.Character.Id;
             notice.CharacterJobData = client.Character.ActiveCharacterJobData;
-            notice.EquipItemInfo = client.Character.CharacterEquipViewDataListDictionary[client.Character.Job]
-                .Union(client.Character.CharacterEquipDataListDictionary[client.Character.Job])
-                .SelectMany(x => x.Equips)
+            notice.EquipItemInfo = client.Character.CharacterEquipViewItemListDictionary[client.Character.Job]
+                .Union(client.Character.CharacterEquipItemListDictionary[client.Character.Job])
+                .Select(x => x.AsCDataEquipItemInfo())
                 .ToList();
             notice.SetAcquirementParamList = client.Character.CustomSkills
                 .Where(x => x.Job == packet.Structure.JobId)

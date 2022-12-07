@@ -12,8 +12,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public string EquipItemUId { get; set; }
-        public byte EquipCategory { get; set; }
-        public byte EquipType { get; set; }
+        public byte EquipCategory { get; set; } // Slot
+        public byte EquipType { get; set; } // Equip type (1 performance, 2 visual)
 
         public class Serializer : EntitySerializer<CDataCharacterEquipInfo>
         {

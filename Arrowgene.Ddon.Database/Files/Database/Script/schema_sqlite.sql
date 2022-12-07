@@ -219,8 +219,9 @@ CREATE TABLE IF NOT EXISTS `ddon_character_job_data`
     CONSTRAINT `fk_character_job_data_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `ddon_equip_item_info`
+CREATE TABLE IF NOT EXISTS `ddon_equip_item`
 (
+    `id`           TEXT PRIMARY KEY NOT NULL,
     `character_id` INTEGER  NOT NULL,
     `job`          TINYINT  NOT NULL,
     `item_id`      INT      NOT NULL,
@@ -228,8 +229,8 @@ CREATE TABLE IF NOT EXISTS `ddon_equip_item_info`
     `equip_slot`   SMALLINT NOT NULL,
     `color`        TINYINT  NOT NULL,
     `plus_value`   TINYINT  NOT NULL,
-    PRIMARY KEY (`character_id`, `job`, `equip_type`, `equip_slot`),
-    CONSTRAINT `fk_equip_item_info_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+    UNIQUE (`character_id`, `job`, `equip_type`, `equip_slot`),
+    CONSTRAINT `fk_equip_item_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_equip_job_item`

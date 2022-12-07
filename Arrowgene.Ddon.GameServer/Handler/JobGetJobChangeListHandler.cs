@@ -26,12 +26,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             S2CJobGetJobChangeListRes jobChangeList = new S2CJobGetJobChangeListRes();
-            jobChangeList.JobChangeInfo = client.Character.CharacterEquipDataListDictionary
-                .Union(client.Character.CharacterEquipViewDataListDictionary)
+            jobChangeList.JobChangeInfo = client.Character.CharacterEquipItemListDictionary
+                .Union(client.Character.CharacterEquipViewItemListDictionary)
                 .GroupBy(x => x.Key)
                 .Select(x => new CDataJobChangeInfo() {
                     JobId = x.Key,
-                    EquipItemList = x.SelectMany(x => x.Value).SelectMany(x => x.Equips).ToList() // Flatten group by and CDataCharacterEquipData
+                    EquipItemList = x.SelectMany(x => x.Value).Select(x => x.AsCDataEquipItemInfo()).ToList() // Flatten group by
                 })
                 .ToList();
             jobChangeList.JobReleaseInfo = jobChangeList.JobReleaseInfo;

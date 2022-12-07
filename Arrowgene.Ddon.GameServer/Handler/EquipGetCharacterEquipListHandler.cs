@@ -1,12 +1,15 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+﻿using System.Linq;
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EquipGetCharacterEquipListHandler : PacketHandler<GameClient>
+    public class EquipGetCharacterEquipListHandler : GameStructurePacketHandler<C2SEquipGetCharacterEquipListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipGetCharacterEquipListHandler));
 
@@ -15,11 +18,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_EQUIP_GET_CHARACTER_EQUIP_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SEquipGetCharacterEquipListReq> packet)
         {
-            client.Send(InGameDump.Dump_48);
+            client.Send(new S2CEquipGetCharacterEquipListRes()
+            {
+                CharacterEquipList = client.Character.CharacterEquipViewItemListDictionary[client.Character.Job]
+                    .Union(client.Character.CharacterEquipItemListDictionary[client.Character.Job])
+                    .Select(x => new CDataCharacterEquipInfo()
+                    {
+                        EquipItemUId = x.EquipItemUId,
+                        EquipCategory = (byte) x.EquipSlot,
+                        EquipType = x.EquipType
+                    })
+                    .ToList(),
+                EquipJobItemList = client.Character.CharacterEquipJobItemListDictionary[client.Character.Job],
+                // TODO: PawnEquipItemList
+            });
         }
     }
 }

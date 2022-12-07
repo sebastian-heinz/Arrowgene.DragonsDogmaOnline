@@ -38,14 +38,16 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.Job = packet.Structure.CharacterInfo.Job;
             character.CharacterJobDataList = packet.Structure.CharacterInfo.CharacterJobDataList;
             //character.PlayPointList = packet.Structure.CharacterInfo.PlayPointList;
-            character.CharacterEquipDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>()
-            {
-              { packet.Structure.CharacterInfo.Job, packet.Structure.CharacterInfo.CharacterEquipDataList }
-            };
-            character.CharacterEquipViewDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>()
-            {
-              { packet.Structure.CharacterInfo.Job, packet.Structure.CharacterInfo.CharacterEquipViewDataList }
-            };
+            character.CharacterEquipItemListDictionary = new Dictionary<JobId, List<EquipItem>>()
+            {{ 
+                packet.Structure.CharacterInfo.Job,
+                packet.Structure.CharacterInfo.CharacterEquipDataList.SelectMany(x => x.Equips).Select(x => new EquipItem(x)).ToList()
+            }};
+            character.CharacterEquipViewItemListDictionary = new Dictionary<JobId, List<EquipItem>>()
+            {{
+                packet.Structure.CharacterInfo.Job, 
+                packet.Structure.CharacterInfo.CharacterEquipViewDataList.SelectMany(x => x.Equips).Select(x => new EquipItem(x)).ToList()
+            }};
             character.CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>()
             {
                 { packet.Structure.CharacterInfo.Job, packet.Structure.CharacterInfo.CharacterEquipJobItemList }
@@ -133,9 +135,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     MAtkDownResist = arisenPreset.MAtkDownResist,
                     MDefDownResist = arisenPreset.MDefDownResist
             }).ToList();
-            character.CharacterEquipDataListDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, CDataCharacterEquipData>(arisenPreset.Job, new CDataCharacterEquipData {
-                    Equips = new List<CDataEquipItemInfo>() {
-                        new CDataEquipItemInfo {
+            character.CharacterEquipItemListDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<EquipItem>>(arisenPreset.Job, new List<EquipItem>() {
+                        new EquipItem {
                             ItemId = arisenPreset.PrimaryWeapon,
                             Unk0 = 0,
                             EquipType = 1,
@@ -174,14 +175,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.SecondaryWeapon,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 2,
                             Color = arisenPreset.SecondaryWeaponColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Head,
                             Unk0 = 0,
                             EquipType = 1,
@@ -215,7 +216,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Body,
                             Unk0 = 0,
                             EquipType = 1,
@@ -254,14 +255,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Clothing,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 5,
                             Color = arisenPreset.ClothingColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Arm,
                             Unk0 = 0,
                             EquipType = 1,
@@ -295,7 +296,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Leg,
                             Unk0 = 0,
                             EquipType = 1,
@@ -329,21 +330,21 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Legwear,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 8,
                             Color = arisenPreset.LegwearColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Overwear,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 9,
                             Color = arisenPreset.OverwearColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Jewelry1,
                             Unk0 = 0,
                             EquipType = 1,
@@ -444,7 +445,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Jewelry2,
                             Unk0 = 0,
                             EquipType = 1,
@@ -545,7 +546,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Jewelry3,
                             Unk0 = 0,
                             EquipType = 1,
@@ -646,7 +647,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Jewelry4,
                             Unk0 = 0,
                             EquipType = 1,
@@ -747,7 +748,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Jewelry5,
                             Unk0 = 0,
                             EquipType = 1,
@@ -848,74 +849,72 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.Lantern,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 15
                         }
                     }
-                })
-            ).ToDictionary(x => x.Item1, x => new List<CDataCharacterEquipData>() {x.Item2});
-            character.CharacterEquipViewDataListDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, CDataCharacterEquipData>(arisenPreset.Job, new CDataCharacterEquipData {
-                    Equips = new List<CDataEquipItemInfo>() {
-                        new CDataEquipItemInfo {
+            )).ToDictionary(x => x.Item1, x => x.Item2);
+            character.CharacterEquipViewItemListDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<EquipItem>>(arisenPreset.Job, new List<EquipItem> {
+                        new EquipItem {
                             ItemId = arisenPreset.VPrimaryWeapon,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 1,
                             Color = arisenPreset.VPrimaryWeaponColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.VSecondaryWeapon,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 2,
                             Color = arisenPreset.VSecondaryWeaponColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.VHead,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 3,
                             Color = arisenPreset.VHeadColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.VBody,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 4,
                             Color = arisenPreset.VBodyColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.VClothing,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 5,
                             Color = arisenPreset.VClothingColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.VArm,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 6,
                             Color = arisenPreset.VArmColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.VLeg,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 7,
                             Color = arisenPreset.VLegColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.VLegwear,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 8,
                             Color = arisenPreset.VLegwearColour
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = arisenPreset.VOverwear,
                             Unk0 = 0,
                             EquipType = 2,
@@ -923,8 +922,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             Color = arisenPreset.VOverwearColour,
                         }
                     }
-                })
-            ).ToDictionary(x => x.Item1, x => new List<CDataCharacterEquipData>() {x.Item2});
+                )
+            ).ToDictionary(x => x.Item1, x => x.Item2);
             character.CharacterEquipJobItemListDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CDataEquipJobItem>>(arisenPreset.Job, new List<CDataEquipJobItem>() {
                 new CDataEquipJobItem {
                     JobItemId = arisenPreset.ClassItem1,

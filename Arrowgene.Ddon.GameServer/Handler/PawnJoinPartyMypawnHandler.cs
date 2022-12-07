@@ -175,9 +175,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     MAtkDownResist = pcapPawn.Context.ResistInfo.MAtkDownResist,
                     MDefDownResist = pcapPawn.Context.ResistInfo.MDefDownResist,
             }};
-            pawn.Character.CharacterEquipDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>() { { myPawnCsvData.Job, new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
-                    Equips = new List<CDataEquipItemInfo>() {
-                        new CDataEquipItemInfo {
+            pawn.Character.CharacterEquipItemListDictionary = new Dictionary<JobId, List<EquipItem>>() { { myPawnCsvData.Job, new List<EquipItem>() {
+                        new EquipItem {
                             ItemId = myPawnCsvData.Primary,
                             Unk0 = 0,
                             EquipType = 1,
@@ -195,14 +194,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.Secondary,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 2,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.Head,
                             Unk0 = 0,
                             EquipType = 1,
@@ -220,7 +219,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.Body,
                             Unk0 = 0,
                             EquipType = 1,
@@ -238,14 +237,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.BodyClothing,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 5,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.Arm,
                             Unk0 = 0,
                             EquipType = 1,
@@ -263,7 +262,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.Leg,
                             Unk0 = 0,
                             EquipType = 1,
@@ -281,21 +280,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             },
                             // Empty EquipElementParamList
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.LegWear,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 8,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.OverWear,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 9,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.JewelrySlot1,
                             Unk0 = 0,
                             EquipType = 1,
@@ -375,7 +374,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.JewelrySlot2,
                             Unk0 = 0,
                             EquipType = 1,
@@ -455,7 +454,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.JewelrySlot3,
                             Unk0 = 0,
                             EquipType = 1,
@@ -535,7 +534,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.JewelrySlot4,
                             Unk0 = 0,
                             EquipType = 1,
@@ -615,7 +614,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.JewelrySlot5,
                             Unk0 = 0,
                             EquipType = 1,
@@ -695,74 +694,72 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 },
                             }
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.Lantern,
                             Unk0 = 0,
                             EquipType = 1,
                             EquipSlot = 15
                         }
                     }
-                }
-            }}};
-            pawn.Character.CharacterEquipViewDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>() { { myPawnCsvData.Job, new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
-                    Equips = new List<CDataEquipItemInfo>() {
-                        new CDataEquipItemInfo {
+            }};
+            pawn.Character.CharacterEquipViewItemListDictionary = new Dictionary<JobId, List<EquipItem>>() { { myPawnCsvData.Job, new List<EquipItem>() {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VPrimary,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 1,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VSecondary,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 2,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VHead,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 3,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VBody,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 4,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VBodyClothing,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 5,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VArm,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 6,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VLeg,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 7,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VLegWear,
                             Unk0 = 0,
                             EquipType = 2,
                             EquipSlot = 8,
                             Color = 0
                         },
-                        new CDataEquipItemInfo {
+                        new EquipItem {
                             ItemId = myPawnCsvData.VOverWear,
                             Unk0 = 0,
                             EquipType = 2,
@@ -770,8 +767,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             Color = 0,
                         }
                     }
-                }
-            }}};
+            }};
             pawn.Character.CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>() { { myPawnCsvData.Job, new List<CDataEquipJobItem>() {
                 new CDataEquipJobItem {
                     JobItemId = myPawnCsvData.JobItem1,

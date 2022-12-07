@@ -18,10 +18,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             HideEquipLantern = character.HideEquipLantern;
             // In the context equipment lists, the index is the slot. A 0,0,0 element has to be in place if a slot is not filled
             ContextEquipPerformanceList = Enumerable.Range(1, 15)
-                .Select(i => new CDataContextEquipData(character.CharacterEquipDataListDictionary[character.Job].SelectMany(x => x.Equips).Where(x => x.EquipSlot == i).SingleOrDefault(new CDataEquipItemInfo())))
+                .Select(i => new CDataContextEquipData(character.CharacterEquipItemListDictionary[character.Job].Where(x => x.EquipSlot == i).Select(x => x.AsCDataEquipItemInfo()).SingleOrDefault(new CDataEquipItemInfo())))
                 .ToList();
             ContextEquipVisualList = Enumerable.Range(1, 15)
-                .Select(i => new CDataContextEquipData(character.CharacterEquipViewDataListDictionary[character.Job].SelectMany(x => x.Equips).Where(x => x.EquipSlot == i).SingleOrDefault(new CDataEquipItemInfo())))
+                .Select(i => new CDataContextEquipData(character.CharacterEquipViewItemListDictionary[character.Job].Where(x => x.EquipSlot == i).Select(x => x.AsCDataEquipItemInfo()).SingleOrDefault(new CDataEquipItemInfo())))
                 .ToList();
             ContextEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job]
                 .Select(x => new CDataContextEquipJobItemData(x)).ToList();

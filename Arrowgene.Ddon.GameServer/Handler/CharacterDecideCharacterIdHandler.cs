@@ -30,9 +30,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
             res.CharacterInfo.CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>()
             {
+                // Check nItem::E_STORAGE_TYPE in the PS4 debug symbols for IDs
                 new CDataCharacterItemSlotInfo()
                 {
-                    StorageType = 1, // Item Bag (Consumable) STORAGE_TYPE_BAG_USE
+                    StorageType = 0x1, // Item Bag (Consumable)
+                    SlotMax = 20
+                },
+                new CDataCharacterItemSlotInfo()
+                {
+                    StorageType = 0x2, // Item Bag (Material)
+                    SlotMax = 20
+                },
+                new CDataCharacterItemSlotInfo()
+                {
+                    StorageType = 0x3, // Item Bag (Equipment)
                     SlotMax = 20
                 }
             };
