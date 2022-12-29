@@ -81,6 +81,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataFavoriteWarpPoint.Serializer());
             Create(new CDataGameServerListInfoSerializer());
             Create(new CDataGameTimeBaseInfo.Serializer());
+            Create(new CDataGatheringItemGetRequest.Serializer());
+            Create(new CDataGatheringItemListUnk1.Serializer());
+            Create(new CDataGatheringItemListUnk1Unk2.Serializer());
+            Create(new CDataGatheringItemListUnk2.Serializer());
             Create(new CDataGPCourseValidSerializer());
             Create(new CDataHistoryElement.Serializer());
             Create(new CDataItemList.Serializer());

@@ -11,30 +11,30 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CItemUpdateCharacterItemNtc()
         {
-            Unk0=0;
-            ItemUpdateResultList=new List<CDataItemUpdateResult>();
-            UpdateWalletPointList=new List<CDataUpdateWalletPoint>();
+            UpdateType=0;
+            UpdateItemList=new List<CDataItemUpdateResult>();
+            UpdateWallet=new List<CDataUpdateWalletPoint>();
         }
 
-        public ushort Unk0;
-        public List<CDataItemUpdateResult> ItemUpdateResultList;
-        public List<CDataUpdateWalletPoint> UpdateWalletPointList;
+        public ushort UpdateType;
+        public List<CDataItemUpdateResult> UpdateItemList;
+        public List<CDataUpdateWalletPoint> UpdateWallet;
 
         public class Serializer : PacketEntitySerializer<S2CItemUpdateCharacterItemNtc>
         {
             public override void Write(IBuffer buffer, S2CItemUpdateCharacterItemNtc obj)
             {
-                WriteUInt16(buffer, obj.Unk0);
-                WriteEntityList<CDataItemUpdateResult>(buffer, obj.ItemUpdateResultList);
-                WriteEntityList<CDataUpdateWalletPoint>(buffer, obj.UpdateWalletPointList);
+                WriteUInt16(buffer, obj.UpdateType);
+                WriteEntityList<CDataItemUpdateResult>(buffer, obj.UpdateItemList);
+                WriteEntityList<CDataUpdateWalletPoint>(buffer, obj.UpdateWallet);
             }
 
             public override S2CItemUpdateCharacterItemNtc Read(IBuffer buffer)
             {
                 S2CItemUpdateCharacterItemNtc obj = new S2CItemUpdateCharacterItemNtc();
-                obj.Unk0 = ReadUInt16(buffer);
-                obj.ItemUpdateResultList = ReadEntityList<CDataItemUpdateResult>(buffer);
-                obj.UpdateWalletPointList = ReadEntityList<CDataUpdateWalletPoint>(buffer);
+                obj.UpdateType = ReadUInt16(buffer);
+                obj.UpdateItemList = ReadEntityList<CDataItemUpdateResult>(buffer);
+                obj.UpdateWallet = ReadEntityList<CDataUpdateWalletPoint>(buffer);
                 return obj;
             }
         }
