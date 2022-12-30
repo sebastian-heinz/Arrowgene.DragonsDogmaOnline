@@ -10,8 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class EquipItem
     {
-        // TODO: Check in pcaps if UIDs use lower case letters or not
-        private static string UIdPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private static string UIdPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         public const int UIdLength = 8;
 
         public EquipItem()
@@ -64,6 +63,15 @@ namespace Arrowgene.Ddon.Shared.Model
                 WeaponCrestDataList = this.WeaponCrestDataList,
                 ArmorCrestDataList = this.ArmorCrestDataList,
                 EquipElementParamList = this.EquipElementParamList
+            };
+        }
+
+        public CDataCharacterEquipInfo AsCDataCharacterEquipInfo() {
+            return new CDataCharacterEquipInfo()
+            {
+                EquipItemUId = this.EquipItemUId,
+                EquipType = this.EquipType,
+                EquipCategory = (byte) this.EquipSlot // TODO: Check if these two values are equivalent or if some conversion is needed
             };
         }
 

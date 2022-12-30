@@ -6,6 +6,8 @@ using Arrowgene.Logging;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
+using System.Linq;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -20,51 +22,47 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SItemUseBagItemReq> req)
         {
-            S2CItemUseBagItemRes res = new S2CItemUseBagItemRes(req.Structure);
+            S2CItemUseBagItemRes res = new S2CItemUseBagItemRes();
             client.Send(res);
 
+            // TODO: Send S2CItemUseBagItemNtc?
+
+            EquipItem item = client.Character.Items
+                .Where(item => item?.EquipType == 1 && item?.EquipItemUId == req.Structure.ItemUId).Single();
+
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
+            ntc.UpdateType = 3;
 
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
-            ntcData0.ItemList.ItemUId = req.Structure.ItemUID;
-            ntcData0.ItemList.ItemNum = 9;
-            ntcData0.ItemList.Unk3 = 0;
-            ntcData0.ItemList.StorageType = 1;
-            ntcData0.ItemList.Unk6 = 0;
-            ntcData0.ItemList.Unk7 = 0;
+            ntcData0.ItemList.ItemUId = item.EquipItemUId;
+            ntcData0.ItemList.ItemId = item.ItemId;
+            ntcData0.ItemList.ItemNum = 9; // TODO: Decrement and save back
+            ntcData0.ItemList.Unk3 = item.Unk0;
+            ntcData0.ItemList.StorageType = item.EquipType;
+            ntcData0.ItemList.SlotNo = item.EquipSlot;
+            ntcData0.ItemList.Unk6 = item.Color; // ?
+            ntcData0.ItemList.Unk7 = item.PlusValue; // ?
             ntcData0.ItemList.Bind = false;
             ntcData0.ItemList.Unk9 = 0;
             ntcData0.ItemList.Unk10 = 0;
             ntcData0.ItemList.Unk11 = 0;
-            ntcData0.ItemList.WeaponCrestDataList = new List<CDataWeaponCrestData>();
-            ntcData0.ItemList.ArmorCrestDataList = new List<CDataArmorCrestData>();
-            ntcData0.ItemList.EquipElementParamList = new List<CDataEquipElementParam>();
+            ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+            ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+            ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
             ntcData0.UpdateItemNum = 0;
-
-            if (req.Structure.ItemUID == "12345678") { ntcData0.ItemList.ItemId = 13807; ntcData0.ItemList.SlotNo = 1; }
-            if (req.Structure.ItemUID == "12345679") { ntcData0.ItemList.ItemId = 11407; ntcData0.ItemList.SlotNo = 2; }
-            if (req.Structure.ItemUID == "12345680") { ntcData0.ItemList.ItemId = 9378; ntcData0.ItemList.SlotNo = 3; }
-            if (req.Structure.ItemUID == "12345681") { ntcData0.ItemList.ItemId = 13801; ntcData0.ItemList.SlotNo = 4; }
-            if (req.Structure.ItemUID == "12345682") { ntcData0.ItemList.ItemId = 55; ntcData0.ItemList.SlotNo = 5; }
-            if (req.Structure.ItemUID == "12345683") { ntcData0.ItemList.ItemId = 9387; ntcData0.ItemList.SlotNo = 6; }
-            if (req.Structure.ItemUID == "12345684") { ntcData0.ItemList.ItemId = 9389; ntcData0.ItemList.SlotNo = 7; }
-            if (req.Structure.ItemUID == "12345685") { ntcData0.ItemList.ItemId = 9429; ntcData0.ItemList.SlotNo = 8; }
-            if (req.Structure.ItemUID == "12345686") { ntcData0.ItemList.ItemId = 47; ntcData0.ItemList.SlotNo = 9; }
-            if (req.Structure.ItemUID == "12345687") { ntcData0.ItemList.ItemId = 9404; ntcData0.ItemList.SlotNo = 10; }
-            if (req.Structure.ItemUID == "12345688") { ntcData0.ItemList.ItemId = 9405; ntcData0.ItemList.SlotNo = 11; }
-            if (req.Structure.ItemUID == "12345689") { ntcData0.ItemList.ItemId = 9406; ntcData0.ItemList.SlotNo = 12; }
-            CDataUpdateWalletPoint ntcData1 = new CDataUpdateWalletPoint();
-
-            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 3;
             ntc.UpdateItemList.Add(ntcData0);
-            ntc.UpdateWallet.Add(ntcData1);
+
+            // Wallet points?
+
             client.Send(ntc);
 
-            if (req.Structure.ItemUID == "12345682")
-            { client.Send(SelectedDump.lantern2_27_16); }
-
-
-
+            // Lantern start NTC
+            // TODO: Figure out all item IDs that do lantern stuff
+            if (item.ItemId == 55)
+            { 
+                client.Send(SelectedDump.lantern2_27_16); 
+                // TODO: Send S2C_CHARACTER_START_LANTERN_OTHER_NOTICE to other party members
+            }
         }
     }
 }

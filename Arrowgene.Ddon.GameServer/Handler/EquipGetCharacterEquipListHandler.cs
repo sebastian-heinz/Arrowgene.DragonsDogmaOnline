@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SEquipGetCharacterEquipListReq> packet)
         {
+            // TODO: Figure out if it should send all equips or just the ones for the current job
             client.Send(new S2CEquipGetCharacterEquipListRes()
             {
                 CharacterEquipList = client.Character.CharacterEquipViewItemListDictionary[client.Character.Job]

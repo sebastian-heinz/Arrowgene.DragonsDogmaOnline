@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataCharacterItemSlotInfo()
                 {
                     StorageType = 0x1, // Item Bag (Consumable)
-                    SlotMax = 20
+                    SlotMax = (ushort) client.Character.Items.Count
                 },
                 new CDataCharacterItemSlotInfo()
                 {
@@ -44,6 +44,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataCharacterItemSlotInfo()
                 {
                     StorageType = 0x3, // Item Bag (Equipment)
+                    SlotMax = 20
+                },
+                new CDataCharacterItemSlotInfo()
+                {
+                    StorageType = 0xD, // Item Bag (Job)
+                    SlotMax = 20
+                },
+                new CDataCharacterItemSlotInfo()
+                {
+                    StorageType = 0x10,
+                    SlotMax = 20
+                },
+                new CDataCharacterItemSlotInfo()
+                {
+                    StorageType = 0x11,
                     SlotMax = 20
                 }
             };

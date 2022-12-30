@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Chat.GatheringItem;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -14,9 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemHandler));
 
+        private readonly GatheringItemManager _gatheringItemManager;
 
         public InstanceGetGatheringItemHandler(DdonGameServer server) : base(server)
         {
+            this._gatheringItemManager = server.GatheringItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetGatheringItemReq> req)
@@ -29,31 +32,61 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
             ntc.UpdateType = 1;
-            for (int r = 0; r < req.Structure.GatheringItemGetRequestList.Count; r++)
+            foreach (CDataGatheringItemGetRequest gatheringItemRequest in req.Structure.GatheringItemGetRequestList)
             {
-                CDataGatheringItemGetRequest itemRequest = req.Structure.GatheringItemGetRequestList[r];
-                CDataGatheringItemListUnk2 item = InstanceGetGatheringItemListHandler.ITEMS.Where(item => item.SlotNo == itemRequest.SlotNo).Single();
+                CDataGatheringItemListUnk2 gatheringItem = this._gatheringItemManager.GetItems(req.Structure.LayoutId, req.Structure.PosId)
+                    .Where(item => item.SlotNo == gatheringItemRequest.SlotNo)
+                    .Single();
+
+                EquipItem item = client.Character.Items
+                    .Where(item => item?.EquipType == 1 && item?.ItemId == gatheringItem.ItemId)
+                    .SingleOrDefault();
+
+                if (item == null) {
+                    int firstEmptySlotNo;
+                    for (firstEmptySlotNo = 0; firstEmptySlotNo < client.Character.Items.Count; firstEmptySlotNo++)
+                    {
+                        if(client.Character.Items[firstEmptySlotNo] == null)
+                        {
+                            break;
+                        }
+                    }
+
+                    item = new EquipItem() {
+                        EquipItemUId = EquipItem.GenerateEquipItemUId(),
+                        ItemId = gatheringItem.ItemId,
+                        Unk0 = 0,
+                        EquipType = 1,
+                        EquipSlot = (ushort) (firstEmptySlotNo+1),
+                        Color = 0,
+                        PlusValue = 0,
+                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                        ArmorCrestDataList = new List<CDataArmorCrestData>(),
+                        EquipElementParamList = new List<CDataEquipElementParam>()
+                    };
+                    client.Character.Items[firstEmptySlotNo] = item;
+                }
+
                 CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
-                ntcData0.ItemList.ItemUId = EquipItem.GenerateEquipItemUId();
+                ntcData0.ItemList.ItemUId = item.EquipItemUId;
                 ntcData0.ItemList.ItemId = item.ItemId;
-                ntcData0.ItemList.ItemNum = itemRequest.Num; // Take only the requested amount, not item.ItemId which would be all available
-                ntcData0.ItemList.Unk3 = 0;
-                ntcData0.ItemList.StorageType = 1;
-                ntcData0.ItemList.SlotNo = (ushort) item.SlotNo;
-                ntcData0.ItemList.Unk6 = 0;
-                ntcData0.ItemList.Unk7 = 0;
+                ntcData0.ItemList.ItemNum = /* TODO: previousValue + */gatheringItemRequest.Num; // Take only the requested amount, not gatheringItem.Num which would be all available
+                ntcData0.ItemList.Unk3 = item.Unk0;
+                ntcData0.ItemList.StorageType = item.EquipType;
+                ntcData0.ItemList.SlotNo = item.EquipSlot;
+                ntcData0.ItemList.Unk6 = item.Color; // ?
+                ntcData0.ItemList.Unk7 = item.PlusValue; // ?
                 ntcData0.ItemList.Bind = false;
                 ntcData0.ItemList.Unk9 = 0;
                 ntcData0.ItemList.Unk10 = 0;
                 ntcData0.ItemList.Unk11 = 0;
-                ntcData0.ItemList.WeaponCrestDataList = new List<CDataWeaponCrestData>();
-                ntcData0.ItemList.ArmorCrestDataList = new List<CDataArmorCrestData>();
-                ntcData0.ItemList.EquipElementParamList = new List<CDataEquipElementParam>();
+                ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+                ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+                ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
                 ntcData0.UpdateItemNum = 0;
                 ntc.UpdateItemList.Add(ntcData0);
 
-                CDataUpdateWalletPoint ntcData1 = new CDataUpdateWalletPoint();
-                ntc.UpdateWallet.Add(ntcData1);
+                // Wallet points?
             }
 
             client.Send(ntc);

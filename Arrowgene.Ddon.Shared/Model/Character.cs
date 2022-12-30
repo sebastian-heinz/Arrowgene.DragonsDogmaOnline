@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.Shared.Model
             NormalSkills = new List<CDataNormalSkillParam>();
             CustomSkills = new List<CustomSkill>();
             Abilities = new List<Ability>();
+            Items = new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 20)); // Bag size
         }
 
         public CDataCharacterJobData ActiveCharacterJobData
@@ -75,6 +76,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataNormalSkillParam> NormalSkills { get; set; }
         public List<CustomSkill> CustomSkills { get; set;}
         public List<Ability> Abilities { get; set; }
+        public List<EquipItem> Items { get; set; } // TODO: Use its own thing and not EquipItem
         
         /// TODO combine into a location class ?
         public StageId Stage { get; set; }
