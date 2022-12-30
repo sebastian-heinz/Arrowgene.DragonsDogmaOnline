@@ -15,6 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemUseBagItemHandler));
 
+        private static readonly StorageType DestinationStorageType = StorageType.ItemBagConsumable;
 
         public ItemUseBagItemHandler(DdonGameServer server) : base(server)
         {
@@ -27,8 +28,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Send S2CItemUseBagItemNtc?
 
-            EquipItem item = client.Character.Items
-                .Where(item => item?.EquipType == 1 && item?.EquipItemUId == req.Structure.ItemUId).Single();
+            EquipItem item = client.Character.Items[DestinationStorageType]
+                .Where(item => item?.EquipType == (byte) DestinationStorageType && item?.EquipItemUId == req.Structure.ItemUId).Single();
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
             ntc.UpdateType = 3;

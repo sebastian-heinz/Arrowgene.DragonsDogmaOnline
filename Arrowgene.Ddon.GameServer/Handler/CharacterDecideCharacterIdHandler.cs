@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
@@ -28,40 +29,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.Id;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
-            res.CharacterInfo.CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>()
-            {
-                // Check nItem::E_STORAGE_TYPE in the PS4 debug symbols for IDs
-                new CDataCharacterItemSlotInfo()
-                {
-                    StorageType = 0x1, // Item Bag (Consumable)
-                    SlotMax = (ushort) client.Character.Items.Count
-                },
-                new CDataCharacterItemSlotInfo()
-                {
-                    StorageType = 0x2, // Item Bag (Material)
-                    SlotMax = 20
-                },
-                new CDataCharacterItemSlotInfo()
-                {
-                    StorageType = 0x3, // Item Bag (Equipment)
-                    SlotMax = 20
-                },
-                new CDataCharacterItemSlotInfo()
-                {
-                    StorageType = 0xD, // Item Bag (Job)
-                    SlotMax = 20
-                },
-                new CDataCharacterItemSlotInfo()
-                {
-                    StorageType = 0x10,
-                    SlotMax = 20
-                },
-                new CDataCharacterItemSlotInfo()
-                {
-                    StorageType = 0x11,
-                    SlotMax = 20
-                }
-            };
+            res.CharacterInfo.CharacterItemSlotInfoList = client.Character.Items.Select(storage => new CDataCharacterItemSlotInfo() {
+                StorageType = storage.Key,
+                SlotMax = (ushort) storage.Value.Count
+            }).ToList();
             res.CharacterInfo.WalletPointList = new List<CDataWalletPoint>()
             {
                 // TODO: Figure out what other currencies there are.

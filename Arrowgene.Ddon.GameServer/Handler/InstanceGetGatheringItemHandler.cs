@@ -15,6 +15,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemHandler));
 
+        private static readonly StorageType DestinationStorageType = StorageType.ItemBagConsumable;
+
         private readonly GatheringItemManager _gatheringItemManager;
 
         public InstanceGetGatheringItemHandler(DdonGameServer server) : base(server)
@@ -38,15 +40,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Where(item => item.SlotNo == gatheringItemRequest.SlotNo)
                     .Single();
 
-                EquipItem item = client.Character.Items
-                    .Where(item => item?.EquipType == 1 && item?.ItemId == gatheringItem.ItemId)
+                EquipItem item = client.Character.Items[DestinationStorageType]
+                    .Where(item => item?.EquipType == (byte) DestinationStorageType && item?.ItemId == gatheringItem.ItemId)
                     .SingleOrDefault();
 
                 if (item == null) {
                     int firstEmptySlotNo;
-                    for (firstEmptySlotNo = 0; firstEmptySlotNo < client.Character.Items.Count; firstEmptySlotNo++)
+                    for (firstEmptySlotNo = 0; firstEmptySlotNo < client.Character.Items[DestinationStorageType].Count; firstEmptySlotNo++)
                     {
-                        if(client.Character.Items[firstEmptySlotNo] == null)
+                        if(client.Character.Items[DestinationStorageType][firstEmptySlotNo] == null)
                         {
                             break;
                         }
@@ -56,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         EquipItemUId = EquipItem.GenerateEquipItemUId(),
                         ItemId = gatheringItem.ItemId,
                         Unk0 = 0,
-                        EquipType = 1,
+                        EquipType = (byte) DestinationStorageType,
                         EquipSlot = (ushort) (firstEmptySlotNo+1),
                         Color = 0,
                         PlusValue = 0,
@@ -64,7 +66,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ArmorCrestDataList = new List<CDataArmorCrestData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()
                     };
-                    client.Character.Items[firstEmptySlotNo] = item;
+                    client.Character.Items[DestinationStorageType][firstEmptySlotNo] = item;
                 }
 
                 CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
