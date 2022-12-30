@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataUpdateWalletPoint ntcData1 = new CDataUpdateWalletPoint();
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.Unk0 = 3;
+            ntc.UpdateType = 3;
             ntc.ItemUpdateResultList.Add(ntcData0);
             ntc.UpdateWalletPointList.Add(ntcData1);
             client.Send(ntc);

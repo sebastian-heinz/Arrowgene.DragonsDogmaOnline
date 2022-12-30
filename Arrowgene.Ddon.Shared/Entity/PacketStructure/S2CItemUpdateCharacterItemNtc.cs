@@ -11,12 +11,20 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CItemUpdateCharacterItemNtc()
         {
-            Unk0=0;
+            UpdateType=0;
             ItemUpdateResultList=new List<CDataItemUpdateResult>();
             UpdateWalletPointList=new List<CDataUpdateWalletPoint>();
         }
 
-        public ushort Unk0;
+        // 1: S2C_INSTANCE_GET_GATHERING_ITEM_RES
+        // 2: S2C_INSTANCE_GET_DROP_ITEM_RES
+        // 3: S2C_ITEM_USE_BAG_ITEM_RES
+        // 8: S2C_ITEM_MOVE_ITEM_RES
+        // 0x28: Job Change
+        // 0x29: Pawn Job Change
+        // 0x37: S2C_SEASON_DUNGEON_DELIVER_ITEM_FOR_EX_RES
+        // 0x38: S2C_SEASON_DUNGEON_RECEIVE_SOUL_ORDEAL_REWARD_RES
+        public ushort UpdateType;
         public List<CDataItemUpdateResult> ItemUpdateResultList;
         public List<CDataUpdateWalletPoint> UpdateWalletPointList;
 
@@ -24,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, S2CItemUpdateCharacterItemNtc obj)
             {
-                WriteUInt16(buffer, obj.Unk0);
+                WriteUInt16(buffer, obj.UpdateType);
                 WriteEntityList<CDataItemUpdateResult>(buffer, obj.ItemUpdateResultList);
                 WriteEntityList<CDataUpdateWalletPoint>(buffer, obj.UpdateWalletPointList);
             }
@@ -32,7 +40,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CItemUpdateCharacterItemNtc Read(IBuffer buffer)
             {
                 S2CItemUpdateCharacterItemNtc obj = new S2CItemUpdateCharacterItemNtc();
-                obj.Unk0 = ReadUInt16(buffer);
+                obj.UpdateType = ReadUInt16(buffer);
                 obj.ItemUpdateResultList = ReadEntityList<CDataItemUpdateResult>(buffer);
                 obj.UpdateWalletPointList = ReadEntityList<CDataUpdateWalletPoint>(buffer);
                 return obj;

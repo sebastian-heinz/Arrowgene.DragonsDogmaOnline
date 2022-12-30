@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (n == 11) { i = 12; ntcData0.ItemList.Unk0 = "12345689"; ntcData0.ItemList.Unk5 = i; ntcData0.ItemList.Unk1 = 9406; }
 
                 S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-                ntc.Unk0 = 1;
+                ntc.UpdateType = 1;
                 ntc.ItemUpdateResultList.Add(ntcData0);
                 ntc.UpdateWalletPointList.Add(ntcData1);
                 client.Send(ntc);
