@@ -15,12 +15,36 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlInsertEquipItem = $"INSERT INTO `ddon_equip_item` ({BuildQueryField(CDataEquipItemFields)}) VALUES ({BuildQueryInsert(CDataEquipItemFields)});";
         private readonly string SqlReplaceEquipItem = $"INSERT OR REPLACE INTO `ddon_equip_item` ({BuildQueryField(CDataEquipItemFields)}) VALUES ({BuildQueryInsert(CDataEquipItemFields)});";
-        private static readonly string SqlUpdateEquipItem = $"UPDATE `ddon_equip_item` SET {BuildQueryUpdate(CDataEquipItemFields)} WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=@equip_type AND `equip_slot`=@equip_slot;";
+        private static readonly string SqlUpdateEquipItem = $"UPDATE `ddon_equip_item` SET {BuildQueryUpdate(CDataEquipItemFields)} WHERE `id` = @id;";
         private static readonly string SqlSelectEquipItem = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=1;";
         private static readonly string SqlSelectVisualEquipItem = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=2;";
         private static readonly string SqlSelectEquipItemByCharacter = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id` = @character_id AND `equip_type`=1;";
         private static readonly string SqlSelectVisualEquipItemByCharacter = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id` = @character_id AND `equip_type`=2;";
-        private const string SqlDeleteEquipItemInfo = "DELETE FROM `ddon_equip_item` WHERE `character_id`=@character_id AND `job`=@job AND `equip_type`=@equip_type AND `equip_slot`=@equip_slot;";
+        private static readonly string SqlDeleteEquipItem = "DELETE FROM `ddon_equip_item` WHERE `character_id`=@character_id AND `job`=@job AND `id`=@id;";
+
+        public bool InsertEquipItem(uint characterId, JobId job, EquipItem equipItem)
+        {
+            return ExecuteNonQuery(SqlInsertEquipItem, command =>
+            {
+                AddParameter(command, characterId, job, equipItem);
+            }) == 1;
+        }
+
+        public bool UpdateEquipItem(uint characterId, JobId job, EquipItem equipItem)
+        {
+            return ExecuteNonQuery(SqlUpdateEquipItem, command =>
+            {
+                AddParameter(command, characterId, job, equipItem);
+            }) == 1;
+        }
+
+        public bool DeleteEquipItem(uint characterId, JobId job, EquipItem equipItem)
+        {
+            return ExecuteNonQuery(SqlDeleteEquipItem, command =>
+            {
+                AddParameter(command, characterId, job, equipItem);
+            }) == 1;
+        }
 
         private EquipItem ReadEquipItem(DbDataReader reader)
         {
@@ -36,9 +60,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private void AddParameter(TCom command, uint characterId, JobId job, EquipItem equipItem)
         {
-            AddParameter(command, "id", equipItem.EquipItemUId);
             AddParameter(command, "character_id", characterId);
             AddParameter(command, "job", (byte) job);
+            AddParameter(command, "id", equipItem.EquipItemUId);
             AddParameter(command, "item_id", equipItem.ItemId);
             AddParameter(command, "equip_type", equipItem.EquipType);
             AddParameter(command, "equip_slot", equipItem.EquipSlot);

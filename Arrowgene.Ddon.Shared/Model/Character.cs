@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 { StorageType.ItemBagEquipment, new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 40)) },
                 { StorageType.ItemBagJob, new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 5)) },
                 { StorageType.Unk5, new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 20)) },
-                { StorageType.Unk6, new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 400)) },
+                { StorageType.StorageBoxNormal, new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 400)) },
                 { StorageType.Unk7, new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 400)) },
                 { StorageType.Unk8, new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 400)) },
                 { StorageType.Unk9, new List<EquipItem>(Enumerable.Repeat<EquipItem>(null, 400)) },

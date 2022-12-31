@@ -6,11 +6,11 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CChangeCharacterEquipLobbyNotice : IPacketStructure
+    public class S2CEquipChangeCharacterEquipLobbyNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_EQUIP_29_17_16_NTC;
+        public PacketId Id => PacketId.S2C_EQUIP_CHANGE_CHARACTER_EQUIP_LOBBY_NTC;
         
-        public S2CChangeCharacterEquipLobbyNotice()
+        public S2CEquipChangeCharacterEquipLobbyNtc()
         {
             CharacterId=0;
             Job=0;
@@ -23,9 +23,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataEquipItemInfo> EquipItemList { get; set; }
         public List<CDataEquipItemInfo> VisualEquipItemList { get; set; }
 
-        public class Serializer : PacketEntitySerializer<S2CChangeCharacterEquipLobbyNotice>
+        public class Serializer : PacketEntitySerializer<S2CEquipChangeCharacterEquipLobbyNtc>
         {
-            public override void Write(IBuffer buffer, S2CChangeCharacterEquipLobbyNotice obj)
+            public override void Write(IBuffer buffer, S2CEquipChangeCharacterEquipLobbyNtc obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteByte(buffer, (byte) obj.Job);
@@ -33,9 +33,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataEquipItemInfo>(buffer, obj.VisualEquipItemList);
             }
 
-            public override S2CChangeCharacterEquipLobbyNotice Read(IBuffer buffer)
+            public override S2CEquipChangeCharacterEquipLobbyNtc Read(IBuffer buffer)
             {
-                S2CChangeCharacterEquipLobbyNotice obj = new S2CChangeCharacterEquipLobbyNotice();
+                S2CEquipChangeCharacterEquipLobbyNtc obj = new S2CEquipChangeCharacterEquipLobbyNtc();
                 obj.CharacterId = ReadUInt32(buffer);
                 obj.Job = (JobId) ReadByte(buffer);
                 obj.EquipItemList = ReadEntityList<CDataEquipItemInfo>(buffer);

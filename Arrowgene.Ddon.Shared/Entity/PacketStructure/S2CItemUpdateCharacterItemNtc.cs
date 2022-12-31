@@ -20,6 +20,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         // 2: S2C_INSTANCE_GET_DROP_ITEM_RES
         // 3: S2C_ITEM_USE_BAG_ITEM_RES
         // 8: S2C_ITEM_MOVE_ITEM_RES
+        // 0x25: changePawnEquip
+        // 0x27: changePawnStorageEquip
+        // 0x24: changeCharacterEquip
+        // 0x26: changeCharacterStorageEquip
         // 0x28: Job Change
         // 0x29: Pawn Job Change
         // 0x37: S2C_SEASON_DUNGEON_DELIVER_ITEM_FOR_EX_RES

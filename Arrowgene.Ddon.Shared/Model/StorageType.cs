@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Model
         ItemBagEquipment = 0x3, 
         ItemBagJob = 0x4,
         Unk5 = 0x5,
-        Unk6 = 0x6,
+        StorageBoxNormal = 0x6,
         Unk7 = 0x7,
         Unk8 = 0x8,
         Unk9 = 0x9,

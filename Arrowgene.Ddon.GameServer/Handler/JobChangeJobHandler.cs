@@ -29,8 +29,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CJobGetJobChangeListRes jobChangeList = EntitySerializer.Get<S2CJobGetJobChangeListRes>().Read(InGameDump.data_Dump_52);
             CDataJobPlayPoint requestedJobPlayPoint = jobChangeList.PlayPointList.Where(x => x.Job == packet.Structure.JobId).FirstOrDefault();
 
-            S2CEquipGetCharacterEquipListRes getCharacterEquipListRes = EntitySerializer.Get<S2CEquipGetCharacterEquipListRes>().Read(InGameDump.data_Dump_48);
-
             S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
             notice.CharacterId = client.Character.Id;
             notice.CharacterJobData = client.Character.ActiveCharacterJobData;
@@ -53,7 +51,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CJobChangeJobRes response = new S2CJobChangeJobRes();
             response.CharacterJobData = client.Character.ActiveCharacterJobData;
-            response.CharacterEquipList = getCharacterEquipListRes.CharacterEquipList;
+            // TODO: Figure out if it should send all equips or just the ones for the current job
+            response.CharacterEquipList = client.Character.CharacterEquipViewItemListDictionary[client.Character.Job]
+                    .Union(client.Character.CharacterEquipItemListDictionary[client.Character.Job])
+                    .Select(x => x.AsCDataCharacterEquipInfo())
+                    .ToList();
             response.SetAcquirementParamList = client.Character.CustomSkills
                 .Select(x => x.AsCDataSetAcquirementParam())
                 .ToList();
@@ -76,6 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0x28;
+            // TODO: Move previous job equipment to storage box, and move new job equipment from storage box
             client.Send(updateCharacterItemNtc);
 
             // I don't know whats the purpose of this carrying so much data since the job change itself is done by the NTC

@@ -25,12 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 CharacterEquipList = client.Character.CharacterEquipViewItemListDictionary[client.Character.Job]
                     .Union(client.Character.CharacterEquipItemListDictionary[client.Character.Job])
-                    .Select(x => new CDataCharacterEquipInfo()
-                    {
-                        EquipItemUId = x.EquipItemUId,
-                        EquipCategory = (byte) x.EquipSlot,
-                        EquipType = x.EquipType
-                    })
+                    .Select(x => x.AsCDataCharacterEquipInfo())
                     .ToList(),
                 EquipJobItemList = client.Character.CharacterEquipJobItemListDictionary[client.Character.Job],
                 // TODO: PawnEquipItemList

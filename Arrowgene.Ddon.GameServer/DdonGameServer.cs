@@ -186,6 +186,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ContextSetContextHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
 
+            AddHandler(new EquipChangeCharacterEquipHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
             AddHandler(new EquipUpdateHideCharacterHeadArmorHandler(this));
             AddHandler(new EquipUpdateHideCharacterLanternHandler(this));
@@ -220,6 +221,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
 
             AddHandler(new ItemGetStorageItemListHandler(this));
+            AddHandler(new ItemMoveItemHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
             AddHandler(new ItemSortSetItemSortdataBinHandler(this));
             AddHandler(new ItemUseBagItemHandler(this));
