@@ -25,33 +25,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
             {
-                ushort dstSlotNo = itemFromTo.SlotNo;
-                if(dstSlotNo == 0) {
-                    for (dstSlotNo = 0; dstSlotNo < client.Character.Items[itemFromTo.DstStorageType].Count; dstSlotNo++)
-                    {
-                        if(client.Character.Items[itemFromTo.DstStorageType][dstSlotNo] == null)
-                        {
-                            break;
-                        }
-                    }
-                    dstSlotNo++;
-                }
-
                 // TODO: Move only item.Num and not the entire thing
-                var tuple = client.Character.Items[itemFromTo.SrcStorageType]
+                var tuple = client.Character.Storage.getStorage(itemFromTo.SrcStorageType)
                     .Select((item, index) => new { item, index })
-                    .Where(tuple => itemFromTo.ItemUId == tuple.item?.EquipItemUId)
+                    .Where(tuple => itemFromTo.ItemUId == tuple.item?.UId)
                     .Single();
-                EquipItem item = tuple.item;
+                Item item = tuple.item;
                 ushort srcSlotNo = (ushort) (tuple.index+1);
 
                 // Update item
                 CDataItemUpdateResult updateItem = new CDataItemUpdateResult();
-                updateItem.ItemList.ItemUId = item.EquipItemUId;
+                updateItem.ItemList.ItemUId = item.UId;
                 updateItem.ItemList.ItemId = item.ItemId;
-                updateItem.ItemList.ItemNum = 10-itemFromTo.Num; // TODO: yknow
-                updateItem.ItemList.Unk3 = item.Unk0;
-                updateItem.ItemList.StorageType = item.EquipType;
+                updateItem.ItemList.ItemNum = item.ItemNum-itemFromTo.Num; // TODO: Move partially
+                updateItem.ItemList.Unk3 = item.Unk3;
+                updateItem.ItemList.StorageType = (byte) itemFromTo.SrcStorageType;
                 updateItem.ItemList.SlotNo = srcSlotNo;
                 updateItem.ItemList.Unk6 = item.Color; // ?
                 updateItem.ItemList.Unk7 = item.PlusValue; // ?
@@ -65,17 +53,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateItem.UpdateItemNum = (int) -itemFromTo.Num;
                 ntc.UpdateItemList.Add(updateItem);
 
-                client.Character.Items[itemFromTo.SrcStorageType][srcSlotNo] = null;
-                item.EquipType = (byte) itemFromTo.DstStorageType;
-                item.EquipSlot = dstSlotNo;
-                client.Character.Items[itemFromTo.DstStorageType][dstSlotNo] = item;
+                // TODO: Handle swapping items and moving only a number of items?
+                client.Character.Storage.setStorageItem(null, itemFromTo.SrcStorageType, srcSlotNo);
+                Server.Database.DeleteStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo);
+
+                ushort dstSlotNo = itemFromTo.SlotNo;
+                if(dstSlotNo == 0)
+                {
+                    dstSlotNo = client.Character.Storage.addStorageItem(item, itemFromTo.DstStorageType);
+                }
+                client.Character.Storage.setStorageItem(item, itemFromTo.DstStorageType, dstSlotNo);
+                Server.Database.InsertStorageItem(client.Character.Id, itemFromTo.DstStorageType, dstSlotNo, item.UId);
 
                 CDataItemUpdateResult updateItem2 = new CDataItemUpdateResult();
-                updateItem2.ItemList.ItemUId = item.EquipItemUId;
+                updateItem2.ItemList.ItemUId = item.UId;
                 updateItem2.ItemList.ItemId = item.ItemId;
-                updateItem2.ItemList.ItemNum = itemFromTo.Num;
-                updateItem2.ItemList.Unk3 = item.Unk0;
-                updateItem2.ItemList.StorageType = item.EquipType;
+                updateItem2.ItemList.ItemNum = itemFromTo.Num; // TODO: Move partially
+                updateItem2.ItemList.Unk3 = item.Unk3;
+                updateItem2.ItemList.StorageType = (byte) itemFromTo.DstStorageType;
                 updateItem2.ItemList.SlotNo = dstSlotNo;
                 updateItem2.ItemList.Unk6 = item.Color; // ?
                 updateItem2.ItemList.Unk7 = item.PlusValue; // ?

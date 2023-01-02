@@ -10,64 +10,51 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CDataEquipItemFields = new string[]
         {
-            "id", "character_id", "job", "item_id", "equip_type", "equip_slot", "color", "plus_value"
+            "item_uid", "character_id", "job", "equip_type", "equip_slot"
         };
 
         private readonly string SqlInsertEquipItem = $"INSERT INTO `ddon_equip_item` ({BuildQueryField(CDataEquipItemFields)}) VALUES ({BuildQueryInsert(CDataEquipItemFields)});";
         private readonly string SqlReplaceEquipItem = $"INSERT OR REPLACE INTO `ddon_equip_item` ({BuildQueryField(CDataEquipItemFields)}) VALUES ({BuildQueryInsert(CDataEquipItemFields)});";
-        private static readonly string SqlUpdateEquipItem = $"UPDATE `ddon_equip_item` SET {BuildQueryUpdate(CDataEquipItemFields)} WHERE `id` = @id;";
-        private static readonly string SqlSelectEquipItem = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=1;";
-        private static readonly string SqlSelectVisualEquipItem = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id` = @character_id AND `job` = @job AND `equip_type`=2;";
-        private static readonly string SqlSelectEquipItemByCharacter = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id` = @character_id AND `equip_type`=1;";
-        private static readonly string SqlSelectVisualEquipItemByCharacter = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id` = @character_id AND `equip_type`=2;";
-        private static readonly string SqlDeleteEquipItem = "DELETE FROM `ddon_equip_item` WHERE `character_id`=@character_id AND `job`=@job AND `id`=@id;";
+        private static readonly string SqlUpdateEquipItem = $"UPDATE `ddon_equip_item` SET {BuildQueryUpdate(CDataEquipItemFields)} WHERE `item_uid`=@item_uid AND `character_id`=@character_id AND `job`=@job AND `equip_type`=@equip_type AND `equip_slot`=@equip_slot;";
+        private static readonly string SqlSelectEquipItemByCharacter = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM `ddon_equip_item` WHERE `character_id`=@character_id;";
+        private static readonly string SqlDeleteEquipItem = "DELETE FROM `ddon_equip_item` WHERE `item_uid`=@item_uid AND `character_id`=@character_id AND `job`=@job AND `equip_type`=@equip_type AND `equip_slot`=@equip_slot;";
 
-        public bool InsertEquipItem(uint characterId, JobId job, EquipItem equipItem)
+        public bool InsertEquipItem(TCon conn, uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
-            return ExecuteNonQuery(SqlInsertEquipItem, command =>
+            return ExecuteNonQuery(conn, SqlInsertEquipItem, command =>
             {
-                AddParameter(command, characterId, job, equipItem);
+                AddParameter(command, characterId, job, equipType, equipSlot, itemUId);
             }) == 1;
         }
 
-        public bool UpdateEquipItem(uint characterId, JobId job, EquipItem equipItem)
+        public bool InsertEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
+        {
+            return this.InsertEquipItem(null, characterId, job, equipType, equipSlot, itemUId);
+        }
+
+        public bool UpdateEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
             return ExecuteNonQuery(SqlUpdateEquipItem, command =>
             {
-                AddParameter(command, characterId, job, equipItem);
+                AddParameter(command, characterId, job, equipType, equipSlot, itemUId);
             }) == 1;
         }
 
-        public bool DeleteEquipItem(uint characterId, JobId job, EquipItem equipItem)
+        public bool DeleteEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
             return ExecuteNonQuery(SqlDeleteEquipItem, command =>
             {
-                AddParameter(command, characterId, job, equipItem);
+                AddParameter(command, characterId, job, equipType, equipSlot, itemUId);
             }) == 1;
         }
 
-        private EquipItem ReadEquipItem(DbDataReader reader)
+        private void AddParameter(TCom command, uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
-            EquipItem equipItem = new EquipItem();
-            equipItem.EquipItemUId = GetString(reader, "id");
-            equipItem.ItemId = GetUInt32(reader, "item_id");
-            equipItem.EquipType = GetByte(reader, "equip_type");
-            equipItem.EquipSlot = GetUInt16(reader, "equip_slot");
-            equipItem.Color = GetByte(reader, "color");
-            equipItem.PlusValue = GetByte(reader, "plus_value");
-            return equipItem;
-        }
-
-        private void AddParameter(TCom command, uint characterId, JobId job, EquipItem equipItem)
-        {
+            AddParameter(command, "item_uid", itemUId);
             AddParameter(command, "character_id", characterId);
             AddParameter(command, "job", (byte) job);
-            AddParameter(command, "id", equipItem.EquipItemUId);
-            AddParameter(command, "item_id", equipItem.ItemId);
-            AddParameter(command, "equip_type", equipItem.EquipType);
-            AddParameter(command, "equip_slot", equipItem.EquipSlot);
-            AddParameter(command, "color", equipItem.Color);
-            AddParameter(command, "plus_value", equipItem.PlusValue);
+            AddParameter(command, "equip_type", (byte) equipType);
+            AddParameter(command, "equip_slot", equipSlot);
         }
     }
 }

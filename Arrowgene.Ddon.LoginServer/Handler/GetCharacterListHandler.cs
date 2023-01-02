@@ -46,11 +46,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 //cResponse.CharacterListElement.EntryJobBaseInfo.Level = (byte) c.CharacterInfo.MatchingProfile.EntryJobLevel;
                 cResponse.EditInfo = c.EditInfo;
                 cResponse.MatchingProfile = c.MatchingProfile;
-                cResponse.EquipItemInfo = c.CharacterEquipViewItemListDictionary[c.Job]
-                    .Union(c.CharacterEquipItemListDictionary[c.Job])
-                    .Select(x => x.AsCDataEquipItemInfo())
-                    .ToList();
-                    
+                cResponse.EquipItemInfo = c.Equipment.getEquipmentAsCDataEquipItemInfo(c.Job, EquipType.Performance)
+                    .Union(c.Equipment.getEquipmentAsCDataEquipItemInfo(c.Job, EquipType.Visual))
+                    .ToList();                    
 
                 characterListResponse.Add(cResponse);
             }

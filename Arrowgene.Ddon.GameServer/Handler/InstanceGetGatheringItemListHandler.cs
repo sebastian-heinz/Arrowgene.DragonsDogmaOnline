@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CInstanceGetGatheringItemListRes res = new S2CInstanceGetGatheringItemListRes();
             res.LayoutId = req.Structure.LayoutId;
             res.PosId = req.Structure.PosId;
-            res.GatheringItemUId = EquipItem.GenerateEquipItemUId();
+            res.GatheringItemUId = Item.GenerateEquipItemUId(); // TODO: Find in item bag a gathering item
             res.IsGatheringItemBreak = false; // TODO: Random, and update broken item by sending S2CItemUpdateCharacterItemNtc
             res.Unk0 = false;
             res.Unk1 = new List<CDataGatheringItemListUnk1>();

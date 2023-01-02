@@ -33,10 +33,25 @@ namespace Arrowgene.Ddon.Database
 
         bool UpdateCharacterBaseInfo(Character character);
 
+        // Item
+        bool InsertItem(Item item);
+        bool UpdateItem(Item item);
+        bool DeleteItem(string uid);
+
+        //Storage
+        bool InsertStorage(uint characterId, CDataCharacterItemSlotInfo storage);
+        bool UpdateStorage(uint characterId, CDataCharacterItemSlotInfo storage);
+        bool DeleteStorage(uint characterId, StorageType storageType);
+
+        // Storage Item
+        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId);
+        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId);
+        bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
+
         // Equip
-        bool InsertEquipItem(uint characterId, JobId job, EquipItem equipItem);
-        bool UpdateEquipItem(uint characterId, JobId job, EquipItem equipItem);
-        bool DeleteEquipItem(uint characterId, JobId job, EquipItem equipItem);
+        bool InsertEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool UpdateEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool DeleteEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
 
         // CustomSkills
         bool InsertEquippedCustomSkill(uint characterId, CustomSkill skill);

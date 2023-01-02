@@ -28,19 +28,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Send S2CItemUseBagItemNtc?
 
-            EquipItem item = client.Character.Items[DestinationStorageType]
-                .Where(item => item?.EquipType == (byte) DestinationStorageType && item?.EquipItemUId == req.Structure.ItemUId).Single();
+            var tuple = client.Character.Storage.getStorage(DestinationStorageType)
+                .Select((x, index) => new {item = x, slot = index+1})
+                .Where(tuple => tuple.item?.UId == req.Structure.ItemUId)
+                .Single();
+            Item item = tuple.item;
+            ushort slotNo = (ushort) tuple.slot;
+
+            item.ItemNum--;
+            Server.Database.UpdateItem(item);
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
             ntc.UpdateType = 3;
 
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
-            ntcData0.ItemList.ItemUId = item.EquipItemUId;
+            ntcData0.ItemList.ItemUId = item.UId;
             ntcData0.ItemList.ItemId = item.ItemId;
-            ntcData0.ItemList.ItemNum = 9; // TODO: Decrement and save back
-            ntcData0.ItemList.Unk3 = item.Unk0;
-            ntcData0.ItemList.StorageType = item.EquipType;
-            ntcData0.ItemList.SlotNo = item.EquipSlot;
+            ntcData0.ItemList.ItemNum = item.ItemNum;
+            ntcData0.ItemList.Unk3 = item.Unk3;
+            ntcData0.ItemList.StorageType = (byte) DestinationStorageType;
+            ntcData0.ItemList.SlotNo = slotNo;
             ntcData0.ItemList.Unk6 = item.Color; // ?
             ntcData0.ItemList.Unk7 = item.PlusValue; // ?
             ntcData0.ItemList.Bind = false;
@@ -50,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
             ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
-            ntcData0.UpdateItemNum = 0;
+            ntcData0.UpdateItemNum = -1;
             ntc.UpdateItemList.Add(ntcData0);
 
             // Wallet points?

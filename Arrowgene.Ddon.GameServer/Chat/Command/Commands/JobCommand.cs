@@ -79,9 +79,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
                 notice.CharacterId = client.Character.Id;
                 notice.CharacterJobData = client.Character.ActiveCharacterJobData;
-                notice.EquipItemInfo = client.Character.CharacterEquipViewItemListDictionary[client.Character.Job]
-                    .Union(client.Character.CharacterEquipItemListDictionary[client.Character.Job])
-                    .Select(x => x.AsCDataEquipItemInfo())
+                notice.EquipItemInfo = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Performance)
+                    .Union(client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Visual))
                     .ToList();
                 notice.SetAcquirementParamList = client.Character.CustomSkills
                     .Where(x => x.Job == job)

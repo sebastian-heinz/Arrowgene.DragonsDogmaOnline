@@ -1,12 +1,9 @@
 ﻿using System.Linq;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -26,12 +23,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             S2CJobGetJobChangeListRes jobChangeList = new S2CJobGetJobChangeListRes();
-            jobChangeList.JobChangeInfo = client.Character.CharacterEquipItemListDictionary
-                .Union(client.Character.CharacterEquipViewItemListDictionary)
-                .GroupBy(x => x.Key)
-                .Select(x => new CDataJobChangeInfo() {
-                    JobId = x.Key,
-                    EquipItemList = x.SelectMany(x => x.Value).Select(x => x.AsCDataEquipItemInfo()).ToList() // Flatten group by
+            jobChangeList.JobChangeInfo = client.Character.Equipment.getAllEquipment().Keys
+                .Select(jobId => new CDataJobChangeInfo() {
+                    JobId = jobId,
+                    EquipItemList = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(jobId, EquipType.Performance)
+                        .Union(client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(jobId, EquipType.Visual))
+                        .ToList()
                 })
                 .ToList();
             jobChangeList.JobReleaseInfo = jobChangeList.JobReleaseInfo;

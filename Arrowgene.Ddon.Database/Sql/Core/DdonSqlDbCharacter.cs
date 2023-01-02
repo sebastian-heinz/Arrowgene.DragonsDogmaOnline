@@ -107,6 +107,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     ExecuteNonQuery(conn, SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
 
                     StoreCharacterData(conn, character);
+
+                    CreateItems(conn, character);
                 });
         }
 
@@ -154,6 +156,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     });
 
                     StoreCharacterData(conn, character);
+
+                    // TODO: Synchronize equipment items and storage items
                 });
         }
 
@@ -220,33 +224,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     while (reader.Read())
                     {
+                        string UId = GetString(reader, "item_uid");
                         JobId job = (JobId) GetByte(reader, "job");
-                        EquipItem equipItem = ReadEquipItem(reader);
-                        if(!character.CharacterEquipItemListDictionary.ContainsKey(job))
-                        {
-                            character.CharacterEquipItemListDictionary.Add(job, new List<EquipItem>());
-                        }
-                        character.CharacterEquipItemListDictionary[job].Add(equipItem);
+                        EquipType equipType = (EquipType) GetByte(reader, "equip_type");
+                        byte equipSlot = GetByte(reader, "equip_slot");
+                        ExecuteReader(conn, SqlSelectItem,
+                            command2 => { AddParameter(command2, "@uid", UId); },
+                            reader2 => 
+                            {
+                                if(reader2.Read())
+                                {
+                                    Item item = ReadItem(reader2);
+                                    character.Equipment.setEquipItem(item, job, equipType, equipSlot);
+                                }
+                            });
                     }
-                });
-
-            ExecuteReader(conn, SqlSelectVisualEquipItemByCharacter,
-                command => { AddParameter(command, "@character_id", character.Id); }, 
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        JobId job = (JobId) GetByte(reader, "job");
-                        EquipItem equipItemInfo = ReadEquipItem(reader);
-                        if(!character.CharacterEquipViewItemListDictionary.ContainsKey(job))
-                        {
-                            character.CharacterEquipViewItemListDictionary.Add(job, new List<EquipItem>());
-                        }
-                        character.CharacterEquipViewItemListDictionary[job].Add(equipItemInfo);
-                    }
-                });
-
-            
+                });            
 
             // Job Items
             ExecuteReader(conn, SqlSelectEquipJobItemByCharacter,
@@ -319,6 +312,41 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.CommunicationShortCutList.Add(ReadCommunicationShortCut(reader));
                     }
                 });
+
+            // Storage
+            ExecuteReader(conn, SqlSelectAllStoragesByCharacter,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        CDataCharacterItemSlotInfo storageSlotInfo = ReadStorage(reader);
+                        character.Storage.addStorage(storageSlotInfo.StorageType, storageSlotInfo.SlotMax);
+                    }
+
+                    ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
+                    command2 => { AddParameter(command2, "@character_id", character.Id); },
+                    reader2 =>
+                    {
+                        while(reader2.Read())
+                        {
+                            StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
+                            ushort slot = GetUInt16(reader2, "slot_no");
+                            string UId = GetString(reader2, "item_uid");
+
+                            ExecuteReader(conn, SqlSelectItem,
+                                command3 => { AddParameter(command3, "@uid", UId); },
+                                reader3 => 
+                                {
+                                    if(reader3.Read())
+                                    {
+                                        Item item = ReadItem(reader3);
+                                        character.Storage.setStorageItem(item, storageType, slot);
+                                    }
+                                });
+                        }
+                    });
+                });
         }
 
         private void StoreCharacterData(TCon conn, Character character)
@@ -329,28 +357,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     AddParameter(command, character.Id, characterJobData);
                 });
-            }
-
-            foreach(KeyValuePair<JobId, List<EquipItem>> characterEquipDataListByJob in character.CharacterEquipItemListDictionary)
-            {
-                foreach(EquipItem equipItem in characterEquipDataListByJob.Value)
-                {   
-                    ExecuteNonQuery(conn, SqlReplaceEquipItem, command =>
-                    {
-                        AddParameter(command, character.Id, characterEquipDataListByJob.Key, equipItem);
-                    });
-                }
-            }
-
-            foreach(KeyValuePair<JobId, List<EquipItem>> characterEquipViewDataListByJob in character.CharacterEquipViewItemListDictionary)
-            {
-                foreach(EquipItem equipItem in characterEquipViewDataListByJob.Value)
-                {
-                    ExecuteNonQuery(conn, SqlReplaceEquipItem, command =>
-                    {
-                        AddParameter(command, character.Id, characterEquipViewDataListByJob.Key, equipItem);
-                    });
-                }
             }
 
             foreach(KeyValuePair<JobId, List<CDataEquipJobItem>> characterEquipJobItemListByJob in character.CharacterEquipJobItemListDictionary)
@@ -402,6 +408,57 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     AddParameter(command, character.Id, communicationShortcut);
                 });
+            }
+
+            foreach(StorageType storageType in character.Storage.getAllStorages().Keys)
+            {
+                ExecuteNonQuery(conn, SqlReplaceStorage, command =>
+                {
+                    AddParameter(command, character.Id, new CDataCharacterItemSlotInfo()
+                    {
+                        StorageType = storageType,
+                        SlotMax = (ushort) character.Storage.getAllStorages()[storageType].Count
+                    });
+                });
+            }
+        }
+
+        private void CreateItems(TCon conn, Character character)
+        {
+            // Create storage items
+            foreach (KeyValuePair<StorageType, List<Item>> storage in character.Storage.getAllStorages())
+            {
+                StorageType storageType = storage.Key;
+                for(ushort index=0; index < storage.Value.Count; index++)
+                {
+                    Item item = storage.Value[index];
+                    if(item != null)
+                    {
+                        ushort slot = (ushort)(index+1);
+                        InsertItem(conn, item);
+                        InsertStorageItem(conn, character.Id, storageType, slot, item.UId);
+                    }
+                }
+            }
+
+            // Create equipment items
+            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.Equipment.getAllEquipment())
+            {
+                JobId job = jobEquipment.Key;
+                foreach (KeyValuePair<EquipType, List<Item>> equipment in jobEquipment.Value)
+                {
+                    EquipType equipType = equipment.Key;
+                    for (byte index = 0; index < equipment.Value.Count; index++)
+                    {
+                        Item item = equipment.Value[index];
+                        if(item != null)
+                        {
+                            byte slot = (byte)(index+1);
+                            InsertItem(conn, item);
+                            InsertEquipItem(conn, character.Id, job, equipType, slot, item.UId);
+                        }
+                    }
+                }
             }
         }
 

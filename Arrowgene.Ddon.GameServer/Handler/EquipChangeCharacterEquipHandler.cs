@@ -20,61 +20,45 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SEquipChangeCharacterEquipReq> packet)
         {
-            S2CItemUpdateCharacterItemNtc equipUpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            equipUpdateCharacterItemNtc.UpdateType = 0x24;
 
-            S2CItemUpdateCharacterItemNtc unequipUpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            unequipUpdateCharacterItemNtc.UpdateType = 0x24;
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            updateCharacterItemNtc.UpdateType = 0x24;
 
             foreach (CDataCharacterEquipInfo changeCharacterEquipInfo in packet.Structure.ChangeCharacterEquipList)
             {
+                EquipType equipType = (EquipType) changeCharacterEquipInfo.EquipType;
+                byte equipSlot = changeCharacterEquipInfo.EquipCategory;
+
                 if(changeCharacterEquipInfo.EquipItemUId.Length == 0)
                 {
                     // Unequip item; from equipment to bag
                     // Find in equipment the item to unequip
-                    EquipItem equipItem = client.Character.CharacterEquipItemListDictionary[client.Character.Job]
-                        .Concat(client.Character.CharacterEquipViewItemListDictionary[client.Character.Job])
-                        .Where(ei => ei.EquipSlot == changeCharacterEquipInfo.EquipCategory
-                                && ei.EquipType == changeCharacterEquipInfo.EquipType)
-                        .Single();
+                    Item item = client.Character.Equipment.getEquipItem(client.Character.Job, equipType, equipSlot);
 
-                    List<EquipItem> targetEquipItemList = equipItem.EquipType == 1
-                        ? client.Character.CharacterEquipItemListDictionary[client.Character.Job]
-                        : client.Character.CharacterEquipViewItemListDictionary[client.Character.Job];
-
-                    targetEquipItemList.Remove(equipItem);
-                    Server.Database.DeleteEquipItem(client.Character.Id, client.Character.Job, equipItem);
+                    client.Character.Equipment.setEquipItem(null, client.Character.Job, equipType, equipSlot);
+                    Server.Database.DeleteEquipItem(client.Character.Id, client.Character.Job, equipType, equipSlot, item.UId);
                     
-                    // Find slot in which to place the item
-                    ushort dstSlotNo;
-                    for (dstSlotNo = 0; dstSlotNo < client.Character.Items[StorageType.ItemBagEquipment].Count; dstSlotNo++)
-                    {
-                        if(client.Character.Items[StorageType.ItemBagEquipment][dstSlotNo] == null)
-                        {
-                            break;
-                        }
-                    }
-                    dstSlotNo++;
-                    client.Character.Items[StorageType.ItemBagEquipment][dstSlotNo-1] = equipItem;
+                    ushort dstSlotNo = client.Character.Storage.addStorageItem(item, StorageType.ItemBagEquipment);
+                    Server.Database.InsertStorageItem(client.Character.Id, StorageType.ItemBagEquipment, dstSlotNo, item.UId);
 
-                    unequipUpdateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
-                        UpdateItemNum = 1,
+                    updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
+                        UpdateItemNum = 0,
                         ItemList = new CDataItemList() {
-                            ItemUId = equipItem.EquipItemUId,
-                            ItemId = equipItem.ItemId,
+                            ItemUId = item.UId,
+                            ItemId = item.ItemId,
                             ItemNum = 1,
-                            Unk3 = equipItem.Unk0,
+                            Unk3 = item.Unk3,
                             StorageType = (byte) StorageType.ItemBagEquipment,
                             SlotNo = dstSlotNo,
-                            Unk6 = equipItem.Color,
-                            Unk7 = equipItem.PlusValue,
+                            Unk6 = item.Color,
+                            Unk7 = item.PlusValue,
                             Bind = true,
                             Unk9 = 0,
                             Unk10 = 0,
                             Unk11 = 0,
-                            WeaponCrestDataList = equipItem.WeaponCrestDataList,
-                            ArmorCrestDataList = equipItem.ArmorCrestDataList,
-                            EquipElementParamList = equipItem.EquipElementParamList
+                            WeaponCrestDataList = item.WeaponCrestDataList,
+                            ArmorCrestDataList = item.ArmorCrestDataList,
+                            EquipElementParamList = item.EquipElementParamList
                         }
                     });
                 }
@@ -82,45 +66,39 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     // Equip item; from bag to equipment
                     // Find in the bag the item to equip
-                    var tuple = client.Character.Items[StorageType.ItemBagEquipment]
-                        .Select((item, index) => new {item, index})
-                        .Where(tuple => tuple.item?.EquipItemUId == changeCharacterEquipInfo.EquipItemUId)
+                    var tuple = client.Character.Storage.getStorage(StorageType.ItemBagEquipment)
+                        .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
+                        .Where(tuple => tuple.item?.UId == changeCharacterEquipInfo.EquipItemUId)
                         .Single();
-                    EquipItem equipItem = tuple.item;
-                    ushort srcSlotNo = (ushort)(tuple.index+1);
+                    Item item = tuple.item;
+                    ushort srcSlotNo = tuple.slot;
 
-                    equipItem.EquipType = changeCharacterEquipInfo.EquipType;
-                    equipItem.EquipSlot = changeCharacterEquipInfo.EquipCategory;
-
-                    List<EquipItem> targetEquipItemList = changeCharacterEquipInfo.EquipType == 1
-                        ? client.Character.CharacterEquipItemListDictionary[client.Character.Job]
-                        : client.Character.CharacterEquipViewItemListDictionary[client.Character.Job];
-
-                    targetEquipItemList.Add(equipItem);
+                    client.Character.Equipment.setEquipItem(item, client.Character.Job, (EquipType) changeCharacterEquipInfo.EquipType, changeCharacterEquipInfo.EquipCategory);
                     // TODO: Handle equipping over an already equipped slot
-                    Server.Database.InsertEquipItem(client.Character.Id, client.Character.Job, equipItem);
+                    Server.Database.InsertEquipItem(client.Character.Id, client.Character.Job, equipType, equipSlot, item.UId);
 
                     // Find slot from which the item will be taken
-                    client.Character.Items[StorageType.ItemBagEquipment][srcSlotNo-1] = null;
+                    client.Character.Storage.setStorageItem(null, StorageType.ItemBagEquipment, tuple.slot);
+                    Server.Database.DeleteStorageItem(client.Character.Id, StorageType.ItemBagEquipment, tuple.slot);
 
-                    equipUpdateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
-                        UpdateItemNum = -1, // TODO: ?
+                    updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
+                        UpdateItemNum = 0, // TODO: ?
                         ItemList = new CDataItemList() {
-                            ItemUId = equipItem.EquipItemUId,
-                            ItemId = equipItem.ItemId,
-                            ItemNum = 0,
-                            Unk3 = equipItem.Unk0,
+                            ItemUId = item.UId,
+                            ItemId = item.ItemId,
+                            ItemNum = 1,
+                            Unk3 = item.Unk3,
                             StorageType = (byte) StorageType.ItemBagEquipment,
                             SlotNo = srcSlotNo,
-                            Unk6 = equipItem.Color,
-                            Unk7 = equipItem.PlusValue,
+                            Unk6 = item.Color,
+                            Unk7 = item.PlusValue,
                             Bind = false,
                             Unk9 = 0,
-                            Unk10 = 0,
+                            Unk10 = client.Character.Id,
                             Unk11 = 0,
-                            WeaponCrestDataList = equipItem.WeaponCrestDataList,
-                            ArmorCrestDataList = equipItem.ArmorCrestDataList,
-                            EquipElementParamList = equipItem.EquipElementParamList
+                            WeaponCrestDataList = item.WeaponCrestDataList,
+                            ArmorCrestDataList = item.ArmorCrestDataList,
+                            EquipElementParamList = item.EquipElementParamList
                         }
                     });
                 }
@@ -130,15 +108,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.CharacterEquipList = packet.Structure.ChangeCharacterEquipList;
             client.Send(res);
 
+            client.Send(updateCharacterItemNtc);
 
             // Notify other players
             S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
             {
                 CharacterId = client.Character.Id,
-                EquipItemList = client.Character.CharacterEquipItemListDictionary[client.Character.Job]
-                    .Select(x => x.AsCDataEquipItemInfo()).ToList(),
-                VisualEquipItemList = client.Character.CharacterEquipViewItemListDictionary[client.Character.Job]
-                    .Select(x => x.AsCDataEquipItemInfo()).ToList()
+                EquipItemList = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Performance),
+                VisualEquipItemList = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Visual)
                 // TODO: Unk0
             };
 
@@ -158,15 +135,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 otherClient.Send(changeCharacterEquipNtc);
                 //otherClient.Send(changeCharacterEquipLobbyNtc);
             }
-
-            // This is the only way i've found for it to behave properly.
-            // If i try to send equipping data (aka, removing from the bag the equipped item)
-            //  without sending the first NTC even if it's empty AND SLEEPING (IMPORTANT), the item doesn't show up as equipped.
-            // And if I don't send the equipping data, the item is duplicated, it appears as equipped AND still in the item bag
-            // I have NO IDEA why you have to do it this way
-            client.Send(unequipUpdateCharacterItemNtc);
-            System.Threading.Thread.Sleep(100);
-            client.Send(equipUpdateCharacterItemNtc);
+            
         }
     }
 }
