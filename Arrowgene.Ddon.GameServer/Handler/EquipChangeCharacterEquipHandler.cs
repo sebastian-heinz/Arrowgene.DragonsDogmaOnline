@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     // Equip item; from bag to equipment
                     // Find in the bag the item to equip
-                    var tuple = client.Character.Storage.getStorage(StorageType.ItemBagEquipment)
+                    var tuple = client.Character.Storage.getStorage(StorageType.ItemBagEquipment).Items
                         .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                         .Where(tuple => tuple.item?.UId == changeCharacterEquipInfo.EquipItemUId)
                         .Single();

@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Where(item => item.SlotNo == gatheringItemRequest.SlotNo)
                     .Single();
 
-                var tuple = client.Character.Storage.getStorage(DestinationStorageType)
+                var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
                     .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                     .Where(tuple => tuple.item?.ItemId == gatheredItem.ItemId)
                     .SingleOrDefault();

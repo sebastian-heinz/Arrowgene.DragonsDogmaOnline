@@ -320,8 +320,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     while (reader.Read())
                     {
-                        CDataCharacterItemSlotInfo storageSlotInfo = ReadStorage(reader);
-                        character.Storage.addStorage(storageSlotInfo.StorageType, storageSlotInfo.SlotMax);
+                        Tuple<StorageType, Storage> tuple = ReadStorage(reader);
+                        character.Storage.addStorage(tuple.Item1, tuple.Item2);
                     }
 
                     ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
@@ -414,11 +414,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 ExecuteNonQuery(conn, SqlReplaceStorage, command =>
                 {
-                    AddParameter(command, character.Id, new CDataCharacterItemSlotInfo()
-                    {
-                        StorageType = storageType,
-                        SlotMax = (ushort) character.Storage.getAllStorages()[storageType].Count
-                    });
+                    AddParameter(command, character.Id, storageType, character.Storage.getStorage(storageType));
                 });
             }
         }
@@ -426,12 +422,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private void CreateItems(TCon conn, Character character)
         {
             // Create storage items
-            foreach (KeyValuePair<StorageType, List<Item>> storage in character.Storage.getAllStorages())
+            foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.getAllStorages())
             {
                 StorageType storageType = storage.Key;
-                for(ushort index=0; index < storage.Value.Count; index++)
+                for(ushort index=0; index < storage.Value.Items.Count; index++)
                 {
-                    Item item = storage.Value[index];
+                    Item item = storage.Value.Items[index];
                     if(item != null)
                     {
                         ushort slot = (ushort)(index+1);

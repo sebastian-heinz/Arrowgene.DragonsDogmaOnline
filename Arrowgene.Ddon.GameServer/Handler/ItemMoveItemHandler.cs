@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
             {
                 // TODO: Move only item.Num and not the entire thing
-                var tuple = client.Character.Storage.getStorage(itemFromTo.SrcStorageType)
+                var tuple = client.Character.Storage.getStorage(itemFromTo.SrcStorageType).Items
                     .Select((item, index) => new { item, index })
                     .Where(tuple => itemFromTo.ItemUId == tuple.item?.UId)
                     .Single();

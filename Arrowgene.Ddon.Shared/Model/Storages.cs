@@ -7,47 +7,47 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 namespace Arrowgene.Ddon.Shared.Model
 {
     #nullable enable
-    public class Storage
+    public class Storages
     {
-        private Dictionary<StorageType, List<Item?>> storage;
+        private Dictionary<StorageType, Storage> storages;
 
-        public Storage(Dictionary<StorageType, ushort> maxSlotsDict)
+        public Storages(Dictionary<StorageType, ushort> maxSlotsDict)
         {
-            storage = new Dictionary<StorageType, List<Item?>>();
+            storages = new Dictionary<StorageType, Storage>();
             foreach (var tuple in maxSlotsDict)
             {
-                addStorage(tuple.Key, tuple.Value);
+                addStorage(tuple.Key, new Storage(tuple.Value));
             }
         }
 
-        public Dictionary<StorageType, List<Item?>> getAllStorages()
+        public Dictionary<StorageType, Storage> getAllStorages()
         {
-            return storage;
+            return storages;
         }
 
         public List<CDataCharacterItemSlotInfo> getAllStoragesAsCDataCharacterItemSlotInfoList()
         {
-            return storage
+            return storages
                 .Select(storage => new CDataCharacterItemSlotInfo() {
                     StorageType = storage.Key,
-                    SlotMax = (ushort) storage.Value.Count
+                    SlotMax = (ushort) storage.Value.Items.Count
                 })
                 .ToList();
         }
 
-        public List<Item?> getStorage(StorageType storageType)
+        public Storage getStorage(StorageType storageType)
         {
-            return storage[storageType];
+            return storages[storageType];
         }
 
-        public void addStorage(StorageType storageType, ushort slotMax)
+        public void addStorage(StorageType storageType, Storage storage)
         {
-            storage[storageType] = Enumerable.Repeat<Item?>(null, slotMax).ToList();
+            storages[storageType] = storage;
         }
 
         public List<CDataItemList> getStorageAsCDataItemList(StorageType storageType)
         {
-            return getStorage(storageType)
+            return getStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataItemList()
@@ -72,11 +72,11 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public Item? getStorageItem(StorageType storageType, ushort slot) {
-            return storage[storageType][slot-1];
+            return storages[storageType].Items[slot-1];
         }
 
         public ushort addStorageItem(Item newItem, StorageType storageType) {
-            var tuple = getStorage(storageType)
+            var tuple = getStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item == null)
                 .First();
@@ -86,8 +86,25 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public Item? setStorageItem(Item newItem, StorageType storageType, ushort slot) {
             Item? oldItem = getStorageItem(storageType, slot);
-            storage[storageType][slot-1] = newItem;
+            storages[storageType].Items[slot-1] = newItem;
             return oldItem;
+        }
+    }
+
+    public class Storage
+    {
+        public List<Item?> Items { get; set; }
+        public byte[] SortData { get; set; }
+
+        public Storage(ushort slotMax) : this(slotMax, new byte[1024])
+        {
+
+        }
+
+        public Storage(ushort slotMax, byte[] sortData)
+        {
+            Items = Enumerable.Repeat<Item?>(null, slotMax).ToList();
+            SortData = sortData;
         }
     }
 

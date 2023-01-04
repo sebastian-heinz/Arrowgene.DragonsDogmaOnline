@@ -224,6 +224,7 @@ CREATE TABLE IF NOT EXISTS `ddon_storage`
     `character_id`  INTEGER             NOT NULL,
     `storage_type`  TINYINT             NOT NULL,
     `slot_max`      SMALLINT            NOT NULL,
+    `item_sort`     BLOB                NOT NULL,
     PRIMARY KEY (`character_id`, `storage_type`),
     CONSTRAINT `fk_equip_item_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );

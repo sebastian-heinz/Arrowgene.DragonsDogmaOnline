@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Send S2CItemUseBagItemNtc?
 
-            var tuple = client.Character.Storage.getStorage(DestinationStorageType)
+            var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
                 .Select((x, index) => new {item = x, slot = index+1})
                 .Where(tuple => tuple.item?.UId == req.Structure.ItemUId)
                 .Single();
@@ -61,6 +61,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.UpdateItemList.Add(ntcData0);
 
             // Wallet points?
+
+            // TODO: Probably delete item when ItemNum reaches 0 to free up the slot
 
             client.Send(ntc);
 

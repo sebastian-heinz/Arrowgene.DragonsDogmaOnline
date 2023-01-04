@@ -1110,7 +1110,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     AbilityLv = arisenPreset.Ab10Lv
                 }
             }).ToList();
-            character.Storage = new Storage(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
+            character.Storage = new Storages(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
 
             L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
             if (!Database.CreateCharacter(character))
