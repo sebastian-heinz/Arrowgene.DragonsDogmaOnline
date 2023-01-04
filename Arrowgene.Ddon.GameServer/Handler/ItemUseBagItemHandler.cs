@@ -30,13 +30,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
                 .Select((x, index) => new {item = x, slot = index+1})
-                .Where(tuple => tuple.item?.UId == req.Structure.ItemUId)
+                .Where(tuple => tuple.item?.Item1.UId == req.Structure.ItemUId)
                 .Single();
-            Item item = tuple.item;
+            Item item = tuple.item.Item1;
+            uint itemNum = tuple.item.Item2;
             ushort slotNo = (ushort) tuple.slot;
 
-            item.ItemNum--;
-            Server.Database.UpdateItem(item);
+            itemNum--;
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
             ntc.UpdateType = 3;
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
             ntcData0.ItemList.ItemUId = item.UId;
             ntcData0.ItemList.ItemId = item.ItemId;
-            ntcData0.ItemList.ItemNum = item.ItemNum;
+            ntcData0.ItemList.ItemNum = itemNum;
             ntcData0.ItemList.Unk3 = item.Unk3;
             ntcData0.ItemList.StorageType = (byte) DestinationStorageType;
             ntcData0.ItemList.SlotNo = slotNo;
@@ -60,9 +60,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntcData0.UpdateItemNum = -1;
             ntc.UpdateItemList.Add(ntcData0);
 
-            // Wallet points?
-
-            // TODO: Probably delete item when ItemNum reaches 0 to free up the slot
+            if(itemNum == 0)
+            {
+                // Delete item when ItemNum reaches 0 to free up the slot
+                Server.Database.DeleteStorageItem(client.Character.Id, DestinationStorageType, slotNo);
+            }
+            else
+            {
+                Server.Database.ReplaceStorageItem(client.Character.Id, DestinationStorageType, slotNo, item.UId, itemNum);
+            }
 
             client.Send(ntc);
 

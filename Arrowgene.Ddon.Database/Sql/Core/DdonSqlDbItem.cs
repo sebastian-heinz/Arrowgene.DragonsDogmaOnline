@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] ItemFields = new string[]
         {
-            "uid", "item_id", "item_num", "unk3", "color", "plus_value"
+            "uid", "item_id", "unk3", "color", "plus_value"
         };
 
         private readonly string SqlInsertItem = $"INSERT INTO `ddon_item` ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";
@@ -42,6 +42,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
+        public Item SelectItem(string uid)
+        {
+            Item item = null;
+            ExecuteReader(SqlSelectItem, 
+            command => 
+            {
+                AddParameter(command, "uid", uid);
+            },
+            reader => 
+            {
+                if(reader.Read())
+                {
+                    item = ReadItem(reader);
+                }
+            });
+            return item;
+        }
+
         public bool DeleteItem(string uid)
         {
             return ExecuteNonQuery(SqlDeleteItem, command =>
@@ -56,7 +74,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             Item item = new Item();
             item.UId = GetString(reader, "uid");
             item.ItemId = GetUInt32(reader, "item_id");
-            item.ItemNum = GetUInt32(reader, "item_num");
             item.Unk3 = GetByte(reader, "unk3");
             item.Color = GetByte(reader, "color");
             item.PlusValue = GetByte(reader, "plus_value");
@@ -67,7 +84,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             AddParameter(command, "uid", item.UId);
             AddParameter(command, "item_id", item.ItemId);
-            AddParameter(command, "item_num", item.ItemNum);
             AddParameter(command, "unk3", item.Unk3);
             AddParameter(command, "color", item.Color);
             AddParameter(command, "plus_value", item.PlusValue);

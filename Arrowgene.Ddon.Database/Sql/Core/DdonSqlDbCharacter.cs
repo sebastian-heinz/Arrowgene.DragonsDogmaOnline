@@ -330,9 +330,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     {
                         while(reader2.Read())
                         {
+                            string UId = GetString(reader2, "item_uid");
                             StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
                             ushort slot = GetUInt16(reader2, "slot_no");
-                            string UId = GetString(reader2, "item_uid");
+                            uint itemNum = GetUInt32(reader2, "item_num");
 
                             ExecuteReader(conn, SqlSelectItem,
                                 command3 => { AddParameter(command3, "@uid", UId); },
@@ -341,7 +342,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                     if(reader3.Read())
                                     {
                                         Item item = ReadItem(reader3);
-                                        character.Storage.setStorageItem(item, storageType, slot);
+                                        character.Storage.setStorageItem(item, itemNum, storageType, slot);
                                     }
                                 });
                         }
@@ -427,12 +428,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 StorageType storageType = storage.Key;
                 for(ushort index=0; index < storage.Value.Items.Count; index++)
                 {
-                    Item item = storage.Value.Items[index];
-                    if(item != null)
+                    if(storage.Value.Items[index] != null)
                     {
+                        Item item = storage.Value.Items[index].Item1;
+                        uint itemNum = storage.Value.Items[index].Item2;
                         ushort slot = (ushort)(index+1);
                         InsertItem(conn, item);
-                        InsertStorageItem(conn, character.Id, storageType, slot, item.UId);
+                        InsertStorageItem(conn, character.Id, storageType, slot, item.UId, itemNum);
                     }
                 }
             }

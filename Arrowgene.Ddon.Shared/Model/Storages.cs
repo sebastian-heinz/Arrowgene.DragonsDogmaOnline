@@ -52,48 +52,50 @@ namespace Arrowgene.Ddon.Shared.Model
                 .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataItemList()
                 {
-                    ItemUId = tuple.item.UId,
-                    ItemId = tuple.item.ItemId,
-                    ItemNum = tuple.item.ItemNum,
-                    Unk3 = tuple.item.Unk3,
+                    ItemUId = tuple.item.Item1.UId,
+                    ItemId = tuple.item.Item1.ItemId,
+                    ItemNum = tuple.item.Item2,
+                    Unk3 = tuple.item.Item1.Unk3,
                     StorageType = (byte) storageType,
                     SlotNo = tuple.slot,
-                    Unk6 = tuple.item.Color,
-                    Unk7 = tuple.item.PlusValue,
+                    Unk6 = tuple.item.Item1.Color,
+                    Unk7 = tuple.item.Item1.PlusValue,
                     Bind = true,
                     Unk9 = 0,
                     Unk10 = 0,
                     Unk11 = 0,
-                    WeaponCrestDataList = tuple.item.WeaponCrestDataList,
-                    ArmorCrestDataList = tuple.item.ArmorCrestDataList,
-                    EquipElementParamList = tuple.item.EquipElementParamList
+                    WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,
+                    ArmorCrestDataList = tuple.item.Item1.ArmorCrestDataList,
+                    EquipElementParamList = tuple.item.Item1.EquipElementParamList
                 })
                 .ToList();
         }
 
-        public Item? getStorageItem(StorageType storageType, ushort slot) {
+        public Tuple<Item, uint>? getStorageItem(StorageType storageType, ushort slot) {
             return storages[storageType].Items[slot-1];
         }
 
-        public ushort addStorageItem(Item newItem, StorageType storageType) {
+        public ushort addStorageItem(Item newItem, uint itemCount, StorageType storageType) {
             var tuple = getStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item == null)
                 .First();
-            setStorageItem(newItem, storageType, tuple.slot);
+            setStorageItem(newItem, itemCount, storageType, tuple.slot);
             return tuple.slot;
         }
 
-        public Item? setStorageItem(Item newItem, StorageType storageType, ushort slot) {
-            Item? oldItem = getStorageItem(storageType, slot);
-            storages[storageType].Items[slot-1] = newItem;
+        public Tuple<Item, uint>? setStorageItem(Item newItem, uint itemCount, StorageType storageType, ushort slot) {
+            Tuple<Item, uint>? oldItem = getStorageItem(storageType, slot);
+            storages[storageType].Items[slot-1] = newItem == null
+                ? null
+                : new Tuple<Item, uint>(newItem, itemCount);
             return oldItem;
         }
     }
 
     public class Storage
     {
-        public List<Item?> Items { get; set; }
+        public List<Tuple<Item, uint>?> Items { get; set; }
         public byte[] SortData { get; set; }
 
         public Storage(ushort slotMax) : this(slotMax, new byte[1024])
@@ -103,7 +105,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public Storage(ushort slotMax, byte[] sortData)
         {
-            Items = Enumerable.Repeat<Item?>(null, slotMax).ToList();
+            Items = Enumerable.Repeat<Tuple<Item, uint>?>(null, slotMax).ToList();
             SortData = sortData;
         }
     }

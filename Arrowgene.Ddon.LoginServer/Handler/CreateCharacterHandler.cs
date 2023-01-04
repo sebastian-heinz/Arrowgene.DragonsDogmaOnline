@@ -55,7 +55,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         {
                                             UId = Item.GenerateEquipItemUId(),
                                             ItemId = info.ItemId,
-                                            ItemNum = 1,
                                             Unk3 = info.Unk0,
                                             Color = info.Color,
                                             PlusValue = info.PlusValue,
@@ -79,7 +78,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         {
                                             UId = Item.GenerateEquipItemUId(),
                                             ItemId = info.ItemId,
-                                            ItemNum = 1,
                                             Unk3 = info.Unk0,
                                             Color = info.Color,
                                             PlusValue = info.PlusValue,

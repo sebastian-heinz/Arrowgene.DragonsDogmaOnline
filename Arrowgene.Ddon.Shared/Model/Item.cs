@@ -15,7 +15,6 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public string UId { get; set; }
         public uint ItemId { get; set; }
-        public uint ItemNum { get; set; }
         public byte Unk3 { get; set; } // QualityParam?
         public byte Color { get; set; }
         public byte PlusValue { get; set; }

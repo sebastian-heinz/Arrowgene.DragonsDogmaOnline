@@ -42,16 +42,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
                     .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
-                    .Where(tuple => tuple.item?.ItemId == gatheredItem.ItemId)
+                    .Where(tuple => tuple.item?.Item1.ItemId == gatheredItem.ItemId)
                     .SingleOrDefault();
-                Item item = tuple?.item;
+                Item item = tuple?.item.Item1;
+                uint itemNum = tuple?.item.Item2 ?? gatheringItemRequest.Num; // TODO: Cap to item bag stack maximum
                 ushort slot = tuple?.slot ?? 0;
 
                 if (item == null) {
                     item = new Item() {
                         UId = Item.GenerateEquipItemUId(),
                         ItemId = gatheredItem.ItemId,
-                        ItemNum = gatheringItemRequest.Num,
                         Unk3 = 0,
                         Color = 0,
                         PlusValue = 0,
@@ -60,18 +60,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         EquipElementParamList = new List<CDataEquipElementParam>()
                     };
                     Server.Database.InsertItem(item);
-                    slot = client.Character.Storage.addStorageItem(item, DestinationStorageType);
+                    slot = client.Character.Storage.addStorageItem(item, itemNum, DestinationStorageType);
                 } else {
-                    item.ItemNum+=gatheringItemRequest.Num;
+                    itemNum+=gatheringItemRequest.Num;
                     Server.Database.UpdateItem(item);
                 }
 
-                Server.Database.ReplaceStorageItem(client.Character.Id, DestinationStorageType, slot, item.UId);
+                Server.Database.ReplaceStorageItem(client.Character.Id, DestinationStorageType, slot, item.UId, itemNum);
 
                 CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
                 ntcData0.ItemList.ItemUId = item.UId;
                 ntcData0.ItemList.ItemId = item.ItemId;
-                ntcData0.ItemList.ItemNum = item.ItemNum;
+                ntcData0.ItemList.ItemNum = itemNum;
                 ntcData0.ItemList.Unk3 = item.Unk3;
                 ntcData0.ItemList.StorageType = (byte) DestinationStorageType;
                 ntcData0.ItemList.SlotNo = slot;

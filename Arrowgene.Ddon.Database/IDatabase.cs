@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.Database
         // Item
         bool InsertItem(Item item);
         bool UpdateItem(Item item);
+        Item SelectItem(string uid);
         bool DeleteItem(string uid);
 
         //Storage
@@ -44,8 +45,8 @@ namespace Arrowgene.Ddon.Database
         bool DeleteStorage(uint characterId, StorageType storageType);
 
         // Storage Item
-        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId);
-        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId);
+        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
+        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
 
         // Equip

@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -21,23 +19,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SItemMoveItemReq> packet)
         {
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 8;
+            ntc.UpdateType = DetermineUpdateType(packet.Structure.SourceGameStorageType);
 
             foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
             {
                 // TODO: Move only item.Num and not the entire thing
                 var tuple = client.Character.Storage.getStorage(itemFromTo.SrcStorageType).Items
                     .Select((item, index) => new { item, index })
-                    .Where(tuple => itemFromTo.ItemUId == tuple.item?.UId)
+                    .Where(tuple => itemFromTo.ItemUId == tuple.item?.Item1.UId)
                     .Single();
-                Item item = tuple.item;
+                Item item = tuple.item.Item1;
+                uint itemNum = tuple.item.Item2;
+                uint sanitizedItemFromToNum = Math.Clamp(itemFromTo.Num, 0, itemNum);
                 ushort srcSlotNo = (ushort) (tuple.index+1);
+                uint srcItemNum = itemNum-sanitizedItemFromToNum;
 
-                // Update item
+                // Update item in src storage
                 CDataItemUpdateResult updateItem = new CDataItemUpdateResult();
                 updateItem.ItemList.ItemUId = item.UId;
                 updateItem.ItemList.ItemId = item.ItemId;
-                updateItem.ItemList.ItemNum = item.ItemNum-itemFromTo.Num; // TODO: Move partially
+                updateItem.ItemList.ItemNum = srcItemNum;
                 updateItem.ItemList.Unk3 = item.Unk3;
                 updateItem.ItemList.StorageType = (byte) itemFromTo.SrcStorageType;
                 updateItem.ItemList.SlotNo = srcSlotNo;
@@ -53,22 +54,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateItem.UpdateItemNum = (int) -itemFromTo.Num;
                 ntc.UpdateItemList.Add(updateItem);
 
-                // TODO: Handle swapping items and moving only a number of items?
-                client.Character.Storage.setStorageItem(null, itemFromTo.SrcStorageType, srcSlotNo);
-                Server.Database.DeleteStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo);
+                // TODO: Handle swapping items
+                if(srcItemNum == 0)
+                {
+                    client.Character.Storage.setStorageItem(null, 0, itemFromTo.SrcStorageType, srcSlotNo);
+                    Server.Database.DeleteStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo);
+                }
+                else
+                {
+                    client.Character.Storage.setStorageItem(item, srcItemNum, itemFromTo.SrcStorageType, srcSlotNo);
+                    Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo, item.UId, srcItemNum);
+                }
 
                 ushort dstSlotNo = itemFromTo.SlotNo;
+                uint dstItemNum = sanitizedItemFromToNum;
                 if(dstSlotNo == 0)
                 {
-                    dstSlotNo = client.Character.Storage.addStorageItem(item, itemFromTo.DstStorageType);
+                    dstSlotNo = client.Character.Storage.addStorageItem(item, dstItemNum, itemFromTo.DstStorageType);
                 }
-                client.Character.Storage.setStorageItem(item, itemFromTo.DstStorageType, dstSlotNo);
-                Server.Database.InsertStorageItem(client.Character.Id, itemFromTo.DstStorageType, dstSlotNo, item.UId);
+                else
+                {
+                    Tuple<Item, uint> itemInDstSlot = client.Character.Storage.getStorageItem(itemFromTo.DstStorageType, dstSlotNo);
+                    dstItemNum+=itemInDstSlot.Item2;
+                }
+                client.Character.Storage.setStorageItem(item, dstItemNum, itemFromTo.DstStorageType, dstSlotNo);
+                Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.DstStorageType, dstSlotNo, item.UId, dstItemNum);
 
                 CDataItemUpdateResult updateItem2 = new CDataItemUpdateResult();
                 updateItem2.ItemList.ItemUId = item.UId;
                 updateItem2.ItemList.ItemId = item.ItemId;
-                updateItem2.ItemList.ItemNum = itemFromTo.Num; // TODO: Move partially
+                updateItem2.ItemList.ItemNum = dstItemNum;
                 updateItem2.ItemList.Unk3 = item.Unk3;
                 updateItem2.ItemList.StorageType = (byte) itemFromTo.DstStorageType;
                 updateItem2.ItemList.SlotNo = dstSlotNo;
@@ -87,6 +102,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(ntc);
             client.Send(new S2CItemMoveItemRes());
+        }
+
+        // Taken from sItemManager::moveItemsFunc (0xB9F867 in the PC Dump)
+        // TODO: Cleanup
+        private ushort DetermineUpdateType(byte sourceGameStorageType)
+        {
+            switch ( sourceGameStorageType )
+            {
+                case 1:
+                    return 49;
+                case 7:
+                    return 22;
+                case 19:
+                    return 8;
+                case 20:
+                    return 9;
+                default:
+                    return 0;
+            }
         }
     }
 }

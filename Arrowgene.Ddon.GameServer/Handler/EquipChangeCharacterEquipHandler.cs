@@ -38,8 +38,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Character.Equipment.setEquipItem(null, client.Character.Job, equipType, equipSlot);
                     Server.Database.DeleteEquipItem(client.Character.Id, client.Character.Job, equipType, equipSlot, item.UId);
                     
-                    ushort dstSlotNo = client.Character.Storage.addStorageItem(item, StorageType.ItemBagEquipment);
-                    Server.Database.InsertStorageItem(client.Character.Id, StorageType.ItemBagEquipment, dstSlotNo, item.UId);
+                    ushort dstSlotNo = client.Character.Storage.addStorageItem(item, 1, StorageType.ItemBagEquipment);
+                    Server.Database.InsertStorageItem(client.Character.Id, StorageType.ItemBagEquipment, dstSlotNo, item.UId, 1);
 
                     updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                         UpdateItemNum = 0,
@@ -68,9 +68,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     // Find in the bag the item to equip
                     var tuple = client.Character.Storage.getStorage(StorageType.ItemBagEquipment).Items
                         .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
-                        .Where(tuple => tuple.item?.UId == changeCharacterEquipInfo.EquipItemUId)
+                        .Where(tuple => tuple.item?.Item1.UId == changeCharacterEquipInfo.EquipItemUId)
                         .Single();
-                    Item item = tuple.item;
+                    Item item = tuple.item.Item1;
+                    uint itemNum = tuple.item.Item2;
                     ushort srcSlotNo = tuple.slot;
 
                     client.Character.Equipment.setEquipItem(item, client.Character.Job, (EquipType) changeCharacterEquipInfo.EquipType, changeCharacterEquipInfo.EquipCategory);
@@ -78,7 +79,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Server.Database.InsertEquipItem(client.Character.Id, client.Character.Job, equipType, equipSlot, item.UId);
 
                     // Find slot from which the item will be taken
-                    client.Character.Storage.setStorageItem(null, StorageType.ItemBagEquipment, tuple.slot);
+                    client.Character.Storage.setStorageItem(null, 0, StorageType.ItemBagEquipment, tuple.slot);
                     Server.Database.DeleteStorageItem(client.Character.Id, StorageType.ItemBagEquipment, tuple.slot);
 
                     updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
