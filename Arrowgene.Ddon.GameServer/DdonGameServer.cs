@@ -223,6 +223,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobGetJobChangeListHandler(this));
+            AddHandler(new JobUpdateExpModeHandler(this));
 
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
