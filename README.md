@@ -76,7 +76,7 @@ Launch the client with the following args:
 ## Game Server
 ### Party Management (Party List)
 - [ ] Party Members
-  - [ ] View Arisen Profile
+  - [x] View Arisen Profile
   - [ ] Send Tell
   - [ ] Send Friend Request
   - [ ] View Status and Equipment

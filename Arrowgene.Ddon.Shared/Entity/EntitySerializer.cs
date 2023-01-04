@@ -95,6 +95,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterItemSlotInfo.Serializer());
             Create(new CDataJobBaseInfo.Serializer());
             Create(new CDataJobOrbTreeStatus.Serializer());
+            Create(new CDataJobExpMode.Serializer());
             Create(new CDataJobPlayPointSerializer());
             Create(new CDataJumpLocationSerializer());
             Create(new CDataLayoutEnemyData.Serializer());
@@ -218,6 +219,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemUseBagItemReq.Serializer());
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobGetJobChangeListReq.Serializer());
+            Create(new C2SJobUpdateExpModeReq.Serializer());
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
             Create(new C2SLobbyLeaveReq.Serializer());
@@ -369,6 +371,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobChangeJobNtc.Serializer());
             Create(new S2CJobChangeJobRes.Serializer());
             Create(new S2CJobGetJobChangeListRes.Serializer());
+            Create(new S2CJobUpdateExpModeRes.Serializer());
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
             Create(new S2CLobbyJoinRes.Serializer());
