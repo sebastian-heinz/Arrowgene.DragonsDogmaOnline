@@ -16,14 +16,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "uid", "item_id", "unk3", "color", "plus_value"
         };
 
-        private readonly string SqlInsertItem = $"INSERT INTO `ddon_item` ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";
-        private static readonly string SqlUpdateItem = $"UPDATE `ddon_item` SET {BuildQueryUpdate(ItemFields)} WHERE `uid`=@uid;";
+        // Items don't get updated or deleted once created as the same row is shared among all players.
+        // Making a distinction wouldn't make sense, as upgrading/changin crests would generate a new item with a different UID
+        private readonly string SqlInsertOrIgnoreItem = $"INSERT OR IGNORE INTO `ddon_item` ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";
         private static readonly string SqlSelectItem = $"SELECT {BuildQueryField(ItemFields)} FROM `ddon_item` WHERE `uid`=@uid;";
-        private static readonly string SqlDeleteItem = "DELETE FROM `ddon_item` WHERE `uid`=@uid;";
 
         public bool InsertItem(TCon conn, Item item)
         {
-            return ExecuteNonQuery(conn, SqlInsertItem, command =>
+            return ExecuteNonQuery(conn, SqlInsertOrIgnoreItem, command =>
             {
                 AddParameter(command, item);
             }) == 1;
@@ -32,14 +32,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public bool InsertItem(Item item)
         {
             return this.InsertItem(null, item);
-        }
-
-        public bool UpdateItem(Item item)
-        {
-            return ExecuteNonQuery(SqlUpdateItem, command =>
-            {
-                AddParameter(command, item);
-            }) == 1;
         }
 
         public Item SelectItem(string uid)
@@ -59,15 +51,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
             return item;
         }
-
-        public bool DeleteItem(string uid)
-        {
-            return ExecuteNonQuery(SqlDeleteItem, command =>
-            {
-                AddParameter(command, "uid", uid);
-            }) == 1;
-        }
-
 
         private Item ReadItem(DbDataReader reader)
         {

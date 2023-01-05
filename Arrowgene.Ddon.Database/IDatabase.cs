@@ -35,9 +35,7 @@ namespace Arrowgene.Ddon.Database
 
         // Item
         bool InsertItem(Item item);
-        bool UpdateItem(Item item);
         Item SelectItem(string uid);
-        bool DeleteItem(string uid);
 
         //Storage
         bool InsertStorage(uint characterId, StorageType storageType, Storage storage);

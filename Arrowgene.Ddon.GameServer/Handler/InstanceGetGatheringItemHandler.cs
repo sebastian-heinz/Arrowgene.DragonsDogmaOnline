@@ -50,7 +50,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (item == null) {
                     item = new Item() {
-                        UId = Item.GenerateEquipItemUId(),
                         ItemId = gatheredItem.ItemId,
                         Unk3 = 0,
                         Color = 0,
@@ -63,7 +62,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     slot = client.Character.Storage.addStorageItem(item, itemNum, DestinationStorageType);
                 } else {
                     itemNum+=gatheringItemRequest.Num;
-                    Server.Database.UpdateItem(item);
                 }
 
                 Server.Database.ReplaceStorageItem(client.Character.Id, DestinationStorageType, slot, item.UId, itemNum);

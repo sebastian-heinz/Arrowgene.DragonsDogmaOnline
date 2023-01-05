@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,23 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class Item
     {
-        private static string UIdPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         public const int UIdLength = 8;
 
-        public string UId { get; set; }
+        public string UId { 
+            get
+            {
+                if(this._uid == null)
+                {
+                    UpdateUId();
+                }
+                return this._uid;
+            }
+            set
+            {
+                this._uid = value;
+            }
+        }
+        
         public uint ItemId { get; set; }
         public byte Unk3 { get; set; } // QualityParam?
         public byte Color { get; set; }
@@ -22,23 +36,42 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
 
+        private string _uid;
+
         public Item()
         {
-            UId = GenerateEquipItemUId();
             WeaponCrestDataList = new List<CDataWeaponCrestData>();
             ArmorCrestDataList = new List<CDataArmorCrestData>();
             EquipElementParamList = new List<CDataEquipElementParam>();
         }
 
-        public static string GenerateEquipItemUId()
+        public string UpdateUId()
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < UIdLength; i++)
+            IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5); // It's for comparison, who cares, it's fast.
+            hash.AppendData(BitConverter.GetBytes(ItemId));
+            hash.AppendData(BitConverter.GetBytes(Unk3));
+            hash.AppendData(BitConverter.GetBytes(Color));
+            hash.AppendData(BitConverter.GetBytes(PlusValue));
+            foreach (var weaponCrestData in WeaponCrestDataList)
             {
-                int uidPoolIndex = CryptoRandom.Instance.Next(0, UIdPool.Length - 1);
-                sb.Append(UIdPool[uidPoolIndex]);
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u0));
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u1));
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u2));
             }
-            return sb.ToString();
+            foreach (var armorCrestData in ArmorCrestDataList)
+            {
+                hash.AppendData(BitConverter.GetBytes(armorCrestData.u0));
+                hash.AppendData(BitConverter.GetBytes(armorCrestData.u1));
+                hash.AppendData(BitConverter.GetBytes(armorCrestData.u2));
+                hash.AppendData(BitConverter.GetBytes(armorCrestData.u3));
+            }
+            foreach (var equipElementParam in EquipElementParamList)
+            {
+                hash.AppendData(BitConverter.GetBytes(equipElementParam.SlotNo));
+                hash.AppendData(BitConverter.GetBytes(equipElementParam.ItemId));
+            }
+            this._uid = BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, UIdLength);
+            return this._uid;
         }
     }
 }

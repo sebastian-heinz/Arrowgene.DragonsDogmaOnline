@@ -226,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `ddon_storage`
     `slot_max`      SMALLINT            NOT NULL,
     `item_sort`     BLOB                NOT NULL,
     PRIMARY KEY (`character_id`, `storage_type`),
-    CONSTRAINT `fk_equip_item_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+    CONSTRAINT `fk_storage_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_item`
@@ -248,7 +248,7 @@ CREATE TABLE IF NOT EXISTS `ddon_storage_item`
     `item_num`     INT              NOT NULL,
     UNIQUE (`character_id`, `storage_type`, `slot_no`),
     CONSTRAINT `fk_storage_item_item_uid` FOREIGN KEY (`item_uid`) REFERENCES `ddon_item` (`uid`) ON DELETE CASCADE,
-    CONSTRAINT `fk_equip_item_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+    CONSTRAINT `fk_storage_item_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_equip_item`

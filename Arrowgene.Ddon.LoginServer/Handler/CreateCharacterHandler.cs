@@ -53,7 +53,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                     } else {
                                         return new Item()
                                         {
-                                            UId = Item.GenerateEquipItemUId(),
                                             ItemId = info.ItemId,
                                             Unk3 = info.Unk0,
                                             Color = info.Color,
@@ -76,7 +75,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                     } else {
                                         return new Item()
                                         {
-                                            UId = Item.GenerateEquipItemUId(),
                                             ItemId = info.ItemId,
                                             Unk3 = info.Unk0,
                                             Color = info.Color,
@@ -184,7 +182,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     EquipType.Performance,
                     new List<Item>() {
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.PrimaryWeapon,
                             Unk3 = 0,
                             Color = arisenPreset.PrimaryWeaponColour,
@@ -222,13 +219,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty EquipElementParamList
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.SecondaryWeapon,
                             Unk3 = 0,
                             Color = arisenPreset.SecondaryWeaponColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Head,
                             Unk3 = 0,
                             Color = arisenPreset.HeadColour,
@@ -261,7 +256,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty EquipElementParamList
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Body,
                             Unk3 = 0,
                             Color = arisenPreset.BodyColour,
@@ -299,13 +293,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty EquipElementParamList
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Clothing,
                             Unk3 = 0,
                             Color = arisenPreset.ClothingColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Arm,
                             Unk3 = 0,
                             Color = arisenPreset.ArmColour,
@@ -338,7 +330,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty EquipElementParamList
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Leg,
                             Unk3 = 0,
                             Color = arisenPreset.LegColour,
@@ -371,19 +362,16 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             // Empty EquipElementParamList
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Legwear,
                             Unk3 = 0,
                             Color = arisenPreset.LegwearColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Overwear,
                             Unk3 = 0,
                             Color = arisenPreset.OverwearColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Jewelry1,
                             Unk3 = 0,
                             Color = 0,
@@ -483,7 +471,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             }
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Jewelry2,
                             Unk3 = 0,
                             Color = 0,
@@ -583,7 +570,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             }
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Jewelry3,
                             Unk3 = 0,
                             Color = 0,
@@ -683,7 +669,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             }
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Jewelry4,
                             Unk3 = 0,
                             Color = 0,
@@ -783,7 +768,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             }
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Jewelry5,
                             Unk3 = 0,
                             Color = 0,
@@ -883,7 +867,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             }
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.Lantern,
                             Unk3 = 0,
                         }
@@ -893,55 +876,46 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     EquipType.Visual,
                     new List<Item>() {
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VPrimaryWeapon,
                             Unk3 = 0,
                             Color = arisenPreset.VPrimaryWeaponColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VSecondaryWeapon,
                             Unk3 = 0,
                             Color = arisenPreset.VSecondaryWeaponColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VHead,
                             Unk3 = 0,
                             Color = arisenPreset.VHeadColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VBody,
                             Unk3 = 0,
                             Color = arisenPreset.VBodyColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VClothing,
                             Unk3 = 0,
                             Color = arisenPreset.VClothingColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VArm,
                             Unk3 = 0,
                             Color = arisenPreset.VArmColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VLeg,
                             Unk3 = 0,
                             Color = arisenPreset.VLegColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VLegwear,
                             Unk3 = 0,
                             Color = arisenPreset.VLegwearColour
                         },
                         new Item {
-                            UId = Item.GenerateEquipItemUId(),
                             ItemId = arisenPreset.VOverwear,
                             Unk3 = 0,
                             Color = arisenPreset.VOverwearColour,
