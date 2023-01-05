@@ -1084,6 +1084,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }).ToList();
             character.Storage = new Storages(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
 
+            // Add starting storage items
+            foreach (var tuple in Server.AssetRepository.StorageItemAsset)
+            {
+                character.Storage.addStorageItem(tuple.Item3, tuple.Item2, tuple.Item1);
+            }
+
             L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
             if (!Database.CreateCharacter(character))
             {

@@ -1,3 +1,8 @@
+# ItemBagConsumable = 1
+# ItemBagMaterial = 2
+# ItemBagEquipment = 3 
+# ItemBagJob = 4
+# StorageBoxNormal = 6
 # Storage Type, Max Slots
 1, 20
 2, 40
