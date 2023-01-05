@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -10,22 +9,23 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EquipChangeCharacterEquipHandler : GameStructurePacketHandler<C2SEquipChangeCharacterEquipReq>
+    public class EquipChangeCharacterStorageEquipHandler : GameStructurePacketHandler<C2SEquipChangeCharacterStorageEquipReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipChangeCharacterEquipHandler));
-        
-        public EquipChangeCharacterEquipHandler(DdonGameServer server) : base(server)
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipChangeCharacterStorageEquipHandler));
+
+        public EquipChangeCharacterStorageEquipHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SEquipChangeCharacterEquipReq> packet)
+        // Copypasted from EquipChangeCharacterEquipHandler
+        // TODO: Move to an abstract class
+        public override void Handle(GameClient client, StructurePacket<C2SEquipChangeCharacterStorageEquipReq> packet)
         {
-
             S2CItemUpdateCharacterItemNtc equipUpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            equipUpdateCharacterItemNtc.UpdateType = 0x24;
+            equipUpdateCharacterItemNtc.UpdateType = 0x26;
 
             S2CItemUpdateCharacterItemNtc unequipUpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            unequipUpdateCharacterItemNtc.UpdateType = 0x24;
+            unequipUpdateCharacterItemNtc.UpdateType = 0x26;
 
             foreach (CDataCharacterEquipInfo changeCharacterEquipInfo in packet.Structure.ChangeCharacterEquipList)
             {
@@ -41,8 +41,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Character.Equipment.setEquipItem(null, client.Character.Job, equipType, equipSlot);
                     Server.Database.DeleteEquipItem(client.Character.Id, client.Character.Job, equipType, equipSlot, item.UId);
                     
-                    ushort dstSlotNo = client.Character.Storage.addStorageItem(item, 1, StorageType.ItemBagEquipment);
-                    Server.Database.InsertStorageItem(client.Character.Id, StorageType.ItemBagEquipment, dstSlotNo, item.UId, 1);
+                    ushort dstSlotNo = client.Character.Storage.addStorageItem(item, 1, StorageType.StorageBoxNormal);
+                    Server.Database.InsertStorageItem(client.Character.Id, StorageType.StorageBoxNormal, dstSlotNo, item.UId, 1);
 
                     unequipUpdateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                         UpdateItemNum = 0,
@@ -51,11 +51,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             ItemId = item.ItemId,
                             ItemNum = 1,
                             Unk3 = item.Unk3,
-                            StorageType = (byte) StorageType.ItemBagEquipment,
+                            StorageType = (byte) StorageType.StorageBoxNormal,
                             SlotNo = dstSlotNo,
                             Color = item.Color,
                             PlusValue = item.PlusValue,
-                            Bind = false,
+                            Bind = true,
                             EquipPoint = 0,
                             EquipCharacterID = 0,
                             EquipPawnID = 0,
@@ -69,7 +69,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     // Equip item; from bag to equipment
                     // Find in the bag the item to equip
-                    var tuple = client.Character.Storage.getStorage(StorageType.ItemBagEquipment).Items
+                    var tuple = client.Character.Storage.getStorage(StorageType.StorageBoxNormal).Items
                         .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                         .Where(tuple => tuple.item?.Item1.UId == changeCharacterEquipInfo.EquipItemUId)
                         .Single();
@@ -82,8 +82,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Server.Database.InsertEquipItem(client.Character.Id, client.Character.Job, equipType, equipSlot, item.UId);
 
                     // Find slot from which the item will be taken
-                    client.Character.Storage.setStorageItem(null, 0, StorageType.ItemBagEquipment, tuple.slot);
-                    Server.Database.DeleteStorageItem(client.Character.Id, StorageType.ItemBagEquipment, tuple.slot);
+                    client.Character.Storage.setStorageItem(null, 0, StorageType.StorageBoxNormal, tuple.slot);
+                    Server.Database.DeleteStorageItem(client.Character.Id, StorageType.StorageBoxNormal, tuple.slot);
 
                     equipUpdateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                         UpdateItemNum = 0, // TODO: ?
@@ -92,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             ItemId = item.ItemId,
                             ItemNum = 0,
                             Unk3 = item.Unk3,
-                            StorageType = (byte) StorageType.ItemBagEquipment,
+                            StorageType = (byte) StorageType.StorageBoxNormal,
                             SlotNo = srcSlotNo,
                             Color = item.Color,
                             PlusValue = item.PlusValue,
@@ -108,7 +108,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            S2CEquipChangeCharacterEquipRes res = new S2CEquipChangeCharacterEquipRes();
+            S2CEquipChangeCharacterStorageEquipRes res = new S2CEquipChangeCharacterStorageEquipRes();
             res.CharacterEquipList = packet.Structure.ChangeCharacterEquipList;
             client.Send(res);
 
@@ -125,7 +125,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 otherClient.Send(changeCharacterEquipNtc);
             }
-            
+
             // This is the only way i've found for it to behave properly.
             // If i try to send equipping data (aka, removing from the bag the equipped item)
             //  without sending the first NTC even if it's empty AND SLEEPING (IMPORTANT), the item doesn't show up as equipped.

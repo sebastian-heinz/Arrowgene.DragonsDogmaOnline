@@ -187,6 +187,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new DailyMissionListGetHandler(this));
 
             AddHandler(new EquipChangeCharacterEquipHandler(this));
+            AddHandler(new EquipChangeCharacterStorageEquipHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
             AddHandler(new EquipUpdateHideCharacterHeadArmorHandler(this));
             AddHandler(new EquipUpdateHideCharacterLanternHandler(this));

@@ -18,13 +18,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ItemNum { get; set; }
         public byte Unk3 { get; set; }
         public byte StorageType { get; set; }
-        public ushort SlotNo { get; set; } // SlotNo?
-        public byte Unk6 { get; set; } // Color?
-        public byte Unk7 { get; set; } // PlusValue?
+        public ushort SlotNo { get; set; }
+        public byte Color { get; set; }
+        public byte PlusValue { get; set; }
         public bool Bind { get; set; }
-        public uint Unk9 { get; set; } // EquipPawnID? EquipPoint?
-        public uint Unk10 { get; set; } // EquipCharacterID?
-        public uint Unk11 { get; set; } // // EquipPawnID? EquipPoint?
+        public uint EquipPoint { get; set; }
+        public uint EquipCharacterID { get; set; }
+        public uint EquipPawnID { get; set; }
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
         public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
@@ -39,12 +39,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.Unk3);
                 WriteByte(buffer, obj.StorageType);
                 WriteUInt16(buffer, obj.SlotNo);
-                WriteByte(buffer, obj.Unk6);
-                WriteByte(buffer, obj.Unk7);
+                WriteByte(buffer, obj.Color);
+                WriteByte(buffer, obj.PlusValue);
                 WriteBool(buffer, obj.Bind);
-                WriteUInt32(buffer, obj.Unk9);
-                WriteUInt32(buffer, obj.Unk10);
-                WriteUInt32(buffer, obj.Unk11);
+                WriteUInt32(buffer, obj.EquipPoint);
+                WriteUInt32(buffer, obj.EquipCharacterID);
+                WriteUInt32(buffer, obj.EquipPawnID);
                 WriteEntityList<CDataWeaponCrestData>(buffer, obj.WeaponCrestDataList);
                 WriteEntityList<CDataArmorCrestData>(buffer, obj.ArmorCrestDataList);
                 WriteEntityList<CDataEquipElementParam>(buffer, obj.EquipElementParamList);
@@ -59,12 +59,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Unk3 = ReadByte(buffer);
                 obj.StorageType = ReadByte(buffer);
                 obj.SlotNo = ReadUInt16(buffer);
-                obj.Unk6 = ReadByte(buffer);
-                obj.Unk7 = ReadByte(buffer);
+                obj.Color = ReadByte(buffer);
+                obj.PlusValue = ReadByte(buffer);
                 obj.Bind = ReadBool(buffer);
-                obj.Unk9 = ReadUInt32(buffer);
-                obj.Unk10 = ReadUInt32(buffer);
-                obj.Unk11 = ReadUInt32(buffer);
+                obj.EquipPoint = ReadUInt32(buffer);
+                obj.EquipCharacterID = ReadUInt32(buffer);
+                obj.EquipPawnID = ReadUInt32(buffer);
                 obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);
                 obj.ArmorCrestDataList = ReadEntityList<CDataArmorCrestData>(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);

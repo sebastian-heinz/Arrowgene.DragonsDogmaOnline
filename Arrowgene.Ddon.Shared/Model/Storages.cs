@@ -58,12 +58,12 @@ namespace Arrowgene.Ddon.Shared.Model
                     Unk3 = tuple.item.Item1.Unk3,
                     StorageType = (byte) storageType,
                     SlotNo = tuple.slot,
-                    Unk6 = tuple.item.Item1.Color,
-                    Unk7 = tuple.item.Item1.PlusValue,
+                    Color = tuple.item.Item1.Color,
+                    PlusValue = tuple.item.Item1.PlusValue,
                     Bind = true,
-                    Unk9 = 0,
-                    Unk10 = 0,
-                    Unk11 = 0,
+                    EquipPoint = 0,
+                    EquipCharacterID = 0,
+                    EquipPawnID = 0,
                     WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,
                     ArmorCrestDataList = tuple.item.Item1.ArmorCrestDataList,
                     EquipElementParamList = tuple.item.Item1.EquipElementParamList
@@ -76,6 +76,7 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public ushort addStorageItem(Item newItem, uint itemCount, StorageType storageType) {
+            // TODO: Limit itemCount to the item ID's max stack size in storageType
             var tuple = getStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item == null)
@@ -85,6 +86,7 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public Tuple<Item, uint>? setStorageItem(Item newItem, uint itemCount, StorageType storageType, ushort slot) {
+            // TODO: Limit itemCount to the item ID's max stack size in storageType
             Tuple<Item, uint>? oldItem = getStorageItem(storageType, slot);
             storages[storageType].Items[slot-1] = newItem == null
                 ? null
