@@ -106,9 +106,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     ExecuteNonQuery(conn, SqlInsertCharacterMatchingProfile, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
 
-                    StoreCharacterData(conn, character);
-
                     CreateItems(conn, character);
+                    
+                    StoreCharacterData(conn, character);
                 });
         }
 
