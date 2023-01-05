@@ -23,7 +23,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
             {
-                // TODO: Move only item.Num and not the entire thing
                 var tuple = client.Character.Storage.getStorage(itemFromTo.SrcStorageType).Items
                     .Select((item, index) => new { item, index })
                     .Where(tuple => itemFromTo.ItemUId == tuple.item?.Item1.UId)
@@ -70,12 +69,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint dstItemNum = sanitizedItemFromToNum;
                 if(dstSlotNo == 0)
                 {
-                    dstSlotNo = client.Character.Storage.addStorageItem(item, dstItemNum, itemFromTo.DstStorageType);
+                    // Check if there's already of the item in the dst storage
+                    var itemInDstSlot = client.Character.Storage.getStorage(itemFromTo.DstStorageType).Items
+                        .Select((item, index) => new { item, index })
+                        .Where(tuple => itemFromTo.ItemUId == tuple.item?.Item1.UId)
+                        .SingleOrDefault();
+
+                    if(itemInDstSlot == null)
+                    {
+                        dstSlotNo = client.Character.Storage.addStorageItem(item, dstItemNum, itemFromTo.DstStorageType);
+                    }
+                    else
+                    {
+                        dstSlotNo = (ushort) (itemInDstSlot.index+1);
+                        dstItemNum += itemInDstSlot.item.Item2;
+                    }
                 }
                 else
                 {
                     Tuple<Item, uint> itemInDstSlot = client.Character.Storage.getStorageItem(itemFromTo.DstStorageType, dstSlotNo);
-                    dstItemNum+=itemInDstSlot.Item2;
+                    dstItemNum += itemInDstSlot.Item2;
                 }
                 client.Character.Storage.setStorageItem(item, dstItemNum, itemFromTo.DstStorageType, dstSlotNo);
                 Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.DstStorageType, dstSlotNo, item.UId, dstItemNum);
