@@ -69,18 +69,17 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             return getEquipment(job, equipType)
                 .Select((x, index) => new {item = x, slot = (byte)(index+1)})
-                .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataEquipItemInfo()
                 {
-                    ItemId = tuple.item.ItemId,
-                    Unk0 = tuple.item.Unk3,
+                    ItemId = tuple.item?.ItemId ?? 0,
+                    Unk0 = tuple.item?.Unk3 ?? 0,
                     EquipType = (byte) equipType,
                     EquipSlot = tuple.slot,
-                    Color = tuple.item.Color,
-                    PlusValue = tuple.item.PlusValue,
-                    WeaponCrestDataList = tuple.item.WeaponCrestDataList,
-                    ArmorCrestDataList = tuple.item.ArmorCrestDataList,
-                    EquipElementParamList = tuple.item.EquipElementParamList
+                    Color = tuple.item?.Color ?? 0,
+                    PlusValue = tuple.item?.PlusValue ?? 0,
+                    WeaponCrestDataList = tuple.item?.WeaponCrestDataList ?? new List<CDataWeaponCrestData>(),
+                    ArmorCrestDataList = tuple.item?.ArmorCrestDataList ?? new List<CDataArmorCrestData>(),
+                    EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>()
                 })
                 .ToList();
         }
