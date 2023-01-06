@@ -26,6 +26,7 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.GameServer.Chat.Command;
+using Arrowgene.Ddon.GameServer.Chat.GatheringItem;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Enemy;
@@ -53,6 +54,7 @@ namespace Arrowgene.Ddon.GameServer
             Router = new GameRouter();
             ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
+            GatheringItemManager = new GatheringItemManager();
             PartyManager = new PartyManager();
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
@@ -66,6 +68,7 @@ namespace Arrowgene.Ddon.GameServer
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
         public EnemyManager EnemyManager { get; }
+        public GatheringItemManager GatheringItemManager { get; }
         public PartyManager PartyManager { get; }
         public GameRouter Router { get; }
 
@@ -183,6 +186,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ContextSetContextHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
 
+            AddHandler(new EquipChangeCharacterEquipHandler(this));
+            AddHandler(new EquipChangeCharacterStorageEquipHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
             AddHandler(new EquipUpdateHideCharacterHeadArmorHandler(this));
             AddHandler(new EquipUpdateHideCharacterLanternHandler(this));
@@ -217,8 +222,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
 
             AddHandler(new ItemGetStorageItemListHandler(this));
+            AddHandler(new ItemMoveItemHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
-            AddHandler(new ItemSortSetItemSortdataBinHandler(this));
+            AddHandler(new ItemSortSetItemSortDataBinHandler(this));
             AddHandler(new ItemUseBagItemHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));

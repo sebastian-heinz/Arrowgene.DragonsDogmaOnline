@@ -12,37 +12,41 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public S2CItemUpdateCharacterItemNtc()
         {
             UpdateType=0;
-            ItemUpdateResultList=new List<CDataItemUpdateResult>();
-            UpdateWalletPointList=new List<CDataUpdateWalletPoint>();
+            UpdateItemList=new List<CDataItemUpdateResult>();
+            UpdateWallet=new List<CDataUpdateWalletPoint>();
         }
 
         // 1: S2C_INSTANCE_GET_GATHERING_ITEM_RES
         // 2: S2C_INSTANCE_GET_DROP_ITEM_RES
         // 3: S2C_ITEM_USE_BAG_ITEM_RES
         // 8: S2C_ITEM_MOVE_ITEM_RES
+        // 0x25: changePawnEquip
+        // 0x27: changePawnStorageEquip
+        // 0x24: changeCharacterEquip
+        // 0x26: changeCharacterStorageEquip
         // 0x28: Job Change
         // 0x29: Pawn Job Change
         // 0x37: S2C_SEASON_DUNGEON_DELIVER_ITEM_FOR_EX_RES
         // 0x38: S2C_SEASON_DUNGEON_RECEIVE_SOUL_ORDEAL_REWARD_RES
-        public ushort UpdateType;
-        public List<CDataItemUpdateResult> ItemUpdateResultList;
-        public List<CDataUpdateWalletPoint> UpdateWalletPointList;
+        public ushort UpdateType; 
+        public List<CDataItemUpdateResult> UpdateItemList;
+        public List<CDataUpdateWalletPoint> UpdateWallet;
 
         public class Serializer : PacketEntitySerializer<S2CItemUpdateCharacterItemNtc>
         {
             public override void Write(IBuffer buffer, S2CItemUpdateCharacterItemNtc obj)
             {
                 WriteUInt16(buffer, obj.UpdateType);
-                WriteEntityList<CDataItemUpdateResult>(buffer, obj.ItemUpdateResultList);
-                WriteEntityList<CDataUpdateWalletPoint>(buffer, obj.UpdateWalletPointList);
+                WriteEntityList<CDataItemUpdateResult>(buffer, obj.UpdateItemList);
+                WriteEntityList<CDataUpdateWalletPoint>(buffer, obj.UpdateWallet);
             }
 
             public override S2CItemUpdateCharacterItemNtc Read(IBuffer buffer)
             {
                 S2CItemUpdateCharacterItemNtc obj = new S2CItemUpdateCharacterItemNtc();
                 obj.UpdateType = ReadUInt16(buffer);
-                obj.ItemUpdateResultList = ReadEntityList<CDataItemUpdateResult>(buffer);
-                obj.UpdateWalletPointList = ReadEntityList<CDataUpdateWalletPoint>(buffer);
+                obj.UpdateItemList = ReadEntityList<CDataItemUpdateResult>(buffer);
+                obj.UpdateWallet = ReadEntityList<CDataUpdateWalletPoint>(buffer);
                 return obj;
             }
         }

@@ -327,6 +327,11 @@ namespace Arrowgene.Ddon.Database.Sql
             AddParameter(command, name, value, DbType.DateTime);
         }
 
+        protected void AddParameter(TCom command, string name, byte[] value)
+        {
+            AddParameter(command, name, value, DbType.Binary);
+        }
+
         protected void AddParameter(TCom command, string name, bool value)
         {
             AddParameter(command, name, value, DbType.Boolean);
@@ -350,6 +355,18 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             return reader.GetString(ordinal);
+        }
+
+        protected byte[]? GetBytesNullable(DbDataReader reader, int ordinal, int size)
+        {
+            if(reader.IsDBNull(ordinal))
+            {
+                return null;
+            }
+
+            byte[] buffer = new byte[size];
+            reader.GetBytes(ordinal, 0, buffer, 0, size);
+            return buffer;
         }
 
         protected int GetInt32(DbDataReader reader, string column)
@@ -402,6 +419,13 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetDateTime(reader.GetOrdinal(column));
         }
 
+        protected byte[] GetBytes(DbDataReader reader, string column, int size)
+        {
+            byte[] buffer = new byte[size];
+            reader.GetBytes(reader.GetOrdinal(column), 0, buffer, 0, size);
+            return buffer;
+        }
+
         protected DateTime? GetDateTimeNullable(DbDataReader reader, string column)
         {
             int ordinal = reader.GetOrdinal(column);
@@ -412,6 +436,12 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             int ordinal = reader.GetOrdinal(column);
             return GetStringNullable(reader, ordinal);
+        }
+
+        protected byte[] GetBytesNullable(DbDataReader reader, string column, int size)
+        {
+            int ordinal = reader.GetOrdinal(column);
+            return GetBytesNullable(reader, ordinal, size);
         }
     }
 }

@@ -5,61 +5,69 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataItemList
     {
-        public string Unk0 { get; set; }
-        public uint Unk1 { get; set; }
-        public uint Unk2 { get; set; }
-        public byte Unk3 { get; set; } // EquipType?
-        public byte Unk4 { get; set; } // EquipSlot?
-        public ushort Unk5 { get; set; } // ItemID?
-        public byte Unk6 { get; set; } // Color?
-        public byte Unk7 { get; set; } // PlusValue?
-        public bool Unk8 { get; set; }
-        public uint Unk9 { get; set; }
-        public uint Unk10 { get; set; }
-        public uint Unk11 { get; set; }
-        public List<CDataWeaponCrestData> Unk12 { get; set; } // Maybe weapon crests?
-        public List<CDataArmorCrestData> Unk13 { get; set; } // Maybe armor crests?
-        public List<CDataEquipElementParam> Unk14 { get; set; } // EquipElementParamList?
+        public CDataItemList()
+        {
+            ItemUId = string.Empty;
+            WeaponCrestDataList = new List<CDataWeaponCrestData>();
+            ArmorCrestDataList = new List<CDataArmorCrestData>();
+            EquipElementParamList = new List<CDataEquipElementParam>();
+        }
+
+        public string ItemUId { get; set; }
+        public uint ItemId { get; set; }
+        public uint ItemNum { get; set; }
+        public byte Unk3 { get; set; }
+        public byte StorageType { get; set; }
+        public ushort SlotNo { get; set; }
+        public byte Color { get; set; }
+        public byte PlusValue { get; set; }
+        public bool Bind { get; set; }
+        public uint EquipPoint { get; set; }
+        public uint EquipCharacterID { get; set; }
+        public uint EquipPawnID { get; set; }
+        public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
+        public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
+        public List<CDataEquipElementParam> EquipElementParamList { get; set; }
         
         public class Serializer : EntitySerializer<CDataItemList>
         {
             public override void Write(IBuffer buffer, CDataItemList obj)
             {
-                WriteMtString(buffer, obj.Unk0);
-                WriteUInt32(buffer, obj.Unk1);
-                WriteUInt32(buffer, obj.Unk2);
+                WriteMtString(buffer, obj.ItemUId);
+                WriteUInt32(buffer, obj.ItemId);
+                WriteUInt32(buffer, obj.ItemNum);
                 WriteByte(buffer, obj.Unk3);
-                WriteByte(buffer, obj.Unk4);
-                WriteUInt16(buffer, obj.Unk5);
-                WriteByte(buffer, obj.Unk6);
-                WriteByte(buffer, obj.Unk7);
-                WriteBool(buffer, obj.Unk8);
-                WriteUInt32(buffer, obj.Unk9);
-                WriteUInt32(buffer, obj.Unk10);
-                WriteUInt32(buffer, obj.Unk11);
-                WriteEntityList<CDataWeaponCrestData>(buffer, obj.Unk12);
-                WriteEntityList<CDataArmorCrestData>(buffer, obj.Unk13);
-                WriteEntityList<CDataEquipElementParam>(buffer, obj.Unk14);
+                WriteByte(buffer, obj.StorageType);
+                WriteUInt16(buffer, obj.SlotNo);
+                WriteByte(buffer, obj.Color);
+                WriteByte(buffer, obj.PlusValue);
+                WriteBool(buffer, obj.Bind);
+                WriteUInt32(buffer, obj.EquipPoint);
+                WriteUInt32(buffer, obj.EquipCharacterID);
+                WriteUInt32(buffer, obj.EquipPawnID);
+                WriteEntityList<CDataWeaponCrestData>(buffer, obj.WeaponCrestDataList);
+                WriteEntityList<CDataArmorCrestData>(buffer, obj.ArmorCrestDataList);
+                WriteEntityList<CDataEquipElementParam>(buffer, obj.EquipElementParamList);
             }
 
             public override CDataItemList Read(IBuffer buffer)
             {
                 CDataItemList obj = new CDataItemList();
-                obj.Unk0 = ReadMtString(buffer);
-                obj.Unk1 = ReadUInt32(buffer);
-                obj.Unk2 = ReadUInt32(buffer);
+                obj.ItemUId = ReadMtString(buffer);
+                obj.ItemId = ReadUInt32(buffer);
+                obj.ItemNum = ReadUInt32(buffer);
                 obj.Unk3 = ReadByte(buffer);
-                obj.Unk4 = ReadByte(buffer);
-                obj.Unk5 = ReadUInt16(buffer);
-                obj.Unk6 = ReadByte(buffer);
-                obj.Unk7 = ReadByte(buffer);
-                obj.Unk8 = ReadBool(buffer);
-                obj.Unk9 = ReadUInt32(buffer);
-                obj.Unk10 = ReadUInt32(buffer);
-                obj.Unk11 = ReadUInt32(buffer);
-                obj.Unk12 = ReadEntityList<CDataWeaponCrestData>(buffer);
-                obj.Unk13 = ReadEntityList<CDataArmorCrestData>(buffer);
-                obj.Unk14 = ReadEntityList<CDataEquipElementParam>(buffer);
+                obj.StorageType = ReadByte(buffer);
+                obj.SlotNo = ReadUInt16(buffer);
+                obj.Color = ReadByte(buffer);
+                obj.PlusValue = ReadByte(buffer);
+                obj.Bind = ReadBool(buffer);
+                obj.EquipPoint = ReadUInt32(buffer);
+                obj.EquipCharacterID = ReadUInt32(buffer);
+                obj.EquipPawnID = ReadUInt32(buffer);
+                obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);
+                obj.ArmorCrestDataList = ReadEntityList<CDataArmorCrestData>(buffer);
+                obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 return obj;
             }
         }

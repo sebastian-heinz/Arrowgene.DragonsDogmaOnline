@@ -4,6 +4,8 @@
         "jeff-hykin.better-cpp-syntax",
         "ms-dotnettools.csharp",
         "kreativ-software.csharpextensions",
-        "notblank00.hexeditor"
+        "notblank00.hexeditor",
+        "wayou.vscode-todo-highlight",
+        "usernamehw.errorlens"
     ]
 }

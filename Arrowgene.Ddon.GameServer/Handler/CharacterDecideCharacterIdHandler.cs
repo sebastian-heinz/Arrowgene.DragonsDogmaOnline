@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
@@ -28,14 +29,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.Id;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
-            res.CharacterInfo.CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>()
-            {
-                new CDataCharacterItemSlotInfo()
-                {
-                    StorageType = 1, // Item Bag (Consumable) STORAGE_TYPE_BAG_USE
-                    SlotMax = 20
-                }
-            };
             res.CharacterInfo.WalletPointList = new List<CDataWalletPoint>()
             {
                 // TODO: Figure out what other currencies there are.

@@ -16,6 +16,8 @@ namespace Arrowgene.Ddon.Shared
         public const string MyPawnAssetKey = "MyPawn.csv";
         public const string MyRoomAssetKey = "MyRoom.csv";
         public const string ArisenAssetKey = "Arisen.csv";
+        public const string StorageKey = "Storage.csv";
+        public const string StorageItemKey = "StorageItem.csv";
         public const string ServerListKey = "GameServerList.csv";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
@@ -42,6 +44,8 @@ namespace Arrowgene.Ddon.Shared
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
             ArisenAsset = new List<ArisenCsv>();
+            StorageAsset = new List<CDataCharacterItemSlotInfo>();
+            StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; }
@@ -50,6 +54,8 @@ namespace Arrowgene.Ddon.Shared
         public List<MyPawnCsv> MyPawnAsset { get; }
         public List<MyRoomCsv> MyRoomAsset { get; }
         public List<ArisenCsv> ArisenAsset { get; }
+        public List<CDataCharacterItemSlotInfo> StorageAsset { get; }
+        public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; }
 
         public void Initialize()
         {
@@ -59,6 +65,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(MyRoomAsset, MyRoomAssetKey, new MyRoomCsvReader());
             RegisterAsset(ArisenAsset, ArisenAssetKey, new ArisenCsvReader());
             RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsvReader());
+            RegisterAsset(StorageAsset, StorageKey, new StorageCsvReader());
+            RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsvReader());
         }
 
         private void RegisterAsset<T>(List<T> list, string key, CsvReader<T> reader)

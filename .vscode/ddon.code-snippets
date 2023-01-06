@@ -166,5 +166,70 @@
 			"\t}",
 			"}"
 		]
-	}
+	},
+	"Structure Serializer": {
+		"scope": "csharp",
+		"prefix": "serializer",
+		"description": "Generic structure serializer",
+		"body": [
+			"public class Serializer : EntitySerializer<$1>",
+			"{",
+			"\tpublic override void Write(IBuffer buffer, $1 obj)",
+			"\t{",
+			"\t\t$0",
+			"\t}",
+			"",
+			"\tpublic override $1 Read(IBuffer buffer)",
+			"\t{",
+			"\t\t$1 obj = new $1();",
+			"\t\t",
+			"\t\treturn obj;",
+			"\t}",
+			"}"
+		]
+	},
+	"Packet Structure Serializer": {
+		"scope": "csharp",
+		"prefix": "packetserializer",
+		"description": "Packet structure serializer",
+		"body": [
+			"public class Serializer : PacketEntitySerializer<$1>",
+			"{",
+			"\tpublic override void Write(IBuffer buffer, $1 obj)",
+			"\t{",
+			"\t\t$0",
+			"\t}",
+			"",
+			"\tpublic override $1 Read(IBuffer buffer)",
+			"\t{",
+			"\t\t$1 obj = new $1();",
+			"\t\t",
+			"\t\treturn obj;",
+			"\t}",
+			"}"
+		]
+	},
+	"Response Structure Serializer": {
+		"scope": "csharp",
+		"prefix": "responseserializer",
+		"description": "Response packet structure serializer",
+		"body": [
+			"public class Serializer : PacketEntitySerializer<$1>",
+			"{",
+			"\tpublic override void Write(IBuffer buffer, $1 obj)",
+			"\t{",
+			"\t\tWriteServerResponse(buffer, obj);",
+			"\t\t$0",
+			"\t}",
+			"",
+			"\tpublic override $1 Read(IBuffer buffer)",
+			"\t{",
+			"\t\t$1 obj = new $1();",
+			"\t\tReadServerResponse(buffer, obj);",
+			"\t\t",
+			"\t\treturn obj;",
+			"\t}",
+			"}"
+		]
+	},
 }

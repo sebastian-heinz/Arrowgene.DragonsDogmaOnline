@@ -16,11 +16,10 @@ namespace Arrowgene.Ddon.Shared.Model
             StatusInfo = new CDataStatusInfo();
             CharacterJobDataList = new List<CDataCharacterJobData>();
             PlayPointList = new List<CDataJobPlayPoint>();
-            CharacterEquipDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>();
-            CharacterEquipViewDataListDictionary = new Dictionary<JobId, List<CDataCharacterEquipData>>();
+            Storage = new Storages(new Dictionary<StorageType, ushort>());
+            Equipment = new Equipment();
             CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>();
             Unk0 = new List<UnknownCharacterData0>();
-            CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
             WalletPointList = new List<CDataWalletPoint>();
             OrbStatusList = new List<CDataOrbPageStatus>();
             MsgSetList = new List<CDataCharacterMsgSet>();
@@ -50,12 +49,11 @@ namespace Arrowgene.Ddon.Shared.Model
         public JobId Job;
         public List<CDataCharacterJobData> CharacterJobDataList;
         public List<CDataJobPlayPoint> PlayPointList;
-        public Dictionary<JobId, List<CDataCharacterEquipData>> CharacterEquipDataListDictionary;
-        public Dictionary<JobId, List<CDataCharacterEquipData>> CharacterEquipViewDataListDictionary;
+        public Storages Storage;
+        public Equipment Equipment;
         public Dictionary<JobId, List<CDataEquipJobItem>> CharacterEquipJobItemListDictionary;
         public byte JewelrySlotNum;
         public List<UnknownCharacterData0> Unk0;
-        public List<CDataCharacterItemSlotInfo> CharacterItemSlotInfoList;
         public List<CDataWalletPoint> WalletPointList;
         public byte MyPawnSlotNum;
         public byte RentalPawnSlotNum;

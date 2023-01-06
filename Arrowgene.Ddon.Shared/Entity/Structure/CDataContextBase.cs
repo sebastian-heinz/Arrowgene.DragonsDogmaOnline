@@ -17,12 +17,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             HideEquipHead = character.HideEquipHead;
             HideEquipLantern = character.HideEquipLantern;
             // In the context equipment lists, the index is the slot. A 0,0,0 element has to be in place if a slot is not filled
-            ContextEquipPerformanceList = Enumerable.Range(1, 15)
-                .Select(i => new CDataContextEquipData(character.CharacterEquipDataListDictionary[character.Job].SelectMany(x => x.Equips).Where(x => x.EquipSlot == i).SingleOrDefault(new CDataEquipItemInfo())))
-                .ToList();
-            ContextEquipVisualList = Enumerable.Range(1, 15)
-                .Select(i => new CDataContextEquipData(character.CharacterEquipViewDataListDictionary[character.Job].SelectMany(x => x.Equips).Where(x => x.EquipSlot == i).SingleOrDefault(new CDataEquipItemInfo())))
-                .ToList();
+            ContextEquipPerformanceList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Performance);
+            ContextEquipVisualList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Visual);
             ContextEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job]
                 .Select(x => new CDataContextEquipJobItemData(x)).ToList();
             ContextNormalSkillList = character.NormalSkills

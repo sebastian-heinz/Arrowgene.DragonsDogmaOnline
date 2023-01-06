@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -30,6 +32,25 @@ namespace Arrowgene.Ddon.Database
         bool DeleteCharacter(uint characterId);
 
         bool UpdateCharacterBaseInfo(Character character);
+
+        // Item
+        bool InsertItem(Item item);
+        Item SelectItem(string uid);
+
+        //Storage
+        bool InsertStorage(uint characterId, StorageType storageType, Storage storage);
+        bool UpdateStorage(uint characterId, StorageType storageType, Storage storage);
+        bool DeleteStorage(uint characterId, StorageType storageType);
+
+        // Storage Item
+        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
+        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
+        bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
+
+        // Equip
+        bool InsertEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool UpdateEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool DeleteEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
 
         // CustomSkills
         bool InsertEquippedCustomSkill(uint characterId, CustomSkill skill);

@@ -81,6 +81,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataFavoriteWarpPoint.Serializer());
             Create(new CDataGameServerListInfoSerializer());
             Create(new CDataGameTimeBaseInfo.Serializer());
+            Create(new CDataGatheringItemGetRequest.Serializer());
+            Create(new CDataGatheringItemListUnk1.Serializer());
+            Create(new CDataGatheringItemListUnk1Unk2.Serializer());
+            Create(new CDataGatheringItemListUnk2.Serializer());
             Create(new CDataGPCourseValidSerializer());
             Create(new CDataHistoryElement.Serializer());
             Create(new CDataItemList.Serializer());
@@ -103,6 +107,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMasterInfo.Serializer());
             Create(new CDataMatchingProfileSerializer());
             Create(new CDataMoonSchedule.Serializer());
+            Create(new CDataMoveItemUIDFromTo.Serializer());
             Create(new CDataNamedEnemyParamClient.Serializer());
             Create(new CDataNormalSkillParam.Serializer());
             Create(new CDataOcdActive.Serializer());
@@ -185,6 +190,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SContextGetSetContextReq.Serializer());
             Create(new C2SContextSetContextNtc.Serializer());
 
+            Create(new C2SEquipChangeCharacterEquipReq.Serializer());
+            Create(new C2SEquipChangeCharacterStorageEquipReq.Serializer());
             Create(new C2SEquipGetCharacterEquipListReq.Serializer());
             Create(new C2SEquipUpdateHideCharacterHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHideCharacterLanternReq.Serializer());
@@ -206,6 +213,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstanceTreasurePointGetCategoryListReq.Serializer());
             Create(new C2SInstanceTreasurePointGetListReq.Serializer());
 
+            Create(new C2SItemGetStorageItemListReq.Serializer());
+            Create(new C2SItemMoveItemReq.Serializer());
+            Create(new C2SItemSortGetItemSortDataBinReq.Serializer());
+            Create(new C2SItemSortSetItemSortDataBinReq.Serializer());
             Create(new C2SItemUseBagItemReq.Serializer());
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobGetJobChangeListReq.Serializer());
@@ -291,7 +302,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CNextConnectionServerNtc.Serializer());
 
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
-            Create(new S2CChangeCharacterEquipLobbyNotice.Serializer());
+            Create(new S2CEquipChangeCharacterEquipLobbyNtc.Serializer());
 
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
@@ -323,6 +334,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextMasterChangeNtc.Serializer());
             Create(new S2CContextMasterInfoNtc.Serializer());
             Create(new S2CContextSetContextBaseNtc.Serializer());
+
+            Create(new S2CEquipChangeCharacterEquipNtc.Serializer());
+            Create(new S2CEquipChangeCharacterEquipRes.Serializer());
+            Create(new S2CEquipChangeCharacterStorageEquipRes.Serializer());
             Create(new S2CEquipGetCharacterEquipListRes.Serializer());
             Create(new S2CEquipUpdateEquipHideNtc.Serializer());
             Create(new S2CEquipUpdateHideCharacterHeadArmorRes.Serializer());
@@ -347,9 +362,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceTreasurePointGetCategoryListRes.Serializer());
             Create(new S2CInstanceTreasurePointGetListRes.Serializer());
             Create(new S2CItemExtendItemSlotNtc.Serializer());
+            Create(new S2CItemGetStorageItemListRes.Serializer());
             Create(new S2CItemUpdateCharacterItemNtc.Serializer());
             Create(new S2CItemSortGetItemSortdataBinRes.Serializer());
             Create(new S2CItemSortGetItemSortdataBinNtc.Serializer());
+            Create(new S2CItemSortSetItemSortDataBinRes.Serializer());
+            Create(new S2CItemMoveItemRes.Serializer());
             Create(new S2CItemUseBagItemRes.Serializer());
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());

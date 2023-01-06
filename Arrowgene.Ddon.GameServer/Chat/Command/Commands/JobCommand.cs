@@ -79,9 +79,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
                 notice.CharacterId = client.Character.Id;
                 notice.CharacterJobData = client.Character.ActiveCharacterJobData;
-                notice.EquipItemInfo = client.Character.CharacterEquipViewDataListDictionary[client.Character.Job]
-                    .Union(client.Character.CharacterEquipDataListDictionary[client.Character.Job])
-                    .SelectMany(x => x.Equips)
+                notice.EquipItemInfo = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Performance)
+                    .Union(client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Visual))
                     .ToList();
                 notice.SetAcquirementParamList = client.Character.CustomSkills
                     .Where(x => x.Job == job)
@@ -96,7 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     .ToList();
                 notice.EquipJobItemList = client.Character.CharacterEquipJobItemListDictionary[client.Character.Job];
 
-                foreach(GameClient otherClient in _server.Clients)
+                foreach(GameClient otherClient in _server.ClientLookup.GetAll())
                 {
                     otherClient.Send(notice);
                 }

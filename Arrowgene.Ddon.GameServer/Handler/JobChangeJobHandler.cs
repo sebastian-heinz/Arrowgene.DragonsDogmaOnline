@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -29,14 +30,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CJobGetJobChangeListRes jobChangeList = EntitySerializer.Get<S2CJobGetJobChangeListRes>().Read(InGameDump.data_Dump_52);
             CDataJobPlayPoint requestedJobPlayPoint = jobChangeList.PlayPointList.Where(x => x.Job == packet.Structure.JobId).FirstOrDefault();
 
-            S2CEquipGetCharacterEquipListRes getCharacterEquipListRes = EntitySerializer.Get<S2CEquipGetCharacterEquipListRes>().Read(InGameDump.data_Dump_48);
-
             S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
             notice.CharacterId = client.Character.Id;
             notice.CharacterJobData = client.Character.ActiveCharacterJobData;
-            notice.EquipItemInfo = client.Character.CharacterEquipViewDataListDictionary[client.Character.Job]
-                .Union(client.Character.CharacterEquipDataListDictionary[client.Character.Job])
-                .SelectMany(x => x.Equips)
+            notice.EquipItemInfo = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Performance)
+                .Union(client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Visual))
                 .ToList();
             notice.SetAcquirementParamList = client.Character.CustomSkills
                 .Where(x => x.Job == packet.Structure.JobId)
@@ -53,7 +51,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CJobChangeJobRes response = new S2CJobChangeJobRes();
             response.CharacterJobData = client.Character.ActiveCharacterJobData;
-            response.CharacterEquipList = getCharacterEquipListRes.CharacterEquipList;
+            // TODO: Figure out if it should send all equips or just the ones for the current job
+            response.CharacterEquipList = client.Character.Equipment.getEquipmentAsCDataCharacterEquipInfo(client.Character.Job, EquipType.Performance)
+                .Union(client.Character.Equipment.getEquipmentAsCDataCharacterEquipInfo(client.Character.Job, EquipType.Visual))
+                .ToList();
             response.SetAcquirementParamList = client.Character.CustomSkills
                 .Select(x => x.AsCDataSetAcquirementParam())
                 .ToList();
@@ -66,8 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             response.EquipJobItemList = client.Character.CharacterEquipJobItemListDictionary[client.Character.Job];
             response.PlayPointData = requestedJobPlayPoint.PlayPoint;
             response.Unk0.Unk0 = (byte) packet.Structure.JobId;
-            response.Unk0.Unk1 = client.Character.CharacterItemSlotInfoList;
-
+            response.Unk0.Unk1 = client.Character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
 
             foreach(GameClient otherClient in Server.ClientLookup.GetAll())
             {
@@ -76,6 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0x28;
+            // TODO: Move previous job equipment to storage box, and move new job equipment from storage box
             client.Send(updateCharacterItemNtc);
 
             // I don't know whats the purpose of this carrying so much data since the job change itself is done by the NTC

@@ -1,25 +1,30 @@
+using System.Reflection.Metadata;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ItemSortSetItemSortdataBinHandler : PacketHandler<GameClient>
+    public class ItemSortSetItemSortDataBinHandler : StructurePacketHandler<GameClient, C2SItemSortSetItemSortDataBinReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemSortSetItemSortdataBinHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemSortSetItemSortDataBinHandler));
 
 
-        public ItemSortSetItemSortdataBinHandler(DdonGameServer server) : base(server)
+        public ItemSortSetItemSortDataBinHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_ITEM_SORT_SET_ITEM_SORTDATA_BIN_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SItemSortSetItemSortDataBinReq> packet)
         {
-            client.Send(SelectedDump.AntiDcSortdataBin);
+            Storage storage = client.Character.Storage.getStorage(packet.Structure.SortData.StorageType);
+            storage.SortData = packet.Structure.SortData.Bin;
+            Server.Database.UpdateStorage(client.Character.Id, packet.Structure.SortData.StorageType, storage);
+
+            client.Send(new S2CItemSortSetItemSortDataBinRes());
         }
     }
 }
