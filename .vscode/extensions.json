@@ -6,6 +6,7 @@
         "kreativ-software.csharpextensions",
         "notblank00.hexeditor",
         "wayou.vscode-todo-highlight",
-        "usernamehw.errorlens"
+        "usernamehw.errorlens",
+        "mechatroner.rainbow-csv"
     ]
 }

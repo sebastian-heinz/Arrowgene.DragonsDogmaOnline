@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var tuple = client.Character.Storage.getStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item?.Item1.UId == itemUId)
-                .Single();
+                .First();
             Item item = tuple.item.Item1;
             uint itemNum = tuple.item.Item2;
             ushort srcSlotNo = tuple.slot;
