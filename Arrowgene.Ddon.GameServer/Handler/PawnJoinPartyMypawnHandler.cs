@@ -727,7 +727,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                     ItemId = myPawnCsvData.VOverWear,
                                     Unk3 = 0,
                                     Color = 0,
-                                }
+                                },
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                             }
                         }
                     }
