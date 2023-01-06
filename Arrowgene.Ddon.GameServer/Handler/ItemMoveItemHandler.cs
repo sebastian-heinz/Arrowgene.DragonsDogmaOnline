@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var tuple = client.Character.Storage.getStorage(itemFromTo.SrcStorageType).Items
                     .Select((item, index) => new { item, index })
                     .Where(tuple => itemFromTo.ItemUId == tuple.item?.Item1.UId)
-                    .Single();
+                    .First();
                 Item item = tuple.item.Item1;
                 uint itemNum = tuple.item.Item2;
                 uint sanitizedItemFromToNum = Math.Clamp(itemFromTo.Num, 0, itemNum);
@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var itemInDstSlot = client.Character.Storage.getStorage(itemFromTo.DstStorageType).Items
                         .Select((item, index) => new { item, index })
                         .Where(tuple => itemFromTo.ItemUId == tuple.item?.Item1.UId)
-                        .SingleOrDefault();
+                        .FirstOrDefault();
 
                     if(itemInDstSlot == null)
                     {
