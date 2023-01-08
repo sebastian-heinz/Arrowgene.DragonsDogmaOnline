@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.GameServer.Chat.GatheringItem;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -36,9 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.UpdateType = 1;
             foreach (CDataGatheringItemGetRequest gatheringItemRequest in req.Structure.GatheringItemGetRequestList)
             {
-                CDataGatheringItemListUnk2 gatheredItem = this._gatheringItemManager.GetItems(req.Structure.LayoutId, req.Structure.PosId)
-                    .Where(item => item.SlotNo == gatheringItemRequest.SlotNo)
-                    .First();
+                GatheringItem gatheredItem = this._gatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)[(int) gatheringItemRequest.SlotNo];
 
                 var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
                     .Select((item, index) => new {item = item, slot = (ushort) (index+1)})

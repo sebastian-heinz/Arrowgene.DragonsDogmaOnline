@@ -26,7 +26,6 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.GameServer.Chat.Command;
-using Arrowgene.Ddon.GameServer.Chat.GatheringItem;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Enemy;
@@ -54,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer
             Router = new GameRouter();
             ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
-            GatheringItemManager = new GatheringItemManager();
+            GatheringItemManager = new GatheringItemManager(assetRepository, database);
             PartyManager = new PartyManager();
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();

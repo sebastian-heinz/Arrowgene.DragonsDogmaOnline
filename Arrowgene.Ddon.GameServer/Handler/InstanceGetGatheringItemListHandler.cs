@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Chat.GatheringItem;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -30,7 +29,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.IsGatheringItemBreak = false; // TODO: Random, and update broken item by sending S2CItemUpdateCharacterItemNtc
             res.Unk0 = false;
             res.Unk1 = new List<CDataGatheringItemListUnk1>();
-            res.Unk2 = this._gatheringItemManager.GetItems(req.Structure.LayoutId, req.Structure.PosId);
+            res.Unk2 = this._gatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)
+                .Select((asset, index) => new CDataGatheringItemListUnk2()
+                {
+                    SlotNo = (uint) index,
+                    ItemId = asset.ItemId,
+                    ItemNum = asset.ItemNum,
+                    Unk3 = asset.Unk3,
+                    Unk4 = asset.Unk4
+                })
+                .ToList();
             client.Send(res);
         }
     }
