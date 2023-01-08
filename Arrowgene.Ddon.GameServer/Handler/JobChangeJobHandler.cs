@@ -26,10 +26,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.UpdateCharacterBaseInfo(client.Character);
 
-            // TODO: Replace pcap data with DB data
-            S2CJobGetJobChangeListRes jobChangeList = EntitySerializer.Get<S2CJobGetJobChangeListRes>().Read(InGameDump.data_Dump_52);
-            CDataJobPlayPoint requestedJobPlayPoint = jobChangeList.PlayPointList.Where(x => x.Job == packet.Structure.JobId).FirstOrDefault();
-
             S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
             notice.CharacterId = client.Character.Id;
             notice.CharacterJobData = client.Character.ActiveCharacterJobData;
@@ -65,7 +61,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();
             response.EquipJobItemList = client.Character.CharacterEquipJobItemListDictionary[client.Character.Job];
-            response.PlayPointData = requestedJobPlayPoint.PlayPoint;
+            response.PlayPointData = client.Character.PlayPointList
+                .Where(x => x.Job == packet.Structure.JobId)
+                .Select(x => x.PlayPoint)
+                .FirstOrDefault(new CDataPlayPointData());
             response.Unk0.Unk0 = (byte) packet.Structure.JobId;
             response.Unk0.Unk1 = client.Character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
 

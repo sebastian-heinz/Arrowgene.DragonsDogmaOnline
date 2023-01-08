@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public override AccountStateType AccountState => AccountStateType.User;
 
         public override string Key => "job";
-        public override string HelpText => "usage: `/job [job]` - Light, please, just commit your changes";
+        public override string HelpText => "usage: `/job [job]`";
 
         private DdonGameServer _server;
 
