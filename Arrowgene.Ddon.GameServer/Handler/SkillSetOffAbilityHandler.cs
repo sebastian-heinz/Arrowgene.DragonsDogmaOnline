@@ -41,9 +41,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 for(int i=0; i<client.Character.Abilities.Count; i++)
                 {
                     Ability ability = client.Character.Abilities[i];
-                    if(ability.EquippedToJob == client.Character.Job && ability.SlotNo > removedAbilitySlotNo)
+                    if(ability.EquippedToJob == client.Character.Job)
                     {
-                        ability.SlotNo--;
+                        if(ability.SlotNo > removedAbilitySlotNo)
+                        {
+                            ability.SlotNo--;
+                        }
                         newAbilities.Add(ability);
                     }
                 }
