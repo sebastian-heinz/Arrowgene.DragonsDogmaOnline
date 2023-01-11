@@ -52,9 +52,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Union(client.Character.Equipment.getEquipmentAsCDataCharacterEquipInfo(client.Character.Job, EquipType.Visual))
                 .ToList();
             response.SetAcquirementParamList = client.Character.CustomSkills
+                .Where(x => x.Job == packet.Structure.JobId)
                 .Select(x => x.AsCDataSetAcquirementParam())
                 .ToList();
             response.SetAbilityParamList = client.Character.Abilities
+                .Where(x => x.EquippedToJob == packet.Structure.JobId)
                 .Select(x => x.AsCDataSetAcquirementParam())
                 .ToList();
             response.LearnNormalSkillParamList = client.Character.NormalSkills
