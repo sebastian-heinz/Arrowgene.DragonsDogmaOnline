@@ -45,10 +45,7 @@ namespace Arrowgene.Ddon.GameServer
         
         private void AssetRepositoryOnAssetChanged(object sender, AssetChangedEventArgs e)
         {
-            if (e.Key == AssetRepository.EnemySpawnsKey)
-            {
-                Load();
-            }
+            Load();
         }
     }
 }
