@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public class GatheringItem : IStageLocationAsset<uint>
+    public class GatheringItem : IStageLocationAsset<uint>, ICloneable
     {
         public StageId StageId { get; set; }
         public uint SubGroupId { get; set; }
@@ -14,5 +9,18 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ItemNum { get; set; }
         public uint Unk3 { get; set; }
         public bool Unk4 { get; set; }
+
+        public object Clone()
+        {
+            return new GatheringItem()
+            {
+                StageId = this.StageId,
+                SubGroupId = this.SubGroupId,
+                ItemId = this.ItemId,
+                ItemNum = this.ItemNum,
+                Unk3 = this.Unk3,
+                Unk4 = this.Unk4
+            };
+        }
     }
 }

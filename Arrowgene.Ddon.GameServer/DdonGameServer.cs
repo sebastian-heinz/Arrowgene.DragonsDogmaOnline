@@ -29,6 +29,7 @@ using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Enemy;
+using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -125,7 +126,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), GatheringItemManager);
             ClientLookup.Add(newClient);
             return newClient;
         }
