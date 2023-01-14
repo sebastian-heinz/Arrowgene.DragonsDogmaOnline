@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -17,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ItemId { get; set; }
         public uint ItemNum { get; set; }
         public byte Unk3 { get; set; }
-        public byte StorageType { get; set; }
+        public StorageType StorageType { get; set; }
         public ushort SlotNo { get; set; }
         public byte Color { get; set; }
         public byte PlusValue { get; set; }
@@ -37,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.ItemId);
                 WriteUInt32(buffer, obj.ItemNum);
                 WriteByte(buffer, obj.Unk3);
-                WriteByte(buffer, obj.StorageType);
+                WriteByte(buffer, (byte) obj.StorageType);
                 WriteUInt16(buffer, obj.SlotNo);
                 WriteByte(buffer, obj.Color);
                 WriteByte(buffer, obj.PlusValue);
@@ -57,7 +58,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ItemId = ReadUInt32(buffer);
                 obj.ItemNum = ReadUInt32(buffer);
                 obj.Unk3 = ReadByte(buffer);
-                obj.StorageType = ReadByte(buffer);
+                obj.StorageType = (StorageType) ReadByte(buffer);
                 obj.SlotNo = ReadUInt16(buffer);
                 obj.Color = ReadByte(buffer);
                 obj.PlusValue = ReadByte(buffer);

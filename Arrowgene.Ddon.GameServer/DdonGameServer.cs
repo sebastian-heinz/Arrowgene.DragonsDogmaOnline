@@ -26,10 +26,10 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.GameServer.Chat.Command;
-using Arrowgene.Ddon.GameServer.Chat.GatheringItem;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Enemy;
+using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer
             Router = new GameRouter();
             ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
-            GatheringItemManager = new GatheringItemManager();
+            GatheringItemManager = new GatheringItemManager(assetRepository, database);
             PartyManager = new PartyManager();
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
@@ -126,7 +126,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), GatheringItemManager);
             ClientLookup.Add(newClient);
             return newClient;
         }

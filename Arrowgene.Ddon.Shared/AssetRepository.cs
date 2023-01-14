@@ -13,6 +13,7 @@ namespace Arrowgene.Ddon.Shared
     {
         public const string ClientErrorCodesKey = "ClientErrorCodes.csv";
         public const string EnemySpawnsKey = "EnemySpawn.csv";
+        public const string GatheringItemsKey = "GatheringItem.csv";
         public const string MyPawnAssetKey = "MyPawn.csv";
         public const string MyRoomAssetKey = "MyRoom.csv";
         public const string ArisenAssetKey = "Arisen.csv";
@@ -40,6 +41,7 @@ namespace Arrowgene.Ddon.Shared
 
             ClientErrorCodes = new List<CDataErrorMessage>();
             EnemySpawns = new List<EnemySpawn>();
+            GatheringItems = new List<GatheringItem>();
             ServerList = new List<CDataGameServerListInfo>();
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
@@ -50,6 +52,7 @@ namespace Arrowgene.Ddon.Shared
 
         public List<CDataErrorMessage> ClientErrorCodes { get; }
         public List<EnemySpawn> EnemySpawns { get; }
+        public List<GatheringItem> GatheringItems { get; }
         public List<CDataGameServerListInfo> ServerList { get; }
         public List<MyPawnCsv> MyPawnAsset { get; }
         public List<MyRoomCsv> MyRoomAsset { get; }
@@ -61,6 +64,7 @@ namespace Arrowgene.Ddon.Shared
         {
             RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsvReader());
             RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsvReader());
+            RegisterAsset(GatheringItems, GatheringItemsKey, new GatheringItemCsvReader());
             RegisterAsset(MyPawnAsset, MyPawnAssetKey, new MyPawnCsvReader());
             RegisterAsset(MyRoomAsset, MyRoomAssetKey, new MyRoomCsvReader());
             RegisterAsset(ArisenAsset, ArisenAssetKey, new ArisenCsvReader());

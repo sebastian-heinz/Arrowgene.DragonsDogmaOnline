@@ -1,4 +1,4 @@
-using Arrowgene.Ddon.GameServer.Chat.GatheringItem;
+using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -36,16 +36,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.UpdateType = 1;
             foreach (CDataGatheringItemGetRequest gatheringItemRequest in req.Structure.GatheringItemGetRequestList)
             {
-                CDataGatheringItemListUnk2 gatheredItem = this._gatheringItemManager.GetItems(req.Structure.LayoutId, req.Structure.PosId)
-                    .Where(item => item.SlotNo == gatheringItemRequest.SlotNo)
-                    .First();
+                GatheringItem gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)[(int) gatheringItemRequest.SlotNo];
 
                 var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
                     .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                     .Where(tuple => tuple.item?.Item1.ItemId == gatheredItem.ItemId)
                     .FirstOrDefault();
                 Item item = tuple?.item.Item1;
-                uint itemNum = tuple?.item.Item2 ?? gatheringItemRequest.Num; // TODO: Cap to item bag stack maximum
+                uint oldItemNum = tuple?.item.Item2 ?? 0;
+                uint newItemNum = oldItemNum + gatheringItemRequest.Num; // TODO: Cap to item bag stack maximum
                 ushort slot = tuple?.slot ?? 0;
 
                 if (item == null) {
@@ -59,19 +58,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         EquipElementParamList = new List<CDataEquipElementParam>()
                     };
                     Server.Database.InsertItem(item);
-                    slot = client.Character.Storage.addStorageItem(item, itemNum, DestinationStorageType);
+                    slot = client.Character.Storage.addStorageItem(item, newItemNum, DestinationStorageType);
                 } else {
-                    itemNum+=gatheringItemRequest.Num;
+                    client.Character.Storage.setStorageItem(item, newItemNum, DestinationStorageType, slot);
                 }
 
-                Server.Database.ReplaceStorageItem(client.Character.Id, DestinationStorageType, slot, item.UId, itemNum);
+                Server.Database.ReplaceStorageItem(client.Character.Id, DestinationStorageType, slot, item.UId, newItemNum);
+
+                gatheredItem.ItemNum -= gatheringItemRequest.Num;
+                // TODO: Maybe remove gatheredItem when ItemNum reaches 0? Doesn't seem to be needed
 
                 CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
                 ntcData0.ItemList.ItemUId = item.UId;
                 ntcData0.ItemList.ItemId = item.ItemId;
-                ntcData0.ItemList.ItemNum = itemNum;
+                ntcData0.ItemList.ItemNum = newItemNum;
                 ntcData0.ItemList.Unk3 = item.Unk3;
-                ntcData0.ItemList.StorageType = (byte) DestinationStorageType;
+                ntcData0.ItemList.StorageType = DestinationStorageType;
                 ntcData0.ItemList.SlotNo = slot;
                 ntcData0.ItemList.Color = item.Color; // ?
                 ntcData0.ItemList.PlusValue = item.PlusValue; // ?
@@ -82,7 +84,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
                 ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
                 ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
-                ntcData0.UpdateItemNum = (int)gatheringItemRequest.Num;
+                ntcData0.UpdateItemNum = (int) gatheringItemRequest.Num;
                 ntc.UpdateItemList.Add(ntcData0);
 
                 // Wallet points?

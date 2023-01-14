@@ -520,6 +520,14 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public void ResetInstance()
+        {
+            foreach (GameClient client in Clients)
+            {
+                client.InstanceGatheringItemManager.Clear();
+            }
+        }
+
         private PlayerPartyMember GetByCharacterId(uint characterId)
         {
             lock (_lock)
