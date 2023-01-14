@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateItem.ItemList.ItemId = item.ItemId;
                 updateItem.ItemList.ItemNum = srcItemNum;
                 updateItem.ItemList.Unk3 = item.Unk3;
-                updateItem.ItemList.StorageType = (byte) itemFromTo.SrcStorageType;
+                updateItem.ItemList.StorageType = itemFromTo.SrcStorageType;
                 updateItem.ItemList.SlotNo = srcSlotNo;
                 updateItem.ItemList.Color = item.Color; // ?
                 updateItem.ItemList.PlusValue = item.PlusValue; // ?
@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateItem2.ItemList.ItemId = item.ItemId;
                 updateItem2.ItemList.ItemNum = dstItemNum;
                 updateItem2.ItemList.Unk3 = item.Unk3;
-                updateItem2.ItemList.StorageType = (byte) itemFromTo.DstStorageType;
+                updateItem2.ItemList.StorageType = itemFromTo.DstStorageType;
                 updateItem2.ItemList.SlotNo = dstSlotNo;
                 updateItem2.ItemList.Color = item.Color; // ?
                 updateItem2.ItemList.PlusValue = item.PlusValue; // ?

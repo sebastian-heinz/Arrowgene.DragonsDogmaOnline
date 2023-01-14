@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     ItemId = tuple.item.Item1.ItemId,
                     ItemNum = tuple.item.Item2,
                     Unk3 = tuple.item.Item1.Unk3,
-                    StorageType = (byte) storageType,
+                    StorageType = storageType,
                     SlotNo = tuple.slot,
                     Color = tuple.item.Item1.Color,
                     PlusValue = tuple.item.Item1.PlusValue,
