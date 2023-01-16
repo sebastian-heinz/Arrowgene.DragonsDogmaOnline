@@ -71,7 +71,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     Logger.Info($"Loaded settings from:{settingPath}");
                 }
             }
-
+            
             if (_database == null)
             {
                 _database = DdonDatabaseBuilder.Build(_setting.DatabaseSetting);

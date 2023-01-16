@@ -50,6 +50,8 @@ namespace Arrowgene.Ddon.GameServer
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
+            LogProvider.ConfigureNamespace(typeof(DdonGameServer).Namespace, setting.ServerSetting);
+            
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ChatManager = new ChatManager(this, Router);
