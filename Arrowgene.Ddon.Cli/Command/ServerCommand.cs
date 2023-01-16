@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading;
@@ -44,6 +45,8 @@ namespace Arrowgene.Ddon.Cli.Command
             Logger.Info("Please be aware that it may expose or put your system at risk");
             Logger.Info($"***{Environment.NewLine}");
 
+            Logger.Info("*** INFO ***");
+            Logger.Info($"GameServerVersion: {Util.GetGameServerVersion()}");
             Logger.Info($"Startup: {DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)}");
             Logger.Info($"OS: {Environment.OSVersion}");
             Logger.Info($"x64 OS: {Environment.Is64BitOperatingSystem}");
@@ -53,6 +56,31 @@ namespace Arrowgene.Ddon.Cli.Command
             Logger.Info($"CurrentDirectory: {Environment.CurrentDirectory}");
             Logger.Info($"ApplicationDirectory: {Util.ExecutingDirectory()}");
             Logger.Info($"RelativeApplicationDirectory: {Util.RelativeExecutingDirectory()}");
+            Logger.Info($"***{Environment.NewLine}");
+
+            Logger.Info("*** DEBUG ***");
+            Logger.Info("Locations:");
+            foreach (string location in Util.DebugGetLocations())
+            {
+                Logger.Info($"- {location}");
+            }
+
+            Logger.Info("Versions:");
+            foreach (Dictionary<string, string> version in Util.DebugGetVersions())
+            {
+                Logger.Info($"+ name: {version["name"]}");
+                foreach (string key in version.Keys)
+                {
+                    if (key == "name")
+                    {
+                        continue;
+                    }
+
+                    Logger.Info($"- {key}: {version[key]}");
+                }
+            }
+
+            Logger.Info($"***{Environment.NewLine}");
 
             bool isService = parameter.Switches.Contains("--service");
 

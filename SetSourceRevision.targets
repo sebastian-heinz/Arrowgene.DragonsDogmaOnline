@@ -1,0 +1,11 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
+        <Exec
+                Command="git describe --long --always --dirty --exclude=* --abbrev=8"
+                ConsoleToMSBuild="True"
+                IgnoreExitCode="False"
+        >
+            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput"/>
+        </Exec>
+    </Target>
+</Project>

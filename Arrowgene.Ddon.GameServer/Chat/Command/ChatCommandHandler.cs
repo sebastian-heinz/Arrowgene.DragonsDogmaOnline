@@ -23,6 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             AddCommand(new EnemyCommand());
             AddCommand(new InfoCommand());
             AddCommand(new JobCommand(server));
+            AddCommand(new VersionCommand());
         }
 
         public void AddCommand(ChatCommand command)
