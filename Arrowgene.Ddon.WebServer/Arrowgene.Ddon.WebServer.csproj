@@ -10,7 +10,7 @@
         <LangVersion>10</LangVersion>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
+        <PackageReference Include="Arrowgene.Logging" Version="1.2.0" />
         <PackageReference Include="Arrowgene.WebServer" Version="1.1.4" />
     </ItemGroup>
     <ItemGroup>

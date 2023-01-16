@@ -46,8 +46,6 @@ namespace Arrowgene.Ddon.Server
             AssetRepository = assetRepository;
             Database = database;
 
-            LogProvider.Configure<ServerLogger>(_setting);
-
             _consumer = new Consumer<TClient>(
                 _setting,
                 _setting.ServerSocketSettings,
