@@ -9,9 +9,9 @@ namespace Arrowgene.Ddon.Client.Resource
     {
         public class Entry
         {
+            public uint Index { get; set; }
             public string Key { get; set; }
             public string Msg { get; set; }
-            public uint Index { get; set; }
             public uint a2 { get; set; }
             public uint a3 { get; set; }
             public uint a4 { get; set; }
@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.Client.Resource
         }
 
         public List<Entry> Entries { get; }
+        public byte[] unk { get; set; }
 
         public GuiMessage()
         {
@@ -35,8 +36,9 @@ namespace Arrowgene.Ddon.Client.Resource
             uint stringCount = ReadUInt32(buffer);
             uint keySize = ReadUInt32(buffer);
             uint stringSize = ReadUInt32(buffer);
-            uint h = ReadUInt32(buffer);
-            string str = buffer.ReadCString(Encoding.UTF8);
+            uint strLen = ReadUInt32(buffer);
+            string str = buffer.ReadString((int)strLen);
+            buffer.ReadByte(); // str null-termination
 
 
             if (keyCount > 0 && keyCount != stringCount)
@@ -65,7 +67,7 @@ namespace Arrowgene.Ddon.Client.Resource
                     entry.a5 = ReadUInt32(buffer);
                 }
 
-                byte[] unk = buffer.ReadBytes(1024); // hashTable?
+                unk = buffer.ReadBytes(1024); // hashTable?
 
                 for (int i = 0; i < keyCount; i++)
                 {

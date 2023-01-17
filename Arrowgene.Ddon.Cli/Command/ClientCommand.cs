@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.Json;
 using Arrowgene.Ddon.Client;
+using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Ddon.Client.Resource.Texture;
 using Arrowgene.Ddon.Client.Resource.Texture.Dds;
 using Arrowgene.Ddon.Client.Resource.Texture.Tex;
@@ -64,6 +66,65 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
+            if (parameter.ArgumentMap.ContainsKey("extractGmd"))
+            {
+                string extractGmd = parameter.ArgumentMap["extractGmd"];
+                DirectoryInfo outDir = new DirectoryInfo(extractGmd);
+                if (!outDir.Exists)
+                {
+                    Logger.Error($"Directory does not exists. ({extractGmd})");
+                    return CommandResultType.Exit;
+                }
+
+
+                string source = parameter.Arguments[0];
+                FileInfo arcFile = new FileInfo(source);
+                if (!arcFile.Exists || arcFile.Extension != ".arc")
+                {
+                    Logger.Error($"Source file not exists or is not a .arc file. ({source})");
+                    return CommandResultType.Exit;
+                }
+
+                ArcArchive archive = new ArcArchive();
+                archive.Open(arcFile.FullName);
+                List<ArcArchive.ArcFile> gmdFiles = archive.GetFiles(
+                    ArcArchive.Search().ByExtension("gmd")
+                );
+
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Index, key, Msg, a2, a3, a4, a5, Path");
+                sb.Append($"{Environment.NewLine}");
+                foreach (ArcArchive.ArcFile gmdFile in gmdFiles)
+                {
+                    GuiMessage gmd = new GuiMessage();
+                    gmd.Open(gmdFile.Data);
+
+                    foreach (GuiMessage.Entry gmdEntry in gmd.Entries)
+                    {
+                        sb.Append($"{gmdEntry.Index},");
+                        sb.Append($"{gmdEntry.Key},");
+                        sb.Append($"{gmdEntry.Msg},");
+                        sb.Append($"{gmdEntry.a2},");
+                        sb.Append($"{gmdEntry.a3},");
+                        sb.Append($"{gmdEntry.a4},");
+                        sb.Append($"{gmdEntry.a5},");
+                        sb.Append($"{gmdFile.Index.Path}");
+                        sb.Append($"{Environment.NewLine}");
+                    }
+                }
+
+                string outPath = Path.Combine(outDir.FullName, arcFile.Name, ".csv");
+                File.WriteAllText(outPath, sb.ToString(), Encoding.UTF8);
+                Logger.Info($"Written gmd to: {outPath}");
+
+                return CommandResultType.Exit;
+            }
+
+            if (parameter.ArgumentMap.ContainsKey("packGmd"))
+            {
+                string packGmd = parameter.ArgumentMap["packGmd"];
+                return CommandResultType.Exit;
+            }
 
             FileInfo fileInfo = new FileInfo(parameter.Arguments[0]);
             if (fileInfo.Exists)
