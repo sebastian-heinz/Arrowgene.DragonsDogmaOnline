@@ -70,48 +70,17 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 string extractGmd = parameter.ArgumentMap["extractGmd"];
                 DirectoryInfo outDir = new DirectoryInfo(extractGmd);
-                if (!outDir.Exists)
+                if (outDir.Exists)
                 {
                     Logger.Error($"Directory does not exists. ({extractGmd})");
                     return CommandResultType.Exit;
                 }
-
-
+                
                 string source = parameter.Arguments[0];
                 FileInfo arcFile = new FileInfo(source);
-                if (!arcFile.Exists || arcFile.Extension != ".arc")
-                {
-                    Logger.Error($"Source file not exists or is not a .arc file. ({source})");
-                    return CommandResultType.Exit;
-                }
-
-                ArcArchive archive = new ArcArchive();
-                archive.Open(arcFile.FullName);
-                List<ArcArchive.ArcFile> gmdFiles = archive.GetFiles(
-                    ArcArchive.Search().ByExtension("gmd")
-                );
-
+                
                 StringBuilder sb = new StringBuilder();
-                sb.Append("Index, key, Msg, a2, a3, a4, a5, Path");
-                sb.Append($"{Environment.NewLine}");
-                foreach (ArcArchive.ArcFile gmdFile in gmdFiles)
-                {
-                    GuiMessage gmd = new GuiMessage();
-                    gmd.Open(gmdFile.Data);
-
-                    foreach (GuiMessage.Entry gmdEntry in gmd.Entries)
-                    {
-                        sb.Append($"{gmdEntry.Index},");
-                        sb.Append($"{gmdEntry.Key},");
-                        sb.Append($"{gmdEntry.Msg},");
-                        sb.Append($"{gmdEntry.a2},");
-                        sb.Append($"{gmdEntry.a3},");
-                        sb.Append($"{gmdEntry.a4},");
-                        sb.Append($"{gmdEntry.a5},");
-                        sb.Append($"{gmdFile.Index.Path}");
-                        sb.Append($"{Environment.NewLine}");
-                    }
-                }
+                GmdToCsv(arcFile, sb, true);
 
                 string outPath = Path.Combine(outDir.FullName, arcFile.Name + ".csv");
                 File.WriteAllText(outPath, sb.ToString(), Encoding.UTF8);
@@ -167,7 +136,72 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
+            if (parameter.ArgumentMap.ContainsKey("extractAllGmd"))
+            {
+                DirectoryInfo outDirectory = new DirectoryInfo(parameter.ArgumentMap["extractAllGmd"]);
+                if (!outDirectory.Exists)
+                {
+                    outDirectory.Create();
+                    Logger.Info($"Created Dir: {outDirectory.FullName}");
+                }
+                
+                string[] files = Directory.GetFiles(romDirectory.FullName, "*.arc", SearchOption.AllDirectories);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    FileInfo arcFile = new FileInfo(files[i]);
+                    GmdToCsv(arcFile, sb, i==0);
+                    Logger.Info($"Processing {i}/{files.Length} {arcFile.FullName}");
+                }
+
+                string outPath = Path.Combine(outDirectory.FullName, "gmd.csv");
+                File.WriteAllText(outPath, sb.ToString());
+                Logger.Info($"Done: {outPath}");
+                return CommandResultType.Exit;
+            }
+            
             return CommandResultType.Exit;
+        }
+
+        private void GmdToCsv(FileInfo arcFile, StringBuilder sb, bool writeHeader)
+        {
+            if (!arcFile.Exists || arcFile.Extension != ".arc")
+            {
+                Logger.Error($"Source file not exists or is not a .arc file. ({arcFile.FullName})");
+                return;
+            }
+
+            ArcArchive archive = new ArcArchive();
+            archive.Open(arcFile.FullName);
+            List<ArcArchive.ArcFile> gmdFiles = archive.GetFiles(
+                ArcArchive.Search().ByExtension("gmd")
+            );
+
+            if (writeHeader)
+            {
+                sb.Append("Index, key, Msg, a2, a3, a4, a5, Arc Path, Arc File");
+                sb.Append($"{Environment.NewLine}");
+            }
+
+            foreach (ArcArchive.ArcFile gmdFile in gmdFiles)
+            {
+                GuiMessage gmd = new GuiMessage();
+                gmd.Open(gmdFile.Data);
+
+                foreach (GuiMessage.Entry gmdEntry in gmd.Entries)
+                {
+                    sb.Append($"{gmdEntry.Index},");
+                    sb.Append($"{gmdEntry.Key},");
+                    sb.Append($"\"{gmdEntry.Msg}\",");
+                    sb.Append($"{gmdEntry.a2},");
+                    sb.Append($"{gmdEntry.a3},");
+                    sb.Append($"{gmdEntry.a4},");
+                    sb.Append($"{gmdEntry.a5},");
+                    sb.Append($"{gmdFile.Index.Path},");
+                    sb.Append($"{arcFile.Name}");
+                    sb.Append($"{Environment.NewLine}");
+                }
+            }
         }
 
         public void ExportResourceRepository(DirectoryInfo romDirectory, DirectoryInfo outDir)
