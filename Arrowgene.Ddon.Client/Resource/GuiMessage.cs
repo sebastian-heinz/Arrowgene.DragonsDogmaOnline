@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 using Arrowgene.Buffers;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
     public class GuiMessage : ResourceFile
     {
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(GuiMessage));
+
         public class Entry
         {
             public uint Index { get; set; }
@@ -43,8 +46,10 @@ namespace Arrowgene.Ddon.Client.Resource
 
             if (keyCount > 0 && keyCount != stringCount)
             {
-                // TODO unsure how to deal if sizes are different, perhaps need to check all files if such case exists.
-                throw new Exception("Please Report Me");
+                // TODO it seems to work for this case as well
+                // This case exists for a few files, one is 
+                // /Volumes/data/game/Dragon's Dogma Online/nativePC/rom/quest/pqi_01.arc
+                // ui\00_message\package_quest\package_quest_info1
             }
 
             uint maxEntries = Math.Max(keyCount, stringCount);

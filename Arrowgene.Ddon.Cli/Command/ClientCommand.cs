@@ -192,7 +192,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 {
                     sb.Append($"{gmdEntry.Index},");
                     sb.Append($"{gmdEntry.Key},");
-                    sb.Append($"\"{gmdEntry.Msg}\",");
+                    sb.Append($"\"{gmdEntry.Msg.Replace("\"","\"\"")}\",");
                     sb.Append($"{gmdEntry.a2},");
                     sb.Append($"{gmdEntry.a3},");
                     sb.Append($"{gmdEntry.a4},");
