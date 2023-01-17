@@ -113,7 +113,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     }
                 }
 
-                string outPath = Path.Combine(outDir.FullName, arcFile.Name, ".csv");
+                string outPath = Path.Combine(outDir.FullName, arcFile.Name + ".csv");
                 File.WriteAllText(outPath, sb.ToString(), Encoding.UTF8);
                 Logger.Info($"Written gmd to: {outPath}");
 
