@@ -179,7 +179,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (writeHeader)
             {
-                sb.Append("Index, key, Msg, a2, a3, a4, a5, Arc Path, Arc File");
+                sb.Append("Index, Key, Msg, a2, a3, a4, a5, Arc Path, Arc File, KeyReadIdx, MsgReadIdx, GmdStr");
                 sb.Append($"{Environment.NewLine}");
             }
 
@@ -198,7 +198,10 @@ namespace Arrowgene.Ddon.Cli.Command
                     sb.Append($"{gmdEntry.a4},");
                     sb.Append($"{gmdEntry.a5},");
                     sb.Append($"{gmdFile.Index.Path},");
-                    sb.Append($"{arcFile.Name}");
+                    sb.Append($"{arcFile.Name},");
+                    sb.Append($"{gmdEntry.KeyReadIndex},");
+                    sb.Append($"{gmdEntry.MsgReadIndex},");
+                    sb.Append($"{gmd.Str}");
                     sb.Append($"{Environment.NewLine}");
                 }
             }

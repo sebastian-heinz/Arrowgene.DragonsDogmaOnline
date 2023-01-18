@@ -19,10 +19,13 @@ namespace Arrowgene.Ddon.Client.Resource
             public uint a3 { get; set; }
             public uint a4 { get; set; }
             public uint a5 { get; set; }
+            public uint KeyReadIndex { get; set; }
+            public uint MsgReadIndex { get; set; }
         }
 
         public List<Entry> Entries { get; }
         public byte[] unk { get; set; }
+        public string Str { get; set; }
 
         public GuiMessage()
         {
@@ -40,7 +43,7 @@ namespace Arrowgene.Ddon.Client.Resource
             uint keySize = ReadUInt32(buffer);
             uint stringSize = ReadUInt32(buffer);
             uint strLen = ReadUInt32(buffer);
-            string str = buffer.ReadString((int)strLen);
+            Str = buffer.ReadString((int)strLen);
             buffer.ReadByte(); // str null-termination
 
 
@@ -74,17 +77,19 @@ namespace Arrowgene.Ddon.Client.Resource
 
                 unk = buffer.ReadBytes(1024); // hashTable?
 
-                for (int i = 0; i < keyCount; i++)
+                for (uint i = 0; i < keyCount; i++)
                 {
                     Entry entry = entries[i];
                     entry.Key = buffer.ReadCString(Encoding.UTF8);
+                    entry.KeyReadIndex = i;
                 }
             }
 
-            for (int i = 0; i < stringCount; i++)
+            for (uint i = 0; i < stringCount; i++)
             {
                 Entry entry = entries[i];
                 entry.Msg = buffer.ReadCString(Encoding.UTF8);
+                entry.MsgReadIndex = i;
             }
 
             Entries.Clear();
