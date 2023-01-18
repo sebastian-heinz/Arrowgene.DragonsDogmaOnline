@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 string extractGmd = parameter.ArgumentMap["extractGmd"];
                 DirectoryInfo outDir = new DirectoryInfo(extractGmd);
-                if (outDir.Exists)
+                if (!outDir.Exists)
                 {
                     Logger.Error($"Directory does not exists. ({extractGmd})");
                     return CommandResultType.Exit;
