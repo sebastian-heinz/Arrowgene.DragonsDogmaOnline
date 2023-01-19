@@ -30,14 +30,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.IsGatheringItemBreak = false; // TODO: Random, and update broken item by sending S2CItemUpdateCharacterItemNtc
             res.Unk0 = false;
             res.Unk1 = new List<CDataGatheringItemListUnk1>();
-            res.Unk2 = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)
-                .Select((asset, index) => new CDataGatheringItemListUnk2()
+            res.ItemList = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)
+                .Select((asset, index) => new CDataGatheringItemElement()
                 {
                     SlotNo = (uint) index,
                     ItemId = asset.ItemId,
                     ItemNum = asset.ItemNum,
                     Unk3 = asset.Unk3,
-                    Unk4 = asset.Unk4
+                    IsHidden = asset.IsHidden
                 })
                 .ToList();
             client.Send(res);

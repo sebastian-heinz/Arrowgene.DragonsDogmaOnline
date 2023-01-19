@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ItemId { get; set; }
         public uint ItemNum { get; set; }
         public uint Unk3 { get; set; }
-        public bool Unk4 { get; set; }
+        public bool IsHidden { get; set; }
 
         public class Serializer : EntitySerializer<CDataGatheringItemListUnk2>
         {
@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.ItemId);
                 WriteUInt32(buffer, obj.ItemNum);
                 WriteUInt32(buffer, obj.Unk3);
-                WriteBool(buffer, obj.Unk4);
+                WriteBool(buffer, obj.IsHidden);
             }
         
             public override CDataGatheringItemListUnk2 Read(IBuffer buffer)
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ItemId = ReadUInt32(buffer);
                 obj.ItemNum = ReadUInt32(buffer);
                 obj.Unk3 = ReadUInt32(buffer);
-                obj.Unk4 = ReadBool(buffer);
+                obj.IsHidden = ReadBool(buffer);
                 return obj;
             }
         }
