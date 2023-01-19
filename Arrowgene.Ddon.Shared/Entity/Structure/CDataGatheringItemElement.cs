@@ -2,7 +2,7 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public class CDataGatheringItemListUnk2
+    public class CDataGatheringItemElement
     {
         public uint SlotNo { get; set; }
         public uint ItemId { get; set; }
@@ -10,9 +10,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint Unk3 { get; set; }
         public bool IsHidden { get; set; }
 
-        public class Serializer : EntitySerializer<CDataGatheringItemListUnk2>
+        public class Serializer : EntitySerializer<CDataGatheringItemElement>
         {
-            public override void Write(IBuffer buffer, CDataGatheringItemListUnk2 obj)
+            public override void Write(IBuffer buffer, CDataGatheringItemElement obj)
             {
                 WriteUInt32(buffer, obj.SlotNo);
                 WriteUInt32(buffer, obj.ItemId);
@@ -21,9 +21,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteBool(buffer, obj.IsHidden);
             }
         
-            public override CDataGatheringItemListUnk2 Read(IBuffer buffer)
+            public override CDataGatheringItemElement Read(IBuffer buffer)
             {
-                CDataGatheringItemListUnk2 obj = new CDataGatheringItemListUnk2();
+                CDataGatheringItemElement obj = new CDataGatheringItemElement();
                 obj.SlotNo = ReadUInt32(buffer);
                 obj.ItemId = ReadUInt32(buffer);
                 obj.ItemNum = ReadUInt32(buffer);
