@@ -10,12 +10,14 @@ namespace Arrowgene.Ddon.GameServer
     {
         protected readonly MultiKeyMultiValueDictionary<StageId, Y, T> _assetDictionary;
         protected readonly AssetRepository _assetRepository;
+        protected readonly string _assetKey;
         protected readonly List<T> _assetList;
         protected readonly IDatabase _database;
 
-        public StageLocationAssetManager(AssetRepository assetRepository, IDatabase database, List<T> assetList)
+        public StageLocationAssetManager(AssetRepository assetRepository, string assetKey, IDatabase database, List<T> assetList)
         {
             _assetRepository = assetRepository;
+            _assetKey = assetKey;
             _database = database;
             _assetList = assetList;
             _assetDictionary = new MultiKeyMultiValueDictionary<StageId, Y, T>();
@@ -45,7 +47,10 @@ namespace Arrowgene.Ddon.GameServer
         
         private void AssetRepositoryOnAssetChanged(object sender, AssetChangedEventArgs e)
         {
-            Load();
+            if(e.Key == this._assetKey)
+            {
+                Load();
+            }
         }
     }
 }
