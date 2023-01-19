@@ -1,6 +1,8 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -16,9 +18,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnGetRegisteredPawnDataReq> packet)
         {
-            client.Send(new S2CPawnGetRegisteredPawnDataRes() {
-                PawnId = (uint) packet.Structure.PawnId
-            });
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.Id == packet.Structure.PawnId).Single();
+            var res = new S2CPawnGetRegisteredPawnDataRes();
+            GameStructure.CDataPawnInfo(res.PawnInfo, pawn);
+            client.Send(res);
         }
     }
 }

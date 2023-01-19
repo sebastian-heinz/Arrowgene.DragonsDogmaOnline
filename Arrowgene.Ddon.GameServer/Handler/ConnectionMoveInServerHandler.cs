@@ -10,10 +10,9 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionMoveInServerHandler : StructurePacketHandler<GameClient, C2SConnectionMoveInServerReq>
+    public class ConnectionMoveInServerHandler : GameStructurePacketHandler<C2SConnectionMoveInServerReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionMoveInServerHandler));
-
 
         public ConnectionMoveInServerHandler(DdonGameServer server) : base(server)
         {
@@ -52,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character = character;
             client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
-
+            Server.LoadCharacterPawns(client.Character);
             Logger.Info(client, "Moved Into GameServer");
 
 
