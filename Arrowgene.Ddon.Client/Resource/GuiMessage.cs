@@ -2,23 +2,30 @@
 using System.Collections.Generic;
 using System.Text;
 using Arrowgene.Buffers;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Client.Resource
 {
     public class GuiMessage : ResourceFile
     {
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(GuiMessage));
+
         public class Entry
         {
+            public uint Index { get; set; }
             public string Key { get; set; }
             public string Msg { get; set; }
-            public uint Index { get; set; }
             public uint a2 { get; set; }
             public uint a3 { get; set; }
             public uint a4 { get; set; }
             public uint a5 { get; set; }
+            public uint KeyReadIndex { get; set; }
+            public uint MsgReadIndex { get; set; }
         }
 
         public List<Entry> Entries { get; }
+        public byte[] unk { get; set; }
+        public string Str { get; set; }
 
         public GuiMessage()
         {
@@ -35,14 +42,17 @@ namespace Arrowgene.Ddon.Client.Resource
             uint stringCount = ReadUInt32(buffer);
             uint keySize = ReadUInt32(buffer);
             uint stringSize = ReadUInt32(buffer);
-            uint h = ReadUInt32(buffer);
-            string str = buffer.ReadCString(Encoding.UTF8);
+            uint strLen = ReadUInt32(buffer);
+            Str = buffer.ReadString((int)strLen);
+            buffer.ReadByte(); // str null-termination
 
 
             if (keyCount > 0 && keyCount != stringCount)
             {
-                // TODO unsure how to deal if sizes are different, perhaps need to check all files if such case exists.
-                throw new Exception("Please Report Me");
+                // TODO it seems to work for this case as well
+                // This case exists for a few files, one is 
+                // /Volumes/data/game/Dragon's Dogma Online/nativePC/rom/quest/pqi_01.arc
+                // ui\00_message\package_quest\package_quest_info1
             }
 
             uint maxEntries = Math.Max(keyCount, stringCount);
@@ -65,19 +75,21 @@ namespace Arrowgene.Ddon.Client.Resource
                     entry.a5 = ReadUInt32(buffer);
                 }
 
-                byte[] unk = buffer.ReadBytes(1024); // hashTable?
+                unk = buffer.ReadBytes(1024); // hashTable?
 
-                for (int i = 0; i < keyCount; i++)
+                for (uint i = 0; i < keyCount; i++)
                 {
                     Entry entry = entries[i];
                     entry.Key = buffer.ReadCString(Encoding.UTF8);
+                    entry.KeyReadIndex = i;
                 }
             }
 
-            for (int i = 0; i < stringCount; i++)
+            for (uint i = 0; i < stringCount; i++)
             {
                 Entry entry = entries[i];
                 entry.Msg = buffer.ReadCString(Encoding.UTF8);
+                entry.MsgReadIndex = i;
             }
 
             Entries.Clear();
