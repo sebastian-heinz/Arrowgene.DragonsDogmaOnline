@@ -53,6 +53,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public List<CDataContextEquipData> getEquipmentAsCDataContextEquipData(JobId job, EquipType equipType)
         {
+            // In the context equipment lists, the index is the slot. An element with all info set to 0 has to be in place if a slot is not filled
             return getEquipment(job, equipType)
                 .Select(x => x == null ? new CDataContextEquipData() : new CDataContextEquipData()
                 {
