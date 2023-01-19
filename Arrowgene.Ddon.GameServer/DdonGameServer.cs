@@ -186,6 +186,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new ContextGetSetContextHandler(this));
             AddHandler(new ContextSetContextHandler(this));
+            AddHandler(new CraftGetCraftProgressListHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
 
             AddHandler(new EquipChangeCharacterEquipHandler(this));
@@ -279,6 +280,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnGetMyPawnListHandler(this));
             AddHandler(new PawnGetNoraPawnListHandler(this));
             AddHandler(new PawnGetPawnHistoryListHandler(this));
+            AddHandler(new PawnGetPawnTotalScoreHandler(this));
             AddHandler(new PawnGetRegisteredPawnDataHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
             AddHandler(new PawnJoinPartyMypawnHandler(this));

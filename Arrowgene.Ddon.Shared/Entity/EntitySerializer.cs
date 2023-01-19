@@ -123,11 +123,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnCraftData.Serializer());
             Create(new CDataPawnCraftSkill.Serializer());
             Create(new CDataPawnEquipInfo.Serializer());
+            Create(new CDataPawnFeedback.Serializer());
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPawnInfo.Serializer());
             Create(new CDataPawnList.Serializer());
             Create(new CDataPawnListData.Serializer());
             Create(new CDataPawnReaction.Serializer());
+            Create(new CDataPawnTotalScore.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
             Create(new CDataQuestAnnounce.Serializer());
@@ -249,6 +251,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnGetMypawnDataReq.Serializer());
             Create(new C2SPawnGetMypawnListReq.Serializer());
             Create(new C2SPawnGetPawnHistoryListReq.Serializer());
+            Create(new C2SPawnGetPawnTotalScoreReq.Serializer());
             Create(new C2SPawnGetRegisteredPawnDataReq.Serializer());
             Create(new C2SPawnJoinPartyMypawnReq.Serializer());
             Create(new C2SPawnTrainingGetPreparetionInfoToAdviceReq.Serializer());
@@ -417,6 +420,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnGetMypawnDataRes.Serializer());
             Create(new S2CPawnGetMypawnListRes.Serializer());
             Create(new S2CPawnGetPawnHistoryListRes.Serializer());
+            Create(new S2CPawnGetPawnTotalScoreRes.Serializer());
             Create(new S2CPawnGetRegisteredPawnDataRes.Serializer());
             Create(new S2CPawnJoinPartyMypawnRes.Serializer());
             Create(new S2CPawnTrainingGetPreparetionInfoToAdviceRes.Serializer());
