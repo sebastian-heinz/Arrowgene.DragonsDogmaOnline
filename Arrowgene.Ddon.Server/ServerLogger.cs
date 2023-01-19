@@ -102,6 +102,7 @@ namespace Arrowgene.Ddon.Server
                         {
                             Write(LogLevel.Debug,
                                 $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                            return;
                         }
                     }
 
@@ -126,6 +127,7 @@ namespace Arrowgene.Ddon.Server
                         {
                             Write(LogLevel.Debug,
                                 $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                            return;
                         }
                     }
 

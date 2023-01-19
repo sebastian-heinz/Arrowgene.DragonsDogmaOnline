@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Server.Network
 {
     public class Consumer<TClient> : ThreadedBlockingQueueConsumer where TClient : Client
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Consumer<TClient>));
+        private readonly ServerLogger Logger;
         private readonly Dictionary<PacketId, IPacketHandler<TClient>> _packetHandlerLookup;
         private readonly Dictionary<ITcpSocket, TClient> _clients;
         private readonly object _lock;
@@ -20,9 +20,10 @@ namespace Arrowgene.Ddon.Server.Network
         public Action<TClient> ClientDisconnected;
         public Action<TClient> ClientConnected;
 
-        public Consumer(ServerSetting setting, AsyncEventSettings socketSetting, IClientFactory<TClient> clientFactory)
+        public Consumer(ServerSetting setting, AsyncEventSettings socketSetting, IClientFactory<TClient> clientFactory, ServerLogger logger = null)
             : base(socketSetting, setting.Name)
         {
+            Logger = logger ?? LogProvider.Logger<ServerLogger>(GetType());
             _setting = setting;
             _clientFactory = clientFactory;
             _lock = new object();

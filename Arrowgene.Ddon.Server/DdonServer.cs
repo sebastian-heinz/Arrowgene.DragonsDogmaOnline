@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Server
     public abstract class DdonServer<TClient> : IClientFactory<TClient>
         where TClient : Client
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonServer<TClient>));
+        private readonly ServerLogger Logger;
 
         private readonly Consumer<TClient> _consumer;
         private readonly AsyncEventServer _server;
@@ -42,6 +42,9 @@ namespace Arrowgene.Ddon.Server
 
         public DdonServer(ServerSetting setting, IDatabase database, AssetRepository assetRepository)
         {
+            LogProvider.ConfigureNamespace(GetType().Namespace, setting);
+            Logger = LogProvider.Logger<ServerLogger>(GetType());
+            
             _setting = setting;
             AssetRepository = assetRepository;
             Database = database;
@@ -49,7 +52,8 @@ namespace Arrowgene.Ddon.Server
             _consumer = new Consumer<TClient>(
                 _setting,
                 _setting.ServerSocketSettings,
-                this
+                this,
+                Logger
             );
             _consumer.ClientConnected += ClientConnected;
             _consumer.ClientDisconnected += ClientDisconnected;
