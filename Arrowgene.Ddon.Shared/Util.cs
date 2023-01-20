@@ -183,6 +183,11 @@ namespace Arrowgene.Ddon.Shared
                     asmInformalVersionStr = asmInformalVersion.InformationalVersion;
                 }
 
+                if (asmInformalVersionStr.StartsWith(asmVersionStr))
+                {
+                    asmInformalVersionStr = asmInformalVersionStr.Substring(asmVersionStr.Length);
+                }
+
                 Dictionary<string, string> asmInfo = new Dictionary<string, string>();
                 asmInfo.Add("name", asmName);
                 asmInfo.Add("version", asmVersionStr);
@@ -205,7 +210,11 @@ namespace Arrowgene.Ddon.Shared
                     continue;
                 }
 
-                gameServerVersion = $"{version["version"]}-{version["informalVersion"]}";
+                gameServerVersion = $"{version["version"]}";
+                if (!string.IsNullOrWhiteSpace(version["informalVersion"]))
+                {
+                    gameServerVersion += $":{version["informalVersion"]}";
+                }
             }
 
             return gameServerVersion;

@@ -2,10 +2,13 @@
     <Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation">
         <Exec
                 Command="git describe --long --always --dirty --exclude=* --abbrev=8"
-                ConsoleToMSBuild="True"
-                IgnoreExitCode="False"
+                ConsoleToMSBuild="true"
+                ContinueOnError="true"
+                IgnoreExitCode="true"
         >
-            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput"/>
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+            <Output PropertyName="SourceRevisionId" TaskParameter="ConsoleOutput" Condition="'$(ErrorCode)'=='0'"/>
         </Exec>
+        <Message Text="git describe exit code: $(ErrorCode)"/>
     </Target>
 </Project>
