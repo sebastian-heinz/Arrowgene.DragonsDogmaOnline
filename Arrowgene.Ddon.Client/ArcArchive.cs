@@ -237,7 +237,7 @@ namespace Arrowgene.Ddon.Client
 
             File.WriteAllBytes(fileInfo.FullName, f.Data);
         }
-
+        
         /// <summary>
         /// Retrieve a ArcFile from an index
         /// </summary>

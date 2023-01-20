@@ -9,16 +9,17 @@ namespace Arrowgene.Ddon.Server
 {
     public class ServerLogger : Logger
     {
-        private ServerSetting _setting;
+        private ServerSetting _serverSetting;
 
-        public override void Initialize(string identity, string name, Action<Log> write, object configuration)
+        public override void Initialize(string identity, string name, Action<Log> write)
         {
-            base.Initialize(identity, name, write, configuration);
-            _setting = configuration as ServerSetting;
-            if (_setting == null)
-            {
-                Error("Couldn't apply DdonLogger configuration");
-            }
+            base.Initialize(identity, name, write);
+        }
+        
+        public override void Configure(object loggerTypeConfig, object identityConfig)
+        {
+            base.Configure(loggerTypeConfig, identityConfig);
+            _serverSetting = identityConfig as ServerSetting;
         }
 
         public void Hex(byte[] data)
@@ -82,25 +83,31 @@ namespace Arrowgene.Ddon.Server
 
         public void LogPacket(Client client, IPacket packet)
         {
+            if (_serverSetting == null)
+            {
+                Error("Can not log packet (_serverSetting == null)");
+                return;
+            }
             switch (packet.Source)
             {
                 case PacketSource.Client:
                 {
-                    if (!_setting.LogIncomingPackets)
+                    if (!_serverSetting.LogIncomingPackets)
                     {
                         return;
                     }
 
-                    if (_setting.LogIncomingPacketStructure)
+                    if (_serverSetting.LogIncomingPacketStructure)
                     {
                         if (packet is IStructurePacket structurePacket)
                         {
                             Write(LogLevel.Debug,
                                 $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                            return;
                         }
                     }
 
-                    if (!_setting.LogIncomingPacketPayload)
+                    if (!_serverSetting.LogIncomingPacketPayload)
                     {
                         Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{packet.PrintHeader()}", packet);
                         return;
@@ -110,21 +117,22 @@ namespace Arrowgene.Ddon.Server
                 }
                 case PacketSource.Server:
                 {
-                    if (!_setting.LogOutgoingPackets)
+                    if (!_serverSetting.LogOutgoingPackets)
                     {
                         return;
                     }
 
-                    if (_setting.LogOutgoingPacketStructure)
+                    if (_serverSetting.LogOutgoingPacketStructure)
                     {
                         if (packet is IStructurePacket structurePacket)
                         {
                             Write(LogLevel.Debug,
                                 $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                            return;
                         }
                     }
 
-                    if (!_setting.LogOutgoingPacketPayload)
+                    if (!_serverSetting.LogOutgoingPacketPayload)
                     {
                         Write(LogLevel.Debug, $"{client.Identity}{Environment.NewLine}{packet.PrintHeader()}", packet);
                         return;
@@ -133,7 +141,7 @@ namespace Arrowgene.Ddon.Server
                     break;
                 }
                 default:
-                    if (!_setting.LogUnknownPackets)
+                    if (!_serverSetting.LogUnknownPackets)
                     {
                         return;
                     }
@@ -153,10 +161,17 @@ namespace Arrowgene.Ddon.Server
 
         public void LogUnhandledPacket<TClient>(TClient client, IPacket packet) where TClient : Client
         {
-            if (!_setting.LogUnknownPackets)
+            if (_serverSetting == null)
+            {
+                Error("Can not log unhandled packet (_serverSetting == null)");
+                return;
+            }
+            
+            if (!_serverSetting.LogUnknownPackets)
             {
                 return;
             }
+
             Write(LogLevel.Error,
                 $"UNHANDLED PACKET:{Environment.NewLine}{client.Identity}{Environment.NewLine}{packet}", packet);
         }

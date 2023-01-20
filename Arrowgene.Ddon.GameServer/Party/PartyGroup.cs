@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 {
     public class PartyGroup
     {
-        public const uint MaxPartyMember = 4;
+        public const uint MaxPartyMember = 8; // TODO: Different max sizes per party type
         public const int InvalidSlotIndex = -1;
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyGroup));

@@ -2,8 +2,6 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class MyPawnCsv
     {
-
-
         public uint PawnId { get; set; }
         public uint MemberIndex { get; set; }
         public int StageNo { get; set; }
@@ -239,7 +237,5 @@ namespace Arrowgene.Ddon.Shared.Model
         public ushort Fat { get; set; }
         public ushort Muscle { get; set; }
         public ushort MotionFilter { get; set; }
-
-
     }
 }

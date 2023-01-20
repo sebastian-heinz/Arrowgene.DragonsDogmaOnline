@@ -9,7 +9,7 @@
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
     </PropertyGroup>
-    <Import Project="./../SetSourceRevision.targets"/>
+    <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />
@@ -19,7 +19,7 @@
         <ProjectReference Include="..\Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
+      <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
     </ItemGroup>
     
 </Project>
