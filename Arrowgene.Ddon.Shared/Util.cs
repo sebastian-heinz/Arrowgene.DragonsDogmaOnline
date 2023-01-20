@@ -194,13 +194,13 @@ namespace Arrowgene.Ddon.Shared
             return assemblyInfo;
         }
 
-        public static string GetGameServerVersion()
+        public static string GetVersion(string ddonComponent)
         {
             string gameServerVersion = "";
             List<Dictionary<string, string>> versions = DebugGetVersions();
             foreach (Dictionary<string, string> version in versions)
             {
-                if (version["name"] != "Arrowgene.Ddon.GameServer")
+                if (version["name"] != $"Arrowgene.Ddon.{ddonComponent}")
                 {
                     continue;
                 }

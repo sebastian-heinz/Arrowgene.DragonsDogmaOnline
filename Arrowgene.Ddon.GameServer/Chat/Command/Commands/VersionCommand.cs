@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public override void Execute(string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
         {
             ChatResponse response = new ChatResponse();
-            response.Message = Util.GetGameServerVersion();
+            response.Message = Util.GetVersion("GameServer");
             responses.Add(response);
             responses.Add(ChatResponse.ServerMessage(client, "Command Executed"));
         }

@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Cli.Command
             Logger.Info($"***{Environment.NewLine}");
 
             Logger.Info("*** INFO ***");
-            Logger.Info($"GameServerVersion: {Util.GetGameServerVersion()}");
+            Logger.Info($"GameServerVersion: {Util.GetVersion("GameServer")}");
             Logger.Info($"Startup: {DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)}");
             Logger.Info($"OS: {Environment.OSVersion}");
             Logger.Info($"x64 OS: {Environment.Is64BitOperatingSystem}");
