@@ -9,10 +9,11 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
+    <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Arrowgene.Logging" Version="1.2.0" />
+        <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
     </ItemGroup>
 </Project>

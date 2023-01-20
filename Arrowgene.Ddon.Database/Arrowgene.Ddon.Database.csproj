@@ -10,9 +10,9 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
-    
+    <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
-      <PackageReference Include="Arrowgene.Logging" Version="1.2.0" />
+      <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
       <PackageReference Include="System.Data.SQLite" Version="1.0.115.5" />
     </ItemGroup>
 
