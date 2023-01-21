@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using Arrowgene.Ddon.Client;
@@ -97,9 +98,13 @@ namespace Arrowgene.Ddon.Cli.Command
                 string gmdCsvB = parameter.ArgumentMap["gmdB"];
 
                 GmdCsvReader gmdCsvReader = new GmdCsvReader();
-                List<GmdIntermediateContainer> gmdContainer = gmdCsvReader.ReadPath(gmdCsvA);
-                
-                
+                List<GmdIntermediateContainer> gmdContainerA = gmdCsvReader.ReadPath(gmdCsvA);
+                List<GmdIntermediateContainer> gmdContainerB = gmdCsvReader.ReadPath(gmdCsvB);
+
+                List<GmdIntermediateContainer> aOnly = gmdContainerA.Except(gmdContainerB).ToList();
+                List<GmdIntermediateContainer> bOnly = gmdContainerB.Except(gmdContainerA).ToList();
+
+
                 return CommandResultType.Exit;
             }
 
@@ -194,7 +199,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (writeHeader)
             {
-                sb.Append("Index, Key, Msg, a2, a3, a4, a5, Arc Path, Arc File, KeyReadIdx, MsgReadIdx, GmdStr");
+                sb.Append("#Index, Key, Msg, a2, a3, a4, a5, Arc Path, Arc File, KeyReadIdx, MsgReadIdx, GmdStr");
                 sb.Append($"{Environment.NewLine}");
             }
 
