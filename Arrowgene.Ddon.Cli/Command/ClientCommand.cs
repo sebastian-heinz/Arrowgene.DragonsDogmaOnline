@@ -8,6 +8,8 @@ using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Ddon.Client.Resource.Texture;
 using Arrowgene.Ddon.Client.Resource.Texture.Dds;
 using Arrowgene.Ddon.Client.Resource.Texture.Tex;
+using Arrowgene.Ddon.Shared.Csv;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli.Command
@@ -23,12 +25,6 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-            if (parameter.Arguments.Count < 1)
-            {
-                Logger.Error($"To few arguments. {Description}");
-                return CommandResultType.Exit;
-            }
-
             if (parameter.ArgumentMap.ContainsKey("extract"))
             {
                 string extract = parameter.ArgumentMap["extract"];
@@ -94,7 +90,26 @@ namespace Arrowgene.Ddon.Cli.Command
                 string packGmd = parameter.ArgumentMap["packGmd"];
                 return CommandResultType.Exit;
             }
+            
+            if (parameter.ArgumentMap.ContainsKey("gmdA") && parameter.ArgumentMap.ContainsKey("gmdB"))
+            {
+                string gmdCsvA = parameter.ArgumentMap["gmdA"];
+                string gmdCsvB = parameter.ArgumentMap["gmdB"];
 
+                GmdCsvReader gmdCsvReader = new GmdCsvReader();
+                List<GmdIntermediateContainer> gmdContainer = gmdCsvReader.ReadPath(gmdCsvA);
+                
+                
+                return CommandResultType.Exit;
+            }
+
+            
+            if (parameter.Arguments.Count < 1)
+            {
+                Logger.Error($"To few arguments. {Description}");
+                return CommandResultType.Exit;
+            }
+            
             FileInfo fileInfo = new FileInfo(parameter.Arguments[0]);
             if (fileInfo.Exists)
             {

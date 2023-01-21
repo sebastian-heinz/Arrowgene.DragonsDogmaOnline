@@ -12,19 +12,14 @@ namespace Arrowgene.Ddon.Shared.Csv
         private const int BufferSize = 128;
         private static readonly ILogger Logger = LogProvider.Logger(typeof(CsvReader<T>));
 
-        private readonly bool _treatLfAsEndOfLine;
+
         protected abstract int NumExpectedItems { get; }
 
         public CsvReader()
         {
-            _treatLfAsEndOfLine = false;
+
         }
         
-        public CsvReader(bool treatLfAsEndOfLine)
-        {
-            _treatLfAsEndOfLine = treatLfAsEndOfLine;
-        }
-
         public List<T> ReadString(string csv)
         {
             using Stream stream = new MemoryStream();
@@ -49,6 +44,9 @@ namespace Arrowgene.Ddon.Shared.Csv
             return Read(stream);
         }
 
+        /// <summary>
+        /// https://www.rfc-editor.org/rfc/rfc4180
+        /// </summary>
         public List<T> Read(Stream stream)
         {
             List<T> items = new List<T>();
@@ -62,74 +60,182 @@ namespace Arrowgene.Ddon.Shared.Csv
 
             int c;
             int line = 1;
-            StringBuilder sb = new StringBuilder();
-            bool previousCr = false;
+            List<string> fields = new List<string>();
+            StringBuilder fieldBuilder = new StringBuilder();
+            StringBuilder lineBuilder = new StringBuilder();
+            bool isFieldFirstCharacter = true;
+            bool isLineFirstCharacter = true;
+            bool isFieldQuoted = false;
+            bool insideComment = false;
+            int previousChar = -1;
+
             while ((c = streamReader.Read()) > 0)
             {
-                // only treat \r\n as line endings
-                if (c == '\r')
+                if (isLineFirstCharacter)
                 {
-                    //carriage return (The Carriage Return (CR) character (0x0D, \r))
-                    previousCr = true;
-                    continue;
+                    isLineFirstCharacter = false;
+                    if (c == '#')
+                    {             
+                        // comment start
+                        insideComment = true;
+                        previousChar = c;
+                        lineBuilder.Append((char)c);
+                        continue;
+                    }
+                    
+                    int nextChar = streamReader.Peek();
+                    if (c == '\r' && nextChar == '\n')
+                    {
+                        // empty line
+                        lineBuilder.Append((char)c);
+                        c = streamReader.Read();
+                        lineBuilder.Append((char)c);
+                        previousChar = c;
+                        isLineFirstCharacter = true;
+                        isFieldFirstCharacter = true;
+                        continue;
+                    }
                 }
 
-                if (c == '\n')
+                if (insideComment)
                 {
-                    //line feed (The Line Feed (LF) character (0x0A, \n))
-                    if (previousCr || _treatLfAsEndOfLine)
+                    if (previousChar == '\r' && c == '\n')
                     {
-                        ProcessLine(sb.ToString(), items, line++);
-                        sb.Clear();
+                        // comment end
+                        isLineFirstCharacter = true;
+                        isFieldFirstCharacter = true;
+                        insideComment = false;
                     }
 
-                    previousCr = false;
+                    previousChar = c;
+                    lineBuilder.Append((char)c);
                     continue;
                 }
 
-                sb.Append((char) c);
-                previousCr = false;
+                if (isFieldFirstCharacter)
+                {
+                    isFieldFirstCharacter = false;
+                    if (c == '"')
+                    {
+                        isFieldQuoted = true;
+                        fieldBuilder.Append((char)c);
+                        previousChar = c;
+                        lineBuilder.Append((char)c);
+                        continue;
+                    }
+                }
+
+                if (isFieldQuoted)
+                {
+                    int nextChar = streamReader.Peek();
+                    bool isQuoteEscaped = c == '"' && nextChar == '"';
+                    if (isQuoteEscaped)
+                    {
+                        fieldBuilder.Append((char)c);
+                        lineBuilder.Append((char)c);
+                        c = streamReader.Read();
+                        fieldBuilder.Append((char)c);
+                        lineBuilder.Append((char)c);
+                        previousChar = c;
+                        continue;
+                    }
+
+                    if (c == '"' && nextChar != '"')
+                    {
+                        // detect the end
+                        isFieldQuoted = false;
+                        if (nextChar != ',')
+                        {
+                            // error unescaped quote
+                        }
+                    }
+
+                    fieldBuilder.Append((char)c);
+                    previousChar = c;
+                    lineBuilder.Append((char)c);
+                    continue;
+                }
+
+                if (c == ',')
+                {
+                    isFieldFirstCharacter = true;
+                    fields.Add(fieldBuilder.ToString());
+                    fieldBuilder.Clear();
+                    previousChar = c;
+                    lineBuilder.Append((char)c);
+                    continue;
+                }
+
+                if (previousChar == '\r' && c == '\n')
+                {
+                    //carriage return (The Carriage Return (CR) character (0x0D, \r))
+                    //line feed (The Line Feed (LF) character (0x0A, \n))
+
+                    string field = fieldBuilder.ToString();
+                    field = field.Remove(field.Length - 1);
+                    fields.Add(field);
+                    fieldBuilder.Clear();
+
+                    ProcessLine(fields, items, lineBuilder.ToString(), line++);
+                    fields.Clear();
+                    lineBuilder.Clear();
+                    isLineFirstCharacter = true;
+                    previousChar = c;
+                    continue;
+                }
+
+                fieldBuilder.Append((char)c);
+                lineBuilder.Append((char)c);
+                previousChar = c;
             }
 
-            ProcessLine(sb.ToString(), items, line++);
+            if (fields.Count > 0)
+            {
+                // process last item if missing CRLF
+                string field = fieldBuilder.ToString();
+                if (field.EndsWith('\n'))
+                {
+                    field = field.Remove(field.Length - 1);
+                }
+
+                fields.Add(field);
+                fieldBuilder.Clear();
+                ProcessLine(fields, items, lineBuilder.ToString(), line);
+            }
 
             return items;
         }
 
         protected abstract T CreateInstance(string[] properties);
 
-        private void ProcessLine(string lineContents, ICollection<T> items, int lineNumber)
+        private void ProcessLine(List<string> fields, ICollection<T> items, string line, int lineNumber)
         {
-            if (string.IsNullOrEmpty(lineContents)) return;
-
-            if (lineContents.StartsWith('#'))
-                // Ignoring Comment
+            if (fields.Count <= 0)
+            {
                 return;
+            }
 
-            string[] properties = lineContents.Split(",");
-            if (properties.Length <= 0) return;
-
-            if (properties.Length < NumExpectedItems)
+            if (fields.Count < NumExpectedItems)
             {
                 Logger.Error(
-                    $"Skipping Line {lineNumber}: '{lineContents}' expected {NumExpectedItems} values but got {properties.Length}");
+                    $"Skipping Line {lineNumber}: '{line}' expected {NumExpectedItems} values but got {fields.Count}");
                 return;
             }
 
             T item = default;
             try
             {
-                item = CreateInstance(properties);
+                item = CreateInstance(fields.ToArray());
             }
             catch (Exception ex)
             {
                 Logger.Exception(ex);
             }
-            
+
 
             if (item == null)
             {
-                Logger.Error($"Skipping Line {lineNumber}: '{lineContents}' could not be converted");
+                Logger.Error($"Skipping Line {lineNumber}: '{line}' could not be converted");
                 return;
             }
 
@@ -161,6 +267,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 value = 0;
                 return false;
             }
+
             str = str.TrimStart('0', 'x');
             return uint.TryParse(str, NumberStyles.HexNumber, null, out value);
         }

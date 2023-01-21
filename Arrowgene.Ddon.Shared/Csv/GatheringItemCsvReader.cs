@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 {
     public class GatheringItemCsvReader : CsvReader<GatheringItem>
     {
-        public GatheringItemCsvReader() : base(true)
+        public GatheringItemCsvReader() : base()
         {
             
         }

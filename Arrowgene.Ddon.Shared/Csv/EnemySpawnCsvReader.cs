@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 {
     public class EnemySpawnCsvReader : CsvReader<EnemySpawn>
     {
-        public EnemySpawnCsvReader() : base(true)
+        public EnemySpawnCsvReader() : base()
         {
             
         }
