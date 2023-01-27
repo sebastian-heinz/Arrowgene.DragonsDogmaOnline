@@ -86,9 +86,16 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
-            if (parameter.ArgumentMap.ContainsKey("packGmd"))
+            if (parameter.ArgumentMap.ContainsKey("packGmdCsv") 
+                && parameter.ArgumentMap.ContainsKey("packGmdRom"))
             {
-                string packGmd = parameter.ArgumentMap["packGmd"];
+                string packGmdCsv = parameter.ArgumentMap["packGmdCsv"];
+                string packGmdRom = parameter.ArgumentMap["packGmdRom"];
+                
+                GmdCsv gmdCsvReader = new GmdCsv(true);
+                List<GmdIntermediateContainer> gmdCsv =gmdCsvReader.ReadPath(packGmdCsv);
+                
+ 
                 return CommandResultType.Exit;
             }
 
@@ -128,7 +135,10 @@ namespace Arrowgene.Ddon.Cli.Command
                     if (gmdIndexEn.ContainsKey(gmdOrgHash))
                     {
                         GmdIntermediateContainer gmdEn = gmdIndexEn[gmdOrgHash];
-                        gmdOrg.MsgEn = gmdEn.MsgOrg;
+                        if (gmdOrg.MsgOrg != gmdEn.MsgOrg)
+                        {
+                            gmdOrg.MsgEn = gmdEn.MsgOrg;
+                        }
                     }
                 }
 

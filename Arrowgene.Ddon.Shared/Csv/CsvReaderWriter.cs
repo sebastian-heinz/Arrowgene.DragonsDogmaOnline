@@ -7,6 +7,9 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
+    /// <summary>
+    /// https://www.rfc-editor.org/rfc/rfc4180
+    /// </summary>
     public abstract class CsvReaderWriter<T>
     {
         private const int BufferSize = 128;
@@ -30,7 +33,12 @@ namespace Arrowgene.Ddon.Shared.Csv
 
         public void WritePath(List<T> rows, string path)
         {
-            Logger.Info($"Writing {path}");
+            Logger.Info($"Writing: {path}");
+            if (File.Exists(path))
+            {
+                Logger.Info($"Deleting: {path}");
+                File.Delete(path);
+            }
             using FileStream stream = File.OpenWrite(path);
             Write(rows, stream);
         }
@@ -71,10 +79,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             using FileStream stream = File.OpenRead(file.FullName);
             return Read(stream);
         }
-
-        /// <summary>
-        /// https://www.rfc-editor.org/rfc/rfc4180
-        /// </summary>
+        
         public List<T> Read(Stream stream)
         {
             List<T> items = new List<T>();
@@ -146,7 +151,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     if (c == '"')
                     {
                         isFieldQuoted = true;
-                        fieldBuilder.Append((char)c);
+                        // fieldBuilder.Append((char)c); // exclude quotes on reading data
                         previousChar = c;
                         lineBuilder.Append((char)c);
                         continue;
@@ -159,7 +164,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     bool isQuoteEscaped = c == '"' && nextChar == '"';
                     if (isQuoteEscaped)
                     {
-                        fieldBuilder.Append((char)c);
+                        // fieldBuilder.Append((char)c); // unescape quote
                         lineBuilder.Append((char)c);
                         c = streamReader.Read();
                         fieldBuilder.Append((char)c);
@@ -178,6 +183,11 @@ namespace Arrowgene.Ddon.Shared.Csv
                             Logger.Error(
                                 $"Unescaped Quote in CSV near:`{lineBuilder}{(char)c}{(char)nextChar}` (expected `{(char)nextChar}` HEX:{nextChar:X8} to be a quote)");
                         }
+                        
+                        // fieldBuilder.Append((char)c);  // exclude quotes on reading data
+                        previousChar = c;
+                        lineBuilder.Append((char)c);
+                        continue;
                     }
 
                     fieldBuilder.Append((char)c);
@@ -390,7 +400,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 {
                     return;
                 }
-
+                
                 if (columnVal.Contains('"'))
                 {
                     columnVal = columnVal.Replace("\"", "\"\"");
@@ -400,6 +410,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     columnVal.Contains('\r')
                     || columnVal.Contains('\n')
                     || columnVal.Contains('"')
+                    || columnVal.Contains(',')
                 )
                 {
                     columnVal = $"\"{columnVal}\"";
