@@ -3,9 +3,9 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    public class EnemySpawnCsvReader : CsvReader<EnemySpawn>
+    public class EnemySpawnCsv : CsvReaderWriter<EnemySpawn>
     {
-        public EnemySpawnCsvReader() : base()
+        public EnemySpawnCsv() : base()
         {
             
         }

@@ -62,24 +62,24 @@ namespace Arrowgene.Ddon.Shared
 
         public void Initialize()
         {
-            RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsvReader());
-            RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsvReader());
-            RegisterAsset(GatheringItems, GatheringItemsKey, new GatheringItemCsvReader());
+            RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsv());
+            RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsv());
+            RegisterAsset(GatheringItems, GatheringItemsKey, new GatheringItemCsv());
             RegisterAsset(MyPawnAsset, MyPawnAssetKey, new MyPawnCsvReader());
             RegisterAsset(MyRoomAsset, MyRoomAssetKey, new MyRoomCsvReader());
             RegisterAsset(ArisenAsset, ArisenAssetKey, new ArisenCsvReader());
-            RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsvReader());
-            RegisterAsset(StorageAsset, StorageKey, new StorageCsvReader());
-            RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsvReader());
+            RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsv());
+            RegisterAsset(StorageAsset, StorageKey, new StorageCsv());
+            RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsv());
         }
 
-        private void RegisterAsset<T>(List<T> list, string key, CsvReader<T> reader)
+        private void RegisterAsset<T>(List<T> list, string key, CsvReaderWriter<T> readerWriter)
         {
-            Load(list, key, reader);
-            RegisterFileSystemWatcher(list, key, reader);
+            Load(list, key, readerWriter);
+            RegisterFileSystemWatcher(list, key, readerWriter);
         }
 
-        private void Load<T>(List<T> list, string key, CsvReader<T> reader)
+        private void Load<T>(List<T> list, string key, CsvReaderWriter<T> readerWriter)
         {
             string path = Path.Combine(_directory.FullName, key);
             FileInfo file = new FileInfo(path);
@@ -88,14 +88,14 @@ namespace Arrowgene.Ddon.Shared
                 Logger.Error($"Could not load '{key}', file does not exist");
             }
 
-            List<T> assets = reader.ReadPath(file.FullName);
+            List<T> assets = readerWriter.ReadPath(file.FullName);
 
             list.Clear();
             list.AddRange(assets);
             OnAssetChanged(key, list);
         }
 
-        private void RegisterFileSystemWatcher<T>(List<T> list, string key, CsvReader<T> reader)
+        private void RegisterFileSystemWatcher<T>(List<T> list, string key, CsvReaderWriter<T> readerWriter)
         {
             if (_fileSystemWatchers.ContainsKey(key))
             {
@@ -113,7 +113,7 @@ namespace Arrowgene.Ddon.Shared
                 {
                     try
                     {
-                        Load(list, key, reader);
+                        Load(list, key, readerWriter);
                         break;
                     }
                     catch (IOException ex)

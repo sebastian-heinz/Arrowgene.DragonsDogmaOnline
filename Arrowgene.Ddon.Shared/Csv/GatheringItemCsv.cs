@@ -7,9 +7,9 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    public class GatheringItemCsvReader : CsvReader<GatheringItem>
+    public class GatheringItemCsv : CsvReaderWriter<GatheringItem>
     {
-        public GatheringItemCsvReader() : base()
+        public GatheringItemCsv() : base()
         {
             
         }

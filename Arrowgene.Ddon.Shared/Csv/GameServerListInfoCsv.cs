@@ -1,9 +1,8 @@
-﻿using System.Net;
-using Arrowgene.Ddon.Shared.Entity.Structure;
+﻿using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Csv;
 
-public class GameServerListInfoCsvReader : CsvReader<CDataGameServerListInfo>
+public class GameServerListInfoCsv : CsvReaderWriter<CDataGameServerListInfo>
 {
     protected override int NumExpectedItems => 9;
     protected override CDataGameServerListInfo CreateInstance(string[] properties)

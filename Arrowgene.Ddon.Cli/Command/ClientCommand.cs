@@ -72,15 +72,15 @@ namespace Arrowgene.Ddon.Cli.Command
                     Logger.Error($"Directory does not exists. ({extractGmd})");
                     return CommandResultType.Exit;
                 }
-                
+
                 string source = parameter.Arguments[0];
                 FileInfo arcFile = new FileInfo(source);
-                
-                StringBuilder sb = new StringBuilder();
-                GmdToCsv(arcFile, sb, true);
+
+                List<GmdIntermediateContainer> containers = ExtractGmdContainer(arcFile);
 
                 string outPath = Path.Combine(outDir.FullName, arcFile.Name + ".csv");
-                File.WriteAllText(outPath, sb.ToString(), Encoding.UTF8);
+                GmdCsv writer = new GmdCsv(false);
+                writer.WritePath(containers, outPath);
                 Logger.Info($"Written gmd to: {outPath}");
 
                 return CommandResultType.Exit;
@@ -91,30 +91,62 @@ namespace Arrowgene.Ddon.Cli.Command
                 string packGmd = parameter.ArgumentMap["packGmd"];
                 return CommandResultType.Exit;
             }
-            
-            if (parameter.ArgumentMap.ContainsKey("gmdA") && parameter.ArgumentMap.ContainsKey("gmdB"))
+
+            if (parameter.ArgumentMap.ContainsKey("gmdOrg") 
+                && parameter.ArgumentMap.ContainsKey("gmdEn")
+                && parameter.ArgumentMap.ContainsKey("gmdOut"))
             {
-                string gmdCsvA = parameter.ArgumentMap["gmdA"];
-                string gmdCsvB = parameter.ArgumentMap["gmdB"];
+                string gmdCsvOrg = parameter.ArgumentMap["gmdOrg"];
+                string gmdCsvEn = parameter.ArgumentMap["gmdEn"];
+                string gmdOut = parameter.ArgumentMap["gmdOut"];
 
-                GmdCsvReader gmdCsvReader = new GmdCsvReader();
-                List<GmdIntermediateContainer> gmdContainerA = gmdCsvReader.ReadPath(gmdCsvA);
-                List<GmdIntermediateContainer> gmdContainerB = gmdCsvReader.ReadPath(gmdCsvB);
+                GmdCsv gmdCsvReader = new GmdCsv(false);
 
-                List<GmdIntermediateContainer> aOnly = gmdContainerA.Except(gmdContainerB).ToList();
-                List<GmdIntermediateContainer> bOnly = gmdContainerB.Except(gmdContainerA).ToList();
+                // index english
+                List<GmdIntermediateContainer> gmdContainerEn = gmdCsvReader.ReadPath(gmdCsvEn);
+                Dictionary<string, GmdIntermediateContainer> gmdIndexEn = new Dictionary<string, GmdIntermediateContainer>();
+                foreach (GmdIntermediateContainer gmdEn in gmdContainerEn)
+                {
+                    string gmdHash = gmdEn.GetUniqueQualifierLanguageAgnostic();
+                    if (!gmdIndexEn.ContainsKey(gmdHash))
+                    {
+                        gmdIndexEn.Add(gmdHash, gmdEn);
+                    }
+                    else
+                    {
+                        GmdIntermediateContainer gmdEnEx = gmdIndexEn[gmdHash];
+                        int i = 1;
+                    }
+                
+                }
+                
+                // enrich original
+                List<GmdIntermediateContainer> gmdContainerOrg = gmdCsvReader.ReadPath(gmdCsvOrg);
+                foreach (GmdIntermediateContainer gmdOrg in gmdContainerOrg)
+                {
+                    string gmdOrgHash = gmdOrg.GetUniqueQualifierLanguageAgnostic();
+                    if (gmdIndexEn.ContainsKey(gmdOrgHash))
+                    {
+                        GmdIntermediateContainer gmdEn = gmdIndexEn[gmdOrgHash];
+                        gmdOrg.MsgEn = gmdEn.MsgOrg;
+                    }
+                }
 
+                string outPath = Path.Combine(gmdOut, "gmd_merged.csv");
+                GmdCsv gmdCsvWriter = new GmdCsv(true);
+                gmdCsvWriter.WritePath(gmdContainerOrg, outPath);
+                Logger.Info($"Done: {outPath}");
 
                 return CommandResultType.Exit;
             }
 
-            
+
             if (parameter.Arguments.Count < 1)
             {
                 Logger.Error($"To few arguments. {Description}");
                 return CommandResultType.Exit;
             }
-            
+
             FileInfo fileInfo = new FileInfo(parameter.Arguments[0]);
             if (fileInfo.Exists)
             {
@@ -164,31 +196,35 @@ namespace Arrowgene.Ddon.Cli.Command
                     outDirectory.Create();
                     Logger.Info($"Created Dir: {outDirectory.FullName}");
                 }
-                
+
                 string[] files = Directory.GetFiles(romDirectory.FullName, "*.arc", SearchOption.AllDirectories);
-                StringBuilder sb = new StringBuilder();
+                List<GmdIntermediateContainer> containers = new List<GmdIntermediateContainer>();
                 for (int i = 0; i < files.Length; i++)
                 {
                     FileInfo arcFile = new FileInfo(files[i]);
-                    GmdToCsv(arcFile, sb, i==0);
+                    containers.AddRange(ExtractGmdContainer(arcFile));
                     Logger.Info($"Processing {i}/{files.Length} {arcFile.FullName}");
                 }
 
                 string outPath = Path.Combine(outDirectory.FullName, "gmd.csv");
-                File.WriteAllText(outPath, sb.ToString());
+                GmdCsv writer = new GmdCsv(false);
+                writer.WritePath(containers, outPath);
+                
                 Logger.Info($"Done: {outPath}");
                 return CommandResultType.Exit;
             }
-            
+
             return CommandResultType.Exit;
         }
 
-        private void GmdToCsv(FileInfo arcFile, StringBuilder sb, bool writeHeader)
+        private List<GmdIntermediateContainer> ExtractGmdContainer(FileInfo arcFile)
         {
+            List<GmdIntermediateContainer> containers = new List<GmdIntermediateContainer>();
+
             if (!arcFile.Exists || arcFile.Extension != ".arc")
             {
                 Logger.Error($"Source file not exists or is not a .arc file. ({arcFile.FullName})");
-                return;
+                return containers;
             }
 
             ArcArchive archive = new ArcArchive();
@@ -197,34 +233,29 @@ namespace Arrowgene.Ddon.Cli.Command
                 ArcArchive.Search().ByExtension("gmd")
             );
 
-            if (writeHeader)
-            {
-                sb.Append("#Index, Key, Msg, a2, a3, a4, a5, Arc Path, Arc File, KeyReadIdx, MsgReadIdx, GmdStr");
-                sb.Append($"{Environment.NewLine}");
-            }
-
             foreach (ArcArchive.ArcFile gmdFile in gmdFiles)
             {
                 GuiMessage gmd = new GuiMessage();
                 gmd.Open(gmdFile.Data);
-
                 foreach (GuiMessage.Entry gmdEntry in gmd.Entries)
                 {
-                    sb.Append($"{gmdEntry.Index},");
-                    sb.Append($"{gmdEntry.Key},");
-                    sb.Append($"\"{gmdEntry.Msg.Replace("\"","\"\"")}\",");
-                    sb.Append($"{gmdEntry.a2},");
-                    sb.Append($"{gmdEntry.a3},");
-                    sb.Append($"{gmdEntry.a4},");
-                    sb.Append($"{gmdEntry.a5},");
-                    sb.Append($"{gmdFile.Index.Path},");
-                    sb.Append($"{arcFile.Name},");
-                    sb.Append($"{gmdEntry.KeyReadIndex},");
-                    sb.Append($"{gmdEntry.MsgReadIndex},");
-                    sb.Append($"{gmd.Str}");
-                    sb.Append($"{Environment.NewLine}");
+                    GmdIntermediateContainer container = new GmdIntermediateContainer();
+                    container.Index = gmdEntry.Index;
+                    container.Key = gmdEntry.Key;
+                    container.MsgOrg = gmdEntry.Msg;
+                    container.a2 = gmdEntry.a2;
+                    container.a3 = gmdEntry.a3;
+                    container.a4 = gmdEntry.a4;
+                    container.a5 = gmdEntry.a5;
+                    container.Path = gmdFile.Index.Path;
+                    container.Name = arcFile.Name;
+                    container.KeyReadIndex = gmdEntry.KeyReadIndex;
+                    container.MsgReadIndex = gmdEntry.MsgReadIndex;
+                    container.Str = gmd.Str;
+                    containers.Add(container);
                 }
             }
+            return containers;
         }
 
         public void ExportResourceRepository(DirectoryInfo romDirectory, DirectoryInfo outDir)

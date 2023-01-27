@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    public class StorageItemCsvReader : CsvReader<Tuple<StorageType, uint, Item>>
+    public class StorageItemCsv : CsvReaderWriter<Tuple<StorageType, uint, Item>>
     {
         protected override int NumExpectedItems => 6;
 

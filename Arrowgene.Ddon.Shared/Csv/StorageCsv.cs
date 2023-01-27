@@ -3,7 +3,7 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    public class StorageCsvReader : CsvReader<CDataCharacterItemSlotInfo>
+    public class StorageCsv : CsvReaderWriter<CDataCharacterItemSlotInfo>
     {
         protected override int NumExpectedItems => 2;
 

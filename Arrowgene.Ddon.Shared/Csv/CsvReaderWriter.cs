@@ -7,19 +7,47 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    public abstract class CsvReader<T>
+    public abstract class CsvReaderWriter<T>
     {
         private const int BufferSize = 128;
-        private static readonly ILogger Logger = LogProvider.Logger(typeof(CsvReader<T>));
+        private static readonly ILogger Logger = LogProvider.Logger(typeof(CsvReaderWriter<T>));
 
 
         protected abstract int NumExpectedItems { get; }
 
-        public CsvReader()
+        public CsvReaderWriter()
         {
-
         }
-        
+
+        public string WriteString(List<T> rows)
+        {
+            using Stream stream = new MemoryStream();
+            Write(rows, stream);
+            stream.Position = 0;
+            using StreamReader reader = new StreamReader(stream);
+            return reader.ReadToEnd();
+        }
+
+        public void WritePath(List<T> rows, string path)
+        {
+            Logger.Info($"Writing {path}");
+            using FileStream stream = File.OpenWrite(path);
+            Write(rows, stream);
+        }
+
+        public void Write(List<T> rows, Stream stream)
+        {
+            RowWriter rowWriter = new RowWriter(stream);
+            CreateHeader(rowWriter);
+            foreach (T row in rows)
+            {
+                CreateRow(row, rowWriter);
+                rowWriter.NextRow();
+            }
+
+            rowWriter.Flush();
+        }
+
         public List<T> ReadString(string csv)
         {
             using Stream stream = new MemoryStream();
@@ -75,14 +103,14 @@ namespace Arrowgene.Ddon.Shared.Csv
                 {
                     isLineFirstCharacter = false;
                     if (c == '#')
-                    {             
+                    {
                         // comment start
                         insideComment = true;
                         previousChar = c;
                         lineBuilder.Append((char)c);
                         continue;
                     }
-                    
+
                     int nextChar = streamReader.Peek();
                     if (c == '\r' && nextChar == '\n')
                     {
@@ -144,9 +172,11 @@ namespace Arrowgene.Ddon.Shared.Csv
                     {
                         // detect the end
                         isFieldQuoted = false;
-                        if (nextChar != ',')
+                        if (nextChar != ',' // expect end of field, if not
+                            && nextChar != '\r') // and it is not the line end
                         {
-                            // error unescaped quote
+                            Logger.Error(
+                                $"Unescaped Quote in CSV near:`{lineBuilder}{(char)c}{(char)nextChar}` (expected `{(char)nextChar}` HEX:{nextChar:X8} to be a quote)");
                         }
                     }
 
@@ -206,7 +236,51 @@ namespace Arrowgene.Ddon.Shared.Csv
             return items;
         }
 
-        protected abstract T CreateInstance(string[] properties);
+        protected virtual T CreateInstance(string[] properties)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void CreateRow(T entry, RowWriter rowWriter)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void CreateHeader(RowWriter rowWriter)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected bool TryParseNullableInt(string str, out int? value)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                value = null;
+                return true;
+            }
+
+            if (int.TryParse(str, out int val))
+            {
+                value = val;
+                return true;
+            }
+
+            value = null;
+            return false;
+        }
+
+        protected bool TryParseHexUInt(string str, out uint value)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                value = 0;
+                return false;
+            }
+
+            str = str.TrimStart('0', 'x');
+            return uint.TryParse(str, NumberStyles.HexNumber, null, out value);
+        }
+
 
         private void ProcessLine(List<string> fields, ICollection<T> items, string line, int lineNumber)
         {
@@ -242,34 +316,137 @@ namespace Arrowgene.Ddon.Shared.Csv
             items.Add(item);
         }
 
-        protected bool TryParseNullableInt(string str, out int? value)
+
+        public class RowWriter
         {
-            if (string.IsNullOrEmpty(str))
+            private readonly StreamWriter _writer;
+            private string[] _header;
+            private string[] _currentRow;
+            private bool _headerCompleted;
+
+            public RowWriter(Stream stream)
             {
-                value = null;
-                return true;
+                _writer = new StreamWriter(stream);
+                _headerCompleted = false;
             }
 
-            if (int.TryParse(str, out int val))
+            public void Flush()
             {
-                value = val;
-                return true;
+                _writer.Flush();
             }
 
-            value = null;
-            return false;
-        }
-
-        protected bool TryParseHexUInt(string str, out uint value)
-        {
-            if (string.IsNullOrEmpty(str))
+            public void WriteHeader(int headerIndex, string headerValue)
             {
-                value = 0;
-                return false;
+                if (_headerCompleted)
+                {
+                    return;
+                }
+
+                int newHeaderSize = headerIndex + 1;
+                if (_header == null)
+                {
+                    _header = new string[newHeaderSize];
+                }
+
+
+                if (newHeaderSize > _header.Length)
+                {
+                    string[] newHeader = new string[newHeaderSize];
+                    for (int i = 0; i < _header.Length; i++)
+                    {
+                        newHeader[i] = _header[i];
+                    }
+
+                    _header = newHeader;
+                }
+
+                _header[headerIndex] = headerValue;
             }
 
-            str = str.TrimStart('0', 'x');
-            return uint.TryParse(str, NumberStyles.HexNumber, null, out value);
+            private void WriteRow(int columnIndex, string columnVal)
+            {
+                if (!_headerCompleted)
+                {
+                    WriteHeader();
+                    _headerCompleted = true;
+                }
+
+                if (columnIndex > _header.Length)
+                {
+                    return;
+                }
+
+                if (_currentRow == null)
+                {
+                    _currentRow = new string[_header.Length];
+                }
+
+                _currentRow[columnIndex] = columnVal;
+            }
+
+            public void Write(int columnIndex, string columnVal)
+            {
+                if (columnVal == null)
+                {
+                    return;
+                }
+
+                if (columnVal.Contains('"'))
+                {
+                    columnVal = columnVal.Replace("\"", "\"\"");
+                }
+
+                if (
+                    columnVal.Contains('\r')
+                    || columnVal.Contains('\n')
+                    || columnVal.Contains('"')
+                )
+                {
+                    columnVal = $"\"{columnVal}\"";
+                }
+
+                WriteRow(columnIndex, columnVal);
+            }
+
+            public void Write(int columnIndex, int columnVal)
+            {
+                WriteRow(columnIndex, $"{columnVal}");
+            }
+
+            public void Write(int columnIndex, uint columnVal)
+            {
+                WriteRow(columnIndex, $"{columnVal}");
+            }
+
+            public void NextRow()
+            {
+                for (int i = 0; i < _currentRow.Length; i++)
+                {
+                    _writer.Write(_currentRow[i]);
+                    if (i < _currentRow.Length - 1)
+                    {
+                        _writer.Write(",");
+                    }
+                }
+
+                _writer.Write(Environment.NewLine);
+                _currentRow = null;
+            }
+
+            private void WriteHeader()
+            {
+                _writer.Write("#");
+                for (int i = 0; i < _header.Length; i++)
+                {
+                    _writer.Write(_header[i]);
+                    if (i < _header.Length - 1)
+                    {
+                        _writer.Write(",");
+                    }
+                }
+
+                _writer.Write(Environment.NewLine);
+            }
         }
     }
 }
