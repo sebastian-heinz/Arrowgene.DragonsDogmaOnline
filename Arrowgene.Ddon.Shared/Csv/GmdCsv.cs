@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             _multiLanguage = multiLanguage;
         }
 
-        protected override int NumExpectedItems => _multiLanguage ? 13 : 12;
+        protected override int NumExpectedItems => _multiLanguage ? 14 : 13;
 
         protected override GmdIntermediateContainer CreateInstance(string[] properties)
         {
@@ -25,11 +25,12 @@ namespace Arrowgene.Ddon.Shared.Csv
                 if (!uint.TryParse(properties[5], out uint a3)) return null;
                 if (!uint.TryParse(properties[6], out uint a4)) return null;
                 if (!uint.TryParse(properties[7], out uint a5)) return null;
-                string path = properties[8];
-                string name = properties[9];
-                if (!uint.TryParse(properties[10], out uint keyReadIndex)) return null;
-                if (!uint.TryParse(properties[11], out uint msgReadIndex)) return null;
-                string str = properties[12];
+                string gmdPath = properties[8];
+                string arcPath = properties[9];
+                string arcName = properties[10];
+                if (!uint.TryParse(properties[11], out uint keyReadIndex)) return null;
+                if (!uint.TryParse(properties[12], out uint msgReadIndex)) return null;
+                string str = properties[13];
                 
                 return new GmdIntermediateContainer
                 {
@@ -41,8 +42,9 @@ namespace Arrowgene.Ddon.Shared.Csv
                     a3 = a3,
                     a4 = a4,
                     a5 = a5,
-                    Path = path,
-                    Name = name,
+                    GmdPath = gmdPath,
+                    ArcPath = arcPath,
+                    ArcName = arcName,
                     KeyReadIndex = keyReadIndex,
                     MsgReadIndex = msgReadIndex,
                     Str = str
@@ -57,11 +59,12 @@ namespace Arrowgene.Ddon.Shared.Csv
                 if (!uint.TryParse(properties[4], out uint a3)) return null;
                 if (!uint.TryParse(properties[5], out uint a4)) return null;
                 if (!uint.TryParse(properties[6], out uint a5)) return null;
-                string path = properties[7];
-                string name = properties[8];
-                if (!uint.TryParse(properties[9], out uint keyReadIndex)) return null;
-                if (!uint.TryParse(properties[10], out uint msgReadIndex)) return null;
-                string str = properties[11];
+                string gmdPath = properties[7];
+                string arcPath = properties[8];
+                string arcName = properties[9];
+                if (!uint.TryParse(properties[10], out uint keyReadIndex)) return null;
+                if (!uint.TryParse(properties[11], out uint msgReadIndex)) return null;
+                string str = properties[12];
                 return new GmdIntermediateContainer
                 {
                     Index = index,
@@ -71,8 +74,9 @@ namespace Arrowgene.Ddon.Shared.Csv
                     a3 = a3,
                     a4 = a4,
                     a5 = a5,
-                    Path = path,
-                    Name = name,
+                    GmdPath = gmdPath,
+                    ArcPath = arcPath,
+                    ArcName = arcName,
                     KeyReadIndex = keyReadIndex,
                     MsgReadIndex = msgReadIndex,
                     Str = str
@@ -92,11 +96,12 @@ namespace Arrowgene.Ddon.Shared.Csv
                 rowWriter.WriteHeader(5, "a3");
                 rowWriter.WriteHeader(6, "a4");
                 rowWriter.WriteHeader(7, "a5");
-                rowWriter.WriteHeader(8, "Path");
-                rowWriter.WriteHeader(9, "Name");
-                rowWriter.WriteHeader(10, "KeyReadIndex");
-                rowWriter.WriteHeader(11, "MsgReadIndex");
-                rowWriter.WriteHeader(12, "Str");
+                rowWriter.WriteHeader(8, "GmdPath");
+                rowWriter.WriteHeader(9, "ArcPath");
+                rowWriter.WriteHeader(10, "ArcName");
+                rowWriter.WriteHeader(11, "KeyReadIndex");
+                rowWriter.WriteHeader(12, "MsgReadIndex");
+                rowWriter.WriteHeader(13, "Str");
             }
             else
             {
@@ -107,11 +112,12 @@ namespace Arrowgene.Ddon.Shared.Csv
                 rowWriter.WriteHeader(4, "a3");
                 rowWriter.WriteHeader(5, "a4");
                 rowWriter.WriteHeader(6, "a5");
-                rowWriter.WriteHeader(7, "Path");
-                rowWriter.WriteHeader(8, "Name");
-                rowWriter.WriteHeader(9, "KeyReadIndex");
-                rowWriter.WriteHeader(10, "MsgReadIndex");
-                rowWriter.WriteHeader(11, "Str");
+                rowWriter.WriteHeader(7, "GmdPath");
+                rowWriter.WriteHeader(8, "ArcPath");
+                rowWriter.WriteHeader(9, "ArcName");
+                rowWriter.WriteHeader(10, "KeyReadIndex");
+                rowWriter.WriteHeader(11, "MsgReadIndex");
+                rowWriter.WriteHeader(12, "Str");
             }
         }
 
@@ -127,11 +133,12 @@ namespace Arrowgene.Ddon.Shared.Csv
                 rowWriter.Write(5, entry.a3);
                 rowWriter.Write(6, entry.a4);
                 rowWriter.Write(7, entry.a5);
-                rowWriter.Write(8, entry.Path);
-                rowWriter.Write(9, entry.Name);
-                rowWriter.Write(10, entry.KeyReadIndex);
-                rowWriter.Write(11, entry.MsgReadIndex);
-                rowWriter.Write(12, entry.Str);
+                rowWriter.Write(8, entry.GmdPath);
+                rowWriter.Write(9, entry.ArcPath);
+                rowWriter.Write(10, entry.ArcName);
+                rowWriter.Write(11, entry.KeyReadIndex);
+                rowWriter.Write(12, entry.MsgReadIndex);
+                rowWriter.Write(13, entry.Str);
             }
             else
             {
@@ -142,11 +149,12 @@ namespace Arrowgene.Ddon.Shared.Csv
                 rowWriter.Write(4, entry.a3);
                 rowWriter.Write(5, entry.a4);
                 rowWriter.Write(6, entry.a5);
-                rowWriter.Write(7, entry.Path);
-                rowWriter.Write(8, entry.Name);
-                rowWriter.Write(9, entry.KeyReadIndex);
-                rowWriter.Write(10, entry.MsgReadIndex);
-                rowWriter.Write(11, entry.Str);
+                rowWriter.Write(7, entry.GmdPath);
+                rowWriter.Write(8, entry.ArcPath);
+                rowWriter.Write(9, entry.ArcName);
+                rowWriter.Write(10, entry.KeyReadIndex);
+                rowWriter.Write(11, entry.MsgReadIndex);
+                rowWriter.Write(12, entry.Str);
             }
         }
     }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using Arrowgene.Ddon.Client;
@@ -86,20 +85,47 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
-            if (parameter.ArgumentMap.ContainsKey("packGmdCsv") 
+            if (parameter.ArgumentMap.ContainsKey("packGmdCsv")
                 && parameter.ArgumentMap.ContainsKey("packGmdRom"))
             {
                 string packGmdCsv = parameter.ArgumentMap["packGmdCsv"];
                 string packGmdRom = parameter.ArgumentMap["packGmdRom"];
-                
+
                 GmdCsv gmdCsvReader = new GmdCsv(true);
-                List<GmdIntermediateContainer> gmdCsv =gmdCsvReader.ReadPath(packGmdCsv);
-                
- 
+                List<GmdIntermediateContainer> gmdCsv = gmdCsvReader.ReadPath(packGmdCsv);
+                Dictionary<string, List<GmdIntermediateContainer>> gmdLookup =
+                    new Dictionary<string, List<GmdIntermediateContainer>>();
+                foreach (GmdIntermediateContainer gmd in gmdCsv)
+                {
+                    string gmdHash = gmd.ArcPath;
+                    List<GmdIntermediateContainer> gmds;
+                    if (!gmdLookup.ContainsKey(gmdHash))
+                    {
+                        gmds = new List<GmdIntermediateContainer>();
+                        gmdLookup.Add(gmdHash, gmds);
+                    }
+                    else
+                    {
+                        gmds = gmdLookup[gmdHash];
+                    }
+
+                    gmds.Add(gmd);
+                }
+
+                foreach (string gmdHash in gmdLookup.Keys)
+                {
+                    // all gmds from same arc file
+                    List<GmdIntermediateContainer> gmds = gmdLookup[gmdHash];
+                    foreach (GmdIntermediateContainer gmd in gmds)
+                    {
+                        // pack it back
+                    }
+                }
+
                 return CommandResultType.Exit;
             }
 
-            if (parameter.ArgumentMap.ContainsKey("gmdOrg") 
+            if (parameter.ArgumentMap.ContainsKey("gmdOrg")
                 && parameter.ArgumentMap.ContainsKey("gmdEn")
                 && parameter.ArgumentMap.ContainsKey("gmdOut"))
             {
@@ -111,7 +137,8 @@ namespace Arrowgene.Ddon.Cli.Command
 
                 // index english
                 List<GmdIntermediateContainer> gmdContainerEn = gmdCsvReader.ReadPath(gmdCsvEn);
-                Dictionary<string, GmdIntermediateContainer> gmdIndexEn = new Dictionary<string, GmdIntermediateContainer>();
+                Dictionary<string, GmdIntermediateContainer> gmdIndexEn =
+                    new Dictionary<string, GmdIntermediateContainer>();
                 foreach (GmdIntermediateContainer gmdEn in gmdContainerEn)
                 {
                     string gmdHash = gmdEn.GetUniqueQualifierLanguageAgnostic();
@@ -124,9 +151,8 @@ namespace Arrowgene.Ddon.Cli.Command
                         GmdIntermediateContainer gmdEnEx = gmdIndexEn[gmdHash];
                         int i = 1;
                     }
-                
                 }
-                
+
                 // enrich original
                 List<GmdIntermediateContainer> gmdContainerOrg = gmdCsvReader.ReadPath(gmdCsvOrg);
                 foreach (GmdIntermediateContainer gmdOrg in gmdContainerOrg)
@@ -219,7 +245,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 string outPath = Path.Combine(outDirectory.FullName, "gmd.csv");
                 GmdCsv writer = new GmdCsv(false);
                 writer.WritePath(containers, outPath);
-                
+
                 Logger.Info($"Done: {outPath}");
                 return CommandResultType.Exit;
             }
@@ -257,14 +283,28 @@ namespace Arrowgene.Ddon.Cli.Command
                     container.a3 = gmdEntry.a3;
                     container.a4 = gmdEntry.a4;
                     container.a5 = gmdEntry.a5;
-                    container.Path = gmdFile.Index.Path;
-                    container.Name = arcFile.Name;
+                    container.GmdPath = gmdFile.Index.Path;
+                    container.ArcName = arcFile.Name;
+                    string search = "nativePC\\rom";
+                    int romIdx = arcFile.FullName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase);
+                    if (romIdx == -1)
+                    {
+                        search = "nativePC/rom";
+                        romIdx = arcFile.FullName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase);
+                    }
+
+                    if (romIdx >= 0)
+                    {
+                        container.ArcPath = arcFile.FullName.Substring(romIdx + search.Length);
+                    }
+
                     container.KeyReadIndex = gmdEntry.KeyReadIndex;
                     container.MsgReadIndex = gmdEntry.MsgReadIndex;
                     container.Str = gmd.Str;
                     containers.Add(container);
                 }
             }
+
             return containers;
         }
 

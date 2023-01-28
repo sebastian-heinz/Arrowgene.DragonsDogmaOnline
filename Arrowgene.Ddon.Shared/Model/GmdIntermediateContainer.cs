@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace Arrowgene.Ddon.Shared.Model;
 
@@ -13,8 +12,9 @@ public class GmdIntermediateContainer
     public uint a3 { get; set; }
     public uint a4 { get; set; }
     public uint a5 { get; set; }
-    public string Path { get; set; }
-    public string Name { get; set; }
+    public string GmdPath { get; set; }
+    public string ArcName { get; set; }
+    public string ArcPath { get; set; }
     public uint KeyReadIndex { get; set; }
     public uint MsgReadIndex { get; set; }
     public string Str { get; set; }
@@ -29,8 +29,9 @@ public class GmdIntermediateContainer
         sb.Append(a3);
         sb.Append(a4);
         //sb.Append(a5);
-        sb.Append(Path);
-        sb.Append(Name);
+        sb.Append(GmdPath);
+        sb.Append(ArcPath);
+        sb.Append(ArcName);
         sb.Append(KeyReadIndex);
         sb.Append(MsgReadIndex);
         sb.Append(Str);
