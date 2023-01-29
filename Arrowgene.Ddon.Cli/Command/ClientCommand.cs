@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Ddon.Client.Resource.Texture;
 using Arrowgene.Ddon.Client.Resource.Texture.Dds;
 using Arrowgene.Ddon.Client.Resource.Texture.Tex;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
@@ -108,19 +109,63 @@ namespace Arrowgene.Ddon.Cli.Command
                     {
                         gmds = gmdLookup[gmdHash];
                     }
-
                     gmds.Add(gmd);
+                }
+
+                Dictionary<string, ArcArchive.ArcFile> archiveLookup =
+                    new Dictionary<string, ArcArchive.ArcFile>();
+                foreach (string gmdHash in gmdLookup.Keys)
+                {
+                    List<GmdIntermediateContainer> gmds = gmdLookup[gmdHash];
+                    ArcArchive archive = new ArcArchive();
+                    string path = Path.Combine(packGmdRom, Util.UnrootPath(gmdHash));
+                    archive.Open(path);
+                    List<ArcArchive.ArcFile> gmdFiles = archive.GetFiles(
+                        ArcArchive.Search().ByExtension("gmd")
+                    );
+                    string gmdPath = gmds[0].GmdPath;
+                    foreach (ArcArchive.ArcFile arcArchiveFile in gmdFiles)
+                    {
+                        if (gmdPath == arcArchiveFile.Index.Path)
+                        {
+                            archiveLookup.Add(gmdHash, arcArchiveFile);
+                            break;
+                        }
+                    }
                 }
 
                 foreach (string gmdHash in gmdLookup.Keys)
                 {
-                    // all gmds from same arc file
-                    List<GmdIntermediateContainer> gmds = gmdLookup[gmdHash];
-                    foreach (GmdIntermediateContainer gmd in gmds)
+                    ArcArchive.ArcFile arcFile = archiveLookup[gmdHash];
+                    List<GmdIntermediateContainer> gmdIntermediates = gmdLookup[gmdHash];
+                    List<GuiMessage.Entry> guiMessages = new List<GuiMessage.Entry>();
+                    foreach (GmdIntermediateContainer gmdIntermediate in gmdIntermediates)
                     {
-                        // pack it back
+                        GuiMessage.Entry  newEntry = new GuiMessage.Entry();
+                        newEntry.Index = gmdIntermediate.Index;
+                        newEntry.Key = gmdIntermediate.Key;
+                        newEntry.Msg = gmdIntermediate.MsgEn;
+                        newEntry.a2 = gmdIntermediate.a2;
+                        newEntry.a3 = gmdIntermediate.a3;
+                        newEntry.a4 = gmdIntermediate.a4;
+                        newEntry.a5 = gmdIntermediate.a5;
+                        newEntry.KeyReadIndex = gmdIntermediate.KeyReadIndex;
+                        newEntry.MsgReadIndex = gmdIntermediate.MsgReadIndex;
+                        guiMessages.Add(newEntry);
                     }
+                    
+                    GuiMessage gmd = new GuiMessage();
+                    gmd.Open(arcFile.Data);
+                    
+                    // override gmd entries
+                    gmd.Entries = guiMessages;
+                    
+                    
+                    // write bytes to file
                 }
+
+                
+                                    
 
                 return CommandResultType.Exit;
             }
@@ -252,7 +297,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             return CommandResultType.Exit;
         }
-
+        
         private List<GmdIntermediateContainer> ExtractGmdContainer(FileInfo arcFile)
         {
             List<GmdIntermediateContainer> containers = new List<GmdIntermediateContainer>();
