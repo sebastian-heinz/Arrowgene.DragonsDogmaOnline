@@ -15,6 +15,8 @@ namespace Arrowgene.Ddon.Client
         private const string Key = "ABB(DF2I8[{Y-oS_CCMy(@<}qR}WYX11M)w[5V.~CbjwM5q<F1Iab+-";
         private const int FileIndexSize = 80;
         private const int FileNameSize = 64;
+        private const int FileIndexSizeOffset = 6;
+        private const int FileIndexOffset = 8;
 
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ResourceFile));
         private static readonly BlowFish BlowFish = new BlowFish(Encoding.UTF8.GetBytes(Key), true);
@@ -127,12 +129,12 @@ namespace Arrowgene.Ddon.Client
         }
 
         private readonly List<FileIndex> _fileIndices;
-        private List<ArcFile> _changes;
+        private List<ArcFile> _putFiles;
 
         public ArcArchive()
         {
             _fileIndices = new List<FileIndex>();
-            _changes = new List<ArcFile>();
+            _putFiles = new List<ArcFile>();
         }
 
         public string MagicTag { get; set; }
@@ -200,15 +202,214 @@ namespace Arrowgene.Ddon.Client
 
             return null;
         }
-        
-        public void PutFile(ArcFile arcFile)
+
+        public void PutFile(string path, byte[] fileData)
         {
-            if (arcFile == null)
+            FileIndex existingIndex = null;
+            foreach (FileIndex fileIndex in _fileIndices)
             {
+                if (path == fileIndex.Path)
+                {
+                    existingIndex = fileIndex;
+                    break;
+                }
+            }
+
+            if (existingIndex != null)
+            {
+                DeleteFile(existingIndex);
+            }
+
+            FileIndex newFileIndex = new FileIndex();
+            newFileIndex.Path = path;
+            string ext = Path.GetExtension(path);
+            newFileIndex.ArcPath = path.Substring(0, path.Length - ext.Length);
+            ext = ext.TrimStart('.');
+
+            foreach (uint jamCrc in JamCrcLookup.Keys)
+            {
+                ArcExt arcExt = JamCrcLookup[jamCrc];
+                if (arcExt.Extension == ext)
+                {
+                    newFileIndex.ArcExt = arcExt;
+                    newFileIndex.JamCrc = arcExt.JamCrc;
+                    newFileIndex.Extension = arcExt.Extension;
+                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(newFileIndex.Extension))
+            {
+                // todo calculate jamcrc?
+                newFileIndex.Extension = $"{newFileIndex.JamCrc:X8}";
+            }
+
+            newFileIndex.Directory = Path.GetDirectoryName(newFileIndex.ArcPath);
+            if (newFileIndex.Directory == null)
+            {
+                newFileIndex.Directory = "";
+            }
+
+            newFileIndex.Name = $"{Path.GetFileName(newFileIndex.ArcPath)}.{newFileIndex.Extension}";
+            newFileIndex.Size = (uint)fileData.Length;
+            fileData = Compress(fileData);
+            fileData = BlowFish.Encrypt_ECB(fileData);
+            newFileIndex.Compression = ArcCompression.Normal;
+            newFileIndex.CompressedSize = (uint)fileData.Length;
+
+            using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open, FileAccess.ReadWrite);
+
+
+            newFileIndex.Offset = 0;
+            newFileIndex.IndexOffset = (uint)_fileIndices.Count * FileIndexSize;
+
+            foreach (FileIndex fi in _fileIndices)
+            {
+                uint fiDataEnd = fi.Offset + fi.CompressedSize;
+                if (fiDataEnd > newFileIndex.Offset)
+                {
+                    newFileIndex.Offset = fiDataEnd;
+                }
+            }
+
+            // insert payload
+            InsertFilePart(fs, (int)newFileIndex.Offset, fileData);
+            
+            _fileIndices.Add(newFileIndex);
+            fs.Position = FileIndexSizeOffset;
+            fs.Write(BitConverter.GetBytes((short)_fileIndices.Count));
+            
+            WriteFileIndicesChange(fs, newFileIndex, true);
+        }
+        
+        private void WriteFileIndicesChange(Stream stream, FileIndex fileIndex, bool add)
+        {
+            int currentOffset = FileIndexOffset;
+            foreach (FileIndex fi in _fileIndices)
+            {
+                fi.IndexOffset = (uint)currentOffset;
+                if (fi.Offset <= fileIndex.Offset)
+                {
+                    if (add)
+                    {
+                        fi.Offset += FileIndexSize;
+                    }
+                    else
+                    {
+                        fi.Offset -= FileIndexSize;
+                    }
+                }
+                else if (fi.Offset > fileIndex.Offset)
+                {
+                    if (add)
+                    {
+                        fi.Offset += (fileIndex.CompressedSize + FileIndexSize);
+                    }
+                    else
+                    {
+                        fi.Offset -= (fileIndex.CompressedSize + FileIndexSize);
+                    }
+                }
+
+                currentOffset += FileIndexSize;
+            }
+
+        }
+        
+        private void WriteFileIndices(Stream stream)
+        {
+            foreach (FileIndex fi in _fileIndices)
+            {
+                byte[] indexBytes = SerializeFileIndex(fi);
+                stream.Position = fi.IndexOffset;
+                stream.Write(indexBytes);
+            }
+        }
+
+        private byte[] SerializeFileIndex(FileIndex fileIndex)
+        {
+            IBuffer fileIndexBuffer = new StreamBuffer();
+            fileIndexBuffer.WriteFixedString(fileIndex.ArcPath, FileNameSize);
+            fileIndexBuffer.WriteUInt32(fileIndex.JamCrc);
+            fileIndexBuffer.WriteUInt32(fileIndex.CompressedSize);
+            uint sizeBits = fileIndex.Size;
+            uint compressionBits = (uint)fileIndex.Compression;
+            uint flags = sizeBits
+                         | compressionBits << 29;
+            fileIndexBuffer.WriteUInt32(flags);
+            fileIndexBuffer.WriteUInt32(fileIndex.Offset);
+            byte[] buffer = fileIndexBuffer.GetAllBytes();
+            buffer = BlowFish.Encrypt_ECB(buffer);
+            return buffer;
+        }
+
+
+        public void DeleteFile(FileIndex fileIndex)
+        {
+            if (!_fileIndices.Contains(fileIndex))
+            {
+                Logger.Error($"fileIndex not part of this ARC file");
                 return;
             }
-            
-            _changes.Add(arcFile);
+
+            using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open, FileAccess.ReadWrite);
+            // delete payload
+            DeleteFilePart(fs, (int)fileIndex.Offset, (int)fileIndex.CompressedSize);
+            // delete index
+            DeleteFilePart(fs, (int)fileIndex.IndexOffset, FileIndexSize);
+            // adjust header
+            _fileIndices.Remove(fileIndex);
+            fs.Position = FileIndexSizeOffset;
+            fs.Write(BitConverter.GetBytes((short)_fileIndices.Count));
+            WriteFileIndicesChange(fs, fileIndex, false);
+        }
+
+        private void DeleteFilePart(Stream fs, int offset, int size)
+        {
+            fs.Position = offset + size;
+            using MemoryStream mem = new MemoryStream();
+            byte[] buffer = new byte[2048]; // read in chunks of 2KB
+            int bytesRead;
+
+            // delete body bytes
+            while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                mem.Write(buffer, 0, bytesRead);
+            }
+
+            fs.Position = offset;
+            mem.Position = 0;
+            while ((bytesRead = mem.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                fs.Write(buffer, 0, bytesRead);
+            }
+
+            fs.SetLength(fs.Position);
+            fs.Flush();
+        }
+
+        private void InsertFilePart(Stream fs, int offset, byte[] data)
+        {
+            using MemoryStream mem = new MemoryStream();
+            byte[] buffer = new byte[2048]; // read in chunks of 2KB
+            int bytesRead;
+
+            fs.Position = offset;
+            while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                mem.Write(buffer, 0, bytesRead);
+            }
+
+            fs.Position = offset;
+            fs.Write(data, 0, data.Length);
+
+            while ((bytesRead = mem.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                fs.Write(buffer, 0, bytesRead);
+            }
+
+            fs.SetLength(fs.Position);
+            fs.Flush();
         }
 
         /// <summary>
@@ -346,6 +547,7 @@ namespace Arrowgene.Ddon.Client
                 entry = BlowFish.Decrypt_ECB(entry);
                 IBuffer entryBuffer = new StreamBuffer(entry);
                 entryBuffer.Position = 0;
+                fileIndex.IndexOffset = (uint)buffer.Position;
                 fileIndex.ArcPath = entryBuffer.ReadFixedString(FileNameSize);
                 fileIndex.Directory = Path.GetDirectoryName(fileIndex.ArcPath);
                 if (fileIndex.Directory == null)
@@ -368,8 +570,10 @@ namespace Arrowgene.Ddon.Client
                 fileIndex.Path = Path.Combine(fileIndex.Directory, fileIndex.Name);
                 fileIndex.CompressedSize = ReadUInt32(entryBuffer);
                 uint flags = ReadUInt32(entryBuffer);
-                fileIndex.Compression = (ArcCompression)((flags >> 0x1D) & 0x07);
-                fileIndex.Size = flags & 0x1FFFFFFFU;
+                uint sizeBits = flags & ((1 << 29) - 1);
+                uint compressionBits = (flags >> 29) & ((1 << 3) - 1);
+                fileIndex.Compression = (ArcCompression)compressionBits;
+                fileIndex.Size = sizeBits;
                 fileIndex.Offset = ReadUInt32(entryBuffer);
                 _fileIndices.Add(fileIndex);
             }
@@ -377,12 +581,9 @@ namespace Arrowgene.Ddon.Client
 
         protected override void Write(IBuffer buffer)
         {
-            
-            
-            
-            
-            
-            
+            byte[] magicTag = Encoding.UTF8.GetBytes(MagicTag);
+            buffer.WriteBytes(magicTag);
+            buffer.WriteUInt16(MagicId);
             throw new NotImplementedException();
         }
 
@@ -581,6 +782,7 @@ namespace Arrowgene.Ddon.Client
 
         public class FileIndex
         {
+            public uint IndexOffset { get; set; }
             public string Name { get; set; }
             public string Directory { get; set; }
             public string ArcPath { get; set; }

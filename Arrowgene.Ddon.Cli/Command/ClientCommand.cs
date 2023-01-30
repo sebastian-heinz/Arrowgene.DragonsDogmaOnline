@@ -168,10 +168,13 @@ namespace Arrowgene.Ddon.Cli.Command
                     
                     ArcArchive archive = new ArcArchive();
                     string path = Path.Combine(packGmdRom, Util.UnrootPath(gmdHash));
+                    path = "C:\\Users\\nxspirit\\Downloads\\DragonsDogmaOnlineEn\\character_edit_select_org - Copy.arc";
                     archive.Open(path);
-                    archive.PutFile(arcFile);
-                    byte[] newArchive = archive.Save();
-                    File.WriteAllBytes("C:\\Users\\nxspirit\\Downloads\\" + gmdHash + ".new", newArchive);
+                    archive.PutFile(arcFile.Index.Path, arcFile.Data);
+                   // byte[] newArchive = archive.Save();
+                  //  File.WriteAllBytes("C:\\Users\\nxspirit\\Downloads\\" + gmdHash + ".new", newArchive);
+                    
+                    break;
                 }
 
 
