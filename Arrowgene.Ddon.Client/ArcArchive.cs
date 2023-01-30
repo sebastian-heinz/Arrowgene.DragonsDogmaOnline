@@ -17,6 +17,7 @@ namespace Arrowgene.Ddon.Client
         private const int FileNameSize = 64;
         private const int FileIndexSizeOffset = 6;
         private const int FileIndexOffset = 8;
+        private const int FileDataOffset = 0x8000;
 
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ResourceFile));
         private static readonly BlowFish BlowFish = new BlowFish(Encoding.UTF8.GetBytes(Key), true);
@@ -272,50 +273,56 @@ namespace Arrowgene.Ddon.Client
                 }
             }
 
+            newFileIndex.Offset += FileIndexSize;
+
             // insert payload
             InsertFilePart(fs, (int)newFileIndex.Offset, fileData);
-            
+
             _fileIndices.Add(newFileIndex);
             fs.Position = FileIndexSizeOffset;
             fs.Write(BitConverter.GetBytes((short)_fileIndices.Count));
-            
+
             WriteFileIndicesChange(fs, newFileIndex, true);
         }
-        
+
         private void WriteFileIndicesChange(Stream stream, FileIndex fileIndex, bool add)
         {
             int currentOffset = FileIndexOffset;
             foreach (FileIndex fi in _fileIndices)
             {
                 fi.IndexOffset = (uint)currentOffset;
-                if (fi.Offset <= fileIndex.Offset)
+                if (fileIndex != fi)
                 {
-                    if (add)
+                    if (fi.Offset <= fileIndex.Offset)
                     {
-                        fi.Offset += FileIndexSize;
+                        if (add)
+                        {
+                            fi.Offset += FileIndexSize;
+                        }
+                        else
+                        {
+                            fi.Offset -= FileIndexSize;
+                        }
                     }
-                    else
+                    else if (fi.Offset > fileIndex.Offset)
                     {
-                        fi.Offset -= FileIndexSize;
-                    }
-                }
-                else if (fi.Offset > fileIndex.Offset)
-                {
-                    if (add)
-                    {
-                        fi.Offset += (fileIndex.CompressedSize + FileIndexSize);
-                    }
-                    else
-                    {
-                        fi.Offset -= (fileIndex.CompressedSize + FileIndexSize);
+                        if (add)
+                        {
+                            fi.Offset += (fileIndex.CompressedSize + FileIndexSize);
+                        }
+                        else
+                        {
+                            fi.Offset -= (fileIndex.CompressedSize + FileIndexSize);
+                        }
                     }
                 }
 
                 currentOffset += FileIndexSize;
             }
 
+            WriteFileIndices(stream);
         }
-        
+
         private void WriteFileIndices(Stream stream)
         {
             foreach (FileIndex fi in _fileIndices)
@@ -324,6 +331,8 @@ namespace Arrowgene.Ddon.Client
                 stream.Position = fi.IndexOffset;
                 stream.Write(indexBytes);
             }
+
+            stream.Write(new byte[FileDataOffset - stream.Position]);
         }
 
         private byte[] SerializeFileIndex(FileIndex fileIndex)
@@ -355,8 +364,6 @@ namespace Arrowgene.Ddon.Client
             using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open, FileAccess.ReadWrite);
             // delete payload
             DeleteFilePart(fs, (int)fileIndex.Offset, (int)fileIndex.CompressedSize);
-            // delete index
-            DeleteFilePart(fs, (int)fileIndex.IndexOffset, FileIndexSize);
             // adjust header
             _fileIndices.Remove(fileIndex);
             fs.Position = FileIndexSizeOffset;
@@ -543,11 +550,11 @@ namespace Arrowgene.Ddon.Client
             {
                 FileIndex fileIndex = new FileIndex();
 
+                fileIndex.IndexOffset = (uint)buffer.Position;
                 byte[] entry = buffer.ReadBytes(FileIndexSize);
                 entry = BlowFish.Decrypt_ECB(entry);
                 IBuffer entryBuffer = new StreamBuffer(entry);
                 entryBuffer.Position = 0;
-                fileIndex.IndexOffset = (uint)buffer.Position;
                 fileIndex.ArcPath = entryBuffer.ReadFixedString(FileNameSize);
                 fileIndex.Directory = Path.GetDirectoryName(fileIndex.ArcPath);
                 if (fileIndex.Directory == null)
@@ -614,6 +621,21 @@ namespace Arrowgene.Ddon.Client
             {
                 int count = decompressor.Inflate(buf);
                 bos.Write(buf, 0, count);
+                if (count == 0 && !decompressor.IsFinished)
+                {
+                    if (decompressor.IsNeedingDictionary)
+                    {
+                        Logger.Error("ecompressor.IsNeedingDictionary");
+                    }
+                    else if (decompressor.IsNeedingInput)
+                    {
+                        Logger.Error("decompressor.IsNeedingInput");
+                    }
+                    else
+                    {
+                        Logger.Error("Unknown Decompression Error");
+                    }
+                }
             }
 
             return bos.ToArray();
