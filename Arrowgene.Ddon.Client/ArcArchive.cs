@@ -32,8 +32,9 @@ namespace Arrowgene.Ddon.Client
             arcExt.JamCrcStr = $"0x{arcExt.JamCrc:X8}";
             JamCrcLookup.Add(arcExt.JamCrc, arcExt);
         }
-        
-        public static T GetFile<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ClientFile, new()
+
+        public static T GetFile<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null)
+            where T : ClientFile, new()
         {
             ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, true);
             if (arcFile == null)
@@ -46,7 +47,8 @@ namespace Arrowgene.Ddon.Client
             return file;
         }
 
-        public static T GetResource<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
+        public static T GetResource<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null)
+            where T : ResourceFile, new()
         {
             ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, true);
             if (arcFile == null)
@@ -59,7 +61,8 @@ namespace Arrowgene.Ddon.Client
             return resource;
         }
 
-        public static T GetResource_NoLog<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
+        public static T GetResource_NoLog<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null)
+            where T : ResourceFile, new()
         {
             ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, false);
             if (arcFile == null)
@@ -104,7 +107,7 @@ namespace Arrowgene.Ddon.Client
 
             return arcFile;
         }
-        
+
         public static FileIndexSearch Search()
         {
             return new FileIndexSearch();
@@ -124,10 +127,12 @@ namespace Arrowgene.Ddon.Client
         }
 
         private readonly List<FileIndex> _fileIndices;
+        private List<ArcFile> _changes;
 
         public ArcArchive()
         {
             _fileIndices = new List<FileIndex>();
+            _changes = new List<ArcFile>();
         }
 
         public string MagicTag { get; set; }
@@ -195,6 +200,16 @@ namespace Arrowgene.Ddon.Client
 
             return null;
         }
+        
+        public void PutFile(ArcFile arcFile)
+        {
+            if (arcFile == null)
+            {
+                return;
+            }
+            
+            _changes.Add(arcFile);
+        }
 
         /// <summary>
         /// Extract all files into the given rootPath.
@@ -237,7 +252,7 @@ namespace Arrowgene.Ddon.Client
 
             File.WriteAllBytes(fileInfo.FullName, f.Data);
         }
-        
+
         /// <summary>
         /// Retrieve a ArcFile from an index
         /// </summary>
@@ -271,7 +286,7 @@ namespace Arrowgene.Ddon.Client
             }
 
             var fileData = new byte[fileIndex.CompressedSize];
-            int remaining = (int) fileIndex.CompressedSize;
+            int remaining = (int)fileIndex.CompressedSize;
             int offset = 0;
             using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open);
             if (fileIndex.Offset + remaining > fs.Length)
@@ -353,11 +368,22 @@ namespace Arrowgene.Ddon.Client
                 fileIndex.Path = Path.Combine(fileIndex.Directory, fileIndex.Name);
                 fileIndex.CompressedSize = ReadUInt32(entryBuffer);
                 uint flags = ReadUInt32(entryBuffer);
-                fileIndex.Compression = (ArcCompression) ((flags >> 0x1D) & 0x07);
+                fileIndex.Compression = (ArcCompression)((flags >> 0x1D) & 0x07);
                 fileIndex.Size = flags & 0x1FFFFFFFU;
                 fileIndex.Offset = ReadUInt32(entryBuffer);
                 _fileIndices.Add(fileIndex);
             }
+        }
+
+        protected override void Write(IBuffer buffer)
+        {
+            
+            
+            
+            
+            
+            
+            throw new NotImplementedException();
         }
 
         private byte[] Compress(byte[] input, int level = Deflater.BEST_COMPRESSION)
@@ -447,7 +473,7 @@ namespace Arrowgene.Ddon.Client
                 {
                     return true;
                 }
-                
+
                 if (Option.HasFlag(SearchOption.ArcPath))
                 {
                     if (fileIndex.ArcPath != null

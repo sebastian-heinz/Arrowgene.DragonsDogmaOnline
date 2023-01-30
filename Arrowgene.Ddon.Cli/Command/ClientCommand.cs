@@ -109,6 +109,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     {
                         gmds = gmdLookup[gmdHash];
                     }
+
                     gmds.Add(gmd);
                 }
 
@@ -141,7 +142,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     List<GuiMessage.Entry> guiMessages = new List<GuiMessage.Entry>();
                     foreach (GmdIntermediateContainer gmdIntermediate in gmdIntermediates)
                     {
-                        GuiMessage.Entry  newEntry = new GuiMessage.Entry();
+                        GuiMessage.Entry newEntry = new GuiMessage.Entry();
                         newEntry.Index = gmdIntermediate.Index;
                         newEntry.Key = gmdIntermediate.Key;
                         newEntry.Msg = gmdIntermediate.MsgEn;
@@ -153,19 +154,26 @@ namespace Arrowgene.Ddon.Cli.Command
                         newEntry.MsgReadIndex = gmdIntermediate.MsgReadIndex;
                         guiMessages.Add(newEntry);
                     }
-                    
+
                     GuiMessage gmd = new GuiMessage();
                     gmd.Open(arcFile.Data);
+                    if (gmd.Entries.Count != guiMessages.Count)
+                    {
+                      Logger.Error("gmd.Entries.Count != guiMessages.Count");
+                    }
+
+                    gmd.Entries.Clear();
+                    gmd.Entries.AddRange(guiMessages);
+                    arcFile.Data = gmd.Save();
                     
-                    // override gmd entries
-                    gmd.Entries = guiMessages;
-                    
-                    
-                    // write bytes to file
+                    ArcArchive archive = new ArcArchive();
+                    string path = Path.Combine(packGmdRom, Util.UnrootPath(gmdHash));
+                    archive.Open(path);
+                    archive.PutFile(arcFile);
+                    byte[] newArchive = archive.Save();
+                    File.WriteAllBytes("C:\\Users\\nxspirit\\Downloads\\" + gmdHash + ".new", newArchive);
                 }
 
-                
-                                    
 
                 return CommandResultType.Exit;
             }
@@ -297,7 +305,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             return CommandResultType.Exit;
         }
-        
+
         private List<GmdIntermediateContainer> ExtractGmdContainer(FileInfo arcFile)
         {
             List<GmdIntermediateContainer> containers = new List<GmdIntermediateContainer>();

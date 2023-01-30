@@ -26,6 +26,10 @@ namespace Arrowgene.Ddon.Client.Resource
         public List<Entry> Entries { get; }
         public byte[] unk { get; set; }
         public string Str { get; set; }
+        public uint Version { get; set; }
+        public uint A { get; set; }
+        public uint B { get; set; }
+        public uint C { get; set; }
 
         public GuiMessage()
         {
@@ -34,10 +38,10 @@ namespace Arrowgene.Ddon.Client.Resource
 
         protected override void ReadResource(IBuffer buffer)
         {
-            uint version = ReadUInt32(buffer);
-            uint a = ReadUInt32(buffer);
-            uint b = ReadUInt32(buffer);
-            uint c = ReadUInt32(buffer);
+            Version = ReadUInt32(buffer);
+            A = ReadUInt32(buffer);
+            B = ReadUInt32(buffer);
+            C = ReadUInt32(buffer);
             uint keyCount = ReadUInt32(buffer);
             uint stringCount = ReadUInt32(buffer);
             uint keySize = ReadUInt32(buffer);
@@ -45,7 +49,6 @@ namespace Arrowgene.Ddon.Client.Resource
             uint strLen = ReadUInt32(buffer);
             Str = buffer.ReadString((int)strLen);
             buffer.ReadByte(); // str null-termination
-
 
             if (keyCount > 0 && keyCount != stringCount)
             {
@@ -94,6 +97,84 @@ namespace Arrowgene.Ddon.Client.Resource
 
             Entries.Clear();
             Entries.AddRange(entries);
+        }
+
+        protected override void WriteResource(IBuffer buffer)
+        {
+            List<Entry> keys = new List<Entry>();
+            List<Entry> strings = new List<Entry>();
+            foreach (Entry entry in Entries)
+            {
+                if (string.IsNullOrEmpty(entry.Key))
+                {
+                    strings.Add(entry);
+                }
+                else
+                {
+                    keys.Add(entry);
+                }
+            }
+
+            keys.Sort((x, y) => x.KeyReadIndex.CompareTo(y.KeyReadIndex));
+            strings.Sort((x, y) => x.MsgReadIndex.CompareTo(y.MsgReadIndex));
+
+            uint keyCount = (uint)keys.Count;
+            uint stringCount = (uint)strings.Count;
+            uint keySize = 0;
+            uint stringSize = 0;
+            uint strLen = (uint)Str.Length;
+
+            buffer.WriteUInt32(Version);
+            buffer.WriteUInt32(A);
+            buffer.WriteUInt32(B);
+            buffer.WriteUInt32(C);
+            buffer.WriteUInt32(C);
+            buffer.WriteUInt32(keyCount);
+            buffer.WriteUInt32(stringCount);
+            //
+            int sizePosition = buffer.Position;
+            buffer.WriteUInt32(keySize);
+            buffer.WriteUInt32(stringSize);
+            //
+            buffer.WriteUInt32(strLen);
+            buffer.WriteString(Str);
+            buffer.WriteByte(0); // str null-termination
+
+            keySize = (uint)buffer.Position;
+            if (keyCount > 0)
+            {
+                foreach (Entry key in keys)
+                {
+                    buffer.WriteUInt32(key.Index);
+                    buffer.WriteUInt32(key.a2);
+                    buffer.WriteUInt32(key.a3);
+                    buffer.WriteUInt32(key.a4);
+                    buffer.WriteUInt32(key.a5);
+                }
+
+                buffer.WriteBytes(unk);
+                foreach (Entry key in keys)
+                {
+                    buffer.WriteCString(key.Msg, Encoding.UTF8);
+                }
+            }
+
+            keySize = (uint)buffer.Position - keySize;
+
+            stringSize = (uint)buffer.Position;
+            foreach (Entry str in strings)
+            {
+                buffer.WriteUInt32(str.Index);
+                buffer.WriteCString(str.Msg, Encoding.UTF8);
+            }
+
+            stringSize = (uint)buffer.Position - stringSize;
+
+            int tmpPosition = buffer.Position;
+            buffer.Position = sizePosition;
+            buffer.WriteUInt32(keySize);
+            buffer.WriteUInt32(stringSize);
+            buffer.Position = tmpPosition;
         }
     }
 }
