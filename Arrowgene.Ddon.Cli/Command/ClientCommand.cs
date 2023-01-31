@@ -145,7 +145,7 @@ namespace Arrowgene.Ddon.Cli.Command
                         GuiMessage.Entry newEntry = new GuiMessage.Entry();
                         newEntry.Index = gmdIntermediate.Index;
                         newEntry.Key = gmdIntermediate.Key;
-                        newEntry.Msg = gmdIntermediate.MsgEn;
+                        newEntry.Msg = "PLEASE WORK";
                         newEntry.a2 = gmdIntermediate.a2;
                         newEntry.a3 = gmdIntermediate.a3;
                         newEntry.a4 = gmdIntermediate.a4;
@@ -174,9 +174,7 @@ namespace Arrowgene.Ddon.Cli.Command
                         ArcArchive.Search()
                     );
                     archive.PutFile(arcFile.Index.Path, arcFile.Data);
-                   // byte[] newArchive = archive.Save();
-                  //  File.WriteAllBytes("C:\\Users\\nxspirit\\Downloads\\" + gmdHash + ".new", newArchive);
-                    
+
                     break;
                 }
 

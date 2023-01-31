@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Client.Resource
         }
 
         public List<Entry> Entries { get; }
-        public byte[] unk { get; set; }
+        public byte[] Unknown { get; set; }
         public string Str { get; set; }
         public uint Version { get; set; }
         public uint A { get; set; }
@@ -78,7 +78,7 @@ namespace Arrowgene.Ddon.Client.Resource
                     entry.a5 = ReadUInt32(buffer);
                 }
 
-                unk = buffer.ReadBytes(1024); // hashTable?
+                Unknown = buffer.ReadBytes(1024); // hashTable?
 
                 for (uint i = 0; i < keyCount; i++)
                 {
@@ -101,25 +101,21 @@ namespace Arrowgene.Ddon.Client.Resource
 
         protected override void WriteResource(IBuffer buffer)
         {
-            List<Entry> keys = new List<Entry>();
-            List<Entry> strings = new List<Entry>();
+
+            uint keyCount = 0;
+            uint stringCount = 0;
             foreach (Entry entry in Entries)
             {
-                if (string.IsNullOrEmpty(entry.Key))
+                if (!string.IsNullOrEmpty(entry.Key))
                 {
-                    strings.Add(entry);
+                    keyCount++;
                 }
-                else
-                {
-                    keys.Add(entry);
-                }
+
+                stringCount++;
             }
-
-            keys.Sort((x, y) => x.KeyReadIndex.CompareTo(y.KeyReadIndex));
-            strings.Sort((x, y) => x.MsgReadIndex.CompareTo(y.MsgReadIndex));
-
-            uint keyCount = (uint)keys.Count;
-            uint stringCount = (uint)strings.Count;
+            
+            Entries.Sort((x, y) => x.MsgReadIndex.CompareTo(y.MsgReadIndex));
+            
             uint keySize = 0;
             uint stringSize = 0;
             uint strLen = (uint)Str.Length;
@@ -127,7 +123,6 @@ namespace Arrowgene.Ddon.Client.Resource
             buffer.WriteUInt32(Version);
             buffer.WriteUInt32(A);
             buffer.WriteUInt32(B);
-            buffer.WriteUInt32(C);
             buffer.WriteUInt32(C);
             buffer.WriteUInt32(keyCount);
             buffer.WriteUInt32(stringCount);
@@ -143,29 +138,28 @@ namespace Arrowgene.Ddon.Client.Resource
             keySize = (uint)buffer.Position;
             if (keyCount > 0)
             {
-                foreach (Entry key in keys)
+                for (int i = 0; i < keyCount; i++)
                 {
-                    buffer.WriteUInt32(key.Index);
-                    buffer.WriteUInt32(key.a2);
-                    buffer.WriteUInt32(key.a3);
-                    buffer.WriteUInt32(key.a4);
-                    buffer.WriteUInt32(key.a5);
+                    buffer.WriteUInt32(Entries[i].Index);
+                    buffer.WriteUInt32(Entries[i].a2);
+                    buffer.WriteUInt32(Entries[i].a3);
+                    buffer.WriteUInt32(Entries[i].a4);
+                    buffer.WriteUInt32(Entries[i].a5);
                 }
 
-                buffer.WriteBytes(unk);
-                foreach (Entry key in keys)
+                buffer.WriteBytes(Unknown);
+                for (int i = 0; i < keyCount; i++)
                 {
-                    buffer.WriteCString(key.Msg, Encoding.UTF8);
+                    buffer.WriteCString(Entries[i].Key, Encoding.UTF8);
                 }
             }
 
             keySize = (uint)buffer.Position - keySize;
 
             stringSize = (uint)buffer.Position;
-            foreach (Entry str in strings)
+            for (int i = 0; i < stringCount; i++)
             {
-                buffer.WriteUInt32(str.Index);
-                buffer.WriteCString(str.Msg, Encoding.UTF8);
+                buffer.WriteCString(Entries[i].Msg, Encoding.UTF8);
             }
 
             stringSize = (uint)buffer.Position - stringSize;
