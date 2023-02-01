@@ -159,13 +159,13 @@ namespace Arrowgene.Ddon.Cli.Command
                     gmd.Open(arcFile.Data);
                     if (gmd.Entries.Count != guiMessages.Count)
                     {
-                      Logger.Error("gmd.Entries.Count != guiMessages.Count");
+                        Logger.Error("gmd.Entries.Count != guiMessages.Count");
                     }
 
                     gmd.Entries.Clear();
                     gmd.Entries.AddRange(guiMessages);
                     arcFile.Data = gmd.Save();
-                    
+
                     ArcArchive archive = new ArcArchive();
                     string path = Path.Combine(packGmdRom, Util.UnrootPath(gmdHash));
                     path = "C:\\Users\\nxspirit\\Downloads\\character_edit_select - Copy.arc";
@@ -399,8 +399,9 @@ namespace Arrowgene.Ddon.Cli.Command
                 string relativePath = filePath.Substring(romDirectory.FullName.Length);
                 ArcArchive archive = new ArcArchive();
                 archive.Open(filePath);
-                foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
+                foreach (ArcArchive.ArcFile file in archive.GetFiles())
                 {
+                    ArcArchive.FileIndex fi = file.Index;
                     sb.Append($"{relativePath},{fi.ArcPath}.{fi.ArcExt.Extension},{fi.ArcExt.Extension},");
                     sb.Append($"{fi.ArcExt.JamCrcStr},{fi.ArcExt.Class},{fi.JamCrc},");
                     sb.Append($"{fi.Size},{fi.CompressedSize},{fi.Offset}{Environment.NewLine}");
@@ -449,14 +450,9 @@ namespace Arrowgene.Ddon.Cli.Command
         {
             ArcArchive archive = new ArcArchive();
             archive.Open(fileInfo.FullName);
-            foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
+            foreach (ArcArchive.ArcFile af in archive.GetFiles())
             {
-                ArcArchive.ArcFile af = archive.GetFile(fi);
-                if (af == null)
-                {
-                    continue;
-                }
-
+                ArcArchive.FileIndex fi = af.Index;
                 string outDirectory = Path.Combine(outDir.FullName, fileInfo.Name, fi.Directory);
                 if (!Directory.Exists(outDirectory))
                 {

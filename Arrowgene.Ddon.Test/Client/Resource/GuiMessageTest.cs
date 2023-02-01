@@ -1,10 +1,25 @@
-﻿using Arrowgene.Ddon.Client.Resource;
+﻿using System.IO;
+using Arrowgene.Ddon.Client.Resource;
 using Xunit;
 
 namespace Arrowgene.Ddon.Test.Client.Resource;
 
 public class GuiMessageTest
 {
+    [Fact]
+    public void TestGmdSerialisation()
+    {
+        string gmdDump = TestUtils.GetTestPath("gmd_dump.bin");
+        byte[] gmd = File.ReadAllBytes(gmdDump);
+        GuiMessage gmdM = new GuiMessage();
+        gmdM.Open(gmd);
+        byte[] saved = gmdM.Save();
+        for (int i = 0; i < gmd.Length; i++)
+        {
+            Assert.Equal(gmd[i], saved[i]);
+        }
+    }
+
     [Fact]
     public void TestGmdSerialisationA()
     {
@@ -141,6 +156,13 @@ public class GuiMessageTest
             Assert.Equal(entryExpected.a5, entryActual.a5);
             Assert.Equal(entryExpected.KeyReadIndex, entryActual.KeyReadIndex);
             Assert.Equal(entryExpected.MsgReadIndex, entryActual.MsgReadIndex);
+        }
+
+        byte[] expectedBytes = expected.Save();
+        byte[] actualBytes = actual.Save();
+        for (int i = 0; i < expectedBytes.Length; i++)
+        {
+            Assert.Equal(expectedBytes[i], actualBytes[i]);
         }
     }
 }

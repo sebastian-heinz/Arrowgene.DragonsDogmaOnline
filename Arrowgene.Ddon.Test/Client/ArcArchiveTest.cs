@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Client;
+﻿using System.IO;
+using Arrowgene.Ddon.Client;
 using Xunit;
 
 namespace Arrowgene.Ddon.Test.Client;
@@ -17,5 +18,24 @@ public class ArcArchiveTest
                        | compressionBits3__29_31 << 29;
 
         Assert.True(flags == reFlags);
+    }
+
+    [Fact]
+    public void TestArcPacking()
+    {
+        string arcTest = TestUtils.GetTestPath("arc_test.bin");
+        byte[] arcBytes = File.ReadAllBytes(arcTest);
+        ArcArchive archive = new ArcArchive();
+        archive.Open(arcBytes);
+        byte[] savedArcBytes = archive.Save();
+        File.WriteAllBytes(arcTest + ".1.bin", savedArcBytes);
+
+        archive.Open(savedArcBytes);
+        byte[] savedArcBytesTwo = archive.Save();
+        File.WriteAllBytes(arcTest + ".2.bin", savedArcBytesTwo);
+
+
+        Assert.Equal(savedArcBytes, savedArcBytesTwo);
+        Assert.Equal(arcBytes, savedArcBytes);
     }
 }

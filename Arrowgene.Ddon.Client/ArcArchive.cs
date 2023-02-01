@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
 using ICSharpCode.SharpZipLib.Zip.Compression;
+using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddon.Client
 {
@@ -15,7 +16,6 @@ namespace Arrowgene.Ddon.Client
         private const string Key = "ABB(DF2I8[{Y-oS_CCMy(@<}qR}WYX11M)w[5V.~CbjwM5q<F1Iab+-";
         private const int FileIndexSize = 80;
         private const int FileNameSize = 64;
-        private const int FileIndexSizeOffset = 6;
         private const int FileIndexOffset = 8;
         private const int FileDataOffset = 0x8000;
 
@@ -129,13 +129,11 @@ namespace Arrowgene.Ddon.Client
             return path;
         }
 
-        private readonly List<FileIndex> _fileIndices;
-        private List<ArcFile> _putFiles;
+        private List<ArcFile> _files;
 
         public ArcArchive()
         {
-            _fileIndices = new List<FileIndex>();
-            _putFiles = new List<ArcFile>();
+            _files = new List<ArcFile>();
         }
 
         public string MagicTag { get; set; }
@@ -144,43 +142,29 @@ namespace Arrowgene.Ddon.Client
         /// <summary>
         /// Returns all file indices from this archive.
         /// </summary>
-        public List<FileIndex> GetFileIndices()
+        public List<ArcFile> GetFiles()
         {
-            return new List<FileIndex>(_fileIndices);
+            return new List<ArcFile>(_files);
         }
 
         /// <summary>
         /// Returns a list of all matching FileIndices.
         /// </summary>
-        public List<FileIndex> GetFileIndices(FileIndexSearch search)
+        public List<ArcFile> GetFiles(FileIndexSearch search)
         {
-            List<FileIndex> fileIndices = new List<FileIndex>();
+            List<ArcFile> arcFiles = new List<ArcFile>();
             if (search != null)
             {
-                foreach (FileIndex index in _fileIndices)
+                foreach (ArcFile arcFile in _files)
                 {
-                    if (search.Match(index))
+                    if (search.Match(arcFile.Index))
                     {
-                        fileIndices.Add(index);
+                        arcFiles.Add(arcFile);
                     }
                 }
             }
 
-            return fileIndices;
-        }
-
-        /// <summary>
-        /// Returns a list of all matching files.
-        /// </summary>
-        public List<ArcFile> GetFiles(FileIndexSearch search)
-        {
-            List<ArcFile> files = new List<ArcFile>();
-            foreach (FileIndex index in GetFileIndices(search))
-            {
-                files.Add(GetFile(index));
-            }
-
-            return files;
+            return arcFiles;
         }
 
         /// <summary>
@@ -188,37 +172,24 @@ namespace Arrowgene.Ddon.Client
         /// </summary>
         public ArcFile GetFile(FileIndexSearch search)
         {
-            if (search == null)
-            {
-                return null;
-            }
-
-            foreach (FileIndex index in _fileIndices)
-            {
-                if (search.Match(index))
-                {
-                    return GetFile(index);
-                }
-            }
-
-            return null;
+            return GetFiles(search)[0];
         }
 
-        public void PutFile(string path, byte[] fileData)
+        public ArcFile PutFile(string path, byte[] fileData)
         {
-            FileIndex existingIndex = null;
-            foreach (FileIndex fileIndex in _fileIndices)
+            ArcFile existingFile = null;
+            foreach (ArcFile file in _files)
             {
-                if (path == fileIndex.Path)
+                if (path == file.Index.Path)
                 {
-                    existingIndex = fileIndex;
+                    existingFile = file;
                     break;
                 }
             }
 
-            if (existingIndex != null)
+            if (existingFile != null)
             {
-                DeleteFile(existingIndex);
+                DeleteFile(existingFile);
             }
 
             FileIndex newFileIndex = new FileIndex();
@@ -253,87 +224,143 @@ namespace Arrowgene.Ddon.Client
 
             newFileIndex.Name = $"{Path.GetFileName(newFileIndex.ArcPath)}.{newFileIndex.Extension}";
             newFileIndex.Size = (uint)fileData.Length;
-            fileData = Compress(fileData);
-            fileData = BlowFish.Encrypt_ECB(fileData);
+            fileData = SerializeFileData(fileData);
             newFileIndex.Compression = ArcCompression.Normal;
             newFileIndex.CompressedSize = (uint)fileData.Length;
 
-            using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open, FileAccess.ReadWrite);
-
-
             newFileIndex.Offset = 0;
-            newFileIndex.IndexOffset = (uint)_fileIndices.Count * FileIndexSize;
+            newFileIndex.IndexOffset = 0;
 
-            foreach (FileIndex fi in _fileIndices)
-            {
-                uint fiDataEnd = fi.Offset + fi.CompressedSize;
-                if (fiDataEnd > newFileIndex.Offset)
-                {
-                    newFileIndex.Offset = fiDataEnd;
-                }
-            }
 
-            newFileIndex.Offset += FileIndexSize;
-
-            // insert payload
-            InsertFilePart(fs, (int)newFileIndex.Offset, fileData);
-
-            _fileIndices.Add(newFileIndex);
-            fs.Position = FileIndexSizeOffset;
-            fs.Write(BitConverter.GetBytes((short)_fileIndices.Count));
-
-            WriteFileIndicesChange(fs, newFileIndex, true);
+            ArcFile newArcFile = new ArcFile();
+            newArcFile.Index = newFileIndex;
+            newArcFile.Data = fileData;
+            _files.Add(newArcFile);
+            return newArcFile;
         }
 
-        private void WriteFileIndicesChange(Stream stream, FileIndex fileIndex, bool add)
+        public void DeleteFile(ArcFile file)
         {
-            int currentOffset = FileIndexOffset;
-            foreach (FileIndex fi in _fileIndices)
+            _files.Remove(file);
+        }
+
+        /// <summary>
+        /// Extract all files into the given rootPath.
+        /// Preserving the arc directory structure.
+        /// Directories that do not exists will be created.
+        /// </summary>
+        public void ExtractArchive(string rootPath)
+        {
+            foreach (ArcFile file in _files)
             {
-                fi.IndexOffset = (uint)currentOffset;
-                if (fileIndex != fi)
+                ExtractFile(rootPath, file);
+            }
+        }
+
+        /// <summary>
+        /// Extract a single file to the given root path.
+        /// Preserving the arc directory structure.
+        /// Directories that do not exists will be created.
+        /// </summary>
+        public void ExtractFile(string rootPath, ArcFile file)
+        {
+            FileInfo fileInfo = new FileInfo(Path.Combine(rootPath, file.Index.Path));
+            if (fileInfo.DirectoryName == null)
+            {
+                Logger.Error("Failed to extract file (fileInfo.DirectoryName == null)");
+                return;
+            }
+
+            if (!Directory.Exists(fileInfo.DirectoryName))
+            {
+                Directory.CreateDirectory(fileInfo.DirectoryName);
+            }
+
+            File.WriteAllBytes(fileInfo.FullName, file.Data);
+        }
+
+        protected override void Read(IBuffer buffer)
+        {
+            _files.Clear();
+            
+            if (buffer.Size < 6)
+            {
+                Logger.Error($"Not enough data to parse ArcArchive (Size:{buffer.Size} < 8)");
+                return;
+            }
+
+            byte[] magicTag = buffer.ReadBytes(4);
+            MagicTag = Encoding.UTF8.GetString(magicTag);
+            MagicId = ReadUInt16(buffer);
+            if (MagicTag != "ARCC" || MagicId != 0x07)
+            {
+                Logger.Error("Invalid .arc File");
+                return;
+            }
+
+            int entries = ReadInt16(buffer);
+            List<FileIndex> indices = new List<FileIndex>();
+            for (int i = 0; i < entries; i++)
+            {
+                uint indexOffset = (uint)buffer.Position;
+                byte[] indexData = buffer.ReadBytes(FileIndexSize);
+                FileIndex index = DeserializeFileIndex(indexData, indexOffset);
+                indices.Add(index);
+            }
+
+            foreach (FileIndex fileIndex in indices)
+            {
+                byte[] fileData = buffer.GetBytes((int)fileIndex.Offset, (int)fileIndex.CompressedSize);
+
+                fileData = DeserializeFileData(fileData);
+                if (fileData.Length != fileIndex.Size)
                 {
-                    if (fi.Offset <= fileIndex.Offset)
-                    {
-                        if (add)
-                        {
-                            fi.Offset += FileIndexSize;
-                        }
-                        else
-                        {
-                            fi.Offset -= FileIndexSize;
-                        }
-                    }
-                    else if (fi.Offset > fileIndex.Offset)
-                    {
-                        if (add)
-                        {
-                            fi.Offset += (fileIndex.CompressedSize + FileIndexSize);
-                        }
-                        else
-                        {
-                            fi.Offset -= (fileIndex.CompressedSize + FileIndexSize);
-                        }
-                    }
+                    Logger.Error(
+                        $"File Length does not match expected: (Data Length:{fileData.Length} != Index Length:{fileIndex.Size})");
+                    continue;
                 }
 
-                currentOffset += FileIndexSize;
+                ArcFile file = new ArcFile();
+                file.Data = fileData;
+                file.Index = fileIndex;
+                _files.Add(file);
             }
-
-            WriteFileIndices(stream);
         }
 
-        private void WriteFileIndices(Stream stream)
+        protected override void Write(IBuffer buffer)
         {
-            foreach (FileIndex fi in _fileIndices)
-            {
-                byte[] indexBytes = SerializeFileIndex(fi);
-                stream.Position = fi.IndexOffset;
-                stream.Write(indexBytes);
-            }
+            byte[] magicTag = Encoding.UTF8.GetBytes(MagicTag);
+            buffer.WriteBytes(magicTag);
+            buffer.WriteUInt16(MagicId);
+            buffer.WriteUInt16((ushort)_files.Count);
 
-            stream.Write(new byte[FileDataOffset - stream.Position]);
+
+            uint dataOffset = FileDataOffset;
+            uint indexOffset = FileIndexOffset;
+            for (int i = 0; i < _files.Count; i++)
+            {
+                if (indexOffset >= FileDataOffset)
+                {
+                    Logger.Error("Index to big, can't store more files");
+                }
+
+                ArcFile file = _files[i];
+                byte[] fileData = SerializeFileData(file.Data);
+
+                file.Index.Offset = dataOffset;
+                file.Index.IndexOffset = indexOffset;
+                file.Index.Size = (uint)file.Data.Length;
+                file.Index.CompressedSize = (uint)fileData.Length;
+
+                byte[] fileIndex = SerializeFileIndex(file.Index);
+                buffer.WriteBytes(fileIndex, 0, (int)file.Index.IndexOffset, fileIndex.Length);
+                buffer.WriteBytes(fileData, 0, (int)file.Index.Offset, fileData.Length);
+
+                indexOffset += FileIndexSize;
+                dataOffset += file.Index.CompressedSize;
+            }
         }
+
 
         private byte[] SerializeFileIndex(FileIndex fileIndex)
         {
@@ -352,246 +379,61 @@ namespace Arrowgene.Ddon.Client
             return buffer;
         }
 
-
-        public void DeleteFile(FileIndex fileIndex)
+        private FileIndex DeserializeFileIndex(byte[] fileIndexData, uint indexOffset = 0)
         {
-            if (!_fileIndices.Contains(fileIndex))
+            FileIndex fileIndex = new FileIndex();
+            fileIndex.IndexOffset = indexOffset;
+            byte[] entry = BlowFish.Decrypt_ECB(fileIndexData);
+            IBuffer entryBuffer = new StreamBuffer(entry);
+            entryBuffer.Position = 0;
+            fileIndex.ArcPath = entryBuffer.ReadFixedString(FileNameSize);
+            fileIndex.Directory = Path.GetDirectoryName(fileIndex.ArcPath);
+            if (fileIndex.Directory == null)
             {
-                Logger.Error($"fileIndex not part of this ARC file");
-                return;
+                fileIndex.Directory = "";
             }
 
-            using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open, FileAccess.ReadWrite);
-            // delete payload
-            DeleteFilePart(fs, (int)fileIndex.Offset, (int)fileIndex.CompressedSize);
-            // adjust header
-            _fileIndices.Remove(fileIndex);
-            fs.Position = FileIndexSizeOffset;
-            fs.Write(BitConverter.GetBytes((short)_fileIndices.Count));
-            WriteFileIndicesChange(fs, fileIndex, false);
+            fileIndex.JamCrc = ReadUInt32(entryBuffer);
+            if (JamCrcLookup.ContainsKey(fileIndex.JamCrc))
+            {
+                fileIndex.ArcExt = JamCrcLookup[fileIndex.JamCrc];
+                fileIndex.Extension = fileIndex.ArcExt.Extension;
+            }
+            else
+            {
+                fileIndex.Extension = $"{fileIndex.JamCrc:X8}";
+            }
+
+            fileIndex.Name = $"{Path.GetFileName(fileIndex.ArcPath)}.{fileIndex.Extension}";
+            fileIndex.Path = Path.Combine(fileIndex.Directory, fileIndex.Name);
+            fileIndex.CompressedSize = ReadUInt32(entryBuffer);
+            uint flags = ReadUInt32(entryBuffer);
+            uint sizeBits = flags & ((1 << 29) - 1);
+            uint compressionBits = (flags >> 29) & ((1 << 3) - 1);
+            fileIndex.Compression = (ArcCompression)compressionBits;
+            fileIndex.Size = sizeBits;
+            fileIndex.Offset = ReadUInt32(entryBuffer);
+            return fileIndex;
         }
 
-        private void DeleteFilePart(Stream fs, int offset, int size)
+        private byte[] SerializeFileData(byte[] fileData)
         {
-            fs.Position = offset + size;
-            using MemoryStream mem = new MemoryStream();
-            byte[] buffer = new byte[2048]; // read in chunks of 2KB
-            int bytesRead;
-
-            // delete body bytes
-            while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                mem.Write(buffer, 0, bytesRead);
-            }
-
-            fs.Position = offset;
-            mem.Position = 0;
-            while ((bytesRead = mem.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                fs.Write(buffer, 0, bytesRead);
-            }
-
-            fs.SetLength(fs.Position);
-            fs.Flush();
+            int dataLen = fileData.Length;
+            byte[] copy = new byte[dataLen];
+            Buffer.BlockCopy(fileData, 0, copy, 0, dataLen);
+            copy = Compress(copy);
+            copy = BlowFish.Encrypt_ECB(copy);
+            return copy;
         }
 
-        private void InsertFilePart(Stream fs, int offset, byte[] data)
+        private byte[] DeserializeFileData(byte[] fileData)
         {
-            using MemoryStream mem = new MemoryStream();
-            byte[] buffer = new byte[2048]; // read in chunks of 2KB
-            int bytesRead;
-
-            fs.Position = offset;
-            while ((bytesRead = fs.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                mem.Write(buffer, 0, bytesRead);
-            }
-
-            fs.Position = offset;
-            fs.Write(data, 0, data.Length);
-
-            while ((bytesRead = mem.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                fs.Write(buffer, 0, bytesRead);
-            }
-
-            fs.SetLength(fs.Position);
-            fs.Flush();
-        }
-
-        /// <summary>
-        /// Extract all files into the given rootPath.
-        /// Preserving the arc directory structure.
-        /// Directories that do not exists will be created.
-        /// </summary>
-        public void ExtractArchive(string rootPath)
-        {
-            foreach (FileIndex fileIndex in _fileIndices)
-            {
-                ExtractFile(rootPath, fileIndex);
-            }
-        }
-
-        /// <summary>
-        /// Extract a single file to the given root path.
-        /// Preserving the arc directory structure.
-        /// Directories that do not exists will be created.
-        /// </summary>
-        public void ExtractFile(string rootPath, FileIndex fileIndex)
-        {
-            ArcFile f = GetFile(fileIndex);
-            if (f == null)
-            {
-                Logger.Error($"Failed to extract file (ArcPath:{fileIndex.ArcPath})");
-                return;
-            }
-
-            FileInfo fileInfo = new FileInfo(Path.Combine(rootPath, f.Index.Path));
-            if (fileInfo.DirectoryName == null)
-            {
-                Logger.Error("Failed to extract file (fileInfo.DirectoryName == null)");
-                return;
-            }
-
-            if (!Directory.Exists(fileInfo.DirectoryName))
-            {
-                Directory.CreateDirectory(fileInfo.DirectoryName);
-            }
-
-            File.WriteAllBytes(fileInfo.FullName, f.Data);
-        }
-
-        /// <summary>
-        /// Retrieve a ArcFile from an index
-        /// </summary>
-        public ArcFile GetFile(FileIndex fileIndex)
-        {
-            if (fileIndex.Offset > int.MaxValue)
-            {
-                Logger.Error($"Unsupported Offset (offset:{fileIndex.Offset} > MaxValue:{int.MaxValue})");
-                return null;
-            }
-
-            if (fileIndex.CompressedSize > int.MaxValue)
-            {
-                Logger.Error(
-                    $"Unsupported Compressed Size (compressedSize:{fileIndex.CompressedSize} > MaxValue:{int.MaxValue})");
-                return null;
-            }
-
-            if (FilePath == null)
-            {
-                // TODO assumed to be backed by a file, if Open(byte[]) or Open(IBuffer) is used retrieving files will fail.
-                // At the moment there should not be a need to keep the .arc in memory
-                Logger.Error("No File Open (FilePath == null)");
-                return null;
-            }
-
-            if (!FilePath.Exists)
-            {
-                Logger.Error($"File does not exists: {FilePath.FullName}");
-                return null;
-            }
-
-            var fileData = new byte[fileIndex.CompressedSize];
-            int remaining = (int)fileIndex.CompressedSize;
-            int offset = 0;
-            using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open);
-            if (fileIndex.Offset + remaining > fs.Length)
-            {
-                Logger.Error(
-                    $"Not enough data available: (Index:{fileIndex.Offset + remaining} > Length:{fs.Length})");
-                return null;
-            }
-
-            fs.Position = fileIndex.Offset;
-            while (remaining > 0)
-            {
-                int read = fs.Read(fileData, offset, remaining);
-                offset += read;
-                remaining -= read;
-            }
-
-            fileData = BlowFish.Decrypt_ECB(fileData);
-            fileData = Decompress(fileData);
-
-            if (fileData.Length != fileIndex.Size)
-            {
-                Logger.Error(
-                    $"File Length does not match expected: (Data Length:{fileData.Length} != Index Length:{fileIndex.Size})");
-                return null;
-            }
-
-            ArcFile file = new ArcFile();
-            file.Data = fileData;
-            file.Index = fileIndex;
-            return file;
-        }
-
-        protected override void Read(IBuffer buffer)
-        {
-            if (buffer.Size < 6)
-            {
-                Logger.Error($"Not enough data to parse ArcArchive (Size:{buffer.Size} < 8)");
-                return;
-            }
-
-            byte[] magicTag = buffer.ReadBytes(4);
-            MagicTag = Encoding.UTF8.GetString(magicTag);
-            MagicId = ReadUInt16(buffer);
-            if (MagicTag != "ARCC" || MagicId != 0x07)
-            {
-                Logger.Error("Invalid .arc File");
-                return;
-            }
-
-            int entries = ReadInt16(buffer);
-            for (int i = 0; i < entries; i++)
-            {
-                FileIndex fileIndex = new FileIndex();
-
-                fileIndex.IndexOffset = (uint)buffer.Position;
-                byte[] entry = buffer.ReadBytes(FileIndexSize);
-                entry = BlowFish.Decrypt_ECB(entry);
-                IBuffer entryBuffer = new StreamBuffer(entry);
-                entryBuffer.Position = 0;
-                fileIndex.ArcPath = entryBuffer.ReadFixedString(FileNameSize);
-                fileIndex.Directory = Path.GetDirectoryName(fileIndex.ArcPath);
-                if (fileIndex.Directory == null)
-                {
-                    fileIndex.Directory = "";
-                }
-
-                fileIndex.JamCrc = ReadUInt32(entryBuffer);
-                if (JamCrcLookup.ContainsKey(fileIndex.JamCrc))
-                {
-                    fileIndex.ArcExt = JamCrcLookup[fileIndex.JamCrc];
-                    fileIndex.Extension = fileIndex.ArcExt.Extension;
-                }
-                else
-                {
-                    fileIndex.Extension = $"{fileIndex.JamCrc:X8}";
-                }
-
-                fileIndex.Name = $"{Path.GetFileName(fileIndex.ArcPath)}.{fileIndex.Extension}";
-                fileIndex.Path = Path.Combine(fileIndex.Directory, fileIndex.Name);
-                fileIndex.CompressedSize = ReadUInt32(entryBuffer);
-                uint flags = ReadUInt32(entryBuffer);
-                uint sizeBits = flags & ((1 << 29) - 1);
-                uint compressionBits = (flags >> 29) & ((1 << 3) - 1);
-                fileIndex.Compression = (ArcCompression)compressionBits;
-                fileIndex.Size = sizeBits;
-                fileIndex.Offset = ReadUInt32(entryBuffer);
-                _fileIndices.Add(fileIndex);
-            }
-        }
-
-        protected override void Write(IBuffer buffer)
-        {
-            byte[] magicTag = Encoding.UTF8.GetBytes(MagicTag);
-            buffer.WriteBytes(magicTag);
-            buffer.WriteUInt16(MagicId);
-            throw new NotImplementedException();
+            int dataLen = fileData.Length;
+            byte[] copy = new byte[dataLen];
+            Buffer.BlockCopy(fileData, 0, copy, 0, dataLen);
+            copy = BlowFish.Decrypt_ECB(copy);
+            copy = Decompress(copy);
+            return copy;
         }
 
         private byte[] Compress(byte[] input, int level = Deflater.BEST_COMPRESSION)
