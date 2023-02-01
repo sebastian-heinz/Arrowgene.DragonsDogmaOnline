@@ -129,7 +129,7 @@ namespace Arrowgene.Ddon.Client
             return path;
         }
 
-        private List<ArcFile> _files;
+        private readonly List<ArcFile> _files;
 
         public ArcArchive()
         {
@@ -224,13 +224,6 @@ namespace Arrowgene.Ddon.Client
 
             newFileIndex.Name = $"{Path.GetFileName(newFileIndex.ArcPath)}.{newFileIndex.Extension}";
             newFileIndex.Size = (uint)fileData.Length;
-            fileData = SerializeFileData(fileData);
-            newFileIndex.Compression = ArcCompression.Normal;
-            newFileIndex.CompressedSize = (uint)fileData.Length;
-
-            newFileIndex.Offset = 0;
-            newFileIndex.IndexOffset = 0;
-
 
             ArcFile newArcFile = new ArcFile();
             newArcFile.Index = newFileIndex;
@@ -282,7 +275,7 @@ namespace Arrowgene.Ddon.Client
         protected override void Read(IBuffer buffer)
         {
             _files.Clear();
-            
+
             if (buffer.Size < 6)
             {
                 Logger.Error($"Not enough data to parse ArcArchive (Size:{buffer.Size} < 8)");
@@ -345,7 +338,7 @@ namespace Arrowgene.Ddon.Client
                 }
 
                 ArcFile file = _files[i];
-                byte[] fileData = SerializeFileData(file.Data);
+                byte[] fileData = SerializeFileData(file.Data, file.Index.Compression);
 
                 file.Index.Offset = dataOffset;
                 file.Index.IndexOffset = indexOffset;
@@ -416,12 +409,12 @@ namespace Arrowgene.Ddon.Client
             return fileIndex;
         }
 
-        private byte[] SerializeFileData(byte[] fileData)
+        private byte[] SerializeFileData(byte[] fileData, ArcCompression compression)
         {
             int dataLen = fileData.Length;
             byte[] copy = new byte[dataLen];
             Buffer.BlockCopy(fileData, 0, copy, 0, dataLen);
-            copy = Compress(copy);
+            copy = Compress(copy, (int)compression);
             copy = BlowFish.Encrypt_ECB(copy);
             return copy;
         }

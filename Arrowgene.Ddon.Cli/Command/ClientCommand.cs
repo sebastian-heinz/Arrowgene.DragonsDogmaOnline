@@ -174,6 +174,8 @@ namespace Arrowgene.Ddon.Cli.Command
                         ArcArchive.Search()
                     );
                     archive.PutFile(arcFile.Index.Path, arcFile.Data);
+                    byte[] savedArc = archive.Save();
+                    File.WriteAllBytes("C:\\Users\\nxspirit\\Downloads\\character_edit_select.arc", savedArc);
 
                     break;
                 }
