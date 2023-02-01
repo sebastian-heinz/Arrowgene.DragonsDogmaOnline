@@ -86,6 +86,29 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
+            if (parameter.ArgumentMap.ContainsKey("gmdTest"))
+            {
+                string packGmdCsv = parameter.ArgumentMap["gmdTest"];
+                ArcArchive archive = new ArcArchive();
+                archive.Open(packGmdCsv);
+                List<ArcArchive.ArcFile> gmdArcFiles = archive.GetFiles(
+                    ArcArchive.Search().ByExtension("gmd")
+                );
+                foreach (ArcArchive.ArcFile gmdArcFile in gmdArcFiles)
+                {
+                    GuiMessage gmd = new GuiMessage();
+                    gmd.Open(gmdArcFile.Data);
+                    foreach (GuiMessage.Entry entry in gmd.Entries)
+                    {
+                        entry.Msg = "TEST";
+                    }
+                    gmdArcFile.Data = gmd.Save();
+                }
+                byte[] savedArc = archive.Save();
+                File.WriteAllBytes(packGmdCsv + ".out", savedArc);
+                return CommandResultType.Exit;
+            }
+
             if (parameter.ArgumentMap.ContainsKey("packGmdCsv")
                 && parameter.ArgumentMap.ContainsKey("packGmdRom"))
             {

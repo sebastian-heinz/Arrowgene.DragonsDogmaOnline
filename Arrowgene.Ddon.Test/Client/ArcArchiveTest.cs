@@ -19,6 +19,7 @@ public class ArcArchiveTest
                        | compressionBits3__29_31 << 29;
 
         Assert.True(flags == reFlags);
+        Assert.Equal(ArcArchive.ArcCompression.Normal, compression);
     }
 
     [Fact]
