@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.Client.Resource
         public byte[] Unknown { get; set; }
         public string Str { get; set; }
         public uint Version { get; set; }
-        public uint A { get; set; }
+        public uint Language { get; set; }
         public uint B { get; set; }
         public uint C { get; set; }
 
@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.Client.Resource
         protected override void ReadResource(IBuffer buffer)
         {
             Version = ReadUInt32(buffer);
-            A = ReadUInt32(buffer); // Language ? 0 Japanese, 1 English ?
+            Language = ReadUInt32(buffer);
             B = ReadUInt32(buffer);
             C = ReadUInt32(buffer);
             uint keyCount = ReadUInt32(buffer);
@@ -141,7 +141,7 @@ namespace Arrowgene.Ddon.Client.Resource
             uint strLen = (uint)Str.Length;
 
             buffer.WriteUInt32(Version);
-            buffer.WriteUInt32(A);
+            buffer.WriteUInt32(Language);
             buffer.WriteUInt32(B);
             buffer.WriteUInt32(C);
             buffer.WriteUInt32(keyCount);

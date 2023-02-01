@@ -98,9 +98,12 @@ namespace Arrowgene.Ddon.Cli.Command
                 {
                     GuiMessage gmd = new GuiMessage();
                     gmd.Open(gmdArcFile.Data);
+                    //gmd.Language = 1;
+                    //gmd.Unknown = new byte[1024];
                     foreach (GuiMessage.Entry entry in gmd.Entries)
                     {
                         entry.Msg = "TEST";
+                        //entry.a5 = 0;
                     }
                     gmdArcFile.Data = gmd.Save();
                 }

@@ -29,7 +29,7 @@ public class GuiMessageTest
         gmdA.Str = "TextWeb";
         gmdA.Unknown = new byte[1024];
         gmdA.Version = 0x10302;
-        gmdA.A = 0xFFFFFFFF;
+        gmdA.Language = 0xFFFFFFFF;
         gmdA.B = 0xFFFFFFFF;
         gmdA.C = 0xFFFFFFFF;
         for (uint i = 0; i < 10; i++)
@@ -64,7 +64,7 @@ public class GuiMessageTest
         gmdB.Str = "TextWeb";
         gmdB.Unknown = null;
         gmdB.Version = 0x10302;
-        gmdB.A = 0xFFFFFFFF;
+        gmdB.Language = 0xFFFFFFFF;
         gmdB.B = 0xFFFFFFFF;
         gmdB.C = 0xFFFFFFFF;
         for (uint i = 0; i < 10; i++)
@@ -100,7 +100,7 @@ public class GuiMessageTest
         gmdC.Str = "TextWeb";
         gmdC.Unknown = new byte[1024];
         gmdC.Version = 0x10302;
-        gmdC.A = 0xFFFFFFFF;
+        gmdC.Language = 0xFFFFFFFF;
         gmdC.B = 0xFFFFFFFF;
         gmdC.C = 0xFFFFFFFF;
 
@@ -140,7 +140,7 @@ public class GuiMessageTest
         Assert.Equal(expected.Str, actual.Str);
         Assert.Equal(expected.Version, actual.Version);
         Assert.Equal(expected.Unknown, actual.Unknown);
-        Assert.Equal(expected.A, actual.A);
+        Assert.Equal(expected.Language, actual.Language);
         Assert.Equal(expected.B, actual.B);
         Assert.Equal(expected.C, actual.C);
         for (int i = 0; i < expected.Entries.Count; i++)
