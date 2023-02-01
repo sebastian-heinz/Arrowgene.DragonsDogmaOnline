@@ -36,11 +36,11 @@ public class GuiMessageTest
         {
             GuiMessage.Entry entry = new GuiMessage.Entry();
             entry.Index = i;
+            entry.KeyHash2X = 0xFFFFFFFF;
+            entry.KeyHash3X = 0xFFFFFFFF;
             entry.Key = $"KEY_{i}";
             entry.Msg = $"MSG_{i}";
-            entry.a2 = 0xFFFFFFFF;
-            entry.a3 = 0xFFFFFFFF;
-            entry.a4 = 0xFFFFFFFF;
+            entry.KeyOffset = 0xFFFFFFFF;
             entry.a5 = 0xFFFFFFFF;
             entry.KeyReadIndex = i;
             entry.MsgReadIndex = i;
@@ -71,11 +71,11 @@ public class GuiMessageTest
         {
             GuiMessage.Entry entry = new GuiMessage.Entry();
             entry.Index = 0;
+            entry.KeyHash2X = 0;
+            entry.KeyHash3X = 0;
             entry.Key = null;
             entry.Msg = "MSG";
-            entry.a2 = 0;
-            entry.a3 = 0;
-            entry.a4 = 0;
+            entry.KeyOffset = 0;
             entry.a5 = 0;
             entry.KeyReadIndex = 0;
             entry.MsgReadIndex = i;
@@ -106,11 +106,11 @@ public class GuiMessageTest
 
         GuiMessage.Entry entryA = new GuiMessage.Entry();
         entryA.Index = 0;
+        entryA.KeyHash2X = 0xFFFFFFFF;
+        entryA.KeyHash3X = 0xFFFFFFFF;
         entryA.Key = "KEY";
         entryA.Msg = "MSG";
-        entryA.a2 = 0xFFFFFFFF;
-        entryA.a3 = 0xFFFFFFFF;
-        entryA.a4 = 0xFFFFFFFF;
+        entryA.KeyOffset = 0xFFFFFFFF;
         entryA.a5 = 0xFFFFFFFF;
         entryA.KeyReadIndex = 0;
         entryA.MsgReadIndex = 0;
@@ -118,11 +118,11 @@ public class GuiMessageTest
 
         GuiMessage.Entry entryB = new GuiMessage.Entry();
         entryB.Index = 0;
+        entryB.KeyHash2X = 0;
+        entryB.KeyHash3X = 0;
         entryB.Key = null;
         entryB.Msg = "MSG";
-        entryB.a2 = 0;
-        entryB.a3 = 0;
-        entryB.a4 = 0;
+        entryB.KeyOffset = 0;
         entryB.a5 = 0;
         entryB.KeyReadIndex = 0;
         entryB.MsgReadIndex = 1;
@@ -150,9 +150,9 @@ public class GuiMessageTest
             Assert.Equal(entryExpected.Index, entryActual.Index);
             Assert.Equal(entryExpected.Key, entryActual.Key);
             Assert.Equal(entryExpected.Msg, entryActual.Msg);
-            Assert.Equal(entryExpected.a2, entryActual.a2);
-            Assert.Equal(entryExpected.a3, entryActual.a3);
-            Assert.Equal(entryExpected.a4, entryActual.a4);
+            Assert.Equal(entryExpected.KeyHash2X, entryActual.KeyHash2X);
+            Assert.Equal(entryExpected.KeyHash3X, entryActual.KeyHash3X);
+            Assert.Equal(entryExpected.KeyOffset, entryActual.KeyOffset);
             Assert.Equal(entryExpected.a5, entryActual.a5);
             Assert.Equal(entryExpected.KeyReadIndex, entryActual.KeyReadIndex);
             Assert.Equal(entryExpected.MsgReadIndex, entryActual.MsgReadIndex);

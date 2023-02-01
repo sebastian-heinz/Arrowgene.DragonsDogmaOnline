@@ -169,9 +169,9 @@ namespace Arrowgene.Ddon.Cli.Command
                         newEntry.Index = gmdIntermediate.Index;
                         newEntry.Key = gmdIntermediate.Key;
                         newEntry.Msg = "PLEASE WORK";
-                        newEntry.a2 = gmdIntermediate.a2;
-                        newEntry.a3 = gmdIntermediate.a3;
-                        newEntry.a4 = gmdIntermediate.a4;
+                        newEntry.KeyHash2X = gmdIntermediate.a2;
+                        newEntry.KeyHash3X = gmdIntermediate.a3;
+                        newEntry.KeyOffset = gmdIntermediate.a4;
                         newEntry.a5 = gmdIntermediate.a5;
                         newEntry.KeyReadIndex = gmdIntermediate.KeyReadIndex;
                         newEntry.MsgReadIndex = gmdIntermediate.MsgReadIndex;
@@ -361,9 +361,9 @@ namespace Arrowgene.Ddon.Cli.Command
                     container.Index = gmdEntry.Index;
                     container.Key = gmdEntry.Key;
                     container.MsgOrg = gmdEntry.Msg;
-                    container.a2 = gmdEntry.a2;
-                    container.a3 = gmdEntry.a3;
-                    container.a4 = gmdEntry.a4;
+                    container.a2 = gmdEntry.KeyHash2X;
+                    container.a3 = gmdEntry.KeyHash3X;
+                    container.a4 = gmdEntry.KeyOffset;
                     container.a5 = gmdEntry.a5;
                     container.GmdPath = gmdFile.Index.Path;
                     container.ArcName = arcFile.Name;

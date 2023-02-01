@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Client.Resource
@@ -12,12 +13,33 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public class Entry
         {
+            private string _key;
+
             public uint Index { get; set; }
-            public string Key { get; set; }
+
+            public string Key
+            {
+                get => _key;
+                set
+                {
+                    _key = value;
+                    if (value == null)
+                    {
+                        KeyHash2X = 0;
+                        KeyHash3X = 0;
+                    }
+                    else
+                    {
+                        KeyHash2X = Crc32.GetHash(value+value);
+                        KeyHash3X = Crc32.GetHash(value+value+value);
+                    }
+                }
+            }
+
             public string Msg { get; set; }
-            public uint a2 { get; set; }
-            public uint a3 { get; set; }
-            public uint a4 { get; set; }
+            public uint KeyHash2X { get; set; }
+            public uint KeyHash3X { get; set; }
+            public uint KeyOffset { get; set; }
             public uint a5 { get; set; }
             public uint KeyReadIndex { get; set; }
             public uint MsgReadIndex { get; set; }
@@ -39,7 +61,7 @@ namespace Arrowgene.Ddon.Client.Resource
         protected override void ReadResource(IBuffer buffer)
         {
             Version = ReadUInt32(buffer);
-            A = ReadUInt32(buffer);
+            A = ReadUInt32(buffer); // Language ? 0 Japanese, 1 English ?
             B = ReadUInt32(buffer);
             C = ReadUInt32(buffer);
             uint keyCount = ReadUInt32(buffer);
@@ -67,18 +89,17 @@ namespace Arrowgene.Ddon.Client.Resource
 
             if (keyCount > 0)
             {
-                // TODO I assume this part is only parsed when "keyCount > 0"
                 for (int i = 0; i < keyCount; i++)
                 {
                     Entry entry = entries[i];
                     entry.Index = ReadUInt32(buffer);
-                    entry.a2 = ReadUInt32(buffer);
-                    entry.a3 = ReadUInt32(buffer);
-                    entry.a4 = ReadUInt32(buffer);
-                    entry.a5 = ReadUInt32(buffer);
+                    entry.KeyHash2X = ReadUInt32(buffer);
+                    entry.KeyHash3X = ReadUInt32(buffer);
+                    entry.KeyOffset = ReadUInt32(buffer);
+                    entry.a5 = ReadUInt32(buffer); // Key Offset ?
                 }
 
-                Unknown = buffer.ReadBytes(1024); // hashTable?
+                Unknown = buffer.ReadBytes(1024);
 
                 for (uint i = 0; i < keyCount; i++)
                 {
@@ -101,7 +122,6 @@ namespace Arrowgene.Ddon.Client.Resource
 
         protected override void WriteResource(IBuffer buffer)
         {
-
             uint keyCount = 0;
             uint stringCount = 0;
             foreach (Entry entry in Entries)
@@ -113,9 +133,9 @@ namespace Arrowgene.Ddon.Client.Resource
 
                 stringCount++;
             }
-            
+
             Entries.Sort((x, y) => x.MsgReadIndex.CompareTo(y.MsgReadIndex));
-            
+
             uint keySize = 0;
             uint stringSize = 0;
             uint strLen = (uint)Str.Length;
@@ -138,13 +158,18 @@ namespace Arrowgene.Ddon.Client.Resource
             keySize = (uint)buffer.Position;
             if (keyCount > 0)
             {
+                uint keyOffset = 0;
                 for (int i = 0; i < keyCount; i++)
                 {
+                    Entries[i].KeyOffset = keyOffset;
+                        
                     buffer.WriteUInt32(Entries[i].Index);
-                    buffer.WriteUInt32(Entries[i].a2);
-                    buffer.WriteUInt32(Entries[i].a3);
-                    buffer.WriteUInt32(Entries[i].a4);
+                    buffer.WriteUInt32(Entries[i].KeyHash2X);
+                    buffer.WriteUInt32(Entries[i].KeyHash3X);
+                    buffer.WriteUInt32(Entries[i].KeyOffset);
                     buffer.WriteUInt32(Entries[i].a5);
+
+                    keyOffset += (uint)Entries[i].Key.Length + 1;
                 }
 
                 buffer.WriteBytes(Unknown);
