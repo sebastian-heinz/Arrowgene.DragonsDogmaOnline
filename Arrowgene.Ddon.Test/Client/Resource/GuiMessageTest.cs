@@ -18,8 +18,29 @@ public class GuiMessageTest
         {
             Assert.Equal(gmd[i], saved[i]);
         }
+    }    
+    
+    [Fact]
+    public void TestGmd()
+    {
+        string a = "C:/Users/nxspirit/Downloads/gmd/gui_cmn.arcsystem_log.gmd.gmd";
+        string b = "C:/Users/nxspirit/Downloads/gmd/gui_cmn.arccustom_skill_name_06.gmd.gmd";
+        byte[] gmd = File.ReadAllBytes(b);
+        GuiMessage gmdM = new GuiMessage();
+        gmdM.Open(gmd);
+        foreach (var entry in gmdM.Entries)
+        {
+            if (entry.LinkIndex > 0)
+            {
+                int isf = 1;
+            }
+        }
+        int i = 1;
     }
 
+    
+    
+    
     [Fact]
     public void TestGmdSerialisationA()
     {
@@ -27,11 +48,9 @@ public class GuiMessageTest
         GuiMessage gmdA = new GuiMessage();
         gmdA.Magic = "GMD ";
         gmdA.Str = "TextWeb";
-        gmdA.Unknown = new byte[1024];
         gmdA.Version = 0x10302;
-        gmdA.Language = 0xFFFFFFFF;
-        gmdA.B = 0xFFFFFFFF;
-        gmdA.C = 0xFFFFFFFF;
+        gmdA.LanguageId = 0xFFFFFFFF;
+        gmdA.UpdateTime = 0;
         for (uint i = 0; i < 10; i++)
         {
             GuiMessage.Entry entry = new GuiMessage.Entry();
@@ -41,7 +60,7 @@ public class GuiMessageTest
             entry.Key = $"KEY_{i}";
             entry.Msg = $"MSG_{i}";
             entry.KeyOffset = 0xFFFFFFFF;
-            entry.a5 = 0xFFFFFFFF;
+            entry.LinkIndex = 0xFFFFFFFF;
             entry.KeyReadIndex = i;
             entry.MsgReadIndex = i;
             gmdA.Entries.Add(entry);
@@ -62,11 +81,9 @@ public class GuiMessageTest
         GuiMessage gmdB = new GuiMessage();
         gmdB.Magic = "GMD ";
         gmdB.Str = "TextWeb";
-        gmdB.Unknown = null;
         gmdB.Version = 0x10302;
-        gmdB.Language = 0xFFFFFFFF;
-        gmdB.B = 0xFFFFFFFF;
-        gmdB.C = 0xFFFFFFFF;
+        gmdB.LanguageId = 0xFFFFFFFF;
+        gmdB.UpdateTime = 0;
         for (uint i = 0; i < 10; i++)
         {
             GuiMessage.Entry entry = new GuiMessage.Entry();
@@ -76,7 +93,7 @@ public class GuiMessageTest
             entry.Key = null;
             entry.Msg = "MSG";
             entry.KeyOffset = 0;
-            entry.a5 = 0;
+            entry.LinkIndex = 0;
             entry.KeyReadIndex = 0;
             entry.MsgReadIndex = i;
             gmdB.Entries.Add(entry);
@@ -98,11 +115,9 @@ public class GuiMessageTest
         GuiMessage gmdC = new GuiMessage();
         gmdC.Magic = "GMD ";
         gmdC.Str = "TextWeb";
-        gmdC.Unknown = new byte[1024];
         gmdC.Version = 0x10302;
-        gmdC.Language = 0xFFFFFFFF;
-        gmdC.B = 0xFFFFFFFF;
-        gmdC.C = 0xFFFFFFFF;
+        gmdC.LanguageId = 0xFFFFFFFF;
+        gmdC.UpdateTime = 0;
 
         GuiMessage.Entry entryA = new GuiMessage.Entry();
         entryA.Index = 0;
@@ -111,7 +126,7 @@ public class GuiMessageTest
         entryA.Key = "KEY";
         entryA.Msg = "MSG";
         entryA.KeyOffset = 0xFFFFFFFF;
-        entryA.a5 = 0xFFFFFFFF;
+        entryA.LinkIndex = 0xFFFFFFFF;
         entryA.KeyReadIndex = 0;
         entryA.MsgReadIndex = 0;
         gmdC.Entries.Add(entryA);
@@ -123,7 +138,7 @@ public class GuiMessageTest
         entryB.Key = null;
         entryB.Msg = "MSG";
         entryB.KeyOffset = 0;
-        entryB.a5 = 0;
+        entryB.LinkIndex = 0;
         entryB.KeyReadIndex = 0;
         entryB.MsgReadIndex = 1;
         gmdC.Entries.Add(entryB);
@@ -139,10 +154,8 @@ public class GuiMessageTest
     {
         Assert.Equal(expected.Str, actual.Str);
         Assert.Equal(expected.Version, actual.Version);
-        Assert.Equal(expected.Unknown, actual.Unknown);
-        Assert.Equal(expected.Language, actual.Language);
-        Assert.Equal(expected.B, actual.B);
-        Assert.Equal(expected.C, actual.C);
+        Assert.Equal(expected.UpdateTime, actual.UpdateTime);
+        Assert.Equal(expected.LanguageId, actual.LanguageId);
         for (int i = 0; i < expected.Entries.Count; i++)
         {
             GuiMessage.Entry entryExpected = expected.Entries[i];
@@ -153,7 +166,7 @@ public class GuiMessageTest
             Assert.Equal(entryExpected.KeyHash2X, entryActual.KeyHash2X);
             Assert.Equal(entryExpected.KeyHash3X, entryActual.KeyHash3X);
             Assert.Equal(entryExpected.KeyOffset, entryActual.KeyOffset);
-            Assert.Equal(entryExpected.a5, entryActual.a5);
+            Assert.Equal(entryExpected.LinkIndex, entryActual.LinkIndex);
             Assert.Equal(entryExpected.KeyReadIndex, entryActual.KeyReadIndex);
             Assert.Equal(entryExpected.MsgReadIndex, entryActual.MsgReadIndex);
         }

@@ -30,8 +30,8 @@ namespace Arrowgene.Ddon.Client.Resource
                     }
                     else
                     {
-                        KeyHash2X = Crc32.GetHash(value+value);
-                        KeyHash3X = Crc32.GetHash(value+value+value);
+                        KeyHash2X = Crc32.GetHash(value + value);
+                        KeyHash3X = Crc32.GetHash(value + value + value);
                     }
                 }
             }
@@ -40,30 +40,34 @@ namespace Arrowgene.Ddon.Client.Resource
             public uint KeyHash2X { get; set; }
             public uint KeyHash3X { get; set; }
             public uint KeyOffset { get; set; }
-            public uint a5 { get; set; }
+            public uint LinkIndex { get; set; }
             public uint KeyReadIndex { get; set; }
             public uint MsgReadIndex { get; set; }
+
+            public Entry Link { get; set; }
         }
 
         public List<Entry> Entries { get; }
-        public byte[] Unknown { get; set; }
+        public uint[] HashTable { get; }
+        public Entry[] HashTableEntry { get; }
         public string Str { get; set; }
         public uint Version { get; set; }
-        public uint Language { get; set; }
-        public uint B { get; set; }
-        public uint C { get; set; }
+        public uint LanguageId { get; set; }
+        public ulong UpdateTime { get; set; }
+
 
         public GuiMessage()
         {
+            HashTable = new uint[256];
+            HashTableEntry = new Entry[256];
             Entries = new List<Entry>();
         }
 
         protected override void ReadResource(IBuffer buffer)
         {
             Version = ReadUInt32(buffer);
-            Language = ReadUInt32(buffer);
-            B = ReadUInt32(buffer);
-            C = ReadUInt32(buffer);
+            LanguageId = ReadUInt32(buffer);
+            UpdateTime = ReadUInt64(buffer);
             uint keyCount = ReadUInt32(buffer);
             uint stringCount = ReadUInt32(buffer);
             uint keySize = ReadUInt32(buffer);
@@ -96,10 +100,13 @@ namespace Arrowgene.Ddon.Client.Resource
                     entry.KeyHash2X = ReadUInt32(buffer);
                     entry.KeyHash3X = ReadUInt32(buffer);
                     entry.KeyOffset = ReadUInt32(buffer);
-                    entry.a5 = ReadUInt32(buffer); // Key Offset ?
+                    entry.LinkIndex = ReadUInt32(buffer);
                 }
 
-                Unknown = buffer.ReadBytes(1024);
+                for (int j = 0; j < HashTable.Length; j++)
+                {
+                    HashTable[j] = ReadUInt32(buffer);
+                }
 
                 for (uint i = 0; i < keyCount; i++)
                 {
@@ -118,6 +125,42 @@ namespace Arrowgene.Ddon.Client.Resource
 
             Entries.Clear();
             Entries.AddRange(entries);
+            
+            for (int i = 0; i < keyCount; i++)
+            {
+                Entry entry = entries[i];
+                if (entry.LinkIndex == 0)
+                {
+                    entry.Link = null;
+                }
+                else if (entry.LinkIndex == 0xFFFFFFFF)
+                {
+                    entry.Link = Entries[0];
+                }
+                else
+                {
+                    entry.Link = Entries[(int)entry.LinkIndex];
+                }
+            }
+
+            for (int i = 0; i < HashTable.Length; i++)
+            {
+                uint index = HashTable[i];
+                if (index == 0)
+                {
+                    HashTableEntry[i] = null;
+                }
+                else if (index == 0xFFFFFFFF)
+                {
+                    HashTableEntry[i] = Entries[0];
+                }
+                else
+                {
+                    HashTableEntry[i] = Entries[(int)index];
+                }
+            }
+
+
         }
 
         protected override void WriteResource(IBuffer buffer)
@@ -141,9 +184,8 @@ namespace Arrowgene.Ddon.Client.Resource
             uint strLen = (uint)Str.Length;
 
             buffer.WriteUInt32(Version);
-            buffer.WriteUInt32(Language);
-            buffer.WriteUInt32(B);
-            buffer.WriteUInt32(C);
+            buffer.WriteUInt32(LanguageId);
+            buffer.WriteUInt64(UpdateTime);
             buffer.WriteUInt32(keyCount);
             buffer.WriteUInt32(stringCount);
             //
@@ -162,17 +204,21 @@ namespace Arrowgene.Ddon.Client.Resource
                 for (int i = 0; i < keyCount; i++)
                 {
                     Entries[i].KeyOffset = keyOffset;
-                        
+
                     buffer.WriteUInt32(Entries[i].Index);
                     buffer.WriteUInt32(Entries[i].KeyHash2X);
                     buffer.WriteUInt32(Entries[i].KeyHash3X);
                     buffer.WriteUInt32(Entries[i].KeyOffset);
-                    buffer.WriteUInt32(Entries[i].a5);
+                    buffer.WriteUInt32(Entries[i].LinkIndex);
 
                     keyOffset += (uint)Entries[i].Key.Length + 1;
                 }
 
-                buffer.WriteBytes(Unknown);
+                for (int j = 0; j < HashTable.Length; j++)
+                {
+                    buffer.WriteUInt32(HashTable[j]);
+                }
+
                 for (int i = 0; i < keyCount; i++)
                 {
                     buffer.WriteCString(Entries[i].Key, Encoding.UTF8);

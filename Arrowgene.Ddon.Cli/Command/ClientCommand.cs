@@ -85,6 +85,23 @@ namespace Arrowgene.Ddon.Cli.Command
 
                 return CommandResultType.Exit;
             }
+            
+            if (parameter.ArgumentMap.ContainsKey("dumpGmd"))
+            {
+                string dumpGmd = parameter.ArgumentMap["dumpGmd"];
+                ArcArchive archive = new ArcArchive();
+                archive.Open(dumpGmd);
+                List<ArcArchive.ArcFile> gmdArcFiles = archive.GetFiles(
+                    ArcArchive.Search().ByExtension("gmd")
+                );
+                foreach (ArcArchive.ArcFile gmdFile in gmdArcFiles)
+                {
+                    File.WriteAllBytes(dumpGmd + gmdFile.Index.Name + ".gmd",gmdFile.Data);
+                }
+                
+
+                return CommandResultType.Exit;
+            }
 
             if (parameter.ArgumentMap.ContainsKey("gmdTest"))
             {
@@ -175,7 +192,7 @@ namespace Arrowgene.Ddon.Cli.Command
                         newEntry.KeyHash2X = gmdIntermediate.a2;
                         newEntry.KeyHash3X = gmdIntermediate.a3;
                         newEntry.KeyOffset = gmdIntermediate.a4;
-                        newEntry.a5 = gmdIntermediate.a5;
+                        newEntry.LinkIndex = gmdIntermediate.a5;
                         newEntry.KeyReadIndex = gmdIntermediate.KeyReadIndex;
                         newEntry.MsgReadIndex = gmdIntermediate.MsgReadIndex;
                         guiMessages.Add(newEntry);
@@ -367,7 +384,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     container.a2 = gmdEntry.KeyHash2X;
                     container.a3 = gmdEntry.KeyHash3X;
                     container.a4 = gmdEntry.KeyOffset;
-                    container.a5 = gmdEntry.a5;
+                    container.a5 = gmdEntry.LinkIndex;
                     container.GmdPath = gmdFile.Index.Path;
                     container.ArcName = arcFile.Name;
                     string search = "nativePC\\rom";

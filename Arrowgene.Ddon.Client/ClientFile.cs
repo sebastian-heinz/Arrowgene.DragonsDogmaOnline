@@ -122,6 +122,11 @@ namespace Arrowgene.Ddon.Client
             return buffer.ReadUInt32(Endianness.Little);
         }
         
+        protected ulong ReadUInt64(IBuffer buffer)
+        {
+            return buffer.ReadUInt64(Endianness.Little);
+        }
+        
         protected float ReadFloat(IBuffer buffer)
         {
             return buffer.ReadFloat(Endianness.Little);
