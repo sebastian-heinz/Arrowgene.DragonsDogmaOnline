@@ -82,56 +82,6 @@ namespace Arrowgene.Ddon.Cli.Command
                 GmdCsv writer = new GmdCsv(false);
                 writer.WritePath(containers, outPath);
                 Logger.Info($"Written gmd to: {outPath}");
-
-                return CommandResultType.Exit;
-            }
-            
-            if (parameter.ArgumentMap.ContainsKey("dumpGmd"))
-            {
-                string dumpGmd = parameter.ArgumentMap["dumpGmd"];
-                ArcArchive archive = new ArcArchive();
-                archive.Open(dumpGmd);
-                List<ArcArchive.ArcFile> gmdArcFiles = archive.GetFiles(
-                    ArcArchive.Search().ByExtension("gmd")
-                );
-                foreach (ArcArchive.ArcFile gmdFile in gmdArcFiles)
-                {
-                    File.WriteAllBytes(dumpGmd + gmdFile.Index.Name + ".gmd",gmdFile.Data);
-                }
-                
-
-                return CommandResultType.Exit;
-            }
-
-            if (parameter.ArgumentMap.ContainsKey("gmdTest"))
-            {
-                string packGmdCsv = parameter.ArgumentMap["gmdTest"];
-                String output = packGmdCsv.Replace(".en", "");
-                
-                ArcArchive archive = new ArcArchive();
-                archive.Open(packGmdCsv);
-                List<ArcArchive.ArcFile> gmdArcFiles = archive.GetFiles(
-                    ArcArchive.Search().ByExtension("gmd")
-                );
-                foreach (ArcArchive.ArcFile gmdArcFile in gmdArcFiles)
-                {
-                    GuiMessage gmd = new GuiMessage();
-                    gmd.Open(gmdArcFile.Data);
-                    //gmd.Language = 1;
-                    //gmd.Unknown = new byte[1024];
-                    foreach (GuiMessage.Entry entry in gmd.Entries)
-                    {
-                        entry.Msg = "TEST";
-                        //entry.a5 = 0;
-                    }
-
-                //    gmd.Entries[12].Msg = "Test";
-                    gmdArcFile.Data = gmd.Save(); // diff
-                    File.WriteAllBytes(output + gmdArcFile.Index.Name, gmdArcFile.Data);
-                }
-                byte[] savedArc = archive.Save();
-        
-                File.WriteAllBytes(output, savedArc);
                 return CommandResultType.Exit;
             }
 
@@ -228,8 +178,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
                     break;
                 }
-
-
+                
                 return CommandResultType.Exit;
             }
 

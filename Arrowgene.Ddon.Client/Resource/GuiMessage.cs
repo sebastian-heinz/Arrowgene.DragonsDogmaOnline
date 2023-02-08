@@ -13,29 +13,8 @@ namespace Arrowgene.Ddon.Client.Resource
 
         public class Entry
         {
-            private string _key;
-
             public uint Index { get; set; }
-
-            public string Key
-            {
-                get => _key;
-                set
-                {
-                    _key = value;
-                    if (value == null)
-                    {
-                        KeyHash2X = 0;
-                        KeyHash3X = 0;
-                    }
-                    else
-                    {
-                        KeyHash2X = Crc32.GetHash(value + value);
-                        KeyHash3X = Crc32.GetHash(value + value + value);
-                    }
-                }
-            }
-
+            public string Key { get; set; }
             public string Msg { get; set; }
             public uint KeyHash2X { get; set; }
             public uint KeyHash3X { get; set; }
@@ -148,19 +127,29 @@ namespace Arrowgene.Ddon.Client.Resource
             buffer.WriteUInt64(UpdateTime);
             buffer.WriteUInt32(keyCount);
             buffer.WriteUInt32(stringCount);
-            //
+
             int sizePosition = buffer.Position;
             buffer.WriteUInt32(keySize);
             buffer.WriteUInt32(stringSize);
-            //
+
             buffer.WriteUInt32(strLen);
             buffer.WriteString(Str);
             buffer.WriteByte(0); // str null-termination
 
-            keySize = (uint)buffer.Position;
             if (keyCount > 0)
             {
-                uint counter = 0;
+                uint keyOffset = 0;
+                for (int i = 0; i < keyCount; i++)
+                {
+                    Entries[i].Index = (uint)i;
+                    Entries[i].KeyOffset = keyOffset;
+                    Entries[i].LinkIndex = 0;
+                    Entries[i].KeyHash2X = Crc32.GetHash(Entries[i].Key + Entries[i].Key);
+                    Entries[i].KeyHash3X = Crc32.GetHash(Entries[i].Key + Entries[i].Key + Entries[i].Key);
+                    keyOffset += (uint)Entries[i].Key.Length + 1;
+                }
+
+                uint bucketCounter = 0;
                 Dictionary<byte, uint> buckets = new Dictionary<byte, uint>();
                 for (int i = 0; i < keyCount; i++)
                 {
@@ -168,42 +157,37 @@ namespace Arrowgene.Ddon.Client.Resource
                     byte bucket = (byte)(Crc32.GetHash(Entries[i].Key) & 0xFF);
                     if (buckets.ContainsKey(bucket))
                     {
-                        Entries[(int)buckets[bucket]].LinkIndex = counter;
-                        buckets[bucket] = counter;
+                        Entries[(int)buckets[bucket]].LinkIndex = bucketCounter;
+                        buckets[bucket] = bucketCounter;
                     }
                     else
                     {
-                        buckets.Add(bucket, counter);
+                        buckets.Add(bucket, bucketCounter);
                     }
 
-                    counter++;
+                    bucketCounter++;
                 }
 
-                uint counter2 = 0;
+                uint hashTableCounter = 0;
                 uint[] hashTable = new uint[256];
                 for (int i = 0; i < keyCount; i++)
                 {
                     byte bucket = (byte)(Crc32.GetHash(Entries[i].Key) & 0xFF);
                     if (hashTable[bucket] == 0)
                     {
-                        hashTable[bucket] = (counter2 == 0) ? 0xFFFFFFFF : counter2;
+                        hashTable[bucket] = (hashTableCounter == 0) ? 0xFFFFFFFF : hashTableCounter;
                     }
-                    counter2++;
+
+                    hashTableCounter++;
                 }
 
-
-                uint keyOffset = 0;
                 for (int i = 0; i < keyCount; i++)
                 {
-                    Entries[i].KeyOffset = keyOffset;
-
                     buffer.WriteUInt32(Entries[i].Index);
                     buffer.WriteUInt32(Entries[i].KeyHash2X);
                     buffer.WriteUInt32(Entries[i].KeyHash3X);
                     buffer.WriteUInt32(Entries[i].KeyOffset);
                     buffer.WriteUInt32(Entries[i].LinkIndex);
-
-                    keyOffset += (uint)Entries[i].Key.Length + 1;
                 }
 
                 for (int j = 0; j < hashTable.Length; j++)
@@ -211,13 +195,14 @@ namespace Arrowgene.Ddon.Client.Resource
                     buffer.WriteUInt32(hashTable[j]);
                 }
 
+                keySize = (uint)buffer.Position;
                 for (int i = 0; i < keyCount; i++)
                 {
                     buffer.WriteCString(Entries[i].Key, Encoding.UTF8);
                 }
-            }
 
-            keySize = (uint)buffer.Position - keySize;
+                keySize = (uint)buffer.Position - keySize;
+            }
 
             stringSize = (uint)buffer.Position;
             for (int i = 0; i < stringCount; i++)

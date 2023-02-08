@@ -19,30 +19,7 @@ public class GuiMessageTest
             Assert.Equal(gmd[i], saved[i]);
         }
     }    
-    
-    [Fact]
-    public void TestGmd()
-    {
-        string a = "C:/Users/nxspirit/Downloads/gmd/gui_cmn.arcsystem_log.gmd.gmd";
-        string b = "C:/Users/nxspirit/Downloads/gmd/gui_cmn.arccustom_skill_name_06.gmd.gmd";
-        byte[] gmd = File.ReadAllBytes(a);
-        GuiMessage gmdM = new GuiMessage();
-        gmdM.Open(gmd);
 
-        GuiMessage.Entry biggest = gmdM.Entries[0];
-        foreach (GuiMessage.Entry entry in gmdM.Entries)
-        {
-            if (entry.LinkIndex > biggest.LinkIndex)
-            {
-                biggest = entry;
-            }
-        }
-        int i = 1;
-    }
-
-    
-    
-    
     [Fact]
     public void TestGmdSerialisationA()
     {
