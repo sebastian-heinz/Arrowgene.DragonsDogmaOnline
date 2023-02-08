@@ -106,6 +106,8 @@ namespace Arrowgene.Ddon.Cli.Command
             if (parameter.ArgumentMap.ContainsKey("gmdTest"))
             {
                 string packGmdCsv = parameter.ArgumentMap["gmdTest"];
+                String output = packGmdCsv.Replace(".en", "");
+                
                 ArcArchive archive = new ArcArchive();
                 archive.Open(packGmdCsv);
                 List<ArcArchive.ArcFile> gmdArcFiles = archive.GetFiles(
@@ -122,10 +124,14 @@ namespace Arrowgene.Ddon.Cli.Command
                         entry.Msg = "TEST";
                         //entry.a5 = 0;
                     }
-                    gmdArcFile.Data = gmd.Save();
+
+                //    gmd.Entries[12].Msg = "Test";
+                    gmdArcFile.Data = gmd.Save(); // diff
+                    File.WriteAllBytes(output + gmdArcFile.Index.Name, gmdArcFile.Data);
                 }
                 byte[] savedArc = archive.Save();
-                File.WriteAllBytes(packGmdCsv + ".out", savedArc);
+        
+                File.WriteAllBytes(output, savedArc);
                 return CommandResultType.Exit;
             }
 

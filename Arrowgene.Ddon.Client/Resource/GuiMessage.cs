@@ -43,13 +43,10 @@ namespace Arrowgene.Ddon.Client.Resource
             public uint LinkIndex { get; set; }
             public uint KeyReadIndex { get; set; }
             public uint MsgReadIndex { get; set; }
-
-            public Entry Link { get; set; }
         }
 
         public List<Entry> Entries { get; }
         public uint[] HashTable { get; }
-        public Entry[] HashTableEntry { get; }
         public string Str { get; set; }
         public uint Version { get; set; }
         public uint LanguageId { get; set; }
@@ -59,7 +56,6 @@ namespace Arrowgene.Ddon.Client.Resource
         public GuiMessage()
         {
             HashTable = new uint[256];
-            HashTableEntry = new Entry[256];
             Entries = new List<Entry>();
         }
 
@@ -70,7 +66,7 @@ namespace Arrowgene.Ddon.Client.Resource
             UpdateTime = ReadUInt64(buffer);
             uint keyCount = ReadUInt32(buffer);
             uint stringCount = ReadUInt32(buffer);
-            uint keySize = ReadUInt32(buffer);
+            uint keySize = ReadUInt32(buffer); // diff
             uint stringSize = ReadUInt32(buffer);
             uint strLen = ReadUInt32(buffer);
             Str = buffer.ReadString((int)strLen);
@@ -125,42 +121,6 @@ namespace Arrowgene.Ddon.Client.Resource
 
             Entries.Clear();
             Entries.AddRange(entries);
-            
-            for (int i = 0; i < keyCount; i++)
-            {
-                Entry entry = entries[i];
-                if (entry.LinkIndex == 0)
-                {
-                    entry.Link = null;
-                }
-                else if (entry.LinkIndex == 0xFFFFFFFF)
-                {
-                    entry.Link = Entries[0];
-                }
-                else
-                {
-                    entry.Link = Entries[(int)entry.LinkIndex];
-                }
-            }
-
-            for (int i = 0; i < HashTable.Length; i++)
-            {
-                uint index = HashTable[i];
-                if (index == 0)
-                {
-                    HashTableEntry[i] = null;
-                }
-                else if (index == 0xFFFFFFFF)
-                {
-                    HashTableEntry[i] = Entries[0];
-                }
-                else
-                {
-                    HashTableEntry[i] = Entries[(int)index];
-                }
-            }
-
-
         }
 
         protected override void WriteResource(IBuffer buffer)
@@ -200,6 +160,38 @@ namespace Arrowgene.Ddon.Client.Resource
             keySize = (uint)buffer.Position;
             if (keyCount > 0)
             {
+                uint counter = 0;
+                Dictionary<byte, uint> buckets = new Dictionary<byte, uint>();
+                for (int i = 0; i < keyCount; i++)
+                {
+                    Entries[i].Index = (uint)i;
+                    byte bucket = (byte)(Crc32.GetHash(Entries[i].Key) & 0xFF);
+                    if (buckets.ContainsKey(bucket))
+                    {
+                        Entries[(int)buckets[bucket]].LinkIndex = counter;
+                        buckets[bucket] = counter;
+                    }
+                    else
+                    {
+                        buckets.Add(bucket, counter);
+                    }
+
+                    counter++;
+                }
+
+                uint counter2 = 0;
+                uint[] hashTable = new uint[256];
+                for (int i = 0; i < keyCount; i++)
+                {
+                    byte bucket = (byte)(Crc32.GetHash(Entries[i].Key) & 0xFF);
+                    if (hashTable[bucket] == 0)
+                    {
+                        hashTable[bucket] = (counter2 == 0) ? 0xFFFFFFFF : counter2;
+                    }
+                    counter2++;
+                }
+
+
                 uint keyOffset = 0;
                 for (int i = 0; i < keyCount; i++)
                 {
@@ -214,9 +206,9 @@ namespace Arrowgene.Ddon.Client.Resource
                     keyOffset += (uint)Entries[i].Key.Length + 1;
                 }
 
-                for (int j = 0; j < HashTable.Length; j++)
+                for (int j = 0; j < hashTable.Length; j++)
                 {
-                    buffer.WriteUInt32(HashTable[j]);
+                    buffer.WriteUInt32(hashTable[j]);
                 }
 
                 for (int i = 0; i < keyCount; i++)

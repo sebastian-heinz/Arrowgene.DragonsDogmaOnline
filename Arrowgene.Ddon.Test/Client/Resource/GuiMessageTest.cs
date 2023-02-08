@@ -25,14 +25,16 @@ public class GuiMessageTest
     {
         string a = "C:/Users/nxspirit/Downloads/gmd/gui_cmn.arcsystem_log.gmd.gmd";
         string b = "C:/Users/nxspirit/Downloads/gmd/gui_cmn.arccustom_skill_name_06.gmd.gmd";
-        byte[] gmd = File.ReadAllBytes(b);
+        byte[] gmd = File.ReadAllBytes(a);
         GuiMessage gmdM = new GuiMessage();
         gmdM.Open(gmd);
-        foreach (var entry in gmdM.Entries)
+
+        GuiMessage.Entry biggest = gmdM.Entries[0];
+        foreach (GuiMessage.Entry entry in gmdM.Entries)
         {
-            if (entry.LinkIndex > 0)
+            if (entry.LinkIndex > biggest.LinkIndex)
             {
-                int isf = 1;
+                biggest = entry;
             }
         }
         int i = 1;
