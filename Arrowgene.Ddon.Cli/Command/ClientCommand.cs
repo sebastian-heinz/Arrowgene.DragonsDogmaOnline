@@ -162,104 +162,108 @@ namespace Arrowgene.Ddon.Cli.Command
                     return CommandResultType.Exit;
                 }
 
-                Logger.Info($"Reading CSV: {gmdCsvFile.FullName}");
                 GmdCsv gmdCsvReader = new GmdCsv();
                 List<GmdCsv.Entry> csvEntries = gmdCsvReader.ReadPath(gmdCsvFile.FullName);
-                Dictionary<string, List<GmdCsv.Entry>> gmdLookup = new Dictionary<string, List<GmdCsv.Entry>>();
+                Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>> csvArcLookup =
+                    new Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>>();
                 foreach (GmdCsv.Entry csvEntry in csvEntries)
                 {
-                    string gmdHash = csvEntry.ArcPath;
-                    List<GmdCsv.Entry> gmds;
-                    if (!gmdLookup.ContainsKey(gmdHash))
+                    string arcPath = csvEntry.ArcPath;
+                    Dictionary<string, List<GmdCsv.Entry>> gmdLookup;
+                    if (csvArcLookup.ContainsKey(arcPath))
                     {
-                        gmds = new List<GmdCsv.Entry>();
-                        gmdLookup.Add(gmdHash, gmds);
+                        gmdLookup = csvArcLookup[arcPath];
                     }
                     else
                     {
-                        gmds = gmdLookup[gmdHash];
+                        gmdLookup = new Dictionary<string, List<GmdCsv.Entry>>();
+                        csvArcLookup.Add(arcPath, gmdLookup);
                     }
 
-                    gmds.Add(csvEntry);
+                    string gmdPath = csvEntry.GmdPath;
+                    List<GmdCsv.Entry> gmdEntries;
+                    if (gmdLookup.ContainsKey(gmdPath))
+                    {
+                        gmdEntries = gmdLookup[gmdPath];
+                    }
+                    else
+                    {
+                        gmdEntries = new List<GmdCsv.Entry>();
+                        gmdLookup.Add(gmdPath, gmdEntries);
+                    }
+
+                    gmdEntries.Add(csvEntry);
                 }
-                
-                int count = gmdLookup.Keys.Count;
+
                 int current = 0;
-                Dictionary<string, ArcArchive.ArcFile> archiveLookup = new Dictionary<string, ArcArchive.ArcFile>();
-                foreach (string gmdHash in gmdLookup.Keys)
+                foreach (string arcPath in csvArcLookup.Keys)
                 {
                     current++;
-                    List<GmdCsv.Entry> gmds = gmdLookup[gmdHash];
-                    List<ArcArchive.ArcFile> gmdFiles;
-                    string path = Path.Combine(romDir.FullName, Util.UnrootPath(gmdHash));
-                    using (FileStream fs = new FileStream(path, FileMode.Open))
-                    {
-                        List<ArcArchive.FileIndex> gmdIndices = ArcArchive.IndexProbeStream(fs,
-                            ArcArchive.Search().ByExtension("gmd")
-                        );
-                        gmdFiles = ArcArchive.ReadFileStream(fs, gmdIndices);
-                    }
-
-                    string gmdPath = gmds[0].GmdPath;
-                    foreach (ArcArchive.ArcFile arcArchiveFile in gmdFiles)
-                    {
-                        if (gmdPath == arcArchiveFile.Index.Path)
-                        {
-                            archiveLookup.Add(gmdHash, arcArchiveFile);
-                            break;
-                        }
-                    }
-                    Logger.Info($"Creating Lookup {current}/{count} {path}");
-                }
-
-
-                current = 0;
-                foreach (string gmdHash in gmdLookup.Keys)
-                {
-                    current++;
-                    ArcArchive.ArcFile arcFile = archiveLookup[gmdHash];
-                    List<GmdCsv.Entry> gmdIntermediates = gmdLookup[gmdHash];
-                    List<GuiMessage.Entry> guiMessages = new List<GuiMessage.Entry>();
-                    foreach (GmdCsv.Entry csvEntry in gmdIntermediates)
-                    {
-                        GuiMessage.Entry newEntry = new GuiMessage.Entry();
-                        newEntry.Index = csvEntry.Index;
-                        newEntry.Key = csvEntry.Key;
-                        if (romLanguage == GuiMessage.Language.Japanese)
-                        {
-                            newEntry.Msg = csvEntry.MsgJp;
-                        }
-                        else if (romLanguage == GuiMessage.Language.English)
-                        {
-                            newEntry.Msg = csvEntry.MsgEn;
-                        }
-                        else
-                        {
-                            Logger.Error($"Language {romLanguage} not supported");
-                        }
-
-                        newEntry.ReadIndex = csvEntry.ReadIndex;
-                        guiMessages.Add(newEntry);
-                    }
-
-                    GuiMessage gmd = new GuiMessage();
-                    gmd.Open(arcFile.Data);
-                    if (gmd.Entries.Count != guiMessages.Count)
-                    {
-                        Logger.Error("gmd.Entries.Count != guiMessages.Count");
-                    }
-
-                    gmd.Entries.Clear();
-                    gmd.Entries.AddRange(guiMessages);
-                    arcFile.Data = gmd.Save();
-
+                    string fullPath = Path.Combine(romDir.FullName, Util.UnrootPath(arcPath));
+                    string backuppatP = Path.Combine("C:\\Users\\nxspirit\\Downloads\\back", Util.UnrootPath(arcPath));
+                //    File.Copy(fullPath, backuppatP);
+                    Dictionary<string, List<GmdCsv.Entry>> gmdCsvLookup = csvArcLookup[arcPath];
                     ArcArchive archive = new ArcArchive();
-                    string path = Path.Combine(romDir.FullName, Util.UnrootPath(gmdHash));
-                    archive.Open(path);
-                    archive.PutFile(arcFile.Index.Path, arcFile.Data);
+                    archive.Open(fullPath);
+                    List<ArcArchive.ArcFile> gmdFiles = archive.GetFiles(ArcArchive.Search().ByExtension("gmd"));
+                    foreach (ArcArchive.ArcFile gmdFile in gmdFiles)
+                    {
+                        string gmdPath = gmdFile.Index.Path;
+                        if (!gmdCsvLookup.ContainsKey(gmdPath))
+                        {
+                            Logger.Info($"No Updates for GMD (ArcPath:{arcPath}, GmdPath:{gmdPath})");
+                            continue;
+                        }
+
+                        List<GmdCsv.Entry> gmdCsvEntries = gmdCsvLookup[gmdPath];
+                        GuiMessage gmd = new GuiMessage();
+                        gmd.Open(gmdFile.Data);
+                        foreach (GuiMessage.Entry entry in gmd.Entries)
+                        {
+                            GmdCsv.Entry matchCsvEntry = null;
+                            foreach (GmdCsv.Entry csvEntry in gmdCsvEntries)
+                            {
+                                if (!string.IsNullOrEmpty(entry.Key) && csvEntry.Key == entry.Key)
+                                {
+                                    // matched based on key
+                                    matchCsvEntry = csvEntry;
+                                    break;
+                                }
+
+                                if (entry.ReadIndex == csvEntry.ReadIndex)
+                                {
+                                    matchCsvEntry = csvEntry;
+                                    break;
+                                }
+                            }
+
+                            if (matchCsvEntry == null)
+                            {
+                                Logger.Info(
+                                    $"No Update for GMD Entry (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
+                                continue;
+                            }
+
+                            if (romLanguage == GuiMessage.Language.Japanese)
+                            {
+                                entry.Msg = matchCsvEntry.MsgJp;
+                            }
+                            else if (romLanguage == GuiMessage.Language.English)
+                            {
+                                entry.Msg = matchCsvEntry.MsgEn;
+                            }
+                            else
+                            {
+                                Logger.Error($"Language {romLanguage} not supported");
+                            }
+                        }
+
+                        gmdFile.Data = gmd.Save();
+                    }
+
                     byte[] savedArc = archive.Save();
-                    File.WriteAllBytes(path, savedArc);
-                    Logger.Info($"Writing {current}/{count} {path}");
+                    File.WriteAllBytes(fullPath, savedArc);
+                    Logger.Info($"Writing {current}/{csvArcLookup.Keys.Count} {fullPath}");
                 }
 
                 return CommandResultType.Exit;

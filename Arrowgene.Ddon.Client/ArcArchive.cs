@@ -395,21 +395,26 @@ namespace Arrowgene.Ddon.Client
             buffer.WriteUInt16(MagicId);
             buffer.WriteUInt16((ushort)_files.Count);
 
+            uint requiredIndexSize = (uint)(FileIndexSize * _files.Count);
+            uint factor = (requiredIndexSize / FileDataOffset) + 1;
 
-            uint dataOffset = FileDataOffset;
-            uint indexOffset = FileIndexOffset;
+            uint fileDataOffset = factor * FileDataOffset;
+            uint currentDataOffset = fileDataOffset;
+            uint currentIndexOffset = FileIndexOffset;
             for (int i = 0; i < _files.Count; i++)
             {
-                if (indexOffset >= FileDataOffset)
+                if (currentIndexOffset >= fileDataOffset)
                 {
-                    Logger.Error("Index to big, can't store more files");
+                    Exception ex = new Exception("Index to big, can't store more files");
+                    Logger.Exception(ex);
+                    throw ex;
                 }
 
                 ArcFile file = _files[i];
                 byte[] fileData = SerializeFileData(file.Data, file.Index.Compression);
 
-                file.Index.Offset = dataOffset;
-                file.Index.IndexOffset = indexOffset;
+                file.Index.Offset = currentDataOffset;
+                file.Index.IndexOffset = currentIndexOffset;
                 file.Index.Size = (uint)file.Data.Length;
                 file.Index.CompressedSize = (uint)fileData.Length;
 
@@ -417,8 +422,8 @@ namespace Arrowgene.Ddon.Client
                 buffer.WriteBytes(fileIndex, 0, (int)file.Index.IndexOffset, fileIndex.Length);
                 buffer.WriteBytes(fileData, 0, (int)file.Index.Offset, fileData.Length);
 
-                indexOffset += FileIndexSize;
-                dataOffset += file.Index.CompressedSize;
+                currentIndexOffset += FileIndexSize;
+                currentDataOffset += file.Index.CompressedSize;
             }
         }
 
