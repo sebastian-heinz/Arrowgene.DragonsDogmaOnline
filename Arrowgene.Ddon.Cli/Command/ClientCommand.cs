@@ -238,22 +238,34 @@ namespace Arrowgene.Ddon.Cli.Command
                             if (matchCsvEntry == null)
                             {
                                 Logger.Info(
-                                    $"No Update for GMD Entry (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
+                                    $"No Update for GMD Entry, skipping (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
                                 continue;
                             }
 
+                            string newMsg;
                             if (romLanguage == GuiMessage.Language.Japanese)
                             {
-                                entry.Msg = matchCsvEntry.MsgJp;
+                                newMsg = matchCsvEntry.MsgJp;
                             }
                             else if (romLanguage == GuiMessage.Language.English)
                             {
-                                entry.Msg = matchCsvEntry.MsgEn;
+                                newMsg = matchCsvEntry.MsgEn;
                             }
                             else
                             {
-                                Logger.Error($"Language {romLanguage} not supported");
+                                Logger.Error(
+                                    $"Language {romLanguage} not supported, skipping (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
+                                continue;
                             }
+
+                            if (string.IsNullOrEmpty(newMsg))
+                            {
+                                Logger.Error(
+                                    $"csv message is empty, skipping (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
+                                continue;
+                            }
+
+                            entry.Msg = newMsg;
                         }
 
                         gmdFile.Data = gmd.Save();
