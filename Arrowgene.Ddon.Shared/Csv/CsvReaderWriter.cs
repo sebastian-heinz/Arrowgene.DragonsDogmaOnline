@@ -33,12 +33,13 @@ namespace Arrowgene.Ddon.Shared.Csv
 
         public void WritePath(List<T> rows, string path)
         {
-            Logger.Info($"Writing: {path}");
             if (File.Exists(path))
             {
-                Logger.Info($"Deleting: {path}");
+                Logger.Info($"Deleting Existing: {path}");
                 File.Delete(path);
             }
+
+            Logger.Info($"Writing: {path}");
             using FileStream stream = File.OpenWrite(path);
             Write(rows, stream);
         }
@@ -79,7 +80,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             using FileStream stream = File.OpenRead(file.FullName);
             return Read(stream);
         }
-        
+
         public List<T> Read(Stream stream)
         {
             List<T> items = new List<T>();
@@ -117,7 +118,10 @@ namespace Arrowgene.Ddon.Shared.Csv
                     }
 
                     int nextChar = streamReader.Peek();
-                    if (c == '\r' && nextChar == '\n')
+                    if (
+                        (c == '\r' && nextChar == '\n') // Line end on CRLF
+                        || (c == '\n') // Line end on LF
+                    )
                     {
                         // empty line
                         lineBuilder.Append((char)c);
@@ -183,7 +187,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                             Logger.Error(
                                 $"Unescaped Quote in CSV near:`{lineBuilder}{(char)c}{(char)nextChar}` (expected `{(char)nextChar}` HEX:{nextChar:X8} to be a quote)");
                         }
-                        
+
                         // fieldBuilder.Append((char)c);  // exclude quotes on reading data
                         previousChar = c;
                         lineBuilder.Append((char)c);
@@ -206,7 +210,10 @@ namespace Arrowgene.Ddon.Shared.Csv
                     continue;
                 }
 
-                if (previousChar == '\r' && c == '\n')
+                if (
+                    (previousChar == '\r' && c == '\n') // Line end on CRLF
+                    || (c == '\n') // Line end on LF
+                )
                 {
                     //carriage return (The Carriage Return (CR) character (0x0D, \r))
                     //line feed (The Line Feed (LF) character (0x0A, \n))
@@ -400,7 +407,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 {
                     return;
                 }
-                
+
                 if (columnVal.Contains('"'))
                 {
                     columnVal = columnVal.Replace("\"", "\"\"");

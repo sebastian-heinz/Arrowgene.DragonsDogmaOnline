@@ -18,7 +18,7 @@ public class GuiMessageTest
         {
             Assert.Equal(gmd[i], saved[i]);
         }
-    }    
+    }
 
     [Fact]
     public void TestGmdSerialisationA()
@@ -40,8 +40,7 @@ public class GuiMessageTest
             entry.Msg = $"MSG_{i}";
             entry.KeyOffset = 0xFFFFFFFF;
             entry.LinkIndex = 0xFFFFFFFF;
-            entry.KeyReadIndex = i;
-            entry.MsgReadIndex = i;
+            entry.ReadIndex = i;
             gmdA.Entries.Add(entry);
         }
 
@@ -73,8 +72,7 @@ public class GuiMessageTest
             entry.Msg = "MSG";
             entry.KeyOffset = 0;
             entry.LinkIndex = 0;
-            entry.KeyReadIndex = 0;
-            entry.MsgReadIndex = i;
+            entry.ReadIndex = i;
             gmdB.Entries.Add(entry);
         }
 
@@ -106,8 +104,7 @@ public class GuiMessageTest
         entryA.Msg = "MSG";
         entryA.KeyOffset = 0xFFFFFFFF;
         entryA.LinkIndex = 0xFFFFFFFF;
-        entryA.KeyReadIndex = 0;
-        entryA.MsgReadIndex = 0;
+        entryA.ReadIndex = 0;
         gmdC.Entries.Add(entryA);
 
         GuiMessage.Entry entryB = new GuiMessage.Entry();
@@ -118,8 +115,7 @@ public class GuiMessageTest
         entryB.Msg = "MSG";
         entryB.KeyOffset = 0;
         entryB.LinkIndex = 0;
-        entryB.KeyReadIndex = 0;
-        entryB.MsgReadIndex = 1;
+        entryB.ReadIndex = 1;
         gmdC.Entries.Add(entryB);
 
         byte[] gmdSerialized = gmdC.Save();
@@ -146,8 +142,7 @@ public class GuiMessageTest
             Assert.Equal(entryExpected.KeyHash3X, entryActual.KeyHash3X);
             Assert.Equal(entryExpected.KeyOffset, entryActual.KeyOffset);
             Assert.Equal(entryExpected.LinkIndex, entryActual.LinkIndex);
-            Assert.Equal(entryExpected.KeyReadIndex, entryActual.KeyReadIndex);
-            Assert.Equal(entryExpected.MsgReadIndex, entryActual.MsgReadIndex);
+            Assert.Equal(entryExpected.ReadIndex, entryActual.ReadIndex);
         }
 
         byte[] expectedBytes = expected.Save();

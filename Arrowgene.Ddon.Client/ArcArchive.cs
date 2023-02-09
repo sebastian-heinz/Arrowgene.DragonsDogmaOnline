@@ -111,6 +111,74 @@ namespace Arrowgene.Ddon.Client
             return arcFile;
         }
 
+        /// <summary>
+        /// Search Stream for specific indices in .arc files.
+        /// Intended for FileStream/FileSystem to avoid reading whole .arc file into memory.
+        /// </summary>
+        public static List<FileIndex> IndexProbeStream(Stream stream, FileIndexSearch search)
+        {
+            List<FileIndex> indices = new List<FileIndex>();
+            using BinaryReader r = new BinaryReader(stream, Encoding.UTF8, true);
+            byte[] magicTagBytes = r.ReadBytes(4);
+            string magicTag = Encoding.UTF8.GetString(magicTagBytes);
+            ushort magicId = r.ReadUInt16();
+            if (magicTag != "ARCC" || magicId != 0x07)
+            {
+                Logger.Error("Invalid .arc File");
+                return indices;
+            }
+
+            int entries = r.ReadUInt16();
+            for (int i = 0; i < entries; i++)
+            {
+                uint indexOffset = (uint)stream.Position;
+                byte[] indexData = r.ReadBytes(FileIndexSize);
+                FileIndex index = DeserializeFileIndex(indexData, indexOffset);
+                if (search.Match(index))
+                {
+                    indices.Add(index);
+                }
+            }
+
+            return indices;
+        }
+
+        /// <summary>
+        /// Read ArcFiles from Stream based on indices.
+        /// Intended for FileStream/FileSystem to avoid reading whole .arc file into memory.
+        /// </summary>
+        public static List<ArcFile> ReadFileStream(Stream stream, List<FileIndex> indices)
+        {
+            List<ArcFile> files = new List<ArcFile>();
+            foreach (FileIndex index in indices)
+            {
+                byte[] fileData = new byte[index.CompressedSize];
+                stream.Position = index.Offset;
+                int read = stream.Read(fileData, 0, fileData.Length);
+                if (read != fileData.Length)
+                {
+                    Logger.Error(
+                        $"Stream read less than required: (Read Length:{read} != File Length:{fileData.Length})");
+                    continue;
+                }
+
+                fileData = DeserializeFileData(fileData);
+                if (fileData.Length != index.Size)
+                {
+                    Logger.Error(
+                        $"File Length does not match expected: (Data Length:{fileData.Length} != Index Length:{index.Size})");
+                    continue;
+                }
+
+                ArcFile file = new ArcFile();
+                file.Data = fileData;
+                file.Index = index;
+                files.Add(file);
+            }
+
+            return files;
+        }
+
         public static FileIndexSearch Search()
         {
             return new FileIndexSearch();
@@ -372,7 +440,7 @@ namespace Arrowgene.Ddon.Client
             return buffer;
         }
 
-        private FileIndex DeserializeFileIndex(byte[] fileIndexData, uint indexOffset = 0)
+        private static FileIndex DeserializeFileIndex(byte[] fileIndexData, uint indexOffset = 0)
         {
             FileIndex fileIndex = new FileIndex();
             fileIndex.IndexOffset = indexOffset;
@@ -386,7 +454,7 @@ namespace Arrowgene.Ddon.Client
                 fileIndex.Directory = "";
             }
 
-            fileIndex.JamCrc = ReadUInt32(entryBuffer);
+            fileIndex.JamCrc = entryBuffer.ReadUInt32();
             if (JamCrcLookup.ContainsKey(fileIndex.JamCrc))
             {
                 fileIndex.ArcExt = JamCrcLookup[fileIndex.JamCrc];
@@ -399,13 +467,13 @@ namespace Arrowgene.Ddon.Client
 
             fileIndex.Name = $"{Path.GetFileName(fileIndex.ArcPath)}.{fileIndex.Extension}";
             fileIndex.Path = Path.Combine(fileIndex.Directory, fileIndex.Name);
-            fileIndex.CompressedSize = ReadUInt32(entryBuffer);
-            uint flags = ReadUInt32(entryBuffer);
+            fileIndex.CompressedSize = entryBuffer.ReadUInt32();
+            uint flags = entryBuffer.ReadUInt32();
             uint sizeBits = flags & ((1 << 29) - 1);
             uint compressionBits = (flags >> 29) & ((1 << 3) - 1);
             fileIndex.Compression = (ArcCompression)compressionBits;
             fileIndex.Size = sizeBits;
-            fileIndex.Offset = ReadUInt32(entryBuffer);
+            fileIndex.Offset = entryBuffer.ReadUInt32();
             return fileIndex;
         }
 
@@ -419,7 +487,7 @@ namespace Arrowgene.Ddon.Client
             return copy;
         }
 
-        private byte[] DeserializeFileData(byte[] fileData)
+        private static byte[] DeserializeFileData(byte[] fileData)
         {
             int dataLen = fileData.Length;
             byte[] copy = new byte[dataLen];
@@ -446,7 +514,7 @@ namespace Arrowgene.Ddon.Client
             return bos.ToArray();
         }
 
-        private byte[] Decompress(byte[] input)
+        private static byte[] Decompress(byte[] input)
         {
             Inflater decompressor = new Inflater();
             decompressor.SetInput(input);

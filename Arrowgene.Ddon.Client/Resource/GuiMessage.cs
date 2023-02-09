@@ -11,6 +11,16 @@ namespace Arrowgene.Ddon.Client.Resource
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(GuiMessage));
 
+        public enum Language : uint
+        {
+            Japanese = 0,
+            English = 1,
+            French = 2,
+            Spanish = 3,
+            German = 4,
+            Italian = 5
+        }
+
         public class Entry
         {
             public uint Index { get; set; }
@@ -20,8 +30,7 @@ namespace Arrowgene.Ddon.Client.Resource
             public uint KeyHash3X { get; set; }
             public uint KeyOffset { get; set; }
             public uint LinkIndex { get; set; }
-            public uint KeyReadIndex { get; set; }
-            public uint MsgReadIndex { get; set; }
+            public uint ReadIndex { get; set; }
         }
 
         public List<Entry> Entries { get; }
@@ -38,103 +47,30 @@ namespace Arrowgene.Ddon.Client.Resource
             Entries = new List<Entry>();
         }
 
-        protected override void ReadResource(IBuffer buffer)
+        public uint CalculateKeyProperties()
         {
-            Version = ReadUInt32(buffer);
-            LanguageId = ReadUInt32(buffer);
-            UpdateTime = ReadUInt64(buffer);
-            uint keyCount = ReadUInt32(buffer);
-            uint stringCount = ReadUInt32(buffer);
-            uint keySize = ReadUInt32(buffer); // diff
-            uint stringSize = ReadUInt32(buffer);
-            uint strLen = ReadUInt32(buffer);
-            Str = buffer.ReadString((int)strLen);
-            buffer.ReadByte(); // str null-termination
+            Entries.Sort((x, y) => x.ReadIndex.CompareTo(y.ReadIndex));
 
-            if (keyCount > 0 && keyCount != stringCount)
-            {
-                // TODO it seems to work for this case as well
-                // This case exists for a few files, one is 
-                // /Volumes/data/game/Dragon's Dogma Online/nativePC/rom/quest/pqi_01.arc
-                // ui\00_message\package_quest\package_quest_info1
-            }
-
-            uint maxEntries = Math.Max(keyCount, stringCount);
-            Entry[] entries = new Entry[maxEntries];
-            for (int i = 0; i < maxEntries; i++)
-            {
-                entries[i] = new Entry();
-            }
-
-            if (keyCount > 0)
-            {
-                for (int i = 0; i < keyCount; i++)
-                {
-                    Entry entry = entries[i];
-                    entry.Index = ReadUInt32(buffer);
-                    entry.KeyHash2X = ReadUInt32(buffer);
-                    entry.KeyHash3X = ReadUInt32(buffer);
-                    entry.KeyOffset = ReadUInt32(buffer);
-                    entry.LinkIndex = ReadUInt32(buffer);
-                }
-
-                for (int j = 0; j < HashTable.Length; j++)
-                {
-                    HashTable[j] = ReadUInt32(buffer);
-                }
-
-                for (uint i = 0; i < keyCount; i++)
-                {
-                    Entry entry = entries[i];
-                    entry.Key = buffer.ReadCString(Encoding.UTF8);
-                    entry.KeyReadIndex = i;
-                }
-            }
-
-            for (uint i = 0; i < stringCount; i++)
-            {
-                Entry entry = entries[i];
-                entry.Msg = buffer.ReadCString(Encoding.UTF8);
-                entry.MsgReadIndex = i;
-            }
-
-            Entries.Clear();
-            Entries.AddRange(entries);
-        }
-
-        protected override void WriteResource(IBuffer buffer)
-        {
             uint keyCount = 0;
-            uint stringCount = 0;
+            bool finished = false;
             foreach (Entry entry in Entries)
             {
-                if (!string.IsNullOrEmpty(entry.Key))
+                if (string.IsNullOrEmpty(entry.Key))
                 {
+                    finished = true;
+                }
+                else
+                {
+                    if (finished)
+                    {
+                        Logger.Error(
+                            $"There is a gap within the keys. (keyCount: {keyCount}, Key:{entry.Key}, Msg:{entry.Msg})");
+                        break;
+                    }
+
                     keyCount++;
                 }
-
-                stringCount++;
             }
-
-            Entries.Sort((x, y) => x.MsgReadIndex.CompareTo(y.MsgReadIndex));
-
-            uint keySize = 0;
-            uint stringSize = 0;
-            uint strLen = (uint)Str.Length;
-
-            buffer.WriteUInt32(Version);
-            buffer.WriteUInt32(LanguageId);
-            buffer.WriteUInt64(UpdateTime);
-            buffer.WriteUInt32(keyCount);
-            buffer.WriteUInt32(stringCount);
-
-            int sizePosition = buffer.Position;
-            buffer.WriteUInt32(keySize);
-            buffer.WriteUInt32(stringSize);
-
-            buffer.WriteUInt32(strLen);
-            buffer.WriteString(Str);
-            buffer.WriteByte(0); // str null-termination
 
             if (keyCount > 0)
             {
@@ -169,18 +105,106 @@ namespace Arrowgene.Ddon.Client.Resource
                 }
 
                 uint hashTableCounter = 0;
-                uint[] hashTable = new uint[256];
+                for (int i = 0; i < HashTable.Length; i++)
+                {
+                    HashTable[i] = 0;
+                }
+
                 for (int i = 0; i < keyCount; i++)
                 {
                     byte bucket = (byte)(Crc32.GetHash(Entries[i].Key) & 0xFF);
-                    if (hashTable[bucket] == 0)
+                    if (HashTable[bucket] == 0)
                     {
-                        hashTable[bucket] = (hashTableCounter == 0) ? 0xFFFFFFFF : hashTableCounter;
+                        HashTable[bucket] = hashTableCounter == 0 ? 0xFFFFFFFF : hashTableCounter;
                     }
 
                     hashTableCounter++;
                 }
+            }
 
+            return keyCount;
+        }
+
+        protected override void ReadResource(IBuffer buffer)
+        {
+            Version = ReadUInt32(buffer);
+            LanguageId = ReadUInt32(buffer);
+            UpdateTime = ReadUInt64(buffer);
+            uint keyCount = ReadUInt32(buffer);
+            uint stringCount = ReadUInt32(buffer);
+            uint keySize = ReadUInt32(buffer);
+            uint stringSize = ReadUInt32(buffer);
+            uint strLen = ReadUInt32(buffer);
+            Str = buffer.ReadString((int)strLen);
+            buffer.ReadByte(); // str null-termination
+
+            uint maxEntries = Math.Max(keyCount, stringCount);
+            Entry[] entries = new Entry[maxEntries];
+            for (int i = 0; i < maxEntries; i++)
+            {
+                entries[i] = new Entry();
+            }
+
+            if (keyCount > 0)
+            {
+                for (int i = 0; i < keyCount; i++)
+                {
+                    Entry entry = entries[i];
+                    entry.Index = ReadUInt32(buffer);
+                    entry.KeyHash2X = ReadUInt32(buffer);
+                    entry.KeyHash3X = ReadUInt32(buffer);
+                    entry.KeyOffset = ReadUInt32(buffer);
+                    entry.LinkIndex = ReadUInt32(buffer);
+                }
+
+                for (int j = 0; j < HashTable.Length; j++)
+                {
+                    HashTable[j] = ReadUInt32(buffer);
+                }
+
+                for (uint i = 0; i < keyCount; i++)
+                {
+                    Entry entry = entries[i];
+                    entry.Key = buffer.ReadCString(Encoding.UTF8);
+                }
+            }
+
+            for (uint i = 0; i < stringCount; i++)
+            {
+                Entry entry = entries[i];
+                entry.Msg = buffer.ReadCString(Encoding.UTF8);
+                entry.ReadIndex = i;
+            }
+
+            Entries.Clear();
+            Entries.AddRange(entries);
+        }
+
+        protected override void WriteResource(IBuffer buffer)
+        {
+            uint keyCount = CalculateKeyProperties();
+            uint stringCount = (uint)Entries.Count;
+
+            uint keySize = 0;
+            uint stringSize = 0;
+            uint strLen = (uint)Str.Length;
+
+            buffer.WriteUInt32(Version);
+            buffer.WriteUInt32(LanguageId);
+            buffer.WriteUInt64(UpdateTime);
+            buffer.WriteUInt32(keyCount);
+            buffer.WriteUInt32(stringCount);
+
+            int sizePosition = buffer.Position;
+            buffer.WriteUInt32(keySize);
+            buffer.WriteUInt32(stringSize);
+
+            buffer.WriteUInt32(strLen);
+            buffer.WriteString(Str);
+            buffer.WriteByte(0); // str null-termination
+
+            if (keyCount > 0)
+            {
                 for (int i = 0; i < keyCount; i++)
                 {
                     buffer.WriteUInt32(Entries[i].Index);
@@ -190,9 +214,9 @@ namespace Arrowgene.Ddon.Client.Resource
                     buffer.WriteUInt32(Entries[i].LinkIndex);
                 }
 
-                for (int j = 0; j < hashTable.Length; j++)
+                for (int j = 0; j < HashTable.Length; j++)
                 {
-                    buffer.WriteUInt32(hashTable[j]);
+                    buffer.WriteUInt32(HashTable[j]);
                 }
 
                 keySize = (uint)buffer.Position;
