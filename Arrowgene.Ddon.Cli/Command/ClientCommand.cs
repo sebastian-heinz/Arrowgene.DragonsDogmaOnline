@@ -200,8 +200,6 @@ namespace Arrowgene.Ddon.Cli.Command
                 {
                     current++;
                     string fullPath = Path.Combine(romDir.FullName, Util.UnrootPath(arcPath));
-                    string backuppatP = Path.Combine("C:\\Users\\nxspirit\\Downloads\\back", Util.UnrootPath(arcPath));
-                //    File.Copy(fullPath, backuppatP);
                     Dictionary<string, List<GmdCsv.Entry>> gmdCsvLookup = csvArcLookup[arcPath];
                     ArcArchive archive = new ArcArchive();
                     archive.Open(fullPath);
