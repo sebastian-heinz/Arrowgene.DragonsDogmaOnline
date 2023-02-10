@@ -221,10 +221,6 @@ namespace Arrowgene.Ddon.Shared.Csv
                     //line feed (The Line Feed (LF) character (0x0A, \n))
 
                     string field = fieldBuilder.ToString();
-                    if (field.EndsWith('\n'))
-                    {
-                        field = field.Remove(field.Length - 1);
-                    }
                     fields.Add(field);
                     fieldBuilder.Clear();
 
