@@ -136,7 +136,9 @@ namespace Arrowgene.Ddon.Shared.Csv
 
                 if (insideComment)
                 {
-                    if (previousChar == '\r' && c == '\n')
+                    if ((previousChar == '\r' && c == '\n') // Line end on CRLF
+                    || (c == '\n') // Line end on LF
+                    )
                     {
                         // comment end
                         isLineFirstCharacter = true;
@@ -182,7 +184,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                         // detect the end
                         isFieldQuoted = false;
                         if (nextChar != ',' // expect end of field, if not
-                            && nextChar != '\r') // and it is not the line end
+                            && nextChar != '\r' && nextChar != '\n') // and it is not the line end
                         {
                             Logger.Error(
                                 $"Unescaped Quote in CSV near:`{lineBuilder}{(char)c}{(char)nextChar}` (expected `{(char)nextChar}` HEX:{nextChar:X8} to be a quote)");
@@ -219,7 +221,10 @@ namespace Arrowgene.Ddon.Shared.Csv
                     //line feed (The Line Feed (LF) character (0x0A, \n))
 
                     string field = fieldBuilder.ToString();
-                    field = field.Remove(field.Length - 1);
+                    if (field.EndsWith('\n'))
+                    {
+                        field = field.Remove(field.Length - 1);
+                    }
                     fields.Add(field);
                     fieldBuilder.Clear();
 
