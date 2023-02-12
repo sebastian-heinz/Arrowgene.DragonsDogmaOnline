@@ -219,8 +219,15 @@ namespace Arrowgene.Ddon.Shared.Csv
                 {
                     //carriage return (The Carriage Return (CR) character (0x0D, \r))
                     //line feed (The Line Feed (LF) character (0x0A, \n))
-
+                    
                     string field = fieldBuilder.ToString();
+                    
+                    if (field.EndsWith('\r'))
+                    {
+                        // For CRLF case, CR is already committed to field, need to remove it.
+                        field = field.Remove(field.Length - 1);
+                    }
+                    
                     fields.Add(field);
                     fieldBuilder.Clear();
 
