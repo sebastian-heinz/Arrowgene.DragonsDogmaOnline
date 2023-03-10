@@ -219,6 +219,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemConsumeStorageItemReq.Serializer());
             Create(new C2SItemGetStorageItemListReq.Serializer());
             Create(new C2SItemMoveItemReq.Serializer());
+            Create(new C2SItemSellItemReq.Serializer());
             Create(new C2SItemSortGetItemSortDataBinReq.Serializer());
             Create(new C2SItemSortSetItemSortDataBinReq.Serializer());
             Create(new C2SItemUseBagItemReq.Serializer());
@@ -374,6 +375,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemSortGetItemSortdataBinNtc.Serializer());
             Create(new S2CItemSortSetItemSortDataBinRes.Serializer());
             Create(new S2CItemMoveItemRes.Serializer());
+            Create(new S2CItemSellItemRes.Serializer());
             Create(new S2CItemUseBagItemRes.Serializer());
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());
