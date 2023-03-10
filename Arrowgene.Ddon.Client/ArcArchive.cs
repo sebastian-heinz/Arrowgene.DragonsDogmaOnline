@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
 using ICSharpCode.SharpZipLib.Zip.Compression;
+using Buffer = System.Buffer;
 
 namespace Arrowgene.Ddon.Client
 {
@@ -15,6 +16,8 @@ namespace Arrowgene.Ddon.Client
         private const string Key = "ABB(DF2I8[{Y-oS_CCMy(@<}qR}WYX11M)w[5V.~CbjwM5q<F1Iab+-";
         private const int FileIndexSize = 80;
         private const int FileNameSize = 64;
+        private const int FileIndexOffset = 8;
+        private const int FileDataOffset = 0x8000;
 
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ResourceFile));
         private static readonly BlowFish BlowFish = new BlowFish(Encoding.UTF8.GetBytes(Key), true);
@@ -32,8 +35,9 @@ namespace Arrowgene.Ddon.Client
             arcExt.JamCrcStr = $"0x{arcExt.JamCrc:X8}";
             JamCrcLookup.Add(arcExt.JamCrc, arcExt);
         }
-        
-        public static T GetFile<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ClientFile, new()
+
+        public static T GetFile<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null)
+            where T : ClientFile, new()
         {
             ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, true);
             if (arcFile == null)
@@ -46,7 +50,8 @@ namespace Arrowgene.Ddon.Client
             return file;
         }
 
-        public static T GetResource<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
+        public static T GetResource<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null)
+            where T : ResourceFile, new()
         {
             ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, true);
             if (arcFile == null)
@@ -59,7 +64,8 @@ namespace Arrowgene.Ddon.Client
             return resource;
         }
 
-        public static T GetResource_NoLog<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null) where T : ResourceFile, new()
+        public static T GetResource_NoLog<T>(DirectoryInfo romDir, string arcPath, string filePath, string ext = null)
+            where T : ResourceFile, new()
         {
             ArcFile arcFile = GetArcFile(romDir, arcPath, filePath, ext, false);
             if (arcFile == null)
@@ -104,7 +110,75 @@ namespace Arrowgene.Ddon.Client
 
             return arcFile;
         }
-        
+
+        /// <summary>
+        /// Search Stream for specific indices in .arc files.
+        /// Intended for FileStream/FileSystem to avoid reading whole .arc file into memory.
+        /// </summary>
+        public static List<FileIndex> IndexProbeStream(Stream stream, FileIndexSearch search)
+        {
+            List<FileIndex> indices = new List<FileIndex>();
+            using BinaryReader r = new BinaryReader(stream, Encoding.UTF8, true);
+            byte[] magicTagBytes = r.ReadBytes(4);
+            string magicTag = Encoding.UTF8.GetString(magicTagBytes);
+            ushort magicId = r.ReadUInt16();
+            if (magicTag != "ARCC" || magicId != 0x07)
+            {
+                Logger.Error("Invalid .arc File");
+                return indices;
+            }
+
+            int entries = r.ReadUInt16();
+            for (int i = 0; i < entries; i++)
+            {
+                uint indexOffset = (uint)stream.Position;
+                byte[] indexData = r.ReadBytes(FileIndexSize);
+                FileIndex index = DeserializeFileIndex(indexData, indexOffset);
+                if (search.Match(index))
+                {
+                    indices.Add(index);
+                }
+            }
+
+            return indices;
+        }
+
+        /// <summary>
+        /// Read ArcFiles from Stream based on indices.
+        /// Intended for FileStream/FileSystem to avoid reading whole .arc file into memory.
+        /// </summary>
+        public static List<ArcFile> ReadFileStream(Stream stream, List<FileIndex> indices)
+        {
+            List<ArcFile> files = new List<ArcFile>();
+            foreach (FileIndex index in indices)
+            {
+                byte[] fileData = new byte[index.CompressedSize];
+                stream.Position = index.Offset;
+                int read = stream.Read(fileData, 0, fileData.Length);
+                if (read != fileData.Length)
+                {
+                    Logger.Error(
+                        $"Stream read less than required: (Read Length:{read} != File Length:{fileData.Length})");
+                    continue;
+                }
+
+                fileData = DeserializeFileData(fileData);
+                if (fileData.Length != index.Size)
+                {
+                    Logger.Error(
+                        $"File Length does not match expected: (Data Length:{fileData.Length} != Index Length:{index.Size})");
+                    continue;
+                }
+
+                ArcFile file = new ArcFile();
+                file.Data = fileData;
+                file.Index = index;
+                files.Add(file);
+            }
+
+            return files;
+        }
+
         public static FileIndexSearch Search()
         {
             return new FileIndexSearch();
@@ -123,11 +197,11 @@ namespace Arrowgene.Ddon.Client
             return path;
         }
 
-        private readonly List<FileIndex> _fileIndices;
+        private readonly List<ArcFile> _files;
 
         public ArcArchive()
         {
-            _fileIndices = new List<FileIndex>();
+            _files = new List<ArcFile>();
         }
 
         public string MagicTag { get; set; }
@@ -136,43 +210,29 @@ namespace Arrowgene.Ddon.Client
         /// <summary>
         /// Returns all file indices from this archive.
         /// </summary>
-        public List<FileIndex> GetFileIndices()
+        public List<ArcFile> GetFiles()
         {
-            return new List<FileIndex>(_fileIndices);
+            return new List<ArcFile>(_files);
         }
 
         /// <summary>
         /// Returns a list of all matching FileIndices.
         /// </summary>
-        public List<FileIndex> GetFileIndices(FileIndexSearch search)
+        public List<ArcFile> GetFiles(FileIndexSearch search)
         {
-            List<FileIndex> fileIndices = new List<FileIndex>();
+            List<ArcFile> arcFiles = new List<ArcFile>();
             if (search != null)
             {
-                foreach (FileIndex index in _fileIndices)
+                foreach (ArcFile arcFile in _files)
                 {
-                    if (search.Match(index))
+                    if (search.Match(arcFile.Index))
                     {
-                        fileIndices.Add(index);
+                        arcFiles.Add(arcFile);
                     }
                 }
             }
 
-            return fileIndices;
-        }
-
-        /// <summary>
-        /// Returns a list of all matching files.
-        /// </summary>
-        public List<ArcFile> GetFiles(FileIndexSearch search)
-        {
-            List<ArcFile> files = new List<ArcFile>();
-            foreach (FileIndex index in GetFileIndices(search))
-            {
-                files.Add(GetFile(index));
-            }
-
-            return files;
+            return arcFiles;
         }
 
         /// <summary>
@@ -180,20 +240,69 @@ namespace Arrowgene.Ddon.Client
         /// </summary>
         public ArcFile GetFile(FileIndexSearch search)
         {
-            if (search == null)
-            {
-                return null;
-            }
+            return GetFiles(search)[0];
+        }
 
-            foreach (FileIndex index in _fileIndices)
+        public ArcFile PutFile(string path, byte[] fileData)
+        {
+            ArcFile existingFile = null;
+            foreach (ArcFile file in _files)
             {
-                if (search.Match(index))
+                if (path == file.Index.Path)
                 {
-                    return GetFile(index);
+                    existingFile = file;
+                    break;
                 }
             }
 
-            return null;
+            if (existingFile != null)
+            {
+                DeleteFile(existingFile);
+            }
+
+            FileIndex newFileIndex = new FileIndex();
+            newFileIndex.Path = path;
+            string ext = Path.GetExtension(path);
+            newFileIndex.ArcPath = path.Substring(0, path.Length - ext.Length);
+            ext = ext.TrimStart('.');
+
+            foreach (uint jamCrc in JamCrcLookup.Keys)
+            {
+                ArcExt arcExt = JamCrcLookup[jamCrc];
+                if (arcExt.Extension == ext)
+                {
+                    newFileIndex.ArcExt = arcExt;
+                    newFileIndex.JamCrc = arcExt.JamCrc;
+                    newFileIndex.Extension = arcExt.Extension;
+                    break;
+                }
+            }
+
+            if (string.IsNullOrEmpty(newFileIndex.Extension))
+            {
+                // todo calculate jamcrc?
+                newFileIndex.Extension = $"{newFileIndex.JamCrc:X8}";
+            }
+
+            newFileIndex.Directory = Path.GetDirectoryName(newFileIndex.ArcPath);
+            if (newFileIndex.Directory == null)
+            {
+                newFileIndex.Directory = "";
+            }
+
+            newFileIndex.Name = $"{Path.GetFileName(newFileIndex.ArcPath)}.{newFileIndex.Extension}";
+            newFileIndex.Size = (uint)fileData.Length;
+
+            ArcFile newArcFile = new ArcFile();
+            newArcFile.Index = newFileIndex;
+            newArcFile.Data = fileData;
+            _files.Add(newArcFile);
+            return newArcFile;
+        }
+
+        public void DeleteFile(ArcFile file)
+        {
+            _files.Remove(file);
         }
 
         /// <summary>
@@ -203,9 +312,9 @@ namespace Arrowgene.Ddon.Client
         /// </summary>
         public void ExtractArchive(string rootPath)
         {
-            foreach (FileIndex fileIndex in _fileIndices)
+            foreach (ArcFile file in _files)
             {
-                ExtractFile(rootPath, fileIndex);
+                ExtractFile(rootPath, file);
             }
         }
 
@@ -214,16 +323,9 @@ namespace Arrowgene.Ddon.Client
         /// Preserving the arc directory structure.
         /// Directories that do not exists will be created.
         /// </summary>
-        public void ExtractFile(string rootPath, FileIndex fileIndex)
+        public void ExtractFile(string rootPath, ArcFile file)
         {
-            ArcFile f = GetFile(fileIndex);
-            if (f == null)
-            {
-                Logger.Error($"Failed to extract file (ArcPath:{fileIndex.ArcPath})");
-                return;
-            }
-
-            FileInfo fileInfo = new FileInfo(Path.Combine(rootPath, f.Index.Path));
+            FileInfo fileInfo = new FileInfo(Path.Combine(rootPath, file.Index.Path));
             if (fileInfo.DirectoryName == null)
             {
                 Logger.Error("Failed to extract file (fileInfo.DirectoryName == null)");
@@ -235,78 +337,13 @@ namespace Arrowgene.Ddon.Client
                 Directory.CreateDirectory(fileInfo.DirectoryName);
             }
 
-            File.WriteAllBytes(fileInfo.FullName, f.Data);
-        }
-        
-        /// <summary>
-        /// Retrieve a ArcFile from an index
-        /// </summary>
-        public ArcFile GetFile(FileIndex fileIndex)
-        {
-            if (fileIndex.Offset > int.MaxValue)
-            {
-                Logger.Error($"Unsupported Offset (offset:{fileIndex.Offset} > MaxValue:{int.MaxValue})");
-                return null;
-            }
-
-            if (fileIndex.CompressedSize > int.MaxValue)
-            {
-                Logger.Error(
-                    $"Unsupported Compressed Size (compressedSize:{fileIndex.CompressedSize} > MaxValue:{int.MaxValue})");
-                return null;
-            }
-
-            if (FilePath == null)
-            {
-                // TODO assumed to be backed by a file, if Open(byte[]) or Open(IBuffer) is used retrieving files will fail.
-                // At the moment there should not be a need to keep the .arc in memory
-                Logger.Error("No File Open (FilePath == null)");
-                return null;
-            }
-
-            if (!FilePath.Exists)
-            {
-                Logger.Error($"File does not exists: {FilePath.FullName}");
-                return null;
-            }
-
-            var fileData = new byte[fileIndex.CompressedSize];
-            int remaining = (int) fileIndex.CompressedSize;
-            int offset = 0;
-            using FileStream fs = new FileStream(FilePath.FullName, FileMode.Open);
-            if (fileIndex.Offset + remaining > fs.Length)
-            {
-                Logger.Error(
-                    $"Not enough data available: (Index:{fileIndex.Offset + remaining} > Length:{fs.Length})");
-                return null;
-            }
-
-            fs.Position = fileIndex.Offset;
-            while (remaining > 0)
-            {
-                int read = fs.Read(fileData, offset, remaining);
-                offset += read;
-                remaining -= read;
-            }
-
-            fileData = BlowFish.Decrypt_ECB(fileData);
-            fileData = Decompress(fileData);
-
-            if (fileData.Length != fileIndex.Size)
-            {
-                Logger.Error(
-                    $"File Length does not match expected: (Data Length:{fileData.Length} != Index Length:{fileIndex.Size})");
-                return null;
-            }
-
-            ArcFile file = new ArcFile();
-            file.Data = fileData;
-            file.Index = fileIndex;
-            return file;
+            File.WriteAllBytes(fileInfo.FullName, file.Data);
         }
 
         protected override void Read(IBuffer buffer)
         {
+            _files.Clear();
+
             if (buffer.Size < 6)
             {
                 Logger.Error($"Not enough data to parse ArcArchive (Size:{buffer.Size} < 8)");
@@ -323,41 +360,146 @@ namespace Arrowgene.Ddon.Client
             }
 
             int entries = ReadInt16(buffer);
+            List<FileIndex> indices = new List<FileIndex>();
             for (int i = 0; i < entries; i++)
             {
-                FileIndex fileIndex = new FileIndex();
-
-                byte[] entry = buffer.ReadBytes(FileIndexSize);
-                entry = BlowFish.Decrypt_ECB(entry);
-                IBuffer entryBuffer = new StreamBuffer(entry);
-                entryBuffer.Position = 0;
-                fileIndex.ArcPath = entryBuffer.ReadFixedString(FileNameSize);
-                fileIndex.Directory = Path.GetDirectoryName(fileIndex.ArcPath);
-                if (fileIndex.Directory == null)
-                {
-                    fileIndex.Directory = "";
-                }
-
-                fileIndex.JamCrc = ReadUInt32(entryBuffer);
-                if (JamCrcLookup.ContainsKey(fileIndex.JamCrc))
-                {
-                    fileIndex.ArcExt = JamCrcLookup[fileIndex.JamCrc];
-                    fileIndex.Extension = fileIndex.ArcExt.Extension;
-                }
-                else
-                {
-                    fileIndex.Extension = $"{fileIndex.JamCrc:X8}";
-                }
-
-                fileIndex.Name = $"{Path.GetFileName(fileIndex.ArcPath)}.{fileIndex.Extension}";
-                fileIndex.Path = Path.Combine(fileIndex.Directory, fileIndex.Name);
-                fileIndex.CompressedSize = ReadUInt32(entryBuffer);
-                uint flags = ReadUInt32(entryBuffer);
-                fileIndex.Compression = (ArcCompression) ((flags >> 0x1D) & 0x07);
-                fileIndex.Size = flags & 0x1FFFFFFFU;
-                fileIndex.Offset = ReadUInt32(entryBuffer);
-                _fileIndices.Add(fileIndex);
+                uint indexOffset = (uint)buffer.Position;
+                byte[] indexData = buffer.ReadBytes(FileIndexSize);
+                FileIndex index = DeserializeFileIndex(indexData, indexOffset);
+                indices.Add(index);
             }
+
+            foreach (FileIndex fileIndex in indices)
+            {
+                byte[] fileData = buffer.GetBytes((int)fileIndex.Offset, (int)fileIndex.CompressedSize);
+
+                fileData = DeserializeFileData(fileData);
+                if (fileData.Length != fileIndex.Size)
+                {
+                    Logger.Error(
+                        $"File Length does not match expected: (Data Length:{fileData.Length} != Index Length:{fileIndex.Size})");
+                    continue;
+                }
+
+                ArcFile file = new ArcFile();
+                file.Data = fileData;
+                file.Index = fileIndex;
+                _files.Add(file);
+            }
+        }
+
+        protected override void Write(IBuffer buffer)
+        {
+            byte[] magicTag = Encoding.UTF8.GetBytes(MagicTag);
+            buffer.WriteBytes(magicTag);
+            buffer.WriteUInt16(MagicId);
+            buffer.WriteUInt16((ushort)_files.Count);
+
+            uint requiredIndexSize = (uint)(FileIndexSize * _files.Count);
+            uint factor = (requiredIndexSize / FileDataOffset) + 1;
+
+            uint fileDataOffset = factor * FileDataOffset;
+            uint currentDataOffset = fileDataOffset;
+            uint currentIndexOffset = FileIndexOffset;
+            for (int i = 0; i < _files.Count; i++)
+            {
+                if (currentIndexOffset >= fileDataOffset)
+                {
+                    Exception ex = new Exception("Index to big, can't store more files");
+                    Logger.Exception(ex);
+                    throw ex;
+                }
+
+                ArcFile file = _files[i];
+                byte[] fileData = SerializeFileData(file.Data, file.Index.Compression);
+
+                file.Index.Offset = currentDataOffset;
+                file.Index.IndexOffset = currentIndexOffset;
+                file.Index.Size = (uint)file.Data.Length;
+                file.Index.CompressedSize = (uint)fileData.Length;
+
+                byte[] fileIndex = SerializeFileIndex(file.Index);
+                buffer.WriteBytes(fileIndex, 0, (int)file.Index.IndexOffset, fileIndex.Length);
+                buffer.WriteBytes(fileData, 0, (int)file.Index.Offset, fileData.Length);
+
+                currentIndexOffset += FileIndexSize;
+                currentDataOffset += file.Index.CompressedSize;
+            }
+        }
+
+
+        private byte[] SerializeFileIndex(FileIndex fileIndex)
+        {
+            IBuffer fileIndexBuffer = new StreamBuffer();
+            fileIndexBuffer.WriteFixedString(fileIndex.ArcPath, FileNameSize);
+            fileIndexBuffer.WriteUInt32(fileIndex.JamCrc);
+            fileIndexBuffer.WriteUInt32(fileIndex.CompressedSize);
+            uint sizeBits = fileIndex.Size;
+            uint compressionBits = (uint)fileIndex.Compression;
+            uint flags = sizeBits
+                         | compressionBits << 29;
+            fileIndexBuffer.WriteUInt32(flags);
+            fileIndexBuffer.WriteUInt32(fileIndex.Offset);
+            byte[] buffer = fileIndexBuffer.GetAllBytes();
+            buffer = BlowFish.Encrypt_ECB(buffer);
+            return buffer;
+        }
+
+        private static FileIndex DeserializeFileIndex(byte[] fileIndexData, uint indexOffset = 0)
+        {
+            FileIndex fileIndex = new FileIndex();
+            fileIndex.IndexOffset = indexOffset;
+            byte[] entry = BlowFish.Decrypt_ECB(fileIndexData);
+            IBuffer entryBuffer = new StreamBuffer(entry);
+            entryBuffer.Position = 0;
+            fileIndex.ArcPath = entryBuffer.ReadFixedString(FileNameSize);
+            fileIndex.Directory = Path.GetDirectoryName(fileIndex.ArcPath);
+            if (fileIndex.Directory == null)
+            {
+                fileIndex.Directory = "";
+            }
+
+            fileIndex.JamCrc = entryBuffer.ReadUInt32();
+            if (JamCrcLookup.ContainsKey(fileIndex.JamCrc))
+            {
+                fileIndex.ArcExt = JamCrcLookup[fileIndex.JamCrc];
+                fileIndex.Extension = fileIndex.ArcExt.Extension;
+            }
+            else
+            {
+                fileIndex.Extension = $"{fileIndex.JamCrc:X8}";
+            }
+
+            fileIndex.Name = $"{Path.GetFileName(fileIndex.ArcPath)}.{fileIndex.Extension}";
+            fileIndex.Path = Path.Combine(fileIndex.Directory, fileIndex.Name);
+            fileIndex.CompressedSize = entryBuffer.ReadUInt32();
+            uint flags = entryBuffer.ReadUInt32();
+            uint sizeBits = flags & ((1 << 29) - 1);
+            uint compressionBits = (flags >> 29) & ((1 << 3) - 1);
+            fileIndex.Compression = (ArcCompression)compressionBits;
+            fileIndex.Size = sizeBits;
+            fileIndex.Offset = entryBuffer.ReadUInt32();
+            return fileIndex;
+        }
+
+        private byte[] SerializeFileData(byte[] fileData, ArcCompression compression)
+        {
+            int dataLen = fileData.Length;
+            byte[] copy = new byte[dataLen];
+            Buffer.BlockCopy(fileData, 0, copy, 0, dataLen);
+            copy = Compress(copy, (int)compression);
+            copy = BlowFish.Encrypt_ECB(copy);
+            return copy;
+        }
+
+        private static byte[] DeserializeFileData(byte[] fileData)
+        {
+            int dataLen = fileData.Length;
+            byte[] copy = new byte[dataLen];
+            Buffer.BlockCopy(fileData, 0, copy, 0, dataLen);
+            copy = BlowFish.Decrypt_ECB(copy);
+            copy = Decompress(copy);
+            return copy;
         }
 
         private byte[] Compress(byte[] input, int level = Deflater.BEST_COMPRESSION)
@@ -377,7 +519,7 @@ namespace Arrowgene.Ddon.Client
             return bos.ToArray();
         }
 
-        private byte[] Decompress(byte[] input)
+        private static byte[] Decompress(byte[] input)
         {
             Inflater decompressor = new Inflater();
             decompressor.SetInput(input);
@@ -387,6 +529,21 @@ namespace Arrowgene.Ddon.Client
             {
                 int count = decompressor.Inflate(buf);
                 bos.Write(buf, 0, count);
+                if (count == 0 && !decompressor.IsFinished)
+                {
+                    if (decompressor.IsNeedingDictionary)
+                    {
+                        Logger.Error("ecompressor.IsNeedingDictionary");
+                    }
+                    else if (decompressor.IsNeedingInput)
+                    {
+                        Logger.Error("decompressor.IsNeedingInput");
+                    }
+                    else
+                    {
+                        Logger.Error("Unknown Decompression Error");
+                    }
+                }
             }
 
             return bos.ToArray();
@@ -447,7 +604,7 @@ namespace Arrowgene.Ddon.Client
                 {
                     return true;
                 }
-                
+
                 if (Option.HasFlag(SearchOption.ArcPath))
                 {
                     if (fileIndex.ArcPath != null
@@ -555,6 +712,7 @@ namespace Arrowgene.Ddon.Client
 
         public class FileIndex
         {
+            public uint IndexOffset { get; set; }
             public string Name { get; set; }
             public string Directory { get; set; }
             public string ArcPath { get; set; }

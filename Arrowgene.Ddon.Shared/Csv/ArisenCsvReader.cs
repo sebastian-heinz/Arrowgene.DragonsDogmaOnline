@@ -2,7 +2,7 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    public class ArisenCsvReader : CsvReader<ArisenCsv>
+    public class ArisenCsvReader : CsvReaderWriter<ArisenCsv>
     {
         protected override int NumExpectedItems => 5;
 

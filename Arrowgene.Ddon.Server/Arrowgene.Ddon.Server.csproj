@@ -9,9 +9,10 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
+    <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
-        <PackageReference Include="Arrowgene.Logging" Version="1.2.0" />
+        <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
         <PackageReference Include="Arrowgene.Networking" Version="1.0.6" />
     </ItemGroup>
     <ItemGroup>

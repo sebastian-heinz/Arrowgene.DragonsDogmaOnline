@@ -8,6 +8,8 @@ using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Ddon.Client.Resource.Texture;
 using Arrowgene.Ddon.Client.Resource.Texture.Dds;
 using Arrowgene.Ddon.Client.Resource.Texture.Tex;
+using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli.Command
@@ -23,12 +25,6 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
-            if (parameter.Arguments.Count < 1)
-            {
-                Logger.Error($"To few arguments. {Description}");
-                return CommandResultType.Exit;
-            }
-
             if (parameter.ArgumentMap.ContainsKey("extract"))
             {
                 string extract = parameter.ArgumentMap["extract"];
@@ -66,32 +62,227 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
-            if (parameter.ArgumentMap.ContainsKey("extractGmd"))
+            if (parameter.Arguments[0] == "gmd2Csv" &&
+                parameter.ArgumentMap.ContainsKey("gmdCsv") &&
+                parameter.ArgumentMap.ContainsKey("romDir") &&
+                parameter.ArgumentMap.ContainsKey("romLang"))
             {
-                string extractGmd = parameter.ArgumentMap["extractGmd"];
-                DirectoryInfo outDir = new DirectoryInfo(extractGmd);
-                if (!outDir.Exists)
+                // Merge all .arc files of ROM dir into existing CSVs language column
+
+                string gmdCsvArg = parameter.ArgumentMap["gmdCsv"];
+                string romDirArg = parameter.ArgumentMap["romDir"];
+                string romLangArg = parameter.ArgumentMap["romLang"];
+
+                if (!Enum.TryParse<GuiMessage.Language>(romLangArg, out GuiMessage.Language romLanguage))
                 {
-                    Logger.Error($"Directory does not exists. ({extractGmd})");
+                    Logger.Error($"Provided romLang:{romLangArg} is invalid");
                     return CommandResultType.Exit;
                 }
-                
-                string source = parameter.Arguments[0];
-                FileInfo arcFile = new FileInfo(source);
-                
-                StringBuilder sb = new StringBuilder();
-                GmdToCsv(arcFile, sb, true);
 
-                string outPath = Path.Combine(outDir.FullName, arcFile.Name + ".csv");
-                File.WriteAllText(outPath, sb.ToString(), Encoding.UTF8);
-                Logger.Info($"Written gmd to: {outPath}");
+                DirectoryInfo romDir = new DirectoryInfo(romDirArg);
+                FileInfo gmdCsvFile = new FileInfo(gmdCsvArg);
+                if (!romDir.Exists)
+                {
+                    Logger.Error($"Provided romDir:{romDirArg} does not exist");
+                    return CommandResultType.Exit;
+                }
+
+                GmdCsv gmdCsvReader = new GmdCsv();
+                List<GmdCsv.Entry> csvEntries = gmdCsvReader.ReadPath(gmdCsvFile.FullName);
+                Dictionary<string, GmdCsv.Entry> csvIndex = new Dictionary<string, GmdCsv.Entry>();
+                foreach (GmdCsv.Entry csvEntry in csvEntries)
+                {
+                    string hash = csvEntry.GetUniqueQualifierLanguageAgnostic();
+                    if (!csvIndex.ContainsKey(hash))
+                    {
+                        csvIndex.Add(hash, csvEntry);
+                    }
+                    else
+                    {
+                        GmdCsv.Entry existingRomCsvEntry = csvIndex[hash];
+                        Logger.Error($"Duplicate entry in CSV, dropping");
+                    }
+                }
+
+                string[] files = Directory.GetFiles(romDir.FullName, "*.arc", SearchOption.AllDirectories);
+                List<GmdCsv.Entry> romCsvEntries = new List<GmdCsv.Entry>();
+                for (int i = 0; i < files.Length; i++)
+                {
+                    FileInfo arcFile = new FileInfo(files[i]);
+                    romCsvEntries.AddRange(ExtractGmdCsvEntries(arcFile, romLanguage));
+                    Logger.Info($"Processing {i}/{files.Length} {arcFile.FullName}");
+                }
+
+                List<GmdCsv.Entry> resultCsvEntries = new List<GmdCsv.Entry>();
+                foreach (GmdCsv.Entry romCsvEntry in romCsvEntries)
+                {
+                    string hash = romCsvEntry.GetUniqueQualifierLanguageAgnostic();
+                    GmdCsv.Entry resultEntry;
+                    if (csvIndex.ContainsKey(hash))
+                    {
+                        resultEntry = csvIndex[hash];
+                        MergeGmdCsvLanguage(romCsvEntry, romLanguage, resultEntry);
+                    }
+                    else
+                    {
+                        resultEntry = romCsvEntry;
+                    }
+
+                    resultCsvEntries.Add(resultEntry);
+                }
+
+                string outPath = Path.Combine(gmdCsvFile.FullName);
+                gmdCsvReader.WritePath(resultCsvEntries, outPath);
+                Logger.Info($"Done: {outPath}");
+                return CommandResultType.Exit;
+            }
+
+
+            if (parameter.Arguments[0] == "packGmd" &&
+                parameter.ArgumentMap.ContainsKey("gmdCsv") &&
+                parameter.ArgumentMap.ContainsKey("romDir") &&
+                parameter.ArgumentMap.ContainsKey("romLang"))
+            {
+                // pack gmd.csv into all .arc files of rom
+                string gmdCsvArg = parameter.ArgumentMap["gmdCsv"];
+                string romDirArg = parameter.ArgumentMap["romDir"];
+                string romLangArg = parameter.ArgumentMap["romLang"];
+
+                if (!Enum.TryParse<GuiMessage.Language>(romLangArg, out GuiMessage.Language romLanguage))
+                {
+                    Logger.Error($"Provided romLang:{romLangArg} is invalid");
+                    return CommandResultType.Exit;
+                }
+
+                DirectoryInfo romDir = new DirectoryInfo(romDirArg);
+                FileInfo gmdCsvFile = new FileInfo(gmdCsvArg);
+                if (!romDir.Exists)
+                {
+                    Logger.Error($"Provided romDir:{romDirArg} does not exist");
+                    return CommandResultType.Exit;
+                }
+
+                GmdCsv gmdCsvReader = new GmdCsv();
+                List<GmdCsv.Entry> csvEntries = gmdCsvReader.ReadPath(gmdCsvFile.FullName);
+                Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>> csvArcLookup =
+                    new Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>>();
+                foreach (GmdCsv.Entry csvEntry in csvEntries)
+                {
+                    string arcPath = csvEntry.ArcPath;
+                    Dictionary<string, List<GmdCsv.Entry>> gmdLookup;
+                    if (csvArcLookup.ContainsKey(arcPath))
+                    {
+                        gmdLookup = csvArcLookup[arcPath];
+                    }
+                    else
+                    {
+                        gmdLookup = new Dictionary<string, List<GmdCsv.Entry>>();
+                        csvArcLookup.Add(arcPath, gmdLookup);
+                    }
+
+                    string gmdPath = csvEntry.GmdPath;
+                    List<GmdCsv.Entry> gmdEntries;
+                    if (gmdLookup.ContainsKey(gmdPath))
+                    {
+                        gmdEntries = gmdLookup[gmdPath];
+                    }
+                    else
+                    {
+                        gmdEntries = new List<GmdCsv.Entry>();
+                        gmdLookup.Add(gmdPath, gmdEntries);
+                    }
+
+                    gmdEntries.Add(csvEntry);
+                }
+
+                int current = 0;
+                foreach (string arcPath in csvArcLookup.Keys)
+                {
+                    current++;
+                    string fullPath = Path.Combine(romDir.FullName, Util.UnrootPath(arcPath));
+                    Dictionary<string, List<GmdCsv.Entry>> gmdCsvLookup = csvArcLookup[arcPath];
+                    ArcArchive archive = new ArcArchive();
+                    archive.Open(fullPath);
+                    List<ArcArchive.ArcFile> gmdFiles = archive.GetFiles(ArcArchive.Search().ByExtension("gmd"));
+                    foreach (ArcArchive.ArcFile gmdFile in gmdFiles)
+                    {
+                        string gmdPath = gmdFile.Index.Path;
+                        if (!gmdCsvLookup.ContainsKey(gmdPath))
+                        {
+                            Logger.Info($"No Updates for GMD (ArcPath:{arcPath}, GmdPath:{gmdPath})");
+                            continue;
+                        }
+
+                        List<GmdCsv.Entry> gmdCsvEntries = gmdCsvLookup[gmdPath];
+                        GuiMessage gmd = new GuiMessage();
+                        gmd.Open(gmdFile.Data);
+                        foreach (GuiMessage.Entry entry in gmd.Entries)
+                        {
+                            GmdCsv.Entry matchCsvEntry = null;
+                            foreach (GmdCsv.Entry csvEntry in gmdCsvEntries)
+                            {
+                                if (!string.IsNullOrEmpty(entry.Key) && csvEntry.Key == entry.Key)
+                                {
+                                    // matched based on key
+                                    matchCsvEntry = csvEntry;
+                                    break;
+                                }
+
+                                if (entry.ReadIndex == csvEntry.ReadIndex)
+                                {
+                                    matchCsvEntry = csvEntry;
+                                    break;
+                                }
+                            }
+
+                            if (matchCsvEntry == null)
+                            {
+                                Logger.Info(
+                                    $"No Update for GMD Entry, skipping (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
+                                continue;
+                            }
+
+                            string newMsg;
+                            if (romLanguage == GuiMessage.Language.Japanese)
+                            {
+                                newMsg = matchCsvEntry.MsgJp;
+                            }
+                            else if (romLanguage == GuiMessage.Language.English)
+                            {
+                                newMsg = matchCsvEntry.MsgEn;
+                            }
+                            else
+                            {
+                                Logger.Error(
+                                    $"Language {romLanguage} not supported, skipping (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
+                                continue;
+                            }
+
+                            if (string.IsNullOrEmpty(newMsg))
+                            {
+                                Logger.Error(
+                                    $"csv message is empty, skipping (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
+                                continue;
+                            }
+
+                            entry.Msg = newMsg;
+                        }
+
+                        gmdFile.Data = gmd.Save();
+                    }
+
+                    byte[] savedArc = archive.Save();
+                    File.WriteAllBytes(fullPath, savedArc);
+                    Logger.Info($"Writing {current}/{csvArcLookup.Keys.Count} {fullPath}");
+                }
 
                 return CommandResultType.Exit;
             }
 
-            if (parameter.ArgumentMap.ContainsKey("packGmd"))
+
+            if (parameter.Arguments.Count < 1)
             {
-                string packGmd = parameter.ArgumentMap["packGmd"];
+                Logger.Error($"To few arguments. {Description}");
                 return CommandResultType.Exit;
             }
 
@@ -136,75 +327,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
-            if (parameter.ArgumentMap.ContainsKey("extractAllGmd"))
-            {
-                DirectoryInfo outDirectory = new DirectoryInfo(parameter.ArgumentMap["extractAllGmd"]);
-                if (!outDirectory.Exists)
-                {
-                    outDirectory.Create();
-                    Logger.Info($"Created Dir: {outDirectory.FullName}");
-                }
-                
-                string[] files = Directory.GetFiles(romDirectory.FullName, "*.arc", SearchOption.AllDirectories);
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < files.Length; i++)
-                {
-                    FileInfo arcFile = new FileInfo(files[i]);
-                    GmdToCsv(arcFile, sb, i==0);
-                    Logger.Info($"Processing {i}/{files.Length} {arcFile.FullName}");
-                }
-
-                string outPath = Path.Combine(outDirectory.FullName, "gmd.csv");
-                File.WriteAllText(outPath, sb.ToString());
-                Logger.Info($"Done: {outPath}");
-                return CommandResultType.Exit;
-            }
-            
             return CommandResultType.Exit;
-        }
-
-        private void GmdToCsv(FileInfo arcFile, StringBuilder sb, bool writeHeader)
-        {
-            if (!arcFile.Exists || arcFile.Extension != ".arc")
-            {
-                Logger.Error($"Source file not exists or is not a .arc file. ({arcFile.FullName})");
-                return;
-            }
-
-            ArcArchive archive = new ArcArchive();
-            archive.Open(arcFile.FullName);
-            List<ArcArchive.ArcFile> gmdFiles = archive.GetFiles(
-                ArcArchive.Search().ByExtension("gmd")
-            );
-
-            if (writeHeader)
-            {
-                sb.Append("Index, Key, Msg, a2, a3, a4, a5, Arc Path, Arc File, KeyReadIdx, MsgReadIdx, GmdStr");
-                sb.Append($"{Environment.NewLine}");
-            }
-
-            foreach (ArcArchive.ArcFile gmdFile in gmdFiles)
-            {
-                GuiMessage gmd = new GuiMessage();
-                gmd.Open(gmdFile.Data);
-
-                foreach (GuiMessage.Entry gmdEntry in gmd.Entries)
-                {
-                    sb.Append($"{gmdEntry.Index},");
-                    sb.Append($"{gmdEntry.Key},");
-                    sb.Append($"\"{gmdEntry.Msg.Replace("\"","\"\"")}\",");
-                    sb.Append($"{gmdEntry.a2},");
-                    sb.Append($"{gmdEntry.a3},");
-                    sb.Append($"{gmdEntry.a4},");
-                    sb.Append($"{gmdEntry.a5},");
-                    sb.Append($"{gmdFile.Index.Path},");
-                    sb.Append($"{arcFile.Name},");
-                    sb.Append($"{gmdEntry.KeyReadIndex},");
-                    sb.Append($"{gmdEntry.MsgReadIndex},");
-                    sb.Append($"{gmd.Str}");
-                    sb.Append($"{Environment.NewLine}");
-                }
-            }
         }
 
         public void ExportResourceRepository(DirectoryInfo romDirectory, DirectoryInfo outDir)
@@ -241,8 +364,9 @@ namespace Arrowgene.Ddon.Cli.Command
                 string relativePath = filePath.Substring(romDirectory.FullName.Length);
                 ArcArchive archive = new ArcArchive();
                 archive.Open(filePath);
-                foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
+                foreach (ArcArchive.ArcFile file in archive.GetFiles())
                 {
+                    ArcArchive.FileIndex fi = file.Index;
                     sb.Append($"{relativePath},{fi.ArcPath}.{fi.ArcExt.Extension},{fi.ArcExt.Extension},");
                     sb.Append($"{fi.ArcExt.JamCrcStr},{fi.ArcExt.Class},{fi.JamCrc},");
                     sb.Append($"{fi.Size},{fi.CompressedSize},{fi.Offset}{Environment.NewLine}");
@@ -291,14 +415,9 @@ namespace Arrowgene.Ddon.Cli.Command
         {
             ArcArchive archive = new ArcArchive();
             archive.Open(fileInfo.FullName);
-            foreach (ArcArchive.FileIndex fi in archive.GetFileIndices())
+            foreach (ArcArchive.ArcFile af in archive.GetFiles())
             {
-                ArcArchive.ArcFile af = archive.GetFile(fi);
-                if (af == null)
-                {
-                    continue;
-                }
-
+                ArcArchive.FileIndex fi = af.Index;
                 string outDirectory = Path.Combine(outDir.FullName, fileInfo.Name, fi.Directory);
                 if (!Directory.Exists(outDirectory))
                 {
@@ -340,6 +459,87 @@ namespace Arrowgene.Ddon.Cli.Command
             string outPath = $"{fileInfo.FullName}.tex";
             texTexture.Save(outPath);
             Logger.Info($"Written: {outPath}");
+        }
+
+        private void MergeGmdCsvLanguage(GmdCsv.Entry entrySrc, GuiMessage.Language langSrc, GmdCsv.Entry entryDst)
+        {
+            switch (langSrc)
+            {
+                case GuiMessage.Language.Japanese:
+                    entryDst.MsgJp = entrySrc.MsgJp;
+                    break;
+                case GuiMessage.Language.English:
+                    entryDst.MsgEn = entrySrc.MsgEn;
+                    break;
+                default:
+                    Logger.Error($"Language {langSrc} not supported");
+                    break;
+            }
+        }
+
+        private List<GmdCsv.Entry> ExtractGmdCsvEntries(FileInfo arcFile, GuiMessage.Language language)
+        {
+            List<GmdCsv.Entry> csvEntries = new List<GmdCsv.Entry>();
+
+            if (!arcFile.Exists || arcFile.Extension != ".arc")
+            {
+                Logger.Error($"Source file not exists or is not a .arc file. ({arcFile.FullName})");
+                return csvEntries;
+            }
+
+            List<ArcArchive.ArcFile> gmdFiles;
+            using (FileStream fs = new FileStream(arcFile.FullName, FileMode.Open))
+            {
+                List<ArcArchive.FileIndex> gmdIndices = ArcArchive.IndexProbeStream(fs,
+                    ArcArchive.Search().ByExtension("gmd")
+                );
+                gmdFiles = ArcArchive.ReadFileStream(fs, gmdIndices);
+            }
+
+            foreach (ArcArchive.ArcFile gmdFile in gmdFiles)
+            {
+                GuiMessage gmd = new GuiMessage();
+                gmd.Open(gmdFile.Data);
+                foreach (GuiMessage.Entry gmdEntry in gmd.Entries)
+                {
+                    GmdCsv.Entry csvEntry = new GmdCsv.Entry();
+                    csvEntry.Index = gmdEntry.Index;
+                    csvEntry.Key = gmdEntry.Key;
+
+                    if (language == GuiMessage.Language.Japanese)
+                    {
+                        csvEntry.MsgJp = gmdEntry.Msg;
+                    }
+                    else if (language == GuiMessage.Language.English)
+                    {
+                        csvEntry.MsgEn = gmdEntry.Msg;
+                    }
+                    else
+                    {
+                        Logger.Error($"Language {language} not supported");
+                    }
+
+                    csvEntry.GmdPath = gmdFile.Index.Path;
+                    csvEntry.ArcName = arcFile.Name;
+                    csvEntry.ReadIndex = gmdEntry.ReadIndex;
+                    string search = "nativePC\\rom";
+                    int romIdx = arcFile.FullName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase);
+                    if (romIdx == -1)
+                    {
+                        search = "nativePC/rom";
+                        romIdx = arcFile.FullName.IndexOf(search, StringComparison.InvariantCultureIgnoreCase);
+                    }
+
+                    if (romIdx >= 0)
+                    {
+                        csvEntry.ArcPath = arcFile.FullName.Substring(romIdx + search.Length);
+                    }
+
+                    csvEntries.Add(csvEntry);
+                }
+            }
+
+            return csvEntries;
         }
 
         public void Shutdown()
