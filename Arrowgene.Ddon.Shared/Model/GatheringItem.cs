@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ItemId { get; set; }
         public uint ItemNum { get; set; }
         public uint Unk3 { get; set; }
-        public bool Unk4 { get; set; }
+        public bool IsHidden { get; set; }
 
         public object Clone()
         {
@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 ItemId = this.ItemId,
                 ItemNum = this.ItemNum,
                 Unk3 = this.Unk3,
-                Unk4 = this.Unk4
+                IsHidden = this.IsHidden
             };
         }
     }

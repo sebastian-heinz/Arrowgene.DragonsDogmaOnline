@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             if (!uint.TryParse(properties[4], out uint itemId)) return null;
             if (!uint.TryParse(properties[5], out uint itemNum)) return null;
             if (!uint.TryParse(properties[6], out uint unk3)) return null;
-            if (!bool.TryParse(properties[7], out bool unk4)) return null;
+            if (!bool.TryParse(properties[7], out bool isHidden)) return null;
 
             return new GatheringItem
             {
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 ItemId = itemId,
                 ItemNum = itemNum,
                 Unk3 = unk3,
-                Unk4 = unk4
+                IsHidden = isHidden
             };
         }
     }

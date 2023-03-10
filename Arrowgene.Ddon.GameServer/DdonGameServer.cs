@@ -1158,8 +1158,10 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
 
+            AddHandler(new ItemConsumeStorageItemHandler(this));
             AddHandler(new ItemGetStorageItemListHandler(this));
             AddHandler(new ItemMoveItemHandler(this));
+            AddHandler(new ItemSellItemHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
             AddHandler(new ItemSortSetItemSortDataBinHandler(this));
             AddHandler(new ItemUseBagItemHandler(this));
