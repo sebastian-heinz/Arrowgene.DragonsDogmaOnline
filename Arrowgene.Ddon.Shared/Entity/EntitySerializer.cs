@@ -152,6 +152,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataStageInfo.Serializer());
             Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer());
             Create(new CDataStatusInfoSerializer());
+            Create(new CDataStorageItemUIDList.Serializer());
             Create(new CDataTraningRoomEnemyHeader.Serializer());
             Create(new CDataUpdateMatchingProfileInfo.Serializer());
             Create(new CDataUpdateWalletPoint.Serializer());
@@ -215,6 +216,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstanceTreasurePointGetCategoryListReq.Serializer());
             Create(new C2SInstanceTreasurePointGetListReq.Serializer());
 
+            Create(new C2SItemConsumeStorageItemReq.Serializer());
             Create(new C2SItemGetStorageItemListReq.Serializer());
             Create(new C2SItemMoveItemReq.Serializer());
             Create(new C2SItemSortGetItemSortDataBinReq.Serializer());
@@ -364,6 +366,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceSetOmInstantKeyValueRes.Serializer());
             Create(new S2CInstanceTreasurePointGetCategoryListRes.Serializer());
             Create(new S2CInstanceTreasurePointGetListRes.Serializer());
+            Create(new S2CItemConsumeStorageItemRes.Serializer());
             Create(new S2CItemExtendItemSlotNtc.Serializer());
             Create(new S2CItemGetStorageItemListRes.Serializer());
             Create(new S2CItemUpdateCharacterItemNtc.Serializer());
