@@ -128,32 +128,80 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return characterUpdateRowsAffected > NoRowsAffected;
         }
 
+        public bool UpdateCharacterEditInfo(Character character)
+        {
+            return UpdateCharacterEditInfo(null, character);
+        }
+
+        public bool UpdateCharacterEditInfo(TCon conn, Character character)
+        {
+            int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterEditInfo, command =>
+            {
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
+
+            return characterUpdateRowsAffected > NoRowsAffected;
+        }
+
+        public bool UpdateCharacterStatusInfo(Character character)
+        {
+            return UpdateCharacterStatusInfo(null, character);
+        }
+
+        public bool UpdateCharacterStatusInfo(TCon conn, Character character)
+        {
+            int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterStatusInfo, command =>
+            {
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
+
+            return characterUpdateRowsAffected > NoRowsAffected;
+        }
+
+        public bool UpdateCharacterMatchingProfile(Character character)
+        {
+            return UpdateCharacterMatchingProfile(null, character);
+        }
+
+        public bool UpdateCharacterMatchingProfile(TCon conn, Character character)
+        {
+            int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterMatchingProfile, command =>
+            {
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
+
+            return characterUpdateRowsAffected > NoRowsAffected;
+        }
+
+        public bool UpdateCharacterArisenProfile(Character character)
+        {
+            return UpdateCharacterArisenProfile(null, character);
+        }
+
+        public bool UpdateCharacterArisenProfile(TCon conn, Character character)
+        {
+            int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterArisenProfile, command =>
+            {
+                AddParameter(command, "@id", character.Id);
+                AddParameter(command, character);
+            });
+
+            return characterUpdateRowsAffected > NoRowsAffected;
+        }
+
         public bool UpdateCharacter(Character character)
         {
             return ExecuteInTransaction(conn =>
                 {
                     UpdateCharacterBaseInfo(character);
 
-                    ExecuteNonQuery(conn, SqlUpdateCharacterEditInfo, command =>
-                    {
-                        AddParameter(command, "@id", character.Id);
-                        AddParameter(command, character);
-                    });
-                    ExecuteNonQuery(conn, SqlUpdateCharacterStatusInfo, command =>
-                    {
-                        AddParameter(command, "@id", character.Id);
-                        AddParameter(command, character);
-                    });
-                    ExecuteNonQuery(conn, SqlUpdateCharacterMatchingProfile, command =>
-                    {
-                        AddParameter(command, "@id", character.Id);
-                        AddParameter(command, character);
-                    });
-                    ExecuteNonQuery(conn, SqlUpdateCharacterArisenProfile, command =>
-                    {
-                        AddParameter(command, "@id", character.Id);
-                        AddParameter(command, character);
-                    });
+                    UpdateCharacterEditInfo(character);
+                    UpdateCharacterStatusInfo(character);
+                    UpdateCharacterMatchingProfile(character);
+                    UpdateCharacterArisenProfile(character);
 
                     StoreCharacterData(conn, character);
 

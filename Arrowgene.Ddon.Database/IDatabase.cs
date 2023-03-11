@@ -32,6 +32,10 @@ namespace Arrowgene.Ddon.Database
         bool DeleteCharacter(uint characterId);
 
         bool UpdateCharacterBaseInfo(Character character);
+        bool UpdateCharacterEditInfo(Character character);
+        bool UpdateCharacterStatusInfo(Character character);
+        bool UpdateCharacterMatchingProfile(Character character);
+        bool UpdateCharacterArisenProfile(Character character);
 
         // Item
         bool InsertItem(Item item);
