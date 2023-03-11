@@ -1,3 +1,4 @@
+using System;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -18,8 +19,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCharacterCharacterPointReviveReq> packet)
         {
+            client.Character.StatusInfo.RevivePoint = (byte) Math.Max(0, client.Character.StatusInfo.RevivePoint-1);
+            Database.UpdateCharacterStatusInfo(client.Character);
+
             S2CCharacterCharacterPointReviveRes res = new S2CCharacterCharacterPointReviveRes();
-            res.RevivePoint = 2;
+            res.RevivePoint = client.Character.StatusInfo.RevivePoint;
 
             client.Send(res);
         }
