@@ -49,6 +49,9 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
+        // TODO: Maybe place somewhere else
+        public static readonly TimeSpan RevivalPowerRechargeTimeSpan = TimeSpan.FromDays(1);
+
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
@@ -81,6 +84,9 @@ namespace Arrowgene.Ddon.GameServer
         public List<CDataStageInfo> StageList { get; }
 
         public override GameClientLookup ClientLookup { get; }
+        
+        // TODO: Maybe place somewhere else
+        public readonly Dictionary<uint, DateTime> LastRevivalPowerRechargeTime = new Dictionary<uint, DateTime>();
 
         public override void Start()
         {
@@ -1089,10 +1095,12 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new CharacterCommunityCharacterStatusGetHandler(this));
             AddHandler(new CharacterDecideCharacterIdHandler(this));
+            AddHandler(new CharacterGetReviveChargeableTimeHandler(this));
             AddHandler(new CharacterCharacterGoldenReviveHandler(this));
             AddHandler(new CharacterCharacterPenaltyReviveHandler(this));
             AddHandler(new CharacterCharacterPointReviveHandler(this));
             AddHandler(new CharacterCharacterSearchHandler(this));
+            AddHandler(new CharacterChargeRevivePointHandler(this));
             AddHandler(new CharacterPawnGoldenReviveHandler(this));
             AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));

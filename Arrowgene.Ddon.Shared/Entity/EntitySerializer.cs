@@ -175,6 +175,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
             Create(new C2SCharacterCharacterPointReviveReq.Serializer());
             Create(new C2SCharacterCharacterSearchReq.Serializer());
+            Create(new C2SCharacterChargeRevivePointReq.Serializer());
+            Create(new C2SCharacterGetReviveChargeableTimeReq.Serializer());
             Create(new C2SCharacterPawnGoldenReviveReq.Serializer());
             Create(new C2SCharacterPawnPointReviveReq.Serializer());
             Create(new C2SCharacterSetOnlineStatusReq.Serializer());
@@ -315,9 +317,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
             Create(new S2CCharacterCharacterPointReviveRes.Serializer());
             Create(new S2CCharacterCharacterSearchRes.Serializer());
+            Create(new S2CCharacterChargeRevivePointRes.Serializer());
             Create(new S2CCharacterCommunityCharacterStatusUpdateNtc.Serializer());
             Create(new S2CCharacterDecideCharacterIdRes.Serializer());
             Create(new S2CCharacterGetCharacterStatusNtc.Serializer());
+            Create(new S2CCharacterGetReviveChargeableTimeRes.Serializer());
             Create(new S2CCharacterContentsReleaseElementNtc.Serializer());
             Create(new S2CCharacterPawnGoldenReviveRes.Serializer());
             Create(new S2CCharacterPawnPointReviveRes.Serializer());
