@@ -24,34 +24,69 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override PacketId Id => PacketId.C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ;
 
         public override void Handle(GameClient client, IPacket packet)
-        {       
+        {
+            client.Character.WalletPointList = new List<CDataWalletPoint>()
+            {
+                // TODO: Figure out what other currencies there are.
+                // Pcap currencies:
+                new CDataWalletPoint() {
+                    Type = 1,
+                    Value = 9863202 // (G)
+                },
+                new CDataWalletPoint() {
+                    Type = 2,
+                    Value = 2096652 // (RP)
+                },
+                new CDataWalletPoint() {
+                    Type = 3,
+                    Value = 100 // BO
+                },
+                new CDataWalletPoint() {
+                    Type = 4,
+                    Value = 5648
+                },
+                new CDataWalletPoint() {
+                    Type = 6,
+                    Value = 99999
+                },
+                new CDataWalletPoint() {
+                    Type = 9,
+                    Value = 200 // (HO?)
+                },
+                new CDataWalletPoint() {
+                    Type = 10,
+                    Value = 0
+                },
+                new CDataWalletPoint() {
+                    Type = 11,
+                    Value = 8
+                },
+                new CDataWalletPoint() {
+                    Type = 12,
+                    Value = 219
+                },
+                new CDataWalletPoint() {
+                    Type = 13,
+                    Value = 2
+                },
+                new CDataWalletPoint() {
+                    Type = 14,
+                    Value = 2
+                },
+                new CDataWalletPoint() {
+                    Type = 15,
+                    Value = 115
+                },
+                new CDataWalletPoint() {
+                    Type = 16,
+                    Value = 105
+                }
+            };
+
             S2CCharacterDecideCharacterIdRes pcap = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.Id;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
-            res.CharacterInfo.WalletPointList = new List<CDataWalletPoint>()
-            {
-                // TODO: Figure out what other currencies there are.
-                // Pcap currencies:
-                //  1   9863202 (G?)
-                //  2   2096652 (RP?)
-                //  3   50000
-                //  4   5648
-                //  6   99999
-                //  9   5000
-                //  10  0
-                //  11  8
-                //  12  219
-                //  13  2
-                //  14  2
-                //  15  115
-                //  16  105
-                new CDataWalletPoint()
-                {
-                    Type = 2, // RP
-                    Value = 42069
-                }
-            };
             res.Unk0 = pcap.Unk0; // Commenting this makes tons of tutorials pop up
             
             client.Send(res);
