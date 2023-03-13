@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut)
         {
-            return ExecuteNonQuery(SqlDeleteCommunicationShortcut, command =>
+            return ExecuteNonQuery(SqlUpdateCommunicationShortcut, command =>
             {
                 AddParameter(command, characterId, updatedCommunicationShortcut);
                 AddParameter(command, "@old_character_id", characterId);
