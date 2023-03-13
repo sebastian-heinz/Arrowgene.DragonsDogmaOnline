@@ -1,7 +1,9 @@
-using Arrowgene.Ddon.GameServer.Dump;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -17,13 +19,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SWarpAreaWarpReq> packet)
         {
-            // TODO: Get character's RP and substract packet.Structure.Price
-            // TODO 2: Don't trust packet.Structure.Price and actually check it in DB
+            uint price = packet.Structure.Price; // TODO: Don't trust packet.Structure.Price and check its price server side
+
+            CDataWalletPoint walletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.RiftPoints).Single();
+            walletPoint.Value -= price;
+            Database.UpdateWalletPoint(client.Character.Id, walletPoint);
 
             S2CWarpAreaWarpRes obj = new S2CWarpAreaWarpRes();
             obj.WarpPointId = packet.Structure.WarpPointId;
-            obj.Rim = 42069; // TODO: Set obj.Rim as the substraction result
+            obj.Rim = walletPoint.Value;
             client.Send(obj);
+
+            if(packet.Structure.Price > 0) {
+                S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+                CDataUpdateWalletPoint updateWallet = new CDataUpdateWalletPoint();
+                updateWallet.Type = WalletType.RiftPoints;
+                updateWallet.AddPoint = (int) -price;
+                updateWallet.Value = walletPoint.Value;
+                updateCharacterItemNtc.UpdateWalletList.Add(updateWallet);
+                client.Send(updateCharacterItemNtc);
+            }
         }
     }
 }
