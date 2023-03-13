@@ -105,7 +105,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     walletUpdate.Type = walletTypeAndQuantity.WalletType;
                     walletUpdate.AddPoint = (int) totalQuantityToAdd;
                     walletUpdate.Value = characterWalletPoint.Value;
-                    ntc.UpdateWallet.Add(walletUpdate);
+                    ntc.UpdateWalletList.Add(walletUpdate);
                 } else {
                     // TODO: Determine by gatheredItem.ItemId
                     StorageType destinationStorageType = StorageType.ItemBagConsumable;
