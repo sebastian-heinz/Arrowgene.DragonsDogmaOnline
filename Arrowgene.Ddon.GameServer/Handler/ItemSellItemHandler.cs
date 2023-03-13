@@ -56,14 +56,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 // TODO: Figure out by ItemId
                 uint goldValue = 100;
+                uint amountToAdd = goldValue * consumeItem.Num;
 
-                CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == 1).First();
-                characterWalletPoint.Value += goldValue; // TODO: Cap to maximum for that wallet
-                // TODO: Save to DB
+                CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).First();
+                characterWalletPoint.Value += amountToAdd; // TODO: Cap to maximum for that wallet
+                Database.UpdateWalletPoint(client.Character.Id, characterWalletPoint);
 
                 CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
-                walletUpdate.Type = 1;
-                walletUpdate.AddPoint = (int) goldValue;
+                walletUpdate.Type = WalletType.Gold;
+                walletUpdate.AddPoint = (int) amountToAdd;
                 walletUpdate.Value = characterWalletPoint.Value;
                 ntc.UpdateWalletList.Add(walletUpdate);
 

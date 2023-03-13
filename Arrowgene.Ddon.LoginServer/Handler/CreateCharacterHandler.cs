@@ -1083,6 +1083,63 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 }
             }).ToList();
             character.Storage = new Storages(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
+            character.WalletPointList = new List<CDataWalletPoint>()
+            {
+                // TODO: Figure out what other currencies there are.
+                // Pcap currencies:
+                new CDataWalletPoint() {
+                    Type = WalletType.Gold,
+                    Value = 10000
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.RiftPoints,
+                    Value = 10000
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.BloodOrbs,
+                    Value = 0
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk4,
+                    Value = 5648
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk6,
+                    Value = 99999
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.HighOrbs,
+                    Value = 0
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk10,
+                    Value = 0
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk11,
+                    Value = 8
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk12,
+                    Value = 219
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk13,
+                    Value = 2
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk14,
+                    Value = 2
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk15,
+                    Value = 115
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.Unk16,
+                    Value = 105
+                }
+            };
 
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)

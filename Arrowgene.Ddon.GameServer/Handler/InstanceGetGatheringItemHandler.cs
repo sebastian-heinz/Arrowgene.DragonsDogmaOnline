@@ -16,26 +16,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemHandler));
 
-        private static readonly Dictionary<uint, (byte WalletType, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (byte WalletType, uint Amount)>() { 
-            {7789, (1, 1)},
-            {7790, (1, 10)},
-            {7791, (1, 100)},
-            {7792, (2,1)},
-            {7793, (2,10)},
-            {7794, (2,100)},
-            {7795, (3,1)}, // Doesn't show up 
-            {7796, (3,10)}, // Doesn't show up
-            {7797, (3,100)}, // Doesn't show up
-            {18742, (9,1)}, // TODO: Check if HO is type 9
-            {18743, (9,10)},
-            {18744, (9,100)},
-            {18828,(1,7500)},
-            {18829,(2,1250)},
-            {18830,(3,750)},
-            {19508,(1,1000)},
-            {19509,(1,10000)},
-            {19510,(2,1000)},
-            {19511,(3,1000)}
+        private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
+            {7789, (WalletType.Gold, 1)},
+            {7790, (WalletType.Gold, 10)},
+            {7791, (WalletType.Gold, 100)},
+            {7792, (WalletType.RiftPoints,1)},
+            {7793, (WalletType.RiftPoints,10)},
+            {7794, (WalletType.RiftPoints,100)},
+            {7795, (WalletType.BloodOrbs,1)}, // Doesn't show up 
+            {7796, (WalletType.BloodOrbs,10)}, // Doesn't show up
+            {7797, (WalletType.BloodOrbs,100)}, // Doesn't show up
+            {18742, (WalletType.HighOrbs,1)},
+            {18743, (WalletType.HighOrbs,10)},
+            {18744, (WalletType.HighOrbs,100)},
+            {18828,(WalletType.Gold,7500)},
+            {18829,(WalletType.RiftPoints,1250)},
+            {18830,(WalletType.BloodOrbs,750)},
+            {19508,(WalletType.Gold,1000)},
+            {19509,(WalletType.Gold,10000)},
+            {19510,(WalletType.RiftPoints,1000)},
+            {19511,(WalletType.BloodOrbs,1000)}
             // TODO: Find all items that add wallet points
         };
 
@@ -97,12 +97,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     pickedGatherItems = gatheringItemRequest.Num;
                     uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheredItem.ItemNum;
                     
-                    CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.WalletType).First();
+                    CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.Type).First();
                     characterWalletPoint.Value += totalQuantityToAdd; // TODO: Cap to maximum for that wallet
-                    // TODO: Save to DB
+                    Database.UpdateWalletPoint(client.Character.Id, characterWalletPoint);
 
                     CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
-                    walletUpdate.Type = walletTypeAndQuantity.WalletType;
+                    walletUpdate.Type = walletTypeAndQuantity.Type;
                     walletUpdate.AddPoint = (int) totalQuantityToAdd;
                     walletUpdate.Value = characterWalletPoint.Value;
                     ntc.UpdateWalletList.Add(walletUpdate);
