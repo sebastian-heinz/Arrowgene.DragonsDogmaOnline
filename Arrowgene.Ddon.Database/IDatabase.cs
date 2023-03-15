@@ -37,6 +37,12 @@ namespace Arrowgene.Ddon.Database
         bool UpdateCharacterMatchingProfile(Character character);
         bool UpdateCharacterArisenProfile(Character character);
 
+        // Wallet Points
+        bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint);
+        bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint);
+        bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint);
+        bool DeleteWalletPoint(uint characterId, WalletType type);
+
         // Item
         bool InsertItem(Item item);
         Item SelectItem(string uid);

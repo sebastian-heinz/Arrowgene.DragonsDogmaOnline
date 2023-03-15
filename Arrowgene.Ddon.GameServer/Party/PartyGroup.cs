@@ -503,6 +503,32 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public void SendToAllExcept<TResStruct>(TResStruct res, params GameClient[] exceptions) where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            SendToAllExcept(packet, exceptions);
+        }
+
+        public void SendToAllExcept(Packet packet, params GameClient[] exceptions)
+        {
+            foreach (GameClient client in Clients)
+            {
+                bool send = true;
+                foreach (GameClient exception in exceptions)
+                {
+                    if (client == exception)
+                    {
+                        send = false;
+                    }
+                }
+
+                if (send)
+                {
+                    client.Send(packet);
+                }
+            }
+        }
+
         public int MemberCount()
         {
             lock (_lock)

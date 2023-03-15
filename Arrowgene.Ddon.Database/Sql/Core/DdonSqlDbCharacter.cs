@@ -396,6 +396,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         }
                     });
                 });
+
+            // Wallet Points
+            ExecuteReader(conn, SqlSelectWalletPoints,
+                command => { AddParameter(command, "@character_id", character.Id); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.WalletPointList.Add(ReadWalletPoint(reader));
+                    }
+                });
         }
 
         private void StoreCharacterData(TCon conn, Character character)
@@ -464,6 +475,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ExecuteNonQuery(conn, SqlReplaceStorage, command =>
                 {
                     AddParameter(command, character.Id, storageType, character.Storage.getStorage(storageType));
+                });
+            }
+
+            foreach(CDataWalletPoint walletPoint in character.WalletPointList)
+            {
+                ExecuteNonQuery(conn, SqlReplaceWalletPoint, command => 
+                {
+                    AddParameter(command, character.Id, walletPoint);
                 });
             }
         }

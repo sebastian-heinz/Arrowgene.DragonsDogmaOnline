@@ -229,6 +229,15 @@ CREATE TABLE IF NOT EXISTS `ddon_storage`
     CONSTRAINT `fk_storage_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS `ddon_wallet_point`
+(
+    `character_id`  INTEGER             NOT NULL,
+    `type`          TINYINT             NOT NULL,
+    `value`         INTEGER             NOT NULL,
+    PRIMARY KEY (`character_id`, `type`),
+    CONSTRAINT `fk_wallet_point_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`id`) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS `ddon_item`
 (
     `uid`          TEXT             NOT NULL,

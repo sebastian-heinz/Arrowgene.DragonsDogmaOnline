@@ -171,7 +171,7 @@
 |S2C_PARTY_PARTY_JOIN_NTC|6|8|16|0x7e8a30|None|
 |C2S_PARTY_PARTY_GET_CONTENT_NUMBER_REQ|6|9|1|||
 |S2C_PARTY_PARTY_GET_CONTENT_NUMBER_RES|6|9|2|0x7e7830|パーティコンテンツ情報取得に|
-|S2C_PARTY_PARTY_LEAVE_REQ|6|10|1|0x831f83|| <-- DESPUES DEL JOIN HACE ESTA!!!!!!!!! CUANDO LA PANTALLA DE CARGA
+|S2C_PARTY_PARTY_LEAVE_REQ|6|10|1|0x831f83||
 |S2C_PARTY_PARTY_LEAVE_RES|6|10|2|0x7e8f30|None|
 |S2C_PARTY_PARTY_LEAVE_NTC|6|10|16|0x7e8e50|None|
 |C2S_PARTY_PARTY_MEMBER_KICK_REQ|6|11|1|0x832043||
@@ -698,7 +698,7 @@
 |S2C_INSTANCE_13_37_16_NTC|13|37|16|0x7dbf90|None| <-- Literalmente nada
 |S2C_INSTANCE_13_38_16_NTC|13|38|16|0x7dbfa0|None| <-- Literalmente nada
 |S2C_INSTANCE_POP_DROP_ITEM_NTC|13|39|16|0x7dbe30|None| <-- StageLayoutID, uint, byte, y una posicion?
-|S2C_ENEMY_REPOP_NTC|13|40|16|0x7dad20|None|
+|S2C_INSTANCE_ENEMY_REPOP_NTC|13|40|16|0x7dad20|None|
 |S2C_INSTANCE_ENCOUNTER_PAWN_NTC|13|41|16|0x7da720|None| <-- Presuntamente StageLayoutID + 3 uints
 |S2C_INSTANCE_AREA_RESET_NTC|13|42|16|0x7dbe00|None|
 |C2S_INSTANCE_GET_EX_OM_INFO_REQ|13|43|1|||
@@ -729,11 +729,11 @@
 |S2C_WARP_GET_AREA_WARP_POINT_LIST_RES|14|8|2|0x7fea80|エリア指定ワープ情報取得に|
 |C2S_WARP_AREA_WARP_REQ|14|9|1|0x83f873||
 |S2C_WARP_AREA_WARP_RES|14|9|2|0x7fe940|現在のエリアからのワープリクエストに|
-|C2S_WARP_14_10_16_NTC|14|10|16|0x840160|Despues de que un miembro de la party se teleporte. Sin datos (C2S_WARP_END_NTC?)|
-|C2S_WARP_14_11_16_NTC|14|11|16|0x840080|Despues de que un miembro de la party termine de teleportarse. Solo un uint (C2S_WARP_END_NTC?)|
+|C2S_WARP_WARP_START_NTC|14|10|16|0x840160||
+|C2S_WARP_WARP_END_NTC|14|11|16|0x840080||
 |C2S_WARP_GET_RETURN_LOCATION_REQ|14|12|1|0x83fc03||
 |S2C_WARP_GET_RETURN_LOCATION_RES|14|12|2|0x7fecf0|復帰位置の取得に|
-|S2C_WARP_14_13_16_NTC|14|13|16|0x7fefe0|None|
+|S2C_WARP_LEADER_WARP_NTC|14|13|16|0x7fefe0|None|
 |C2S_WARP_GET_START_POINT_LIST_REQ|14|14|1|0x83fcc3||
 |S2C_WARP_GET_START_POINT_LIST_RES|14|14|2|0x7fede0|ゲーム開始ポイントの取得に|
 
@@ -743,7 +743,6 @@
 |---|---|---|---|---|---|
 ||15|0|16||Aparece cuando se crea un personaje nuevo, al reproducirse la cutscene|
 ||15|1|16||Aparece cuando se crea un personaje nuevo, al acabarse la cutscene|
-|S2C_15_65535_255|15|65535|255|0x0|None|
 
 
 ### Group: 16 - (FRIEND)
@@ -769,7 +768,7 @@
 |S2C_FRIEND_GET_RECENT_CHARACTER_LIST_RES|16|6|2|0x7d6840|最近遊んだプレイヤー取得に|
 
 
-### Group: 17 - (BLACK)
+### Group: 17 - (BLACK_LIST)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_BLACK_LIST_GET_BLACK_LIST_REQ|17|0|1|0x820593||
@@ -1406,7 +1405,7 @@
 |S2C_JOB_33_20_16_NTC|33|20|16|0x7e2770|None|
 
 
-### Group: 34 - (ENTRY)
+### Group: 34 - (ENTRY_BOARD)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_ENTRY_BOARD_ENTRY_BOARD_LIST_REQ|34|0|1|0x8275f3||
@@ -1668,7 +1667,7 @@
 |S2C_DLC_48_4_16_NTC|48|4|16|0x7d2740|None|
 
 
-### Group: 49 - (SUPPORT)
+### Group: 49 - (SUPPORT_POINT)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_SUPPORT_POINT_SUPPORT_POINT_GET_RATE_REQ|49|0|1|0x83f6d3||
@@ -1677,7 +1676,7 @@
 |S2C_SUPPORT_POINT_SUPPORT_POINT_USE_RES|49|1|2|0x7fe480|サポートポイント使用に|
 
 
-### Group: 50 - (ITEM)
+### Group: 50 - (ITEM_SORT)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_ITEM_SORT_GET_ITEM_SORTDATA_BIN_REQ|50|0|1|0x82d5c3||
@@ -1702,7 +1701,7 @@
 |S2C_DISPEL_GET_LOCK_SETTING_RES|51|4|2|0x7d25a0|解呪ロック設定情報取得要求に|
 
 
-### Group: 52 - (MY)
+### Group: 52 - (MY_ROOM)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_MY_ROOM_MY_ROOM_RELEASE_REQ|52|0|1|0x830923||
@@ -1726,7 +1725,7 @@
 |S2C_MY_ROOM_SET_OTHER_ROOM_PERMISSION_RES|52|8|2|0x7e60c0|他人自室の公開範囲の設定|
 
 
-### Group: 53 - (PARTNER)
+### Group: 53 - (PARTNER_PAWN)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_PARTNER_PAWN_PARTNER_PAWN_SET_REQ|53|0|1|0x831333||
@@ -1750,7 +1749,7 @@
 |S2C_PARTNER_53_9_16_NTC|53|9|16|0x7e6d50|None|
 
 
-### Group: 54 - (CRAFT)
+### Group: 54 - (CRAFT_RECIPE)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_CRAFT_RECIPE_GET_CRAFT_RECIPE_REQ|54|0|1|0x825963||
@@ -1785,7 +1784,7 @@
 |S2C_SERVER_56_1_16_NTC|56|1|16|0x7f9bb0|None|
 
 
-### Group: 57 - (BOX)
+### Group: 57 - (BOX_GACHA)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_BOX_GACHA_BOX_GACHA_LIST_REQ|57|0|1|0x8208e3||
@@ -1798,7 +1797,7 @@
 |S2C_BOX_GACHA_BOX_GACHA_DRAW_INFO_RES|57|3|2|0x7c6e90|BOXガチャアイテム情報に|
 
 
-### Group: 58 - (PAWN)
+### Group: 58 - (PAWN_EXPEDITION)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_PAWN_EXPEDITION_PAWN_EXPEDITION_GET_SALLY_INFO_REQ|58|0|1|0x832d33||
@@ -1823,7 +1822,7 @@
 |S2C_PAWN_EXPEDITION_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES|58|9|2|0x7e9ef0|ポーン隊報酬アイテム拾う応答|
 
 
-### Group: 59 - (INFINITY)
+### Group: 59 - (INFINITY_DELIVERY)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_INFINITY_DELIVERY_GET_CURRENT_EVENT_REQ|59|0|1|0x82ac83||
@@ -1852,7 +1851,7 @@
 |S2C_INFINITY_DELIVERY_RECEIVE_BORDER_REWARD_RES|59|11|2|0x7da0a0|大口納品報酬受け取りに|
 
 
-### Group: 60 - (NPC)
+### Group: 60 - (NPC_GET)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_NPC_GET_NPC_EXTENDED_FACILITY_REQ|60|0|1|0x830d63||
@@ -1860,7 +1859,7 @@
 |S2C_NPC_60_1_16_NTC|60|1|16|0x7e62c0|None|
 
 
-### Group: 61 - (PAWN)
+### Group: 61 - (PAWN_TRAINING)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_PAWN_TRAINING_GET_TRAINING_STATUS_REQ|61|0|1|0x834be3||
@@ -1874,7 +1873,7 @@
 |S2C_PAWN_61_5_16_NTC|61|5|16|0x7ed0a0|None|
 
 
-### Group: 62 - (SEASON)
+### Group: 62 - (SEASON_DUNGEON)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_SEASON_DUNGEON_GET_ID_FROM_NPC_ID_REQ|62|0|1|0x83b423||
@@ -2038,7 +2037,7 @@
 |S2C_68_1_1|68|1|1|0x7f6920|None|
 
 
-### Group: 69 - (PAWN)
+### Group: 69 - (PAWN_SP)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_PAWN_SP_SKILL_GET_ACTIVE_SKILL_REQ|69|0|1|0x834793||
@@ -2064,7 +2063,7 @@
 |S2C_ACTION_SET_PLAYER_ACTION_HISTORY_RES|70|0|2|0x7c3840|プレイヤーの行動履歴の設定|
 
 
-### Group: 71 - (BATTLE)
+### Group: 71 - (BATTLE_CONTENT)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_BATTLE_71_0_1_REQ|71|0|1|||
@@ -2117,7 +2116,7 @@
 |S2C_BATTLE_CONTENT_INSTANT_COMPLETE_RES|71|23|2|0x7c53d0|バトルコンテンツ即時クリア|
 
 
-### Group: 72 - (DAILY)
+### Group: 72 - (DAILY_MISSION)
 |Name|GroupID|ID|Sub ID|Code Address|Comment|
 |---|---|---|---|---|---|
 |C2S_DAILY_MISSION_LIST_GET_REQ|72|0|1|0x826133||

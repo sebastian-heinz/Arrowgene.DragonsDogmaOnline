@@ -35,27 +35,38 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint oldItemNum = tuple.item.Item2;
                 uint newItemNum = Math.Max(0, oldItemNum - consumeItem.Num);
 
-                CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
-                ntcData0.ItemList.ItemUId = item.UId;
-                ntcData0.ItemList.ItemId = item.ItemId;
-                ntcData0.ItemList.ItemNum = newItemNum;
-                ntcData0.ItemList.Unk3 = item.Unk3;
-                ntcData0.ItemList.StorageType = consumeItem.StorageType;
-                ntcData0.ItemList.SlotNo = itemSlot;
-                ntcData0.ItemList.Color = item.Color;
-                ntcData0.ItemList.PlusValue = item.PlusValue;
-                ntcData0.ItemList.Bind = false;
-                ntcData0.ItemList.EquipPoint = 0;
-                ntcData0.ItemList.EquipCharacterID = 0;
-                ntcData0.ItemList.EquipPawnID = 0;
-                ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-                ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
-                ntcData0.UpdateItemNum = -((int)consumeItem.Num);
+                CDataItemUpdateResult itemUpdate = new CDataItemUpdateResult();
+                itemUpdate.ItemList.ItemUId = item.UId;
+                itemUpdate.ItemList.ItemId = item.ItemId;
+                itemUpdate.ItemList.ItemNum = newItemNum;
+                itemUpdate.ItemList.Unk3 = item.Unk3;
+                itemUpdate.ItemList.StorageType = consumeItem.StorageType;
+                itemUpdate.ItemList.SlotNo = itemSlot;
+                itemUpdate.ItemList.Color = item.Color;
+                itemUpdate.ItemList.PlusValue = item.PlusValue;
+                itemUpdate.ItemList.Bind = false;
+                itemUpdate.ItemList.EquipPoint = 0;
+                itemUpdate.ItemList.EquipCharacterID = 0;
+                itemUpdate.ItemList.EquipPawnID = 0;
+                itemUpdate.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+                itemUpdate.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+                itemUpdate.ItemList.EquipElementParamList = item.EquipElementParamList;
+                itemUpdate.UpdateItemNum = -((int)consumeItem.Num);
+                ntc.UpdateItemList.Add(itemUpdate);
 
-                // TODO: Add Gold to ntc.UpdateWallet and DB
+                // TODO: Figure out by ItemId
+                uint goldValue = 100;
+                uint amountToAdd = goldValue * consumeItem.Num;
 
-                ntc.UpdateItemList.Add(ntcData0);
+                CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).First();
+                characterWalletPoint.Value += amountToAdd; // TODO: Cap to maximum for that wallet
+                Database.UpdateWalletPoint(client.Character.Id, characterWalletPoint);
+
+                CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
+                walletUpdate.Type = WalletType.Gold;
+                walletUpdate.AddPoint = (int) amountToAdd;
+                walletUpdate.Value = characterWalletPoint.Value;
+                ntc.UpdateWalletList.Add(walletUpdate);
 
                 if(newItemNum == 0)
                 {

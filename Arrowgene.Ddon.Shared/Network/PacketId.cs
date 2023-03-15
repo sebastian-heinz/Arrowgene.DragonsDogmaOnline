@@ -912,9 +912,11 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_WARP_GET_AREA_WARP_POINT_LIST_RES = new PacketId(14, 8, 2, "S2C_WARP_GET_AREA_WARP_POINT_LIST_RES", ServerType.Game, PacketSource.Server); // エリア指定ワープ情報取得に
         public static readonly PacketId C2S_WARP_AREA_WARP_REQ = new PacketId(14, 9, 1, "C2S_WARP_AREA_WARP_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_WARP_AREA_WARP_RES = new PacketId(14, 9, 2, "S2C_WARP_AREA_WARP_RES", ServerType.Game, PacketSource.Server); // 現在のエリアからのワープリクエストに
+        public static readonly PacketId C2S_WARP_WARP_START_NTC = new PacketId(14, 10, 16, "C2S_WARP_WARP_START_NTC", ServerType.Game, PacketSource.Client);
+        public static readonly PacketId C2S_WARP_WARP_END_NTC = new PacketId(14, 11, 16, "C2S_WARP_WARP_END_NTC", ServerType.Game, PacketSource.Client);
         public static readonly PacketId C2S_WARP_GET_RETURN_LOCATION_REQ = new PacketId(14, 12, 1, "C2S_WARP_GET_RETURN_LOCATION_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_WARP_GET_RETURN_LOCATION_RES = new PacketId(14, 12, 2, "S2C_WARP_GET_RETURN_LOCATION_RES", ServerType.Game, PacketSource.Server); // 復帰位置の取得に
-        public static readonly PacketId S2C_WARP_14_13_16_NTC = new PacketId(14, 13, 16, "S2C_WARP_14_13_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_WARP_LEADER_WARP_NTC = new PacketId(14, 13, 16, "S2C_WARP_LEADER_WARP_NTC", ServerType.Game, PacketSource.Server, "S2C_WARP_14_13_16_NTC");
         public static readonly PacketId C2S_WARP_GET_START_POINT_LIST_REQ = new PacketId(14, 14, 1, "C2S_WARP_GET_START_POINT_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_WARP_GET_START_POINT_LIST_RES = new PacketId(14, 14, 2, "S2C_WARP_GET_START_POINT_LIST_RES", ServerType.Game, PacketSource.Server); // ゲーム開始ポイントの取得に
 
@@ -2816,9 +2818,11 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_WARP_GET_AREA_WARP_POINT_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_WARP_AREA_WARP_REQ);
             AddPacketIdEntry(packetIds, S2C_WARP_AREA_WARP_RES);
+            AddPacketIdEntry(packetIds, C2S_WARP_WARP_START_NTC);
+            AddPacketIdEntry(packetIds, C2S_WARP_WARP_END_NTC);
             AddPacketIdEntry(packetIds, C2S_WARP_GET_RETURN_LOCATION_REQ);
             AddPacketIdEntry(packetIds, S2C_WARP_GET_RETURN_LOCATION_RES);
-            AddPacketIdEntry(packetIds, S2C_WARP_14_13_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_WARP_LEADER_WARP_NTC);
             AddPacketIdEntry(packetIds, C2S_WARP_GET_START_POINT_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_WARP_GET_START_POINT_LIST_RES);
 
