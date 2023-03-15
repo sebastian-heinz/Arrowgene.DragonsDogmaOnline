@@ -296,9 +296,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SWarpGetReturnLocationReq.Serializer());
             Create(new C2SWarpGetStartPointListReq.Serializer());
             Create(new C2SWarpGetWarpPointListReq.Serializer());
+            Create(new C2SWarpPartyWarpReq.Serializer());
             Create(new C2SWarpRegisterFavoriteWarpReq.Serializer());
             Create(new C2SWarpReleaseWarpPointReq.Serializer());
+            Create(new C2SWarpWarpEndNtc.Serializer());
             Create(new C2SWarpWarpReq.Serializer());
+            Create(new C2SWarpWarpStartNtc.Serializer());
             Create(new L2CCreateCharacterDataNtc.Serializer());
             Create(new L2CCreateCharacterDataRes.Serializer());
             Create(new L2CGetErrorMessageListNtc.Serializer());
@@ -479,6 +482,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CWarpGetReturnLocationRes.Serializer());
             Create(new S2CWarpGetStartPointListRes.Serializer());
             Create(new S2CWarpGetWarpPointListRes.Serializer());
+            Create(new S2CWarpLeaderWarpNtc.Serializer());
+            Create(new S2CWarpPartyWarpRes.Serializer());
             Create(new S2CWarpRegisterFavoriteWarpRes.Serializer());
             Create(new S2CWarpReleaseWarpPointRes.Serializer());
             Create(new S2CWarpWarpRes.Serializer());

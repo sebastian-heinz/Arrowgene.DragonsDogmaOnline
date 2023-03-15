@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -40,6 +41,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateCharacterItemNtc.UpdateWalletList.Add(updateWallet);
                 client.Send(updateCharacterItemNtc);
             }
+
+            client.LastWarpPointId = packet.Structure.DestPointId;
+            client.LastWarpDateTime = DateTime.Now;
         }
     }
 }

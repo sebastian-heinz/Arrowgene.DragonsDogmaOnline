@@ -1288,9 +1288,11 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new WarpGetReturnLocationHandler(this));
             AddHandler(new WarpGetStartPointListHandler(this));
             AddHandler(new WarpGetWarpPointListHandler(this));
+            AddHandler(new WarpPartyWarpHandler(this));
             AddHandler(new WarpRegisterFavoriteWarpHandler(this));
             AddHandler(new WarpReleaseWarpPointHandler(this));
             AddHandler(new WarpWarpHandler(this));
+            AddHandler(new WarpWarpStartHandler(this));
         }
     }
 }

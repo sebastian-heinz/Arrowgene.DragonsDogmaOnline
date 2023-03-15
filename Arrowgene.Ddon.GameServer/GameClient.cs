@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Database.Model;
+﻿using System;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server.Network;
@@ -37,5 +38,9 @@ namespace Arrowgene.Ddon.GameServer
         
         public PartyGroup Party { get; set; }
         public InstanceGatheringItemManager InstanceGatheringItemManager { get; set; }
+
+        // TODO: Place somewhere else more sensible
+        public uint LastWarpPointId { get; set; }
+        public DateTime LastWarpDateTime { get; set; }
     }
 }
