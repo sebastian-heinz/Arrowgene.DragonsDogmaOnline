@@ -388,7 +388,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());
             Create(new S2CJobChangeJobRes.Serializer());
+            Create(new S2CJobCharacterJobExpUpNtc.Serializer());
+            Create(new S2CJobCharacterJobLevelUpMemberNtc.Serializer());
+            Create(new S2CJobCharacterJobLevelUpNtc.Serializer());
+            Create(new S2CJobCharacterJobLevelUpOtherNtc.Serializer());
             Create(new S2CJobGetJobChangeListRes.Serializer());
+            Create(new S2CJobPawnJobExpUpNtc.Serializer());
+            Create(new S2CJobPawnJobLevelUpMemberNtc.Serializer());
+            Create(new S2CJobPawnJobLevelUpNtc.Serializer());
             Create(new S2CJobUpdateExpModeRes.Serializer());
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
