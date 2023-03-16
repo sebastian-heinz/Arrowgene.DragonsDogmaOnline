@@ -9,7 +9,7 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class JobGetJobChangeListHandler : PacketHandler<GameClient>
+    public class JobGetJobChangeListHandler : StructurePacketHandler<GameClient, C2SJobGetJobChangeListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobGetJobChangeListHandler));
 
@@ -18,9 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_JOB_GET_JOB_CHANGE_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SJobGetJobChangeListReq> packet)
         {
             S2CJobGetJobChangeListRes jobChangeList = new S2CJobGetJobChangeListRes();
             jobChangeList.JobChangeInfo = client.Character.Equipment.getAllEquipment().Keys
@@ -31,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         .ToList()
                 })
                 .ToList();
-            jobChangeList.JobReleaseInfo = jobChangeList.JobReleaseInfo;
+            jobChangeList.JobReleaseInfo = jobChangeList.JobChangeInfo;
             // TODO: jobChangeList.PawnJobChangeInfoList
             jobChangeList.PlayPointList = client.Character.PlayPointList;
             client.Send(jobChangeList);
