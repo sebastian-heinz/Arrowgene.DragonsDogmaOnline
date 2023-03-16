@@ -1582,7 +1582,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CONTEXT_GET_PARTY_PLAYER_CONTEXT_NTC = new PacketId(35, 1, 16, "S2C_CONTEXT_GET_PARTY_PLAYER_CONTEXT_NTC", ServerType.Game, PacketSource.Server, "S2C_CONTEXT_35_1_16_NTC");
         public static readonly PacketId C2S_CONTEXT_GET_ALL_PLAYER_CONTEXT_REQ = new PacketId(35, 2, 1, "C2S_CONTEXT_GET_ALL_PLAYER_CONTEXT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONTEXT_GET_ALL_PLAYER_CONTEXT_RES = new PacketId(35, 2, 2, "S2C_CONTEXT_GET_ALL_PLAYER_CONTEXT_RES", ServerType.Game, PacketSource.Server); // 全部入りプレイヤーコンテキスト取得に
-        public static readonly PacketId S2C_CONTEXT_35_2_16_NTC = new PacketId(35, 2, 16, "S2C_CONTEXT_35_2_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CONTEXT_GET_ALL_PLAYER_CONTEXT_NTC = new PacketId(35, 2, 16, "S2C_CONTEXT_GET_ALL_PLAYER_CONTEXT_NTC", ServerType.Game, PacketSource.Server, "S2C_CONTEXT_35_2_16_NTC");
         public static readonly PacketId C2S_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_REQ = new PacketId(35, 3, 1, "C2S_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_RES = new PacketId(35, 3, 2, "S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_RES", ServerType.Game, PacketSource.Server); // パーティマイポーンコンテキスト取得に
         public static readonly PacketId S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_NTC = new PacketId(35, 3, 16, "S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_NTC", ServerType.Game, PacketSource.Server, "S2C_CONTEXT_35_3_16_NTC");
@@ -3488,7 +3488,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_PARTY_PLAYER_CONTEXT_NTC);
             AddPacketIdEntry(packetIds, C2S_CONTEXT_GET_ALL_PLAYER_CONTEXT_REQ);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_ALL_PLAYER_CONTEXT_RES);
-            AddPacketIdEntry(packetIds, S2C_CONTEXT_35_2_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_ALL_PLAYER_CONTEXT_NTC);
             AddPacketIdEntry(packetIds, C2S_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_REQ);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_RES);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_NTC);

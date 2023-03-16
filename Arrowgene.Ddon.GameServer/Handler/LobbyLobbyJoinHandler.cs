@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
@@ -21,10 +20,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SLobbyJoinReq> packet)
         {
-            
-            S2CContextGetLobbyPlayerContextNtc sampleData = EntitySerializer
-                        .Get<S2CContextGetLobbyPlayerContextNtc>().Read(SelectedDump.data_Dump_LobbyPlayerContext);
-
             var resp = new S2CLobbyJoinRes()
             {
                 CharacterId = client.Character.Id,
@@ -48,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CUserListJoinNtc alreadyPresentUsersNtc = new S2CUserListJoinNtc();
             List<S2CContextGetLobbyPlayerContextNtc> alreadyPresentPlayerContextNtcs =
                 new List<S2CContextGetLobbyPlayerContextNtc>();
-            foreach (GameClient otherClient in Server.Clients)
+            foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
                 if (otherClient != client)
                 {
@@ -85,7 +80,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             newUserNtc.UserList = resp.LobbyMemberInfoList;
 
             S2CContextGetLobbyPlayerContextNtc newUserContextNtc = new S2CContextGetLobbyPlayerContextNtc(client.Character);
-            foreach (GameClient otherClient in Server.Clients)
+            foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
                 if (otherClient != client)
                 {

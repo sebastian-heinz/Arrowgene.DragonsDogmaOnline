@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataAbilityParam.Serializer());
             Create(new CDataAchieveCategoryStatus.Serializer());
             Create(new CDataAchievementIdentifierSerializer());
+            Create(new CDataAllPlayerContext.Serializer());
             Create(new CDataArisenProfileSerializer());
             Create(new CDataCharacterEquipDataSerializer());
             Create(new CDataCharacterEquipInfo.Serializer());
@@ -333,6 +334,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
             Create(new S2CClanClanConciergeGetListRes.Serializer());
             Create(new S2CClanClanConciergeUpdateRes.Serializer());
+            Create(new S2CClanClanGetMyInfoRes.Serializer());
             Create(new S2CClanClanGetMyMemberListRes.Serializer());
             Create(new S2CClanClanPartnerPawnDataGetRes.Serializer());
             Create(new S2CClanGetFurnitureRes.Serializer());
@@ -341,8 +343,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveInServerRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
-            Create(new S2CContextGetPartyMypawnContextNtc.Serializer());
+            Create(new S2CContextGetAllPlayerContextNtc.Serializer());
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
+            Create(new S2CContextGetPartyMypawnContextNtc.Serializer());
             Create(new S2CContextGetPartyPlayerContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
             Create(new S2CContextMasterChangeNtc.Serializer());
