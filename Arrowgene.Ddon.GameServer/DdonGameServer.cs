@@ -42,6 +42,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
+using Arrowgene.Ddon.GameServer.Experience;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -61,6 +62,7 @@ namespace Arrowgene.Ddon.GameServer
             EnemyManager = new EnemyManager(assetRepository, database);
             GatheringItemManager = new GatheringItemManager(assetRepository, database);
             PartyManager = new PartyManager();
+            ExpManager = new ExpManager(database, ClientLookup);
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
 
@@ -77,6 +79,7 @@ namespace Arrowgene.Ddon.GameServer
         public EnemyManager EnemyManager { get; }
         public GatheringItemManager GatheringItemManager { get; }
         public PartyManager PartyManager { get; }
+        public ExpManager ExpManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
