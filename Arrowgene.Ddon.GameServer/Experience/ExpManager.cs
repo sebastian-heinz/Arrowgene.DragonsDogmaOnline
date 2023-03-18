@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -167,14 +163,17 @@ namespace Arrowgene.Ddon.GameServer.Experience
 
             // --------
             // LEVEL UP
-            uint nextLevel = activeCharacterJobData.Lv+1;
-            if(activeCharacterJobData.Lv < LV_CAP && activeCharacterJobData.Exp >= this.TotalExpToLevelUpTo(nextLevel)) {
-                activeCharacterJobData.Lv = nextLevel;
-
-                uint addJobPoint = 0; // TODO: Figure out
+            uint currentLevel = activeCharacterJobData.Lv;
+            uint addJobPoint = 0; // TODO: Figure out
+            while (activeCharacterJobData.Lv < LV_CAP && activeCharacterJobData.Exp >= this.TotalExpToLevelUpTo(activeCharacterJobData.Lv+1)) 
+            {
+                activeCharacterJobData.Lv++;
                 activeCharacterJobData.JobPoint += addJobPoint;
                 // TODO: Update other values in ActiveCharacterJobData
+            }
 
+            if (currentLevel != activeCharacterJobData.Lv)
+            {
                 // Inform client of lvl up
                 S2CJobCharacterJobLevelUpNtc lvlNtc = new S2CJobCharacterJobLevelUpNtc();
                 lvlNtc.Job = client.Character.Job;
