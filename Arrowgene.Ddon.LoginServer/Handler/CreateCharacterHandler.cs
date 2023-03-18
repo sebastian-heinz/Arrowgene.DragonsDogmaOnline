@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.StatusInfo = packet.Structure.CharacterInfo.StatusInfo;
             character.Job = packet.Structure.CharacterInfo.Job;
             character.CharacterJobDataList = packet.Structure.CharacterInfo.CharacterJobDataList;
-            //character.PlayPointList = packet.Structure.CharacterInfo.PlayPointList;
+            character.PlayPointList = packet.Structure.CharacterInfo.PlayPointList;
             character.Equipment = new Equipment(new Dictionary<JobId, Dictionary<EquipType, List<Item>>>()
             {
                 {

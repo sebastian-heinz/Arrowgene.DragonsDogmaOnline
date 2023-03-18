@@ -63,8 +63,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterEquipJobItemList = new List<CDataEquipJobItem>();
             JewelrySlotNum = 0;
             Unk0 = new List<UnknownCharacterData0>();
-            CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>(); // Slots in each Item Bag and Storage
-            WalletPointList = new List<CDataWalletPoint>(); // Currencies? 1 is G, 2 is RP...
+            CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
+            WalletPointList = new List<CDataWalletPoint>();
             MyPawnSlotNum = 0;
             RentalPawnSlotNum = 0;
             OrbStatusList = new List<CDataOrbPageStatus>();

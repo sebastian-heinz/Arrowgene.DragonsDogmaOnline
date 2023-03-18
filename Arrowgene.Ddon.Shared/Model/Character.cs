@@ -15,7 +15,15 @@ namespace Arrowgene.Ddon.Shared.Model
             EditInfo = new CDataEditInfo();
             StatusInfo = new CDataStatusInfo();
             CharacterJobDataList = new List<CDataCharacterJobData>();
-            PlayPointList = new List<CDataJobPlayPoint>();
+            PlayPointList = Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
+            {
+                Job = job,
+                PlayPoint = new CDataPlayPointData()
+                {
+                    ExpMode = 1, // EXP
+                    PlayPoint = 0
+                }
+            }).ToList();
             Storage = new Storages(new Dictionary<StorageType, ushort>());
             Equipment = new Equipment();
             CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>();

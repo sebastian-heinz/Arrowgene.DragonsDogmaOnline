@@ -26,7 +26,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.Id;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
-            res.CharacterInfo.PlayPointList = pcap.CharacterInfo.PlayPointList; // Removing this makes the Exp bar dissapear
             res.Unk0 = pcap.Unk0; // Removing this makes tons of tutorials pop up
             
             client.Send(res);
