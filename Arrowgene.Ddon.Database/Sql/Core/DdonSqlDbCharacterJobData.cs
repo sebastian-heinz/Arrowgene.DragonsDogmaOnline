@@ -25,6 +25,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectCharacterJobDataByCharacter = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_id` = @character_id;";
         private const string SqlDeleteCharacterJobData = "DELETE FROM `ddon_character_job_data` WHERE `character_id`=@character_id AND `job` = @job;";
         
+        public bool UpdateCharacterJobData(uint characterId, CDataCharacterJobData updatedCharacterJobData)
+        {
+            return ExecuteNonQuery(SqlUpdateCharacterJobData, command =>
+            {
+                AddParameter(command, characterId, updatedCharacterJobData);
+            }) == 1;
+        }
+
         private CDataCharacterJobData ReadCharacterJobData(DbDataReader reader)
         {
             CDataCharacterJobData characterJobData = new CDataCharacterJobData();

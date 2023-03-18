@@ -141,4 +141,18 @@ public static class GameStructure
         cDataPawnInfo.Unk1 = new CData_772E80() {Unk0 = 0x7530, Unk1 = 0x3, Unk2 = 0x3, Unk3 = 0x1, Unk4 = 0x3};
         cDataPawnInfo.SpSkillList = pawn.SpSkillList;
     }
+
+    public static void CDataCharacterLevelParam(CDataCharacterLevelParam characterLevelParam, Character character)
+    {
+        characterLevelParam.Attack = character.ActiveCharacterJobData.Atk;
+        characterLevelParam.MagAttack = character.ActiveCharacterJobData.MAtk;
+        characterLevelParam.Defence = character.ActiveCharacterJobData.Def;
+        characterLevelParam.MagDefence = character.ActiveCharacterJobData.MDef;
+        characterLevelParam.Strength = character.ActiveCharacterJobData.Strength;
+        characterLevelParam.DownPower = character.ActiveCharacterJobData.DownPower;
+        characterLevelParam.ShakePower = character.ActiveCharacterJobData.ShakePower;
+        characterLevelParam.StunPower = character.ActiveCharacterJobData.StunPower;
+        characterLevelParam.Constitution = character.ActiveCharacterJobData.Consitution;
+        characterLevelParam.Guts = character.ActiveCharacterJobData.Guts;
+    }
 }

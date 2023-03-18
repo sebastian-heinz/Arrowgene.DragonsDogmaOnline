@@ -37,6 +37,9 @@ namespace Arrowgene.Ddon.Database
         bool UpdateCharacterMatchingProfile(Character character);
         bool UpdateCharacterArisenProfile(Character character);
 
+        // CharacterJobData
+        bool UpdateCharacterJobData(uint characterId, CDataCharacterJobData updatedCharacterJobData);
+
         // Wallet Points
         bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint);
         bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint);
