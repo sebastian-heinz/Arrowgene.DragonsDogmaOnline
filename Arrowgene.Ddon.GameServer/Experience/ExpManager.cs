@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.GameServer.Experience
         private static readonly byte LV_CAP = 120;
 
         // E.g. EXP_UNTIL_NEXT_LV[3] = 800, meaning as Lv 3 you need 800 exp to level to Lv 4
-        private static readonly uint[] EXP_UNTIL_NEXT_LV = new uint[] {
+        public static readonly uint[] EXP_UNTIL_NEXT_LV = new uint[] {
             /********/   0,
             /* Lv 1 */   300,
             /* Lv 2 */   500,
