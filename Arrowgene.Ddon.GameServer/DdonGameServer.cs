@@ -58,13 +58,13 @@ namespace Arrowgene.Ddon.GameServer
         {
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
+            ClientLookup = new GameClientLookup();
+            ChatLogHandler = new ChatLogHandler();
             ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
             GatheringItemManager = new GatheringItemManager(assetRepository, database);
             PartyManager = new PartyManager();
             ExpManager = new ExpManager(database, ClientLookup);
-            ClientLookup = new GameClientLookup();
-            ChatLogHandler = new ChatLogHandler();
 
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
