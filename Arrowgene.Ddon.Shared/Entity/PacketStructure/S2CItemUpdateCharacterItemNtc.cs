@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         // 0x29: Pawn Job Change
         // 0x37: S2C_SEASON_DUNGEON_DELIVER_ITEM_FOR_EX_RES
         // 0x38: S2C_SEASON_DUNGEON_RECEIVE_SOUL_ORDEAL_REWARD_RES
+        // 0x10a: S2C_SHOP_BUY_SHOP_GOODS_RES
         // 0x10b: S2C_ITEM_SELL_ITEM_RES
         public ushort UpdateType; 
         public List<CDataItemUpdateResult> UpdateItemList;
