@@ -85,6 +85,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGatheringItemGetRequest.Serializer());
             Create(new CDataGatheringItemListUnk1.Serializer());
             Create(new CDataGatheringItemListUnk1Unk2.Serializer());
+            Create(new CDataGoodsParam.Serializer());
+            Create(new CDataGoodsParamUnk7.Serializer());
             Create(new CDataGatheringItemElement.Serializer());
             Create(new CDataGPCourseValidSerializer());
             Create(new CDataHistoryElement.Serializer());
@@ -286,6 +288,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSkillSetOffSkillReq.Serializer());
             Create(new C2SSkillSetSkillReq.Serializer());
             Create(new C2SSetShortcutReq.Serializer());
+            Create(new C2SShopBuyShopGoodsReq.Serializer());
+            Create(new C2SShopGetShopGoodsListReq.Serializer());
             Create(new C2SSetCommunicationShortcutReq.Serializer());
             Create(new C2SStageAreaChangeReq.Serializer());
             Create(new C2SStageGetStageListReq.Serializer());
@@ -480,6 +484,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSetCommunicationShortcutRes.Serializer());
             Create(new S2CContextSetContextNtc.Serializer());
             Create(new S2CSetShortcutRes.Serializer());
+            Create(new S2CShopBuyShopGoodsRes.Serializer());
+            Create(new S2CShopGetShopGoodsListRes.Serializer());
             Create(new S2CStageAreaChangeRes.Serializer());
             Create(new S2CStageGetStageListRes.Serializer());
             Create(new S2CTraningRoomGetEnemyListRes.Serializer());

@@ -93,6 +93,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public double Z { get; set; }
         // ---
 
+        // TODO: Move to a more sensible place
+        public uint LastEnteredShopId { get; set; }
+
         public CDataGameServerListInfo Server;
     }
 }

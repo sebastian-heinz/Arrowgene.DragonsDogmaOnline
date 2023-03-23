@@ -1,3 +1,4 @@
+using System.Runtime.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +7,7 @@ using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared.Json;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -19,6 +21,7 @@ namespace Arrowgene.Ddon.Shared
         public const string ArisenAssetKey = "Arisen.csv";
         public const string StorageKey = "Storage.csv";
         public const string StorageItemKey = "StorageItem.csv";
+        public const string ShopKey = "Shop.json";
         public const string ServerListKey = "GameServerList.csv";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
@@ -48,6 +51,7 @@ namespace Arrowgene.Ddon.Shared
             ArisenAsset = new List<ArisenCsv>();
             StorageAsset = new List<CDataCharacterItemSlotInfo>();
             StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
+            ShopAsset = new List<Shop>();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; }
@@ -59,6 +63,7 @@ namespace Arrowgene.Ddon.Shared
         public List<ArisenCsv> ArisenAsset { get; }
         public List<CDataCharacterItemSlotInfo> StorageAsset { get; }
         public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; }
+        public List<Shop> ShopAsset { get; }
 
         public void Initialize()
         {
@@ -71,15 +76,16 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsv());
             RegisterAsset(StorageAsset, StorageKey, new StorageCsv());
             RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsv());
+            RegisterAsset(ShopAsset, ShopKey, new JsonReaderWriter<Shop>());
         }
 
-        private void RegisterAsset<T>(List<T> list, string key, CsvReaderWriter<T> readerWriter)
+        private void RegisterAsset<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
         {
             Load(list, key, readerWriter);
             RegisterFileSystemWatcher(list, key, readerWriter);
         }
 
-        private void Load<T>(List<T> list, string key, CsvReaderWriter<T> readerWriter)
+        private void Load<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
         {
             string path = Path.Combine(_directory.FullName, key);
             FileInfo file = new FileInfo(path);
@@ -95,7 +101,7 @@ namespace Arrowgene.Ddon.Shared
             OnAssetChanged(key, list);
         }
 
-        private void RegisterFileSystemWatcher<T>(List<T> list, string key, CsvReaderWriter<T> readerWriter)
+        private void RegisterFileSystemWatcher<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
         {
             if (_fileSystemWatchers.ContainsKey(key))
             {

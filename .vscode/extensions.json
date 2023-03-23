@@ -10,6 +10,7 @@
         "mechatroner.rainbow-csv",
         "yo1dog.cursor-align",
         "wmaurer.change-case",
-        "softwareape.numbermonger"
+        "softwareape.numbermonger",
+        "maziac.hex-hover-converter"
     ]
 }

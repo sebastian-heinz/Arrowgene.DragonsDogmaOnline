@@ -2,7 +2,7 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
-namespace Arrowgene.Ddon.GameServer.Experience
+namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class ExpManager
     {

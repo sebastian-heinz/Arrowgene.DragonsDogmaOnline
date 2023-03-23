@@ -42,7 +42,8 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
-using Arrowgene.Ddon.GameServer.Experience;
+using Arrowgene.Ddon.GameServer.Shop;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -62,9 +63,11 @@ namespace Arrowgene.Ddon.GameServer
             ChatLogHandler = new ChatLogHandler();
             ChatManager = new ChatManager(this, Router);
             EnemyManager = new EnemyManager(assetRepository, database);
+            ItemManager = new ItemManager();
             GatheringItemManager = new GatheringItemManager(assetRepository, database);
             PartyManager = new PartyManager();
             ExpManager = new ExpManager(database, ClientLookup);
+            ShopManager = new ShopManager(assetRepository, database);
 
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
@@ -77,9 +80,11 @@ namespace Arrowgene.Ddon.GameServer
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
         public EnemyManager EnemyManager { get; }
+        public ItemManager ItemManager { get; }
         public GatheringItemManager GatheringItemManager { get; }
         public PartyManager PartyManager { get; }
         public ExpManager ExpManager { get; }
+        public ShopManager ShopManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
@@ -139,7 +144,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), GatheringItemManager);
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), ShopManager, GatheringItemManager);
             ClientLookup.Add(newClient);
             return newClient;
         }
@@ -1278,6 +1283,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new SkillSetOffSkillHandler(this));
             AddHandler(new SkillSetSkillHandler(this));
             AddHandler(new SetShortcutHandler(this));
+            AddHandler(new ShopBuyShopGoodsHandler(this));
+            AddHandler(new ShopGetShopGoodsListHandler(this));
             AddHandler(new SetCommunicationShortcutHandler(this));
 
             AddHandler(new StageAreaChangeHandler(this));

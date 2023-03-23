@@ -1,8 +1,7 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Enemy;
-using Arrowgene.Ddon.GameServer.Experience;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
