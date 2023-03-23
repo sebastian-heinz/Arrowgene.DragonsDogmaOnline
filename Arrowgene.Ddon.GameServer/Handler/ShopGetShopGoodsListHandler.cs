@@ -1,12 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -16,32 +10,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ShopGetShopGoodsListHandler));
         
+        private readonly ShopManager ShopManager;
+
         public ShopGetShopGoodsListHandler(DdonGameServer server) : base(server)
         {
+            ShopManager = server.ShopManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SShopGetShopGoodsListReq> packet)
         {
-            S2CShopGetShopGoodsListRes res = new S2CShopGetShopGoodsListRes();
-            res.Unk0 = packet.Structure.ShopId;
-            res.WalletType = WalletType.Gold;
-            res.GoodsParamList = new List<CDataGoodsParam>()
-            {
-                new CDataGoodsParam()
-                {
-                    Index = 0,
-                    ItemId = 68,
-                    Stock = byte.MaxValue,
-                    Price = 1000
-                },
-                new CDataGoodsParam()
-                {
-                    Index = 1,
-                    ItemId = 74,
-                    Stock = byte.MaxValue,
-                    Price = 1000
-                },
-            };
+            client.Character.LastEnteredShopId = packet.Structure.ShopId;
+
+            S2CShopGetShopGoodsListRes res = ShopManager.GetAssets(packet.Structure.ShopId);
             client.Send(res);
         }
     }

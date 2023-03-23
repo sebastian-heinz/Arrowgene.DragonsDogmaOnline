@@ -10,7 +10,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public uint GoodsIndex { get; set; }
         public uint Num { get; set; }
-        public StorageType StorageType { get; set; }
+
+        // Values found:
+        // 19: Buying to bag
+        // 20: Buying to storage
+        // It could possibly be StorageType?
+        public byte Destination { get; set; }
         public uint Price { get; set; }        
 
         public class Serializer : PacketEntitySerializer<C2SShopBuyShopGoodsReq>
@@ -19,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteUInt32(buffer, obj.GoodsIndex);
                 WriteUInt32(buffer, obj.Num);
-                WriteByte(buffer, (byte) obj.StorageType);
+                WriteByte(buffer, obj.Destination);
                 WriteUInt32(buffer, obj.Price);
             }
 
@@ -28,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 C2SShopBuyShopGoodsReq obj = new C2SShopBuyShopGoodsReq();
                 obj.GoodsIndex = ReadUInt32(buffer);
                 obj.Num = ReadUInt32(buffer);
-                obj.StorageType = (StorageType) ReadByte(buffer);
+                obj.Destination = ReadByte(buffer);
                 obj.Price = ReadUInt32(buffer);
                 return obj;
             }

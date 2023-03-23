@@ -1,5 +1,3 @@
-using System;
-using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -9,6 +7,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -69,11 +68,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         // old = 'プレイポイント'
         // new = 'Play Point'
 
-        private readonly GatheringItemManager _gatheringItemManager;
+        private readonly ItemManager _itemManager;
 
         public InstanceGetGatheringItemHandler(DdonGameServer server) : base(server)
         {
-            this._gatheringItemManager = server.GatheringItemManager;
+            this._itemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetGatheringItemReq> req)
@@ -109,54 +108,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 } else {
                     // TODO: Determine by gatheredItem.ItemId
                     StorageType destinationStorageType = StorageType.ItemBagConsumable;
-
                     pickedGatherItems = gatheringItemRequest.Num;
-
-                    var tuple = client.Character.Storage.getStorage(destinationStorageType).Items
-                        .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
-                        .Where(tuple => tuple.item?.Item1.ItemId == gatheredItem.ItemId)
-                        .FirstOrDefault();
-                    Item item = tuple?.item.Item1;
-                    uint oldItemNum = tuple?.item.Item2 ?? 0;
-                    uint newItemNum = oldItemNum + pickedGatherItems; // TODO: Cap to item bag stack maximum
-                    ushort slot = tuple?.slot ?? 0;
-
-                    if (item == null) {
-                        item = new Item() {
-                            ItemId = gatheredItem.ItemId,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                            ArmorCrestDataList = new List<CDataArmorCrestData>(),
-                            EquipElementParamList = new List<CDataEquipElementParam>()
-                        };
-                        Server.Database.InsertItem(item);
-                        slot = client.Character.Storage.addStorageItem(item, newItemNum, destinationStorageType);
-                    } else {
-                        client.Character.Storage.setStorageItem(item, newItemNum, destinationStorageType, slot);
-                    }
-
-                    Server.Database.ReplaceStorageItem(client.Character.Id, destinationStorageType, slot, item.UId, newItemNum);
-
-                    CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
-                    ntcData0.ItemList.ItemUId = item.UId;
-                    ntcData0.ItemList.ItemId = item.ItemId;
-                    ntcData0.ItemList.ItemNum = newItemNum;
-                    ntcData0.ItemList.Unk3 = item.Unk3;
-                    ntcData0.ItemList.StorageType = destinationStorageType;
-                    ntcData0.ItemList.SlotNo = slot;
-                    ntcData0.ItemList.Color = item.Color; // ?
-                    ntcData0.ItemList.PlusValue = item.PlusValue; // ?
-                    ntcData0.ItemList.Bind = false;
-                    ntcData0.ItemList.EquipPoint = 0;
-                    ntcData0.ItemList.EquipCharacterID = 0;
-                    ntcData0.ItemList.EquipPawnID = 0;
-                    ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                    ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-                    ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
-                    ntcData0.UpdateItemNum = (int) gatheringItemRequest.Num;
-                    ntc.UpdateItemList.Add(ntcData0);
+                    CDataItemUpdateResult result = this._itemManager.AddItem(Server.Database, client.Character, destinationStorageType, gatheredItem.ItemId, pickedGatherItems);
+                    ntc.UpdateItemList.Add(result);
                 }
 
                 gatheredItem.ItemNum -= pickedGatherItems;

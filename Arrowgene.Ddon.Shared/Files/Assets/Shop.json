@@ -1,0 +1,42 @@
+[
+    {
+        "ShopId": 52,
+        "Data": {
+            "Unk0": 0,
+            "Unk1": 0,
+            "WalletType": 1,
+            "GoodsParamList": [
+                {
+                    "Index": 0,
+                    "ItemId": 68,
+                    "Price": 1000,
+                    "Stock": 5,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 1,
+                    "ItemId": 35,
+                    "Price": 10,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 2,
+                    "ItemId": 36,
+                    "Price": 50,
+                    "Stock": 50,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                }
+            ]
+        }
+    }
+]
