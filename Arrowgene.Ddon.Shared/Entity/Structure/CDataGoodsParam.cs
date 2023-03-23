@@ -1,10 +1,12 @@
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
         
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public class CDataGoodsParam
+    public class CDataGoodsParam : ICloneable
     {
         public CDataGoodsParam() {
             Unk7 = new List<CDataGoodsParamUnk7>();
@@ -19,6 +21,21 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public ulong Unk5 { get; set; }
         public ulong Unk6 { get; set; }
         public List<CDataGoodsParamUnk7> Unk7 { get; set; } // Requirements?
+
+        public object Clone()
+        {
+            return new CDataGoodsParam()
+            {
+                Index = this.Index,
+                ItemId = this.ItemId,
+                Price = this.Price,
+                Stock = this.Stock,
+                Unk4 = this.Unk4,
+                Unk5 = this.Unk5,
+                Unk6 = this.Unk6,
+                Unk7 = this.Unk7.Select(gpu7 => (CDataGoodsParamUnk7) gpu7.Clone()).ToList()
+            };
+        }
     
         public class Serializer : EntitySerializer<CDataGoodsParam>
         {

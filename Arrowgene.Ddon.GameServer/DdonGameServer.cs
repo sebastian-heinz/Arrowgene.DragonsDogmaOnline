@@ -144,7 +144,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), GatheringItemManager);
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), ShopManager, GatheringItemManager);
             ClientLookup.Add(newClient);
             return newClient;
         }

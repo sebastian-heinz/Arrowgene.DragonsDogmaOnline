@@ -1,11 +1,8 @@
-using System.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -19,17 +16,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ShopBuyShopGoodsHandler));
         
         private readonly ItemManager _itemManager;
-        private readonly ShopManager _shopManager;
 
         public ShopBuyShopGoodsHandler(DdonGameServer server) : base(server)
         {
             _itemManager = server.ItemManager;
-            _shopManager = server.ShopManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SShopBuyShopGoodsReq> packet)
         {
-            S2CShopGetShopGoodsListRes shop = _shopManager.GetAssets(client.Character.LastEnteredShopId);
+            S2CShopGetShopGoodsListRes shop = client.InstanceShopManager.GetAssets(client.Character.LastEnteredShopId);
             CDataGoodsParam good = shop.GoodsParamList.Where(good => good.Index == packet.Structure.GoodsIndex).Single();
 
             // TODO: Send to according item bag (consumable/material/equipment...), 

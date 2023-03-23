@@ -1,3 +1,5 @@
+using System.Linq;
+using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -6,7 +8,7 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CShopGetShopGoodsListRes : ServerResponse
+    public class S2CShopGetShopGoodsListRes : ServerResponse, ICloneable
     {
         public override PacketId Id => PacketId.S2C_SHOP_GET_SHOP_GOODS_LIST_RES;
 
@@ -19,6 +21,17 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public byte Unk1 { get; set; }
         public WalletType WalletType { get; set; }
         public List<CDataGoodsParam> GoodsParamList { get; set; }
+
+        public object Clone()
+        {
+            return new S2CShopGetShopGoodsListRes()
+            {
+                Unk0 = this.Unk0,
+                Unk1 = this.Unk1,
+                WalletType = this.WalletType,
+                GoodsParamList = GoodsParamList.Select(gp => (CDataGoodsParam) gp.Clone()).ToList()
+            };
+        }
 
         public class Serializer : PacketEntitySerializer<S2CShopGetShopGoodsListRes>
         {
