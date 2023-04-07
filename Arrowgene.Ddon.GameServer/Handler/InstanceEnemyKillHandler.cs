@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.GameServer.Party;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -32,71 +33,73 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Send(new S2CInstanceEnemyKillRes());
 
-            EnemySpawn enemyKilled = this._enemyManager.GetAssets(packet.Structure.LayoutId, 0)[(int) packet.Structure.SetId];
-            uint gainedExp = this.calculateExp(enemyKilled);
-            uint extraBonusExp = 0; // TODO: Figure out what this is for
-            this._expManager.AddExp(client, gainedExp, extraBonusExp);
+            // TODO: Exp and Lvl for the pawns in the party
 
-            // TODO: Exp and Lvl for the client's pawns in the party
-
-
-            // Drop Gold and HOBO
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-
-            // Drop Gold
-            uint gold = this.calculateGold(enemyKilled);
-
-            CDataWalletPoint goldWallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
-            goldWallet.Value += gold;
-
-            CDataUpdateWalletPoint goldUpdateWalletPoint = new CDataUpdateWalletPoint();
-            goldUpdateWalletPoint.Type = WalletType.Gold;
-            goldUpdateWalletPoint.AddPoint = (int) gold;
-            goldUpdateWalletPoint.Value = goldWallet.Value;
-            updateCharacterItemNtc.UpdateWalletList.Add(goldUpdateWalletPoint);
-
-            // PERSIST CHANGES IN DB
-            Server.Database.UpdateWalletPoint(client.Character.Id, goldWallet);
-
-            if(enemyKilled.Enemy.IsBloodEnemy)
+            foreach(GameClient partyClient in client.Party.Clients)
             {
-                // Drop BO
-                uint bo = this.calculateBO(enemyKilled);
+                EnemySpawn enemyKilled = this._enemyManager.GetAssets(packet.Structure.LayoutId, 0)[(int) packet.Structure.SetId];
+                uint gainedExp = this.calculateExp(enemyKilled);
+                uint extraBonusExp = 0; // TODO: Figure out what this is for
+                this._expManager.AddExp(partyClient, gainedExp, extraBonusExp);
 
-                CDataWalletPoint boWallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.BloodOrbs).Single();
-                boWallet.Value += bo;
+                // Drop Gold and HOBO
+                S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
-                CDataUpdateWalletPoint boUpdateWalletPoint = new CDataUpdateWalletPoint();
-                boUpdateWalletPoint.Type = WalletType.BloodOrbs;
-                boUpdateWalletPoint.AddPoint = (int) bo;
-                boUpdateWalletPoint.Value = boWallet.Value;
-                updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
+                // Drop Gold
+                uint gold = this.calculateGold(enemyKilled);
+
+                CDataWalletPoint goldWallet = partyClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
+                goldWallet.Value += gold;
+
+                CDataUpdateWalletPoint goldUpdateWalletPoint = new CDataUpdateWalletPoint();
+                goldUpdateWalletPoint.Type = WalletType.Gold;
+                goldUpdateWalletPoint.AddPoint = (int) gold;
+                goldUpdateWalletPoint.Value = goldWallet.Value;
+                updateCharacterItemNtc.UpdateWalletList.Add(goldUpdateWalletPoint);
 
                 // PERSIST CHANGES IN DB
-                Server.Database.UpdateWalletPoint(client.Character.Id, boWallet);
-            }
+                Server.Database.UpdateWalletPoint(partyClient.Character.Id, goldWallet);
 
-            if(enemyKilled.Enemy.IsHighOrbEnemy)
-            {
-                // Drop HO
-                uint ho = this.calculateHO(enemyKilled);
+                if(enemyKilled.Enemy.IsBloodEnemy)
+                {
+                    // Drop BO
+                    uint bo = this.calculateBO(enemyKilled);
 
-                CDataWalletPoint hoWallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.HighOrbs).Single();
-                hoWallet.Value += ho;
+                    CDataWalletPoint boWallet = partyClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.BloodOrbs).Single();
+                    boWallet.Value += bo;
 
-                CDataUpdateWalletPoint hoUpdateWalletPoint = new CDataUpdateWalletPoint();
-                hoUpdateWalletPoint.Type = WalletType.HighOrbs;
-                hoUpdateWalletPoint.AddPoint = (int) ho;
-                hoUpdateWalletPoint.Value = hoWallet.Value;
-                updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
+                    CDataUpdateWalletPoint boUpdateWalletPoint = new CDataUpdateWalletPoint();
+                    boUpdateWalletPoint.Type = WalletType.BloodOrbs;
+                    boUpdateWalletPoint.AddPoint = (int) bo;
+                    boUpdateWalletPoint.Value = boWallet.Value;
+                    updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
 
-                // PERSIST CHANGES IN DB
-                Server.Database.UpdateWalletPoint(client.Character.Id, hoWallet);
-            }
+                    // PERSIST CHANGES IN DB
+                    Server.Database.UpdateWalletPoint(partyClient.Character.Id, boWallet);
+                }
 
-            if(updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
-            {
-                client.Send(updateCharacterItemNtc);
+                if(enemyKilled.Enemy.IsHighOrbEnemy)
+                {
+                    // Drop HO
+                    uint ho = this.calculateHO(enemyKilled);
+
+                    CDataWalletPoint hoWallet = partyClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.HighOrbs).Single();
+                    hoWallet.Value += ho;
+
+                    CDataUpdateWalletPoint hoUpdateWalletPoint = new CDataUpdateWalletPoint();
+                    hoUpdateWalletPoint.Type = WalletType.HighOrbs;
+                    hoUpdateWalletPoint.AddPoint = (int) ho;
+                    hoUpdateWalletPoint.Value = hoWallet.Value;
+                    updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
+
+                    // PERSIST CHANGES IN DB
+                    Server.Database.UpdateWalletPoint(partyClient.Character.Id, hoWallet);
+                }
+
+                if(updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
+                {
+                    partyClient.Send(updateCharacterItemNtc);
+                }
             }
         }
 
