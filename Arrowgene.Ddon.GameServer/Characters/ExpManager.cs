@@ -1,3 +1,4 @@
+using System;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -145,68 +146,70 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public void AddExp(GameClient client, uint gainedExp, uint extraBonusExp)
         {
             CDataCharacterJobData activeCharacterJobData = client.Character.ActiveCharacterJobData;
-
-            // ------
-            // EXP UP
-
-            activeCharacterJobData.Exp += gainedExp;
-            activeCharacterJobData.Exp += extraBonusExp;
-
-            S2CJobCharacterJobExpUpNtc expNtc = new S2CJobCharacterJobExpUpNtc();
-            expNtc.JobId = activeCharacterJobData.Job;
-            expNtc.AddExp = gainedExp;
-            expNtc.ExtraBonusExp = extraBonusExp;
-            expNtc.TotalExp = activeCharacterJobData.Exp;
-            expNtc.Type = 0; // TODO: Figure out
-            client.Send(expNtc);
-
-
-            // --------
-            // LEVEL UP
-            uint currentLevel = activeCharacterJobData.Lv;
-            uint addJobPoint = 0; // TODO: Figure out
-            while (activeCharacterJobData.Lv < LV_CAP && activeCharacterJobData.Exp >= this.TotalExpToLevelUpTo(activeCharacterJobData.Lv+1)) 
+            if(activeCharacterJobData.Lv < ExpManager.LV_CAP)
             {
-                activeCharacterJobData.Lv++;
-                activeCharacterJobData.JobPoint += addJobPoint;
-                // TODO: Update other values in ActiveCharacterJobData
-            }
+                // ------
+                // EXP UP
 
-            if (currentLevel != activeCharacterJobData.Lv)
-            {
-                // Inform client of lvl up
-                S2CJobCharacterJobLevelUpNtc lvlNtc = new S2CJobCharacterJobLevelUpNtc();
-                lvlNtc.Job = client.Character.Job;
-                lvlNtc.Level = activeCharacterJobData.Lv;
-                lvlNtc.AddJobPoint = addJobPoint;
-                lvlNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, client.Character);
-                client.Send(lvlNtc);
+                activeCharacterJobData.Exp += gainedExp;
+                activeCharacterJobData.Exp += extraBonusExp;
 
-                // Inform other party members
-                S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
-                lvlMemberNtc.CharacterId = client.Character.Id;
-                lvlMemberNtc.Job = client.Character.Job;
-                lvlMemberNtc.Level = activeCharacterJobData.Lv;
-                GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, client.Character);
-                client.Party.SendToAllExcept(lvlMemberNtc, client);
+                S2CJobCharacterJobExpUpNtc expNtc = new S2CJobCharacterJobExpUpNtc();
+                expNtc.JobId = activeCharacterJobData.Job;
+                expNtc.AddExp = gainedExp;
+                expNtc.ExtraBonusExp = extraBonusExp;
+                expNtc.TotalExp = activeCharacterJobData.Exp;
+                expNtc.Type = 0; // TODO: Figure out
+                client.Send(expNtc);
 
-                // Inform all other players in the server
-                S2CJobCharacterJobLevelUpOtherNtc lvlOtherNtc = new S2CJobCharacterJobLevelUpOtherNtc();
-                lvlOtherNtc.CharacterId = client.Character.Id;
-                lvlOtherNtc.Job = client.Character.Job;
-                lvlOtherNtc.Level = activeCharacterJobData.Lv;
-                foreach (GameClient otherClient in this._gameClientLookup.GetAll())
+
+                // --------
+                // LEVEL UP
+                uint currentLevel = activeCharacterJobData.Lv;
+                uint addJobPoint = 0; // TODO: Figure out
+                while (activeCharacterJobData.Lv < LV_CAP && activeCharacterJobData.Exp >= this.TotalExpToLevelUpTo(activeCharacterJobData.Lv+1)) 
                 {
-                    if(otherClient.Party != client.Party)
+                    activeCharacterJobData.Lv++;
+                    activeCharacterJobData.JobPoint += addJobPoint;
+                    // TODO: Update other values in ActiveCharacterJobData
+                }
+
+                if (currentLevel != activeCharacterJobData.Lv)
+                {
+                    // Inform client of lvl up
+                    S2CJobCharacterJobLevelUpNtc lvlNtc = new S2CJobCharacterJobLevelUpNtc();
+                    lvlNtc.Job = client.Character.Job;
+                    lvlNtc.Level = activeCharacterJobData.Lv;
+                    lvlNtc.AddJobPoint = addJobPoint;
+                    lvlNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
+                    GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, client.Character);
+                    client.Send(lvlNtc);
+
+                    // Inform other party members
+                    S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
+                    lvlMemberNtc.CharacterId = client.Character.Id;
+                    lvlMemberNtc.Job = client.Character.Job;
+                    lvlMemberNtc.Level = activeCharacterJobData.Lv;
+                    GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, client.Character);
+                    client.Party.SendToAllExcept(lvlMemberNtc, client);
+
+                    // Inform all other players in the server
+                    S2CJobCharacterJobLevelUpOtherNtc lvlOtherNtc = new S2CJobCharacterJobLevelUpOtherNtc();
+                    lvlOtherNtc.CharacterId = client.Character.Id;
+                    lvlOtherNtc.Job = client.Character.Job;
+                    lvlOtherNtc.Level = activeCharacterJobData.Lv;
+                    foreach (GameClient otherClient in this._gameClientLookup.GetAll())
                     {
-                        otherClient.Send(lvlOtherNtc);
+                        if(otherClient.Party != client.Party)
+                        {
+                            otherClient.Send(lvlOtherNtc);
+                        }
                     }
                 }
-            }
 
-            // PERSIST CHANGES IN DB
-            this._database.UpdateCharacterJobData(client.Character.Id, activeCharacterJobData);
+                // PERSIST CHANGES IN DB
+                this._database.UpdateCharacterJobData(client.Character.Id, activeCharacterJobData);
+            }
         }
 
         private uint TotalExpToLevelUpTo(uint level) {
