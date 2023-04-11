@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
@@ -25,6 +24,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(new S2CCharacterChargeRevivePointRes() {
                 RevivePoint = client.Character.StatusInfo.RevivePoint
             });
+
+            S2CCharacterUpdateRevivePointNtc ntc = new S2CCharacterUpdateRevivePointNtc()
+            {
+                CharacterId = client.Character.Id,
+                RevivePoint = client.Character.StatusInfo.RevivePoint
+            };
+            client.Party.SendToAllExcept(ntc, client);
         }
     }
 }
