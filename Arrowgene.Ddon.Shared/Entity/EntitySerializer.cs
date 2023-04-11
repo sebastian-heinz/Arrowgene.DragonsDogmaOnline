@@ -334,6 +334,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterPawnGoldenReviveRes.Serializer());
             Create(new S2CCharacterPawnPointReviveRes.Serializer());
             Create(new S2CCharacterSetOnlineStatusRes.Serializer());
+            Create(new S2CCharacterUpdateRevivePointNtc.Serializer());
 
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
             Create(new S2CClanClanConciergeGetListRes.Serializer());

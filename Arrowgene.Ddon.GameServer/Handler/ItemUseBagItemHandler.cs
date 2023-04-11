@@ -79,7 +79,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (item.ItemId == 55)
             { 
                 client.Send(SelectedDump.lantern2_27_16); 
-                // TODO: Send S2C_CHARACTER_START_LANTERN_OTHER_NOTICE to other party members
+                // TODO: Send S2C_CHARACTER_START_LANTERN_OTHER_NOTICE to other party members?
             }
         }
     }

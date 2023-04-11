@@ -24,8 +24,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CCharacterCharacterPointReviveRes res = new S2CCharacterCharacterPointReviveRes();
             res.RevivePoint = client.Character.StatusInfo.RevivePoint;
-
             client.Send(res);
+
+            S2CCharacterUpdateRevivePointNtc ntc = new S2CCharacterUpdateRevivePointNtc()
+            {
+                CharacterId = client.Character.Id,
+                RevivePoint = client.Character.StatusInfo.RevivePoint
+            };
+            client.Party.SendToAllExcept(ntc, client);
         }
     }
 }

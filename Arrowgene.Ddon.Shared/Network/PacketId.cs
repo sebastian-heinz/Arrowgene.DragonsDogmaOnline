@@ -313,7 +313,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_CHARGE_REVIVE_POINT_RES = new PacketId(2, 25, 2, "S2C_CHARACTER_CHARGE_REVIVE_POINT_RES", ServerType.Game, PacketSource.Server); // 復活力チャージに
         public static readonly PacketId C2S_CHARACTER_GET_REVIVE_POINT_REQ = new PacketId(2, 26, 1, "C2S_CHARACTER_GET_REVIVE_POINT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_GET_REVIVE_POINT_RES = new PacketId(2, 26, 2, "S2C_CHARACTER_GET_REVIVE_POINT_RES", ServerType.Game, PacketSource.Server); // 復活力取得に
-        public static readonly PacketId S2C_CHARACTER_START_LANTERN_NOTICE = new PacketId(2, 27, 16, "S2C_CHARACTER_START_LANTERN_NOTICE", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_27_16_NTC");
+        public static readonly PacketId S2C_CHARACTER_START_LANTERN_NTC = new PacketId(2, 27, 16, "S2C_CHARACTER_START_LANTERN_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_27_16_NTC");
         public static readonly PacketId S2C_CHARACTER_2_28_16_NTC = new PacketId(2, 28, 16, "S2C_CHARACTER_2_28_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_29_16_NTC = new PacketId(2, 29, 16, "S2C_CHARACTER_2_29_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_30_16_NTC = new PacketId(2, 30, 16, "S2C_CHARACTER_2_30_16_NTC", ServerType.Game, PacketSource.Server);
@@ -323,7 +323,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_2_34_16_NTC = new PacketId(2, 34, 16, "S2C_CHARACTER_2_34_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_35_16_NTC = new PacketId(2, 35, 16, "S2C_CHARACTER_2_35_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_36_16_NTC = new PacketId(2, 36, 16, "S2C_CHARACTER_2_36_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CHARACTER_2_37_16_NTC = new PacketId(2, 37, 16, "S2C_CHARACTER_2_37_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_UPDATE_REVIVE_POINT_NTC = new PacketId(2, 37, 16, "S2C_CHARACTER_UPDATE_REVIVE_POINT_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_37_16_NTC");
         public static readonly PacketId C2S_CHARACTER_SET_ONLINE_STATUS_REQ = new PacketId(2, 38, 1, "C2S_CHARACTER_SET_ONLINE_STATUS_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_SET_ONLINE_STATUS_RES = new PacketId(2, 38, 2, "S2C_CHARACTER_SET_ONLINE_STATUS_RES", ServerType.Game, PacketSource.Server); // オンラインステータス設定に
         public static readonly PacketId C2S_CHARACTER_SWITCH_GAME_MODE_REQ = new PacketId(2, 39, 1, "C2S_CHARACTER_SWITCH_GAME_MODE_REQ", ServerType.Game, PacketSource.Client);
@@ -2219,7 +2219,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_CHARGE_REVIVE_POINT_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_GET_REVIVE_POINT_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_GET_REVIVE_POINT_RES);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_START_LANTERN_NOTICE);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_START_LANTERN_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_28_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_29_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_30_16_NTC);
@@ -2229,7 +2229,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_34_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_35_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_36_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_37_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_UPDATE_REVIVE_POINT_NTC);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_SET_ONLINE_STATUS_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_SET_ONLINE_STATUS_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_SWITCH_GAME_MODE_REQ);
