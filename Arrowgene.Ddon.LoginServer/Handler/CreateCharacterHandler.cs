@@ -188,24 +188,24 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 0,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.PWCrest1,
-                                    u2 = (ushort) (arisenPreset.PWC1Add1 << 8 | arisenPreset.PWC1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.PWCrest1,
+                                    Add = (ushort) (arisenPreset.PWC1Add1 << 8 | arisenPreset.PWC1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.PWCrest2,
-                                    u2 = (ushort) (arisenPreset.PWC2Add1 << 8 | arisenPreset.PWC2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.PWCrest2,
+                                    Add = (ushort) (arisenPreset.PWC2Add1 << 8 | arisenPreset.PWC2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.PWCrest3,
-                                    u2 = (ushort) (arisenPreset.PWC3Add1 << 8 | arisenPreset.PWC3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.PWCrest3,
+                                    Add = (ushort) (arisenPreset.PWC3Add1 << 8 | arisenPreset.PWC3Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 4,
-                                    u1 = arisenPreset.PWCrest4,
-                                    u2 = (ushort) (arisenPreset.PWC4Add1 << 8 | arisenPreset.PWC4Add2),
+                                    SlotNo = 4,
+                                    CrestId = arisenPreset.PWCrest4,
+                                    Add = (ushort) (arisenPreset.PWC4Add1 << 8 | arisenPreset.PWC4Add2),
                                 }
                             },
                             ArmorCrestDataList = new List<CDataArmorCrestData>() {
@@ -230,19 +230,19 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 3,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.HeadCrest1,
-                                    u2 = (ushort) (arisenPreset.HC1Add1 << 8 | arisenPreset.HC1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.HeadCrest1,
+                                    Add = (ushort) (arisenPreset.HC1Add1 << 8 | arisenPreset.HC1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.HeadCrest2,
-                                    u2 = (ushort) (arisenPreset.HC2Add1 << 8 | arisenPreset.HC2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.HeadCrest2,
+                                    Add = (ushort) (arisenPreset.HC2Add1 << 8 | arisenPreset.HC2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.HeadCrest3,
-                                    u2 = (ushort) (arisenPreset.HC3Add1 << 8 | arisenPreset.HC3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.HeadCrest3,
+                                    Add = (ushort) (arisenPreset.HC3Add1 << 8 | arisenPreset.HC3Add2),
                                 }
                             },
                             ArmorCrestDataList = new List<CDataArmorCrestData>() {
@@ -262,24 +262,24 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 4,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.BodyCrest1,
-                                    u2 = (ushort) (arisenPreset.BC1Add1 << 8 | arisenPreset.BC1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.BodyCrest1,
+                                    Add = (ushort) (arisenPreset.BC1Add1 << 8 | arisenPreset.BC1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.BodyCrest2,
-                                    u2 = (ushort) (arisenPreset.BC2Add1 << 8 | arisenPreset.BC2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.BodyCrest2,
+                                    Add = (ushort) (arisenPreset.BC2Add1 << 8 | arisenPreset.BC2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.BodyCrest3,
-                                    u2 = (ushort) (arisenPreset.BC3Add1 << 8 | arisenPreset.BC3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.BodyCrest3,
+                                    Add = (ushort) (arisenPreset.BC3Add1 << 8 | arisenPreset.BC3Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 4,
-                                    u1 = arisenPreset.BodyCrest4,
-                                    u2 = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
+                                    SlotNo = 4,
+                                    CrestId = arisenPreset.BodyCrest4,
+                                    Add = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
                                 }                                
                             },
                             ArmorCrestDataList = new List<CDataArmorCrestData>() {
@@ -304,19 +304,19 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 3,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.ArmCrest1,
-                                    u2 = (ushort) (arisenPreset.AC1Add1 << 8 | arisenPreset.AC1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.ArmCrest1,
+                                    Add = (ushort) (arisenPreset.AC1Add1 << 8 | arisenPreset.AC1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.ArmCrest2,
-                                    u2 = (ushort) (arisenPreset.AC2Add1 << 8 | arisenPreset.AC2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.ArmCrest2,
+                                    Add = (ushort) (arisenPreset.AC2Add1 << 8 | arisenPreset.AC2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.ArmCrest3,
-                                    u2 = (ushort) (arisenPreset.AC3Add1 << 8 | arisenPreset.AC3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.ArmCrest3,
+                                    Add = (ushort) (arisenPreset.AC3Add1 << 8 | arisenPreset.AC3Add2),
                                 }
                             },
                             ArmorCrestDataList = new List<CDataArmorCrestData>() {
@@ -336,19 +336,19 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 3,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.LegCrest1,
-                                    u2 = (ushort) (arisenPreset.LC1Add1 << 8 | arisenPreset.LC1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.LegCrest1,
+                                    Add = (ushort) (arisenPreset.LC1Add1 << 8 | arisenPreset.LC1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.LegCrest2,
-                                    u2 = (ushort) (arisenPreset.LC2Add1 << 8 | arisenPreset.LC2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.LegCrest2,
+                                    Add = (ushort) (arisenPreset.LC2Add1 << 8 | arisenPreset.LC2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.LegCrest3,
-                                    u2 = (ushort) (arisenPreset.LC3Add1 << 8 | arisenPreset.LC3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.LegCrest3,
+                                    Add = (ushort) (arisenPreset.LC3Add1 << 8 | arisenPreset.LC3Add2),
                                 }
                             },
                             ArmorCrestDataList = new List<CDataArmorCrestData>() {
@@ -378,24 +378,24 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 0,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.J1Crest1,
-                                    u2 = (ushort) (arisenPreset.J1C1Add1 << 8 | arisenPreset.J1C1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.J1Crest1,
+                                    Add = (ushort) (arisenPreset.J1C1Add1 << 8 | arisenPreset.J1C1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.J1Crest2,
-                                    u2 = (ushort) (arisenPreset.J1C2Add1 << 8 | arisenPreset.J1C2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.J1Crest2,
+                                    Add = (ushort) (arisenPreset.J1C2Add1 << 8 | arisenPreset.J1C2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.J1Crest3,
-                                    u2 = (ushort) (arisenPreset.J1C3Add1 << 8 | arisenPreset.J1C3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.J1Crest3,
+                                    Add = (ushort) (arisenPreset.J1C3Add1 << 8 | arisenPreset.J1C3Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 4,
-                                    u1 = arisenPreset.J1Crest4,
-                                    u2 = (ushort) (arisenPreset.J1C4Add1 << 8 | arisenPreset.J1C4Add2),
+                                    SlotNo = 4,
+                                    CrestId = arisenPreset.J1Crest4,
+                                    Add = (ushort) (arisenPreset.J1C4Add1 << 8 | arisenPreset.J1C4Add2),
                                 }                                
                             },
                             // Empty ArmorCrestDataList
@@ -477,24 +477,24 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 0,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.J2Crest1,
-                                    u2 = (ushort) (arisenPreset.J2C1Add1 << 8 | arisenPreset.J2C1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.J2Crest1,
+                                    Add = (ushort) (arisenPreset.J2C1Add1 << 8 | arisenPreset.J2C1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.J2Crest2,
-                                    u2 = (ushort) (arisenPreset.J2C2Add1 << 8 | arisenPreset.J2C2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.J2Crest2,
+                                    Add = (ushort) (arisenPreset.J2C2Add1 << 8 | arisenPreset.J2C2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.J2Crest3,
-                                    u2 = (ushort) (arisenPreset.J2C3Add1 << 8 | arisenPreset.J2C3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.J2Crest3,
+                                    Add = (ushort) (arisenPreset.J2C3Add1 << 8 | arisenPreset.J2C3Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 4,
-                                    u1 = arisenPreset.J2Crest4,
-                                    u2 = (ushort) (arisenPreset.J2C4Add1 << 8 | arisenPreset.J2C4Add2),
+                                    SlotNo = 4,
+                                    CrestId = arisenPreset.J2Crest4,
+                                    Add = (ushort) (arisenPreset.J2C4Add1 << 8 | arisenPreset.J2C4Add2),
                                 }                                
                             },
                             // Empty ArmorCrestDataList
@@ -576,24 +576,24 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 0,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.J3Crest1,
-                                    u2 = (ushort) (arisenPreset.J3C1Add1 << 8 | arisenPreset.J3C1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.J3Crest1,
+                                    Add = (ushort) (arisenPreset.J3C1Add1 << 8 | arisenPreset.J3C1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.J3Crest2,
-                                    u2 = (ushort) (arisenPreset.J3C2Add1 << 8 | arisenPreset.J3C2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.J3Crest2,
+                                    Add = (ushort) (arisenPreset.J3C2Add1 << 8 | arisenPreset.J3C2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.J3Crest3,
-                                    u2 = (ushort) (arisenPreset.J3C3Add1 << 8 | arisenPreset.J3C3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.J3Crest3,
+                                    Add = (ushort) (arisenPreset.J3C3Add1 << 8 | arisenPreset.J3C3Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 4,
-                                    u1 = arisenPreset.J3Crest4,
-                                    u2 = (ushort) (arisenPreset.J3C4Add1 << 8 | arisenPreset.J3C4Add2),
+                                    SlotNo = 4,
+                                    CrestId = arisenPreset.J3Crest4,
+                                    Add = (ushort) (arisenPreset.J3C4Add1 << 8 | arisenPreset.J3C4Add2),
                                 }                                
                             },
                             // Empty ArmorCrestDataList
@@ -675,24 +675,24 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 0,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.J4Crest1,
-                                    u2 = (ushort) (arisenPreset.J4C1Add1 << 8 | arisenPreset.J4C1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.J4Crest1,
+                                    Add = (ushort) (arisenPreset.J4C1Add1 << 8 | arisenPreset.J4C1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.J4Crest2,
-                                    u2 = (ushort) (arisenPreset.J4C2Add1 << 8 | arisenPreset.J4C2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.J4Crest2,
+                                    Add = (ushort) (arisenPreset.J4C2Add1 << 8 | arisenPreset.J4C2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.J4Crest3,
-                                    u2 = (ushort) (arisenPreset.J4C3Add1 << 8 | arisenPreset.J4C3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.J4Crest3,
+                                    Add = (ushort) (arisenPreset.J4C3Add1 << 8 | arisenPreset.J4C3Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 4,
-                                    u1 = arisenPreset.J4Crest4,
-                                    u2 = (ushort) (arisenPreset.J4C4Add1 << 8 | arisenPreset.J4C4Add2),
+                                    SlotNo = 4,
+                                    CrestId = arisenPreset.J4Crest4,
+                                    Add = (ushort) (arisenPreset.J4C4Add1 << 8 | arisenPreset.J4C4Add2),
                                 }                                
                             },
                             // Empty ArmorCrestDataList
@@ -774,24 +774,24 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             PlusValue = 0,
                             WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                 new CDataWeaponCrestData {
-                                    u0 = 1,
-                                    u1 = arisenPreset.J5Crest1,
-                                    u2 = (ushort) (arisenPreset.J5C1Add1 << 8 | arisenPreset.J5C1Add2),
+                                    SlotNo = 1,
+                                    CrestId = arisenPreset.J5Crest1,
+                                    Add = (ushort) (arisenPreset.J5C1Add1 << 8 | arisenPreset.J5C1Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 2,
-                                    u1 = arisenPreset.J5Crest2,
-                                    u2 = (ushort) (arisenPreset.J5C2Add1 << 8 | arisenPreset.J5C2Add2),
+                                    SlotNo = 2,
+                                    CrestId = arisenPreset.J5Crest2,
+                                    Add = (ushort) (arisenPreset.J5C2Add1 << 8 | arisenPreset.J5C2Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 3,
-                                    u1 = arisenPreset.J5Crest3,
-                                    u2 = (ushort) (arisenPreset.J5C3Add1 << 8 | arisenPreset.J5C3Add2),
+                                    SlotNo = 3,
+                                    CrestId = arisenPreset.J5Crest3,
+                                    Add = (ushort) (arisenPreset.J5C3Add1 << 8 | arisenPreset.J5C3Add2),
                                 },
                                 new CDataWeaponCrestData {
-                                    u0 = 4,
-                                    u1 = arisenPreset.J5Crest4,
-                                    u2 = (ushort) (arisenPreset.J5C4Add1 << 8 | arisenPreset.J5C4Add2),
+                                    SlotNo = 4,
+                                    CrestId = arisenPreset.J5Crest4,
+                                    Add = (ushort) (arisenPreset.J5C4Add1 << 8 | arisenPreset.J5C4Add2),
                                 }                                
                             },
                             // Empty ArmorCrestDataList
