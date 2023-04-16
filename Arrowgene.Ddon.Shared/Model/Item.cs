@@ -54,9 +54,9 @@ namespace Arrowgene.Ddon.Shared.Model
             hash.AppendData(BitConverter.GetBytes(PlusValue));
             foreach (var weaponCrestData in WeaponCrestDataList)
             {
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u0));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u1));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u2));
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.SlotNo));
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.CrestId));
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.Add));
             }
             foreach (var armorCrestData in ArmorCrestDataList)
             {

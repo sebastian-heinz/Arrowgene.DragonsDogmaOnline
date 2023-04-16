@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -21,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public uint ItemId { get; set; }
         public byte Unk0 { get; set; } // Not stored in DB cause i dont know what its for
-        public byte EquipType { get; set; } // 1 = Equipment, 2 = Visual
+        public EquipType EquipType { get; set; } // 1 = Equipment, 2 = Visual
         public ushort EquipSlot { get; set; }
         public byte Color { get; set; }
         public byte PlusValue { get; set; }
@@ -35,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.ItemId);
                 WriteByte(buffer, obj.Unk0);
-                WriteByte(buffer, obj.EquipType);
+                WriteByte(buffer, (byte) obj.EquipType);
                 WriteUInt16(buffer, obj.EquipSlot);
                 WriteByte(buffer, obj.Color);
                 WriteByte(buffer, obj.PlusValue);
@@ -49,7 +50,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataEquipItemInfo obj = new CDataEquipItemInfo();
                 obj.ItemId = ReadUInt32(buffer);
                 obj.Unk0 = ReadByte(buffer);
-                obj.EquipType = ReadByte(buffer);
+                obj.EquipType = (EquipType) ReadByte(buffer);
                 obj.EquipSlot = ReadUInt16(buffer);
                 obj.Color = ReadByte(buffer);
                 obj.PlusValue = ReadByte(buffer);

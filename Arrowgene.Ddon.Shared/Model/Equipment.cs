@@ -74,7 +74,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 {
                     ItemId = tuple.item?.ItemId ?? 0,
                     Unk0 = tuple.item?.Unk3 ?? 0,
-                    EquipType = (byte) equipType,
+                    EquipType = equipType,
                     EquipSlot = tuple.slot,
                     Color = tuple.item?.Color ?? 0,
                     PlusValue = tuple.item?.PlusValue ?? 0,
