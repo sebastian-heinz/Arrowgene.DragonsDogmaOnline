@@ -1954,7 +1954,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     targetLevel++;
                 }
 
-                if (currentLevel != activeCharacterJobData.Lv)
+                if (currentLevel != targetLevel)
                 {
                     activeCharacterJobData.Lv = targetLevel;
                     activeCharacterJobData.JobPoint += addJobPoint;
