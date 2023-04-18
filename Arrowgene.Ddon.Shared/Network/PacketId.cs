@@ -317,8 +317,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_2_28_16_NTC = new PacketId(2, 28, 16, "S2C_CHARACTER_2_28_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_29_16_NTC = new PacketId(2, 29, 16, "S2C_CHARACTER_2_29_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_30_16_NTC = new PacketId(2, 30, 16, "S2C_CHARACTER_2_30_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CHARACTER_2_31_16_NTC = new PacketId(2, 31, 16, "S2C_CHARACTER_2_31_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CHARACTER_2_32_16_NTC = new PacketId(2, 32, 16, "S2C_CHARACTER_2_32_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_START_DEATH_PENALTY_NTC = new PacketId(2, 31, 16, "S2C_CHARACTER_2_31_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_FINISH_DEATH_PENALTY_NTC = new PacketId(2, 32, 16, "S2C_CHARACTER_2_32_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_33_16_NTC = new PacketId(2, 33, 16, "S2C_CHARACTER_2_33_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_34_16_NTC = new PacketId(2, 34, 16, "S2C_CHARACTER_2_34_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_35_16_NTC = new PacketId(2, 35, 16, "S2C_CHARACTER_2_35_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2223,8 +2223,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_28_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_29_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_30_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_31_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_32_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_START_DEATH_PENALTY_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_FINISH_DEATH_PENALTY_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_33_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_34_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_35_16_NTC);
