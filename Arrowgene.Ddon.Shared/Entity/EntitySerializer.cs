@@ -328,12 +328,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterChargeRevivePointRes.Serializer());
             Create(new S2CCharacterCommunityCharacterStatusUpdateNtc.Serializer());
             Create(new S2CCharacterDecideCharacterIdRes.Serializer());
+            Create(new S2CCharacterFinishDeathPenaltyNtc.Serializer());
             Create(new S2CCharacterGetCharacterStatusNtc.Serializer());
             Create(new S2CCharacterGetReviveChargeableTimeRes.Serializer());
             Create(new S2CCharacterContentsReleaseElementNtc.Serializer());
             Create(new S2CCharacterPawnGoldenReviveRes.Serializer());
             Create(new S2CCharacterPawnPointReviveRes.Serializer());
             Create(new S2CCharacterSetOnlineStatusRes.Serializer());
+            Create(new S2CCharacterStartDeathPenaltyNtc.Serializer());
             Create(new S2CCharacterUpdateRevivePointNtc.Serializer());
 
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
