@@ -127,6 +127,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnCraftSkill.Serializer());
             Create(new CDataPawnEquipInfo.Serializer());
             Create(new CDataPawnFeedback.Serializer());
+            Create(new CDataPawnHp.Serializer());
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPawnInfo.Serializer());
             Create(new CDataPawnList.Serializer());
@@ -206,8 +207,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
+            Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnStayInnReq.Serializer());
+            Create(new C2SInnStayPenaltyHealInnReq.Serializer());
 
             Create(new C2SInstanceEnemyGroupEntryNtc.Serializer());
             Create(new C2SInstanceEnemyGroupLeaveNtc.Serializer());
@@ -369,8 +372,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHidePawnHeadArmorRes.Serializer());
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
+            Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
             Create(new S2CInnStayInnRes.Serializer());
+            Create(new S2CInnStayPenaltyHealInnRes.Serializer());
             Create(new S2CInstance_13_20_16_Ntc.Serializer());
             Create(new S2CInstance_13_23_16_Ntc.Serializer());
             Create(new S2CInstanceAreaResetNtc.Serializer());

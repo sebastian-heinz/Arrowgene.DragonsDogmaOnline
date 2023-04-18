@@ -1157,8 +1157,10 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
 
+            AddHandler(new InnGetPenaltyHealStayPrice(this));
             AddHandler(new InnGetStayPriceHandler(this));
             AddHandler(new InnStayInnHandler(this));
+            AddHandler(new InnStayPenaltyHealInn(this));
 
             AddHandler(new InstanceEnemyGroupEntryHandler(this));
             AddHandler(new InstanceEnemyGroupLeaveHandler(this));
