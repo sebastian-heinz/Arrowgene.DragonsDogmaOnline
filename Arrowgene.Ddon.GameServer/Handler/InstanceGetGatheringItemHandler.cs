@@ -106,8 +106,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     walletUpdate.Value = characterWalletPoint.Value;
                     ntc.UpdateWalletList.Add(walletUpdate);
                 } else {
-                    // TODO: Determine by gatheredItem.ItemId
-                    StorageType destinationStorageType = StorageType.ItemBagConsumable;
+                    StorageType destinationStorageType = ClientItemInfo.GetStorageTypeForItemId(Server.AssetRepository.ClientItemInfos, gatheredItem.ItemId);
                     pickedGatherItems = gatheringItemRequest.Num;
                     CDataItemUpdateResult result = this._itemManager.AddItem(Server.Database, client.Character, destinationStorageType, gatheredItem.ItemId, pickedGatherItems);
                     ntc.UpdateItemList.Add(result);

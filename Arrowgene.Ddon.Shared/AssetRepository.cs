@@ -1,4 +1,3 @@
-using System.Runtime.Serialization.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,12 +7,17 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Json;
+using System.Text.Json;
 
 namespace Arrowgene.Ddon.Shared
 {
     public class AssetRepository
     {
+        // Client data
         public const string ClientErrorCodesKey = "ClientErrorCodes.csv";
+        public const string ItemListKey = "itemlist.csv";
+
+        // Server data
         public const string EnemySpawnsKey = "EnemySpawn.csv";
         public const string GatheringItemsKey = "GatheringItem.csv";
         public const string MyPawnAssetKey = "MyPawn.csv";
@@ -43,6 +47,7 @@ namespace Arrowgene.Ddon.Shared
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
             ClientErrorCodes = new List<CDataErrorMessage>();
+            ClientItemInfos = new List<ClientItemInfo>();
             EnemySpawns = new List<EnemySpawn>();
             GatheringItems = new List<GatheringItem>();
             ServerList = new List<CDataGameServerListInfo>();
@@ -55,6 +60,7 @@ namespace Arrowgene.Ddon.Shared
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; }
+        public List<ClientItemInfo> ClientItemInfos { get; set; } // May be incorrect, or incomplete
         public List<EnemySpawn> EnemySpawns { get; }
         public List<GatheringItem> GatheringItems { get; }
         public List<CDataGameServerListInfo> ServerList { get; }
@@ -68,6 +74,7 @@ namespace Arrowgene.Ddon.Shared
         public void Initialize()
         {
             RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsv());
+            RegisterAsset(ClientItemInfos, ItemListKey, new ClientItemInfoCsv());
             RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsv());
             RegisterAsset(GatheringItems, GatheringItemsKey, new GatheringItemCsv());
             RegisterAsset(MyPawnAsset, MyPawnAssetKey, new MyPawnCsvReader());
