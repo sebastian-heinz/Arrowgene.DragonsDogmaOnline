@@ -27,10 +27,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CShopGetShopGoodsListRes shop = client.InstanceShopManager.GetAssets(client.Character.LastEnteredShopId);
             CDataGoodsParam good = shop.GoodsParamList.Where(good => good.Index == packet.Structure.GoodsIndex).Single();
 
-            // TODO: Send to according item bag (consumable/material/equipment...), 
-            // figuring it out by its item ID, if packet.Structure.Destination is 19
-            // or send to storage if Destination is 20. Figure out other values, if any
-            StorageType destinationStorageType = StorageType.StorageBoxNormal;
+            StorageType destinationStorageType;
+            switch(packet.Structure.Destination) {
+                case 19:
+                    // If packet.Structure.Destination is 19: Send to corresponding item bag
+                    destinationStorageType = ClientItemInfo.GetStorageTypeForItemId(Server.AssetRepository.ClientItemInfos, good.ItemId);
+                    break;
+                case 20:
+                    // If packet.Structure.Destination is 20: Send to storage 
+                    // TODO: Check if storage is full
+                    destinationStorageType = StorageType.StorageBoxNormal;
+                    break;
+                default:
+                    throw new Exception("Unexpected destination when buying goods: "+packet.Structure.Destination);
+            }
 
             // TODO: Cap to destination storage type max items
             uint boughAmount = packet.Structure.Num;

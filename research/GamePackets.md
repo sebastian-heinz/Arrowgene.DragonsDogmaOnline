@@ -2129,3 +2129,9 @@
 |S2C_DAILY_MISSION_REWARD_RECEIVE_RES|72|2|2|0x7d1a50|デイリーミッションの報酬受け取りに|
 |C2S_DAILY_MISSION_EVENT_LIST_GET_REQ|72|3|1|0x826053||
 |S2C_DAILY_MISSION_EVENT_LIST_GET_RES|72|3|2|0x7d18b0|デイリーミッション：期間イベントのリストの取得に|
+
+
+## Resources
+
+|Name|Magic Bytes|Address|
+|itemlist|ipa|0xa972a0|
