@@ -14,11 +14,12 @@ namespace Arrowgene.Ddon.Shared.Csv
         {
             if (!uint.TryParse(properties[0], out uint itemId)) return null;
             if (!byte.TryParse(properties[1], out byte storageType)) return null;
-
+            if (!ushort.TryParse(properties[2], out ushort price)) return null;
             return new ClientItemInfo
             {
                 ItemId = itemId,
-                StorageType = (StorageType) storageType
+                StorageType = (StorageType) storageType,
+                Price = price
             };
         }
     }

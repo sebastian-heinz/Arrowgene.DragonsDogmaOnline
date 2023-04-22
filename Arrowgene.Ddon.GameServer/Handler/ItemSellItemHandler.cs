@@ -54,8 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 itemUpdate.UpdateItemNum = -((int)consumeItem.Num);
                 ntc.UpdateItemList.Add(itemUpdate);
 
-                // TODO: Figure out by ItemId
-                uint goldValue = 100;
+                uint goldValue = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, item.ItemId).Price;
                 uint amountToAdd = goldValue * consumeItem.Num;
 
                 CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).First();
