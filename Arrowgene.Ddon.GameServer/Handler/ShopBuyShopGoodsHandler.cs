@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             switch(packet.Structure.Destination) {
                 case 19:
                     // If packet.Structure.Destination is 19: Send to corresponding item bag
-                    destinationStorageType = ClientItemInfo.GetStorageTypeForItemId(Server.AssetRepository.ClientItemInfos, good.ItemId);
+                    destinationStorageType = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, good.ItemId).StorageType;
                     break;
                 case 20:
                     // If packet.Structure.Destination is 20: Send to storage 
