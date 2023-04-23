@@ -13,6 +13,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemGetStorageItemListHandler));
 
+        private static readonly StorageType[] ItemBagStorageTypes = new StorageType[] { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
+
         public ItemMoveItemHandler(DdonGameServer server) : base(server)
         {
         }
@@ -28,45 +30,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Where(tuple => itemFromTo.ItemUId == tuple.item?.Item1.UId)
                     .First();
                 Item item = tuple.item.Item1;
-                uint itemNum = tuple.item.Item2;
-                uint sanitizedItemFromToNum = Math.Clamp(itemFromTo.Num, 0, itemNum);
                 ushort srcSlotNo = (ushort) (tuple.index+1);
-                uint srcItemNum = itemNum-sanitizedItemFromToNum;
-
-                // Update item in src storage
-                CDataItemUpdateResult updateItem = new CDataItemUpdateResult();
-                updateItem.ItemList.ItemUId = item.UId;
-                updateItem.ItemList.ItemId = item.ItemId;
-                updateItem.ItemList.ItemNum = srcItemNum;
-                updateItem.ItemList.Unk3 = item.Unk3;
-                updateItem.ItemList.StorageType = itemFromTo.SrcStorageType;
-                updateItem.ItemList.SlotNo = srcSlotNo;
-                updateItem.ItemList.Color = item.Color; // ?
-                updateItem.ItemList.PlusValue = item.PlusValue; // ?
-                updateItem.ItemList.Bind = false;
-                updateItem.ItemList.EquipPoint = 0;
-                updateItem.ItemList.EquipCharacterID = 0;
-                updateItem.ItemList.EquipPawnID = 0;
-                updateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                updateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-                updateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
-                updateItem.UpdateItemNum = (int) -itemFromTo.Num;
-                ntc.UpdateItemList.Add(updateItem);
-
-                // TODO: Handle swapping items
-                if(srcItemNum == 0)
-                {
-                    client.Character.Storage.setStorageItem(null, 0, itemFromTo.SrcStorageType, srcSlotNo);
-                    Server.Database.DeleteStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo);
-                }
-                else
-                {
-                    client.Character.Storage.setStorageItem(item, srcItemNum, itemFromTo.SrcStorageType, srcSlotNo);
-                    Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo, item.UId, srcItemNum);
-                }
-
                 ushort dstSlotNo = itemFromTo.SlotNo;
-                uint dstItemNum = sanitizedItemFromToNum;
+                uint oldSrcItemNum = tuple.item.Item2;
+                uint newSrcItemNum;
+                uint oldDstItemNum;
+                uint newDstItemNum;
+
                 if(dstSlotNo == 0)
                 {
                     // Check if there's already of the item in the dst storage
@@ -77,40 +47,83 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if(itemInDstSlot == null)
                     {
-                        dstSlotNo = client.Character.Storage.addStorageItem(item, dstItemNum, itemFromTo.DstStorageType);
+                        oldDstItemNum = 0;
+                        dstSlotNo = client.Character.Storage.addStorageItem(item, oldDstItemNum, itemFromTo.DstStorageType);
                     }
                     else
                     {
+                        oldDstItemNum = itemInDstSlot.item.Item2;
                         dstSlotNo = (ushort) (itemInDstSlot.index+1);
-                        dstItemNum += itemInDstSlot.item.Item2;
                     }
                 }
                 else
                 {
                     Tuple<Item, uint> itemInDstSlot = client.Character.Storage.getStorageItem(itemFromTo.DstStorageType, dstSlotNo);
-                    dstItemNum += itemInDstSlot.Item2;
+                    oldDstItemNum = itemInDstSlot.Item2;
                 }
-                client.Character.Storage.setStorageItem(item, dstItemNum, itemFromTo.DstStorageType, dstSlotNo);
-                Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.DstStorageType, dstSlotNo, item.UId, dstItemNum);
 
-                CDataItemUpdateResult updateItem2 = new CDataItemUpdateResult();
-                updateItem2.ItemList.ItemUId = item.UId;
-                updateItem2.ItemList.ItemId = item.ItemId;
-                updateItem2.ItemList.ItemNum = dstItemNum;
-                updateItem2.ItemList.Unk3 = item.Unk3;
-                updateItem2.ItemList.StorageType = itemFromTo.DstStorageType;
-                updateItem2.ItemList.SlotNo = dstSlotNo;
-                updateItem2.ItemList.Color = item.Color; // ?
-                updateItem2.ItemList.PlusValue = item.PlusValue; // ?
-                updateItem2.ItemList.Bind = false;
-                updateItem2.ItemList.EquipPoint = 0;
-                updateItem2.ItemList.EquipCharacterID = 0;
-                updateItem2.ItemList.EquipPawnID = 0;
-                updateItem2.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                updateItem2.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-                updateItem2.ItemList.EquipElementParamList = item.EquipElementParamList;
-                updateItem2.UpdateItemNum = (int) itemFromTo.Num;
-                ntc.UpdateItemList.Add(updateItem2);
+                ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, item.ItemId);
+                uint sanitizedItemFromToNum = Math.Min(itemFromTo.Num, oldSrcItemNum);
+                newDstItemNum = oldDstItemNum + sanitizedItemFromToNum;
+                if(ItemBagStorageTypes.Contains(itemFromTo.DstStorageType))
+                {
+                    // Limit items to the item bag stack limit when moving to the item bag
+                    newDstItemNum = Math.Min(clientItemInfo.StackLimit, oldDstItemNum + sanitizedItemFromToNum);
+                }
+                uint movedItemNum = newDstItemNum - oldDstItemNum;
+                client.Character.Storage.setStorageItem(item, newDstItemNum, itemFromTo.DstStorageType, dstSlotNo);
+                Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.DstStorageType, dstSlotNo, item.UId, newDstItemNum);
+
+                CDataItemUpdateResult dstUpdateItem = new CDataItemUpdateResult();
+                dstUpdateItem.ItemList.ItemUId = item.UId;
+                dstUpdateItem.ItemList.ItemId = item.ItemId;
+                dstUpdateItem.ItemList.ItemNum = newDstItemNum;
+                dstUpdateItem.ItemList.Unk3 = item.Unk3;
+                dstUpdateItem.ItemList.StorageType = itemFromTo.DstStorageType;
+                dstUpdateItem.ItemList.SlotNo = dstSlotNo;
+                dstUpdateItem.ItemList.Color = item.Color; // ?
+                dstUpdateItem.ItemList.PlusValue = item.PlusValue; // ?
+                dstUpdateItem.ItemList.Bind = false;
+                dstUpdateItem.ItemList.EquipPoint = 0;
+                dstUpdateItem.ItemList.EquipCharacterID = 0;
+                dstUpdateItem.ItemList.EquipPawnID = 0;
+                dstUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+                dstUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+                dstUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
+                dstUpdateItem.UpdateItemNum = (int) movedItemNum;
+                ntc.UpdateItemList.Add(dstUpdateItem);
+
+                // Update item in src storage
+                // TODO: Handle swapping items
+                newSrcItemNum = oldSrcItemNum - movedItemNum;
+                if(newSrcItemNum == 0)
+                {
+                    client.Character.Storage.setStorageItem(null, 0, itemFromTo.SrcStorageType, srcSlotNo);
+                    Server.Database.DeleteStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo);
+                }
+                else
+                {
+                    client.Character.Storage.setStorageItem(item, newSrcItemNum, itemFromTo.SrcStorageType, srcSlotNo);
+                    Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo, item.UId, newSrcItemNum);
+                }
+                CDataItemUpdateResult srcUpdateItem = new CDataItemUpdateResult();
+                srcUpdateItem.ItemList.ItemUId = item.UId;
+                srcUpdateItem.ItemList.ItemId = item.ItemId;
+                srcUpdateItem.ItemList.ItemNum = newSrcItemNum;
+                srcUpdateItem.ItemList.Unk3 = item.Unk3;
+                srcUpdateItem.ItemList.StorageType = itemFromTo.SrcStorageType;
+                srcUpdateItem.ItemList.SlotNo = srcSlotNo;
+                srcUpdateItem.ItemList.Color = item.Color; // ?
+                srcUpdateItem.ItemList.PlusValue = item.PlusValue; // ?
+                srcUpdateItem.ItemList.Bind = false;
+                srcUpdateItem.ItemList.EquipPoint = 0;
+                srcUpdateItem.ItemList.EquipCharacterID = 0;
+                srcUpdateItem.ItemList.EquipPawnID = 0;
+                srcUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+                srcUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+                srcUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
+                srcUpdateItem.UpdateItemNum = (int) -movedItemNum;
+                ntc.UpdateItemList.Add(srcUpdateItem);
             }
 
             client.Send(ntc);

@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ItemId;
         public StorageType StorageType;
         public ushort Price;
+        public byte StackLimit;
 
         // TODO: Optimize this mess (Use a Set or something that doesn't require looping over it)
         public static ClientItemInfo GetInfoForItemId(List<ClientItemInfo> clientItemInfos, uint itemId)

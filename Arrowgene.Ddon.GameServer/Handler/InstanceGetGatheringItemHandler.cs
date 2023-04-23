@@ -1,3 +1,4 @@
+#nullable enable
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -88,12 +89,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (CDataGatheringItemGetRequest gatheringItemRequest in req.Structure.GatheringItemGetRequestList)
             {
                 GatheringItem gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)[(int) gatheringItemRequest.SlotNo];
-                uint pickedGatherItems;
-
                 if(ItemIdWalletTypeAndQuantity.ContainsKey(gatheredItem.ItemId)) {
                     var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheredItem.ItemId];
 
-                    pickedGatherItems = gatheringItemRequest.Num;
+                    uint pickedGatherItems = gatheringItemRequest.Num;
                     uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheredItem.ItemNum;
                     
                     CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.Type).First();
@@ -105,15 +104,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     walletUpdate.AddPoint = (int) totalQuantityToAdd;
                     walletUpdate.Value = characterWalletPoint.Value;
                     ntc.UpdateWalletList.Add(walletUpdate);
+                    
+                    gatheredItem.ItemNum -= pickedGatherItems;
                 } else {
-                    StorageType destinationStorageType = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, gatheredItem.ItemId).StorageType;
-                    pickedGatherItems = gatheringItemRequest.Num;
-                    CDataItemUpdateResult result = this._itemManager.AddItem(Server.Database, client.Character, destinationStorageType, gatheredItem.ItemId, pickedGatherItems);
+                    CDataItemUpdateResult? result = this._itemManager.AddItem(Server, client.Character, true, gatheredItem.ItemId, gatheringItemRequest.Num);
                     ntc.UpdateItemList.Add(result);
+                    gatheredItem.ItemNum -= (uint) result.UpdateItemNum;
                 }
 
-                gatheredItem.ItemNum -= pickedGatherItems;
-                // TODO: Maybe remove gatheredItem when ItemNum reaches 0? Doesn't seem to be needed
             }
 
             client.Send(ntc);
