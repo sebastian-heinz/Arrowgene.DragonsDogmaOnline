@@ -640,7 +640,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.MatchingProfile.ObjectiveType2 = GetUInt32(reader, "objective_type2");
             character.MatchingProfile.PlayStyle = GetUInt32(reader, "play_style");
             character.MatchingProfile.Comment = GetString(reader, "comment");
-            character.MatchingProfile.IsJoinParty = GetByte(reader, "is_join_party");
+            character.MatchingProfile.IsJoinParty = GetBoolean(reader, "is_join_party");
 
             character.ArisenProfile.BackgroundId = GetByte(reader, "background_id");
             character.ArisenProfile.Title.UId = GetUInt32(reader, "title_uid");
