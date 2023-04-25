@@ -1,6 +1,5 @@
 using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -21,6 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             GameClient targetClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
 
+
             S2CProfileGetCharacterProfileRes res = new S2CProfileGetCharacterProfileRes();
             res.CharacterId = targetClient.Character.Id;
             GameStructure.CDataCharacterName(res.CharacterName, targetClient.Character);
@@ -37,6 +37,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: OnlineId
             
             client.Send(res);
+
+
+            S2CCharacterGetCharacterStatusNtc ntc = new S2CCharacterGetCharacterStatusNtc();
+            ntc.CharacterId = targetClient.Character.Id;
+            ntc.StatusInfo = targetClient.Character.StatusInfo;
+            ntc.JobParam = targetClient.Character.ActiveCharacterJobData;
+            GameStructure.CDataCharacterLevelParam(ntc.CharacterParam, client.Character);
+            ntc.EditInfo = targetClient.Character.EditInfo;
+            ntc.EquipDataList = targetClient.Character.Equipment.getEquipmentAsCDataEquipItemInfo(targetClient.Character.Job, EquipType.Performance);
+            ntc.VisualEquipDataList = targetClient.Character.Equipment.getEquipmentAsCDataEquipItemInfo(targetClient.Character.Job, EquipType.Visual);
+            ntc.EquipJobItemList = targetClient.Character.CharacterEquipJobItemListDictionary[targetClient.Character.Job];
+            ntc.HideHead = targetClient.Character.HideEquipHead;
+            ntc.HideLantern = targetClient.Character.HideEquipLantern;
+            ntc.JewelryNum = targetClient.Character.JewelrySlotNum;
+
+            client.Send(ntc);
         }
     }
 }
