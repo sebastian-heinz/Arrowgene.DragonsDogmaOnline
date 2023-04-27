@@ -20,8 +20,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(InGameDump.Dump_20); // Commenting this makes the Vocation change option not show up and some paths are blocked
-            client.Send(InGameDump.Dump_24);
+            // S2C_QUEST_JOIN_LOBBY_QUEST_INFO_NTC
+            //Not sending this makes the Vocation change option not show up and some paths are blocked
+            client.Send(InGameDump.Dump_20);
+            
+            IBuffer buffer = new StreamBuffer();
+            buffer.WriteInt32(0, Endianness.Big);
+            buffer.WriteInt32(0, Endianness.Big);
+            buffer.WriteUInt32(0, Endianness.Big);
+            client.Send(new Packet(PacketId.S2C_QUEST_GET_CYCLE_CONTENTS_STATE_LIST_RES, buffer.GetAllBytes()));
+            //client.Send(InGameDump.Dump_24);
         }
     }
 }

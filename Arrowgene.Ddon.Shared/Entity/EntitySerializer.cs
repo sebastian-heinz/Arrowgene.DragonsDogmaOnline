@@ -104,6 +104,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataLayoutEnemyData.Serializer());
             Create(new CDataLearnedSetAcquirementParam.Serializer());
             Create(new CDataLearnNormalSkillParam.Serializer());
+            Create(new CDataLightQuestDetail.Serializer());
+            Create(new CDataLightQuestList.Serializer());
+            Create(new CDataLightQuestOrderList.Serializer());
             Create(new CDataLobbyContextPlayer.Serializer());
             Create(new CDataLobbyMemberInfoSerializer());
             Create(new CDataLoginSettingSerializer());
@@ -137,15 +140,24 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
             Create(new CDataQuestAnnounce.Serializer());
+            Create(new CDataQuestCommand.Serializer());
+            Create(new CDataQuestContents.Serializer());
             Create(new CDataQuestEnemyInfo.Serializer());
             Create(new CDataQuestFlag.Serializer());
             Create(new CDataQuestIdScheduleId.Serializer());
             Create(new CDataQuestKeyItemPointRecord.Serializer());
             Create(new CDataQuestLayoutFlag.Serializer());
             Create(new CDataQuestLayoutFlagSetInfo.Serializer());
+            Create(new CDataQuestList.Serializer());
+            Create(new CDataQuestListUnk0.Serializer());
+            Create(new CDataQuestListUnk1.Serializer());
+            Create(new CDataQuestListUnk7.Serializer());
+            Create(new CDataQuestLog.Serializer());
             Create(new CDataQuestOrderConditionParam.Serializer());
             Create(new CDataQuestOrderList.Serializer());
             Create(new CDataQuestProcessState.Serializer());
+            Create(new CDataQuestProgressWork.Serializer());
+            Create(new CDataQuestSetInfo.Serializer());
             Create(new CDataQuestTalkInfo.Serializer());
             Create(new CDataRewardItem.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
@@ -269,7 +281,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnTrainingGetPreparetionInfoToAdviceReq.Serializer());
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
+
+            Create(new C2SQuestGetLightQuestListReq.Serializer());
             Create(new C2SQuestGetLotQuestListReq.Serializer());
+            Create(new C2SQuestGetPackageQuestListReq.Serializer());
             Create(new C2SQuestGetTutorialQuestListRes.Serializer());
             Create(new C2SQuestSendLeaderQuestOrderConditionInfoReq.Serializer());
             Create(new C2SQuestSendLeaderWaitOrderQuestListReq.Serializer());
@@ -462,6 +477,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnTrainingGetPreparetionInfoToAdviceRes.Serializer());
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());
+
+            Create(new S2CQuestGetLightQuestListRes.Serializer());
             Create(new S2CQuestGetLotQuestListRes.Serializer());
             Create(new S2CQuestGetMainQuestListRes.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
