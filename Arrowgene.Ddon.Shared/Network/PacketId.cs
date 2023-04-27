@@ -1519,12 +1519,12 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_JOB_JOB_VALUE_SHOP_BUY_ITEM_REQ = new PacketId(33, 10, 1, "C2S_JOB_JOB_VALUE_SHOP_BUY_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_JOB_JOB_VALUE_SHOP_BUY_ITEM_RES = new PacketId(33, 10, 2, "S2C_JOB_JOB_VALUE_SHOP_BUY_ITEM_RES", ServerType.Game, PacketSource.Server); // プレイポイントショップ購入
         public static readonly PacketId S2C_JOB_CHARACTER_JOB_EXP_UP_NTC = new PacketId(33, 11, 16, "S2C_JOB_CHARACTER_JOB_EXP_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_11_16_NTC");
-        public static readonly PacketId S2C_JOB_33_12_16_NTC = new PacketId(33, 12, 16, "S2C_JOB_33_12_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_JOB_33_13_16_NTC = new PacketId(33, 13, 16, "S2C_JOB_33_13_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_JOB_33_14_16_NTC = new PacketId(33, 14, 16, "S2C_JOB_33_14_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_JOB_CHARACTER_JOB_LEVEL_UP_NTC = new PacketId(33, 12, 16, "S2C_JOB_CHARACTER_JOB_LEVEL_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_12_16_NTC");
+        public static readonly PacketId S2C_JOB_CHARACTER_JOB_LEVEL_UP_MEMBER_NTC = new PacketId(33, 13, 16, "S2C_JOB_CHARACTER_JOB_LEVEL_UP_MEMBER_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_13_16_NTC");
+        public static readonly PacketId S2C_JOB_CHARACTER_JOB_LEVEL_UP_OTHER_NTC = new PacketId(33, 14, 16, "S2C_JOB_CHARACTER_JOB_LEVEL_UP_OTHER_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_14_16_NTC");
         public static readonly PacketId S2C_JOB_PAWN_JOB_EXP_UP_NTC = new PacketId(33, 15, 16, "S2C_JOB_PAWN_JOB_EXP_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_15_16_NTC");
-        public static readonly PacketId S2C_JOB_33_16_16_NTC = new PacketId(33, 16, 16, "S2C_JOB_33_16_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_JOB_33_17_16_NTC = new PacketId(33, 17, 16, "S2C_JOB_33_17_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_JOB_PAWN_JOB_LEVEL_UP_NTC = new PacketId(33, 16, 16, "S2C_JOB_PAWN_JOB_LEVEL_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_16_16_NTC");
+        public static readonly PacketId S2C_JOB_PAWN_JOB_LEVEL_UP_MEMBER_NTC = new PacketId(33, 17, 16, "S2C_JOB_PAWN_JOB_LEVEL_UP_MEMBER_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_17_16_NTC");
         public static readonly PacketId S2C_JOB_33_18_16_NTC = new PacketId(33, 18, 16, "S2C_JOB_33_18_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_JOB_33_19_16_NTC = new PacketId(33, 19, 16, "S2C_JOB_33_19_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_JOB_33_20_16_NTC = new PacketId(33, 20, 16, "S2C_JOB_33_20_16_NTC", ServerType.Game, PacketSource.Server);
@@ -3425,12 +3425,12 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_JOB_JOB_VALUE_SHOP_BUY_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_JOB_JOB_VALUE_SHOP_BUY_ITEM_RES);
             AddPacketIdEntry(packetIds, S2C_JOB_CHARACTER_JOB_EXP_UP_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_12_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_13_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_14_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_CHARACTER_JOB_LEVEL_UP_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_CHARACTER_JOB_LEVEL_UP_MEMBER_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_CHARACTER_JOB_LEVEL_UP_OTHER_NTC);
             AddPacketIdEntry(packetIds, S2C_JOB_PAWN_JOB_EXP_UP_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_16_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_17_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_PAWN_JOB_LEVEL_UP_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_PAWN_JOB_LEVEL_UP_MEMBER_NTC);
             AddPacketIdEntry(packetIds, S2C_JOB_33_18_16_NTC);
             AddPacketIdEntry(packetIds, S2C_JOB_33_19_16_NTC);
             AddPacketIdEntry(packetIds, S2C_JOB_33_20_16_NTC);

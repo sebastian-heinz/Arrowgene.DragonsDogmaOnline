@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CJobCharacterJobLevelUpMemberNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_JOB_33_13_16_NTC;
+        public PacketId Id => PacketId.S2C_JOB_CHARACTER_JOB_LEVEL_UP_MEMBER_NTC;
 
         public S2CJobCharacterJobLevelUpMemberNtc()
         {
