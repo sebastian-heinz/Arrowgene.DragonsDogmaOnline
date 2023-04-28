@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 };
                 foreach(GameClient member in client.Party.Clients)
                 {
-                    if(member.Character.Id != member.Party.Leader.Character.Id)
+                    if(member.Character.Id != member.Party.Leader.Client.Character.Id)
                     {
                         // Disconnects you for some reason
                         //member.Send(ntc);

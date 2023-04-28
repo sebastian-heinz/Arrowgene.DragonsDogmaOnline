@@ -159,15 +159,13 @@ namespace Arrowgene.Ddon.GameServer
             S2CContextGetPartyMypawnContextNtc pcapPawn = EntitySerializer.Get<S2CContextGetPartyMypawnContextNtc>().Read(SelectedDump.data_Dump_Pawn35_3_16);
             Pawn pawn = new Pawn(character.Id);
             pawn.Id = myPawnCsvData.PawnId;
-            pawn.Character.Id = character.Id; // TODO
             pawn.CharacterId = character.Id; // pawns characterId, refers to the owner
-            pawn.Character.Server = AssetRepository.ServerList[0];
+            pawn.Server = AssetRepository.ServerList[0]; // TODO: is it possible for a pawn to be in a different server than its owner?
             
             pawn.HmType = myPawnCsvData.HmType;
             pawn.PawnType = myPawnCsvData.PawnType;
-            pawn.Character.FirstName = myPawnCsvData.Name;
-            //pawn.Character.LastName = Pawns dont have Last Name
-            pawn.Character.EditInfo = new CDataEditInfo()
+            pawn.Name = myPawnCsvData.Name;
+            pawn.EditInfo = new CDataEditInfo()
             {
                 Sex = myPawnCsvData.Sex,
                 Voice = myPawnCsvData.Voice,
@@ -241,10 +239,10 @@ namespace Arrowgene.Ddon.GameServer
                 Muscle = myPawnCsvData.Muscle,
                 MotionFilter = myPawnCsvData.MotionFilter
             };
-            pawn.Character.Job = myPawnCsvData.Job;
-            pawn.Character.HideEquipHead = myPawnCsvData.HideEquipHead;
-            pawn.Character.HideEquipLantern = myPawnCsvData.HideEquipLantern;
-            pawn.Character.StatusInfo = new CDataStatusInfo()
+            pawn.Job = myPawnCsvData.Job;
+            pawn.HideEquipHead = character.HideEquipHeadPawn;
+            pawn.HideEquipLantern = character.HideEquipLanternPawn;
+            pawn.StatusInfo = new CDataStatusInfo()
             {
                 HP = (uint) pcapPawn.Context.PlayerInfo.HP,
                 Stamina = (uint) pcapPawn.Context.PlayerInfo.Stamina,
@@ -260,7 +258,7 @@ namespace Arrowgene.Ddon.GameServer
                 GainMagicDefense = pcapPawn.Context.PlayerInfo.GainMagicDefense
             };
             //pawn.Character.PlayPointList
-            pawn.Character.CharacterJobDataList = new List<CDataCharacterJobData>(){ new CDataCharacterJobData {
+            pawn.CharacterJobDataList = new List<CDataCharacterJobData>(){ new CDataCharacterJobData {
                     Job = myPawnCsvData.Job,
                     //Exp = myPawnCsvData.Exp,
                     //JobPoint = myPawnCsvData.JobPoint,
@@ -306,7 +304,7 @@ namespace Arrowgene.Ddon.GameServer
                     MAtkDownResist = pcapPawn.Context.ResistInfo.MAtkDownResist,
                     MDefDownResist = pcapPawn.Context.ResistInfo.MDefDownResist,
             }};
-            pawn.Character.Equipment = new Equipment(new Dictionary<JobId, Dictionary<EquipType, List<Item>>>() 
+            pawn.Equipment = new Equipment(new Dictionary<JobId, Dictionary<EquipType, List<Item>>>() 
             { 
                 { 
                     myPawnCsvData.Job, 
@@ -870,7 +868,7 @@ namespace Arrowgene.Ddon.GameServer
                     }
                 }
             });
-            pawn.Character.CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>() { { myPawnCsvData.Job, new List<CDataEquipJobItem>() {
+            pawn.CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>() { { myPawnCsvData.Job, new List<CDataEquipJobItem>() {
                 new CDataEquipJobItem {
                     JobItemId = myPawnCsvData.JobItem1,
                     EquipSlotNo = myPawnCsvData.JobItemSlot1
@@ -880,7 +878,7 @@ namespace Arrowgene.Ddon.GameServer
                     EquipSlotNo = myPawnCsvData.JobItemSlot2
                 }
             }}};
-            pawn.Character.NormalSkills = new List<CDataNormalSkillParam>() {
+            pawn.NormalSkills = new List<CDataNormalSkillParam>() {
                 new CDataNormalSkillParam() {
                     Job = myPawnCsvData.Job,
                     SkillNo = myPawnCsvData.NormalSkill1,
@@ -900,7 +898,7 @@ namespace Arrowgene.Ddon.GameServer
                     PreSkillNo = 0
                 }
             };
-            pawn.Character.CustomSkills = new List<CustomSkill>() {
+            pawn.CustomSkills = new List<CustomSkill>() {
                 // Main Palette
                 new CustomSkill() {
                     Job = myPawnCsvData.Job,
@@ -927,7 +925,7 @@ namespace Arrowgene.Ddon.GameServer
                     SkillLv = myPawnCsvData.CustomSkillLv4
                 }
             };
-            pawn.Character.Abilities = new List<Ability>() {
+            pawn.Abilities = new List<Ability>() {
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
                     Job = 0,

@@ -8,16 +8,23 @@ public class PlayerPartyMember : PartyMember
 {
     public GameClient Client { get; set; }
 
+    public override CDataPartyMember GetCDataPartyMember()
+    {
+        CDataPartyMember obj = new CDataPartyMember();
+        GameStructure.CDataPartyMember(obj, this);
+        return obj;
+    }
+
     public override Packet GetS2CContextGetParty_ContextNtc()
     {
         CDataPartyPlayerContext partyPlayerContext = new CDataPartyPlayerContext();
-        partyPlayerContext.Base = new CDataContextBase(Character);
-        partyPlayerContext.PlayerInfo = new CDataContextPlayerInfo(Character);
-        partyPlayerContext.ResistInfo = new CDataContextResist(Character);
-        partyPlayerContext.EditInfo = Character.EditInfo;
+        GameStructure.CDataContextBase(partyPlayerContext.Base, Client.Character);
+        GameStructure.CDataContextPlayerInfo(partyPlayerContext.PlayerInfo, Client.Character);
+        GameStructure.CDataContextResist(partyPlayerContext.ResistInfo, Client.Character);
+        partyPlayerContext.EditInfo = Client.Character.EditInfo;
 
         S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc();
-        partyPlayerContextNtc.CharacterId = Character.Id;
+        partyPlayerContextNtc.CharacterId = Client.Character.Id;
         partyPlayerContextNtc.Context = partyPlayerContext;
         partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;
 

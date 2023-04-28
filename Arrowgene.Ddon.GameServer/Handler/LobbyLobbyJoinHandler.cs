@@ -62,7 +62,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     );
 
-                    S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc(otherClient.Character);
+                    S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
+                    GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, otherClient.Character);
                     alreadyPresentPlayerContextNtcs.Add(lobbyPlayerContextNtc);
                 }
             }
@@ -79,7 +80,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CUserListJoinNtc newUserNtc = new S2CUserListJoinNtc();
             newUserNtc.UserList = resp.LobbyMemberInfoList;
 
-            S2CContextGetLobbyPlayerContextNtc newUserContextNtc = new S2CContextGetLobbyPlayerContextNtc(client.Character);
+            S2CContextGetLobbyPlayerContextNtc newUserContextNtc = new S2CContextGetLobbyPlayerContextNtc();
+            GameStructure.S2CContextGetLobbyPlayerContextNtc(newUserContextNtc, client.Character);
             foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
                 if (otherClient != client)

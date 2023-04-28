@@ -9,20 +9,27 @@ public class PawnPartyMember : PartyMember
 {
     public Pawn Pawn { get; set; }
 
+    public override CDataPartyMember GetCDataPartyMember()
+    {
+        CDataPartyMember obj = new CDataPartyMember();
+        GameStructure.CDataPartyMember(obj, this);
+        return obj;
+    }
+
     public override Packet GetS2CContextGetParty_ContextNtc()
     {
         CDataPartyContextPawn partyContextPawn = new CDataPartyContextPawn();
-        partyContextPawn.Base = new CDataContextBase(Character);
+        GameStructure.CDataContextBase(partyContextPawn.Base, Pawn);
         partyContextPawn.Base.PawnId = PawnId;
-        partyContextPawn.Base.CharacterId = Character.Id;
+        partyContextPawn.Base.CharacterId = Pawn.CharacterId;
         partyContextPawn.Base.PawnType = Pawn.PawnType;
         partyContextPawn.Base.HmType = Pawn.HmType;
-        partyContextPawn.PlayerInfo = new CDataContextPlayerInfo(Character);
+        GameStructure.CDataContextPlayerInfo(partyContextPawn.PlayerInfo, Pawn);
         partyContextPawn.PawnReactionList = Pawn.PawnReactionList;
         partyContextPawn.Unk0 = new byte[64];
         partyContextPawn.SpSkillList = Pawn.SpSkillList;
-        partyContextPawn.ResistInfo = new CDataContextResist(Character);
-        partyContextPawn.EditInfo = Character.EditInfo;
+        GameStructure.CDataContextResist(partyContextPawn.ResistInfo, Pawn);
+        partyContextPawn.EditInfo = Pawn.EditInfo;
 
         S2CContextGetPartyMypawnContextNtc partyPlayerContextNtc = new S2CContextGetPartyMypawnContextNtc();
         partyPlayerContextNtc.PawnId = PawnId;

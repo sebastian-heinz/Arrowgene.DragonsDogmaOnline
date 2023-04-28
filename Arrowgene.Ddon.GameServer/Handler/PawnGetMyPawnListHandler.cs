@@ -23,12 +23,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 PawnList = client.Character.Pawns.Select((pawn, index) => new CDataPawnList() {
                     PawnId = (int) pawn.Id,
                     SlotNo = (uint) (index+1),
-                    Name = pawn.Character.FirstName,
-                    Sex = pawn.Character.EditInfo.Sex,
+                    Name = pawn.Name,
+                    Sex = pawn.EditInfo.Sex,
                     PawnListData = new CDataPawnListData() 
                     {
-                        Job = pawn.Character.Job,
-                        Level = pawn.Character.ActiveCharacterJobData.Lv
+                        Job = pawn.Job,
+                        Level = pawn.ActiveCharacterJobData.Lv
                         // TODO: CraftRank, PawnCraftSkillList, CommentSize, LatestReturnDate
                     }
                     // TODO: Unk0, Unk1, Unk2

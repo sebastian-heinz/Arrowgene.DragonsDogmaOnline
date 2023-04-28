@@ -3,12 +3,12 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public class Pawn
+    public class Pawn : CharacterCommon
     {
         public Pawn(uint ownerCharacterId)
         {
             CharacterId = ownerCharacterId;
-            Character = new Character();
+            Name = string.Empty;
             OnlineStatus = OnlineStatus.None;
             PawnReactionList = new List<CDataPawnReaction>();
             SpSkillList = new List<CDataSpSkill>();
@@ -23,8 +23,9 @@ namespace Arrowgene.Ddon.Shared.Model
         /// Id of character who this pawn belongs to
         /// </summary>
         public uint CharacterId { get; set; }
+
+        public string Name { get; set; }
         
-        public Character Character { get; set; }
         public byte HmType { get; set; }
         public byte PawnType { get; set; }
         public OnlineStatus OnlineStatus { get; set; }

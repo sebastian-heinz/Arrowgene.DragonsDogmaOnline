@@ -7,31 +7,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextBase
     {
-        public CDataContextBase(Character character)
-        {
-            CharacterId = character.Id;
-            FirstName = character.FirstName;
-            LastName = character.LastName;
-            StageNo = 200; // TODO: Replace with the actual stage the player is in. As it is right now it'll probably give issues when new players join outside of WDT
-            Sex = character.EditInfo.Sex;
-            HideEquipHead = character.HideEquipHead;
-            HideEquipLantern = character.HideEquipLantern;
-            ContextEquipPerformanceList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Performance);
-            ContextEquipVisualList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Visual);
-            ContextEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job]
-                .Select(x => new CDataContextEquipJobItemData(x)).ToList();
-            ContextNormalSkillList = character.NormalSkills
-                .Where(x => x.Job == character.Job)
-                .Select(x => new CDataContextNormalSkillData(x)).ToList();
-            ContextSkillList = character.CustomSkills
-                .Where(x => x.Job == character.Job)
-                .Select(x => x.AsCDataContextAcquirementData()).ToList();
-            ContextAbilityList = character.Abilities
-                .Where(x => x.Job == character.Job)
-                .Select(x => x.AsCDataContextAcquirementData()).ToList();
-            Unk0List=new List<CDataContextBaseUnk0>(); // TODO: Figure this one out
-        }
-
         public CDataContextBase()
         {
             FirstName=string.Empty;
