@@ -9,48 +9,48 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] EquippedCustomSkillFields = new string[]
         {
-            "character_id", "job", "slot_no", "skill_id", "skill_lv"
+            "character_common_id", "job", "slot_no", "skill_id", "skill_lv"
         };
 
         private readonly string SqlInsertEquippedCustomSkill = $"INSERT INTO `ddon_equipped_custom_skill` ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)});";
         private readonly string SqlReplaceEquippedCustomSkill = $"INSERT OR REPLACE INTO `ddon_equipped_custom_skill` ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)});";
-        private static readonly string SqlUpdateEquippedCustomSkill = $"UPDATE `ddon_equipped_custom_skill` SET {BuildQueryUpdate(EquippedCustomSkillFields)} WHERE `character_id`=@old_character_id AND `job`=@old_job AND `slot_no`=@old_slot_no;";
-        private static readonly string SqlSelectEquippedCustomSkills = $"SELECT {BuildQueryField(EquippedCustomSkillFields)} FROM `ddon_equipped_custom_skill` WHERE `character_id`=@character_id;";
-        private const string SqlDeleteEquippedCustomSkill = "DELETE FROM `ddon_equipped_custom_skill` WHERE `character_id`=@character_id AND `job`=@job AND `slot_no`=@slot_no;";
+        private static readonly string SqlUpdateEquippedCustomSkill = $"UPDATE `ddon_equipped_custom_skill` SET {BuildQueryUpdate(EquippedCustomSkillFields)} WHERE `character_common_id`=@old_character_common_id AND `job`=@old_job AND `slot_no`=@old_slot_no;";
+        private static readonly string SqlSelectEquippedCustomSkills = $"SELECT {BuildQueryField(EquippedCustomSkillFields)} FROM `ddon_equipped_custom_skill` WHERE `character_common_id`=@character_common_id;";
+        private const string SqlDeleteEquippedCustomSkill = "DELETE FROM `ddon_equipped_custom_skill` WHERE `character_common_id`=@character_common_id AND `job`=@job AND `slot_no`=@slot_no;";
 
-        public bool InsertEquippedCustomSkill(uint characterId, CustomSkill skill)
+        public bool InsertEquippedCustomSkill(uint commonId, CustomSkill skill)
         {
             return ExecuteNonQuery(SqlInsertEquippedCustomSkill, command =>
             {
-                AddParameter(command, characterId, skill);
+                AddParameter(command, commonId, skill);
             }) == 1;
         }
         
-        public bool ReplaceEquippedCustomSkill(uint characterId, CustomSkill skill)
+        public bool ReplaceEquippedCustomSkill(uint commonId, CustomSkill skill)
         {
             ExecuteNonQuery(SqlReplaceEquippedCustomSkill, command =>
             {
-                AddParameter(command, characterId, skill);
+                AddParameter(command, commonId, skill);
             });
             return true;
         }
 
-        public bool UpdateEquippedCustomSkill(uint characterId, JobId oldJob, byte oldSlotNo, CustomSkill updatedSkill)
+        public bool UpdateEquippedCustomSkill(uint commonId, JobId oldJob, byte oldSlotNo, CustomSkill updatedSkill)
         {
             return ExecuteNonQuery(SqlDeleteEquippedCustomSkill, command =>
             {
-                AddParameter(command, characterId, updatedSkill);
-                AddParameter(command, "@old_character_id", characterId);
+                AddParameter(command, commonId, updatedSkill);
+                AddParameter(command, "@old_character_common_id", commonId);
                 AddParameter(command, "@old_job", (byte) oldJob);
                 AddParameter(command, "@old_slot_no", oldSlotNo);
             }) == 1;
         }
 
-        public bool DeleteEquippedCustomSkill(uint characterId, JobId job, byte slotNo)
+        public bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo)
         {
             return ExecuteNonQuery(SqlDeleteEquippedCustomSkill, command =>
             {
-                AddParameter(command, "@character_id", characterId);
+                AddParameter(command, "@character_common_id", commonId);
                 AddParameter(command, "@job", (byte) job);
                 AddParameter(command, "@slot_no", slotNo);
             }) == 1;
@@ -66,9 +66,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return skill;
         }
 
-        private void AddParameter(TCom command, uint characterId, CustomSkill skill)
+        private void AddParameter(TCom command, uint commonId, CustomSkill skill)
         {
-            AddParameter(command, "character_id", characterId);
+            AddParameter(command, "character_common_id", commonId);
             AddParameter(command, "job", (byte) skill.Job);
             AddParameter(command, "slot_no", skill.SlotNo);
             AddParameter(command, "skill_id", skill.SkillId);

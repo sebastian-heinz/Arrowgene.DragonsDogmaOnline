@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Model
         /// <summary>
         /// Id of Pawn
         /// </summary>
-        public uint Id  { get; set; }
+        public uint PawnId  { get; set; }
         
         /// <summary>
         /// Id of character who this pawn belongs to
@@ -28,7 +28,6 @@ namespace Arrowgene.Ddon.Shared.Model
         
         public byte HmType { get; set; }
         public byte PawnType { get; set; }
-        public OnlineStatus OnlineStatus { get; set; }
 
         public List<CDataPawnReaction> PawnReactionList { get; set; }
         public List<CDataSpSkill> SpSkillList { get; set; }

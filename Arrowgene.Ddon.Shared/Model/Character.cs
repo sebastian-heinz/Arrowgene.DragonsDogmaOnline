@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public int AccountId { get; set; }
         public DateTime Created { get; set; }
-        public uint Id;
+        public uint CharacterId;
         public uint UserId;
         public uint Version;
         public string FirstName;
@@ -55,8 +55,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipHeadPawn;
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
-
-        public OnlineStatus OnlineStatus;
 
         public List<Pawn> Pawns { get; set; }
         

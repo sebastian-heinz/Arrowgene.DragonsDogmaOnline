@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CEquipUpdateEquipHideNtc ntc = new S2CEquipUpdateEquipHideNtc()
             {
-                CharacterId = client.Character.Id,
+                CharacterId = client.Character.CharacterId,
                 HideHead = client.Character.HideEquipHead,
                 HideLantern = client.Character.HideEquipLantern,
                 HidePawnHead = client.Character.HideEquipHeadPawn,

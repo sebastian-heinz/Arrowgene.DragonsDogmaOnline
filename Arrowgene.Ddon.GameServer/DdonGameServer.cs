@@ -157,9 +157,9 @@ namespace Arrowgene.Ddon.GameServer
         private Pawn LoadPawn(Character character, MyPawnCsv myPawnCsvData)
         {
             S2CContextGetPartyMypawnContextNtc pcapPawn = EntitySerializer.Get<S2CContextGetPartyMypawnContextNtc>().Read(SelectedDump.data_Dump_Pawn35_3_16);
-            Pawn pawn = new Pawn(character.Id);
-            pawn.Id = myPawnCsvData.PawnId;
-            pawn.CharacterId = character.Id; // pawns characterId, refers to the owner
+            Pawn pawn = new Pawn(character.CharacterId);
+            pawn.PawnId = myPawnCsvData.PawnId;
+            pawn.CharacterId = character.CharacterId; // pawns characterId, refers to the owner
             pawn.Server = AssetRepository.ServerList[0]; // TODO: is it possible for a pawn to be in a different server than its owner?
             
             pawn.HmType = myPawnCsvData.HmType;

@@ -17,9 +17,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCharacterChargeRevivePointReq> packet)
         {
             client.Character.StatusInfo.RevivePoint = 3;
-            Server.Database.UpdateCharacterStatusInfo(client.Character);
+            Server.Database.UpdateStatusInfo(client.Character);
 
-            Server.LastRevivalPowerRechargeTime[client.Character.Id] = DateTime.Now;
+            Server.LastRevivalPowerRechargeTime[client.Character.CharacterId] = DateTime.Now;
 
             client.Send(new S2CCharacterChargeRevivePointRes() {
                 RevivePoint = client.Character.StatusInfo.RevivePoint
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CCharacterUpdateRevivePointNtc ntc = new S2CCharacterUpdateRevivePointNtc()
             {
-                CharacterId = client.Character.Id,
+                CharacterId = client.Character.CharacterId,
                 RevivePoint = client.Character.StatusInfo.RevivePoint
             };
             client.Party.SendToAllExcept(ntc, client);

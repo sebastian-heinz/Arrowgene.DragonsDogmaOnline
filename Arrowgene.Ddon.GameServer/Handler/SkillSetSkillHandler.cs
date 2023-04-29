@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 skillSlot.SkillLv = packet.Structure.SkillLv;
             }
 
-            Database.ReplaceEquippedCustomSkill(client.Character.Id, skillSlot);
+            Database.ReplaceEquippedCustomSkill(client.Character.CommonId, skillSlot);
 
             client.Send(new S2CSkillSetSkillRes() {
                 Job = skillSlot.Job,
@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
                 {
-                    CharacterId = client.Character.Id,
+                    CharacterId = client.Character.CharacterId,
                     ContextAcquirementData = new CDataContextAcquirementData()
                     {
                         SlotNo = skillSlot.SlotNo,

@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
             Character character = new Character();
             character.AccountId = client.Account.Id;
-            character.Id = packet.Structure.CharacterInfo.CharacterId;
+            character.CharacterId = packet.Structure.CharacterInfo.CharacterId;
             character.UserId = packet.Structure.CharacterInfo.UserId;
             character.Version = packet.Structure.CharacterInfo.Version;
             character.FirstName = packet.Structure.CharacterInfo.FirstName;
@@ -1156,7 +1156,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
             
             L2CCreateCharacterDataNtc ntc = new L2CCreateCharacterDataNtc();
-            ntc.Result = character.Id; // Value will show up in DecideCharacterIdHandler as CharacterId
+            ntc.Result = character.CharacterId; // Value will show up in DecideCharacterIdHandler as CharacterId
             client.Send(ntc);
 
             // Sent to client once the player queue "WaitNum" above is 0,

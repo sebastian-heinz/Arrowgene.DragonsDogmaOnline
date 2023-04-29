@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Server.Database.UpdateCharacterBaseInfo(client.Character);
 
             S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
-            notice.CharacterId = client.Character.Id;
+            notice.CharacterId = client.Character.CharacterId;
             notice.CharacterJobData = client.Character.ActiveCharacterJobData;
             notice.EquipItemInfo = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Performance)
                 .Union(client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Visual))

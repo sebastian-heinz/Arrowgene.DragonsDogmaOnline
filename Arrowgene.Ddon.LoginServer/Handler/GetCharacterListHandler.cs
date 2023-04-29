@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             foreach (Character c in characters)
             {
                 CDataCharacterListInfo cResponse = new CDataCharacterListInfo();
-                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = (uint)c.Id;
+                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = (uint)c.CharacterId;
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = c.FirstName;
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = c.LastName;
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.Job;

@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.Shared.Model
             get { return CharacterJobDataList.Where(x => x.Job == Job).Single(); }
         }
 
+        public uint CommonId { get; set; }
         public CDataGameServerListInfo Server { get; set; }
         public CDataEditInfo EditInfo { get; set; }
         public CDataStatusInfo StatusInfo { get; set; }
@@ -40,6 +41,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataNormalSkillParam> NormalSkills { get; set; }
         public List<CustomSkill> CustomSkills { get; set;}
         public List<Ability> Abilities { get; set; }
-
+        public OnlineStatus OnlineStatus;
     }
 }

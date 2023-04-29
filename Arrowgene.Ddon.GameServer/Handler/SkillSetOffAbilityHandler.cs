@@ -52,7 +52,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            Database.ReplaceEquippedAbilities(client.Character.Id, client.Character.Job, newAbilities);
+            Database.ReplaceEquippedAbilities(client.Character.CommonId, client.Character.Job, newAbilities);
 
             client.Send(new S2CSkillSetOffAbilityRes() {
                 SlotNo = packet.Structure.SlotNo

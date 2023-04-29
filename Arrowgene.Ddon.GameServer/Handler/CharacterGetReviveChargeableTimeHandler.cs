@@ -20,9 +20,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CCharacterGetReviveChargeableTimeRes res = new S2CCharacterGetReviveChargeableTimeRes();
 
-            if(Server.LastRevivalPowerRechargeTime.ContainsKey(client.Character.Id))
+            if(Server.LastRevivalPowerRechargeTime.ContainsKey(client.Character.CharacterId))
             {
-                DateTime lastRechargeTime = Server.LastRevivalPowerRechargeTime[client.Character.Id];
+                DateTime lastRechargeTime = Server.LastRevivalPowerRechargeTime[client.Character.CharacterId];
                 DateTime nextRechargeTime = lastRechargeTime.Add(DdonGameServer.RevivalPowerRechargeTimeSpan);
                 TimeSpan remainTimeSpan = nextRechargeTime - DateTime.Now;
                 res.RemainTime = (uint) Math.Max(0, remainTimeSpan.TotalSeconds);

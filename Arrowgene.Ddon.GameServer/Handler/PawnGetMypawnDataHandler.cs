@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
                 Pawn pawn = client.Character.Pawns[req.Structure.SlotNo-1];
                 var res = new S2CPawnGetMypawnDataRes();
-                res.PawnId = pawn.Id;
+                res.PawnId = pawn.PawnId;
                 GameStructure.CDataPawnInfo(res.PawnInfo, pawn);
                 client.Send(res);
         }

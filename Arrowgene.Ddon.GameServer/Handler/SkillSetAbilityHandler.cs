@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             abilitySlot.AbilityId = packet.Structure.SkillId;
             abilitySlot.AbilityLv = packet.Structure.SkillLv;
 
-            Database.ReplaceEquippedAbility(client.Character.Id, abilitySlot);
+            Database.ReplaceEquippedAbility(client.Character.CommonId, abilitySlot);
 
             client.Send(new S2CSkillSetAbilityRes() {
                 SlotNo = abilitySlot.SlotNo,
@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Inform party members of the change
             client.Party.SendToAll(new S2CSkillAbilitySetNtc()
             {
-                CharacterId = client.Character.Id,
+                CharacterId = client.Character.CharacterId,
                 ContextAcquirementData = new CDataContextAcquirementData()
                 {
                     SlotNo = abilitySlot.SlotNo,

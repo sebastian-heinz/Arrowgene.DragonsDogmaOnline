@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Storage storage = client.Character.Storage.getStorage(packet.Structure.SortData.StorageType);
             storage.SortData = packet.Structure.SortData.Bin;
-            Server.Database.UpdateStorage(client.Character.Id, packet.Structure.SortData.StorageType, storage);
+            Server.Database.UpdateStorage(client.Character.CharacterId, packet.Structure.SortData.StorageType, storage);
 
             client.Send(new S2CItemSortSetItemSortDataBinRes());
         }

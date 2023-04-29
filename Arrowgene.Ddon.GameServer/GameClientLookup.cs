@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer
                     continue;
                 }
 
-                if (character.Id == characterId)
+                if (character.CharacterId == characterId)
                 {
                     return client;
                 }

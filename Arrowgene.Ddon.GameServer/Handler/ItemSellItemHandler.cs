@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).First();
                 characterWalletPoint.Value += amountToAdd; // TODO: Cap to maximum for that wallet
-                Database.UpdateWalletPoint(client.Character.Id, characterWalletPoint);
+                Database.UpdateWalletPoint(client.Character.CharacterId, characterWalletPoint);
 
                 CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
                 walletUpdate.Type = WalletType.Gold;
@@ -71,12 +71,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     // Delete item when ItemNum reaches 0 to free up the slot
                     client.Character.Storage.setStorageItem(null, 0, consumeItem.StorageType, itemSlot);
-                    Server.Database.DeleteStorageItem(client.Character.Id, consumeItem.StorageType, itemSlot);
+                    Server.Database.DeleteStorageItem(client.Character.CharacterId, consumeItem.StorageType, itemSlot);
                 }
                 else
                 {
                     client.Character.Storage.setStorageItem(item, newItemNum, consumeItem.StorageType, itemSlot);
-                    Server.Database.ReplaceStorageItem(client.Character.Id, consumeItem.StorageType, itemSlot, item.UId, newItemNum);
+                    Server.Database.ReplaceStorageItem(client.Character.CharacterId, consumeItem.StorageType, itemSlot, item.UId, newItemNum);
                 }
 
                 client.Send(ntc);

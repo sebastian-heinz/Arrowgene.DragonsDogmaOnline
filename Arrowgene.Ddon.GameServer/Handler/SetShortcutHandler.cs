@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CSetShortcutRes response = new S2CSetShortcutRes();
             foreach(CDataShortCut shortcut in request.Structure.ShortCutList)
             {
-                Database.ReplaceShortcut(client.Character.Id, shortcut);
+                Database.ReplaceShortcut(client.Character.CharacterId, shortcut);
             }
             client.Character.ShortCutList = request.Structure.ShortCutList;
             client.Send(response);

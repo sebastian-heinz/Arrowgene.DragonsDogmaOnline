@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach(GameClient otherClient in client.Party.Clients)
             {
                 S2CPartyRecvBinaryMsgAllNtc binaryMsgNtc = new S2CPartyRecvBinaryMsgAllNtc();
-                binaryMsgNtc.CharacterId = client.Character.Id;
+                binaryMsgNtc.CharacterId = client.Character.CharacterId;
                 binaryMsgNtc.Data = packet.Structure.Data;
                 binaryMsgNtc.OnlineStatus = client.Character.OnlineStatus;
                 otherClient.Send(binaryMsgNtc);

@@ -43,7 +43,7 @@ public static class GameStructure
         CDataCommunityCharacterBaseInfo cDataCommunityCharacterBaseInfo,
         Character character)
     {
-        cDataCommunityCharacterBaseInfo.CharacterId = character.Id;
+        cDataCommunityCharacterBaseInfo.CharacterId = character.CharacterId;
         CDataCharacterName(cDataCommunityCharacterBaseInfo.CharacterName, character);
         cDataCommunityCharacterBaseInfo.ClanName = ""; // TODO: Clan
     }
@@ -203,7 +203,7 @@ public static class GameStructure
 
     public static void CDataContextBase(CDataContextBase contextBase, Character character)
     {
-        contextBase.CharacterId = character.Id;
+        contextBase.CharacterId = character.CharacterId;
         contextBase.FirstName = character.FirstName;
         contextBase.LastName = character.LastName;
         CDataContextBase_common(contextBase, character);
@@ -335,7 +335,7 @@ public static class GameStructure
 
         public static void S2CContextGetLobbyPlayerContextNtc(S2CContextGetLobbyPlayerContextNtc ntc, Character character)
         {
-            ntc.CharacterId = character.Id;
+            ntc.CharacterId = character.CharacterId;
             GameStructure.CDataLobbyContextPlayer(ntc.Context, character);
         }
 }

@@ -24,7 +24,7 @@ public class PlayerPartyMember : PartyMember
         partyPlayerContext.EditInfo = Client.Character.EditInfo;
 
         S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc();
-        partyPlayerContextNtc.CharacterId = Client.Character.Id;
+        partyPlayerContextNtc.CharacterId = Client.Character.CharacterId;
         partyPlayerContextNtc.Context = partyPlayerContext;
         partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;
 

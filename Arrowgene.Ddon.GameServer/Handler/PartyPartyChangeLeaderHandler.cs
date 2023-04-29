@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
 
             Logger.Info(client,
-                $"changed party leader from {currentLeader.Client.Character.Id} to {newLeader.Value.Client.Character.Id} for PartyId:{party.Id}");
+                $"changed party leader from {currentLeader.Client.Character.CharacterId} to {newLeader.Value.Client.Character.CharacterId} for PartyId:{party.Id}");
         }
     }
 }

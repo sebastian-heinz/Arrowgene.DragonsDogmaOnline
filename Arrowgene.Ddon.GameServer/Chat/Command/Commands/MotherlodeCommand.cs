@@ -74,7 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             {
                 CDataWalletPoint walletPoint = client.Character.WalletPointList.Where(wp => wp.Type == walletType).Single();
                 walletPoint.Value += amount;
-                _server.Database.UpdateWalletPoint(client.Character.Id, walletPoint);
+                _server.Database.UpdateWalletPoint(client.Character.CharacterId, walletPoint);
                 
                 CDataUpdateWalletPoint updateWalletPoint = new CDataUpdateWalletPoint();
                 updateWalletPoint.Type = walletPoint.Type;

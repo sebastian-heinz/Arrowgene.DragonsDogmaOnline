@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateCharacterItemNtc.UpdateWalletList.Add(goldUpdateWalletPoint);
 
                 // PERSIST CHANGES IN DB
-                Server.Database.UpdateWalletPoint(partyClient.Character.Id, goldWallet);
+                Server.Database.UpdateWalletPoint(partyClient.Character.CharacterId, goldWallet);
 
                 if(enemyKilled.Enemy.IsBloodEnemy)
                 {
@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
 
                     // PERSIST CHANGES IN DB
-                    Server.Database.UpdateWalletPoint(partyClient.Character.Id, boWallet);
+                    Server.Database.UpdateWalletPoint(partyClient.Character.CharacterId, boWallet);
                 }
 
                 if(enemyKilled.Enemy.IsHighOrbEnemy)
@@ -93,7 +93,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
 
                     // PERSIST CHANGES IN DB
-                    Server.Database.UpdateWalletPoint(partyClient.Character.Id, hoWallet);
+                    Server.Database.UpdateWalletPoint(partyClient.Character.CharacterId, hoWallet);
                 }
 
                 if(updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)

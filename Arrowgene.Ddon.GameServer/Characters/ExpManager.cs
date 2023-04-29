@@ -1977,7 +1977,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     // Inform other party members
                     S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
-                    lvlMemberNtc.CharacterId = client.Character.Id;
+                    lvlMemberNtc.CharacterId = client.Character.CharacterId;
                     lvlMemberNtc.Job = client.Character.Job;
                     lvlMemberNtc.Level = activeCharacterJobData.Lv;
                     GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, client.Character);
@@ -1987,7 +1987,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Figure out if this is required, sending this information to ALL other server players
                     // even when it doesn't affect them seems like too much
                     S2CJobCharacterJobLevelUpOtherNtc lvlOtherNtc = new S2CJobCharacterJobLevelUpOtherNtc();
-                    lvlOtherNtc.CharacterId = client.Character.Id;
+                    lvlOtherNtc.CharacterId = client.Character.CharacterId;
                     lvlOtherNtc.Job = client.Character.Job;
                     lvlOtherNtc.Level = activeCharacterJobData.Lv;
                     foreach (GameClient otherClient in this._gameClientLookup.GetAll())
@@ -2000,7 +2000,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 // PERSIST CHANGES IN DB
-                this._database.UpdateCharacterJobData(client.Character.Id, activeCharacterJobData);
+                this._database.UpdateCharacterJobData(client.Character.CommonId, activeCharacterJobData);
             }
         }
 

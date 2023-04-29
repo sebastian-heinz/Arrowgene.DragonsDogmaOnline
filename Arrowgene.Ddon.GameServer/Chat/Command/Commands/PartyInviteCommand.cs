@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 
                 _inviteCharacterHandler.Handle(client, new StructurePacket<C2SPartyPartyInviteCharacterReq>(new C2SPartyPartyInviteCharacterReq()
                 {
-                    CharacterId = targetClient.Character.Id
+                    CharacterId = targetClient.Character.CharacterId
                 }));
 
                 responses.Add(ChatResponse.ServerMessage(client, "invite sent to "+targetClient.Character.FirstName+" "+targetClient.Character.LastName));

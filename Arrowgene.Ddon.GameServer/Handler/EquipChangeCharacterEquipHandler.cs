@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Notify other players
             S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
             {
-                CharacterId = client.Character.Id,
+                CharacterId = client.Character.CharacterId,
                 EquipItemList = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Performance),
                 VisualEquipItemList = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Visual)
                 // TODO: Unk0
@@ -88,10 +88,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Item item = client.Character.Equipment.getEquipItem(client.Character.Job, equipType, equipSlot);
 
             client.Character.Equipment.setEquipItem(null, client.Character.Job, equipType, equipSlot);
-            server.Database.DeleteEquipItem(client.Character.Id, client.Character.Job, equipType, equipSlot, item.UId);
+            server.Database.DeleteEquipItem(client.Character.CommonId, client.Character.Job, equipType, equipSlot, item.UId);
             
             ushort dstSlotNo = client.Character.Storage.addStorageItem(item, 1, storageType);
-            server.Database.InsertStorageItem(client.Character.Id, storageType, dstSlotNo, item.UId, 1);
+            server.Database.InsertStorageItem(client.Character.CharacterId, storageType, dstSlotNo, item.UId, 1);
 
             unequipUpdateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                 UpdateItemNum = 0,
@@ -134,11 +134,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             client.Character.Equipment.setEquipItem(item, client.Character.Job, (EquipType) equipType, equipSlot);
-            server.Database.InsertEquipItem(client.Character.Id, client.Character.Job, equipType, equipSlot, item.UId);
+            server.Database.InsertEquipItem(client.Character.CommonId, client.Character.Job, equipType, equipSlot, item.UId);
 
             // Find slot from which the item will be taken
             client.Character.Storage.setStorageItem(null, 0, storageType, tuple.slot);
-            server.Database.DeleteStorageItem(client.Character.Id, storageType, tuple.slot);
+            server.Database.DeleteStorageItem(client.Character.CharacterId, storageType, tuple.slot);
 
             equipUpdateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                 UpdateItemNum = 0, // TODO: ?
@@ -153,7 +153,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     PlusValue = item.PlusValue,
                     Bind = true,
                     EquipPoint = 0,
-                    EquipCharacterID = client.Character.Id,
+                    EquipCharacterID = client.Character.CharacterId,
                     EquipPawnID = 0,
                     WeaponCrestDataList = item.WeaponCrestDataList,
                     ArmorCrestDataList = item.ArmorCrestDataList,

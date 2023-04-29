@@ -29,14 +29,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 skillSlot.SkillId = packet.Structure.SkillId;
                 skillSlot.SkillLv = 1; // Must be 1 otherwise they do 0 damage
 
-                Database.ReplaceEquippedCustomSkill(client.Character.Id, skillSlot);
+                Database.ReplaceEquippedCustomSkill(client.Character.CommonId, skillSlot);
 
                 // Inform party members of the change
                 if(packet.Structure.Job == client.Character.Job)
                 {
                     client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
                     {
-                        CharacterId = client.Character.Id,
+                        CharacterId = client.Character.CharacterId,
                         ContextAcquirementData = new CDataContextAcquirementData()
                         {
                             SlotNo = skillSlot.SlotNo,
