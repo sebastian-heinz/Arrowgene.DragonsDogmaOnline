@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -84,6 +85,139 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return commonUpdateRowsAffected > NoRowsAffected;
         }
 
+
+        private void QueryCharacterCommonData(TCon conn, CharacterCommon common)
+        {
+            // Job data
+            ExecuteReader(conn, SqlSelectCharacterJobDataByCharacter,
+                command => { AddParameter(command, "@character_common_id", common.CommonId); }, reader =>
+                {
+                    while (reader.Read())
+                    {
+                        common.CharacterJobDataList.Add(ReadCharacterJobData(reader));
+                    }
+                });
+
+            // Equips
+            ExecuteReader(conn, SqlSelectEquipItemByCharacter,
+                command => { AddParameter(command, "@character_common_id", common.CommonId); }, 
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        string UId = GetString(reader, "item_uid");
+                        JobId job = (JobId) GetByte(reader, "job");
+                        EquipType equipType = (EquipType) GetByte(reader, "equip_type");
+                        byte equipSlot = GetByte(reader, "equip_slot");
+                        ExecuteReader(conn, SqlSelectItem,
+                            command2 => { AddParameter(command2, "@uid", UId); },
+                            reader2 => 
+                            {
+                                if(reader2.Read())
+                                {
+                                    Item item = ReadItem(reader2);
+                                    common.Equipment.setEquipItem(item, job, equipType, equipSlot);
+                                }
+                            });
+                    }
+                });            
+
+            // Job Items
+            ExecuteReader(conn, SqlSelectEquipJobItemByCharacter,
+                command => { AddParameter(command, "@character_common_id", common.CommonId); }, 
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        JobId job = (JobId) GetByte(reader, "job");
+                        CDataEquipJobItem equipJobItem = ReadEquipJobItem(reader);
+                        if(!common.CharacterEquipJobItemListDictionary.ContainsKey(job))
+                        {
+                            common.CharacterEquipJobItemListDictionary.Add(job, new List<CDataEquipJobItem>());
+                        }
+                        common.CharacterEquipJobItemListDictionary[job].Add(equipJobItem);
+                    }
+                });
+
+            // Normal Skills
+            ExecuteReader(conn, SqlSelectNormalSkillParam,
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        common.NormalSkills.Add(ReadNormalSkillParam(reader));
+                    }
+                });
+
+            // Custom Skills
+            ExecuteReader(conn, SqlSelectEquippedCustomSkills,
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        common.CustomSkills.Add(ReadCustomSkill(reader));
+                    }
+                });
+
+            // Abilities
+            ExecuteReader(conn, SqlSelectEquippedAbilities,
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        common.Abilities.Add(ReadAbility(reader));
+                    }
+                });
+        }
+
+        private void StoreCharacterCommonData(TCon conn, CharacterCommon common)
+        {
+            foreach(CDataCharacterJobData characterJobData in common.CharacterJobDataList)
+            {
+                ExecuteNonQuery(conn, SqlReplaceCharacterJobData, command =>
+                {
+                    AddParameter(command, common.CommonId, characterJobData);
+                });
+            }
+
+            foreach(KeyValuePair<JobId, List<CDataEquipJobItem>> characterEquipJobItemListByJob in common.CharacterEquipJobItemListDictionary)
+            {
+                foreach(CDataEquipJobItem equipJobItem in characterEquipJobItemListByJob.Value)
+                {
+                    ExecuteNonQuery(conn, SqlReplaceEquipJobItem, command =>
+                    {
+                        AddParameter(command, common.CommonId, characterEquipJobItemListByJob.Key, equipJobItem);
+                    });
+                }
+            }
+
+            foreach(CDataNormalSkillParam normalSkillParam in common.NormalSkills)
+            {
+                ExecuteNonQuery(conn, SqlReplaceNormalSkillParam, command =>
+                {
+                    AddParameter(command, common.CommonId, normalSkillParam);
+                });
+            }
+
+            foreach(CustomSkill skill in common.CustomSkills)
+            {
+                ExecuteNonQuery(conn, SqlReplaceEquippedCustomSkill, command =>
+                {
+                    AddParameter(command, common.CommonId, skill);
+                });
+            }
+
+            foreach(Ability ability in common.Abilities)
+            {
+                ExecuteNonQuery(conn, SqlReplaceEquippedAbility, command =>
+                {
+                    AddParameter(command, common.CommonId, ability);
+                });
+            }
+        }
 
         private void ReadAllCharacterCommonData(DbDataReader reader, CharacterCommon common)
         {

@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "LEFT JOIN `ddon_character_matching_profile` ON `ddon_character_matching_profile`.`character_id` = `ddon_character`.`character_id` "
             + "LEFT JOIN `ddon_character_arisen_profile` ON `ddon_character_arisen_profile`.`character_id` = `ddon_character`.`character_id` "
             + "WHERE `account_id` = @account_id";
-        private const string SqlDeleteCharacter = "DELETE FROM `ddon_character` WHERE `character_id`=@character_id;";
+        private const string SqlDeleteCharacter = "DELETE FROM `ddon_character_common` WHERE EXISTS (SELECT 1 FROM `ddon_character` WHERE `character_id`=@character_id);";
 
 
         private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO `ddon_character_matching_profile` ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
@@ -195,89 +195,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private void QueryCharacterData(TCon conn, Character character)
         {
-            // Job data
-            ExecuteReader(conn, SqlSelectCharacterJobDataByCharacter,
-                command => { AddParameter(command, "@character_common_id", character.CommonId); }, reader =>
-                {
-                    while (reader.Read())
-                    {
-                        character.CharacterJobDataList.Add(ReadCharacterJobData(reader));
-                    }
-                });
-
-            // Equips
-            ExecuteReader(conn, SqlSelectEquipItemByCharacter,
-                command => { AddParameter(command, "@character_common_id", character.CommonId); }, 
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        string UId = GetString(reader, "item_uid");
-                        JobId job = (JobId) GetByte(reader, "job");
-                        EquipType equipType = (EquipType) GetByte(reader, "equip_type");
-                        byte equipSlot = GetByte(reader, "equip_slot");
-                        ExecuteReader(conn, SqlSelectItem,
-                            command2 => { AddParameter(command2, "@uid", UId); },
-                            reader2 => 
-                            {
-                                if(reader2.Read())
-                                {
-                                    Item item = ReadItem(reader2);
-                                    character.Equipment.setEquipItem(item, job, equipType, equipSlot);
-                                }
-                            });
-                    }
-                });            
-
-            // Job Items
-            ExecuteReader(conn, SqlSelectEquipJobItemByCharacter,
-                command => { AddParameter(command, "@character_common_id", character.CommonId); }, 
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        JobId job = (JobId) GetByte(reader, "job");
-                        CDataEquipJobItem equipJobItem = ReadEquipJobItem(reader);
-                        if(!character.CharacterEquipJobItemListDictionary.ContainsKey(job))
-                        {
-                            character.CharacterEquipJobItemListDictionary.Add(job, new List<CDataEquipJobItem>());
-                        }
-                        character.CharacterEquipJobItemListDictionary[job].Add(equipJobItem);
-                    }
-                });
-
-            // Normal Skills
-            ExecuteReader(conn, SqlSelectNormalSkillParam,
-                command => { AddParameter(command, "@character_common_id", character.CommonId); },
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        character.NormalSkills.Add(ReadNormalSkillParam(reader));
-                    }
-                });
-
-            // Custom Skills
-            ExecuteReader(conn, SqlSelectEquippedCustomSkills,
-                command => { AddParameter(command, "@character_common_id", character.CommonId); },
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        character.CustomSkills.Add(ReadCustomSkill(reader));
-                    }
-                });
-
-            // Abilities
-            ExecuteReader(conn, SqlSelectEquippedAbilities,
-                command => { AddParameter(command, "@character_common_id", character.CommonId); },
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        character.Abilities.Add(ReadAbility(reader));
-                    }
-                });
+            QueryCharacterCommonData(conn, character);
 
             // Shortcuts
             ExecuteReader(conn, SqlSelectShortcuts,
@@ -351,48 +269,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private void StoreCharacterData(TCon conn, Character character)
         {
-            foreach(CDataCharacterJobData characterJobData in character.CharacterJobDataList)
-            {
-                ExecuteNonQuery(conn, SqlReplaceCharacterJobData, command =>
-                {
-                    AddParameter(command, character.CommonId, characterJobData);
-                });
-            }
-
-            foreach(KeyValuePair<JobId, List<CDataEquipJobItem>> characterEquipJobItemListByJob in character.CharacterEquipJobItemListDictionary)
-            {
-                foreach(CDataEquipJobItem equipJobItem in characterEquipJobItemListByJob.Value)
-                {
-                    ExecuteNonQuery(conn, SqlReplaceEquipJobItem, command =>
-                    {
-                        AddParameter(command, character.CommonId, characterEquipJobItemListByJob.Key, equipJobItem);
-                    });
-                }
-            }
-
-            foreach(CDataNormalSkillParam normalSkillParam in character.NormalSkills)
-            {
-                ExecuteNonQuery(conn, SqlReplaceNormalSkillParam, command =>
-                {
-                    AddParameter(command, character.CommonId, normalSkillParam);
-                });
-            }
-
-            foreach(CustomSkill skill in character.CustomSkills)
-            {
-                ExecuteNonQuery(conn, SqlReplaceEquippedCustomSkill, command =>
-                {
-                    AddParameter(command, character.CommonId, skill);
-                });
-            }
-
-            foreach(Ability ability in character.Abilities)
-            {
-                ExecuteNonQuery(conn, SqlReplaceEquippedAbility, command =>
-                {
-                    AddParameter(command, character.CommonId, ability);
-                });
-            }
+            StoreCharacterCommonData(conn, character);
 
             foreach(CDataShortCut shortcut in character.ShortCutList)
             {

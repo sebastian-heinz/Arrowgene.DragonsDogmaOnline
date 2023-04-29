@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS `ddon_character`
     `hide_equip_head_pawn`       BIT                               NOT NULL,
     `hide_equip_lantern_pawn`    BIT                               NOT NULL,
     `arisen_profile_share_range` TINYINT                           NOT NULL,
-    CONSTRAINT `fk_character_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`)
-    CONSTRAINT `fk_character_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+    CONSTRAINT `fk_character_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_character_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_pawn`
@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS `ddon_pawn`
     `name`                       TEXT                              NOT NULL,
     `hm_type`                    TINYINT                           NOT NULL,
     `pawn_type`                  TINYINT                           NOT NULL,
-    CONSTRAINT `fk_character_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`),
-    CONSTRAINT `fk_character_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`)
+    CONSTRAINT `fk_character_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE,
+    CONSTRAINT `fk_character_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_edit_info`
