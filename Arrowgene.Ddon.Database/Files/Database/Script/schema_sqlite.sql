@@ -372,7 +372,6 @@ CREATE TABLE IF NOT EXISTS `ddon_pawn_reaction`
 CREATE TABLE IF NOT EXISTS `ddon_sp_skill`
 (
     `pawn_id`       INTEGER NOT NULL,
-    `slot`          TINYINT NOT NULL,
     `sp_skill_id`   TINYINT NOT NULL,
     `sp_skill_lv`   TINYINT NOT NULL,
     PRIMARY KEY (`pawn_id`,`slot`),

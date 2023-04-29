@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -46,6 +47,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdatePawnReaction = $"UPDATE `ddon_pawn_reaction` SET {BuildQueryUpdate(CDataPawnReactionFields)} WHERE `pawn_id` = @pawn_id AND `reaction_type`=@reaction_type;";
         private static readonly string SqlSelectPawnReactionByPawnId = $"SELECT {BuildQueryField(CDataPawnReactionFields)} FROM `ddon_pawn_reaction` WHERE `pawn_id` = @pawn_id;";
         private const string SqlDeletePawnReaction = "DELETE FROM `ddon_pawn_reaction` WHERE `pawn_id`=@pawn_id AND `reaction_type`=@reaction_type;";
+
+        private readonly string SqlInsertSpSkill = $"INSERT INTO `ddon_sp_skill` ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
+        private readonly string SqlReplaceSpSkill = $"REPLACE INTO `ddon_sp_skill` ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
+        private static readonly string SqlUpdateSpSkill = $"UPDATE `ddon_sp_skill` SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE `pawn_id` = @pawn_id AND `slot`=@slot;";
+        private static readonly string SqlSelectSpSkillByPawnId = $"SELECT {BuildQueryField(CDataSpSkillFields)} FROM `ddon_sp_skill` WHERE `pawn_id` = @pawn_id;";
+        private const string SqlDeleteSpSkill = "DELETE FROM `ddon_sp_skill` WHERE `pawn_id`=@pawn_id AND `slot`=@slot;";
 
         public bool CreatePawn(Pawn pawn)
         {
@@ -114,14 +121,46 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             QueryCharacterCommonData(conn, pawn);
 
-            // TODO: ddon_pawn_reaction and ddon_sp_skill
+            ExecuteReader(conn, SqlSelectPawnReactionByPawnId,
+                command => { AddParameter(command, "@pawn_id", pawn.PawnId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        pawn.PawnReactionList.Add(ReadPawnReaction(reader));
+                    }
+                });
+
+            ExecuteReader(conn, SqlSelectSpSkillByPawnId,
+                command => { AddParameter(command, "@pawn_id", pawn.PawnId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        pawn.SpSkillList.Add(ReadSpSkill(reader));
+                    }
+                });
         }
 
         private void StorePawnData(TCon conn, Pawn pawn)
         {
             StoreCharacterCommonData(conn, pawn);
 
-            // TODO: ddon_pawn_reaction and ddon_sp_skill
+            foreach (CDataPawnReaction pawnReaction in pawn.PawnReactionList)
+            {
+                ExecuteNonQuery(conn, SqlReplacePawnReaction, command =>
+                {
+                    AddParameter(command, pawn.PawnId, pawnReaction);
+                });
+            }
+
+            foreach (CDataSpSkill spSkill in pawn.SpSkillList)
+            {
+                ExecuteNonQuery(conn, SqlReplaceSpSkill, command =>
+                {
+                    AddParameter(command, pawn.PawnId, spSkill);
+                });
+            }
         }
 
         private void CreateItems(TCon conn, Pawn pawn)
@@ -171,6 +210,36 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@name", pawn.Name);
             AddParameter(command, "@hm_type", pawn.HmType);
             AddParameter(command, "@pawn_type", pawn.PawnType);
+        }
+ 
+        private CDataPawnReaction ReadPawnReaction(DbDataReader reader)
+        {
+            CDataPawnReaction pawnReaction = new CDataPawnReaction();
+            pawnReaction.ReactionType = GetByte(reader, "reaction_type");
+            pawnReaction.MotionNo = GetUInt32(reader, "motion_no");
+            return pawnReaction;
+        }
+        
+        private void AddParameter(TCom command, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            AddParameter(command, "pawn_id", pawnId);
+            AddParameter(command, "reaction_type", pawnReaction.ReactionType);
+            AddParameter(command, "motion_no", pawnReaction.MotionNo);
+        }
+
+        private CDataSpSkill ReadSpSkill(DbDataReader reader)
+        {
+            CDataSpSkill spSkill = new CDataSpSkill();
+            spSkill.SpSkillId = GetByte(reader, "sp_skill_id");
+            spSkill.SpSkillLv = GetByte(reader, "sp_skill_lv");
+            return spSkill;
+        }
+        
+        private void AddParameter(TCom command, uint pawnId, CDataSpSkill spSkill)
+        {
+            AddParameter(command, "pawn_id", pawnId);
+            AddParameter(command, "sp_skill_id", spSkill.SpSkillId);
+            AddParameter(command, "sp_skill_lv", spSkill.SpSkillLv);
         }
     }
 }
