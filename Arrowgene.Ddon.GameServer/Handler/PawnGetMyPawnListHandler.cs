@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }).ToList(),
                 // TODO: PartnerInfo
                 PartnerInfo = new CDataPartnerPawnInfo() {
-                    PawnId = client.Character.Pawns[0]?.PawnId ?? 0,
+                    PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
                     Likability = 1,
                     Personality = 1
                 },

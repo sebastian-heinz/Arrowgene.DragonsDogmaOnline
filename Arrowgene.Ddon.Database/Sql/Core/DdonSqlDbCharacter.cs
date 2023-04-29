@@ -132,23 +132,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return characterUpdateRowsAffected > NoRowsAffected;
         }
 
-        public bool UpdateCharacter(Character character)
-        {
-            return ExecuteInTransaction(conn =>
-                {
-                    UpdateCharacterBaseInfo(character);
-
-                    UpdateEditInfo(character);
-                    UpdateStatusInfo(character);
-                    UpdateCharacterMatchingProfile(character);
-                    UpdateCharacterArisenProfile(character);
-
-                    StoreCharacterData(conn, character);
-
-                    // TODO: Synchronize equipment items and storage items
-                });
-        }
-
         public Character SelectCharacter(uint characterId)
         {
             Character character = null;

@@ -5,13 +5,17 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class Pawn : CharacterCommon
     {
-        public Pawn(uint ownerCharacterId)
+        public Pawn()
         {
-            CharacterId = ownerCharacterId;
             Name = string.Empty;
             OnlineStatus = OnlineStatus.None;
             PawnReactionList = new List<CDataPawnReaction>();
             SpSkillList = new List<CDataSpSkill>();
+        }
+        
+        public Pawn(uint ownerCharacterId):this()
+        {
+            CharacterId = ownerCharacterId;
         }
 
         /// <summary>

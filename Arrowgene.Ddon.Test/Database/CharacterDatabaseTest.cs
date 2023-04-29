@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Test.Database
             Assert.True(characters.Count == 1);
 
             c.FirstName = "NewName";
-            Assert.True(database.UpdateCharacter(c));
+            Assert.True(database.UpdateCharacterBaseInfo(c));
 
             characters = database.SelectCharactersByAccountId(account.Id);
             Assert.NotEmpty(characters);

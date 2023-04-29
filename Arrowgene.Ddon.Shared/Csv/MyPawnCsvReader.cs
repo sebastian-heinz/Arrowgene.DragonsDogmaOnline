@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             if (!double.TryParse(properties[6], out double posZ)) return null;
             if (!float.TryParse(properties[7], out float angleY)) return null;
             if (!byte.TryParse(properties[8], out byte ucColor)) return null;
-            string name = properties[9];
+            string name = properties[9].Trim();
             if (!ushort.TryParse(properties[10], out ushort countEquip)) return null;
             if (!ushort.TryParse(properties[11], out ushort primary)) return null;
             if (!ushort.TryParse(properties[12], out ushort secondary)) return null;
