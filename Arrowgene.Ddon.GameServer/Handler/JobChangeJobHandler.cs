@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Character.Job = packet.Structure.JobId;
 
-            Server.Database.UpdateCharacterBaseInfo(client.Character);
+            Server.Database.UpdateCharacterCommonBaseInfo(client.Character);
 
             S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
             notice.CharacterId = client.Character.CharacterId;

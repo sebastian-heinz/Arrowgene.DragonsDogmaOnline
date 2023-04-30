@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SEquipUpdateHideCharacterLanternReq> packet)
         {
             client.Character.HideEquipLantern = packet.Structure.Hide;
-            Database.UpdateCharacterBaseInfo(client.Character);
+            Database.UpdateCharacterCommonBaseInfo(client.Character);
             client.Send(new S2CEquipUpdateHideCharacterLanternRes()
             {
                 Hide = packet.Structure.Hide

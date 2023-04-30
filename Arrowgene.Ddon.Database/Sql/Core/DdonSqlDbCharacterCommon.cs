@@ -41,6 +41,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
 
         private readonly string SqlInsertCharacterCommon = $"INSERT INTO `ddon_character_common` ({BuildQueryField(CharacterCommonFields)}) VALUES ({BuildQueryInsert(CharacterCommonFields)});";
+        private readonly string SqlUpdateCharacterCommon = $"UPDATE `ddon_character_common` SET {BuildQueryUpdate(CharacterCommonFields)} WHERE `character_common_id` = @character_common_id;";
 
         private readonly string SqlInsertEditInfo = $"INSERT INTO `ddon_edit_info` ({BuildQueryField(CDataEditInfoFields)}) VALUES ({BuildQueryInsert(CDataEditInfoFields)});";
         private static readonly string SqlUpdateEditInfo = $"UPDATE `ddon_edit_info` SET {BuildQueryUpdate(CDataEditInfoFields)} WHERE `character_common_id` = @character_common_id;";
@@ -52,6 +53,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectStatusInfo = $"SELECT {BuildQueryField(CDataStatusInfoFields)} FROM `ddon_status_info` WHERE `character_common_id` = @character_common_id;";
         private const string SqlDeleteStatusInfo = "DELETE FROM `ddon_status_info` WHERE `character_common_id`=@character_common_id;";
 
+        public bool UpdateCharacterCommonBaseInfo(CharacterCommon common)
+        {
+            return UpdateCharacterCommonBaseInfo(null, common);
+        }
+
+        public bool UpdateCharacterCommonBaseInfo(TCon conn, CharacterCommon common)
+        {
+            int commonUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterCommon, command =>
+            {
+                AddParameter(command, "@character_common_id", common.CommonId);
+                AddParameter(command, common);
+            });
+
+            return commonUpdateRowsAffected > NoRowsAffected;
+        }
 
         public bool UpdateEditInfo(CharacterCommon common)
         {

@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SEquipUpdateHideCharacterHeadArmorReq> packet)
         {
             client.Character.HideEquipHead = packet.Structure.Hide;
-            Database.UpdateCharacterBaseInfo(client.Character);
+            Database.UpdateCharacterCommonBaseInfo(client.Character);
             client.Send(new S2CEquipUpdateHideCharacterHeadArmorRes()
             {
                 Hide = packet.Structure.Hide

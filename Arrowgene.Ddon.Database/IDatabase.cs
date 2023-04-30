@@ -24,23 +24,25 @@ namespace Arrowgene.Ddon.Database
         bool UpdateAccount(Account account);
         bool DeleteAccount(int accountId);
 
+        // CharacterCommon
+        public bool UpdateCharacterCommonBaseInfo(CharacterCommon common);
+        bool UpdateEditInfo(CharacterCommon character);
+        bool UpdateStatusInfo(CharacterCommon character);
+
         // Character
         bool CreateCharacter(Character character);
         Character SelectCharacter(uint characterId);
         List<Character> SelectCharactersByAccountId(int accountId);
         bool DeleteCharacter(uint characterId);
+        bool UpdateCharacterBaseInfo(Character character);
+        bool UpdateCharacterMatchingProfile(Character character);
+        bool UpdateCharacterArisenProfile(Character character);
 
         // Pawn
         bool CreatePawn(Pawn pawn);
         Pawn SelectPawn(uint pawnId);
         List<Pawn> SelectPawnsByCharacterId(uint characterId);
         bool DeletePawn(uint pawnId);
-
-        bool UpdateCharacterBaseInfo(Character character);
-        bool UpdateEditInfo(CharacterCommon character);
-        bool UpdateStatusInfo(CharacterCommon character);
-        bool UpdateCharacterMatchingProfile(Character character);
-        bool UpdateCharacterArisenProfile(Character character);
 
         // CharacterJobData
         bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData);

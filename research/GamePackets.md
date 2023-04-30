@@ -884,14 +884,14 @@
 |C2S_SKILL_GET_PAWN_ABILITY_COST_REQ|19|40|1|0x83d153||
 |S2C_SKILL_GET_PAWN_ABILITY_COST_RES|19|40|2|0x7fb160|ポーンアビリティセット用コストの取得に|
 |S2C_SKILL_19_41_16_NTC|19|41|16|0x7fa270|None|
-|S2C_SKILL_19_42_16_NTC|19|42|16|0x7fc2d0|None|
+|S2C_SKILL_19_42_16_NTC|19|42|16|0x7fc2d0|None| <-- uint byte
 |S2C_SKILL_CUSTOM_SKILL_SET_NTC|19|43|16|0x7fa730|None|
-|S2C_SKILL_19_44_16_NTC|19|44|16|0x7fa100|None| <-- uint byte uint byte (S2C_SKILL_ABILITY_SET_NTC? PAWN_?)
+|S2C_SKILL_19_44_16_NTC|19|44|16|0x7fa100|None| <-- uint byte uint byte (PAWN_?)
 |S2C_SKILL_19_45_16_NTC|19|45|16|0x7fc600|None| <-- uint byte
-|S2C_SKILL_19_46_16_NTC|19|46|16|0x7fc4f0|None| <-- uint byte uint byte (S2C_SKILL_ABILITY_SET_NTC? PAWN_?)
-|S2C_SKILL_19_47_16_NTC|19|47|16|0x7fc3f0|None| <-- uint byte uint byte (S2C_SKILL_ABILITY_SET_NTC? PAWN_?)
-|S2C_SKILL_19_48_16_NTC|19|48|16|0x7fd070|None| <-- uint CDataContextAcquirementData
-|S2C_SKILL_19_49_16_NTC|19|49|16|0x7fd260|None| <-- uint CDataContextAcquirementData
+|S2C_SKILL_ABILITY_SET_NTC|19|46|16|0x7fc4f0|None|
+|S2C_SKILL_19_47_16_NTC|19|47|16|0x7fc3f0|None| <-- uint byte uint byte (PAWN_?)
+|S2C_SKILL_19_48_16_NTC|19|48|16|0x7fd070|None| <-- uint List<CDataContextAcquirementData>
+|S2C_SKILL_19_49_16_NTC|19|49|16|0x7fd260|None| <-- uint List<CDataContextAcquirementData>
 |S2C_SKILL_19_50_16_NTC|19|50|16|0x7fabe0|None|
 
 
