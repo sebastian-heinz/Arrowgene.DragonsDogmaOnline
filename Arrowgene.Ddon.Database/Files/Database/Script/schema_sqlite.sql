@@ -374,7 +374,7 @@ CREATE TABLE IF NOT EXISTS `ddon_sp_skill`
     `pawn_id`       INTEGER NOT NULL,
     `sp_skill_id`   TINYINT NOT NULL,
     `sp_skill_lv`   TINYINT NOT NULL,
-    PRIMARY KEY (`pawn_id`,`slot`),
+    PRIMARY KEY (`pawn_id`),
     CONSTRAINT `fk_sp_skill_pawn_id` FOREIGN KEY (`pawn_id`) REFERENCES `ddon_pawn` (`pawn_id`) ON DELETE CASCADE
 );
 
