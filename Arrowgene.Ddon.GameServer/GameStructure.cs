@@ -187,18 +187,19 @@ public static class GameStructure
         cDataPawnInfo.SpSkillList = pawn.SpSkillList;
     }
 
-    public static void CDataCharacterLevelParam(CDataCharacterLevelParam characterLevelParam, Character character)
+    public static void CDataCharacterLevelParam(CDataCharacterLevelParam characterLevelParam, CharacterCommon character)
     {
-        characterLevelParam.Attack = character.ActiveCharacterJobData.Atk;
-        characterLevelParam.MagAttack = character.ActiveCharacterJobData.MAtk;
-        characterLevelParam.Defence = character.ActiveCharacterJobData.Def;
-        characterLevelParam.MagDefence = character.ActiveCharacterJobData.MDef;
-        characterLevelParam.Strength = character.ActiveCharacterJobData.Strength;
-        characterLevelParam.DownPower = character.ActiveCharacterJobData.DownPower;
-        characterLevelParam.ShakePower = character.ActiveCharacterJobData.ShakePower;
-        characterLevelParam.StunPower = character.ActiveCharacterJobData.StunPower;
-        characterLevelParam.Constitution = character.ActiveCharacterJobData.Consitution;
-        characterLevelParam.Guts = character.ActiveCharacterJobData.Guts;
+        CDataCharacterJobData activeCharacterJobData = character.ActiveCharacterJobData;
+        characterLevelParam.Attack = activeCharacterJobData.Atk;
+        characterLevelParam.MagAttack = activeCharacterJobData.MAtk;
+        characterLevelParam.Defence = activeCharacterJobData.Def;
+        characterLevelParam.MagDefence = activeCharacterJobData.MDef;
+        characterLevelParam.Strength = activeCharacterJobData.Strength;
+        characterLevelParam.DownPower = activeCharacterJobData.DownPower;
+        characterLevelParam.ShakePower = activeCharacterJobData.ShakePower;
+        characterLevelParam.StunPower = activeCharacterJobData.StunPower;
+        characterLevelParam.Constitution = activeCharacterJobData.Consitution;
+        characterLevelParam.Guts = activeCharacterJobData.Guts;
     }
 
     public static void CDataContextBase(CDataContextBase contextBase, Character character)

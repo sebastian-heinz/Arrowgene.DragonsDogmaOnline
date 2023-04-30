@@ -20,11 +20,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceEnemyKillHandler));
 
+        private readonly DdonGameServer _gameServer;
         private readonly EnemyManager _enemyManager;
         private readonly ExpManager _expManager;
 
         public InstanceEnemyKillHandler(DdonGameServer server) : base(server)
         {
+            _gameServer = server;
             _enemyManager = server.EnemyManager;
             _expManager = server.ExpManager;
         }
@@ -33,73 +35,88 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Send(new S2CInstanceEnemyKillRes());
 
-            // TODO: Exp and Lvl for the pawns in the party
-
-            foreach(GameClient partyClient in client.Party.Clients)
+            foreach(PartyMember member in client.Party.Members)
             {
                 EnemySpawn enemyKilled = this._enemyManager.GetAssets(packet.Structure.LayoutId, 0)[(int) packet.Structure.SetId];
+                
                 uint gainedExp = this.calculateExp(enemyKilled);
                 uint extraBonusExp = 0; // TODO: Figure out what this is for
-                this._expManager.AddExp(partyClient, gainedExp, extraBonusExp);
 
-                // Drop Gold and HOBO
-                S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-
-                // Drop Gold
-                uint gold = this.calculateGold(enemyKilled);
-
-                CDataWalletPoint goldWallet = partyClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
-                goldWallet.Value += gold;
-
-                CDataUpdateWalletPoint goldUpdateWalletPoint = new CDataUpdateWalletPoint();
-                goldUpdateWalletPoint.Type = WalletType.Gold;
-                goldUpdateWalletPoint.AddPoint = (int) gold;
-                goldUpdateWalletPoint.Value = goldWallet.Value;
-                updateCharacterItemNtc.UpdateWalletList.Add(goldUpdateWalletPoint);
-
-                // PERSIST CHANGES IN DB
-                Server.Database.UpdateWalletPoint(partyClient.Character.CharacterId, goldWallet);
-
-                if(enemyKilled.Enemy.IsBloodEnemy)
+                GameClient memberClient;
+                CharacterCommon memberCharacter;
+                if(member is PlayerPartyMember)
                 {
-                    // Drop BO
-                    uint bo = this.calculateBO(enemyKilled);
+                    memberClient = ((PlayerPartyMember) member).Client;
+                    memberCharacter = memberClient.Character;
+                    S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
-                    CDataWalletPoint boWallet = partyClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.BloodOrbs).Single();
-                    boWallet.Value += bo;
+                    // Drop Gold
+                    uint gold = this.calculateGold(enemyKilled);
+                    CDataWalletPoint goldWallet = memberClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
+                    goldWallet.Value += gold;
 
-                    CDataUpdateWalletPoint boUpdateWalletPoint = new CDataUpdateWalletPoint();
-                    boUpdateWalletPoint.Type = WalletType.BloodOrbs;
-                    boUpdateWalletPoint.AddPoint = (int) bo;
-                    boUpdateWalletPoint.Value = boWallet.Value;
-                    updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
+                    CDataUpdateWalletPoint goldUpdateWalletPoint = new CDataUpdateWalletPoint();
+                    goldUpdateWalletPoint.Type = WalletType.Gold;
+                    goldUpdateWalletPoint.AddPoint = (int) gold;
+                    goldUpdateWalletPoint.Value = goldWallet.Value;
+                    updateCharacterItemNtc.UpdateWalletList.Add(goldUpdateWalletPoint);
 
                     // PERSIST CHANGES IN DB
-                    Server.Database.UpdateWalletPoint(partyClient.Character.CharacterId, boWallet);
-                }
+                    Server.Database.UpdateWalletPoint(memberClient.Character.CharacterId, goldWallet);
 
-                if(enemyKilled.Enemy.IsHighOrbEnemy)
+                    if(enemyKilled.Enemy.IsBloodEnemy)
+                    {
+                        // Drop BO
+                        uint bo = this.calculateBO(enemyKilled);
+
+                        CDataWalletPoint boWallet = memberClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.BloodOrbs).Single();
+                        boWallet.Value += bo;
+
+                        CDataUpdateWalletPoint boUpdateWalletPoint = new CDataUpdateWalletPoint();
+                        boUpdateWalletPoint.Type = WalletType.BloodOrbs;
+                        boUpdateWalletPoint.AddPoint = (int) bo;
+                        boUpdateWalletPoint.Value = boWallet.Value;
+                        updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
+
+                        // PERSIST CHANGES IN DB
+                        Server.Database.UpdateWalletPoint(memberClient.Character.CharacterId, boWallet);
+                    }
+
+                    if(enemyKilled.Enemy.IsHighOrbEnemy)
+                    {
+                        // Drop HO
+                        uint ho = this.calculateHO(enemyKilled);
+
+                        CDataWalletPoint hoWallet = memberClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.HighOrbs).Single();
+                        hoWallet.Value += ho;
+
+                        CDataUpdateWalletPoint hoUpdateWalletPoint = new CDataUpdateWalletPoint();
+                        hoUpdateWalletPoint.Type = WalletType.HighOrbs;
+                        hoUpdateWalletPoint.AddPoint = (int) ho;
+                        hoUpdateWalletPoint.Value = hoWallet.Value;
+                        updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
+
+                        // PERSIST CHANGES IN DB
+                        Server.Database.UpdateWalletPoint(memberClient.Character.CharacterId, hoWallet);
+                    }
+
+                    if(updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
+                    {
+                        memberClient.Send(updateCharacterItemNtc);
+                    }
+                }
+                else if(member is PawnPartyMember)
                 {
-                    // Drop HO
-                    uint ho = this.calculateHO(enemyKilled);
-
-                    CDataWalletPoint hoWallet = partyClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.HighOrbs).Single();
-                    hoWallet.Value += ho;
-
-                    CDataUpdateWalletPoint hoUpdateWalletPoint = new CDataUpdateWalletPoint();
-                    hoUpdateWalletPoint.Type = WalletType.HighOrbs;
-                    hoUpdateWalletPoint.AddPoint = (int) ho;
-                    hoUpdateWalletPoint.Value = hoWallet.Value;
-                    updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
-
-                    // PERSIST CHANGES IN DB
-                    Server.Database.UpdateWalletPoint(partyClient.Character.CharacterId, hoWallet);
+                    Pawn pawn = ((PawnPartyMember) member).Pawn;
+                    memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
+                    memberCharacter = pawn;
                 }
-
-                if(updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
+                else
                 {
-                    partyClient.Send(updateCharacterItemNtc);
+                    throw new Exception("Unknown member type");
                 }
+
+                this._expManager.AddExp(memberClient, memberCharacter, gainedExp, extraBonusExp);
             }
         }
 

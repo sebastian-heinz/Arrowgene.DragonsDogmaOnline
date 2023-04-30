@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CJobPawnJobLevelUpNtc()
         {
-            
+            CharacterLevelParam = new CDataCharacterLevelParam();
         }
 
         public uint PawnId { get; set; }
