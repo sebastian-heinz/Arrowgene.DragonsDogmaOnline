@@ -935,8 +935,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             })).ToDictionary(x => x.Item1, x => x.Item2);
             character.HideEquipHead = ActiveJobPreset.DisplayHelmet;
             character.HideEquipLantern = ActiveJobPreset.DisplayLantern;
-            character.HideEquipHeadPawn = Server.AssetRepository.MyPawnAsset[0].HideEquipHead;
-            character.HideEquipLanternPawn = Server.AssetRepository.MyPawnAsset[0].HideEquipLantern;
+            character.HideEquipHeadPawn = packet.Structure.CharacterInfo.HideEquipHeadPawn;
+            character.HideEquipLanternPawn = packet.Structure.CharacterInfo.HideEquipLanternPawn;
             // TODO: Load from Arisen.csv or something
             character.NormalSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CDataNormalSkillParam>() {
                     new CDataNormalSkillParam() {
