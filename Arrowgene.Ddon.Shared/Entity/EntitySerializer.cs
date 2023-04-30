@@ -308,6 +308,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSkillGetSetSkillListReq.Serializer());
             Create(new C2SSkillSetAbilityReq.Serializer());
             Create(new C2SSkillSetOffAbilityReq.Serializer());
+            Create(new C2SSkillSetOffPawnSkillReq.Serializer());
             Create(new C2SSkillSetOffSkillReq.Serializer());
             Create(new C2SSkillSetPawnSkillReq.Serializer());
             Create(new C2SSkillSetSkillReq.Serializer());
@@ -518,6 +519,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillPawnCustomSkillSetNtc.Serializer());
             Create(new S2CSkillSetAbilityRes.Serializer());
             Create(new S2CSkillSetOffAbilityRes.Serializer());
+            Create(new S2CSkillSetOffPawnSkillRes.Serializer());
             Create(new S2CSkillSetOffSkillRes.Serializer());
             Create(new S2CSkillSetPawnSkillRes.Serializer());
             Create(new S2CSkillSetSkillRes.Serializer());

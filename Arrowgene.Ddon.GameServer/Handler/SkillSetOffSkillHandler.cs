@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -10,24 +11,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillSetOffSkillHandler));
 
+        private readonly JobManager jobManager;
+
         public SkillSetOffSkillHandler(DdonGameServer server) : base(server)
         {
+            jobManager = server.JobManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetOffSkillReq> packet)
         {
-            client.Character.CustomSkills.RemoveAll(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo);
-
-            // TODO: Error handling
-            Database.DeleteEquippedCustomSkill(client.Character.CommonId, packet.Structure.Job, packet.Structure.SlotNo);
+            jobManager.RemoveSkill(Server.Database, client.Character, packet.Structure.Job, packet.Structure.SlotNo);
 
             client.Send(new S2CSkillSetOffSkillRes() {
                 Job = packet.Structure.Job,
                 SlotNo = packet.Structure.SlotNo
             });
-
-            // I haven't found a packet to notify this to other players
-            // From what I tested it doesn't seem to be necessary
         }
     }
 }

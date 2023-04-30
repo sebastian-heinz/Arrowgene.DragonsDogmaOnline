@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetSkillReq> packet)
         {
-            CustomSkill skillSlot = gameServer.SkillManager.SetSkill(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
+            CustomSkill skillSlot = gameServer.JobManager.SetSkill(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
             client.Send(new S2CSkillSetSkillRes() {
                 Job = skillSlot.Job,
                 SlotNo = skillSlot.SlotNo,

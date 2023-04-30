@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetPawnSkillReq> packet)
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            CustomSkill skillSlot = gameServer.SkillManager.SetSkill(Server.Database, client, pawn, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
+            CustomSkill skillSlot = gameServer.JobManager.SetSkill(Server.Database, client, pawn, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
             client.Send(new S2CSkillSetPawnSkillRes() {
                 PawnId = pawn.PawnId,
                 Job = skillSlot.Job,

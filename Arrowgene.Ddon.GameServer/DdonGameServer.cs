@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer
             GatheringItemManager = new GatheringItemManager(assetRepository, database);
             PartyManager = new PartyManager();
             ExpManager = new ExpManager(database, ClientLookup);
-            SkillManager = new SkillManager();
+            JobManager = new JobManager();
             ShopManager = new ShopManager(assetRepository, database);
 
             S2CStageGetStageListRes stageListPacket =
@@ -84,7 +84,7 @@ namespace Arrowgene.Ddon.GameServer
         public PartyManager PartyManager { get; }
         public ExpManager ExpManager { get; }
         public ShopManager ShopManager { get; }
-        public SkillManager SkillManager { get; }
+        public JobManager JobManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
@@ -357,6 +357,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new SkillGetSetSkillListHandler(this));
             AddHandler(new SkillSetAbilityHandler(this));
             AddHandler(new SkillSetOffAbilityHandler(this));
+            AddHandler(new SkillSetOffPawnSkillHandler(this));
             AddHandler(new SkillSetOffSkillHandler(this));
             AddHandler(new SkillSetPawnSkillHandler(this));
             AddHandler(new SkillSetSkillHandler(this));
