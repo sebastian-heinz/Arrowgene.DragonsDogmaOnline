@@ -16,18 +16,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CSkillAbilitySetNtc obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);
-                WriteByte(buffer, obj.ContextAcquirementData.SlotNo);
-                WriteUInt32(buffer, obj.ContextAcquirementData.AcquirementNo);
-                WriteByte(buffer, obj.ContextAcquirementData.AcquirementLv);
+                WriteEntity<CDataContextAcquirementData>(buffer, obj.ContextAcquirementData);
             }
 
             public override S2CSkillAbilitySetNtc Read(IBuffer buffer)
             {
                 S2CSkillAbilitySetNtc obj = new S2CSkillAbilitySetNtc();
                 obj.CharacterId = ReadUInt32(buffer);
-                obj.ContextAcquirementData.SlotNo = ReadByte(buffer);
-                obj.ContextAcquirementData.AcquirementNo = ReadUInt32(buffer);
-                obj.ContextAcquirementData.AcquirementLv = ReadByte(buffer);
+                obj.ContextAcquirementData = ReadEntity<CDataContextAcquirementData>(buffer);
                 return obj;
             }
         }

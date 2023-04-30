@@ -1,4 +1,5 @@
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -13,8 +14,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillSetAbilityHandler));
 
+        private readonly JobManager jobManager;
+
         public SkillSetAbilityHandler(DdonGameServer server) : base(server)
         {
+            jobManager = server.JobManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetAbilityReq> packet)
@@ -23,45 +27,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 Logger.Error(client, $"Requesting to set an ability to slot 0\n{client.Character.Abilities}");
             }
-            // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
             
-            Ability abilitySlot = client.Character.Abilities
-                .Where(ability => ability.EquippedToJob == client.Character.Job && ability.SlotNo == packet.Structure.SlotNo)
-                .FirstOrDefault();
-            
-            if(abilitySlot == null)
-            {
-                abilitySlot = new Ability()
-                {
-                    EquippedToJob = client.Character.Job,
-                    Job = packet.Structure.Job,
-                    SlotNo = packet.Structure.SlotNo,
-                };
-                client.Character.Abilities.Add(abilitySlot);
-            }
-            
-            abilitySlot.Job = packet.Structure.Job;
-            abilitySlot.AbilityId = packet.Structure.SkillId;
-            abilitySlot.AbilityLv = packet.Structure.SkillLv;
-
-            Database.ReplaceEquippedAbility(client.Character.CommonId, abilitySlot);
+            Ability abilitySlot = jobManager.SetAbility(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
 
             client.Send(new S2CSkillSetAbilityRes() {
                 SlotNo = abilitySlot.SlotNo,
                 AbilityId = abilitySlot.AbilityId,
                 AbilityLv = abilitySlot.AbilityLv
-            });
-
-            // Inform party members of the change
-            client.Party.SendToAll(new S2CSkillAbilitySetNtc()
-            {
-                CharacterId = client.Character.CharacterId,
-                ContextAcquirementData = new CDataContextAcquirementData()
-                {
-                    SlotNo = abilitySlot.SlotNo,
-                    AcquirementNo = abilitySlot.AbilityId,
-                    AcquirementLv = abilitySlot.AbilityLv
-                }
             });
         }
     }

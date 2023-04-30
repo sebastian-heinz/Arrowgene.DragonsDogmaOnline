@@ -15,11 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillChangeExSkillHandler));
 
-        private readonly SkillManager skillManager;
+        private readonly JobManager jobManager;
 
         public SkillChangeExSkillHandler(DdonGameServer server) : base(server)
         {
-            skillManager = server.SkillManager;
+            jobManager = server.JobManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillChangeExSkillReq> packet)
@@ -34,29 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 character = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
             }
 
-            IEnumerable<CustomSkill> skillSlots = client.Character.CustomSkills
-                .Where(skill => skill.Job == packet.Structure.Job && GetBaseSkillId(skill.SkillId) == GetBaseSkillId(packet.Structure.SkillId));
-            foreach (CustomSkill skillSlot in skillSlots)
-            {
-                skillSlot.SkillId = packet.Structure.SkillId;
-                skillSlot.SkillLv = 1; // Must be 1 otherwise they do 0 damage
-                skillManager.SetSkill(Server.Database, client, character, skillSlot.Job, skillSlot.SlotNo, skillSlot.SkillId, skillSlot.SkillLv);
-
-                // Inform party members of the change
-                if(packet.Structure.Job == client.Character.Job)
-                {
-                    client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
-                    {
-                        CharacterId = client.Character.CharacterId,
-                        ContextAcquirementData = new CDataContextAcquirementData()
-                        {
-                            SlotNo = skillSlot.SlotNo,
-                            AcquirementNo = skillSlot.SkillId,
-                            AcquirementLv = skillSlot.SkillLv
-                        }
-                    });
-                }
-            }
+            IEnumerable<CustomSkill> skillSlots = jobManager.ChangeExSkill(Server.Database, client, character, packet.Structure.Job, packet.Structure.SkillId);
 
             client.Send(new S2CSkillChangeExSkillRes() {
                 Job = packet.Structure.Job,
@@ -65,11 +43,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 PawnId = packet.Structure.PawnId,
                 SlotsToUpdate = skillSlots.Select(skill => new CDataCommonU8(skill.SlotNo)).ToList()
             });
-        }
-
-        private uint GetBaseSkillId(uint skillId)
-        {
-            return skillId % 100;
         }
     }
 }

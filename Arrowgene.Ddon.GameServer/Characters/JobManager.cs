@@ -95,6 +95,99 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // From what I tested it doesn't seem to be necessary
         }
 
+        public Ability SetAbility(IDatabase database, GameClient client, CharacterCommon character, JobId abilityJob, byte slotNo, uint abilityId, byte abilityLv)
+        {
+            // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
+            
+            Ability abilitySlot = character.Abilities
+                .Where(ability => ability.EquippedToJob == character.Job && ability.SlotNo == slotNo)
+                .FirstOrDefault();
+            
+            if(abilitySlot == null)
+            {
+                abilitySlot = new Ability()
+                {
+                    EquippedToJob = character.Job,
+                    Job = abilityJob,
+                    SlotNo = slotNo,
+                };
+                character.Abilities.Add(abilitySlot);
+            }
+            
+            abilitySlot.Job = abilityJob;
+            abilitySlot.AbilityId = abilityId;
+            abilitySlot.AbilityLv = abilityLv;
+
+            database.ReplaceEquippedAbility(character.CommonId, abilitySlot);
+
+            // Inform party members of the change
+            if(character is Character)
+            {
+                client.Party.SendToAll(new S2CSkillAbilitySetNtc()
+                {
+                    CharacterId = ((Character) character).CharacterId,
+                    ContextAcquirementData = new CDataContextAcquirementData()
+                    {
+                        SlotNo = abilitySlot.SlotNo,
+                        AcquirementNo = abilitySlot.AbilityId,
+                        AcquirementLv = abilitySlot.AbilityLv
+                    }
+                });
+            }
+            else if(character is Pawn)
+            {
+                client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
+                {
+                    PawnId = ((Pawn) character).PawnId,
+                    ContextAcquirementData = new CDataContextAcquirementData()
+                    {
+                        SlotNo = abilitySlot.SlotNo,
+                        AcquirementNo = abilitySlot.AbilityId,
+                        AcquirementLv = abilitySlot.AbilityLv
+                    }
+                });
+            }
+
+            return abilitySlot;
+        }
+
+        public void RemoveAbility(IDatabase database, CharacterCommon character, byte slotNo)
+        {
+            // TODO: Performance
+            List<Ability> newAbilities = new List<Ability>();
+            lock(character.Abilities)
+            {
+                byte removedAbilitySlotNo = Byte.MaxValue;
+                for(int i=0; i<character.Abilities.Count; i++)
+                {
+                    Ability ability = character.Abilities[i];
+                    if(ability.EquippedToJob == character.Job && ability.SlotNo == slotNo)
+                    {
+                        character.Abilities.RemoveAt(i);
+                        removedAbilitySlotNo = ability.SlotNo;
+                        break;
+                    }
+                }
+
+                for(int i=0; i<character.Abilities.Count; i++)
+                {
+                    Ability ability = character.Abilities[i];
+                    if(ability.EquippedToJob == character.Job)
+                    {
+                        if(ability.SlotNo > removedAbilitySlotNo)
+                        {
+                            ability.SlotNo--;
+                        }
+                        newAbilities.Add(ability);
+                    }
+                }
+            }
+
+            database.ReplaceEquippedAbilities(character.CommonId, character.Job, newAbilities);
+
+            // Same as skills, i haven't found an Ability off NTC. It may not be required
+        }
+
         private uint GetBaseSkillId(uint skillId)
         {
             return skillId % 100;
