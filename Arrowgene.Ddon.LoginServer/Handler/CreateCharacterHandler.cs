@@ -1953,70 +1953,70 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             pawn.Abilities = new List<Ability>() {
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob1,
                     SlotNo = 1,
                     AbilityId = myPawnCsvData.AbilityId1,
                     AbilityLv = myPawnCsvData.AbilityLv1
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob2,
                     SlotNo = 2,
                     AbilityId = myPawnCsvData.AbilityId2,
                     AbilityLv = myPawnCsvData.AbilityLv2
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob3,
                     SlotNo = 3,
                     AbilityId = myPawnCsvData.AbilityId3,
                     AbilityLv = myPawnCsvData.AbilityLv3
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob4,
                     SlotNo = 4,
                     AbilityId = myPawnCsvData.AbilityId4,
                     AbilityLv = myPawnCsvData.AbilityLv4
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob5,
                     SlotNo = 5,
                     AbilityId = myPawnCsvData.AbilityId5,
                     AbilityLv = myPawnCsvData.AbilityLv5
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob6,
                     SlotNo = 6,
                     AbilityId = myPawnCsvData.AbilityId6,
                     AbilityLv = myPawnCsvData.AbilityLv6
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob7,
                     SlotNo = 7,
                     AbilityId = myPawnCsvData.AbilityId7,
                     AbilityLv = myPawnCsvData.AbilityLv7
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob8,
                     SlotNo = 8,
                     AbilityId = myPawnCsvData.AbilityId8,
                     AbilityLv = myPawnCsvData.AbilityLv8
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob9,
                     SlotNo = 9,
                     AbilityId = myPawnCsvData.AbilityId9,
                     AbilityLv = myPawnCsvData.AbilityLv9
                 },
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
-                    Job = 0,
+                    Job = (JobId) myPawnCsvData.AbilityJob10,
                     SlotNo = 10,
                     AbilityId = myPawnCsvData.AbilityId10,
                     AbilityLv = myPawnCsvData.AbilityLv10

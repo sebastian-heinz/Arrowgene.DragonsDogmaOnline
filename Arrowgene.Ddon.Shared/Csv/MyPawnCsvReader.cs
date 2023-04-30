@@ -79,34 +79,34 @@ namespace Arrowgene.Ddon.Shared.Csv
             if (!uint.TryParse(properties[68], out uint customSkillId4)) return null;
             if (!byte.TryParse(properties[69], out byte customSkillLv4)) return null;
             if (!uint.TryParse(properties[70], out uint countAbility)) return null;
-            if (!byte.TryParse(properties[71], out byte abilitySlot1)) return null;
+            if (!byte.TryParse(properties[71], out byte abilityJob1)) return null;
             if (!uint.TryParse(properties[72], out uint abilityId1)) return null;
             if (!byte.TryParse(properties[73], out byte abilityLv1)) return null;
-            if (!byte.TryParse(properties[74], out byte abilitySlot2)) return null;
+            if (!byte.TryParse(properties[74], out byte abilityJob2)) return null;
             if (!uint.TryParse(properties[75], out uint abilityId2)) return null;
             if (!byte.TryParse(properties[76], out byte abilityLv2)) return null;
-            if (!byte.TryParse(properties[77], out byte abilitySlot3)) return null;
+            if (!byte.TryParse(properties[77], out byte abilityJob3)) return null;
             if (!uint.TryParse(properties[78], out uint abilityId3)) return null;
             if (!byte.TryParse(properties[79], out byte abilityLv3)) return null;
-            if (!byte.TryParse(properties[80], out byte abilitySlot4)) return null;
+            if (!byte.TryParse(properties[80], out byte abilityJob4)) return null;
             if (!uint.TryParse(properties[81], out uint abilityId4)) return null;
             if (!byte.TryParse(properties[82], out byte abilityLv4)) return null;
-            if (!byte.TryParse(properties[83], out byte abilitySlot5)) return null;
+            if (!byte.TryParse(properties[83], out byte abilityJob5)) return null;
             if (!uint.TryParse(properties[84], out uint abilityId5)) return null;
             if (!byte.TryParse(properties[85], out byte abilityLv5)) return null;
-            if (!byte.TryParse(properties[86], out byte abilitySlot6)) return null;
+            if (!byte.TryParse(properties[86], out byte abilityJob6)) return null;
             if (!uint.TryParse(properties[87], out uint abilityId6)) return null;
             if (!byte.TryParse(properties[88], out byte abilityLv6)) return null;
-            if (!byte.TryParse(properties[89], out byte abilitySlot7)) return null;
+            if (!byte.TryParse(properties[89], out byte abilityJob7)) return null;
             if (!uint.TryParse(properties[90], out uint abilityId7)) return null;
             if (!byte.TryParse(properties[91], out byte abilityLv7)) return null;
-            if (!byte.TryParse(properties[92], out byte abilitySlot8)) return null;
+            if (!byte.TryParse(properties[92], out byte abilityJob8)) return null;
             if (!uint.TryParse(properties[93], out uint abilityId8)) return null;
             if (!byte.TryParse(properties[94], out byte abilityLv8)) return null;
-            if (!byte.TryParse(properties[95], out byte abilitySlot9)) return null;
+            if (!byte.TryParse(properties[95], out byte abilityJob9)) return null;
             if (!uint.TryParse(properties[96], out uint abilityId9)) return null;
             if (!byte.TryParse(properties[97], out byte abilityLv9)) return null;
-            if (!byte.TryParse(properties[98], out byte abilitySlot10)) return null;
+            if (!byte.TryParse(properties[98], out byte abilityJob10)) return null;
             if (!uint.TryParse(properties[99], out uint abilityId10)) return null;
             if (!byte.TryParse(properties[100], out byte abilityLv10)) return null;
             if (!byte.TryParse(properties[101], out byte job)) return null;
@@ -284,34 +284,34 @@ namespace Arrowgene.Ddon.Shared.Csv
                 CustomSkillId4 = customSkillId4,
                 CustomSkillLv4 = customSkillLv4,
                 CountAbility = countAbility,
-                AbilitySlot1 = abilitySlot1,
+                AbilityJob1 = abilityJob1,
                 AbilityId1 = abilityId1,
                 AbilityLv1 = abilityLv1,
-                AbilitySlot2 = abilitySlot2,
+                AbilityJob2 = abilityJob2,
                 AbilityId2 = abilityId2,
                 AbilityLv2 = abilityLv2,
-                AbilitySlot3 = abilitySlot3,
+                AbilityJob3 = abilityJob3,
                 AbilityId3 = abilityId3,
                 AbilityLv3 = abilityLv3,
-                AbilitySlot4 = abilitySlot4,
+                AbilityJob4 = abilityJob4,
                 AbilityId4 = abilityId4,
                 AbilityLv4 = abilityLv4,
-                AbilitySlot5 = abilitySlot5,
+                AbilityJob5 = abilityJob5,
                 AbilityId5 = abilityId5,
                 AbilityLv5 = abilityLv5,
-                AbilitySlot6 = abilitySlot6,
+                AbilityJob6 = abilityJob6,
                 AbilityId6 = abilityId6,
                 AbilityLv6 = abilityLv6,
-                AbilitySlot7 = abilitySlot7,
+                AbilityJob7 = abilityJob7,
                 AbilityId7 = abilityId7,
                 AbilityLv7 = abilityLv7,
-                AbilitySlot8 = abilitySlot8,
+                AbilityJob8 = abilityJob8,
                 AbilityId8 = abilityId8,
                 AbilityLv8 = abilityLv8,
-                AbilitySlot9 = abilitySlot9,
+                AbilityJob9 = abilityJob9,
                 AbilityId9 = abilityId9,
                 AbilityLv9 = abilityLv9,
-                AbilitySlot10 = abilitySlot10,
+                AbilityJob10 = abilityJob10,
                 AbilityId10 = abilityId10,
                 AbilityLv10 = abilityLv10,
                 Job = (JobId) job,
