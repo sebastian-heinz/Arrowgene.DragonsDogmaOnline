@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "LEFT JOIN `ddon_character_matching_profile` ON `ddon_character_matching_profile`.`character_id` = `ddon_character`.`character_id` "
             + "LEFT JOIN `ddon_character_arisen_profile` ON `ddon_character_arisen_profile`.`character_id` = `ddon_character`.`character_id` "
             + "WHERE `account_id` = @account_id";
-        private const string SqlDeleteCharacter = "DELETE FROM `ddon_character_common` WHERE EXISTS (SELECT 1 FROM `ddon_character` WHERE `character_id`=@character_id);";
+        private const string SqlDeleteCharacter = "DELETE FROM `ddon_character_common` WHERE EXISTS (SELECT 1 FROM `ddon_character` WHERE `ddon_character_common`.`character_common_id`=`ddon_character`.`character_common_id` AND `character_id`=@character_id);";
 
 
         private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO `ddon_character_matching_profile` ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
