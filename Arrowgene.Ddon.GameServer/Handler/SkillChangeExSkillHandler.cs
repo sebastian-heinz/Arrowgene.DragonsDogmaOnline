@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -14,37 +15,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillChangeExSkillHandler));
 
+        private readonly SkillManager skillManager;
+
         public SkillChangeExSkillHandler(DdonGameServer server) : base(server)
         {
+            skillManager = server.SkillManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillChangeExSkillReq> packet)
         {
-            // Update all equiped skills of the type to the chosen EX skill
-            IEnumerable<CustomSkill> skillSlots = client.Character.CustomSkills
-                .Where(skill => skill.Job == packet.Structure.Job && GetBaseSkillId(skill.SkillId) == GetBaseSkillId(packet.Structure.SkillId));
+            // TODO: Apparently pawns EX skills can be set separately, but i dont know how because this packet doesnt send PawnID
+            // https://www.youtube.com/watch?v=3rK6DtDJ8EE 1:05:00
 
-            foreach (CustomSkill skillSlot in skillSlots)
+            IEnumerable<CustomSkill> skillSlots = ChangeExSkills(client, client.Character, packet.Structure);
+            foreach (Pawn pawn in client.Character.Pawns)
             {
-                skillSlot.SkillId = packet.Structure.SkillId;
-                skillSlot.SkillLv = 1; // Must be 1 otherwise they do 0 damage
-
-                Database.ReplaceEquippedCustomSkill(client.Character.CommonId, skillSlot);
-
-                // Inform party members of the change
-                if(packet.Structure.Job == client.Character.Job)
-                {
-                    client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
-                    {
-                        CharacterId = client.Character.CharacterId,
-                        ContextAcquirementData = new CDataContextAcquirementData()
-                        {
-                            SlotNo = skillSlot.SlotNo,
-                            AcquirementNo = skillSlot.SkillId,
-                            AcquirementLv = skillSlot.SkillLv
-                        }
-                    });
-                }
+                ChangeExSkills(client, pawn, packet.Structure);
             }
 
             client.Send(new S2CSkillChangeExSkillRes() {
@@ -59,6 +45,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private uint GetBaseSkillId(uint skillId)
         {
             return skillId % 100;
+        }
+
+        private IEnumerable<CustomSkill> ChangeExSkills(GameClient client, CharacterCommon common, C2SSkillChangeExSkillReq structure)
+        {
+            // Update all equiped skills of the type to the chosen EX skill
+            IEnumerable<CustomSkill> skillSlots = client.Character.CustomSkills
+                .Where(skill => skill.Job == structure.Job && GetBaseSkillId(skill.SkillId) == GetBaseSkillId(structure.SkillId));
+            foreach (CustomSkill skillSlot in skillSlots)
+            {
+                skillSlot.SkillId = structure.SkillId;
+                skillSlot.SkillLv = 1; // Must be 1 otherwise they do 0 damage
+                skillManager.SetSkill(Server.Database, client, common, skillSlot.Job, skillSlot.SlotNo, skillSlot.SkillId, skillSlot.SkillLv);
+
+                // Inform party members of the change
+                if(structure.Job == client.Character.Job)
+                {
+                    client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
+                    {
+                        CharacterId = client.Character.CharacterId,
+                        ContextAcquirementData = new CDataContextAcquirementData()
+                        {
+                            SlotNo = skillSlot.SlotNo,
+                            AcquirementNo = skillSlot.SkillId,
+                            AcquirementLv = skillSlot.SkillLv
+                        }
+                    });
+                }
+            }
+            return skillSlots;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CSkillAbilitySetNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_SKILL_19_46_16_NTC;
+        public PacketId Id => PacketId.S2C_SKILL_ABILITY_SET_NTC;
 
         public uint CharacterId { get; set; }
         public CDataContextAcquirementData ContextAcquirementData { get; set; }

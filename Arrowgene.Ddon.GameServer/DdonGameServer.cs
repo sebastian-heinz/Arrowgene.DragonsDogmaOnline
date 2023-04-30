@@ -67,6 +67,7 @@ namespace Arrowgene.Ddon.GameServer
             GatheringItemManager = new GatheringItemManager(assetRepository, database);
             PartyManager = new PartyManager();
             ExpManager = new ExpManager(database, ClientLookup);
+            SkillManager = new SkillManager();
             ShopManager = new ShopManager(assetRepository, database);
 
             S2CStageGetStageListRes stageListPacket =
@@ -83,6 +84,7 @@ namespace Arrowgene.Ddon.GameServer
         public PartyManager PartyManager { get; }
         public ExpManager ExpManager { get; }
         public ShopManager ShopManager { get; }
+        public SkillManager SkillManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
@@ -344,12 +346,19 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new SkillGetLearnedAbilityListHandler(this));
             AddHandler(new SkillGetLearnedNormalSkillListHandler(this));
             AddHandler(new SkillGetLearnedSkillListHandler(this));
+            AddHandler(new SkillGetPawnAbilityCostHandler(this));
+            AddHandler(new SkillGetPawnLearnedAbilityListHandler(this));
+            AddHandler(new SkillGetPawnLearnedNormalSkillListHandler(this));
+            AddHandler(new SkillGetPawnLearnedSkillListHandler(this));
+            AddHandler(new SkillGetPawnSetAbilityListHandler(this));
+            AddHandler(new SkillGetPawnSetSkillListHandler(this));
             AddHandler(new SkillGetPresetAbilityListHandler(this));
             AddHandler(new SkillGetSetAbilityListHandler(this));
             AddHandler(new SkillGetSetSkillListHandler(this));
             AddHandler(new SkillSetAbilityHandler(this));
             AddHandler(new SkillSetOffAbilityHandler(this));
             AddHandler(new SkillSetOffSkillHandler(this));
+            AddHandler(new SkillSetPawnSkillHandler(this));
             AddHandler(new SkillSetSkillHandler(this));
             AddHandler(new SetShortcutHandler(this));
             AddHandler(new ShopBuyShopGoodsHandler(this));

@@ -522,6 +522,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetLearnedAbilityListReq> packet)
         {
+            // TODO: Move this to DB
             client.Send(new S2CSkillGetLearnedAbilityListRes()
             {
                 SetAcquierementParam = AllAbilities

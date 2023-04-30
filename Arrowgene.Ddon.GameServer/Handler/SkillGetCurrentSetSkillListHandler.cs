@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetCurrentSetSkillListReq> packet)
         {
-             // TODO: Check if its necessary to filter so only the current job skills are sent
+            // TODO: Check if its necessary to filter so only the current job skills are sent
             S2CSkillGetCurrentSetSkillListRes res = new S2CSkillGetCurrentSetSkillListRes();
             res.NormalSkillList = client.Character.NormalSkills;
             res.SetCustomSkillList = client.Character.CustomSkills 

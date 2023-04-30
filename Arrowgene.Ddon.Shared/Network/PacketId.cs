@@ -1053,7 +1053,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_SKILL_CUSTOM_SKILL_SET_NTC = new PacketId(19, 43, 16, "S2C_SKILL_CUSTOM_SKILL_SET_NTC", ServerType.Game, PacketSource.Server, "S2C_SKILL_19_43_16_NTC");
         public static readonly PacketId S2C_SKILL_19_44_16_NTC = new PacketId(19, 44, 16, "S2C_SKILL_19_44_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_SKILL_19_45_16_NTC = new PacketId(19, 45, 16, "S2C_SKILL_19_45_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_SKILL_19_46_16_NTC = new PacketId(19, 46, 16, "S2C_SKILL_19_46_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_SKILL_ABILITY_SET_NTC = new PacketId(19, 46, 16, "S2C_SKILL_19_46_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_SKILL_19_47_16_NTC = new PacketId(19, 47, 16, "S2C_SKILL_19_47_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_SKILL_19_48_16_NTC = new PacketId(19, 48, 16, "S2C_SKILL_19_48_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_SKILL_19_49_16_NTC = new PacketId(19, 49, 16, "S2C_SKILL_19_49_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2959,7 +2959,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_SKILL_CUSTOM_SKILL_SET_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_44_16_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_45_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_SKILL_19_46_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_SKILL_ABILITY_SET_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_47_16_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_48_16_NTC);
             AddPacketIdEntry(packetIds, S2C_SKILL_19_49_16_NTC);
