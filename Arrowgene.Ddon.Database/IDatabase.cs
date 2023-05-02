@@ -45,6 +45,7 @@ namespace Arrowgene.Ddon.Database
         bool DeletePawn(uint pawnId);
 
         // CharacterJobData
+        bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
         bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData);
 
         // Wallet Points

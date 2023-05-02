@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -10,6 +12,130 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class JobManager
     {
+        public void SetJob(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
+        {
+            common.Job = jobId;
+
+            server.Database.UpdateCharacterCommonBaseInfo(common);
+
+            CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
+
+            if(activeCharacterJobData == null)
+            {
+                activeCharacterJobData = new CDataCharacterJobData();
+                activeCharacterJobData.Job = jobId;
+                activeCharacterJobData.Exp = 0;
+                activeCharacterJobData.JobPoint = 0;
+                activeCharacterJobData.Lv = 1;
+                // TODO: All the other stats
+                common.CharacterJobDataList.Add(activeCharacterJobData);
+                server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData);
+            }
+
+            // TODO: Figure out if it should send all equips or just the ones for the current job
+            List<CDataEquipItemInfo> equipItemInfos = common.Equipment.getEquipmentAsCDataEquipItemInfo(common.Job, EquipType.Performance)
+                .Union(common.Equipment.getEquipmentAsCDataEquipItemInfo(common.Job, EquipType.Visual))
+                .ToList();
+            List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
+                .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
+                .ToList();
+
+            List<CDataSetAcquirementParam> skills = common.CustomSkills
+                .Where(x => x.Job == jobId)
+                .Select(x => x.AsCDataSetAcquirementParam())
+                .ToList();
+            List<CDataSetAcquirementParam> abilities = common.Abilities
+                .Where(x => x.EquippedToJob == jobId)
+                .Select(x => x.AsCDataSetAcquirementParam())
+                .ToList();
+            List<CDataLearnNormalSkillParam> normalSkills = common.NormalSkills
+                .Select(x => new CDataLearnNormalSkillParam(x))
+                .ToList();
+            List<CDataEquipJobItem> jobItems = common.CharacterEquipJobItemListDictionary[common.Job];
+
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            // TODO: Move previous job equipment to storage box, and move new job equipment from storage box
+
+            if(common is Character)
+            {
+                Character character = (Character) common;
+
+                S2CJobChangeJobNtc changeJobNotice = new S2CJobChangeJobNtc();
+                changeJobNotice.CharacterId = character.CharacterId;
+                changeJobNotice.CharacterJobData = activeCharacterJobData;
+                changeJobNotice.EquipItemInfo = equipItemInfos;
+                changeJobNotice.SetAcquirementParamList = skills;
+                changeJobNotice.SetAbilityParamList = abilities;
+                changeJobNotice.LearnNormalSkillParamList = normalSkills;
+                changeJobNotice.EquipJobItemList = jobItems;
+                // TODO: Unk0
+                
+                foreach(GameClient otherClient in server.ClientLookup.GetAll())
+                {
+                    otherClient.Send(changeJobNotice);
+                }
+
+                updateCharacterItemNtc.UpdateType = 0x28;
+                client.Send(updateCharacterItemNtc);
+
+                S2CJobChangeJobRes changeJobResponse = new S2CJobChangeJobRes();
+                changeJobResponse.CharacterJobData = activeCharacterJobData;
+                changeJobResponse.CharacterEquipList = characterEquipList;
+                changeJobResponse.SetAcquirementParamList = skills;
+                changeJobResponse.SetAbilityParamList = abilities;
+                changeJobResponse.LearnNormalSkillParamList = normalSkills;
+                changeJobResponse.EquipJobItemList = jobItems;
+                changeJobResponse.PlayPointData = character.PlayPointList
+                    .Where(x => x.Job == jobId)
+                    .Select(x => x.PlayPoint)
+                    .FirstOrDefault(new CDataPlayPointData());
+                changeJobResponse.Unk0.Unk0 = (byte) jobId;
+                changeJobResponse.Unk0.Unk1 = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
+            
+                client.Send(changeJobResponse);
+            }
+            else if(common is Pawn)
+            {
+                Pawn pawn = (Pawn) common;
+
+                S2CJobChangePawnJobNtc changeJobNotice = new S2CJobChangePawnJobNtc();
+                changeJobNotice.CharacterId = pawn.CharacterId;
+                changeJobNotice.PawnId = pawn.PawnId;
+                changeJobNotice.CharacterJobData = activeCharacterJobData;
+                changeJobNotice.EquipItemInfo = equipItemInfos;
+                changeJobNotice.SetAcquirementParamList = skills;
+                changeJobNotice.SetAbilityParamList = abilities;
+                changeJobNotice.LearnNormalSkillParamList = normalSkills;
+                changeJobNotice.EquipJobItemList = jobItems;
+                // TODO: Unk0
+                foreach(GameClient otherClient in server.ClientLookup.GetAll())
+                {
+                    otherClient.Send(changeJobNotice);
+                }
+
+                updateCharacterItemNtc.UpdateType = 0x29;
+                client.Send(updateCharacterItemNtc);
+
+                S2CJobChangePawnJobRes changeJobResponse = new S2CJobChangePawnJobRes();
+                changeJobResponse.PawnId = pawn.PawnId;
+                changeJobResponse.CharacterJobData = activeCharacterJobData;
+                changeJobResponse.CharacterEquipList = characterEquipList;
+                changeJobResponse.SetAcquirementParamList = skills;
+                changeJobResponse.SetAbilityParamList = abilities;
+                changeJobResponse.LearnNormalSkillParamList = normalSkills;
+                changeJobResponse.EquipJobItemList = jobItems;
+                changeJobResponse.Unk0.Unk0 = (byte) jobId;
+                // changeJobResponse.Unk0.Unk1 = pawn.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList(); // TODO: What
+                // changeJobResponse.Unk1 // TODO: its the same thing as in CDataPawnInfo
+                changeJobResponse.SpSkillList = pawn.SpSkillList;
+                client.Send(changeJobResponse);
+            }
+            else
+            {
+                throw new Exception("Unknown character type");
+            }
+        }
+
         public CustomSkill SetSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, byte slotNo, uint skillId, byte skillLv)
         {
             // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
