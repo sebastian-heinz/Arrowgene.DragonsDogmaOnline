@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private static readonly string[]  CDataSpSkillFields = new string[]
         {
-            "pawn_id", "slot", "sp_skill_id", "sp_skill_lv"
+            "pawn_id", "sp_skill_id", "sp_skill_lv"
         };
 
         private readonly string SqlInsertPawn = $"INSERT INTO `ddon_pawn` ({BuildQueryField(PawnFields)}) VALUES ({BuildQueryInsert(PawnFields)});";
@@ -50,9 +50,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlInsertSpSkill = $"INSERT INTO `ddon_sp_skill` ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
         private readonly string SqlReplaceSpSkill = $"REPLACE INTO `ddon_sp_skill` ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
-        private static readonly string SqlUpdateSpSkill = $"UPDATE `ddon_sp_skill` SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE `pawn_id` = @pawn_id AND `slot`=@slot;";
+        private static readonly string SqlUpdateSpSkill = $"UPDATE `ddon_sp_skill` SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE `pawn_id` = @pawn_id AND `sp_skill_id`=@sp_skill_id;";
         private static readonly string SqlSelectSpSkillByPawnId = $"SELECT {BuildQueryField(CDataSpSkillFields)} FROM `ddon_sp_skill` WHERE `pawn_id` = @pawn_id;";
-        private const string SqlDeleteSpSkill = "DELETE FROM `ddon_sp_skill` WHERE `pawn_id`=@pawn_id AND `slot`=@slot;";
+        private const string SqlDeleteSpSkill = "DELETE FROM `ddon_sp_skill` WHERE `pawn_id`=@pawn_id AND `sp_skill_id`=@sp_skill_id;";
 
         public bool CreatePawn(Pawn pawn)
         {
