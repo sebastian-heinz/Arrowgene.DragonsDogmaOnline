@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -78,8 +79,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // And if I don't send the equipping data, the item is duplicated, it appears as equipped AND still in the item bag
             // I have NO IDEA why you have to do it this way
             client.Send(unequipUpdateCharacterItemNtc);
-            System.Threading.Thread.Sleep(100);
-            client.Send(equipUpdateCharacterItemNtc);
+            Task.Delay(100).ContinueWith(_ => client.Send(equipUpdateCharacterItemNtc));
         }
 
         private static void UnequipItem(DdonGameServer server, GameClient client, S2CItemUpdateCharacterItemNtc unequipUpdateCharacterItemNtc, EquipType equipType, byte equipSlot, StorageType storageType)

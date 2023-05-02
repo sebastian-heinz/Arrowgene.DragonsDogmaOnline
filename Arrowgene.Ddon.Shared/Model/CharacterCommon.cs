@@ -1,7 +1,6 @@
-using System;
+#nullable enable
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -12,19 +11,22 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public CharacterCommon()
         {
+            Server = new CDataGameServerListInfo();
             EditInfo = new CDataEditInfo();
             StatusInfo = new CDataStatusInfo();
             CharacterJobDataList = new List<CDataCharacterJobData>();
             Equipment = new Equipment();
-            CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>();
+            CharacterEquipJobItemListDictionary = ((JobId[]) JobId.GetValues(typeof(JobId)))
+                .Select(jobId => (jobId, new List<CDataEquipJobItem>()))
+                .ToDictionary(pair => pair.jobId, pair => pair.Item2);
             NormalSkills = new List<CDataNormalSkillParam>();
             CustomSkills = new List<CustomSkill>();
             Abilities = new List<Ability>();
         }
 
-        public CDataCharacterJobData ActiveCharacterJobData
+        public CDataCharacterJobData? ActiveCharacterJobData
         {
-            get { return CharacterJobDataList.Where(x => x.Job == Job).Single(); }
+            get { return CharacterJobDataList.Where(x => x.Job == Job).SingleOrDefault(); }
         }
 
         public uint CommonId { get; set; }
