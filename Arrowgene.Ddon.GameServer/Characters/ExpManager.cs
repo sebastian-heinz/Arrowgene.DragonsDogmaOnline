@@ -2002,6 +2002,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         // Inform client of lvl up
                         S2CJobPawnJobLevelUpNtc lvlNtc = new S2CJobPawnJobLevelUpNtc();
+                        lvlNtc.PawnId = ((Pawn) characterToAddExpTo).PawnId;
                         lvlNtc.Job = characterToAddExpTo.Job;
                         lvlNtc.Level = activeCharacterJobData.Lv;
                         lvlNtc.AddJobPoint = addJobPoint;
