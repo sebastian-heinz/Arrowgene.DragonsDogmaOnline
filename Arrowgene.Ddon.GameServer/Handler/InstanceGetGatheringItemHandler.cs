@@ -97,7 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     
                     CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.Type).First();
                     characterWalletPoint.Value += totalQuantityToAdd; // TODO: Cap to maximum for that wallet
-                    Database.UpdateWalletPoint(client.Character.Id, characterWalletPoint);
+                    Database.UpdateWalletPoint(client.Character.CharacterId, characterWalletPoint);
 
                     CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
                     walletUpdate.Type = walletTypeAndQuantity.Type;

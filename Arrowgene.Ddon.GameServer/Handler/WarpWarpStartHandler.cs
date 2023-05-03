@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 S2CWarpLeaderWarpNtc ntc = new S2CWarpLeaderWarpNtc()
                 {
-                    CharacterId = client.Character.Id,
+                    CharacterId = client.Character.CharacterId,
                     DestPointId = client.LastWarpPointId,
                     RestSecond = WarpPartyWarpHandler.PARTY_WARP_SECONDS
                 };

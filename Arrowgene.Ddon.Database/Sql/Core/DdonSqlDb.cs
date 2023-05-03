@@ -29,18 +29,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             for (int i = 0; i < fieldLists.Length; i++)
             {
                 string[] fieldList = fieldLists[i];
-                if(table != null)
+                for (int j = 0; j < fieldList.Length; j++)
                 {
+                    string field = fieldList[j];
+                    if(table != null)
+                    {
+                        sb.Append('`');
+                        sb.Append(table);
+                        sb.Append("`.");
+                    }
                     sb.Append('`');
-                    sb.Append(table);
-                    sb.Append("`.");
-                }
-                sb.Append('`');
-                sb.Append(string.Join("`, `", fieldList));
-                sb.Append('`');
-                if (i < fieldLists.Length - 1)
-                {
-                    sb.Append(", ");
+                    sb.Append(field);
+                    sb.Append('`');
+                    if (j < fieldList.Length - 1)
+                    {
+                        sb.Append(", ");
+                    }
                 }
             }
 

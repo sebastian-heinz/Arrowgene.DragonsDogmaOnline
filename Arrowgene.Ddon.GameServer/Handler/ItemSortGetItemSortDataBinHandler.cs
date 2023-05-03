@@ -38,9 +38,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(ntc); // Whats the ntc for if the res has the same info
             client.Send(res);
-
-            //client.Send(EntitySerializer.Get<S2CItemSortGetItemSortdataBinNtc>().Read(InGameDump.data_Dump_37));
-            //client.Send(EntitySerializer.Get<S2CItemSortGetItemSortdataBinRes>().Read(InGameDump.data_Dump_38));
         }
     }
 }

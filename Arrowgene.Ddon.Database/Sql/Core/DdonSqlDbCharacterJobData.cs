@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CDataCharacterJobDataFields = new string[]
         {
-            "character_id", "job", "exp", "job_point", "lv", "atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", 
+            "character_common_id", "job", "exp", "job_point", "lv", "atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", 
             "stun_power", "consitution", "guts", "fire_resist", "ice_resist", "thunder_resist", "holy_resist", "dark_resist", "spread_resist", 
             "freeze_resist", "shock_resist", "absorb_resist", "dark_elm_resist", "poison_resist", "slow_resist", "sleep_resist", "stun_resist", 
             "wet_resist", "oil_resist", "seal_resist", "curse_resist", "soft_resist", "stone_resist", "gold_resist", "fire_reduce_resist", 
@@ -20,16 +20,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlInsertCharacterJobData = $"INSERT INTO `ddon_character_job_data` ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
         private readonly string SqlReplaceCharacterJobData = $"INSERT OR REPLACE INTO `ddon_character_job_data` ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
-        private static readonly string SqlUpdateCharacterJobData = $"UPDATE `ddon_character_job_data` SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE `character_id` = @character_id AND `job` = @job;";
-        private static readonly string SqlSelectCharacterJobData = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_id` = @character_id AND `job` = @job;";
-        private static readonly string SqlSelectCharacterJobDataByCharacter = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_id` = @character_id;";
-        private const string SqlDeleteCharacterJobData = "DELETE FROM `ddon_character_job_data` WHERE `character_id`=@character_id AND `job` = @job;";
+        private static readonly string SqlUpdateCharacterJobData = $"UPDATE `ddon_character_job_data` SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE `character_common_id` = @character_common_id AND `job` = @job;";
+        private static readonly string SqlSelectCharacterJobData = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_common_id` = @character_common_id AND `job` = @job;";
+        private static readonly string SqlSelectCharacterJobDataByCharacter = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_common_id` = @character_common_id;";
+        private const string SqlDeleteCharacterJobData = "DELETE FROM `ddon_character_job_data` WHERE `character_common_id`=@character_common_id AND `job` = @job;";
         
-        public bool UpdateCharacterJobData(uint characterId, CDataCharacterJobData updatedCharacterJobData)
+        public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData)
+        {
+            return ExecuteNonQuery(SqlReplaceCharacterJobData, command =>
+            {
+                AddParameter(command, commonId, replacedCharacterJobData);
+            }) == 1;
+        }
+        
+        public bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
         {
             return ExecuteNonQuery(SqlUpdateCharacterJobData, command =>
             {
-                AddParameter(command, characterId, updatedCharacterJobData);
+                AddParameter(command, commonId, updatedCharacterJobData);
             }) == 1;
         }
 
@@ -83,9 +91,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return characterJobData;
         }
 
-        private void AddParameter(TCom command, uint characterId, CDataCharacterJobData characterJobData)
+        private void AddParameter(TCom command, uint commonId, CDataCharacterJobData characterJobData)
         {
-            AddParameter(command, "character_id", characterId);
+            AddParameter(command, "character_common_id", commonId);
             AddParameter(command, "job", (byte) characterJobData.Job);
             AddParameter(command, "exp", characterJobData.Exp);
             AddParameter(command, "job_point", characterJobData.JobPoint);

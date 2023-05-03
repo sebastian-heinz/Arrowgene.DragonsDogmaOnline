@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             {
                 var tuple = client.Character.Pawns
                     .Select((pawn, index) => new {pawn = pawn, pawnNumber = (byte)(index+1)})
-                    .Where(tuple => tuple.pawn.Character.FirstName == command[0])
+                    .Where(tuple => tuple.pawn.Name == command[0])
                     .SingleOrDefault();
 
                 if (tuple == null)
@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 
                 _inviteCharacterHandler.Handle(client, new StructurePacket<C2SPartyPartyInviteCharacterReq>(new C2SPartyPartyInviteCharacterReq()
                 {
-                    CharacterId = targetClient.Character.Id
+                    CharacterId = targetClient.Character.CharacterId
                 }));
 
                 responses.Add(ChatResponse.ServerMessage(client, "invite sent to "+targetClient.Character.FirstName+" "+targetClient.Character.LastName));

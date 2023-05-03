@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public JobId Job { get; set; }
         public uint SkillId { get; set; }
         public byte SkillLv { get; set; }
-        public uint Unk3 { get; set; }
+        public uint PawnId { get; set; }
         public List<CDataCommonU8> SlotsToUpdate { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CSkillChangeExSkillRes>
@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteByte(buffer, (byte) obj.Job);
                 WriteUInt32(buffer, obj.SkillId);
                 WriteByte(buffer, obj.SkillLv);
-                WriteUInt32(buffer, obj.Unk3);
+                WriteUInt32(buffer, obj.PawnId);
                 WriteEntityList<CDataCommonU8>(buffer, obj.SlotsToUpdate);
             }
 
@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Job = (JobId) ReadByte(buffer);
                 obj.SkillId = ReadUInt32(buffer);
                 obj.SkillLv = ReadByte(buffer);
-                obj.Unk3 = ReadUInt32(buffer);
+                obj.PawnId = ReadUInt32(buffer);
                 obj.SlotsToUpdate = ReadEntityList<CDataCommonU8>(buffer);
                 return obj;
             }

@@ -260,13 +260,13 @@ namespace Arrowgene.Ddon.GameServer.Party
                 int slotIndex = TakeSlot(partyMember);
                 if (slotIndex <= InvalidSlotIndex)
                 {
-                    Logger.Error($"[PartyId:{Id}][Join(Pawn)Id:{pawn.Id}] no slot available");
+                    Logger.Error($"[PartyId:{Id}][Join(Pawn)Id:{pawn.PawnId}] no slot available");
                     return null;
                 }
 
 
                 partyMember.JoinState = JoinState.On;
-                Logger.Info($"[PartyId:{Id}][Join(Pawn)Id:{pawn.Id}] joined");
+                Logger.Info($"[PartyId:{Id}][Join(Pawn)Id:{pawn.PawnId}] joined");
                 return partyMember;
             }
         }
@@ -357,7 +357,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 if (member is PawnPartyMember pawn)
                 {
-                    if (pawn.Character.Id != changeRequester.Character.Id)
+                    if (pawn.Pawn.CharacterId != changeRequester.Client.Character.CharacterId)
                     {
                         Logger.Error(client, $"[PartyId:{Id}][Kick] is not authorized (not pawn owner)");
                         return ErrorRes<PartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER);
@@ -562,13 +562,13 @@ namespace Arrowgene.Ddon.GameServer.Party
                 {
                     if (_slots[i] is PlayerPartyMember member)
                     {
-                        Character character = member.Character;
+                        Character character = member.Client.Character;
                         if (character == null)
                         {
                             continue;
                         }
 
-                        if (character.Id == characterId)
+                        if (character.CharacterId == characterId)
                         {
                             return member;
                         }
@@ -632,7 +632,6 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             PlayerPartyMember partyMember = new PlayerPartyMember();
             partyMember.Client = client;
-            partyMember.Character = client.Character;
             partyMember.IsPawn = false;
             partyMember.MemberType = 1;
             partyMember.PawnId = 0;
@@ -649,10 +648,9 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             PawnPartyMember partyMember = new PawnPartyMember();
             partyMember.Pawn = pawn;
-            partyMember.Character = pawn.Character;
             partyMember.IsPawn = true;
             partyMember.MemberType = 2;
-            partyMember.PawnId = pawn.Id;
+            partyMember.PawnId = pawn.PawnId;
             partyMember.IsPlayEntry = false;
             partyMember.AnyValueList = new byte[8];
             partyMember.IsLeader = false;

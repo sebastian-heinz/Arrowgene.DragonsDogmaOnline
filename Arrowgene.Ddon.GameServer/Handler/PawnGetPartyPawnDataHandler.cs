@@ -21,11 +21,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             GameClient owner = this.Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
             // TODO: Move this to a function or lookup class
-            Pawn pawn = owner.Character.Pawns.Where(pawn => pawn.Id == packet.Structure.PawnId).First();
+            Pawn pawn = owner.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).First();
 
             var res = new S2CPawnGetPartyPawnDataRes();
             res.CharacterId = pawn.CharacterId;
-            res.PawnId = pawn.Id;
+            res.PawnId = pawn.PawnId;
             GameStructure.CDataPawnInfo(res.PawnInfo, pawn);
             
             client.Send(res);

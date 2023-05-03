@@ -21,21 +21,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Send(new S2CPawnGetMypawnListRes() {
                 PawnList = client.Character.Pawns.Select((pawn, index) => new CDataPawnList() {
-                    PawnId = (int) pawn.Id,
+                    PawnId = (int) pawn.PawnId,
                     SlotNo = (uint) (index+1),
-                    Name = pawn.Character.FirstName,
-                    Sex = pawn.Character.EditInfo.Sex,
+                    Name = pawn.Name,
+                    Sex = pawn.EditInfo.Sex,
                     PawnListData = new CDataPawnListData() 
                     {
-                        Job = pawn.Character.Job,
-                        Level = pawn.Character.ActiveCharacterJobData.Lv
+                        Job = pawn.Job,
+                        Level = pawn.ActiveCharacterJobData.Lv
                         // TODO: CraftRank, PawnCraftSkillList, CommentSize, LatestReturnDate
                     }
                     // TODO: Unk0, Unk1, Unk2
                 }).ToList(),
                 // TODO: PartnerInfo
                 PartnerInfo = new CDataPartnerPawnInfo() {
-                    PawnId = client.Character.Pawns[0]?.Id ?? 0,
+                    PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
                     Likability = 1,
                     Personality = 1
                 },

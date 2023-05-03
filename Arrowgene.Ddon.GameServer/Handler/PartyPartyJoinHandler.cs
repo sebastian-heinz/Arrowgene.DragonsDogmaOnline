@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
@@ -42,8 +43,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
-            ntc.HostCharacterId = party.Host.Character.Id;
-            ntc.LeaderCharacterId = party.Leader.Character.Id;
+            ntc.HostCharacterId = party.Host.Client.Character.CharacterId;
+            ntc.LeaderCharacterId = party.Leader.Client.Character.CharacterId;
             foreach (PartyMember member in party.Members)
             {
                 ntc.PartyMembers.Add(member.GetCDataPartyMember());

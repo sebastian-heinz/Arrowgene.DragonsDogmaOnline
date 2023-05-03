@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 uint movedItemNum = newDstItemNum - oldDstItemNum;
                 client.Character.Storage.setStorageItem(item, newDstItemNum, itemFromTo.DstStorageType, dstSlotNo);
-                Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.DstStorageType, dstSlotNo, item.UId, newDstItemNum);
+                Server.Database.ReplaceStorageItem(client.Character.CharacterId, itemFromTo.DstStorageType, dstSlotNo, item.UId, newDstItemNum);
 
                 CDataItemUpdateResult dstUpdateItem = new CDataItemUpdateResult();
                 dstUpdateItem.ItemList.ItemUId = item.UId;
@@ -99,12 +99,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if(newSrcItemNum == 0)
                 {
                     client.Character.Storage.setStorageItem(null, 0, itemFromTo.SrcStorageType, srcSlotNo);
-                    Server.Database.DeleteStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo);
+                    Server.Database.DeleteStorageItem(client.Character.CharacterId, itemFromTo.SrcStorageType, srcSlotNo);
                 }
                 else
                 {
                     client.Character.Storage.setStorageItem(item, newSrcItemNum, itemFromTo.SrcStorageType, srcSlotNo);
-                    Server.Database.ReplaceStorageItem(client.Character.Id, itemFromTo.SrcStorageType, srcSlotNo, item.UId, newSrcItemNum);
+                    Server.Database.ReplaceStorageItem(client.Character.CharacterId, itemFromTo.SrcStorageType, srcSlotNo, item.UId, newSrcItemNum);
                 }
                 CDataItemUpdateResult srcUpdateItem = new CDataItemUpdateResult();
                 srcUpdateItem.ItemList.ItemUId = item.UId;
