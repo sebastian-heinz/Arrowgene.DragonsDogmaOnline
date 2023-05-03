@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(new S2CEquipChangeCharacterEquipRes()
                 {
                     CharacterEquipList = packet.Structure.ChangeCharacterEquipList
+                    // TODO: Unk0
                 });
             });
         }
