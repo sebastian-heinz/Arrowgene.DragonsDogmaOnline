@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Logger.Debug(client, $"Creating SessionKey");
             S2CConnectionMoveOutServerRes res = new S2CConnectionMoveOutServerRes();
-            GameToken token = GameToken.GenerateGameToken(client.Account.Id, client.Character.Id);
+            GameToken token = GameToken.GenerateGameToken(client.Account.Id, client.Character.CharacterId);
             if (!Database.SetToken(token))
             {
                 Logger.Error(client, "Failed to store SessionKey");
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            Logger.Info(client, $"Created SessionKey:{token.Token} for CharacterId:{client.Character.Id}");
+            Logger.Info(client, $"Created SessionKey:{token.Token} for CharacterId:{client.Character.CharacterId}");
             res.SessionKey = token.Token;
             client.Send(res);
         }

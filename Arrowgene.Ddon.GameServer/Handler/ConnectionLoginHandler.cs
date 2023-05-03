@@ -99,7 +99,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character = character;
             client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
-            Server.LoadCharacterPawns(client.Character);
+
+            client.Character.Pawns = Database.SelectPawnsByCharacterId(token.CharacterId);
+            foreach (Pawn pawn in client.Character.Pawns)
+            {
+                pawn.Server = client.Character.Server;
+            }
+
             Logger.Info(client, "Logged Into GameServer");
 
             // update login token for client

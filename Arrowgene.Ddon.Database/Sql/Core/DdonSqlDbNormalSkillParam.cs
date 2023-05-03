@@ -10,14 +10,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CDataNormalSkillParamFields = new string[]
         {
-            "character_id", "job", "skill_no", "index", "pre_skill_no"
+            "character_common_id", "job", "skill_no", "index", "pre_skill_no"
         };
 
         private readonly string SqlInsertNormalSkillParam = $"INSERT INTO `ddon_normal_skill_param` ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)});";
         private readonly string SqlReplaceNormalSkillParam = $"INSERT OR REPLACE INTO `ddon_normal_skill_param` ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)});";
-        private static readonly string SqlUpdateNormalSkillParam = $"UPDATE `ddon_normal_skill_param` SET {BuildQueryUpdate(CDataNormalSkillParamFields)} WHERE `character_id` = @character_id AND `job` = @job AND `skill_no`=@skill_no;";
-        private static readonly string SqlSelectNormalSkillParam = $"SELECT {BuildQueryField(CDataNormalSkillParamFields)} FROM `ddon_normal_skill_param` WHERE `character_id` = @character_id;";
-        private const string SqlDeleteNormalSkillParam = "DELETE FROM `ddon_normal_skill_param` WHERE `character_id`=@character_id AND `job`=@job AND `skill_no`=@skill_no;";
+        private static readonly string SqlUpdateNormalSkillParam = $"UPDATE `ddon_normal_skill_param` SET {BuildQueryUpdate(CDataNormalSkillParamFields)} WHERE `character_common_id` = @character_common_id AND `job` = @job AND `skill_no`=@skill_no;";
+        private static readonly string SqlSelectNormalSkillParam = $"SELECT {BuildQueryField(CDataNormalSkillParamFields)} FROM `ddon_normal_skill_param` WHERE `character_common_id` = @character_common_id;";
+        private const string SqlDeleteNormalSkillParam = "DELETE FROM `ddon_normal_skill_param` WHERE `character_common_id`=@character_common_id AND `job`=@job AND `skill_no`=@skill_no;";
 
         private CDataNormalSkillParam ReadNormalSkillParam(DbDataReader reader)
         {
@@ -29,9 +29,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return normalSkillParam;
         }
 
-        private void AddParameter(TCom command, uint characterId, CDataNormalSkillParam normalSkillParam)
+        private void AddParameter(TCom command, uint commonId, CDataNormalSkillParam normalSkillParam)
         {
-            AddParameter(command, "character_id", characterId);
+            AddParameter(command, "character_common_id", commonId);
             AddParameter(command, "job", (byte) normalSkillParam.Job);
             AddParameter(command, "skill_no", normalSkillParam.SkillNo);
             AddParameter(command, "index", normalSkillParam.Index);

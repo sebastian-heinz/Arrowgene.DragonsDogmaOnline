@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             S2CProfileGetCharacterProfileRes res = new S2CProfileGetCharacterProfileRes();
-            res.CharacterId = targetClient.Character.Id;
+            res.CharacterId = targetClient.Character.CharacterId;
             GameStructure.CDataCharacterName(res.CharacterName, targetClient.Character);
             res.JobId = targetClient.Character.Job;
             res.JobLevel = (byte) targetClient.Character.ActiveCharacterJobData.Lv;
@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             S2CCharacterGetCharacterStatusNtc ntc = new S2CCharacterGetCharacterStatusNtc();
-            ntc.CharacterId = targetClient.Character.Id;
+            ntc.CharacterId = targetClient.Character.CharacterId;
             ntc.StatusInfo = targetClient.Character.StatusInfo;
             ntc.JobParam = targetClient.Character.ActiveCharacterJobData;
             GameStructure.CDataCharacterLevelParam(ntc.CharacterParam, client.Character);

@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             inviteAcceptNtc.ServerId =
                 Server.AssetRepository.ServerList[0].Id; // TODO: Get from config, or from DdonGameServer instance
             inviteAcceptNtc.PartyId = party.Id;
-            inviteAcceptNtc.StageId = party.Leader.Character.Stage.Id;
+            inviteAcceptNtc.StageId = party.Leader.Client.Character.Stage.Id;
             inviteAcceptNtc.PositionId = 0; // TODO: Figure what this is about
             inviteAcceptNtc.MemberIndex = (byte)partyMember.Value.MemberIndex;
             client.Send(inviteAcceptNtc);
@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CPartyPartyInviteJoinMemberNtc inviteJoinMemberNtc = new S2CPartyPartyInviteJoinMemberNtc();
             CDataPartyMemberMinimum newMemberMinimum = new CDataPartyMemberMinimum();
             GameStructure.CDataCommunityCharacterBaseInfo(newMemberMinimum.CommunityCharacterBaseInfo,
-                partyMember.Value.Character);
+                partyMember.Value.Client.Character);
             newMemberMinimum.IsLeader = partyMember.Value.IsLeader;
             newMemberMinimum.MemberIndex = partyMember.Value.MemberIndex;
             newMemberMinimum.MemberType = partyMember.Value.MemberType;

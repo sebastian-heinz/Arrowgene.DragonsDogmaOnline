@@ -6,43 +6,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextResist
     {
-
-        public CDataContextResist(Character character)
-        {
-            CDataCharacterJobData characterJobData = character.ActiveCharacterJobData;
-
-            FireResist = characterJobData.FireResist;
-            IceResist = characterJobData.IceResist;
-            ThunderResist = characterJobData.ThunderResist;
-            HolyResist = characterJobData.HolyResist;
-            DarkResist = characterJobData.DarkResist;
-            SpreadResist = characterJobData.SpreadResist;
-            FreezeResist = characterJobData.FreezeResist;
-            ShockResist = characterJobData.ShockResist;
-            AbsorbResist = characterJobData.AbsorbResist;
-            DarkElmResist = characterJobData.DarkElmResist;
-            PoisonResist = characterJobData.PoisonResist;
-            SlowResist = characterJobData.SlowResist;
-            SleepResist = characterJobData.SleepResist;
-            StunResist = characterJobData.StunResist;
-            WetResist = characterJobData.WetResist;
-            OilResist = characterJobData.OilResist;
-            SealResist = characterJobData.SealResist;
-            CurseResist = characterJobData.CurseResist;
-            SoftResist = characterJobData.SoftResist;
-            StoneResist = characterJobData.StoneResist;
-            GoldResist = characterJobData.GoldResist;
-            FireReduceResist = characterJobData.FireReduceResist;
-            IceReduceResist = characterJobData.IceReduceResist;
-            ThunderReduceResist = characterJobData.ThunderReduceResist;
-            HolyReduceResist = characterJobData.HolyReduceResist;
-            DarkReduceResist = characterJobData.DarkReduceResist;
-            AtkDownResist = characterJobData.AtkDownResist;
-            DefDownResist = characterJobData.DefDownResist;
-            MAtkDownResist = characterJobData.MAtkDownResist;
-            MDefDownResist = characterJobData.MDefDownResist;
-        }
-
         public CDataContextResist()
         {
         }

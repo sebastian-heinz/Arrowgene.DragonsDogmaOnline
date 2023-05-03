@@ -15,7 +15,7 @@ public class ChatMessageLogEntry
         DateTime = DateTime.Now;
         FirstName = character.FirstName;
         LastName = character.LastName;
-        CharacterId = character.Id;
+        CharacterId = character.CharacterId;
         ChatMessage = chatMessage;
     }
 

@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             CDataWalletPoint walletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.RiftPoints).Single();
             walletPoint.Value -= price;
-            Database.UpdateWalletPoint(client.Character.Id, walletPoint);
+            Database.UpdateWalletPoint(client.Character.CharacterId, walletPoint);
 
             S2CWarpAreaWarpRes obj = new S2CWarpAreaWarpRes();
             obj.WarpPointId = packet.Structure.WarpPointId;

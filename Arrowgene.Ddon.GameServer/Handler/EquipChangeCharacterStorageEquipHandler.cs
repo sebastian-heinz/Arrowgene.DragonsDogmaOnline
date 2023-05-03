@@ -1,8 +1,6 @@
-using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -13,19 +11,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipChangeCharacterStorageEquipHandler));
 
+        private readonly EquipManager equipManager;
+
         public EquipChangeCharacterStorageEquipHandler(DdonGameServer server) : base(server)
         {
+            equipManager = server.EquipManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SEquipChangeCharacterStorageEquipReq> packet)
         {
-            EquipChangeCharacterEquipHandler.HandleChangeCharacterEquipList(Server, client, packet.Structure.ChangeCharacterEquipList, 0x26, StorageType.StorageBoxNormal, () => {
+            equipManager.HandleChangeEquipList(Server, client, client.Character, packet.Structure.ChangeCharacterEquipList, 0x26, StorageType.StorageBoxNormal, () => {
                 client.Send(new S2CEquipChangeCharacterStorageEquipRes()
                 {
                     CharacterEquipList = packet.Structure.ChangeCharacterEquipList
+                    // TODO: Unk0
                 });
             });
-
         }
     }
 }

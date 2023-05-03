@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using Arrowgene.Ddon.Database.Model;
+﻿using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -51,7 +48,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character = character;
             client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
-            Server.LoadCharacterPawns(client.Character);
+
+            client.Character.Pawns = Database.SelectPawnsByCharacterId(token.CharacterId);
+            foreach (Pawn pawn in client.Character.Pawns)
+            {
+                pawn.Server = client.Character.Server;
+            }
+
             Logger.Info(client, "Moved Into GameServer");
 
 

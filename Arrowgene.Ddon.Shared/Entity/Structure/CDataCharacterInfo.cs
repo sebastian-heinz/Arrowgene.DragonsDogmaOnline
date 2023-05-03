@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataCharacterInfo(Character character)
         {
-            CharacterId = character.Id;
+            CharacterId = character.CharacterId;
             UserId = character.UserId;
             Version = character.Version;
             FirstName = character.FirstName;

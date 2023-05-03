@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 character.Storage.setStorageItem(item, newItemNum, destinationStorageType, slot);
             }
 
-            database.ReplaceStorageItem(character.Id, destinationStorageType, slot, item.UId, newItemNum);
+            database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, item.UId, newItemNum);
 
             CDataItemUpdateResult result = new CDataItemUpdateResult();
             result.ItemList.ItemUId = item.UId;

@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if(client.Character != null) {
                 // Notice all other users
                 S2CUserListLeaveNtc ntc = new S2CUserListLeaveNtc();
-                ntc.CharacterList.Add(new CDataCommonU32(client.Character.Id));
+                ntc.CharacterList.Add(new CDataCommonU32(client.Character.CharacterId));
                 foreach (Client otherClient in Server.Clients)
                 {
                     if (otherClient != client)

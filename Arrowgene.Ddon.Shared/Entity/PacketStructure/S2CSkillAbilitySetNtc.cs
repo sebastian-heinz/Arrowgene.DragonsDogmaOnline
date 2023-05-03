@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CSkillAbilitySetNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_SKILL_19_46_16_NTC;
+        public PacketId Id => PacketId.S2C_SKILL_ABILITY_SET_NTC;
 
         public uint CharacterId { get; set; }
         public CDataContextAcquirementData ContextAcquirementData { get; set; }
@@ -16,18 +16,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CSkillAbilitySetNtc obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);
-                WriteByte(buffer, obj.ContextAcquirementData.SlotNo);
-                WriteUInt32(buffer, obj.ContextAcquirementData.AcquirementNo);
-                WriteByte(buffer, obj.ContextAcquirementData.AcquirementLv);
+                WriteEntity<CDataContextAcquirementData>(buffer, obj.ContextAcquirementData);
             }
 
             public override S2CSkillAbilitySetNtc Read(IBuffer buffer)
             {
                 S2CSkillAbilitySetNtc obj = new S2CSkillAbilitySetNtc();
                 obj.CharacterId = ReadUInt32(buffer);
-                obj.ContextAcquirementData.SlotNo = ReadByte(buffer);
-                obj.ContextAcquirementData.AcquirementNo = ReadUInt32(buffer);
-                obj.ContextAcquirementData.AcquirementLv = ReadByte(buffer);
+                obj.ContextAcquirementData = ReadEntity<CDataContextAcquirementData>(buffer);
                 return obj;
             }
         }
