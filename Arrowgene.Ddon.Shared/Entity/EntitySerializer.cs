@@ -213,6 +213,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SEquipChangeCharacterEquipReq.Serializer());
             Create(new C2SEquipChangeCharacterStorageEquipReq.Serializer());
+            Create(new C2SEquipChangePawnEquipReq.Serializer());
+            Create(new C2SEquipChangePawnStorageEquipReq.Serializer());
             Create(new C2SEquipGetCharacterEquipListReq.Serializer());
             Create(new C2SEquipUpdateHideCharacterHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHideCharacterLanternReq.Serializer());
@@ -390,6 +392,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipChangeCharacterEquipNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipRes.Serializer());
             Create(new S2CEquipChangeCharacterStorageEquipRes.Serializer());
+            Create(new S2CEquipChangePawnEquipNtc.Serializer());
+            Create(new S2CEquipChangePawnEquipRes.Serializer());
+            Create(new S2CEquipChangePawnStorageEquipRes.Serializer());
             Create(new S2CEquipGetCharacterEquipListRes.Serializer());
             Create(new S2CEquipUpdateEquipHideNtc.Serializer());
             Create(new S2CEquipUpdateHideCharacterHeadArmorRes.Serializer());

@@ -1292,7 +1292,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_EQUIP_GET_PAWN_EQUIP_LIST_RES = new PacketId(29, 3, 2, "S2C_EQUIP_GET_PAWN_EQUIP_LIST_RES", ServerType.Game, PacketSource.Server); // ポーン装備リスト取得に
         public static readonly PacketId C2S_EQUIP_CHANGE_PAWN_EQUIP_REQ = new PacketId(29, 4, 1, "C2S_EQUIP_CHANGE_PAWN_EQUIP_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_EQUIP_CHANGE_PAWN_EQUIP_RES = new PacketId(29, 4, 2, "S2C_EQUIP_CHANGE_PAWN_EQUIP_RES", ServerType.Game, PacketSource.Server); // ポーン装備変更に
-        public static readonly PacketId S2C_EQUIP_29_4_16_NTC = new PacketId(29, 4, 16, "S2C_EQUIP_29_4_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_EQUIP_CHANGE_PAWN_EQUIP_NTC = new PacketId(29, 4, 16, "S2C_EQUIP_CHANGE_PAWN_EQUIP_NTC", ServerType.Game, PacketSource.Server, "S2C_EQUIP_29_4_16_NTC");
         public static readonly PacketId C2S_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_REQ = new PacketId(29, 5, 1, "C2S_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_RES = new PacketId(29, 5, 2, "S2C_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_RES", ServerType.Game, PacketSource.Server); // ポーン倉庫装備変更に
         public static readonly PacketId C2S_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ = new PacketId(29, 6, 1, "C2S_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ", ServerType.Game, PacketSource.Client);
@@ -3198,7 +3198,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_EQUIP_GET_PAWN_EQUIP_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_EQUIP_CHANGE_PAWN_EQUIP_REQ);
             AddPacketIdEntry(packetIds, S2C_EQUIP_CHANGE_PAWN_EQUIP_RES);
-            AddPacketIdEntry(packetIds, S2C_EQUIP_29_4_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_EQUIP_CHANGE_PAWN_EQUIP_NTC);
             AddPacketIdEntry(packetIds, C2S_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_REQ);
             AddPacketIdEntry(packetIds, S2C_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_RES);
             AddPacketIdEntry(packetIds, C2S_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ);

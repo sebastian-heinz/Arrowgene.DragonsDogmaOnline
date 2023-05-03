@@ -68,6 +68,7 @@ namespace Arrowgene.Ddon.GameServer
             PartyManager = new PartyManager();
             ExpManager = new ExpManager(database, ClientLookup);
             JobManager = new JobManager();
+            EquipManager = new EquipManager();
             ShopManager = new ShopManager(assetRepository, database);
 
             S2CStageGetStageListRes stageListPacket =
@@ -85,6 +86,7 @@ namespace Arrowgene.Ddon.GameServer
         public ExpManager ExpManager { get; }
         public ShopManager ShopManager { get; }
         public JobManager JobManager { get; }
+        public EquipManager EquipManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
@@ -209,6 +211,8 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new EquipChangeCharacterEquipHandler(this));
             AddHandler(new EquipChangeCharacterStorageEquipHandler(this));
+            AddHandler(new EquipChangePawnEquipHandler(this));
+            AddHandler(new EquipChangePawnStorageEquipHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
             AddHandler(new EquipUpdateHideCharacterHeadArmorHandler(this));
             AddHandler(new EquipUpdateHideCharacterLanternHandler(this));
