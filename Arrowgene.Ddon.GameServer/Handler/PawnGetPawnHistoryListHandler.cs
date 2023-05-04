@@ -1,5 +1,3 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
@@ -19,7 +17,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SPawnGetPawnHistoryListReq> req)
         {
             S2CPawnGetPawnHistoryListRes res = new S2CPawnGetPawnHistoryListRes();
-            res.PawnId = req.Structure;
             client.Send(res);
         }
     }
