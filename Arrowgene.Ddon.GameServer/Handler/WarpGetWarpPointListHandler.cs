@@ -19,8 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SWarpGetWarpPointListReq> packet)
         {
-            S2CWarpGetWarpPointListRes res = EntitySerializer.Get<S2CWarpGetWarpPointListRes>().Read(GameFull.data_Dump_140);
-            //S2CWarpGetWarpPointListRes res = new S2CWarpGetWarpPointListRes();
+            //S2CWarpGetWarpPointListRes res = EntitySerializer.Get<S2CWarpGetWarpPointListRes>().Read(GameFull.data_Dump_140);
+            S2CWarpGetWarpPointListRes res = new S2CWarpGetWarpPointListRes();
             //res.WarpPointList.Add(new CDataWarpPoint(0x01, 0)); // White Dragon Temple, 0 RP
             //res.WarpPointList.Add(new CDataWarpPoint(0x02, 100)); // Tel, 100 RP
             //res.WarpPointList.Add(new CDataWarpPoint(0x03, 42069)); // Rotes, 42069 RP

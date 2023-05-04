@@ -138,6 +138,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnListData.Serializer());
             Create(new CDataPawnReaction.Serializer());
             Create(new CDataPawnTotalScore.Serializer());
+            Create(new CDataPawnTrainingPreparationInfoToAdvice.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
             Create(new CDataQuestAnnounce.Serializer());
