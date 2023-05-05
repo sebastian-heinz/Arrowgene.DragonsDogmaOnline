@@ -870,7 +870,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             ItemId = arisenPreset.Lantern,
                             Unk3 = 0,
                         }
-                    }
+                    }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                 },
                 {
                     EquipType.Visual,
@@ -920,7 +920,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                             Unk3 = 0,
                             Color = arisenPreset.VOverwearColour,
                         }
-                    }
+                    }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                 }
             })).ToDictionary(x => x.Item1, x => x.Item2));
             character.CharacterEquipJobItemListDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CDataEquipJobItem>>(arisenPreset.Job, new List<CDataEquipJobItem>() {
@@ -939,7 +939,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.HideEquipLanternPawn = packet.Structure.CharacterInfo.HideEquipLanternPawn;
             // TODO: Load from Arisen.csv or something
             character.NormalSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CDataNormalSkillParam>() {
-                    new CDataNormalSkillParam() {
+                new CDataNormalSkillParam() {
                     Job = arisenPreset.Job,
                     SkillNo = 1,
                     Index = 0,
@@ -1009,7 +1009,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     SkillId = arisenPreset.Cs4SpId,
                     SkillLv = arisenPreset.Cs4SpLv
                 }
-            }).ToList();
+            }).Where(skill => skill.SkillId != 0).ToList();
             character.Abilities = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<Ability>() {
                 new Ability() {
                     EquippedToJob = arisenPreset.Job,
@@ -1081,7 +1081,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     AbilityId = arisenPreset.Ab10Id,
                     AbilityLv = arisenPreset.Ab10Lv
                 }
-            }).ToList();
+            }).Where(aug => aug.AbilityId != 0).ToList();
             character.Storage = new Storages(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
             character.WalletPointList = new List<CDataWalletPoint>()
             {
@@ -1144,7 +1144,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)
             {
-                character.Storage.addStorageItem(tuple.Item3, tuple.Item2, tuple.Item1);
+                if(tuple.Item3.ItemId != 0)
+                {
+                    character.Storage.addStorageItem(tuple.Item3, tuple.Item2, tuple.Item1);
+                }
             }
 
             L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
@@ -1832,7 +1835,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                     ItemId = myPawnCsvData.Lantern,
                                     Unk3 = 0,
                                 }
-                            }
+                            }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                         },
                         {
                             EquipType.Visual,
@@ -1888,7 +1891,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 null,
                                 null,
                                 null
-                            }
+                            }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                         }
                     }
                 }
@@ -1922,7 +1925,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Index = 0,
                     PreSkillNo = 0
                 }
-            };
+            }.Where(coreSkill => coreSkill.SkillNo != 0).ToList();
             pawn.CustomSkills = new List<CustomSkill>() {
                 // Main Palette
                 new CustomSkill() {
@@ -1949,7 +1952,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     SkillId = myPawnCsvData.CustomSkillId4,
                     SkillLv = myPawnCsvData.CustomSkillLv4
                 }
-            };
+            }.Where(skill => skill.SkillId != 0).ToList();
             pawn.Abilities = new List<Ability>() {
                 new Ability() {
                     EquippedToJob = myPawnCsvData.Job,
@@ -2021,7 +2024,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     AbilityId = myPawnCsvData.AbilityId10,
                     AbilityLv = myPawnCsvData.AbilityLv10
                 }
-            };
+            }.Where(aug => aug.AbilityId != 0).ToList();
             pawn.PawnReactionList = new List<CDataPawnReaction>()
             {
                 new CDataPawnReaction()
@@ -2087,7 +2090,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     SpSkillId = myPawnCsvData.SpSkillSlot3Id,
                     SpSkillLv = myPawnCsvData.SpSkillSlot3Lv
                 }
-            };
+            }.Where(spSkill => spSkill.SpSkillId != 0).ToList();
             return pawn;
         }
 
