@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +53,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataItemList()
                 {
-                    ItemUId = tuple.item.Item1.UId,
+                    ItemUId = tuple.item!.Item1.UId,
                     ItemId = tuple.item.Item1.ItemId,
                     ItemNum = tuple.item.Item2,
                     Unk3 = tuple.item.Item1.Unk3,
@@ -84,8 +86,8 @@ namespace Arrowgene.Ddon.Shared.Model
             return tuple.slot;
         }
 
-        public Tuple<Item, uint>? setStorageItem(Item newItem, uint itemCount, StorageType storageType, ushort slot) {
-            if(newItem.ItemId == 0)
+        public Tuple<Item, uint>? setStorageItem(Item? newItem, uint itemCount, StorageType storageType, ushort slot) {
+            if(newItem != null && newItem.ItemId == 0)
             {
                 throw new ArgumentException("Item Id can't be 0", "newItem");
             }
