@@ -85,6 +85,11 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public Tuple<Item, uint>? setStorageItem(Item newItem, uint itemCount, StorageType storageType, ushort slot) {
+            if(newItem.ItemId == 0)
+            {
+                throw new ArgumentException("Item Id can't be 0", "newItem");
+            }
+            
             // TODO: Limit itemCount to the item ID's max stack size in storageType
             Tuple<Item, uint>? oldItem = getStorageItem(storageType, slot);
             storages[storageType].Items[slot-1] = newItem == null
