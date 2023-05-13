@@ -89,6 +89,7 @@ public class PartyManager
         }
 
         _idPool.Push(party.Id);
+        LogPartyIdCount();
         return true;
     }
 
@@ -107,6 +108,13 @@ public class PartyManager
             return null;
         }
 
+        LogPartyIdCount();
+        
         return party;
+    }
+
+    private void LogPartyIdCount()
+    {
+        Logger.Info($"Free party IDs: {_idPool.Count}/{MaxNumParties}");
     }
 }
