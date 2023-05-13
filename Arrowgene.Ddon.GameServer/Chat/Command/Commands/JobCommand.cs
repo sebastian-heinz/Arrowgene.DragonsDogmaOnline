@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     .Where(x => x.EquippedToJob == job)
                     .Select(x => x.AsCDataSetAcquirementParam())
                     .ToList();
-                notice.LearnNormalSkillParamList = client.Character.NormalSkills
+                notice.LearnNormalSkillParamList = client.Character.LearnedNormalSkills
                     .Select(x => new CDataLearnNormalSkillParam(x))
                     .ToList();
                 notice.EquipJobItemList = client.Character.CharacterEquipJobItemListDictionary[client.Character.Job];

@@ -1,5 +1,7 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -15,11 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetPawnLearnedAbilityListReq> packet)
         {
-            // TODO: Move this to DB
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
             client.Send(new S2CSkillGetPawnLearnedAbilityListRes()
             {
-                PawnId = packet.Structure.PawnId,
-                SetAcquierementParam = SkillGetLearnedAbilityListHandler.AllAbilities
+                PawnId = pawn.PawnId,
+                SetAcquierementParam = pawn.LearnedAbilities
             });
         }
     }

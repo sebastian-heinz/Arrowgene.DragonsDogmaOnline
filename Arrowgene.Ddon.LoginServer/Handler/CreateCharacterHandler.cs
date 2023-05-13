@@ -938,26 +938,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.HideEquipHeadPawn = packet.Structure.CharacterInfo.HideEquipHeadPawn;
             character.HideEquipLanternPawn = packet.Structure.CharacterInfo.HideEquipLanternPawn;
             // TODO: Load from Arisen.csv or something
-            character.NormalSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CDataNormalSkillParam>() {
-                new CDataNormalSkillParam() {
-                    Job = arisenPreset.Job,
-                    SkillNo = 1,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = arisenPreset.Job,
-                    SkillNo = 2,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = arisenPreset.Job,
-                    SkillNo = 3,
-                    Index = 0,
-                    PreSkillNo = 0
-                }
-            }).ToList();
+            character.LearnedNormalSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CDataNormalSkillParam>()).ToList();
             character.CustomSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CustomSkill>() {
                 // Main Palette
                 new CustomSkill() {
@@ -1906,26 +1887,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     EquipSlotNo = myPawnCsvData.JobItemSlot2
                 }
             }}};
-            pawn.NormalSkills = new List<CDataNormalSkillParam>() {
-                new CDataNormalSkillParam() {
-                    Job = myPawnCsvData.Job,
-                    SkillNo = myPawnCsvData.NormalSkill1,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = myPawnCsvData.Job,
-                    SkillNo = myPawnCsvData.NormalSkill2,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = myPawnCsvData.Job,
-                    SkillNo = myPawnCsvData.NormalSkill3,
-                    Index = 0,
-                    PreSkillNo = 0
-                }
-            }.Where(coreSkill => coreSkill.SkillNo != 0).ToList();
+            pawn.LearnedNormalSkills = new List<CDataNormalSkillParam>();
             pawn.CustomSkills = new List<CustomSkill>() {
                 // Main Palette
                 new CustomSkill() {

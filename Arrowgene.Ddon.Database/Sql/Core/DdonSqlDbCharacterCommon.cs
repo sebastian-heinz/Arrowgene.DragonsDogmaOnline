@@ -162,7 +162,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     while (reader.Read())
                     {
-                        common.NormalSkills.Add(ReadNormalSkillParam(reader));
+                        common.LearnedNormalSkills.Add(ReadNormalSkillParam(reader));
                     }
                 });
 
@@ -210,7 +210,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }
             }
 
-            foreach(CDataNormalSkillParam normalSkillParam in common.NormalSkills)
+            foreach(CDataNormalSkillParam normalSkillParam in common.LearnedNormalSkills)
             {
                 ExecuteNonQuery(conn, SqlReplaceNormalSkillParam, command =>
                 {

@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // TODO: Check if its necessary to filter so only the current job skills are sent
             S2CSkillGetCurrentSetSkillListRes res = new S2CSkillGetCurrentSetSkillListRes();
-            res.NormalSkillList = client.Character.NormalSkills;
+            res.NormalSkillList = client.Character.LearnedNormalSkills;
             res.SetCustomSkillList = client.Character.CustomSkills 
                 .Where(x => x.Job == client.Character.Job)
                 .Select(x => x.AsCDataSetAcquirementParam())

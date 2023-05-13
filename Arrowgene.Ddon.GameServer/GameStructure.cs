@@ -158,7 +158,7 @@ public static class GameStructure
         cDataPawnInfo.CraftCount = 10;
         cDataPawnInfo.MaxAdventureCount = 5;
         cDataPawnInfo.MaxCraftCount = 10;
-        cDataPawnInfo.ContextNormalSkillList = pawn.NormalSkills.Select(normalSkill => new CDataContextNormalSkillData(normalSkill)).ToList();
+        cDataPawnInfo.ContextNormalSkillList = pawn.LearnedNormalSkills.Select(normalSkill => new CDataContextNormalSkillData(normalSkill)).ToList();
         cDataPawnInfo.ContextSkillList = pawn.CustomSkills.Select(skill => skill.AsCDataContextAcquirementData()).ToList();
         cDataPawnInfo.ContextAbilityList = pawn.Abilities.Select(ability => ability.AsCDataContextAcquirementData()).ToList();
         // TODO: AbilityCostMax, ExtendParam
@@ -228,7 +228,7 @@ public static class GameStructure
         contextBase.ContextEquipVisualList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Visual);
         contextBase.ContextEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job]
             .Select(x => new CDataContextEquipJobItemData(x)).ToList();
-        contextBase.ContextNormalSkillList = character.NormalSkills
+        contextBase.ContextNormalSkillList = character.LearnedNormalSkills
             .Where(x => x.Job == character.Job)
             .Select(x => new CDataContextNormalSkillData(x)).ToList();
         contextBase.ContextSkillList = character.CustomSkills

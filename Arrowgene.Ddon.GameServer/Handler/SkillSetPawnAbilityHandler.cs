@@ -1,9 +1,7 @@
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -31,8 +29,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // For some reason JobId is received as 0, unlike in SkillSetAbilityHandler, where it's set to its correct value
             // This is, also for whatever reason, important so it works properly, so we have to set it ourselves
             // TODO: Investigate this more, or optimize this
-            JobId abilityJob = SkillGetLearnedAbilityListHandler.AllAbilities
-                .Where(aug => aug.AcquirementNo == packet.Structure.SkillId )
+            JobId abilityJob = SkillGetAcquirableAbilityListHandler.AllAbilities
+                .Where(aug => aug.AbilityNo == packet.Structure.SkillId )
                 .Select(aug => aug.Job)
                 .Single();
 

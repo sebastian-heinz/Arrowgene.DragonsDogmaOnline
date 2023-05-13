@@ -48,7 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Where(x => x.EquippedToJob == jobId)
                 .Select(x => x.AsCDataSetAcquirementParam())
                 .ToList();
-            List<CDataLearnNormalSkillParam> normalSkills = common.NormalSkills
+            List<CDataLearnNormalSkillParam> normalSkills = common.LearnedNormalSkills
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();
             List<CDataEquipJobItem> jobItems = common.CharacterEquipJobItemListDictionary[common.Job];

@@ -151,7 +151,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataQuestLayoutFlag.Serializer());
             Create(new CDataQuestLayoutFlagSetInfo.Serializer());
             Create(new CDataQuestList.Serializer());
-            Create(new CDataQuestListUnk0.Serializer());
             Create(new CDataQuestListUnk1.Serializer());
             Create(new CDataQuestListUnk7.Serializer());
             Create(new CDataQuestLog.Serializer());
@@ -311,6 +310,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSkillGetPresetAbilityListReq.Serializer());
             Create(new C2SSkillGetSetAbilityListReq.Serializer());
             Create(new C2SSkillGetSetSkillListReq.Serializer());
+            Create(new C2SSkillLearnSkillReq.Serializer());
             Create(new C2SSkillSetAbilityReq.Serializer());
             Create(new C2SSkillSetOffAbilityReq.Serializer());
             Create(new C2SSkillSetOffPawnAbilityReq.Serializer());
@@ -528,6 +528,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillGetPresetAbilityListRes.Serializer());
             Create(new S2CSkillGetSetAbilityListRes.Serializer());
             Create(new S2CSkillGetSetSkillListRes.Serializer());
+            Create(new S2CSkillLearnSkillRes.Serializer());
             Create(new S2CSkillPawnAbilitySetNtc.Serializer());
             Create(new S2CSkillPawnCustomSkillSetNtc.Serializer());
             Create(new S2CSkillSetAbilityRes.Serializer());
