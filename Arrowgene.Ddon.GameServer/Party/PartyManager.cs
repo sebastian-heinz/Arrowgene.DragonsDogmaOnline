@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Party;
 
@@ -97,8 +98,14 @@ public class PartyManager
     {
         if (!_idPool.TryPop(out uint partyId))
         {
-            Logger.Error("Could not create party, id pool exhausted (!_idPool.TryPop(out uint partyId)");
-            return null;
+            Logger.Info("Id pool seemingly exhausted. Cleaning up (!_idPool.TryPop(out uint partyId)");
+            RecalculateIdPool();
+            // Try again a second time and error if the problem persists
+            if (!_idPool.TryPop(out partyId))
+            {
+                Logger.Error("Could not create party, id pool exhausted (!_idPool.TryPop(out partyId)");
+                return null;
+            }
         }
 
         PartyGroup party = new PartyGroup(partyId, this);
@@ -115,6 +122,21 @@ public class PartyManager
 
     private void LogPartyIdCount()
     {
+        Logger.Info($"Free party IDs: {_idPool.Count}/{MaxNumParties}");
+    }
+
+    private void RecalculateIdPool()
+    {
+        // TODO: Thread safety, logs, error handling
+        foreach (KeyValuePair<uint, PartyGroup> pair in _parties)
+        {
+            if(pair.Value.MemberCount() == 0)
+            {
+                _idPool.Push(pair.Key);
+                _parties.TryRemove(pair);
+            }
+        }
+
         Logger.Info($"Free party IDs: {_idPool.Count}/{MaxNumParties}");
     }
 }
