@@ -37,6 +37,33 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "packet",
+            "command": "dotnet",
+            "type":"process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/Arrowgene.Ddon.Cli/Arrowgene.Ddon.Cli.csproj",
+                "packet",
+                "${input:pathToYaml}",
+                "${input:camelliaKey}"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ],
+    "inputs": [
+        {
+            "id": "pathToYaml",
+            "description": "Path to Wireshark packet capture YAML",
+            "default": "C:\\Users\\xx\\Downloads\\dumps\\85_11.yaml",
+            "type": "promptString"
+        },
+        {
+            "id": "camelliaKey",
+            "description": "Camellia Key",
+            "type": "promptString"
         }
     ]
 }
