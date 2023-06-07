@@ -94,6 +94,7 @@ namespace Arrowgene.Ddon.Cli
             AddCommand(new ServerCommand());
             AddCommand(new HelpCommand(_commands));
             AddCommand(new ClientCommand());
+            AddCommand(new PacketCommand());
         }
 
         private void RunArguments(string[] arguments)
