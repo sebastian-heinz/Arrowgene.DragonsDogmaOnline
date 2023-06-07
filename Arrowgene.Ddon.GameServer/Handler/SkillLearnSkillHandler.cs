@@ -1,4 +1,5 @@
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -13,30 +14,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillLearnSkillHandler));
         
+        private readonly JobManager jobManager;
+
         public SkillLearnSkillHandler(DdonGameServer server) : base(server)
         {
+            this.jobManager = server.JobManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillLearnSkillReq> packet)
         {
-            CustomSkill newSkill = new CustomSkill()
-            {
-                Job = packet.Structure.Job,
-                SkillId = packet.Structure.SkillId,
-                SkillLv = packet.Structure.SkillLv
-            };
-            client.Character.LearnedCustomSkills.Add(newSkill);
-            Server.Database.ReplaceLearnedCustomSkill(client.Character.CommonId, newSkill);
-
-            // TODO: substract cost, save to db
-
-            client.Send(new S2CSkillLearnSkillRes()
-            {
-                Job = packet.Structure.Job,
-                NewJobPoint = client.Character.ActiveCharacterJobData.JobPoint,
-                SkillId = packet.Structure.SkillId,
-                SkillLv = packet.Structure.SkillLv
-            });
+            this.jobManager.UnlockSkill(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SkillId, packet.Structure.SkillLv);
         }
     }
 }

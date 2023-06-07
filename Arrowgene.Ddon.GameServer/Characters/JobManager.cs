@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -134,6 +135,52 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public void UnlockSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv)
+        {
+            CustomSkill newSkill = new CustomSkill()
+            {
+                Job = job,
+                SkillId = skillId,
+                SkillLv = skillLv
+            };
+            character.LearnedCustomSkills.Add(newSkill);
+            database.ReplaceLearnedCustomSkill(character.CommonId, newSkill);
+
+            uint jpCost = SkillGetAcquirableSkillListHandler.AllSkills
+                .Where(skill => skill.Job == job && skill.SkillNo == skillId)
+                .SelectMany(skill => skill.Params)
+                .Where(skillParams => skillParams.Lv == skillLv)
+                .Select(skillParams => skillParams.RequireJobPoint)
+                .Single();
+
+            // TODO: Check that this doesn't end up negative
+            CDataCharacterJobData activeCharacterJobData = character.ActiveCharacterJobData;
+            activeCharacterJobData.JobPoint -= jpCost;
+            database.UpdateCharacterJobData(character.CommonId, activeCharacterJobData);
+
+            if(character is Character)
+            {
+                client.Send(new S2CSkillLearnSkillRes()
+                {
+                    Job = job,
+                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    SkillId = skillId,
+                    SkillLv = skillLv
+                });
+            }
+            else if(character is Pawn)
+            {
+                client.Send(new S2CSkillLearnPawnSkillRes()
+                {
+                    PawnId = ((Pawn) character).PawnId,
+                    Job = job,
+                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    SkillId = skillId,
+                    SkillLv = skillLv
+                });
+            }
+        }
+
         public CustomSkill SetSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, byte slotNo, uint skillId, byte skillLv)
         {
             // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
@@ -199,6 +246,45 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // I haven't found a packet to notify this to other players
             // From what I tested it doesn't seem to be necessary
+        }
+
+        public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)
+        {
+            Ability newAbility = new Ability()
+            {
+                Job = job,
+                AbilityId = abilityId,
+                AbilityLv = abilityLv
+            };
+            character.LearnedAbilities.Add(newAbility);
+            database.ReplaceLearnedAbility(character.CommonId, newAbility);
+
+            uint jpCost = SkillGetAcquirableAbilityListHandler.AllAbilities
+                .Where(aug => aug.Job == job && aug.AbilityNo == abilityId)
+                .SelectMany(aug => aug.Params)
+                .Where(augParams => augParams.Lv == abilityLv)
+                .Select(augParams => augParams.RequireJobPoint)
+                .Single();
+
+            // TODO: Check that this doesn't end up negative
+            CDataCharacterJobData activeCharacterJobData = character.ActiveCharacterJobData;
+            activeCharacterJobData.JobPoint -= jpCost;
+            database.UpdateCharacterJobData(character.CommonId, activeCharacterJobData);
+
+            if(character is Character)
+            {
+                client.Send(new S2CSkillLearnAbilityRes()
+                {
+                    Job = job,
+                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    AbilityId = abilityId,
+                    AbilityLv = abilityLv
+                });
+            }
+            else if(character is Pawn)
+            {
+                // TODO: S2CSkillLearnPawnAbilityRes
+            }
         }
 
         public Ability SetAbility(IDatabase database, GameClient client, CharacterCommon character, JobId abilityJob, byte slotNo, uint abilityId, byte abilityLv)
