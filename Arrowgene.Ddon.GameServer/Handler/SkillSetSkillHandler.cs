@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CustomSkill skillSlot = gameServer.JobManager.SetSkill(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
             client.Send(new S2CSkillSetSkillRes() {
                 Job = skillSlot.Job,
-                SlotNo = skillSlot.SlotNo,
+                SlotNo = packet.Structure.SlotNo,
                 SkillId = skillSlot.SkillId,
                 SkillLv = skillSlot.SkillLv
             });

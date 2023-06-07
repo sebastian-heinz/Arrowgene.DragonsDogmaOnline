@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
             client.Send(new S2CSkillGetPawnLearnedNormalSkillListRes() {
                 PawnId = pawn.PawnId,
-                NormalSkillParamList = pawn.NormalSkills
+                NormalSkillParamList = pawn.LearnedNormalSkills
             });
         }
     }

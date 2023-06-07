@@ -5,6 +5,8 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -19,6 +21,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
     public class ExpManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ExpManager));
+
         private static readonly byte LV_CAP = 120;
 
         // E.g. EXP_UNTIL_NEXT_LV[3] = 800, meaning as Lv 3 you need 800 exp to level to Lv 4
@@ -144,6 +148,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             /* Lv 118 */ 5000000,
             /* Lv 119 */ 5000000,
         };
+        
+        // E.g. LEVEL_UP_JOB_POINTS_EARNED[3] = 300, meaning you earn 300 JP when you reach Lv 3
+        public static readonly uint[] LEVEL_UP_JOB_POINTS_EARNED = new uint[] {0,200,200,300,300,400,400,500,600,700,700,800,1000,1200,1400,1600,1800,2000,2300,2600,2900,3300,3500,3800,3800,4000,4000,4500,4500,5000,5000,5500,5800,5800,6500,6500,6800,6800,8000,8000,9000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
         private static readonly Dictionary<JobId, JobLevelUp[]> LEVEL_UP_TABLE = new Dictionary<JobId, JobLevelUp[]>()
             {
@@ -1960,11 +1967,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // LEVEL UP
                 uint currentLevel = activeCharacterJobData.Lv;
                 uint targetLevel = currentLevel;
-                uint addJobPoint = 0; // TODO: Figure out
+                uint addJobPoint = 0;
 
                 while (targetLevel < LV_CAP && activeCharacterJobData.Exp >= this.TotalExpToLevelUpTo(targetLevel + 1))
                 {
                     targetLevel++;
+                    addJobPoint+=LEVEL_UP_JOB_POINTS_EARNED[targetLevel];
                 }
 
                 if (currentLevel != targetLevel)
