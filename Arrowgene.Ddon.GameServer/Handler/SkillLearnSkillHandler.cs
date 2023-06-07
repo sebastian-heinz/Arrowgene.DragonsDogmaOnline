@@ -19,19 +19,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillLearnSkillReq> packet)
         {
-            // TODO: Move to DB
-            client.Character.LearnedCustomSkills.Add(new CDataLearnedSetAcquirementParam()
+            CustomSkill newSkill = new CustomSkill()
             {
                 Job = packet.Structure.Job,
-                Type = 0, // TODO: Figure out
-                AcquirementNo = packet.Structure.SkillId,
-                AcquirementLv = packet.Structure.SkillLv,
-                AcquirementParamId = 0 // TODO: Figure out
-            });
+                SkillId = packet.Structure.SkillId,
+                SkillLv = packet.Structure.SkillLv
+            };
+            client.Character.LearnedCustomSkills.Add(newSkill);
+            Server.Database.ReplaceLearnedCustomSkill(client.Character.CommonId, newSkill);
+
+            // TODO: substract cost, save to db
+
             client.Send(new S2CSkillLearnSkillRes()
             {
                 Job = packet.Structure.Job,
-                NewJobPoint = client.Character.ActiveCharacterJobData.JobPoint, // TODO: substract cost, save to db
+                NewJobPoint = client.Character.ActiveCharacterJobData.JobPoint,
                 SkillId = packet.Structure.SkillId,
                 SkillLv = packet.Structure.SkillLv
             });

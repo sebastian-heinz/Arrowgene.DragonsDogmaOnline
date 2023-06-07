@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             if(packet.Structure.SlotNo == 0)
             {
-                Logger.Error(client, $"Requesting to set an ability to slot 0\n{client.Character.Abilities}");
+                Logger.Error(client, $"Requesting to set an ability to slot 0");
             }
             
             // For some reason JobId is received as 0, unlike in SkillSetAbilityHandler, where it's set to its correct value
@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(new S2CSkillSetPawnAbilityRes() {
                 PawnId = pawn.PawnId,
-                SlotNo = abilitySlot.SlotNo,
+                SlotNo = packet.Structure.SlotNo,
                 AbilityId = abilitySlot.AbilityId,
                 AbilityLv = abilitySlot.AbilityLv
             });

@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Send(new S2CSkillGetLearnedSkillListRes()
             {
-                SetAcquierementParam = client.Character.LearnedCustomSkills
+                SetAcquierementParam = client.Character.LearnedCustomSkills.Select(x => x.AsCDataLearnedSetAcquirementParam()).ToList()
             });
         }
     }

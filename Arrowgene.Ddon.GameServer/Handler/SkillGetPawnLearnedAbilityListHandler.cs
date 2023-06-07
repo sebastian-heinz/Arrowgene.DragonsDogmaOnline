@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(new S2CSkillGetPawnLearnedAbilityListRes()
             {
                 PawnId = pawn.PawnId,
-                SetAcquierementParam = pawn.LearnedAbilities
+                SetAcquierementParam = pawn.LearnedAbilities.Select(x => x.AsCDataLearnedSetAcquirementParam()).ToList()
             });
         }
     }

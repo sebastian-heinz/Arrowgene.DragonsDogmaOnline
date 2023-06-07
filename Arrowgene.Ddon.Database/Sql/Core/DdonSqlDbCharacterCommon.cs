@@ -167,24 +167,53 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             // Custom Skills
+            ExecuteReader(conn, SqlSelectLearnedCustomSkills,
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        common.LearnedCustomSkills.Add(ReadLearnedCustomSkill(reader));
+                    }
+                });
             ExecuteReader(conn, SqlSelectEquippedCustomSkills,
                 command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        common.CustomSkills.Add(ReadCustomSkill(reader));
+                        uint skillId = GetUInt32(reader, "skill_id");
+                        JobId job = (JobId) GetByte(reader, "job");
+                        CustomSkill skill = common.LearnedCustomSkills.Where(x => x.Job == job && x.SkillId == skillId).Single();
+
+                        byte slotNo = GetByte(reader, "slot_no");
+                        common.EquippedCustomSkillsDictionary[job][slotNo-1] = skill;
                     }
                 });
 
             // Abilities
+            ExecuteReader(conn, SqlSelectLearnedAbilities,
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        common.LearnedAbilities.Add(ReadLearnedAbility(reader));
+                    }
+                });
             ExecuteReader(conn, SqlSelectEquippedAbilities,
                 command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        common.Abilities.Add(ReadAbility(reader));
+                        uint abilityId = GetUInt32(reader, "ability_id");
+                        JobId job = (JobId) GetByte(reader, "job");
+                        JobId equippedToJob = (JobId) GetByte(reader, "equipped_to_job");
+                        Ability aug = common.LearnedAbilities.Where(x => x.Job == job && x.AbilityId == abilityId).Single();
+
+                        byte slotNo = GetByte(reader, "slot_no");
+                        common.EquippedAbilitiesDictionary[equippedToJob][slotNo-1] = aug;
                     }
                 });
         }
@@ -218,20 +247,53 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
             }
 
-            foreach(CustomSkill skill in common.CustomSkills)
+            foreach(CustomSkill learnedSkills in common.LearnedCustomSkills)
             {
-                ExecuteNonQuery(conn, SqlReplaceEquippedCustomSkill, command =>
+                ExecuteNonQuery(conn, SqlReplaceLearnedCustomSkill, command => 
                 {
-                    AddParameter(command, common.CommonId, skill);
+                    AddParameter(command, common.CommonId, learnedSkills);
                 });
             }
 
-            foreach(Ability ability in common.Abilities)
+            foreach(KeyValuePair<JobId, List<CustomSkill>> jobAndSkills in common.EquippedCustomSkillsDictionary)
             {
-                ExecuteNonQuery(conn, SqlReplaceEquippedAbility, command =>
+                for(int i=0; i<jobAndSkills.Value.Count; i++)
+                {
+                    CustomSkill? skill = jobAndSkills.Value[i];
+                    byte slotNo = (byte)(i+1);
+                    if(skill != null)
+                    {
+                        ExecuteNonQuery(conn, SqlReplaceEquippedCustomSkill, command =>
+                        {
+                            AddParameter(command, common.CommonId, slotNo, skill);
+                        });
+                    }
+                }
+            }
+
+            foreach(Ability ability in common.LearnedAbilities)
+            {
+                ExecuteNonQuery(conn, SqlReplaceLearnedAbility, command =>
                 {
                     AddParameter(command, common.CommonId, ability);
                 });
+            }
+
+            foreach(KeyValuePair<JobId, List<Ability>> jobAndAugs in common.EquippedAbilitiesDictionary)
+            {
+                JobId equippedToJob = jobAndAugs.Key;
+                for(int i=0; i<jobAndAugs.Value.Count; i++)
+                {
+                    Ability? ability = jobAndAugs.Value[i];
+                    byte slotNo = (byte)(i+1);
+                    if(ability != null)
+                    {
+                        ExecuteNonQuery(conn, SqlReplaceEquippedAbility, command =>
+                        {
+                            AddParameter(command, common.CommonId, equippedToJob, slotNo, ability);
+                        });
+                    }
+                }
             }
         }
 
