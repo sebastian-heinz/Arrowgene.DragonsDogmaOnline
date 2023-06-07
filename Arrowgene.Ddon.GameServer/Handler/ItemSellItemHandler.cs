@@ -22,6 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Send(new S2CItemSellItemRes());
 
+            uint totalAmountToAdd = 0;
+
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
             ntc.UpdateType = 267;
             foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
@@ -56,16 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 uint goldValue = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, item.ItemId).Price;
                 uint amountToAdd = goldValue * consumeItem.Num;
-
-                CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).First();
-                characterWalletPoint.Value += amountToAdd; // TODO: Cap to maximum for that wallet
-                Database.UpdateWalletPoint(client.Character.CharacterId, characterWalletPoint);
-
-                CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
-                walletUpdate.Type = WalletType.Gold;
-                walletUpdate.AddPoint = (int) amountToAdd;
-                walletUpdate.Value = characterWalletPoint.Value;
-                ntc.UpdateWalletList.Add(walletUpdate);
+                totalAmountToAdd += amountToAdd;
 
                 if(newItemNum == 0)
                 {
@@ -79,8 +72,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Server.Database.ReplaceStorageItem(client.Character.CharacterId, consumeItem.StorageType, itemSlot, item.UId, newItemNum);
                 }
 
-                client.Send(ntc);
             }
+            
+            CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).First();
+            characterWalletPoint.Value += totalAmountToAdd; // TODO: Cap to maximum for that wallet
+            Database.UpdateWalletPoint(client.Character.CharacterId, characterWalletPoint);
+
+            CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
+            walletUpdate.Type = WalletType.Gold;
+            walletUpdate.AddPoint = (int) totalAmountToAdd;
+            walletUpdate.Value = characterWalletPoint.Value;
+            ntc.UpdateWalletList.Add(walletUpdate);
+
+            client.Send(ntc);
         }
     }
 }
