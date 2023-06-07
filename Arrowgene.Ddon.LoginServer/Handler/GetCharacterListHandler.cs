@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             foreach (Character c in characters)
             {
                 CDataCharacterListInfo cResponse = new CDataCharacterListInfo();
-                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = (uint)c.Id;
+                cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = (uint)c.CharacterId;
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = c.FirstName;
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = c.LastName;
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.Job;
@@ -46,11 +46,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 //cResponse.CharacterListElement.EntryJobBaseInfo.Level = (byte) c.CharacterInfo.MatchingProfile.EntryJobLevel;
                 cResponse.EditInfo = c.EditInfo;
                 cResponse.MatchingProfile = c.MatchingProfile;
-                cResponse.EquipItemInfo = c.CharacterEquipViewDataListDictionary[c.Job]
-                    .Union(c.CharacterEquipDataListDictionary[c.Job])
-                    .SelectMany(x => x.Equips)
-                    .ToList();
-                    
+                cResponse.EquipItemInfo = c.Equipment.getEquipmentAsCDataEquipItemInfo(c.Job, EquipType.Performance)
+                    .Union(c.Equipment.getEquipmentAsCDataEquipItemInfo(c.Job, EquipType.Visual))
+                    .ToList();                    
 
                 characterListResponse.Add(cResponse);
             }

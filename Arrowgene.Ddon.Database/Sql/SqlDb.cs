@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Data;
 using System.Data.Common;
 
@@ -50,12 +52,12 @@ namespace Arrowgene.Ddon.Database.Sql
             return ExecuteNonQuery(null, query, nonQueryAction);
         }
 
-        public int ExecuteNonQuery(TCon conn, string query, Action<TCom> nonQueryAction)
+        public int ExecuteNonQuery(TCon? conn, string query, Action<TCom> nonQueryAction)
         {
             try
             {
                 bool autoCloseConnection = false;
-                TCon connection = conn;
+                TCon? connection = conn;
                 if (connection == null)
                 {
                     autoCloseConnection = true;
@@ -88,12 +90,12 @@ namespace Arrowgene.Ddon.Database.Sql
             return ExecuteNonQuery(null, query, nonQueryAction, out autoIncrement);
         }
 
-        public int ExecuteNonQuery(TCon conn, string query, Action<TCom> nonQueryAction, out long autoIncrement)
+        public int ExecuteNonQuery(TCon? conn, string query, Action<TCom> nonQueryAction, out long autoIncrement)
         {
             try
             {
                 bool autoCloseConnection = false;
-                TCon connection = conn;
+                TCon? connection = conn;
                 if (connection == null)
                 {
                     autoCloseConnection = true;
@@ -128,12 +130,12 @@ namespace Arrowgene.Ddon.Database.Sql
             ExecuteReader(null, query, nonQueryAction, readAction);
         }
 
-        public void ExecuteReader(TCon conn, string query, Action<TCom> nonQueryAction, Action<DbDataReader> readAction)
+        public void ExecuteReader(TCon? conn, string query, Action<TCom> nonQueryAction, Action<DbDataReader> readAction)
         {
             try
             {
                 bool autoCloseConnection = false;
-                TCon connection = conn;
+                TCon? connection = conn;
                 if (connection == null)
                 {
                     autoCloseConnection = true;
@@ -165,12 +167,12 @@ namespace Arrowgene.Ddon.Database.Sql
             ExecuteReader(null, query, readAction);
         }
 
-        public void ExecuteReader(TCon conn, string query, Action<DbDataReader> readAction)
+        public void ExecuteReader(TCon? conn, string query, Action<DbDataReader> readAction)
         {
             try
             {
                 bool autoCloseConnection = false;
-                TCon connection = conn;
+                TCon? connection = conn;
                 if (connection == null)
                 {
                     autoCloseConnection = true;
@@ -201,12 +203,12 @@ namespace Arrowgene.Ddon.Database.Sql
             Execute(null, query);
         }
 
-        public void Execute(TCon conn, string query)
+        public void Execute(TCon? conn, string query)
         {
             try
             {
                 bool autoCloseConnection = false;
-                TCon connection = conn;
+                TCon? connection = conn;
                 if (connection == null)
                 {
                     autoCloseConnection = true;
@@ -234,12 +236,12 @@ namespace Arrowgene.Ddon.Database.Sql
             return ServerVersion(null);
         }
 
-        public string ServerVersion(TCon conn)
+        public string ServerVersion(TCon? conn)
         {
             try
             {
                 bool autoCloseConnection = false;
-                TCon connection = conn;
+                TCon? connection = conn;
                 if (connection == null)
                 {
                     autoCloseConnection = true;
@@ -262,12 +264,12 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        protected virtual void Exception(Exception ex, string query = null)
+        protected virtual void Exception(Exception ex, string? query = null)
         {
             throw ex;
         }
 
-        protected DbParameter Parameter(TCom command, string name, object value, DbType type)
+        protected DbParameter Parameter(TCom command, string name, object? value, DbType type)
         {
             DbParameter parameter = command.CreateParameter();
             parameter.ParameterName = name;
@@ -281,7 +283,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return Parameter(command, name, value, DbType.String);
         }
 
-        protected void AddParameter(TCom command, string name, object value, DbType type)
+        protected void AddParameter(TCom command, string name, object? value, DbType type)
         {
             DbParameter parameter = Parameter(command, name, value, type);
             command.Parameters.Add(parameter);
@@ -327,6 +329,11 @@ namespace Arrowgene.Ddon.Database.Sql
             AddParameter(command, name, value, DbType.DateTime);
         }
 
+        protected void AddParameter(TCom command, string name, byte[] value)
+        {
+            AddParameter(command, name, value, DbType.Binary);
+        }
+
         protected void AddParameter(TCom command, string name, bool value)
         {
             AddParameter(command, name, value, DbType.Boolean);
@@ -342,7 +349,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetDateTime(ordinal);
         }
 
-        protected string GetStringNullable(DbDataReader reader, int ordinal)
+        protected string? GetStringNullable(DbDataReader reader, int ordinal)
         {
             if (reader.IsDBNull(ordinal))
             {
@@ -350,6 +357,18 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             return reader.GetString(ordinal);
+        }
+
+        protected byte[]? GetBytesNullable(DbDataReader reader, int ordinal, int size)
+        {
+            if(reader.IsDBNull(ordinal))
+            {
+                return null;
+            }
+
+            byte[] buffer = new byte[size];
+            reader.GetBytes(ordinal, 0, buffer, 0, size);
+            return buffer;
         }
 
         protected int GetInt32(DbDataReader reader, string column)
@@ -402,16 +421,29 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetDateTime(reader.GetOrdinal(column));
         }
 
+        protected byte[] GetBytes(DbDataReader reader, string column, int size)
+        {
+            byte[] buffer = new byte[size];
+            reader.GetBytes(reader.GetOrdinal(column), 0, buffer, 0, size);
+            return buffer;
+        }
+
         protected DateTime? GetDateTimeNullable(DbDataReader reader, string column)
         {
             int ordinal = reader.GetOrdinal(column);
             return GetDateTimeNullable(reader, ordinal);
         }
 
-        protected string GetStringNullable(DbDataReader reader, string column)
+        protected string? GetStringNullable(DbDataReader reader, string column)
         {
             int ordinal = reader.GetOrdinal(column);
             return GetStringNullable(reader, ordinal);
+        }
+
+        protected byte[]? GetBytesNullable(DbDataReader reader, string column, int size)
+        {
+            int ordinal = reader.GetOrdinal(column);
+            return GetBytesNullable(reader, ordinal, size);
         }
     }
 }

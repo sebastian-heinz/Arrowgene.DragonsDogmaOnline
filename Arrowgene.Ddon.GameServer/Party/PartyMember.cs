@@ -6,7 +6,6 @@ namespace Arrowgene.Ddon.GameServer.Party;
 
 public abstract class PartyMember
 {
-    public Character Character { get; set; }
     public byte MemberType { get; set; }
     public int MemberIndex { get; set; }
     public uint PawnId { get; set; }
@@ -17,12 +16,6 @@ public abstract class PartyMember
     public byte[] AnyValueList { get; set; }
     public byte SessionStatus { get; set; }
 
-    public CDataPartyMember GetCDataPartyMember()
-    {
-        CDataPartyMember partyMember = new CDataPartyMember();
-        GameStructure.CDataPartyMember(partyMember, this);
-        return partyMember;
-    }
-
+    public abstract CDataPartyMember GetCDataPartyMember();
     public abstract Packet GetS2CContextGetParty_ContextNtc();
 }

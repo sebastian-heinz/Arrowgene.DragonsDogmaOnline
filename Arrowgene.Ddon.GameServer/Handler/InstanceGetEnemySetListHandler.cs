@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.Stage = stageId;
 
    
-            List<EnemySpawn> spawns = _enemyManager.GetSpawns(stageId, subGroupId);
+            List<EnemySpawn> spawns = _enemyManager.GetAssets(stageId, subGroupId);
             
             // TODO test
             // spawns.AddRange(_enemyManager.GetSpawns(new StageId(1,0,15), 0));

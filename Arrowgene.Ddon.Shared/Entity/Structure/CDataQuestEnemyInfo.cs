@@ -4,21 +4,25 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
 public class CDataQuestEnemyInfo
 {
-    public CDataQuestEnemyInfo()
-    {
-
-    }
+    public uint GroupId { get; set; }
+    public ushort Lv { get; set; }
+    public bool IsPartyRecommend { get; set; }
     
     public class Serializer : EntitySerializer<CDataQuestEnemyInfo>
     {
         public override void Write(IBuffer buffer, CDataQuestEnemyInfo obj)
         {
-
+            WriteUInt32(buffer, obj.GroupId);
+            WriteUInt16(buffer, obj.Lv);
+            WriteBool(buffer, obj.IsPartyRecommend);
         }
 
         public override CDataQuestEnemyInfo Read(IBuffer buffer)
         {
             CDataQuestEnemyInfo obj = new CDataQuestEnemyInfo();
+            obj.GroupId = ReadUInt32(buffer);
+            obj.Lv = ReadUInt16(buffer);
+            obj.IsPartyRecommend = ReadBool(buffer);
             return obj;
         }
     }

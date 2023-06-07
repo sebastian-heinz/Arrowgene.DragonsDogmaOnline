@@ -17,3 +17,6 @@
 *.dll binary
 *.pfx binary
 *.csv binary
+
+research/* linguist-generated=true
+research/dti/* linguist-generated=true

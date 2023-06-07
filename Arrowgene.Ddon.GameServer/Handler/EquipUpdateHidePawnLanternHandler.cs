@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -18,6 +19,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Character.HideEquipLanternPawn= packet.Structure.Hide;
             Database.UpdateCharacterBaseInfo(client.Character);
+
+            foreach (Pawn pawn in client.Character.Pawns)
+            {
+                pawn.HideEquipLantern = packet.Structure.Hide;
+                Database.UpdateCharacterCommonBaseInfo(pawn);
+            }
+
             client.Send(new S2CEquipUpdateHidePawnLanternRes()
             {
                 Hide = packet.Structure.Hide
@@ -25,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CEquipUpdateEquipHideNtc ntc = new S2CEquipUpdateEquipHideNtc()
             {
-                CharacterId = client.Character.Id,
+                CharacterId = client.Character.CharacterId,
                 HideHead = client.Character.HideEquipHead,
                 HideLantern = client.Character.HideEquipLantern,
                 HidePawnHead = client.Character.HideEquipHeadPawn,

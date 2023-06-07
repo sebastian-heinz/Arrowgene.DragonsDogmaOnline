@@ -1,0 +1,5 @@
+<Project>
+    <PropertyGroup>
+        <Version>$([System.IO.File]::ReadAllText("$(ProjectDir)..\ddon.version"))</Version>
+    </PropertyGroup>
+</Project>

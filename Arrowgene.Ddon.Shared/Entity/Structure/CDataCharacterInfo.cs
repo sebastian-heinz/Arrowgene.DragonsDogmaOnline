@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataCharacterInfo(Character character)
         {
-            CharacterId = character.Id;
+            CharacterId = character.CharacterId;
             UserId = character.UserId;
             Version = character.Version;
             FirstName = character.FirstName;
@@ -19,12 +19,16 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Job = character.Job;
             CharacterJobDataList = character.CharacterJobDataList;
             PlayPointList = character.PlayPointList;
-            CharacterEquipDataList = character.CharacterEquipDataListDictionary[character.Job];
-            CharacterEquipViewDataList = character.CharacterEquipViewDataListDictionary[character.Job];
+            CharacterEquipDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
+                    Equips = character.Equipment.getEquipmentAsCDataEquipItemInfo(character.Job, EquipType.Performance)
+            }};
+            CharacterEquipViewDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
+                    Equips = character.Equipment.getEquipmentAsCDataEquipItemInfo(character.Job, EquipType.Visual)
+            }};
             CharacterEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job];
             JewelrySlotNum = character.JewelrySlotNum;
             Unk0 = character.Unk0;
-            CharacterItemSlotInfoList = character.CharacterItemSlotInfoList;
+            CharacterItemSlotInfoList = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
             WalletPointList = character.WalletPointList;
             MyPawnSlotNum = character.MyPawnSlotNum;
             RentalPawnSlotNum = character.RentalPawnSlotNum;
@@ -59,8 +63,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterEquipJobItemList = new List<CDataEquipJobItem>();
             JewelrySlotNum = 0;
             Unk0 = new List<UnknownCharacterData0>();
-            CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>(); // Slots in each Item Bag and Storage
-            WalletPointList = new List<CDataWalletPoint>(); // Currencies? 1 is G, 2 is RP...
+            CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
+            WalletPointList = new List<CDataWalletPoint>();
             MyPawnSlotNum = 0;
             RentalPawnSlotNum = 0;
             OrbStatusList = new List<CDataOrbPageStatus>();

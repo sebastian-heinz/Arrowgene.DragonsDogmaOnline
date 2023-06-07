@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             });
         }
 
-        private bool IsSkillEX(uint skillNo)
+        public static bool IsSkillEX(uint skillNo)
         {
             return skillNo >= 100;
         }

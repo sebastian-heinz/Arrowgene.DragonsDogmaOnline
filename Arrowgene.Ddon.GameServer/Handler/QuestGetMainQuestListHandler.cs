@@ -20,7 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-             client.Send(GameFull.Dump_123);
+            client.Send(GameFull.Dump_123);
+
             S2CQuestGetMainQuestListRes res = new S2CQuestGetMainQuestListRes();
             res.KeyId = 1;
             res.QuestScheduleId = 1;
@@ -29,8 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.DetailMsgId = 2;
             res.OrderNpcId = 1;
             res.BaseLevel = 15;
-       
-           // client.Send(res);
+            //client.Send(res);
         }
     }
 }

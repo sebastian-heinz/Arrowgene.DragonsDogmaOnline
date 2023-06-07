@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Server.Network
 {
     public class Client
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Client));
+        private readonly ServerLogger Logger;
 
         protected readonly ITcpSocket Socket;
         private readonly PacketFactory _packetFactory;
@@ -24,6 +24,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public Client(ITcpSocket socket, PacketFactory packetFactory)
         {
+            Logger = LogProvider.Logger<ServerLogger>(GetType());
             Socket = socket;
             _packetFactory = packetFactory;
             _challenge = null;

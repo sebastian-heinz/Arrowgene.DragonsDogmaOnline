@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using Arrowgene.Buffers;
 
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared
 
         public static long GetUnixTime(DateTime dateTime)
         {
-            return ((DateTimeOffset) dateTime).ToUnixTimeSeconds();
+            return ((DateTimeOffset)dateTime).ToUnixTimeSeconds();
         }
 
         public static byte[] FromHexString(string hexString)
@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.Shared
                 high = (high & 0xf) + ((high & 0x40) >> 6) * 9;
                 low = (low & 0xf) + ((low & 0x40) >> 6) * 9;
 
-                ret[i] = (byte) ((high << 4) | low);
+                ret[i] = (byte)((high << 4) | low);
             }
 
             return ret;
@@ -115,7 +115,7 @@ namespace Arrowgene.Ddon.Shared
                         byte b = bytes[i + j];
                         line[hexColumn] = HexChars[(b >> 4) & 0xF];
                         line[hexColumn + 1] = HexChars[b & 0xF];
-                        line[charColumn] = (b < 32 ? '·' : (char) b);
+                        line[charColumn] = (b < 32 ? '·' : (char)b);
                     }
 
                     hexColumn += 3;
@@ -130,7 +130,7 @@ namespace Arrowgene.Ddon.Shared
             ret = ret += Environment.NewLine;
             return ret;
         }
-        
+
         public static string UnrootPath(string path)
         {
             // https://stackoverflow.com/questions/53102/why-does-path-combine-not-properly-concatenate-filenames-that-start-with-path-di
@@ -145,16 +145,111 @@ namespace Arrowgene.Ddon.Shared
 
         public static string ExecutingDirectory()
         {
-            //var path = Assembly.GetEntryAssembly().CodeBase;
-            //var uri = new Uri(path);
-            //var codeBase = Path.GetDirectoryName(uri.LocalPath);
-
-            // Console.WriteLine($"CodeBase {codeBase}");
-            // Console.WriteLine($"Launched from {Environment.CurrentDirectory}");
-            // Console.WriteLine($"Physical location {AppDomain.CurrentDomain.BaseDirectory}");
-            // Console.WriteLine($"AppContext.BaseDir {AppContext.BaseDirectory}");
-            // Console.WriteLine($"Runtime Call {Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}");
             return AppContext.BaseDirectory;
+        }
+
+        public static List<Dictionary<string, string>> DebugGetVersions()
+        {
+            List<Dictionary<string, string>> assemblyInfo = new List<Dictionary<string, string>>();
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (Assembly assembly in assemblies)
+            {
+                AssemblyName assemblyName = assembly.GetName();
+                string asmName = assemblyName.Name;
+                if (asmName == null)
+                {
+                    continue;
+                }
+
+                if (!asmName.StartsWith("Arrowgene.Ddon"))
+                {
+                    continue;
+                }
+
+                Version asmVersion = assemblyName.Version;
+                string asmVersionStr = "unknown";
+                if (asmVersion != null)
+                {
+                    asmVersionStr = asmVersion.ToString();
+                }
+                // FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+
+                AssemblyInformationalVersionAttribute asmInformalVersion =
+                    assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                string asmInformalVersionStr = "unknown";
+                if (asmInformalVersion != null)
+                {
+                    asmInformalVersionStr = asmInformalVersion.InformationalVersion;
+                }
+
+                if (asmInformalVersionStr.StartsWith(asmVersionStr))
+                {
+                    asmInformalVersionStr = asmInformalVersionStr.Substring(asmVersionStr.Length);
+                }
+
+                Dictionary<string, string> asmInfo = new Dictionary<string, string>();
+                asmInfo.Add("name", asmName);
+                asmInfo.Add("version", asmVersionStr);
+                asmInfo.Add("informalVersion", asmInformalVersionStr);
+                assemblyInfo.Add(asmInfo);
+            }
+
+
+            return assemblyInfo;
+        }
+
+        public static string GetVersion(string ddonComponent)
+        {
+            string gameServerVersion = "";
+            List<Dictionary<string, string>> versions = DebugGetVersions();
+            foreach (Dictionary<string, string> version in versions)
+            {
+                if (version["name"] != $"Arrowgene.Ddon.{ddonComponent}")
+                {
+                    continue;
+                }
+
+                gameServerVersion = $"{version["version"]}";
+                if (!string.IsNullOrWhiteSpace(version["informalVersion"]))
+                {
+                    gameServerVersion += $":{version["informalVersion"]}";
+                }
+            }
+
+            return gameServerVersion;
+        }
+
+        public static string[] DebugGetLocations()
+        {
+            string[] locations = new string[5];
+
+            try
+            {
+                var path = Assembly.GetEntryAssembly().CodeBase;
+                var uri = new Uri(path);
+                var codeBase = Path.GetDirectoryName(uri.LocalPath);
+                locations[0] = $"CodeBase: {codeBase}";
+            }
+            catch (Exception ex)
+            {
+                locations[0] = $"CodeBase: Caused Exception ({ex})";
+            }
+
+            locations[1] = $"Launched from {Environment.CurrentDirectory}";
+            locations[2] = $"Physical location {AppDomain.CurrentDomain.BaseDirectory}";
+            locations[3] = $"AppContext.BaseDir {AppContext.BaseDirectory}";
+
+            try
+            {
+                locations[4] = $"Runtime Call {Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}";
+            }
+            catch (Exception ex)
+            {
+                locations[4] = $"Runtime Call: Caused Exception ({ex})";
+            }
+
+            return locations;
         }
 
         public static string RelativeExecutingDirectory()
@@ -338,6 +433,5 @@ namespace Arrowgene.Ddon.Shared
 
             return dst;
         }
-
     }
 }

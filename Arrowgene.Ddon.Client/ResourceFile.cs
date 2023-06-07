@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Logging;
 
@@ -32,6 +33,18 @@ namespace Arrowgene.Ddon.Client
             }
         }
 
+        protected override void Write(IBuffer buffer)
+        {
+            byte[] magicTag = Encoding.UTF8.GetBytes(Magic);
+            buffer.WriteBytes(magicTag);
+            WriteResource(buffer);
+        }
+
         protected abstract void ReadResource(IBuffer buffer);
+
+        protected virtual void WriteResource(IBuffer buffer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

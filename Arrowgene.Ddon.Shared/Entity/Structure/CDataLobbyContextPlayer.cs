@@ -5,13 +5,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataLobbyContextPlayer
     {
-        public CDataLobbyContextPlayer(Character character)
-        {
-            Base = new CDataContextBase(character);
-            PlayerInfo = new CDataContextPlayerInfo(character);
-            EditInfo = character.EditInfo;
-        }
-
         public CDataLobbyContextPlayer()
         {
             Base=new CDataContextBase();

@@ -6,6 +6,8 @@ using Arrowgene.Logging;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
+using System.Linq;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -13,6 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemUseBagItemHandler));
 
+        private static readonly StorageType DestinationStorageType = StorageType.ItemBagConsumable;
 
         public ItemUseBagItemHandler(DdonGameServer server) : base(server)
         {
@@ -20,51 +23,64 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SItemUseBagItemReq> req)
         {
-            S2CItemUseBagItemRes res = new S2CItemUseBagItemRes(req.Structure);
+            S2CItemUseBagItemRes res = new S2CItemUseBagItemRes();
             client.Send(res);
 
+            // TODO: Send S2CItemUseBagItemNtc?
 
-            CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
-            ntcData0.ItemList.Unk0 = req.Structure.ItemUID;
-            ntcData0.ItemList.Unk2 = 9;
-            ntcData0.ItemList.Unk3 = 0;
-            ntcData0.ItemList.Unk4 = 1;
-            ntcData0.ItemList.Unk6 = 0;
-            ntcData0.ItemList.Unk7 = 0;
-            ntcData0.ItemList.Unk8 = false;
-            ntcData0.ItemList.Unk9 = 0;
-            ntcData0.ItemList.Unk10 = 0;
-            ntcData0.ItemList.Unk11 = 0;
-            ntcData0.ItemList.Unk12 = new List<CDataWeaponCrestData>();
-            ntcData0.ItemList.Unk13 = new List<CDataArmorCrestData>();
-            ntcData0.ItemList.Unk14 = new List<CDataEquipElementParam>();
-            ntcData0.UpdateItemNum = 0;
+            var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
+                .Select((x, index) => new {item = x, slot = index+1})
+                .Where(tuple => tuple.item?.Item1.UId == req.Structure.ItemUId)
+                .First();
+            Item item = tuple.item.Item1;
+            uint itemNum = tuple.item.Item2;
+            ushort slotNo = (ushort) tuple.slot;
 
-            if (req.Structure.ItemUID == "12345678") { ntcData0.ItemList.Unk1 = 13807; ntcData0.ItemList.Unk5 = 1; }
-            if (req.Structure.ItemUID == "12345679") { ntcData0.ItemList.Unk1 = 11407; ntcData0.ItemList.Unk5 = 2; }
-            if (req.Structure.ItemUID == "12345680") { ntcData0.ItemList.Unk1 = 9378; ntcData0.ItemList.Unk5 = 3; }
-            if (req.Structure.ItemUID == "12345681") { ntcData0.ItemList.Unk1 = 13801; ntcData0.ItemList.Unk5 = 4; }
-            if (req.Structure.ItemUID == "12345682") { ntcData0.ItemList.Unk1 = 55; ntcData0.ItemList.Unk5 = 5; }
-            if (req.Structure.ItemUID == "12345683") { ntcData0.ItemList.Unk1 = 9387; ntcData0.ItemList.Unk5 = 6; }
-            if (req.Structure.ItemUID == "12345684") { ntcData0.ItemList.Unk1 = 9389; ntcData0.ItemList.Unk5 = 7; }
-            if (req.Structure.ItemUID == "12345685") { ntcData0.ItemList.Unk1 = 9429; ntcData0.ItemList.Unk5 = 8; }
-            if (req.Structure.ItemUID == "12345686") { ntcData0.ItemList.Unk1 = 47; ntcData0.ItemList.Unk5 = 9; }
-            if (req.Structure.ItemUID == "12345687") { ntcData0.ItemList.Unk1 = 9404; ntcData0.ItemList.Unk5 = 10; }
-            if (req.Structure.ItemUID == "12345688") { ntcData0.ItemList.Unk1 = 9405; ntcData0.ItemList.Unk5 = 11; }
-            if (req.Structure.ItemUID == "12345689") { ntcData0.ItemList.Unk1 = 9406; ntcData0.ItemList.Unk5 = 12; }
-            CDataUpdateWalletPoint ntcData1 = new CDataUpdateWalletPoint();
+            itemNum--;
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.Unk0 = 3;
-            ntc.ItemUpdateResultList.Add(ntcData0);
-            ntc.UpdateWalletPointList.Add(ntcData1);
+            ntc.UpdateType = 3;
+
+            CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
+            ntcData0.ItemList.ItemUId = item.UId;
+            ntcData0.ItemList.ItemId = item.ItemId;
+            ntcData0.ItemList.ItemNum = itemNum;
+            ntcData0.ItemList.Unk3 = item.Unk3;
+            ntcData0.ItemList.StorageType = DestinationStorageType;
+            ntcData0.ItemList.SlotNo = slotNo;
+            ntcData0.ItemList.Color = item.Color; // ?
+            ntcData0.ItemList.PlusValue = item.PlusValue; // ?
+            ntcData0.ItemList.Bind = false;
+            ntcData0.ItemList.EquipPoint = 0;
+            ntcData0.ItemList.EquipCharacterID = 0;
+            ntcData0.ItemList.EquipPawnID = 0;
+            ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+            ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+            ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
+            ntcData0.UpdateItemNum = -1;
+            ntc.UpdateItemList.Add(ntcData0);
+
+            if(itemNum == 0)
+            {
+                // Delete item when ItemNum reaches 0 to free up the slot
+                client.Character.Storage.setStorageItem(null, 0, DestinationStorageType, slotNo);
+                Server.Database.DeleteStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo);
+            }
+            else
+            {
+                client.Character.Storage.setStorageItem(item, itemNum, DestinationStorageType, slotNo);
+                Server.Database.ReplaceStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo, item.UId, itemNum);
+            }
+
             client.Send(ntc);
 
-            if (req.Structure.ItemUID == "12345682")
-            { client.Send(SelectedDump.lantern2_27_16); }
-
-
-
+            // Lantern start NTC
+            // TODO: Figure out all item IDs that do lantern stuff
+            if (item.ItemId == 55)
+            { 
+                client.Send(SelectedDump.lantern2_27_16); 
+                // TODO: Send S2C_CHARACTER_START_LANTERN_OTHER_NOTICE to other party members?
+            }
         }
     }
 }

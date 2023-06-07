@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CPartyPartyInviteEntryNtc ntc = new S2CPartyPartyInviteEntryNtc
             {
-                CharacterId = client.Character.Id,
+                CharacterId = client.Character.CharacterId,
                 NowMember = (uint)client.Party.MemberCount(),
                 MaxMember = client.Party.MaxSlots // TODO: Check if i can place like 20 players or something
             };

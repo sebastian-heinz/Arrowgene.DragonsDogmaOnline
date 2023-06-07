@@ -1,3 +1,4 @@
+using System.Linq;
 /*
  * This file is part of Arrowgene.Ddon.GameServer
  *
@@ -29,6 +30,7 @@ using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Enemy;
+using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -37,8 +39,11 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
+using Arrowgene.Ddon.GameServer.Shop;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -46,16 +51,25 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
+        // TODO: Maybe place somewhere else
+        public static readonly TimeSpan RevivalPowerRechargeTimeSpan = TimeSpan.FromDays(1);
+
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
-            ChatManager = new ChatManager(this, Router);
-            EnemyManager = new EnemyManager(assetRepository, database);
-            PartyManager = new PartyManager();
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
+            ChatManager = new ChatManager(this, Router);
+            EnemyManager = new EnemyManager(assetRepository, database);
+            ItemManager = new ItemManager();
+            GatheringItemManager = new GatheringItemManager(assetRepository, database);
+            PartyManager = new PartyManager();
+            ExpManager = new ExpManager(database, ClientLookup);
+            JobManager = new JobManager();
+            EquipManager = new EquipManager();
+            ShopManager = new ShopManager(assetRepository, database);
 
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
@@ -66,7 +80,13 @@ namespace Arrowgene.Ddon.GameServer
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
         public EnemyManager EnemyManager { get; }
+        public ItemManager ItemManager { get; }
+        public GatheringItemManager GatheringItemManager { get; }
         public PartyManager PartyManager { get; }
+        public ExpManager ExpManager { get; }
+        public ShopManager ShopManager { get; }
+        public JobManager JobManager { get; }
+        public EquipManager EquipManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
@@ -74,6 +94,9 @@ namespace Arrowgene.Ddon.GameServer
         public List<CDataStageInfo> StageList { get; }
 
         public override GameClientLookup ClientLookup { get; }
+        
+        // TODO: Maybe place somewhere else
+        public readonly Dictionary<uint, DateTime> LastRevivalPowerRechargeTime = new Dictionary<uint, DateTime>();
 
         public override void Start()
         {
@@ -123,7 +146,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver));
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), ShopManager, GatheringItemManager);
             ClientLookup.Add(newClient);
             return newClient;
         }
@@ -150,10 +173,12 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new CharacterCommunityCharacterStatusGetHandler(this));
             AddHandler(new CharacterDecideCharacterIdHandler(this));
+            AddHandler(new CharacterGetReviveChargeableTimeHandler(this));
             AddHandler(new CharacterCharacterGoldenReviveHandler(this));
             AddHandler(new CharacterCharacterPenaltyReviveHandler(this));
             AddHandler(new CharacterCharacterPointReviveHandler(this));
             AddHandler(new CharacterCharacterSearchHandler(this));
+            AddHandler(new CharacterChargeRevivePointHandler(this));
             AddHandler(new CharacterPawnGoldenReviveHandler(this));
             AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
@@ -181,8 +206,13 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new ContextGetSetContextHandler(this));
             AddHandler(new ContextSetContextHandler(this));
+            AddHandler(new CraftGetCraftProgressListHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
 
+            AddHandler(new EquipChangeCharacterEquipHandler(this));
+            AddHandler(new EquipChangeCharacterStorageEquipHandler(this));
+            AddHandler(new EquipChangePawnEquipHandler(this));
+            AddHandler(new EquipChangePawnStorageEquipHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
             AddHandler(new EquipUpdateHideCharacterHeadArmorHandler(this));
             AddHandler(new EquipUpdateHideCharacterLanternHandler(this));
@@ -199,8 +229,10 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
 
+            AddHandler(new InnGetPenaltyHealStayPrice(this));
             AddHandler(new InnGetStayPriceHandler(this));
             AddHandler(new InnStayInnHandler(this));
+            AddHandler(new InnStayPenaltyHealInn(this));
 
             AddHandler(new InstanceEnemyGroupEntryHandler(this));
             AddHandler(new InstanceEnemyGroupLeaveHandler(this));
@@ -216,13 +248,18 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
 
+            AddHandler(new ItemConsumeStorageItemHandler(this));
             AddHandler(new ItemGetStorageItemListHandler(this));
+            AddHandler(new ItemMoveItemHandler(this));
+            AddHandler(new ItemSellItemHandler(this));
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
-            AddHandler(new ItemSortSetItemSortdataBinHandler(this));
+            AddHandler(new ItemSortSetItemSortDataBinHandler(this));
             AddHandler(new ItemUseBagItemHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
+            AddHandler(new JobChangePawnJobHandler(this));
             AddHandler(new JobGetJobChangeListHandler(this));
+            AddHandler(new JobUpdateExpModeHandler(this));
 
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
@@ -265,22 +302,28 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartySendBinaryMsgAllHandler(this));
             AddHandler(new PartySendBinaryMsgHandler(this));
 
+            AddHandler(new PawnGetLostPawnListHandler(this));
             AddHandler(new PawnGetMypawnDataHandler(this));
             AddHandler(new PawnGetMyPawnListHandler(this));
             AddHandler(new PawnGetNoraPawnListHandler(this));
+            AddHandler(new PawnGetPartyPawnDataHandler(this));
             AddHandler(new PawnGetPawnHistoryListHandler(this));
+            AddHandler(new PawnGetPawnTotalScoreHandler(this));
             AddHandler(new PawnGetRegisteredPawnDataHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
             AddHandler(new PawnJoinPartyMypawnHandler(this));
             AddHandler(new PawnTrainingGetPreparetionInfoToAdviceHandler(this));
-
-            AddHandler(new PawnGetLostPawnListHandler(this));
+            
+            AddHandler(new ProfileGetCharacterProfileHandler(this));
+            AddHandler(new ProfileGetMyCharacterProfileHandler(this));
+            
             AddHandler(new QuestEndDistributionQuestCancelHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestListHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
             AddHandler(new QuestGetAreaBonusListHandler(this));
             AddHandler(new QuestGetCycleContentsStateListHandler(this));
             AddHandler(new QuestGetLevelBonusListHandler(this));
+            AddHandler(new QuestGetLightQuestList(this));
             AddHandler(new QuestGetLotQuestListHandler(this));
             AddHandler(new QuestGetMainQuestListHandler(this));
             AddHandler(new QuestGetPackageQuestListHandler(this));
@@ -308,14 +351,26 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new SkillGetLearnedAbilityListHandler(this));
             AddHandler(new SkillGetLearnedNormalSkillListHandler(this));
             AddHandler(new SkillGetLearnedSkillListHandler(this));
+            AddHandler(new SkillGetPawnAbilityCostHandler(this));
+            AddHandler(new SkillGetPawnLearnedAbilityListHandler(this));
+            AddHandler(new SkillGetPawnLearnedNormalSkillListHandler(this));
+            AddHandler(new SkillGetPawnLearnedSkillListHandler(this));
+            AddHandler(new SkillGetPawnSetAbilityListHandler(this));
+            AddHandler(new SkillGetPawnSetSkillListHandler(this));
             AddHandler(new SkillGetPresetAbilityListHandler(this));
             AddHandler(new SkillGetSetAbilityListHandler(this));
             AddHandler(new SkillGetSetSkillListHandler(this));
             AddHandler(new SkillSetAbilityHandler(this));
             AddHandler(new SkillSetOffAbilityHandler(this));
+            AddHandler(new SkillSetOffPawnAbilityHandler(this));
+            AddHandler(new SkillSetOffPawnSkillHandler(this));
             AddHandler(new SkillSetOffSkillHandler(this));
+            AddHandler(new SkillSetPawnAbilityHandler(this));
+            AddHandler(new SkillSetPawnSkillHandler(this));
             AddHandler(new SkillSetSkillHandler(this));
             AddHandler(new SetShortcutHandler(this));
+            AddHandler(new ShopBuyShopGoodsHandler(this));
+            AddHandler(new ShopGetShopGoodsListHandler(this));
             AddHandler(new SetCommunicationShortcutHandler(this));
 
             AddHandler(new StageAreaChangeHandler(this));
@@ -329,9 +384,11 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new WarpGetReturnLocationHandler(this));
             AddHandler(new WarpGetStartPointListHandler(this));
             AddHandler(new WarpGetWarpPointListHandler(this));
+            AddHandler(new WarpPartyWarpHandler(this));
             AddHandler(new WarpRegisterFavoriteWarpHandler(this));
             AddHandler(new WarpReleaseWarpPointHandler(this));
             AddHandler(new WarpWarpHandler(this));
+            AddHandler(new WarpWarpStartHandler(this));
         }
     }
 }
