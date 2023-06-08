@@ -42,10 +42,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .ToList();
 
             List<CDataSetAcquirementParam> skills = common.EquippedCustomSkillsDictionary[jobId]
-                .Select((x, idx) => x.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Where(x => x != null)
                 .ToList();
             List<CDataSetAcquirementParam> abilities = common.EquippedAbilitiesDictionary[jobId]
-                .Select((x, idx) => x.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Where(x => x != null)
                 .ToList();
             List<CDataLearnNormalSkillParam> normalSkills = common.LearnedNormalSkills
                 .Select(x => new CDataLearnNormalSkillParam(x))
