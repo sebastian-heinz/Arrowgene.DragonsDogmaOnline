@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CSetCommunicationShortcutRes response = new S2CSetCommunicationShortcutRes();
             foreach(CDataCommunicationShortCut shortcut in request.Structure.CommunicationShortCutList)
             {
-                Database.ReplaceCommunicationShortcut(client.Character.Id, shortcut);
+                Database.ReplaceCommunicationShortcut(client.Character.CharacterId, shortcut);
             }
             client.Character.CommunicationShortCutList = request.Structure.CommunicationShortCutList;
             client.Send(response);

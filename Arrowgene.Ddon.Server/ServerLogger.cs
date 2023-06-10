@@ -11,14 +11,15 @@ namespace Arrowgene.Ddon.Server
     {
         private ServerSetting _serverSetting;
 
-        public override void Initialize(string identity,
-            string name, Action<Log> write,
-            object loggerTypeTag,
-            object identityTag
-        )
+        public override void Initialize(string identity, string name, Action<Log> write)
         {
-            base.Initialize(identity, name, write, loggerTypeTag, identityTag);
-            _serverSetting = identityTag as ServerSetting;
+            base.Initialize(identity, name, write);
+        }
+        
+        public override void Configure(object loggerTypeConfig, object identityConfig)
+        {
+            base.Configure(loggerTypeConfig, identityConfig);
+            _serverSetting = identityConfig as ServerSetting;
         }
 
         public void Hex(byte[] data)
@@ -102,6 +103,7 @@ namespace Arrowgene.Ddon.Server
                         {
                             Write(LogLevel.Debug,
                                 $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                            return;
                         }
                     }
 
@@ -126,6 +128,7 @@ namespace Arrowgene.Ddon.Server
                         {
                             Write(LogLevel.Debug,
                                 $"{client.Identity}{Environment.NewLine}{structurePacket.PrintStructure()}", packet);
+                            return;
                         }
                     }
 

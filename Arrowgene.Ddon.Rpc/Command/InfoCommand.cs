@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.Rpc.Command
                 Character character = client.Character;
                 if (character != null)
                 {
-                    info.CharacterId = character.Id;
+                    info.CharacterId = character.CharacterId;
                     info.FirstName = character.FirstName;
                     info.LastName = character.LastName;
                 }

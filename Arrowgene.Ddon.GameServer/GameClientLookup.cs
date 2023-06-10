@@ -57,7 +57,26 @@ namespace Arrowgene.Ddon.GameServer
                     continue;
                 }
 
-                if (character.Id == characterId)
+                if (character.CharacterId == characterId)
+                {
+                    return client;
+                }
+            }
+
+            return null;
+        }
+
+        public GameClient GetClientByCharacterName(string FirstName, string LastName)
+        {
+            foreach (GameClient client in GetAll())
+            {
+                Character character = client.Character;
+                if (character == null)
+                {
+                    continue;
+                }
+
+                if (character.FirstName == FirstName && character.LastName == LastName)
                 {
                     return client;
                 }

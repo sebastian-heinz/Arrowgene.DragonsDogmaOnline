@@ -12,3 +12,6 @@ drag&drop a .dds file and it will be converted to DDON .tex
 
 ##tex2dds.cmd
 drag&drop a .tex file and it will be converted to .dss
+
+##pack_gmd_english.cmd
+drag&drop the rom folder from ddon, it will apply english patch to the game

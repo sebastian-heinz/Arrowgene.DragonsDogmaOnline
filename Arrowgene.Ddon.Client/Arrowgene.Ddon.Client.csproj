@@ -10,15 +10,22 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
-
+    <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
-        <PackageReference Include="Arrowgene.Logging" Version="1.2.0" />
+        <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
         <PackageReference Include="SharpZipLib" Version="1.3.3" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ContentWithTargetPath Include="Files\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+        </ContentWithTargetPath>
     </ItemGroup>
     
 </Project>

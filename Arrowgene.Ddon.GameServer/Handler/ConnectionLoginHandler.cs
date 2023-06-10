@@ -10,10 +10,9 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionLoginHandler : StructurePacketHandler<GameClient, C2SConnectionLoginReq>
+    public class ConnectionLoginHandler : GameStructurePacketHandler<C2SConnectionLoginReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionLoginHandler));
-
 
         public ConnectionLoginHandler(DdonGameServer server) : base(server)
         {
@@ -100,6 +99,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character = character;
             client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
+
+            client.Character.Pawns = Database.SelectPawnsByCharacterId(token.CharacterId);
+            foreach (Pawn pawn in client.Character.Pawns)
+            {
+                pawn.Server = client.Character.Server;
+            }
+
             Logger.Info(client, "Logged Into GameServer");
 
             // update login token for client

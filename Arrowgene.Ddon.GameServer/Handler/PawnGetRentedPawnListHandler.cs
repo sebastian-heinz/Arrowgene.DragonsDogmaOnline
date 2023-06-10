@@ -20,7 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(InGameDump.Dump_35);
+            //client.Send(InGameDump.Dump_35);
+            client.Send(new Packet(PacketId.S2C_PAWN_GET_RENTED_PAWN_LIST_RES, new byte[12]));
         }
     }
 }

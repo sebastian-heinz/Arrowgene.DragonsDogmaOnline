@@ -6,12 +6,18 @@ using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared.Json;
+using System.Text.Json;
 
 namespace Arrowgene.Ddon.Shared
 {
     public class AssetRepository
     {
+        // Client data
         public const string ClientErrorCodesKey = "ClientErrorCodes.csv";
+        public const string ItemListKey = "itemlist.csv";
+
+        // Server data
         public const string EnemySpawnsKey = "EnemySpawn.csv";
         public const string GatheringItemsKey = "GatheringItem.csv";
         public const string MyPawnAssetKey = "MyPawn.csv";
@@ -19,6 +25,7 @@ namespace Arrowgene.Ddon.Shared
         public const string ArisenAssetKey = "Arisen.csv";
         public const string StorageKey = "Storage.csv";
         public const string StorageItemKey = "StorageItem.csv";
+        public const string ShopKey = "Shop.json";
         public const string ServerListKey = "GameServerList.csv";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
@@ -40,6 +47,7 @@ namespace Arrowgene.Ddon.Shared
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
             ClientErrorCodes = new List<CDataErrorMessage>();
+            ClientItemInfos = new List<ClientItemInfo>();
             EnemySpawns = new List<EnemySpawn>();
             GatheringItems = new List<GatheringItem>();
             ServerList = new List<CDataGameServerListInfo>();
@@ -48,9 +56,11 @@ namespace Arrowgene.Ddon.Shared
             ArisenAsset = new List<ArisenCsv>();
             StorageAsset = new List<CDataCharacterItemSlotInfo>();
             StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
+            ShopAsset = new List<Shop>();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; }
+        public List<ClientItemInfo> ClientItemInfos { get; set; } // May be incorrect, or incomplete
         public List<EnemySpawn> EnemySpawns { get; }
         public List<GatheringItem> GatheringItems { get; }
         public List<CDataGameServerListInfo> ServerList { get; }
@@ -59,27 +69,30 @@ namespace Arrowgene.Ddon.Shared
         public List<ArisenCsv> ArisenAsset { get; }
         public List<CDataCharacterItemSlotInfo> StorageAsset { get; }
         public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; }
+        public List<Shop> ShopAsset { get; }
 
         public void Initialize()
         {
-            RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsvReader());
-            RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsvReader());
-            RegisterAsset(GatheringItems, GatheringItemsKey, new GatheringItemCsvReader());
+            RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsv());
+            RegisterAsset(ClientItemInfos, ItemListKey, new ClientItemInfoCsv());
+            RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsv());
+            RegisterAsset(GatheringItems, GatheringItemsKey, new GatheringItemCsv());
             RegisterAsset(MyPawnAsset, MyPawnAssetKey, new MyPawnCsvReader());
             RegisterAsset(MyRoomAsset, MyRoomAssetKey, new MyRoomCsvReader());
             RegisterAsset(ArisenAsset, ArisenAssetKey, new ArisenCsvReader());
-            RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsvReader());
-            RegisterAsset(StorageAsset, StorageKey, new StorageCsvReader());
-            RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsvReader());
+            RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsv());
+            RegisterAsset(StorageAsset, StorageKey, new StorageCsv());
+            RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsv());
+            RegisterAsset(ShopAsset, ShopKey, new JsonReaderWriter<Shop>());
         }
 
-        private void RegisterAsset<T>(List<T> list, string key, CsvReader<T> reader)
+        private void RegisterAsset<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
         {
-            Load(list, key, reader);
-            RegisterFileSystemWatcher(list, key, reader);
+            Load(list, key, readerWriter);
+            RegisterFileSystemWatcher(list, key, readerWriter);
         }
 
-        private void Load<T>(List<T> list, string key, CsvReader<T> reader)
+        private void Load<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
         {
             string path = Path.Combine(_directory.FullName, key);
             FileInfo file = new FileInfo(path);
@@ -88,14 +101,14 @@ namespace Arrowgene.Ddon.Shared
                 Logger.Error($"Could not load '{key}', file does not exist");
             }
 
-            List<T> assets = reader.ReadPath(file.FullName);
+            List<T> assets = readerWriter.ReadPath(file.FullName);
 
             list.Clear();
             list.AddRange(assets);
             OnAssetChanged(key, list);
         }
 
-        private void RegisterFileSystemWatcher<T>(List<T> list, string key, CsvReader<T> reader)
+        private void RegisterFileSystemWatcher<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
         {
             if (_fileSystemWatchers.ContainsKey(key))
             {
@@ -113,7 +126,7 @@ namespace Arrowgene.Ddon.Shared
                 {
                     try
                     {
-                        Load(list, key, reader);
+                        Load(list, key, readerWriter);
                         break;
                     }
                     catch (IOException ex)

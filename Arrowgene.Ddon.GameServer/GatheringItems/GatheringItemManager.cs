@@ -6,7 +6,8 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
     public class GatheringItemManager : StageLocationAssetManager<GatheringItem, uint>
     {
-        public GatheringItemManager(AssetRepository assetRepository, IDatabase database) : base(assetRepository, database, assetRepository.GatheringItems)
+        public GatheringItemManager(AssetRepository assetRepository, IDatabase database)
+        : base(assetRepository, AssetRepository.GatheringItemsKey, database, assetRepository.GatheringItems)
         {
         }
     }

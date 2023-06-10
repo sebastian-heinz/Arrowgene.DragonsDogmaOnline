@@ -18,7 +18,14 @@ namespace Arrowgene.Ddon.Client
         {
             FilePath = null;
         }
-
+        
+        public byte[] Save()
+        {
+            IBuffer buffer = new StreamBuffer();
+            Write(buffer);
+            return buffer.GetAllBytes();
+        }        
+        
         public void Open(IBuffer buffer)
         {
             buffer.SetPositionStart();
@@ -55,6 +62,8 @@ namespace Arrowgene.Ddon.Client
         }
 
         protected abstract void Read(IBuffer buffer);
+
+        protected abstract void Write(IBuffer buffer);
 
         protected void WriteMtString(IBuffer buffer, string str)
         {
@@ -111,6 +120,11 @@ namespace Arrowgene.Ddon.Client
         protected uint ReadUInt32(IBuffer buffer)
         {
             return buffer.ReadUInt32(Endianness.Little);
+        }
+        
+        protected ulong ReadUInt64(IBuffer buffer)
+        {
+            return buffer.ReadUInt64(Endianness.Little);
         }
         
         protected float ReadFloat(IBuffer buffer)

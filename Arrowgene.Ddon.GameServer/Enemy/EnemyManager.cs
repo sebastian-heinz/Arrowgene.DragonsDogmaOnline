@@ -6,7 +6,8 @@ namespace Arrowgene.Ddon.GameServer.Enemy
 {
     public class EnemyManager : StageLocationAssetManager<EnemySpawn, byte>
     {
-        public EnemyManager(AssetRepository assetRepository, IDatabase database) : base(assetRepository, database, assetRepository.EnemySpawns)
+        public EnemyManager(AssetRepository assetRepository, IDatabase database)
+        : base(assetRepository, AssetRepository.EnemySpawnsKey, database, assetRepository.EnemySpawns)
         {
         }
     }

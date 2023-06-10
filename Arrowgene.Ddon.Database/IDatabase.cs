@@ -24,14 +24,35 @@ namespace Arrowgene.Ddon.Database
         bool UpdateAccount(Account account);
         bool DeleteAccount(int accountId);
 
+        // CharacterCommon
+        public bool UpdateCharacterCommonBaseInfo(CharacterCommon common);
+        bool UpdateEditInfo(CharacterCommon character);
+        bool UpdateStatusInfo(CharacterCommon character);
+
         // Character
         bool CreateCharacter(Character character);
-        bool UpdateCharacter(Character character);
         Character SelectCharacter(uint characterId);
         List<Character> SelectCharactersByAccountId(int accountId);
         bool DeleteCharacter(uint characterId);
-
         bool UpdateCharacterBaseInfo(Character character);
+        bool UpdateCharacterMatchingProfile(Character character);
+        bool UpdateCharacterArisenProfile(Character character);
+
+        // Pawn
+        bool CreatePawn(Pawn pawn);
+        Pawn SelectPawn(uint pawnId);
+        List<Pawn> SelectPawnsByCharacterId(uint characterId);
+        bool DeletePawn(uint pawnId);
+
+        // CharacterJobData
+        bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
+        bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData);
+
+        // Wallet Points
+        bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint);
+        bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint);
+        bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint);
+        bool DeleteWalletPoint(uint characterId, WalletType type);
 
         // Item
         bool InsertItem(Item item);
@@ -48,23 +69,25 @@ namespace Arrowgene.Ddon.Database
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
 
         // Equip
-        bool InsertEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
-        bool UpdateEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
-        bool DeleteEquipItem(uint characterId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
 
         // CustomSkills
-        bool InsertEquippedCustomSkill(uint characterId, CustomSkill skill);
-        bool ReplaceEquippedCustomSkill(uint characterId, CustomSkill skill);
-        bool UpdateEquippedCustomSkill(uint characterId, JobId oldJob, byte oldSlotNo, CustomSkill skill);
-        bool DeleteEquippedCustomSkill(uint characterId, JobId job, byte slotNo);
+        bool ReplaceLearnedCustomSkill(uint commonId, CustomSkill skill);
+        bool InsertEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
+        bool ReplaceEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
+        bool UpdateEquippedCustomSkill(uint commonId, JobId oldJob, byte oldSlotNo, byte slotNo, CustomSkill skill);
+        bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo);
 
         // Abilities
-        bool InsertEquippedAbility(uint characterId, Ability skill);
-        bool ReplaceEquippedAbility(uint characterId, Ability skill);
-        bool ReplaceEquippedAbilities(uint characterId, JobId equippedToJob, List<Ability> abilities);
-        bool UpdateEquippedAbility(uint characterId, JobId oldEquippedToJob, byte oldSlotNo, Ability skill);
-        bool DeleteEquippedAbility(uint characterId, JobId equippedToJob, byte slotNo);
-        bool DeleteEquippedAbilities(uint characterId, JobId equippedToJob);
+        bool ReplaceLearnedAbility(uint commonId, Ability ability);
+        bool InsertEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability);
+        bool ReplaceEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability);
+        bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities);
+        bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, JobId equipptedToJob, byte slotNo, Ability ability);
+        bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo);
+        bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob);
 
         // Shortcut
         bool InsertShortcut(uint characterId, CDataShortCut shortcut);

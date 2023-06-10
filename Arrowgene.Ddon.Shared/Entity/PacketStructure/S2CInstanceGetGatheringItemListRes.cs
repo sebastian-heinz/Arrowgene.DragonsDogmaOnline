@@ -16,13 +16,13 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public bool IsGatheringItemBreak { get; set; }
         public bool Unk0 { get; set; }
         public List<CDataGatheringItemListUnk1> Unk1 { get; set; } // Currencies?
-        public List<CDataGatheringItemListUnk2> Unk2 { get; set; } // Items
+        public List<CDataGatheringItemElement> ItemList { get; set; } // Items
         
         public S2CInstanceGetGatheringItemListRes()
         {
             LayoutId = new CDataStageLayoutId();
             Unk1 = new List<CDataGatheringItemListUnk1>();
-            Unk2 = new List<CDataGatheringItemListUnk2>();
+            ItemList = new List<CDataGatheringItemElement>();
         }
 
         public class Serializer : PacketEntitySerializer<S2CInstanceGetGatheringItemListRes>
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteBool(buffer, obj.IsGatheringItemBreak);
                 WriteBool(buffer, obj.Unk0);
                 WriteEntityList(buffer, obj.Unk1);
-                WriteEntityList(buffer, obj.Unk2);
+                WriteEntityList(buffer, obj.ItemList);
             }
 
             public override S2CInstanceGetGatheringItemListRes Read(IBuffer buffer)
@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.IsGatheringItemBreak = ReadBool(buffer);
                 obj.Unk0 = ReadBool(buffer);
                 obj.Unk1 = ReadEntityList<CDataGatheringItemListUnk1>(buffer);
-                obj.Unk2 = ReadEntityList<CDataGatheringItemListUnk2>(buffer);
+                obj.ItemList = ReadEntityList<CDataGatheringItemElement>(buffer);
                 return obj;
             }
 

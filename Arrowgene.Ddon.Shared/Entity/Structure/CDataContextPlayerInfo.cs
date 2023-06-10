@@ -7,48 +7,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextPlayerInfo
     {
-        public CDataContextPlayerInfo(Character character)
-        {
-            CDataCharacterJobData characterJobData = character.ActiveCharacterJobData;
-
-            Job = character.Job;
-            HP = character.StatusInfo.HP;
-            MaxHP = character.StatusInfo.MaxHP;
-            WhiteHP = character.StatusInfo.WhiteHP;
-            Stamina = character.StatusInfo.Stamina;
-            MaxStamina = character.StatusInfo.MaxStamina;
-            // Weight?
-            Lv = (ushort) characterJobData.Lv;
-            Exp = characterJobData.Exp;
-            Atk = characterJobData.Atk;
-            Def = characterJobData.Def;
-            MAtk = characterJobData.MAtk;
-            MDef = characterJobData.MDef;
-            Strength = characterJobData.Strength;
-            DownPower = characterJobData.DownPower;
-            ShakePower = characterJobData.ShakePower;
-            // StanPower?
-            // Constitution?
-            Guts = characterJobData.Guts;
-            JobPoint = characterJobData.JobPoint;
-            GainHp = character.StatusInfo.GainHP;
-            GainStamina = character.StatusInfo.GainStamina;
-            GainAttack = character.StatusInfo.GainAttack;
-            GainDefense = character.StatusInfo.GainDefense;
-            GainMagicAttack = character.StatusInfo.GainMagicAttack;
-            GainMagicDefense = character.StatusInfo.GainMagicDefense;
-            // ActNo?
-            RevivePoint = character.StatusInfo.RevivePoint;
-            // CustomSkillGroup?
-            JobList = character.CharacterJobDataList
-                .Select(x => new CDataContextJobData(x)).ToList();
-            ChargeEffectList=new List<CDataCommonU32>(); // TODO
-            OcdActiveList=new List<CDataOcdActive>(); // TODO
-            // CatchType?
-            // CatchJointNo?
-            // CustomWork?
-        }
-
         public CDataContextPlayerInfo()
         {
             JobList=new List<CDataContextJobData>();

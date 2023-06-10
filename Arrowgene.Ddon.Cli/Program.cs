@@ -60,6 +60,7 @@ namespace Arrowgene.Ddon.Cli
         private static void Main(string[] args)
         {
             Console.WriteLine("Program started");
+            Console.WriteLine($"Version: {Util.GetVersion("Cli")}");
             Program program = new Program();
             program.RunArguments(args);
             Console.WriteLine("Program ended");
@@ -93,6 +94,7 @@ namespace Arrowgene.Ddon.Cli
             AddCommand(new ServerCommand());
             AddCommand(new HelpCommand(_commands));
             AddCommand(new ClientCommand());
+            AddCommand(new PacketCommand());
         }
 
         private void RunArguments(string[] arguments)

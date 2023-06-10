@@ -13,58 +13,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillSetSkillHandler));
 
+        private readonly DdonGameServer gameServer;
+
         public SkillSetSkillHandler(DdonGameServer server) : base(server)
         {
+            gameServer = server;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetSkillReq> packet)
         {
-            // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
-            
-            CustomSkill skillSlot = client.Character.CustomSkills
-                .Where(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo)
-                .FirstOrDefault();
-            
-            if(skillSlot == null)
-            {
-                skillSlot = new CustomSkill()
-                {
-                    Job = packet.Structure.Job,
-                    SlotNo = packet.Structure.SlotNo,
-                    SkillId = packet.Structure.SkillId,
-                    SkillLv = packet.Structure.SkillLv
-                };
-                client.Character.CustomSkills.Add(skillSlot);
-            }
-            else
-            {
-                skillSlot.SkillId = packet.Structure.SkillId;
-                skillSlot.SkillLv = packet.Structure.SkillLv;
-            }
-
-            Database.ReplaceEquippedCustomSkill(client.Character.Id, skillSlot);
-
+            CustomSkill skillSlot = gameServer.JobManager.SetSkill(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
             client.Send(new S2CSkillSetSkillRes() {
                 Job = skillSlot.Job,
-                SlotNo = skillSlot.SlotNo,
+                SlotNo = packet.Structure.SlotNo,
                 SkillId = skillSlot.SkillId,
                 SkillLv = skillSlot.SkillLv
             });
-
-            // Inform party members of the change
-            if(packet.Structure.Job == client.Character.Job)
-            {
-                client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
-                {
-                    CharacterId = client.Character.Id,
-                    ContextAcquirementData = new CDataContextAcquirementData()
-                    {
-                        SlotNo = skillSlot.SlotNo,
-                        AcquirementNo = skillSlot.SkillId,
-                        AcquirementLv = skillSlot.SkillLv
-                    }
-                });
-            }
         }
     }
 }

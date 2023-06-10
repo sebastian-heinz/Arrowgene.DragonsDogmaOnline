@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
-            partyLeaveNtc.CharacterId = client.Character.Id;
+            partyLeaveNtc.CharacterId = client.Character.CharacterId;
             party.SendToAll(partyLeaveNtc);
 
             party.Leave(client);

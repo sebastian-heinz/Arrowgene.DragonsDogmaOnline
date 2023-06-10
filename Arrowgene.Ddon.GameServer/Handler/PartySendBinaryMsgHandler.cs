@@ -16,10 +16,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartySendBinaryMsgNtc> packet)
         {
-            foreach(GameClient otherClient in Server.Clients.Where(x => packet.Structure.CharacterIdList.Select(x => x.Value).Contains(x.Character.Id)))
+            foreach(GameClient otherClient in Server.Clients.Where(x => packet.Structure.CharacterIdList.Select(x => x.Value).Contains(x.Character.CharacterId)))
             {
                 S2CPartyRecvBinaryMsgNtc binaryMsgNtc = new S2CPartyRecvBinaryMsgNtc();
-                binaryMsgNtc.CharacterId = client.Character.Id;
+                binaryMsgNtc.CharacterId = client.Character.CharacterId;
                 binaryMsgNtc.Data = packet.Structure.Data;
                 binaryMsgNtc.OnlineStatus = client.Character.OnlineStatus;
                 otherClient.Send(binaryMsgNtc);

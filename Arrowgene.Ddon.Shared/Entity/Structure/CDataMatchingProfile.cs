@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ObjectiveType2 = 0;
             PlayStyle = 0;
             Comment = "";
-            IsJoinParty = 0;
+            IsJoinParty = false;
         }
 
         public JobId EntryJob;
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ObjectiveType2;
         public uint PlayStyle;
         public string Comment;
-        public byte IsJoinParty;
+        public bool IsJoinParty;
     }
 
     public class CDataMatchingProfileSerializer : EntitySerializer<CDataMatchingProfile>
@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteUInt32(buffer, obj.ObjectiveType2);
             WriteUInt32(buffer, obj.PlayStyle);
             WriteMtString(buffer, obj.Comment);
-            WriteByte(buffer, obj.IsJoinParty);
+            WriteBool(buffer, obj.IsJoinParty);
         }
 
         public override CDataMatchingProfile Read(IBuffer buffer)
@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.ObjectiveType2 = ReadUInt32(buffer);
             obj.PlayStyle = ReadUInt32(buffer);
             obj.Comment = ReadMtString(buffer);
-            obj.IsJoinParty = ReadByte(buffer);
+            obj.IsJoinParty = ReadBool(buffer);
             return obj;
         }
     }

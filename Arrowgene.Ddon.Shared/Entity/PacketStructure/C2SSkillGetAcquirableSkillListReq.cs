@@ -10,11 +10,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SSkillGetAcquirableSkillListReq()
         {
-            Unk0 = 0;
+            CharacterId = 0;
             Job = 0;
         }
 
-        public uint Unk0 { get; set; }
+        public uint CharacterId { get; set; }
         public JobId Job { get; set; }
 
 
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, C2SSkillGetAcquirableSkillListReq obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.CharacterId);
                 WriteByte(buffer, (byte) obj.Job);
             }
 
@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 return new C2SSkillGetAcquirableSkillListReq
                 {
-                    Unk0 = ReadUInt32(buffer),
+                    CharacterId = ReadUInt32(buffer),
                     Job = (JobId) ReadByte(buffer)
                 };
             }

@@ -31,10 +31,8 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
                 _gatheringItemsDictionary.AddRange(stageId, subGroupId, itemsClone);
                 return items;
             }
-            else
-            {
-                return _gatheringItemsDictionary.Get(stageId, subGroupId);
-            }
+            
+            return _gatheringItemsDictionary.Get(stageId, subGroupId);
         }
 
         public void Clear()

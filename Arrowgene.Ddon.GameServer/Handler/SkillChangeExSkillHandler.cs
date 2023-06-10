@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -14,51 +15,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillChangeExSkillHandler));
 
+        private readonly JobManager jobManager;
+
         public SkillChangeExSkillHandler(DdonGameServer server) : base(server)
         {
+            jobManager = server.JobManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillChangeExSkillReq> packet)
-        {
-            // Update all equiped skills of the type to the chosen EX skill
-            IEnumerable<CustomSkill> skillSlots = client.Character.CustomSkills
-                .Where(skill => skill.Job == packet.Structure.Job && GetBaseSkillId(skill.SkillId) == GetBaseSkillId(packet.Structure.SkillId));
-
-            foreach (CustomSkill skillSlot in skillSlots)
+        {            
+            CharacterCommon character;
+            if(packet.Structure.PawnId == 0)
             {
-                skillSlot.SkillId = packet.Structure.SkillId;
-                skillSlot.SkillLv = 1; // Must be 1 otherwise they do 0 damage
-
-                Database.ReplaceEquippedCustomSkill(client.Character.Id, skillSlot);
-
-                // Inform party members of the change
-                if(packet.Structure.Job == client.Character.Job)
-                {
-                    client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
-                    {
-                        CharacterId = client.Character.Id,
-                        ContextAcquirementData = new CDataContextAcquirementData()
-                        {
-                            SlotNo = skillSlot.SlotNo,
-                            AcquirementNo = skillSlot.SkillId,
-                            AcquirementLv = skillSlot.SkillLv
-                        }
-                    });
-                }
+                character = client.Character;
             }
+            else
+            {
+                character = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
+            }
+
+            IEnumerable<byte> skillSlots = jobManager.ChangeExSkill(Server.Database, client, character, packet.Structure.Job, packet.Structure.SkillId);
 
             client.Send(new S2CSkillChangeExSkillRes() {
                 Job = packet.Structure.Job,
                 SkillId = packet.Structure.SkillId,
                 SkillLv = 1, // Must be 1 otherwise they do 0 damage
-                Unk3 = packet.Structure.Unk0,
-                SlotsToUpdate = skillSlots.Select(skill => new CDataCommonU8(skill.SlotNo)).ToList()
+                PawnId = packet.Structure.PawnId,
+                SlotsToUpdate = skillSlots.Select(slotNo => new CDataCommonU8(slotNo)).ToList()
             });
-        }
-
-        private uint GetBaseSkillId(uint skillId)
-        {
-            return skillId % 100;
         }
     }
 }

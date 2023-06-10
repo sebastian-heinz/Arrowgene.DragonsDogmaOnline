@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -12,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ExtraBonusPoint=0;
         }
 
-        public byte Type { get; set; }
+        public WalletType Type { get; set; }
         public uint Value { get; set; }
         public int AddPoint { get; set; }
         public uint ExtraBonusPoint { get; set; }
@@ -21,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataUpdateWalletPoint obj)
             {
-                WriteByte(buffer, obj.Type);
+                WriteByte(buffer, (byte) obj.Type);
                 WriteUInt32(buffer, obj.Value);
                 WriteInt32(buffer, obj.AddPoint);
                 WriteUInt32(buffer, obj.ExtraBonusPoint);
@@ -30,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataUpdateWalletPoint Read(IBuffer buffer)
             {
                 CDataUpdateWalletPoint obj = new CDataUpdateWalletPoint();
-                obj.Type = ReadByte(buffer);
+                obj.Type = (WalletType) ReadByte(buffer);
                 obj.Value = ReadUInt32(buffer);
                 obj.AddPoint = ReadInt32(buffer);
                 obj.ExtraBonusPoint = ReadUInt32(buffer);

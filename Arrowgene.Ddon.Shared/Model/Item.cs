@@ -1,10 +1,6 @@
 using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -54,9 +50,9 @@ namespace Arrowgene.Ddon.Shared.Model
             hash.AppendData(BitConverter.GetBytes(PlusValue));
             foreach (var weaponCrestData in WeaponCrestDataList)
             {
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u0));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u1));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.u2));
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.SlotNo));
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.CrestId));
+                hash.AppendData(BitConverter.GetBytes(weaponCrestData.Add));
             }
             foreach (var armorCrestData in ArmorCrestDataList)
             {

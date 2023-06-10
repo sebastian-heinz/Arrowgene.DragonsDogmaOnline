@@ -5,20 +5,23 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public class Character
+    public class Character : CharacterCommon
     {
-        public Character()
+        public Character():base()
         {
             FirstName = string.Empty;
             LastName = string.Empty;
             Created = DateTime.MinValue;
-            EditInfo = new CDataEditInfo();
-            StatusInfo = new CDataStatusInfo();
-            CharacterJobDataList = new List<CDataCharacterJobData>();
-            PlayPointList = new List<CDataJobPlayPoint>();
+            PlayPointList = Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
+            {
+                Job = job,
+                PlayPoint = new CDataPlayPointData()
+                {
+                    ExpMode = 1, // EXP
+                    PlayPoint = 0
+                }
+            }).ToList();
             Storage = new Storages(new Dictionary<StorageType, ushort>());
-            Equipment = new Equipment();
-            CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>();
             Unk0 = new List<UnknownCharacterData0>();
             WalletPointList = new List<CDataWalletPoint>();
             OrbStatusList = new List<CDataOrbPageStatus>();
@@ -27,32 +30,18 @@ namespace Arrowgene.Ddon.Shared.Model
             CommunicationShortCutList = new List<CDataCommunicationShortCut>();
             MatchingProfile = new CDataMatchingProfile();
             ArisenProfile = new CDataArisenProfile();
-            NormalSkills = new List<CDataNormalSkillParam>();
-            CustomSkills = new List<CustomSkill>();
-            Abilities = new List<Ability>();
-        }
-
-        public CDataCharacterJobData ActiveCharacterJobData
-        {
-            get { return CharacterJobDataList.Where(x => x.Job == Job).Single(); }
+            Pawns = new List<Pawn>();
         }
 
         public int AccountId { get; set; }
         public DateTime Created { get; set; }
-        public uint Id;
+        public uint CharacterId;
         public uint UserId;
         public uint Version;
         public string FirstName;
         public string LastName;
-        public CDataEditInfo EditInfo;
-        public CDataStatusInfo StatusInfo;
-        public JobId Job;
-        public List<CDataCharacterJobData> CharacterJobDataList;
         public List<CDataJobPlayPoint> PlayPointList;
         public Storages Storage;
-        public Equipment Equipment;
-        public Dictionary<JobId, List<CDataEquipJobItem>> CharacterEquipJobItemListDictionary;
-        public byte JewelrySlotNum;
         public List<UnknownCharacterData0> Unk0;
         public List<CDataWalletPoint> WalletPointList;
         public byte MyPawnSlotNum;
@@ -63,16 +52,11 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataCommunicationShortCut> CommunicationShortCutList;
         public CDataMatchingProfile MatchingProfile;
         public CDataArisenProfile ArisenProfile;
-        public bool HideEquipHead;
-        public bool HideEquipLantern;
         public bool HideEquipHeadPawn;
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
 
-        public OnlineStatus OnlineStatus;
-        public List<CDataNormalSkillParam> NormalSkills { get; set; }
-        public List<CustomSkill> CustomSkills { get; set;}
-        public List<Ability> Abilities { get; set; }
+        public List<Pawn> Pawns { get; set; }
         
         /// TODO combine into a location class ?
         public StageId Stage { get; set; }
@@ -82,6 +66,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public double Z { get; set; }
         // ---
 
-        public CDataGameServerListInfo Server;
+        // TODO: Move to a more sensible place
+        public uint LastEnteredShopId { get; set; }
     }
 }

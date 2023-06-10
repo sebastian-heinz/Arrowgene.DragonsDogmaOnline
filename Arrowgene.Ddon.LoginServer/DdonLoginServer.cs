@@ -38,8 +38,6 @@ namespace Arrowgene.Ddon.LoginServer
         public DdonLoginServer(LoginServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(setting.ServerSetting, database, assetRepository)
         {
-            LogProvider.ConfigureNamespace(typeof(DdonLoginServer).Namespace, setting.ServerSetting);
-            
             Setting = new LoginServerSetting(setting);
             ClientLookup = new LoginClientLookup();
             LoadPacketHandler();
