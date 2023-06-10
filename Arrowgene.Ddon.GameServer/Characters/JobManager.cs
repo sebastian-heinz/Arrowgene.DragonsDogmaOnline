@@ -139,6 +139,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void UnlockSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv)
         {
+            // Remove previous skill, if it exists (lower level skill)
+            character.LearnedCustomSkills.RemoveAll(skill => skill != null && skill.Job == job && skill.SkillId == skillId);
+
+            // Add new skill
             CustomSkill newSkill = new CustomSkill()
             {
                 Job = job,
@@ -185,10 +189,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CustomSkill SetSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, byte slotNo, uint skillId, byte skillLv)
         {
-            // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
+            // Remove skill from other slots
+            for (int i = 0; i < character.EquippedCustomSkillsDictionary[job].Count; i++)
+            {
+                CustomSkill removedSkill = character.EquippedCustomSkillsDictionary[job][i];
+                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId)
+                {
+                    character.EquippedCustomSkillsDictionary[job][i] = null;
+                    byte removedSkillSlotNo = (byte)(i+1);
+                    database.DeleteEquippedCustomSkill(character.CommonId, job, removedSkillSlotNo);
+                }
+            }
+
+            // Add skill to the requested slot
             CustomSkill skill = character.LearnedCustomSkills.Where(skill => skill.Job == job && skill.SkillId == skillId).Single();
             character.EquippedCustomSkillsDictionary[job][slotNo-1] = skill;
-
             database.ReplaceEquippedCustomSkill(character.CommonId, slotNo, skill);
 
             // Inform party members of the change
