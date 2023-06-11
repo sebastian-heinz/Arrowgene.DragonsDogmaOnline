@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
@@ -85,6 +86,8 @@ namespace Arrowgene.Ddon.Cli.Command
                         annotated.Append($" Pcap(No:{pcapPacket.Packet} Ts:{pcapPacket.TimeStamp})");
                         annotated.Append(Environment.NewLine);
                         annotated.Append(readPacket.PrintData());
+                        annotated.Append(string.Join(", ", readPacket.Data.Select(dataByte => String.Format("0x{0:X}", dataByte))));
+                        annotated.Append(Environment.NewLine);
                         annotated.Append(Environment.NewLine);
                     }
                 }
