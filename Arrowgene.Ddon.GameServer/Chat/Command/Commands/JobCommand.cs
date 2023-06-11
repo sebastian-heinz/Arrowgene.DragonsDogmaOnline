@@ -72,33 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             }
             else
             {
-                client.Character.Job = (JobId) job;
-
-                _server.Database.UpdateCharacterCommonBaseInfo(client.Character);
-
-                S2CJobChangeJobNtc notice = new S2CJobChangeJobNtc();
-                notice.CharacterId = client.Character.CharacterId;
-                notice.CharacterJobData = client.Character.ActiveCharacterJobData;
-                notice.EquipItemInfo = client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Performance)
-                    .Union(client.Character.Equipment.getEquipmentAsCDataEquipItemInfo(client.Character.Job, EquipType.Visual))
-                    .ToList();
-                notice.SetAcquirementParamList = client.Character.CustomSkills
-                    .Where(x => x.Job == job)
-                    .Select(x => x.AsCDataSetAcquirementParam())
-                    .ToList();
-                notice.SetAbilityParamList = client.Character.Abilities
-                    .Where(x => x.EquippedToJob == job)
-                    .Select(x => x.AsCDataSetAcquirementParam())
-                    .ToList();
-                notice.LearnNormalSkillParamList = client.Character.NormalSkills
-                    .Select(x => new CDataLearnNormalSkillParam(x))
-                    .ToList();
-                notice.EquipJobItemList = client.Character.CharacterEquipJobItemListDictionary[client.Character.Job];
-
-                foreach(GameClient otherClient in _server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(notice);
-                }
+                _server.JobManager.SetJob(_server, client, client.Character, (JobId) job);
             }
         }
     }

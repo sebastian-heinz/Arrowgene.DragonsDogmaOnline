@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -40,15 +41,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
                 .ToList();
 
-            List<CDataSetAcquirementParam> skills = common.CustomSkills
-                .Where(x => x.Job == jobId)
-                .Select(x => x.AsCDataSetAcquirementParam())
+            List<CDataSetAcquirementParam> skills = common.EquippedCustomSkillsDictionary[jobId]
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Where(x => x != null)
                 .ToList();
-            List<CDataSetAcquirementParam> abilities = common.Abilities
-                .Where(x => x.EquippedToJob == jobId)
-                .Select(x => x.AsCDataSetAcquirementParam())
+            List<CDataSetAcquirementParam> abilities = common.EquippedAbilitiesDictionary[jobId]
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Where(x => x != null)
                 .ToList();
-            List<CDataLearnNormalSkillParam> normalSkills = common.NormalSkills
+            List<CDataLearnNormalSkillParam> normalSkills = common.LearnedNormalSkills
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();
             List<CDataEquipJobItem> jobItems = common.CharacterEquipJobItemListDictionary[common.Job];
@@ -136,32 +137,74 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public CustomSkill SetSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, byte slotNo, uint skillId, byte skillLv)
+        public void UnlockSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv)
         {
-            // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
-            
-            CustomSkill skillSlot = character.CustomSkills
-                .Where(skill => skill.Job == job && skill.SlotNo == slotNo)
-                .FirstOrDefault();
-            
-            if(skillSlot == null)
+            // Remove previous skill, if it exists (lower level skill)
+            character.LearnedCustomSkills.RemoveAll(skill => skill != null && skill.Job == job && skill.SkillId == skillId);
+
+            // Add new skill
+            CustomSkill newSkill = new CustomSkill()
             {
-                skillSlot = new CustomSkill()
+                Job = job,
+                SkillId = skillId,
+                SkillLv = skillLv
+            };
+            character.LearnedCustomSkills.Add(newSkill);
+            database.ReplaceLearnedCustomSkill(character.CommonId, newSkill);
+
+            uint jpCost = SkillGetAcquirableSkillListHandler.AllSkills
+                .Where(skill => skill.Job == job && skill.SkillNo == skillId)
+                .SelectMany(skill => skill.Params)
+                .Where(skillParams => skillParams.Lv == skillLv)
+                .Select(skillParams => skillParams.RequireJobPoint)
+                .Single();
+
+            // TODO: Check that this doesn't end up negative
+            CDataCharacterJobData activeCharacterJobData = character.ActiveCharacterJobData;
+            activeCharacterJobData.JobPoint -= jpCost;
+            database.UpdateCharacterJobData(character.CommonId, activeCharacterJobData);
+
+            if(character is Character)
+            {
+                client.Send(new S2CSkillLearnSkillRes()
                 {
                     Job = job,
-                    SlotNo = slotNo,
+                    NewJobPoint = activeCharacterJobData.JobPoint,
                     SkillId = skillId,
                     SkillLv = skillLv
-                };
-                character.CustomSkills.Add(skillSlot);
+                });
             }
-            else
+            else if(character is Pawn)
             {
-                skillSlot.SkillId = skillId;
-                skillSlot.SkillLv = skillLv;
+                client.Send(new S2CSkillLearnPawnSkillRes()
+                {
+                    PawnId = ((Pawn) character).PawnId,
+                    Job = job,
+                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    SkillId = skillId,
+                    SkillLv = skillLv
+                });
+            }
+        }
+
+        public CustomSkill SetSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, byte slotNo, uint skillId, byte skillLv)
+        {
+            // Remove skill from other slots
+            for (int i = 0; i < character.EquippedCustomSkillsDictionary[job].Count; i++)
+            {
+                CustomSkill removedSkill = character.EquippedCustomSkillsDictionary[job][i];
+                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId)
+                {
+                    character.EquippedCustomSkillsDictionary[job][i] = null;
+                    byte removedSkillSlotNo = (byte)(i+1);
+                    database.DeleteEquippedCustomSkill(character.CommonId, job, removedSkillSlotNo);
+                }
             }
 
-            database.ReplaceEquippedCustomSkill(character.CommonId, skillSlot);
+            // Add skill to the requested slot
+            CustomSkill skill = character.LearnedCustomSkills.Where(skill => skill.Job == job && skill.SkillId == skillId).Single();
+            character.EquippedCustomSkillsDictionary[job][slotNo-1] = skill;
+            database.ReplaceEquippedCustomSkill(character.CommonId, slotNo, skill);
 
             // Inform party members of the change
             if(job == character.Job)
@@ -171,12 +214,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
                     {
                         CharacterId = ((Character) character).CharacterId,
-                        ContextAcquirementData = new CDataContextAcquirementData()
-                        {
-                            SlotNo = skillSlot.SlotNo,
-                            AcquirementNo = skillSlot.SkillId,
-                            AcquirementLv = skillSlot.SkillLv
-                        }
+                        ContextAcquirementData = skill.AsCDataContextAcquirementData(slotNo)
                     });
                 }
                 else if(character is Pawn)
@@ -184,35 +222,41 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     client.Party.SendToAll(new S2CSkillPawnCustomSkillSetNtc()
                     {
                         PawnId = ((Pawn) character).PawnId,
-                        ContextAcquirementData = new CDataContextAcquirementData()
-                        {
-                            SlotNo = skillSlot.SlotNo,
-                            AcquirementNo = skillSlot.SkillId,
-                            AcquirementLv = skillSlot.SkillLv
-                        }
+                        ContextAcquirementData = skill.AsCDataContextAcquirementData(slotNo)
                     });
                 }
             }
 
-            return skillSlot;
+            return skill;
         }
 
-        public IEnumerable<CustomSkill> ChangeExSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId)
+        public IEnumerable<byte> ChangeExSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId)
         {
-            IEnumerable<CustomSkill> modifiedSkillSlots = character.CustomSkills
-                .Where(skill => skill.Job == job && GetBaseSkillId(skill.SkillId) == GetBaseSkillId(skillId));
-            foreach (CustomSkill skillSlot in modifiedSkillSlots)
+            CustomSkill affectedSkill = character.LearnedCustomSkills
+                .Where(skill => skill.Job == job && skill.SkillId == skillId)
+                .Single();
+            
+            List<byte> affectedSlots = new List<byte>(); 
+            foreach(KeyValuePair<JobId, List<CustomSkill>> jobAndEquippedSkill in character.EquippedCustomSkillsDictionary)
             {
-                skillSlot.SkillId = skillId;
-                skillSlot.SkillLv = 1; // Must be 1 otherwise they do 0 damage
-                SetSkill(database, client, character, skillSlot.Job, skillSlot.SlotNo, skillSlot.SkillId, skillSlot.SkillLv);
+                for(int i=0; i<jobAndEquippedSkill.Value.Count; i++)
+                {
+                    CustomSkill equippedSkill = jobAndEquippedSkill.Value[i];
+                    byte slotNo = (byte)(i+1);
+                    if(equippedSkill == affectedSkill)
+                    {
+                        SetSkill(database, client, character, affectedSkill.Job, slotNo, affectedSkill.SkillId, affectedSkill.SkillLv);
+                        affectedSlots.Add(slotNo);
+                        break;
+                    }
+                }
             }
-            return modifiedSkillSlots;
+            return affectedSlots;
         }
 
         public void RemoveSkill(IDatabase database, CharacterCommon character, JobId job, byte slotNo)
         {
-            character.CustomSkills.RemoveAll(skill => skill.Job == job && skill.SlotNo == slotNo);
+            character.EquippedCustomSkillsDictionary[job][slotNo-1] = null;
 
             // TODO: Error handling
             database.DeleteEquippedCustomSkill(character.CommonId, job, slotNo);
@@ -221,30 +265,54 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // From what I tested it doesn't seem to be necessary
         }
 
+        public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)
+        {
+            Ability newAbility = new Ability()
+            {
+                Job = job,
+                AbilityId = abilityId,
+                AbilityLv = abilityLv
+            };
+            character.LearnedAbilities.Add(newAbility);
+            database.ReplaceLearnedAbility(character.CommonId, newAbility);
+
+            uint jpCost = SkillGetAcquirableAbilityListHandler.AllAbilities
+                .Where(aug => aug.Job == job && aug.AbilityNo == abilityId)
+                .SelectMany(aug => aug.Params)
+                .Where(augParams => augParams.Lv == abilityLv)
+                .Select(augParams => augParams.RequireJobPoint)
+                .Single();
+
+            // TODO: Check that this doesn't end up negative
+            CDataCharacterJobData activeCharacterJobData = character.ActiveCharacterJobData;
+            activeCharacterJobData.JobPoint -= jpCost;
+            database.UpdateCharacterJobData(character.CommonId, activeCharacterJobData);
+
+            if(character is Character)
+            {
+                client.Send(new S2CSkillLearnAbilityRes()
+                {
+                    Job = job,
+                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    AbilityId = abilityId,
+                    AbilityLv = abilityLv
+                });
+            }
+            else if(character is Pawn)
+            {
+                // TODO: S2CSkillLearnPawnAbilityRes
+            }
+        }
+
         public Ability SetAbility(IDatabase database, GameClient client, CharacterCommon character, JobId abilityJob, byte slotNo, uint abilityId, byte abilityLv)
         {
-            // TODO: Check in DB if the skill is unlocked and it's leveled up to what the packet says
-            
-            Ability abilitySlot = character.Abilities
-                .Where(ability => ability.EquippedToJob == character.Job && ability.SlotNo == slotNo)
-                .FirstOrDefault();
-            
-            if(abilitySlot == null)
-            {
-                abilitySlot = new Ability()
-                {
-                    EquippedToJob = character.Job,
-                    Job = abilityJob,
-                    SlotNo = slotNo,
-                };
-                character.Abilities.Add(abilitySlot);
-            }
-            
-            abilitySlot.Job = abilityJob;
-            abilitySlot.AbilityId = abilityId;
-            abilitySlot.AbilityLv = abilityLv;
+            Ability ability = character.LearnedAbilities
+                .Where(aug => aug.Job == abilityJob && aug.AbilityId == abilityId && aug.AbilityLv == abilityLv)
+                .Single();
 
-            database.ReplaceEquippedAbility(character.CommonId, abilitySlot);
+            character.EquippedAbilitiesDictionary[character.Job][slotNo-1] = ability;
+
+            database.ReplaceEquippedAbility(character.CommonId, character.Job, slotNo, ability);
 
             // Inform party members of the change
             if(character is Character)
@@ -252,12 +320,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 client.Party.SendToAll(new S2CSkillAbilitySetNtc()
                 {
                     CharacterId = ((Character) character).CharacterId,
-                    ContextAcquirementData = new CDataContextAcquirementData()
-                    {
-                        SlotNo = abilitySlot.SlotNo,
-                        AcquirementNo = abilitySlot.AbilityId,
-                        AcquirementLv = abilitySlot.AbilityLv
-                    }
+                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
                 });
             }
             else if(character is Pawn)
@@ -265,58 +328,49 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
                 {
                     PawnId = ((Pawn) character).PawnId,
-                    ContextAcquirementData = new CDataContextAcquirementData()
-                    {
-                        SlotNo = abilitySlot.SlotNo,
-                        AcquirementNo = abilitySlot.AbilityId,
-                        AcquirementLv = abilitySlot.AbilityLv
-                    }
+                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
                 });
             }
 
-            return abilitySlot;
+            return ability;
         }
 
         public void RemoveAbility(IDatabase database, CharacterCommon character, byte slotNo)
         {
             // TODO: Performance
-            List<Ability> newAbilities = new List<Ability>();
-            lock(character.Abilities)
+            List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
+            lock(equippedAbilities)
             {
                 byte removedAbilitySlotNo = Byte.MaxValue;
-                for(int i=0; i<character.Abilities.Count; i++)
+                for(int i=0; i<equippedAbilities.Count; i++)
                 {
-                    Ability ability = character.Abilities[i];
-                    if(ability.EquippedToJob == character.Job && ability.SlotNo == slotNo)
+                    Ability equippedAbility = equippedAbilities[i];
+                    byte equippedAbilitySlotNo = (byte)(i+1);
+                    if(character.Job == character.Job && equippedAbilitySlotNo == slotNo)
                     {
-                        character.Abilities.RemoveAt(i);
-                        removedAbilitySlotNo = ability.SlotNo;
+                        equippedAbilities.RemoveAt(i);
+                        removedAbilitySlotNo = equippedAbilitySlotNo;
                         break;
                     }
                 }
 
-                for(int i=0; i<character.Abilities.Count; i++)
+                for(int i=0; i<equippedAbilities.Count; i++)
                 {
-                    Ability ability = character.Abilities[i];
-                    if(ability.EquippedToJob == character.Job)
+                    Ability equippedAbility = equippedAbilities[i];
+                    byte equippedAbilitySlotNo = (byte)(i+1);
+                    if(character.Job == character.Job)
                     {
-                        if(ability.SlotNo > removedAbilitySlotNo)
+                        if(equippedAbilitySlotNo > removedAbilitySlotNo)
                         {
-                            ability.SlotNo--;
+                            equippedAbilitySlotNo--;
                         }
-                        newAbilities.Add(ability);
                     }
                 }
             }
 
-            database.ReplaceEquippedAbilities(character.CommonId, character.Job, newAbilities);
+            database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
 
             // Same as skills, i haven't found an Ability off NTC. It may not be required
-        }
-
-        private uint GetBaseSkillId(uint skillId)
-        {
-            return skillId % 100;
         }
     }
 }

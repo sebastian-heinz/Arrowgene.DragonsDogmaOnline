@@ -23,13 +23,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             if(packet.Structure.SlotNo == 0)
             {
-                Logger.Error(client, $"Requesting to set an ability to slot 0\n{client.Character.Abilities}");
+                Logger.Error(client, $"Requesting to set an ability to slot 0");
             }
             
             Ability abilitySlot = jobManager.SetAbility(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
 
             client.Send(new S2CSkillSetAbilityRes() {
-                SlotNo = abilitySlot.SlotNo,
+                SlotNo = packet.Structure.SlotNo,
                 AbilityId = abilitySlot.AbilityId,
                 AbilityLv = abilitySlot.AbilityLv
             });

@@ -34,14 +34,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 character = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
             }
 
-            IEnumerable<CustomSkill> skillSlots = jobManager.ChangeExSkill(Server.Database, client, character, packet.Structure.Job, packet.Structure.SkillId);
+            IEnumerable<byte> skillSlots = jobManager.ChangeExSkill(Server.Database, client, character, packet.Structure.Job, packet.Structure.SkillId);
 
             client.Send(new S2CSkillChangeExSkillRes() {
                 Job = packet.Structure.Job,
                 SkillId = packet.Structure.SkillId,
                 SkillLv = 1, // Must be 1 otherwise they do 0 damage
                 PawnId = packet.Structure.PawnId,
-                SlotsToUpdate = skillSlots.Select(skill => new CDataCommonU8(skill.SlotNo)).ToList()
+                SlotsToUpdate = skillSlots.Select(slotNo => new CDataCommonU8(slotNo)).ToList()
             });
         }
     }

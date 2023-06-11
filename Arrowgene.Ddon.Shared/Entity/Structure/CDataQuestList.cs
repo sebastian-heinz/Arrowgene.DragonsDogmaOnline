@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataQuestList
     {
         public CDataQuestList() {
-            Unk0 = new List<CDataQuestListUnk0>();
+            Unk0 = new List<CDataWalletPoint>();
             Unk1 = new List<CDataQuestListUnk1>();
             FixedRewardItemList = new List<CDataRewardItem>();
             FixedRewardSelectItemList = new List<CDataRewardItem>();
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint QuestId { get; set; }
         public uint BaseLevel { get; set; }
         public ushort ContentJoinItemRank { get; set; }
-        public List<CDataQuestListUnk0> Unk0 { get; set; }
+        public List<CDataWalletPoint> Unk0 { get; set; }
         public List<CDataQuestListUnk1> Unk1 { get; set; }
         public uint Unk2 { get; set;}
         public uint Unk3 { get; set;}
@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.QuestId);
                 WriteUInt32(buffer, obj.BaseLevel);
                 WriteUInt16(buffer, obj.ContentJoinItemRank);
-                WriteEntityList<CDataQuestListUnk0>(buffer, obj.Unk0);
+                WriteEntityList<CDataWalletPoint>(buffer, obj.Unk0);
                 WriteEntityList<CDataQuestListUnk1>(buffer, obj.Unk1);
                 WriteUInt32(buffer, obj.Unk2);
                 WriteUInt32(buffer, obj.Unk3);
@@ -84,7 +84,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.QuestId = ReadUInt32(buffer);
                 obj.BaseLevel = ReadUInt32(buffer);
                 obj.ContentJoinItemRank = ReadUInt16(buffer);
-                obj.Unk0 = ReadEntityList<CDataQuestListUnk0>(buffer);
+                obj.Unk0 = ReadEntityList<CDataWalletPoint>(buffer);
                 obj.Unk1 = ReadEntityList<CDataQuestListUnk1>(buffer);
                 obj.Unk2 = ReadUInt32(buffer);
                 obj.Unk3 = ReadUInt32(buffer);

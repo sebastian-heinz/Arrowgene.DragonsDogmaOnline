@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(new S2CSkillSetPawnSkillRes() {
                 PawnId = pawn.PawnId,
                 Job = skillSlot.Job,
-                SlotNo = skillSlot.SlotNo,
+                SlotNo = packet.Structure.SlotNo,
                 SkillId = skillSlot.SkillId,
                 SkillLv = skillSlot.SkillLv
             });

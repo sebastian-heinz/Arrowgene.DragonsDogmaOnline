@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] EquippedAbilityFields = new string[]
         {
-            "character_common_id", "equipped_to_job", "job", "slot_no", "ability_id", "ability_lv"
+            "character_common_id", "equipped_to_job", "job", "slot_no", "ability_id"
         };
 
         private readonly string SqlInsertEquippedAbility = $"INSERT INTO `ddon_equipped_ability` ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)});";
@@ -20,19 +20,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeleteEquippedAbility = "DELETE FROM `ddon_equipped_ability` WHERE `character_common_id`=@character_common_id AND `equipped_to_job`=@equipped_to_job AND `slot_no`=@slot_no;";
         private const string SqlDeleteEquippedAbilities = "DELETE FROM `ddon_equipped_ability` WHERE `character_common_id`=@character_common_id AND `equipped_to_job`=@equipped_to_job;";
 
-        public bool InsertEquippedAbility(uint commonId, Ability ability)
+        public bool InsertEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo, Ability ability)
         {
             return ExecuteNonQuery(SqlInsertEquippedAbility, command =>
             {
-                AddParameter(command, commonId, ability);
+                AddParameter(command, commonId, equippedToJob, slotNo, ability);
             }) == 1;
         }
         
-        public bool ReplaceEquippedAbility(uint commonId, Ability ability)
+        public bool ReplaceEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo, Ability ability)
         {
             ExecuteNonQuery(SqlReplaceEquippedAbility, command =>
             {
-                AddParameter(command, commonId, ability);
+                AddParameter(command, commonId, equippedToJob, slotNo, ability);
             });
             return true;
         }
@@ -49,21 +49,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
                 // Insert new ones
-                foreach(Ability ability in abilities)
+                for(byte i = 0; i < abilities.Count; i++)
                 {
+                    Ability ability = abilities[i];
+                    byte slotNo = (byte)(i+1);
                     ExecuteNonQuery(connection, SqlInsertEquippedAbility, command =>
                     {
-                        AddParameter(command, commonId, ability);
+                        AddParameter(command, commonId, equippedToJob, slotNo, ability);
                     });
                 }
             });
         }
 
-        public bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, Ability updatedability)
+        public bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, JobId equippedToJob, byte slotNo, Ability updatedability)
         {
             return ExecuteNonQuery(SqlDeleteEquippedAbility, command =>
             {
-                AddParameter(command, commonId, updatedability);
+                AddParameter(command, commonId, equippedToJob, slotNo, updatedability);
                 AddParameter(command, "@old_character_common_id", commonId);
                 AddParameter(command, "@old_equipped_to_job", (byte) oldEquippedToJob);
                 AddParameter(command, "@old_slot_no", oldSlotNo);
@@ -89,23 +91,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        private Ability ReadAbility(DbDataReader reader)
-        {
-            Ability ability = new Ability();
-            ability.EquippedToJob = (JobId) GetByte(reader, "equipped_to_job");
-            ability.Job = (JobId) GetByte(reader, "job");
-            ability.SlotNo = GetByte(reader, "slot_no");
-            ability.AbilityId = GetUInt32(reader, "ability_id");
-            ability.AbilityLv = GetByte(reader, "ability_lv");
-            return ability;
-        }
-
-        private void AddParameter(TCom command, uint commonId, Ability ability)
+        private void AddParameter(TCom command, uint commonId, JobId equippedToJob, byte slotNo, Ability ability)
         {
             AddParameter(command, "character_common_id", commonId);
-            AddParameter(command, "equipped_to_job", (byte) ability.EquippedToJob);
+            AddParameter(command, "equipped_to_job", (byte) equippedToJob);
             AddParameter(command, "job", (byte) ability.Job);
-            AddParameter(command, "slot_no", ability.SlotNo);
+            AddParameter(command, "slot_no", slotNo);
             AddParameter(command, "ability_id", ability.AbilityId);
             AddParameter(command, "ability_lv", ability.AbilityLv);
         }

@@ -23,9 +23,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Check if its necessary to filter so only the current job skills are sent
             S2CSkillGetPawnSetSkillListRes res = new S2CSkillGetPawnSetSkillListRes();
             res.PawnId = pawn.PawnId;
-            res.SetAcquierementParamList = pawn.CustomSkills
-                .Where(x => x.Job == pawn.Job)
-                .Select(x => x.AsCDataSetAcquirementParam())
+            res.SetAcquierementParamList = pawn.EquippedCustomSkillsDictionary[pawn.Job]
+                .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index+1)))
+                .Where(x => x != null)
                 .ToList();
             client.Send(res);
         }
