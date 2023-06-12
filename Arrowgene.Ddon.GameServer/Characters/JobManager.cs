@@ -300,7 +300,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else if(character is Pawn)
             {
-                // TODO: S2CSkillLearnPawnAbilityRes
+                client.Send(new S2CSkillLearnPawnAbilityRes()
+                {
+                    PawnId = ((Pawn) character).PawnId,
+                    Job = job,
+                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    AbilityId = abilityId,
+                    AbilityLv = abilityLv
+                });
             }
         }
 
