@@ -383,6 +383,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new StageGetStageListHandler(this));
 
             AddHandler(new StampBonusCheckHandler(this));
+			AddHandler(new StampBonusGetListHandler(this));
+			AddHandler(new StampBonusReceiveDailyHandler(this));
 
             AddHandler(new WarpAreaWarpHandler(this));
             AddHandler(new WarpGetFavoriteWarpPointListHandler(this));
