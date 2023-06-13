@@ -155,17 +155,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly Dictionary<JobId, JobLevelUp[]> LEVEL_UP_TABLE = new Dictionary<JobId, JobLevelUp[]>()
             {
                 {
+                    // Fighter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
                     JobId.Fighter,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                             Lv = 0,
-                            Atk = 0,
-                            Def = 0,
-                            MAtk = 0,
-                            MDef = 0,
+                            Atk = 30,
+                            Def = 120,
+                            MAtk = 20,
+                            MDef = 83,
                         },
-                        new JobLevelUp() {
+                         new JobLevelUp() {
                             Lv = 9,
                             Atk = 40,
                             Def = 30,
@@ -315,15 +316,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 },
                 {
+                    // Seeker growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 10(base lv1) +0
                     JobId.Seeker,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                             Lv = 0,
-                            Atk = 0,
-                            Def = 0,
-                            MAtk = 0,
-                            MDef = 0
+                            Atk = 30,
+                            Def = 83,
+                            MAtk = 20,
+                            MDef = 83
                         },
                         new JobLevelUp() {
                             Lv = 9,
@@ -475,15 +477,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 },
                 {
+                    // Hunter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
                     JobId.Hunter,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 30,
+                    Def = 83,
+                    MAtk = 20,
+                    MDef = 83
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -635,15 +638,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 },
                 {
+                    // Priest growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 18(base lv1) +0
                     JobId.Priest,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 20,
+                    Def = 58,
+                    MAtk = 30,
+                    MDef = 100
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -795,15 +799,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 },
                 {
+                    // ShieldSage growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 30(base lv1) +3 / Magi Def 120(base lv1) +1.2 / Blow 30(base lv1) +0
                     JobId.ShieldSage,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 30,
+                    Def = 120,
+                    MAtk = 30,
+                    MDef = 120
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -955,15 +960,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 },
                 {
+                    // Sorcerer growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 30(base lv1) +0
                     JobId.Sorcerer,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 20,
+                    Def = 58,
+                    MAtk = 30,
+                    MDef = 100
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -1115,15 +1121,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 },
                 {
+                    // Warrior growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 35(base lv1) +0
                     JobId.Warrior,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 30,
+                    Def = 120,
+                    MAtk = 20,
+                    MDef = 83
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -1275,15 +1282,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 },
                 {
+                    // ElementArcher growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 18(base lv1) +0
                     JobId.ElementArcher,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 20,
+                    Def = 58,
+                    MAtk = 30,
+                    MDef = 100
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -1435,15 +1443,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 },
                 {
+                    // Alchemist growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 100(base lv1) +1 / Magi Atk 20(base lv1) +2 / Magi Def 100(base lv1) +1 / Blow 25(base lv1) +0
                     JobId.Alchemist,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 30,
+                    Def = 100,
+                    MAtk = 20,
+                    MDef = 100
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -1594,20 +1603,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
                     }
                 },
-                // SL and HS have placeholder level up values.
-                // TODO: Find out where the correct stats for these two last classes are stored.
-                // They're apparently missing from the files in base.arc obj/pl/pl000000/param/jobleveluptbl files
-                // It may be that Season 3 onwards they stopped updating this file
                 {
+                    // Status confirmed
+                    // SpiritLancer growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 30(base lv1) +3 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
                     JobId.SpiritLancer,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 30,
+                    Def = 83,
+                    MAtk = 30,
+                    MDef = 83
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -1758,16 +1765,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
                     }
                 },
+                // HS have placeholder level up values.
+                // TODO: Find out where the correct stats for these two last classes are stored.
+                // They're apparently missing from the files in base.arc obj/pl/pl000000/param/jobleveluptbl files
+                // It may be that Season 3 onwards they stopped updating this file
                 {
+                    // HighScepter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 30(base lv1) +3 / Magi Def 120(base lv1) +1.2 / Blow 25(base lv1) +0
                     JobId.HighScepter,
                     new JobLevelUp[]
                     {
                         new JobLevelUp() {
                     Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
+                    Atk = 30,
+                    Def = 120,
+                    MAtk = 30,
+                    MDef = 120
                 },
                 new JobLevelUp() {
                     Lv = 9,
@@ -1979,13 +1991,397 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     activeCharacterJobData.Lv = targetLevel;
                     activeCharacterJobData.JobPoint += addJobPoint;
-                    // Using Math.Max to prevent lvl up from lowering your stats if you happen to have higher ones
                     JobLevelUp jobLevelUp = GetJobLevelUp(activeCharacterJobData.Job, activeCharacterJobData.Lv);
-                    activeCharacterJobData.Atk = Math.Max(activeCharacterJobData.Atk, jobLevelUp.Atk);
-                    activeCharacterJobData.Def = Math.Max(activeCharacterJobData.Def, jobLevelUp.Def);
-                    activeCharacterJobData.MAtk = Math.Max(activeCharacterJobData.MAtk, jobLevelUp.MAtk);
-                    activeCharacterJobData.MDef = Math.Max(activeCharacterJobData.MDef, jobLevelUp.MDef);
-                    // TODO: Figure out the values for all other job data fields
+
+                    // Growth sources: https://wiki.famitsu.com/dd-online/%E3%82%B8%E3%83%A7%E3%83%96/%E3%83%95%E3%82%A1%E3%82%A4%E3%82%BF%E3%83%BC
+                    // Fighter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
+                    // Check class Id and cap level
+                    if (activeCharacterJobData.Job == JobId.Fighter && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.Fighter].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.Fighter][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.Fighter][i-1].Atk + 3);
+                                LEVEL_UP_TABLE[JobId.Fighter][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.Fighter][i-1].Def + 1.2);
+                                LEVEL_UP_TABLE[JobId.Fighter][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.Fighter][i-1].MAtk + 2);
+                                LEVEL_UP_TABLE[JobId.Fighter][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.Fighter][i-1].MDef + 0.8);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.Fighter][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.Fighter][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Fighter][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.Fighter][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Fighter][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.Fighter][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Fighter][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.Fighter][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // Seeker growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 10(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.Seeker && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.Seeker].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.Seeker][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.Seeker][i-1].Atk + 3);
+                                LEVEL_UP_TABLE[JobId.Seeker][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.Seeker][i-1].Def + 0.8);
+                                LEVEL_UP_TABLE[JobId.Seeker][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.Seeker][i-1].MAtk + 2);
+                                LEVEL_UP_TABLE[JobId.Seeker][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.Seeker][i-1].MDef + 0.8);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.Seeker][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.Seeker][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Seeker][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.Seeker][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Seeker][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.Seeker][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Seeker][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.Seeker][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // Hunter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.Hunter && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.Hunter].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.Hunter][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.Hunter][i-1].Atk + 3);
+                                LEVEL_UP_TABLE[JobId.Hunter][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.Hunter][i-1].Def + 0.8);
+                                LEVEL_UP_TABLE[JobId.Hunter][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.Hunter][i-1].MAtk + 2);
+                                LEVEL_UP_TABLE[JobId.Hunter][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.Hunter][i-1].MDef + 0.8);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.Hunter][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.Hunter][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Hunter][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.Hunter][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Hunter][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.Hunter][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Hunter][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.Hunter][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // Priest growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 18(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.Priest && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.Priest].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.Priest][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.Priest][i-1].Atk + 2);
+                                LEVEL_UP_TABLE[JobId.Priest][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.Priest][i-1].Def + 0.4);
+                                LEVEL_UP_TABLE[JobId.Priest][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.Priest][i-1].MAtk + 3);
+                                LEVEL_UP_TABLE[JobId.Priest][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.Priest][i-1].MDef + 1);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.Priest][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.Priest][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Priest][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.Priest][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Priest][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.Priest][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Priest][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.Priest][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // ShieldSage growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 30(base lv1) +3 / Magi Def 120(base lv1) +1.2 / Blow 30(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.ShieldSage && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.ShieldSage].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.ShieldSage][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.ShieldSage][i-1].Atk + 3);
+                                LEVEL_UP_TABLE[JobId.ShieldSage][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.ShieldSage][i-1].Def + 1.2);
+                                LEVEL_UP_TABLE[JobId.ShieldSage][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.ShieldSage][i-1].MAtk + 3);
+                                LEVEL_UP_TABLE[JobId.ShieldSage][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.ShieldSage][i-1].MDef + 1.2);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.ShieldSage][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.ShieldSage][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.ShieldSage][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.ShieldSage][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.ShieldSage][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.ShieldSage][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.ShieldSage][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.ShieldSage][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // Sorcerer growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 30(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.Sorcerer && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.Sorcerer].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.Sorcerer][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.Sorcerer][i-1].Atk + 2);
+                                LEVEL_UP_TABLE[JobId.Sorcerer][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.Sorcerer][i-1].Def + 0.4);
+                                LEVEL_UP_TABLE[JobId.Sorcerer][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.Sorcerer][i-1].MAtk + 3);
+                                LEVEL_UP_TABLE[JobId.Sorcerer][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.Sorcerer][i-1].MDef + 1);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.Sorcerer][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.Sorcerer][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Sorcerer][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.Sorcerer][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Sorcerer][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.Sorcerer][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Sorcerer][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.Sorcerer][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // Warrior growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 35(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.Warrior && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.Warrior].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.Warrior][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.Warrior][i-1].Atk + 3);
+                                LEVEL_UP_TABLE[JobId.Warrior][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.Warrior][i-1].Def + 1.2);
+                                LEVEL_UP_TABLE[JobId.Warrior][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.Warrior][i-1].MAtk + 2);
+                                LEVEL_UP_TABLE[JobId.Warrior][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.Warrior][i-1].MDef + 0.8);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.Warrior][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.Warrior][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Warrior][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.Warrior][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Warrior][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.Warrior][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Warrior][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.Warrior][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // ElementArcher growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 18(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.ElementArcher && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.ElementArcher].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.ElementArcher][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.ElementArcher][i-1].Atk + 2);
+                                LEVEL_UP_TABLE[JobId.ElementArcher][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.ElementArcher][i-1].Def + 0.4);
+                                LEVEL_UP_TABLE[JobId.ElementArcher][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.ElementArcher][i-1].MAtk + 3);
+                                LEVEL_UP_TABLE[JobId.ElementArcher][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.ElementArcher][i-1].MDef + 1);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.ElementArcher][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.ElementArcher][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.ElementArcher][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.ElementArcher][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.ElementArcher][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.ElementArcher][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.ElementArcher][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.ElementArcher][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // Growth sources: https://dogmaonlineyyy.wiki.fc2.com/wiki/%E3%82%A2%E3%83%AB%E3%82%B1%E3%83%9F%E3%82%B9%E3%83%88
+                    // Growth not actually there, it's just following the above logic and patterns
+                    // Alchemist growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 100(base lv1) +1 / Magi Atk 20(base lv1) +2 / Magi Def 100(base lv1) +1 / Blow 25(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.Alchemist && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.Alchemist].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.Alchemist][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.Alchemist][i-1].Atk + 3);
+                                LEVEL_UP_TABLE[JobId.Alchemist][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.Alchemist][i-1].Def + 1);
+                                LEVEL_UP_TABLE[JobId.Alchemist][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.Alchemist][i-1].MAtk + 2);
+                                LEVEL_UP_TABLE[JobId.Alchemist][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.Alchemist][i-1].MDef + 1);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.Alchemist][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.Alchemist][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Alchemist][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.Alchemist][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Alchemist][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.Alchemist][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.Alchemist][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.Alchemist][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // Confirmed statuses and added proper growth rate
+                    // SpiritLancer growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 30(base lv1) +3 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.SpiritLancer && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.SpiritLancer].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.SpiritLancer][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.SpiritLancer][i-1].Atk + 3);
+                                LEVEL_UP_TABLE[JobId.SpiritLancer][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.SpiritLancer][i-1].Def + 0.8);
+                                LEVEL_UP_TABLE[JobId.SpiritLancer][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.SpiritLancer][i-1].MAtk + 3);
+                                LEVEL_UP_TABLE[JobId.SpiritLancer][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.SpiritLancer][i-1].MDef + 0.8);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.SpiritLancer][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.SpiritLancer][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.SpiritLancer][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.SpiritLancer][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.SpiritLancer][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.SpiritLancer][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.SpiritLancer][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.SpiritLancer][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    // Based on the placeholder statues and above logic patterns
+                    // HighScepter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 30(base lv1) +3 / Magi Def 120(base lv1) +1.2 / Blow 25(base lv1) +0
+                    // Check class Id and cap level
+                    else if (activeCharacterJobData.Job == JobId.HighScepter && targetLevel < LV_CAP)
+                    {
+                        // Loop to increase statuses per level
+                        for (int i = 0; i < LEVEL_UP_TABLE[JobId.HighScepter].Length; i++)
+                        {
+                            if (i > 0)
+                            {
+                                // Use the previous values and increase
+                                LEVEL_UP_TABLE[JobId.HighScepter][i].Atk = (ushort)(LEVEL_UP_TABLE[JobId.HighScepter][i-1].Atk + 3);
+                                LEVEL_UP_TABLE[JobId.HighScepter][i].Def = (ushort)(LEVEL_UP_TABLE[JobId.HighScepter][i-1].Def + 1.2);
+                                LEVEL_UP_TABLE[JobId.HighScepter][i].MAtk = (ushort)(LEVEL_UP_TABLE[JobId.HighScepter][i-1].MAtk + 3);
+                                LEVEL_UP_TABLE[JobId.HighScepter][i].MDef = (ushort)(LEVEL_UP_TABLE[JobId.HighScepter][i-1].MDef + 1.2);
+                            }
+                        }
+                        // Add the values to activeCharacterJobData if they are greater or equal than the previous ones
+                        if (LEVEL_UP_TABLE[JobId.HighScepter][activeCharacterJobData.Lv].Atk >= activeCharacterJobData.Atk)
+                        {
+                            activeCharacterJobData.Atk = LEVEL_UP_TABLE[JobId.HighScepter][activeCharacterJobData.Lv].Atk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.HighScepter][activeCharacterJobData.Lv].Def >= activeCharacterJobData.Def)
+                        {
+                            activeCharacterJobData.Def = LEVEL_UP_TABLE[JobId.HighScepter][activeCharacterJobData.Lv].Def;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.HighScepter][activeCharacterJobData.Lv].MAtk >= activeCharacterJobData.MAtk)
+                        {
+                            activeCharacterJobData.MAtk = LEVEL_UP_TABLE[JobId.HighScepter][activeCharacterJobData.Lv].MAtk;
+                        }
+                        if (LEVEL_UP_TABLE[JobId.HighScepter][activeCharacterJobData.Lv].MDef >= activeCharacterJobData.MDef)
+                        {
+                            activeCharacterJobData.MDef = LEVEL_UP_TABLE[JobId.HighScepter][activeCharacterJobData.Lv].MDef;
+                        }
+                    }
+                    else
+                    {
+                        // Using Math.Max to prevent lvl up from lowering your stats if you happen to have higher ones
+                        activeCharacterJobData.Atk = Math.Max(activeCharacterJobData.Atk, jobLevelUp.Atk);
+                        activeCharacterJobData.Def = Math.Max(activeCharacterJobData.Def, jobLevelUp.Def);
+                        activeCharacterJobData.MAtk = Math.Max(activeCharacterJobData.MAtk, jobLevelUp.MAtk);
+                        activeCharacterJobData.MDef = Math.Max(activeCharacterJobData.MDef, jobLevelUp.MDef);
+                        // TODO: Figure out the values for all other job data fields
+                        
+                    }
 
                     if(characterToAddExpTo is Character)
                     {
