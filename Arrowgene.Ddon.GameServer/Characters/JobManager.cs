@@ -152,6 +152,44 @@ namespace Arrowgene.Ddon.GameServer.Characters
             character.LearnedCustomSkills.Add(newSkill);
             database.ReplaceLearnedCustomSkill(character.CommonId, newSkill);
 
+            // EX Skills
+            if(skillLv == 9)
+            {
+                // EX T Skill
+                uint exSkillTId = skillId+100;
+                CDataSkillParam? exSkillT = SkillGetAcquirableSkillListHandler.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillTId).SingleOrDefault();
+                if(exSkillT != null)
+                {
+                    // Add new skill
+                    CustomSkill newExSkillT = new CustomSkill()
+                    {
+                        Job = job,
+                        SkillId = exSkillTId,
+                        SkillLv = 1
+                    };
+                    character.LearnedCustomSkills.Add(newExSkillT);
+                    database.ReplaceLearnedCustomSkill(character.CommonId, newExSkillT);
+                }
+            }
+            else if(skillLv == 10)
+            {
+                // EX P Skill
+                uint exSkillPId = skillId+200;
+                CDataSkillParam? exSkillP = SkillGetAcquirableSkillListHandler.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillPId).SingleOrDefault();
+                if(exSkillP != null)
+                {
+                    // Add new skill
+                    CustomSkill newExSkillP = new CustomSkill()
+                    {
+                        Job = job,
+                        SkillId = exSkillPId,
+                        SkillLv = 1
+                    };
+                    character.LearnedCustomSkills.Add(newExSkillP);
+                    database.ReplaceLearnedCustomSkill(character.CommonId, newExSkillP);
+                }
+            }
+
             uint jpCost = SkillGetAcquirableSkillListHandler.AllSkills
                 .Where(skill => skill.Job == job && skill.SkillNo == skillId)
                 .SelectMany(skill => skill.Params)
@@ -233,7 +271,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public IEnumerable<byte> ChangeExSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId)
         {
             CustomSkill affectedSkill = character.LearnedCustomSkills
-                .Where(skill => skill.Job == job && skill.SkillId == skillId)
+                .Where(skill => skill.Job == job && skill.SkillId == GetBaseSkillId(skillId))
                 .Single();
             
             List<byte> affectedSlots = new List<byte>(); 
@@ -241,9 +279,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 for(int i=0; i<jobAndEquippedSkill.Value.Count; i++)
                 {
-                    CustomSkill equippedSkill = jobAndEquippedSkill.Value[i];
+                    CustomSkill? equippedSkill = jobAndEquippedSkill.Value[i];
                     byte slotNo = (byte)(i+1);
-                    if(equippedSkill == affectedSkill)
+                    if(equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == affectedSkill.SkillId)
                     {
                         SetSkill(database, client, character, affectedSkill.Job, slotNo, affectedSkill.SkillId, affectedSkill.SkillLv);
                         affectedSlots.Add(slotNo);
@@ -252,6 +290,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
             return affectedSlots;
+        }
+
+        private uint GetBaseSkillId(uint skillId)
+        {
+            return skillId % 100;
         }
 
         public void RemoveSkill(IDatabase database, CharacterCommon character, JobId job, byte slotNo)
