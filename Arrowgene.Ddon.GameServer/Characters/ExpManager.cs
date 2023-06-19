@@ -285,10 +285,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         }
                     }
                 },
-                // HS have placeholder level up values.
-                // TODO: Find out where the correct stats for these two last classes are stored.
-                // They're apparently missing from the files in base.arc obj/pl/pl000000/param/jobleveluptbl files
-                // It may be that Season 3 onwards they stopped updating this file
+                // Many videos has its initial values different but growth rate are the same.
+                // This is the source of the proper values and growth rate: https://youtu.be/Ov_t6CBeugE?t=291
                 {
                     JobId.HighScepter,
                     new JobLevelUp[]
@@ -296,9 +294,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         new JobLevelUp() {
                             Lv = 1,
                             Atk = 30,
-                            Def = 120,
+                            Def = 83,
                             MAtk = 30,
-                            MDef = 120
+                            MDef = 83
                         }
                     }
                 },
@@ -459,15 +457,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         activeCharacterJobData.MAtk = (ushort)(baseStats.MAtk + (activeCharacterJobData.Lv - 1) * 3);
                         activeCharacterJobData.MDef = (ushort)(baseStats.MDef + (activeCharacterJobData.Lv - 1) * 0.8);
                     }
-                    // Based on the placeholder statues and above logic patterns
-                    // HighScepter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 30(base lv1) +3 / Magi Def 120(base lv1) +1.2 / Blow 25(base lv1) +0
+                    // This is the source of the proper values and growth rate: https://youtu.be/Ov_t6CBeugE?t=291
+                    // HighScepter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 30(base lv1) +3 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
                     else if (activeCharacterJobData.Job == JobId.HighScepter)
                     {
                         JobLevelUp baseStats = LEVEL_UP_TABLE[activeCharacterJobData.Job][0];
                         activeCharacterJobData.Atk = (ushort)(baseStats.Atk + (activeCharacterJobData.Lv - 1) * 3);
-                        activeCharacterJobData.Def = (ushort)(baseStats.Def + (activeCharacterJobData.Lv - 1) * 1.2);
+                        activeCharacterJobData.Def = (ushort)(baseStats.Def + (activeCharacterJobData.Lv - 1) * 0.8);
                         activeCharacterJobData.MAtk = (ushort)(baseStats.MAtk + (activeCharacterJobData.Lv - 1) * 3);
-                        activeCharacterJobData.MDef = (ushort)(baseStats.MDef + (activeCharacterJobData.Lv - 1) * 1.2);
+                        activeCharacterJobData.MDef = (ushort)(baseStats.MDef + (activeCharacterJobData.Lv - 1) * 0.8);
                     }
 
                     if(characterToAddExpTo is Character)
