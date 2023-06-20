@@ -182,6 +182,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterPawnGoldenReviveHandler(this));
             AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
+			AddHandler(new CharacterEditGetShopPriceHandler(this));
+			AddHandler(new CharacterEditUpdateCharacterEditParamHandler(this));
+			AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
 
             AddHandler(new ClanClanBaseGetInfoHandler(this));
             AddHandler(new ClanClanConciergeGetListHandler(this));
@@ -226,6 +229,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new Gp_28_2_1_Handler(this));
             AddHandler(new GpGetUpdateAppCourseBonusFlagHandler(this));
             AddHandler(new GpGetValidChatComGroupHandler(this));
+			AddHandler(new GpGpEditGetVoiceListHandler(this));
+			AddHandler(new GpGetGpHandler(this));
 
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
 
