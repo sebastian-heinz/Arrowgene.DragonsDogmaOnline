@@ -4,7 +4,6 @@ using System.Linq;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -227,14 +226,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CustomSkill SetSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, byte slotNo, uint skillId, byte skillLv)
         {
-            // Remove skill from other slots
+            // Remove skill from other slots in the same palette
+            int paletteMask = slotNo & 0x10;
             for (int i = 0; i < character.EquippedCustomSkillsDictionary[job].Count; i++)
             {
+                byte removedSkillSlotNo = (byte)(i+1);
                 CustomSkill removedSkill = character.EquippedCustomSkillsDictionary[job][i];
-                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId)
+                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId && (removedSkillSlotNo&0x10) == paletteMask)
                 {
                     character.EquippedCustomSkillsDictionary[job][i] = null;
-                    byte removedSkillSlotNo = (byte)(i+1);
                     database.DeleteEquippedCustomSkill(character.CommonId, job, removedSkillSlotNo);
                 }
             }
@@ -270,6 +270,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public IEnumerable<byte> ChangeExSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId)
         {
+            CustomSkill exSkill = character.LearnedCustomSkills
+                .Where(skill => skill.Job == job && skill.SkillId == skillId)
+                .Single();
+
             CustomSkill affectedSkill = character.LearnedCustomSkills
                 .Where(skill => skill.Job == job && skill.SkillId == GetBaseSkillId(skillId))
                 .Single();
@@ -283,7 +287,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     byte slotNo = (byte)(i+1);
                     if(equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == affectedSkill.SkillId)
                     {
-                        SetSkill(database, client, character, affectedSkill.Job, slotNo, affectedSkill.SkillId, affectedSkill.SkillLv);
+                        SetSkill(database, client, character, exSkill.Job, slotNo, exSkill.SkillId, exSkill.SkillLv);
                         affectedSlots.Add(slotNo);
                         break;
                     }
@@ -398,7 +402,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     byte equippedAbilitySlotNo = (byte)(i+1);
                     if(character.Job == character.Job && equippedAbilitySlotNo == slotNo)
                     {
-                        equippedAbilities.RemoveAt(i);
+                        equippedAbilities[i] = null;
                         removedAbilitySlotNo = equippedAbilitySlotNo;
                         break;
                     }
