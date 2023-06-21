@@ -4,7 +4,6 @@ using System.Linq;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -270,6 +269,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public IEnumerable<byte> ChangeExSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId)
         {
+            CustomSkill exSkill = character.LearnedCustomSkills
+                .Where(skill => skill.Job == job && skill.SkillId == skillId)
+                .Single();
+
             CustomSkill affectedSkill = character.LearnedCustomSkills
                 .Where(skill => skill.Job == job && skill.SkillId == GetBaseSkillId(skillId))
                 .Single();
@@ -283,7 +286,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     byte slotNo = (byte)(i+1);
                     if(equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == affectedSkill.SkillId)
                     {
-                        SetSkill(database, client, character, affectedSkill.Job, slotNo, affectedSkill.SkillId, affectedSkill.SkillLv);
+                        SetSkill(database, client, character, exSkill.Job, slotNo, exSkill.SkillId, exSkill.SkillLv);
                         affectedSlots.Add(slotNo);
                         break;
                     }
