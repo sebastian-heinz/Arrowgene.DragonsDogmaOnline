@@ -226,14 +226,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CustomSkill SetSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, byte slotNo, uint skillId, byte skillLv)
         {
-            // Remove skill from other slots
+            // Remove skill from other slots in the same palette
+            int paletteMask = slotNo & 0x10;
             for (int i = 0; i < character.EquippedCustomSkillsDictionary[job].Count; i++)
             {
+                byte removedSkillSlotNo = (byte)(i+1);
                 CustomSkill removedSkill = character.EquippedCustomSkillsDictionary[job][i];
-                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId)
+                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId && (removedSkillSlotNo&0x10) == paletteMask)
                 {
                     character.EquippedCustomSkillsDictionary[job][i] = null;
-                    byte removedSkillSlotNo = (byte)(i+1);
                     database.DeleteEquippedCustomSkill(character.CommonId, job, removedSkillSlotNo);
                 }
             }
