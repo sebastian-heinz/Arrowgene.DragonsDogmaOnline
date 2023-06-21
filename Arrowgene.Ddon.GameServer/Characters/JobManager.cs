@@ -401,7 +401,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     byte equippedAbilitySlotNo = (byte)(i+1);
                     if(character.Job == character.Job && equippedAbilitySlotNo == slotNo)
                     {
-                        equippedAbilities.RemoveAt(i);
+                        equippedAbilities[i] = null;
                         removedAbilitySlotNo = equippedAbilitySlotNo;
                         break;
                     }
