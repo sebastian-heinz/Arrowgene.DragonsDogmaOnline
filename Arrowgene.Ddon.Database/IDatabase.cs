@@ -74,14 +74,16 @@ namespace Arrowgene.Ddon.Database
         bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
 
         // CustomSkills
-        bool ReplaceLearnedCustomSkill(uint commonId, CustomSkill skill);
+        bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill);
+        bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill);
         bool InsertEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
         bool ReplaceEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
         bool UpdateEquippedCustomSkill(uint commonId, JobId oldJob, byte oldSlotNo, byte slotNo, CustomSkill skill);
         bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo);
 
         // Abilities
-        bool ReplaceLearnedAbility(uint commonId, Ability ability);
+        bool InsertLearnedAbility(uint commonId, Ability ability);
+        bool UpdateLearnedAbility(uint commonId, Ability ability);
         bool InsertEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability);
         bool ReplaceEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability);
         bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities);

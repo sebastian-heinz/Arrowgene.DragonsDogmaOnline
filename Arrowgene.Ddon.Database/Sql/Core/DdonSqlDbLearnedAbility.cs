@@ -14,12 +14,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_common_id", "job", "ability_id", "ability_lv"
         };
 
-        private readonly string SqlReplaceLearnedAbility = $"INSERT OR REPLACE INTO `ddon_learned_ability` ({BuildQueryField(LearnedAbilityFields)}) VALUES ({BuildQueryInsert(LearnedAbilityFields)});";
+        private readonly string SqlInsertLearnedAbility = $"INSERT INTO `ddon_learned_ability` ({BuildQueryField(LearnedAbilityFields)}) VALUES ({BuildQueryInsert(LearnedAbilityFields)});";
+        private readonly string SqlUpdateLearnedAbility = $"UPDATE `ddon_learned_ability` SET {BuildQueryUpdate(LearnedAbilityFields)} WHERE `character_common_id`=@character_common_id AND `job`=@job AND `ability_id`=@ability_id;";
         private static readonly string SqlSelectLearnedAbilities = $"SELECT {BuildQueryField(LearnedAbilityFields)} FROM `ddon_learned_ability` WHERE `character_common_id`=@character_common_id;";
         
-        public bool ReplaceLearnedAbility(uint commonId, Ability ability)
+        public bool InsertLearnedAbility(uint commonId, Ability ability)
         {
-            ExecuteNonQuery(SqlReplaceLearnedAbility, command =>
+            ExecuteNonQuery(SqlInsertLearnedAbility, command =>
+            {
+                AddParameter(command, commonId, ability);
+            });
+            return true;
+        }
+
+        public bool UpdateLearnedAbility(uint commonId, Ability ability)
+        {
+            ExecuteNonQuery(SqlUpdateLearnedAbility, command =>
             {
                 AddParameter(command, commonId, ability);
             });
