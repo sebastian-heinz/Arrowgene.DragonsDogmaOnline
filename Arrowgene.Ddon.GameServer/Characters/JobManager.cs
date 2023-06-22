@@ -138,18 +138,27 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void UnlockSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv)
         {
-            // Remove previous skill, if it exists (lower level skill)
-            character.LearnedCustomSkills.RemoveAll(skill => skill != null && skill.Job == job && skill.SkillId == skillId);
+            // Check if there is a learned skill of the same ID (This unlock is a level upgrade)
+            CustomSkill lowerLevelSkill = character.LearnedCustomSkills.Where(skill => skill != null && skill.Job == job && skill.SkillId == skillId).SingleOrDefault();
 
-            // Add new skill
-            CustomSkill newSkill = new CustomSkill()
+            if(lowerLevelSkill == null)
             {
-                Job = job,
-                SkillId = skillId,
-                SkillLv = skillLv
-            };
-            character.LearnedCustomSkills.Add(newSkill);
-            database.ReplaceLearnedCustomSkill(character.CommonId, newSkill);
+                // Add new skill
+                CustomSkill newSkill = new CustomSkill()
+                {
+                    Job = job,
+                    SkillId = skillId,
+                    SkillLv = skillLv
+                };
+                character.LearnedCustomSkills.Add(newSkill);
+                database.InsertLearnedCustomSkill(character.CommonId, newSkill);
+            }
+            else
+            {
+                // Upgrade existing skills
+                lowerLevelSkill.SkillLv = skillLv;
+                database.UpdateLearnedCustomSkill(character.CommonId, lowerLevelSkill);
+            }
 
             // EX Skills
             if(skillLv == 9)
@@ -167,7 +176,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         SkillLv = 1
                     };
                     character.LearnedCustomSkills.Add(newExSkillT);
-                    database.ReplaceLearnedCustomSkill(character.CommonId, newExSkillT);
+                    database.InsertLearnedCustomSkill(character.CommonId, newExSkillT);
                 }
             }
             else if(skillLv == 10)
@@ -185,7 +194,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         SkillLv = 1
                     };
                     character.LearnedCustomSkills.Add(newExSkillP);
-                    database.ReplaceLearnedCustomSkill(character.CommonId, newExSkillP);
+                    database.InsertLearnedCustomSkill(character.CommonId, newExSkillP);
                 }
             }
 
@@ -314,14 +323,27 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)
         {
-            Ability newAbility = new Ability()
+            // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
+            Ability lowerLevelAbility = character.LearnedAbilities.Where(aug => aug != null && aug.Job == job && aug.AbilityId == abilityId).SingleOrDefault();
+
+            if(lowerLevelAbility == null)
             {
-                Job = job,
-                AbilityId = abilityId,
-                AbilityLv = abilityLv
-            };
-            character.LearnedAbilities.Add(newAbility);
-            database.ReplaceLearnedAbility(character.CommonId, newAbility);
+                // New ability
+                Ability newAbility = new Ability()
+                {
+                    Job = job,
+                    AbilityId = abilityId,
+                    AbilityLv = abilityLv
+                };
+                character.LearnedAbilities.Add(newAbility);
+                database.InsertLearnedAbility(character.CommonId, newAbility);
+            }
+            else
+            {
+                // Level upgrade
+                lowerLevelAbility.AbilityLv = abilityLv;
+                database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility);
+            }
 
             uint jpCost = SkillGetAcquirableAbilityListHandler.AllAbilities
                 .Where(aug => aug.Job == job && aug.AbilityNo == abilityId)

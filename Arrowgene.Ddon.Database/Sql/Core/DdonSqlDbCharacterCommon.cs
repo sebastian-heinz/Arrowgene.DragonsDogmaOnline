@@ -249,7 +249,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CustomSkill learnedSkills in common.LearnedCustomSkills)
             {
-                ExecuteNonQuery(conn, SqlReplaceLearnedCustomSkill, command => 
+                ExecuteNonQuery(conn, SqlInsertLearnedCustomSkill, command => 
                 {
                     AddParameter(command, common.CommonId, learnedSkills);
                 });
@@ -273,7 +273,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(Ability ability in common.LearnedAbilities)
             {
-                ExecuteNonQuery(conn, SqlReplaceLearnedAbility, command =>
+                ExecuteNonQuery(conn, SqlInsertLearnedAbility, command =>
                 {
                     AddParameter(command, common.CommonId, ability);
                 });
