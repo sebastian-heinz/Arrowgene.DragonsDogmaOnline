@@ -206,16 +206,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Single();
 
             // TODO: Check that this doesn't end up negative
-            CDataCharacterJobData activeCharacterJobData = character.ActiveCharacterJobData;
-            activeCharacterJobData.JobPoint -= jpCost;
-            database.UpdateCharacterJobData(character.CommonId, activeCharacterJobData);
+            CDataCharacterJobData learnedSkillCharacterJobData = character.CharacterJobDataList.Where(jobData => jobData.Job == job).Single();
+            learnedSkillCharacterJobData.JobPoint -= jpCost;
+            database.UpdateCharacterJobData(character.CommonId, learnedSkillCharacterJobData);
 
             if(character is Character)
             {
                 client.Send(new S2CSkillLearnSkillRes()
                 {
                     Job = job,
-                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    NewJobPoint = learnedSkillCharacterJobData.JobPoint,
                     SkillId = skillId,
                     SkillLv = skillLv
                 });
@@ -226,7 +226,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     PawnId = ((Pawn) character).PawnId,
                     Job = job,
-                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    NewJobPoint = learnedSkillCharacterJobData.JobPoint,
                     SkillId = skillId,
                     SkillLv = skillLv
                 });
@@ -353,16 +353,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Single();
 
             // TODO: Check that this doesn't end up negative
-            CDataCharacterJobData activeCharacterJobData = character.ActiveCharacterJobData;
-            activeCharacterJobData.JobPoint -= jpCost;
-            database.UpdateCharacterJobData(character.CommonId, activeCharacterJobData);
+            CDataCharacterJobData learnedAbilityCharacterJobData = job == 0
+                ? character.ActiveCharacterJobData // Secret Augments -> Use current job's JP TODO: Verify if this is the correct behaviour
+                : character.CharacterJobDataList.Where(jobData => jobData.Job == job).Single(); // Job Augments -> Use that job's JP
+            learnedAbilityCharacterJobData.JobPoint -= jpCost;
+            database.UpdateCharacterJobData(character.CommonId, learnedAbilityCharacterJobData);
 
             if(character is Character)
             {
                 client.Send(new S2CSkillLearnAbilityRes()
                 {
                     Job = job,
-                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
                 });
@@ -373,7 +375,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     PawnId = ((Pawn) character).PawnId,
                     Job = job,
-                    NewJobPoint = activeCharacterJobData.JobPoint,
+                    NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
                 });
