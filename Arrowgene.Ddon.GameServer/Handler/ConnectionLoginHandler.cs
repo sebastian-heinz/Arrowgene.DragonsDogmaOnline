@@ -109,7 +109,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Logger.Info(client, "Logged Into GameServer");
 
             // update login token for client
-            client.Account.LoginToken = GameToken.GenerateLoginToken();
+            // client.Account.LoginToken = GameToken.GenerateLoginToken();
             client.Account.LoginTokenCreated = now;
             if (!Database.UpdateAccount(client.Account))
             {
