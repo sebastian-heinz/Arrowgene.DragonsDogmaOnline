@@ -296,7 +296,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     SetSkill(database, client, character, exSkill.Job, slotNo, exSkill.SkillId, exSkill.SkillLv);
                     affectedSlots.Add(slotNo);
-                    break;
                 }
             }
             return affectedSlots;
