@@ -396,9 +396,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     activeCharacterJobData.Def = (ushort)(baseStats.Def + (activeCharacterJobData.Lv - 1) * baseStats.DefRate);
                     activeCharacterJobData.MAtk = (ushort)(baseStats.MAtk + (activeCharacterJobData.Lv - 1) * baseStats.MAtkRate);
                     activeCharacterJobData.MDef = (ushort)(baseStats.MDef + (activeCharacterJobData.Lv - 1) * baseStats.MDefRate);
-    
-                    // PERSIST CHANGES IN DB
-                    this._database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
 
                     if(characterToAddExpTo is Character)
                     {
@@ -441,6 +438,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         client.Party.SendToAllExcept(lvlMemberNtc, client);
                     }
                 }
+            
+                // PERSIST CHANGES IN DB
+                this._database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
             }
         }
 
