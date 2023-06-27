@@ -287,19 +287,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Where(skill => skill.Job == job && skill.SkillId == GetBaseSkillId(skillId))
                 .Single();
             
-            List<byte> affectedSlots = new List<byte>(); 
-            foreach(KeyValuePair<JobId, List<CustomSkill>> jobAndEquippedSkill in character.EquippedCustomSkillsDictionary)
+            List<byte> affectedSlots = new List<byte>();
+            for(int i=0; i<character.EquippedCustomSkillsDictionary[job].Count; i++)
             {
-                for(int i=0; i<jobAndEquippedSkill.Value.Count; i++)
+                CustomSkill? equippedSkill = character.EquippedCustomSkillsDictionary[job][i];
+                byte slotNo = (byte)(i+1);
+                if(equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == GetBaseSkillId(affectedSkill.SkillId))
                 {
-                    CustomSkill? equippedSkill = jobAndEquippedSkill.Value[i];
-                    byte slotNo = (byte)(i+1);
-                    if(equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == affectedSkill.SkillId)
-                    {
-                        SetSkill(database, client, character, exSkill.Job, slotNo, exSkill.SkillId, exSkill.SkillLv);
-                        affectedSlots.Add(slotNo);
-                        break;
-                    }
+                    SetSkill(database, client, character, exSkill.Job, slotNo, exSkill.SkillId, exSkill.SkillLv);
+                    affectedSlots.Add(slotNo);
                 }
             }
             return affectedSlots;
