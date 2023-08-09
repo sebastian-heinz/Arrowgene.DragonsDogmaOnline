@@ -148,7 +148,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         string UId = GetString(reader, "item_uid");
                         JobId job = (JobId) GetByte(reader, "job");
                         byte equipSlot = GetByte(reader, "equip_slot");
-                        uint itemNum = GetUInt32(reader, "item_num");
                         ExecuteReader(conn, SqlSelectItem,
                             command2 => { AddParameter(command2, "@uid", UId); },
                             reader2 => 
@@ -156,7 +155,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 if(reader2.Read())
                                 {
                                     Item item = ReadItem(reader2);
-                                    common.Equipment.SetJobItem(item, itemNum, job, equipSlot);
+                                    common.Equipment.SetJobItem(item, job, equipSlot);
                                 }
                             });
                     }

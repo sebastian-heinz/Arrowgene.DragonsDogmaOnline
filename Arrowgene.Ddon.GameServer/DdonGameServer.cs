@@ -261,6 +261,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
             AddHandler(new ItemSortSetItemSortDataBinHandler(this));
             AddHandler(new ItemUseBagItemHandler(this));
+            AddHandler(new ItemUseJobItemsHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));

@@ -92,7 +92,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         }
                     }
                 },
-                new Dictionary<JobId, List<Tuple<Item, uint>?>>());
+                new Dictionary<JobId, List<Item?>>());
             character.JewelrySlotNum = packet.Structure.CharacterInfo.JewelrySlotNum;
             //character.CharacterItemSlotInfoList = packet.Structure.CharacterInfo.CharacterItemSlotInfoList;
             //character.UnkCharData0 = packet.Structure.CharacterInfo.UnkCharData0;
@@ -923,21 +923,15 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                     }
                 })).ToDictionary(x => x.Item1, x => x.Item2),
-                Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Tuple<Item, uint>>>(arisenPreset.Job, new List<Tuple<Item,uint>>() {
-                    new Tuple<Item, uint>(
+                Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Item>>(arisenPreset.Job, new List<Item>() {
                         new Item()
                         {
                             ItemId = arisenPreset.ClassItem1
                         },
-                        99
-                    ),
-                    new Tuple<Item, uint>(
                         new Item()
                         {
                             ItemId = arisenPreset.ClassItem1
-                        },
-                        99
-                    )
+                        }
                 })).ToDictionary(x => x.Item1, x => x.Item2)
             );
             character.HideEquipHead = ActiveJobPreset.DisplayHelmet;
@@ -1860,25 +1854,19 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         }
                     }
                 },
-                new Dictionary<JobId, List<Tuple<Item, uint>>>()
+                new Dictionary<JobId, List<Item>>()
                 { 
                     { 
                         myPawnCsvData.Job, 
-                        new List<Tuple<Item, uint>>() {
-                            new Tuple<Item, uint>(
+                        new List<Item>() {
                                 new Item()
                                 {
                                     ItemId = myPawnCsvData.JobItem1
                                 },
-                                99
-                            ),
-                            new Tuple<Item, uint>(
                                 new Item()
                                 {
                                     ItemId = myPawnCsvData.JobItem2
-                                },
-                                99
-                            )
+                                }
                         }
                     }
                 }

@@ -1,13 +1,12 @@
+#nullable enable
 using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-#nullable enable
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Model;
 using System;
-using Arrowgene.Ddon.GameServer.Characters;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
