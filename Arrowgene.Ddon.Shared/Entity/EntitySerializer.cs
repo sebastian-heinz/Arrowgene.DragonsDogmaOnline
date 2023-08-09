@@ -76,6 +76,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEquipElementParam.Serializer());
             Create(new CDataWeaponCrestData.Serializer());
             Create(new CDataArmorCrestData.Serializer());
+            Create(new CDataChangeEquipJobItem.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
             Create(new CDataEquipJobItem.Serializer());
             Create(new CDataErrorMessage.Serializer());
@@ -92,6 +93,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataHistoryElement.Serializer());
             Create(new CDataItemList.Serializer());
             Create(new CDataItemSort.Serializer());
+            Create(new CDataItemUIdList.Serializer());
             Create(new CDataItemUpdateResult.Serializer());
             Create(new CDataJobChangeInfo.Serializer());
             Create(new CDataJobChangeJobResUnk0.Serializer());
@@ -212,6 +214,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SContextGetSetContextReq.Serializer());
             Create(new C2SContextSetContextNtc.Serializer());
 
+            Create(new C2SEquipChangeCharacterEquipJobItemReq.Serializer());
             Create(new C2SEquipChangeCharacterEquipReq.Serializer());
             Create(new C2SEquipChangeCharacterStorageEquipReq.Serializer());
             Create(new C2SEquipChangePawnEquipReq.Serializer());
@@ -246,6 +249,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemSortGetItemSortDataBinReq.Serializer());
             Create(new C2SItemSortSetItemSortDataBinReq.Serializer());
             Create(new C2SItemUseBagItemReq.Serializer());
+            Create(new C2SItemUseJobItemsReq.Serializer());
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobChangePawnJobReq.Serializer());
             Create(new C2SJobGetJobChangeListReq.Serializer());
@@ -395,7 +399,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextMasterChangeNtc.Serializer());
             Create(new S2CContextMasterInfoNtc.Serializer());
             Create(new S2CContextSetContextBaseNtc.Serializer());
+            Create(new S2CContextSetContextNtc.Serializer());
 
+            Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
+            Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());
             Create(new S2CEquipChangeCharacterEquipNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipRes.Serializer());
             Create(new S2CEquipChangeCharacterStorageEquipRes.Serializer());
@@ -437,6 +444,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemMoveItemRes.Serializer());
             Create(new S2CItemSellItemRes.Serializer());
             Create(new S2CItemUseBagItemRes.Serializer());
+            Create(new S2CItemUseJobItemsRes.Serializer());
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());
             Create(new S2CJobChangeJobRes.Serializer());
@@ -550,7 +558,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillSetPawnSkillRes.Serializer());
             Create(new S2CSkillSetSkillRes.Serializer());
             Create(new S2CSetCommunicationShortcutRes.Serializer());
-            Create(new S2CContextSetContextNtc.Serializer());
             Create(new S2CSetShortcutRes.Serializer());
             Create(new S2CShopBuyShopGoodsRes.Serializer());
             Create(new S2CShopGetShopGoodsListRes.Serializer());

@@ -132,26 +132,32 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 if(reader2.Read())
                                 {
                                     Item item = ReadItem(reader2);
-                                    common.Equipment.setEquipItem(item, job, equipType, equipSlot);
+                                    common.Equipment.SetEquipItem(item, job, equipType, equipSlot);
                                 }
                             });
                     }
                 });            
 
             // Job Items
-            ExecuteReader(conn, SqlSelectEquipJobItemByCharacter,
+            ExecuteReader(conn, SqlSelectEquipJobItemsByCharacter,
                 command => { AddParameter(command, "@character_common_id", common.CommonId); }, 
                 reader =>
                 {
                     while (reader.Read())
                     {
+                        string UId = GetString(reader, "item_uid");
                         JobId job = (JobId) GetByte(reader, "job");
-                        CDataEquipJobItem equipJobItem = ReadEquipJobItem(reader);
-                        if(!common.CharacterEquipJobItemListDictionary.ContainsKey(job))
-                        {
-                            common.CharacterEquipJobItemListDictionary.Add(job, new List<CDataEquipJobItem>());
-                        }
-                        common.CharacterEquipJobItemListDictionary[job].Add(equipJobItem);
+                        byte equipSlot = GetByte(reader, "equip_slot");
+                        ExecuteReader(conn, SqlSelectItem,
+                            command2 => { AddParameter(command2, "@uid", UId); },
+                            reader2 => 
+                            {
+                                if(reader2.Read())
+                                {
+                                    Item item = ReadItem(reader2);
+                                    common.Equipment.SetJobItem(item, job, equipSlot);
+                                }
+                            });
                     }
                 });
 
@@ -226,17 +232,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     AddParameter(command, common.CommonId, characterJobData);
                 });
-            }
-
-            foreach(KeyValuePair<JobId, List<CDataEquipJobItem>> characterEquipJobItemListByJob in common.CharacterEquipJobItemListDictionary)
-            {
-                foreach(CDataEquipJobItem equipJobItem in characterEquipJobItemListByJob.Value)
-                {
-                    ExecuteNonQuery(conn, SqlReplaceEquipJobItem, command =>
-                    {
-                        AddParameter(command, common.CommonId, characterEquipJobItemListByJob.Key, equipJobItem);
-                    });
-                }
             }
 
             foreach(CDataNormalSkillParam normalSkillParam in common.LearnedNormalSkills)

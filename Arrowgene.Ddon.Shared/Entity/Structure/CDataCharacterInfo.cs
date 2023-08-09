@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterEquipViewDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
                     Equips = character.Equipment.getEquipmentAsCDataEquipItemInfo(character.Job, EquipType.Visual)
             }};
-            CharacterEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job];
+            CharacterEquipJobItemList = character.Equipment.getJobItemsAsCDataEquipJobItem(character.Job);
             JewelrySlotNum = character.JewelrySlotNum;
             Unk0 = character.Unk0;
             CharacterItemSlotInfoList = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();

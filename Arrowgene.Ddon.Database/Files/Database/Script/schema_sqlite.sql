@@ -293,11 +293,12 @@ CREATE TABLE IF NOT EXISTS `ddon_equip_item`
 
 CREATE TABLE IF NOT EXISTS `ddon_equip_job_item`
 (
-    `character_common_id`  INTEGER NOT NULL,
-    `job`           TINYINT NOT NULL,
-    `job_item_id`   INT     NOT NULL,
-    `equip_slot_no` TINYINT NOT NULL,
-    PRIMARY KEY (`character_common_id`, `job`, `equip_slot_no`),
+    `item_uid`            TEXT             NOT NULL,
+    `character_common_id` INTEGER          NOT NULL,
+    `job`                 TINYINT          NOT NULL,
+    `equip_slot`          SMALLINT         NOT NULL,
+    PRIMARY KEY (`character_common_id`, `job`, `equip_slot`),
+    CONSTRAINT `fk_equip_job_item_item_uid` FOREIGN KEY (`item_uid`) REFERENCES `ddon_item` (`uid`) ON DELETE CASCADE,
     CONSTRAINT `fk_equip_job_item_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 

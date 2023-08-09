@@ -73,6 +73,11 @@ namespace Arrowgene.Ddon.Database
         bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
 
+        // Job Items
+        bool InsertEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo);
+        bool ReplaceEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo);
+        bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo);
+
         // CustomSkills
         bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill);
         bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill);

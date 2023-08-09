@@ -213,6 +213,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new DailyMissionListGetHandler(this));
 
             AddHandler(new EquipChangeCharacterEquipHandler(this));
+            AddHandler(new EquipChangeCharacterEquipJobItemHandler(this));
             AddHandler(new EquipChangeCharacterStorageEquipHandler(this));
             AddHandler(new EquipChangePawnEquipHandler(this));
             AddHandler(new EquipChangePawnStorageEquipHandler(this));
@@ -260,6 +261,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemSortGetItemSortDataBinHandler(this));
             AddHandler(new ItemSortSetItemSortDataBinHandler(this));
             AddHandler(new ItemUseBagItemHandler(this));
+            AddHandler(new ItemUseJobItemsHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));
