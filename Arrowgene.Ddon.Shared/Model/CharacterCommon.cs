@@ -16,9 +16,6 @@ namespace Arrowgene.Ddon.Shared.Model
             StatusInfo = new CDataStatusInfo();
             CharacterJobDataList = new List<CDataCharacterJobData>();
             Equipment = new Equipment();
-            CharacterEquipJobItemListDictionary = ((JobId[]) JobId.GetValues(typeof(JobId)))
-                .Select(jobId => (jobId, new List<CDataEquipJobItem>()))
-                .ToDictionary(pair => pair.jobId, pair => pair.Item2);
             LearnedNormalSkills = new List<CDataNormalSkillParam>();
             LearnedCustomSkills = new List<CustomSkill>();
             EquippedCustomSkillsDictionary = ((JobId[]) JobId.GetValues(typeof(JobId)))
@@ -44,7 +41,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipLantern { get; set; }
         public List<CDataCharacterJobData> CharacterJobDataList { get; set; }
         public Equipment Equipment { get; set; }
-        public Dictionary<JobId, List<CDataEquipJobItem>> CharacterEquipJobItemListDictionary { get; set; }
         public byte JewelrySlotNum { get; set; }
         public List<CDataNormalSkillParam> LearnedNormalSkills { get; set; }
         public List<CustomSkill> LearnedCustomSkills { get; set;}

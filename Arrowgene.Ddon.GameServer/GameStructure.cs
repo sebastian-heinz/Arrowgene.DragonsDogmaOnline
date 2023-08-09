@@ -128,7 +128,7 @@ public static class GameStructure
                 Equips = pawn.Equipment.getEquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Visual)
             }
         };
-        cDataPawnInfo.CharacterEquipJobItemList = pawn.CharacterEquipJobItemListDictionary[pawn.Job];
+        cDataPawnInfo.CharacterEquipJobItemList = pawn.Equipment.getJobItemsAsCDataEquipJobItem(pawn.Job);
         cDataPawnInfo.JewelrySlotNum = pawn.JewelrySlotNum;
         // TODO: Pawn CharacterItemSlotInfoList, CraftData
         cDataPawnInfo.CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
@@ -232,7 +232,7 @@ public static class GameStructure
         contextBase.HideEquipLantern = character.HideEquipLantern;
         contextBase.ContextEquipPerformanceList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Performance);
         contextBase.ContextEquipVisualList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Visual);
-        contextBase.ContextEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job]
+        contextBase.ContextEquipJobItemList = character.Equipment.getJobItemsAsCDataEquipJobItem(character.Job)
             .Select(x => new CDataContextEquipJobItemData(x)).ToList();
         contextBase.ContextNormalSkillList = character.LearnedNormalSkills
             .Where(x => x.Job == character.Job)

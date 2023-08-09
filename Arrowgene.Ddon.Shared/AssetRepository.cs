@@ -101,11 +101,18 @@ namespace Arrowgene.Ddon.Shared
                 Logger.Error($"Could not load '{key}', file does not exist");
             }
 
-            List<T> assets = readerWriter.ReadPath(file.FullName);
+            try {
+                List<T> assets = readerWriter.ReadPath(file.FullName);
 
-            list.Clear();
-            list.AddRange(assets);
-            OnAssetChanged(key, list);
+                list.Clear();
+                list.AddRange(assets);
+                OnAssetChanged(key, list);
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Could not load '{key}', error reading the file contents");
+                Logger.Exception(e);
+            }
         }
 
         private void RegisterFileSystemWatcher<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)

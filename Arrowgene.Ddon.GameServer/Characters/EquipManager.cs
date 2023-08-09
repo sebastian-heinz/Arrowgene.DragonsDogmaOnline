@@ -13,9 +13,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ushort updateType, StorageType storageType, Action sendResponse)
         {
-            // This'll contain all actions to be run after processing all CDataCharacterEquipInfo in the request packet
-            List<Action> deferredActions = new List<Action>();
-
             S2CItemUpdateCharacterItemNtc updateCharacterIemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterIemNtc.UpdateType = updateType;
 
@@ -92,9 +89,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private void UnequipItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, EquipType equipType, byte equipSlot, StorageType storageType, uint characterId, uint pawnId)
         {
             // Find in equipment the item to unequip
-            Item item = characterToEquipTo.Equipment.getEquipItem(characterToEquipTo.Job, equipType, equipSlot);
+            Item item = characterToEquipTo.Equipment.GetEquipItem(characterToEquipTo.Job, equipType, equipSlot);
 
-            characterToEquipTo.Equipment.setEquipItem(null, characterToEquipTo.Job, equipType, equipSlot);
+            characterToEquipTo.Equipment.SetEquipItem(null, characterToEquipTo.Job, equipType, equipSlot);
             server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, item.UId);
             
             ushort dstSlotNo = client.Character.Storage.addStorageItem(item, 1, storageType);
@@ -153,14 +150,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint itemNum = tuple.item.Item2;
             ushort srcSlotNo = tuple.slot;
 
-            Item itemInSlot = characterToEquipTo.Equipment.getEquipItem(characterToEquipTo.Job, (EquipType) equipType, equipSlot);
+            Item itemInSlot = characterToEquipTo.Equipment.GetEquipItem(characterToEquipTo.Job, (EquipType) equipType, equipSlot);
             if(itemInSlot != null)
             {
                 // When equipping over an already equipped slot, unequip item first
                 this.UnequipItem(server, client, characterToEquipTo, updateCharacterItemNtc, equipType, equipSlot, srcStorageType, characterId, pawnId);
             }
 
-            characterToEquipTo.Equipment.setEquipItem(item, characterToEquipTo.Job, (EquipType) equipType, equipSlot);
+            characterToEquipTo.Equipment.SetEquipItem(item, characterToEquipTo.Job, (EquipType) equipType, equipSlot);
             server.Database.InsertEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, item.UId);
 
             // Find slot from which the item will be taken

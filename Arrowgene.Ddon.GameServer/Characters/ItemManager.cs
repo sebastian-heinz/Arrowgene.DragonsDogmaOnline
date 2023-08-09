@@ -26,10 +26,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         }
 
-        public CDataItemUpdateResult AddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue)
+        private CDataItemUpdateResult AddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue)
         {
             var tuple = character.Storage.getStorage(destinationStorageType).Items
-                .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
+                .Select((item, index) => new {item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item?.Item1.ItemId == itemId)
                 .FirstOrDefault();
 

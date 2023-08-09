@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             List<CDataLearnNormalSkillParam> normalSkills = common.LearnedNormalSkills
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();
-            List<CDataEquipJobItem> jobItems = common.CharacterEquipJobItemListDictionary[common.Job];
+            List<CDataEquipJobItem> jobItems = common.Equipment.getJobItemsAsCDataEquipJobItem(common.Job);
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             // TODO: Move previous job equipment to storage box, and move new job equipment from storage box
