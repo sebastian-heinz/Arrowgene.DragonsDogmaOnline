@@ -217,6 +217,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipChangeCharacterEquipJobItemReq.Serializer());
             Create(new C2SEquipChangeCharacterEquipReq.Serializer());
             Create(new C2SEquipChangeCharacterStorageEquipReq.Serializer());
+            Create(new C2SEquipChangePawnEquipJobItemReq.Serializer());
             Create(new C2SEquipChangePawnEquipReq.Serializer());
             Create(new C2SEquipChangePawnStorageEquipReq.Serializer());
             Create(new C2SEquipGetCharacterEquipListReq.Serializer());
@@ -406,6 +407,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipChangeCharacterEquipNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipRes.Serializer());
             Create(new S2CEquipChangeCharacterStorageEquipRes.Serializer());
+            Create(new S2CEquipChangePawnEquipJobItemNtc.Serializer());
+            Create(new S2CEquipChangePawnEquipJobItemRes.Serializer());
             Create(new S2CEquipChangePawnEquipNtc.Serializer());
             Create(new S2CEquipChangePawnEquipRes.Serializer());
             Create(new S2CEquipChangePawnStorageEquipRes.Serializer());
