@@ -216,6 +216,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EquipChangeCharacterEquipJobItemHandler(this));
             AddHandler(new EquipChangeCharacterStorageEquipHandler(this));
             AddHandler(new EquipChangePawnEquipHandler(this));
+            AddHandler(new EquipChangePawnEquipJobItemHandler(this));
             AddHandler(new EquipChangePawnStorageEquipHandler(this));
             AddHandler(new EquipGetCharacterEquipListHandler(this));
             AddHandler(new EquipUpdateHideCharacterHeadArmorHandler(this));
