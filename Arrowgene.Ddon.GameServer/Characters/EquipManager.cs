@@ -197,69 +197,112 @@ namespace Arrowgene.Ddon.GameServer.Characters
             });
         }
 
-        private void EquipItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, EquipType equipType, byte equipSlot, StorageType srcStorageType, string itemUId, uint characterId, uint pawnId)
+        private void EquipItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, EquipType equipType, byte equipSlot, StorageType storageType, string itemUId, uint characterId, uint pawnId)
         {
             // Find in the bag the item to equip
-            var tuple = client.Character.Storage.getStorage(srcStorageType).Items
+            var tuple = client.Character.Storage.getStorage(storageType).Items
                 .Select((item, index) => new { item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item?.Item1.UId == itemUId)
                 .First();
-            Item item = tuple.item!.Item1;
-            uint itemNum = tuple.item.Item2;
-            ushort srcSlotNo = tuple.slot;
+            Item itemToEquip = tuple.item!.Item1;
+            uint itemToEquipNum = tuple.item.Item2;
+            ushort storageSlotNo = tuple.slot;
 
-            Item? itemInSlot = characterToEquipTo.Equipment.GetEquipItem(characterToEquipTo.Job, (EquipType) equipType, equipSlot);
-            if(itemInSlot != null)
+            Item? previouslyEquippedItem = characterToEquipTo.Equipment.GetEquipItem(characterToEquipTo.Job, equipType, equipSlot);
+            
+            characterToEquipTo.Equipment.SetEquipItem(itemToEquip, characterToEquipTo.Job, equipType, equipSlot);
+            server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemToEquip.UId);
+
+            if(previouslyEquippedItem != null)
             {
-                // When equipping over an already equipped slot, unequip item first
-                this.UnequipItem(server, client, characterToEquipTo, updateCharacterItemNtc, equipType, equipSlot, srcStorageType, characterId, pawnId);
+                // When equipping over an already equipped slot, move item in that slot to storage
+                client.Character.Storage.setStorageItem(previouslyEquippedItem, 1, storageType, storageSlotNo);
+                server.Database.ReplaceStorageItem(client.Character.CharacterId, storageType, storageSlotNo, previouslyEquippedItem.UId, 1);
+                updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
+                    UpdateItemNum = 0,
+                    ItemList = new CDataItemList() {
+                        ItemUId = previouslyEquippedItem.UId,
+                        ItemId = previouslyEquippedItem.ItemId,
+                        ItemNum = 0,
+                        Unk3 = previouslyEquippedItem.Unk3,
+                        StorageType = StorageType.Unk14,
+                        SlotNo = 1,
+                        Color = previouslyEquippedItem.Color,
+                        PlusValue = previouslyEquippedItem.PlusValue,
+                        Bind = true,
+                        EquipPoint = 0,
+                        EquipCharacterID = characterId,
+                        EquipPawnID = pawnId,
+                        WeaponCrestDataList = previouslyEquippedItem.WeaponCrestDataList,
+                        ArmorCrestDataList = previouslyEquippedItem.ArmorCrestDataList,
+                        EquipElementParamList = previouslyEquippedItem.EquipElementParamList
+                    }
+                });
+                updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
+                    UpdateItemNum = 1,
+                    ItemList = new CDataItemList() {
+                        ItemUId = previouslyEquippedItem.UId,
+                        ItemId = previouslyEquippedItem.ItemId,
+                        ItemNum = 1,
+                        Unk3 = previouslyEquippedItem.Unk3,
+                        StorageType = storageType,
+                        SlotNo = storageSlotNo,
+                        Color = previouslyEquippedItem.Color,
+                        PlusValue = previouslyEquippedItem.PlusValue,
+                        Bind = true,
+                        EquipPoint = 0,
+                        EquipCharacterID = 0,
+                        EquipPawnID = 0,
+                        WeaponCrestDataList = previouslyEquippedItem.WeaponCrestDataList,
+                        ArmorCrestDataList = previouslyEquippedItem.ArmorCrestDataList,
+                        EquipElementParamList = previouslyEquippedItem.EquipElementParamList
+                    }
+                });
             }
-
-            characterToEquipTo.Equipment.SetEquipItem(item, characterToEquipTo.Job, (EquipType) equipType, equipSlot);
-            server.Database.InsertEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, item.UId);
-
-            // Find slot from which the item will be taken
-            client.Character.Storage.setStorageItem(null, 0, srcStorageType, tuple.slot);
-            server.Database.DeleteStorageItem(client.Character.CharacterId, srcStorageType, tuple.slot);
+            else
+            {
+                client.Character.Storage.setStorageItem(null, 0, storageType, storageSlotNo);
+                server.Database.DeleteStorageItem(client.Character.CharacterId, storageType, storageSlotNo);
+            }
 
             updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                 UpdateItemNum = 0, // TODO: ?
                 ItemList = new CDataItemList() {
-                    ItemUId = item.UId,
-                    ItemId = item.ItemId,
+                    ItemUId = itemToEquip.UId,
+                    ItemId = itemToEquip.ItemId,
                     ItemNum = 0,
-                    Unk3 = item.Unk3,
-                    StorageType = srcStorageType,
-                    SlotNo = srcSlotNo,
-                    Color = item.Color,
-                    PlusValue = item.PlusValue,
+                    Unk3 = itemToEquip.Unk3,
+                    StorageType = storageType,
+                    SlotNo = storageSlotNo,
+                    Color = itemToEquip.Color,
+                    PlusValue = itemToEquip.PlusValue,
                     Bind = true,
                     EquipPoint = 0,
                     EquipCharacterID = characterId,
                     EquipPawnID = pawnId,
-                    WeaponCrestDataList = item.WeaponCrestDataList,
-                    ArmorCrestDataList = item.ArmorCrestDataList,
-                    EquipElementParamList = item.EquipElementParamList
+                    WeaponCrestDataList = itemToEquip.WeaponCrestDataList,
+                    ArmorCrestDataList = itemToEquip.ArmorCrestDataList,
+                    EquipElementParamList = itemToEquip.EquipElementParamList
                 }
             });
             updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                 UpdateItemNum = 1,
                 ItemList = new CDataItemList() {
-                    ItemUId = item.UId,
-                    ItemId = item.ItemId,
+                    ItemUId = itemToEquip.UId,
+                    ItemId = itemToEquip.ItemId,
                     ItemNum = 1,
-                    Unk3 = item.Unk3,
+                    Unk3 = itemToEquip.Unk3,
                     StorageType = StorageType.Unk14,
                     SlotNo = 1,
-                    Color = item.Color,
-                    PlusValue = item.PlusValue,
+                    Color = itemToEquip.Color,
+                    PlusValue = itemToEquip.PlusValue,
                     Bind = true,
                     EquipPoint = 0,
                     EquipCharacterID = characterId,
                     EquipPawnID = pawnId,
-                    WeaponCrestDataList = item.WeaponCrestDataList,
-                    ArmorCrestDataList = item.ArmorCrestDataList,
-                    EquipElementParamList = item.EquipElementParamList
+                    WeaponCrestDataList = itemToEquip.WeaponCrestDataList,
+                    ArmorCrestDataList = itemToEquip.ArmorCrestDataList,
+                    EquipElementParamList = itemToEquip.EquipElementParamList
                 }
             });
         }
