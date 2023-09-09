@@ -1141,7 +1141,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         private Pawn LoadDefaultPawn(Character character, MyPawnCsv myPawnCsvData)
         {
-            S2CContextGetPartyMypawnContextNtc pcapPawn = EntitySerializer.Get<S2CContextGetPartyMypawnContextNtc>().Read(data_Dump_Pawn35_3_16);
+            S2CContextGetPartyMypawnContextNtc pcapPawn = EntitySerializer.Get<S2CContextGetPartyMypawnContextNtc>().Read(data_Dump_Pawn35_3_16); // TODO: Replace pcap data
             Pawn pawn = new Pawn(character.CharacterId);
             pawn.PawnId = myPawnCsvData.PawnId;
             pawn.CharacterId = character.CharacterId; // pawns characterId, refers to the owner

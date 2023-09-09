@@ -77,6 +77,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataWeaponCrestData.Serializer());
             Create(new CDataArmorCrestData.Serializer());
             Create(new CDataChangeEquipJobItem.Serializer());
+            Create(new CDataCharacterEditUpdatePawnEditParamReqUnk0.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
             Create(new CDataEquipJobItem.Serializer());
             Create(new CDataErrorMessage.Serializer());
@@ -194,6 +195,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
             Create(new C2SCharacterCharacterPointReviveReq.Serializer());
             Create(new C2SCharacterCharacterSearchReq.Serializer());
+            Create(new C2SCharacterEditUpdateCharacterEditParamReq.Serializer());
+            Create(new C2SCharacterEditUpdateCharacterEditParamExReq.Serializer());
+            Create(new C2SCharacterEditUpdatePawnEditParamReq.Serializer());
+            Create(new C2SCharacterEditUpdatePawnEditParamExReq.Serializer());
             Create(new C2SCharacterChargeRevivePointReq.Serializer());
             Create(new C2SCharacterGetReviveChargeableTimeReq.Serializer());
             Create(new C2SCharacterPawnGoldenReviveReq.Serializer());
@@ -370,6 +375,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterChargeRevivePointRes.Serializer());
             Create(new S2CCharacterCommunityCharacterStatusUpdateNtc.Serializer());
             Create(new S2CCharacterDecideCharacterIdRes.Serializer());
+            Create(new S2CCharacterEditUpdateCharacterEditParamRes.Serializer());
+            Create(new S2CCharacterEditUpdateCharacterEditParamExRes.Serializer());
+            Create(new S2CCharacterEditUpdateEditParamNtc.Serializer());
+            Create(new S2CCharacterEditUpdateEditParamExNtc.Serializer());
+            Create(new S2CCharacterEditUpdatePawnEditParamRes.Serializer());
+            Create(new S2CCharacterEditUpdatePawnEditParamExRes.Serializer());
             Create(new S2CCharacterFinishDeathPenaltyNtc.Serializer());
             Create(new S2CCharacterGetCharacterStatusNtc.Serializer());
             Create(new S2CCharacterGetReviveChargeableTimeRes.Serializer());

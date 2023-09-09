@@ -43,6 +43,7 @@ namespace Arrowgene.Ddon.Database
         Pawn SelectPawn(uint pawnId);
         List<Pawn> SelectPawnsByCharacterId(uint characterId);
         bool DeletePawn(uint pawnId);
+        bool UpdatePawnBaseInfo(Pawn pawn);
 
         // CharacterJobData
         bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
