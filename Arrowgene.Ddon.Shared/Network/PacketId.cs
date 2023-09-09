@@ -1689,7 +1689,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_RES = new PacketId(41, 2, 2, "S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_RES", ServerType.Game, PacketSource.Server); // キャラクタエディット更新
         public static readonly PacketId C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_REQ = new PacketId(41, 3, 1, "C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_RES = new PacketId(41, 3, 2, "S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_RES", ServerType.Game, PacketSource.Server); // ポーンエディット更新
-        public static readonly PacketId S2C_CHARACTER_41_4_16_NTC = new PacketId(41, 4, 16, "S2C_CHARACTER_41_4_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_NTC = new PacketId(41, 4, 16, "S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_41_4_16_NTC");
         public static readonly PacketId C2S_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_REQ = new PacketId(41, 5, 1, "C2S_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_RES = new PacketId(41, 5, 2, "S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_RES", ServerType.Game, PacketSource.Server); // キャラクタエディット拡張更新
         public static readonly PacketId C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_REQ = new PacketId(41, 6, 1, "C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_REQ", ServerType.Game, PacketSource.Client);
@@ -3595,7 +3595,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_RES);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_41_4_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_NTC);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_REQ);
