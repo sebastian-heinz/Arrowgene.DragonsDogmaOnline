@@ -184,7 +184,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterSetOnlineStatusHandler(this));
 			AddHandler(new CharacterEditGetShopPriceHandler(this));
 			AddHandler(new CharacterEditUpdateCharacterEditParamHandler(this));
+            AddHandler(new CharacterEditUpdateCharacterEditParamExHandler(this));
 			AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
+            AddHandler(new CharacterEditUpdatePawnEditParamExHandler(this));
 
             AddHandler(new ClanClanBaseGetInfoHandler(this));
             AddHandler(new ClanClanConciergeGetListHandler(this));
