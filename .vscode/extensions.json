@@ -10,6 +10,7 @@
         "yo1dog.cursor-align",
         "wmaurer.change-case",
         "softwareape.numbermonger",
-        "maziac.hex-hover-converter"
+        "maziac.hex-hover-converter",
+        "ms-dotnettools.csdevkit"
     ]
 }
