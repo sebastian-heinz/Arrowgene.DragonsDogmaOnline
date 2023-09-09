@@ -1,26 +1,32 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdateCharacterEditParamHandler : PacketHandler<GameClient>
+    public class CharacterEditUpdateCharacterEditParamHandler : GameStructurePacketHandler<C2SCharacterEditUpdateCharacterEditParamReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdateCharacterEditParamHandler));
-
 
         public CharacterEditUpdateCharacterEditParamHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamReq> packet)
         {
-            client.Send(GameFull.Dump_705);
+            // TODO: Substract GG/Tickets
+            client.Character.EditInfo = packet.Structure.EditInfo;
+            Server.Database.UpdateEditInfo(client.Character);
+            client.Send(new S2CCharacterEditUpdateCharacterEditParamRes());
+            foreach(Client other in Server.ClientLookup.GetAll()) {
+                other.Send(new S2CCharacterEditUpdateEditParamNtc() {
+                    CharacterId = client.Character.CharacterId,
+                    PawnId = 0,
+                    EditInfo = client.Character.EditInfo
+                });
+            }
         }
     }
 }
