@@ -21,6 +21,9 @@ namespace Arrowgene.Ddon.Database
                     break;
                 case DatabaseType.PostgreSQL:
                     database = BuildPostgres(settings);
+                    break;              
+                case DatabaseType.MariaDB:
+                    database = BuildMariaDB(settings);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!");
@@ -70,6 +73,18 @@ namespace Arrowgene.Ddon.Database
             {
                 ScriptRunner scriptRunner = new ScriptRunner(db);
                 scriptRunner.Run(Path.Combine(settings.SqLiteFolder, "Script/schema_postgres.sql"));
+            }
+
+            return db;
+        }
+        
+        public static DdonMariaDb BuildMariaDB(DatabaseSetting settings)
+        {
+            DdonMariaDb db = new DdonMariaDb(settings);
+            if (db.CreateDatabase())
+            {
+                ScriptRunner scriptRunner = new ScriptRunner(db);
+                scriptRunner.Run(Path.Combine(settings.SqLiteFolder, "Script/schema_mariadb.sql"));
             }
 
             return db;

@@ -1,0 +1,55 @@
+version: '3.8'
+
+volumes:
+  ddon-server-mariadb-volume:
+
+networks:
+  ddon-network:
+
+services:
+  app:
+    container_name: ddon-server
+    build: .
+    restart: no
+    ports:
+      # Game server
+      - "52000:52000"
+      # Web server
+      - "52099:52099"
+      # Login server
+      - "52100:52100"
+    volumes:
+      - ./Arrowgene.Ddon.config.mariadb.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
+      - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets:ro
+    networks:
+      - ddon-network
+    # Workaround: cli expects to be able to process keyboard input
+    tty: true
+    depends_on:  
+      db:
+        condition: service_healthy
+    command: /var/ddon/server/Arrowgene.Ddon.Cli server start
+
+  db:
+    container_name: ddon-db
+    image: mariadb:11
+    ports:
+      # Database
+      - "3306:3306"
+    restart: no
+    volumes:
+      - ddon-server-mariadb-volume:/var/lib/mysql
+    networks:
+      - ddon-network
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_USER=admin
+      - MARIADB_PASSWORD=admin
+      - MARIADB_DATABASE=mariadb
+      - LANG=C.UTF_8
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 3s
+      timeout: 3s
+      retries: 10

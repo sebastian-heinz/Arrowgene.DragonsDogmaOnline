@@ -3,6 +3,7 @@
     public enum DatabaseType
     {
         SQLite,
-        PostgreSQL
+        PostgreSQL,
+        MariaDB
     }
 }

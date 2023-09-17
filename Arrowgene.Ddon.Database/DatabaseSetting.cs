@@ -28,6 +28,9 @@ namespace Arrowgene.Ddon.Database
                     break;
                 case "postgres":
                     Type = DatabaseType.PostgreSQL;
+                    break;             
+                case "mariadb":
+                    Type = DatabaseType.MariaDB;
                     break;
             }
 
