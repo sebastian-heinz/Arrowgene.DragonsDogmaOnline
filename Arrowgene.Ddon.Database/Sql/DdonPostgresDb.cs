@@ -33,7 +33,9 @@ namespace Arrowgene.Ddon.Database.Sql
 
             if (_dataSource == null)
             {
-                _dataSource = NpgsqlDataSource.Create(_connectionString);
+                var dataSourceBuilder = new NpgsqlDataSourceBuilder(_connectionString);
+                dataSourceBuilder.EnableParameterLogging();
+                _dataSource = dataSourceBuilder.Build();
             }
 
             if (_settings.WipeOnStartup)
@@ -74,9 +76,13 @@ namespace Arrowgene.Ddon.Database.Sql
             return new NpgsqlCommand(query, connection);
         }
 
+        /// <summary>
+        /// Safe within the same connection session (transaction?), but unsafe if triggers are involved.
+        /// https://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
+        /// </summary>
         protected override long AutoIncrement(NpgsqlConnection connection, NpgsqlCommand command)
         {
-            return 0;
+            return (long)new NpgsqlCommand("SELECT LASTVAL();", connection).ExecuteScalar();
         }
 
         public override int Upsert(string table, string[] columns, object[] values, string whereColumn,

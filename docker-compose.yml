@@ -1,7 +1,10 @@
 version: '3.8'
 
 volumes:
-  ddon-server-database-volume:
+  ddon-server-sqlite-volume:
+
+networks:
+  ddon-network:
 
 services:
   app:
@@ -12,15 +15,17 @@ services:
       # Database
       - '3306:3306'
       # Game server
-      - '52000:52000'
+      - "52000:52000"
       # Web server
-      - '52099:52099'
+      - "52099:52099"
       # Login server
-      - '52100:52100'
+      - "52100:52100"
     volumes:
-      - ddon-server-database-volume:/var/ddon/server/Files/Database
+      - ddon-server-sqlite-volume:/var/ddon/server/Files/Database
       - ./Arrowgene.Ddon.config.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
       - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets:ro
+    networks:
+      - ddon-network
     # Workaround: cli expects to be able to process keyboard input
     tty: true
     command: /var/ddon/server/Arrowgene.Ddon.Cli server start

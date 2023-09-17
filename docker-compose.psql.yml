@@ -1,7 +1,7 @@
 version: '3.8'
 
 volumes:
-  ddon-server-database-volume:
+  ddon-server-psql-volume:
 
 networks:
   ddon-network:
@@ -13,11 +13,11 @@ services:
     restart: no
     ports:
       # Game server
-      - "62000:52000"
+      - "52000:52000"
       # Web server
-      - "62099:52099"
+      - "52099:52099"
       # Login server
-      - "62100:52100"
+      - "52100:52100"
     volumes:
       - ./Arrowgene.Ddon.config.psql.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
       - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets:ro
@@ -38,7 +38,7 @@ services:
       - "5432:5432"
     restart: no
     volumes:
-      - ddon-server-database-volume:/var/lib/postgresql/data
+      - ddon-server-psql-volume:/var/lib/postgresql/data
       - $PWD/deploy/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
     networks:
       - ddon-network

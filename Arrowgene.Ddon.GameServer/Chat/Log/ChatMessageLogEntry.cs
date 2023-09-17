@@ -12,7 +12,7 @@ public class ChatMessageLogEntry
 
     public ChatMessageLogEntry(Character character, ChatMessage chatMessage)
     {
-        DateTime = DateTime.Now;
+        DateTime = DateTime.UtcNow;
         FirstName = character.FirstName;
         LastName = character.LastName;
         CharacterId = character.CharacterId;

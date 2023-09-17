@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             return ExecuteInTransaction(conn =>
                 {
-                    character.Created = DateTime.Now;
+                    character.Created = DateTime.UtcNow;
                     
                     ExecuteNonQuery(conn, SqlInsertCharacterCommon, command => { AddParameter(command, character); }, out long commonId);
                     character.CommonId = (uint) commonId;
