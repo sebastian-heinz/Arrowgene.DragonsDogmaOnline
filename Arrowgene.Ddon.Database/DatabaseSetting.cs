@@ -3,7 +3,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -27,6 +26,9 @@ namespace Arrowgene.Ddon.Database
                 case "sqlite":
                     Type = DatabaseType.SQLite;
                     break;
+                case "postgres":
+                    Type = DatabaseType.PostgreSQL;
+                    break;
             }
 
             string envDbUser = Environment.GetEnvironmentVariable("DB_USER");
@@ -39,6 +41,30 @@ namespace Arrowgene.Ddon.Database
             if (!string.IsNullOrEmpty(envDbPass))
             {
                 Password = envDbPass;
+            }
+
+            string envDbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            if (!string.IsNullOrEmpty(envDbHost))
+            {
+                Host = envDbHost;
+            }
+
+            string envDbPort = Environment.GetEnvironmentVariable("DB_PORT");
+            if (!string.IsNullOrEmpty(envDbPort))
+            {
+                Port = Convert.ToInt16(envDbPort);
+            }
+
+            string envDbDatabase = Environment.GetEnvironmentVariable("DB_DATABASE");
+            if (!string.IsNullOrEmpty(envDbDatabase))
+            {
+                Database = envDbDatabase;
+            }
+
+            string envDbWipeOnStartup = Environment.GetEnvironmentVariable("DB_WIPE_ON_STARTUP");
+            if (!string.IsNullOrEmpty(envDbWipeOnStartup))
+            {
+                WipeOnStartup = Convert.ToBoolean(envDbWipeOnStartup);
             }
         }
 

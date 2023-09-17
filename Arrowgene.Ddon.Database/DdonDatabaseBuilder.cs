@@ -19,12 +19,21 @@ namespace Arrowgene.Ddon.Database
                     string sqLitePath = Path.Combine(settings.SqLiteFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
                     database = BuildSqLite(settings.SqLiteFolder, sqLitePath, settings.WipeOnStartup);
                     break;
+                case DatabaseType.PostgreSQL:
+                    database = BuildPostgres(settings);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!");
             }
 
             if (database == null)
             {
                 Logger.Error("Database could not be created, exiting...");
                 Environment.Exit(1);
+            }
+            else
+            {
+                Logger.Info($"Database of type '${database.GetType()}' has been created.");
             }
 
             return database;
@@ -49,6 +58,18 @@ namespace Arrowgene.Ddon.Database
             {
                 ScriptRunner scriptRunner = new ScriptRunner(db);
                 scriptRunner.Run(Path.Combine(sqLiteFolder, "Script/schema_sqlite.sql"));
+            }
+
+            return db;
+        }
+
+        public static DdonPostgresDb BuildPostgres(DatabaseSetting settings)
+        {
+            DdonPostgresDb db = new DdonPostgresDb(settings);
+            if (db.CreateDatabase())
+            {
+                ScriptRunner scriptRunner = new ScriptRunner(db);
+                scriptRunner.Run(Path.Combine(settings.SqLiteFolder, "Script/schema_postgres.sql"));
             }
 
             return db;

@@ -3,5 +3,6 @@
     public enum DatabaseType
     {
         SQLite,
+        PostgreSQL
     }
 }
