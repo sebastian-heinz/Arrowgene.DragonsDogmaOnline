@@ -18,12 +18,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "m_atk_down_resist", "m_def_down_resist"
         };
 
-        private readonly string SqlInsertCharacterJobData = $"INSERT INTO `ddon_character_job_data` ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
-        private readonly string SqlReplaceCharacterJobData = $"INSERT OR REPLACE INTO `ddon_character_job_data` ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
-        private static readonly string SqlUpdateCharacterJobData = $"UPDATE `ddon_character_job_data` SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE `character_common_id` = @character_common_id AND `job` = @job;";
-        private static readonly string SqlSelectCharacterJobData = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_common_id` = @character_common_id AND `job` = @job;";
-        private static readonly string SqlSelectCharacterJobDataByCharacter = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM `ddon_character_job_data` WHERE `character_common_id` = @character_common_id;";
-        private const string SqlDeleteCharacterJobData = "DELETE FROM `ddon_character_job_data` WHERE `character_common_id`=@character_common_id AND `job` = @job;";
+        private readonly string SqlInsertCharacterJobData = $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+        private readonly string SqlReplaceCharacterJobData = $"INSERT OR REPLACE INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+        private static readonly string SqlUpdateCharacterJobData = $"UPDATE \"ddon_character_job_data\" SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
+        private static readonly string SqlSelectCharacterJobData = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
+        private static readonly string SqlSelectCharacterJobDataByCharacter = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id;";
+        private const string SqlDeleteCharacterJobData = "DELETE FROM \"ddon_character_job_data\" WHERE \"character_common_id\"=@character_common_id AND \"job\" = @job;";
         
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData)
         {

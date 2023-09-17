@@ -14,12 +14,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "storage_type", "slot_max", "item_sort"
         };
 
-        private static readonly string SqlInsertStorage = $"INSERT INTO `ddon_storage` ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)});";
-        private static readonly string SqlReplaceStorage = $"INSERT OR REPLACE INTO `ddon_storage` ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)});";
-        private static readonly string SqlUpdateStorage = $"UPDATE `ddon_storage` SET {BuildQueryUpdate(StorageFields)} WHERE `storage_type` = @storage_type AND `character_id` = @character_id;";
-        private static readonly string SqlSelectStorage = $"SELECT {BuildQueryField(StorageFields)} FROM `ddon_storage` WHERE `storage_type` = @storage_type AND `character_id` = @character_id;";
-        private static readonly string SqlSelectAllStoragesByCharacter = $"SELECT {BuildQueryField(StorageFields)} FROM `ddon_storage` WHERE `character_id` = @character_id;";
-        private static readonly string SqlDeleteStorage = "DELETE FROM `ddon_storage` WHERE `storage_type`=@storage_type AND `character_id` = @character_id;";
+        private static readonly string SqlInsertStorage = $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)});";
+        private static readonly string SqlReplaceStorage = $"INSERT OR REPLACE INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)});";
+        private static readonly string SqlUpdateStorage = $"UPDATE \"ddon_storage\" SET {BuildQueryUpdate(StorageFields)} WHERE \"storage_type\" = @storage_type AND \"character_id\" = @character_id;";
+        private static readonly string SqlSelectStorage = $"SELECT {BuildQueryField(StorageFields)} FROM \"ddon_storage\" WHERE \"storage_type\" = @storage_type AND \"character_id\" = @character_id;";
+        private static readonly string SqlSelectAllStoragesByCharacter = $"SELECT {BuildQueryField(StorageFields)} FROM \"ddon_storage\" WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlDeleteStorage = "DELETE FROM \"ddon_storage\" WHERE \"storage_type\"=@storage_type AND \"character_id\" = @character_id;";
 
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage)
         {

@@ -12,11 +12,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_common_id", "job", "slot_no", "skill_id"
         };
 
-        private readonly string SqlInsertEquippedCustomSkill = $"INSERT INTO `ddon_equipped_custom_skill` ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)});";
-        private readonly string SqlReplaceEquippedCustomSkill = $"INSERT OR REPLACE INTO `ddon_equipped_custom_skill` ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)});";
-        private static readonly string SqlUpdateEquippedCustomSkill = $"UPDATE `ddon_equipped_custom_skill` SET {BuildQueryUpdate(EquippedCustomSkillFields)} WHERE `character_common_id`=@old_character_common_id AND `job`=@old_job AND `slot_no`=@old_slot_no;";
-        private static readonly string SqlSelectEquippedCustomSkills = $"SELECT {BuildQueryField(EquippedCustomSkillFields)} FROM `ddon_equipped_custom_skill` WHERE `character_common_id`=@character_common_id;";
-        private const string SqlDeleteEquippedCustomSkill = "DELETE FROM `ddon_equipped_custom_skill` WHERE `character_common_id`=@character_common_id AND `job`=@job AND `slot_no`=@slot_no;";
+        private readonly string SqlInsertEquippedCustomSkill = $"INSERT INTO \"ddon_equipped_custom_skill\" ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)});";
+        private readonly string SqlReplaceEquippedCustomSkill = $"INSERT OR REPLACE INTO \"ddon_equipped_custom_skill\" ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)});";
+        private static readonly string SqlUpdateEquippedCustomSkill = $"UPDATE \"ddon_equipped_custom_skill\" SET {BuildQueryUpdate(EquippedCustomSkillFields)} WHERE \"character_common_id\"=@old_character_common_id AND \"job\"=@old_job AND \"slot_no\"=@old_slot_no;";
+        private static readonly string SqlSelectEquippedCustomSkills = $"SELECT {BuildQueryField(EquippedCustomSkillFields)} FROM \"ddon_equipped_custom_skill\" WHERE \"character_common_id\"=@character_common_id;";
+        private const string SqlDeleteEquippedCustomSkill = "DELETE FROM \"ddon_equipped_custom_skill\" WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"slot_no\"=@slot_no;";
 
         public bool InsertEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill)
         {

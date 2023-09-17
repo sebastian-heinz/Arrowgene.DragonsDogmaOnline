@@ -26,39 +26,39 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "background_id", "title_uid", "title_index", "motion_id", "motion_frame_no"
         };
 
-        private readonly string SqlInsertCharacter = $"INSERT INTO `ddon_character` ({BuildQueryField(CharacterFields)}) VALUES ({BuildQueryInsert(CharacterFields)});";
-        private static readonly string SqlUpdateCharacter = $"UPDATE `ddon_character` SET {BuildQueryUpdate(CharacterFields)} WHERE `character_id` = @character_id;";
-        private static readonly string SqlSelectCharacter = $"SELECT `ddon_character`.`character_id`, {BuildQueryField(CharacterFields)} FROM `ddon_character` WHERE `character_id` = @character_id;";
-        private static readonly string SqlSelectCharactersByAccountId = $"SELECT `ddon_character`.`character_id`, {BuildQueryField(CharacterFields)} FROM `ddon_character` WHERE `account_id` = @account_id;";
-        private readonly string SqlSelectAllCharacterData = $"SELECT `ddon_character`.`character_id`, {BuildQueryField("ddon_character", CharacterFields)}, `ddon_character_common`.`character_common_id`, {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
-            + "FROM `ddon_character` "
-            + "LEFT JOIN `ddon_character_common` ON `ddon_character_common`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_edit_info` ON `ddon_edit_info`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_status_info` ON `ddon_status_info`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_character_matching_profile` ON `ddon_character_matching_profile`.`character_id` = `ddon_character`.`character_id` "
-            + "LEFT JOIN `ddon_character_arisen_profile` ON `ddon_character_arisen_profile`.`character_id` = `ddon_character`.`character_id` "
-            + "WHERE `ddon_character`.`character_id` = @character_id";
-        private readonly string SqlSelectAllCharactersDataByAccountId = $"SELECT `ddon_character`.`character_id`, {BuildQueryField("ddon_character", CharacterFields)}, `ddon_character_common`.`character_common_id`, {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
-            + "FROM `ddon_character` "
-            + "LEFT JOIN `ddon_character_common` ON `ddon_character_common`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_edit_info` ON `ddon_edit_info`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_status_info` ON `ddon_status_info`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_character_matching_profile` ON `ddon_character_matching_profile`.`character_id` = `ddon_character`.`character_id` "
-            + "LEFT JOIN `ddon_character_arisen_profile` ON `ddon_character_arisen_profile`.`character_id` = `ddon_character`.`character_id` "
-            + "WHERE `account_id` = @account_id";
-        private const string SqlDeleteCharacter = "DELETE FROM `ddon_character_common` WHERE EXISTS (SELECT 1 FROM `ddon_character` WHERE `ddon_character_common`.`character_common_id`=`ddon_character`.`character_common_id` AND `character_id`=@character_id);";
+        private readonly string SqlInsertCharacter = $"INSERT INTO \"ddon_character\" ({BuildQueryField(CharacterFields)}) VALUES ({BuildQueryInsert(CharacterFields)});";
+        private static readonly string SqlUpdateCharacter = $"UPDATE \"ddon_character\" SET {BuildQueryUpdate(CharacterFields)} WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlSelectCharacter = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField(CharacterFields)} FROM \"ddon_character\" WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlSelectCharactersByAccountId = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField(CharacterFields)} FROM \"ddon_character\" WHERE \"account_id\" = @account_id;";
+        private readonly string SqlSelectAllCharacterData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+            + "FROM \"ddon_character\" "
+            + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "WHERE \"ddon_character\".\"character_id\" = @character_id";
+        private readonly string SqlSelectAllCharactersDataByAccountId = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+            + "FROM \"ddon_character\" "
+            + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "WHERE \"account_id\" = @account_id";
+        private const string SqlDeleteCharacter = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_character\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_character\".\"character_common_id\" AND \"character_id\"=@character_id);";
 
 
-        private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO `ddon_character_matching_profile` ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
-        private static readonly string SqlUpdateCharacterMatchingProfile = $"UPDATE `ddon_character_matching_profile` SET {BuildQueryUpdate(CDataMatchingProfileFields)} WHERE `character_id` = @character_id;";
-        private static readonly string SqlSelectCharacterMatchingProfile = $"SELECT {BuildQueryField(CDataMatchingProfileFields)} FROM `ddon_character_matching_profile` WHERE `character_id` = @character_id;";
-        private const string SqlDeleteCharacterMatchingProfile = "DELETE FROM `ddon_character_matching_profile` WHERE `character_id`=@character_id;";
+        private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO \"ddon_character_matching_profile\" ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
+        private static readonly string SqlUpdateCharacterMatchingProfile = $"UPDATE \"ddon_character_matching_profile\" SET {BuildQueryUpdate(CDataMatchingProfileFields)} WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlSelectCharacterMatchingProfile = $"SELECT {BuildQueryField(CDataMatchingProfileFields)} FROM \"ddon_character_matching_profile\" WHERE \"character_id\" = @character_id;";
+        private const string SqlDeleteCharacterMatchingProfile = "DELETE FROM \"ddon_character_matching_profile\" WHERE \"character_id\"=@character_id;";
 
 
-        private readonly string SqlInsertCharacterArisenProfile = $"INSERT INTO `ddon_character_arisen_profile` ({BuildQueryField(CDataArisenProfileFields)}) VALUES ({BuildQueryInsert(CDataArisenProfileFields)});";
-        private static readonly string SqlUpdateCharacterArisenProfile = $"UPDATE `ddon_character_arisen_profile` SET {BuildQueryUpdate(CDataArisenProfileFields)} WHERE `character_id` = @character_id;";
-        private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM `ddon_character_arisen_profile` WHERE `character_id` = @character_id;";
-        private const string SqlDeleteCharacterArisenProfile = "DELETE FROM `ddon_character_arisen_profile` WHERE `character_id`=@character_id;";
+        private readonly string SqlInsertCharacterArisenProfile = $"INSERT INTO \"ddon_character_arisen_profile\" ({BuildQueryField(CDataArisenProfileFields)}) VALUES ({BuildQueryInsert(CDataArisenProfileFields)});";
+        private static readonly string SqlUpdateCharacterArisenProfile = $"UPDATE \"ddon_character_arisen_profile\" SET {BuildQueryUpdate(CDataArisenProfileFields)} WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM \"ddon_character_arisen_profile\" WHERE \"character_id\" = @character_id;";
+        private const string SqlDeleteCharacterArisenProfile = "DELETE FROM \"ddon_character_arisen_profile\" WHERE \"character_id\"=@character_id;";
 
 
         public bool CreateCharacter(Character character)

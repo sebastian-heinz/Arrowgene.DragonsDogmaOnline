@@ -12,11 +12,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "page_no", "button_no", "shortcut_id", "u32_data", "f32_data", "exex_type"
         };
 
-        private readonly string SqlInsertShortcut = $"INSERT INTO `ddon_shortcut` ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)});";
-        private readonly string SqlReplaceShortcut = $"INSERT OR REPLACE INTO `ddon_shortcut` ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)});";
-        private static readonly string SqlUpdateShortcut = $"UPDATE `ddon_shortcut` SET {BuildQueryUpdate(ShortcutFields)} WHERE `character_id`=@old_character_id AND `page_no`=@old_page_no AND `button_no`=@old_button_no";
-        private static readonly string SqlSelectShortcuts = $"SELECT {BuildQueryField(ShortcutFields)} FROM `ddon_shortcut` WHERE `character_id`=@character_id;";
-        private const string SqlDeleteShortcut = "DELETE FROM `ddon_shortcut` WHERE `character_id`=@character_id AND `page_no`=@page_no AND `button_no`=@button_no";
+        private readonly string SqlInsertShortcut = $"INSERT INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)});";
+        private readonly string SqlReplaceShortcut = $"INSERT OR REPLACE INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)});";
+        private static readonly string SqlUpdateShortcut = $"UPDATE \"ddon_shortcut\" SET {BuildQueryUpdate(ShortcutFields)} WHERE \"character_id\"=@old_character_id AND \"page_no\"=@old_page_no AND \"button_no\"=@old_button_no";
+        private static readonly string SqlSelectShortcuts = $"SELECT {BuildQueryField(ShortcutFields)} FROM \"ddon_shortcut\" WHERE \"character_id\"=@character_id;";
+        private const string SqlDeleteShortcut = "DELETE FROM \"ddon_shortcut\" WHERE \"character_id\"=@character_id AND \"page_no\"=@page_no AND \"button_no\"=@button_no";
 
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut)
         {

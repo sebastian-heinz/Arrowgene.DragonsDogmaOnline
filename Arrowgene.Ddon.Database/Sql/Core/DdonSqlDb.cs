@@ -34,13 +34,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     string field = fieldList[j];
                     if(table != null)
                     {
-                        sb.Append('`');
+                        sb.Append('\"');
                         sb.Append(table);
-                        sb.Append("`.");
+                        sb.Append("\".");
                     }
-                    sb.Append('`');
+                    sb.Append('\"');
                     sb.Append(field);
-                    sb.Append('`');
+                    sb.Append('\"');
                     if (j < fieldList.Length - 1)
                     {
                         sb.Append(", ");
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 for (int j = 0; j < fieldList.Length; j++)
                 {
                     string field = fieldList[j];
-                    sb.Append($"`{field}`=@{field}");
+                    sb.Append($"\"{field}\"=@{field}");
                     if (j < fieldList.Length - 1)
                     {
                         sb.Append(", ");

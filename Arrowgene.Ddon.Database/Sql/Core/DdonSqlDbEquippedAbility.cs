@@ -13,12 +13,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_common_id", "equipped_to_job", "job", "slot_no", "ability_id"
         };
 
-        private readonly string SqlInsertEquippedAbility = $"INSERT INTO `ddon_equipped_ability` ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)});";
-        private readonly string SqlReplaceEquippedAbility = $"INSERT OR REPLACE INTO `ddon_equipped_ability` ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)});";
-        private static readonly string SqlUpdateEquippedAbility = $"UPDATE `ddon_equipped_ability` SET {BuildQueryUpdate(EquippedAbilityFields)} WHERE `character_common_id`=@old_character_common_id AND `equipped_to_job`=@old_equipped_to_job AND `slot_no`=@old_slot_no;";
-        private static readonly string SqlSelectEquippedAbilities = $"SELECT {BuildQueryField(EquippedAbilityFields)} FROM `ddon_equipped_ability` WHERE `character_common_id`=@character_common_id ORDER BY equipped_to_job, slot_no;";
-        private const string SqlDeleteEquippedAbility = "DELETE FROM `ddon_equipped_ability` WHERE `character_common_id`=@character_common_id AND `equipped_to_job`=@equipped_to_job AND `slot_no`=@slot_no;";
-        private const string SqlDeleteEquippedAbilities = "DELETE FROM `ddon_equipped_ability` WHERE `character_common_id`=@character_common_id AND `equipped_to_job`=@equipped_to_job;";
+        private readonly string SqlInsertEquippedAbility = $"INSERT INTO \"ddon_equipped_ability\" ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)});";
+        private readonly string SqlReplaceEquippedAbility = $"INSERT OR REPLACE INTO \"ddon_equipped_ability\" ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)});";
+        private static readonly string SqlUpdateEquippedAbility = $"UPDATE \"ddon_equipped_ability\" SET {BuildQueryUpdate(EquippedAbilityFields)} WHERE \"character_common_id\"=@old_character_common_id AND \"equipped_to_job\"=@old_equipped_to_job AND \"slot_no\"=@old_slot_no;";
+        private static readonly string SqlSelectEquippedAbilities = $"SELECT {BuildQueryField(EquippedAbilityFields)} FROM \"ddon_equipped_ability\" WHERE \"character_common_id\"=@character_common_id ORDER BY equipped_to_job, slot_no;";
+        private const string SqlDeleteEquippedAbility = "DELETE FROM \"ddon_equipped_ability\" WHERE \"character_common_id\"=@character_common_id AND \"equipped_to_job\"=@equipped_to_job AND \"slot_no\"=@slot_no;";
+        private const string SqlDeleteEquippedAbilities = "DELETE FROM \"ddon_equipped_ability\" WHERE \"character_common_id\"=@character_common_id AND \"equipped_to_job\"=@equipped_to_job;";
 
         public bool InsertEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo, Ability ability)
         {

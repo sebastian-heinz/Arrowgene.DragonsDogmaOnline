@@ -13,12 +13,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "name", "normal_name", "hash", "mail", "mail_verified", "mail_verified_at", "mail_token", "password_token", "login_token", "login_token_created", "state", "last_login", "created"
         };
         
-        private static readonly string SqlInsertAccount = $"INSERT INTO `account` ({BuildQueryField(AccountFields)}) VALUES ({BuildQueryInsert(AccountFields)});";
-        private static readonly string SqlSelectAccountById = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `id`=@id;";
-        private static readonly string SqlSelectAccountByName = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `normal_name`=@normal_name;";
-        private static readonly string SqlSelectAccountByLoginToken = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `login_token`=@login_token;";
-        private static readonly string SqlUpdateAccount = $"UPDATE `account` SET {BuildQueryUpdate(AccountFields)} WHERE `id`=@id;";
-        private const string SqlDeleteAccount = "DELETE FROM `account` WHERE `id`=@id;";
+        private static readonly string SqlInsertAccount = $"INSERT INTO \"account\" ({BuildQueryField(AccountFields)}) VALUES ({BuildQueryInsert(AccountFields)});";
+        private static readonly string SqlSelectAccountById = $"SELECT \"id\", {BuildQueryField(AccountFields)} FROM \"account\" WHERE \"id\"=@id;";
+        private static readonly string SqlSelectAccountByName = $"SELECT \"id\", {BuildQueryField(AccountFields)} FROM \"account\" WHERE \"normal_name\"=@normal_name;";
+        private static readonly string SqlSelectAccountByLoginToken = $"SELECT \"id\", {BuildQueryField(AccountFields)} FROM \"account\" WHERE \"login_token\"=@login_token;";
+        private static readonly string SqlUpdateAccount = $"UPDATE \"account\" SET {BuildQueryUpdate(AccountFields)} WHERE \"id\"=@id;";
+        private const string SqlDeleteAccount = "DELETE FROM \"account\" WHERE \"id\"=@id;";
 
         public Account CreateAccount(string name, string mail, string hash)
         {

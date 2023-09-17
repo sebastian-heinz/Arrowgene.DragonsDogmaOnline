@@ -7,12 +7,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCon : DbConnection
         where TCom : DbCommand
     {
-        private const string SqlInsertToken = "INSERT INTO `ddon_game_token` (`account_id`, `character_id`, `token`, `created`) VALUES (@account_id, @character_id, @token, @created);";
-        private const string SqlUpdateToken = "UPDATE `ddon_game_token` SET `character_id`=@character_id, `token`=@token, `created`=@created WHERE `account_id` = @account_id;";
-        private const string SqlSelectTokenByAccountId = "SELECT `token`, `account_id`, `character_id`, `token`, `created` FROM `ddon_game_token` WHERE `account_id` = @account_id;";
-        private const string SqlDeleteTokenByAccountId = "DELETE FROM `ddon_game_token` WHERE `account_id`=@account_id;";
-        private const string SqlSelectToken = "SELECT `token`, `account_id`, `character_id`, `token`, `created` FROM `ddon_game_token` WHERE `token` = @token;";
-        private const string SqlDeleteToken = "DELETE FROM `ddon_game_token` WHERE `token`=@token;";
+        private const string SqlInsertToken = "INSERT INTO \"ddon_game_token\" (\"account_id\", \"character_id\", \"token\", \"created\") VALUES (@account_id, @character_id, @token, @created);";
+        private const string SqlUpdateToken = "UPDATE \"ddon_game_token\" SET \"character_id\"=@character_id, \"token\"=@token, \"created\"=@created WHERE \"account_id\" = @account_id;";
+        private const string SqlSelectTokenByAccountId = "SELECT \"token\", \"account_id\", \"character_id\", \"token\", \"created\" FROM \"ddon_game_token\" WHERE \"account_id\" = @account_id;";
+        private const string SqlDeleteTokenByAccountId = "DELETE FROM \"ddon_game_token\" WHERE \"account_id\"=@account_id;";
+        private const string SqlSelectToken = "SELECT \"token\", \"account_id\", \"character_id\", \"token\", \"created\" FROM \"ddon_game_token\" WHERE \"token\" = @token;";
+        private const string SqlDeleteToken = "DELETE FROM \"ddon_game_token\" WHERE \"token\"=@token;";
 
         public bool SetToken(GameToken token)
         {

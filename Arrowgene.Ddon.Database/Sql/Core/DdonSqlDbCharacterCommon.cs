@@ -40,18 +40,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
 
-        private readonly string SqlInsertCharacterCommon = $"INSERT INTO `ddon_character_common` ({BuildQueryField(CharacterCommonFields)}) VALUES ({BuildQueryInsert(CharacterCommonFields)});";
-        private readonly string SqlUpdateCharacterCommon = $"UPDATE `ddon_character_common` SET {BuildQueryUpdate(CharacterCommonFields)} WHERE `character_common_id` = @character_common_id;";
+        private readonly string SqlInsertCharacterCommon = $"INSERT INTO \"ddon_character_common\" ({BuildQueryField(CharacterCommonFields)}) VALUES ({BuildQueryInsert(CharacterCommonFields)});";
+        private readonly string SqlUpdateCharacterCommon = $"UPDATE \"ddon_character_common\" SET {BuildQueryUpdate(CharacterCommonFields)} WHERE \"character_common_id\" = @character_common_id;";
 
-        private readonly string SqlInsertEditInfo = $"INSERT INTO `ddon_edit_info` ({BuildQueryField(CDataEditInfoFields)}) VALUES ({BuildQueryInsert(CDataEditInfoFields)});";
-        private static readonly string SqlUpdateEditInfo = $"UPDATE `ddon_edit_info` SET {BuildQueryUpdate(CDataEditInfoFields)} WHERE `character_common_id` = @character_common_id;";
-        private static readonly string SqlSelectEditInfo = $"SELECT {BuildQueryField(CDataEditInfoFields)} FROM `ddon_edit_info` WHERE `character_common_id` = @character_common_id;";
-        private const string SqlDeleteEditInfo = "DELETE FROM `ddon_edit_info` WHERE `character_common_id`=@character_common_id;";
+        private readonly string SqlInsertEditInfo = $"INSERT INTO \"ddon_edit_info\" ({BuildQueryField(CDataEditInfoFields)}) VALUES ({BuildQueryInsert(CDataEditInfoFields)});";
+        private static readonly string SqlUpdateEditInfo = $"UPDATE \"ddon_edit_info\" SET {BuildQueryUpdate(CDataEditInfoFields)} WHERE \"character_common_id\" = @character_common_id;";
+        private static readonly string SqlSelectEditInfo = $"SELECT {BuildQueryField(CDataEditInfoFields)} FROM \"ddon_edit_info\" WHERE \"character_common_id\" = @character_common_id;";
+        private const string SqlDeleteEditInfo = "DELETE FROM \"ddon_edit_info\" WHERE \"character_common_id\"=@character_common_id;";
 
-        private readonly string SqlInsertStatusInfo = $"INSERT INTO `ddon_status_info` ({BuildQueryField(CDataStatusInfoFields)}) VALUES ({BuildQueryInsert(CDataStatusInfoFields)});";
-        private static readonly string SqlUpdateStatusInfo = $"UPDATE `ddon_status_info` SET {BuildQueryUpdate(CDataStatusInfoFields)} WHERE `character_common_id` = @character_common_id;";
-        private static readonly string SqlSelectStatusInfo = $"SELECT {BuildQueryField(CDataStatusInfoFields)} FROM `ddon_status_info` WHERE `character_common_id` = @character_common_id;";
-        private const string SqlDeleteStatusInfo = "DELETE FROM `ddon_status_info` WHERE `character_common_id`=@character_common_id;";
+        private readonly string SqlInsertStatusInfo = $"INSERT INTO \"ddon_status_info\" ({BuildQueryField(CDataStatusInfoFields)}) VALUES ({BuildQueryInsert(CDataStatusInfoFields)});";
+        private static readonly string SqlUpdateStatusInfo = $"UPDATE \"ddon_status_info\" SET {BuildQueryUpdate(CDataStatusInfoFields)} WHERE \"character_common_id\" = @character_common_id;";
+        private static readonly string SqlSelectStatusInfo = $"SELECT {BuildQueryField(CDataStatusInfoFields)} FROM \"ddon_status_info\" WHERE \"character_common_id\" = @character_common_id;";
+        private const string SqlDeleteStatusInfo = "DELETE FROM \"ddon_status_info\" WHERE \"character_common_id\"=@character_common_id;";
 
         public bool UpdateCharacterCommonBaseInfo(CharacterCommon common)
         {

@@ -6,10 +6,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCon : DbConnection
         where TCom : DbCommand
     {
-        private const string SqlSelectSetting = "SELECT `value` FROM `setting` WHERE `key` = @key;";
-        private const string SqlInsertSetting = "INSERT INTO `setting` (`key`, `value`) VALUES (@key, @value);";
-        private const string SqlUpdateSetting = "UPDATE `setting` SET `value`=@value WHERE `key`=@key;";
-        private const string SqlDeleteSetting = "DELETE FROM `setting` WHERE `key`=@key;";
+        private const string SqlSelectSetting = "SELECT \"value\" FROM \"setting\" WHERE \"key\" = @key;";
+        private const string SqlInsertSetting = "INSERT INTO \"setting\" (\"key\", \"value\") VALUES (@key, @value);";
+        private const string SqlUpdateSetting = "UPDATE \"setting\" SET \"value\"=@value WHERE \"key\"=@key;";
+        private const string SqlDeleteSetting = "DELETE FROM \"setting\" WHERE \"key\"=@key;";
 
 
         public bool SetSetting(string key, string value)

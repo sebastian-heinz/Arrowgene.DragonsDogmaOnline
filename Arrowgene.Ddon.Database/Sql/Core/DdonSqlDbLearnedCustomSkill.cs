@@ -12,9 +12,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_common_id", "job", "skill_id", "skill_lv"
         };
 
-        private readonly string SqlInsertLearnedCustomSkill = $"INSERT INTO `ddon_learned_custom_skill` ({BuildQueryField(LearnedCustomSkillFields)}) VALUES ({BuildQueryInsert(LearnedCustomSkillFields)});";
-        private readonly string SqlUpdateLearnedCustomSkill = $"UPDATE `ddon_learned_custom_skill` SET {BuildQueryUpdate(LearnedCustomSkillFields)} WHERE `character_common_id`=@character_common_id AND `job`=@job AND `skill_id`=@skill_id;";
-        private static readonly string SqlSelectLearnedCustomSkills = $"SELECT {BuildQueryField(LearnedCustomSkillFields)} FROM `ddon_learned_custom_skill` WHERE `character_common_id`=@character_common_id;";
+        private readonly string SqlInsertLearnedCustomSkill = $"INSERT INTO \"ddon_learned_custom_skill\" ({BuildQueryField(LearnedCustomSkillFields)}) VALUES ({BuildQueryInsert(LearnedCustomSkillFields)});";
+        private readonly string SqlUpdateLearnedCustomSkill = $"UPDATE \"ddon_learned_custom_skill\" SET {BuildQueryUpdate(LearnedCustomSkillFields)} WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"skill_id\"=@skill_id;";
+        private static readonly string SqlSelectLearnedCustomSkills = $"SELECT {BuildQueryField(LearnedCustomSkillFields)} FROM \"ddon_learned_custom_skill\" WHERE \"character_common_id\"=@character_common_id;";
 
         public bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill)
         {

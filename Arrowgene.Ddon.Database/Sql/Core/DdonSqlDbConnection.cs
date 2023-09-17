@@ -9,19 +9,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCom : DbCommand
     {
         private const string SqlInsertConnection =
-            "INSERT INTO `ddon_connection` (`server_id`, `account_id`, `type`, `created`) VALUES (@server_id, @account_id, @type, @created);";
+            "INSERT INTO \"ddon_connection\" (\"server_id\", \"account_id\", \"type\", \"created\") VALUES (@server_id, @account_id, @type, @created);";
 
         private const string SqlSelectConnectionsByAccountId =
-            "SELECT `server_id`, `account_id`, `type`, `created` FROM `ddon_connection` WHERE `account_id` = @account_id;";
+            "SELECT \"server_id\", \"account_id\", \"type\", \"created\" FROM \"ddon_connection\" WHERE \"account_id\" = @account_id;";
 
         private const string SqlDeleteConnectionsByAccountId =
-            "DELETE FROM `ddon_connection` WHERE `account_id`=@account_id;";
+            "DELETE FROM \"ddon_connection\" WHERE \"account_id\"=@account_id;";
         
         private const string SqlDeleteConnectionsByServerId =
-            "DELETE FROM `ddon_connection` WHERE `server_id`=@server_id;";
+            "DELETE FROM \"ddon_connection\" WHERE \"server_id\"=@server_id;";
 
         private const string SqlDeleteConnection =
-            "DELETE FROM `ddon_connection` WHERE `server_id`=@server_id AND `account_id`=@account_id;";
+            "DELETE FROM \"ddon_connection\" WHERE \"server_id\"=@server_id AND \"account_id\"=@account_id;";
 
         public bool InsertConnection(Connection connection)
         {
