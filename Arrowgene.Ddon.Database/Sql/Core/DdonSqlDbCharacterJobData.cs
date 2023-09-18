@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCon : DbConnection
         where TCom : DbCommand
     {
-        private static readonly string[] CDataCharacterJobDataFields = new string[]
+        protected static readonly string[] CDataCharacterJobDataFields = new string[]
         {
             "character_common_id", "job", "exp", "job_point", "lv", "atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", 
             "stun_power", "consitution", "guts", "fire_resist", "ice_resist", "thunder_resist", "holy_resist", "dark_resist", "spread_resist", 
@@ -19,7 +19,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private readonly string SqlInsertCharacterJobData = $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
-        private readonly string SqlReplaceCharacterJobData = $"INSERT OR REPLACE INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+
+        protected virtual string SqlReplaceCharacterJobData { get; } =
+            $"INSERT OR REPLACE INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+
         private static readonly string SqlUpdateCharacterJobData = $"UPDATE \"ddon_character_job_data\" SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
         private static readonly string SqlSelectCharacterJobData = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
         private static readonly string SqlSelectCharacterJobDataByCharacter = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id;";

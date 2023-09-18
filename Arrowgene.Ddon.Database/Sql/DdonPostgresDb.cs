@@ -91,5 +91,11 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             throw new NotImplementedException();
         }
+
+        protected override string SqlInsertOrIgnoreItem =>
+            $"INSERT INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)}) ON CONFLICT DO NOTHING;";
+
+        protected override string SqlReplaceCharacterJobData =>
+            $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)}) ON CONFLICT ON CONSTRAINT pk_character_job_data DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", CDataCharacterJobDataFields)};";
     }
 }

@@ -11,14 +11,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCon : DbConnection
         where TCom : DbCommand
     {
-        private static readonly string[] ItemFields = new string[]
+        protected static readonly string[] ItemFields = new string[]
         {
             "uid", "item_id", "unk3", "color", "plus_value"
         };
 
         // Items don't get updated or deleted once created as the same row is shared among all players.
         // Making a distinction wouldn't make sense, as upgrading/changin crests would generate a new item with a different UID
-        private readonly string SqlInsertOrIgnoreItem = $"INSERT OR IGNORE INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";
+        protected virtual string SqlInsertOrIgnoreItem { get; } = $"INSERT OR IGNORE INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";
         private static readonly string SqlSelectItem = $"SELECT {BuildQueryField(ItemFields)} FROM \"ddon_item\" WHERE \"uid\"=@uid;";
 
         public bool InsertItem(TCon conn, Item item)
