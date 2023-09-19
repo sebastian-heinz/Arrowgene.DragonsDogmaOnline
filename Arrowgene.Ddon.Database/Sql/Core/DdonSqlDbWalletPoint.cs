@@ -8,13 +8,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCon : DbConnection
         where TCom : DbCommand
     {
-        private static readonly string[] WalletPointFields = new string[]
+        protected static readonly string[] WalletPointFields = new string[]
         {
             "character_id", "type", "value"
         };
 
         private readonly string SqlInsertWalletPoint = $"INSERT INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)});";
-        private readonly string SqlReplaceWalletPoint = $"INSERT OR REPLACE INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)});";
+
+        protected virtual string SqlReplaceWalletPoint { get; } =
+            $"INSERT OR REPLACE INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)});";
+
         private static readonly string SqlUpdateWalletPoint = $"UPDATE \"ddon_wallet_point\" SET {BuildQueryUpdate(WalletPointFields)} WHERE \"character_id\"=@character_id AND \"type\"=@type";
         private static readonly string SqlSelectWalletPoints = $"SELECT {BuildQueryField(WalletPointFields)} FROM \"ddon_wallet_point\" WHERE \"character_id\"=@character_id;";
         private const string SqlDeleteWalletPoint = "DELETE FROM \"ddon_wallet_point\" WHERE \"character_id\"=@character_id AND \"type\"=@type";

@@ -7,13 +7,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCon : DbConnection
         where TCom : DbCommand
     {
-        private static readonly string[] CDataEquipJobItemFields = new string[]
+        protected static readonly string[] CDataEquipJobItemFields = new string[]
         {
             "item_uid", "character_common_id", "job", "equip_slot"
         };
 
         private readonly string SqlInsertEquipJobItem = $"INSERT INTO \"ddon_equip_job_item\" ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)});";
-        private readonly string SqlReplaceEquipJobItem = $"INSERT OR REPLACE INTO \"ddon_equip_job_item\" ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)});";
+
+        protected virtual string SqlReplaceEquipJobItem { get; } =
+            $"INSERT OR REPLACE INTO \"ddon_equip_job_item\" ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)});";
+
         private static readonly string SqlUpdateEquipJobItem = $"UPDATE \"ddon_equip_job_item\" SET {BuildQueryUpdate(CDataEquipJobItemFields)} WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job AND \"equip_slot\"=@equip_slot;";
         private static readonly string SqlSelectEquipJobItems = $"SELECT {BuildQueryField(CDataEquipJobItemFields)} FROM \"ddon_equip_job_item\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
         private static readonly string SqlSelectEquipJobItemsByCharacter = $"SELECT {BuildQueryField(CDataEquipJobItemFields)} FROM \"ddon_equip_job_item\" WHERE \"character_common_id\" = @character_common_id;";

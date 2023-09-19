@@ -14,12 +14,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_common_id", "character_id", "name", "hm_type", "pawn_type"
         };
 
-        private static readonly string[] CDataPawnReactionFields = new string[]
+        protected static readonly string[] CDataPawnReactionFields = new string[]
         {
             "pawn_id", "reaction_type", "motion_no"
         };
 
-        private static readonly string[]  CDataSpSkillFields = new string[]
+        protected static readonly string[]  CDataSpSkillFields = new string[]
         {
             "pawn_id", "sp_skill_id", "sp_skill_lv"
         };
@@ -43,13 +43,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeletePawn = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_pawn\" WHERE \"pawn_id\"=@pawn_id);";
 
         private readonly string SqlInsertPawnReaction = $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
-        private readonly string SqlReplacePawnReaction = $"REPLACE INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
+
+        protected virtual string SqlReplacePawnReaction { get; } =
+            $"REPLACE INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
+
         private static readonly string SqlUpdatePawnReaction = $"UPDATE \"ddon_pawn_reaction\" SET {BuildQueryUpdate(CDataPawnReactionFields)} WHERE \"pawn_id\" = @pawn_id AND \"reaction_type\"=@reaction_type;";
         private static readonly string SqlSelectPawnReactionByPawnId = $"SELECT {BuildQueryField(CDataPawnReactionFields)} FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\" = @pawn_id;";
         private const string SqlDeletePawnReaction = "DELETE FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\"=@pawn_id AND \"reaction_type\"=@reaction_type;";
 
         private readonly string SqlInsertSpSkill = $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
-        private readonly string SqlReplaceSpSkill = $"REPLACE INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
+        protected virtual string SqlReplaceSpSkill { get; } = $"REPLACE INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
         private static readonly string SqlUpdateSpSkill = $"UPDATE \"ddon_sp_skill\" SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE \"pawn_id\" = @pawn_id AND \"sp_skill_id\"=@sp_skill_id;";
         private static readonly string SqlSelectSpSkillByPawnId = $"SELECT {BuildQueryField(CDataSpSkillFields)} FROM \"ddon_sp_skill\" WHERE \"pawn_id\" = @pawn_id;";
         private const string SqlDeleteSpSkill = "DELETE FROM \"ddon_sp_skill\" WHERE \"pawn_id\"=@pawn_id AND \"sp_skill_id\"=@sp_skill_id;";

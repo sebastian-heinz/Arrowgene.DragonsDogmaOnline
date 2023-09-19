@@ -9,13 +9,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCon : DbConnection
         where TCom : DbCommand
     {
-        private static readonly string[] StorageFields = new string[]
+        protected static readonly string[] StorageFields = new string[]
         {
             "character_id", "storage_type", "slot_max", "item_sort"
         };
 
         private static readonly string SqlInsertStorage = $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)});";
-        private static readonly string SqlReplaceStorage = $"INSERT OR REPLACE INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)});";
+
+        protected virtual string SqlReplaceStorage { get; } =
+            $"INSERT OR REPLACE INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)});";
+
         private static readonly string SqlUpdateStorage = $"UPDATE \"ddon_storage\" SET {BuildQueryUpdate(StorageFields)} WHERE \"storage_type\" = @storage_type AND \"character_id\" = @character_id;";
         private static readonly string SqlSelectStorage = $"SELECT {BuildQueryField(StorageFields)} FROM \"ddon_storage\" WHERE \"storage_type\" = @storage_type AND \"character_id\" = @character_id;";
         private static readonly string SqlSelectAllStoragesByCharacter = $"SELECT {BuildQueryField(StorageFields)} FROM \"ddon_storage\" WHERE \"character_id\" = @character_id;";
