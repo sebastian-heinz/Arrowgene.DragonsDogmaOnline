@@ -27,13 +27,15 @@ namespace Arrowgene.Ddon.Database.Sql
         public abstract int Upsert(string table, string[] columns, object[] values, string whereColumn,
             object whereValue, out long autoIncrement);
 
-        public bool ExecuteInTransaction(Action<TCon> action)
+        protected virtual string SqlBeginTransaction => "BEGIN TRANSACTION";
+
+        public virtual bool ExecuteInTransaction(Action<TCon> action)
         {
             using (TCon connection = Connection())
             {
                 try
                 {
-                    Execute(connection, "BEGIN TRANSACTION");
+                    Execute(connection, SqlBeginTransaction);
                     action(connection);
                     Execute(connection, "COMMIT");
                     return true;
@@ -311,7 +313,8 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected void AddParameter(TCom command, string name, UInt32 value)
         {
-            AddParameter(command, name, value, DbType.UInt32);
+            AddParameter(command, name, (Int32)value); // TODO hack for PSQL
+            // AddParameter(command, name, value, DbType.UInt32);
         }
 
         protected void AddParameterEnumInt32<T>(TCom command, string name, T value) where T : Enum

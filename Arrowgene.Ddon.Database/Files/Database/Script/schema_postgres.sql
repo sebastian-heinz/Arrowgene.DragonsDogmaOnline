@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS ddon_character_common
     jewelry_slot_num    SMALLINT           NOT NULL
 );
 
-
 CREATE TABLE IF NOT EXISTS ddon_character
 (
     character_id               SERIAL PRIMARY KEY          NOT NULL,

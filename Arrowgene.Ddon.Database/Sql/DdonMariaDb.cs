@@ -30,23 +30,23 @@ namespace Arrowgene.Ddon.Database.Sql
                 return false;
             }
 
-            if (_settings.WipeOnStartup)
-            {
-                MySqlConnection connection = Connection();
-                try
-                {
-                    MySqlCommand command = Command("DROP SCHEMA public CASCADE;", connection);
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
+            // if (_settings.WipeOnStartup)
+            // {
+            //     MySqlConnection connection = Connection();
+            //     try
+            //     {
+            //         MySqlCommand command = Command("DROP DATABASE public;", connection);
+            //         command.ExecuteNonQuery();
+            //     }
+            //     catch (Exception)
+            //     {
+            //         // ignored
+            //     }
+            //     finally
+            //     {
+            //         connection.Close();
+            //     }
+            // }
 
             return true;
         }
@@ -67,6 +67,8 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             MySqlConnection connection = new MySqlConnection(_connectionString);
             connection.Open();
+            MySqlCommand command = Command("SET SESSION SQL_MODE = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ANSI_QUOTES';", connection);
+            command.ExecuteNonQuery();
             return connection;
         }
 
@@ -90,5 +92,7 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             throw new NotImplementedException();
         }
+
+        protected override string SqlBeginTransaction => "START TRANSACTION";
     }
 }
