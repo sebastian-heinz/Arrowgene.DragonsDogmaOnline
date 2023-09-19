@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Database.Sql
     /// <summary>
     /// PostgreSQL Ddon database.
     /// </summary>
-    public class DdonPostgresDb : DdonSqlDb<NpgsqlConnection, NpgsqlCommand>, IDatabase
+    public class DdonPostgresDb : DdonSqlDb<NpgsqlConnection, NpgsqlCommand, NpgsqlDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonPostgresDb));
 
@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return connectionString;
         }
 
-        protected override NpgsqlConnection Connection()
+        protected override NpgsqlConnection OpenConnection()
         {
             return _dataSource.OpenConnection();
         }
@@ -96,40 +96,40 @@ namespace Arrowgene.Ddon.Database.Sql
             $"INSERT INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)}) ON CONFLICT DO NOTHING;";
 
         protected override string SqlReplaceCharacterJobData =>
-            $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)}) ON CONFLICT ON CONSTRAINT pk_character_job_data DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", CDataCharacterJobDataFields)};";
+            $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)}) ON CONFLICT ON CONSTRAINT pk_character_job_data DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataCharacterJobDataFields)};";
 
         protected override string SqlReplaceStorageItem =>
-            $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) VALUES ({BuildQueryInsert(StorageItemFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_storage_item DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", StorageItemFields)};";
+            $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) VALUES ({BuildQueryInsert(StorageItemFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_storage_item DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", StorageItemFields)};";
 
         protected override string SqlReplaceStorage =>
-            $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_storage DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", StorageFields)};";
+            $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_storage DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", StorageFields)};";
 
         protected override string SqlReplaceCommunicationShortcut =>
-            $"INSERT INTO \"ddon_communication_shortcut\" ({BuildQueryField(CommunicationShortcutFields)}) VALUES ({BuildQueryInsert(CommunicationShortcutFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_communication_shortcut DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", CommunicationShortcutFields)};";
+            $"INSERT INTO \"ddon_communication_shortcut\" ({BuildQueryField(CommunicationShortcutFields)}) VALUES ({BuildQueryInsert(CommunicationShortcutFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_communication_shortcut DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CommunicationShortcutFields)};";
 
         protected override string SqlReplaceEquipItem =>
-            $"INSERT INTO \"ddon_equip_item\" ({BuildQueryField(CDataEquipItemFields)}) VALUES ({BuildQueryInsert(CDataEquipItemFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equip_item DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", CDataEquipItemFields)};";
+            $"INSERT INTO \"ddon_equip_item\" ({BuildQueryField(CDataEquipItemFields)}) VALUES ({BuildQueryInsert(CDataEquipItemFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equip_item DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataEquipItemFields)};";
 
         protected override string SqlReplaceEquipJobItem =>
-            $"INSERT INTO \"ddon_equip_job_item\" ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equip_job_item DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", CDataEquipJobItemFields)};";
+            $"INSERT INTO \"ddon_equip_job_item\" ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equip_job_item DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataEquipJobItemFields)};";
 
         protected override string SqlReplaceEquippedAbility =>
-            $"INSERT INTO \"ddon_equipped_ability\" ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equipped_ability DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", EquippedAbilityFields)};";
+            $"INSERT INTO \"ddon_equipped_ability\" ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equipped_ability DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", EquippedAbilityFields)};";
 
         protected override string SqlReplaceEquippedCustomSkill =>
-            $"INSERT INTO \"ddon_equipped_custom_skill\" ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equipped_custom_skill DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", EquippedCustomSkillFields)};";
+            $"INSERT INTO \"ddon_equipped_custom_skill\" ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equipped_custom_skill DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", EquippedCustomSkillFields)};";
 
         protected override string SqlReplaceNormalSkillParam =>
-            $"INSERT INTO \"ddon_normal_skill_param\" ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_normal_skill_param DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", CDataNormalSkillParamFields)};";
+            $"INSERT INTO \"ddon_normal_skill_param\" ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_normal_skill_param DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataNormalSkillParamFields)};";
 
         protected override string SqlReplaceShortcut =>
-            $"INSERT INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_shortcut DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", ShortcutFields)};";
+            $"INSERT INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_shortcut DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", ShortcutFields)};";
 
         protected override string SqlReplaceWalletPoint =>
-            $"INSERT INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_wallet_point DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", WalletPointFields)};";
+            $"INSERT INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_wallet_point DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", WalletPointFields)};";
 
-        protected override string SqlReplacePawnReaction => $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_pawn_reaction DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", CDataPawnReactionFields)};";
+        protected override string SqlReplacePawnReaction => $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_pawn_reaction DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataPawnReactionFields)};";
 
-        protected override string SqlReplaceSpSkill => $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_sp_skill DO UPDATE SET {BuildQueryUpdateWithTempTable("excluded", CDataSpSkillFields)};";
+        protected override string SqlReplaceSpSkill => $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_sp_skill DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataSpSkillFields)};";
     }
 }

@@ -1,37 +1,51 @@
 {
   "WebServerSetting": {
-    "WebSetting": {
-      "ServerHeader": "",
-      "HttpPorts": [
-        52099
-      ],
-      "HttpsEnabled": false,
-      "HttpsPort": 443,
+    "PublicWebEndPoint": {
+      "IpAddress": "0.0.0.0",
+      "Port": 52099,
+      "IsHttps": false,
       "HttpsCertPath": "",
       "HttpsCertPw": "",
-      "WebFolder": "\/var\/ddon\/server\/Files\/www"
+      "SslProtocols": 0,
+      "DomainName": ""
+    },
+    "WebSetting": {
+      "ServerHeader": "",
+      "WebEndpoints": [
+        {
+          "IpAddress": "0.0.0.0",
+          "Port": 52099,
+          "IsHttps": false,
+          "HttpsCertPath": "",
+          "HttpsCertPw": "",
+          "SslProtocols": 0,
+          "DomainName": ""
+        }
+      ],
+      "WebFolder": "\/Files\/www"
     }
   },
   "GameServerSetting": {
     "ServerSetting": {
+      "Id": 10,
+      "Name": "Game",
       "ListenIpAddress": "0.0.0.0",
       "ServerPort": 52000,
-      "Name": "Game",
       "LogLevel": 0,
-      "LogUnknownPackets": false,
-      "LogOutgoingPackets": false,
+      "LogUnknownPackets": true,
+      "LogOutgoingPackets": true,
       "LogOutgoingPacketPayload": false,
-      "LogIncomingPackets": false,
+      "LogIncomingPackets": true,
       "LogIncomingPacketPayload": false,
       "LogIncomingPacketStructure": false,
       "LogOutgoingPacketStructure": false,
       "ServerSocketSettings": {
-        "Identity": "",
+        "Identity": "Game",
         "MaxConnections": 100,
         "NumSimultaneouslyWriteOperations": 100,
         "BufferSize": 2048,
         "Retries": 10,
-        "MaxUnitOfOrder": 8,
+        "MaxUnitOfOrder": 1,
         "MaxSimultaneousSendsPerClient": 1,
         "SocketTimeoutSeconds": -1,
         "SocketSettings": {
@@ -61,19 +75,20 @@
   },
   "LoginServerSetting": {
     "ServerSetting": {
+      "Id": 1,
+      "Name": "Login",
       "ListenIpAddress": "0.0.0.0",
       "ServerPort": 52100,
-      "Name": "Login",
       "LogLevel": 0,
-      "LogUnknownPackets": false,
-      "LogOutgoingPackets": false,
+      "LogUnknownPackets": true,
+      "LogOutgoingPackets": true,
       "LogOutgoingPacketPayload": false,
-      "LogIncomingPackets": false,
+      "LogIncomingPackets": true,
       "LogIncomingPacketPayload": false,
       "LogIncomingPacketStructure": false,
       "LogOutgoingPacketStructure": false,
       "ServerSocketSettings": {
-        "Identity": "",
+        "Identity": "Login",
         "MaxConnections": 100,
         "NumSimultaneouslyWriteOperations": 100,
         "BufferSize": 2000,
@@ -133,14 +148,14 @@
     "UrlSupportIndex": "http:\/\/localhost:52099\/sp_ingame\/support\/index.html"
   },
   "DatabaseSetting": {
-    "Type": 0,
-    "SqLiteFolder": "\/var\/ddon\/server\/Files\/Database",
+    "Type": 2,
+    "SqLiteFolder": "\/Files\/Database",
     "Host": "localhost",
     "Port": 3306,
-    "User": "",
-    "Password": "",
-    "Database": "Ddon",
-    "WipeOnStartup": true
+    "User": "admin",
+    "Password": "admin",
+    "Database": "mariadb",
+    "WipeOnStartup": false
   },
-  "AssetPath": "\/var\/ddon\/server\/Files\/Assets"
+  "AssetPath": "\/Files\/Assets"
 }

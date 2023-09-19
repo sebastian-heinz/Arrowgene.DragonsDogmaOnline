@@ -5,9 +5,10 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] PawnFields = new string[]
         {
@@ -97,7 +98,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public List<Pawn> SelectPawnsByCharacterId(uint characterId)
         {
             List<Pawn> pawns = new List<Pawn>();
-            ExecuteInTransaction(conn => {
+            ExecuteInTransaction(conn =>
+            {
                 ExecuteReader(conn, SqlSelectAllPawnsDataByCharacterId,
                     command => { AddParameter(command, "@character_id", characterId); }, reader =>
                     {
@@ -105,10 +107,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         {
                             Pawn pawn = ReadAllPawnData(reader);
                             pawns.Add(pawn);
-
-                            QueryPawnData(conn, pawn);
                         }
                     });
+                foreach (var pawn in pawns)
+                {
+                    QueryPawnData(conn, pawn);
+                }
             });
             return pawns;
         }
@@ -204,7 +208,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
-        private Pawn ReadAllPawnData(DbDataReader reader)
+        private Pawn ReadAllPawnData(TReader reader)
         {
             Pawn pawn = new Pawn();
 
@@ -230,7 +234,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@pawn_type", pawn.PawnType);
         }
  
-        private CDataPawnReaction ReadPawnReaction(DbDataReader reader)
+        private CDataPawnReaction ReadPawnReaction(TReader reader)
         {
             CDataPawnReaction pawnReaction = new CDataPawnReaction();
             pawnReaction.ReactionType = GetByte(reader, "reaction_type");
@@ -245,7 +249,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "motion_no", pawnReaction.MotionNo);
         }
 
-        private CDataSpSkill ReadSpSkill(DbDataReader reader)
+        private CDataSpSkill ReadSpSkill(TReader reader)
         {
             CDataSpSkill spSkill = new CDataSpSkill();
             spSkill.SpSkillId = GetByte(reader, "sp_skill_id");

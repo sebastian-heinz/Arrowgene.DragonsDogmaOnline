@@ -4,9 +4,10 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         protected static readonly string[] CDataNormalSkillParamFields = new string[]
         {
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectNormalSkillParam = $"SELECT {BuildQueryField(CDataNormalSkillParamFields)} FROM \"ddon_normal_skill_param\" WHERE \"character_common_id\" = @character_common_id;";
         private const string SqlDeleteNormalSkillParam = "DELETE FROM \"ddon_normal_skill_param\" WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"skill_no\"=@skill_no;";
 
-        private CDataNormalSkillParam ReadNormalSkillParam(DbDataReader reader)
+        private CDataNormalSkillParam ReadNormalSkillParam(TReader reader)
         {
             CDataNormalSkillParam normalSkillParam = new CDataNormalSkillParam();
             normalSkillParam.Job = (JobId) GetByte(reader, "job");

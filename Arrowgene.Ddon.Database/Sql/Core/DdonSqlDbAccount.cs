@@ -5,9 +5,10 @@ using Arrowgene.Ddon.Database.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] AccountFields = new string[]
         {
@@ -136,7 +137,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return rowsAffected > NoRowsAffected;
         }
 
-        private Account ReadAccount(DbDataReader reader)
+        private Account ReadAccount(TReader reader)
         {
             Account account = new Account();
             account.Id = GetInt32(reader, "id");

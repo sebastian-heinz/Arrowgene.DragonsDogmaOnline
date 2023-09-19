@@ -3,9 +3,10 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] LearnedCustomSkillFields = new string[]
         {
@@ -34,7 +35,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return true;
         }
 
-        private CustomSkill ReadLearnedCustomSkill(DbDataReader reader)
+        private CustomSkill ReadLearnedCustomSkill(TReader reader)
         {
             CustomSkill skill = new CustomSkill();
             skill.Job = (JobId) GetByte(reader, "job");

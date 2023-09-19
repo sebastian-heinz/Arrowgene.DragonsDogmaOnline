@@ -8,9 +8,10 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] CharacterCommonFields = new string[]
         {
@@ -125,7 +126,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         JobId job = (JobId) GetByte(reader, "job");
                         EquipType equipType = (EquipType) GetByte(reader, "equip_type");
                         byte equipSlot = GetByte(reader, "equip_slot");
-                        ExecuteReader(conn, SqlSelectItem,
+
+                        using TCon connection = OpenConnection();
+                        ExecuteReader(connection, SqlSelectItem,
                             command2 => { AddParameter(command2, "@uid", UId); },
                             reader2 => 
                             {
@@ -148,7 +151,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         string UId = GetString(reader, "item_uid");
                         JobId job = (JobId) GetByte(reader, "job");
                         byte equipSlot = GetByte(reader, "equip_slot");
-                        ExecuteReader(conn, SqlSelectItem,
+                        
+                        using TCon connection = OpenConnection();
+                        ExecuteReader(connection, SqlSelectItem,
                             command2 => { AddParameter(command2, "@uid", UId); },
                             reader2 => 
                             {
@@ -292,7 +297,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
-        private void ReadAllCharacterCommonData(DbDataReader reader, CharacterCommon common)
+        private void ReadAllCharacterCommonData(TReader reader, CharacterCommon common)
         {
             common.CommonId = GetUInt32(reader, "character_common_id");
             common.Job = (JobId) GetByte(reader, "job");

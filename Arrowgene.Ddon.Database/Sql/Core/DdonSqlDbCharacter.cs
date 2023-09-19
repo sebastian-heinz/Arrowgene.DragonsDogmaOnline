@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] CharacterFields = new string[]
         {
@@ -153,7 +155,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public List<Character> SelectCharactersByAccountId(int accountId)
         {
             List<Character> characters = new List<Character>();
-            ExecuteInTransaction(conn => {
+            ExecuteInTransaction(conn =>
+            {
                 ExecuteReader(conn, SqlSelectAllCharactersDataByAccountId,
                     command => { AddParameter(command, "@account_id", accountId); }, reader =>
                     {
@@ -161,10 +164,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         {
                             Character character = ReadAllCharacterData(reader);
                             characters.Add(character);
-
-                            QueryCharacterData(conn, character);
                         }
                     });
+                foreach (var character in characters)
+                {
+                    QueryCharacterData(conn, character);
+                }
             });
             return characters;
         }
@@ -212,30 +217,30 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Tuple<StorageType, Storage> tuple = ReadStorage(reader);
                         character.Storage.addStorage(tuple.Item1, tuple.Item2);
                     }
-
-                    ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
-                    command2 => { AddParameter(command2, "@character_id", character.CharacterId); },
-                    reader2 =>
+                });
+            ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
+                command2 => { AddParameter(command2, "@character_id", character.CharacterId); },
+                reader2 =>
+                {
+                    while(reader2.Read())
                     {
-                        while(reader2.Read())
-                        {
-                            string UId = GetString(reader2, "item_uid");
-                            StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
-                            ushort slot = GetUInt16(reader2, "slot_no");
-                            uint itemNum = GetUInt32(reader2, "item_num");
+                        string UId = GetString(reader2, "item_uid");
+                        StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
+                        ushort slot = GetUInt16(reader2, "slot_no");
+                        uint itemNum = GetUInt32(reader2, "item_num");
 
-                            ExecuteReader(conn, SqlSelectItem,
-                                command3 => { AddParameter(command3, "@uid", UId); },
-                                reader3 => 
+                        using TCon connection = OpenConnection();
+                        ExecuteReader(connection, SqlSelectItem,
+                            command3 => { AddParameter(command3, "@uid", UId); },
+                            reader3 => 
+                            {
+                                if(reader3.Read())
                                 {
-                                    if(reader3.Read())
-                                    {
-                                        Item item = ReadItem(reader3);
-                                        character.Storage.setStorageItem(item, itemNum, storageType, slot);
-                                    }
-                                });
-                        }
-                    });
+                                    Item item = ReadItem(reader3);
+                                    character.Storage.setStorageItem(item, itemNum, storageType, slot);
+                                }
+                            });
+                    }
                 });
 
             // Wallet Points
@@ -327,7 +332,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
-        private Character ReadAllCharacterData(DbDataReader reader)
+        private Character ReadAllCharacterData(TReader reader)
         {
             Character character = new Character();
 

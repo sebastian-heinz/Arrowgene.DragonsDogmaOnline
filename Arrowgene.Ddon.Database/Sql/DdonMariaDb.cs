@@ -6,9 +6,9 @@ using MySqlConnector;
 namespace Arrowgene.Ddon.Database.Sql
 {
     /// <summary>
-    /// PostgreSQL Ddon database.
+    /// MariaDB Ddon database.
     /// </summary>
-    public class DdonMariaDb : DdonSqlDb<MySqlConnection, MySqlCommand>, IDatabase
+    public class DdonMariaDb : DdonSqlDb<MySqlConnection, MySqlCommand, MySqlDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonMariaDb));
 
@@ -30,45 +30,33 @@ namespace Arrowgene.Ddon.Database.Sql
                 return false;
             }
 
-            // if (_settings.WipeOnStartup)
-            // {
-            //     MySqlConnection connection = Connection();
-            //     try
-            //     {
-            //         MySqlCommand command = Command("DROP DATABASE public;", connection);
-            //         command.ExecuteNonQuery();
-            //     }
-            //     catch (Exception)
-            //     {
-            //         // ignored
-            //     }
-            //     finally
-            //     {
-            //         connection.Close();
-            //     }
-            // }
+            if (_settings.WipeOnStartup)
+            {
+                Logger.Info($"WipeOnStartup is currently not supported by '{_settings.Database}'.");
+            }
 
             return true;
         }
 
         private string BuildConnectionString(DatabaseSetting settings)
         {
-            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();
-            builder.Server = settings.Host;
-            builder.UserID = settings.User;
-            builder.Password = settings.Password;
-            builder.Database = settings.Database;
+            MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
+            {
+                Server = settings.Host,
+                UserID = settings.User,
+                Password = settings.Password,
+                Database = settings.Database,
+                IgnoreCommandTransaction = true
+            };
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");
             return connectionString;
         }
 
-        protected override MySqlConnection Connection()
+        protected override MySqlConnection OpenConnection()
         {
             MySqlConnection connection = new MySqlConnection(_connectionString);
             connection.Open();
-            MySqlCommand command = Command("SET SESSION SQL_MODE = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ANSI_QUOTES';", connection);
-            command.ExecuteNonQuery();
             return connection;
         }
 
@@ -93,6 +81,55 @@ namespace Arrowgene.Ddon.Database.Sql
             throw new NotImplementedException();
         }
 
-        protected override string SqlBeginTransaction => "START TRANSACTION";
+        protected override uint GetUInt32(MySqlDataReader reader, string column)
+        {
+            return reader.GetUInt32(column);
+        }
+
+        protected override ushort GetUInt16(MySqlDataReader reader, string column)
+        {
+            return reader.GetUInt16(column);
+        }
+
+        protected override string SqlInsertOrIgnoreItem => $"INSERT IGNORE INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";
+
+        protected override string SqlReplaceCharacterJobData =>
+            $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataCharacterJobDataFields)};";
+
+        protected override string SqlReplaceStorageItem =>
+            $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) VALUES ({BuildQueryInsert(StorageItemFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, StorageItemFields)};";
+
+        protected override string SqlReplaceStorage =>
+            $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, StorageFields)};";
+
+        protected override string SqlReplaceCommunicationShortcut =>
+            $"INSERT INTO \"ddon_communication_shortcut\" ({BuildQueryField(CommunicationShortcutFields)}) VALUES ({BuildQueryInsert(CommunicationShortcutFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CommunicationShortcutFields)};";
+
+        protected override string SqlReplaceEquipItem =>
+            $"INSERT INTO \"ddon_equip_item\" ({BuildQueryField(CDataEquipItemFields)}) VALUES ({BuildQueryInsert(CDataEquipItemFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataEquipItemFields)};";
+
+        protected override string SqlReplaceEquipJobItem =>
+            $"INSERT INTO \"ddon_equip_job_item\" ({BuildQueryField(CDataEquipJobItemFields)}) VALUES ({BuildQueryInsert(CDataEquipJobItemFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataEquipJobItemFields)};";
+
+        protected override string SqlReplaceEquippedAbility =>
+            $"INSERT INTO \"ddon_equipped_ability\" ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, EquippedAbilityFields)};";
+
+        protected override string SqlReplaceEquippedCustomSkill =>
+            $"INSERT INTO \"ddon_equipped_custom_skill\" ({BuildQueryField(EquippedCustomSkillFields)}) VALUES ({BuildQueryInsert(EquippedCustomSkillFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, EquippedCustomSkillFields)};";
+
+        protected override string SqlReplaceNormalSkillParam =>
+            $"INSERT INTO \"ddon_normal_skill_param\" ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataNormalSkillParamFields)};";
+
+        protected override string SqlReplaceShortcut =>
+            $"INSERT INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, ShortcutFields)};";
+
+        protected override string SqlReplaceWalletPoint =>
+            $"INSERT INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, WalletPointFields)};";
+
+        protected override string SqlReplacePawnReaction =>
+            $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataPawnReactionFields)};";
+
+        protected override string SqlReplaceSpSkill =>
+            $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataSpSkillFields)};";
     }
 }

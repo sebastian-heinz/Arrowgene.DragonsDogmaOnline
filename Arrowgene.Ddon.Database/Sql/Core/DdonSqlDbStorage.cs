@@ -5,9 +5,10 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         protected static readonly string[] StorageFields = new string[]
         {
@@ -50,7 +51,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         }
 
 
-        private Tuple<StorageType, Storage> ReadStorage(DbDataReader reader)
+        private Tuple<StorageType, Storage> ReadStorage(TReader reader)
         {
             StorageType storageType = (StorageType) GetByte(reader, "storage_type");
             ushort slotMax = GetUInt16(reader, "slot_max");

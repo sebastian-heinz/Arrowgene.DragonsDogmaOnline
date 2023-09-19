@@ -9,9 +9,10 @@ namespace Arrowgene.Ddon.Database.Sql
     /// <summary>
     /// Operations for SQL type databases.
     /// </summary>
-    public abstract class SqlDb<TCon, TCom>
+    public abstract class SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         public const int NoRowsAffected = 0;
         public const long NoAutoIncrement = 0;
@@ -20,65 +21,44 @@ namespace Arrowgene.Ddon.Database.Sql
         {
         }
 
-        protected abstract TCon Connection();
+        protected abstract TCon OpenConnection();
         protected abstract TCom Command(string query, TCon connection);
         protected abstract long AutoIncrement(TCon connection, TCom command);
 
         public abstract int Upsert(string table, string[] columns, object[] values, string whereColumn,
             object whereValue, out long autoIncrement);
 
-        protected virtual string SqlBeginTransaction => "BEGIN TRANSACTION";
-
-        public virtual bool ExecuteInTransaction(Action<TCon> action)
+        public bool ExecuteInTransaction(Action<TCon> action)
         {
-            using (TCon connection = Connection())
+            using TCon connection = OpenConnection();
+            using DbTransaction transaction = connection.BeginTransaction();
+            try
             {
-                try
-                {
-                    Execute(connection, SqlBeginTransaction);
-                    action(connection);
-                    Execute(connection, "COMMIT");
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Execute(connection, "ROLLBACK");
-                    Exception(ex);
-                    return false;
-                }
+                action(connection);
+                transaction.Commit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                Exception(ex);
+                return false;
             }
         }
 
         public int ExecuteNonQuery(string query, Action<TCom> nonQueryAction)
         {
-            return ExecuteNonQuery(null, query, nonQueryAction);
+            using TCon connection = OpenConnection();
+            return ExecuteNonQuery(connection, query, nonQueryAction);
         }
 
         public int ExecuteNonQuery(TCon? conn, string query, Action<TCom> nonQueryAction)
         {
             try
             {
-                bool autoCloseConnection = false;
-                TCon? connection = conn;
-                if (connection == null)
-                {
-                    autoCloseConnection = true;
-                    connection = Connection();
-                }
-
-                int rowsAffected = 0;
-                using (TCom command = Command(query, connection))
-                {
-                    nonQueryAction(command);
-                    rowsAffected = command.ExecuteNonQuery();
-                }
-
-                if (autoCloseConnection)
-                {
-                    connection.Close();
-                }
-
-                return rowsAffected;
+                using TCom command = Command(query, conn);
+                nonQueryAction(command);
+                return command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -89,34 +69,18 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public int ExecuteNonQuery(string query, Action<TCom> nonQueryAction, out long autoIncrement)
         {
-            return ExecuteNonQuery(null, query, nonQueryAction, out autoIncrement);
+            using TCon connection = OpenConnection();
+            return ExecuteNonQuery(connection, query, nonQueryAction, out autoIncrement);
         }
 
         public int ExecuteNonQuery(TCon? conn, string query, Action<TCom> nonQueryAction, out long autoIncrement)
         {
             try
             {
-                bool autoCloseConnection = false;
-                TCon? connection = conn;
-                if (connection == null)
-                {
-                    autoCloseConnection = true;
-                    connection = Connection();
-                }
-
-                int rowsAffected = 0;
-                using (TCom command = Command(query, connection))
-                {
-                    nonQueryAction(command);
-                    rowsAffected = command.ExecuteNonQuery();
-                    autoIncrement = AutoIncrement(connection, command);
-                }
-
-                if (autoCloseConnection)
-                {
-                    connection.Close();
-                }
-
+                using TCom command = Command(query, conn);
+                nonQueryAction(command);
+                var rowsAffected = command.ExecuteNonQuery();
+                autoIncrement = AutoIncrement(conn, command);
                 return rowsAffected;
             }
             catch (Exception ex)
@@ -127,36 +91,20 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public void ExecuteReader(string query, Action<TCom> nonQueryAction, Action<DbDataReader> readAction)
+        public void ExecuteReader(string query, Action<TCom> nonQueryAction, Action<TReader> readAction)
         {
-            ExecuteReader(null, query, nonQueryAction, readAction);
+            using TCon connection = OpenConnection();
+            ExecuteReader(connection, query, nonQueryAction, readAction);
         }
 
-        public void ExecuteReader(TCon? conn, string query, Action<TCom> nonQueryAction, Action<DbDataReader> readAction)
+        public void ExecuteReader(TCon? conn, string query, Action<TCom> nonQueryAction, Action<TReader> readAction)
         {
             try
             {
-                bool autoCloseConnection = false;
-                TCon? connection = conn;
-                if (connection == null)
-                {
-                    autoCloseConnection = true;
-                    connection = Connection();
-                }
-
-                using (TCom command = Command(query, connection))
-                {
-                    nonQueryAction(command);
-                    using (DbDataReader reader = command.ExecuteReader())
-                    {
-                        readAction(reader);
-                    }
-                }
-
-                if (autoCloseConnection)
-                {
-                    connection.Close();
-                }
+                using TCom command = Command(query, conn);
+                nonQueryAction(command);
+                using TReader reader = (TReader)command.ExecuteReader();
+                readAction(reader);
             }
             catch (Exception ex)
             {
@@ -164,35 +112,19 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public void ExecuteReader(string query, Action<DbDataReader> readAction)
+        public void ExecuteReader(string query, Action<TReader> readAction)
         {
-            ExecuteReader(null, query, readAction);
+            using TCon connection = OpenConnection();
+            ExecuteReader(connection, query, readAction);
         }
 
-        public void ExecuteReader(TCon? conn, string query, Action<DbDataReader> readAction)
+        public void ExecuteReader(TCon? conn, string query, Action<TReader> readAction)
         {
             try
             {
-                bool autoCloseConnection = false;
-                TCon? connection = conn;
-                if (connection == null)
-                {
-                    autoCloseConnection = true;
-                    connection = Connection();
-                }
-
-                using (TCom command = Command(query, connection))
-                {
-                    using (DbDataReader reader = command.ExecuteReader())
-                    {
-                        readAction(reader);
-                    }
-                }
-
-                if (autoCloseConnection)
-                {
-                    connection.Close();
-                }
+                using TCom command = Command(query, conn);
+                using TReader reader = (TReader)command.ExecuteReader();
+                readAction(reader);
             }
             catch (Exception ex)
             {
@@ -202,30 +134,16 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void Execute(string query)
         {
-            Execute(null, query);
+            using TCon connection = OpenConnection();
+            Execute(connection, query);
         }
 
         public void Execute(TCon? conn, string query)
         {
             try
             {
-                bool autoCloseConnection = false;
-                TCon? connection = conn;
-                if (connection == null)
-                {
-                    autoCloseConnection = true;
-                    connection = Connection();
-                }
-
-                using (TCom command = Command(query, connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-                if (autoCloseConnection)
-                {
-                    connection.Close();
-                }
+                using TCom command = Command(query, conn);
+                command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -235,29 +153,15 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public string ServerVersion()
         {
-            return ServerVersion(null);
+            using TCon connection = OpenConnection();
+            return ServerVersion(connection);
         }
 
         public string ServerVersion(TCon? conn)
         {
             try
             {
-                bool autoCloseConnection = false;
-                TCon? connection = conn;
-                if (connection == null)
-                {
-                    autoCloseConnection = true;
-                    connection = Connection();
-                }
-
-                string serverVersion = connection.ServerVersion;
-
-                if (autoCloseConnection)
-                {
-                    connection.Close();
-                }
-
-                return serverVersion;
+                return conn.ServerVersion;
             }
             catch (Exception ex)
             {
@@ -313,8 +217,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected void AddParameter(TCom command, string name, UInt32 value)
         {
-            AddParameter(command, name, (Int32)value); // TODO hack for PSQL
-            // AddParameter(command, name, value, DbType.UInt32);
+            AddParameter(command, name, value, DbType.UInt32);
         }
 
         protected void AddParameterEnumInt32<T>(TCom command, string name, T value) where T : Enum
@@ -342,7 +245,7 @@ namespace Arrowgene.Ddon.Database.Sql
             AddParameter(command, name, value, DbType.Boolean);
         }
 
-        protected DateTime? GetDateTimeNullable(DbDataReader reader, int ordinal)
+        protected DateTime? GetDateTimeNullable(TReader reader, int ordinal)
         {
             if (reader.IsDBNull(ordinal))
             {
@@ -352,7 +255,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetDateTime(ordinal);
         }
 
-        protected string? GetStringNullable(DbDataReader reader, int ordinal)
+        protected string? GetStringNullable(TReader reader, int ordinal)
         {
             if (reader.IsDBNull(ordinal))
             {
@@ -362,9 +265,9 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetString(ordinal);
         }
 
-        protected byte[]? GetBytesNullable(DbDataReader reader, int ordinal, int size)
+        protected byte[]? GetBytesNullable(TReader reader, int ordinal, int size)
         {
-            if(reader.IsDBNull(ordinal))
+            if (reader.IsDBNull(ordinal))
             {
                 return null;
             }
@@ -374,76 +277,76 @@ namespace Arrowgene.Ddon.Database.Sql
             return buffer;
         }
 
-        protected int GetInt32(DbDataReader reader, string column)
+        protected int GetInt32(TReader reader, string column)
         {
             return reader.GetInt32(reader.GetOrdinal(column));
         }
 
-        protected uint GetUInt32(DbDataReader reader, string column)
+        protected virtual uint GetUInt32(TReader reader, string column)
         {
             return (uint)reader.GetInt32(reader.GetOrdinal(column));
         }
 
-        protected byte GetByte(DbDataReader reader, string column)
+        protected byte GetByte(TReader reader, string column)
         {
             return reader.GetByte(reader.GetOrdinal(column));
         }
 
-        protected short GetInt16(DbDataReader reader, string column)
+        protected short GetInt16(TReader reader, string column)
         {
             return reader.GetInt16(reader.GetOrdinal(column));
         }
 
-        protected ushort GetUInt16(DbDataReader reader, string column)
+        protected virtual ushort GetUInt16(TReader reader, string column)
         {
             return (ushort)reader.GetInt16(reader.GetOrdinal(column));
         }
 
-        protected float GetFloat(DbDataReader reader, string column)
+        protected float GetFloat(TReader reader, string column)
         {
             return reader.GetFloat(reader.GetOrdinal(column));
         }
 
-        protected string GetString(DbDataReader reader, string column)
+        protected string GetString(TReader reader, string column)
         {
             return reader.GetString(reader.GetOrdinal(column));
         }
 
-        protected bool GetBoolean(DbDataReader reader, string column)
+        protected bool GetBoolean(TReader reader, string column)
         {
             return reader.GetBoolean(reader.GetOrdinal(column));
         }
 
-        protected T GetEnumInt32<T>(DbDataReader reader, string column) where T : Enum
+        protected T GetEnumInt32<T>(TReader reader, string column) where T : Enum
         {
             return (T)(object)reader.GetInt32(reader.GetOrdinal(column));
         }
 
-        protected DateTime GetDateTime(DbDataReader reader, string column)
+        protected DateTime GetDateTime(TReader reader, string column)
         {
             return reader.GetDateTime(reader.GetOrdinal(column));
         }
 
-        protected byte[] GetBytes(DbDataReader reader, string column, int size)
+        protected byte[] GetBytes(TReader reader, string column, int size)
         {
             byte[] buffer = new byte[size];
             reader.GetBytes(reader.GetOrdinal(column), 0, buffer, 0, size);
             return buffer;
         }
 
-        protected DateTime? GetDateTimeNullable(DbDataReader reader, string column)
+        protected DateTime? GetDateTimeNullable(TReader reader, string column)
         {
             int ordinal = reader.GetOrdinal(column);
             return GetDateTimeNullable(reader, ordinal);
         }
 
-        protected string? GetStringNullable(DbDataReader reader, string column)
+        protected string? GetStringNullable(TReader reader, string column)
         {
             int ordinal = reader.GetOrdinal(column);
             return GetStringNullable(reader, ordinal);
         }
 
-        protected byte[]? GetBytesNullable(DbDataReader reader, string column, int size)
+        protected byte[]? GetBytesNullable(TReader reader, string column, int size)
         {
             int ordinal = reader.GetOrdinal(column);
             return GetBytesNullable(reader, ordinal, size);

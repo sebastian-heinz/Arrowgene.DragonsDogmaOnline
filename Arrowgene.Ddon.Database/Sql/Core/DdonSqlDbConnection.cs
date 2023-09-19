@@ -4,9 +4,10 @@ using Arrowgene.Ddon.Database.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private const string SqlInsertConnection =
             "INSERT INTO \"ddon_connection\" (\"server_id\", \"account_id\", \"type\", \"created\") VALUES (@server_id, @account_id, @type, @created);";

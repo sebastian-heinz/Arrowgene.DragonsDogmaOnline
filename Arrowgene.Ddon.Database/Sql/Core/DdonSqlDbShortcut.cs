@@ -3,9 +3,10 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         protected static readonly string[] ShortcutFields = new string[]
         {
@@ -56,7 +57,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        private CDataShortCut ReadShortCut(DbDataReader reader)
+        private CDataShortCut ReadShortCut(TReader reader)
         {
             CDataShortCut shortcut = new CDataShortCut();
             shortcut.PageNo = GetUInt32(reader, "page_no");

@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Database.Sql
     /// <summary>
     /// SQLite Ddon database.
     /// </summary>
-    public class DdonSqLiteDb : DdonSqlDb<SQLiteConnection, SQLiteCommand>, IDatabase
+    public class DdonSqLiteDb : DdonSqlDb<SQLiteConnection, SQLiteCommand, SQLiteDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqLiteDb));
 
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Database.Sql
                 _memoryConnection.Open();
                 return true;
             }
-
+            
             if (!File.Exists(_databasePath))
             {
                 FileStream fs = File.Create(_databasePath);
@@ -71,10 +71,9 @@ namespace Arrowgene.Ddon.Database.Sql
             return connectionString;
         }
 
-        protected override SQLiteConnection Connection()
+        protected override SQLiteConnection OpenConnection()
         {
-            SQLiteConnection connection = new SQLiteConnection(_connectionString);
-            return connection.OpenAndReturn();
+            return new SQLiteConnection(_connectionString).OpenAndReturn();
         }
 
         protected override SQLiteCommand Command(string query, SQLiteConnection connection)

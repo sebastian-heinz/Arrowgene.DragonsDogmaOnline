@@ -3,9 +3,10 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private const string SqlInsertToken = "INSERT INTO \"ddon_game_token\" (\"account_id\", \"character_id\", \"token\", \"created\") VALUES (@account_id, @character_id, @token, @created);";
         private const string SqlUpdateToken = "UPDATE \"ddon_game_token\" SET \"character_id\"=@character_id, \"token\"=@token, \"created\"=@created WHERE \"account_id\" = @account_id;";

@@ -8,11 +8,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     /// <summary>
     /// Implementation of Ddon database operations.
     /// </summary>
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
-        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom>));
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom, TReader>));
 
         public DdonSqlDb()
         {
@@ -53,30 +54,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public static string BuildQueryUpdate(params string[][] fieldLists)
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < fieldLists.Length; i++)
-            {
-                string[] fieldList = fieldLists[i];
-                for (int j = 0; j < fieldList.Length; j++)
-                {
-                    string field = fieldList[j];
-                    sb.Append($"\"{field}\"=@{field}");
-                    if (j < fieldList.Length - 1)
-                    {
-                        sb.Append(", ");
-                    }
-                }
-
-                if (i < fieldLists.Length - 1)
-                {
-                    sb.Append(", ");
-                }
-            }
-
-            return sb.ToString();
+            return BuildQueryUpdateWithPrefix("@", fieldLists);
         }
 
-        protected static string BuildQueryUpdateWithTempTable(string tempName, params string[][] fieldLists)
+        protected static string BuildQueryUpdateWithPrefix(string prefix, params string[][] fieldLists)
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < fieldLists.Length; i++)
@@ -85,7 +66,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 for (int j = 0; j < fieldList.Length; j++)
                 {
                     string field = fieldList[j];
-                    sb.Append($"\"{field}\"={tempName}.{field}");
+                    sb.Append($"\"{field}\"={prefix}{field}");
                     if (j < fieldList.Length - 1)
                     {
                         sb.Append(", ");
