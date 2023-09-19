@@ -1,26 +1,26 @@
 ﻿CREATE TABLE IF NOT EXISTS `setting`
 (
     `key`   VARCHAR(768) NOT NULL,
-    `value` TEXT NOT NULL,
+    `value` TEXT         NOT NULL,
     PRIMARY KEY (`key`)
 );
 
 CREATE TABLE IF NOT EXISTS `account`
 (
     `id`                  INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `name`                TEXT                              NOT NULL,
-    `normal_name`         TEXT                              NOT NULL,
-    `hash`                TEXT                              NOT NULL,
-    `mail`                TEXT                              NOT NULL,
-    `mail_verified`       INTEGER                           NOT NULL,
+    `name`                TEXT                               NOT NULL,
+    `normal_name`         TEXT                               NOT NULL,
+    `hash`                TEXT                               NOT NULL,
+    `mail`                TEXT                               NOT NULL,
+    `mail_verified`       BOOLEAN                            NOT NULL,
     `mail_verified_at`    DATETIME DEFAULT NULL,
     `mail_token`          TEXT     DEFAULT NULL,
     `password_token`      TEXT     DEFAULT NULL,
     `login_token`         TEXT     DEFAULT NULL,
     `login_token_created` DATETIME DEFAULT NULL,
-    `state`               INTEGER                           NOT NULL,
+    `state`               INTEGER                            NOT NULL,
     `last_login`          DATETIME DEFAULT NULL,
-    `created`             DATETIME                          NOT NULL,
+    `created`             DATETIME                           NOT NULL,
     CONSTRAINT `uq_account_name` UNIQUE (`name`),
     CONSTRAINT `uq_account_normal_name` UNIQUE (`normal_name`),
     CONSTRAINT `uq_account_login_token` UNIQUE (`login_token`),
@@ -29,46 +29,46 @@ CREATE TABLE IF NOT EXISTS `account`
 
 CREATE TABLE IF NOT EXISTS `ddon_character_common`
 (
-    `character_common_id`        INTEGER PRIMARY KEY AUTO_INCREMENT  NOT NULL,
-    `job`                        TINYINT                           NOT NULL,
-    `hide_equip_head`            BIT                               NOT NULL,
-    `hide_equip_lantern`         BIT                               NOT NULL,
-    `jewelry_slot_num`           TINYINT                           NOT NULL
+    `character_common_id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `job`                 TINYINT                            NOT NULL,
+    `hide_equip_head`     BIT                                NOT NULL,
+    `hide_equip_lantern`  BIT                                NOT NULL,
+    `jewelry_slot_num`    TINYINT                            NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_character`
 (
-    `character_id`               INTEGER PRIMARY KEY AUTO_INCREMENT  NOT NULL,
-    `character_common_id`        INTEGER                           NOT NULL,
-    `account_id`                 INTEGER                           NOT NULL,
-    `version`                    INTEGER                           NOT NULL,
-    `first_name`                 TEXT                              NOT NULL,
-    `last_name`                  TEXT                              NOT NULL,
-    `created`                    DATETIME                          NOT NULL,
-    `my_pawn_slot_num`           TINYINT                           NOT NULL,
-    `rental_pawn_slot_num`       TINYINT                           NOT NULL,
-    `hide_equip_head_pawn`       BIT                               NOT NULL,
-    `hide_equip_lantern_pawn`    BIT                               NOT NULL,
-    `arisen_profile_share_range` TINYINT                           NOT NULL,
+    `character_id`               INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `character_common_id`        INTEGER                            NOT NULL,
+    `account_id`                 INTEGER                            NOT NULL,
+    `version`                    INTEGER                            NOT NULL,
+    `first_name`                 TEXT                               NOT NULL,
+    `last_name`                  TEXT                               NOT NULL,
+    `created`                    DATETIME                           NOT NULL,
+    `my_pawn_slot_num`           TINYINT                            NOT NULL,
+    `rental_pawn_slot_num`       TINYINT                            NOT NULL,
+    `hide_equip_head_pawn`       BOOLEAN                            NOT NULL,
+    `hide_equip_lantern_pawn`    BOOLEAN                            NOT NULL,
+    `arisen_profile_share_range` TINYINT                            NOT NULL,
     CONSTRAINT `fk_character_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE,
     CONSTRAINT `fk_character_account_id` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_pawn`
 (
-    `pawn_id`                    INTEGER PRIMARY KEY AUTO_INCREMENT  NOT NULL,
-    `character_common_id`        INTEGER                           NOT NULL,
-    `character_id`               INTEGER                           NOT NULL,
-    `name`                       TEXT                              NOT NULL,
-    `hm_type`                    TINYINT                           NOT NULL,
-    `pawn_type`                  TINYINT                           NOT NULL,
+    `pawn_id`             INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `character_common_id` INTEGER                            NOT NULL,
+    `character_id`        INTEGER                            NOT NULL,
+    `name`                TEXT                               NOT NULL,
+    `hm_type`             TINYINT                            NOT NULL,
+    `pawn_type`           TINYINT                            NOT NULL,
     CONSTRAINT `fk_pawn_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE,
     CONSTRAINT `fk_character_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_edit_info`
 (
-    `character_common_id`                INTEGER PRIMARY KEY NOT NULL,
+    `character_common_id`         INTEGER PRIMARY KEY NOT NULL,
     `sex`                         BIT                 NOT NULL,
     `voice`                       TINYINT             NOT NULL,
     `voice_pitch`                 SMALLINT            NOT NULL,
@@ -145,19 +145,19 @@ CREATE TABLE IF NOT EXISTS `ddon_edit_info`
 
 CREATE TABLE IF NOT EXISTS `ddon_status_info`
 (
-    `character_common_id`       INTEGER PRIMARY KEY NOT NULL,
-    `hp`                 INT                 NOT NULL,
-    `stamina`            INT                 NOT NULL,
-    `revive_point`       TINYINT             NOT NULL,
-    `max_hp`             INT                 NOT NULL,
-    `max_stamina`        INT                 NOT NULL,
-    `white_hp`           INT                 NOT NULL,
-    `gain_hp`            INT                 NOT NULL,
-    `gain_stamina`       INT                 NOT NULL,
-    `gain_attack`        INT                 NOT NULL,
-    `gain_defense`       INT                 NOT NULL,
-    `gain_magic_attack`  INT                 NOT NULL,
-    `gain_magic_defense` INT                 NOT NULL,
+    `character_common_id` INTEGER PRIMARY KEY NOT NULL,
+    `hp`                  INT                 NOT NULL,
+    `stamina`             INT                 NOT NULL,
+    `revive_point`        TINYINT             NOT NULL,
+    `max_hp`              INT                 NOT NULL,
+    `max_stamina`         INT                 NOT NULL,
+    `white_hp`            INT                 NOT NULL,
+    `gain_hp`             INT                 NOT NULL,
+    `gain_stamina`        INT                 NOT NULL,
+    `gain_attack`         INT                 NOT NULL,
+    `gain_defense`        INT                 NOT NULL,
+    `gain_magic_attack`   INT                 NOT NULL,
+    `gain_magic_defense`  INT                 NOT NULL,
     CONSTRAINT `fk_status_info_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `ddon_character_matching_profile`
     `objective_type2`   INT                 NOT NULL,
     `play_style`        INT                 NOT NULL,
     `comment`           TEXT                NOT NULL,
-    `is_join_party`     TINYINT             NOT NULL,
+    `is_join_party`     BOOLEAN             NOT NULL,
     CONSTRAINT `fk_matching_profile_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`) ON DELETE CASCADE
 );
 
@@ -234,70 +234,70 @@ CREATE TABLE IF NOT EXISTS `ddon_character_job_data`
     `def_down_resist`       TINYINT  NOT NULL,
     `m_atk_down_resist`     TINYINT  NOT NULL,
     `m_def_down_resist`     TINYINT  NOT NULL,
-    PRIMARY KEY (`character_common_id`, `job`),
+    CONSTRAINT `pk_character_job_data` PRIMARY KEY (`character_common_id`, `job`),
     CONSTRAINT `fk_character_job_data_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_storage`
 (
-    `character_id`  INTEGER             NOT NULL,
-    `storage_type`  TINYINT             NOT NULL,
-    `slot_max`      SMALLINT            NOT NULL,
-    `item_sort`     BLOB                NOT NULL,
-    PRIMARY KEY (`character_id`, `storage_type`),
+    `character_id` INTEGER  NOT NULL,
+    `storage_type` TINYINT  NOT NULL,
+    `slot_max`     SMALLINT NOT NULL,
+    `item_sort`    BLOB     NOT NULL,
+    CONSTRAINT `pk_ddon_storage` PRIMARY KEY (`character_id`, `storage_type`),
     CONSTRAINT `fk_storage_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_wallet_point`
 (
-    `character_id`  INTEGER             NOT NULL,
-    `type`          TINYINT             NOT NULL,
-    `value`         INTEGER             NOT NULL,
-    PRIMARY KEY (`character_id`, `type`),
+    `character_id` INTEGER NOT NULL,
+    `type`         TINYINT NOT NULL,
+    `value`        INTEGER NOT NULL,
+    CONSTRAINT `pk_ddon_wallet_point` PRIMARY KEY (`character_id`, `type`),
     CONSTRAINT `fk_wallet_point_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_item`
 (
-    `uid`          VARCHAR(768)             NOT NULL,
-    `item_id`      INT              NOT NULL,
-    `unk3`         TINYINT          NOT NULL,
-    `color`        TINYINT          NOT NULL,
-    `plus_value`   TINYINT          NOT NULL,
+    `uid`        VARCHAR(768) NOT NULL,
+    `item_id`    INT          NOT NULL,
+    `unk3`       TINYINT      NOT NULL,
+    `color`      TINYINT      NOT NULL,
+    `plus_value` TINYINT      NOT NULL,
     PRIMARY KEY (`uid`)
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_storage_item`
 (
-    `item_uid`     VARCHAR(768)             NOT NULL,
-    `character_id` INTEGER          NOT NULL,
-    `storage_type` TINYINT          NOT NULL,
-    `slot_no`      SMALLINT         NOT NULL,
-    `item_num`     INT              NOT NULL,
-    PRIMARY KEY (`character_id`, `storage_type`, `slot_no`),
+    `item_uid`     VARCHAR(768) NOT NULL,
+    `character_id` INTEGER      NOT NULL,
+    `storage_type` TINYINT      NOT NULL,
+    `slot_no`      SMALLINT     NOT NULL,
+    `item_num`     INT          NOT NULL,
+    CONSTRAINT `pk_ddon_storage_item` PRIMARY KEY (`character_id`, `storage_type`, `slot_no`),
     CONSTRAINT `fk_storage_item_item_uid` FOREIGN KEY (`item_uid`) REFERENCES `ddon_item` (`uid`) ON DELETE CASCADE,
     CONSTRAINT `fk_storage_item_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_equip_item`
 (
-    `item_uid`            VARCHAR(768)             NOT NULL,
-    `character_common_id` INTEGER          NOT NULL,
-    `job`                 TINYINT          NOT NULL,
-    `equip_type`          TINYINT          NOT NULL,
-    `equip_slot`          SMALLINT         NOT NULL,
-    PRIMARY KEY (`character_common_id`, `job`, `equip_type`, `equip_slot`),
+    `item_uid`            VARCHAR(768) NOT NULL,
+    `character_common_id` INTEGER      NOT NULL,
+    `job`                 TINYINT      NOT NULL,
+    `equip_type`          TINYINT      NOT NULL,
+    `equip_slot`          SMALLINT     NOT NULL,
+    CONSTRAINT `pk_ddon_equip_item` PRIMARY KEY (`character_common_id`, `job`, `equip_type`, `equip_slot`),
     CONSTRAINT `fk_equip_item_item_uid` FOREIGN KEY (`item_uid`) REFERENCES `ddon_item` (`uid`) ON DELETE CASCADE,
     CONSTRAINT `fk_equip_item_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_equip_job_item`
 (
-    `item_uid`            VARCHAR(768)             NOT NULL,
-    `character_common_id` INTEGER          NOT NULL,
-    `job`                 TINYINT          NOT NULL,
-    `equip_slot`          SMALLINT         NOT NULL,
-    PRIMARY KEY (`character_common_id`, `job`, `equip_slot`),
+    `item_uid`            VARCHAR(768) NOT NULL,
+    `character_common_id` INTEGER      NOT NULL,
+    `job`                 TINYINT      NOT NULL,
+    `equip_slot`          SMALLINT     NOT NULL,
+    CONSTRAINT `pk_ddon_equip_job_item` PRIMARY KEY (`character_common_id`, `job`, `equip_slot`),
     CONSTRAINT `fk_equip_job_item_item_uid` FOREIGN KEY (`item_uid`) REFERENCES `ddon_item` (`uid`) ON DELETE CASCADE,
     CONSTRAINT `fk_equip_job_item_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
@@ -305,77 +305,77 @@ CREATE TABLE IF NOT EXISTS `ddon_equip_job_item`
 CREATE TABLE IF NOT EXISTS `ddon_normal_skill_param`
 (
     `character_common_id` INTEGER NOT NULL,
-    `job`          TINYINT NOT NULL,
-    `skill_no`     INT     NOT NULL,
-    `index`        INT     NOT NULL,
-    `pre_skill_no` INT     NOT NULL,
-    PRIMARY KEY (`character_common_id`, `job`, `skill_no`),
+    `job`                 TINYINT NOT NULL,
+    `skill_no`            INT     NOT NULL,
+    `index`               INT     NOT NULL,
+    `pre_skill_no`        INT     NOT NULL,
+    CONSTRAINT `pk_ddon_normal_skill_param` PRIMARY KEY (`character_common_id`, `job`, `skill_no`),
     CONSTRAINT `fk_normal_skill_param_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_learned_custom_skill`
 (
-    `character_common_id`   INTEGER NOT NULL,
-    `job`            TINYINT NOT NULL,
-    `skill_id` INT     NOT NULL,
-    `skill_lv` TINYINT NOT NULL,
+    `character_common_id` INTEGER NOT NULL,
+    `job`                 TINYINT NOT NULL,
+    `skill_id`            INT     NOT NULL,
+    `skill_lv`            TINYINT NOT NULL,
     PRIMARY KEY (`character_common_id`, `job`, `skill_id`),
     CONSTRAINT `fk_learned_custom_skill_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_equipped_custom_skill`
 (
-    `character_common_id`   INTEGER NOT NULL,
-    `job`            TINYINT NOT NULL,
-    `slot_no`        TINYINT NOT NULL,
-    `skill_id` INT     NOT NULL,
-    PRIMARY KEY (`character_common_id`, `job`, `slot_no`),
+    `character_common_id` INTEGER NOT NULL,
+    `job`                 TINYINT NOT NULL,
+    `slot_no`             TINYINT NOT NULL,
+    `skill_id`            INT     NOT NULL,
+    CONSTRAINT `pk_ddon_equipped_custom_skill` PRIMARY KEY (`character_common_id`, `job`, `slot_no`),
     CONSTRAINT `fk_equipped_custom_skill_character_common_id` FOREIGN KEY (`character_common_id`, `job`, `skill_id`) REFERENCES `ddon_learned_custom_skill` (`character_common_id`, `job`, `skill_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_learned_ability`
 (
-    `character_common_id`    INTEGER NOT NULL,
-    `job`             TINYINT NOT NULL,
-    `ability_id` INT     NOT NULL,
-    `ability_lv` TINYINT NOT NULL,
+    `character_common_id` INTEGER NOT NULL,
+    `job`                 TINYINT NOT NULL,
+    `ability_id`          INT     NOT NULL,
+    `ability_lv`          TINYINT NOT NULL,
     PRIMARY KEY (`character_common_id`, `job`, `ability_id`),
     CONSTRAINT `fk_learned_ability_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_equipped_ability`
 (
-    `character_common_id`    INTEGER NOT NULL,
-    `equipped_to_job` TINYINT NOT NULL,
-    `job`             TINYINT NOT NULL,
-    `slot_no`         TINYINT NOT NULL,
-    `ability_id` INT     NOT NULL,
-    PRIMARY KEY (`character_common_id`, `equipped_to_job`, `slot_no`),
+    `character_common_id` INTEGER NOT NULL,
+    `equipped_to_job`     TINYINT NOT NULL,
+    `job`                 TINYINT NOT NULL,
+    `slot_no`             TINYINT NOT NULL,
+    `ability_id`          INT     NOT NULL,
+    CONSTRAINT `pk_ddon_equipped_ability` PRIMARY KEY (`character_common_id`, `equipped_to_job`, `slot_no`),
     CONSTRAINT `fk_equipped_ability_character_common_id` FOREIGN KEY (`character_common_id`, `job`, `ability_id`) REFERENCES `ddon_learned_ability` (`character_common_id`, `job`, `ability_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_shortcut`
 (
-    `character_id`    INTEGER NOT NULL,
-    `page_no` INTEGER NOT NULL,
-    `button_no` INTEGER NOT NULL,
-    `shortcut_id` INTEGER NOT NULL,
-    `u32_data` INTEGER NOT NULL,
-    `f32_data` INTEGER NOT NULL,
-    `exex_type` TINYINT NOT NULL,
-    PRIMARY KEY (`character_id`, `page_no`, `button_no`),
+    `character_id` INTEGER NOT NULL,
+    `page_no`      INTEGER NOT NULL,
+    `button_no`    INTEGER NOT NULL,
+    `shortcut_id`  INTEGER NOT NULL,
+    `u32_data`     INTEGER NOT NULL,
+    `f32_data`     INTEGER NOT NULL,
+    `exex_type`    TINYINT NOT NULL,
+    CONSTRAINT `pk_ddon_shortcut` PRIMARY KEY (`character_id`, `page_no`, `button_no`),
     CONSTRAINT `fk_shortcut_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_communication_shortcut`
 (
-    `character_id`    INTEGER NOT NULL,
-    `page_no` INTEGER NOT NULL,
-    `button_no` INTEGER NOT NULL,
-    `type` TINYINT NOT NULL,
-    `category` TINYINT NOT NULL,
-    `id` INTEGER NOT NULL,
-    PRIMARY KEY (`character_id`, `page_no`, `button_no`),
+    `character_id` INTEGER NOT NULL,
+    `page_no`      INTEGER NOT NULL,
+    `button_no`    INTEGER NOT NULL,
+    `type`         TINYINT NOT NULL,
+    `category`     TINYINT NOT NULL,
+    `id`           INTEGER NOT NULL,
+    CONSTRAINT `pk_ddon_communication_shortcut` PRIMARY KEY (`character_id`, `page_no`, `button_no`),
     CONSTRAINT `fk_communication_shortcut_character_id` FOREIGN KEY (`character_id`) REFERENCES `ddon_character` (`character_id`) ON DELETE CASCADE
 );
 
@@ -384,16 +384,16 @@ CREATE TABLE IF NOT EXISTS `ddon_pawn_reaction`
     `pawn_id`       INTEGER NOT NULL,
     `reaction_type` TINYINT NOT NULL,
     `motion_no`     INTEGER NOT NULL,
-    PRIMARY KEY (`pawn_id`,`reaction_type`),
+    CONSTRAINT `pk_ddon_pawn_reaction` PRIMARY KEY (`pawn_id`, `reaction_type`),
     CONSTRAINT `fk_pawn_reaction_pawn_id` FOREIGN KEY (`pawn_id`) REFERENCES `ddon_pawn` (`pawn_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_sp_skill`
 (
-    `pawn_id`       INTEGER NOT NULL,
-    `sp_skill_id`   TINYINT NOT NULL,
-    `sp_skill_lv`   TINYINT NOT NULL,
-    PRIMARY KEY (`pawn_id`),
+    `pawn_id`     INTEGER NOT NULL,
+    `sp_skill_id` TINYINT NOT NULL,
+    `sp_skill_lv` TINYINT NOT NULL,
+    CONSTRAINT `pk_ddon_sp_skill` PRIMARY KEY (`pawn_id`),
     CONSTRAINT `fk_sp_skill_pawn_id` FOREIGN KEY (`pawn_id`) REFERENCES `ddon_pawn` (`pawn_id`) ON DELETE CASCADE
 );
 
