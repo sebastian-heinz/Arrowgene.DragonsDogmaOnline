@@ -22,7 +22,32 @@ namespace Arrowgene.Ddon.Database.Sql
         }
 
         protected abstract TCon OpenNewConnection();
-        protected abstract TCon OpenExistingConnection();
+
+        protected virtual TCon ReusableConnection { get; set; }
+
+        /// <summary>
+        /// Reusing connections can usually only be done in special cases, depending on the database engine:
+        /// - One operation at a time.
+        /// - Not thread-safe.
+        /// If unsure, check DB engine connector documentation or prefer to use <see cref="OpenNewConnection"/>.
+        /// </summary>
+        /// <returns>An opened, prior-existing connection</returns>
+        protected virtual TCon OpenExistingConnection()
+        {
+            switch (ReusableConnection.State)
+            {
+                case ConnectionState.Closed:
+                    ReusableConnection.Open();
+                    break;
+                case ConnectionState.Broken:
+                    ReusableConnection.Close();
+                    ReusableConnection.Open();
+                    break;
+            }
+
+            return ReusableConnection;
+        }
+
         protected abstract TCom Command(string query, TCon connection);
         protected abstract long AutoIncrement(TCon connection, TCom command);
 
