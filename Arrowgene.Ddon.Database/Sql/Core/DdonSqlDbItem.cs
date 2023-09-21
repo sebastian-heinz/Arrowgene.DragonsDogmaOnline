@@ -32,7 +32,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool InsertItem(Item item)
         {
-            return this.InsertItem(null, item);
+            using TCon connection = OpenNewConnection();
+            return InsertItem(connection, item);
         }
 
         public Item SelectItem(string uid)

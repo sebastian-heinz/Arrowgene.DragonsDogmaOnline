@@ -64,7 +64,8 @@ namespace Arrowgene.Ddon.Database.Sql
                 Host = settings.Host,
                 Username = settings.User,
                 Password = settings.Password,
-                Database = settings.Database
+                Database = settings.Database,
+                Pooling = true
             };
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");

@@ -49,7 +49,8 @@ namespace Arrowgene.Ddon.Database.Sql
                 UserID = settings.User,
                 Password = settings.Password,
                 Database = settings.Database,
-                IgnoreCommandTransaction = true
+                IgnoreCommandTransaction = true,
+                Pooling = true
             };
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");

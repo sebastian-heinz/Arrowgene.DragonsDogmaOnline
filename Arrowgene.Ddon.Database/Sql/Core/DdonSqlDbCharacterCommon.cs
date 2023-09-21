@@ -56,7 +56,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCharacterCommonBaseInfo(CharacterCommon common)
         {
-            return UpdateCharacterCommonBaseInfo(null, common);
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterCommonBaseInfo(connection, common);
         }
 
         public bool UpdateCharacterCommonBaseInfo(TCon conn, CharacterCommon common)
@@ -72,7 +73,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateEditInfo(CharacterCommon common)
         {
-            return UpdateEditInfo(null, common);
+            using TCon connection = OpenNewConnection();
+            return UpdateEditInfo(connection, common);
         }
 
         public bool UpdateEditInfo(TCon conn, CharacterCommon common)
@@ -88,7 +90,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateStatusInfo(CharacterCommon common)
         {
-            return UpdateStatusInfo(null, common);
+            using TCon connection = OpenNewConnection();
+            return UpdateStatusInfo(connection, common);
         }
 
         public bool UpdateStatusInfo(TCon conn, CharacterCommon common)

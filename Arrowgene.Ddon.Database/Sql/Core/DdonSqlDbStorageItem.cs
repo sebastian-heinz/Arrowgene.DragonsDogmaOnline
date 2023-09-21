@@ -38,7 +38,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum)
         {
-            return this.InsertStorageItem(null, characterId, storageType, slotNo, itemUId, itemNum);
+            using TCon connection = OpenNewConnection();
+            return InsertStorageItem(connection, characterId, storageType, slotNo, itemUId, itemNum);
         }
 
         public bool ReplaceStorageItem(TCon conn, uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum)
@@ -55,7 +56,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum)
         {
-            return this.ReplaceStorageItem(null, characterId, storageType, slotNo, itemUId, itemNum);
+            using TCon connection = OpenNewConnection();
+            return ReplaceStorageItem(connection, characterId, storageType, slotNo, itemUId, itemNum);
         }
 
         public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo)

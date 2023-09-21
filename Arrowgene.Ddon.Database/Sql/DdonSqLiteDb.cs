@@ -62,12 +62,15 @@ namespace Arrowgene.Ddon.Database.Sql
 
         private string BuildConnectionString(string source)
         {
-            SQLiteConnectionStringBuilder builder = new SQLiteConnectionStringBuilder();
-            builder.DataSource = source;
-            builder.Version = 3;
-            builder.ForeignKeys = true;
-            // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
-            builder.Flags = builder.Flags & SQLiteConnectionFlags.StrictConformance;
+            SQLiteConnectionStringBuilder builder = new SQLiteConnectionStringBuilder
+            {
+                DataSource = source,
+                Version = 3,
+                ForeignKeys = true,
+                Pooling = true,
+                // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
+                Flags = SQLiteConnectionFlags.Default & SQLiteConnectionFlags.StrictConformance
+            };
 
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");

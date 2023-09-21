@@ -126,7 +126,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdatePawnBaseInfo(Pawn pawn)
         {
-            return UpdatePawnBaseInfo(null, pawn);
+            using TCon connection = OpenNewConnection();
+            return UpdatePawnBaseInfo(connection, pawn);
         }
 
         public bool UpdatePawnBaseInfo(TCon conn, Pawn pawn)

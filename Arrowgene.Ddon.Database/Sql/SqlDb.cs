@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public bool ExecuteInTransaction(Action<TCon> action)
         {
-            TCon connection = OpenExistingConnection();
+            using TCon connection = OpenNewConnection();
             using DbTransaction transaction = connection.BeginTransaction();
             try
             {
@@ -79,7 +79,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public int ExecuteNonQuery(string query, Action<TCom> nonQueryAction)
         {
-            TCon connection = OpenExistingConnection();
+            using TCon connection = OpenNewConnection();
             try
             {
                 return ExecuteNonQuery(connection, query, nonQueryAction);
@@ -107,7 +107,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public int ExecuteNonQuery(string query, Action<TCom> nonQueryAction, out long autoIncrement)
         {
-            TCon connection = OpenExistingConnection();
+            using TCon connection = OpenNewConnection();
             try
             {
                 return ExecuteNonQuery(connection, query, nonQueryAction, out autoIncrement);
@@ -122,6 +122,7 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             try
             {
+                conn ??= OpenNewConnection();
                 using TCom command = Command(query, conn);
                 nonQueryAction(command);
                 var rowsAffected = command.ExecuteNonQuery();
@@ -138,7 +139,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void ExecuteReader(string query, Action<TCom> nonQueryAction, Action<TReader> readAction)
         {
-            TCon connection = OpenExistingConnection();
+            using TCon connection = OpenNewConnection();
             try
             {
                 ExecuteReader(connection, query, nonQueryAction, readAction);
@@ -166,7 +167,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void ExecuteReader(string query, Action<TReader> readAction)
         {
-            TCon connection = OpenExistingConnection();
+            using TCon connection = OpenNewConnection();
             try
             {
                 ExecuteReader(connection, query, readAction);
@@ -193,7 +194,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void Execute(string query)
         {
-            TCon connection = OpenExistingConnection();
+            using TCon connection = OpenNewConnection();
             try
             {
                 Execute(connection, query);
@@ -219,7 +220,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public string ServerVersion()
         {
-            TCon connection = OpenExistingConnection();
+            using TCon connection = OpenNewConnection();
             try
             {
                 return ServerVersion(connection);

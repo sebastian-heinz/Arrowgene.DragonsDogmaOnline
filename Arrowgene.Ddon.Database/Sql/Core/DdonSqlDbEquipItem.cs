@@ -33,7 +33,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
-            return this.InsertEquipItem(null, commonId, job, equipType, equipSlot, itemUId);
+            using TCon connection = OpenNewConnection();
+            return InsertEquipItem(connection, commonId, job, equipType, equipSlot, itemUId);
         }
 
         public bool ReplaceEquipItem(TCon conn, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
@@ -46,7 +47,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
-            return this.ReplaceEquipItem(null, commonId, job, equipType, equipSlot, itemUId);
+            using TCon connection = OpenNewConnection();
+            return ReplaceEquipItem(connection, commonId, job, equipType, equipSlot, itemUId);
         }
 
         public bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)

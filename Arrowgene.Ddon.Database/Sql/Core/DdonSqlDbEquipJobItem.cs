@@ -36,7 +36,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool InsertEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo)
         {
-            return InsertEquipJobItem(null, itemUId, commonId, job, slotNo);
+            using TCon connection = OpenNewConnection();
+            return InsertEquipJobItem(connection, itemUId, commonId, job, slotNo);
         }
 
         public bool ReplaceEquipJobItem(TCon conn, string itemUId, uint commonId, JobId job, ushort slotNo)
@@ -52,7 +53,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool ReplaceEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo)
         {
-            return ReplaceEquipJobItem(null, itemUId, commonId, job, slotNo);
+            using TCon connection = OpenNewConnection();
+            return ReplaceEquipJobItem(connection, itemUId, commonId, job, slotNo);
         }
 
         public bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo)

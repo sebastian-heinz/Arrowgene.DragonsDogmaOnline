@@ -88,7 +88,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCharacterBaseInfo(Character character)
         {
-            return UpdateCharacterBaseInfo(null, character);
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterBaseInfo(connection, character);
         }
 
         public bool UpdateCharacterBaseInfo(TCon conn, Character character)
@@ -104,7 +105,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCharacterMatchingProfile(Character character)
         {
-            return UpdateCharacterMatchingProfile(null, character);
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterMatchingProfile(connection, character);
         }
 
         public bool UpdateCharacterMatchingProfile(TCon conn, Character character)
@@ -120,7 +122,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCharacterArisenProfile(Character character)
         {
-            return UpdateCharacterArisenProfile(null, character);
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterArisenProfile(connection, character);
         }
 
         public bool UpdateCharacterArisenProfile(TCon conn, Character character)
