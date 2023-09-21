@@ -15,6 +15,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         private readonly DatabaseSetting _settings;
         private string _connectionString;
+        private MySqlConnection _reusableConnection;
 
         public DdonMariaDb(DatabaseSetting settings)
         {
@@ -30,6 +31,8 @@ namespace Arrowgene.Ddon.Database.Sql
                 Logger.Error($"Failed to build connection string");
                 return false;
             }
+
+            _reusableConnection = new MySqlConnection(_connectionString);
 
             if (_settings.WipeOnStartup)
             {
@@ -54,11 +57,33 @@ namespace Arrowgene.Ddon.Database.Sql
             return connectionString;
         }
 
-        protected override MySqlConnection OpenConnection()
+        protected override MySqlConnection OpenNewConnection()
         {
             MySqlConnection connection = new MySqlConnection(_connectionString);
             connection.Open();
             return connection;
+        }
+
+        /// <summary>
+        /// Check https://mysqlconnector.net/troubleshooting/connection-reuse/.
+        /// - One operation at a time.
+        /// - Not thread-safe.
+        /// For such cases prefer to use <see cref="DdonMariaDb.OpenNewConnection"/>.
+        /// </summary>
+        /// <returns></returns>
+        protected override MySqlConnection OpenExistingConnection()
+        {
+            if (_reusableConnection.State == ConnectionState.Closed)
+            {
+                _reusableConnection.Open();
+            }
+            else if (_reusableConnection.State == ConnectionState.Broken)
+            {
+                _reusableConnection.Close();
+                _reusableConnection.Open();
+            }
+
+            return _reusableConnection;
         }
 
         protected override MySqlCommand Command(string query, MySqlConnection connection)
@@ -86,7 +111,7 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             AddParameter(command, name, value, DbType.UInt16);
         }
-        
+
         protected override ushort GetUInt16(MySqlDataReader reader, string column)
         {
             return reader.GetUInt16(column);

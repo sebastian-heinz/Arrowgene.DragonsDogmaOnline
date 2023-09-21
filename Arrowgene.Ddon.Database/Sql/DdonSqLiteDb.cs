@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using Arrowgene.Ddon.Database.Sql.Core;
@@ -20,6 +21,7 @@ namespace Arrowgene.Ddon.Database.Sql
         private readonly string _databasePath;
         private string _connectionString;
         private SQLiteConnection _memoryConnection;
+        private SQLiteConnection _reusableConnection;
 
         public DdonSqLiteDb(string databasePath)
         {
@@ -36,6 +38,8 @@ namespace Arrowgene.Ddon.Database.Sql
                 Logger.Error($"Failed to build connection string");
                 return false;
             }
+
+            _reusableConnection = new SQLiteConnection(_connectionString);
 
             if (_databasePath == MemoryDatabasePath)
             {
@@ -71,9 +75,22 @@ namespace Arrowgene.Ddon.Database.Sql
             return connectionString;
         }
 
-        protected override SQLiteConnection OpenConnection()
+        protected override SQLiteConnection OpenNewConnection()
         {
             return new SQLiteConnection(_connectionString).OpenAndReturn();
+        }
+
+        protected override SQLiteConnection OpenExistingConnection()
+        {
+            if (_reusableConnection.State == ConnectionState.Closed)
+            {
+                _reusableConnection.Open();
+            }else if (_reusableConnection.State == ConnectionState.Broken)
+            {
+                _reusableConnection.Close();
+                _reusableConnection.Open();
+            }
+            return _reusableConnection;
         }
 
         protected override SQLiteCommand Command(string query, SQLiteConnection connection)

@@ -21,7 +21,8 @@ namespace Arrowgene.Ddon.Database.Sql
         {
         }
 
-        protected abstract TCon OpenConnection();
+        protected abstract TCon OpenNewConnection();
+        protected abstract TCon OpenExistingConnection();
         protected abstract TCom Command(string query, TCon connection);
         protected abstract long AutoIncrement(TCon connection, TCom command);
 
@@ -30,7 +31,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public bool ExecuteInTransaction(Action<TCon> action)
         {
-            using TCon connection = OpenConnection();
+            TCon connection = OpenExistingConnection();
             using DbTransaction transaction = connection.BeginTransaction();
             try
             {
@@ -41,15 +42,27 @@ namespace Arrowgene.Ddon.Database.Sql
             catch (Exception ex)
             {
                 transaction.Rollback();
+                connection.Close();
                 Exception(ex);
                 return false;
+            }
+            finally
+            {
+                connection.Close();
             }
         }
 
         public int ExecuteNonQuery(string query, Action<TCom> nonQueryAction)
         {
-            using TCon connection = OpenConnection();
-            return ExecuteNonQuery(connection, query, nonQueryAction);
+            TCon connection = OpenExistingConnection();
+            try
+            {
+                return ExecuteNonQuery(connection, query, nonQueryAction);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public int ExecuteNonQuery(TCon? conn, string query, Action<TCom> nonQueryAction)
@@ -69,8 +82,15 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public int ExecuteNonQuery(string query, Action<TCom> nonQueryAction, out long autoIncrement)
         {
-            using TCon connection = OpenConnection();
-            return ExecuteNonQuery(connection, query, nonQueryAction, out autoIncrement);
+            TCon connection = OpenExistingConnection();
+            try
+            {
+                return ExecuteNonQuery(connection, query, nonQueryAction, out autoIncrement);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public int ExecuteNonQuery(TCon? conn, string query, Action<TCom> nonQueryAction, out long autoIncrement)
@@ -93,8 +113,15 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void ExecuteReader(string query, Action<TCom> nonQueryAction, Action<TReader> readAction)
         {
-            using TCon connection = OpenConnection();
-            ExecuteReader(connection, query, nonQueryAction, readAction);
+            TCon connection = OpenExistingConnection();
+            try
+            {
+                ExecuteReader(connection, query, nonQueryAction, readAction);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public void ExecuteReader(TCon? conn, string query, Action<TCom> nonQueryAction, Action<TReader> readAction)
@@ -114,8 +141,15 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void ExecuteReader(string query, Action<TReader> readAction)
         {
-            using TCon connection = OpenConnection();
-            ExecuteReader(connection, query, readAction);
+            TCon connection = OpenExistingConnection();
+            try
+            {
+                ExecuteReader(connection, query, readAction);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public void ExecuteReader(TCon? conn, string query, Action<TReader> readAction)
@@ -134,8 +168,15 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public void Execute(string query)
         {
-            using TCon connection = OpenConnection();
-            Execute(connection, query);
+            TCon connection = OpenExistingConnection();
+            try
+            {
+                Execute(connection, query);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public void Execute(TCon? conn, string query)
@@ -153,8 +194,15 @@ namespace Arrowgene.Ddon.Database.Sql
 
         public string ServerVersion()
         {
-            using TCon connection = OpenConnection();
-            return ServerVersion(connection);
+            TCon connection = OpenExistingConnection();
+            try
+            {
+                return ServerVersion(connection);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
 
         public string ServerVersion(TCon? conn)
@@ -214,12 +262,12 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             AddParameter(command, name, value, DbType.Byte);
         }
-                
+
         protected virtual void AddParameter(TCom command, string name, UInt16 value)
         {
             AddParameter(command, name, value, DbType.UInt16);
         }
-        
+
         protected virtual void AddParameter(TCom command, string name, UInt32 value)
         {
             AddParameter(command, name, value, DbType.UInt32);

@@ -127,7 +127,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         EquipType equipType = (EquipType) GetByte(reader, "equip_type");
                         byte equipSlot = GetByte(reader, "equip_slot");
 
-                        using TCon connection = OpenConnection();
+                        using TCon connection = OpenNewConnection();
                         ExecuteReader(connection, SqlSelectItem,
                             command2 => { AddParameter(command2, "@uid", UId); },
                             reader2 => 
@@ -152,7 +152,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         JobId job = (JobId) GetByte(reader, "job");
                         byte equipSlot = GetByte(reader, "equip_slot");
                         
-                        using TCon connection = OpenConnection();
+                        using TCon connection = OpenNewConnection();
                         ExecuteReader(connection, SqlSelectItem,
                             command2 => { AddParameter(command2, "@uid", UId); },
                             reader2 => 

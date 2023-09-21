@@ -16,6 +16,7 @@ namespace Arrowgene.Ddon.Database.Sql
         private readonly DatabaseSetting _settings;
         private string _connectionString;
         private NpgsqlDataSource _dataSource;
+        private NpgsqlConnection _reusableConnection;
 
         public DdonPostgresDb(DatabaseSetting settings)
         {
@@ -39,6 +40,8 @@ namespace Arrowgene.Ddon.Database.Sql
                 _dataSource = dataSourceBuilder.Build();
             }
 
+            _reusableConnection = _dataSource.OpenConnection();
+            
             if (_settings.WipeOnStartup)
             {
                 try
@@ -69,9 +72,22 @@ namespace Arrowgene.Ddon.Database.Sql
             return connectionString;
         }
 
-        protected override NpgsqlConnection OpenConnection()
+        protected override NpgsqlConnection OpenNewConnection()
         {
             return _dataSource.OpenConnection();
+        }
+
+        protected override NpgsqlConnection OpenExistingConnection()
+        {
+            if (_reusableConnection.State == ConnectionState.Closed)
+            {
+                _reusableConnection.Open();
+            }else if (_reusableConnection.State == ConnectionState.Broken)
+            {
+                _reusableConnection.Close();
+                _reusableConnection.Open();
+            }
+            return _reusableConnection;
         }
 
         protected override NpgsqlCommand Command(string query, NpgsqlConnection connection)

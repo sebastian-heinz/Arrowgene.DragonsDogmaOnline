@@ -229,7 +229,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         ushort slot = GetUInt16(reader2, "slot_no");
                         uint itemNum = GetUInt32(reader2, "item_num");
 
-                        using TCon connection = OpenConnection();
+                        using TCon connection = OpenNewConnection();
                         ExecuteReader(connection, SqlSelectItem,
                             command3 => { AddParameter(command3, "@uid", UId); },
                             reader3 => 
