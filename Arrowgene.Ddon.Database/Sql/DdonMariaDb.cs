@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Arrowgene.Ddon.Database.Sql.Core;
 using Arrowgene.Logging;
 using MySqlConnector;
@@ -81,14 +82,24 @@ namespace Arrowgene.Ddon.Database.Sql
             throw new NotImplementedException();
         }
 
-        protected override uint GetUInt32(MySqlDataReader reader, string column)
+        protected override void AddParameter(MySqlCommand command, string name, ushort value)
         {
-            return reader.GetUInt32(column);
+            AddParameter(command, name, value, DbType.UInt16);
         }
-
+        
         protected override ushort GetUInt16(MySqlDataReader reader, string column)
         {
             return reader.GetUInt16(column);
+        }
+
+        protected override void AddParameter(MySqlCommand command, string name, uint value)
+        {
+            AddParameter(command, name, value, DbType.UInt32);
+        }
+
+        protected override uint GetUInt32(MySqlDataReader reader, string column)
+        {
+            return reader.GetUInt32(column);
         }
 
         protected override string SqlInsertOrIgnoreItem => $"INSERT IGNORE INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";

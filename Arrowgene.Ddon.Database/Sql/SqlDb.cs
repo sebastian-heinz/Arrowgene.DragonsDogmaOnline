@@ -214,8 +214,13 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             AddParameter(command, name, value, DbType.Byte);
         }
-
-        protected void AddParameter(TCom command, string name, UInt32 value)
+                
+        protected virtual void AddParameter(TCom command, string name, UInt16 value)
+        {
+            AddParameter(command, name, value, DbType.UInt16);
+        }
+        
+        protected virtual void AddParameter(TCom command, string name, UInt32 value)
         {
             AddParameter(command, name, value, DbType.UInt32);
         }
@@ -225,12 +230,12 @@ namespace Arrowgene.Ddon.Database.Sql
             AddParameter(command, name, (Int32)(object)value, DbType.Int32);
         }
 
-        protected void AddParameter(TCom command, string name, DateTime? value)
+        protected virtual void AddParameter(TCom command, string name, DateTime? value)
         {
             AddParameter(command, name, value, DbType.DateTime);
         }
 
-        protected void AddParameter(TCom command, string name, DateTime value)
+        protected virtual void AddParameter(TCom command, string name, DateTime value)
         {
             AddParameter(command, name, value, DbType.DateTime);
         }
@@ -245,7 +250,7 @@ namespace Arrowgene.Ddon.Database.Sql
             AddParameter(command, name, value, DbType.Boolean);
         }
 
-        protected DateTime? GetDateTimeNullable(TReader reader, int ordinal)
+        protected virtual DateTime? GetDateTimeNullable(TReader reader, int ordinal)
         {
             if (reader.IsDBNull(ordinal))
             {
@@ -322,7 +327,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return (T)(object)reader.GetInt32(reader.GetOrdinal(column));
         }
 
-        protected DateTime GetDateTime(TReader reader, string column)
+        protected virtual DateTime GetDateTime(TReader reader, string column)
         {
             return reader.GetDateTime(reader.GetOrdinal(column));
         }

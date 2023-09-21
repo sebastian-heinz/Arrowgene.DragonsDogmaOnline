@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             client.LastWarpPointId = packet.Structure.WarpPointId;
-            client.LastWarpDateTime = DateTime.Now;
+            client.LastWarpDateTime = DateTime.UtcNow;
         }
     }
 }

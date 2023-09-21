@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Arrowgene.Ddon.Database.Sql.Core;
 using Arrowgene.Logging;
 using Npgsql;
@@ -42,7 +43,7 @@ namespace Arrowgene.Ddon.Database.Sql
             {
                 try
                 {
-                    NpgsqlCommand command = _dataSource.CreateCommand("DROP SCHEMA public CASCADE;");
+                    using NpgsqlCommand command = _dataSource.CreateCommand("DROP SCHEMA public CASCADE;");
                     command.ExecuteNonQuery();
                 }
                 catch (Exception)
@@ -56,11 +57,13 @@ namespace Arrowgene.Ddon.Database.Sql
 
         private string BuildConnectionString(DatabaseSetting settings)
         {
-            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder();
-            builder.Host = settings.Host;
-            builder.Username = settings.User;
-            builder.Password = settings.Password;
-            builder.Database = settings.Database;
+            NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
+            {
+                Host = settings.Host,
+                Username = settings.User,
+                Password = settings.Password,
+                Database = settings.Database
+            };
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");
             return connectionString;
@@ -82,7 +85,8 @@ namespace Arrowgene.Ddon.Database.Sql
         /// </summary>
         protected override long AutoIncrement(NpgsqlConnection connection, NpgsqlCommand command)
         {
-            return (long)new NpgsqlCommand("SELECT LASTVAL();", connection).ExecuteScalar();
+            using NpgsqlCommand lastIdCommand = new NpgsqlCommand("SELECT LASTVAL();", connection);
+            return (long)lastIdCommand.ExecuteScalar();
         }
 
         public override int Upsert(string table, string[] columns, object[] values, string whereColumn,
@@ -90,6 +94,58 @@ namespace Arrowgene.Ddon.Database.Sql
             out long autoIncrement)
         {
             throw new NotImplementedException();
+        }
+
+        protected override void AddParameter(NpgsqlCommand command, string name, ushort value)
+        {
+            AddParameter(command, name, (short)value, DbType.Int16);
+        }
+        
+        protected override ushort GetUInt16(NpgsqlDataReader reader, string column)
+        {
+            return (ushort)reader.GetInt16(reader.GetOrdinal(column));
+        }
+
+        protected override void AddParameter(NpgsqlCommand command, string name, uint value)
+        {
+            AddParameter(command, name, (int)value, DbType.Int32);
+        }
+
+        protected override void AddParameter(NpgsqlCommand command, string name, DateTime? value)
+        {
+            if (value.HasValue)
+            {
+                AddParameter(command, name, DateTime.SpecifyKind(value.Value, DateTimeKind.Utc), DbType.DateTime);
+            }
+            else
+            {
+                AddParameter(command, name, value, DbType.DateTime);
+            }
+        }
+
+        protected override void AddParameter(NpgsqlCommand command, string name, DateTime value)
+        {
+            AddParameter(command, name, DateTime.SpecifyKind(value, DateTimeKind.Utc), DbType.DateTime);
+        }
+        
+        protected override DateTime GetDateTime(NpgsqlDataReader reader, string column)
+        {
+            return DateTime.SpecifyKind(reader.GetDateTime(reader.GetOrdinal(column)), DateTimeKind.Utc);
+        }
+
+        protected override DateTime? GetDateTimeNullable(NpgsqlDataReader reader, int ordinal)
+        {
+            if (reader.IsDBNull(ordinal))
+            {
+                return null;
+            }
+
+            return DateTime.SpecifyKind(reader.GetDateTime(ordinal), DateTimeKind.Utc);
+        }
+
+        protected override uint GetUInt32(NpgsqlDataReader reader, string column)
+        {
+            return (uint)reader.GetInt32(reader.GetOrdinal(column));
         }
 
         protected override string SqlInsertOrIgnoreItem =>
