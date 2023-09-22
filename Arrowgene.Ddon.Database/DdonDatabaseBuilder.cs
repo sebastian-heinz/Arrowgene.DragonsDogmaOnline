@@ -12,18 +12,21 @@ namespace Arrowgene.Ddon.Database
 
         public static IDatabase Build(DatabaseSetting settings)
         {
-            IDatabase database = null;
+            IDatabase database;
+            DatabaseType dbType;
             switch (settings.Type)
             {
                 case DatabaseType.SQLite:
-                    string sqLitePath = Path.Combine(settings.SqLiteFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
-                    database = BuildSqLite(settings.SqLiteFolder, sqLitePath, settings.WipeOnStartup);
+                    database = BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup);
+                    dbType = DatabaseType.SQLite;
                     break;
                 case DatabaseType.PostgreSQL:
-                    database = BuildPostgres(settings);
-                    break;              
-                case DatabaseType.MariaDB:
-                    database = BuildMariaDB(settings);
+                    database = BuildPostgres(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup);
+                    dbType = DatabaseType.PostgreSQL;
+                    break;
+                case DatabaseType.MariaDb:
+                    database = BuildMariaDB(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup);
+                    dbType = DatabaseType.MariaDb;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!");
@@ -36,55 +39,45 @@ namespace Arrowgene.Ddon.Database
             }
             else
             {
-                Logger.Info($"Database of type '${database.GetType()}' has been created.");
+                Logger.Info($"Database of type '${dbType}' has been created.");
+                Logger.Info($"Database path: {settings.DatabaseFolder}");
             }
 
             return database;
         }
 
-        public static DdonSqLiteDb BuildSqLite(string sqLiteFolder, string sqLitePath, bool deleteIfExists)
+        public static DdonSqLiteDb BuildSqLite(string databaseFolder, bool wipeOnStartup)
         {
-            if (deleteIfExists)
-            {
-                try
-                {
-                    File.Delete(sqLitePath);
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
-
-            DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath);
+            string sqLitePath = Path.Combine(databaseFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
+            DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath, wipeOnStartup);
             if (db.CreateDatabase())
             {
                 ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(sqLiteFolder, "Script/schema_sqlite.sql"));
+                scriptRunner.Run(Path.Combine(databaseFolder, "Script/schema_sqlite.sql"));
             }
 
             return db;
         }
 
-        public static DdonPostgresDb BuildPostgres(DatabaseSetting settings)
+        public static DdonPostgresDb BuildPostgres(string databaseFolder, string host, string user, string password, string database, bool wipeOnStartup)
         {
-            DdonPostgresDb db = new DdonPostgresDb(settings);
+            DdonPostgresDb db = new DdonPostgresDb(host, user, password, database, wipeOnStartup);
             if (db.CreateDatabase())
             {
                 ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(settings.SqLiteFolder, "Script/schema_postgres.sql"));
+                scriptRunner.Run(Path.Combine(databaseFolder, "Script/schema_postgres.sql"));
             }
 
             return db;
         }
-        
-        public static DdonMariaDb BuildMariaDB(DatabaseSetting settings)
+
+        public static DdonMariaDb BuildMariaDB(string databaseFolder, string host, string user, string password, string database, bool wipeOnStartup)
         {
-            DdonMariaDb db = new DdonMariaDb(settings);
+            DdonMariaDb db = new DdonMariaDb(host, user, password, database, wipeOnStartup);
             if (db.CreateDatabase())
             {
                 ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(settings.SqLiteFolder, "Script/schema_mariadb.sql"));
+                scriptRunner.Run(Path.Combine(databaseFolder, "Script/schema_mariadb.sql"));
             }
 
             return db;

@@ -43,9 +43,8 @@ services:
     networks:
       - ddon-network
     environment:
-      - POSTGRES_ROOT_PASSWORD=root
-      - POSTGRES_PASSWORD=root
       - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
       - POSTGRES_DB=postgres
       - POSTGRES_INITDB_ARGS=--auth=scram-sha-256 --lc-numeric=en_US.UTF-8
     command: postgres -c config_file=/etc/postgresql/postgresql.conf

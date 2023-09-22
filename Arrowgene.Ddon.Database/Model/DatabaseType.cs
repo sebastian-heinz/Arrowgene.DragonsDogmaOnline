@@ -4,6 +4,6 @@
     {
         SQLite,
         PostgreSQL,
-        MariaDB
+        MariaDb
     }
 }

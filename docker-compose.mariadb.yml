@@ -42,8 +42,8 @@ services:
     networks:
       - ddon-network
     environment:
-      - MARIADB_ROOT_PASSWORD=root
       - MARIADB_USER=admin
+      - MARIADB_ROOT_PASSWORD=admin
       - MARIADB_PASSWORD=admin
       - MARIADB_DATABASE=mariadb
       - LANG=C.UTF_8

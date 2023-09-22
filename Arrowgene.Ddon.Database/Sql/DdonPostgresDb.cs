@@ -6,26 +6,24 @@ using Npgsql;
 
 namespace Arrowgene.Ddon.Database.Sql
 {
-    /// <summary>
-    /// PostgreSQL Ddon database.
-    /// </summary>
     public class DdonPostgresDb : DdonSqlDb<NpgsqlConnection, NpgsqlCommand, NpgsqlDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonPostgresDb));
 
-        private readonly DatabaseSetting _settings;
         private string _connectionString;
         private NpgsqlDataSource _dataSource;
 
-        public DdonPostgresDb(DatabaseSetting settings)
+        public DdonPostgresDb(string host, string user, string password, string database, bool wipeOnStartup)
         {
-            _settings = settings;
-            Logger.Info($"Database Path: {settings.SqLiteFolder}");
+            _connectionString = BuildConnectionString(host, user, password, database);
+            if (wipeOnStartup)
+            {
+                Logger.Info($"WipeOnStartup is currently not supported.");
+            }
         }
 
         public bool CreateDatabase()
         {
-            _connectionString = BuildConnectionString(_settings);
             if (_connectionString == null)
             {
                 Logger.Error($"Failed to build connection string");
@@ -40,31 +38,17 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             ReusableConnection = _dataSource.OpenConnection();
-            
-            if (_settings.WipeOnStartup)
-            {
-                try
-                {
-                    using NpgsqlCommand command = _dataSource.CreateCommand("DROP SCHEMA public CASCADE;");
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception)
-                {
-                    // ignored
-                }
-            }
-
             return true;
         }
 
-        private string BuildConnectionString(DatabaseSetting settings)
+        private string BuildConnectionString(string host, string user, string password, string database)
         {
             NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
             {
-                Host = settings.Host,
-                Username = settings.User,
-                Password = settings.Password,
-                Database = settings.Database,
+                Host = host,
+                Username = user,
+                Password = password,
+                Database = database,
                 Pooling = true
             };
             string connectionString = builder.ToString();
@@ -98,22 +82,7 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             throw new NotImplementedException();
         }
-
-        protected override void AddParameter(NpgsqlCommand command, string name, ushort value)
-        {
-            AddParameter(command, name, (short)value, DbType.Int16);
-        }
         
-        protected override ushort GetUInt16(NpgsqlDataReader reader, string column)
-        {
-            return (ushort)reader.GetInt16(reader.GetOrdinal(column));
-        }
-
-        protected override void AddParameter(NpgsqlCommand command, string name, uint value)
-        {
-            AddParameter(command, name, (int)value, DbType.Int32);
-        }
-
         protected override void AddParameter(NpgsqlCommand command, string name, DateTime? value)
         {
             if (value.HasValue)
@@ -130,7 +99,7 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             AddParameter(command, name, DateTime.SpecifyKind(value, DateTimeKind.Utc), DbType.DateTime);
         }
-        
+
         protected override DateTime GetDateTime(NpgsqlDataReader reader, string column)
         {
             return DateTime.SpecifyKind(reader.GetDateTime(reader.GetOrdinal(column)), DateTimeKind.Utc);
@@ -145,12 +114,7 @@ namespace Arrowgene.Ddon.Database.Sql
 
             return DateTime.SpecifyKind(reader.GetDateTime(ordinal), DateTimeKind.Utc);
         }
-
-        protected override uint GetUInt32(NpgsqlDataReader reader, string column)
-        {
-            return (uint)reader.GetInt32(reader.GetOrdinal(column));
-        }
-
+        
         protected override string SqlInsertOrIgnoreItem =>
             $"INSERT INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)}) ON CONFLICT DO NOTHING;";
 
@@ -187,8 +151,10 @@ namespace Arrowgene.Ddon.Database.Sql
         protected override string SqlReplaceWalletPoint =>
             $"INSERT INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_wallet_point DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", WalletPointFields)};";
 
-        protected override string SqlReplacePawnReaction => $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_pawn_reaction DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataPawnReactionFields)};";
+        protected override string SqlReplacePawnReaction =>
+            $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_pawn_reaction DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataPawnReactionFields)};";
 
-        protected override string SqlReplaceSpSkill => $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_sp_skill DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataSpSkillFields)};";
+        protected override string SqlReplaceSpSkill =>
+            $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_sp_skill DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataSpSkillFields)};";
     }
 }

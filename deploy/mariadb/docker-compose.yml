@@ -15,14 +15,14 @@ services:
       - $PWD/../../Arrowgene.Ddon.Database/Files/Database/Script/schema_mariadb.sql:/docker-entrypoint-initdb.d/schema_mariadb.sql:ro
       - $PWD/mariadb.cnf:/etc/mysql/mariadb.conf.d/mariadb.cnf:ro
     environment:
-      - MARIADB_ROOT_PASSWORD=root
       - MARIADB_USER=admin
+      - MARIADB_ROOT_PASSWORD=admin
       - MARIADB_PASSWORD=admin
       - MARIADB_DATABASE=mariadb
       - LANG=C.UTF_8
     command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
     healthcheck:
       test: ["CMD", "/usr/local/bin/healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 3s
-      timeout: 3s
-      retries: 10
+      interval: 10s
+      timeout: 1s
+      retries: 3

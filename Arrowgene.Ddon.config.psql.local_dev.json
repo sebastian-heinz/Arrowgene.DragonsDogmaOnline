@@ -149,8 +149,8 @@
   },
   "DatabaseSetting": {
     "Type": 1,
-    "SqLiteFolder": "\/var\/ddon\/server\/Files\/Database",
-    "Host": "db",
+    "DatabaseFolder": "\/var\/ddon\/server\/Files\/Database",
+    "Host": "localhost",
     "Port": 5432,
     "User": "root",
     "Password": "root",

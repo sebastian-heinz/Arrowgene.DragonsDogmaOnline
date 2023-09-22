@@ -14,12 +14,8 @@ namespace Arrowgene.Ddon.Database.Sql
         where TCom : DbCommand
         where TReader : DbDataReader
     {
-        public const int NoRowsAffected = 0;
-        public const long NoAutoIncrement = 0;
-
-        public SqlDb()
-        {
-        }
+        protected const int NoRowsAffected = 0;
+        protected const long NoAutoIncrement = 0;
 
         protected abstract TCon OpenNewConnection();
 
@@ -289,14 +285,14 @@ namespace Arrowgene.Ddon.Database.Sql
             AddParameter(command, name, value, DbType.Byte);
         }
 
-        protected virtual void AddParameter(TCom command, string name, UInt16 value)
+        protected void AddParameter(TCom command, string name, UInt16 value)
         {
-            AddParameter(command, name, value, DbType.UInt16);
+            AddParameter(command, name, (short)value, DbType.Int16);
         }
 
-        protected virtual void AddParameter(TCom command, string name, UInt32 value)
+        protected void AddParameter(TCom command, string name, UInt32 value)
         {
-            AddParameter(command, name, value, DbType.UInt32);
+            AddParameter(command, name, (int)value, DbType.Int32);
         }
 
         protected void AddParameterEnumInt32<T>(TCom command, string name, T value) where T : Enum
@@ -361,7 +357,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetInt32(reader.GetOrdinal(column));
         }
 
-        protected virtual uint GetUInt32(TReader reader, string column)
+        protected uint GetUInt32(TReader reader, string column)
         {
             return (uint)reader.GetInt32(reader.GetOrdinal(column));
         }
@@ -376,7 +372,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetInt16(reader.GetOrdinal(column));
         }
 
-        protected virtual ushort GetUInt16(TReader reader, string column)
+        protected ushort GetUInt16(TReader reader, string column)
         {
             return (ushort)reader.GetInt16(reader.GetOrdinal(column));
         }

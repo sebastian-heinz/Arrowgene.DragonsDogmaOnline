@@ -6,25 +6,23 @@ using MySqlConnector;
 
 namespace Arrowgene.Ddon.Database.Sql
 {
-    /// <summary>
-    /// MariaDB Ddon database.
-    /// </summary>
     public class DdonMariaDb : DdonSqlDb<MySqlConnection, MySqlCommand, MySqlDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonMariaDb));
 
-        private readonly DatabaseSetting _settings;
         private string _connectionString;
 
-        public DdonMariaDb(DatabaseSetting settings)
+        public DdonMariaDb(string host, string user, string password, string database, bool wipeOnStartup)
         {
-            _settings = settings;
-            Logger.Info($"Database Path: {settings.SqLiteFolder}");
+            _connectionString = BuildConnectionString(host, user, password, database);
+            if (wipeOnStartup)
+            {
+                Logger.Info($"WipeOnStartup is currently not supported.");
+            }
         }
 
         public bool CreateDatabase()
         {
-            _connectionString = BuildConnectionString(_settings);
             if (_connectionString == null)
             {
                 Logger.Error($"Failed to build connection string");
@@ -32,23 +30,17 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             ReusableConnection = new MySqlConnection(_connectionString);
-
-            if (_settings.WipeOnStartup)
-            {
-                Logger.Info($"WipeOnStartup is currently not supported by '{_settings.Database}'.");
-            }
-
             return true;
         }
 
-        private string BuildConnectionString(DatabaseSetting settings)
+        private string BuildConnectionString(string host, string user, string password, string database)
         {
             MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
             {
-                Server = settings.Host,
-                UserID = settings.User,
-                Password = settings.Password,
-                Database = settings.Database,
+                Server = host,
+                UserID = user,
+                Password = password,
+                Database = database,
                 IgnoreCommandTransaction = true,
                 Pooling = true
             };
@@ -83,26 +75,6 @@ namespace Arrowgene.Ddon.Database.Sql
             out long autoIncrement)
         {
             throw new NotImplementedException();
-        }
-
-        protected override void AddParameter(MySqlCommand command, string name, ushort value)
-        {
-            AddParameter(command, name, value, DbType.UInt16);
-        }
-
-        protected override ushort GetUInt16(MySqlDataReader reader, string column)
-        {
-            return reader.GetUInt16(column);
-        }
-
-        protected override void AddParameter(MySqlCommand command, string name, uint value)
-        {
-            AddParameter(command, name, value, DbType.UInt32);
-        }
-
-        protected override uint GetUInt32(MySqlDataReader reader, string column)
-        {
-            return reader.GetUInt32(column);
         }
 
         protected override string SqlInsertOrIgnoreItem => $"INSERT IGNORE INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";

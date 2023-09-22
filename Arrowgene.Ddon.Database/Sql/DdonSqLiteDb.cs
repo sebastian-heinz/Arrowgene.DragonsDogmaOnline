@@ -7,9 +7,6 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Database.Sql
 {
-    /// <summary>
-    /// SQLite Ddon database.
-    /// </summary>
     public class DdonSqLiteDb : DdonSqlDb<SQLiteConnection, SQLiteCommand, SQLiteDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqLiteDb));
@@ -22,11 +19,21 @@ namespace Arrowgene.Ddon.Database.Sql
         private string _connectionString;
         private SQLiteConnection _memoryConnection;
 
-        public DdonSqLiteDb(string databasePath)
+        public DdonSqLiteDb(string databasePath, bool wipeOnStartup)
         {
             _memoryConnection = null;
             _databasePath = databasePath;
-            Logger.Info($"Database Path: {_databasePath}");
+            if (wipeOnStartup)
+            {
+                try
+                {
+                    File.Delete(_databasePath);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
         }
 
         public bool CreateDatabase()
@@ -69,7 +76,7 @@ namespace Arrowgene.Ddon.Database.Sql
                 ForeignKeys = true,
                 Pooling = true,
                 // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
-                Flags = SQLiteConnectionFlags.Default & SQLiteConnectionFlags.StrictConformance
+                Flags = SQLiteConnectionFlags.Default | SQLiteConnectionFlags.StrictConformance
             };
 
             string connectionString = builder.ToString();
