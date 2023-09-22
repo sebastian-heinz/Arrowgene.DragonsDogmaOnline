@@ -9,9 +9,11 @@ namespace Arrowgene.Ddon.Database
     [DataContract]
     public class DatabaseSetting
     {
+        public DatabaseType DbType { get; set; }
+        
         public DatabaseSetting()
         {
-            Type = DatabaseType.SQLite;
+            Type = "sqlite";
             DatabaseFolder = Path.Combine(Util.ExecutingDirectory(), "Files/Database");
             Host = "localhost";
             Port = 3306;
@@ -20,9 +22,14 @@ namespace Arrowgene.Ddon.Database
             Password = string.Empty;
             WipeOnStartup = true;
 
-            if (Enum.TryParse(Environment.GetEnvironmentVariable("DB_TYPE"), true, out DatabaseType dbType))
+            string envDbType = Environment.GetEnvironmentVariable("DB_TYPE");
+            if (!string.IsNullOrEmpty(envDbType))
             {
-                Type = dbType;
+                Type = envDbType;
+            }
+            if (Enum.TryParse(Type, true, out DatabaseType dbType))
+            {
+                DbType = dbType;
             }
             string envDbFolder = Environment.GetEnvironmentVariable("DB_FOLDER");
             if (!string.IsNullOrEmpty(envDbFolder))
@@ -64,6 +71,10 @@ namespace Arrowgene.Ddon.Database
         public DatabaseSetting(DatabaseSetting databaseSettings)
         {
             Type = databaseSettings.Type;
+            if (Enum.TryParse(Type, true, out DatabaseType dbType))
+            {
+                DbType = dbType;
+            }
             DatabaseFolder = databaseSettings.DatabaseFolder;
             Host = databaseSettings.Host;
             Port = databaseSettings.Port;
@@ -73,7 +84,7 @@ namespace Arrowgene.Ddon.Database
             WipeOnStartup = databaseSettings.WipeOnStartup;
         }
 
-        [DataMember(Order = 0)] public DatabaseType Type { get; set; }
+        [DataMember(Order = 0)] public string Type { get; set; }
 
         [DataMember(Order = 1)] public string DatabaseFolder { get; set; }
 
@@ -87,6 +98,6 @@ namespace Arrowgene.Ddon.Database
 
         [DataMember(Order = 6)] public string Database { get; set; }
 
-        [DataMember(Order = 6)] public bool WipeOnStartup { get; set; }
+        [DataMember(Order = 7)] public bool WipeOnStartup { get; set; }
     }
 }

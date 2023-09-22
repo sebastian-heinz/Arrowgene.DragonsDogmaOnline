@@ -12,25 +12,13 @@ namespace Arrowgene.Ddon.Database
 
         public static IDatabase Build(DatabaseSetting settings)
         {
-            IDatabase database;
-            DatabaseType dbType;
-            switch (settings.Type)
+            IDatabase database = settings.DbType switch
             {
-                case DatabaseType.SQLite:
-                    database = BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup);
-                    dbType = DatabaseType.SQLite;
-                    break;
-                case DatabaseType.PostgreSQL:
-                    database = BuildPostgres(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup);
-                    dbType = DatabaseType.PostgreSQL;
-                    break;
-                case DatabaseType.MariaDb:
-                    database = BuildMariaDB(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup);
-                    dbType = DatabaseType.MariaDb;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!");
-            }
+                DatabaseType.SQLite => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup),
+                DatabaseType.PostgreSQL => BuildPostgres(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
+                DatabaseType.MariaDb => BuildMariaDB(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
+                _ => throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!")
+            };
 
             if (database == null)
             {
@@ -39,7 +27,7 @@ namespace Arrowgene.Ddon.Database
             }
             else
             {
-                Logger.Info($"Database of type '${dbType}' has been created.");
+                Logger.Info($"Database of type '${settings.DbType.ToString()}' has been created.");
                 Logger.Info($"Database path: {settings.DatabaseFolder}");
             }
 

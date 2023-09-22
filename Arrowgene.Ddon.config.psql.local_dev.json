@@ -148,7 +148,7 @@
     "UrlSupportIndex": "http:\/\/localhost:52099\/sp_ingame\/support\/index.html"
   },
   "DatabaseSetting": {
-    "Type": 1,
+    "Type": "postgresql",
     "DatabaseFolder": "\/var\/ddon\/server\/Files\/Database",
     "Host": "localhost",
     "Port": 5432,
