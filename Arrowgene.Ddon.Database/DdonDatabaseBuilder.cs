@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Database
     public static class DdonDatabaseBuilder
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonDatabaseBuilder));
+        private const string DefaultSchemaFile = "Script/schema_sqlite.sql";
 
         public static IDatabase Build(DatabaseSetting settings)
         {
@@ -42,7 +43,7 @@ namespace Arrowgene.Ddon.Database
             if (db.CreateDatabase())
             {
                 ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(databaseFolder, "Script/schema_sqlite.sql"));
+                scriptRunner.Run(Path.Combine(databaseFolder, DefaultSchemaFile));
             }
 
             return db;
@@ -53,7 +54,7 @@ namespace Arrowgene.Ddon.Database
             DdonPostgresDb db = new DdonPostgresDb(host, user, password, database, wipeOnStartup);
             if (db.CreateDatabase())
             {
-                string schemaFilePath = Path.Combine(databaseFolder, "Script/schema_sqlite.sql");
+                string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
                 schema = schema.Replace(" DATETIME ", " TIMESTAMP WITH TIME ZONE ");
                 schema = schema.Replace(" INTEGER PRIMARY KEY AUTOINCREMENT ", " SERIAL PRIMARY KEY ");
@@ -61,7 +62,7 @@ namespace Arrowgene.Ddon.Database
                 File.WriteAllText(schemaFilePath, schema);
                 
                 ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(databaseFolder, "Script/schema_postgres.sql"));
+                scriptRunner.Run(Path.Combine(databaseFolder, DefaultSchemaFile));
             }
 
             return db;
@@ -72,13 +73,13 @@ namespace Arrowgene.Ddon.Database
             DdonMariaDb db = new DdonMariaDb(host, user, password, database, wipeOnStartup);
             if (db.CreateDatabase())
             {
-                string schemaFilePath = Path.Combine(databaseFolder, "Script/schema_sqlite.sql");
+                string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
                 schema = schema.Replace(" AUTOINCREMENT ", " AUTO_INCREMENT ");
                 File.WriteAllText(schemaFilePath, schema);
                 
                 ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(databaseFolder, "Script/schema_mariadb.sql"));
+                scriptRunner.Run(Path.Combine(databaseFolder, DefaultSchemaFile));
             }
 
             return db;
