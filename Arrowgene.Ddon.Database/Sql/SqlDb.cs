@@ -86,7 +86,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public int ExecuteNonQuery(TCon? conn, string query, Action<TCom> nonQueryAction)
+        public int ExecuteNonQuery(TCon conn, string query, Action<TCom> nonQueryAction)
         {
             try
             {
@@ -114,11 +114,10 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public int ExecuteNonQuery(TCon? conn, string query, Action<TCom> nonQueryAction, out long autoIncrement)
+        public int ExecuteNonQuery(TCon conn, string query, Action<TCom> nonQueryAction, out long autoIncrement)
         {
             try
             {
-                conn ??= OpenNewConnection();
                 using TCom command = Command(query, conn);
                 nonQueryAction(command);
                 var rowsAffected = command.ExecuteNonQuery();
@@ -146,7 +145,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public void ExecuteReader(TCon? conn, string query, Action<TCom> nonQueryAction, Action<TReader> readAction)
+        public void ExecuteReader(TCon conn, string query, Action<TCom> nonQueryAction, Action<TReader> readAction)
         {
             try
             {
@@ -174,7 +173,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public void ExecuteReader(TCon? conn, string query, Action<TReader> readAction)
+        public void ExecuteReader(TCon conn, string query, Action<TReader> readAction)
         {
             try
             {
@@ -227,7 +226,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public string ServerVersion(TCon? conn)
+        public string ServerVersion(TCon conn)
         {
             try
             {

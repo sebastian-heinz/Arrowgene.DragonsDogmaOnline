@@ -9,8 +9,6 @@ namespace Arrowgene.Ddon.Database
     [DataContract]
     public class DatabaseSetting
     {
-        public DatabaseType DbType { get; set; }
-        
         public DatabaseSetting()
         {
             Type = "sqlite";
@@ -26,10 +24,6 @@ namespace Arrowgene.Ddon.Database
             if (!string.IsNullOrEmpty(envDbType))
             {
                 Type = envDbType;
-            }
-            if (Enum.TryParse(Type, true, out DatabaseType dbType))
-            {
-                DbType = dbType;
             }
             string envDbFolder = Environment.GetEnvironmentVariable("DB_FOLDER");
             if (!string.IsNullOrEmpty(envDbFolder))
@@ -71,10 +65,6 @@ namespace Arrowgene.Ddon.Database
         public DatabaseSetting(DatabaseSetting databaseSettings)
         {
             Type = databaseSettings.Type;
-            if (Enum.TryParse(Type, true, out DatabaseType dbType))
-            {
-                DbType = dbType;
-            }
             DatabaseFolder = databaseSettings.DatabaseFolder;
             Host = databaseSettings.Host;
             Port = databaseSettings.Port;

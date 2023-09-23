@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql;
 using Arrowgene.Logging;
@@ -14,7 +15,8 @@ namespace Arrowgene.Ddon.Database
 
         public static IDatabase Build(DatabaseSetting settings)
         {
-            IDatabase database = settings.DbType switch
+            Enum.TryParse(settings.Type, true, out DatabaseType dbType);
+            IDatabase database = dbType switch
             {
                 DatabaseType.SQLite => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup),
                 DatabaseType.PostgreSQL => BuildPostgres(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
@@ -29,7 +31,7 @@ namespace Arrowgene.Ddon.Database
             }
             else
             {
-                Logger.Info($"Database of type '${settings.DbType.ToString()}' has been created.");
+                Logger.Info($"Database of type '${dbType.ToString()}' has been created.");
                 Logger.Info($"Database path: {settings.DatabaseFolder}");
             }
 
@@ -42,8 +44,10 @@ namespace Arrowgene.Ddon.Database
             DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath, wipeOnStartup);
             if (db.CreateDatabase())
             {
-                ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(databaseFolder, DefaultSchemaFile));
+                string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
+                String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
+                
+                db.Execute(schema);
             }
 
             return db;
@@ -56,13 +60,11 @@ namespace Arrowgene.Ddon.Database
             {
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                schema = schema.Replace(" DATETIME ", " TIMESTAMP WITH TIME ZONE ");
-                schema = schema.Replace(" INTEGER PRIMARY KEY AUTOINCREMENT ", " SERIAL PRIMARY KEY ");
-                schema = schema.Replace(" BLOB ", " BYTEA ");
-                File.WriteAllText(schemaFilePath, schema);
+                schema = Regex.Replace(schema, "(\\s)DATETIME(\\s)", " TIMESTAMP WITH TIME ZONE ");
+                schema = Regex.Replace(schema, "(\\s)INTEGER PRIMARY KEY AUTOINCREMENT(\\s)", " SERIAL PRIMARY KEY ");
+                schema = Regex.Replace(schema, "(\\s)BLOB(\\s)", " BYTEA ");
                 
-                ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(databaseFolder, DefaultSchemaFile));
+                db.Execute(schema);
             }
 
             return db;
@@ -75,11 +77,9 @@ namespace Arrowgene.Ddon.Database
             {
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                schema = schema.Replace(" AUTOINCREMENT ", " AUTO_INCREMENT ");
-                File.WriteAllText(schemaFilePath, schema);
+                schema = Regex.Replace(schema, "(\\s)AUTOINCREMENT(\\s)", " AUTO_INCREMENT ");
                 
-                ScriptRunner scriptRunner = new ScriptRunner(db);
-                scriptRunner.Run(Path.Combine(databaseFolder, DefaultSchemaFile));
+                db.Execute(schema);
             }
 
             return db;
