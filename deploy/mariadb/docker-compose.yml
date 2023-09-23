@@ -12,7 +12,7 @@ services:
     restart: no
     volumes:
       - ddon-mariadb-volume:/var/lib/mysql
-      - $PWD/../../Arrowgene.Ddon.Database/Files/Database/Script/schema_mariadb.sql:/docker-entrypoint-initdb.d/schema_mariadb.sql:ro
+#      - $PWD/schema_mariadb.sql:/docker-entrypoint-initdb.d/schema_mariadb.sql:ro
       - $PWD/mariadb.cnf:/etc/mysql/mariadb.conf.d/mariadb.cnf:ro
     environment:
       - MARIADB_USER=admin

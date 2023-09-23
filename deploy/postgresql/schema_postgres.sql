@@ -1,6 +1,3 @@
-CREATE DOMAIN DATETIME AS TIMESTAMP WITH TIME ZONE;
-CREATE DOMAIN BLOB AS BYTEA;
-
 CREATE TABLE IF NOT EXISTS setting
 (
     "key"   VARCHAR(32) NOT NULL,
@@ -16,14 +13,14 @@ CREATE TABLE IF NOT EXISTS account
     "hash"                TEXT               NOT NULL,
     "mail"                TEXT               NOT NULL,
     "mail_verified"       BOOLEAN            NOT NULL,
-    "mail_verified_at"    DATETIME DEFAULT NULL,
+    "mail_verified_at"    TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     "mail_token"          TEXT     DEFAULT NULL,
     "password_token"      TEXT     DEFAULT NULL,
     "login_token"         TEXT     DEFAULT NULL,
-    "login_token_created" DATETIME DEFAULT NULL,
+    "login_token_created" TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     "state"               INTEGER            NOT NULL,
-    "last_login"          DATETIME DEFAULT NULL,
-    "created"             DATETIME           NOT NULL,
+    "last_login"          TIMESTAMP WITH TIME ZONE DEFAULT NULL,
+    "created"             TIMESTAMP WITH TIME ZONE           NOT NULL,
     CONSTRAINT uq_account_name UNIQUE ("name"),
     CONSTRAINT uq_account_normal_name UNIQUE ("normal_name"),
     CONSTRAINT uq_account_login_token UNIQUE ("login_token"),
@@ -47,7 +44,7 @@ CREATE TABLE IF NOT EXISTS ddon_character
     "version"                    INTEGER            NOT NULL,
     "first_name"                 TEXT               NOT NULL,
     "last_name"                  TEXT               NOT NULL,
-    "created"                    DATETIME           NOT NULL,
+    "created"                    TIMESTAMP WITH TIME ZONE           NOT NULL,
     "my_pawn_slot_num"           SMALLINT           NOT NULL,
     "rental_pawn_slot_num"       SMALLINT           NOT NULL,
     "hide_equip_head_pawn"       BOOLEAN            NOT NULL,
@@ -246,7 +243,7 @@ CREATE TABLE IF NOT EXISTS ddon_storage
     "character_id" INTEGER  NOT NULL,
     "storage_type" SMALLINT NOT NULL,
     "slot_max"     SMALLINT NOT NULL,
-    "item_sort"    BLOB     NOT NULL,
+    "item_sort"    BYTEA     NOT NULL,
     CONSTRAINT pk_ddon_storage PRIMARY KEY (character_id, storage_type),
     CONSTRAINT fk_storage_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
@@ -406,7 +403,7 @@ CREATE TABLE IF NOT EXISTS ddon_game_token
     "account_id"   INTEGER PRIMARY KEY NOT NULL,
     "character_id" INTEGER             NOT NULL,
     "token"        TEXT                NOT NULL,
-    "created"      DATETIME            NOT NULL,
+    "created"      TIMESTAMP WITH TIME ZONE            NOT NULL,
     CONSTRAINT uq_game_token_token UNIQUE ("token"),
     CONSTRAINT fk_game_token_account_id FOREIGN KEY ("account_id") REFERENCES account ("id"),
     CONSTRAINT fk_game_token_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id")
@@ -417,7 +414,7 @@ CREATE TABLE IF NOT EXISTS ddon_connection
     "server_id"  INTEGER  NOT NULL,
     "account_id" INTEGER  NOT NULL,
     "type"       INTEGER  NOT NULL,
-    "created"    DATETIME NOT NULL,
+    "created"    TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT uq_connection_server_id_account_id UNIQUE (server_id, account_id),
     CONSTRAINT fk_connection_token_account_id FOREIGN KEY ("account_id") REFERENCES account ("id")
 );

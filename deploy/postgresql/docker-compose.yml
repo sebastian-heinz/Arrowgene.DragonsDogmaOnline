@@ -12,7 +12,7 @@ services:
     restart: no
     volumes:
       - ddon-psql-data:/var/lib/postgresql/data
-      - $PWD/../../Arrowgene.Ddon.Database/Files/Database/Script/schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
+#      - $PWD/schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
       - $PWD/postgresql.conf:/etc/postgresql/postgresql.conf:ro
     environment:
       - POSTGRES_USER=root

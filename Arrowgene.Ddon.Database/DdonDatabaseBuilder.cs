@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql;
 using Arrowgene.Logging;
@@ -52,6 +53,13 @@ namespace Arrowgene.Ddon.Database
             DdonPostgresDb db = new DdonPostgresDb(host, user, password, database, wipeOnStartup);
             if (db.CreateDatabase())
             {
+                string schemaFilePath = Path.Combine(databaseFolder, "Script/schema_sqlite.sql");
+                String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
+                schema = schema.Replace(" DATETIME ", " TIMESTAMP WITH TIME ZONE ");
+                schema = schema.Replace(" INTEGER PRIMARY KEY AUTOINCREMENT ", " SERIAL PRIMARY KEY ");
+                schema = schema.Replace(" BLOB ", " BYTEA ");
+                File.WriteAllText(schemaFilePath, schema);
+                
                 ScriptRunner scriptRunner = new ScriptRunner(db);
                 scriptRunner.Run(Path.Combine(databaseFolder, "Script/schema_postgres.sql"));
             }
@@ -64,6 +72,11 @@ namespace Arrowgene.Ddon.Database
             DdonMariaDb db = new DdonMariaDb(host, user, password, database, wipeOnStartup);
             if (db.CreateDatabase())
             {
+                string schemaFilePath = Path.Combine(databaseFolder, "Script/schema_sqlite.sql");
+                String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
+                schema = schema.Replace(" AUTOINCREMENT ", " AUTO_INCREMENT ");
+                File.WriteAllText(schemaFilePath, schema);
+                
                 ScriptRunner scriptRunner = new ScriptRunner(db);
                 scriptRunner.Run(Path.Combine(databaseFolder, "Script/schema_mariadb.sql"));
             }
