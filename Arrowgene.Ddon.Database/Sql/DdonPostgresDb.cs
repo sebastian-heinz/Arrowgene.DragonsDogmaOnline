@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             throw new NotImplementedException();
         }
-        
+
         protected override void AddParameter(NpgsqlCommand command, string name, DateTime? value)
         {
             if (value.HasValue)
@@ -114,9 +114,6 @@ namespace Arrowgene.Ddon.Database.Sql
 
             return DateTime.SpecifyKind(reader.GetDateTime(ordinal), DateTimeKind.Utc);
         }
-        
-        protected override string SqlInsertOrIgnoreItem =>
-            $"INSERT INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)}) ON CONFLICT DO NOTHING;";
 
         protected override string SqlReplaceCharacterJobData =>
             $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)}) ON CONFLICT ON CONSTRAINT pk_character_job_data DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataCharacterJobDataFields)};";

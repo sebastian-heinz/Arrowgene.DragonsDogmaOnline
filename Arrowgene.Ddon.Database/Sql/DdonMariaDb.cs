@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Arrowgene.Ddon.Database.Sql.Core;
 using Arrowgene.Logging;
 using MySqlConnector;
@@ -76,8 +75,6 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             throw new NotImplementedException();
         }
-
-        protected override string SqlInsertOrIgnoreItem => $"INSERT IGNORE INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";
 
         protected override string SqlReplaceCharacterJobData =>
             $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataCharacterJobDataFields)};";

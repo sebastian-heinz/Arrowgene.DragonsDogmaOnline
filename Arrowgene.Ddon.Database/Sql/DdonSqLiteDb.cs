@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Data.SQLite;
 using System.IO;
 using Arrowgene.Ddon.Database.Sql.Core;
@@ -28,10 +27,11 @@ namespace Arrowgene.Ddon.Database.Sql
                 try
                 {
                     File.Delete(_databasePath);
+                    Logger.Info($"Database has been wiped.");
                 }
                 catch (Exception)
                 {
-                    // ignored
+                    Logger.Error($"Failed to wipe database.");
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.Database.Sql
                 _memoryConnection.Open();
                 return true;
             }
-            
+
             if (!File.Exists(_databasePath))
             {
                 FileStream fs = File.Create(_databasePath);
