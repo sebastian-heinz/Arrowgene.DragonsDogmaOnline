@@ -272,10 +272,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataCommunicationShortCut communicationShortcut in character.CommunicationShortCutList)
             {
-                ExecuteNonQuery(conn, SqlReplaceCommunicationShortcut, command =>
-                {
-                    AddParameter(command, character.CharacterId, communicationShortcut);
-                });
+                ReplaceCommunicationShortcut(conn, character.CharacterId, communicationShortcut);
             }
 
             foreach(StorageType storageType in character.Storage.getAllStorages().Keys)
