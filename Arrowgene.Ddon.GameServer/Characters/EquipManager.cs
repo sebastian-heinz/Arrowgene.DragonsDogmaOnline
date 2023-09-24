@@ -208,9 +208,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint itemToEquipNum = tuple.item.Item2;
             ushort storageSlotNo = tuple.slot;
 
-            Item? previouslyEquippedItem = characterToEquipTo.Equipment.GetEquipItem(characterToEquipTo.Job, equipType, equipSlot);
+            Item? previouslyEquippedItem = characterToEquipTo.Equipment.SetEquipItem(itemToEquip, characterToEquipTo.Job, equipType, equipSlot);
             
-            characterToEquipTo.Equipment.SetEquipItem(itemToEquip, characterToEquipTo.Job, equipType, equipSlot);
             server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemToEquip.UId);
 
             if(previouslyEquippedItem != null)
