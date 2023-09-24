@@ -76,9 +76,6 @@ namespace Arrowgene.Ddon.Database.Sql
             throw new NotImplementedException();
         }
 
-        protected override string SqlReplaceStorageItem =>
-            $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) VALUES ({BuildQueryInsert(StorageItemFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, StorageItemFields)};";
-
         protected override string SqlReplaceStorage =>
             $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, StorageFields)};";
 
