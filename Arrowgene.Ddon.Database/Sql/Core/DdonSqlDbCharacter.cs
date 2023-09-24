@@ -280,10 +280,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(StorageType storageType in character.Storage.getAllStorages().Keys)
             {
-                ExecuteNonQuery(conn, SqlReplaceStorage, command =>
-                {
-                    AddParameter(command, character.CharacterId, storageType, character.Storage.getStorage(storageType));
-                });
+                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.getStorage(storageType));
             }
 
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)

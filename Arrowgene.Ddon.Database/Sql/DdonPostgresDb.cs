@@ -115,9 +115,6 @@ namespace Arrowgene.Ddon.Database.Sql
             return DateTime.SpecifyKind(reader.GetDateTime(ordinal), DateTimeKind.Utc);
         }
 
-        protected override string SqlReplaceStorage =>
-            $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_storage DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", StorageFields)};";
-
         protected override string SqlReplaceCommunicationShortcut =>
             $"INSERT INTO \"ddon_communication_shortcut\" ({BuildQueryField(CommunicationShortcutFields)}) VALUES ({BuildQueryInsert(CommunicationShortcutFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_communication_shortcut DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CommunicationShortcutFields)};";
 
