@@ -115,9 +115,6 @@ namespace Arrowgene.Ddon.Database.Sql
             return DateTime.SpecifyKind(reader.GetDateTime(ordinal), DateTimeKind.Utc);
         }
 
-        protected override string SqlReplaceCharacterJobData =>
-            $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)}) ON CONFLICT ON CONSTRAINT pk_character_job_data DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataCharacterJobDataFields)};";
-
         protected override string SqlReplaceStorageItem =>
             $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) VALUES ({BuildQueryInsert(StorageItemFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_storage_item DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", StorageItemFields)};";
 

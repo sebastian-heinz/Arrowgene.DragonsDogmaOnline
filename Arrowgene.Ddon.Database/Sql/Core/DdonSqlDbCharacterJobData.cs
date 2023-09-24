@@ -19,30 +19,71 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "m_atk_down_resist", "m_def_down_resist"
         };
 
-        private readonly string SqlInsertCharacterJobData = $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+        private readonly string SqlInsertCharacterJobData =
+            $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
 
-        protected virtual string SqlReplaceCharacterJobData { get; } =
-            $"INSERT OR REPLACE INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
+        protected virtual string SqlInsertIfNotExistsCharacterJobData { get; } =
+            $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) SELECT {BuildQueryInsert(CDataCharacterJobDataFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job);";
 
-        private static readonly string SqlUpdateCharacterJobData = $"UPDATE \"ddon_character_job_data\" SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
-        private static readonly string SqlSelectCharacterJobData = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
-        private static readonly string SqlSelectCharacterJobDataByCharacter = $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id;";
+        private static readonly string SqlUpdateCharacterJobData =
+            $"UPDATE \"ddon_character_job_data\" SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
+
+        private static readonly string SqlSelectCharacterJobData =
+            $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
+
+        private static readonly string SqlSelectCharacterJobDataByCharacter =
+            $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id;";
+
         private const string SqlDeleteCharacterJobData = "DELETE FROM \"ddon_character_job_data\" WHERE \"character_common_id\"=@character_common_id AND \"job\" = @job;";
-        
+
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData)
         {
-            return ExecuteNonQuery(SqlReplaceCharacterJobData, command =>
+            using TCon connection = OpenNewConnection();
+            return ReplaceCharacterJobData(connection, commonId, replacedCharacterJobData);
+        }
+
+        public bool ReplaceCharacterJobData(TCon connection, uint commonId, CDataCharacterJobData replacedCharacterJobData)
+        {
+            Logger.Debug("Inserting character job data.");
+            if (!InsertIfNotExistsCharacterJobData(connection, commonId, replacedCharacterJobData))
             {
-                AddParameter(command, commonId, replacedCharacterJobData);
-            }) == 1;
+                Logger.Debug("Character job data already exists, replacing.");
+                return UpdateCharacterJobData(connection, commonId, replacedCharacterJobData);
+            }
+            return true;
+        }
+
+        public bool InsertCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertCharacterJobData(connection, commonId, updatedCharacterJobData);
+        }
+
+        public bool InsertCharacterJobData(TCon connection, uint commonId, CDataCharacterJobData updatedCharacterJobData)
+        {
+            return ExecuteNonQuery(connection, SqlInsertCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
         }
         
+        public bool InsertIfNotExistsCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertIfNotExistsCharacterJobData(connection, commonId, updatedCharacterJobData);
+        }
+
+        public bool InsertIfNotExistsCharacterJobData(TCon connection, uint commonId, CDataCharacterJobData updatedCharacterJobData)
+        {
+            return ExecuteNonQuery(connection, SqlInsertIfNotExistsCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
+        }
+
         public bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
         {
-            return ExecuteNonQuery(SqlUpdateCharacterJobData, command =>
-            {
-                AddParameter(command, commonId, updatedCharacterJobData);
-            }) == 1;
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterJobData(connection, commonId, updatedCharacterJobData);
+        }
+
+        public bool UpdateCharacterJobData(TCon connection, uint commonId, CDataCharacterJobData updatedCharacterJobData)
+        {
+            return ExecuteNonQuery(connection, SqlUpdateCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
         }
 
         private CDataCharacterJobData ReadCharacterJobData(TReader reader)
