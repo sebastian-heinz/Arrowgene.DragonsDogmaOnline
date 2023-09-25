@@ -264,10 +264,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataShortCut shortcut in character.ShortCutList)
             {
-                ExecuteNonQuery(conn, SqlReplaceShortcut, command =>
-                {
-                    AddParameter(command, character.CharacterId, shortcut);
-                });
+                ReplaceShortcut(conn, character.CharacterId, shortcut);
             }
 
             foreach(CDataCommunicationShortCut communicationShortcut in character.CommunicationShortCutList)

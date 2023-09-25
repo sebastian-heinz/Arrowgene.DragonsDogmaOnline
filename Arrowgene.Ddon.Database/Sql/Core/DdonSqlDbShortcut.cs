@@ -14,14 +14,37 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private readonly string SqlInsertShortcut = $"INSERT INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)});";
-        protected virtual string SqlReplaceShortcut { get; } = $"INSERT OR REPLACE INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)});";
+        private readonly string SqlInsertIfNotExistsShortcut = $"INSERT INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) SELECT {BuildQueryInsert(ShortcutFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_shortcut\" WHERE \"character_id\"=@character_id AND \"page_no\"=@page_no AND \"button_no\"=@button_no);";
         private static readonly string SqlUpdateShortcut = $"UPDATE \"ddon_shortcut\" SET {BuildQueryUpdate(ShortcutFields)} WHERE \"character_id\"=@old_character_id AND \"page_no\"=@old_page_no AND \"button_no\"=@old_button_no";
         private static readonly string SqlSelectShortcuts = $"SELECT {BuildQueryField(ShortcutFields)} FROM \"ddon_shortcut\" WHERE \"character_id\"=@character_id;";
         private const string SqlDeleteShortcut = "DELETE FROM \"ddon_shortcut\" WHERE \"character_id\"=@character_id AND \"page_no\"=@page_no AND \"button_no\"=@button_no";
 
+        public bool InsertIfNotExistsShortcut(uint characterId, CDataShortCut shortcut)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertShortcut(connection, characterId, shortcut);
+        }
+        
+        public bool InsertIfNotExistsShortcut(TCon connection, uint characterId, CDataShortCut shortcut)
+        {
+            return ExecuteNonQuery(connection, SqlInsertIfNotExistsShortcut, command =>
+            {
+                AddParameter(command, characterId, shortcut);
+                AddParameter(command, "@character_id", characterId);
+                AddParameter(command, "@page_no", shortcut.PageNo);
+                AddParameter(command, "@button_no", shortcut.ButtonNo);
+            }) == 1;
+        }
+        
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut)
         {
-            return ExecuteNonQuery(SqlInsertShortcut, command =>
+            using TCon connection = OpenNewConnection();
+            return InsertShortcut(connection, characterId, shortcut);
+        }
+        
+        public bool InsertShortcut(TCon connection, uint characterId, CDataShortCut shortcut)
+        {
+            return ExecuteNonQuery(connection, SqlInsertShortcut, command =>
             {
                 AddParameter(command, characterId, shortcut);
             }) == 1;
@@ -29,16 +52,29 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut)
         {
-            ExecuteNonQuery(SqlReplaceShortcut, command =>
+            using TCon connection = OpenNewConnection();
+            return ReplaceShortcut(connection, characterId, shortcut);
+        }       
+        
+        public bool ReplaceShortcut(TCon connection, uint characterId, CDataShortCut shortcut)
+        {
+            Logger.Debug("Inserting shortcut.");
+            if (!InsertIfNotExistsShortcut(connection, characterId, shortcut))
             {
-                AddParameter(command, characterId, shortcut);
-            });
+                Logger.Debug("Shortcut already exists, replacing.");
+                return UpdateShortcut(connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
+            }
             return true;
         }
 
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut)
         {
-            return ExecuteNonQuery(SqlDeleteShortcut, command =>
+            using TCon connection = OpenNewConnection();
+            return UpdateShortcut(connection, characterId, oldPageNo, oldButtonNo, updatedShortcut);
+        }
+        public bool UpdateShortcut(TCon connection, uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut)
+        {
+            return ExecuteNonQuery(connection, SqlUpdateShortcut, command =>
             {
                 AddParameter(command, characterId, updatedShortcut);
                 AddParameter(command, "@old_character_id", characterId);

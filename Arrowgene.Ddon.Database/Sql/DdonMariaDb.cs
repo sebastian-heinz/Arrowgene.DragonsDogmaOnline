@@ -82,9 +82,6 @@ namespace Arrowgene.Ddon.Database.Sql
         protected override string SqlReplaceNormalSkillParam =>
             $"INSERT INTO \"ddon_normal_skill_param\" ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataNormalSkillParamFields)};";
 
-        protected override string SqlReplaceShortcut =>
-            $"INSERT INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, ShortcutFields)};";
-
         protected override string SqlReplacePawnReaction =>
             $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, CDataPawnReactionFields)};";
 
