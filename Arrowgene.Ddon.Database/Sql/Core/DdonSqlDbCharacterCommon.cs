@@ -263,10 +263,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     byte slotNo = (byte)(i+1);
                     if(skill != null)
                     {
-                        ExecuteNonQuery(conn, SqlReplaceEquippedCustomSkill, command =>
-                        {
-                            AddParameter(command, common.CommonId, slotNo, skill);
-                        });
+                        ReplaceEquippedCustomSkill(conn, common.CommonId, slotNo, skill);
                     }
                 }
             }
