@@ -118,9 +118,6 @@ namespace Arrowgene.Ddon.Database.Sql
         protected override string SqlReplaceEquippedAbility =>
             $"INSERT INTO \"ddon_equipped_ability\" ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equipped_ability DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", EquippedAbilityFields)};";
 
-        protected override string SqlReplaceNormalSkillParam =>
-            $"INSERT INTO \"ddon_normal_skill_param\" ({BuildQueryField(CDataNormalSkillParamFields)}) VALUES ({BuildQueryInsert(CDataNormalSkillParamFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_normal_skill_param DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataNormalSkillParamFields)};";
-
         protected override string SqlReplacePawnReaction =>
             $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_pawn_reaction DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataPawnReactionFields)};";
 

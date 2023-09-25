@@ -241,10 +241,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataNormalSkillParam normalSkillParam in common.LearnedNormalSkills)
             {
-                ExecuteNonQuery(conn, SqlReplaceNormalSkillParam, command =>
-                {
-                    AddParameter(command, common.CommonId, normalSkillParam);
-                });
+                ReplaceNormalSkillParam(conn, common.CommonId, normalSkillParam);
             }
 
             foreach(CustomSkill learnedSkills in common.LearnedCustomSkills)
