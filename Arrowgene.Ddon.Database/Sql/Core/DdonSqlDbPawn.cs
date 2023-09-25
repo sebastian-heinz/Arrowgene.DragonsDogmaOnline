@@ -44,10 +44,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeletePawn = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_pawn\" WHERE \"pawn_id\"=@pawn_id);";
 
         private readonly string SqlInsertPawnReaction = $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
-
-        protected virtual string SqlReplacePawnReaction { get; } =
-            $"REPLACE INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
-
+        private readonly string SqlInsertIfNotExistsPawnReaction = $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) SELECT {BuildQueryInsert(CDataPawnReactionFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\"=@pawn_id AND \"reaction_type\"=@reaction_type);";
         private static readonly string SqlUpdatePawnReaction = $"UPDATE \"ddon_pawn_reaction\" SET {BuildQueryUpdate(CDataPawnReactionFields)} WHERE \"pawn_id\" = @pawn_id AND \"reaction_type\"=@reaction_type;";
         private static readonly string SqlSelectPawnReactionByPawnId = $"SELECT {BuildQueryField(CDataPawnReactionFields)} FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\" = @pawn_id;";
         private const string SqlDeletePawnReaction = "DELETE FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\"=@pawn_id AND \"reaction_type\"=@reaction_type;";
@@ -174,10 +171,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach (CDataPawnReaction pawnReaction in pawn.PawnReactionList)
             {
-                ExecuteNonQuery(conn, SqlReplacePawnReaction, command =>
-                {
-                    AddParameter(command, pawn.PawnId, pawnReaction);
-                });
+                ReplacePawnReaction(conn, pawn.PawnId, pawnReaction);
             }
 
             foreach (CDataSpSkill spSkill in pawn.SpSkillList)
@@ -271,12 +265,84 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool DeleteNormalSkillParam(uint pawnId, byte spSkillId)
+        public bool DeleteSpSkill(uint pawnId, byte spSkillId)
         {
             return ExecuteNonQuery(SqlDeleteSpSkill, command =>
             {
                 AddParameter(command, "@pawn_id", pawnId);
                 AddParameter(command, "@sp_skill_id", spSkillId);
+            }) == 1;
+        }
+        
+        public bool InsertIfNotExistsPawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertIfNotExistsPawnReaction(connection, pawnId, pawnReaction);
+        }
+
+        public bool InsertIfNotExistsPawnReaction(TCon conn, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            return ExecuteNonQuery(conn, SqlInsertIfNotExistsPawnReaction, command =>
+            {
+                AddParameter(command, pawnId, pawnReaction);
+                AddParameter(command, "@pawn_id", pawnId);
+                AddParameter(command, "@reaction_type", pawnReaction.ReactionType);
+            }) == 1;
+        }
+        
+        public bool InsertPawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertPawnReaction(connection, pawnId, pawnReaction);
+        }
+
+        public bool InsertPawnReaction(TCon conn, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            return ExecuteNonQuery(conn, SqlInsertPawnReaction, command =>
+            {
+                AddParameter(command, pawnId, pawnReaction);
+            }) == 1;
+        }
+
+        public bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            using TCon connection = OpenNewConnection();
+            return ReplacePawnReaction(connection, pawnId, pawnReaction);
+        }
+
+        public bool ReplacePawnReaction(TCon conn, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            Logger.Debug("Inserting pawn reaction.");
+            if (!InsertIfNotExistsPawnReaction(conn, pawnId, pawnReaction))
+            {
+                Logger.Debug("Pawn reaction already exists, replacing.");
+                return UpdatePawnReaction(conn, pawnId, pawnReaction);
+            }
+            return true;
+        }
+
+        public bool UpdatePawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdatePawnReaction(connection, pawnId, pawnReaction);
+        }
+
+        public bool UpdatePawnReaction(TCon connection, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            return ExecuteNonQuery(connection, SqlUpdatePawnReaction, command =>
+            {
+                AddParameter(command, pawnId, pawnReaction);
+                AddParameter(command, "@pawn_id", pawnId);
+                AddParameter(command, "@reaction_type", pawnReaction.ReactionType);
+            }) == 1;
+        }
+        
+        public bool DeleteNormalSkillParam(uint pawnId, byte reactionType)
+        {
+            return ExecuteNonQuery(SqlDeletePawnReaction, command =>
+            {
+                AddParameter(command, "@pawn_id", pawnId);
+                AddParameter(command, "@reaction_type", reactionType);
             }) == 1;
         }
 
