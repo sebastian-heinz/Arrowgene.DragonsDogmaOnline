@@ -114,8 +114,5 @@ namespace Arrowgene.Ddon.Database.Sql
 
             return DateTime.SpecifyKind(reader.GetDateTime(ordinal), DateTimeKind.Utc);
         }
-
-        protected override string SqlReplaceEquippedAbility =>
-            $"INSERT INTO \"ddon_equipped_ability\" ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_equipped_ability DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", EquippedAbilityFields)};";
     }
 }

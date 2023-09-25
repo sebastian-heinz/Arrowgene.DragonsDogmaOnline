@@ -75,8 +75,5 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             throw new NotImplementedException();
         }
-
-        protected override string SqlReplaceEquippedAbility =>
-            $"INSERT INTO \"ddon_equipped_ability\" ({BuildQueryField(EquippedAbilityFields)}) VALUES ({BuildQueryInsert(EquippedAbilityFields)}) ON DUPLICATE KEY UPDATE {BuildQueryUpdateWithPrefix(string.Empty, EquippedAbilityFields)};";
     }
 }
