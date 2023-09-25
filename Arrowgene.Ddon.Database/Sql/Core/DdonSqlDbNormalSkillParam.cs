@@ -31,9 +31,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(conn, SqlInsertIfNotExistsNormalSkillParam, command =>
             {
                 AddParameter(command, commonId, normalSkillParam);
-                AddParameter(command, "@character_common_id", commonId);
-                AddParameter(command, "@job", (byte) normalSkillParam.Job);
-                AddParameter(command, "@skill_no", normalSkillParam.SkillNo);
             }) == 1;
         }
         
@@ -80,9 +77,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlUpdateNormalSkillParam, command =>
             {
                 AddParameter(command, commonId, normalSkillParam);
-                AddParameter(command, "@character_common_id", commonId);
-                AddParameter(command, "@job", (byte)job);
-                AddParameter(command, "@skill_no", skillNo);
             }) == 1;
         }
         

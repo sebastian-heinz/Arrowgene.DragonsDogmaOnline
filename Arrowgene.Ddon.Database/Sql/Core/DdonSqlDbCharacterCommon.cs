@@ -64,7 +64,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             int commonUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterCommon, command =>
             {
-                AddParameter(command, "@character_common_id", common.CommonId);
                 AddParameter(command, common);
             });
 
@@ -81,7 +80,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             int commonUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateEditInfo, command =>
             {
-                AddParameter(command, "@character_common_id", common.CommonId);
                 AddParameter(command, common);
             });
 
@@ -98,7 +96,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             int commonUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateStatusInfo, command =>
             {
-                AddParameter(command, "@character_common_id", common.CommonId);
                 AddParameter(command, common);
             });
 

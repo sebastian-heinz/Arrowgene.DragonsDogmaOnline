@@ -30,9 +30,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlInsertIfNotExistsShortcut, command =>
             {
                 AddParameter(command, characterId, shortcut);
-                AddParameter(command, "@character_id", characterId);
-                AddParameter(command, "@page_no", shortcut.PageNo);
-                AddParameter(command, "@button_no", shortcut.ButtonNo);
             }) == 1;
         }
         

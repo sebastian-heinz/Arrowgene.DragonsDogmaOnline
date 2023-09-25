@@ -96,7 +96,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacter, command =>
             {
-                AddParameter(command, "@character_id", character.CharacterId);
                 AddParameter(command, character);
             });
 
@@ -113,7 +112,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterMatchingProfile, command =>
             {
-                AddParameter(command, "@character_id", character.CharacterId);
                 AddParameter(command, character);
             });
 
@@ -130,7 +128,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterArisenProfile, command =>
             {
-                AddParameter(command, "@character_id", character.CharacterId);
                 AddParameter(command, character);
             });
 

@@ -214,7 +214,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(conn, SqlInsertIfNotExistsSpSkill, command =>
             {
                 AddParameter(command, pawnId, spSkill);
-                AddParameter(command, "@pawn_id", pawnId);
             }) == 1;
         }
         
@@ -260,8 +259,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlUpdateSpSkill, command =>
             {
                 AddParameter(command, pawnId, spSkill);
-                AddParameter(command, "@pawn_id", pawnId);
-                AddParameter(command, "@sp_skill_id", spSkill.SpSkillId);
             }) == 1;
         }
         
@@ -285,8 +282,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(conn, SqlInsertIfNotExistsPawnReaction, command =>
             {
                 AddParameter(command, pawnId, pawnReaction);
-                AddParameter(command, "@pawn_id", pawnId);
-                AddParameter(command, "@reaction_type", pawnReaction.ReactionType);
             }) == 1;
         }
         
@@ -332,8 +327,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlUpdatePawnReaction, command =>
             {
                 AddParameter(command, pawnId, pawnReaction);
-                AddParameter(command, "@pawn_id", pawnId);
-                AddParameter(command, "@reaction_type", pawnReaction.ReactionType);
             }) == 1;
         }
         
