@@ -120,8 +120,5 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected override string SqlReplacePawnReaction =>
             $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_pawn_reaction DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataPawnReactionFields)};";
-
-        protected override string SqlReplaceSpSkill =>
-            $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_sp_skill DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataSpSkillFields)};";
     }
 }
