@@ -15,17 +15,34 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private readonly string SqlInsertWalletPoint = $"INSERT INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)});";
-
-        protected virtual string SqlReplaceWalletPoint { get; } =
-            $"INSERT OR REPLACE INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)});";
-
+        private readonly string SqlInsertIfNotExistsWalletPoint = $"INSERT INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) SELECT {BuildQueryInsert(WalletPointFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_wallet_point\" WHERE \"character_id\"=@character_id AND \"type\"=@type);";
         private static readonly string SqlUpdateWalletPoint = $"UPDATE \"ddon_wallet_point\" SET {BuildQueryUpdate(WalletPointFields)} WHERE \"character_id\"=@character_id AND \"type\"=@type";
         private static readonly string SqlSelectWalletPoints = $"SELECT {BuildQueryField(WalletPointFields)} FROM \"ddon_wallet_point\" WHERE \"character_id\"=@character_id;";
         private const string SqlDeleteWalletPoint = "DELETE FROM \"ddon_wallet_point\" WHERE \"character_id\"=@character_id AND \"type\"=@type";
 
+        public bool InsertIfNotExistsWalletPoint(uint characterId, CDataWalletPoint walletPoint)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertIfNotExistsWalletPoint(connection, characterId, walletPoint);
+        }
+        
+        public bool InsertIfNotExistsWalletPoint(TCon connection, uint characterId, CDataWalletPoint walletPoint)
+        {
+            return ExecuteNonQuery(connection, SqlInsertIfNotExistsWalletPoint, command =>
+            {
+                AddParameter(command, characterId, walletPoint);
+            }) == 1;
+        }
+        
         public bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint)
         {
-            return ExecuteNonQuery(SqlInsertWalletPoint, command =>
+            using TCon connection = OpenNewConnection();
+            return InsertWalletPoint(connection, characterId, walletPoint);
+        }
+        
+        public bool InsertWalletPoint(TCon connection, uint characterId, CDataWalletPoint walletPoint)
+        {
+            return ExecuteNonQuery(connection, SqlInsertWalletPoint, command =>
             {
                 AddParameter(command, characterId, walletPoint);
             }) == 1;
@@ -33,16 +50,30 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         public bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint)
         {
-            ExecuteNonQuery(SqlReplaceWalletPoint, command =>
+            using TCon connection = OpenNewConnection();
+            return ReplaceWalletPoint(connection, characterId, walletPoint);
+        }        
+        
+        public bool ReplaceWalletPoint(TCon connection, uint characterId, CDataWalletPoint walletPoint)
+        {
+            Logger.Debug("Inserting wallet point.");
+            if (!InsertIfNotExistsWalletPoint(connection, characterId, walletPoint))
             {
-                AddParameter(command, characterId, walletPoint);
-            });
+                Logger.Debug("Wallet point already exists, replacing.");
+                return UpdateWalletPoint(connection, characterId, walletPoint);
+            }
             return true;
         }
 
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint)
         {
-            return ExecuteNonQuery(SqlUpdateWalletPoint, command =>
+            using TCon connection = OpenNewConnection();
+            return UpdateWalletPoint(connection, characterId, updatedWalletPoint);
+        }
+        
+        public bool UpdateWalletPoint(TCon connection, uint characterId, CDataWalletPoint updatedWalletPoint)
+        {
+            return ExecuteNonQuery(connection, SqlUpdateWalletPoint, command =>
             {
                 AddParameter(command, characterId, updatedWalletPoint);
             }) == 1;

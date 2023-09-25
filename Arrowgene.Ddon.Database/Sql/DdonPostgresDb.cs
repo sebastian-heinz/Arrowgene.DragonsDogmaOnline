@@ -124,9 +124,6 @@ namespace Arrowgene.Ddon.Database.Sql
         protected override string SqlReplaceShortcut =>
             $"INSERT INTO \"ddon_shortcut\" ({BuildQueryField(ShortcutFields)}) VALUES ({BuildQueryInsert(ShortcutFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_shortcut DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", ShortcutFields)};";
 
-        protected override string SqlReplaceWalletPoint =>
-            $"INSERT INTO \"ddon_wallet_point\" ({BuildQueryField(WalletPointFields)}) VALUES ({BuildQueryInsert(WalletPointFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_wallet_point DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", WalletPointFields)};";
-
         protected override string SqlReplacePawnReaction =>
             $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)}) ON CONFLICT ON CONSTRAINT pk_ddon_pawn_reaction DO UPDATE SET {BuildQueryUpdateWithPrefix("excluded.", CDataPawnReactionFields)};";
 

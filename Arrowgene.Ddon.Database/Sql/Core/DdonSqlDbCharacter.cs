@@ -282,10 +282,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)
             {
-                ExecuteNonQuery(conn, SqlReplaceWalletPoint, command => 
-                {
-                    AddParameter(command, character.CharacterId, walletPoint);
-                });
+                ReplaceWalletPoint(conn, character.CharacterId, walletPoint);
             }
         }
 
