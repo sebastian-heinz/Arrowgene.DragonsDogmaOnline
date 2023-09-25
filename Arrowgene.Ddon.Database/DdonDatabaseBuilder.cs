@@ -60,9 +60,9 @@ namespace Arrowgene.Ddon.Database
             {
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                schema = Regex.Replace(schema, "(\\s)DATETIME(\\s)", " TIMESTAMP WITH TIME ZONE ");
-                schema = Regex.Replace(schema, "(\\s)INTEGER PRIMARY KEY AUTOINCREMENT(\\s)", " SERIAL PRIMARY KEY ");
-                schema = Regex.Replace(schema, "(\\s)BLOB(\\s)", " BYTEA ");
+                schema = Regex.Replace(schema, "(\\s)DATETIME(\\s|,)", "$1TIMESTAMP WITH TIME ZONE$2");
+                schema = Regex.Replace(schema, "(\\s)INTEGER PRIMARY KEY AUTOINCREMENT(\\s|,)", "$1SERIAL PRIMARY KEY$2");
+                schema = Regex.Replace(schema, "(\\s)BLOB(\\s|,)", "$1BYTEA$2");
                 
                 db.Execute(schema);
             }
@@ -77,7 +77,7 @@ namespace Arrowgene.Ddon.Database
             {
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                schema = Regex.Replace(schema, "(\\s)AUTOINCREMENT(\\s)", " AUTO_INCREMENT ");
+                schema = Regex.Replace(schema, "(\\s)AUTOINCREMENT(\\s|,)", "$1AUTO_INCREMENT$2");
                 
                 db.Execute(schema);
             }
