@@ -22,7 +22,7 @@ services:
       - LANG=C.UTF_8
     command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
     healthcheck:
-      test: ["CMD", "/usr/local/bin/healthcheck.sh", "--connect", "--innodb_initialized"]
+      test: ["CMD-SHELL", "mariadb --defaults-file=/var/lib/mysql/.my-healthcheck.cnf --skip-column-names -h localhost -e \"select 1 from information_schema.ENGINES WHERE ENGINE='InnoDB' AND support in ('YES', 'DEFAULT', 'ENABLED')\""]
       interval: 10s
       timeout: 1s
       retries: 3
