@@ -4,6 +4,8 @@
 
 = Dragons Dogma Online - Server
 
+image::https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/actions/workflows/build.yaml/badge.svg[]
+
 Server Emulator for the Game Dragons Dogma Online.
 
 '''
