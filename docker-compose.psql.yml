@@ -18,6 +18,15 @@ services:
       - "52099:52099"
       # Login server
       - "52100:52100"
+    environment:
+      - DB_TYPE=postgresql
+      - DB_DATABASE=postgres
+      - DB_FOLDER=/var/ddon/server/Files/Database
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_PORT=5432
+      - DB_WIPE_ON_STARTUP=false
     volumes:
       - ./Arrowgene.Ddon.config.psql.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
       - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets:ro

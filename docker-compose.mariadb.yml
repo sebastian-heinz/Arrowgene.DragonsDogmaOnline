@@ -18,6 +18,15 @@ services:
       - "52099:52099"
       # Login server
       - "52100:52100"
+    environment:
+      - DB_TYPE=mariadb
+      - DB_DATABASE=mariadb
+      - DB_FOLDER=/var/ddon/server/Files/Database
+      - DB_HOST=db
+      - DB_USER=admin
+      - DB_PASS=admin
+      - DB_PORT=3306
+      - DB_WIPE_ON_STARTUP=false
     volumes:
       - ./Arrowgene.Ddon.config.mariadb.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
       - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets:ro

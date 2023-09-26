@@ -147,15 +147,5 @@
     "UrlShopStoneLimit": "http:\/\/localhost:52099\/shop\/ingame\/stone\/limit",
     "UrlSupportIndex": "http:\/\/localhost:52099\/sp_ingame\/support\/index.html"
   },
-  "DatabaseSetting": {
-    "Type": "mariadb",
-    "DatabaseFolder": "\/var\/ddon\/server\/Files\/Database",
-    "Host": "localhost",
-    "Port": 3306,
-    "User": "admin",
-    "Password": "admin",
-    "Database": "mariadb",
-    "WipeOnStartup": false
-  },
   "AssetPath": "\/var\/ddon\/server\/Files\/Assets"
 }
