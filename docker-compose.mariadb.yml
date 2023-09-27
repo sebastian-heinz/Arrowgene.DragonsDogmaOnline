@@ -9,7 +9,10 @@ networks:
 services:
   app:
     container_name: ddon-server
-    build: .
+    build: 
+      context: .
+      args:
+        - RUNTIME=${RUNTIME}
     restart: no
     ports:
       # Game server

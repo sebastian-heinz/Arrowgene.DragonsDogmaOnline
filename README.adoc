@@ -71,7 +71,10 @@ A xref:./Dockerfile[Dockerfile] is provided which encapsulates everything requir
 
 * Force rebuild `docker-compose up --build`
 * Clean up & delete persistent volumes (data) as well `docker-compose down -v`
+* Only build the image `docker-compose build`
+* Build for other runtimes, e.g. arm64 `RUNTIME=linux-arm64 docker-compose build`
 * All-in-one clean & rebuild `docker-compose down -v && docker-compose up --build`
+* All-in-one clean & rebuild & arm64 `RUNTIME=linux-arm64 docker-compose down -v && docker-compose up --build`
 
 == Server
 With default configuration the server will listen on following ports:
