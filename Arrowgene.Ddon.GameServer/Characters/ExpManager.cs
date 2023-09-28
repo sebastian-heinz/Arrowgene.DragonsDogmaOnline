@@ -1,24 +1,32 @@
-using System.Linq;
+#nullable enable
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using System;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
-    struct JobLevelUp
+    struct BaseStats
     {
         public ushort Lv;
         public ushort Atk;
+        public double AtkRate;
         public ushort Def;
+        public double DefRate;
         public ushort MAtk;
+        public double MAtkRate;
         public ushort MDef;
+        public double MDefRate;
     }
 
     public class ExpManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ExpManager));
+
         private static readonly byte LV_CAP = 120;
 
         // E.g. EXP_UNTIL_NEXT_LV[3] = 800, meaning as Lv 3 you need 800 exp to level to Lv 4
@@ -144,1771 +152,181 @@ namespace Arrowgene.Ddon.GameServer.Characters
             /* Lv 118 */ 5000000,
             /* Lv 119 */ 5000000,
         };
+        
+        // E.g. LEVEL_UP_JOB_POINTS_EARNED[3] = 300, meaning you earn 300 JP when you reach Lv 3
+        public static readonly uint[] LEVEL_UP_JOB_POINTS_EARNED = new uint[] {0,200,200,300,300,400,400,500,600,700,700,800,1000,1200,1400,1600,1800,2000,2300,2600,2900,3300,3500,3800,3800,4000,4000,4500,4500,5000,5000,5500,5800,5800,6500,6500,6800,6800,8000,8000,9000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-        private static readonly Dictionary<JobId, JobLevelUp[]> LEVEL_UP_TABLE = new Dictionary<JobId, JobLevelUp[]>()
+        // Growth sources: https://wiki.famitsu.com/dd-online/%E3%82%B8%E3%83%A7%E3%83%96/%E3%83%95%E3%82%A1%E3%82%A4%E3%82%BF%E3%83%BC
+        private static readonly Dictionary<JobId, BaseStats> BASE_STATS_TABLE = new Dictionary<JobId, BaseStats>()
             {
                 {
+                    // Fighter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
                     JobId.Fighter,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                            Lv = 0,
-                            Atk = 0,
-                            Def = 0,
-                            MAtk = 0,
-                            MDef = 0,
-                        },
-                        new JobLevelUp() {
-                            Lv = 9,
-                            Atk = 40,
-                            Def = 30,
-                            MAtk = 20,
-                            MDef = 20,
-                        },
-                        new JobLevelUp() {
-                            Lv = 19,
-                            Atk = 80,
-                            Def = 70,
-                            MAtk = 40,
-                            MDef = 30,
-                        },
-                        new JobLevelUp() {
-                            Lv = 29,
-                            Atk = 120,
-                            Def = 110,
-                            MAtk = 60,
-                            MDef = 40,
-                        },
-                        new JobLevelUp() {
-                            Lv = 39,
-                            Atk = 160,
-                            Def = 150,
-                            MAtk = 80,
-                            MDef = 50,
-                        },
-                        new JobLevelUp() {
-                            Lv = 49,
-                            Atk = 200,
-                            Def = 190,
-                            MAtk = 100,
-                            MDef = 60,
-                        },
-                        new JobLevelUp() {
-                            Lv = 59,
-                            Atk = 240,
-                            Def = 230,
-                            MAtk = 120,
-                            MDef = 70,
-                        },
-                        new JobLevelUp() {
-                            Lv = 69,
-                            Atk = 280,
-                            Def = 270,
-                            MAtk = 140,
-                            MDef = 80,
-                        },
-                        new JobLevelUp() {
-                            Lv = 79,
-                            Atk = 320,
-                            Def = 310,
-                            MAtk = 160,
-                            MDef = 90,
-                        },
-                        new JobLevelUp() {
-                            Lv = 89,
-                            Atk = 360,
-                            Def = 350,
-                            MAtk = 180,
-                            MDef = 100,
-                        },
-                        new JobLevelUp() {
-                            Lv = 99,
-                            Atk = 400,
-                            Def = 390,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 109,
-                            Atk = 410,
-                            Def = 420,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 119,
-                            Atk = 420,
-                            Def = 450,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 129,
-                            Atk = 430,
-                            Def = 480,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 139,
-                            Atk = 440,
-                            Def = 510,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 149,
-                            Atk = 450,
-                            Def = 540,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 159,
-                            Atk = 460,
-                            Def = 570,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 169,
-                            Atk = 470,
-                            Def = 600,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 179,
-                            Atk = 480,
-                            Def = 630,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 189,
-                            Atk = 490,
-                            Def = 660,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 199,
-                            Atk = 500,
-                            Def = 690,
-                            MAtk = 200,
-                            MDef = 110,
-                        },
-                        new JobLevelUp() {
-                            Lv = 999,
-                            Atk = 500,
-                            Def = 690,
-                            MAtk = 200,
-                            MDef = 110,
-                        }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 30,
+                        AtkRate = 3,
+                        Def = 120,
+                        DefRate = 1.2,
+                        MAtk = 20,
+                        MAtkRate = 2,
+                        MDef = 83,
+                        MDefRate = 0.8
                     }
                 },
                 {
+                    // Seeker growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 10(base lv1) +0
                     JobId.Seeker,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                            Lv = 0,
-                            Atk = 0,
-                            Def = 0,
-                            MAtk = 0,
-                            MDef = 0
-                        },
-                        new JobLevelUp() {
-                            Lv = 9,
-                            Atk = 30,
-                            Def = 30,
-                            MAtk = 30,
-                            MDef = 20
-                        },
-                        new JobLevelUp() {
-                            Lv = 19,
-                            Atk = 60,
-                            Def = 60,
-                            MAtk = 60,
-                            MDef = 40
-                        },
-                        new JobLevelUp() {
-                            Lv = 29,
-                            Atk = 90,
-                            Def = 90,
-                            MAtk = 90,
-                            MDef = 60
-                        },
-                        new JobLevelUp() {
-                            Lv = 39,
-                            Atk = 120,
-                            Def = 120,
-                            MAtk = 120,
-                            MDef = 80
-                        },
-                        new JobLevelUp() {
-                            Lv = 49,
-                            Atk = 150,
-                            Def = 150,
-                            MAtk = 150,
-                            MDef = 100
-                        },
-                        new JobLevelUp() {
-                            Lv = 59,
-                            Atk = 180,
-                            Def = 180,
-                            MAtk = 180,
-                            MDef = 120
-                        },
-                        new JobLevelUp() {
-                            Lv = 69,
-                            Atk = 210,
-                            Def = 210,
-                            MAtk = 210,
-                            MDef = 140
-                        },
-                        new JobLevelUp() {
-                            Lv = 79,
-                            Atk = 240,
-                            Def = 240,
-                            MAtk = 240,
-                            MDef = 160
-                        },
-                        new JobLevelUp() {
-                            Lv = 89,
-                            Atk = 270,
-                            Def = 270,
-                            MAtk = 270,
-                            MDef = 180
-                        },
-                        new JobLevelUp() {
-                            Lv = 99,
-                            Atk = 300,
-                            Def = 300,
-                            MAtk = 300,
-                            MDef = 200
-                        },
-                        new JobLevelUp() {
-                            Lv = 109,
-                            Atk = 310,
-                            Def = 310,
-                            MAtk = 310,
-                            MDef = 310
-                        },
-                        new JobLevelUp() {
-                            Lv = 119,
-                            Atk = 320,
-                            Def = 320,
-                            MAtk = 320,
-                            MDef = 320
-                        },
-                        new JobLevelUp() {
-                            Lv = 129,
-                            Atk = 330,
-                            Def = 330,
-                            MAtk = 330,
-                            MDef = 330
-                        },
-                        new JobLevelUp() {
-                            Lv = 139,
-                            Atk = 340,
-                            Def = 340,
-                            MAtk = 340,
-                            MDef = 340
-                        },
-                        new JobLevelUp() {
-                            Lv = 149,
-                            Atk = 350,
-                            Def = 350,
-                            MAtk = 350,
-                            MDef = 350
-                        },
-                        new JobLevelUp() {
-                            Lv = 159,
-                            Atk = 360,
-                            Def = 360,
-                            MAtk = 360,
-                            MDef = 360
-                        },
-                        new JobLevelUp() {
-                            Lv = 169,
-                            Atk = 370,
-                            Def = 370,
-                            MAtk = 370,
-                            MDef = 370
-                        },
-                        new JobLevelUp() {
-                            Lv = 179,
-                            Atk = 380,
-                            Def = 380,
-                            MAtk = 380,
-                            MDef = 380
-                        },
-                        new JobLevelUp() {
-                            Lv = 189,
-                            Atk = 390,
-                            Def = 390,
-                            MAtk = 390,
-                            MDef = 390
-                        },
-                        new JobLevelUp() {
-                            Lv = 199,
-                            Atk = 400,
-                            Def = 400,
-                            MAtk = 400,
-                            MDef = 400
-                        },
-                        new JobLevelUp() {
-                            Lv = 999,
-                            Atk = 400,
-                            Def = 400,
-                            MAtk = 400,
-                            MDef = 400
-                        }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 30,
+                        AtkRate = 3,
+                        Def = 83,
+                        DefRate = 0.8,
+                        MAtk = 20,
+                        MAtkRate = 2,
+                        MDef = 83,
+                        MDefRate = 0.8
                     }
                 },
                 {
+                    // Hunter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
                     JobId.Hunter,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 30,
-                    Def = 30,
-                    MAtk = 30,
-                    MDef = 20
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 70,
-                    Def = 50,
-                    MAtk = 60,
-                    MDef = 40
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 110,
-                    Def = 70,
-                    MAtk = 90,
-                    MDef = 60
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 150,
-                    Def = 90,
-                    MAtk = 120,
-                    MDef = 80
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 190,
-                    Def = 110,
-                    MAtk = 150,
-                    MDef = 100
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 230,
-                    Def = 130,
-                    MAtk = 180,
-                    MDef = 120
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 270,
-                    Def = 150,
-                    MAtk = 210,
-                    MDef = 140
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 310,
-                    Def = 170,
-                    MAtk = 240,
-                    MDef = 160
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 350,
-                    Def = 190,
-                    MAtk = 270,
-                    MDef = 180
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 390,
-                    Def = 210,
-                    MAtk = 300,
-                    MDef = 200
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 410,
-                    Def = 220,
-                    MAtk = 300,
-                    MDef = 210
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 430,
-                    Def = 230,
-                    MAtk = 300,
-                    MDef = 220
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 450,
-                    Def = 240,
-                    MAtk = 300,
-                    MDef = 230
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 470,
-                    Def = 250,
-                    MAtk = 300,
-                    MDef = 240
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 490,
-                    Def = 260,
-                    MAtk = 300,
-                    MDef = 250
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 510,
-                    Def = 270,
-                    MAtk = 300,
-                    MDef = 260
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 530,
-                    Def = 280,
-                    MAtk = 300,
-                    MDef = 270
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 550,
-                    Def = 290,
-                    MAtk = 300,
-                    MDef = 280
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 570,
-                    Def = 300,
-                    MAtk = 300,
-                    MDef = 290
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 590,
-                    Def = 310,
-                    MAtk = 300,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 590,
-                    Def = 310,
-                    MAtk = 300,
-                    MDef = 300
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 30,
+                        AtkRate = 3,
+                        Def = 83,
+                        DefRate = 0.8,
+                        MAtk = 20,
+                        MAtkRate = 2,
+                        MDef = 83,
+                        MDefRate = 0.8
                     }
                 },
                 {
+                    // Priest growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 18(base lv1) +0
                     JobId.Priest,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 20,
-                    Def = 30,
-                    MAtk = 40,
-                    MDef = 30
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 40,
-                    Def = 40,
-                    MAtk = 80,
-                    MDef = 70
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 60,
-                    Def = 50,
-                    MAtk = 120,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 80,
-                    Def = 60,
-                    MAtk = 160,
-                    MDef = 150
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 100,
-                    Def = 70,
-                    MAtk = 200,
-                    MDef = 190
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 120,
-                    Def = 80,
-                    MAtk = 240,
-                    MDef = 230
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 140,
-                    Def = 90,
-                    MAtk = 280,
-                    MDef = 270
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 160,
-                    Def = 100,
-                    MAtk = 320,
-                    MDef = 310
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 180,
-                    Def = 110,
-                    MAtk = 360,
-                    MDef = 350
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 400,
-                    MDef = 390
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 420,
-                    MDef = 410
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 440,
-                    MDef = 430
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 460,
-                    MDef = 450
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 480,
-                    MDef = 470
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 500,
-                    MDef = 490
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 520,
-                    MDef = 510
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 540,
-                    MDef = 530
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 560,
-                    MDef = 550
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 580,
-                    MDef = 570
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 600,
-                    MDef = 590
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 600,
-                    MDef = 590
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 20,
+                        AtkRate = 2,
+                        Def = 58,
+                        DefRate = 0.4,
+                        MAtk = 30,
+                        MAtkRate = 3,
+                        MDef = 100,
+                        MDefRate = 1
                     }
                 },
                 {
+                    // ShieldSage growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 30(base lv1) +3 / Magi Def 120(base lv1) +1.2 / Blow 30(base lv1) +0
                     JobId.ShieldSage,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 20,
-                    Def = 30,
-                    MAtk = 20,
-                    MDef = 40
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 30,
-                    Def = 60,
-                    MAtk = 40,
-                    MDef = 90
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 40,
-                    Def = 90,
-                    MAtk = 60,
-                    MDef = 140
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 50,
-                    Def = 120,
-                    MAtk = 80,
-                    MDef = 190
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 60,
-                    Def = 150,
-                    MAtk = 100,
-                    MDef = 240
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 70,
-                    Def = 180,
-                    MAtk = 120,
-                    MDef = 290
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 80,
-                    Def = 210,
-                    MAtk = 140,
-                    MDef = 340
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 90,
-                    Def = 240,
-                    MAtk = 160,
-                    MDef = 390
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 100,
-                    Def = 270,
-                    MAtk = 180,
-                    MDef = 440
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 110,
-                    Def = 300,
-                    MAtk = 200,
-                    MDef = 490
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 110,
-                    Def = 310,
-                    MAtk = 210,
-                    MDef = 510
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 110,
-                    Def = 320,
-                    MAtk = 220,
-                    MDef = 530
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 110,
-                    Def = 330,
-                    MAtk = 230,
-                    MDef = 550
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 110,
-                    Def = 340,
-                    MAtk = 240,
-                    MDef = 570
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 110,
-                    Def = 350,
-                    MAtk = 250,
-                    MDef = 590
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 110,
-                    Def = 360,
-                    MAtk = 260,
-                    MDef = 610
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 110,
-                    Def = 370,
-                    MAtk = 270,
-                    MDef = 630
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 110,
-                    Def = 380,
-                    MAtk = 280,
-                    MDef = 650
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 110,
-                    Def = 390,
-                    MAtk = 290,
-                    MDef = 670
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 110,
-                    Def = 400,
-                    MAtk = 300,
-                    MDef = 690
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 110,
-                    Def = 400,
-                    MAtk = 300,
-                    MDef = 690
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 30,
+                        AtkRate = 3,
+                        Def = 120,
+                        DefRate = 1.2,
+                        MAtk = 30,
+                        MAtkRate = 3,
+                        MDef = 120,
+                        MDefRate = 1.2
                     }
                 },
                 {
+                    // Sorcerer growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 30(base lv1) +0
                     JobId.Sorcerer,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 20,
-                    Def = 30,
-                    MAtk = 40,
-                    MDef = 30
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 40,
-                    Def = 40,
-                    MAtk = 90,
-                    MDef = 80
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 60,
-                    Def = 50,
-                    MAtk = 140,
-                    MDef = 130
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 80,
-                    Def = 60,
-                    MAtk = 190,
-                    MDef = 180
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 100,
-                    Def = 70,
-                    MAtk = 240,
-                    MDef = 230
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 120,
-                    Def = 80,
-                    MAtk = 290,
-                    MDef = 280
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 140,
-                    Def = 90,
-                    MAtk = 340,
-                    MDef = 330
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 160,
-                    Def = 100,
-                    MAtk = 390,
-                    MDef = 380
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 180,
-                    Def = 110,
-                    MAtk = 440,
-                    MDef = 430
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 490,
-                    MDef = 480
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 520,
-                    MDef = 490
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 550,
-                    MDef = 500
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 580,
-                    MDef = 510
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 610,
-                    MDef = 520
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 640,
-                    MDef = 530
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 670,
-                    MDef = 540
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 700,
-                    MDef = 550
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 730,
-                    MDef = 560
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 760,
-                    MDef = 570
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 790,
-                    MDef = 580
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 200,
-                    Def = 120,
-                    MAtk = 790,
-                    MDef = 580
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 20,
+                        AtkRate = 2,
+                        Def = 58,
+                        DefRate = 0.4,
+                        MAtk = 30,
+                        MAtkRate = 3,
+                        MDef = 100,
+                        MDefRate = 1
                     }
                 },
                 {
+                    // Warrior growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 120(base lv1) +1.2 / Magi Atk 20(base lv1) +2 / Magi Def 83(base lv1) +0.8 / Blow 35(base lv1) +0
                     JobId.Warrior,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 40,
-                    Def = 30,
-                    MAtk = 20,
-                    MDef = 20
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 90,
-                    Def = 60,
-                    MAtk = 40,
-                    MDef = 30
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 140,
-                    Def = 90,
-                    MAtk = 60,
-                    MDef = 40
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 190,
-                    Def = 120,
-                    MAtk = 80,
-                    MDef = 50
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 240,
-                    Def = 150,
-                    MAtk = 100,
-                    MDef = 60
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 290,
-                    Def = 180,
-                    MAtk = 120,
-                    MDef = 70
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 340,
-                    Def = 210,
-                    MAtk = 140,
-                    MDef = 80
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 390,
-                    Def = 240,
-                    MAtk = 160,
-                    MDef = 90
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 440,
-                    Def = 270,
-                    MAtk = 180,
-                    MDef = 100
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 490,
-                    Def = 300,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 510,
-                    Def = 320,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 530,
-                    Def = 340,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 550,
-                    Def = 360,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 570,
-                    Def = 380,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 590,
-                    Def = 400,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 610,
-                    Def = 420,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 630,
-                    Def = 440,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 650,
-                    Def = 460,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 670,
-                    Def = 480,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 690,
-                    Def = 500,
-                    MAtk = 200,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 690,
-                    Def = 500,
-                    MAtk = 200,
-                    MDef = 110
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 30,
+                        AtkRate = 3,
+                        Def = 120,
+                        DefRate = 1.2,
+                        MAtk = 20,
+                        MAtkRate = 2,
+                        MDef = 83,
+                        MDefRate = 0.8
                     }
                 },
                 {
+                    // ElementArcher growth per lv: Phys Atk 20(base lv1) +2 / Phys Def 58(base lv1) +0.4 / Magi Atk 30(base lv1) +3 / Magi Def 100(base lv1) +1 / Blow 18(base lv1) +0
                     JobId.ElementArcher,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 20,
-                    Def = 30,
-                    MAtk = 40,
-                    MDef = 30
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 40,
-                    Def = 60,
-                    MAtk = 70,
-                    MDef = 70
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 60,
-                    Def = 90,
-                    MAtk = 100,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 80,
-                    Def = 120,
-                    MAtk = 130,
-                    MDef = 150
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 100,
-                    Def = 150,
-                    MAtk = 160,
-                    MDef = 190
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 120,
-                    Def = 180,
-                    MAtk = 190,
-                    MDef = 230
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 140,
-                    Def = 210,
-                    MAtk = 220,
-                    MDef = 270
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 160,
-                    Def = 240,
-                    MAtk = 250,
-                    MDef = 310
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 180,
-                    Def = 270,
-                    MAtk = 280,
-                    MDef = 350
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 200,
-                    Def = 300,
-                    MAtk = 310,
-                    MDef = 390
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 210,
-                    Def = 300,
-                    MAtk = 320,
-                    MDef = 410
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 220,
-                    Def = 300,
-                    MAtk = 330,
-                    MDef = 430
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 230,
-                    Def = 300,
-                    MAtk = 340,
-                    MDef = 450
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 240,
-                    Def = 300,
-                    MAtk = 350,
-                    MDef = 470
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 250,
-                    Def = 300,
-                    MAtk = 360,
-                    MDef = 490
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 260,
-                    Def = 300,
-                    MAtk = 370,
-                    MDef = 510
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 270,
-                    Def = 300,
-                    MAtk = 380,
-                    MDef = 530
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 280,
-                    Def = 300,
-                    MAtk = 390,
-                    MDef = 550
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 290,
-                    Def = 300,
-                    MAtk = 400,
-                    MDef = 570
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 300,
-                    Def = 300,
-                    MAtk = 410,
-                    MDef = 590
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 300,
-                    Def = 300,
-                    MAtk = 410,
-                    MDef = 590
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 20,
+                        AtkRate = 2,
+                        Def = 58,
+                        DefRate = 0.4,
+                        MAtk = 30,
+                        MAtkRate = 3,
+                        MDef = 100,
+                        MDefRate = 1
                     }
                 },
                 {
+                    // Growth sources: https://dogmaonlineyyy.wiki.fc2.com/wiki/%E3%82%A2%E3%83%AB%E3%82%B1%E3%83%9F%E3%82%B9%E3%83%88
+                    // Growth not actually there, it's just following the above logic and patterns
+                    // Alchemist growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 100(base lv1) +1 / Magi Atk 20(base lv1) +2 / Magi Def 100(base lv1) +1 / Blow 25(base lv1) +0
                     JobId.Alchemist,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 20,
-                    Def = 40,
-                    MAtk = 20,
-                    MDef = 30
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 40,
-                    Def = 90,
-                    MAtk = 30,
-                    MDef = 60
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 60,
-                    Def = 140,
-                    MAtk = 40,
-                    MDef = 90
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 80,
-                    Def = 190,
-                    MAtk = 50,
-                    MDef = 120
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 100,
-                    Def = 240,
-                    MAtk = 60,
-                    MDef = 150
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 120,
-                    Def = 290,
-                    MAtk = 70,
-                    MDef = 180
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 140,
-                    Def = 340,
-                    MAtk = 80,
-                    MDef = 210
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 160,
-                    Def = 390,
-                    MAtk = 90,
-                    MDef = 240
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 180,
-                    Def = 440,
-                    MAtk = 100,
-                    MDef = 270
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 200,
-                    Def = 490,
-                    MAtk = 110,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 210,
-                    Def = 510,
-                    MAtk = 120,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 220,
-                    Def = 530,
-                    MAtk = 130,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 230,
-                    Def = 550,
-                    MAtk = 140,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 240,
-                    Def = 570,
-                    MAtk = 150,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 250,
-                    Def = 590,
-                    MAtk = 160,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 260,
-                    Def = 610,
-                    MAtk = 170,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 270,
-                    Def = 630,
-                    MAtk = 180,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 280,
-                    Def = 650,
-                    MAtk = 190,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 290,
-                    Def = 670,
-                    MAtk = 200,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 300,
-                    Def = 690,
-                    MAtk = 210,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 300,
-                    Def = 690,
-                    MAtk = 210,
-                    MDef = 300
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 30,
+                        AtkRate = 3,
+                        Def = 100,
+                        DefRate = 1,
+                        MAtk = 20,
+                        MAtkRate = 2,
+                        MDef = 100,
+                        MDefRate = 1
                     }
                 },
-                // SL and HS have placeholder level up values.
-                // TODO: Find out where the correct stats for these two last classes are stored.
-                // They're apparently missing from the files in base.arc obj/pl/pl000000/param/jobleveluptbl files
-                // It may be that Season 3 onwards they stopped updating this file
                 {
+                    // Confirmed statuses and added proper growth rate
+                    // SpiritLancer growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 30(base lv1) +3 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
                     JobId.SpiritLancer,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 20,
-                    Def = 30,
-                    MAtk = 40,
-                    MDef = 30
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 40,
-                    Def = 60,
-                    MAtk = 70,
-                    MDef = 70
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 60,
-                    Def = 90,
-                    MAtk = 100,
-                    MDef = 110
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 80,
-                    Def = 120,
-                    MAtk = 130,
-                    MDef = 150
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 100,
-                    Def = 150,
-                    MAtk = 160,
-                    MDef = 190
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 120,
-                    Def = 180,
-                    MAtk = 190,
-                    MDef = 230
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 140,
-                    Def = 210,
-                    MAtk = 220,
-                    MDef = 270
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 160,
-                    Def = 240,
-                    MAtk = 250,
-                    MDef = 310
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 180,
-                    Def = 270,
-                    MAtk = 280,
-                    MDef = 350
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 200,
-                    Def = 300,
-                    MAtk = 310,
-                    MDef = 390
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 210,
-                    Def = 300,
-                    MAtk = 320,
-                    MDef = 410
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 220,
-                    Def = 300,
-                    MAtk = 330,
-                    MDef = 430
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 230,
-                    Def = 300,
-                    MAtk = 340,
-                    MDef = 450
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 240,
-                    Def = 300,
-                    MAtk = 350,
-                    MDef = 470
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 250,
-                    Def = 300,
-                    MAtk = 360,
-                    MDef = 490
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 260,
-                    Def = 300,
-                    MAtk = 370,
-                    MDef = 510
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 270,
-                    Def = 300,
-                    MAtk = 380,
-                    MDef = 530
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 280,
-                    Def = 300,
-                    MAtk = 390,
-                    MDef = 550
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 290,
-                    Def = 300,
-                    MAtk = 400,
-                    MDef = 570
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 300,
-                    Def = 300,
-                    MAtk = 410,
-                    MDef = 590
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 300,
-                    Def = 300,
-                    MAtk = 410,
-                    MDef = 590
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 30,
+                        AtkRate = 3,
+                        Def = 83,
+                        DefRate = 0.8,
+                        MAtk = 30,
+                        MAtkRate = 3,
+                        MDef = 83,
+                        MDefRate = 0.8
                     }
                 },
                 {
+                    // Many videos has its initial values different but growth rate are the same.
+                    // This is the source of the proper values and growth rate: https://youtu.be/Ov_t6CBeugE?t=291
+                    // HighScepter growth per lv: Phys Atk 30(base lv1) +3 / Phys Def 83(base lv1) +0.8 / Magi Atk 30(base lv1) +3 / Magi Def 83(base lv1) +0.8 / Blow 25(base lv1) +0
                     JobId.HighScepter,
-                    new JobLevelUp[]
-                    {
-                        new JobLevelUp() {
-                    Lv = 0,
-                    Atk = 0,
-                    Def = 0,
-                    MAtk = 0,
-                    MDef = 0
-                },
-                new JobLevelUp() {
-                    Lv = 9,
-                    Atk = 20,
-                    Def = 40,
-                    MAtk = 20,
-                    MDef = 30
-                },
-                new JobLevelUp() {
-                    Lv = 19,
-                    Atk = 40,
-                    Def = 90,
-                    MAtk = 30,
-                    MDef = 60
-                },
-                new JobLevelUp() {
-                    Lv = 29,
-                    Atk = 60,
-                    Def = 140,
-                    MAtk = 40,
-                    MDef = 90
-                },
-                new JobLevelUp() {
-                    Lv = 39,
-                    Atk = 80,
-                    Def = 190,
-                    MAtk = 50,
-                    MDef = 120
-                },
-                new JobLevelUp() {
-                    Lv = 49,
-                    Atk = 100,
-                    Def = 240,
-                    MAtk = 60,
-                    MDef = 150
-                },
-                new JobLevelUp() {
-                    Lv = 59,
-                    Atk = 120,
-                    Def = 290,
-                    MAtk = 70,
-                    MDef = 180
-                },
-                new JobLevelUp() {
-                    Lv = 69,
-                    Atk = 140,
-                    Def = 340,
-                    MAtk = 80,
-                    MDef = 210
-                },
-                new JobLevelUp() {
-                    Lv = 79,
-                    Atk = 160,
-                    Def = 390,
-                    MAtk = 90,
-                    MDef = 240
-                },
-                new JobLevelUp() {
-                    Lv = 89,
-                    Atk = 180,
-                    Def = 440,
-                    MAtk = 100,
-                    MDef = 270
-                },
-                new JobLevelUp() {
-                    Lv = 99,
-                    Atk = 200,
-                    Def = 490,
-                    MAtk = 110,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 109,
-                    Atk = 210,
-                    Def = 510,
-                    MAtk = 120,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 119,
-                    Atk = 220,
-                    Def = 530,
-                    MAtk = 130,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 129,
-                    Atk = 230,
-                    Def = 550,
-                    MAtk = 140,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 139,
-                    Atk = 240,
-                    Def = 570,
-                    MAtk = 150,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 149,
-                    Atk = 250,
-                    Def = 590,
-                    MAtk = 160,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 159,
-                    Atk = 260,
-                    Def = 610,
-                    MAtk = 170,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 169,
-                    Atk = 270,
-                    Def = 630,
-                    MAtk = 180,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 179,
-                    Atk = 280,
-                    Def = 650,
-                    MAtk = 190,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 189,
-                    Atk = 290,
-                    Def = 670,
-                    MAtk = 200,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 199,
-                    Atk = 300,
-                    Def = 690,
-                    MAtk = 210,
-                    MDef = 300
-                },
-                new JobLevelUp() {
-                    Lv = 999,
-                    Atk = 300,
-                    Def = 690,
-                    MAtk = 210,
-                    MDef = 300
-                }
+                    new BaseStats() {
+                        Lv = 1,
+                        Atk = 30,
+                        AtkRate = 3,
+                        Def = 83,
+                        DefRate = 0.8,
+                        MAtk = 30,
+                        MAtkRate = 3,
+                        MDef = 83,
+                        MDefRate = 0.8
                     }
                 },
             };
@@ -1922,11 +340,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         protected readonly IDatabase _database;
         protected readonly GameClientLookup _gameClientLookup;
 
-
+        
         public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, uint extraBonusExp)
         {
-            CDataCharacterJobData activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
-            if (activeCharacterJobData.Lv < ExpManager.LV_CAP)
+            CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
+            if (activeCharacterJobData != null && activeCharacterJobData.Lv < ExpManager.LV_CAP)
             {
                 // ------
                 // EXP UP
@@ -1960,24 +378,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // LEVEL UP
                 uint currentLevel = activeCharacterJobData.Lv;
                 uint targetLevel = currentLevel;
-                uint addJobPoint = 0; // TODO: Figure out
+                uint addJobPoint = 0;
 
-                while (targetLevel < LV_CAP && activeCharacterJobData.Exp >= this.TotalExpToLevelUpTo(targetLevel + 1))
+                while (targetLevel < LV_CAP && activeCharacterJobData.Exp >= ExpManager.TotalExpToLevelUpTo(targetLevel + 1))
                 {
                     targetLevel++;
+                    addJobPoint+=LEVEL_UP_JOB_POINTS_EARNED[targetLevel];
                 }
 
-                if (currentLevel != targetLevel)
+                if (currentLevel != targetLevel || addJobPoint != 0)
                 {
                     activeCharacterJobData.Lv = targetLevel;
                     activeCharacterJobData.JobPoint += addJobPoint;
-                    // Using Math.Max to prevent lvl up from lowering your stats if you happen to have higher ones
-                    JobLevelUp jobLevelUp = GetJobLevelUp(activeCharacterJobData.Job, activeCharacterJobData.Lv);
-                    activeCharacterJobData.Atk = Math.Max(activeCharacterJobData.Atk, jobLevelUp.Atk);
-                    activeCharacterJobData.Def = Math.Max(activeCharacterJobData.Def, jobLevelUp.Def);
-                    activeCharacterJobData.MAtk = Math.Max(activeCharacterJobData.MAtk, jobLevelUp.MAtk);
-                    activeCharacterJobData.MDef = Math.Max(activeCharacterJobData.MDef, jobLevelUp.MDef);
-                    // TODO: Figure out the values for all other job data fields
+
+                    BaseStats baseStats = BASE_STATS_TABLE[activeCharacterJobData.Job];
+                    activeCharacterJobData.Atk = (ushort)(baseStats.Atk + (activeCharacterJobData.Lv - 1) * baseStats.AtkRate);
+                    activeCharacterJobData.Def = (ushort)(baseStats.Def + (activeCharacterJobData.Lv - 1) * baseStats.DefRate);
+                    activeCharacterJobData.MAtk = (ushort)(baseStats.MAtk + (activeCharacterJobData.Lv - 1) * baseStats.MAtkRate);
+                    activeCharacterJobData.MDef = (ushort)(baseStats.MDef + (activeCharacterJobData.Lv - 1) * baseStats.MDefRate);
 
                     if(characterToAddExpTo is Character)
                     {
@@ -2020,13 +438,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         client.Party.SendToAllExcept(lvlMemberNtc, client);
                     }
                 }
-
+            
                 // PERSIST CHANGES IN DB
                 this._database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
             }
         }
 
-        private uint TotalExpToLevelUpTo(uint level)
+        public static uint TotalExpToLevelUpTo(uint level)
         {
             uint totalExp = 0;
             for (int i = 1; i < level; i++)
@@ -2034,14 +452,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 totalExp += EXP_UNTIL_NEXT_LV[i];
             }
             return totalExp;
-        }
-
-        private JobLevelUp GetJobLevelUp(JobId jobId, uint level)
-        {
-            JobLevelUp[] levelUps = LEVEL_UP_TABLE[jobId];
-            return levelUps.Where(x => x.Lv < level)
-                        .OrderByDescending(x => x.Lv)
-                        .First();
         }
     }
 }

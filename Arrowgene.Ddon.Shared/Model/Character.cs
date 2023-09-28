@@ -68,5 +68,10 @@ namespace Arrowgene.Ddon.Shared.Model
 
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
+
+        public Pawn PawnBySlotNo(byte SlotNo)
+        {
+            return Pawns[SlotNo-1];
+        }
     }
 }

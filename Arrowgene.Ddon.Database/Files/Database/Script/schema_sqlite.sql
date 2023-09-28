@@ -293,11 +293,12 @@ CREATE TABLE IF NOT EXISTS `ddon_equip_item`
 
 CREATE TABLE IF NOT EXISTS `ddon_equip_job_item`
 (
-    `character_common_id`  INTEGER NOT NULL,
-    `job`           TINYINT NOT NULL,
-    `job_item_id`   INT     NOT NULL,
-    `equip_slot_no` TINYINT NOT NULL,
-    PRIMARY KEY (`character_common_id`, `job`, `equip_slot_no`),
+    `item_uid`            TEXT             NOT NULL,
+    `character_common_id` INTEGER          NOT NULL,
+    `job`                 TINYINT          NOT NULL,
+    `equip_slot`          SMALLINT         NOT NULL,
+    PRIMARY KEY (`character_common_id`, `job`, `equip_slot`),
+    CONSTRAINT `fk_equip_job_item_item_uid` FOREIGN KEY (`item_uid`) REFERENCES `ddon_item` (`uid`) ON DELETE CASCADE,
     CONSTRAINT `fk_equip_job_item_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
@@ -312,15 +313,34 @@ CREATE TABLE IF NOT EXISTS `ddon_normal_skill_param`
     CONSTRAINT `fk_normal_skill_param_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS `ddon_learned_custom_skill`
+(
+    `character_common_id`   INTEGER NOT NULL,
+    `job`            TINYINT NOT NULL,
+    `skill_id` INT     NOT NULL,
+    `skill_lv` TINYINT NOT NULL,
+    PRIMARY KEY (`character_common_id`, `job`, `skill_id`),
+    CONSTRAINT `fk_learned_custom_skill_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS `ddon_equipped_custom_skill`
 (
     `character_common_id`   INTEGER NOT NULL,
     `job`            TINYINT NOT NULL,
     `slot_no`        TINYINT NOT NULL,
     `skill_id` INT     NOT NULL,
-    `skill_lv` TINYINT NOT NULL,
     PRIMARY KEY (`character_common_id`, `job`, `slot_no`),
-    CONSTRAINT `fk_set_acquirement_param_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
+    CONSTRAINT `fk_equipped_custom_skill_character_common_id` FOREIGN KEY (`character_common_id`, `job`, `skill_id`) REFERENCES `ddon_learned_custom_skill` (`character_common_id`, `job`, `skill_id`) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS `ddon_learned_ability`
+(
+    `character_common_id`    INTEGER NOT NULL,
+    `job`             TINYINT NOT NULL,
+    `ability_id` INT     NOT NULL,
+    `ability_lv` TINYINT NOT NULL,
+    PRIMARY KEY (`character_common_id`, `job`, `ability_id`),
+    CONSTRAINT `fk_learned_ability_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_equipped_ability`
@@ -330,9 +350,8 @@ CREATE TABLE IF NOT EXISTS `ddon_equipped_ability`
     `job`             TINYINT NOT NULL,
     `slot_no`         TINYINT NOT NULL,
     `ability_id` INT     NOT NULL,
-    `ability_lv` TINYINT NOT NULL,
     PRIMARY KEY (`character_common_id`, `equipped_to_job`, `slot_no`),
-    CONSTRAINT `fk_set_acquirement_param_character_common_id` FOREIGN KEY (`character_common_id`) REFERENCES `ddon_character_common` (`character_common_id`) ON DELETE CASCADE
+    CONSTRAINT `fk_equipped_ability_character_common_id` FOREIGN KEY (`character_common_id`, `job`, `ability_id`) REFERENCES `ddon_learned_ability` (`character_common_id`, `job`, `ability_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `ddon_shortcut`

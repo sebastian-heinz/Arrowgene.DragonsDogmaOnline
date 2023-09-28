@@ -19,9 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetSetSkillListReq> packet)
         {
             client.Send(new S2CSkillGetSetSkillListRes() {
-                SetAcquierementParam = client.Character.CustomSkills
-                    .Where(x => x.Job == packet.Structure.Job)
-                    .Select(x => x.AsCDataSetAcquirementParam())
+                SetAcquierementParam = client.Character.EquippedCustomSkillsDictionary[client.Character.Job]
+                    .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index+1)))
+                    .Where(x => x != null)
                     .ToList()
             });
         }

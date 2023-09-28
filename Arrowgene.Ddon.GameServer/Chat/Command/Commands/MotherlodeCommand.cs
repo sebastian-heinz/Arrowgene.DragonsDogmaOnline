@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         };
 
         private static readonly uint DefaultAmount = 10000;
-        private static readonly WalletType[] DefaultWalletTypes = new WalletType[] {
+        private static readonly HashSet<WalletType> DefaultWalletTypes = new HashSet<WalletType> {
             WalletType.Gold,
             WalletType.RiftPoints
         };
@@ -51,19 +51,19 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 }
             }
 
-            WalletType[] walletTypes = DefaultWalletTypes;
+            HashSet<WalletType> walletTypes = DefaultWalletTypes;
             if (command.Length >= 2)
             {
-                walletTypes = new WalletType[command.Length-1];
-                for (int i = 1; i < command.Length; i++)
+                walletTypes = new HashSet<WalletType>();
+                foreach (string arg in command.Skip(1))
                 {
-                    if (WalletTypeNames.TryGetValue(command[i], out WalletType parsedWalletType))
+                    if (WalletTypeNames.TryGetValue(arg, out WalletType parsedWalletType))
                     {
-                        walletTypes[i-1] = parsedWalletType;
+                        walletTypes.Add(parsedWalletType);
                     }
                     else
                     {
-                        responses.Add(ChatResponse.CommandError(client, $"Invalid wallet type \"{command[i]}\". It must be one of the following: {string.Join(", ", WalletTypeNames.Keys)}"));
+                        responses.Add(ChatResponse.CommandError(client, $"Invalid wallet type \"{arg}\". It must be one of the following: {string.Join(", ", WalletTypeNames.Keys)}"));
                         return;
                     }
                 }

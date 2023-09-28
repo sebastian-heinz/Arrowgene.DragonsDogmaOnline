@@ -1297,10 +1297,10 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_RES = new PacketId(29, 5, 2, "S2C_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_RES", ServerType.Game, PacketSource.Server); // ポーン倉庫装備変更に
         public static readonly PacketId C2S_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ = new PacketId(29, 6, 1, "C2S_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES = new PacketId(29, 6, 2, "S2C_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES", ServerType.Game, PacketSource.Server); // ジョブ専用アイテム装備変更に
-        public static readonly PacketId S2C_EQUIP_29_6_16_NTC = new PacketId(29, 6, 16, "S2C_EQUIP_29_6_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NTC = new PacketId(29, 6, 16, "S2C_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NTC", ServerType.Game, PacketSource.Server, "S2C_EQUIP_29_6_16_NTC");
         public static readonly PacketId C2S_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_REQ = new PacketId(29, 7, 1, "C2S_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_RES = new PacketId(29, 7, 2, "S2C_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_RES", ServerType.Game, PacketSource.Server); // ポーンジョブ専用アイテム装備変更に
-        public static readonly PacketId S2C_EQUIP_29_7_16_NTC = new PacketId(29, 7, 16, "S2C_EQUIP_29_7_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_NTC = new PacketId(29, 7, 16, "S2C_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_NTC", ServerType.Game, PacketSource.Server, "S2C_EQUIP_29_7_16_NTC");
         public static readonly PacketId C2S_EQUIP_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_REQ = new PacketId(29, 8, 1, "C2S_EQUIP_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_EQUIP_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_RES = new PacketId(29, 8, 2, "S2C_EQUIP_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_RES", ServerType.Game, PacketSource.Server); // 頭装備表示切り替えに
         public static readonly PacketId C2S_EQUIP_UPDATE_HIDE_PAWN_HEAD_ARMOR_REQ = new PacketId(29, 9, 1, "C2S_EQUIP_UPDATE_HIDE_PAWN_HEAD_ARMOR_REQ", ServerType.Game, PacketSource.Client);
@@ -1689,12 +1689,12 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_RES = new PacketId(41, 2, 2, "S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_RES", ServerType.Game, PacketSource.Server); // キャラクタエディット更新
         public static readonly PacketId C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_REQ = new PacketId(41, 3, 1, "C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_RES = new PacketId(41, 3, 2, "S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_RES", ServerType.Game, PacketSource.Server); // ポーンエディット更新
-        public static readonly PacketId S2C_CHARACTER_41_4_16_NTC = new PacketId(41, 4, 16, "S2C_CHARACTER_41_4_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_NTC = new PacketId(41, 4, 16, "S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_41_4_16_NTC");
         public static readonly PacketId C2S_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_REQ = new PacketId(41, 5, 1, "C2S_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_RES = new PacketId(41, 5, 2, "S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_RES", ServerType.Game, PacketSource.Server); // キャラクタエディット拡張更新
         public static readonly PacketId C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_REQ = new PacketId(41, 6, 1, "C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_RES = new PacketId(41, 6, 2, "S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_RES", ServerType.Game, PacketSource.Server); // ポーンエディット拡張更新
-        public static readonly PacketId S2C_CHARACTER_41_7_16_NTC = new PacketId(41, 7, 16, "S2C_CHARACTER_41_7_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_EX_NTC = new PacketId(41, 7, 16, "S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_EX_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_41_7_16_NTC");
         public static readonly PacketId C2S_CHARACTER_EDIT_GET_SHOP_PRICE_REQ = new PacketId(41, 8, 1, "C2S_CHARACTER_EDIT_GET_SHOP_PRICE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_EDIT_GET_SHOP_PRICE_RES = new PacketId(41, 8, 2, "S2C_CHARACTER_EDIT_GET_SHOP_PRICE_RES", ServerType.Game, PacketSource.Server); // 美容院と従者の転生の価格の取得
 
@@ -3203,10 +3203,10 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_EQUIP_CHANGE_PAWN_STORAGE_EQUIP_RES);
             AddPacketIdEntry(packetIds, C2S_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES);
-            AddPacketIdEntry(packetIds, S2C_EQUIP_29_6_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_EQUIP_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NTC);
             AddPacketIdEntry(packetIds, C2S_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_RES);
-            AddPacketIdEntry(packetIds, S2C_EQUIP_29_7_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_EQUIP_CHANGE_PAWN_EQUIP_JOB_ITEM_NTC);
             AddPacketIdEntry(packetIds, C2S_EQUIP_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_REQ);
             AddPacketIdEntry(packetIds, S2C_EQUIP_UPDATE_HIDE_CHARACTER_HEAD_ARMOR_RES);
             AddPacketIdEntry(packetIds, C2S_EQUIP_UPDATE_HIDE_PAWN_HEAD_ARMOR_REQ);
@@ -3595,12 +3595,12 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_RES);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_41_4_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_NTC);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_CHARACTER_EDIT_PARAM_EX_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_PAWN_EDIT_PARAM_EX_RES);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_41_7_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_UPDATE_EDIT_PARAM_EX_NTC);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_EDIT_GET_SHOP_PRICE_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_GET_SHOP_PRICE_RES);
 

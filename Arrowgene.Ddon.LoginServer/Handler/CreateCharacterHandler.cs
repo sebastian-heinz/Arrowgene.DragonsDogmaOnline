@@ -1,3 +1,4 @@
+using System.Security.AccessControl;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -38,62 +39,60 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.Job = packet.Structure.CharacterInfo.Job;
             character.CharacterJobDataList = packet.Structure.CharacterInfo.CharacterJobDataList;
             character.PlayPointList = packet.Structure.CharacterInfo.PlayPointList;
-            character.Equipment = new Equipment(new Dictionary<JobId, Dictionary<EquipType, List<Item>>>()
-            {
+            character.Equipment = new Equipment(
+                new Dictionary<JobId, Dictionary<EquipType, List<Item>>>()
                 {
-                    packet.Structure.CharacterInfo.Job,
-                    new Dictionary<EquipType, List<Item>>() {
-                        {
-                            EquipType.Performance,
-                            Enumerable.Range(1, 15)
-                                .Select(equipSlot => {
-                                    CDataEquipItemInfo info = packet.Structure.CharacterInfo.CharacterEquipDataList.SelectMany(x => x.Equips).Where(x => x.EquipSlot == equipSlot).SingleOrDefault();
-                                    if(info == null) {
-                                        return null;
-                                    } else {
-                                        return new Item()
-                                        {
-                                            ItemId = info.ItemId,
-                                            Unk3 = info.Unk0,
-                                            Color = info.Color,
-                                            PlusValue = info.PlusValue,
-                                            WeaponCrestDataList = info.WeaponCrestDataList,
-                                            ArmorCrestDataList = info.ArmorCrestDataList,
-                                            EquipElementParamList = info.EquipElementParamList
-                                        };
-                                    }
-                                })
-                                .ToList()
-                        },
-                        {
-                            EquipType.Visual,
-                            Enumerable.Range(1, 15)
-                                .Select(equipSlot => {
-                                    CDataEquipItemInfo info = packet.Structure.CharacterInfo.CharacterEquipViewDataList.SelectMany(x => x.Equips).Where(x => x.EquipSlot == equipSlot).SingleOrDefault();
-                                    if(info == null) {
-                                        return null;
-                                    } else {
-                                        return new Item()
-                                        {
-                                            ItemId = info.ItemId,
-                                            Unk3 = info.Unk0,
-                                            Color = info.Color,
-                                            PlusValue = info.PlusValue,
-                                            WeaponCrestDataList = info.WeaponCrestDataList,
-                                            ArmorCrestDataList = info.ArmorCrestDataList,
-                                            EquipElementParamList = info.EquipElementParamList
-                                        };
-                                    }
-                                })
-                                .ToList()
+                    {
+                        packet.Structure.CharacterInfo.Job,
+                        new Dictionary<EquipType, List<Item>>() {
+                            {
+                                EquipType.Performance,
+                                Enumerable.Range(1, 15)
+                                    .Select(equipSlot => {
+                                        CDataEquipItemInfo info = packet.Structure.CharacterInfo.CharacterEquipDataList.SelectMany(x => x.Equips).Where(x => x.EquipSlot == equipSlot).SingleOrDefault();
+                                        if(info == null) {
+                                            return null;
+                                        } else {
+                                            return new Item()
+                                            {
+                                                ItemId = info.ItemId,
+                                                Unk3 = info.Unk0,
+                                                Color = info.Color,
+                                                PlusValue = info.PlusValue,
+                                                WeaponCrestDataList = info.WeaponCrestDataList,
+                                                ArmorCrestDataList = info.ArmorCrestDataList,
+                                                EquipElementParamList = info.EquipElementParamList
+                                            };
+                                        }
+                                    })
+                                    .ToList()
+                            },
+                            {
+                                EquipType.Visual,
+                                Enumerable.Range(1, 15)
+                                    .Select(equipSlot => {
+                                        CDataEquipItemInfo info = packet.Structure.CharacterInfo.CharacterEquipViewDataList.SelectMany(x => x.Equips).Where(x => x.EquipSlot == equipSlot).SingleOrDefault();
+                                        if(info == null) {
+                                            return null;
+                                        } else {
+                                            return new Item()
+                                            {
+                                                ItemId = info.ItemId,
+                                                Unk3 = info.Unk0,
+                                                Color = info.Color,
+                                                PlusValue = info.PlusValue,
+                                                WeaponCrestDataList = info.WeaponCrestDataList,
+                                                ArmorCrestDataList = info.ArmorCrestDataList,
+                                                EquipElementParamList = info.EquipElementParamList
+                                            };
+                                        }
+                                    })
+                                    .ToList()
+                            }
                         }
                     }
-                }
-            });
-            character.CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>()
-            {
-                { packet.Structure.CharacterInfo.Job, packet.Structure.CharacterInfo.CharacterEquipJobItemList }
-            };
+                },
+                new Dictionary<JobId, List<Item?>>());
             character.JewelrySlotNum = packet.Structure.CharacterInfo.JewelrySlotNum;
             //character.CharacterItemSlotInfoList = packet.Structure.CharacterInfo.CharacterItemSlotInfoList;
             //character.UnkCharData0 = packet.Structure.CharacterInfo.UnkCharData0;
@@ -177,911 +176,869 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     MAtkDownResist = arisenPreset.MAtkDownResist,
                     MDefDownResist = arisenPreset.MDefDownResist
             }).ToList();
-            character.Equipment = new Equipment(Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(arisenPreset.Job, new Dictionary<EquipType, List<Item>>() {
-                {
-                    EquipType.Performance,
-                    new List<Item>() {
-                        new Item {
-                            ItemId = arisenPreset.PrimaryWeapon,
-                            Unk3 = 0,
-                            Color = arisenPreset.PrimaryWeaponColour,
-                            PlusValue = 0,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.PWCrest1,
-                                    Add = (ushort) (arisenPreset.PWC1Add1 << 8 | arisenPreset.PWC1Add2),
+            character.Equipment = new Equipment(
+                Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(arisenPreset.Job, new Dictionary<EquipType, List<Item>>() {
+                    {
+                        EquipType.Performance,
+                        new List<Item>() {
+                            new Item {
+                                ItemId = arisenPreset.PrimaryWeapon,
+                                Unk3 = 0,
+                                Color = arisenPreset.PrimaryWeaponColour,
+                                PlusValue = 0,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.PWCrest1,
+                                        Add = (ushort) (arisenPreset.PWC1Add1 << 8 | arisenPreset.PWC1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.PWCrest2,
+                                        Add = (ushort) (arisenPreset.PWC2Add1 << 8 | arisenPreset.PWC2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.PWCrest3,
+                                        Add = (ushort) (arisenPreset.PWC3Add1 << 8 | arisenPreset.PWC3Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 4,
+                                        CrestId = arisenPreset.PWCrest4,
+                                        Add = (ushort) (arisenPreset.PWC4Add1 << 8 | arisenPreset.PWC4Add2),
+                                    }
                                 },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.PWCrest2,
-                                    Add = (ushort) (arisenPreset.PWC2Add1 << 8 | arisenPreset.PWC2Add2),
+                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                    new CDataArmorCrestData {
+                                        u0 = 1,
+                                        u1 = 1,
+                                        u2 = 0x59,
+                                        u3 = 0x04
+                                    }
                                 },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.PWCrest3,
-                                    Add = (ushort) (arisenPreset.PWC3Add1 << 8 | arisenPreset.PWC3Add2),
+                                // Empty EquipElementParamList
+                            },
+                            new Item {
+                                ItemId = arisenPreset.SecondaryWeapon,
+                                Unk3 = 0,
+                                Color = arisenPreset.SecondaryWeaponColour
+                            },
+                            new Item {
+                                ItemId = arisenPreset.Head,
+                                Unk3 = 0,
+                                Color = arisenPreset.HeadColour,
+                                PlusValue = 3,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.HeadCrest1,
+                                        Add = (ushort) (arisenPreset.HC1Add1 << 8 | arisenPreset.HC1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.HeadCrest2,
+                                        Add = (ushort) (arisenPreset.HC2Add1 << 8 | arisenPreset.HC2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.HeadCrest3,
+                                        Add = (ushort) (arisenPreset.HC3Add1 << 8 | arisenPreset.HC3Add2),
+                                    }
                                 },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 4,
-                                    CrestId = arisenPreset.PWCrest4,
-                                    Add = (ushort) (arisenPreset.PWC4Add1 << 8 | arisenPreset.PWC4Add2),
+                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                    new CDataArmorCrestData {
+                                        u0 = 1,
+                                        u1 = 1,
+                                        u2 = 0x29D,
+                                        u3 = 0x01
+                                    }
+                                },
+                                // Empty EquipElementParamList
+                            },
+                            new Item {
+                                ItemId = arisenPreset.Body,
+                                Unk3 = 0,
+                                Color = arisenPreset.BodyColour,
+                                PlusValue = 4,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.BodyCrest1,
+                                        Add = (ushort) (arisenPreset.BC1Add1 << 8 | arisenPreset.BC1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.BodyCrest2,
+                                        Add = (ushort) (arisenPreset.BC2Add1 << 8 | arisenPreset.BC2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.BodyCrest3,
+                                        Add = (ushort) (arisenPreset.BC3Add1 << 8 | arisenPreset.BC3Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 4,
+                                        CrestId = arisenPreset.BodyCrest4,
+                                        Add = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
+                                    }                                
+                                },
+                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                    new CDataArmorCrestData {
+                                        u0 = 1,
+                                        u1 = 1,
+                                        u2 = 0x280,
+                                        u3 = 0x01
+                                    }
+                                },
+                                // Empty EquipElementParamList
+                            },
+                            new Item {
+                                ItemId = arisenPreset.Clothing,
+                                Unk3 = 0,
+                                Color = arisenPreset.ClothingColour
+                            },
+                            new Item {
+                                ItemId = arisenPreset.Arm,
+                                Unk3 = 0,
+                                Color = arisenPreset.ArmColour,
+                                PlusValue = 3,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.ArmCrest1,
+                                        Add = (ushort) (arisenPreset.AC1Add1 << 8 | arisenPreset.AC1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.ArmCrest2,
+                                        Add = (ushort) (arisenPreset.AC2Add1 << 8 | arisenPreset.AC2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.ArmCrest3,
+                                        Add = (ushort) (arisenPreset.AC3Add1 << 8 | arisenPreset.AC3Add2),
+                                    }
+                                },
+                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                    new CDataArmorCrestData {
+                                        u0 = 1,
+                                        u1 = 1,
+                                        u2 = 0x1D2,
+                                        u3 = 0x01
+                                    }
+                                },
+                                // Empty EquipElementParamList
+                            },
+                            new Item {
+                                ItemId = arisenPreset.Leg,
+                                Unk3 = 0,
+                                Color = arisenPreset.LegColour,
+                                PlusValue = 3,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.LegCrest1,
+                                        Add = (ushort) (arisenPreset.LC1Add1 << 8 | arisenPreset.LC1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.LegCrest2,
+                                        Add = (ushort) (arisenPreset.LC2Add1 << 8 | arisenPreset.LC2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.LegCrest3,
+                                        Add = (ushort) (arisenPreset.LC3Add1 << 8 | arisenPreset.LC3Add2),
+                                    }
+                                },
+                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                    new CDataArmorCrestData {
+                                        u0 = 1,
+                                        u1 = 1,
+                                        u2 = 0x225,
+                                        u3 = 0x01
+                                    }
+                                },
+                                // Empty EquipElementParamList
+                            },
+                            new Item {
+                                ItemId = arisenPreset.Legwear,
+                                Unk3 = 0,
+                                Color = arisenPreset.LegwearColour
+                            },
+                            new Item {
+                                ItemId = arisenPreset.Overwear,
+                                Unk3 = 0,
+                                Color = arisenPreset.OverwearColour
+                            },
+                            new Item {
+                                ItemId = arisenPreset.Jewelry1,
+                                Unk3 = 0,
+                                Color = 0,
+                                PlusValue = 0,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.J1Crest1,
+                                        Add = (ushort) (arisenPreset.J1C1Add1 << 8 | arisenPreset.J1C1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.J1Crest2,
+                                        Add = (ushort) (arisenPreset.J1C2Add1 << 8 | arisenPreset.J1C2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.J1Crest3,
+                                        Add = (ushort) (arisenPreset.J1C3Add1 << 8 | arisenPreset.J1C3Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 4,
+                                        CrestId = arisenPreset.J1Crest4,
+                                        Add = (ushort) (arisenPreset.J1C4Add1 << 8 | arisenPreset.J1C4Add2),
+                                    }                                
+                                },
+                                // Empty ArmorCrestDataList
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x2,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x3,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x4,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x5,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x6,
+                                        ItemId = 0x50
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x7,
+                                        ItemId = 0x3C
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x8,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x9,
+                                        ItemId = 0x07
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xA,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xB,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xC,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xD,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xE,
+                                        ItemId = 0x00
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xF,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x10,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x11,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x12,
+                                        ItemId = 0x05
+                                    },
                                 }
                             },
-                            ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                new CDataArmorCrestData {
-                                    u0 = 1,
-                                    u1 = 1,
-                                    u2 = 0x59,
-                                    u3 = 0x04
+                            new Item {
+                                ItemId = arisenPreset.Jewelry2,
+                                Unk3 = 0,
+                                Color = 0,
+                                PlusValue = 0,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.J2Crest1,
+                                        Add = (ushort) (arisenPreset.J2C1Add1 << 8 | arisenPreset.J2C1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.J2Crest2,
+                                        Add = (ushort) (arisenPreset.J2C2Add1 << 8 | arisenPreset.J2C2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.J2Crest3,
+                                        Add = (ushort) (arisenPreset.J2C3Add1 << 8 | arisenPreset.J2C3Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 4,
+                                        CrestId = arisenPreset.J2Crest4,
+                                        Add = (ushort) (arisenPreset.J2C4Add1 << 8 | arisenPreset.J2C4Add2),
+                                    }                                
+                                },
+                                // Empty ArmorCrestDataList
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x2,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x3,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x4,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x5,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x6,
+                                        ItemId = 0x50
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x7,
+                                        ItemId = 0x3C
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x8,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x9,
+                                        ItemId = 0x07
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xA,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xB,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xC,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xD,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xE,
+                                        ItemId = 0x00
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xF,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x10,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x11,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x12,
+                                        ItemId = 0x05
+                                    },
                                 }
                             },
-                            // Empty EquipElementParamList
-                        },
-                        new Item {
-                            ItemId = arisenPreset.SecondaryWeapon,
-                            Unk3 = 0,
-                            Color = arisenPreset.SecondaryWeaponColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Head,
-                            Unk3 = 0,
-                            Color = arisenPreset.HeadColour,
-                            PlusValue = 3,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.HeadCrest1,
-                                    Add = (ushort) (arisenPreset.HC1Add1 << 8 | arisenPreset.HC1Add2),
+                            new Item {
+                                ItemId = arisenPreset.Jewelry3,
+                                Unk3 = 0,
+                                Color = 0,
+                                PlusValue = 0,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.J3Crest1,
+                                        Add = (ushort) (arisenPreset.J3C1Add1 << 8 | arisenPreset.J3C1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.J3Crest2,
+                                        Add = (ushort) (arisenPreset.J3C2Add1 << 8 | arisenPreset.J3C2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.J3Crest3,
+                                        Add = (ushort) (arisenPreset.J3C3Add1 << 8 | arisenPreset.J3C3Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 4,
+                                        CrestId = arisenPreset.J3Crest4,
+                                        Add = (ushort) (arisenPreset.J3C4Add1 << 8 | arisenPreset.J3C4Add2),
+                                    }                                
                                 },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.HeadCrest2,
-                                    Add = (ushort) (arisenPreset.HC2Add1 << 8 | arisenPreset.HC2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.HeadCrest3,
-                                    Add = (ushort) (arisenPreset.HC3Add1 << 8 | arisenPreset.HC3Add2),
+                                // Empty ArmorCrestDataList
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x2,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x3,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x4,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x5,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x6,
+                                        ItemId = 0x50
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x7,
+                                        ItemId = 0x3C
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x8,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x9,
+                                        ItemId = 0x07
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xA,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xB,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xC,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xD,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xE,
+                                        ItemId = 0x00
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xF,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x10,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x11,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x12,
+                                        ItemId = 0x05
+                                    },
                                 }
                             },
-                            ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                new CDataArmorCrestData {
-                                    u0 = 1,
-                                    u1 = 1,
-                                    u2 = 0x29D,
-                                    u3 = 0x01
+                            new Item {
+                                ItemId = arisenPreset.Jewelry4,
+                                Unk3 = 0,
+                                Color = 0,
+                                PlusValue = 0,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.J4Crest1,
+                                        Add = (ushort) (arisenPreset.J4C1Add1 << 8 | arisenPreset.J4C1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.J4Crest2,
+                                        Add = (ushort) (arisenPreset.J4C2Add1 << 8 | arisenPreset.J4C2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.J4Crest3,
+                                        Add = (ushort) (arisenPreset.J4C3Add1 << 8 | arisenPreset.J4C3Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 4,
+                                        CrestId = arisenPreset.J4Crest4,
+                                        Add = (ushort) (arisenPreset.J4C4Add1 << 8 | arisenPreset.J4C4Add2),
+                                    }                                
+                                },
+                                // Empty ArmorCrestDataList
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x2,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x3,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x4,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x5,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x6,
+                                        ItemId = 0x50
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x7,
+                                        ItemId = 0x3C
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x8,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x9,
+                                        ItemId = 0x07
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xA,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xB,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xC,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xD,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xE,
+                                        ItemId = 0x00
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xF,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x10,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x11,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x12,
+                                        ItemId = 0x05
+                                    },
                                 }
                             },
-                            // Empty EquipElementParamList
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Body,
-                            Unk3 = 0,
-                            Color = arisenPreset.BodyColour,
-                            PlusValue = 4,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.BodyCrest1,
-                                    Add = (ushort) (arisenPreset.BC1Add1 << 8 | arisenPreset.BC1Add2),
+                            new Item {
+                                ItemId = arisenPreset.Jewelry5,
+                                Unk3 = 0,
+                                Color = 0,
+                                PlusValue = 0,
+                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 1,
+                                        CrestId = arisenPreset.J5Crest1,
+                                        Add = (ushort) (arisenPreset.J5C1Add1 << 8 | arisenPreset.J5C1Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 2,
+                                        CrestId = arisenPreset.J5Crest2,
+                                        Add = (ushort) (arisenPreset.J5C2Add1 << 8 | arisenPreset.J5C2Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 3,
+                                        CrestId = arisenPreset.J5Crest3,
+                                        Add = (ushort) (arisenPreset.J5C3Add1 << 8 | arisenPreset.J5C3Add2),
+                                    },
+                                    new CDataWeaponCrestData {
+                                        SlotNo = 4,
+                                        CrestId = arisenPreset.J5Crest4,
+                                        Add = (ushort) (arisenPreset.J5C4Add1 << 8 | arisenPreset.J5C4Add2),
+                                    }                                
                                 },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.BodyCrest2,
-                                    Add = (ushort) (arisenPreset.BC2Add1 << 8 | arisenPreset.BC2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.BodyCrest3,
-                                    Add = (ushort) (arisenPreset.BC3Add1 << 8 | arisenPreset.BC3Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 4,
-                                    CrestId = arisenPreset.BodyCrest4,
-                                    Add = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
-                                }                                
-                            },
-                            ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                new CDataArmorCrestData {
-                                    u0 = 1,
-                                    u1 = 1,
-                                    u2 = 0x280,
-                                    u3 = 0x01
+                                // Empty ArmorCrestDataList
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x2,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x3,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x4,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x5,
+                                        ItemId = 0x02
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x6,
+                                        ItemId = 0x50
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x7,
+                                        ItemId = 0x3C
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x8,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x9,
+                                        ItemId = 0x07
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xA,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xB,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xC,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xD,
+                                        ItemId = 0x04
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xE,
+                                        ItemId = 0x00
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0xF,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x10,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x11,
+                                        ItemId = 0x05
+                                    },
+                                    new CDataEquipElementParam {
+                                        SlotNo = 0x12,
+                                        ItemId = 0x05
+                                    },
                                 }
                             },
-                            // Empty EquipElementParamList
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Clothing,
-                            Unk3 = 0,
-                            Color = arisenPreset.ClothingColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Arm,
-                            Unk3 = 0,
-                            Color = arisenPreset.ArmColour,
-                            PlusValue = 3,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.ArmCrest1,
-                                    Add = (ushort) (arisenPreset.AC1Add1 << 8 | arisenPreset.AC1Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.ArmCrest2,
-                                    Add = (ushort) (arisenPreset.AC2Add1 << 8 | arisenPreset.AC2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.ArmCrest3,
-                                    Add = (ushort) (arisenPreset.AC3Add1 << 8 | arisenPreset.AC3Add2),
-                                }
-                            },
-                            ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                new CDataArmorCrestData {
-                                    u0 = 1,
-                                    u1 = 1,
-                                    u2 = 0x1D2,
-                                    u3 = 0x01
-                                }
-                            },
-                            // Empty EquipElementParamList
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Leg,
-                            Unk3 = 0,
-                            Color = arisenPreset.LegColour,
-                            PlusValue = 3,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.LegCrest1,
-                                    Add = (ushort) (arisenPreset.LC1Add1 << 8 | arisenPreset.LC1Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.LegCrest2,
-                                    Add = (ushort) (arisenPreset.LC2Add1 << 8 | arisenPreset.LC2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.LegCrest3,
-                                    Add = (ushort) (arisenPreset.LC3Add1 << 8 | arisenPreset.LC3Add2),
-                                }
-                            },
-                            ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                new CDataArmorCrestData {
-                                    u0 = 1,
-                                    u1 = 1,
-                                    u2 = 0x225,
-                                    u3 = 0x01
-                                }
-                            },
-                            // Empty EquipElementParamList
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Legwear,
-                            Unk3 = 0,
-                            Color = arisenPreset.LegwearColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Overwear,
-                            Unk3 = 0,
-                            Color = arisenPreset.OverwearColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Jewelry1,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.J1Crest1,
-                                    Add = (ushort) (arisenPreset.J1C1Add1 << 8 | arisenPreset.J1C1Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.J1Crest2,
-                                    Add = (ushort) (arisenPreset.J1C2Add1 << 8 | arisenPreset.J1C2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.J1Crest3,
-                                    Add = (ushort) (arisenPreset.J1C3Add1 << 8 | arisenPreset.J1C3Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 4,
-                                    CrestId = arisenPreset.J1Crest4,
-                                    Add = (ushort) (arisenPreset.J1C4Add1 << 8 | arisenPreset.J1C4Add2),
-                                }                                
-                            },
-                            // Empty ArmorCrestDataList
-                            EquipElementParamList = new List<CDataEquipElementParam>() {
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x2,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x3,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x4,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x5,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x6,
-                                    ItemId = 0x50
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x7,
-                                    ItemId = 0x3C
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x8,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x9,
-                                    ItemId = 0x07
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xA,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xB,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xC,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xD,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xE,
-                                    ItemId = 0x00
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xF,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x10,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x11,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x12,
-                                    ItemId = 0x05
-                                },
+                            new Item {
+                                ItemId = arisenPreset.Lantern,
+                                Unk3 = 0,
                             }
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Jewelry2,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.J2Crest1,
-                                    Add = (ushort) (arisenPreset.J2C1Add1 << 8 | arisenPreset.J2C1Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.J2Crest2,
-                                    Add = (ushort) (arisenPreset.J2C2Add1 << 8 | arisenPreset.J2C2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.J2Crest3,
-                                    Add = (ushort) (arisenPreset.J2C3Add1 << 8 | arisenPreset.J2C3Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 4,
-                                    CrestId = arisenPreset.J2Crest4,
-                                    Add = (ushort) (arisenPreset.J2C4Add1 << 8 | arisenPreset.J2C4Add2),
-                                }                                
+                        }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
+                    },
+                    {
+                        EquipType.Visual,
+                        new List<Item>() {
+                            new Item {
+                                ItemId = arisenPreset.VPrimaryWeapon,
+                                Unk3 = 0,
+                                Color = arisenPreset.VPrimaryWeaponColour
                             },
-                            // Empty ArmorCrestDataList
-                            EquipElementParamList = new List<CDataEquipElementParam>() {
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x2,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x3,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x4,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x5,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x6,
-                                    ItemId = 0x50
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x7,
-                                    ItemId = 0x3C
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x8,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x9,
-                                    ItemId = 0x07
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xA,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xB,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xC,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xD,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xE,
-                                    ItemId = 0x00
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xF,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x10,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x11,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x12,
-                                    ItemId = 0x05
-                                },
-                            }
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Jewelry3,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.J3Crest1,
-                                    Add = (ushort) (arisenPreset.J3C1Add1 << 8 | arisenPreset.J3C1Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.J3Crest2,
-                                    Add = (ushort) (arisenPreset.J3C2Add1 << 8 | arisenPreset.J3C2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.J3Crest3,
-                                    Add = (ushort) (arisenPreset.J3C3Add1 << 8 | arisenPreset.J3C3Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 4,
-                                    CrestId = arisenPreset.J3Crest4,
-                                    Add = (ushort) (arisenPreset.J3C4Add1 << 8 | arisenPreset.J3C4Add2),
-                                }                                
+                            new Item {
+                                ItemId = arisenPreset.VSecondaryWeapon,
+                                Unk3 = 0,
+                                Color = arisenPreset.VSecondaryWeaponColour
                             },
-                            // Empty ArmorCrestDataList
-                            EquipElementParamList = new List<CDataEquipElementParam>() {
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x2,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x3,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x4,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x5,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x6,
-                                    ItemId = 0x50
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x7,
-                                    ItemId = 0x3C
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x8,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x9,
-                                    ItemId = 0x07
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xA,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xB,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xC,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xD,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xE,
-                                    ItemId = 0x00
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xF,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x10,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x11,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x12,
-                                    ItemId = 0x05
-                                },
-                            }
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Jewelry4,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.J4Crest1,
-                                    Add = (ushort) (arisenPreset.J4C1Add1 << 8 | arisenPreset.J4C1Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.J4Crest2,
-                                    Add = (ushort) (arisenPreset.J4C2Add1 << 8 | arisenPreset.J4C2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.J4Crest3,
-                                    Add = (ushort) (arisenPreset.J4C3Add1 << 8 | arisenPreset.J4C3Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 4,
-                                    CrestId = arisenPreset.J4Crest4,
-                                    Add = (ushort) (arisenPreset.J4C4Add1 << 8 | arisenPreset.J4C4Add2),
-                                }                                
+                            new Item {
+                                ItemId = arisenPreset.VHead,
+                                Unk3 = 0,
+                                Color = arisenPreset.VHeadColour
                             },
-                            // Empty ArmorCrestDataList
-                            EquipElementParamList = new List<CDataEquipElementParam>() {
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x2,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x3,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x4,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x5,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x6,
-                                    ItemId = 0x50
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x7,
-                                    ItemId = 0x3C
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x8,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x9,
-                                    ItemId = 0x07
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xA,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xB,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xC,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xD,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xE,
-                                    ItemId = 0x00
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xF,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x10,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x11,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x12,
-                                    ItemId = 0x05
-                                },
-                            }
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Jewelry5,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                            WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                new CDataWeaponCrestData {
-                                    SlotNo = 1,
-                                    CrestId = arisenPreset.J5Crest1,
-                                    Add = (ushort) (arisenPreset.J5C1Add1 << 8 | arisenPreset.J5C1Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 2,
-                                    CrestId = arisenPreset.J5Crest2,
-                                    Add = (ushort) (arisenPreset.J5C2Add1 << 8 | arisenPreset.J5C2Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 3,
-                                    CrestId = arisenPreset.J5Crest3,
-                                    Add = (ushort) (arisenPreset.J5C3Add1 << 8 | arisenPreset.J5C3Add2),
-                                },
-                                new CDataWeaponCrestData {
-                                    SlotNo = 4,
-                                    CrestId = arisenPreset.J5Crest4,
-                                    Add = (ushort) (arisenPreset.J5C4Add1 << 8 | arisenPreset.J5C4Add2),
-                                }                                
+                            new Item {
+                                ItemId = arisenPreset.VBody,
+                                Unk3 = 0,
+                                Color = arisenPreset.VBodyColour
                             },
-                            // Empty ArmorCrestDataList
-                            EquipElementParamList = new List<CDataEquipElementParam>() {
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x2,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x3,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x4,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x5,
-                                    ItemId = 0x02
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x6,
-                                    ItemId = 0x50
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x7,
-                                    ItemId = 0x3C
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x8,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x9,
-                                    ItemId = 0x07
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xA,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xB,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xC,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xD,
-                                    ItemId = 0x04
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xE,
-                                    ItemId = 0x00
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0xF,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x10,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x11,
-                                    ItemId = 0x05
-                                },
-                                new CDataEquipElementParam {
-                                    SlotNo = 0x12,
-                                    ItemId = 0x05
-                                },
+                            new Item {
+                                ItemId = arisenPreset.VClothing,
+                                Unk3 = 0,
+                                Color = arisenPreset.VClothingColour
+                            },
+                            new Item {
+                                ItemId = arisenPreset.VArm,
+                                Unk3 = 0,
+                                Color = arisenPreset.VArmColour
+                            },
+                            new Item {
+                                ItemId = arisenPreset.VLeg,
+                                Unk3 = 0,
+                                Color = arisenPreset.VLegColour
+                            },
+                            new Item {
+                                ItemId = arisenPreset.VLegwear,
+                                Unk3 = 0,
+                                Color = arisenPreset.VLegwearColour
+                            },
+                            new Item {
+                                ItemId = arisenPreset.VOverwear,
+                                Unk3 = 0,
+                                Color = arisenPreset.VOverwearColour,
                             }
+                        }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
+                    }
+                })).ToDictionary(x => x.Item1, x => x.Item2),
+                Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Item>>(arisenPreset.Job, new List<Item>() {
+                        new Item()
+                        {
+                            ItemId = arisenPreset.ClassItem1
                         },
-                        new Item {
-                            ItemId = arisenPreset.Lantern,
-                            Unk3 = 0,
+                        new Item()
+                        {
+                            ItemId = arisenPreset.ClassItem1
                         }
-                    }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
-                },
-                {
-                    EquipType.Visual,
-                    new List<Item>() {
-                        new Item {
-                            ItemId = arisenPreset.VPrimaryWeapon,
-                            Unk3 = 0,
-                            Color = arisenPreset.VPrimaryWeaponColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.VSecondaryWeapon,
-                            Unk3 = 0,
-                            Color = arisenPreset.VSecondaryWeaponColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.VHead,
-                            Unk3 = 0,
-                            Color = arisenPreset.VHeadColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.VBody,
-                            Unk3 = 0,
-                            Color = arisenPreset.VBodyColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.VClothing,
-                            Unk3 = 0,
-                            Color = arisenPreset.VClothingColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.VArm,
-                            Unk3 = 0,
-                            Color = arisenPreset.VArmColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.VLeg,
-                            Unk3 = 0,
-                            Color = arisenPreset.VLegColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.VLegwear,
-                            Unk3 = 0,
-                            Color = arisenPreset.VLegwearColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.VOverwear,
-                            Unk3 = 0,
-                            Color = arisenPreset.VOverwearColour,
-                        }
-                    }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
-                }
-            })).ToDictionary(x => x.Item1, x => x.Item2));
-            character.CharacterEquipJobItemListDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CDataEquipJobItem>>(arisenPreset.Job, new List<CDataEquipJobItem>() {
-                new CDataEquipJobItem {
-                    JobItemId = arisenPreset.ClassItem1,
-                    EquipSlotNo = 1
-                },
-                new CDataEquipJobItem {
-                    JobItemId = arisenPreset.ClassItem2,
-                    EquipSlotNo = 2
-                }
-            })).ToDictionary(x => x.Item1, x => x.Item2);
+                })).ToDictionary(x => x.Item1, x => x.Item2)
+            );
             character.HideEquipHead = ActiveJobPreset.DisplayHelmet;
             character.HideEquipLantern = ActiveJobPreset.DisplayLantern;
             character.HideEquipHeadPawn = packet.Structure.CharacterInfo.HideEquipHeadPawn;
             character.HideEquipLanternPawn = packet.Structure.CharacterInfo.HideEquipLanternPawn;
-            // TODO: Load from Arisen.csv or something
-            character.NormalSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CDataNormalSkillParam>() {
-                new CDataNormalSkillParam() {
-                    Job = arisenPreset.Job,
-                    SkillNo = 1,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = arisenPreset.Job,
-                    SkillNo = 2,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = arisenPreset.Job,
-                    SkillNo = 3,
-                    Index = 0,
-                    PreSkillNo = 0
-                }
-            }).ToList();
-            character.CustomSkills = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<CustomSkill>() {
+            character.EquippedCustomSkillsDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CustomSkill>>(arisenPreset.Job, new List<CustomSkill>() {
                 // Main Palette
                 new CustomSkill() {
                     Job = arisenPreset.Job,
-                    SlotNo = 1,
                     SkillId = arisenPreset.Cs1MpId,
                     SkillLv = arisenPreset.Cs1MpLv
                 },
                 new CustomSkill() {
                     Job = arisenPreset.Job,
-                    SlotNo = 2,
                     SkillId = arisenPreset.Cs2MpId,
                     SkillLv = arisenPreset.Cs2MpLv
                 },
                 new CustomSkill() {
                     Job = arisenPreset.Job,
-                    SlotNo = 3,
                     SkillId = arisenPreset.Cs3MpId,
                     SkillLv = arisenPreset.Cs3MpLv
                 },
                 new CustomSkill() {
                     Job = arisenPreset.Job,
-                    SlotNo = 4,
                     SkillId = arisenPreset.Cs4MpId,
                     SkillLv = arisenPreset.Cs4MpLv
                 },
+                null, null, null, null, null, null, null, null, null, null, null, null, // Padding from slots 0x04 (Main Palette slot 4) to 0x11 (Sub Palette slot 1)
                 // Sub Palette
                 new CustomSkill() {
                     Job = arisenPreset.Job,
-                    SlotNo = (1<<4) | 1,
                     SkillId = arisenPreset.Cs1SpId,
                     SkillLv = arisenPreset.Cs1SpLv
                 },
                 new CustomSkill() {
                     Job = arisenPreset.Job,
-                    SlotNo = (1<<4) | 2,
                     SkillId = arisenPreset.Cs2SpId,
                     SkillLv = arisenPreset.Cs2SpLv
                 },
                 new CustomSkill() {
                     Job = arisenPreset.Job,
-                    SlotNo = (1<<4) | 3,
                     SkillId = arisenPreset.Cs3SpId,
                     SkillLv = arisenPreset.Cs3SpLv
                 },
                 new CustomSkill() {
                     Job = arisenPreset.Job,
-                    SlotNo = (1<<4) | 4,
                     SkillId = arisenPreset.Cs4SpId,
                     SkillLv = arisenPreset.Cs4SpLv
                 }
-            }).Where(skill => skill.SkillId != 0).ToList();
-            character.Abilities = Server.AssetRepository.ArisenAsset.SelectMany(arisenPreset => new List<Ability>() {
+            }.Select(skill => skill?.SkillId == 0 ? null : skill).ToList()
+            )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
+            character.LearnedCustomSkills = character.EquippedCustomSkillsDictionary.SelectMany(jobAndSkills => jobAndSkills.Value).Where(skill => skill != null).ToList();
+            character.EquippedAbilitiesDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Ability>>(arisenPreset.Job, new List<Ability>() {
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab1Jb,
-                    SlotNo = 1,
                     AbilityId = arisenPreset.Ab1Id,
                     AbilityLv = arisenPreset.Ab1Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab2Jb,
-                    SlotNo = 2,
                     AbilityId = arisenPreset.Ab2Id,
                     AbilityLv = arisenPreset.Ab2Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab3Jb,
-                    SlotNo = 3,
                     AbilityId = arisenPreset.Ab3Id,
                     AbilityLv = arisenPreset.Ab3Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab4Jb,
-                    SlotNo = 4,
                     AbilityId = arisenPreset.Ab4Id,
                     AbilityLv = arisenPreset.Ab4Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab5Jb,
-                    SlotNo = 5,
                     AbilityId = arisenPreset.Ab5Id,
                     AbilityLv = arisenPreset.Ab5Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab6Jb,
-                    SlotNo = 6,
                     AbilityId = arisenPreset.Ab6Id,
                     AbilityLv = arisenPreset.Ab6Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab7Jb,
-                    SlotNo = 7,
                     AbilityId = arisenPreset.Ab7Id,
                     AbilityLv = arisenPreset.Ab7Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab8Jb,
-                    SlotNo = 8,
                     AbilityId = arisenPreset.Ab8Id,
                     AbilityLv = arisenPreset.Ab8Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab9Jb,
-                    SlotNo = 9,
                     AbilityId = arisenPreset.Ab9Id,
                     AbilityLv = arisenPreset.Ab9Lv
                 },
                 new Ability() {
-                    EquippedToJob = arisenPreset.Job,
                     Job = arisenPreset.Ab10Jb,
-                    SlotNo = 10,
                     AbilityId = arisenPreset.Ab10Id,
                     AbilityLv = arisenPreset.Ab10Lv
                 }
-            }).Where(aug => aug.AbilityId != 0).ToList();
+            }.Select(aug => aug?.AbilityId == 0 ? null : aug).ToList()
+            )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
+            character.LearnedAbilities = character.EquippedAbilitiesDictionary.SelectMany(jobAndAugs => jobAndAugs.Value).Where(aug => aug != null).ToList();
             character.Storage = new Storages(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
             character.WalletPointList = new List<CDataWalletPoint>()
             {
@@ -1184,7 +1141,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         private Pawn LoadDefaultPawn(Character character, MyPawnCsv myPawnCsvData)
         {
-            S2CContextGetPartyMypawnContextNtc pcapPawn = EntitySerializer.Get<S2CContextGetPartyMypawnContextNtc>().Read(data_Dump_Pawn35_3_16);
+            S2CContextGetPartyMypawnContextNtc pcapPawn = EntitySerializer.Get<S2CContextGetPartyMypawnContextNtc>().Read(data_Dump_Pawn35_3_16); // TODO: Replace pcap data
             Pawn pawn = new Pawn(character.CharacterId);
             pawn.PawnId = myPawnCsvData.PawnId;
             pawn.CharacterId = character.CharacterId; // pawns characterId, refers to the owner
@@ -1332,699 +1289,678 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     MAtkDownResist = pcapPawn.Context.ResistInfo.MAtkDownResist,
                     MDefDownResist = pcapPawn.Context.ResistInfo.MDefDownResist,
             }};
-            pawn.Equipment = new Equipment(new Dictionary<JobId, Dictionary<EquipType, List<Item>>>() 
-            { 
+            pawn.Equipment = new Equipment(
+                new Dictionary<JobId, Dictionary<EquipType, List<Item>>>() 
                 { 
-                    myPawnCsvData.Job, 
-                    new Dictionary<EquipType, List<Item>> 
-                    {
+                    { 
+                        myPawnCsvData.Job, 
+                        new Dictionary<EquipType, List<Item>> 
                         {
-                            EquipType.Performance,
-                            new List<Item>() {
-                                new Item {
-                                    ItemId = myPawnCsvData.Primary,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 0,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                        new CDataArmorCrestData {
-                                            u0 = 1,
-                                            u1 = 1,
-                                            u2 = 0x59,
-                                            u3 = 0x04
+                            {
+                                EquipType.Performance,
+                                new List<Item>() {
+                                    new Item {
+                                        ItemId = myPawnCsvData.Primary,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 0,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                            new CDataArmorCrestData {
+                                                u0 = 1,
+                                                u1 = 1,
+                                                u2 = 0x59,
+                                                u3 = 0x04
+                                            }
+                                        },
+                                        // Empty EquipElementParamList
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.Secondary,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.Head,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 3,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                            new CDataArmorCrestData {
+                                                u0 = 1,
+                                                u1 = 1,
+                                                u2 = 0x29D,
+                                                u3 = 0x01
+                                            }
+                                        },
+                                        // Empty EquipElementParamList
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.Body,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 4,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                            new CDataArmorCrestData {
+                                                u0 = 1,
+                                                u1 = 1,
+                                                u2 = 0x280,
+                                                u3 = 0x01
+                                            }
+                                        },
+                                        // Empty EquipElementParamList
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.BodyClothing,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.Arm,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 3,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                            new CDataArmorCrestData {
+                                                u0 = 1,
+                                                u1 = 1,
+                                                u2 = 0x1D2,
+                                                u3 = 0x01
+                                            }
+                                        },
+                                        // Empty EquipElementParamList
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.Leg,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 3,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        ArmorCrestDataList = new List<CDataArmorCrestData>() {
+                                            new CDataArmorCrestData {
+                                                u0 = 1,
+                                                u1 = 1,
+                                                u2 = 0x225,
+                                                u3 = 0x01
+                                            }
+                                        },
+                                        // Empty EquipElementParamList
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.LegWear,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.OverWear,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.JewelrySlot1,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 0,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        // Empty ArmorCrestDataList
+                                        EquipElementParamList = new List<CDataEquipElementParam>() {
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x2,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x3,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x4,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x5,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x6,
+                                                ItemId = 0x50
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x7,
+                                                ItemId = 0x3C
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x8,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x9,
+                                                ItemId = 0x07
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xA,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xB,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xC,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xD,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xE,
+                                                ItemId = 0x00
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xF,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x10,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x11,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x12,
+                                                ItemId = 0x05
+                                            },
                                         }
                                     },
-                                    // Empty EquipElementParamList
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.Secondary,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.Head,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 3,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                        new CDataArmorCrestData {
-                                            u0 = 1,
-                                            u1 = 1,
-                                            u2 = 0x29D,
-                                            u3 = 0x01
+                                    new Item {
+                                        ItemId = myPawnCsvData.JewelrySlot2,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 0,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        // Empty ArmorCrestDataList
+                                        EquipElementParamList = new List<CDataEquipElementParam>() {
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x2,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x3,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x4,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x5,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x6,
+                                                ItemId = 0x50
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x7,
+                                                ItemId = 0x3C
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x8,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x9,
+                                                ItemId = 0x07
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xA,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xB,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xC,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xD,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xE,
+                                                ItemId = 0x00
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xF,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x10,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x11,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x12,
+                                                ItemId = 0x05
+                                            },
                                         }
                                     },
-                                    // Empty EquipElementParamList
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.Body,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 4,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                        new CDataArmorCrestData {
-                                            u0 = 1,
-                                            u1 = 1,
-                                            u2 = 0x280,
-                                            u3 = 0x01
+                                    new Item {
+                                        ItemId = myPawnCsvData.JewelrySlot3,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 0,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        // Empty ArmorCrestDataList
+                                        EquipElementParamList = new List<CDataEquipElementParam>() {
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x2,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x3,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x4,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x5,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x6,
+                                                ItemId = 0x50
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x7,
+                                                ItemId = 0x3C
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x8,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x9,
+                                                ItemId = 0x07
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xA,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xB,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xC,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xD,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xE,
+                                                ItemId = 0x00
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xF,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x10,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x11,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x12,
+                                                ItemId = 0x05
+                                            },
                                         }
                                     },
-                                    // Empty EquipElementParamList
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.BodyClothing,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.Arm,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 3,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                        new CDataArmorCrestData {
-                                            u0 = 1,
-                                            u1 = 1,
-                                            u2 = 0x1D2,
-                                            u3 = 0x01
+                                    new Item {
+                                        ItemId = myPawnCsvData.JewelrySlot4,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 0,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        // Empty ArmorCrestDataList
+                                        EquipElementParamList = new List<CDataEquipElementParam>() {
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x2,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x3,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x4,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x5,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x6,
+                                                ItemId = 0x50
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x7,
+                                                ItemId = 0x3C
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x8,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x9,
+                                                ItemId = 0x07
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xA,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xB,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xC,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xD,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xE,
+                                                ItemId = 0x00
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xF,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x10,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x11,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x12,
+                                                ItemId = 0x05
+                                            },
                                         }
                                     },
-                                    // Empty EquipElementParamList
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.Leg,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 3,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                        new CDataArmorCrestData {
-                                            u0 = 1,
-                                            u1 = 1,
-                                            u2 = 0x225,
-                                            u3 = 0x01
+                                    new Item {
+                                        ItemId = myPawnCsvData.JewelrySlot5,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                        PlusValue = 0,
+                                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                                        // Empty ArmorCrestDataList
+                                        EquipElementParamList = new List<CDataEquipElementParam>() {
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x2,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x3,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x4,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x5,
+                                                ItemId = 0x02
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x6,
+                                                ItemId = 0x50
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x7,
+                                                ItemId = 0x3C
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x8,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x9,
+                                                ItemId = 0x07
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xA,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xB,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xC,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xD,
+                                                ItemId = 0x04
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xE,
+                                                ItemId = 0x00
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0xF,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x10,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x11,
+                                                ItemId = 0x05
+                                            },
+                                            new CDataEquipElementParam {
+                                                SlotNo = 0x12,
+                                                ItemId = 0x05
+                                            },
                                         }
                                     },
-                                    // Empty EquipElementParamList
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.LegWear,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.OverWear,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.JewelrySlot1,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 0,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    // Empty ArmorCrestDataList
-                                    EquipElementParamList = new List<CDataEquipElementParam>() {
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x2,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x3,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x4,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x5,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x6,
-                                            ItemId = 0x50
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x7,
-                                            ItemId = 0x3C
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x8,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x9,
-                                            ItemId = 0x07
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xA,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xB,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xC,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xD,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xE,
-                                            ItemId = 0x00
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xF,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x10,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x11,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x12,
-                                            ItemId = 0x05
-                                        },
+                                    new Item {
+                                        ItemId = myPawnCsvData.Lantern,
+                                        Unk3 = 0,
                                     }
+                                }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
+                            },
+                            {
+                                EquipType.Visual,
+                                new List<Item>() {
+                                    new Item {
+                                        ItemId = myPawnCsvData.VPrimary,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.VSecondary,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.VHead,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.VBody,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.VBodyClothing,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.VArm,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.VLeg,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.VLegWear,
+                                        Unk3 = 0,
+                                        Color = 0
+                                    },
+                                    new Item {
+                                        ItemId = myPawnCsvData.VOverWear,
+                                        Unk3 = 0,
+                                        Color = 0,
+                                    },
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null
+                                }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
+                            }
+                        }
+                    }
+                },
+                new Dictionary<JobId, List<Item>>()
+                { 
+                    { 
+                        myPawnCsvData.Job, 
+                        new List<Item>() {
+                                new Item()
+                                {
+                                    ItemId = myPawnCsvData.JobItem1
                                 },
-                                new Item {
-                                    ItemId = myPawnCsvData.JewelrySlot2,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 0,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    // Empty ArmorCrestDataList
-                                    EquipElementParamList = new List<CDataEquipElementParam>() {
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x2,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x3,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x4,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x5,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x6,
-                                            ItemId = 0x50
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x7,
-                                            ItemId = 0x3C
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x8,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x9,
-                                            ItemId = 0x07
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xA,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xB,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xC,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xD,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xE,
-                                            ItemId = 0x00
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xF,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x10,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x11,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x12,
-                                            ItemId = 0x05
-                                        },
-                                    }
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.JewelrySlot3,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 0,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    // Empty ArmorCrestDataList
-                                    EquipElementParamList = new List<CDataEquipElementParam>() {
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x2,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x3,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x4,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x5,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x6,
-                                            ItemId = 0x50
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x7,
-                                            ItemId = 0x3C
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x8,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x9,
-                                            ItemId = 0x07
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xA,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xB,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xC,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xD,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xE,
-                                            ItemId = 0x00
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xF,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x10,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x11,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x12,
-                                            ItemId = 0x05
-                                        },
-                                    }
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.JewelrySlot4,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 0,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    // Empty ArmorCrestDataList
-                                    EquipElementParamList = new List<CDataEquipElementParam>() {
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x2,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x3,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x4,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x5,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x6,
-                                            ItemId = 0x50
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x7,
-                                            ItemId = 0x3C
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x8,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x9,
-                                            ItemId = 0x07
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xA,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xB,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xC,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xD,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xE,
-                                            ItemId = 0x00
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xF,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x10,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x11,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x12,
-                                            ItemId = 0x05
-                                        },
-                                    }
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.JewelrySlot5,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                    PlusValue = 0,
-                                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                                    // Empty ArmorCrestDataList
-                                    EquipElementParamList = new List<CDataEquipElementParam>() {
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x2,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x3,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x4,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x5,
-                                            ItemId = 0x02
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x6,
-                                            ItemId = 0x50
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x7,
-                                            ItemId = 0x3C
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x8,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x9,
-                                            ItemId = 0x07
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xA,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xB,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xC,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xD,
-                                            ItemId = 0x04
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xE,
-                                            ItemId = 0x00
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0xF,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x10,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x11,
-                                            ItemId = 0x05
-                                        },
-                                        new CDataEquipElementParam {
-                                            SlotNo = 0x12,
-                                            ItemId = 0x05
-                                        },
-                                    }
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.Lantern,
-                                    Unk3 = 0,
+                                new Item()
+                                {
+                                    ItemId = myPawnCsvData.JobItem2
                                 }
-                            }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
-                        },
-                        {
-                            EquipType.Visual,
-                            new List<Item>() {
-                                new Item {
-                                    ItemId = myPawnCsvData.VPrimary,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.VSecondary,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.VHead,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.VBody,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.VBodyClothing,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.VArm,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.VLeg,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.VLegWear,
-                                    Unk3 = 0,
-                                    Color = 0
-                                },
-                                new Item {
-                                    ItemId = myPawnCsvData.VOverWear,
-                                    Unk3 = 0,
-                                    Color = 0,
-                                },
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null
-                            }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                         }
                     }
                 }
-            });
-            pawn.CharacterEquipJobItemListDictionary = new Dictionary<JobId, List<CDataEquipJobItem>>() { { myPawnCsvData.Job, new List<CDataEquipJobItem>() {
-                new CDataEquipJobItem {
-                    JobItemId = myPawnCsvData.JobItem1,
-                    EquipSlotNo = myPawnCsvData.JobItemSlot1
-                },
-                new CDataEquipJobItem {
-                    JobItemId = myPawnCsvData.JobItem2,
-                    EquipSlotNo = myPawnCsvData.JobItemSlot2
+            );
+            pawn.LearnedNormalSkills = new List<CDataNormalSkillParam>();
+            pawn.EquippedCustomSkillsDictionary = new Dictionary<JobId, List<CustomSkill>>() 
+            {
+                {
+                    myPawnCsvData.Job,
+                    new List<CustomSkill>() {
+                        // Main Palette
+                        new CustomSkill() {
+                            Job = myPawnCsvData.Job,
+                            SkillId = myPawnCsvData.CustomSkillId1,
+                            SkillLv = myPawnCsvData.CustomSkillLv1
+                        },
+                        new CustomSkill() {
+                            Job = myPawnCsvData.Job,
+                            SkillId = myPawnCsvData.CustomSkillId2,
+                            SkillLv = myPawnCsvData.CustomSkillLv2
+                        },
+                        new CustomSkill() {
+                            Job = myPawnCsvData.Job,
+                            SkillId = myPawnCsvData.CustomSkillId3,
+                            SkillLv = myPawnCsvData.CustomSkillLv3
+                        },
+                        new CustomSkill() {
+                            Job = myPawnCsvData.Job,
+                            SkillId = myPawnCsvData.CustomSkillId4,
+                            SkillLv = myPawnCsvData.CustomSkillLv4
+                        }
+                    }.Select(skill => skill?.SkillId == 0 ? null : skill).ToList()
                 }
-            }}};
-            pawn.NormalSkills = new List<CDataNormalSkillParam>() {
-                new CDataNormalSkillParam() {
-                    Job = myPawnCsvData.Job,
-                    SkillNo = myPawnCsvData.NormalSkill1,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = myPawnCsvData.Job,
-                    SkillNo = myPawnCsvData.NormalSkill2,
-                    Index = 0,
-                    PreSkillNo = 0
-                },
-                new CDataNormalSkillParam() {
-                    Job = myPawnCsvData.Job,
-                    SkillNo = myPawnCsvData.NormalSkill3,
-                    Index = 0,
-                    PreSkillNo = 0
+            };
+            pawn.LearnedCustomSkills = pawn.EquippedCustomSkillsDictionary.SelectMany(skills => skills.Value).Where(skill => skill != null).ToList();
+            pawn.EquippedAbilitiesDictionary = new Dictionary<JobId, List<Ability>>()
+            {
+                {
+                    myPawnCsvData.Job,
+                    new List<Ability>() {
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob1,
+                            AbilityId = myPawnCsvData.AbilityId1,
+                            AbilityLv = myPawnCsvData.AbilityLv1
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob2,
+                            AbilityId = myPawnCsvData.AbilityId2,
+                            AbilityLv = myPawnCsvData.AbilityLv2
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob3,
+                            AbilityId = myPawnCsvData.AbilityId3,
+                            AbilityLv = myPawnCsvData.AbilityLv3
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob4,
+                            AbilityId = myPawnCsvData.AbilityId4,
+                            AbilityLv = myPawnCsvData.AbilityLv4
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob5,
+                            AbilityId = myPawnCsvData.AbilityId5,
+                            AbilityLv = myPawnCsvData.AbilityLv5
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob6,
+                            AbilityId = myPawnCsvData.AbilityId6,
+                            AbilityLv = myPawnCsvData.AbilityLv6
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob7,
+                            AbilityId = myPawnCsvData.AbilityId7,
+                            AbilityLv = myPawnCsvData.AbilityLv7
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob8,
+                            AbilityId = myPawnCsvData.AbilityId8,
+                            AbilityLv = myPawnCsvData.AbilityLv8
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob9,
+                            AbilityId = myPawnCsvData.AbilityId9,
+                            AbilityLv = myPawnCsvData.AbilityLv9
+                        },
+                        new Ability() {
+                            Job = (JobId) myPawnCsvData.AbilityJob10,
+                            AbilityId = myPawnCsvData.AbilityId10,
+                            AbilityLv = myPawnCsvData.AbilityLv10
+                        }
+                    }.Select(aug => aug?.AbilityId == 0 ? null : aug).ToList()
                 }
-            }.Where(coreSkill => coreSkill.SkillNo != 0).ToList();
-            pawn.CustomSkills = new List<CustomSkill>() {
-                // Main Palette
-                new CustomSkill() {
-                    Job = myPawnCsvData.Job,
-                    SlotNo = 1,
-                    SkillId = myPawnCsvData.CustomSkillId1,
-                    SkillLv = myPawnCsvData.CustomSkillLv1
-                },
-                new CustomSkill() {
-                    Job = myPawnCsvData.Job,
-                    SlotNo = 2,
-                    SkillId = myPawnCsvData.CustomSkillId2,
-                    SkillLv = myPawnCsvData.CustomSkillLv2
-                },
-                new CustomSkill() {
-                    Job = myPawnCsvData.Job,
-                    SlotNo = 3,
-                    SkillId = myPawnCsvData.CustomSkillId3,
-                    SkillLv = myPawnCsvData.CustomSkillLv3
-                },
-                new CustomSkill() {
-                    Job = myPawnCsvData.Job,
-                    SlotNo = 4,
-                    SkillId = myPawnCsvData.CustomSkillId4,
-                    SkillLv = myPawnCsvData.CustomSkillLv4
-                }
-            }.Where(skill => skill.SkillId != 0).ToList();
-            pawn.Abilities = new List<Ability>() {
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob1,
-                    SlotNo = 1,
-                    AbilityId = myPawnCsvData.AbilityId1,
-                    AbilityLv = myPawnCsvData.AbilityLv1
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob2,
-                    SlotNo = 2,
-                    AbilityId = myPawnCsvData.AbilityId2,
-                    AbilityLv = myPawnCsvData.AbilityLv2
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob3,
-                    SlotNo = 3,
-                    AbilityId = myPawnCsvData.AbilityId3,
-                    AbilityLv = myPawnCsvData.AbilityLv3
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob4,
-                    SlotNo = 4,
-                    AbilityId = myPawnCsvData.AbilityId4,
-                    AbilityLv = myPawnCsvData.AbilityLv4
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob5,
-                    SlotNo = 5,
-                    AbilityId = myPawnCsvData.AbilityId5,
-                    AbilityLv = myPawnCsvData.AbilityLv5
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob6,
-                    SlotNo = 6,
-                    AbilityId = myPawnCsvData.AbilityId6,
-                    AbilityLv = myPawnCsvData.AbilityLv6
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob7,
-                    SlotNo = 7,
-                    AbilityId = myPawnCsvData.AbilityId7,
-                    AbilityLv = myPawnCsvData.AbilityLv7
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob8,
-                    SlotNo = 8,
-                    AbilityId = myPawnCsvData.AbilityId8,
-                    AbilityLv = myPawnCsvData.AbilityLv8
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob9,
-                    SlotNo = 9,
-                    AbilityId = myPawnCsvData.AbilityId9,
-                    AbilityLv = myPawnCsvData.AbilityLv9
-                },
-                new Ability() {
-                    EquippedToJob = myPawnCsvData.Job,
-                    Job = (JobId) myPawnCsvData.AbilityJob10,
-                    SlotNo = 10,
-                    AbilityId = myPawnCsvData.AbilityId10,
-                    AbilityLv = myPawnCsvData.AbilityLv10
-                }
-            }.Where(aug => aug.AbilityId != 0).ToList();
+            };
+            pawn.LearnedAbilities = pawn.EquippedAbilitiesDictionary.SelectMany(augs => augs.Value).Where(aug => aug != null).ToList();
             pawn.PawnReactionList = new List<CDataPawnReaction>()
             {
                 new CDataPawnReaction()

@@ -91,7 +91,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 }
 
                 TimeSpan loginTokenAge = account.LoginTokenCreated.Value - now;
-                if (loginTokenAge > TimeSpan.FromDays(1)) // TODO convert to setting
+                if (loginTokenAge > TimeSpan.FromDays(7)) // TODO convert to setting
                 {
                     Logger.Error(client, $"OneTimeToken Created at: {account.LoginTokenCreated} expired.");
                     res.Error = 1;

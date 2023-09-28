@@ -116,6 +116,20 @@ namespace Arrowgene.Ddon.Shared.Model
             Items = Enumerable.Repeat<Tuple<Item, uint>?>(null, slotMax).ToList();
             SortData = sortData;
         }
+
+        public Tuple<ushort, Item, uint>? findItemByUId(string itemUId)
+        {
+            for(int index = 0; index < this.Items.Count; index++)
+            {
+                var itemAndCount = this.Items[index];
+                if(itemAndCount?.Item1.UId == itemUId)
+                {
+                    return new Tuple<ushort, Item, uint>((ushort)(index+1), itemAndCount.Item1, itemAndCount.Item2);
+                }
+            }
+
+            return null;
+        }
     }
 
     // Check nItem::E_STORAGE_TYPE in the PS4 debug symbols for IDs?

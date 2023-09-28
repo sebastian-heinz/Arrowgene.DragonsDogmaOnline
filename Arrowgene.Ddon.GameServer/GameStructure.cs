@@ -128,7 +128,7 @@ public static class GameStructure
                 Equips = pawn.Equipment.getEquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Visual)
             }
         };
-        cDataPawnInfo.CharacterEquipJobItemList = pawn.CharacterEquipJobItemListDictionary[pawn.Job];
+        cDataPawnInfo.CharacterEquipJobItemList = pawn.Equipment.getJobItemsAsCDataEquipJobItem(pawn.Job);
         cDataPawnInfo.JewelrySlotNum = pawn.JewelrySlotNum;
         // TODO: Pawn CharacterItemSlotInfoList, CraftData
         cDataPawnInfo.CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
@@ -158,9 +158,15 @@ public static class GameStructure
         cDataPawnInfo.CraftCount = 10;
         cDataPawnInfo.MaxAdventureCount = 5;
         cDataPawnInfo.MaxCraftCount = 10;
-        cDataPawnInfo.ContextNormalSkillList = pawn.NormalSkills.Select(normalSkill => new CDataContextNormalSkillData(normalSkill)).ToList();
-        cDataPawnInfo.ContextSkillList = pawn.CustomSkills.Select(skill => skill.AsCDataContextAcquirementData()).ToList();
-        cDataPawnInfo.ContextAbilityList = pawn.Abilities.Select(ability => ability.AsCDataContextAcquirementData()).ToList();
+        cDataPawnInfo.ContextNormalSkillList = pawn.LearnedNormalSkills.Select(normalSkill => new CDataContextNormalSkillData(normalSkill)).ToList();
+        cDataPawnInfo.ContextSkillList = pawn.EquippedCustomSkillsDictionary[pawn.Job]
+            .Select((skill, index) => skill?.AsCDataContextAcquirementData((byte)(index+1)))
+            .Where(skill => skill != null)
+            .ToList();
+        cDataPawnInfo.ContextAbilityList = pawn.EquippedAbilitiesDictionary[pawn.Job]
+            .Select((ability, index) => ability?.AsCDataContextAcquirementData((byte)(index+1)))
+            .Where(ability => ability != null)
+            .ToList();
         // TODO: AbilityCostMax, ExtendParam
         cDataPawnInfo.AbilityCostMax = 15;
         cDataPawnInfo.ExtendParam = new CDataOrbGainExtendParam() {
@@ -226,17 +232,19 @@ public static class GameStructure
         contextBase.HideEquipLantern = character.HideEquipLantern;
         contextBase.ContextEquipPerformanceList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Performance);
         contextBase.ContextEquipVisualList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Visual);
-        contextBase.ContextEquipJobItemList = character.CharacterEquipJobItemListDictionary[character.Job]
+        contextBase.ContextEquipJobItemList = character.Equipment.getJobItemsAsCDataEquipJobItem(character.Job)
             .Select(x => new CDataContextEquipJobItemData(x)).ToList();
-        contextBase.ContextNormalSkillList = character.NormalSkills
+        contextBase.ContextNormalSkillList = character.LearnedNormalSkills
             .Where(x => x.Job == character.Job)
             .Select(x => new CDataContextNormalSkillData(x)).ToList();
-        contextBase.ContextSkillList = character.CustomSkills
-            .Where(x => x.Job == character.Job)
-            .Select(x => x.AsCDataContextAcquirementData()).ToList();
-        contextBase.ContextAbilityList = character.Abilities
-            .Where(x => x.Job == character.Job)
-            .Select(x => x.AsCDataContextAcquirementData()).ToList();
+        contextBase.ContextSkillList = character.EquippedCustomSkillsDictionary[character.Job]
+            .Select((x, index) => x?.AsCDataContextAcquirementData((byte)(index+1)))
+            .Where(x => x != null)
+            .ToList();
+        contextBase.ContextAbilityList = character.EquippedAbilitiesDictionary[character.Job]
+            .Select((x, index) => x?.AsCDataContextAcquirementData((byte)(index+1)))
+            .Where(x => x != null)
+            .ToList();
         contextBase.Unk0List = new List<CDataContextBaseUnk0>(); // TODO: Figure this one out
     }
 

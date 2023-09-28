@@ -117,6 +117,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return rowsAffected > NoRowsAffected;
         }
 
+        public bool UpdatePawnBaseInfo(Pawn pawn)
+        {
+            return UpdatePawnBaseInfo(null, pawn);
+        }
+
+        public bool UpdatePawnBaseInfo(TCon conn, Pawn pawn)
+        {
+            int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdatePawn, command =>
+            {
+                AddParameter(command, pawn);
+            });
+
+            return characterUpdateRowsAffected > NoRowsAffected;
+        }
+
         private void QueryPawnData(TCon conn, Pawn pawn)
         {
             QueryCharacterCommonData(conn, pawn);
@@ -166,7 +181,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private void CreateItems(TCon conn, Pawn pawn)
         {
             // Create equipment items
-            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in pawn.Equipment.getAllEquipment())
+            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in pawn.Equipment.GetAllEquipment())
             {
                 JobId job = jobEquipment.Key;
                 foreach (KeyValuePair<EquipType, List<Item>> equipment in jobEquipment.Value)

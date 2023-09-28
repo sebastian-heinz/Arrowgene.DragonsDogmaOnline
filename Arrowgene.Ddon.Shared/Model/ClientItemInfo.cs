@@ -8,9 +8,21 @@ namespace Arrowgene.Ddon.Shared.Model
     public class ClientItemInfo
     {
         public uint ItemId;
-        public StorageType StorageType;
+        public byte Category;
         public ushort Price;
         public byte StackLimit;
+
+        public StorageType StorageType
+        { 
+            get
+            {
+                if (Category == 5)
+                    // Job Items have a category of 5, but Job Items StorageType is 4
+                    return StorageType.ItemBagJob;
+                else
+                    return (StorageType) Category;
+            }
+        }
 
         // TODO: Optimize this mess (Use a Set or something that doesn't require looping over it)
         public static ClientItemInfo GetInfoForItemId(List<ClientItemInfo> clientItemInfos, uint itemId)

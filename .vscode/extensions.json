@@ -3,7 +3,6 @@
         "fudge.auto-using",
         "jeff-hykin.better-cpp-syntax",
         "ms-dotnettools.csharp",
-        "kreativ-software.csharpextensions",
         "notblank00.hexeditor",
         "wayou.vscode-todo-highlight",
         "usernamehw.errorlens",
@@ -11,6 +10,7 @@
         "yo1dog.cursor-align",
         "wmaurer.change-case",
         "softwareape.numbermonger",
-        "maziac.hex-hover-converter"
+        "maziac.hex-hover-converter",
+        "ms-dotnettools.csdevkit"
     ]
 }

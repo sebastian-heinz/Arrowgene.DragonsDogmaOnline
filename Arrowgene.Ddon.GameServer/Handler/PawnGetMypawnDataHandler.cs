@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnGetMypawnDataReq> req)
         {
-                Pawn pawn = client.Character.Pawns[req.Structure.SlotNo-1];
+                Pawn pawn = client.Character.PawnBySlotNo(req.Structure.SlotNo);
                 var res = new S2CPawnGetMypawnDataRes();
                 res.PawnId = pawn.PawnId;
                 GameStructure.CDataPawnInfo(res.PawnInfo, pawn);

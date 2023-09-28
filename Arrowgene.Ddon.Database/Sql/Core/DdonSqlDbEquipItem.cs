@@ -32,6 +32,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return this.InsertEquipItem(null, commonId, job, equipType, equipSlot, itemUId);
         }
 
+        public bool ReplaceEquipItem(TCon conn, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
+        {
+            return ExecuteNonQuery(conn, SqlReplaceEquipItem, command =>
+            {
+                AddParameter(command, commonId, job, equipType, equipSlot, itemUId);
+            }) == 1;
+        }
+
+        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
+        {
+            return this.ReplaceEquipItem(null, commonId, job, equipType, equipSlot, itemUId);
+        }
+
         public bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
             return ExecuteNonQuery(SqlUpdateEquipItem, command =>

@@ -43,6 +43,7 @@ namespace Arrowgene.Ddon.Database
         Pawn SelectPawn(uint pawnId);
         List<Pawn> SelectPawnsByCharacterId(uint characterId);
         bool DeletePawn(uint pawnId);
+        bool UpdatePawnBaseInfo(Pawn pawn);
 
         // CharacterJobData
         bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
@@ -70,20 +71,30 @@ namespace Arrowgene.Ddon.Database
 
         // Equip
         bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
 
+        // Job Items
+        bool InsertEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo);
+        bool ReplaceEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo);
+        bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo);
+
         // CustomSkills
-        bool InsertEquippedCustomSkill(uint characterId, CustomSkill skill);
-        bool ReplaceEquippedCustomSkill(uint characterId, CustomSkill skill);
-        bool UpdateEquippedCustomSkill(uint characterId, JobId oldJob, byte oldSlotNo, CustomSkill skill);
-        bool DeleteEquippedCustomSkill(uint characterId, JobId job, byte slotNo);
+        bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill);
+        bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill);
+        bool InsertEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
+        bool ReplaceEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
+        bool UpdateEquippedCustomSkill(uint commonId, JobId oldJob, byte oldSlotNo, byte slotNo, CustomSkill skill);
+        bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo);
 
         // Abilities
-        bool InsertEquippedAbility(uint commonId, Ability skill);
-        bool ReplaceEquippedAbility(uint commonId, Ability skill);
+        bool InsertLearnedAbility(uint commonId, Ability ability);
+        bool UpdateLearnedAbility(uint commonId, Ability ability);
+        bool InsertEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability);
+        bool ReplaceEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability);
         bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities);
-        bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, Ability skill);
+        bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, JobId equipptedToJob, byte slotNo, Ability ability);
         bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo);
         bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob);
 

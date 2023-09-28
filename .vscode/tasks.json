@@ -10,8 +10,7 @@
                 "${workspaceFolder}/Arrowgene.Ddon.Cli/Arrowgene.Ddon.Cli.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
+            ]
         },
         {
             "label": "publish",
@@ -22,8 +21,7 @@
                 "${workspaceFolder}/Arrowgene.Ddon.Cli/Arrowgene.Ddon.Cli.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
+            ]
         },
         {
             "label": "watch",
@@ -35,8 +33,7 @@
                 "${workspaceFolder}/Arrowgene.Ddon.Cli/Arrowgene.Ddon.Cli.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
+            ]
         },
         {
             "label": "packet",
@@ -49,8 +46,7 @@
                 "packet",
                 "${input:pathToYaml}",
                 "${input:camelliaKey}"
-            ],
-            "problemMatcher": "$msCompile"
+            ]
         }
     ],
     "inputs": [

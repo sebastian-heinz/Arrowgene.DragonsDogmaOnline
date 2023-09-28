@@ -1,0 +1,16 @@
+*
+!Arrowgene.DragonsDogmaOnline.sln
+!SetSourceRevision.targets
+# This is required by projects which import the SetSourceRevision.targets command to add Git revision info.
+# Not including it causes (ingoreable) errors to be thrown
+#!.git/
+!Arrowgene.Ddon.Cli/
+!Arrowgene.Ddon.Client/
+!Arrowgene.Ddon.Database/
+!Arrowgene.Ddon.GameServer/
+!Arrowgene.Ddon.LoginServer/
+!Arrowgene.Ddon.Rpc/
+!Arrowgene.Ddon.Rpc.Web/
+!Arrowgene.Ddon.Server/
+!Arrowgene.Ddon.Shared/
+!Arrowgene.Ddon.WebServer/
