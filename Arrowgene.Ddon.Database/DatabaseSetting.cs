@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Database
             Database = "Ddon";
             User = string.Empty;
             Password = string.Empty;
-            WipeOnStartup = true;
+            WipeOnStartup = false;
 
             string envDbType = Environment.GetEnvironmentVariable("DB_TYPE");
             if (!string.IsNullOrEmpty(envDbType))
