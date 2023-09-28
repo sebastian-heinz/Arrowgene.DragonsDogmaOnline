@@ -102,6 +102,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_database == null)
             {
+                _setting.DatabaseSetting ??= new DatabaseSetting();
                 _database = DdonDatabaseBuilder.Build(_setting.DatabaseSetting);
             }
 

@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             FirstName = string.Empty;
             LastName = string.Empty;
-            Created = DateTime.MinValue;
+            Created = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
             PlayPointList = Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
             {
                 Job = job,

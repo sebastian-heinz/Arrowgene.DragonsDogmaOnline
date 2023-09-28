@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, IPacket packet)
         {
-            client.PingTime = DateTime.Now;
+            client.PingTime = DateTime.UtcNow;
             ServerRes res = new ServerRes(PacketId.L2C_PING_RES);
             client.Send(res);
         }

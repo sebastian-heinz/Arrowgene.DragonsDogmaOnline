@@ -37,7 +37,7 @@ public class PartyManager
         invitation.Invitee = invitee;
         invitation.Host = host;
         invitation.Party = party;
-        invitation.Date = DateTime.Now;
+        invitation.Date = DateTime.UtcNow;
         if (!_invites.TryAdd(invitee, invitation))
         {
             Logger.Error(invitee, $"Already has pending invite)");

@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Rpc.Command
 
         public ChatCommand()
         {
-            _since = DateTime.MinValue;
+            _since = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
         }
 
         public ChatCommand(DateTime since)

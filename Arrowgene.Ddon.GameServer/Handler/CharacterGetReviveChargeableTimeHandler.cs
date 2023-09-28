@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 DateTime lastRechargeTime = Server.LastRevivalPowerRechargeTime[client.Character.CharacterId];
                 DateTime nextRechargeTime = lastRechargeTime.Add(DdonGameServer.RevivalPowerRechargeTimeSpan);
-                TimeSpan remainTimeSpan = nextRechargeTime - DateTime.Now;
+                TimeSpan remainTimeSpan = nextRechargeTime - DateTime.UtcNow;
                 res.RemainTime = (uint) Math.Max(0, remainTimeSpan.TotalSeconds);
             }
             else

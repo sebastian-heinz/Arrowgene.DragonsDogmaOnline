@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow;
 
             List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
             if (connections.Count > 0)

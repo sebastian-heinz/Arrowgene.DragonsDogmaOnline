@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
             GameToken token = new GameToken();
             token.Token = sb.ToString();
-            token.Created = DateTime.Now;
+            token.Created = DateTime.UtcNow;
             token.AccountId = accountId;
             token.CharacterId = characterId;
             return token;

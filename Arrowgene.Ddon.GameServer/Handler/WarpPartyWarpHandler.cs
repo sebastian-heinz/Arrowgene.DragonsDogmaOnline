@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Check if its true that the party leader has teleported there
             // and that the request was sent before the time ran out
-            TimeSpan warpTimeDifference = DateTime.Now - client.Party.Leader.Client.LastWarpDateTime;
+            TimeSpan warpTimeDifference = DateTime.UtcNow - client.Party.Leader.Client.LastWarpDateTime;
             if(warpTimeDifference > TimeSpan.FromSeconds(60)) {
                 res.Result = 1; // I guess
             }

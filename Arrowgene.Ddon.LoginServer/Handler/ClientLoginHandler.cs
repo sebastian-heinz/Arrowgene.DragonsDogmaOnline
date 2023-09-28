@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow;
             client.SetChallengeCompleted(true);
 
             string oneTimeToken = packet.Structure.OneTimeToken;
