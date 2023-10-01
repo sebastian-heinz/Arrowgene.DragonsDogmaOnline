@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] CharacterFields = new string[]
         {
@@ -26,46 +28,46 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "background_id", "title_uid", "title_index", "motion_id", "motion_frame_no"
         };
 
-        private readonly string SqlInsertCharacter = $"INSERT INTO `ddon_character` ({BuildQueryField(CharacterFields)}) VALUES ({BuildQueryInsert(CharacterFields)});";
-        private static readonly string SqlUpdateCharacter = $"UPDATE `ddon_character` SET {BuildQueryUpdate(CharacterFields)} WHERE `character_id` = @character_id;";
-        private static readonly string SqlSelectCharacter = $"SELECT `ddon_character`.`character_id`, {BuildQueryField(CharacterFields)} FROM `ddon_character` WHERE `character_id` = @character_id;";
-        private static readonly string SqlSelectCharactersByAccountId = $"SELECT `ddon_character`.`character_id`, {BuildQueryField(CharacterFields)} FROM `ddon_character` WHERE `account_id` = @account_id;";
-        private readonly string SqlSelectAllCharacterData = $"SELECT `ddon_character`.`character_id`, {BuildQueryField("ddon_character", CharacterFields)}, `ddon_character_common`.`character_common_id`, {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
-            + "FROM `ddon_character` "
-            + "LEFT JOIN `ddon_character_common` ON `ddon_character_common`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_edit_info` ON `ddon_edit_info`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_status_info` ON `ddon_status_info`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_character_matching_profile` ON `ddon_character_matching_profile`.`character_id` = `ddon_character`.`character_id` "
-            + "LEFT JOIN `ddon_character_arisen_profile` ON `ddon_character_arisen_profile`.`character_id` = `ddon_character`.`character_id` "
-            + "WHERE `ddon_character`.`character_id` = @character_id";
-        private readonly string SqlSelectAllCharactersDataByAccountId = $"SELECT `ddon_character`.`character_id`, {BuildQueryField("ddon_character", CharacterFields)}, `ddon_character_common`.`character_common_id`, {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
-            + "FROM `ddon_character` "
-            + "LEFT JOIN `ddon_character_common` ON `ddon_character_common`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_edit_info` ON `ddon_edit_info`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_status_info` ON `ddon_status_info`.`character_common_id` = `ddon_character`.`character_common_id` "
-            + "LEFT JOIN `ddon_character_matching_profile` ON `ddon_character_matching_profile`.`character_id` = `ddon_character`.`character_id` "
-            + "LEFT JOIN `ddon_character_arisen_profile` ON `ddon_character_arisen_profile`.`character_id` = `ddon_character`.`character_id` "
-            + "WHERE `account_id` = @account_id";
-        private const string SqlDeleteCharacter = "DELETE FROM `ddon_character_common` WHERE EXISTS (SELECT 1 FROM `ddon_character` WHERE `ddon_character_common`.`character_common_id`=`ddon_character`.`character_common_id` AND `character_id`=@character_id);";
+        private readonly string SqlInsertCharacter = $"INSERT INTO \"ddon_character\" ({BuildQueryField(CharacterFields)}) VALUES ({BuildQueryInsert(CharacterFields)});";
+        private static readonly string SqlUpdateCharacter = $"UPDATE \"ddon_character\" SET {BuildQueryUpdate(CharacterFields)} WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlSelectCharacter = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField(CharacterFields)} FROM \"ddon_character\" WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlSelectCharactersByAccountId = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField(CharacterFields)} FROM \"ddon_character\" WHERE \"account_id\" = @account_id;";
+        private readonly string SqlSelectAllCharacterData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+            + "FROM \"ddon_character\" "
+            + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "WHERE \"ddon_character\".\"character_id\" = @character_id";
+        private readonly string SqlSelectAllCharactersDataByAccountId = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+            + "FROM \"ddon_character\" "
+            + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "WHERE \"account_id\" = @account_id";
+        private const string SqlDeleteCharacter = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_character\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_character\".\"character_common_id\" AND \"character_id\"=@character_id);";
 
 
-        private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO `ddon_character_matching_profile` ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
-        private static readonly string SqlUpdateCharacterMatchingProfile = $"UPDATE `ddon_character_matching_profile` SET {BuildQueryUpdate(CDataMatchingProfileFields)} WHERE `character_id` = @character_id;";
-        private static readonly string SqlSelectCharacterMatchingProfile = $"SELECT {BuildQueryField(CDataMatchingProfileFields)} FROM `ddon_character_matching_profile` WHERE `character_id` = @character_id;";
-        private const string SqlDeleteCharacterMatchingProfile = "DELETE FROM `ddon_character_matching_profile` WHERE `character_id`=@character_id;";
+        private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO \"ddon_character_matching_profile\" ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
+        private static readonly string SqlUpdateCharacterMatchingProfile = $"UPDATE \"ddon_character_matching_profile\" SET {BuildQueryUpdate(CDataMatchingProfileFields)} WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlSelectCharacterMatchingProfile = $"SELECT {BuildQueryField(CDataMatchingProfileFields)} FROM \"ddon_character_matching_profile\" WHERE \"character_id\" = @character_id;";
+        private const string SqlDeleteCharacterMatchingProfile = "DELETE FROM \"ddon_character_matching_profile\" WHERE \"character_id\"=@character_id;";
 
 
-        private readonly string SqlInsertCharacterArisenProfile = $"INSERT INTO `ddon_character_arisen_profile` ({BuildQueryField(CDataArisenProfileFields)}) VALUES ({BuildQueryInsert(CDataArisenProfileFields)});";
-        private static readonly string SqlUpdateCharacterArisenProfile = $"UPDATE `ddon_character_arisen_profile` SET {BuildQueryUpdate(CDataArisenProfileFields)} WHERE `character_id` = @character_id;";
-        private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM `ddon_character_arisen_profile` WHERE `character_id` = @character_id;";
-        private const string SqlDeleteCharacterArisenProfile = "DELETE FROM `ddon_character_arisen_profile` WHERE `character_id`=@character_id;";
+        private readonly string SqlInsertCharacterArisenProfile = $"INSERT INTO \"ddon_character_arisen_profile\" ({BuildQueryField(CDataArisenProfileFields)}) VALUES ({BuildQueryInsert(CDataArisenProfileFields)});";
+        private static readonly string SqlUpdateCharacterArisenProfile = $"UPDATE \"ddon_character_arisen_profile\" SET {BuildQueryUpdate(CDataArisenProfileFields)} WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM \"ddon_character_arisen_profile\" WHERE \"character_id\" = @character_id;";
+        private const string SqlDeleteCharacterArisenProfile = "DELETE FROM \"ddon_character_arisen_profile\" WHERE \"character_id\"=@character_id;";
 
 
         public bool CreateCharacter(Character character)
         {
             return ExecuteInTransaction(conn =>
                 {
-                    character.Created = DateTime.Now;
+                    character.Created = DateTime.UtcNow;
                     
                     ExecuteNonQuery(conn, SqlInsertCharacterCommon, command => { AddParameter(command, character); }, out long commonId);
                     character.CommonId = (uint) commonId;
@@ -86,14 +88,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCharacterBaseInfo(Character character)
         {
-            return UpdateCharacterBaseInfo(null, character);
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterBaseInfo(connection, character);
         }
 
         public bool UpdateCharacterBaseInfo(TCon conn, Character character)
         {
             int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacter, command =>
             {
-                AddParameter(command, "@character_id", character.CharacterId);
                 AddParameter(command, character);
             });
 
@@ -102,14 +104,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCharacterMatchingProfile(Character character)
         {
-            return UpdateCharacterMatchingProfile(null, character);
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterMatchingProfile(connection, character);
         }
 
         public bool UpdateCharacterMatchingProfile(TCon conn, Character character)
         {
             int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterMatchingProfile, command =>
             {
-                AddParameter(command, "@character_id", character.CharacterId);
                 AddParameter(command, character);
             });
 
@@ -118,14 +120,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCharacterArisenProfile(Character character)
         {
-            return UpdateCharacterArisenProfile(null, character);
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterArisenProfile(connection, character);
         }
 
         public bool UpdateCharacterArisenProfile(TCon conn, Character character)
         {
             int characterUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterArisenProfile, command =>
             {
-                AddParameter(command, "@character_id", character.CharacterId);
                 AddParameter(command, character);
             });
 
@@ -153,7 +155,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public List<Character> SelectCharactersByAccountId(int accountId)
         {
             List<Character> characters = new List<Character>();
-            ExecuteInTransaction(conn => {
+            ExecuteInTransaction(conn =>
+            {
                 ExecuteReader(conn, SqlSelectAllCharactersDataByAccountId,
                     command => { AddParameter(command, "@account_id", accountId); }, reader =>
                     {
@@ -161,10 +164,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         {
                             Character character = ReadAllCharacterData(reader);
                             characters.Add(character);
-
-                            QueryCharacterData(conn, character);
                         }
                     });
+                foreach (var character in characters)
+                {
+                    QueryCharacterData(conn, character);
+                }
             });
             return characters;
         }
@@ -212,30 +217,30 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Tuple<StorageType, Storage> tuple = ReadStorage(reader);
                         character.Storage.addStorage(tuple.Item1, tuple.Item2);
                     }
-
-                    ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
-                    command2 => { AddParameter(command2, "@character_id", character.CharacterId); },
-                    reader2 =>
+                });
+            ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
+                command2 => { AddParameter(command2, "@character_id", character.CharacterId); },
+                reader2 =>
+                {
+                    while(reader2.Read())
                     {
-                        while(reader2.Read())
-                        {
-                            string UId = GetString(reader2, "item_uid");
-                            StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
-                            ushort slot = GetUInt16(reader2, "slot_no");
-                            uint itemNum = GetUInt32(reader2, "item_num");
+                        string UId = GetString(reader2, "item_uid");
+                        StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
+                        ushort slot = GetUInt16(reader2, "slot_no");
+                        uint itemNum = GetUInt32(reader2, "item_num");
 
-                            ExecuteReader(conn, SqlSelectItem,
-                                command3 => { AddParameter(command3, "@uid", UId); },
-                                reader3 => 
+                        using TCon connection = OpenNewConnection();
+                        ExecuteReader(connection, SqlSelectItem,
+                            command3 => { AddParameter(command3, "@uid", UId); },
+                            reader3 => 
+                            {
+                                if(reader3.Read())
                                 {
-                                    if(reader3.Read())
-                                    {
-                                        Item item = ReadItem(reader3);
-                                        character.Storage.setStorageItem(item, itemNum, storageType, slot);
-                                    }
-                                });
-                        }
-                    });
+                                    Item item = ReadItem(reader3);
+                                    character.Storage.setStorageItem(item, itemNum, storageType, slot);
+                                }
+                            });
+                    }
                 });
 
             // Wallet Points
@@ -256,34 +261,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataShortCut shortcut in character.ShortCutList)
             {
-                ExecuteNonQuery(conn, SqlReplaceShortcut, command =>
-                {
-                    AddParameter(command, character.CharacterId, shortcut);
-                });
+                ReplaceShortcut(conn, character.CharacterId, shortcut);
             }
 
             foreach(CDataCommunicationShortCut communicationShortcut in character.CommunicationShortCutList)
             {
-                ExecuteNonQuery(conn, SqlReplaceCommunicationShortcut, command =>
-                {
-                    AddParameter(command, character.CharacterId, communicationShortcut);
-                });
+                ReplaceCommunicationShortcut(conn, character.CharacterId, communicationShortcut);
             }
 
             foreach(StorageType storageType in character.Storage.getAllStorages().Keys)
             {
-                ExecuteNonQuery(conn, SqlReplaceStorage, command =>
-                {
-                    AddParameter(command, character.CharacterId, storageType, character.Storage.getStorage(storageType));
-                });
+                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.getStorage(storageType));
             }
 
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)
             {
-                ExecuteNonQuery(conn, SqlReplaceWalletPoint, command => 
-                {
-                    AddParameter(command, character.CharacterId, walletPoint);
-                });
+                ReplaceWalletPoint(conn, character.CharacterId, walletPoint);
             }
         }
 
@@ -327,7 +320,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
-        private Character ReadAllCharacterData(DbDataReader reader)
+        private Character ReadAllCharacterData(TReader reader)
         {
             Character character = new Character();
 

@@ -195,7 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     return ErrorRes<PlayerPartyMember>.Fail;
                 }
 
-                TimeSpan invitationAge = DateTime.Now - invitation.Date;
+                TimeSpan invitationAge = DateTime.UtcNow - invitation.Date;
                 if (invitationAge > TimeSpan.FromSeconds(PartyManager.InvitationTimeoutSec))
                 {
                     Logger.Error(client, $"[PartyId:{Id}][Accept] invitation expired");

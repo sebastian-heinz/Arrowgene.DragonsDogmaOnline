@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Test.Database
         {
             DatabaseSetting setting = new DatabaseSetting();
             setting.WipeOnStartup = true;
-            IDatabase database = DdonDatabaseBuilder.BuildSqLite(setting.SqLiteFolder, "character.test", true);
+            IDatabase database = DdonDatabaseBuilder.BuildSqLite(setting.DatabaseFolder, true);
 
             Account account = database.CreateAccount("test", "test", "test");
             Assert.NotNull(account);

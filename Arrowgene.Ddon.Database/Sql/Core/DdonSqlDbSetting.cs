@@ -2,14 +2,15 @@
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
-        private const string SqlSelectSetting = "SELECT `value` FROM `setting` WHERE `key` = @key;";
-        private const string SqlInsertSetting = "INSERT INTO `setting` (`key`, `value`) VALUES (@key, @value);";
-        private const string SqlUpdateSetting = "UPDATE `setting` SET `value`=@value WHERE `key`=@key;";
-        private const string SqlDeleteSetting = "DELETE FROM `setting` WHERE `key`=@key;";
+        private const string SqlSelectSetting = "SELECT \"value\" FROM \"setting\" WHERE \"key\" = @key;";
+        private const string SqlInsertSetting = "INSERT INTO \"setting\" (\"key\", \"value\") VALUES (@key, @value);";
+        private const string SqlUpdateSetting = "UPDATE \"setting\" SET \"value\"=@value WHERE \"key\"=@key;";
+        private const string SqlDeleteSetting = "DELETE FROM \"setting\" WHERE \"key\"=@key;";
 
 
         public bool SetSetting(string key, string value)

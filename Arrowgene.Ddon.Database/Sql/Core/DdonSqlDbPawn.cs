@@ -5,54 +5,55 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] PawnFields = new string[]
         {
             "character_common_id", "character_id", "name", "hm_type", "pawn_type"
         };
 
-        private static readonly string[] CDataPawnReactionFields = new string[]
+        protected static readonly string[] CDataPawnReactionFields = new string[]
         {
             "pawn_id", "reaction_type", "motion_no"
         };
 
-        private static readonly string[]  CDataSpSkillFields = new string[]
+        protected static readonly string[]  CDataSpSkillFields = new string[]
         {
             "pawn_id", "sp_skill_id", "sp_skill_lv"
         };
 
-        private readonly string SqlInsertPawn = $"INSERT INTO `ddon_pawn` ({BuildQueryField(PawnFields)}) VALUES ({BuildQueryInsert(PawnFields)});";
-        private static readonly string SqlUpdatePawn = $"UPDATE `ddon_pawn` SET {BuildQueryUpdate(PawnFields)} WHERE `pawn_id` = @pawn_id;";
-        private static readonly string SqlSelectPawn = $"SELECT `ddon_pawn`.`pawn_id`, {BuildQueryField(PawnFields)} FROM `ddon_pawn` WHERE `pawn_id` = @pawn_id;";
-        private static readonly string SqlSelectPawnsByCharacterId = $"SELECT `ddon_pawn`.`pawn_id`, {BuildQueryField(PawnFields)} FROM `ddon_pawn` WHERE `character_id` = @character_id;";
-        private readonly string SqlSelectAllPawnData = $"SELECT `ddon_pawn`.`pawn_id`, {BuildQueryField("ddon_pawn", PawnFields)}, `ddon_character_common`.`character_common_id`, {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}"
-            + "FROM `ddon_pawn` "
-            + "LEFT JOIN `ddon_character_common` ON `ddon_character_common`.`character_common_id` = `ddon_pawn`.`character_common_id` "
-            + "LEFT JOIN `ddon_edit_info` ON `ddon_edit_info`.`character_common_id` = `ddon_pawn`.`character_common_id` "
-            + "LEFT JOIN `ddon_status_info` ON `ddon_status_info`.`character_common_id` = `ddon_pawn`.`character_common_id` "
-            + "WHERE `ddon_pawn`.`pawn_id` = @pawn_id";
-        private readonly string SqlSelectAllPawnsDataByCharacterId = $"SELECT `ddon_pawn`.`pawn_id`, {BuildQueryField("ddon_pawn", PawnFields)}, `ddon_character_common`.`character_common_id`, {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}"
-            + "FROM `ddon_pawn` "
-            + "LEFT JOIN `ddon_character_common` ON `ddon_character_common`.`character_common_id` = `ddon_pawn`.`character_common_id` "
-            + "LEFT JOIN `ddon_edit_info` ON `ddon_edit_info`.`character_common_id` = `ddon_pawn`.`character_common_id` "
-            + "LEFT JOIN `ddon_status_info` ON `ddon_status_info`.`character_common_id` = `ddon_pawn`.`character_common_id` "
-            + "WHERE `character_id` = @character_id";
-        private const string SqlDeletePawn = "DELETE FROM `ddon_character_common` WHERE EXISTS (SELECT 1 FROM `ddon_pawn` WHERE `pawn_id`=@pawn_id);";
+        private readonly string SqlInsertPawn = $"INSERT INTO \"ddon_pawn\" ({BuildQueryField(PawnFields)}) VALUES ({BuildQueryInsert(PawnFields)});";
+        private static readonly string SqlUpdatePawn = $"UPDATE \"ddon_pawn\" SET {BuildQueryUpdate(PawnFields)} WHERE \"pawn_id\" = @pawn_id;";
+        private static readonly string SqlSelectPawn = $"SELECT \"ddon_pawn\".\"pawn_id\", {BuildQueryField(PawnFields)} FROM \"ddon_pawn\" WHERE \"pawn_id\" = @pawn_id;";
+        private static readonly string SqlSelectPawnsByCharacterId = $"SELECT \"ddon_pawn\".\"pawn_id\", {BuildQueryField(PawnFields)} FROM \"ddon_pawn\" WHERE \"character_id\" = @character_id;";
+        private readonly string SqlSelectAllPawnData = $"SELECT \"ddon_pawn\".\"pawn_id\", {BuildQueryField("ddon_pawn", PawnFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}"
+            + "FROM \"ddon_pawn\" "
+            + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
+            + "WHERE \"ddon_pawn\".\"pawn_id\" = @pawn_id";
+        private readonly string SqlSelectAllPawnsDataByCharacterId = $"SELECT \"ddon_pawn\".\"pawn_id\", {BuildQueryField("ddon_pawn", PawnFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}"
+            + "FROM \"ddon_pawn\" "
+            + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
+            + "WHERE \"character_id\" = @character_id";
+        private const string SqlDeletePawn = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_pawn\" WHERE \"pawn_id\"=@pawn_id);";
 
-        private readonly string SqlInsertPawnReaction = $"INSERT INTO `ddon_pawn_reaction` ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
-        private readonly string SqlReplacePawnReaction = $"REPLACE INTO `ddon_pawn_reaction` ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
-        private static readonly string SqlUpdatePawnReaction = $"UPDATE `ddon_pawn_reaction` SET {BuildQueryUpdate(CDataPawnReactionFields)} WHERE `pawn_id` = @pawn_id AND `reaction_type`=@reaction_type;";
-        private static readonly string SqlSelectPawnReactionByPawnId = $"SELECT {BuildQueryField(CDataPawnReactionFields)} FROM `ddon_pawn_reaction` WHERE `pawn_id` = @pawn_id;";
-        private const string SqlDeletePawnReaction = "DELETE FROM `ddon_pawn_reaction` WHERE `pawn_id`=@pawn_id AND `reaction_type`=@reaction_type;";
+        private readonly string SqlInsertPawnReaction = $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
+        private readonly string SqlInsertIfNotExistsPawnReaction = $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) SELECT {BuildQueryInsert(CDataPawnReactionFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\"=@pawn_id AND \"reaction_type\"=@reaction_type);";
+        private static readonly string SqlUpdatePawnReaction = $"UPDATE \"ddon_pawn_reaction\" SET {BuildQueryUpdate(CDataPawnReactionFields)} WHERE \"pawn_id\" = @pawn_id AND \"reaction_type\"=@reaction_type;";
+        private static readonly string SqlSelectPawnReactionByPawnId = $"SELECT {BuildQueryField(CDataPawnReactionFields)} FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\" = @pawn_id;";
+        private const string SqlDeletePawnReaction = "DELETE FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\"=@pawn_id AND \"reaction_type\"=@reaction_type;";
 
-        private readonly string SqlInsertSpSkill = $"INSERT INTO `ddon_sp_skill` ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
-        private readonly string SqlReplaceSpSkill = $"REPLACE INTO `ddon_sp_skill` ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
-        private static readonly string SqlUpdateSpSkill = $"UPDATE `ddon_sp_skill` SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE `pawn_id` = @pawn_id AND `sp_skill_id`=@sp_skill_id;";
-        private static readonly string SqlSelectSpSkillByPawnId = $"SELECT {BuildQueryField(CDataSpSkillFields)} FROM `ddon_sp_skill` WHERE `pawn_id` = @pawn_id;";
-        private const string SqlDeleteSpSkill = "DELETE FROM `ddon_sp_skill` WHERE `pawn_id`=@pawn_id AND `sp_skill_id`=@sp_skill_id;";
+        private readonly string SqlInsertSpSkill = $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
+        private readonly string SqlInsertIfNotExistsSpSkill = $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) SELECT {BuildQueryInsert(CDataSpSkillFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_sp_skill\" WHERE \"pawn_id\" = @pawn_id);";
+        private static readonly string SqlUpdateSpSkill = $"UPDATE \"ddon_sp_skill\" SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE \"pawn_id\" = @pawn_id AND \"sp_skill_id\"=@sp_skill_id;";
+        private static readonly string SqlSelectSpSkillByPawnId = $"SELECT {BuildQueryField(CDataSpSkillFields)} FROM \"ddon_sp_skill\" WHERE \"pawn_id\" = @pawn_id;";
+        private const string SqlDeleteSpSkill = "DELETE FROM \"ddon_sp_skill\" WHERE \"pawn_id\"=@pawn_id AND \"sp_skill_id\"=@sp_skill_id;";
 
         public bool CreatePawn(Pawn pawn)
         {
@@ -94,7 +95,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public List<Pawn> SelectPawnsByCharacterId(uint characterId)
         {
             List<Pawn> pawns = new List<Pawn>();
-            ExecuteInTransaction(conn => {
+            ExecuteInTransaction(conn =>
+            {
                 ExecuteReader(conn, SqlSelectAllPawnsDataByCharacterId,
                     command => { AddParameter(command, "@character_id", characterId); }, reader =>
                     {
@@ -102,10 +104,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         {
                             Pawn pawn = ReadAllPawnData(reader);
                             pawns.Add(pawn);
-
-                            QueryPawnData(conn, pawn);
                         }
                     });
+                foreach (var pawn in pawns)
+                {
+                    QueryPawnData(conn, pawn);
+                }
             });
             return pawns;
         }
@@ -113,13 +117,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public bool DeletePawn(uint pawnId)
         {
             int rowsAffected = ExecuteNonQuery(SqlDeletePawn,
-                command => { AddParameter(command, "@pawn_id", pawnId); });
+                command =>
+                {
+                    AddParameter(command, "@pawn_id", pawnId);
+                });
             return rowsAffected > NoRowsAffected;
         }
 
         public bool UpdatePawnBaseInfo(Pawn pawn)
         {
-            return UpdatePawnBaseInfo(null, pawn);
+            using TCon connection = OpenNewConnection();
+            return UpdatePawnBaseInfo(connection, pawn);
         }
 
         public bool UpdatePawnBaseInfo(TCon conn, Pawn pawn)
@@ -163,18 +171,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach (CDataPawnReaction pawnReaction in pawn.PawnReactionList)
             {
-                ExecuteNonQuery(conn, SqlReplacePawnReaction, command =>
-                {
-                    AddParameter(command, pawn.PawnId, pawnReaction);
-                });
+                ReplacePawnReaction(conn, pawn.PawnId, pawnReaction);
             }
 
             foreach (CDataSpSkill spSkill in pawn.SpSkillList)
             {
-                ExecuteNonQuery(conn, SqlReplaceSpSkill, command =>
-                {
-                    AddParameter(command, pawn.PawnId, spSkill);
-                });
+                ReplaceSpSkill(conn, pawn.PawnId, spSkill);
             }
         }
 
@@ -200,8 +202,144 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }
             }
         }
+        
+        public bool InsertIfNotExistsSpSkill(uint pawnId, CDataSpSkill spSkill)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertIfNotExistsSpSkill(connection, pawnId, spSkill);
+        }
 
-        private Pawn ReadAllPawnData(DbDataReader reader)
+        public bool InsertIfNotExistsSpSkill(TCon conn, uint pawnId, CDataSpSkill spSkill)
+        {
+            return ExecuteNonQuery(conn, SqlInsertIfNotExistsSpSkill, command =>
+            {
+                AddParameter(command, pawnId, spSkill);
+            }) == 1;
+        }
+        
+        public bool InsertSpSkill(uint pawnId, CDataSpSkill spSkill)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertSpSkill(connection, pawnId, spSkill);
+        }
+
+        public bool InsertSpSkill(TCon conn, uint pawnId, CDataSpSkill spSkill)
+        {
+            return ExecuteNonQuery(conn, SqlInsertSpSkill, command =>
+            {
+                AddParameter(command, pawnId, spSkill);
+            }) == 1;
+        }
+
+        public bool ReplaceSpSkill(uint pawnId, CDataSpSkill spSkill)
+        {
+            using TCon connection = OpenNewConnection();
+            return ReplaceSpSkill(connection, pawnId, spSkill);
+        }
+
+        public bool ReplaceSpSkill(TCon conn, uint pawnId, CDataSpSkill spSkill)
+        {
+            Logger.Debug("Inserting SP Skill.");
+            if (!InsertIfNotExistsSpSkill(conn, pawnId, spSkill))
+            {
+                Logger.Debug("SP skill already exists, replacing.");
+                return UpdateSpSkill(conn, pawnId, spSkill);
+            }
+            return true;
+        }
+
+        public bool UpdateSpSkill(uint pawnId, CDataSpSkill spSkill)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdateSpSkill(connection, pawnId, spSkill);
+        }
+
+        public bool UpdateSpSkill(TCon connection, uint pawnId, CDataSpSkill spSkill)
+        {
+            return ExecuteNonQuery(connection, SqlUpdateSpSkill, command =>
+            {
+                AddParameter(command, pawnId, spSkill);
+            }) == 1;
+        }
+        
+        public bool DeleteSpSkill(uint pawnId, byte spSkillId)
+        {
+            return ExecuteNonQuery(SqlDeleteSpSkill, command =>
+            {
+                AddParameter(command, "@pawn_id", pawnId);
+                AddParameter(command, "@sp_skill_id", spSkillId);
+            }) == 1;
+        }
+        
+        public bool InsertIfNotExistsPawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertIfNotExistsPawnReaction(connection, pawnId, pawnReaction);
+        }
+
+        public bool InsertIfNotExistsPawnReaction(TCon conn, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            return ExecuteNonQuery(conn, SqlInsertIfNotExistsPawnReaction, command =>
+            {
+                AddParameter(command, pawnId, pawnReaction);
+            }) == 1;
+        }
+        
+        public bool InsertPawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertPawnReaction(connection, pawnId, pawnReaction);
+        }
+
+        public bool InsertPawnReaction(TCon conn, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            return ExecuteNonQuery(conn, SqlInsertPawnReaction, command =>
+            {
+                AddParameter(command, pawnId, pawnReaction);
+            }) == 1;
+        }
+
+        public bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            using TCon connection = OpenNewConnection();
+            return ReplacePawnReaction(connection, pawnId, pawnReaction);
+        }
+
+        public bool ReplacePawnReaction(TCon conn, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            Logger.Debug("Inserting pawn reaction.");
+            if (!InsertIfNotExistsPawnReaction(conn, pawnId, pawnReaction))
+            {
+                Logger.Debug("Pawn reaction already exists, replacing.");
+                return UpdatePawnReaction(conn, pawnId, pawnReaction);
+            }
+            return true;
+        }
+
+        public bool UpdatePawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdatePawnReaction(connection, pawnId, pawnReaction);
+        }
+
+        public bool UpdatePawnReaction(TCon connection, uint pawnId, CDataPawnReaction pawnReaction)
+        {
+            return ExecuteNonQuery(connection, SqlUpdatePawnReaction, command =>
+            {
+                AddParameter(command, pawnId, pawnReaction);
+            }) == 1;
+        }
+        
+        public bool DeleteNormalSkillParam(uint pawnId, byte reactionType)
+        {
+            return ExecuteNonQuery(SqlDeletePawnReaction, command =>
+            {
+                AddParameter(command, "@pawn_id", pawnId);
+                AddParameter(command, "@reaction_type", reactionType);
+            }) == 1;
+        }
+
+        private Pawn ReadAllPawnData(TReader reader)
         {
             Pawn pawn = new Pawn();
 
@@ -227,7 +365,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@pawn_type", pawn.PawnType);
         }
  
-        private CDataPawnReaction ReadPawnReaction(DbDataReader reader)
+        private CDataPawnReaction ReadPawnReaction(TReader reader)
         {
             CDataPawnReaction pawnReaction = new CDataPawnReaction();
             pawnReaction.ReactionType = GetByte(reader, "reaction_type");
@@ -242,7 +380,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "motion_no", pawnReaction.MotionNo);
         }
 
-        private CDataSpSkill ReadSpSkill(DbDataReader reader)
+        private CDataSpSkill ReadSpSkill(TReader reader)
         {
             CDataSpSkill spSkill = new CDataSpSkill();
             spSkill.SpSkillId = GetByte(reader, "sp_skill_id");

@@ -1,25 +1,24 @@
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
-        private static readonly string[] ItemFields = new string[]
+        protected static readonly string[] ItemFields = new string[]
         {
             "uid", "item_id", "unk3", "color", "plus_value"
         };
 
         // Items don't get updated or deleted once created as the same row is shared among all players.
         // Making a distinction wouldn't make sense, as upgrading/changin crests would generate a new item with a different UID
-        private readonly string SqlInsertOrIgnoreItem = $"INSERT OR IGNORE INTO `ddon_item` ({BuildQueryField(ItemFields)}) VALUES ({BuildQueryInsert(ItemFields)});";
-        private static readonly string SqlSelectItem = $"SELECT {BuildQueryField(ItemFields)} FROM `ddon_item` WHERE `uid`=@uid;";
+        protected virtual string SqlInsertOrIgnoreItem { get; } =
+            $"INSERT INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) SELECT {BuildQueryInsert(ItemFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_item\" WHERE \"uid\"=@uid);";
+
+        private static readonly string SqlSelectItem = $"SELECT {BuildQueryField(ItemFields)} FROM \"ddon_item\" WHERE \"uid\"=@uid;";
 
         public bool InsertItem(TCon conn, Item item)
         {
@@ -31,7 +30,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool InsertItem(Item item)
         {
-            return this.InsertItem(null, item);
+            using TCon connection = OpenNewConnection();
+            return InsertItem(connection, item);
         }
 
         public Item SelectItem(string uid)
@@ -52,7 +52,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return item;
         }
 
-        private Item ReadItem(DbDataReader reader)
+        private Item ReadItem(TReader reader)
         {
             Item item = new Item();
             item.UId = GetString(reader, "uid");

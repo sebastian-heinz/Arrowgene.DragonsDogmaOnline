@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.StatusInfo.RevivePoint = 3;
             Server.Database.UpdateStatusInfo(client.Character);
 
-            Server.LastRevivalPowerRechargeTime[client.Character.CharacterId] = DateTime.Now;
+            Server.LastRevivalPowerRechargeTime[client.Character.CharacterId] = DateTime.UtcNow;
 
             client.Send(new S2CCharacterChargeRevivePointRes() {
                 RevivePoint = client.Character.StatusInfo.RevivePoint

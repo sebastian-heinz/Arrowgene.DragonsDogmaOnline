@@ -6,10 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Database.Sql
 {
-    /// <summary>
-    /// SQLite Ddon database.
-    /// </summary>
-    public class DdonSqLiteDb : DdonSqlDb<SQLiteConnection, SQLiteCommand>, IDatabase
+    public class DdonSqLiteDb : DdonSqlDb<SQLiteConnection, SQLiteCommand, SQLiteDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqLiteDb));
 
@@ -21,11 +18,22 @@ namespace Arrowgene.Ddon.Database.Sql
         private string _connectionString;
         private SQLiteConnection _memoryConnection;
 
-        public DdonSqLiteDb(string databasePath)
+        public DdonSqLiteDb(string databasePath, bool wipeOnStartup)
         {
             _memoryConnection = null;
             _databasePath = databasePath;
-            Logger.Info($"Database Path: {_databasePath}");
+            if (wipeOnStartup)
+            {
+                try
+                {
+                    File.Delete(_databasePath);
+                    Logger.Info($"Database has been wiped.");
+                }
+                catch (Exception)
+                {
+                    Logger.Error($"Failed to wipe database.");
+                }
+            }
         }
 
         public bool CreateDatabase()
@@ -36,6 +44,8 @@ namespace Arrowgene.Ddon.Database.Sql
                 Logger.Error($"Failed to build connection string");
                 return false;
             }
+
+            ReusableConnection = new SQLiteConnection(_connectionString);
 
             if (_databasePath == MemoryDatabasePath)
             {
@@ -59,22 +69,24 @@ namespace Arrowgene.Ddon.Database.Sql
 
         private string BuildConnectionString(string source)
         {
-            SQLiteConnectionStringBuilder builder = new SQLiteConnectionStringBuilder();
-            builder.DataSource = source;
-            builder.Version = 3;
-            builder.ForeignKeys = true;
-            // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
-            builder.Flags = builder.Flags & SQLiteConnectionFlags.StrictConformance;
+            SQLiteConnectionStringBuilder builder = new SQLiteConnectionStringBuilder
+            {
+                DataSource = source,
+                Version = 3,
+                ForeignKeys = true,
+                Pooling = true,
+                // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
+                Flags = SQLiteConnectionFlags.Default | SQLiteConnectionFlags.StrictConformance
+            };
 
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");
             return connectionString;
         }
 
-        protected override SQLiteConnection Connection()
+        protected override SQLiteConnection OpenNewConnection()
         {
-            SQLiteConnection connection = new SQLiteConnection(_connectionString);
-            return connection.OpenAndReturn();
+            return new SQLiteConnection(_connectionString).OpenAndReturn();
         }
 
         protected override SQLiteCommand Command(string query, SQLiteConnection connection)

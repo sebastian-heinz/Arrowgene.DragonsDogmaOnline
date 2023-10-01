@@ -3,7 +3,6 @@ using System.IO;
 using System.Runtime.Serialization;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -12,40 +11,61 @@ namespace Arrowgene.Ddon.Database
     {
         public DatabaseSetting()
         {
-            Type = DatabaseType.SQLite;
-            SqLiteFolder = Path.Combine(Util.ExecutingDirectory(), "Files/Database");
+            Type = "sqlite";
+            DatabaseFolder = Path.Combine(Util.ExecutingDirectory(), "Files/Database");
             Host = "localhost";
             Port = 3306;
             Database = "Ddon";
             User = string.Empty;
             Password = string.Empty;
-            WipeOnStartup = true;
+            WipeOnStartup = false;
 
             string envDbType = Environment.GetEnvironmentVariable("DB_TYPE");
-            switch (envDbType)
+            if (!string.IsNullOrEmpty(envDbType))
             {
-                case "sqlite":
-                    Type = DatabaseType.SQLite;
-                    break;
+                Type = envDbType;
             }
-
+            string envDbFolder = Environment.GetEnvironmentVariable("DB_FOLDER");
+            if (!string.IsNullOrEmpty(envDbFolder))
+            {
+                DatabaseFolder = envDbFolder;
+            }
+            string envDbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            if (!string.IsNullOrEmpty(envDbHost))
+            {
+                Host = envDbHost;
+            }
+            string envDbPort = Environment.GetEnvironmentVariable("DB_PORT");
+            if (!string.IsNullOrEmpty(envDbPort))
+            {
+                Port = Convert.ToInt16(envDbPort);
+            }
+            string envDbDatabase = Environment.GetEnvironmentVariable("DB_DATABASE");
+            if (!string.IsNullOrEmpty(envDbDatabase))
+            {
+                Database = envDbDatabase;
+            }
             string envDbUser = Environment.GetEnvironmentVariable("DB_USER");
             if (!string.IsNullOrEmpty(envDbUser))
             {
                 User = envDbUser;
             }
-
             string envDbPass = Environment.GetEnvironmentVariable("DB_PASS");
             if (!string.IsNullOrEmpty(envDbPass))
             {
                 Password = envDbPass;
+            }
+            string envDbWipeOnStartup = Environment.GetEnvironmentVariable("DB_WIPE_ON_STARTUP");
+            if (!string.IsNullOrEmpty(envDbWipeOnStartup))
+            {
+                WipeOnStartup = Convert.ToBoolean(envDbWipeOnStartup);
             }
         }
 
         public DatabaseSetting(DatabaseSetting databaseSettings)
         {
             Type = databaseSettings.Type;
-            SqLiteFolder = databaseSettings.SqLiteFolder;
+            DatabaseFolder = databaseSettings.DatabaseFolder;
             Host = databaseSettings.Host;
             Port = databaseSettings.Port;
             User = databaseSettings.User;
@@ -54,9 +74,9 @@ namespace Arrowgene.Ddon.Database
             WipeOnStartup = databaseSettings.WipeOnStartup;
         }
 
-        [DataMember(Order = 0)] public DatabaseType Type { get; set; }
+        [DataMember(Order = 0)] public string Type { get; set; }
 
-        [DataMember(Order = 1)] public string SqLiteFolder { get; set; }
+        [DataMember(Order = 1)] public string DatabaseFolder { get; set; }
 
         [DataMember(Order = 2)] public string Host { get; set; }
 
@@ -68,6 +88,6 @@ namespace Arrowgene.Ddon.Database
 
         [DataMember(Order = 6)] public string Database { get; set; }
 
-        [DataMember(Order = 6)] public bool WipeOnStartup { get; set; }
+        [DataMember(Order = 7)] public bool WipeOnStartup { get; set; }
     }
 }
