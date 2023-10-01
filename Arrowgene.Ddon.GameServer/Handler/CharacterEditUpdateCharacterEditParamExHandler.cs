@@ -19,8 +19,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Substract GG
             client.Character.EditInfo = packet.Structure.EditInfo;
             Server.Database.UpdateEditInfo(client.Character);
-            client.Character.FirstName = packet.Structure.FirstName;
-            Server.Database.UpdateCharacterBaseInfo(client.Character);
+            
+            if(packet.Structure.FirstName.Length > 0) {
+                client.Character.FirstName = packet.Structure.FirstName;
+                Server.Database.UpdateCharacterBaseInfo(client.Character);
+            }
+
             client.Send(new S2CCharacterEditUpdateCharacterEditParamExRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamExNtc() {
