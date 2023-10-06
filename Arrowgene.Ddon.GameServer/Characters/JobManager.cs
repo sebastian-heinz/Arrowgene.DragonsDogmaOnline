@@ -359,7 +359,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 client.Send(new S2CSkillLearnAbilityRes()
                 {
-                    Job = job,
+                    Job = learnedAbilityCharacterJobData.Job,
                     NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
@@ -370,7 +370,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 client.Send(new S2CSkillLearnPawnAbilityRes()
                 {
                     PawnId = ((Pawn) character).PawnId,
-                    Job = job,
+                    Job = learnedAbilityCharacterJobData.Job,
                     NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
