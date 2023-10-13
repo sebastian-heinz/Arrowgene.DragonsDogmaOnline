@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.Shared.Model
             MatchingProfile = new CDataMatchingProfile();
             ArisenProfile = new CDataArisenProfile();
             Pawns = new List<Pawn>();
+            ReleasedWarpPoints = new List<ReleasedWarpPoint>();
         }
 
         public int AccountId { get; set; }
@@ -57,6 +58,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte ArisenProfileShareRange;
 
         public List<Pawn> Pawns { get; set; }
+
+        public uint FavWarpSlotNum { get; set; }
+        public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
         
         /// TODO combine into a location class ?
         public StageId Stage { get; set; }

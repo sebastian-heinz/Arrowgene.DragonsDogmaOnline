@@ -1097,6 +1097,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 105
                 }
             };
+            // Value taken from pcaps
+            // TODO: Not hardcode it
+            character.FavWarpSlotNum = 10;
 
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)

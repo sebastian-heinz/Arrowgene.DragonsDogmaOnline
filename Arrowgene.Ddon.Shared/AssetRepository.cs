@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.Shared
         public const string StorageItemKey = "StorageItem.csv";
         public const string ShopKey = "Shop.json";
         public const string ServerListKey = "GameServerList.csv";
+        public const string WarpPointsKey = "WarpPoints.csv";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -57,6 +58,7 @@ namespace Arrowgene.Ddon.Shared
             StorageAsset = new List<CDataCharacterItemSlotInfo>();
             StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
             ShopAsset = new List<Shop>();
+            WarpPoints = new List<WarpPoint>();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; }
@@ -70,6 +72,7 @@ namespace Arrowgene.Ddon.Shared
         public List<CDataCharacterItemSlotInfo> StorageAsset { get; }
         public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; }
         public List<Shop> ShopAsset { get; }
+        public List<WarpPoint> WarpPoints { get; }
 
         public void Initialize()
         {
@@ -84,6 +87,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(StorageAsset, StorageKey, new StorageCsv());
             RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsv());
             RegisterAsset(ShopAsset, ShopKey, new JsonReaderWriter<Shop>());
+            RegisterAsset(WarpPoints, WarpPointsKey, new WarpPointCsv());
         }
 
         private void RegisterAsset<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)

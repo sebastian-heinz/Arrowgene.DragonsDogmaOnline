@@ -55,6 +55,15 @@ namespace Arrowgene.Ddon.Database
         bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint);
         bool DeleteWalletPoint(uint characterId, WalletType type);
 
+        // Released Warp Points
+        List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId);
+        bool InsertIfNotExistsReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint);
+        bool InsertIfNotExistsReleasedWarpPoints(uint characterId, List<ReleasedWarpPoint> ReleasedWarpPoint);
+        bool InsertReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint);
+        bool ReplaceReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint);
+        bool UpdateReleasedWarpPoint(uint characterId, ReleasedWarpPoint updatedReleasedWarpPoint);
+        bool DeleteReleasedWarpPoint(uint characterId, uint warpPointId);
+
         // Item
         bool InsertItem(Item item);
         Item SelectItem(string uid);

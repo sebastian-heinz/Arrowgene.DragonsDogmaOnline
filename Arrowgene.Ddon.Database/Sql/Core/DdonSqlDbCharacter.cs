@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CharacterFields = new string[]
         {
-            "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range"
+            "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num"
         };
 
         private static readonly string[] CDataMatchingProfileFields = new string[]
@@ -253,6 +253,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.WalletPointList.Add(ReadWalletPoint(reader));
                     }
                 });
+
+            // Warp Points
+            ExecuteReader(conn, SqlSelectReleasedWarpPoints,
+                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.ReleasedWarpPoints.Add(ReadReleasedWarpPoint(reader));
+                    }
+                });
         }
 
         private void StoreCharacterData(TCon conn, Character character)
@@ -354,6 +365,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.ArisenProfile.MotionId = GetUInt16(reader, "motion_id");
             character.ArisenProfile.MotionFrameNo = GetUInt32(reader, "motion_frame_no");
 
+            character.FavWarpSlotNum = GetUInt32(reader, "fav_warp_slot_num");
+
             return character;
         }
 
@@ -388,6 +401,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@title_index", character.ArisenProfile.Title.Index);
             AddParameter(command, "@motion_id", character.ArisenProfile.MotionId);
             AddParameter(command, "@motion_frame_no", character.ArisenProfile.MotionFrameNo);
+
+            AddParameter(command, "@fav_warp_slot_num", character.FavWarpSlotNum);
         }
     }
 }
