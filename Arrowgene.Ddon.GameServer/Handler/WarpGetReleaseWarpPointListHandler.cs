@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+﻿using System.Linq;
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -22,9 +23,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // I believe this is a list of already discovered teleporters?
             // When a player interacts with a TP that isn't in this list
             // a C2S_WARP_RELEASE_WARP_POINT_REQ request is sent.
-            S2CWarpGetReleaseWarpPointListRes res = new S2CWarpGetReleaseWarpPointListRes();
-            res.WarpPointIdList.Add(new CDataCommonU32(0x01)); // White Dragon Temple
-            client.Send(res);
+            client.Send(new S2CWarpGetReleaseWarpPointListRes() {
+                WarpPointIdList = client.Character.ReleasedWarpPoints.Select(wp => new CDataCommonU32(wp.WarpPointId)).ToList()
+            });
         }
     }
 }

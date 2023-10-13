@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS ddon_character
     "hide_equip_head_pawn"       BOOLEAN                           NOT NULL,
     "hide_equip_lantern_pawn"    BOOLEAN                           NOT NULL,
     "arisen_profile_share_range" SMALLINT                          NOT NULL,
+    "fav_warp_slot_num"          INTEGER                           NOT NULL,
     CONSTRAINT fk_character_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE,
     CONSTRAINT fk_character_account_id FOREIGN KEY ("account_id") REFERENCES account ("id") ON DELETE CASCADE
 );
@@ -397,6 +398,15 @@ CREATE TABLE IF NOT EXISTS ddon_sp_skill
     CONSTRAINT pk_ddon_sp_skill PRIMARY KEY ("pawn_id"),
     CONSTRAINT fk_sp_skill_pawn_id FOREIGN KEY ("pawn_id") REFERENCES ddon_pawn ("pawn_id") ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS ddon_released_warp_point
+(
+    "character_id"     INTEGER NOT NULL,
+    "warp_point_id"    INTEGER NOT NULL,
+    "favorite_slot_no" INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_released_warp_point PRIMARY KEY (character_id, warp_point_id),
+    CONSTRAINT fk_released_warp_point_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
+)
 
 CREATE TABLE IF NOT EXISTS ddon_game_token
 (

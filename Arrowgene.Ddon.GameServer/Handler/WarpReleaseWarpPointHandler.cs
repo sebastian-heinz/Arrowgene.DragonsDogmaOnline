@@ -16,9 +16,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SWarpReleaseWarpPointReq> packet)
         {
-            S2CWarpReleaseWarpPointRes res = new S2CWarpReleaseWarpPointRes();
-            res.WarpPointId = packet.Structure.WarpPointId;
-            client.Send(res);            
+            ReleasedWarpPoint rwp = new ReleasedWarpPoint()
+            {
+                WarpPointId = packet.Structure.WarpPointId,
+                FavoriteSlotNo = 0
+            };
+            bool inserted = Server.Database.InsertIfNotExistsReleasedWarpPoint(client.Character.CharacterId, rwp);
+            if(inserted)
+            {
+                client.Character.ReleasedWarpPoints.Add(rwp);
+            }
+
+            client.Send(new S2CWarpReleaseWarpPointRes
+            {
+                WarpPointId = packet.Structure.WarpPointId
+            });
         }
     }
 }
