@@ -406,7 +406,7 @@ CREATE TABLE IF NOT EXISTS ddon_released_warp_point
     "favorite_slot_no" INTEGER NOT NULL,
     CONSTRAINT pk_ddon_released_warp_point PRIMARY KEY (character_id, warp_point_id),
     CONSTRAINT fk_released_warp_point_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
-)
+);
 
 CREATE TABLE IF NOT EXISTS ddon_game_token
 (
