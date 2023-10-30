@@ -27,7 +27,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             List<ReleasedWarpPoint> allWarpPoints = _server.AssetRepository.WarpPoints.Select(wp => new ReleasedWarpPoint()
             {
                 WarpPointId = wp.WarpPointId,
-                FavoriteSlotNo = 0
+                // WDT must ALWAYS be the first favorite, otherwise the client doesn't behave properly
+                FavoriteSlotNo = wp.WarpPointId == 1 ? 1u : 0u
             }).ToList();
             _server.Database.InsertIfNotExistsReleasedWarpPoints(client.Character.CharacterId, allWarpPoints);
             client.Character.ReleasedWarpPoints = _server.Database.SelectReleasedWarpPoints(client.Character.CharacterId);
