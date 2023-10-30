@@ -19,7 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ReleasedWarpPoint rwp = new ReleasedWarpPoint()
             {
                 WarpPointId = packet.Structure.WarpPointId,
-                FavoriteSlotNo = 0
+                // WDT must ALWAYS be the first favorite, otherwise the client doesn't behave properly
+                FavoriteSlotNo = packet.Structure.WarpPointId == 1 ? 1u : 0u
             };
             bool inserted = Server.Database.InsertIfNotExistsReleasedWarpPoint(client.Character.CharacterId, rwp);
             if(inserted)
