@@ -217,6 +217,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SConnectionMoveOutServerReq.Serializer());
 
             Create(new C2SContextGetSetContextReq.Serializer());
+            Create(new C2SContextMasterThrowReq.Serializer());
             Create(new C2SContextSetContextNtc.Serializer());
 
             Create(new C2SEquipChangeCharacterEquipJobItemReq.Serializer());
@@ -410,6 +411,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextGetSetContextRes.Serializer());
             Create(new S2CContextMasterChangeNtc.Serializer());
             Create(new S2CContextMasterInfoNtc.Serializer());
+            Create(new S2CContextMasterThrowNtc.Serializer());
+            Create(new S2CContextMasterThrowRes.Serializer());
             Create(new S2CContextSetContextBaseNtc.Serializer());
             Create(new S2CContextSetContextNtc.Serializer());
 

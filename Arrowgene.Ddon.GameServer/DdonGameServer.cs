@@ -210,6 +210,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ConnectionReserveServerHandler(this));
 
             AddHandler(new ContextGetSetContextHandler(this));
+            AddHandler(new ContextMasterThrowHandler(this));
             AddHandler(new ContextSetContextHandler(this));
             AddHandler(new CraftGetCraftProgressListHandler(this));
             AddHandler(new DailyMissionListGetHandler(this));
