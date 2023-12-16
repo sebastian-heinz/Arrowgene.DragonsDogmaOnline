@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Cli.Command
             if (pcapPackets.Count <= 0)
             {
                 Logger.Error("No packets found to annotate");
-                return CommandResultType.Continue;
+                return CommandResultType.Exit;
             }
 
             ServerType serverType = pcapPackets[0].ServerType;
@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.Cli.Command
             else
             {
                 Logger.Error("could not determinate server type");
-                return CommandResultType.Continue;
+                return CommandResultType.Exit;
             }
 
             PacketFactory serverFactory = new PacketFactory(new ServerSetting(), packetIdResolver);
@@ -97,7 +97,7 @@ namespace Arrowgene.Ddon.Cli.Command
             string outputPath = yamlPath + ".annotated.txt";
             File.WriteAllText(outputPath, annotated.ToString());
 
-            return CommandResultType.Continue;
+            return CommandResultType.Exit;
         }
 
 
@@ -106,6 +106,7 @@ namespace Arrowgene.Ddon.Cli.Command
             List<PcapPacket> pcapPackets = new List<PcapPacket>();
             IDeserializer yamlDeserializer = new DeserializerBuilder()
                 .WithTagMapping("tag:yaml.org,2002:binary", typeof(string))
+                .IgnoreUnmatchedProperties()
                 .Build();
             YamlFile yamlFile = yamlDeserializer.Deserialize<YamlFile>(yaml);
             if (yamlFile.peers.Count != 2)
