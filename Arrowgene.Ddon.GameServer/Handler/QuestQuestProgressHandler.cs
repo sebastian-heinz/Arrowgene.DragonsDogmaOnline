@@ -25,6 +25,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint data0 = inBuffer.ReadUInt32(Endianness.Big);
             uint data1 = inBuffer.ReadUInt32(Endianness.Big);
             uint data2 = inBuffer.ReadUInt32(Endianness.Big);
+            Logger.Debug("data0: "+data0+" data1: "+data1+" data2: "+data2+"\n");
+            if(data2 == 287350){ 
+            client.Send(GameFull.Dump_652);
+            }
+            else{
 
             IBuffer outBuffer = new StreamBuffer();
             outBuffer.WriteInt32(0, Endianness.Big);
@@ -49,6 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(GameFull.Dump_297);
             client.Send(GameFull.Dump_299);
             client.Send(GameFull.Dump_524);
+            }
         }
     }
 }

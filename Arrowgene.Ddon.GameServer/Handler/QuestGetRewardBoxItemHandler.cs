@@ -1,0 +1,26 @@
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
+
+namespace Arrowgene.Ddon.GameServer.Handler
+{
+    public class QuestGetRewardBoxItemHandler : PacketHandler<GameClient>
+    {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetRewardBoxItemHandler));
+
+
+        public QuestGetRewardBoxItemHandler(DdonGameServer server) : base(server)
+        {
+        }
+
+        public override PacketId Id => PacketId.C2S_QUEST_GET_REWARD_BOX_ITEM_REQ;
+
+        public override void Handle(GameClient client, IPacket packet)
+        {
+            client.Send(GameFull.Dump_902);
+        }
+    }
+}
