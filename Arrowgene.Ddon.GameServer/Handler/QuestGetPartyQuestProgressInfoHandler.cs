@@ -22,8 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             S2CQuestGetPartyQuestProgressInfoRes res = new S2CQuestGetPartyQuestProgressInfoRes();
-            client.Send(res);
-            // client.Send(GameFull.Dump_142);
+           // client.Send(res);
+             client.Send(GameFull.Dump_142);
         }
     }
 }

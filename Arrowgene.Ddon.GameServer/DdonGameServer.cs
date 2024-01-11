@@ -230,7 +230,6 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new FriendGetFriendListHandler(this));
             AddHandler(new FriendGetRecentCharacterListHandler(this));
 
-
             AddHandler(new Gp_28_2_1_Handler(this));
             AddHandler(new GpGetUpdateAppCourseBonusFlagHandler(this));
             AddHandler(new GpGetValidChatComGroupHandler(this));
@@ -298,7 +297,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
-
+            AddHandler(new PartyMemberSetValueHandler(this));
             AddHandler(new PartyPartyBreakupHandler(this));
             AddHandler(new PartyPartyChangeLeaderHandler(this));
             AddHandler(new PartyPartyCreateHandler(this));
@@ -342,6 +341,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetPriorityQuestHandler(this));
             AddHandler(new QuestGetQuestCompletedListHandler(this));
             AddHandler(new QuestGetQuestPartyBonusListHandler(this));
+            AddHandler(new QuestGetRewardBoxHandler(this));
+            AddHandler(new QuestGetRewardBoxItemHandler(this));
             AddHandler(new QuestGetSetQuestListHandler(this));
             AddHandler(new QuestGetTutorialQuestListHandler(this));
             AddHandler(new QuestGetWorldManageQuestListHandler(this));
@@ -350,7 +351,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestQuestProgressHandler(this));
             AddHandler(new QuestSendLeaderQuestOrderConditionInfoHandler(this));
             AddHandler(new QuestSendLeaderWaitOrderQuestListHandler(this));
-			
+	    AddHandler(new QuestSetPriorityQuestHandler(this));
+		
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));
 			AddHandler(new EntryBoardEntryBoardItemForceStart(this));
