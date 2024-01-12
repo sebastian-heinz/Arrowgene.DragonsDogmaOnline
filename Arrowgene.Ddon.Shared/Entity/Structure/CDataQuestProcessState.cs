@@ -48,6 +48,11 @@ public class CDataQuestProcessState
     public class MtTypedArrayCDataQuestCommand {
         public List<CDataQuestCommand> ResultCommandList { get; set; }
 
+        public MtTypedArrayCDataQuestCommand()
+        {
+            ResultCommandList = new List<CDataQuestCommand>();
+        }
+
         public class Serializer : EntitySerializer<MtTypedArrayCDataQuestCommand>
         {
             public override void Write(IBuffer buffer, MtTypedArrayCDataQuestCommand obj)
