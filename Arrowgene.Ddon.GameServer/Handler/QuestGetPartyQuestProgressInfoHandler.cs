@@ -1,6 +1,7 @@
 ﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -21,9 +22,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            S2CQuestGetPartyQuestProgressInfoRes res = new S2CQuestGetPartyQuestProgressInfoRes();
-           // client.Send(res);
-             client.Send(GameFull.Dump_142);
+            // Not sending this blocks paths
+            EntitySerializer<S2CQuestGetPartyQuestProgressInfoRes> serializer = EntitySerializer.Get<S2CQuestGetPartyQuestProgressInfoRes>();
+            S2CQuestGetPartyQuestProgressInfoRes pcap = serializer.Read(GameFull.data_Dump_142);
+            client.Send(pcap);
         }
     }
 }
