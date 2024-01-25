@@ -618,7 +618,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_11_21_16_NTC = new PacketId(11, 21, 16, "S2C_QUEST_11_21_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_QUEST_LEADER_QUEST_PROGRESS_REQUEST_REQ = new PacketId(11, 22, 1, "C2S_QUEST_LEADER_QUEST_PROGRESS_REQUEST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_LEADER_QUEST_PROGRESS_REQUEST_RES = new PacketId(11, 22, 2, "S2C_QUEST_LEADER_QUEST_PROGRESS_REQUEST_RES", ServerType.Game, PacketSource.Server); // リーダーへのクエスト進行要求に
-        public static readonly PacketId S2C_QUEST_11_22_16_NTC = new PacketId(11, 22, 16, "S2C_QUEST_11_22_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_LEADER_QUEST_PROGRESS_REQUEST_NTC = new PacketId(11, 22, 16, "S2C_QUEST_LEADER_QUEST_PROGRESS_REQUEST_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_22_16_NTC");
         public static readonly PacketId C2S_QUEST_LIGHT_QUEST_GP_COMPLETE_REQ = new PacketId(11, 23, 1, "C2S_QUEST_LIGHT_QUEST_GP_COMPLETE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_LIGHT_QUEST_GP_COMPLETE_RES = new PacketId(11, 23, 2, "S2C_QUEST_LIGHT_QUEST_GP_COMPLETE_RES", ServerType.Game, PacketSource.Server); // ボードクエスト課金即時クリア応答
         public static readonly PacketId C2S_QUEST_CHECK_QUEST_DISTRIBUTION_REQ = new PacketId(11, 24, 1, "C2S_QUEST_CHECK_QUEST_DISTRIBUTION_REQ", ServerType.Game, PacketSource.Client);
@@ -2524,7 +2524,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_11_21_16_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_LEADER_QUEST_PROGRESS_REQUEST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_LEADER_QUEST_PROGRESS_REQUEST_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_22_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_LEADER_QUEST_PROGRESS_REQUEST_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_LIGHT_QUEST_GP_COMPLETE_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_LIGHT_QUEST_GP_COMPLETE_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_CHECK_QUEST_DISTRIBUTION_REQ);
