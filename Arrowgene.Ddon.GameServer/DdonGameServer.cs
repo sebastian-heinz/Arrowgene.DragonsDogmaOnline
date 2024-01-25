@@ -347,12 +347,13 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetSetQuestListHandler(this));
             AddHandler(new QuestGetTutorialQuestListHandler(this));
             AddHandler(new QuestGetWorldManageQuestListHandler(this));
+            AddHandler(new QuestLeaderQuestProgressRequestHandler(this));
 			AddHandler(new QuestGetEndContentsGroup(this));
 			AddHandler(new QuestGetCycleContentsNewsList(this));
             AddHandler(new QuestQuestProgressHandler(this));
             AddHandler(new QuestSendLeaderQuestOrderConditionInfoHandler(this));
             AddHandler(new QuestSendLeaderWaitOrderQuestListHandler(this));
-	    AddHandler(new QuestSetPriorityQuestHandler(this));
+            AddHandler(new QuestSetPriorityQuestHandler(this));
 		
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));
