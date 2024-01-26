@@ -14,7 +14,7 @@
     <ItemGroup>
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
         <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
-        <PackageReference Include="YamlDotNet" Version="11.2.1" />
+        <PackageReference Include="YamlDotNet" Version="13.7.1" />
     </ItemGroup>
 
     <ItemGroup>
