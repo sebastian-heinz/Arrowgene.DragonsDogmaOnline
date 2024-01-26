@@ -2,6 +2,8 @@ using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -20,9 +22,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            // S2C_QUEST_JOIN_LOBBY_QUEST_INFO_NTC
-            //Not sending this makes the Vocation change option not show up and some paths are blocked
-            client.Send(InGameDump.Dump_20);
+            EntitySerializer<S2CQuestJoinLobbyQuestInfoNtc> serializer = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>();
+            S2CQuestJoinLobbyQuestInfoNtc pcap = serializer.Read(InGameDump.data_Dump_20A);
+            client.Send(pcap);
             
             IBuffer buffer = new StreamBuffer();
             buffer.WriteInt32(0, Endianness.Big);
