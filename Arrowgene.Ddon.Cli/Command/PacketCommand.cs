@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Linq;
@@ -100,6 +101,16 @@ namespace Arrowgene.Ddon.Cli.Command
             return CommandResultType.Exit;
         }
 
+        private static string ToReadableTimestamp(string fractionalTimestamp)
+        {
+            // epoch -> UTC -> Mountain Time
+            double epochSeconds = double.Parse(fractionalTimestamp.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+            DateTimeOffset readableTimestamp = DateTimeOffset.UnixEpoch.AddSeconds(epochSeconds);
+            // If we ever get other pcap files, the time zone should instead be provided via the YAML files 
+            readableTimestamp = TimeZoneInfo.ConvertTime(readableTimestamp, TimeZoneInfo.FindSystemTimeZoneById("America/Dawson"));
+            return readableTimestamp.ToString("o");
+        }
+
 
         private List<PcapPacket> ReadYamlPcap(string yaml)
         {
@@ -168,7 +179,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 pcapPacket.ServerType = serverType;
                 pcapPacket.Index = yamlPacket.index;
                 pcapPacket.Data = Convert.FromBase64String(yamlPacket.data);
-                pcapPacket.TimeStamp = yamlPacket.timestamp;
+                pcapPacket.TimeStamp = ToReadableTimestamp(yamlPacket.timestamp);
                 pcapPacket.Packet = yamlPacket.packet;
                 pcapPackets.Add(pcapPacket);
             }
@@ -193,7 +204,7 @@ namespace Arrowgene.Ddon.Cli.Command
             public uint packet;
             public uint peer;
             public uint index;
-            public double timestamp;
+            public string timestamp;
             public string data;
         }
 
@@ -207,7 +218,7 @@ namespace Arrowgene.Ddon.Cli.Command
         {
             public ServerType ServerType { get; set; }
             public PacketSource Source { get; set; }
-            public double TimeStamp { get; set; }
+            public string TimeStamp { get; set; }
             public uint Index { get; set; }
             public uint Packet { get; set; }
             public byte[] Data { get; set; }
