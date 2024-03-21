@@ -11,6 +11,65 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class ItemManager
     {
+        public CDataItemUpdateResult? ConsumeItemByUId(DdonServer<GameClient> server, Character character, StorageType fromStorageType, string itemUId, uint consumeNum)
+        {
+            var foundItem = character.Storage.getStorage(fromStorageType).findItemByUId(itemUId);
+            if(foundItem == null)
+            {
+                return null;
+            } else {
+                (ushort slotNo, Item item, uint itemNum) = foundItem;
+                return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum);
+            }
+        }
+        public CDataItemUpdateResult? ConsumeItemInSlot(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, uint consumeNum)
+        {
+            var foundItem = character.Storage.getStorageItem(fromStorageType, slotNo);
+            if(foundItem == null)
+            {
+                return null;
+            } else {
+                (Item item, uint itemNum) = foundItem;
+                return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum);
+            }
+        }
+        private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consuneNum)
+        {
+            itemNum = Math.Max(0, itemNum - consuneNum);
+
+            CDataItemUpdateResult ntcData = new CDataItemUpdateResult();
+            ntcData.ItemList.ItemUId = item.UId;
+            ntcData.ItemList.ItemId = item.ItemId;
+            ntcData.ItemList.ItemNum = itemNum;
+            ntcData.ItemList.Unk3 = item.Unk3;
+            ntcData.ItemList.StorageType = fromStorageType;
+            ntcData.ItemList.SlotNo = slotNo;
+            ntcData.ItemList.Color = item.Color;
+            ntcData.ItemList.PlusValue = item.PlusValue;
+            ntcData.ItemList.Bind = false;
+            ntcData.ItemList.EquipPoint = 0;
+            ntcData.ItemList.EquipCharacterID = 0;
+            ntcData.ItemList.EquipPawnID = 0;
+            ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+            ntcData.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+            ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
+            ntcData.UpdateItemNum = -(int)consuneNum;
+
+            if(itemNum == 0)
+            {
+                // Delete item when ItemNum reaches 0 to free up the slot
+                character.Storage.setStorageItem(null, 0, fromStorageType, slotNo);
+                server.Database.DeleteStorageItem(character.CharacterId, fromStorageType, slotNo);
+            }
+            else
+            {
+                character.Storage.setStorageItem(item, itemNum, fromStorageType, slotNo);
+                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, item.UId, itemNum);
+            }
+
+            return ntcData;
+        }
+
         public CDataItemUpdateResult AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num)
         {
             if(itemBag)
@@ -25,7 +84,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
         }
-
         private CDataItemUpdateResult AddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue)
         {
             var tuple = character.Storage.getStorage(destinationStorageType).Items

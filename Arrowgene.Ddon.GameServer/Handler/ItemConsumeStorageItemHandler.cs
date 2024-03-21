@@ -1,8 +1,7 @@
-using System;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -12,8 +11,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemConsumeStorageItemHandler));
         
+        private readonly ItemManager _itemManager;
+
         public ItemConsumeStorageItemHandler(DdonGameServer server) : base(server)
         {
+            _itemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SItemConsumeStorageItemReq> req)
@@ -24,45 +26,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.UpdateType = 4;
             foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
             {
-                var tuple = client.Character.Storage.getStorageItem(consumeItem.StorageType, consumeItem.SlotNo);
-                Item item = tuple.Item1;
-                uint itemNum = tuple.Item2;
-
-                itemNum = Math.Max(0, itemNum - consumeItem.Num);
-
-                CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
-                ntcData0.ItemList.ItemUId = item.UId;
-                ntcData0.ItemList.ItemId = item.ItemId;
-                ntcData0.ItemList.ItemNum = itemNum;
-                ntcData0.ItemList.Unk3 = item.Unk3;
-                ntcData0.ItemList.StorageType = consumeItem.StorageType;
-                ntcData0.ItemList.SlotNo = consumeItem.SlotNo;
-                ntcData0.ItemList.Color = item.Color;
-                ntcData0.ItemList.PlusValue = item.PlusValue;
-                ntcData0.ItemList.Bind = false;
-                ntcData0.ItemList.EquipPoint = 0;
-                ntcData0.ItemList.EquipCharacterID = 0;
-                ntcData0.ItemList.EquipPawnID = 0;
-                ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-                ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
-                ntcData0.UpdateItemNum = -((int)consumeItem.Num);
-                ntc.UpdateItemList.Add(ntcData0);
-
-                if(itemNum == 0)
-                {
-                    // Delete item when ItemNum reaches 0 to free up the slot
-                    client.Character.Storage.setStorageItem(null, 0, consumeItem.StorageType, consumeItem.SlotNo);
-                    Server.Database.DeleteStorageItem(client.Character.CharacterId, consumeItem.StorageType, consumeItem.SlotNo);
-                }
-                else
-                {
-                    client.Character.Storage.setStorageItem(item, itemNum, consumeItem.StorageType, consumeItem.SlotNo);
-                    Server.Database.ReplaceStorageItem(client.Character.CharacterId, consumeItem.StorageType, consumeItem.SlotNo, item.UId, itemNum);
-                }
-
-                client.Send(ntc);
+                ntc.UpdateItemList.Add(_itemManager.ConsumeItemInSlot(Server, client.Character, consumeItem.StorageType, consumeItem.SlotNo, consumeItem.Num));
             }
+            client.Send(ntc);
         }
     }
 }
