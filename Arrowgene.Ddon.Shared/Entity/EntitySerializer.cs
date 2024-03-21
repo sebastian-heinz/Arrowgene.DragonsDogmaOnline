@@ -78,6 +78,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEquipElementParam.Serializer());
             Create(new CDataWeaponCrestData.Serializer());
             Create(new CDataArmorCrestData.Serializer());
+            Create(new CDataBazaarCharacterInfo.Serializer());
+            Create(new CDataBazaarItemBaseInfo.Serializer());
+            Create(new CDataBazaarItemHistoryInfo.Serializer());
+            Create(new CDataBazaarItemInfo.Serializer());
+            Create(new CDataBazaarItemNumOfExhibitionInfo.Serializer());
             Create(new CDataChangeEquipJobItem.Serializer());
             Create(new CDataCharacterEditUpdatePawnEditParamReqUnk0.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
@@ -96,6 +101,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataHistoryElement.Serializer());
             Create(new CDataItemList.Serializer());
             Create(new CDataItemSort.Serializer());
+            Create(new CDataItemStorageIndicateNum.Serializer());
             Create(new CDataItemUIdList.Serializer());
             Create(new CDataItemUpdateResult.Serializer());
             Create(new CDataJobChangeInfo.Serializer());
@@ -208,6 +214,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LGetErrorMessageListReq.Serializer());
             Create(new C2LLoginReq.Serializer());
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
+
+            Create(new C2SBazaarGetCharacterListReq.Serializer());
+            Create(new C2SBazaarGetExhibitPossibleNumReq.Serializer());
+            Create(new C2SBazaarGetItemHistoryInfoReq.Serializer());
+            Create(new C2SBazaarGetItemInfoReq.Serializer());
+            Create(new C2SBazaarGetItemListReq.Serializer());
+            Create(new C2SBazaarProceedsReq.Serializer());
 
             Create(new C2SCharacterCharacterGoldenReviveReq.Serializer());
             Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
@@ -387,6 +400,15 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CNextConnectionServerNtc.Serializer());
 
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
+
+            Create(new S2CBazaarGetCharacterListRes.Serializer());
+            Create(new S2CBazaarGetExhibitPossibleNumRes.Serializer());
+            Create(new S2CBazaarGetItemHistoryInfoRes.Serializer());
+            Create(new S2CBazaarGetItemInfoRes.Serializer());
+            Create(new S2CBazaarGetItemListRes.Serializer());
+            Create(new S2CBazaarProceedsNtc.Serializer());
+            Create(new S2CBazaarProceedsRes.Serializer());
+
             Create(new S2CEquipChangeCharacterEquipLobbyNtc.Serializer());
 
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());

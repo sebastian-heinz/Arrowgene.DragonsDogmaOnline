@@ -1618,7 +1618,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_BAZAAR_CANCEL_RES = new PacketId(36, 6, 2, "S2C_BAZAAR_CANCEL_RES", ServerType.Game, PacketSource.Server); // バザー出品キャンセルに
         public static readonly PacketId C2S_BAZAAR_PROCEEDS_REQ = new PacketId(36, 7, 1, "C2S_BAZAAR_PROCEEDS_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BAZAAR_PROCEEDS_RES = new PacketId(36, 7, 2, "S2C_BAZAAR_PROCEEDS_RES", ServerType.Game, PacketSource.Server); // バザーアイテム購入に
-        public static readonly PacketId S2C_BAZAAR_36_7_16_NTC = new PacketId(36, 7, 16, "S2C_BAZAAR_36_7_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_BAZAAR_PROCEEDS_NTC = new PacketId(36, 7, 16, "S2C_BAZAAR_PROCEEDS_NTC", ServerType.Game, PacketSource.Server, "S2C_BAZAAR_36_7_16_NTC");
         public static readonly PacketId C2S_BAZAAR_RECEIVE_PROCEEDS_REQ = new PacketId(36, 8, 1, "C2S_BAZAAR_RECEIVE_PROCEEDS_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BAZAAR_RECEIVE_PROCEEDS_RES = new PacketId(36, 8, 2, "S2C_BAZAAR_RECEIVE_PROCEEDS_RES", ServerType.Game, PacketSource.Server); // バザー売上金受け取りに
         public static readonly PacketId C2S_BAZAAR_GET_ITEM_PRICE_LIMIT_REQ = new PacketId(36, 9, 1, "C2S_BAZAAR_GET_ITEM_PRICE_LIMIT_REQ", ServerType.Game, PacketSource.Client);
@@ -3524,7 +3524,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_BAZAAR_CANCEL_RES);
             AddPacketIdEntry(packetIds, C2S_BAZAAR_PROCEEDS_REQ);
             AddPacketIdEntry(packetIds, S2C_BAZAAR_PROCEEDS_RES);
-            AddPacketIdEntry(packetIds, S2C_BAZAAR_36_7_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_BAZAAR_PROCEEDS_NTC);
             AddPacketIdEntry(packetIds, C2S_BAZAAR_RECEIVE_PROCEEDS_REQ);
             AddPacketIdEntry(packetIds, S2C_BAZAAR_RECEIVE_PROCEEDS_RES);
             AddPacketIdEntry(packetIds, C2S_BAZAAR_GET_ITEM_PRICE_LIMIT_REQ);

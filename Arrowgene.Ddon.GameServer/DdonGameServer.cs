@@ -166,6 +166,13 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AreaGetLeaderAreaReleaseListHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
+            AddHandler(new BazaarGetCharacterListHandler(this));
+            AddHandler(new BazaarGetExhibitPossibleNumHandler(this));
+            AddHandler(new BazaarGetItemHistoryInfoHandler(this));
+            AddHandler(new BazaarGetItemInfoHandler(this));
+            AddHandler(new BazaarGetItemListHandler(this));
+            AddHandler(new BazaarProceedsHandler(this));
+            
             AddHandler(new BinarySaveSetCharacterBinSavedataHandler(this));
             AddHandler(new BlackListGetBlackListHandler(this));
 
