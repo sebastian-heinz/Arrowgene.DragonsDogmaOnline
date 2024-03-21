@@ -7,7 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Json;
-using System.Text.Json;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -28,6 +28,7 @@ namespace Arrowgene.Ddon.Shared
         public const string ShopKey = "Shop.json";
         public const string ServerListKey = "GameServerList.csv";
         public const string WarpPointsKey = "WarpPoints.csv";
+        public const string CraftingRecipesKey = "CraftingRecipes.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -59,6 +60,7 @@ namespace Arrowgene.Ddon.Shared
             StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
             ShopAsset = new List<Shop>();
             WarpPoints = new List<WarpPoint>();
+            CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; }
@@ -73,6 +75,7 @@ namespace Arrowgene.Ddon.Shared
         public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; }
         public List<Shop> ShopAsset { get; }
         public List<WarpPoint> WarpPoints { get; }
+        public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; }
 
         public void Initialize()
         {
@@ -88,6 +91,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsv());
             RegisterAsset(ShopAsset, ShopKey, new JsonReaderWriter<Shop>());
             RegisterAsset(WarpPoints, WarpPointsKey, new WarpPointCsv());
+            RegisterAsset(CraftingRecipesAsset, CraftingRecipesKey, new JsonReaderWriter<S2CCraftRecipeGetCraftRecipeRes>());
         }
 
         private void RegisterAsset<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
