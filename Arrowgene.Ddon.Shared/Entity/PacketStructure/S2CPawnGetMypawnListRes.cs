@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CPawnGetMypawnListRes Read(IBuffer buffer)
             {
                 S2CPawnGetMypawnListRes obj = new S2CPawnGetMypawnListRes();
+                ReadServerResponse(buffer, obj);
                 obj.PawnList = ReadEntityList<CDataPawnList>(buffer);
                 obj.PartnerInfo = ReadEntity<CDataPartnerPawnInfo>(buffer);
                 return obj;
