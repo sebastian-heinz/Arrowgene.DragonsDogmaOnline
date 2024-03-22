@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -21,7 +21,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(new Packet(PacketId.S2C_CRAFT_GET_CRAFT_PROGRESS_LIST_RES, new byte[20]));
+            // TODO: Fetch values from DB
+
+            S2CCraftGetCraftProgressListRes res = new S2CCraftGetCraftProgressListRes();
+            // TODO: CraftProgressList, CreatedRecipeList
+            res.CraftMyPawnList = client.Character.Pawns.Select(pawn => new CDataCraftPawnList()
+            {
+                PawnId = pawn.PawnId,
+                CraftExp = 2500,
+                CraftPoint = 10,
+                CraftRankLimit = 10
+            }).ToList();
+            client.Send(res);
         }
     }
 }
