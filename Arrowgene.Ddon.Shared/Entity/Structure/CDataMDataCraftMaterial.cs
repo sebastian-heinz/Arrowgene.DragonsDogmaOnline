@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ItemId { get; set; }
         public uint Num { get; set; }
         public uint SortNo { get; set; }
-        public bool Unk0 { get; set; }
+        public bool IsSp { get; set; }
     
         public class Serializer : EntitySerializer<CDataMDataCraftMaterial>
         {
@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.ItemId);
                 WriteUInt32(buffer, obj.Num);
                 WriteUInt32(buffer, obj.SortNo);
-                WriteBool(buffer, obj.Unk0);
+                WriteBool(buffer, obj.IsSp);
             }
         
             public override CDataMDataCraftMaterial Read(IBuffer buffer)
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ItemId = ReadUInt32(buffer);
                 obj.Num = ReadUInt32(buffer);
                 obj.SortNo = ReadUInt32(buffer);
-                obj.Unk0 = ReadBool(buffer);
+                obj.IsSp = ReadBool(buffer);
                 return obj;
             }
         }
