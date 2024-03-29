@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     ItemBaseInfo = new CDataBazaarItemBaseInfo() {
                         ItemId = packet.Structure.ItemId,
                         Num = i,
-                        Price = (uint) queriedItem.Price * i,
+                        Price = queriedItem.Price,
                     },
                     ExhibitionTime = 0
                 });
