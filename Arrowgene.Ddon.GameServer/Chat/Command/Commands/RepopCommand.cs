@@ -48,7 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     LayerNo = layerNo,
                     GroupId = groupId
                 };
-                List<EnemySpawn> enemySpawns = Server.EnemyManager.GetAssets(enemyGroup, subGroupId);
+                List<Enemy> enemySpawns = Server.AssetRepository.EnemySpawnAsset.Enemies[(StageId.FromStageLayoutId(enemyGroup), subGroupId)];
 
                 if (enemySpawns.Count <= positionIndex)
                 {
@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 S2CInstanceEnemyRepopNtc ntc = new S2CInstanceEnemyRepopNtc();
                 ntc.LayoutId = enemyGroup;
                 ntc.EnemyData.PositionIndex = positionIndex;
-                ntc.EnemyData.EnemyInfo = enemySpawns[positionIndex].Enemy;
+                ntc.EnemyData.EnemyInfo = enemySpawns[positionIndex].asCDataStageLayoutEnemyPresetEnemyInfoClient();
                 ntc.WaitSecond = waitSeconds;
                 client.Party.SendToAll(ntc);
 

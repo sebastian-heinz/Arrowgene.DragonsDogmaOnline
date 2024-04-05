@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -15,16 +14,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemListHandler));
 
-        private readonly GatheringItemManager gatheringItemManager;
-
         public InstanceGetGatheringItemListHandler(DdonGameServer server) : base(server)
         {
-            this.gatheringItemManager = server.GatheringItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetGatheringItemListReq> req)
         {
-            List<GatheringItem> gatheringItems = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId);
+            List<InstancedGatheringItem> gatheringItems = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId);
 
             S2CInstanceGetGatheringItemListRes res = new S2CInstanceGetGatheringItemListRes();
             res.LayoutId = req.Structure.LayoutId;
@@ -39,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     SlotNo = (uint) index,
                     ItemId = asset.ItemId,
                     ItemNum = asset.ItemNum,
-                    Unk3 = asset.Unk3,
+                    Quality = asset.Quality,
                     IsHidden = asset.IsHidden
                 })
                 .ToList();

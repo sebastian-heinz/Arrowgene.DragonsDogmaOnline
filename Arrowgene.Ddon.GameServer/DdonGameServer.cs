@@ -1,4 +1,3 @@
-using System.Linq;
 /*
  * This file is part of Arrowgene.Ddon.GameServer
  *
@@ -29,8 +28,6 @@ using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Enemy;
-using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -39,7 +36,6 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Ddon.GameServer.Shop;
@@ -62,9 +58,7 @@ namespace Arrowgene.Ddon.GameServer
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
             ChatManager = new ChatManager(this, Router);
-            EnemyManager = new EnemyManager(assetRepository, database);
             ItemManager = new ItemManager();
-            GatheringItemManager = new GatheringItemManager(assetRepository, database);
             PartyManager = new PartyManager();
             ExpManager = new ExpManager(database, ClientLookup);
             JobManager = new JobManager();
@@ -79,9 +73,7 @@ namespace Arrowgene.Ddon.GameServer
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
-        public EnemyManager EnemyManager { get; }
         public ItemManager ItemManager { get; }
-        public GatheringItemManager GatheringItemManager { get; }
         public PartyManager PartyManager { get; }
         public ExpManager ExpManager { get; }
         public ShopManager ShopManager { get; }
@@ -146,7 +138,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), ShopManager, GatheringItemManager);
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), ShopManager, AssetRepository);
             ClientLookup.Add(newClient);
             return newClient;
         }
@@ -261,6 +253,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceEnemyGroupLeaveHandler(this));
             AddHandler(new InstanceEnemyKillHandler(this));
             AddHandler(new InstanceExchangeOmInstantKeyValueHandler(this));
+            AddHandler(new InstanceGetDropItemListHandler(this));
+            AddHandler(new InstanceGetDropItemHandler(this));
             AddHandler(new InstanceGetEnemySetListHandler(this));
             AddHandler(new InstanceGetGatheringItemHandler(this));
             AddHandler(new InstanceGetGatheringItemListHandler(this));

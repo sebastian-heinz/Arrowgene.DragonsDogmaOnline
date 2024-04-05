@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint RaidBossId { get; set; }
         public ushort Scale { get; set; } // Scale as a percentage, 100(%) is normal
         public ushort Lv { get; set; } // Level
-        public ushort HmPresetNo { get; set; } // Preset for human enemies?
+        public ushort HmPresetNo { get; set; }
         public byte StartThinkTblNo { get; set; } // Start Think Table Number???
         public byte RepopNum { get; set; }
         public byte RepopCount { get; set; }
@@ -48,7 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool IsManualSet { get; set; }
         public bool IsAreaBoss { get; set; }
         public bool IsBloodEnemy { get; set; }
-        public bool IsHighOrbEnemy { get; set; } // Unknown. Not in PS4. The last was BloodEnemy, this could be High Orbs?
+        public bool IsHighOrbEnemy { get; set; }
 
         public class Serializer : EntitySerializer<CDataStageLayoutEnemyPresetEnemyInfoClient>
         {

@@ -551,6 +551,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();
+                client.InstanceDropItemManager.Clear();
             }
         }
 
