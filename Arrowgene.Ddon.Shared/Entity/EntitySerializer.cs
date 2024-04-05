@@ -298,6 +298,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstanceEnemyGroupLeaveNtc.Serializer());
             Create(new C2SInstanceEnemyKillReq.Serializer());
             Create(new C2SInstanceExchangeOmInstantKeyValueReq.Serializer());
+            Create(new C2SInstanceGetDropItemListReq.Serializer());
+            Create(new C2SInstanceGetDropItemReq.Serializer());
             Create(new C2SInstanceGetEnemySetListReq.Serializer());
             Create(new C2SInstanceGetGatheringItemListReq.Serializer());
             Create(new C2SInstanceGetGatheringItemReq.Serializer());
@@ -519,10 +521,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceEnemyRepopNtc.Serializer());
             Create(new S2CInstanceEnemySubGroupAppearNtc.Serializer());
             Create(new S2CInstanceExchangeOmInstantKeyValueRes.Serializer());
+            Create(new S2CInstanceGetDropItemListRes.Serializer());
+            Create(new S2CInstanceGetDropItemRes.Serializer());
             Create(new S2CInstanceGetEnemySetListRes.Serializer());
             Create(new S2CInstanceGetGatheringItemListRes.Serializer());
             Create(new S2CInstanceGetGatheringItemRes.Serializer());
             Create(new S2CInstanceGetItemSetListRes.Serializer());
+            Create(new S2CInstancePopDropItemNtc.Serializer());
             Create(new S2CInstanceSetOmInstantKeyValueRes.Serializer());
             Create(new S2CInstanceTreasurePointGetCategoryListRes.Serializer());
             Create(new S2CInstanceTreasurePointGetListRes.Serializer());

@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared
         public const string ItemListKey = "itemlist.csv";
 
         // Server data
-        public const string EnemySpawnsKey = "EnemySpawn.csv";
+        public const string EnemySpawnsKey = "EnemySpawn.json";
         public const string GatheringItemsKey = "GatheringItem.csv";
         public const string MyPawnAssetKey = "MyPawn.csv";
         public const string MyRoomAssetKey = "MyRoom.csv";
@@ -50,8 +50,8 @@ namespace Arrowgene.Ddon.Shared
 
             ClientErrorCodes = new List<CDataErrorMessage>();
             ClientItemInfos = new List<ClientItemInfo>();
-            EnemySpawns = new List<EnemySpawn>();
-            GatheringItems = new List<GatheringItem>();
+            EnemySpawnAsset = new EnemySpawnAsset();
+            GatheringItems = new Dictionary<(StageId, uint), List<GatheringItem>>();
             ServerList = new List<CDataGameServerListInfo>();
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
@@ -63,44 +63,44 @@ namespace Arrowgene.Ddon.Shared
             CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
         }
 
-        public List<CDataErrorMessage> ClientErrorCodes { get; }
-        public List<ClientItemInfo> ClientItemInfos { get; set; } // May be incorrect, or incomplete
-        public List<EnemySpawn> EnemySpawns { get; }
-        public List<GatheringItem> GatheringItems { get; }
-        public List<CDataGameServerListInfo> ServerList { get; }
-        public List<MyPawnCsv> MyPawnAsset { get; }
-        public List<MyRoomCsv> MyRoomAsset { get; }
-        public List<ArisenCsv> ArisenAsset { get; }
-        public List<CDataCharacterItemSlotInfo> StorageAsset { get; }
-        public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; }
-        public List<Shop> ShopAsset { get; }
-        public List<WarpPoint> WarpPoints { get; }
-        public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; }
+        public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
+        public List<ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
+        public EnemySpawnAsset EnemySpawnAsset { get; private set; }
+        public Dictionary<(StageId, uint), List<GatheringItem>> GatheringItems { get; private set; }
+        public List<CDataGameServerListInfo> ServerList { get; private set; }
+        public List<MyPawnCsv> MyPawnAsset { get; private set; }
+        public List<MyRoomCsv> MyRoomAsset { get; private set; }
+        public List<ArisenCsv> ArisenAsset { get; private set; }
+        public List<CDataCharacterItemSlotInfo> StorageAsset { get; private set; }
+        public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; private set; }
+        public List<Shop> ShopAsset { get; private set; }
+        public List<WarpPoint> WarpPoints { get; private set; }
+        public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
 
         public void Initialize()
         {
-            RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsv());
-            RegisterAsset(ClientItemInfos, ItemListKey, new ClientItemInfoCsv());
-            RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsv());
-            RegisterAsset(GatheringItems, GatheringItemsKey, new GatheringItemCsv());
-            RegisterAsset(MyPawnAsset, MyPawnAssetKey, new MyPawnCsvReader());
-            RegisterAsset(MyRoomAsset, MyRoomAssetKey, new MyRoomCsvReader());
-            RegisterAsset(ArisenAsset, ArisenAssetKey, new ArisenCsvReader());
-            RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsv());
-            RegisterAsset(StorageAsset, StorageKey, new StorageCsv());
-            RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsv());
-            RegisterAsset(ShopAsset, ShopKey, new JsonReaderWriter<Shop>());
-            RegisterAsset(WarpPoints, WarpPointsKey, new WarpPointCsv());
-            RegisterAsset(CraftingRecipesAsset, CraftingRecipesKey, new JsonReaderWriter<S2CCraftRecipeGetCraftRecipeRes>());
+            RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeCsv());
+            RegisterAsset(value => ClientItemInfos = value, ItemListKey, new ClientItemInfoCsv());
+            RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer());
+            RegisterAsset(value => GatheringItems = value, GatheringItemsKey, new GatheringItemCsv());
+            RegisterAsset(value => MyPawnAsset = value, MyPawnAssetKey, new MyPawnCsvReader());
+            RegisterAsset(value => MyRoomAsset = value, MyRoomAssetKey, new MyRoomCsvReader());
+            RegisterAsset(value => ArisenAsset = value, ArisenAssetKey, new ArisenCsvReader());
+            RegisterAsset(value => ServerList = value, ServerListKey, new GameServerListInfoCsv());
+            RegisterAsset(value => StorageAsset = value, StorageKey, new StorageCsv());
+            RegisterAsset(value => StorageItemAsset = value, StorageItemKey, new StorageItemCsv());
+            RegisterAsset(value => ShopAsset = value, ShopKey, new JsonReaderWriter<List<Shop>>());
+            RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
+            RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
         }
 
-        private void RegisterAsset<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
+        private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
-            Load(list, key, readerWriter);
-            RegisterFileSystemWatcher(list, key, readerWriter);
+            Load(onLoadAction, key, readerWriter);
+            RegisterFileSystemWatcher(onLoadAction, key, readerWriter);
         }
 
-        private void Load<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
+        private void Load<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
             string path = Path.Combine(_directory.FullName, key);
             FileInfo file = new FileInfo(path);
@@ -110,11 +110,9 @@ namespace Arrowgene.Ddon.Shared
             }
 
             try {
-                List<T> assets = readerWriter.ReadPath(file.FullName);
-
-                list.Clear();
-                list.AddRange(assets);
-                OnAssetChanged(key, list);
+                T asset = readerWriter.ReadPath(file.FullName);
+                onLoadAction.Invoke(asset);
+                OnAssetChanged(key, asset);
             }
             catch (Exception e)
             {
@@ -123,7 +121,7 @@ namespace Arrowgene.Ddon.Shared
             }
         }
 
-        private void RegisterFileSystemWatcher<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
+        private void RegisterFileSystemWatcher<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
             if (_fileSystemWatchers.ContainsKey(key))
             {
@@ -141,7 +139,7 @@ namespace Arrowgene.Ddon.Shared
                 {
                     try
                     {
-                        Load(list, key, readerWriter);
+                        Load(onLoadAction, key, readerWriter);
                         break;
                     }
                     catch (IOException ex)
