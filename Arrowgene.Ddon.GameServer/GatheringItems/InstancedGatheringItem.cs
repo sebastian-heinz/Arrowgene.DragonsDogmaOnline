@@ -10,9 +10,17 @@ public class InstancedGatheringItem
     public InstancedGatheringItem(GatheringItem gatheringItem)
     {
         ItemId = gatheringItem.ItemId;
-        ItemNum = (uint) Random.Shared.Next((int) gatheringItem.ItemNum, (int) gatheringItem.MaxItemNum+1);
         Quality = gatheringItem.Quality;
         IsHidden = gatheringItem.IsHidden;
+
+        if(Random.Shared.NextDouble() <= gatheringItem.DropChance)
+        {
+            ItemNum = (uint) Random.Shared.Next((int) gatheringItem.ItemNum, (int) gatheringItem.MaxItemNum+1);
+        }
+        else
+        {
+            ItemNum = 0;
+        }
     }
 
     public uint ItemId { get; set; }
