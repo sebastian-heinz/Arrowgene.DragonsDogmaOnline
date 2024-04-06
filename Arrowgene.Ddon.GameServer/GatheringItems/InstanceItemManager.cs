@@ -24,7 +24,10 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             if(!_gatheringItemsDictionary.ContainsKey((stageId, subGroupId)))
             {
                 List<GatheringItem> items = FetchItemsFromRepository(stageId, subGroupId);
-                List<InstancedGatheringItem> instancedItems = items.Select(item => new InstancedGatheringItem(item)).ToList();
+                List<InstancedGatheringItem> instancedItems = items
+                    .Select(item => new InstancedGatheringItem(item))
+                    .Where(instancedItem => instancedItem.ItemNum > 0)
+                    .ToList();
                 _gatheringItemsDictionary.Add((stageId, subGroupId), instancedItems);
                 return instancedItems;
             }
