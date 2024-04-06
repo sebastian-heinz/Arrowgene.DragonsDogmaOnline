@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
@@ -23,7 +24,8 @@ namespace Arrowgene.Ddon.Shared.Csv
                     ItemNum = row.ItemNum,
                     MaxItemNum = row.MaxItemNum,
                     Quality = row.Quality,
-                    IsHidden = row.IsHidden
+                    IsHidden = row.IsHidden,
+                    DropChance = row.DropChance,
                 });
                 dict[(row.StageId, row.SubGroupId)] = itemsInSpot;
             }
@@ -55,6 +57,16 @@ namespace Arrowgene.Ddon.Shared.Csv
                 }
                 if (!uint.TryParse(properties[idx++], out uint quality)) return null;
                 if (!bool.TryParse(properties[idx++], out bool isHidden)) return null;
+                double dropChance;
+                if(properties.Length >= 10)
+                {
+                    if (!double.TryParse(properties[idx++], NumberStyles.Any, CultureInfo.InvariantCulture, out dropChance)) return null;
+                }
+                else
+                {
+                    // For compatibility with the older CSV format, skip this column if the length is less than 9
+                    dropChance = 1;
+                }
 
                 return new GatheringItemRow
                 {
@@ -64,7 +76,8 @@ namespace Arrowgene.Ddon.Shared.Csv
                     ItemNum = itemNum,
                     MaxItemNum = maxItemNum,
                     Quality = quality,
-                    IsHidden = isHidden
+                    IsHidden = isHidden,
+                    DropChance = dropChance
                 };
             }
         }
@@ -78,6 +91,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             public uint MaxItemNum { get; set; }
             public uint Quality { get; set; }
             public bool IsHidden { get; set; }
+            public double DropChance { get; set; }
         }
     }
 

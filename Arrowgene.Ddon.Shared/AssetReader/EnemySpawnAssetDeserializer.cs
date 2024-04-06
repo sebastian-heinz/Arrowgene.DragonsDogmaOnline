@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Csv
         private static readonly ILogger Logger = LogProvider.Logger(typeof(EnemySpawnAssetDeserializer));
 
         private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId"};
-        private static readonly string[] DROPS_TABLE_HEADERS = new string[]{"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden"};
+        private static readonly string[] DROPS_TABLE_HEADERS = new string[]{"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden", "DropChance"};
 
         public EnemySpawnAsset ReadPath(string path)
         {
@@ -42,14 +42,24 @@ namespace Arrowgene.Ddon.Shared.Csv
                 foreach (JsonElement dropsTableItemsRow in dropsTableElement.GetProperty("items").EnumerateArray())
                 {
                     List<JsonElement> row = dropsTableItemsRow.EnumerateArray().ToList();
-                    dropsTable.Items.Add(new GatheringItem()
+                    GatheringItem gatheringItem = new GatheringItem();
+                    gatheringItem.ItemId = row[dropsTableSchemaIndexes["ItemId"]].GetUInt32();
+                    gatheringItem.ItemNum = row[dropsTableSchemaIndexes["ItemNum"]].GetUInt32();
+                    gatheringItem.MaxItemNum = row[dropsTableSchemaIndexes["MaxItemNum"]].GetUInt32();
+                    gatheringItem.Quality = row[dropsTableSchemaIndexes["Quality"]].GetUInt32();
+                    gatheringItem.IsHidden = row[dropsTableSchemaIndexes["IsHidden"]].GetBoolean();
+
+                    // Optional for compatibility with older formats
+                    if(dropsTableSchemaIndexes.ContainsKey("DropChance"))
                     {
-                        ItemId = row[dropsTableSchemaIndexes["ItemId"]].GetUInt32(),
-                        ItemNum = row[dropsTableSchemaIndexes["ItemNum"]].GetUInt32(),
-                        MaxItemNum = row[dropsTableSchemaIndexes["MaxItemNum"]].GetUInt32(),
-                        Quality = row[dropsTableSchemaIndexes["Quality"]].GetUInt32(),
-                        IsHidden = row[dropsTableSchemaIndexes["IsHidden"]].GetBoolean()
-                    });
+                        gatheringItem.DropChance = row[dropsTableSchemaIndexes["DropChance"]].GetDouble();
+                    }
+                    else
+                    {
+                        gatheringItem.DropChance = 1;
+                    }
+
+                    dropsTable.Items.Add(gatheringItem);
                 }
 
                 asset.DropsTables[id] = dropsTable;
@@ -112,7 +122,11 @@ namespace Arrowgene.Ddon.Shared.Csv
             Dictionary<string, int> schemaIndexes = new Dictionary<string, int>();
             foreach (string header in reference)
             {
-                schemaIndexes.Add(header, schema.IndexOf(header));
+                int index = schema.IndexOf(header);
+                if (index != -1)
+                {
+                    schemaIndexes.Add(header, index);
+                }
             }
             return schemaIndexes;
         }
