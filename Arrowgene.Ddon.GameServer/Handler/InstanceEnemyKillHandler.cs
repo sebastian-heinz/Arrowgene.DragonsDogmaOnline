@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.GameServer.Party;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -26,8 +27,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyKillReq> packet)
         {
             Enemy enemyKilled = Server.AssetRepository.EnemySpawnAsset.Enemies[(StageId.FromStageLayoutId(packet.Structure.LayoutId), 0)][(int) packet.Structure.SetId];
-            
-            if(enemyKilled.DropsTable != null && enemyKilled.DropsTable.Items.Count > 0) {
+            List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
+            if(instancedGatheringItems.Count > 0) {
                 client.Party.SendToAll(new S2CInstancePopDropItemNtc()
                 {
                     LayoutId = packet.Structure.LayoutId,
