@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations.Infrastructure;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
@@ -11,92 +8,9 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
-    public static class LearnedNormalSkills
-    {
-        internal static class Alchemist
-        {
-            public const uint AlchemicalRadius = 2;
-            public const uint ClusterMagis = 4;
-            public const uint RexLeap = 10;
-            public const uint ConclusterMagis = 12;
-        }
-
-        internal static class  ElementArcher
-        {
-            public const uint Seeker = 4;
-            public const uint TrueAid = 8;
-            public const uint GodsEye = 11;
-        }
-
-        internal static class Fighter
-        {
-            public const uint DireOnslaught = 2;
-            public const uint GuardBreak = 4;
-            public const uint ControlledFall = 12;
-        }
-
-        internal static class HighScepter
-        {
-            public const uint ArcSlash = 2;
-            public const uint ControlledFall = 13;
-        }
-
-        internal static class Hunter
-        {
-            public const uint QuickBowStyle = 3;
-            public const uint QuickChargeStyle = 6;
-            public const uint KeenSight = 7;
-        }
-
-        internal static class Priest
-        {
-            public const uint HealAura = 3;
-            public const uint HolyAura = 5;
-            public const uint Floating = 8;
-        }
-
-        internal static class Seeker
-        {
-            public const uint RoundhouseKick = 2;
-            public const uint HundredKisses = 4;
-            public const uint DoubleJump = 14;
-            public const uint HundredSlashes = 16;
-        }
-
-        internal static class ShieldSage
-        {
-            public const uint ElementChange = 4;
-            public const uint Attract = 10;
-            public const uint ShieldSequence = 12;
-        }
-
-        internal static class Sorcerer
-        {
-            public const uint MagickBoost = 3;
-            public const uint BackMove = 5;
-            public const uint Floating = 10;
-        }
-
-        internal static class SpiritLancer
-        {
-            public const uint ThrustMore = 2;
-            public const uint Aid = 4;
-            public const uint FallMove = 12;
-        }
-
-        internal static class Warrior
-        {
-            public const uint Devastate = 2;
-            public const uint SavageLash = 4;
-            public const uint ControlledFall = 9;
-        }
-    }
-
     public class JobManager
     {
         public void SetJob(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
@@ -405,69 +319,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // From what I tested it doesn't seem to be necessary
         }
 
-        static readonly Dictionary<JobId, List<uint[]>> gLearnedNormalSkillMap = new ()
+        public void UnlockLearnedNormalSkill(AssetRepository AssetRepo, IDatabase Database, GameClient Client, CharacterCommon Character, JobId Job, uint SkillIndex)
         {
-            [JobId.Alchemist] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.Alchemist.AlchemicalRadius },
-                    new uint[] { LearnedNormalSkills.Alchemist.ClusterMagis, LearnedNormalSkills.Alchemist.ConclusterMagis },
-                    new uint[] { LearnedNormalSkills.Alchemist.RexLeap }
-            },
-            [JobId.ElementArcher] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.ElementArcher.Seeker },
-                    new uint[] { LearnedNormalSkills.ElementArcher.TrueAid },
-                    new uint[] { LearnedNormalSkills.ElementArcher.GodsEye }
-            },
-            [JobId.Fighter] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.Fighter.DireOnslaught },
-                    new uint[] { LearnedNormalSkills.Fighter.GuardBreak },
-                    new uint[] { LearnedNormalSkills.Fighter.ControlledFall }
-            },
-            [JobId.HighScepter] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.HighScepter.ArcSlash },
-                    new uint[] { LearnedNormalSkills.HighScepter.ControlledFall },
-            },
-            [JobId.Hunter] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.Hunter.QuickBowStyle },
-                    new uint[] { LearnedNormalSkills.Hunter.QuickChargeStyle },
-                    new uint[] { LearnedNormalSkills.Hunter.KeenSight }
-            },
-            [JobId.Priest] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.Priest.HealAura },
-                    new uint[] { LearnedNormalSkills.Priest.HolyAura },
-                    new uint[] { LearnedNormalSkills.Priest.Floating }
-            },
-            [JobId.ShieldSage] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.ShieldSage.ElementChange },
-                    new uint[] { LearnedNormalSkills.ShieldSage.ShieldSequence },
-                    new uint[] { LearnedNormalSkills.ShieldSage.Attract }
-            },
-            [JobId.Seeker] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.Seeker.RoundhouseKick },
-                    new uint[] { LearnedNormalSkills.Seeker.HundredKisses, LearnedNormalSkills.Seeker.HundredSlashes },
-                    new uint[] { LearnedNormalSkills.Seeker.DoubleJump }
-            },
-            [JobId.Sorcerer] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.Sorcerer.MagickBoost },
-                    new uint[] { LearnedNormalSkills.Sorcerer.BackMove},
-                    new uint[] { LearnedNormalSkills.Sorcerer.Floating }
-            },
-            [JobId.SpiritLancer] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.SpiritLancer.ThrustMore },
-                    new uint[] { LearnedNormalSkills.SpiritLancer.Aid },
-                    new uint[] { LearnedNormalSkills.SpiritLancer.FallMove }
-            },
-            [JobId.Warrior] = new List<uint[]>() {
-                    new uint[] { LearnedNormalSkills.Warrior.Devastate },
-                    new uint[] { LearnedNormalSkills.Warrior.SavageLash },
-                    new uint[] { LearnedNormalSkills.Warrior.ControlledFall }
-            },
-        };
+            CDataCharacterJobData CharacterJobData = Character.CharacterJobDataList.Where(cjd => cjd.Job == Job).Single();
 
-        public void UnlockLearnedNormalSkill(IDatabase database, GameClient client, CharacterCommon character, JobId Job, uint SkillIndex)
-        {
-            CDataCharacterJobData characterJobData = character.CharacterJobDataList.Where(cjd => cjd.Job == Job).Single();
+            Dictionary<JobId, List<LearnedNormalSkill>> LearnedNormalSkillsMap = AssetRepo.LearnedNormalSkillsAsset.LearnedNormalSkills;
 
-            if (!gLearnedNormalSkillMap.ContainsKey(Job) || SkillIndex == 0 || ((SkillIndex - 1) > gLearnedNormalSkillMap[Job].Count()))
+            if (!LearnedNormalSkillsMap.ContainsKey(Job) || SkillIndex == 0 || ((SkillIndex - 1) > LearnedNormalSkillsMap[Job].Count()))
             {
                 // Something strange happened, either there is a new job (unlikely)
                 // or there is a missing skill, or someone tried to craft a custom
@@ -477,17 +335,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     Job = Job,
                     SkillIndex = 0,
-                    NewJobPoint = characterJobData.JobPoint,
+                    NewJobPoint = CharacterJobData.JobPoint,
                 };
 
-                client.Send(S2CSkillLearnNormalSkillRes);
+                Client.Send(S2CSkillLearnNormalSkillRes);
                 return;
             }
 
-            List<uint[]> SkillMapping = gLearnedNormalSkillMap[Job];
-            foreach (uint SkillNo in SkillMapping[(int)(SkillIndex - 1)])
+            LearnedNormalSkill Skill = LearnedNormalSkillsMap[Job][(int)(SkillIndex - 1)];
+            if (CharacterJobData.JobPoint < Skill.JpCost || CharacterJobData.Lv < Skill.RequiredLevel)
             {
-                List<CDataNormalSkillParam> Matches = character.LearnedNormalSkills.Where(skill => skill != null && skill.Job == Job && skill.SkillNo == SkillNo).ToList();
+                // This shouldn't happen, but if it does, don't learn the skill
+                // TODO: Is there a way to fail the request without hanging the client?
+                return;
+            }
+
+            foreach (uint SkillNo in Skill.SkillNo)
+            {
+                List<CDataNormalSkillParam> Matches = Character.LearnedNormalSkills.Where(skill => skill != null && skill.Job == Job && skill.SkillNo == SkillNo).ToList();
                 if (Matches.Count() == 0)
                 {
                     CDataNormalSkillParam NewSkill = new CDataNormalSkillParam()
@@ -497,21 +362,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         SkillNo = SkillNo,  // Related to offsets in gNormalSkillMap
                     };
 
-                    character.LearnedNormalSkills.Add(NewSkill);
-                    database.InsertIfNotExistsNormalSkillParam(character.CommonId, NewSkill);
+                    Character.LearnedNormalSkills.Add(NewSkill);
+                    Database.InsertIfNotExistsNormalSkillParam(Character.CommonId, NewSkill);
                 }
             }
 
-            // TODO: Subtract Job Points
+            // Subtract Job points and update the DB with the new result
+            CharacterJobData.JobPoint -= Skill.JpCost;
+            Database.UpdateCharacterJobData(Character.CommonId, CharacterJobData);
 
             var Result = new S2CSkillLearnNormalSkillRes()
             {
                 Job = Job,
                 SkillIndex = SkillIndex,
-                NewJobPoint = characterJobData.JobPoint,
+                NewJobPoint = CharacterJobData.JobPoint,
             };
 
-            client.Send(Result);
+            Client.Send(Result);
         }
 
         public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)

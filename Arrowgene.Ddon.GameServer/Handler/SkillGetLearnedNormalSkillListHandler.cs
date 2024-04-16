@@ -26,5 +26,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(Result);
         }
+
     }
 }

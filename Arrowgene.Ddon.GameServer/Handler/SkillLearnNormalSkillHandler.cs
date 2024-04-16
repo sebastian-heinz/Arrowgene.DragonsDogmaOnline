@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillLearnNormalSkillReq> packet)
         {
-            _jobManager.UnlockLearnedNormalSkill(Server.Database, client, client.Character,
+            _jobManager.UnlockLearnedNormalSkill(Server.AssetRepository, Server.Database, client, client.Character,
                                                  packet.Structure.Job, packet.Structure.SkillId);
         }
     }
