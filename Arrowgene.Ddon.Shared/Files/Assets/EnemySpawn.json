@@ -9455,7 +9455,7 @@
 		},
 		{
 			"id": 342,
-			"name": "Blaze Harpy (Lv95+) INCOMPLETE",
+			"name": "Blaze Harpy (Lv95+)",
 			"mdlType": 0,
 			"items": [
 				[
@@ -9465,6 +9465,14 @@
 					0,
 					false,
 					0.9
+				],
+				[
+					21263,
+					1,
+					1,
+					0,
+					false,
+					0.7
 				]
 			]
 		},
