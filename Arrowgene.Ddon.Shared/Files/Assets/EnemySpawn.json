@@ -12151,6 +12151,679 @@
 			"items": [
 
 			]
+		},
+		{
+			"id": 473,
+			"name": "Frost Skeleton Cyclops (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 474,
+			"name": "Frost Machina Trinity (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 475,
+			"name": "Bolt Skeleton Cyclops (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 476,
+			"name": "Bolt Machina (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 477,
+			"name": "Bolt Machina Trinity (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 478,
+			"name": "Dark Skeleton Brute (Lv1-79)",
+			"mdlType": 0,
+			"items": [
+				[
+					8015,
+					1,
+					1,
+					0,
+					false,
+					0.4
+				],
+				[
+					7850,
+					1,
+					1,
+					0,
+					false,
+					0.9
+				]
+			]
+		},
+		{
+			"id": 479,
+			"name": "Dark Skeleton Brute (Lv80+)",
+			"mdlType": 0,
+			"items": [
+				[
+					7850,
+					1,
+					2,
+					0,
+					false,
+					0.9
+				],
+				[
+					8015,
+					1,
+					1,
+					0,
+					false,
+					0.6
+				],
+				[
+					17873,
+					1,
+					1,
+					0,
+					false,
+					0.3
+				]
+			]
+		},
+		{
+			"id": 480,
+			"name": "Lux Skeleton (Lv1-79)",
+			"mdlType": 0,
+			"items": [
+				[
+					8014,
+					1,
+					1,
+					0,
+					false,
+					0.4
+				],
+				[
+					7803,
+					1,
+					2,
+					0,
+					false,
+					0.9
+				]
+			]
+		},
+		{
+			"id": 481,
+			"name": "Lux Skeleton (Lv80+)",
+			"mdlType": 0,
+			"items": [
+				[
+					7803,
+					1,
+					2,
+					0,
+					false,
+					0.9
+				],
+				[
+					8014,
+					1,
+					1,
+					0,
+					false,
+					0.6
+				],
+				[
+					17873,
+					1,
+					1,
+					0,
+					false,
+					0.3
+				]
+			]
+		},
+		{
+			"id": 482,
+			"name": "Dim Slime (Lv1-79)",
+			"mdlType": 0,
+			"items": [
+				[
+					7837,
+					1,
+					3,
+					0,
+					false,
+					0.8
+				]
+			]
+		},
+		{
+			"id": 483,
+			"name": "Dim Slime (Lv80+)",
+			"mdlType": 0,
+			"items": [
+				[
+					7837,
+					1,
+					3,
+					0,
+					false,
+					0.9
+				],
+				[
+					17880,
+					1,
+					2,
+					0,
+					false,
+					0.6
+				]
+			]
+		},
+		{
+			"id": 484,
+			"name": "Phindymian Fighter (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					11408,
+					1,
+					1,
+					0,
+					false,
+					0.6
+				]
+			]
+		},
+		{
+			"id": 485,
+			"name": "Phindymian Seeker (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					11408,
+					1,
+					1,
+					0,
+					false,
+					0.7
+				]
+			]
+		},
+		{
+			"id": 486,
+			"name": "Phindymian Hunter (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					11408,
+					1,
+					1,
+					0,
+					false,
+					0.4
+				]
+			]
+		},
+		{
+			"id": 487,
+			"name": "Phindymian Preist (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					11408,
+					1,
+					1,
+					0,
+					false,
+					0.2
+				]
+			]
+		},
+		{
+			"id": 488,
+			"name": "Phindymian Defender (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					11408,
+					1,
+					1,
+					0,
+					false,
+					0.4
+				]
+			]
+		},
+		{
+			"id": 489,
+			"name": "Phindymian Sorcerer (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					11408,
+					1,
+					4,
+					0,
+					false,
+					0.1
+				]
+			]
+		},
+		{
+			"id": 490,
+			"name": "Phindymian Warrior (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					11408,
+					1,
+					1,
+					0,
+					false,
+					0.7
+				]
+			]
+		},
+		{
+			"id": 491,
+			"name": "Phindymian Element Archer (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					11408,
+					1,
+					1,
+					0,
+					false,
+					0.4
+				]
+			]
+		},
+		{
+			"id": 492,
+			"name": "Scourge (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					15996,
+					1,
+					2,
+					0,
+					false,
+					0.9
+				],
+				[
+					16013,
+					1,
+					1,
+					0,
+					false,
+					0.4
+				]
+			]
+		},
+		{
+			"id": 493,
+			"name": "Severely Infected Scourge (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 494,
+			"name": "Red Zuhl (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+				[
+					10986,
+					1,
+					1,
+					0,
+					false,
+					0.1
+				]
+			]
+		},
+		{
+			"id": 495,
+			"name": "Shadow Grigori (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 496,
+			"name": "Shadow Master (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 497,
+			"name": "Gorgon (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 498,
+			"name": "Rage Ghost (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 499,
+			"name": "Grudge Ghost (Lv1-??)",
+			"mdlType": 0,
+			"items": [
+				[
+					21222,
+					1,
+					1,
+					0,
+					false,
+					0.3
+				]
+			]
+		},
+		{
+			"id": 500,
+			"name": "Misery Ghost (Lv85+)",
+			"mdlType": 0,
+			"items": [
+				[
+					17929,
+					1,
+					2,
+					0,
+					false,
+					0.9
+				]
+			]
+		},
+		{
+			"id": 501,
+			"name": "White Tarasque (Lv90+)",
+			"mdlType": 0,
+			"items": [
+				[
+					17877,
+					1,
+					2,
+					0,
+					false,
+					1
+				]
+			]
+		},
+		{
+			"id": 502,
+			"name": "Vile Eye (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
+		},
+		{
+			"id": 503,
+			"name": "Volt Eye (Lv1+)",
+			"mdlType": 0,
+			"items": [
+				[
+					21267,
+					1,
+					1,
+					0,
+					false,
+					0.6
+				]
+			]
+		},
+		{
+			"id": 504,
+			"name": "Crystal Eye (Lv1-44)",
+			"mdlType": 0,
+			"items": [
+				[
+					7901,
+					1,
+					2,
+					0,
+					false,
+					0.7
+				],
+				[
+					7894,
+					1,
+					1,
+					0,
+					false,
+					0.3
+				]
+			]
+		},
+		{
+			"id": 505,
+			"name": "Crystal Eye (Lv45+)",
+			"mdlType": 0,
+			"items": [
+				[
+					7894,
+					1,
+					1,
+					0,
+					false,
+					0.6
+				],
+				[
+					7901,
+					1,
+					3,
+					0,
+					false,
+					0.9
+				],
+				[
+					7730,
+					1,
+					1,
+					0,
+					false,
+					0.4
+				]
+			]
+		},
+		{
+			"id": 506,
+			"name": "Glutton Ooze (Lv1-79)",
+			"mdlType": 0,
+			"items": [
+				[
+					7840,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				],
+				[
+					7837,
+					1,
+					1,
+					0,
+					false,
+					0.7
+				]
+			]
+		},
+		{
+			"id": 507,
+			"name": "Glutton Ooze (Lv80+)",
+			"mdlType": 0,
+			"items": [
+				[
+					7837,
+					1,
+					2,
+					0,
+					false,
+					0.9
+				],
+				[
+					7840,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				],
+				[
+					17880,
+					1,
+					1,
+					0,
+					false,
+					0.6
+				]
+			]
+		},
+		{
+			"id": 508,
+			"name": "Scarlet Fighter",
+			"mdlType": 0,
+			"items": [
+				[
+					7827,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				]
+			]
+		},
+		{
+			"id": 509,
+			"name": "Scarlet Seeker",
+			"mdlType": 0,
+			"items": [
+				[
+					7827,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				]
+			]
+		},
+		{
+			"id": 510,
+			"name": "Scarlet Hunter",
+			"mdlType": 0,
+			"items": [
+				[
+					7827,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				]
+			]
+		},
+		{
+			"id": 511,
+			"name": "Scarlet Healer",
+			"mdlType": 0,
+			"items": [
+				[
+					7827,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				]
+			]
+		},
+		{
+			"id": 512,
+			"name": "Scarlet Defender",
+			"mdlType": 0,
+			"items": [
+				[
+					7827,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				]
+			]
+		},
+		{
+			"id": 513,
+			"name": "Scarlet Mage",
+			"mdlType": 0,
+			"items": [
+				[
+					7827,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				]
+			]
+		},
+		{
+			"id": 514,
+			"name": "Scarlet Warrior",
+			"mdlType": 0,
+			"items": [
+				[
+					7827,
+					1,
+					1,
+					0,
+					false,
+					0.8
+				]
+			]
+		},
+		{
+			"id": 515,
+			"name": "Black Knight Phantom (Lv1-??) INCONCLUSIVE",
+			"mdlType": 0,
+			"items": [
+
+			]
 		}
 	],
 	"enemies": [
