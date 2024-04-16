@@ -8,11 +8,14 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class JobManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobManager));
+
         public void SetJob(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
         {
             common.Job = jobId;
@@ -329,24 +332,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Something strange happened, either there is a new job (unlikely)
                 // or there is a missing skill, or someone tried to craft a custom
-                // packet to the server. For now, just return back the same
-                // data requested so the client doesn't hang.
-                var S2CSkillLearnNormalSkillRes = new S2CSkillLearnNormalSkillRes()
+                // packet to the server. Return back an error packet to the client.
+                Logger.Error("Illegal request to unlock 'Learned Normal/Core Skill'");
+
+                var S2CResult = new S2CSkillLearnNormalSkillRes()
                 {
-                    Job = Job,
-                    SkillIndex = 0,
-                    NewJobPoint = CharacterJobData.JobPoint,
+                    Error = 0xabaddeed
                 };
 
-                Client.Send(S2CSkillLearnNormalSkillRes);
+                Client.Send(S2CResult);
                 return;
             }
 
             LearnedNormalSkill Skill = LearnedNormalSkillsMap[Job][(int)(SkillIndex - 1)];
             if (CharacterJobData.JobPoint < Skill.JpCost || CharacterJobData.Lv < Skill.RequiredLevel)
             {
-                // This shouldn't happen, but if it does, don't learn the skill
-                // TODO: Is there a way to fail the request without hanging the client?
+                // This shouldn't happen, but if it does, don't learn the skill and
+                // return an error packet to the client.
+                Logger.Error("Illegal request to unlock 'Learned Normal/Core Skill'");
+
+                var S2CResult = new S2CSkillLearnNormalSkillRes()
+                {
+                    Error = 0xabaddeed
+                };
+
+                Client.Send(S2CResult);
                 return;
             }
 
@@ -378,7 +388,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 NewJobPoint = CharacterJobData.JobPoint,
             };
 
+            // Send response back to client
             Client.Send(Result);
+
+            // TODO: Send data to rest of party
+            // TODO: S2C_NORMAL_SKILL_LEARN_NTC currently not defined
+            // TODO: Need to investigate ID and layout
+            // Client.Party.SendToAll(S2C_NORMAL_SKILL_LEARN_NTC)
         }
 
         public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)
