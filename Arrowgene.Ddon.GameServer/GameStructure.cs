@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Shared.Entity.Structure;

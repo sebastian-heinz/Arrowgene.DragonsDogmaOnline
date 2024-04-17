@@ -1,6 +1,7 @@
 using System.Data.Common;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -18,7 +19,36 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlInsertIfNotExistsNormalSkillParam = $"INSERT INTO \"ddon_normal_skill_param\" ({BuildQueryField(CDataNormalSkillParamFields)}) SELECT {BuildQueryInsert(CDataNormalSkillParamFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_normal_skill_param\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job AND \"skill_no\"=@skill_no);";
         private static readonly string SqlUpdateNormalSkillParam = $"UPDATE \"ddon_normal_skill_param\" SET {BuildQueryUpdate(CDataNormalSkillParamFields)} WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job AND \"skill_no\"=@skill_no;";
         private static readonly string SqlSelectNormalSkillParam = $"SELECT {BuildQueryField(CDataNormalSkillParamFields)} FROM \"ddon_normal_skill_param\" WHERE \"character_common_id\" = @character_common_id;";
+        private static readonly string SqlSelectAllNormalSkillParam = $"SELECT {BuildQueryField(CDataNormalSkillParamFields)} FROM \"ddon_normal_skill_param\" WHERE \"character_common_id\" = @character_common_id and \"job\" = @job;";
         private const string SqlDeleteNormalSkillParam = "DELETE FROM \"ddon_normal_skill_param\" WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"skill_no\"=@skill_no;";
+
+        public List<CDataNormalSkillParam> SelectNormalSkillParam(uint commonId, JobId job)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectNormalSkillParam(connection, commonId, job);
+        }
+
+        public List<CDataNormalSkillParam> SelectNormalSkillParam(TCon conn, uint commonId, JobId job)
+        {
+            List<CDataNormalSkillParam> LearnedNormalSkills = new List<CDataNormalSkillParam>();
+
+            ExecuteInTransaction(conn =>
+            {
+                ExecuteReader(conn, SqlSelectAllNormalSkillParam,
+                    command => {
+                        AddParameter(command, "@character_common_id", commonId);
+                        AddParameter(command, "@job", (byte)job);
+                    }, reader => {
+                        while (reader.Read())
+                        {
+                            CDataNormalSkillParam LearnedNormalSkill = ReadNormalSkillParam(reader);
+                            LearnedNormalSkills.Add(LearnedNormalSkill);
+                        }
+                    });
+            });
+
+            return LearnedNormalSkills;
+        }
 
         public bool InsertIfNotExistsNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam)
         {
@@ -33,7 +63,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, commonId, normalSkillParam);
             }) == 1;
         }
-        
+
         public bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam)
         {
             using TCon connection = OpenNewConnection();
@@ -79,7 +109,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, commonId, normalSkillParam);
             }) == 1;
         }
-        
+
         public bool DeleteNormalSkillParam(uint commonId, JobId job, uint skillNo)
         {
             return ExecuteNonQuery(SqlDeleteNormalSkillParam, command =>
@@ -94,8 +124,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             CDataNormalSkillParam normalSkillParam = new CDataNormalSkillParam();
             normalSkillParam.Job = (JobId)GetByte(reader, "job");
-            normalSkillParam.SkillNo = GetUInt32(reader, "skill_no");
             normalSkillParam.Index = GetUInt32(reader, "index");
+            normalSkillParam.SkillNo = GetUInt32(reader, "skill_no");
             normalSkillParam.PreSkillNo = GetUInt32(reader, "pre_skill_no");
             return normalSkillParam;
         }

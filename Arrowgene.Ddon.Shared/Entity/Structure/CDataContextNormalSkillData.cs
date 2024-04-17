@@ -8,27 +8,27 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CDataContextNormalSkillData(CDataNormalSkillParam normalSkillParam)
         {
-            SkillNo = (byte) normalSkillParam.SkillNo;
+            SkillIndex = (byte) normalSkillParam.Index;
         }
 
         public CDataContextNormalSkillData()
         {
-            SkillNo=0;
+            SkillIndex=0;
         }
 
-        public byte SkillNo;
+        public byte SkillIndex;
 
         public class Serializer : EntitySerializer<CDataContextNormalSkillData>
         {
             public override void Write(IBuffer buffer, CDataContextNormalSkillData obj)
             {
-                WriteByte(buffer, obj.SkillNo);
+                WriteByte(buffer, obj.SkillIndex);
             }
 
             public override CDataContextNormalSkillData Read(IBuffer buffer)
             {
                 CDataContextNormalSkillData obj = new CDataContextNormalSkillData();
-                obj.SkillNo = ReadByte(buffer);
+                obj.SkillIndex = ReadByte(buffer);
                 return obj;
             }
         }

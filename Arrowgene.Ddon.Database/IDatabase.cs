@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
@@ -106,6 +106,14 @@ namespace Arrowgene.Ddon.Database
         bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, JobId equipptedToJob, byte slotNo, Ability ability);
         bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo);
         bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob);
+
+        // (Learned) Normal Skills / Learned Core Skills
+        bool InsertIfNotExistsNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
+        bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
+        bool ReplaceNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
+        bool UpdateNormalSkillParam(uint commonId, JobId job, uint skillNo, CDataNormalSkillParam normalSkillParam);
+        bool DeleteNormalSkillParam(uint commonId, JobId job, uint skillNo);
+        List<CDataNormalSkillParam> SelectNormalSkillParam(uint commonId, JobId job);
 
         // Shortcut
         bool InsertShortcut(uint characterId, CDataShortCut shortcut);

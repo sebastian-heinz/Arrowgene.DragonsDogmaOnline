@@ -4,14 +4,18 @@ using System.Linq;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class JobManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobManager));
+
         public void SetJob(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
         {
             common.Job = jobId;
@@ -49,6 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Where(x => x != null)
                 .ToList();
             List<CDataLearnNormalSkillParam> normalSkills = common.LearnedNormalSkills
+                .Where(x => x.Job == common.Job)
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();
             List<CDataEquipJobItem> jobItems = common.Equipment.getJobItemsAsCDataEquipJobItem(common.Job);
@@ -69,7 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
-                
+
                 foreach(GameClient otherClient in server.ClientLookup.GetAll())
                 {
                     otherClient.Send(changeJobNotice);
@@ -91,7 +96,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .FirstOrDefault(new CDataPlayPointData());
                 changeJobResponse.Unk0.Unk0 = (byte) jobId;
                 changeJobResponse.Unk0.Unk1 = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
-            
+
                 client.Send(changeJobResponse);
             }
             else if(common is Pawn)
@@ -286,7 +291,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             CustomSkill affectedSkill = character.LearnedCustomSkills
                 .Where(skill => skill.Job == job && skill.SkillId == GetBaseSkillId(skillId))
                 .Single();
-            
+
             List<byte> affectedSlots = new List<byte>();
             for(int i=0; i<character.EquippedCustomSkillsDictionary[job].Count; i++)
             {
@@ -315,6 +320,97 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // I haven't found a packet to notify this to other players
             // From what I tested it doesn't seem to be necessary
+        }
+
+        public void UnlockLearnedNormalSkill(AssetRepository AssetRepo, IDatabase Database, GameClient Client, CharacterCommon Character, JobId Job, uint SkillIndex)
+        {
+            CDataCharacterJobData CharacterJobData = Character.CharacterJobDataList.Where(cjd => cjd.Job == Job).Single();
+
+            Dictionary<JobId, List<LearnedNormalSkill>> LearnedNormalSkillsMap = AssetRepo.LearnedNormalSkillsAsset.LearnedNormalSkills;
+
+            if (!LearnedNormalSkillsMap.ContainsKey(Job) || SkillIndex == 0 || ((SkillIndex - 1) > LearnedNormalSkillsMap[Job].Count()))
+            {
+                // Something strange happened, either there is a new job (unlikely)
+                // or there is a missing skill, or someone tried to craft a custom
+                // packet to the server. Return back an error packet to the client.
+                Logger.Error("Illegal request to unlock 'Learned Normal/Core Skill'");
+
+                var S2CResult = new S2CSkillLearnNormalSkillRes()
+                {
+                    Error = 0xabaddeed
+                };
+
+                Client.Send(S2CResult);
+                return;
+            }
+
+            LearnedNormalSkill Skill = LearnedNormalSkillsMap[Job][(int)(SkillIndex - 1)];
+            if (CharacterJobData.JobPoint < Skill.JpCost || CharacterJobData.Lv < Skill.RequiredLevel)
+            {
+                // This shouldn't happen, but if it does, don't learn the skill and
+                // return an error packet to the client.
+                Logger.Error("Illegal request to unlock 'Learned Normal/Core Skill'");
+
+                var S2CResult = new S2CSkillLearnNormalSkillRes()
+                {
+                    Error = 0xabaddeed
+                };
+
+                Client.Send(S2CResult);
+                return;
+            }
+
+            foreach (uint SkillNo in Skill.SkillNo)
+            {
+                List<CDataNormalSkillParam> Matches = Character.LearnedNormalSkills.Where(skill => skill != null && skill.Job == Job && skill.SkillNo == SkillNo).ToList();
+                if (Matches.Count() == 0)
+                {
+
+                    CDataNormalSkillParam NewSkill = new CDataNormalSkillParam()
+                    {
+                        Job = Job,
+                        Index = SkillIndex, // 1, 2, 3 based offset from packet
+                        SkillNo = SkillNo,  // Skill ID
+                        PreSkillNo = 0
+                    };
+
+                    Character.LearnedNormalSkills.Add(NewSkill);
+                    Database.InsertIfNotExistsNormalSkillParam(Character.CommonId, NewSkill);
+                }
+            }
+
+            // Subtract Job points and update the DB with the new result
+            CharacterJobData.JobPoint -= Skill.JpCost;
+            Database.UpdateCharacterJobData(Character.CommonId, CharacterJobData);
+
+            if (Character is Character)
+            {
+                var Result = new S2CSkillLearnNormalSkillRes()
+                {
+                    Job = Job,
+                    SkillIndex = SkillIndex,
+                    NewJobPoint = CharacterJobData.JobPoint,
+                };
+
+                Client.Send(Result);
+            }
+            else
+            {
+                var Result = new S2CSkillLearnPawnNormalSkillRes()
+                {
+                    PawnId = ((Pawn)Character).PawnId,
+                    Job = Job,
+                    SkillIndex = SkillIndex,
+                    NewJobPoint = CharacterJobData.JobPoint,
+                };
+
+                Client.Send(Result);
+            }
+
+            // TODO: Send data to rest of party
+            // TODO: S2C_NORMAL_SKILL_LEARN_NTC currently not defined
+            // TODO: Need to investigate ID and layout
+            // Client.Party.SendToAll(S2C_NORMAL_SKILL_LEARN_NTC)
         }
 
         public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)

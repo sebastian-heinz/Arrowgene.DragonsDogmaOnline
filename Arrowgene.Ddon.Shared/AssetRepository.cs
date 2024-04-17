@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Json;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Asset;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -29,6 +30,7 @@ namespace Arrowgene.Ddon.Shared
         public const string ServerListKey = "GameServerList.csv";
         public const string WarpPointsKey = "WarpPoints.csv";
         public const string CraftingRecipesKey = "CraftingRecipes.json";
+        public const string LearnedNormalSkillsKey = "LearnedNormalSkills.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -61,6 +63,7 @@ namespace Arrowgene.Ddon.Shared
             ShopAsset = new List<Shop>();
             WarpPoints = new List<WarpPoint>();
             CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
+            LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -76,6 +79,7 @@ namespace Arrowgene.Ddon.Shared
         public List<Shop> ShopAsset { get; private set; }
         public List<WarpPoint> WarpPoints { get; private set; }
         public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
+        public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
 
         public void Initialize()
         {
@@ -92,6 +96,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => ShopAsset = value, ShopKey, new JsonReaderWriter<List<Shop>>());
             RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
             RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
+            RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
         }
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)

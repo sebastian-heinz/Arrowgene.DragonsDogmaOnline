@@ -1,6 +1,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -9,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.C2S_SKILL_LEARN_NORMAL_SKILL_REQ;
 
         public JobId Job { get; set; }
-        public uint SkillId { get; set; }
+        public UInt32 SkillId { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SSkillLearnNormalSkillReq>
         {
@@ -27,6 +28,5 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 return obj;
             }
         }
-
     }
 }
