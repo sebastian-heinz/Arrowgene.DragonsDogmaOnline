@@ -365,11 +365,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 List<CDataNormalSkillParam> Matches = Character.LearnedNormalSkills.Where(skill => skill != null && skill.Job == Job && skill.SkillNo == SkillNo).ToList();
                 if (Matches.Count() == 0)
                 {
+
                     CDataNormalSkillParam NewSkill = new CDataNormalSkillParam()
                     {
                         Job = Job,
                         Index = SkillIndex, // 1, 2, 3 based offset from packet
-                        SkillNo = SkillNo,  // Related to offsets in gNormalSkillMap
+                        SkillNo = SkillNo,  // Skill ID
+                        PreSkillNo = 0
                     };
 
                     Character.LearnedNormalSkills.Add(NewSkill);
@@ -381,15 +383,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
             CharacterJobData.JobPoint -= Skill.JpCost;
             Database.UpdateCharacterJobData(Character.CommonId, CharacterJobData);
 
-            var Result = new S2CSkillLearnNormalSkillRes()
+            if (Character is Character)
             {
-                Job = Job,
-                SkillIndex = SkillIndex,
-                NewJobPoint = CharacterJobData.JobPoint,
-            };
+                var Result = new S2CSkillLearnNormalSkillRes()
+                {
+                    Job = Job,
+                    SkillIndex = SkillIndex,
+                    NewJobPoint = CharacterJobData.JobPoint,
+                };
 
-            // Send response back to client
-            Client.Send(Result);
+                Client.Send(Result);
+            }
+            else
+            {
+                var Result = new S2CSkillLearnPawnNormalSkillRes()
+                {
+                    PawnId = ((Pawn)Character).PawnId,
+                    Job = Job,
+                    SkillIndex = SkillIndex,
+                    NewJobPoint = CharacterJobData.JobPoint,
+                };
+
+                Client.Send(Result);
+            }
 
             // TODO: Send data to rest of party
             // TODO: S2C_NORMAL_SKILL_LEARN_NTC currently not defined

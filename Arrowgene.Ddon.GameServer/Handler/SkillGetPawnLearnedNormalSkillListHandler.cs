@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -20,6 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetPawnLearnedNormalSkillListReq> packet)
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
+
             client.Send(new S2CSkillGetPawnLearnedNormalSkillListRes() {
                 PawnId = pawn.PawnId,
                 NormalSkillParamList = pawn.LearnedNormalSkills
