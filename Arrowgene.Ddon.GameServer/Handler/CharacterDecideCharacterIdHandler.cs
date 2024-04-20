@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -13,9 +14,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterDecideCharacterIdHandler));
 
+        private AssetRepository _AssetRepo;
 
         public CharacterDecideCharacterIdHandler(DdonGameServer server) : base(server)
         {
+            _AssetRepo = server.AssetRepository;
         }
 
         public override PacketId Id => PacketId.C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ;
@@ -27,12 +30,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.CharacterId = client.Character.CharacterId;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
             res.Unk0 = pcap.Unk0; // Removing this makes tons of tutorials pop up
-            
+
             client.Send(res);
-            
+
             // Unlocks menu options such as inventory, warping, etc.
             S2CCharacterContentsReleaseElementNtc contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNtc>().Read(GameFull.data_Dump_20);
             client.Send(contentsReleaseElementNotice);
+
+            foreach (var ValidCourse in _AssetRepo.GPCourseInfoAsset.ValidCourses)
+            {
+                client.Send(new S2CGPCourseStartNtc()
+                {
+                    CourseID = ValidCourse.Value.Id,
+                    ExpiryTimestamp = ValidCourse.Value.EndTime
+                });
+            }
         }
     }
 }
