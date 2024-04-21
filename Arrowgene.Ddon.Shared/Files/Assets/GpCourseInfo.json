@@ -8,11 +8,11 @@
     "The 'start_time' and 'end_time' values are in unix timestamp format."
   ],
   "valid_courses": [
-	  {
+    {
       "course_id": 17,
       "start_time": 1440993600,
       "end_time": 4103413199,
-      "comment":  "Course 17 valid until the year 2100"
+      "comment": "Course 17 valid until the year 2100"
     }
   ],
   "courses": [
@@ -244,301 +244,301 @@
       "id": 1,
       "param0": 0,
       "param1": 0,
-      "comment": "Restore your resilience as many times as you want in one day!"
+      "comment": "GP_COURSE_EFFECT_INFINITE_REVIVE"
     },
     {
       "uid": 2,
       "id": 2,
       "param0": 0,
       "param1": 0,
-      "comment": "You can use the expansion frame of the storage box!"
+      "comment": "GP_COURSE_EFFECT_STRAGE_EXTEND"
     },
     {
       "uid": 3,
       "id": 3,
       "param0": 0,
       "param1": 0,
-      "comment": "You can use the storage box for your base!"
+      "comment": "GP_COURSE_EFFECT_EXTRA_STRAGE_BOX"
     },
     {
       "uid": 5,
       "id": 5,
       "param0": 100,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_FREE_MY_WARP_POINT"
     },
     {
       "uid": 6,
       "id": 6,
       "param0": 50,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_WARP_DISCOUNT"
     },
     {
       "uid": 7,
       "id": 7,
       "param0": 10,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_QUEST_ORDER_LIST_EXTEND"
     },
     {
       "uid": 9,
       "id": 9,
       "param0": 5,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_BAZAAR_EXHIBIT_EXTEND"
     },
     {
       "uid": 10,
       "id": 10,
       "param0": 86400,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_BAZAAR_RE_EXHIBIT_SHORTEN"
     },
     {
       "uid": 11,
       "id": 11,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_AREA_MASTER_SUPPLY"
     },
     {
       "uid": 12,
       "id": 12,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_WORLD_QUEST_REWARD_REALITY_UP"
     },
     {
       "uid": 13,
       "id": 13,
       "param0": 0,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_WORLD_QUEST_SPECIAL_REWARD"
     },
     {
       "uid": 14,
       "id": 14,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_RIM_BQ_REWARD_UP"
     },
     {
       "uid": 15,
       "id": 15,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_RIM_WQ_REWARD_UP"
     },
     {
       "uid": 16,
       "id": 16,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_DROP_UP"
     },
     {
       "uid": 17,
       "id": 17,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_GATHERING_ITEM_NUM_UP"
     },
     {
       "uid": 18,
       "id": 18,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_EXP_UP"
     },
     {
       "uid": 19,
       "id": 19,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_BQ_REWARD_EXP_UP"
     },
     {
       "uid": 20,
       "id": 20,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_WQ_REWARD_EXP_UP"
     },
     {
       "uid": 22,
       "id": 22,
       "param0": 150,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_AREA_POINT_BQ_REWARD_UP"
     },
     {
       "uid": 23,
       "id": 23,
       "param0": 150,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_AREA_POINT_WQ_REWARD_UP"
     },
     {
       "uid": 25,
       "id": 25,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
     },
     {
       "uid": 26,
       "id": 26,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_BQ_REWARD_EXP_UP"
     },
     {
       "uid": 27,
       "id": 27,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_WQ_REWARD_EXP_UP"
     },
     {
       "uid": 40,
       "id": 28,
       "param0": 150,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_CRAFT_EXP_UP"
     },
     {
       "uid": 41,
       "id": 4,
       "param0": 0,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ALL_RELEASE_WARP_POINT"
     },
     {
       "uid": 44,
       "id": 38,
       "param0": 0,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_REVIVE_BY_RIM"
     },
     {
       "uid": 49,
       "id": 40,
       "param0": 1500,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_REGULARLY_SEND_MAIL"
     },
     {
       "uid": 50,
       "id": 34,
       "param0": 50,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_RESCUE_MOTION_SHORTEN"
     },
     {
       "uid": 51,
       "id": 37,
       "param0": 150,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_BLOOD_ORB_UP"
     },
     {
       "uid": 52,
       "id": 35,
       "param0": 100,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_STAY_DISCOUNT"
     },
     {
       "uid": 59,
       "id": 41,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_EXM_REWARD_UP"
     },
     {
       "uid": 69,
       "id": 42,
       "param0": 0,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_BAGGAGE_RENTAL01"
     },
     {
       "uid": 70,
       "id": 43,
       "param0": 0,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_DISABLE_PARTY_ADJUST_ENEMY_EXP"
     },
     {
       "uid": 71,
       "id": 44,
       "param0": 50,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_INCOMING_DAMAGE_CUT_OFF"
     },
     {
       "uid": 72,
       "id": 45,
       "param0": 125,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENDURANCE_UP"
     },
     {
       "uid": 73,
       "id": 46,
       "param0": 50,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_DEBUFF_DAMAGE_CUT_OFF"
     },
     {
       "uid": 74,
       "id": 47,
       "param0": 66,
       "param1": 200,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENABLE_LEVER_GACHA_ASSIST"
     },
     {
       "uid": 75,
       "id": 48,
       "param0": 350,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_AUTO_RESCUE"
     },
     {
       "uid": 76,
       "id": 18,
       "param0": 500,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_EXP_UP"
     },
     {
       "uid": 77,
       "id": 25,
       "param0": 500,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
     },
     {
       "uid": 78,
       "id": 43,
       "param0": 0,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_DISABLE_PARTY_ADJUST_ENEMY_EXP"
     },
     {
       "uid": 119,
       "id": 49,
       "param0": 200,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
     },
     {
       "uid": 128,
       "id": 50,
       "param0": 0,
       "param1": 0,
-      "comment": "Materials stored in storage chests can be used for crafting!"
+      "comment": "GP_COURSE_EFFECT_CRAFT_BAGGAGE_EXTEND"
     },
     {
       "uid": 149,
@@ -566,21 +566,21 @@
       "id": 18,
       "param0": 250,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_EXP_UP"
     },
     {
       "uid": 190,
       "id": 19,
       "param0": 250,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
     },
     {
       "uid": 191,
       "id": 20,
       "param0": 250,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_WQ_REWARD_EXP_UP"
     },
     {
       "uid": 192,
@@ -594,21 +594,21 @@
       "id": 25,
       "param0": 250,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
     },
     {
       "uid": 194,
       "id": 26,
       "param0": 250,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_BQ_REWARD_EXP_UP"
     },
     {
       "uid": 195,
       "id": 27,
       "param0": 250,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_WQ_REWARD_EXP_UP"
     },
     {
       "uid": 196,
@@ -622,21 +622,21 @@
       "id": 18,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_EXP_UP"
     },
     {
       "uid": 198,
       "id": 19,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_BQ_REWARD_EXP_UP"
     },
     {
       "uid": 199,
       "id": 20,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_WQ_REWARD_EXP_UP"
     },
     {
       "uid": 200,
@@ -650,21 +650,21 @@
       "id": 25,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
     },
     {
       "uid": 202,
       "id": 26,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_BQ_REWARD_EXP_UP"
     },
     {
       "uid": 203,
       "id": 27,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_PAWN_BQ_REWARD_EXP_UP"
     },
     {
       "uid": 204,
@@ -748,14 +748,14 @@
       "id": 49,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
     },
     {
       "uid": 229,
       "id": 49,
       "param0": 500,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
     },
     {
       "uid": 246,
@@ -769,14 +769,14 @@
       "id": 49,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
     },
     {
       "uid": 248,
       "id": 49,
       "param0": 250,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
     },
     {
       "uid": 253,
@@ -811,7 +811,7 @@
       "id": 49,
       "param0": 500,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
     },
     {
       "uid": 262,
@@ -825,28 +825,28 @@
       "id": 16,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_ENEMY_DROP_UP"
     },
     {
       "uid": 265,
       "id": 17,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_GATHERING_ITEM_NUM_UP"
     },
     {
       "uid": 266,
       "id": 37,
       "param0": 250,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_BLOOD_ORB_UP"
     },
     {
       "uid": 267,
       "id": 37,
       "param0": 300,
       "param1": 0,
-      "comment": ""
+      "comment": "GP_COURSE_EFFECT_BLOOD_ORB_UP"
     }
   ]
 }

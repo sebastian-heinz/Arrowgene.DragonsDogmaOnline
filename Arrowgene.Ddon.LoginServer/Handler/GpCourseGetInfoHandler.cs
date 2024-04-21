@@ -15,13 +15,20 @@ namespace Arrowgene.Ddon.LoginServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GpCourseGetInfoHandler));
 
-        private L2CGpCourseGetInfoRes _Response;
+        private AssetRepository _AssetRepo;
 
         public GpCourseGetInfoHandler(DdonLoginServer server) : base(server)
         {
-            _Response = new L2CGpCourseGetInfoRes();
+            _AssetRepo = server.AssetRepository;
+        }
 
-            foreach (var Course in server.AssetRepository.GPCourseInfoAsset.Courses)
+        public override PacketId Id => PacketId.C2L_GP_COURSE_GET_INFO_REQ;
+
+        public override void Handle(LoginClient client, IPacket packet)
+        {
+            L2CGpCourseGetInfoRes Response = new L2CGpCourseGetInfoRes();
+
+            foreach (var Course in _AssetRepo.GPCourseInfoAsset.Courses)
             {
                 CDataGPCourseInfo cDataGPCourseInfo = new CDataGPCourseInfo()
                 {
@@ -34,10 +41,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     EffectUIDs = Course.Value.Effects
                 };
 
-                _Response.CourseInfo.Add(cDataGPCourseInfo);
+                Response.CourseInfo.Add(cDataGPCourseInfo);
             }
 
-            foreach (var Effect in server.AssetRepository.GPCourseInfoAsset.Effects)
+            foreach (var Effect in _AssetRepo.GPCourseInfoAsset.Effects)
             {
                 CDataGPCourseEffectParam cDataGPCourseEffectParam = new CDataGPCourseEffectParam()
                 {
@@ -47,16 +54,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Param1 = Effect.Value.Param1
                 };
 
-                _Response.Effects.Add(cDataGPCourseEffectParam);
+                Response.Effects.Add(cDataGPCourseEffectParam);
             }
-        }
 
-        public override PacketId Id => PacketId.C2L_GP_COURSE_GET_INFO_REQ;
-
-        public override void Handle(LoginClient client, IPacket packet)
-        {
             // client.Send(LoginDump.Dump_22);
-            client.Send(_Response);
+            client.Send(Response);
         }
     }
 }
