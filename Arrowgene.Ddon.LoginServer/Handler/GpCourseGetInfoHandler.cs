@@ -11,20 +11,17 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class GpCourseGetInfoHandler : StructurePacketHandler<LoginClient, C2LGpCourseGetInfoReq>
+    public class GpCourseGetInfoHandler : PacketHandler<LoginClient>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GpCourseGetInfoHandler));
-
-        private AssetRepository _AssetRepo;
 
         private L2CGpCourseGetInfoRes _Response;
 
         public GpCourseGetInfoHandler(DdonLoginServer server) : base(server)
         {
-            _AssetRepo = server.AssetRepository;
             _Response = new L2CGpCourseGetInfoRes();
 
-            foreach (var Course in _AssetRepo.GPCourseInfoAsset.Courses)
+            foreach (var Course in server.AssetRepository.GPCourseInfoAsset.Courses)
             {
                 CDataGPCourseInfo cDataGPCourseInfo = new CDataGPCourseInfo()
                 {
@@ -40,7 +37,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 _Response.CourseInfo.Add(cDataGPCourseInfo);
             }
 
-            foreach (var Effect in _AssetRepo.GPCourseInfoAsset.Effects)
+            foreach (var Effect in server.AssetRepository.GPCourseInfoAsset.Effects)
             {
                 CDataGPCourseEffectParam cDataGPCourseEffectParam = new CDataGPCourseEffectParam()
                 {
@@ -54,7 +51,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
         }
 
-        public override void Handle(LoginClient client, StructurePacket<C2LGpCourseGetInfoReq> packet)
+        public override PacketId Id => PacketId.C2L_GP_COURSE_GET_INFO_REQ;
+
+        public override void Handle(LoginClient client, IPacket packet)
         {
             // client.Send(LoginDump.Dump_22);
             client.Send(_Response);

@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         Id = c.CharacterId,
                         CourseId = ValidCourse.Value.Id,
                         NameA = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
-                        NameB = "https://members.dd-on.jp/sp_ingame/img/icon/bouken.jpg", // Link to a JPEG
+                        NameB = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
                         StartTime = ValidCourse.Value.StartTime,
                         EndTime = ValidCourse.Value.EndTime,
                     };

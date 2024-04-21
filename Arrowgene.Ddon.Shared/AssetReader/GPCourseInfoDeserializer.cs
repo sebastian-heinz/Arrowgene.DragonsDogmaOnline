@@ -44,6 +44,9 @@ namespace Arrowgene.Ddon.Shared.Csv
                 obj.PrioritySameTime = Course.GetProperty("priority_same_time").GetUInt32();
                 obj.AnnounceType = Course.GetProperty("announce_type").GetUInt32();
                 obj.Comment = Course.GetProperty("comment").GetString();
+                obj.Url = Course.GetProperty("url").GetString();
+                obj.IconPath = Course.GetProperty("icon_path").GetString();
+                obj.Description = Course.GetProperty("description").GetString();
 
                 var EffectUIDs = Course.GetProperty("effects").EnumerateArray().ToList();
                 foreach (var EffectUID in EffectUIDs)
