@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Linq;
+using System.Text;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Cli.Command
             string yamlPath = parameter.Arguments[0];
             string camelliaKey = parameter.Arguments[1];
             byte[] camelliaKeyBytes = Encoding.UTF8.GetBytes(camelliaKey);
-
+            bool addUtf8EncodedByteDump = parameter.Switches.Contains("--utf8-dump");
 
             string yamlPcap = File.ReadAllText(yamlPath);
             List<PcapPacket> pcapPackets = ReadYamlPcap(yamlPcap);
@@ -88,6 +88,12 @@ namespace Arrowgene.Ddon.Cli.Command
                         annotated.Append(Environment.NewLine);
                         annotated.Append(readPacket.PrintData());
                         annotated.Append(string.Join(", ", readPacket.Data.Select(dataByte => String.Format("0x{0:X}", dataByte))));
+                        if (addUtf8EncodedByteDump)
+                        {
+                            annotated.Append(Environment.NewLine);
+                            annotated.Append(string.Concat(Encoding.UTF8.GetString(readPacket.Data, 0, readPacket.Data.Length - 1).Select(c =>
+                                char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsSeparator(c) || char.IsSymbol(c) ? c : '·')));
+                        }
                         annotated.Append(Environment.NewLine);
                         annotated.Append(Environment.NewLine);
                     }
