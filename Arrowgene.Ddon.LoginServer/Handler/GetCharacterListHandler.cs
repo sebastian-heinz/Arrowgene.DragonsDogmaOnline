@@ -3,7 +3,9 @@ using System.Linq;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
@@ -14,10 +16,13 @@ namespace Arrowgene.Ddon.LoginServer.Handler
     public class GetCharacterListHandler : PacketHandler<LoginClient>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GetCharacterListHandler));
+        private AssetRepository _AssetRepo;
+
 
 
         public GetCharacterListHandler(DdonLoginServer server) : base(server)
         {
+            _AssetRepo = server.AssetRepository;
         }
 
         public override PacketId Id => PacketId.C2L_GET_CHARACTER_LIST_REQ;
@@ -39,6 +44,27 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = c.LastName;
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.Job;
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.ActiveCharacterJobData.Lv;
+
+                List<CDataGPCourseValid> ValidCourses = new List<CDataGPCourseValid>();
+
+                foreach (var ValidCourse in _AssetRepo.GPCourseInfoAsset.ValidCourses)
+                {
+                    CDataGPCourseValid cDataGPCourseValid = new CDataGPCourseValid()
+                    {
+                        Id = c.CharacterId,
+                        CourseId = ValidCourse.Value.Id,
+                        NameA = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
+                        NameB = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
+                        StartTime = ValidCourse.Value.StartTime,
+                        EndTime = ValidCourse.Value.EndTime,
+                    };
+
+                    ValidCourses.Add(cDataGPCourseValid);
+                }
+
+                cResponse.GpCourseValidList = ValidCourses;
+                cResponse.NextFlowType = 1;
+                cResponse.IsClanMemberNotice = 1; // REMOVE
                 // maybe?
                 //cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.CharacterInfo.MatchingProfile.CurrentJob;
                 //cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.CharacterInfo.MatchingProfile.CurrentJobLevel;
@@ -48,11 +74,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.MatchingProfile = c.MatchingProfile;
                 cResponse.EquipItemInfo = c.Equipment.getEquipmentAsCDataEquipItemInfo(c.Job, EquipType.Performance)
                     .Union(c.Equipment.getEquipmentAsCDataEquipItemInfo(c.Job, EquipType.Visual))
-                    .ToList();                    
+                    .ToList();
 
                 characterListResponse.Add(cResponse);
             }
-            
+
             EntitySerializer.Get<CDataCharacterListInfo>().WriteList(buffer, characterListResponse);
             Packet response = new Packet(PacketId.L2C_GET_CHARACTER_LIST_RES, buffer.GetAllBytes());
             client.Send(response);

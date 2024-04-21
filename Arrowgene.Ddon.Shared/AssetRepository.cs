@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.Shared
         public const string WarpPointsKey = "WarpPoints.csv";
         public const string CraftingRecipesKey = "CraftingRecipes.json";
         public const string LearnedNormalSkillsKey = "LearnedNormalSkills.json";
+        public const string GPCourseInfoKey = "GpCourseInfo.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -64,6 +65,7 @@ namespace Arrowgene.Ddon.Shared
             WarpPoints = new List<WarpPoint>();
             CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
             LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
+            GPCourseInfoAsset = new GPCourseInfoAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -80,6 +82,7 @@ namespace Arrowgene.Ddon.Shared
         public List<WarpPoint> WarpPoints { get; private set; }
         public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
         public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
+        public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
 
         public void Initialize()
         {
@@ -97,6 +100,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
             RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
+            RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
         }
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)

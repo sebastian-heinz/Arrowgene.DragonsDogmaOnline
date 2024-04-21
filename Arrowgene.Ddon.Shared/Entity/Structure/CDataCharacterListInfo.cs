@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
@@ -18,15 +18,15 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             IsClanMemberNotice = 0;
         }
 
-        public CDataCharacterListElement CharacterListElement;
-        public CDataEditInfo EditInfo;
-        public CDataMatchingProfile MatchingProfile;
-        public List<CDataEquipItemInfo> EquipItemInfo;
-        public List<CDataGPCourseValid> GpCourseValidList;
-        public byte NextFlowType;
-        public string ClanName;
-        public string ClanNameShort;
-        public byte IsClanMemberNotice;
+        public CDataCharacterListElement CharacterListElement { get; set; }
+        public CDataEditInfo EditInfo { get; set; }
+        public CDataMatchingProfile MatchingProfile { get; set; }
+        public List<CDataEquipItemInfo> EquipItemInfo { get; set; }
+        public List<CDataGPCourseValid> GpCourseValidList { get; set; }
+        public byte NextFlowType { get; set; }
+        public string ClanName { get; set; }
+        public string ClanNameShort { get; set; }
+        public byte IsClanMemberNotice { get; set; }
     }
 
     public class CDataCharacterListInfoSerializer : EntitySerializer<CDataCharacterListInfo>

@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.Shared.Network
 
             return PacketId.UNKNOWN;
         }
-        
+
         public static PacketId GetLoginPacketId(byte groupId, ushort handlerId, byte handlerSubId)
         {
             int hashCode = GetHashCode(groupId, handlerId, handlerSubId);
@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.Shared.Network
 
             return new PacketId(groupId, handlerId, handlerSubId, "Unknown", ServerType.Game, PacketSource.Unknown);
         }
-        
+
         public readonly byte GroupId;
         public readonly ushort HandlerId;
         public readonly byte HandlerSubId;
@@ -130,13 +130,13 @@ namespace Arrowgene.Ddon.Shared.Network
         {
             return GetHashCode(GroupId, HandlerId, HandlerSubId);
         }
-        
-        public static bool operator ==(PacketId a, PacketId b) 
+
+        public static bool operator ==(PacketId a, PacketId b)
         {
             return a.Equals(b);
         }
 
-        public static bool operator !=(PacketId a, PacketId b) 
+        public static bool operator !=(PacketId a, PacketId b)
         {
             return !a.Equals(b);
         }
@@ -1262,7 +1262,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_GP_GP_SHOP_CAN_BUY_REQ = new PacketId(28, 23, 1, "C2S_GP_GP_SHOP_CAN_BUY_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_GP_GP_SHOP_CAN_BUY_RES = new PacketId(28, 23, 2, "S2C_GP_GP_SHOP_CAN_BUY_RES", ServerType.Game, PacketSource.Server); // 課金商品購入可能状態の取得に
         public static readonly PacketId S2C_GP_28_24_16_NTC = new PacketId(28, 24, 16, "S2C_GP_28_24_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_GP_28_25_16_NTC = new PacketId(28, 25, 16, "S2C_GP_28_25_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_GP_COURSE_START_NTC = new PacketId(28, 25, 16, "S2C_GP_COURSE_START_NTC", ServerType.Game, PacketSource.Server); // S2C_GP_28_25_16_NTC
         public static readonly PacketId S2C_GP_28_26_16_NTC = new PacketId(28, 26, 16, "S2C_GP_28_26_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_GP_28_27_16_NTC = new PacketId(28, 27, 16, "S2C_GP_28_27_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_GP_28_28_16_NTC = new PacketId(28, 28, 16, "S2C_GP_28_28_16_NTC", ServerType.Game, PacketSource.Server);
@@ -3168,7 +3168,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_GP_GP_SHOP_CAN_BUY_REQ);
             AddPacketIdEntry(packetIds, S2C_GP_GP_SHOP_CAN_BUY_RES);
             AddPacketIdEntry(packetIds, S2C_GP_28_24_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_GP_28_25_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_GP_COURSE_START_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_28_26_16_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_28_27_16_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_28_28_16_NTC);
@@ -4042,7 +4042,7 @@ namespace Arrowgene.Ddon.Shared.Network
         }
 
         #endregion
-        
+
         // initialize at the very end
         private static readonly Dictionary<int, PacketId> LoginPacketIds = InitializeLoginPacketIds();
         private static readonly Dictionary<int, PacketId> GamePacketIds = InitializeGamePacketIds();

@@ -86,7 +86,7 @@ namespace Arrowgene.Ddon.GameServer
         public List<CDataStageInfo> StageList { get; }
 
         public override GameClientLookup ClientLookup { get; }
-        
+
         // TODO: Maybe place somewhere else
         public readonly Dictionary<uint, DateTime> LastRevivalPowerRechargeTime = new Dictionary<uint, DateTime>();
 
@@ -164,7 +164,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new BazaarGetItemInfoHandler(this));
             AddHandler(new BazaarGetItemListHandler(this));
             AddHandler(new BazaarProceedsHandler(this));
-            
+
             AddHandler(new BinarySaveSetCharacterBinSavedataHandler(this));
             AddHandler(new BlackListGetBlackListHandler(this));
 
@@ -216,7 +216,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CraftGetCraftSettingHandler(this));
             AddHandler(new CraftRecipeGetCraftRecipeHandler(this));
             AddHandler(new CraftStartCraftHandler(this));
-            
+
             AddHandler(new DailyMissionListGetHandler(this));
 
             AddHandler(new EquipChangeCharacterEquipHandler(this));
@@ -239,8 +239,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new Gp_28_2_1_Handler(this));
             AddHandler(new GpGetUpdateAppCourseBonusFlagHandler(this));
             AddHandler(new GpGetValidChatComGroupHandler(this));
-			AddHandler(new GpGpEditGetVoiceListHandler(this));
-			AddHandler(new GpGetGpHandler(this));
+            AddHandler(new GpGpEditGetVoiceListHandler(this));
+            AddHandler(new GpGetGpHandler(this));
+            AddHandler(new GpGpCourseGetAvailableListHandler(this));
 
             AddHandler(new GroupChatGroupChatGetMemberListHandler(this));
 
@@ -333,10 +334,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnJoinPartyMypawnHandler(this));
             AddHandler(new PawnPawnLostHandler(this));
             AddHandler(new PawnTrainingGetPreparetionInfoToAdviceHandler(this));
-            
+
             AddHandler(new ProfileGetCharacterProfileHandler(this));
             AddHandler(new ProfileGetMyCharacterProfileHandler(this));
-            
+
             AddHandler(new QuestEndDistributionQuestCancelHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestListHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
@@ -363,7 +364,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestSendLeaderQuestOrderConditionInfoHandler(this));
             AddHandler(new QuestSendLeaderWaitOrderQuestListHandler(this));
             AddHandler(new QuestSetPriorityQuestHandler(this));
-		
+
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));
 			AddHandler(new EntryBoardEntryBoardItemForceStart(this));
