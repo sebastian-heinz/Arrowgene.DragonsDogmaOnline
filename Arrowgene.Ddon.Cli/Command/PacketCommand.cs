@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Arrowgene.Ddon.Cli.Command.Packet;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
@@ -28,13 +29,32 @@ namespace Arrowgene.Ddon.Cli.Command
             byte[] camelliaKeyBytes = Encoding.UTF8.GetBytes(camelliaKey);
             bool addUtf8EncodedByteDump = parameter.Switches.Contains("--utf8-dump");
 
+            List<PcapPacket> decryptedPcapPackets = DecryptPackets(yamlPath, camelliaKeyBytes);
+            if (decryptedPcapPackets == null)
+            {
+                return CommandResultType.Exit;
+            }
+
+            string annotatedDump = GetAnnotatedPacketDump(decryptedPcapPackets, addUtf8EncodedByteDump);
+            string outputPath = yamlPath + ".annotated.txt";
+            File.WriteAllText(outputPath, annotatedDump);
+
+            return CommandResultType.Exit;
+        }
+
+        public List<PcapPacket> DecryptPackets(string yamlPath, byte[] camelliaKeyBytes)
+        {
             string yamlPcap = File.ReadAllText(yamlPath);
             List<PcapPacket> pcapPackets = ReadYamlPcap(yamlPcap);
+            return DecryptPackets(pcapPackets, camelliaKeyBytes);
+        }
 
-            if (pcapPackets.Count <= 0)
+        public List<PcapPacket> DecryptPackets(List<PcapPacket> pcapPackets, byte[] camelliaKeyBytes)
+        {
+            if (pcapPackets == null || pcapPackets.Count <= 0)
             {
-                Logger.Error("No packets found to annotate");
-                return CommandResultType.Exit;
+                Logger.Error("No packets found to annotate.");
+                return null;
             }
 
             ServerType serverType = pcapPackets[0].ServerType;
@@ -49,8 +69,8 @@ namespace Arrowgene.Ddon.Cli.Command
             }
             else
             {
-                Logger.Error("could not determinate server type");
-                return CommandResultType.Exit;
+                Logger.Error("Could not determine server type.");
+                return null;
             }
 
             PacketFactory serverFactory = new PacketFactory(new ServerSetting(), packetIdResolver);
@@ -58,69 +78,59 @@ namespace Arrowgene.Ddon.Cli.Command
             serverFactory.SetCamelliaKey(camelliaKeyBytes);
             clientFactory.SetCamelliaKey(camelliaKeyBytes);
 
-            StringBuilder annotated = new StringBuilder();
             foreach (PcapPacket pcapPacket in pcapPackets)
             {
-                List<IPacket> readPackets = null;
                 try
                 {
                     if (pcapPacket.Source == PacketSource.Client)
                     {
-                        readPackets = clientFactory.Read(pcapPacket.Data);
+                        pcapPacket.ResolvedPackets = clientFactory.Read(pcapPacket.Data);
                     }
                     else if (pcapPacket.Source == PacketSource.Server)
                     {
-                        readPackets = serverFactory.Read(pcapPacket.Data);
+                        pcapPacket.ResolvedPackets = serverFactory.Read(pcapPacket.Data);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Could not parse more packets, closing prematurely");
+                    Logger.Exception(new Exception("Could not parse more packets, closing prematurely", ex));
                     break;
                 }
+            }
 
-                if (readPackets != null)
+            return pcapPackets;
+        }
+
+        public string GetAnnotatedPacketDump(List<PcapPacket> decryptedPcapPackets, bool addUtf8EncodedByteDump)
+        {
+            StringBuilder annotated = new StringBuilder();
+            {
+                foreach (PcapPacket pcapPacket in decryptedPcapPackets)
                 {
-                    foreach (IPacket readPacket in readPackets)
+                    foreach (IPacket resolvedPacket in pcapPacket.ResolvedPackets)
                     {
-                        annotated.Append(readPacket.PrintHeader());
+                        annotated.Append(resolvedPacket.PrintHeader());
                         annotated.Append($" Pcap(No:{pcapPacket.Packet} Ts:{pcapPacket.TimeStamp})");
                         annotated.Append(Environment.NewLine);
-                        annotated.Append(readPacket.PrintData());
-                        annotated.Append(string.Join(", ", readPacket.Data.Select(dataByte => String.Format("0x{0:X}", dataByte))));
+                        annotated.Append(resolvedPacket.PrintData());
+                        annotated.Append(string.Join(", ", resolvedPacket.Data.Select(dataByte => String.Format("0x{0:X}", dataByte))));
                         if (addUtf8EncodedByteDump)
                         {
                             annotated.Append(Environment.NewLine);
-                            annotated.Append(string.Concat(Encoding.UTF8.GetString(readPacket.Data, 0, readPacket.Data.Length - 1).Select(c =>
+                            annotated.Append(string.Concat(Encoding.UTF8.GetString(resolvedPacket.Data, 0, resolvedPacket.Data.Length).Select(c =>
                                 char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsSeparator(c) || char.IsSymbol(c) ? c : '·')));
                         }
+
                         annotated.Append(Environment.NewLine);
                         annotated.Append(Environment.NewLine);
                     }
                 }
             }
-
-
-            string outputPath = yamlPath + ".annotated.txt";
-            File.WriteAllText(outputPath, annotated.ToString());
-
-            return CommandResultType.Exit;
+            return annotated.ToString();
         }
 
-        private static string ToReadableTimestamp(string fractionalTimestamp)
+        public List<PcapPacket> ReadYamlPcap(string yaml)
         {
-            // epoch -> UTC -> Mountain Time
-            double epochSeconds = double.Parse(fractionalTimestamp.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
-            DateTimeOffset readableTimestamp = DateTimeOffset.UnixEpoch.AddSeconds(epochSeconds);
-            // If we ever get other pcap files, the time zone should instead be provided via the YAML files 
-            readableTimestamp = TimeZoneInfo.ConvertTime(readableTimestamp, TimeZoneInfo.FindSystemTimeZoneById("America/Dawson"));
-            return readableTimestamp.ToString("o");
-        }
-
-
-        private List<PcapPacket> ReadYamlPcap(string yaml)
-        {
-            List<PcapPacket> pcapPackets = new List<PcapPacket>();
             IDeserializer yamlDeserializer = new DeserializerBuilder()
                 .WithTagMapping("tag:yaml.org,2002:binary", typeof(string))
                 .IgnoreUnmatchedProperties()
@@ -129,17 +139,17 @@ namespace Arrowgene.Ddon.Cli.Command
             if (yamlFile.peers.Count != 2)
             {
                 Logger.Error("Expected two peers");
-                return pcapPackets;
+                return null;
             }
 
-            YamlPeer serverPeer = null;
-            YamlPeer clientPeer = null;
-            if (yamlFile.peers[0].port == 52100 || yamlFile.peers[0].port == 52000)
+            YamlPeer serverPeer;
+            YamlPeer clientPeer;
+            if (yamlFile.peers[0].port is 52100 or 52000)
             {
                 serverPeer = yamlFile.peers[0];
                 clientPeer = yamlFile.peers[1];
             }
-            else if (yamlFile.peers[1].port == 52100 || yamlFile.peers[1].port == 52000)
+            else if (yamlFile.peers[1].port is 52100 or 52000)
             {
                 serverPeer = yamlFile.peers[1];
                 clientPeer = yamlFile.peers[0];
@@ -147,7 +157,7 @@ namespace Arrowgene.Ddon.Cli.Command
             else
             {
                 Logger.Error("Could not identify peer roles");
-                return pcapPackets;
+                return null;
             }
 
             ServerType serverType;
@@ -162,9 +172,10 @@ namespace Arrowgene.Ddon.Cli.Command
             else
             {
                 Logger.Error("Could not identify server type");
-                return pcapPackets;
+                return null;
             }
 
+            List<PcapPacket> pcapPackets = new List<PcapPacket>(yamlFile.packets.Count);
             foreach (YamlPacket yamlPacket in yamlFile.packets)
             {
                 PcapPacket pcapPacket = new PcapPacket();
@@ -190,44 +201,21 @@ namespace Arrowgene.Ddon.Cli.Command
                 pcapPackets.Add(pcapPacket);
             }
 
-
             return pcapPackets;
+        }
+
+        private static string ToReadableTimestamp(string fractionalTimestamp)
+        {
+            // epoch -> UTC -> Mountain Time
+            double epochSeconds = double.Parse(fractionalTimestamp.Replace(".", CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator));
+            DateTimeOffset readableTimestamp = DateTimeOffset.UnixEpoch.AddSeconds(epochSeconds);
+            // If we ever get other pcap files, the time zone should instead be provided via the YAML files 
+            readableTimestamp = TimeZoneInfo.ConvertTime(readableTimestamp, TimeZoneInfo.FindSystemTimeZoneById("America/Dawson"));
+            return readableTimestamp.ToString("o");
         }
 
         public void Shutdown()
         {
-        }
-
-        private class YamlPeer
-        {
-            public uint peer;
-            public string host;
-            public ushort port;
-        }
-
-        private class YamlPacket
-        {
-            public uint packet;
-            public uint peer;
-            public uint index;
-            public string timestamp;
-            public string data;
-        }
-
-        private class YamlFile
-        {
-            public List<YamlPeer> peers;
-            public List<YamlPacket> packets;
-        }
-
-        private class PcapPacket
-        {
-            public ServerType ServerType { get; set; }
-            public PacketSource Source { get; set; }
-            public string TimeStamp { get; set; }
-            public uint Index { get; set; }
-            public uint Packet { get; set; }
-            public byte[] Data { get; set; }
         }
     }
 }
