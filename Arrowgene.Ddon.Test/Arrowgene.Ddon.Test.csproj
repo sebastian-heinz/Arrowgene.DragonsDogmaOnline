@@ -26,6 +26,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.Cli\Arrowgene.Ddon.Cli.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
     </ItemGroup>
     <ItemGroup>
