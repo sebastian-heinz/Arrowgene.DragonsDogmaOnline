@@ -4,6 +4,23 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataOrbGainExtendParam
     {
+        public CDataOrbGainExtendParam()
+        {
+            HpMax = 0;
+            StaminaMax = 0;
+            Attack = 0;
+            Defence = 0;
+            MagicAttack = 0;
+            MagicDefence = 0;
+            AbilityCost = 0;
+            JewelrySlot = 0;
+            UseItemSlot = 0;
+            MaterialItemSlot = 0;
+            EquipItemSlot = 0;
+            MainPawnSlot = 0;
+            SupportPawnSlot = 0;
+        }
+
         public ushort HpMax { get; set; }
         public ushort StaminaMax { get; set; }
         public ushort Attack { get; set; }

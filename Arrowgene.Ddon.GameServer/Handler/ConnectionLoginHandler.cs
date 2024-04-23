@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -14,8 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionLoginHandler));
 
+        private OrbUnlockManager _OrbUnlockManager;
+
         public ConnectionLoginHandler(DdonGameServer server) : base(server)
         {
+            _OrbUnlockManager = server.OrbUnlockManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SConnectionLoginReq> packet)
@@ -66,13 +70,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
             }
-            
+
             // Order Important,
             // account need to be only assigned after
             // verification that no connection exists, and before
             // registering the connection
             client.Account = account;
-            
+
             Connection connection = new Connection();
             connection.ServerId = Server.Id;
             connection.AccountId = account.Id;
@@ -95,6 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            character.ExtendedParams = _OrbUnlockManager.GetExtendedParameters(character);
 
             client.Character = character;
             client.Character.Server = Server.AssetRepository.ServerList[0];

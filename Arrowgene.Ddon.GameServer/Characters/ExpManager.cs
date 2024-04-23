@@ -111,7 +111,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             /* Lv 77 */  3335000,
             /* Lv 78 */  3685000,
             /* Lv 79 */  4035000,
-            /* Lv 80 */  4200000, 
+            /* Lv 80 */  4200000,
             /* Lv 81 */  4200000,
             /* Lv 82 */  4200000,
             /* Lv 83 */  4200000,
@@ -152,7 +152,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             /* Lv 118 */ 5000000,
             /* Lv 119 */ 5000000,
         };
-        
+
         // E.g. LEVEL_UP_JOB_POINTS_EARNED[3] = 300, meaning you earn 300 JP when you reach Lv 3
         public static readonly uint[] LEVEL_UP_JOB_POINTS_EARNED = new uint[] {0,200,200,300,300,400,400,500,600,700,700,800,1000,1200,1400,1600,1800,2000,2300,2600,2900,3300,3500,3800,3800,4000,4000,4500,4500,5000,5000,5500,5800,5800,6500,6500,6800,6800,8000,8000,9000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
@@ -340,7 +340,42 @@ namespace Arrowgene.Ddon.GameServer.Characters
         protected readonly IDatabase _database;
         protected readonly GameClientLookup _gameClientLookup;
 
-        
+        private bool CalculateAndAssignStats(CharacterCommon Character)
+        {
+            if (Character == null || Character.ActiveCharacterJobData == null)
+            {
+                return false;
+            }
+
+            var ActiveCharacterJobData = Character.ActiveCharacterJobData;
+
+            BaseStats baseStats = BASE_STATS_TABLE[ActiveCharacterJobData.Job];
+            ActiveCharacterJobData.Atk = (ushort)(baseStats.Atk + (ActiveCharacterJobData.Lv - 1) * baseStats.AtkRate);
+            ActiveCharacterJobData.Def = (ushort)(baseStats.Def + (ActiveCharacterJobData.Lv - 1) * baseStats.DefRate);
+            ActiveCharacterJobData.MAtk = (ushort)(baseStats.MAtk + (ActiveCharacterJobData.Lv - 1) * baseStats.MAtkRate);
+            ActiveCharacterJobData.MDef = (ushort)(baseStats.MDef + (ActiveCharacterJobData.Lv - 1) * baseStats.MDefRate);
+
+            return true;
+        }
+
+        public static CDataCharacterJobData CalculateBaseStats(CharacterCommon Character)
+        {
+            CDataCharacterJobData JobData = new CDataCharacterJobData();
+            if (Character == null || Character.ActiveCharacterJobData == null)
+            {
+                return JobData;
+            }
+
+            var ActiveCharacterJobData = Character.ActiveCharacterJobData;
+            BaseStats baseStats = BASE_STATS_TABLE[ActiveCharacterJobData.Job];
+            JobData.Atk = (ushort)(baseStats.Atk + (ActiveCharacterJobData.Lv - 1) * baseStats.AtkRate);
+            JobData.Def = (ushort)(baseStats.Def + (ActiveCharacterJobData.Lv - 1) * baseStats.DefRate);
+            JobData.MAtk = (ushort)(baseStats.MAtk + (ActiveCharacterJobData.Lv - 1) * baseStats.MAtkRate);
+            JobData.MDef = (ushort)(baseStats.MDef + (ActiveCharacterJobData.Lv - 1) * baseStats.MDefRate);
+
+            return JobData;
+        }
+
         public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, uint extraBonusExp)
         {
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
@@ -391,11 +426,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     activeCharacterJobData.Lv = targetLevel;
                     activeCharacterJobData.JobPoint += addJobPoint;
 
-                    BaseStats baseStats = BASE_STATS_TABLE[activeCharacterJobData.Job];
-                    activeCharacterJobData.Atk = (ushort)(baseStats.Atk + (activeCharacterJobData.Lv - 1) * baseStats.AtkRate);
-                    activeCharacterJobData.Def = (ushort)(baseStats.Def + (activeCharacterJobData.Lv - 1) * baseStats.DefRate);
-                    activeCharacterJobData.MAtk = (ushort)(baseStats.MAtk + (activeCharacterJobData.Lv - 1) * baseStats.MAtkRate);
-                    activeCharacterJobData.MDef = (ushort)(baseStats.MDef + (activeCharacterJobData.Lv - 1) * baseStats.MDefRate);
+                    CalculateAndAssignStats(characterToAddExpTo);
 
                     if(characterToAddExpTo is Character)
                     {
@@ -438,7 +469,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         client.Party.SendToAllExcept(lvlMemberNtc, client);
                     }
                 }
-            
+
                 // PERSIST CHANGES IN DB
                 this._database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
             }

@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             client.Send(new S2CSkillGetAbilityCostRes()
             {
-                CostMax = 100
+                CostMax = 100U + client.Character.ExtendedParams.AbilityCost
             });
         }
     }

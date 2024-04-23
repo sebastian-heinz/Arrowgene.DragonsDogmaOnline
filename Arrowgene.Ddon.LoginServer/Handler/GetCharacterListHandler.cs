@@ -18,8 +18,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GetCharacterListHandler));
         private AssetRepository _AssetRepo;
 
-
-
         public GetCharacterListHandler(DdonLoginServer server) : base(server)
         {
             _AssetRepo = server.AssetRepository;

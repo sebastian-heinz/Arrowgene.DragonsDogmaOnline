@@ -117,7 +117,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Equips
             ExecuteReader(conn, SqlSelectEquipItemByCharacter,
-                command => { AddParameter(command, "@character_common_id", common.CommonId); }, 
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
                 {
                     while (reader.Read())
@@ -130,7 +130,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         using TCon connection = OpenNewConnection();
                         ExecuteReader(connection, SqlSelectItem,
                             command2 => { AddParameter(command2, "@uid", UId); },
-                            reader2 => 
+                            reader2 =>
                             {
                                 if(reader2.Read())
                                 {
@@ -139,11 +139,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 }
                             });
                     }
-                });            
+                });
 
             // Job Items
             ExecuteReader(conn, SqlSelectEquipJobItemsByCharacter,
-                command => { AddParameter(command, "@character_common_id", common.CommonId); }, 
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
                 {
                     while (reader.Read())
@@ -151,11 +151,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         string UId = GetString(reader, "item_uid");
                         JobId job = (JobId) GetByte(reader, "job");
                         byte equipSlot = GetByte(reader, "equip_slot");
-                        
+
                         using TCon connection = OpenNewConnection();
                         ExecuteReader(connection, SqlSelectItem,
                             command2 => { AddParameter(command2, "@uid", UId); },
-                            reader2 => 
+                            reader2 =>
                             {
                                 if(reader2.Read())
                                 {
@@ -212,6 +212,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         common.LearnedAbilities.Add(ReadLearnedAbility(reader));
                     }
                 });
+
+
             ExecuteReader(conn, SqlSelectEquippedAbilities,
                 command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
@@ -243,7 +245,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CustomSkill learnedSkills in common.LearnedCustomSkills)
             {
-                ExecuteNonQuery(conn, SqlInsertLearnedCustomSkill, command => 
+                ExecuteNonQuery(conn, SqlInsertLearnedCustomSkill, command =>
                 {
                     AddParameter(command, common.CommonId, learnedSkills);
                 });

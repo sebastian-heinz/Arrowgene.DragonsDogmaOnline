@@ -15,6 +15,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
     public class JobManager
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobManager));
+        private readonly IDatabase _Database;
+
+        public JobManager(IDatabase database)
+        {
+            _Database = database;
+        }
 
         public void SetJob(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
         {
@@ -418,6 +424,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
             Ability lowerLevelAbility = character.LearnedAbilities.Where(aug => aug != null && aug.Job == job && aug.AbilityId == abilityId).SingleOrDefault();
 
+            Logger.Debug($"The Ability ID is {abilityId}");
+
             if(lowerLevelAbility == null)
             {
                 // New ability
@@ -437,7 +445,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility);
             }
 
-            uint jpCost = SkillGetAcquirableAbilityListHandler.AllAbilities
+            List<CDataAbilityParam> Abilities = (job == 0) ? SkillGetAcquirableAbilityListHandler.AllSecretAbilities : SkillGetAcquirableAbilityListHandler.AllAbilities;
+            uint jpCost = Abilities
                 .Where(aug => aug.Job == job && aug.AbilityNo == abilityId)
                 .SelectMany(aug => aug.Params)
                 .Where(augParams => augParams.Lv == abilityLv)
@@ -509,38 +518,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             // TODO: Performance
             List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
-            lock(equippedAbilities)
+            lock (equippedAbilities)
             {
-                byte removedAbilitySlotNo = Byte.MaxValue;
-                for(int i=0; i<equippedAbilities.Count; i++)
-                {
-                    Ability equippedAbility = equippedAbilities[i];
-                    byte equippedAbilitySlotNo = (byte)(i+1);
-                    if(character.Job == character.Job && equippedAbilitySlotNo == slotNo)
-                    {
-                        equippedAbilities[i] = null;
-                        removedAbilitySlotNo = equippedAbilitySlotNo;
-                        break;
-                    }
-                }
-
-                for(int i=0; i<equippedAbilities.Count; i++)
-                {
-                    Ability equippedAbility = equippedAbilities[i];
-                    byte equippedAbilitySlotNo = (byte)(i+1);
-                    if(character.Job == character.Job)
-                    {
-                        if(equippedAbilitySlotNo > removedAbilitySlotNo)
-                        {
-                            equippedAbilitySlotNo--;
-                        }
-                    }
-                }
+                equippedAbilities[slotNo - 1] = null; // Erase the item from the list
             }
 
             database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
 
             // Same as skills, i haven't found an Ability off NTC. It may not be required
+        }
+
+        public bool UnlockSecretAbility(CharacterCommon Character, SecretAbility secretAbilityType)
+        {
+            return _Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
         }
     }
 }

@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Linq;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -48,5 +49,13 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<Ability> LearnedAbilities { get; set; }
         public Dictionary<JobId, List<Ability?>> EquippedAbilitiesDictionary { get; set; }
         public OnlineStatus OnlineStatus;
+        public CDataOrbGainExtendParam ExtendedParams { get; set; }
+
+        /// TODO combine into a location class ?
+        public StageId Stage { get; set; }
+        public uint StageNo { get; set; }
+        public double X { get; set; }
+        public float Y { get; set; }
+        public double Z { get; set; }
     }
 }

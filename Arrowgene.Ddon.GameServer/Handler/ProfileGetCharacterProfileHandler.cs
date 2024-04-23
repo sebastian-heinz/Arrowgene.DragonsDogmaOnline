@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class ProfileGetCharacterProfileHandler : GameStructurePacketHandler<C2SProfileGetCharacterProfileReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ProfileGetCharacterProfileHandler));
-        
+
         public ProfileGetCharacterProfileHandler(DdonGameServer server) : base(server)
         {
         }
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.MatchingProfile = targetClient.Character.MatchingProfile;
             res.ArisenProfile = targetClient.Character.ArisenProfile;
             // TODO: OnlineId
-            
+
             client.Send(res);
 
 

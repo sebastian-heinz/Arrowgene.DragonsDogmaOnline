@@ -35,12 +35,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.RpcPacket = packet.Structure.RpcPacket;
             res.OnlineStatus = client.Character.OnlineStatus;
 
-            if(!LobbyStageIds.Contains(client.Character.Stage.Id))
+            if(!LobbyStageIds.Contains(client.Character.Stage.Id) && client.Party != null)
             {
-                if(client.Party != null)
-                {
-                    client.Party.SendToAllExcept(res, client);
-                }
+                client.Party.SendToAllExcept(res, client);
             }
             else
             {

@@ -68,18 +68,32 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         public bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities)
         {
-            return ExecuteInTransaction(connection =>
+            ExecuteInTransaction(connection =>
             {
                 // Remove previously equipped abilities
                 DeleteEquippedAbilities(connection, commonId, equippedToJob);
-                // Insert new ones
-                for(byte i = 0; i < abilities.Count; i++)
+
+                // Reinsert Abilities
+                byte slotNo = 1;
+                for (int i = 0; i < abilities.Count; i++)
                 {
-                    Ability ability = abilities[i];
-                    byte slotNo = (byte)(i+1);
+                    var ability = abilities[i];
+                    abilities[i] = null;
+                    if (ability is null)
+                    {
+                        continue;
+                    }
+
                     InsertEquippedAbility(connection, commonId, equippedToJob, slotNo, ability);
+
+                    // Place the ability in it's new slot in the list
+                    abilities[slotNo - 1] = ability;
+
+                    slotNo += 1;
                 }
             });
+
+            return true;
         }
 
         public bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, JobId equippedToJob, byte slotNo, Ability updatedAbility)
