@@ -692,6 +692,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CWarpWarpRes.Serializer());
             
             Create(new S2CFriendGetFriendListRes.Serializer());
+            Create(new S2CFriendApproveFriendRes.Serializer());
 
             Create(new ServerRes.Serializer());
         }

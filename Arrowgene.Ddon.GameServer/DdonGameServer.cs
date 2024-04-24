@@ -234,6 +234,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EquipUpdateHidePawnLanternHandler(this));
 
             AddHandler(new FriendGetFriendListHandler(this));
+            AddHandler(new FriendApproveFriendListHandler(this));
             AddHandler(new FriendGetRecentCharacterListHandler(this));
 
             AddHandler(new Gp_28_2_1_Handler(this));
