@@ -228,6 +228,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataWeatherSchedule.Serializer());
             Create(new CDataWorldManageQuestOrderList.Serializer());
             Create(new CDataStageLayoutId.Serializer());
+            Create(new CDataFriendInfo.Serializer());
             Create(new UnkownCharacterData0Serializer());
 
             // Packet structure serializers
@@ -689,6 +690,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CWarpRegisterFavoriteWarpRes.Serializer());
             Create(new S2CWarpReleaseWarpPointRes.Serializer());
             Create(new S2CWarpWarpRes.Serializer());
+            
+            Create(new S2CFriendGetFriendListRes.Serializer());
 
             Create(new ServerRes.Serializer());
         }
