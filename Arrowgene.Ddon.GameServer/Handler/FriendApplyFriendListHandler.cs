@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -13,41 +8,55 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class FriendApproveFriendListHandler : GameStructurePacketHandler<C2SFriendApproveFriendReq>
+    public class FriendApplyFriendListHandler :  GameStructurePacketHandler<C2SFriendApplyFriendReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(FriendApproveFriendListHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(FriendApplyFriendListHandler));
 
 
-        public FriendApproveFriendListHandler(DdonGameServer server) : base(server)
+        public FriendApplyFriendListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SFriendApproveFriendReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SFriendApplyFriendReq> packet)
         {
-            Character c = Server.Database.SelectCharacter(packet.Structure.CharacterId);
-            var Result = new S2CFriendApproveFriendRes()
+            Character requestedChar = Server.Database.SelectCharacter(packet.Structure.CharacterId);
+            if (requestedChar == null)
             {
-                FriendInfo = CharacterToFriend(c),
+                var res = new S2CFriendApplyFriendRes();
+                Logger.Error(client, $"not found CharacterId:{packet.Structure.CharacterId} for friend invitation");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
+                return;
+            }
+
+            CDataFriendInfo requester = CharacterToFriend(client.Character);
+            CDataFriendInfo requested = CharacterToFriend(requestedChar);
+
+            GameClient requestedClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
+            if (requestedClient != null)
+            {
+                var ntc = new S2CFriendApplyFriendNtc()
+                {
+                    FriendInfo = requester
+                };
+                requestedClient.Send(ntc);
+            }
+
+            
+            var Result = new S2CFriendApplyFriendRes()
+            {
+                FriendInfo = requested,
                 Result = 0,
                 Error = 0,
                     
             };
-            client.Send(Result);
             
-            GameClient requestedClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
-            if (requestedClient != null)
-            {
-                var ntc = new S2CFriendApproveFriendNtc()
-                {
-                    FriendInfo = CharacterToFriend(client.Character),
-                    IsApproved = packet.Structure.IsApproved
-                };
-                requestedClient.Send(ntc);
-            }
+            client.Send(Result);
         }
-        
+
         private CDataFriendInfo CharacterToFriend(Character c)
         {
+            // TODO share this code
             return new CDataFriendInfo()
             {
                 IsFavorite = false,

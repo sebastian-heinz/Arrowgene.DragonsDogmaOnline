@@ -106,8 +106,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             List<CDataCommunityCharacterBaseInfo> applList = new List<CDataCommunityCharacterBaseInfo>();
             List<CDataCommunityCharacterBaseInfo> apprList = new List<CDataCommunityCharacterBaseInfo>();
-            applList.Add(ApplyingFriend);
-            apprList.Add(ApprovingFriend);
+            // applList.Add(ApplyingFriend);
+            // apprList.Add(ApprovingFriend);
             
             var Result = new S2CFriendGetFriendListRes()
             {
