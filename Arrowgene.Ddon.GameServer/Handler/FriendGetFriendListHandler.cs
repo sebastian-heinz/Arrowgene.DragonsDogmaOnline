@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -28,88 +25,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             // client.Send(InGameDump.Dump_60);
-
             List<CDataFriendInfo> fList = new List<CDataFriendInfo>();
-            CDataFriendInfo friend = new CDataFriendInfo()
-            {
-                CharacterListElement = new CDataCharacterListElement()
-                {
-                    CommunityCharacterBaseInfo = new CDataCommunityCharacterBaseInfo()
-                    {
-                        CharacterId = 1,
-                        CharacterName = new CDataCharacterName()
-                        {
-                            FirstName = "Your",
-                            LastName = "Mom"
-                        },
-                        ClanName = "Land Whales",
-
-                    },
-                    OnlineStatus = OnlineStatus.Busy,
-                    CurrentJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        Job = JobId.Seeker,
-                        Level = 10
-                    }
-                }
-            };
-            CDataFriendInfo friend2 = new CDataFriendInfo()
-            {
-                CharacterListElement = new CDataCharacterListElement()
-                {
-                    CommunityCharacterBaseInfo = new CDataCommunityCharacterBaseInfo()
-                    {
-                        CharacterId = 1,
-                        CharacterName = new CDataCharacterName()
-                        {
-                            FirstName = "Your",
-                            LastName = "Dad"
-                        },
-                        ClanName = "Land Whales",
-
-                    },
-                    OnlineStatus = OnlineStatus.Busy,
-                    CurrentJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        Job = JobId.Fighter,
-                        Level = 15
-                    }
-                }
-            };
-            fList.Add(friend);
-            fList.Add(friend2);
-
-            CDataCommunityCharacterBaseInfo ApplyingFriend = new CDataCommunityCharacterBaseInfo()
-            {
-                CharacterId = 1,
-                CharacterName = new CDataCharacterName()
-                {
-                    FirstName = "Your",
-                    LastName = "ApplyingFriend"
-                },
-                ClanName = "Land Whales",
-
-            };
-            
-            
-            CDataCommunityCharacterBaseInfo ApprovingFriend = new CDataCommunityCharacterBaseInfo()
-            {
-                CharacterId = 1,
-                CharacterName = new CDataCharacterName()
-                {
-                    FirstName = "Your",
-                    LastName = "ApprovingFriend"
-                },
-                ClanName = "Land Whales",
-
-            };
-            
             List<CDataCommunityCharacterBaseInfo> applList = new List<CDataCommunityCharacterBaseInfo>();
             List<CDataCommunityCharacterBaseInfo> apprList = new List<CDataCommunityCharacterBaseInfo>();
-            // applList.Add(ApplyingFriend);
-            // apprList.Add(ApprovingFriend);
+            List<ContactListEntity> friends = Database.SelectFriends((int) client.Character.CharacterId);
             
-            var Result = new S2CFriendGetFriendListRes()
+            foreach (var f in friends)
+            {
+                if (f.Type != ContactListType.FriendList) continue;
+                Character otherCharacter =
+                    Database.SelectCharacter((uint)f.GetOtherCharacterId((int)client.Character.CharacterId));
+                
+                if (f.Status == ContactListStatus.Accepted)
+                {
+                    fList.Add(CharacterToFriendInfo(otherCharacter));
+                } 
+                else if (f.Status == ContactListStatus.PendingApproval)
+                {
+                    if (f.RequesterCharacterId == client.Character.CharacterId)
+                    {
+                        apprList.Add(CharacterToCommunityInfo(otherCharacter));
+                    }
+                    else if (f.RequestedCharacterId == client.Character.CharacterId)
+                    {
+                        applList.Add(CharacterToCommunityInfo(otherCharacter));
+                    }
+                }
+            }
+            
+            var result = new S2CFriendGetFriendListRes()
             {
                 FriendInfoList = fList,
                 ApplyingCharacterList = applList,
@@ -120,7 +64,58 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             
 
-            client.Send(Result);
+            client.Send(result);
+        }
+        
+        private CDataCommunityCharacterBaseInfo CharacterToCommunityInfo(Character c)
+        {
+            return new CDataCommunityCharacterBaseInfo()
+            {
+                CharacterId = c.CharacterId,
+                CharacterName = new CDataCharacterName()
+                {
+                    FirstName = c.FirstName,
+                    LastName = c.LastName
+                },
+                ClanName = "", // TODO get clan
+
+            };
+
+        }
+        
+        private CDataFriendInfo CharacterToFriendInfo(Character c)
+        {
+            return new CDataFriendInfo()
+            {
+                CharacterListElement = new CDataCharacterListElement()
+                {
+                    OnlineStatus = c.OnlineStatus,
+                    MatchingProfile = c.MatchingProfile.Comment,
+                    ServerId = c.Server.Id,
+                    CommunityCharacterBaseInfo = new CDataCommunityCharacterBaseInfo()
+                    {
+                        CharacterId = c.CharacterId,
+                        CharacterName = new CDataCharacterName()
+                        {
+                            FirstName = c.FirstName,
+                            LastName = c.LastName
+                        },
+                        ClanName = "" // TODO
+                    },
+                    CurrentJobBaseInfo = new CDataJobBaseInfo()
+                    {
+                        Job = c.Job,
+                        Level = 10 // TODO
+                    },
+                    EntryJobBaseInfo = new CDataJobBaseInfo()
+                    {
+                        // TODO
+                        Job = JobId.Hunter,
+                        Level = 20
+                    }
+                }
+            };
+
         }
     }
 }

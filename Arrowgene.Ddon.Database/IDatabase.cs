@@ -140,5 +140,10 @@ namespace Arrowgene.Ddon.Database
         bool DeleteConnection(int serverId, int accountId);
         bool DeleteConnectionsByAccountId(int accountId);
         bool DeleteConnectionsByServerId(int serverId);
+        
+        // ContactList
+        int UpsertContact(int requestingCommonCharacterId, int requestedCommonCharacterId, ContactListStatus status, ContactListType type);
+        int DeleteContact(int requestingCharacterId, int requestedCharacterId);
+        public  List<ContactListEntity> SelectFriends(int characterId);
     }
 }

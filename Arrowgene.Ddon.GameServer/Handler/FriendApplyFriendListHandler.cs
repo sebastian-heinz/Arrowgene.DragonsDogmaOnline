@@ -1,5 +1,4 @@
-﻿using System;
-using Arrowgene.Ddon.Server;
+﻿using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -29,8 +28,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            int id = Database.UpsertContact((int)client.Character.CharacterId, (int) requestedChar.CharacterId,
+                ContactListStatus.PendingApproval, ContactListType.FriendList);
+            
+            if (id < 1)
+            {
+                var res = new S2CFriendApplyFriendRes()
+                {
+                    FriendInfo = new CDataFriendInfo()
+                };
+                Logger.Error(client, $"Problem sending friend request");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
+                return;
+            }
+            
             CDataFriendInfo requester = CharacterToFriend(client.Character);
             CDataFriendInfo requested = CharacterToFriend(requestedChar);
+            requester.UnFriendNo = (uint)id;
+            requested.UnFriendNo = (uint)id;
 
             GameClient requestedClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
             if (requestedClient != null)

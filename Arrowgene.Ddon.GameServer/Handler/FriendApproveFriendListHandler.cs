@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
+﻿using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -24,25 +18,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SFriendApproveFriendReq> packet)
         {
-            Character c = Server.Database.SelectCharacter(packet.Structure.CharacterId);
-            var Result = new S2CFriendApproveFriendRes()
+            if (packet.Structure.IsApproved)
             {
-                FriendInfo = CharacterToFriend(c),
+                Database.UpsertContact((int)packet.Structure.CharacterId, (int)client.Character.CharacterId,
+                    ContactListStatus.Accepted, ContactListType.FriendList);
+            }
+            else
+            {
+                Database.DeleteContact((int)packet.Structure.CharacterId, (int)client.Character.CharacterId);
+            }
+            
+            Character requestingChar = Server.Database.SelectCharacter(packet.Structure.CharacterId);
+            var result = new S2CFriendApproveFriendRes()
+            {
+                FriendInfo = CharacterToFriend(requestingChar),
                 Result = 0,
                 Error = 0,
                     
             };
-            client.Send(Result);
+            client.Send(result);
             
-            GameClient requestedClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
-            if (requestedClient != null)
+            GameClient requestingClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
+            if (requestingClient != null)
             {
                 var ntc = new S2CFriendApproveFriendNtc()
                 {
                     FriendInfo = CharacterToFriend(client.Character),
                     IsApproved = packet.Structure.IsApproved
                 };
-                requestedClient.Send(ntc);
+                requestingClient.Send(ntc);
             }
         }
         

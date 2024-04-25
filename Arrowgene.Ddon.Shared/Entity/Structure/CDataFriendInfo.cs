@@ -1,20 +1,14 @@
 using System;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataFriendInfo
     {
-        public CDataFriendInfo()
-        {
-            CharacterListElement = new CDataCharacterListElement();
-        }
-
-        public CDataCharacterListElement CharacterListElement { get; set; }
-        public byte PendingStatus { get; set; }
-        public UInt32 UnFriendNo { get; set; }
-        public bool IsFavorite { get; set; }
+        public CDataCharacterListElement CharacterListElement { get; set; } = new();
+        public byte PendingStatus { get; set; } = 0;
+        public UInt32 UnFriendNo { get; set; } = 0;
+        public bool IsFavorite { get; set; } = false;
 
         public class Serializer : EntitySerializer<CDataFriendInfo>
         {
