@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Csv
     {
         private static readonly ILogger Logger = LogProvider.Logger(typeof(EnemySpawnAssetDeserializer));
 
-        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId"};
+        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId", "SpawnTime"};
         private static readonly string[] DROPS_TABLE_HEADERS = new string[]{"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden", "DropChance"};
 
         public EnemySpawnAsset ReadPath(string path)
@@ -97,6 +97,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     IsAreaBoss = row[enemySchemaIndexes["IsAreaBoss"]].GetBoolean(),
                     BloodOrbs = row[enemySchemaIndexes["BloodOrbs"]].GetUInt32(),
                     HighOrbs = row[enemySchemaIndexes["HighOrbs"]].GetUInt32(),
+                    SpawnTime = row[enemySchemaIndexes["SpawnTime"]].GetString(),
                     Experience = row[enemySchemaIndexes["Experience"]].GetUInt32(),
                 };
                 int dropsTableId = row[enemySchemaIndexes["DropsTableId"]].GetInt32();

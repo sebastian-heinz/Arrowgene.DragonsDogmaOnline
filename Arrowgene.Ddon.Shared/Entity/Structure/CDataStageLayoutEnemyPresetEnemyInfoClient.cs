@@ -49,6 +49,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool IsAreaBoss { get; set; }
         public bool IsBloodEnemy { get; set; }
         public bool IsHighOrbEnemy { get; set; }
+        public string SpawnTime { get; set; }
 
         public class Serializer : EntitySerializer<CDataStageLayoutEnemyPresetEnemyInfoClient>
         {
