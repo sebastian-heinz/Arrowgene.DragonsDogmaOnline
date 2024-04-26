@@ -18,20 +18,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SFriendApproveFriendReq> packet)
         {
+            ContactListEntity relationship = Database.SelectRelationship(packet.Structure.CharacterId, client.Character.CharacterId);
+            if (relationship is not { Status: ContactListStatus.PendingApproval })
+            {
+                Logger.Error(client, $"ContactListEntity not found");
+                client.Send(
+                    new S2CFriendApproveFriendRes()
+                    {
+                        FriendInfo = new CDataFriendInfo(),
+                        Error = (uint)ErrorCode.ERROR_CODE_FRIEND_NOT_IN_APPROVING_LIST
+                    }
+                );
+                return;
+            }
+            
+            
             if (packet.Structure.IsApproved)
             {
-                Database.UpsertContact((int)packet.Structure.CharacterId, (int)client.Character.CharacterId,
+                Database.UpsertContact(packet.Structure.CharacterId, client.Character.CharacterId,
                     ContactListStatus.Accepted, ContactListType.FriendList);
             }
             else
             {
-                Database.DeleteContact((int)packet.Structure.CharacterId, (int)client.Character.CharacterId);
+                Database.DeleteContact(packet.Structure.CharacterId, client.Character.CharacterId);
             }
             
             Character requestingChar = Server.Database.SelectCharacter(packet.Structure.CharacterId);
             var result = new S2CFriendApproveFriendRes()
             {
-                FriendInfo = CharacterToFriend(requestingChar),
+                FriendInfo = ContactListEntity.CharacterToFriend(requestingChar, relationship.Id),
                 Result = 0,
                 Error = 0,
                     
@@ -43,49 +58,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 var ntc = new S2CFriendApproveFriendNtc()
                 {
-                    FriendInfo = CharacterToFriend(client.Character),
+                    FriendInfo = ContactListEntity.CharacterToFriend(client.Character, relationship.Id),
                     IsApproved = packet.Structure.IsApproved
                 };
                 requestingClient.Send(ntc);
             }
-        }
-        
-        private CDataFriendInfo CharacterToFriend(Character c)
-        {
-            return new CDataFriendInfo()
-            {
-                IsFavorite = false,
-                PendingStatus = 0x00, // TODO
-                UnFriendNo = 7, // TODO
-                CharacterListElement = new CDataCharacterListElement()
-                {
-                    OnlineStatus = c.OnlineStatus,
-                    MatchingProfile = c.MatchingProfile.Comment,
-                    ServerId = c.Server.Id,
-                    CommunityCharacterBaseInfo = new CDataCommunityCharacterBaseInfo()
-                    {
-                        CharacterId = c.CharacterId,
-                        CharacterName = new CDataCharacterName()
-                        {
-                            FirstName = c.FirstName,
-                            LastName = c.LastName
-                        },
-                        ClanName = "" // TODO
-                    },
-                    CurrentJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        Job = c.Job,
-                        Level = 10
-                    },
-                    EntryJobBaseInfo = new CDataJobBaseInfo()
-                    { // TODO
-                        Job = JobId.Hunter,
-                        Level = 20
-                    }
-                }
-
-            };
-            
         }
     }
 }

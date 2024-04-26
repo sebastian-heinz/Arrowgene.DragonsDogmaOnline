@@ -19,8 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
 
         public override PacketId Id => PacketId.C2S_FRIEND_GET_FRIEND_LIST_REQ;
-            // S2C_FRIEND_GET_FRIEND_LIST_RES
-            // S2CFriendGetFriendListRes
 
         public override void Handle(GameClient client, IPacket packet)
         {
@@ -28,27 +26,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataFriendInfo> fList = new List<CDataFriendInfo>();
             List<CDataCommunityCharacterBaseInfo> applList = new List<CDataCommunityCharacterBaseInfo>();
             List<CDataCommunityCharacterBaseInfo> apprList = new List<CDataCommunityCharacterBaseInfo>();
-            List<ContactListEntity> friends = Database.SelectFriends((int) client.Character.CharacterId);
+            List<ContactListEntity> friends = Database.SelectFriends(client.Character.CharacterId);
             
             foreach (var f in friends)
             {
                 if (f.Type != ContactListType.FriendList) continue;
                 Character otherCharacter =
-                    Database.SelectCharacter((uint)f.GetOtherCharacterId((int)client.Character.CharacterId));
+                    Database.SelectCharacter(f.GetOtherCharacterId(client.Character.CharacterId));
                 
                 if (f.Status == ContactListStatus.Accepted)
                 {
-                    fList.Add(CharacterToFriendInfo(otherCharacter));
+                    fList.Add(ContactListEntity.CharacterToFriend(otherCharacter, f.Id));
                 } 
                 else if (f.Status == ContactListStatus.PendingApproval)
                 {
                     if (f.RequesterCharacterId == client.Character.CharacterId)
                     {
-                        apprList.Add(CharacterToCommunityInfo(otherCharacter));
+                        apprList.Add(ContactListEntity.CharacterToCommunityInfo(otherCharacter));
                     }
                     else if (f.RequestedCharacterId == client.Character.CharacterId)
                     {
-                        applList.Add(CharacterToCommunityInfo(otherCharacter));
+                        applList.Add(ContactListEntity.CharacterToCommunityInfo(otherCharacter));
                     }
                 }
             }
@@ -65,57 +63,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
 
             client.Send(result);
-        }
-        
-        private CDataCommunityCharacterBaseInfo CharacterToCommunityInfo(Character c)
-        {
-            return new CDataCommunityCharacterBaseInfo()
-            {
-                CharacterId = c.CharacterId,
-                CharacterName = new CDataCharacterName()
-                {
-                    FirstName = c.FirstName,
-                    LastName = c.LastName
-                },
-                ClanName = "", // TODO get clan
-
-            };
-
-        }
-        
-        private CDataFriendInfo CharacterToFriendInfo(Character c)
-        {
-            return new CDataFriendInfo()
-            {
-                CharacterListElement = new CDataCharacterListElement()
-                {
-                    OnlineStatus = c.OnlineStatus,
-                    MatchingProfile = c.MatchingProfile.Comment,
-                    ServerId = c.Server.Id,
-                    CommunityCharacterBaseInfo = new CDataCommunityCharacterBaseInfo()
-                    {
-                        CharacterId = c.CharacterId,
-                        CharacterName = new CDataCharacterName()
-                        {
-                            FirstName = c.FirstName,
-                            LastName = c.LastName
-                        },
-                        ClanName = "" // TODO
-                    },
-                    CurrentJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        Job = c.Job,
-                        Level = 10 // TODO
-                    },
-                    EntryJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        // TODO
-                        Job = JobId.Hunter,
-                        Level = 20
-                    }
-                }
-            };
-
         }
     }
 }

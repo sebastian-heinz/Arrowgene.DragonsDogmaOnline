@@ -18,17 +18,49 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SFriendApplyFriendReq> packet)
         {
+            
+            ContactListEntity existingFriend = Server.Database.SelectRelationship(packet.Structure.CharacterId, client.Character.CharacterId);
+            if (existingFriend != null)
+            {
+                uint errorCode = (uint)ErrorCode.ERROR_CODE_FAIL;
+
+                if (existingFriend.Type == ContactListType.BlackList && client.Character.CharacterId == existingFriend.RequesterCharacterId)
+                {
+                    errorCode = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_IN_BLACK_LIST;
+                }
+                else if (existingFriend.Status == ContactListStatus.Accepted)
+                {
+                    errorCode = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_FRIEND;
+                }
+                else if (existingFriend.Status == ContactListStatus.PendingApproval && client.Character.CharacterId == existingFriend.RequesterCharacterId)
+                {
+                    errorCode = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_APPLYING;
+                }
+                else if (existingFriend.Status == ContactListStatus.PendingApproval && client.Character.CharacterId == existingFriend.RequestedCharacterId)
+                {
+                    errorCode = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_APPROVING;
+                }
+                var res = new S2CFriendApplyFriendRes()
+                {
+                    FriendInfo = new CDataFriendInfo(),
+                    Error = errorCode
+                };
+                Logger.Error(client, $"already in contact list: {packet.Structure.CharacterId} - friend invitation");
+                client.Send(res);
+                return;
+            }
+            
             Character requestedChar = Server.Database.SelectCharacter(packet.Structure.CharacterId);
             if (requestedChar == null)
             {
                 var res = new S2CFriendApplyFriendRes();
                 Logger.Error(client, $"not found CharacterId:{packet.Structure.CharacterId} for friend invitation");
-                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                res.Error = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_PARAM_NOT_FOUND;
                 client.Send(res);
                 return;
             }
 
-            int id = Database.UpsertContact((int)client.Character.CharacterId, (int) requestedChar.CharacterId,
+            int id = Database.UpsertContact(client.Character.CharacterId, requestedChar.CharacterId,
                 ContactListStatus.PendingApproval, ContactListType.FriendList);
             
             if (id < 1)
@@ -37,14 +69,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     FriendInfo = new CDataFriendInfo()
                 };
-                Logger.Error(client, $"Problem sending friend request");
+                Logger.Error(client, $"Problem saving friend request");
                 res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
                 client.Send(res);
                 return;
             }
             
-            CDataFriendInfo requester = CharacterToFriend(client.Character);
-            CDataFriendInfo requested = CharacterToFriend(requestedChar);
+            CDataFriendInfo requester = ContactListEntity.CharacterToFriend(client.Character, (uint)id);
+            CDataFriendInfo requested = ContactListEntity.CharacterToFriend(requestedChar, (uint)id);
             requester.UnFriendNo = (uint)id;
             requested.UnFriendNo = (uint)id;
 
@@ -68,45 +100,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             
             client.Send(Result);
-        }
-
-        private CDataFriendInfo CharacterToFriend(Character c)
-        {
-            // TODO share this code
-            return new CDataFriendInfo()
-            {
-                IsFavorite = false,
-                PendingStatus = 0x00, // TODO
-                UnFriendNo = 7, // TODO
-                CharacterListElement = new CDataCharacterListElement()
-                {
-                    OnlineStatus = c.OnlineStatus,
-                    MatchingProfile = c.MatchingProfile.Comment,
-                    ServerId = c.Server.Id,
-                    CommunityCharacterBaseInfo = new CDataCommunityCharacterBaseInfo()
-                    {
-                        CharacterId = c.CharacterId,
-                        CharacterName = new CDataCharacterName()
-                        {
-                            FirstName = c.FirstName,
-                            LastName = c.LastName
-                        },
-                        ClanName = "" // TODO
-                    },
-                    CurrentJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        Job = c.Job,
-                        Level = 10
-                    },
-                    EntryJobBaseInfo = new CDataJobBaseInfo()
-                    { // TODO
-                        Job = JobId.Hunter,
-                        Level = 20
-                    }
-                }
-
-            };
-            
         }
     }
 }
