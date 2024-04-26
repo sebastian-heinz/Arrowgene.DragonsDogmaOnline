@@ -1,32 +1,32 @@
 ﻿using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class FriendRemoveFriendHandler : GameStructurePacketHandler<C2SFriendRemoveFriendReq>
+    public class FriendCancelFriendApplicationHandler : GameStructurePacketHandler<C2SFriendCancelFriendApplicationReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(FriendRemoveFriendHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(FriendCancelFriendApplicationHandler));
 
 
-        public FriendRemoveFriendHandler(DdonGameServer server) : base(server)
+        public FriendCancelFriendApplicationHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SFriendRemoveFriendReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SFriendCancelFriendApplicationReq> packet)
         {
-
-            ContactListEntity relationship = Database.SelectRelationship(packet.Structure.unFriendNo);
-            if (relationship == null)
+            ContactListEntity relationship = Database.SelectRelationship(client.Character.CharacterId, packet.Structure.CharacterId);
+            if (relationship is not { Status: ContactListStatus.PendingApproval })
             {
                 Logger.Error(client, $"ContactListEntity not found");
                 client.Send(
                     new S2CFriendRemoveFriendRes()
                     {
                         Result = -1,
-                        Error = (uint)ErrorCode.ERROR_CODE_FRIEND_INVARID_FRIEND_NO
+                        Error = (uint)ErrorCode.ERROR_CODE_FRIEND_NOT_IN_APPLYING_LIST
                     }
                 );
                 return;
@@ -46,19 +46,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             
             client.Send(
-                new S2CFriendRemoveFriendRes()
+                new S2CFriendCancelFriendApplicationRes()
                 {
                     Result = 1
-                }    
+                }
             );
-
-            uint otherCharId = relationship.GetOtherCharacterId(client.Character.CharacterId);
             
-            GameClient otherClient = Server.ClientLookup.GetClientByCharacterId(otherCharId);
+            GameClient otherClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
             if (otherClient != null)
             {
                 otherClient.Send(
-                    new S2CFriendRemoveFriendNtc()
+                    new S2CFriendCancelFriendApplicationNtc()
                     {
                         CharacterId = client.Character.CharacterId
                     }
