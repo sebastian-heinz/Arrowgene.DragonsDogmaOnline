@@ -22,11 +22,32 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint RequestedCharacterId { get; set; }
         public ContactListStatus Status { get; set; }
         public ContactListType Type { get; set; }
+        public bool RequesterFavorite { get; set; }
+        public bool RequestedFavorite { get; set; }
 
         public uint GetOtherCharacterId(uint characterId)
         {
             if (this.RequesterCharacterId == characterId) return this.RequestedCharacterId;
             return this.RequesterCharacterId;
+        }
+
+        public bool IsFavoriteForCharacter(uint characterId)
+        {
+            if (characterId == this.RequestedCharacterId) return this.RequestedFavorite;
+            if (characterId == this.RequesterCharacterId) return this.RequesterFavorite;
+            return false;
+        }
+        
+        public void SetFavoriteForCharacter(uint characterId, bool favorite)
+        {
+            if (characterId == this.RequestedCharacterId)
+            {
+                this.RequestedFavorite = favorite;
+            }
+            else if (characterId == this.RequesterCharacterId)
+            {
+                this.RequesterFavorite = favorite;
+            }
         }
         
         public static CDataCommunityCharacterBaseInfo CharacterToCommunityInfo(Character c)
@@ -45,11 +66,11 @@ namespace Arrowgene.Ddon.Shared.Model
 
         }
         
-        public static CDataFriendInfo CharacterToFriend(Character c, uint unFriendNo)
+        public static CDataFriendInfo CharacterToFriend(Character c, uint unFriendNo, bool isFavorite)
         {
             return new CDataFriendInfo()
             {
-                IsFavorite = false,
+                IsFavorite = isFavorite,
                 PendingStatus = 0x00, // TODO
                 UnFriendNo = unFriendNo, // TODO
                 CharacterListElement = new CDataCharacterListElement()

@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             int id = Database.UpsertContact(client.Character.CharacterId, requestedChar.CharacterId,
-                ContactListStatus.PendingApproval, ContactListType.FriendList);
+                ContactListStatus.PendingApproval, ContactListType.FriendList, false, false);
             
             if (id < 1)
             {
@@ -75,8 +75,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
             
-            CDataFriendInfo requester = ContactListEntity.CharacterToFriend(client.Character, (uint)id);
-            CDataFriendInfo requested = ContactListEntity.CharacterToFriend(requestedChar, (uint)id);
+            CDataFriendInfo requester = ContactListEntity.CharacterToFriend(client.Character, (uint)id, false);
+            CDataFriendInfo requested = ContactListEntity.CharacterToFriend(requestedChar, (uint)id, false);
             requester.UnFriendNo = (uint)id;
             requested.UnFriendNo = (uint)id;
 

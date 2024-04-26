@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 
                 if (f.Status == ContactListStatus.Accepted)
                 {
-                    fList.Add(ContactListEntity.CharacterToFriend(otherCharacter, f.Id));
+                    fList.Add(ContactListEntity.CharacterToFriend(otherCharacter, f.Id, f.IsFavoriteForCharacter(client.Character.CharacterId)));
                 } 
                 else if (f.Status == ContactListStatus.PendingApproval)
                 {

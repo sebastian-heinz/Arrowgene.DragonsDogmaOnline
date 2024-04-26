@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (packet.Structure.IsApproved)
             {
                 Database.UpsertContact(packet.Structure.CharacterId, client.Character.CharacterId,
-                    ContactListStatus.Accepted, ContactListType.FriendList);
+                    ContactListStatus.Accepted, ContactListType.FriendList, false, false);
             }
             else
             {
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Character requestingChar = Server.Database.SelectCharacter(packet.Structure.CharacterId);
             var result = new S2CFriendApproveFriendRes()
             {
-                FriendInfo = ContactListEntity.CharacterToFriend(requestingChar, relationship.Id),
+                FriendInfo = ContactListEntity.CharacterToFriend(requestingChar, relationship.Id, relationship.IsFavoriteForCharacter(client.Character.CharacterId)),
                 Result = 0,
                 Error = 0,
                     
@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 var ntc = new S2CFriendApproveFriendNtc()
                 {
-                    FriendInfo = ContactListEntity.CharacterToFriend(client.Character, relationship.Id),
+                    FriendInfo = ContactListEntity.CharacterToFriend(client.Character, relationship.Id, relationship.IsFavoriteForCharacter(packet.Structure.CharacterId)),
                     IsApproved = packet.Structure.IsApproved
                 };
                 requestingClient.Send(ntc);

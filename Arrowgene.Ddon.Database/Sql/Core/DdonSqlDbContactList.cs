@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         private static readonly string[] ContactListFields = new string[]
         { 
-           /* id */ "requester_character_id", "requested_character_id", "status", "type"
+           /* id */ "requester_character_id", "requested_character_id", "status", "type", "requester_favorite", "requested_favorite"
         };
 
         private static readonly string SqlInsertContact = $"INSERT INTO \"{TableName}\" ({BuildQueryField(ContactListFields)}) VALUES ({BuildQueryInsert(ContactListFields)});";
@@ -29,10 +29,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlDeleteContactById = $"DELETE FROM \"{TableName}\" WHERE \"id\"=@id;";
         
         
-        private static readonly string SqlUpdateContactByCharIds = $"UPDATE \"{TableName}\" SET \"status\"=@status, \"type\"=@type WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
+        private static readonly string SqlUpdateContactByCharIds = $"UPDATE \"{TableName}\" SET \"status\"=@status, \"type\"=@type, \"requester_favorite\"=@requester_favorite, \"requested_favorite\"=@requested_favorite WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
 
 
-        public int UpsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type)
+        public int UpsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
         {
             int rowsAffected = ExecuteNonQuery(SqlUpdateContactByCharIds, command =>
             {
@@ -40,6 +40,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "@requested_character_id", requestedCharacterId);
                 AddParameter(command, "@status", (byte) status);
                 AddParameter(command, "@type", (byte) type);
+                AddParameter(command, "@requester_favorite", requesterFavorite);
+                AddParameter(command, "@requested_favorite", requestedFavorite);
             });
             if (rowsAffected > NoRowsAffected)
             {
@@ -52,6 +54,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "@requested_character_id", requestedCharacterId);
                 AddParameter(command, "@status", (byte) status);
                 AddParameter(command, "@type", (byte) type);
+                AddParameter(command, "@requester_favorite", requesterFavorite);
+                AddParameter(command, "@requested_favorite", requestedFavorite);
             }, out long autoIncrement);
 
             if (rowsAffected > NoRowsAffected)
@@ -142,6 +146,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             e.RequestedCharacterId = GetUInt32(reader, "requested_character_id");
             e.Status = (ContactListStatus) GetByte(reader, "status");
             e.Type = (ContactListType) GetInt32(reader, "type");
+            e.RequesterFavorite = GetBoolean(reader, "requester_favorite");
+            e.RequestedFavorite = GetBoolean(reader, "requested_favorite");
             return e;
         }
     }
@@ -154,6 +160,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 //     "requested_character_id"	INTEGER NOT NULL,
 //     "status"	INTEGER NOT NULL,
 //     "type"	INTEGER NOT NULL,
+//     "requester_favorite"	BOOLEAN NOT NULL,
+//     "requested_favorite"	BOOLEAN NOT NULL,
 //     FOREIGN KEY("requester_character_id") REFERENCES "ddon_character"("character_id"),
 //     FOREIGN KEY("requested_character_id") REFERENCES "ddon_character"("character_id"),
 //     PRIMARY KEY("id" AUTOINCREMENT),

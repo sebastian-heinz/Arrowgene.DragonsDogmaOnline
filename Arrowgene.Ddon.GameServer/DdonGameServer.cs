@@ -237,6 +237,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new FriendApplyFriendListHandler(this));
             AddHandler(new FriendApproveFriendListHandler(this));
             AddHandler(new FriendRemoveFriendHandler(this));
+            AddHandler(new FriendRegisterFavoriteFriendHandler(this));
             AddHandler(new FriendCancelFriendApplicationHandler(this));
             AddHandler(new FriendGetRecentCharacterListHandler(this));
 
