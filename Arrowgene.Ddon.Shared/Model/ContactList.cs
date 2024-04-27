@@ -82,8 +82,8 @@ namespace Arrowgene.Ddon.Shared.Model
                 EntryJobBaseInfo = new CDataJobBaseInfo()
                 {
                     // TODO
-                    Job = JobId.Hunter,
-                    Level = 20
+                    Job = c.MatchingProfile.EntryJob,
+                    Level = (byte)(c.MatchingProfile?.EntryJobLevel ?? 0x00)
                 }
             };
         }

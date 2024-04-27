@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CharacterFields = new string[]
         {
-            "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num"
+            "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "online_status"
         };
 
         private static readonly string[] CDataMatchingProfileFields = new string[]
@@ -61,6 +61,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateCharacterArisenProfile = $"UPDATE \"ddon_character_arisen_profile\" SET {BuildQueryUpdate(CDataArisenProfileFields)} WHERE \"character_id\" = @character_id;";
         private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM \"ddon_character_arisen_profile\" WHERE \"character_id\" = @character_id;";
         private const string SqlDeleteCharacterArisenProfile = "DELETE FROM \"ddon_character_arisen_profile\" WHERE \"character_id\"=@character_id;";
+        
+        private static readonly string SqlUpdateOnlineStatus = $"UPDATE \"ddon_character\" SET \"online_status\" = @online_status WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlUpdateAllOnlineStatus = $"UPDATE \"ddon_character\" SET \"online_status\" = @online_status;";
 
 
         public bool CreateCharacter(Character character)
@@ -100,6 +103,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
 
             return characterUpdateRowsAffected > NoRowsAffected;
+        }
+        
+        public int UpdateCharacterOnlineStatus(Character character)
+        {
+            int rowsAffected = ExecuteNonQuery(SqlUpdateOnlineStatus, command =>
+            {
+                AddParameter(command, "@online_status", (byte) character.OnlineStatus);
+                AddParameter(command, "@character_id", character.CharacterId);
+            });
+            return rowsAffected;
+        }
+        
+        public int UpdateAllCharactersOnlineStatus(OnlineStatus onlineStatus)
+        {
+            int rowsAffected = ExecuteNonQuery(SqlUpdateAllOnlineStatus, command =>
+            {
+                AddParameter(command, "@online_status", (byte) onlineStatus);
+            });
+            return rowsAffected;
         }
 
         public bool UpdateCharacterMatchingProfile(Character character)
@@ -366,6 +388,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.ArisenProfile.MotionFrameNo = GetUInt32(reader, "motion_frame_no");
 
             character.FavWarpSlotNum = GetUInt32(reader, "fav_warp_slot_num");
+            character.OnlineStatus = (OnlineStatus) GetByte(reader, "online_status");
 
             return character;
         }
@@ -385,6 +408,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@hide_equip_head_pawn", character.HideEquipHeadPawn);
             AddParameter(command, "@hide_equip_lantern_pawn", character.HideEquipLanternPawn);
             AddParameter(command, "@arisen_profile_share_range", character.ArisenProfileShareRange);
+            AddParameter(command, "@online_status", (byte) character.OnlineStatus);
             // CDataMatchingProfile
             AddParameter(command, "@entry_job", (byte) character.MatchingProfile.EntryJob);
             AddParameter(command, "@entry_job_level", character.MatchingProfile.EntryJobLevel);

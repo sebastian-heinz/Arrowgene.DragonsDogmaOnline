@@ -2,6 +2,7 @@ using Arrowgene.Buffers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -16,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             PawnId = 0;
             Unk0 = 0;
             Unk1 = 0;
-            Unk2 = 0;
+            OnlineStatus = 0;
         }
 
         public uint CharacterId;
@@ -34,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         */
         public byte Unk0; // Most likely Platform
         public byte Unk1; // Seems to always be 0 in the pcaps
-        public byte Unk2; // Most likely OnlineStatus
+        public OnlineStatus OnlineStatus; // Most likely OnlineStatus
     }
 
     public class CDataLobbyMemberInfoSerializer : EntitySerializer<CDataLobbyMemberInfo>
@@ -48,7 +49,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             WriteUInt32(buffer, obj.PawnId);
             WriteByte(buffer, obj.Unk0);
             WriteByte(buffer, obj.Unk1);
-            WriteByte(buffer, obj.Unk2);
+            WriteByte(buffer, (byte)obj.OnlineStatus);
         }
 
         public override CDataLobbyMemberInfo Read(IBuffer buffer)
@@ -61,7 +62,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             obj.PawnId = ReadUInt32(buffer);
             obj.Unk0 = ReadByte(buffer);
             obj.Unk1 = ReadByte(buffer);
-            obj.Unk2 = ReadByte(buffer);
+            obj.OnlineStatus = (OnlineStatus)ReadByte(buffer);
             return obj;
         }
     }

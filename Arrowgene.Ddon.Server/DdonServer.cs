@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
@@ -75,6 +76,7 @@ namespace Arrowgene.Ddon.Server
         public virtual void Start()
         {
             Database.DeleteConnectionsByServerId(Id);
+            Database.UpdateAllCharactersOnlineStatus(OnlineStatus.Offline);
             Logger.Info($"[{_setting.ServerSocketSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
             _server.Start();
         }

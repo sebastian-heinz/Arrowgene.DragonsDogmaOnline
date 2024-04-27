@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS ddon_character
     "hide_equip_lantern_pawn"    BOOLEAN                           NOT NULL,
     "arisen_profile_share_range" SMALLINT                          NOT NULL,
     "fav_warp_slot_num"          INTEGER                           NOT NULL,
+    "online_status"              SMALLINT,
     CONSTRAINT fk_character_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE,
     CONSTRAINT fk_character_account_id FOREIGN KEY ("account_id") REFERENCES account ("id") ON DELETE CASCADE
 );
@@ -427,4 +428,18 @@ CREATE TABLE IF NOT EXISTS ddon_connection
     "created"    DATETIME NOT NULL,
     CONSTRAINT uq_connection_server_id_account_id UNIQUE (server_id, account_id),
     CONSTRAINT fk_connection_token_account_id FOREIGN KEY ("account_id") REFERENCES account ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_contact_list" (
+    "id"                        INTEGER UNIQUE,
+    "requester_character_id"	INTEGER NOT NULL,
+    "requested_character_id"	INTEGER NOT NULL,
+    "status"                    SMALLINT NOT NULL,
+    "type"                      SMALLINT NOT NULL,
+    "requester_favorite"	    BOOLEAN NOT NULL,
+    "requested_favorite"	    BOOLEAN NOT NULL,
+    FOREIGN KEY("requester_character_id") REFERENCES "ddon_character"("character_id"),
+    FOREIGN KEY("requested_character_id") REFERENCES "ddon_character"("character_id"),
+    PRIMARY KEY("id" AUTOINCREMENT),
+    UNIQUE("requester_character_id","requested_character_id")
 );

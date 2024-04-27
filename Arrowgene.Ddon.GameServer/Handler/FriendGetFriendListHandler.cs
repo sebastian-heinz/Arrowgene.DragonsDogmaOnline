@@ -42,11 +42,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     if (f.RequesterCharacterId == client.Character.CharacterId)
                     {
-                        apprList.Add(ContactListEntity.CharacterToCommunityInfo(otherCharacter));
+                        applList.Add(ContactListEntity.CharacterToCommunityInfo(otherCharacter));
                     }
                     else if (f.RequestedCharacterId == client.Character.CharacterId)
                     {
-                        applList.Add(ContactListEntity.CharacterToCommunityInfo(otherCharacter));
+                        apprList.Add(ContactListEntity.CharacterToCommunityInfo(otherCharacter));
                     }
                 }
             }

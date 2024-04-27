@@ -40,6 +40,7 @@ using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -133,6 +134,9 @@ namespace Arrowgene.Ddon.GameServer
                     = new ClientConnectionChangeArgs(ClientConnectionChangeArgs.EventType.DISCONNECT, client);
                 connectionChangeEvent(this, connectionChangeEventArgs);
             }
+
+            client.Character.OnlineStatus = OnlineStatus.Offline;
+            Database.UpdateCharacterOnlineStatus(client.Character);
         }
 
         public override GameClient NewClient(ITcpSocket socket)

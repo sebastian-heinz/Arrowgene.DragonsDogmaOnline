@@ -27,15 +27,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             List<CDataCharacterListElement> updateCharacterList = new List<CDataCharacterListElement>();
             List<CDataUpdateMatchingProfileInfo> updateMatchingProfileList = new List<CDataUpdateMatchingProfileInfo>();
-
+            
             List<ContactListEntity> friends = Database.SelectFriends(client.Character.CharacterId);
-
+            
             foreach (var f in friends)
             {
                 if (f.Type != ContactListType.FriendList || f.Status != ContactListStatus.Accepted) continue;
                 Character otherCharacter =
                     Database.SelectCharacter(f.GetOtherCharacterId(client.Character.CharacterId));
-
+            
                 if (f.Status == ContactListStatus.Accepted)
                 {
                     updateCharacterList.Add(ContactListEntity.CharacterToListEml(otherCharacter));
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     });
                 }
             }
-
+            
             client.Send(new S2CCharacterCommunityCharacterStatusUpdateNtc()
             {
                 UpdateCharacterList = updateCharacterList,
@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             client.Send(new S2CCharacterCommunityCharacterStatusGetRes()
             {
-                Result = updateCharacterList.Count
+                Result = updateCharacterList.Count + 1
             });
         }
     }

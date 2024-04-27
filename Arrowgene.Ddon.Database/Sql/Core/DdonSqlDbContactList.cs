@@ -145,7 +145,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             e.RequesterCharacterId = GetUInt32(reader, "requester_character_id");
             e.RequestedCharacterId = GetUInt32(reader, "requested_character_id");
             e.Status = (ContactListStatus) GetByte(reader, "status");
-            e.Type = (ContactListType) GetInt32(reader, "type");
+            e.Type = (ContactListType) GetByte(reader, "type");
             e.RequesterFavorite = GetBoolean(reader, "requester_favorite");
             e.RequestedFavorite = GetBoolean(reader, "requested_favorite");
             return e;
@@ -158,8 +158,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 //     "id"	INTEGER UNIQUE,
 //     "requester_character_id"	INTEGER NOT NULL,
 //     "requested_character_id"	INTEGER NOT NULL,
-//     "status"	INTEGER NOT NULL,
-//     "type"	INTEGER NOT NULL,
+//     "status"	SMALLINT NOT NULL,
+//     "type"	SMALLINT NOT NULL,
 //     "requester_favorite"	BOOLEAN NOT NULL,
 //     "requested_favorite"	BOOLEAN NOT NULL,
 //     FOREIGN KEY("requester_character_id") REFERENCES "ddon_character"("character_id"),

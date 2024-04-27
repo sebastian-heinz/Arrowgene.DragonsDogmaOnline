@@ -25,6 +25,7 @@ namespace Arrowgene.Ddon.Shared.Model
             EquippedAbilitiesDictionary = ((JobId[]) JobId.GetValues(typeof(JobId)))
                 .Select(jobId => (jobId, Enumerable.Repeat<Ability?>(null, 10).ToList()))
                 .ToDictionary(pair => pair.jobId, pair => pair.Item2);
+            OnlineStatus = OnlineStatus.Offline;
         }
 
         public CDataCharacterJobData? ActiveCharacterJobData
