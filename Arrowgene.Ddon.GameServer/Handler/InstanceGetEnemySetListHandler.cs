@@ -8,6 +8,8 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared.Csv;
+using System.Diagnostics;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -24,8 +26,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
         const int gameDayLength = 24;
         const int gameDayLengthRealTime = 90;
+        private readonly EnemySpawnAssetDeserializer _deserializer; // Add this
+
         public InstanceGetEnemySetListHandler(DdonGameServer server) : base(server)
         {
+            _deserializer = new EnemySpawnAssetDeserializer(); // Initialize the deserializer
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
@@ -43,7 +48,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             response.LayoutId = stageId.ToStageLayoutId();
             response.SubGroupId = subGroupId;
             response.RandomSeed = CryptoRandom.Instance.GetRandomUInt32();
-
             for (byte i = 0; i < spawns.Count; i++)
             {
                 Enemy spawn = spawns[i];
@@ -51,14 +55,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     PositionIndex = i,
                     EnemyInfo = spawn.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+
                 };
-                // Get spawn time from the enemy object
-                string spawnTime = spawn.SpawnTime;
-                long startMilliseconds, endMilliseconds;
-                ConvertSpawnTimeToMilliseconds(spawnTime, out startMilliseconds, out endMilliseconds);
 
                 // Calculate current game time
                 long gameTimeMSec = calcGameTimeMSec(DateTimeOffset.Now, ORIGINAL_REAL_TIME_SEC, gameDayLengthRealTime, gameDayLength);
+                
+                // Call the deserializer to get start and end milliseconds
+                long startMilliseconds, endMilliseconds;
+                _deserializer.ConvertSpawnTimeToMilliseconds(spawn.SpawnTime, out startMilliseconds, out endMilliseconds);
+                
+                Logger.Debug($"start and end milliseconds, {startMilliseconds} {endMilliseconds}");
                 
                 // If end < start, it spans past midnight and needs special range handling
                 if(endMilliseconds < startMilliseconds)
@@ -76,26 +83,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             client.Send(response);
-        }
-
-        private void ConvertSpawnTimeToMilliseconds(string spawnTime, out long startMilliseconds, out long endMilliseconds)
-        {
-            // Split the spawnTime string at the comma to get start and end times
-            string[] spawnTimes = spawnTime.Split(',');
-
-            // Split the start time at the colon to get hours and minutes
-            string[] startTimeComponents = spawnTimes[0].Split(':');
-            int startHours = int.Parse(startTimeComponents[0]);
-            int startMinutes = int.Parse(startTimeComponents[1]);
-
-            // Split the end time at the colon to get hours and minutes
-            string[] endTimeComponents = spawnTimes[1].Split(':');
-            int endHours = int.Parse(endTimeComponents[0]);
-            int endMinutes = int.Parse(endTimeComponents[1]);
-
-            // Convert hours and minutes into milliseconds
-            startMilliseconds = (startHours * 3600000) + (startMinutes * 60000);
-            endMilliseconds = (endHours * 3600000) + (endMinutes * 60000);
         }
     }
 }
