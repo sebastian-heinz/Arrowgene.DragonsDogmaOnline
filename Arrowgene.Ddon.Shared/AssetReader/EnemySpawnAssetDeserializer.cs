@@ -97,9 +97,19 @@ namespace Arrowgene.Ddon.Shared.Csv
                     IsAreaBoss = row[enemySchemaIndexes["IsAreaBoss"]].GetBoolean(),
                     BloodOrbs = row[enemySchemaIndexes["BloodOrbs"]].GetUInt32(),
                     HighOrbs = row[enemySchemaIndexes["HighOrbs"]].GetUInt32(),
-                    SpawnTime = row[enemySchemaIndexes["SpawnTime"]].GetString(),
                     Experience = row[enemySchemaIndexes["Experience"]].GetUInt32(),
                 };
+                    if(enemySchemaIndexes.ContainsKey("SpawnTime"))
+                    {
+                        enemy.SpawnTime = row[enemySchemaIndexes["SpawnTime"]].GetString();
+                    }
+                    else
+                    {
+                        enemy.SpawnTime = "00:00,23:59";
+                    }
+                    
+
+                
                 int dropsTableId = row[enemySchemaIndexes["DropsTableId"]].GetInt32();
                 if(dropsTableId >= 0)
                 {
@@ -111,6 +121,26 @@ namespace Arrowgene.Ddon.Shared.Csv
 
             return asset;
         }
+
+        // private void ConvertSpawnTimeToMilliseconds(string spawnTime, out long startMilliseconds, out long endMilliseconds)
+        // {
+        //     // Split the spawnTime string at the comma to get start and end times
+        //     string[] spawnTimes = spawnTime.Split(',');
+
+        //     // Split the start time at the colon to get hours and minutes
+        //     string[] startTimeComponents = spawnTimes[0].Split(':');
+        //     int startHours = int.Parse(startTimeComponents[0]);
+        //     int startMinutes = int.Parse(startTimeComponents[1]);
+
+        //     // Split the end time at the colon to get hours and minutes
+        //     string[] endTimeComponents = spawnTimes[1].Split(':');
+        //     int endHours = int.Parse(endTimeComponents[0]);
+        //     int endMinutes = int.Parse(endTimeComponents[1]);
+
+        //     // Convert hours and minutes into milliseconds
+        //     startMilliseconds = (startHours * 3600000) + (startMinutes * 60000);
+        //     endMilliseconds = (endHours * 3600000) + (endMinutes * 60000);
+        // }
 
         protected uint ParseHexUInt(string str)
         {

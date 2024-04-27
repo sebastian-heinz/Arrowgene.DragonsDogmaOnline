@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class InstanceGetEnemySetListHandler : StructurePacketHandler<GameClient, C2SInstanceGetEnemySetListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetEnemySetListHandler));
+        private static readonly long ORIGINAL_REAL_TIME_SEC = 0x55DDD470; // Taken from the pcaps. A few days before DDOn release. Wednesday, 26 August 2015 15:00:00
         
         private long calcGameTimeMSec(DateTimeOffset realTime, long originalRealTimeSec, uint gameTimeOneDayMin, uint gameTimeDayHour)
         {
@@ -21,8 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         % (3600000 * gameTimeDayHour);
             return result;
         }
-
-
+        const int gameDayLength = 24;
+        const int gameDayLengthRealTime = 90;
         public InstanceGetEnemySetListHandler(DdonGameServer server) : base(server)
         {
         }
@@ -57,29 +58,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ConvertSpawnTimeToMilliseconds(spawnTime, out startMilliseconds, out endMilliseconds);
 
                 // Calculate current game time
-                long gameTimeMSec = calcGameTimeMSec(DateTimeOffset.Now, 0x55DDD470, 90, 24);
+                long gameTimeMSec = calcGameTimeMSec(DateTimeOffset.Now, ORIGINAL_REAL_TIME_SEC, gameDayLengthRealTime, gameDayLength);
                 
-                long dayMilliseconds = 3600000 * 24;
-                // Check if the current game time falls within the spawn time range
-                if (endMilliseconds < startMilliseconds)
+                // If end < start, it spans past midnight and needs special range handling
+                if(endMilliseconds < startMilliseconds)
                 {
-                    endMilliseconds = endMilliseconds + dayMilliseconds;
-                    if (gameTimeMSec <= startMilliseconds && gameTimeMSec <= endMilliseconds)
+                    if(gameTimeMSec <= endMilliseconds // Morning range is 0 (midnight) to end time
+                        || gameTimeMSec >= startMilliseconds) // Evening range is start time and onwards
                     {
                         response.EnemyList.Add(enemy);
                     }
                 }
-
-                if (gameTimeMSec >= startMilliseconds && gameTimeMSec <= endMilliseconds)
+                else if(gameTimeMSec >= startMilliseconds && gameTimeMSec <= endMilliseconds)
                 {
-                    // The enemy is allowed to spawn
                     response.EnemyList.Add(enemy);
-                    Logger.Debug("this funky boi lives");
-                }
-                else
-                {
-                    // The enemy is not allowed to spawn
-                    Logger.Debug("tard couldn't spawn");
                 }
             }
 
