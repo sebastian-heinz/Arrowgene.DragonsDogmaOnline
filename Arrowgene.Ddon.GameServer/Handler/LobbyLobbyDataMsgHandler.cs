@@ -37,19 +37,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if(!LobbyStageIds.Contains(client.Character.Stage.Id))
             {
-                client.Party.SendToAllExcept(res, client);
+                if(client.Party != null)
+                {
+                    client.Party.SendToAllExcept(res, client);
+                }
             }
             else
             {
                 foreach (GameClient otherClient in Server.ClientLookup.GetAll())
                 {
-                    if (otherClient != client && client.Character.Stage.Id == otherClient.Character.Stage.Id)
+                    if (otherClient != client && (client.Character.Stage.Id == otherClient.Character.Stage.Id || client.Party.Id == otherClient.Party.Id))
                     {
                         otherClient.Send(res);
                     }
                 }
             }
-
             
             if(packet.Structure.RpcPacket.Length > 52)
             {
