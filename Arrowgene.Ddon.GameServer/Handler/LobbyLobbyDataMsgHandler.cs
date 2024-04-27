@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -11,6 +12,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LobbyLobbyDataMsgHandler));
 
+        // List of lobby areas, where you're supposed to see all other players.
+        // TODO: Complete with all the safe areas. Maybe move it to DB or config?
+        private static readonly HashSet<uint> LobbyStageIds = new HashSet<uint>(){
+            2, // White Dragon Temple
+            341, // Dana Centrum
+            486, // Fortress City Megado: Residential Level
+            487, // Fortress City Megado: Residential Level
+            488, // Fortress City Megado: Royal Palace Level
+        };
+        
         public LobbyLobbyDataMsgHandler(DdonGameServer server) : base(server)
         {
         }
@@ -24,13 +35,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.RpcPacket = packet.Structure.RpcPacket;
             res.OnlineStatus = client.Character.OnlineStatus;
 
-            foreach (GameClient otherClient in Server.Clients)
+            if(!LobbyStageIds.Contains(client.Character.Stage.Id))
             {
-                if (otherClient != client)
+                client.Party.SendToAllExcept(res, client);
+            }
+            else
+            {
+                foreach (GameClient otherClient in Server.ClientLookup.GetAll())
                 {
-                    otherClient.Send(res);
+                    if (otherClient != client && client.Character.Stage.Id == otherClient.Character.Stage.Id)
+                    {
+                        otherClient.Send(res);
+                    }
                 }
             }
+
             
             if(packet.Structure.RpcPacket.Length > 52)
             {
