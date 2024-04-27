@@ -31,7 +31,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool IsAreaBoss { get; set; }
         public uint BloodOrbs { get; set; }
         public uint HighOrbs { get; set; }
-        public string SpawnTime { get; set;}
+        public long SpawnTimeStart { get; set;}
+        public long SpawnTimeEnd { get; set; }
         public uint Experience { get; set; }
         public DropsTable DropsTable { get; set; }
   

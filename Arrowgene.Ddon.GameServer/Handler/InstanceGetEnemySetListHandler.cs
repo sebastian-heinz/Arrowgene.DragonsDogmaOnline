@@ -18,19 +18,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetEnemySetListHandler));
         private static readonly long ORIGINAL_REAL_TIME_SEC = 0x55DDD470; // Taken from the pcaps. A few days before DDOn release. Wednesday, 26 August 2015 15:00:00
         
+
+        // Magical game time calculation obtained from the PS4 client, can be found in ServerGameTimeGetBaseinfoHandler
         private long calcGameTimeMSec(DateTimeOffset realTime, long originalRealTimeSec, uint gameTimeOneDayMin, uint gameTimeDayHour)
         {
             long result = (1440 * (realTime.Millisecond + 1000 * (realTime.ToUnixTimeSeconds() - originalRealTimeSec)) / gameTimeOneDayMin)
                         % (3600000 * gameTimeDayHour);
             return result;
         }
+        // defining how many hours there are in a day (24)
         const int gameDayLength = 24;
+        // defining how long a full 24 hours cycle is in real world time, (90 minutes)
         const int gameDayLengthRealTime = 90;
-        private readonly EnemySpawnAssetDeserializer _deserializer; // Add this
 
         public InstanceGetEnemySetListHandler(DdonGameServer server) : base(server)
         {
-            _deserializer = new EnemySpawnAssetDeserializer(); // Initialize the deserializer
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
@@ -61,11 +63,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Calculate current game time
                 long gameTimeMSec = calcGameTimeMSec(DateTimeOffset.Now, ORIGINAL_REAL_TIME_SEC, gameDayLengthRealTime, gameDayLength);
                 
-                // Call the deserializer to get start and end milliseconds
+                // getting the start and end times from enemy.cs and defining them here for handling the spawnchecks
                 long startMilliseconds, endMilliseconds;
-                _deserializer.ConvertSpawnTimeToMilliseconds(spawn.SpawnTime, out startMilliseconds, out endMilliseconds);
-                
-                Logger.Debug($"start and end milliseconds, {startMilliseconds} {endMilliseconds}");
+                startMilliseconds = spawn.SpawnTimeStart;
+                endMilliseconds = spawn.SpawnTimeEnd;
                 
                 // If end < start, it spans past midnight and needs special range handling
                 if(endMilliseconds < startMilliseconds)

@@ -99,17 +99,23 @@ namespace Arrowgene.Ddon.Shared.Csv
                     HighOrbs = row[enemySchemaIndexes["HighOrbs"]].GetUInt32(),
                     Experience = row[enemySchemaIndexes["Experience"]].GetUInt32(),
                 };
+
+                //checking if the file has spawntime, if yes we convert the time and pass it along to enemy.cs
                     if(enemySchemaIndexes.ContainsKey("SpawnTime"))
                     {
-                        enemy.SpawnTime = row[enemySchemaIndexes["SpawnTime"]].GetString();
+                        string SpawnTimeGet = row[enemySchemaIndexes["SpawnTime"]].GetString();
+                        ConvertSpawnTimeToMilliseconds(SpawnTimeGet, out long start, out long end);
+                        enemy.SpawnTimeStart = start;
+                        enemy.SpawnTimeEnd = end; 
                     }
                     else
                     {
-                        enemy.SpawnTime = "00:00,23:59";
+                        // if no, we define it to the "allday" spawn time range and pass this along to the enemy.cs instead.
+                        ConvertSpawnTimeToMilliseconds("00:00,23:59", out long start, out long end);
+                        enemy.SpawnTimeStart = start;
+                        enemy.SpawnTimeEnd = end;
                     }
                     
-                    long startMilliseconds, endMilliseconds;
-                    ConvertSpawnTimeToMilliseconds(enemy.SpawnTime, out startMilliseconds, out endMilliseconds);
                 
                 int dropsTableId = row[enemySchemaIndexes["DropsTableId"]].GetInt32();
                 if(dropsTableId >= 0)
@@ -122,7 +128,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 
             return asset;
         }
-
+                // this converts the time (07:00,18:00) as example, down into milliseconds, via splitting into hours/minutes and then combining each respect time into start/end
             public void ConvertSpawnTimeToMilliseconds(string SpawnTime, out long startMilliseconds, out long endMilliseconds)
             {
                 // Split the spawnTime string at the comma to get start and end times
