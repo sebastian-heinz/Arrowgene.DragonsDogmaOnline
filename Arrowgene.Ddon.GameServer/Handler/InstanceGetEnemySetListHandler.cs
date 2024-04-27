@@ -26,9 +26,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         % (3600000 * gameTimeDayHour);
             return result;
         }
-        // defining how many hours there are in a day (24)
+        // defining how many hours there are in a day (24) This comes from the same ps4 pcaps
         const int gameDayLength = 24;
-        // defining how long a full 24 hours cycle is in real world time, (90 minutes)
+        // defining how long a full 24 hours cycle is in real world time, (90 minutes) This comes from the same ps4 pcaps
         const int gameDayLengthRealTime = 90;
 
         public InstanceGetEnemySetListHandler(DdonGameServer server) : base(server)
