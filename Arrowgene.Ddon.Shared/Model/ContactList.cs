@@ -65,6 +65,28 @@ namespace Arrowgene.Ddon.Shared.Model
             };
 
         }
+
+        public static CDataCharacterListElement CharacterToListEml(Character c)
+        {
+            return new CDataCharacterListElement()
+            {
+                OnlineStatus = c.OnlineStatus,
+                MatchingProfile = c.MatchingProfile.Comment,
+                ServerId = c.Server.Id,
+                CommunityCharacterBaseInfo = CharacterToCommunityInfo(c),
+                CurrentJobBaseInfo = new CDataJobBaseInfo()
+                {
+                    Job = c.Job,
+                    Level = (byte)(c.ActiveCharacterJobData?.Lv ?? 0x00)
+                },
+                EntryJobBaseInfo = new CDataJobBaseInfo()
+                {
+                    // TODO
+                    Job = JobId.Hunter,
+                    Level = 20
+                }
+            };
+        }
         
         public static CDataFriendInfo CharacterToFriend(Character c, uint unFriendNo, bool isFavorite)
         {
@@ -72,24 +94,8 @@ namespace Arrowgene.Ddon.Shared.Model
             {
                 IsFavorite = isFavorite,
                 PendingStatus = 0x00, // TODO
-                UnFriendNo = unFriendNo, // TODO
-                CharacterListElement = new CDataCharacterListElement()
-                {
-                    OnlineStatus = c.OnlineStatus,
-                    MatchingProfile = c.MatchingProfile.Comment,
-                    ServerId = c.Server.Id,
-                    CommunityCharacterBaseInfo = CharacterToCommunityInfo(c),
-                    CurrentJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        Job = c.Job,
-                        Level = 10
-                    },
-                    EntryJobBaseInfo = new CDataJobBaseInfo()
-                    { // TODO
-                        Job = JobId.Hunter,
-                        Level = 20
-                    }
-                }
+                UnFriendNo = unFriendNo,
+                CharacterListElement = CharacterToListEml(c)
 
             };
             

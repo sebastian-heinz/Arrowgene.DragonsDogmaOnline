@@ -47,6 +47,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<JobId, List<CustomSkill?>> EquippedCustomSkillsDictionary { get; set;}
         public List<Ability> LearnedAbilities { get; set; }
         public Dictionary<JobId, List<Ability?>> EquippedAbilitiesDictionary { get; set; }
-        public OnlineStatus OnlineStatus;
+        public OnlineStatus OnlineStatus { get; set; }
     }
 }

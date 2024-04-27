@@ -426,6 +426,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SFriendRemoveFriendReq.Serializer());
             Create(new C2SFriendRegisterFavoriteFriendReq.Serializer());
             Create(new C2SFriendCancelFriendApplicationReq.Serializer());
+            Create(new C2SCharacterCommunityCharacterStatusGetReq.Serializer());
             
             Create(new L2CCreateCharacterDataNtc.Serializer());
             Create(new L2CCreateCharacterDataRes.Serializer());
@@ -704,7 +705,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CFriendRemoveFriendRes.Serializer());
             Create(new S2CFriendRegisterFavoriteFriendRes.Serializer());
             Create(new S2CFriendCancelFriendApplicationRes.Serializer());
-            
+            Create(new S2CCharacterCommunityCharacterStatusGetRes.Serializer());
+
             Create(new S2CFriendApplyFriendNtc.Serializer());
             Create(new S2CFriendApproveFriendNtc.Serializer());
             Create(new S2CFriendRemoveFriendNtc.Serializer());
