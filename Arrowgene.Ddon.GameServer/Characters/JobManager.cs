@@ -518,35 +518,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void RemoveAbility(IDatabase database, CharacterCommon character, byte slotNo)
         {
+            var equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
             // TODO: Performance
-            List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
             lock (equippedAbilities)
             {
-                byte removedAbilitySlotNo = Byte.MaxValue;
-                for (int i = 0; i < equippedAbilities.Count; i++)
-                {
-                    Ability equippedAbility = equippedAbilities[i];
-                    byte equippedAbilitySlotNo = (byte)(i + 1);
-                    if (character.Job == character.Job && equippedAbilitySlotNo == slotNo)
-                    {
-                        equippedAbilities[i] = null;
-                        removedAbilitySlotNo = equippedAbilitySlotNo;
-                        break;
-                    }
-                }
-
-                for (int i = 0; i < equippedAbilities.Count; i++)
-                {
-                    Ability equippedAbility = equippedAbilities[i];
-                    byte equippedAbilitySlotNo = (byte)(i + 1);
-                    if (character.Job == character.Job)
-                    {
-                        if (equippedAbilitySlotNo > removedAbilitySlotNo)
-                        {
-                            equippedAbilitySlotNo--;
-                        }
-                    }
-                }
+                // Seems client wants us to keep the abilities where it was added
+                // for the first time. So just null out the ability we want to remove
+                // in the position in the list. When inserting into the DB, we need to
+                // be careful and skip over null entries and continue to increment the
+                // slot index.
+                equippedAbilities[slotNo - 1] = null;
             }
 
             database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
