@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SFriendRegisterFavoriteFriendReq> packet)
         {
-            ContactListEntity r = Database.SelectRelationship(packet.Structure.unFriendNo);
+            ContactListEntity r = Database.SelectContactListById(packet.Structure.unFriendNo);
             if (r == null)
             {
                 Logger.Error(client, $"ContactListEntity not found");
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             
             r.SetFavoriteForCharacter(client.Character.CharacterId, packet.Structure.isFavorite);
-            Database.UpsertContact(r.RequesterCharacterId, r.RequestedCharacterId, r.Status, r.Type,
+            Database.UpdateContact(r.RequesterCharacterId, r.RequestedCharacterId, r.Status, r.Type,
                 r.RequesterFavorite, r.RequestedFavorite);
             
             client.Send(

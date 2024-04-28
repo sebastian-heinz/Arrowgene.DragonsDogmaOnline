@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataFriendInfo> fList = new List<CDataFriendInfo>();
             List<CDataCommunityCharacterBaseInfo> applList = new List<CDataCommunityCharacterBaseInfo>();
             List<CDataCommunityCharacterBaseInfo> apprList = new List<CDataCommunityCharacterBaseInfo>();
-            List<ContactListEntity> friends = Database.SelectFriends(client.Character.CharacterId);
+            List<ContactListEntity> friends = Database.SelectContactsByCharacterId(client.Character.CharacterId);
             
             foreach (var f in friends)
             {

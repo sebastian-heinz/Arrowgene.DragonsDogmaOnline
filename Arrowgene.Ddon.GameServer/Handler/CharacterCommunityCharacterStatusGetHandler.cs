@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataCharacterListElement> updateCharacterList = new List<CDataCharacterListElement>();
             List<CDataUpdateMatchingProfileInfo> updateMatchingProfileList = new List<CDataUpdateMatchingProfileInfo>();
             
-            List<ContactListEntity> friends = Database.SelectFriends(client.Character.CharacterId);
+            List<ContactListEntity> friends = Database.SelectContactsByCharacterId(client.Character.CharacterId);
             
             foreach (var f in friends)
             {

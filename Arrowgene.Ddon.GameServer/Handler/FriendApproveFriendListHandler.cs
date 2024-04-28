@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SFriendApproveFriendReq> packet)
         {
-            ContactListEntity relationship = Database.SelectRelationship(packet.Structure.CharacterId, client.Character.CharacterId);
+            ContactListEntity relationship = Database.SelectContactsByCharacterId(packet.Structure.CharacterId, client.Character.CharacterId);
             if (relationship is not { Status: ContactListStatus.PendingApproval })
             {
                 Logger.Error(client, $"ContactListEntity not found");
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             if (packet.Structure.IsApproved)
             {
-                Database.UpsertContact(packet.Structure.CharacterId, client.Character.CharacterId,
+                Database.UpdateContact(packet.Structure.CharacterId, client.Character.CharacterId,
                     ContactListStatus.Accepted, ContactListType.FriendList, false, false);
             }
             else

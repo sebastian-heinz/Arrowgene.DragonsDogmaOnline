@@ -18,10 +18,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private static readonly string SqlInsertContact = $"INSERT INTO \"{TableName}\" ({BuildQueryField(ContactListFields)}) VALUES ({BuildQueryInsert(ContactListFields)});";
-        private static readonly string SqlSelectFriendsById = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" WHERE \"id\"=@id;";
-        private static readonly string SqlSelectFriends = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" WHERE \"requester_character_id\"=@character_id or \"requested_character_id\"=@character_id;";
+        private static readonly string SqlSelectContactById = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" WHERE \"id\"=@id;";
+        private static readonly string SqlSelectContactsByCharacterId = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" WHERE \"requester_character_id\"=@character_id or \"requested_character_id\"=@character_id;";
         
-        private static readonly string SqlSelectRelationship = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" " +
+        private static readonly string SqlSelectContactsByCharacterIds = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" " +
                                                                $"WHERE (\"requester_character_id\"=@character_id_1 and \"requested_character_id\"=@character_id_2) or " +
                                                                $"(\"requester_character_id\"=@character_id_2 and \"requested_character_id\"=@character_id_1);";
         
@@ -32,23 +32,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateContactByCharIds = $"UPDATE \"{TableName}\" SET \"status\"=@status, \"type\"=@type, \"requester_favorite\"=@requester_favorite, \"requested_favorite\"=@requested_favorite WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
 
 
-        public int UpsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
+        public int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
         {
-            int rowsAffected = ExecuteNonQuery(SqlUpdateContactByCharIds, command =>
-            {
-                AddParameter(command, "@requester_character_id", requestingCharacterId);
-                AddParameter(command, "@requested_character_id", requestedCharacterId);
-                AddParameter(command, "@status", (byte) status);
-                AddParameter(command, "@type", (byte) type);
-                AddParameter(command, "@requester_favorite", requesterFavorite);
-                AddParameter(command, "@requested_favorite", requestedFavorite);
-            });
-            if (rowsAffected > NoRowsAffected)
-            {
-                return rowsAffected * -1;
-            }
-
-            rowsAffected = ExecuteNonQuery(SqlInsertContact, command =>
+            int rowsAffected = ExecuteNonQuery(SqlInsertContact, command =>
             {
                 AddParameter(command, "@requester_character_id", requestingCharacterId);
                 AddParameter(command, "@requested_character_id", requestedCharacterId);
@@ -64,6 +50,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
 
             return 0;
+        }
+        
+        public int UpdateContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
+        {
+            int rowsAffected = ExecuteNonQuery(SqlUpdateContactByCharIds, command =>
+            {
+                AddParameter(command, "@requester_character_id", requestingCharacterId);
+                AddParameter(command, "@requested_character_id", requestedCharacterId);
+                AddParameter(command, "@status", (byte) status);
+                AddParameter(command, "@type", (byte) type);
+                AddParameter(command, "@requester_favorite", requesterFavorite);
+                AddParameter(command, "@requested_favorite", requestedFavorite);
+            });
+
+            return rowsAffected;
         }
         
         public int DeleteContact(uint requestingCharacterId, uint requestedCharacterId)
@@ -85,10 +86,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return rowsAffected;
         }
         
-        public List<ContactListEntity> SelectFriends(uint characterId)
+        public List<ContactListEntity> SelectContactsByCharacterId(uint characterId)
         {
             List<ContactListEntity> entities = new List<ContactListEntity>();
-            ExecuteReader(SqlSelectFriends,
+            ExecuteReader(SqlSelectContactsByCharacterId,
                 command => { AddParameter(command, "@character_id", characterId); }, reader =>
                 {
                     while (reader.Read())
@@ -101,10 +102,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return entities;
         }
         
-        public ContactListEntity SelectRelationship(uint characterId1, uint characterId2)
+        public ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2)
         {
             ContactListEntity entity = null;
-            ExecuteReader(SqlSelectRelationship,
+            ExecuteReader(SqlSelectContactsByCharacterIds,
                 command =>
                 {
                     AddParameter(command, "@character_id_1", characterId1);
@@ -120,10 +121,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return entity;
         }
         
-        public ContactListEntity SelectRelationship(uint id)
+        public ContactListEntity SelectContactListById(uint id)
         {
             ContactListEntity entity = null;
-            ExecuteReader(SqlSelectFriendsById,
+            ExecuteReader(SqlSelectContactById,
                 command =>
                 {
                     AddParameter(command, "@id", id);
@@ -152,18 +153,3 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         }
     }
 }
-
-
-// CREATE TABLE "ddon_contact_list" (
-//     "id"	INTEGER UNIQUE,
-//     "requester_character_id"	INTEGER NOT NULL,
-//     "requested_character_id"	INTEGER NOT NULL,
-//     "status"	SMALLINT NOT NULL,
-//     "type"	SMALLINT NOT NULL,
-//     "requester_favorite"	BOOLEAN NOT NULL,
-//     "requested_favorite"	BOOLEAN NOT NULL,
-//     FOREIGN KEY("requester_character_id") REFERENCES "ddon_character"("character_id"),
-//     FOREIGN KEY("requested_character_id") REFERENCES "ddon_character"("character_id"),
-//     PRIMARY KEY("id" AUTOINCREMENT),
-//     UNIQUE("requester_character_id","requested_character_id")
-// );

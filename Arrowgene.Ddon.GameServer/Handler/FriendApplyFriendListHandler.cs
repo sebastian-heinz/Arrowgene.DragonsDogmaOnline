@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SFriendApplyFriendReq> packet)
         {
             
-            ContactListEntity existingFriend = Server.Database.SelectRelationship(packet.Structure.CharacterId, client.Character.CharacterId);
+            ContactListEntity existingFriend = Server.Database.SelectContactsByCharacterId(packet.Structure.CharacterId, client.Character.CharacterId);
             if (existingFriend != null)
             {
                 uint errorCode = (uint)ErrorCode.ERROR_CODE_FAIL;
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            int id = Database.UpsertContact(client.Character.CharacterId, requestedChar.CharacterId,
+            int id = Database.InsertContact(client.Character.CharacterId, requestedChar.CharacterId,
                 ContactListStatus.PendingApproval, ContactListType.FriendList, false, false);
             
             if (id < 1)

@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SFriendCancelFriendApplicationReq> packet)
         {
-            ContactListEntity relationship = Database.SelectRelationship(client.Character.CharacterId, packet.Structure.CharacterId);
+            ContactListEntity relationship = Database.SelectContactsByCharacterId(client.Character.CharacterId, packet.Structure.CharacterId);
             if (relationship is not { Status: ContactListStatus.PendingApproval })
             {
                 Logger.Error(client, $"ContactListEntity not found");

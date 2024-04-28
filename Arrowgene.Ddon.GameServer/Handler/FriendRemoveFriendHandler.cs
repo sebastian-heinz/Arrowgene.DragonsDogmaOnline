@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SFriendRemoveFriendReq> packet)
         {
 
-            ContactListEntity relationship = Database.SelectRelationship(packet.Structure.unFriendNo);
+            ContactListEntity relationship = Database.SelectContactListById(packet.Structure.unFriendNo);
             if (relationship == null)
             {
                 Logger.Error(client, $"ContactListEntity not found");
