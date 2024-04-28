@@ -25,16 +25,11 @@ namespace Arrowgene.Ddon.Cli.Command
         public CommandResultType Run(CommandParameter parameter)
         {
             string yamlPath = parameter.Arguments[0];
-            string camelliaKey = parameter.Arguments[1];
+            string camelliaKey = parameter.SwitchMap.GetValueOrDefault("--key", null) ?? parameter.Arguments[1];
             byte[] camelliaKeyBytes = Encoding.UTF8.GetBytes(camelliaKey);
             bool addUtf8EncodedByteDump = parameter.Switches.Contains("--utf8-dump");
 
             List<PcapPacket> decryptedPcapPackets = DecryptPackets(yamlPath, camelliaKeyBytes);
-            if (decryptedPcapPackets == null)
-            {
-                return CommandResultType.Exit;
-            }
-
             string annotatedDump = GetAnnotatedPacketDump(decryptedPcapPackets, addUtf8EncodedByteDump);
             string outputPath = yamlPath + ".annotated.txt";
             File.WriteAllText(outputPath, annotatedDump);
@@ -53,8 +48,7 @@ namespace Arrowgene.Ddon.Cli.Command
         {
             if (pcapPackets == null || pcapPackets.Count <= 0)
             {
-                Logger.Error("No packets found to annotate.");
-                return null;
+                throw new PacketCommandException("No packets found to annotate.");
             }
 
             ServerType serverType = pcapPackets[0].ServerType;
@@ -69,8 +63,7 @@ namespace Arrowgene.Ddon.Cli.Command
             }
             else
             {
-                Logger.Error("Could not determine server type.");
-                return null;
+                throw new PacketCommandException("Could not determine server type.");
             }
 
             PacketFactory serverFactory = new PacketFactory(new ServerSetting(), packetIdResolver);
@@ -93,8 +86,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 }
                 catch (Exception ex)
                 {
-                    Logger.Exception(new Exception("Could not parse more packets, closing prematurely", ex));
-                    break;
+                    throw new PacketCommandException("Could not parse more packets, closing prematurely", ex);
                 }
             }
 
@@ -138,46 +130,49 @@ namespace Arrowgene.Ddon.Cli.Command
             YamlFile yamlFile = yamlDeserializer.Deserialize<YamlFile>(yaml);
             if (yamlFile.peers.Count != 2)
             {
-                Logger.Error("Expected two peers");
-                return null;
+                throw new PacketCommandException("Expected two peers");
             }
 
             YamlPeer serverPeer;
             YamlPeer clientPeer;
-            if (yamlFile.peers[0].port is 52100 or 52000)
+            if (yamlFile.peers[0].port is (ushort)ServerType.Login or (ushort)ServerType.Game)
             {
                 serverPeer = yamlFile.peers[0];
                 clientPeer = yamlFile.peers[1];
             }
-            else if (yamlFile.peers[1].port is 52100 or 52000)
+            else if (yamlFile.peers[1].port is (ushort)ServerType.Login or (ushort)ServerType.Game)
             {
                 serverPeer = yamlFile.peers[1];
                 clientPeer = yamlFile.peers[0];
             }
             else
             {
-                Logger.Error("Could not identify peer roles");
-                return null;
+                throw new PacketCommandException("Could not identify peer roles");
             }
 
             ServerType serverType;
-            if (serverPeer.port == 52100)
+            if (serverPeer.port == (ushort)ServerType.Login)
             {
                 serverType = ServerType.Login;
             }
-            else if (serverPeer.port == 52000)
+            else if (serverPeer.port == (ushort)ServerType.Game)
             {
                 serverType = ServerType.Game;
             }
             else
             {
-                Logger.Error("Could not identify server type");
-                return null;
+                throw new PacketCommandException("Could not identify server type");
             }
 
             List<PcapPacket> pcapPackets = new List<PcapPacket>(yamlFile.packets.Count);
             foreach (YamlPacket yamlPacket in yamlFile.packets)
             {
+                if (yamlPacket.timestamp.StartsWith("0"))
+                {
+                    Logger.Error($"Skipping broken packet {yamlPacket.packet} with invalid timestamp!");
+                    continue;
+                }
+                
                 PcapPacket pcapPacket = new PcapPacket();
                 if (yamlPacket.peer == serverPeer.peer)
                 {
