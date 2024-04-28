@@ -11,6 +11,25 @@ namespace Arrowgene.Ddon.Shared.Model
             OnlineStatus = OnlineStatus.None;
             PawnReactionList = new List<CDataPawnReaction>();
             SpSkillList = new List<CDataSpSkill>();
+            // TODO: Fetch from DB
+            CraftData = new CDataPawnCraftData() {
+                CraftExp = 0,
+                CraftRank = 0,
+                CraftRankLimit = 8,
+                CraftPoint = 0,
+                PawnCraftSkillList = new List<CDataPawnCraftSkill>() {
+                    new CDataPawnCraftSkill() {Type = 1, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 2, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 3, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 4, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 5, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 6, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 7, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 8, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 9, Level = 0},
+                    new CDataPawnCraftSkill() {Type = 10, Level = 0}
+                }
+            };
         }
         
         public Pawn(uint ownerCharacterId):this()
@@ -35,5 +54,6 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public List<CDataPawnReaction> PawnReactionList { get; set; }
         public List<CDataSpSkill> SpSkillList { get; set; }
+        public CDataPawnCraftData CraftData { get; set; }
     }
 }

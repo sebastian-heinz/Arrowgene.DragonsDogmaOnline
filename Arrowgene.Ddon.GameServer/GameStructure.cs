@@ -132,24 +132,7 @@ public static class GameStructure
         cDataPawnInfo.JewelrySlotNum = pawn.JewelrySlotNum;
         // TODO: Pawn CharacterItemSlotInfoList, CraftData
         cDataPawnInfo.CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
-        cDataPawnInfo.CraftData = new CDataPawnCraftData() {
-            CraftExp = 391,
-            CraftRank = 4,
-            CraftRankLimit = 8,
-            CraftPoint = 0,
-            PawnCraftSkillList = new List<CDataPawnCraftSkill>() {
-                new CDataPawnCraftSkill() {Type = 1, Level = 0},
-                new CDataPawnCraftSkill() {Type = 2, Level = 3},
-                new CDataPawnCraftSkill() {Type = 3, Level = 0},
-                new CDataPawnCraftSkill() {Type = 4, Level = 0},
-                new CDataPawnCraftSkill() {Type = 5, Level = 0},
-                new CDataPawnCraftSkill() {Type = 6, Level = 0},
-                new CDataPawnCraftSkill() {Type = 7, Level = 0},
-                new CDataPawnCraftSkill() {Type = 8, Level = 0},
-                new CDataPawnCraftSkill() {Type = 9, Level = 0},
-                new CDataPawnCraftSkill() {Type = 10, Level = 0}
-            }
-        };
+        cDataPawnInfo.CraftData = pawn.CraftData;
         cDataPawnInfo.PawnReactionList = pawn.PawnReactionList;
         cDataPawnInfo.HideEquipHead = pawn.HideEquipHead;
         cDataPawnInfo.HideEquipLantern = pawn.HideEquipLantern;
