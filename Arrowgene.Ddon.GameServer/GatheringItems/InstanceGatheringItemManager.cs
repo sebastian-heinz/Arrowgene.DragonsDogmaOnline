@@ -4,18 +4,18 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
-    public class InstanceGatheringItemManager : InstanceItemManager<uint>
+    public class InstanceGatheringItemManager : InstanceItemManager
     {
-        public InstanceGatheringItemManager(AssetRepository assetRepository) : base()
+        private readonly AssetRepository _assetRepository;
+
+        public InstanceGatheringItemManager(AssetRepository assetRepository)
         {
-            this.assetRepository = assetRepository;
+            this._assetRepository = assetRepository;
         }
 
-        private readonly AssetRepository assetRepository;
-
-        protected override List<GatheringItem> FetchItemsFromRepository(StageId stage, uint subGroupId)
+        protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, uint subGroupId)
         {
-            return assetRepository.GatheringItems.GetValueOrDefault((stage, subGroupId)) ?? new List<GatheringItem>();
+            return _assetRepository.GatheringItems.GetValueOrDefault((stage, subGroupId)) ?? new List<GatheringItem>();
         }
     }
 }

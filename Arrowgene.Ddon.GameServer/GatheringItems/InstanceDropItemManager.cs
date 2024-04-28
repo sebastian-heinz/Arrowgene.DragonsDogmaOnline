@@ -1,21 +1,20 @@
 using System.Collections.Generic;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
-    public class InstanceDropItemManager : InstanceItemManager<uint>
+    public class InstanceDropItemManager : InstanceItemManager
     {
-        public InstanceDropItemManager(AssetRepository assetRepository) : base()
+        private readonly GameClient _client;
+
+        public InstanceDropItemManager(GameClient client)
         {
-            this.assetRepository = assetRepository;
+            this._client = client;
         }
 
-        private readonly AssetRepository assetRepository;
-
-        protected override List<GatheringItem> FetchItemsFromRepository(StageId stage, uint setId)
+        protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, uint setId)
         {
-            List<Enemy> enemiesInSet = assetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, (byte) 0));
+            List<Enemy> enemiesInSet =  _client.Party.InstanceEnemyManager.GetAssets(stage, 0);
             if(enemiesInSet != null && setId < enemiesInSet.Count)
             {
                 Enemy enemy = enemiesInSet[(int) setId];

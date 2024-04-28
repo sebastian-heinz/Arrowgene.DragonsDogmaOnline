@@ -48,7 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     LayerNo = layerNo,
                     GroupId = groupId
                 };
-                List<Enemy> enemySpawns = Server.AssetRepository.EnemySpawnAsset.Enemies[(StageId.FromStageLayoutId(enemyGroup), subGroupId)];
+                List<Enemy> enemySpawns = client.Party.InstanceEnemyManager.GetAssets(enemyGroup, subGroupId);
 
                 if (enemySpawns.Count <= positionIndex)
                 {
