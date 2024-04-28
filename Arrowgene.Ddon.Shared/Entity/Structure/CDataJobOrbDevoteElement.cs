@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool DrawConnection { get; set; }
 
         public List<CDataCommonU32> RequiredElementIDList { get; set; }
-        public List<CDataCommonU32> RequiredQuestList {  get; set; } 
+        public List<CDataCommonU32> RequiredQuestList {  get; set; }
 
         public class Serializer : EntitySerializer<CDataJobOrbDevoteElement>
         {
@@ -68,7 +68,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ParamValue = ReadUInt32(buffer);
                 obj.PosX = ReadUInt32(buffer);
                 obj.PosY = ReadUInt32(buffer);
-                obj.IsReleased = ReadByte(buffer) == 1 ? true : false;
+                obj.IsReleased = ReadBool(buffer);
                 obj.RequiredElementIDList = ReadEntityList<CDataCommonU32>(buffer);
                 obj.RequiredQuestList = ReadEntityList<CDataCommonU32>(buffer);
                 return obj;

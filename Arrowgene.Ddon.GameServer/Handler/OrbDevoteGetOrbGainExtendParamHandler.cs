@@ -29,13 +29,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2COrbDevoteGetOrbGainExtendParamRes Result = new S2COrbDevoteGetOrbGainExtendParamRes();
             Result.ExtendParam = client.Character.ExtendedParams;
             client.Send(Result);
-
-            /*
-            S2CItemUpdateCharacterItemNtc UpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            UpdateCharacterItemNtc.UpdateType = 0x2a;
-            UpdateCharacterItemNtc.UpdateItemList = _OrbUnlockManager.GetDragonForceUpgradeUpdateList(client.Character);
-            client.Send(UpdateCharacterItemNtc);
-            */
         }
     }
 }

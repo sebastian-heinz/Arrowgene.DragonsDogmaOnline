@@ -73,23 +73,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 // Remove previously equipped abilities
                 DeleteEquippedAbilities(connection, commonId, equippedToJob);
 
-                // Reinsert Abilities
-                byte slotNo = 1;
-                for (int i = 0; i < abilities.Count; i++)
+                for (int i = 0; i < abilities.Count && abilities[i] != null; i++)
                 {
                     var ability = abilities[i];
-                    abilities[i] = null;
-                    if (ability is null)
-                    {
-                        continue;
-                    }
-
+                    byte slotNo = (byte)(i + 1);
                     InsertEquippedAbility(connection, commonId, equippedToJob, slotNo, ability);
-
-                    // Place the ability in it's new slot in the list
-                    abilities[slotNo - 1] = ability;
-
-                    slotNo += 1;
                 }
             });
 
