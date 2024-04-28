@@ -31,7 +31,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             foreach (var f in friends)
             {
-                if (f.Type != ContactListType.FriendList) continue;
+                if (f.Type != ContactListType.FriendList)
+                {
+                    continue;
+                }
                 Character otherCharacter =
                     Database.SelectCharacter(f.GetOtherCharacterId(client.Character.CharacterId));
                 

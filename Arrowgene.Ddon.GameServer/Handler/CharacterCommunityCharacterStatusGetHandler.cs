@@ -31,7 +31,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             foreach (var f in friends)
             {
-                if (f.Type != ContactListType.FriendList || f.Status != ContactListStatus.Accepted) continue;
+                if (f.Type != ContactListType.FriendList || f.Status != ContactListStatus.Accepted)
+                {
+                    continue;
+                }
                 Character otherCharacter =
                     ContactListManager.getCharWithOnlineStatus(Server,Database, f.GetOtherCharacterId(client.Character.CharacterId));
                 updateCharacterList.Add(ContactListManager.CharacterToListEml(otherCharacter));
