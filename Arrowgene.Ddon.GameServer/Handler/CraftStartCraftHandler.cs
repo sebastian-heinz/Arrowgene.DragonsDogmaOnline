@@ -1,3 +1,4 @@
+#nullable enable
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
@@ -45,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 int consumedItems = 0;
 
                 // Take first from item bag
-                CDataItemUpdateResult? craftMaterialBagUpdateResult = _itemManager.ConsumeItemByUId(Server, client.Character, StorageType.ItemBagMaterial, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                CDataItemUpdateResult? craftMaterialBagUpdateResult = _itemManager.ConsumeItemByUIdFromItemBag(Server, client.Character, craftMaterial.ItemUId, craftMaterial.ItemNum);
                 if(craftMaterialBagUpdateResult != null)
                 {
                     updateCharacterItemNtc.UpdateItemList.Add(craftMaterialBagUpdateResult);

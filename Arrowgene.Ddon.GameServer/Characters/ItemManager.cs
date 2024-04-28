@@ -89,6 +89,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public CDataItemUpdateResult? ConsumeItemByUIdFromItemBag(DdonServer<GameClient> server, Character character, string itemUId, uint consumeNum)
+        {
+            StorageType[] itemBagStorageTypes = new StorageType[] {StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob};
+            foreach (var storageType in itemBagStorageTypes)
+            {
+                CDataItemUpdateResult? result = ConsumeItemByUId(server, character, storageType, itemUId, consumeNum);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
+        }
+
         public CDataItemUpdateResult? ConsumeItemByUId(DdonServer<GameClient> server, Character character, StorageType fromStorageType, string itemUId, uint consumeNum)
         {
             var foundItem = character.Storage.getStorage(fromStorageType).findItemByUId(itemUId);
