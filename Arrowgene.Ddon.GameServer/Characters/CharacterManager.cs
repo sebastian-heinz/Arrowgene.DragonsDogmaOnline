@@ -62,23 +62,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             GameStructure.S2CContextGetLobbyPlayerContextNtc(ntc1, Character);
             Client.Send(ntc1);
 
-            S2CCharacterGetCharacterStatusNtc ntc2 = new S2CCharacterGetCharacterStatusNtc
+            S2CExtendEquipSlotNtc ntc2 = new S2CExtendEquipSlotNtc()
             {
-                CharacterId = Character.CharacterId,
-                HideHead = Character.HideEquipHead,
-                HideLantern = Character.HideEquipLantern,
-                JewelryNum = (byte)(Character.JewelrySlotNum + Character.ExtendedParams.JewelrySlot),
-                StatusInfo = Character.StatusInfo,
-                JobParam = Character.ActiveCharacterJobData
+                EquipSlot = EquipCategory.Jewelry,
+                AddNum = 0,
+                TotalNum = (byte)(Character.JewelrySlotNum + Character.ExtendedParams.JewelrySlot)
             };
 
-            GameStructure.CDataCharacterLevelParam(ntc2.CharacterParam, Character);
-            ntc2.EditInfo = Character.EditInfo;
-            ntc2.EquipDataList = Character.Equipment.getEquipmentAsCDataEquipItemInfo(Character.Job, EquipType.Performance);
-            ntc2.VisualEquipDataList = Character.Equipment.getEquipmentAsCDataEquipItemInfo(Character.Job, EquipType.Visual);
-            ntc2.EquipJobItemList = Character.Equipment.getJobItemsAsCDataEquipJobItem(Character.Job);
-
-            // Client.Party.SendToAll(ntc);
             Client.Send(ntc2);
         }
     }

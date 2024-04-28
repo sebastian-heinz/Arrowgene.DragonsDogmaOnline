@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.EquipJobItemList = targetClient.Character.Equipment.getJobItemsAsCDataEquipJobItem(targetClient.Character.Job);
             ntc.HideHead = targetClient.Character.HideEquipHead;
             ntc.HideLantern = targetClient.Character.HideEquipLantern;
-            ntc.JewelryNum = targetClient.Character.JewelrySlotNum;
+            ntc.JewelryNum = (uint)(targetClient.Character.JewelrySlotNum + targetClient.Character.ExtendedParams.JewelrySlot);
 
             client.Send(ntc);
         }

@@ -96,7 +96,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     }
                 },
                 new Dictionary<JobId, List<Item?>>());
-            character.JewelrySlotNum = packet.Structure.CharacterInfo.JewelrySlotNum;
+            // Every new chaarcter starts with 1 jewlery slot, rest are bought from the dragon.
+            character.JewelrySlotNum = 1; // packet.Structure.CharacterInfo.JewelrySlotNum;
             //character.CharacterItemSlotInfoList = packet.Structure.CharacterInfo.CharacterItemSlotInfoList;
             //character.UnkCharData0 = packet.Structure.CharacterInfo.UnkCharData0;
             //character.UnkCharData1 = packet.Structure.CharacterInfo.UnkCharData1;
@@ -1138,7 +1139,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 Database.InsertSecretAbilityUnlock(character.CommonId, ability);
             }
-            
+
             // Pawns
             LoadDefaultPawns(character);
             foreach (Pawn pawn in character.Pawns)

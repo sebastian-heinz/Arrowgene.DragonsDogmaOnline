@@ -518,6 +518,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHideCharacterLanternRes.Serializer());
             Create(new S2CEquipUpdateHidePawnHeadArmorRes.Serializer());
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
+            Create(new S2CExtendEquipSlotNtc.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());
             Create(new S2CGPCourseStartNtc.Serializer());
