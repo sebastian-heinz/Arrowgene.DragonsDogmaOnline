@@ -96,7 +96,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     }
                 },
                 new Dictionary<JobId, List<Item?>>());
-            // Every new chaarcter starts with 1 jewlery slot, rest are bought from the dragon.
+            // Every new character starts with 1 jewlery slot, rest are bought from the dragon.
             character.JewelrySlotNum = 1; // packet.Structure.CharacterInfo.JewelrySlotNum;
             //character.CharacterItemSlotInfoList = packet.Structure.CharacterInfo.CharacterItemSlotInfoList;
             //character.UnkCharData0 = packet.Structure.CharacterInfo.UnkCharData0;

@@ -16,10 +16,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionLoginHandler));
 
         private OrbUnlockManager _OrbUnlockManager;
+        private CharacterManager _CharacterManager;
 
         public ConnectionLoginHandler(DdonGameServer server) : base(server)
         {
             _OrbUnlockManager = server.OrbUnlockManager;
+            _CharacterManager = server.CharacterManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SConnectionLoginReq> packet)
@@ -90,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            Character character = Database.SelectCharacter(token.CharacterId);
+            Character character = _CharacterManager.SelectCharacter(token.CharacterId);
             if (character == null)
             {
                 Logger.Error(client, $"CharacterId:{token.CharacterId} not found");
@@ -98,8 +100,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(res);
                 return;
             }
-
-            character.ExtendedParams = _OrbUnlockManager.GetExtendedParameters(character);
 
             client.Character = character;
             client.Character.Server = Server.AssetRepository.ServerList[0];

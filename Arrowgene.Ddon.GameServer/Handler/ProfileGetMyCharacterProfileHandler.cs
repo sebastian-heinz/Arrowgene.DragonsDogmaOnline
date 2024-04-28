@@ -13,17 +13,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ProfileGetMyCharacterProfileHandler));
 
         private OrbUnlockManager _OrbUnlockManager;
+        private CharacterManager _CharacterManager;
 
         public ProfileGetMyCharacterProfileHandler(DdonGameServer server) : base(server)
         {
             _OrbUnlockManager = server.OrbUnlockManager;
+            _CharacterManager = server.CharacterManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SProfileGetMyCharacterProfileReq> packet)
         {
             S2CProfileGetMyCharacterProfileRes Result = new S2CProfileGetMyCharacterProfileRes();
             Result.OrbStatusList = _OrbUnlockManager.GetOrbPageStatus(client.Character);
-            Result.AbilityCostMax = 100U + client.Character.ExtendedParams.AbilityCost;
+            Result.AbilityCostMax = _CharacterManager.GetMaxAugmentAllocation(client.Character);
             client.Send(Result);
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;

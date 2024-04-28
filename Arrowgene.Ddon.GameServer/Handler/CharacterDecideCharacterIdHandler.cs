@@ -18,13 +18,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterDecideCharacterIdHandler));
 
         private readonly AssetRepository _AssetRepo;
-        private readonly OrbUnlockManager _OrbUnlockManager;
-        private readonly CharacterManager _CharacterManager;
 
         public CharacterDecideCharacterIdHandler(DdonGameServer server) : base(server)
         {
             _AssetRepo = server.AssetRepository;
-            _CharacterManager = server.CharacterManager;
         }
 
         public override PacketId Id => PacketId.C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ;
@@ -36,9 +33,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.CharacterId = client.Character.CharacterId;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
             res.Unk0 = pcap.Unk0; // Removing this makes tons of tutorials pop up
-
-            _CharacterManager.UpdateCharacterExtendedParams(client.Character);
-
             client.Send(res);
 
             // Unlocks menu options such as inventory, warping, etc.

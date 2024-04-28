@@ -37,7 +37,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ParamId = 0,
                 ParamValue = 0, // Shows up next to orb reward type
                 PosX = 1,
-                PosY = 2,
                 IsReleased = false
                 RequiredElementIDList = new List<CDataCommonU32>() { new CDataCommonU32(0) },
                 RequiredQuestList = new List<CDataCommonU32>() { new CDataCommonU32(0) }
@@ -53,9 +52,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ParamId = 0,
                 ParamValue = 0, // Shows up next to orb reward type
                 PosX = 2,
-                PosY = 2,
                 IsReleased = false,
-                RequiredElementIDList = new List<CDataCommonU32>() { new CDataCommonU32(0) },
+                RequiredElementIDList = new List<CDataCommonU32>() { new CDataCommonU32(1) },
                 RequiredQuestList = new List<CDataCommonU32>() { new CDataCommonU32(0) }
             });
 #endif

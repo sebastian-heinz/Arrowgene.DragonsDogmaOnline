@@ -34,11 +34,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _JobManager = JobManager;
         }
 
-        public CDataOrbGainExtendParam GetExtendedParameters(CharacterCommon Character)
-        {
-            return _Database.SelectOrbGainExtendParam(Character.CommonId);
-        }
-
         public List<CDataOrbPageStatus> GetOrbPageStatus(CharacterCommon Character)
         {
             List<CDataOrbPageStatus> Result = new List<CDataOrbPageStatus>();
