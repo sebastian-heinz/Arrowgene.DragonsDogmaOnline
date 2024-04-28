@@ -76,7 +76,6 @@ namespace Arrowgene.Ddon.Server
         public virtual void Start()
         {
             Database.DeleteConnectionsByServerId(Id);
-            Database.UpdateAllCharactersOnlineStatus(OnlineStatus.Offline);
             Logger.Info($"[{_setting.ServerSocketSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
             _server.Start();
         }

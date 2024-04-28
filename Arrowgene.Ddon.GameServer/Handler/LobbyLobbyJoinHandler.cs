@@ -92,8 +92,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     otherClient.Send(newUserContextNtc);
                 }
             }
-
-            Database.UpdateCharacterOnlineStatus(client.Character);
         }
     }
 }

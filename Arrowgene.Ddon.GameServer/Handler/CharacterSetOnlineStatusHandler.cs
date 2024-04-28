@@ -24,8 +24,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(new S2CCharacterSetOnlineStatusRes() {
                 OnlineStatus = packet.Structure.OnlineStatus
             });
-            
-            Database.UpdateCharacterOnlineStatus(client.Character);
         }
     }
 }

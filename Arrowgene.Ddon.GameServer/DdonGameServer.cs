@@ -134,9 +134,6 @@ namespace Arrowgene.Ddon.GameServer
                     = new ClientConnectionChangeArgs(ClientConnectionChangeArgs.EventType.DISCONNECT, client);
                 connectionChangeEvent(this, connectionChangeEventArgs);
             }
-
-            client.Character.OnlineStatus = OnlineStatus.Offline;
-            Database.UpdateCharacterOnlineStatus(client.Character);
         }
 
         public override GameClient NewClient(ITcpSocket socket)

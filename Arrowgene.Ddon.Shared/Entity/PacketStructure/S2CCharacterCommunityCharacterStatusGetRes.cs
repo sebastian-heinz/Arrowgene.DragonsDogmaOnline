@@ -16,7 +16,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CCharacterCommunityCharacterStatusGetRes obj)
             {
                 WriteInt32(buffer, obj.Result);
-                
             }
 
             public override S2CCharacterCommunityCharacterStatusGetRes Read(IBuffer buffer)

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -34,17 +33,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 if (f.Type != ContactListType.FriendList || f.Status != ContactListStatus.Accepted) continue;
                 Character otherCharacter =
-                    Database.SelectCharacter(f.GetOtherCharacterId(client.Character.CharacterId));
-            
-                if (f.Status == ContactListStatus.Accepted)
+                    ContactListManager.getCharWithOnlineStatus(Server,Database, f.GetOtherCharacterId(client.Character.CharacterId));
+                updateCharacterList.Add(ContactListManager.CharacterToListEml(otherCharacter));
+                updateMatchingProfileList.Add(new CDataUpdateMatchingProfileInfo()
                 {
-                    updateCharacterList.Add(ContactListEntity.CharacterToListEml(otherCharacter));
-                    updateMatchingProfileList.Add(new CDataUpdateMatchingProfileInfo()
-                    {
-                        CharacterId = otherCharacter.CharacterId,
-                        Comment = ""
-                    });
-                }
+                    CharacterId = otherCharacter.CharacterId,
+                    Comment = otherCharacter.MatchingProfile.Comment
+                });
             }
             
             client.Send(new S2CCharacterCommunityCharacterStatusUpdateNtc()

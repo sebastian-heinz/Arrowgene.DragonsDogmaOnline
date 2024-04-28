@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CFriendRemoveFriendNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_FRIEND_16_3_16_NTC;
+        public PacketId Id => PacketId.S2C_FRIEND_REMOVE_FRIEND_NTC;
         public UInt32 CharacterId { get; set; }
 
 

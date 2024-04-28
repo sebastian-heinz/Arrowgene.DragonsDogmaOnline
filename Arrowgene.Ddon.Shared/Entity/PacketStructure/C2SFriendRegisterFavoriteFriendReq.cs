@@ -10,9 +10,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_FRIEND_REGISTER_FAVORITE_FRIEND_REQ;
         
-        // u32 m_unFriendNo;
-        // b8 m_bIsFavorite;
-        
         public UInt32 unFriendNo { get; set; }
         public bool isFavorite { get; set; }
 

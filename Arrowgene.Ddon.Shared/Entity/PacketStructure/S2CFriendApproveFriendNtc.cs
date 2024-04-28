@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CFriendApproveFriendNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_FRIEND_16_2_16_NTC;
+        public PacketId Id => PacketId.S2C_FRIEND_APPROVE_FRIEND_NTC;
 
         public bool IsApproved { get; set; }
         public CDataFriendInfo FriendInfo { get; set; }

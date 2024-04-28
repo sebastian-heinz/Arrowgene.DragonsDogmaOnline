@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -36,17 +37,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 
                 if (f.Status == ContactListStatus.Accepted)
                 {
-                    fList.Add(ContactListEntity.CharacterToFriend(otherCharacter, f.Id, f.IsFavoriteForCharacter(client.Character.CharacterId)));
+                    fList.Add(ContactListManager.CharacterToFriend(otherCharacter, f.Id, f.IsFavoriteForCharacter(client.Character.CharacterId)));
                 } 
                 else if (f.Status == ContactListStatus.PendingApproval)
                 {
                     if (f.RequesterCharacterId == client.Character.CharacterId)
                     {
-                        applList.Add(ContactListEntity.CharacterToCommunityInfo(otherCharacter));
+                        applList.Add(ContactListManager.CharacterToCommunityInfo(otherCharacter));
                     }
                     else if (f.RequestedCharacterId == client.Character.CharacterId)
                     {
-                        apprList.Add(ContactListEntity.CharacterToCommunityInfo(otherCharacter));
+                        apprList.Add(ContactListManager.CharacterToCommunityInfo(otherCharacter));
                     }
                 }
             }

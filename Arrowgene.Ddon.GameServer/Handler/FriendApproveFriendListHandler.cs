@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Server;
+﻿using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -43,10 +44,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Database.DeleteContact(packet.Structure.CharacterId, client.Character.CharacterId);
             }
             
-            Character requestingChar = Server.Database.SelectCharacter(packet.Structure.CharacterId);
+            Character requestingChar = ContactListManager.getCharWithOnlineStatus(Server, Database, packet.Structure.CharacterId);
             var result = new S2CFriendApproveFriendRes()
             {
-                FriendInfo = ContactListEntity.CharacterToFriend(requestingChar, relationship.Id, relationship.IsFavoriteForCharacter(client.Character.CharacterId)),
+                FriendInfo = ContactListManager.CharacterToFriend(requestingChar, relationship.Id, relationship.IsFavoriteForCharacter(client.Character.CharacterId)),
                 Result = 0,
                 Error = 0,
                     
@@ -58,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 var ntc = new S2CFriendApproveFriendNtc()
                 {
-                    FriendInfo = ContactListEntity.CharacterToFriend(client.Character, relationship.Id, relationship.IsFavoriteForCharacter(packet.Structure.CharacterId)),
+                    FriendInfo = ContactListManager.CharacterToFriend(client.Character, relationship.Id, relationship.IsFavoriteForCharacter(packet.Structure.CharacterId)),
                     IsApproved = packet.Structure.IsApproved
                 };
                 requestingClient.Send(ntc);

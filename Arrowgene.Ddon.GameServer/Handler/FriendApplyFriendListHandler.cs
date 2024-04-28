@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.Server;
+﻿using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -50,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
             
-            Character requestedChar = Server.Database.SelectCharacter(packet.Structure.CharacterId);
+            Character requestedChar = ContactListManager.getCharWithOnlineStatus(Server, Database, packet.Structure.CharacterId);
             if (requestedChar == null)
             {
                 var res = new S2CFriendApplyFriendRes();
@@ -74,9 +75,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(res);
                 return;
             }
-            
-            CDataFriendInfo requester = ContactListEntity.CharacterToFriend(client.Character, (uint)id, false);
-            CDataFriendInfo requested = ContactListEntity.CharacterToFriend(requestedChar, (uint)id, false);
+            CDataFriendInfo requester = ContactListManager.CharacterToFriend(client.Character, (uint)id, false);
+            CDataFriendInfo requested = ContactListManager.CharacterToFriend(requestedChar, (uint)id, false);
             requester.UnFriendNo = (uint)id;
             requested.UnFriendNo = (uint)id;
 

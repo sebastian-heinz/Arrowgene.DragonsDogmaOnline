@@ -23,7 +23,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CConnectionLogoutRes res = new S2CConnectionLogoutRes();
             client.Send(res);
             client.Character.OnlineStatus = OnlineStatus.Offline;
-            Database.UpdateCharacterOnlineStatus(client.Character);
         }
     }
 }
