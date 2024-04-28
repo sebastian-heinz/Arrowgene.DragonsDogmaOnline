@@ -4,6 +4,8 @@ using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer;
 
@@ -209,7 +211,19 @@ public static class GameStructure
 
     public static void CDataContextBase_common(CDataContextBase contextBase, CharacterCommon character)
     {
-        contextBase.StageNo = 200; // TODO: Replace with the actual stage the player is in. As it is right now it'll probably give issues when new players join outside of WDT
+        int StageNo = 0;
+        if (character is Character)
+        {
+            StageNo = (int)((Character)character).StageNo;
+        }
+
+        if (StageNo == 0)
+        {
+            // WDT
+            StageNo = 200;
+        }
+
+        contextBase.StageNo = StageNo; 
         contextBase.Sex = character.EditInfo.Sex;
         contextBase.HideEquipHead = character.HideEquipHead;
         contextBase.HideEquipLantern = character.HideEquipLantern;
@@ -232,102 +246,103 @@ public static class GameStructure
     }
 
     public static void CDataContextPlayerInfo(CDataContextPlayerInfo contextPlayerInfo, CharacterCommon character)
-        {
-            CDataCharacterJobData characterJobData = character.ActiveCharacterJobData;
-            contextPlayerInfo.Job = character.Job;
-            contextPlayerInfo.HP = character.StatusInfo.HP;
-            contextPlayerInfo.MaxHP = character.StatusInfo.MaxHP;
-            contextPlayerInfo.WhiteHP = character.StatusInfo.WhiteHP;
-            contextPlayerInfo.Stamina = character.StatusInfo.Stamina;
-            contextPlayerInfo.MaxStamina = character.StatusInfo.MaxStamina;
-            // Weight?
-            contextPlayerInfo.Lv = (ushort) characterJobData.Lv;
-            contextPlayerInfo.Exp = characterJobData.Exp;
-            contextPlayerInfo.Atk = characterJobData.Atk;
-            contextPlayerInfo.Def = characterJobData.Def;
-            contextPlayerInfo.MAtk = characterJobData.MAtk;
-            contextPlayerInfo.MDef = characterJobData.MDef;
-            contextPlayerInfo.Strength = characterJobData.Strength;
-            contextPlayerInfo.DownPower = characterJobData.DownPower;
-            contextPlayerInfo.ShakePower = characterJobData.ShakePower;
-            // StanPower?
-            // Constitution?
-            contextPlayerInfo.Guts = characterJobData.Guts;
-            contextPlayerInfo.JobPoint = characterJobData.JobPoint;
-            contextPlayerInfo.GainHp = character.StatusInfo.GainHP;
-            contextPlayerInfo.GainStamina = character.StatusInfo.GainStamina;
-            contextPlayerInfo.GainAttack = character.StatusInfo.GainAttack;
-            contextPlayerInfo.GainDefense = character.StatusInfo.GainDefense;
-            contextPlayerInfo.GainMagicAttack = character.StatusInfo.GainMagicAttack;
-            contextPlayerInfo.GainMagicDefense = character.StatusInfo.GainMagicDefense;
-            // ActNo?
-            contextPlayerInfo.RevivePoint = character.StatusInfo.RevivePoint;
-            // CustomSkillGroup?
-            contextPlayerInfo.JobList = character.CharacterJobDataList
-                .Select(x => new CDataContextJobData(x)).ToList();
-            contextPlayerInfo.ChargeEffectList = new List<CDataCommonU32>(); // TODO
-            contextPlayerInfo.OcdActiveList = new List<CDataOcdActive>(); // TODO
-            // CatchType?
-            // CatchJointNo?
-            // CustomWork?
-        }
+    {
+        CDataCharacterJobData characterJobData = character.ActiveCharacterJobData;
+        contextPlayerInfo.Job = character.Job;
+        contextPlayerInfo.HP = character.StatusInfo.HP;
+        contextPlayerInfo.MaxHP = character.StatusInfo.MaxHP;
+        contextPlayerInfo.WhiteHP = character.StatusInfo.WhiteHP;
+        contextPlayerInfo.Stamina = character.StatusInfo.Stamina;
+        contextPlayerInfo.MaxStamina = character.StatusInfo.MaxStamina;
+        // Weight?
+        contextPlayerInfo.Lv = (ushort) characterJobData.Lv;
+        contextPlayerInfo.Exp = characterJobData.Exp;
+        contextPlayerInfo.Atk = (uint) characterJobData.Atk;
+        contextPlayerInfo.Def = (uint) characterJobData.Def;
+        contextPlayerInfo.MAtk = (uint) characterJobData.MAtk;
+        contextPlayerInfo.MDef = (uint) characterJobData.MDef;
+        contextPlayerInfo.Strength = characterJobData.Strength;
+        contextPlayerInfo.DownPower = characterJobData.DownPower;
+        contextPlayerInfo.ShakePower = characterJobData.ShakePower;
+        // StanPower?
+        // Constitution?
+        contextPlayerInfo.Guts = characterJobData.Guts;
+        contextPlayerInfo.JobPoint = characterJobData.JobPoint;
+        contextPlayerInfo.GainHp = character.StatusInfo.GainHP;
+        contextPlayerInfo.GainStamina = character.StatusInfo.GainStamina;
+        contextPlayerInfo.GainAttack = character.StatusInfo.GainAttack;
+        contextPlayerInfo.GainDefense = character.StatusInfo.GainDefense;
+        contextPlayerInfo.GainMagicAttack = character.StatusInfo.GainMagicAttack;
+        contextPlayerInfo.GainMagicDefense = character.StatusInfo.GainMagicDefense;
+        contextPlayerInfo.WhiteHP = character.StatusInfo.WhiteHP;
+        // ActNo?
+        contextPlayerInfo.RevivePoint = character.StatusInfo.RevivePoint;
+        // CustomSkillGroup?
+        contextPlayerInfo.JobList = character.CharacterJobDataList
+            .Select(x => new CDataContextJobData(x)).ToList();
+        contextPlayerInfo.ChargeEffectList = new List<CDataCommonU32>(); // TODO
+        contextPlayerInfo.OcdActiveList = new List<CDataOcdActive>(); // TODO
+                                                                      // CatchType?
+                                                                      // CatchJointNo?
+                                                                      // CustomWork?
+    }
 
-        public static void CDataLobbyContextPlayer(CDataLobbyContextPlayer lobbyContextPlayer, Character character)
-        {
-            CDataContextBase(lobbyContextPlayer.Base, character);
-            CDataLobbyContextPlayer_common(lobbyContextPlayer, character);
-        }
+    public static void CDataLobbyContextPlayer(CDataLobbyContextPlayer lobbyContextPlayer, Character character)
+    {
+        CDataContextBase(lobbyContextPlayer.Base, character);
+        CDataLobbyContextPlayer_common(lobbyContextPlayer, character);
+    }
 
-        public static void CDataLobbyContextPlayer(CDataLobbyContextPlayer lobbyContextPlayer, Pawn pawn)
-        {
-            CDataContextBase(lobbyContextPlayer.Base, pawn);
-            CDataLobbyContextPlayer_common(lobbyContextPlayer, pawn);
-        }
+    public static void CDataLobbyContextPlayer(CDataLobbyContextPlayer lobbyContextPlayer, Pawn pawn)
+    {
+        CDataContextBase(lobbyContextPlayer.Base, pawn);
+        CDataLobbyContextPlayer_common(lobbyContextPlayer, pawn);
+    }
 
-        public static void CDataLobbyContextPlayer_common(CDataLobbyContextPlayer lobbyContextPlayer, CharacterCommon common)
-        {
-            CDataContextPlayerInfo(lobbyContextPlayer.PlayerInfo, common);
-            lobbyContextPlayer.EditInfo = common.EditInfo;
-        }
+    public static void CDataLobbyContextPlayer_common(CDataLobbyContextPlayer lobbyContextPlayer, CharacterCommon common)
+    {
+        CDataContextPlayerInfo(lobbyContextPlayer.PlayerInfo, common);
+        lobbyContextPlayer.EditInfo = common.EditInfo;
+    }
 
-        public static void CDataContextResist(CDataContextResist contextResist, CharacterCommon character)
-        {
-            CDataCharacterJobData characterJobData = character.ActiveCharacterJobData;
-            contextResist.FireResist = characterJobData.FireResist;
-            contextResist.IceResist = characterJobData.IceResist;
-            contextResist.ThunderResist = characterJobData.ThunderResist;
-            contextResist.HolyResist = characterJobData.HolyResist;
-            contextResist.DarkResist = characterJobData.DarkResist;
-            contextResist.SpreadResist = characterJobData.SpreadResist;
-            contextResist.FreezeResist = characterJobData.FreezeResist;
-            contextResist.ShockResist = characterJobData.ShockResist;
-            contextResist.AbsorbResist = characterJobData.AbsorbResist;
-            contextResist.DarkElmResist = characterJobData.DarkElmResist;
-            contextResist.PoisonResist = characterJobData.PoisonResist;
-            contextResist.SlowResist = characterJobData.SlowResist;
-            contextResist.SleepResist = characterJobData.SleepResist;
-            contextResist.StunResist = characterJobData.StunResist;
-            contextResist.WetResist = characterJobData.WetResist;
-            contextResist.OilResist = characterJobData.OilResist;
-            contextResist.SealResist = characterJobData.SealResist;
-            contextResist.CurseResist = characterJobData.CurseResist;
-            contextResist.SoftResist = characterJobData.SoftResist;
-            contextResist.StoneResist = characterJobData.StoneResist;
-            contextResist.GoldResist = characterJobData.GoldResist;
-            contextResist.FireReduceResist = characterJobData.FireReduceResist;
-            contextResist.IceReduceResist = characterJobData.IceReduceResist;
-            contextResist.ThunderReduceResist = characterJobData.ThunderReduceResist;
-            contextResist.HolyReduceResist = characterJobData.HolyReduceResist;
-            contextResist.DarkReduceResist = characterJobData.DarkReduceResist;
-            contextResist.AtkDownResist = characterJobData.AtkDownResist;
-            contextResist.DefDownResist = characterJobData.DefDownResist;
-            contextResist.MAtkDownResist = characterJobData.MAtkDownResist;
-            contextResist.MDefDownResist = characterJobData.MDefDownResist;
-        }
+    public static void CDataContextResist(CDataContextResist contextResist, CharacterCommon character)
+    {
+        CDataCharacterJobData characterJobData = character.ActiveCharacterJobData;
+        contextResist.FireResist = characterJobData.FireResist;
+        contextResist.IceResist = characterJobData.IceResist;
+        contextResist.ThunderResist = characterJobData.ThunderResist;
+        contextResist.HolyResist = characterJobData.HolyResist;
+        contextResist.DarkResist = characterJobData.DarkResist;
+        contextResist.SpreadResist = characterJobData.SpreadResist;
+        contextResist.FreezeResist = characterJobData.FreezeResist;
+        contextResist.ShockResist = characterJobData.ShockResist;
+        contextResist.AbsorbResist = characterJobData.AbsorbResist;
+        contextResist.DarkElmResist = characterJobData.DarkElmResist;
+        contextResist.PoisonResist = characterJobData.PoisonResist;
+        contextResist.SlowResist = characterJobData.SlowResist;
+        contextResist.SleepResist = characterJobData.SleepResist;
+        contextResist.StunResist = characterJobData.StunResist;
+        contextResist.WetResist = characterJobData.WetResist;
+        contextResist.OilResist = characterJobData.OilResist;
+        contextResist.SealResist = characterJobData.SealResist;
+        contextResist.CurseResist = characterJobData.CurseResist;
+        contextResist.SoftResist = characterJobData.SoftResist;
+        contextResist.StoneResist = characterJobData.StoneResist;
+        contextResist.GoldResist = characterJobData.GoldResist;
+        contextResist.FireReduceResist = characterJobData.FireReduceResist;
+        contextResist.IceReduceResist = characterJobData.IceReduceResist;
+        contextResist.ThunderReduceResist = characterJobData.ThunderReduceResist;
+        contextResist.HolyReduceResist = characterJobData.HolyReduceResist;
+        contextResist.DarkReduceResist = characterJobData.DarkReduceResist;
+        contextResist.AtkDownResist = characterJobData.AtkDownResist;
+        contextResist.DefDownResist = characterJobData.DefDownResist;
+        contextResist.MAtkDownResist = characterJobData.MAtkDownResist;
+        contextResist.MDefDownResist = characterJobData.MDefDownResist;
+    }
 
-        public static void S2CContextGetLobbyPlayerContextNtc(S2CContextGetLobbyPlayerContextNtc ntc, Character character)
-        {
-            ntc.CharacterId = character.CharacterId;
-            GameStructure.CDataLobbyContextPlayer(ntc.Context, character);
-        }
+    public static void S2CContextGetLobbyPlayerContextNtc(S2CContextGetLobbyPlayerContextNtc ntc, Character character)
+    {
+        ntc.CharacterId = character.CharacterId;
+        GameStructure.CDataLobbyContextPlayer(ntc.Context, character);
+    }
 }

@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
             return true;
         }
-        
+
         public bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities)
         {
             return ExecuteInTransaction(connection =>
@@ -73,10 +73,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 // Remove previously equipped abilities
                 DeleteEquippedAbilities(connection, commonId, equippedToJob);
                 // Insert new ones
-                for(byte i = 0; i < abilities.Count; i++)
+                for (byte i = 0; i < abilities.Count; i++)
                 {
                     Ability ability = abilities[i];
-                    byte slotNo = (byte)(i+1);
+                    byte slotNo = (byte)(i + 1);
                     InsertEquippedAbility(connection, commonId, equippedToJob, slotNo, ability);
                 }
             });

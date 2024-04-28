@@ -61,9 +61,14 @@ namespace Arrowgene.Ddon.GameServer
             ItemManager = new ItemManager();
             PartyManager = new PartyManager(assetRepository);
             ExpManager = new ExpManager(database, ClientLookup);
-            JobManager = new JobManager();
+            JobManager = new JobManager(database);
             EquipManager = new EquipManager();
             ShopManager = new ShopManager(assetRepository, database);
+            WalletManager = new WalletManager(database);
+            CharacterManager = new CharacterManager(database);
+
+            // Orb Management is slightly complex and requires updating fields across multiple systems
+            OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
 
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
@@ -78,6 +83,9 @@ namespace Arrowgene.Ddon.GameServer
         public ExpManager ExpManager { get; }
         public ShopManager ShopManager { get; }
         public JobManager JobManager { get; }
+        public OrbUnlockManager OrbUnlockManager { get; }
+        public WalletManager WalletManager { get; }
+        public CharacterManager CharacterManager { get; }
         public EquipManager EquipManager { get; }
         public GameRouter Router { get; }
 
@@ -281,6 +289,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new JobGetJobChangeListHandler(this));
             AddHandler(new JobUpdateExpModeHandler(this));
 
+            AddHandler(new JobOrbTreeGetJobOrbTreeStatusListHandler(this));
+            AddHandler(new JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler(this));
+
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
             AddHandler(new LobbyLobbyJoinHandler(this));
@@ -304,6 +315,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new NpcGetExtendedFacilityHandler(this));
 
             AddHandler(new OrbDevoteGetOrbGainExtendParamHandler(this));
+            AddHandler(new OrbDevoteGetReleaseOrbElementListHandler(this));
+            AddHandler(new OrbDevoteReleaseOrbElementHandler(this));
 
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));

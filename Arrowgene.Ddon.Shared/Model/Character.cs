@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
     public class Character : CharacterCommon
     {
-        public Character():base()
+        public Character() : base()
         {
             FirstName = string.Empty;
             LastName = string.Empty;
@@ -61,13 +62,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
-        
-        /// TODO combine into a location class ?
-        public StageId Stage { get; set; }
-        public uint StageNo { get; set; }
-        public double X { get; set; }
-        public float Y { get; set; }
-        public double Z { get; set; }
+
         // ---
 
         // TODO: Move to a more sensible place

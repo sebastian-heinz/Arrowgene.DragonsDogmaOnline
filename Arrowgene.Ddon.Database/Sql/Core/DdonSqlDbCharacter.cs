@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private static readonly string[] CDataMatchingProfileFields = new string[]
         {
-            "character_id", "entry_job", "entry_job_level", "current_job", "current_job_level", "objective_type1", "objective_type2", 
+            "character_id", "entry_job", "entry_job_level", "current_job", "current_job_level", "objective_type1", "objective_type2",
             "play_style", "comment", "is_join_party"
         };
 
@@ -68,7 +68,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteInTransaction(conn =>
                 {
                     character.Created = DateTime.UtcNow;
-                    
+
                     ExecuteNonQuery(conn, SqlInsertCharacterCommon, command => { AddParameter(command, character); }, out long commonId);
                     character.CommonId = (uint) commonId;
 
@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     ExecuteNonQuery(conn, SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
 
                     CreateItems(conn, character);
-                    
+
                     StoreCharacterData(conn, character);
                 });
         }
@@ -232,7 +232,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         using TCon connection = OpenNewConnection();
                         ExecuteReader(connection, SqlSelectItem,
                             command3 => { AddParameter(command3, "@uid", UId); },
-                            reader3 => 
+                            reader3 =>
                             {
                                 if(reader3.Read())
                                 {
