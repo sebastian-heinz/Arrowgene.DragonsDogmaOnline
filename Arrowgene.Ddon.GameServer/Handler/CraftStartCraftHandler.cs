@@ -52,6 +52,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 try
                 {
                     List<CDataItemUpdateResult> updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
                 catch (NotEnoughItemsException e)
                 {
