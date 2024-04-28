@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Csv
     {
         private static readonly ILogger Logger = LogProvider.Logger(typeof(EnemySpawnAssetDeserializer));
 
-        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId"};
+        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId", "SpawnTime"};
         private static readonly string[] DROPS_TABLE_HEADERS = new string[]{"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden", "DropChance"};
 
         public EnemySpawnAsset ReadPath(string path)
@@ -99,6 +99,24 @@ namespace Arrowgene.Ddon.Shared.Csv
                     HighOrbs = row[enemySchemaIndexes["HighOrbs"]].GetUInt32(),
                     Experience = row[enemySchemaIndexes["Experience"]].GetUInt32(),
                 };
+
+                //checking if the file has spawntime, if yes we convert the time and pass it along to enemy.cs
+                    if(enemySchemaIndexes.ContainsKey("SpawnTime"))
+                    {
+                        string SpawnTimeGet = row[enemySchemaIndexes["SpawnTime"]].GetString();
+                        ConvertSpawnTimeToMilliseconds(SpawnTimeGet, out long start, out long end);
+                        enemy.SpawnTimeStart = start;
+                        enemy.SpawnTimeEnd = end; 
+                    }
+                    else
+                    {
+                        // if no, we define it to the "allday" spawn time range and pass this along to the enemy.cs instead.
+                        ConvertSpawnTimeToMilliseconds("00:00,23:59", out long start, out long end);
+                        enemy.SpawnTimeStart = start;
+                        enemy.SpawnTimeEnd = end;
+                    }
+                    
+                
                 int dropsTableId = row[enemySchemaIndexes["DropsTableId"]].GetInt32();
                 if(dropsTableId >= 0)
                 {
@@ -110,6 +128,26 @@ namespace Arrowgene.Ddon.Shared.Csv
 
             return asset;
         }
+                // this converts the time (07:00,18:00) as example, down into milliseconds, via splitting into hours/minutes and then combining each respect time into start/end
+            public void ConvertSpawnTimeToMilliseconds(string SpawnTime, out long startMilliseconds, out long endMilliseconds)
+            {
+                // Split the spawnTime string at the comma to get start and end times
+                string[] spawnTimes = SpawnTime.Split(',');
+
+                // Split the start time at the colon to get hours and minutes
+                string[] startTimeComponents = spawnTimes[0].Split(':');
+                int startHours = int.Parse(startTimeComponents[0]);
+                int startMinutes = int.Parse(startTimeComponents[1]);
+
+                // Split the end time at the colon to get hours and minutes
+                string[] endTimeComponents = spawnTimes[1].Split(':');
+                int endHours = int.Parse(endTimeComponents[0]);
+                int endMinutes = int.Parse(endTimeComponents[1]);
+
+                // Convert hours and minutes into milliseconds
+                startMilliseconds = (startHours * 3600000) + (startMinutes * 60000);
+                endMilliseconds = (endHours * 3600000) + (endMinutes * 60000);
+            }
 
         protected uint ParseHexUInt(string str)
         {

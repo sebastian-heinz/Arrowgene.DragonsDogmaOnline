@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             487, // Fortress City Megado: Residential Level
             488, // Fortress City Megado: Royal Palace Level
         };
-        
+
         public LobbyLobbyDataMsgHandler(DdonGameServer server) : base(server)
         {
         }
@@ -35,24 +35,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.RpcPacket = packet.Structure.RpcPacket;
             res.OnlineStatus = client.Character.OnlineStatus;
 
-            if(!LobbyStageIds.Contains(client.Character.Stage.Id))
+            if (client.Party != null)
             {
-                if(client.Party != null)
+                if(!LobbyStageIds.Contains(client.Character.Stage.Id))
                 {
                     client.Party.SendToAllExcept(res, client);
                 }
-            }
-            else
-            {
-                foreach (GameClient otherClient in Server.ClientLookup.GetAll())
+                else
                 {
-                    if (otherClient != client && (client.Character.Stage.Id == otherClient.Character.Stage.Id || client.Party.Id == otherClient.Party.Id))
+                    foreach (GameClient otherClient in Server.ClientLookup.GetAll())
                     {
-                        otherClient.Send(res);
+                        if (otherClient != client && (client.Character.Stage.Id == otherClient.Character.Stage.Id || client.Party.Id == otherClient.Party.Id))
+                        {
+                            otherClient.Send(res);
+                        }
                     }
                 }
             }
-            
+
             if(packet.Structure.RpcPacket.Length > 52)
             {
                 IBuffer rpcPacketBuffer = new StreamBuffer(packet.Structure.RpcPacket);
@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ulong rpcId = rpcPacketBuffer.ReadUInt64(Endianness.Big); // NetMsgData.Head.RpcId
                 uint msgIdFull = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.MsgIdFull
                 uint searchId = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.SearchId, seems to either a PawnId or 0
-                
+
                 // There is theoretically a nNetMsgData::Base, but i cant even see the code that deserializes it in the client
 
                 // nNetMsgData::CtrlBase::deserialize

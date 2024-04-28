@@ -28,9 +28,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.CraftMyPawnList = client.Character.Pawns.Select(pawn => new CDataCraftPawnList()
             {
                 PawnId = pawn.PawnId,
-                CraftExp = 2500,
-                CraftPoint = 10,
-                CraftRankLimit = 10
+                CraftExp = pawn.CraftData.CraftExp,
+                CraftPoint = pawn.CraftData.CraftPoint,
+                CraftRankLimit = pawn.CraftData.CraftRankLimit
             }).ToList();
             client.Send(res);
         }

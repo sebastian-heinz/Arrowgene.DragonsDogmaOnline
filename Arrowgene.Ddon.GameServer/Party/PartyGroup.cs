@@ -25,6 +25,8 @@ namespace Arrowgene.Ddon.GameServer.Party
         private PlayerPartyMember _host;
         private bool _isBreakup;
 
+        public InstanceEnemyManager InstanceEnemyManager { get; }
+
         public PartyGroup(uint id, PartyManager partyManager)
         {
             MaxSlots = MaxPartyMember;
@@ -37,6 +39,8 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             // TODO 
             Contexts = new Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>>();
+
+            InstanceEnemyManager = new InstanceEnemyManager(partyManager.assetRepository);
         }
 
         public Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>> Contexts { get; set; }
@@ -548,6 +552,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public void ResetInstance()
         {
+            InstanceEnemyManager.Clear();
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();

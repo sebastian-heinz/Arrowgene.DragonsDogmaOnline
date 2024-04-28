@@ -107,6 +107,9 @@ namespace Arrowgene.Ddon.Database
         bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo);
         bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob);
 
+        bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility);
+        List<SecretAbility> SelectAllUnlockedSecretAbilities(uint commonId);
+
         // (Learned) Normal Skills / Learned Core Skills
         bool InsertIfNotExistsNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
         bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
@@ -151,5 +154,12 @@ namespace Arrowgene.Ddon.Database
         List<ContactListEntity> SelectContactsByCharacterId(uint characterId);
         ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2);
         ContactListEntity SelectContactListById(uint id);
+
+        // Dragon Force Augmentation
+        public bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo);
+        public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId);
+        public bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
+        public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
+        public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId);
     }
 }

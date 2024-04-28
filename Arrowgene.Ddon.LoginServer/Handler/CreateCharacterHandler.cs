@@ -11,6 +11,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.LoginServer.Dump;
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -18,9 +19,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CreateCharacterHandler));
 
+        private readonly AssetRepository _AssetRepository;
 
         public CreateCharacterHandler(DdonLoginServer server) : base(server)
         {
+            _AssetRepository = server.AssetRepository;
         }
 
         public override void Handle(LoginClient client, StructurePacket<C2LCreateCharacterDataReq> packet)
@@ -93,7 +96,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     }
                 },
                 new Dictionary<JobId, List<Item?>>());
-            character.JewelrySlotNum = packet.Structure.CharacterInfo.JewelrySlotNum;
+            // Every new character starts with 1 jewlery slot, rest are bought from the dragon.
+            character.JewelrySlotNum = 1; // packet.Structure.CharacterInfo.JewelrySlotNum;
             //character.CharacterItemSlotInfoList = packet.Structure.CharacterInfo.CharacterItemSlotInfoList;
             //character.UnkCharData0 = packet.Structure.CharacterInfo.UnkCharData0;
             //character.UnkCharData1 = packet.Structure.CharacterInfo.UnkCharData1;
@@ -283,7 +287,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         SlotNo = 4,
                                         CrestId = arisenPreset.BodyCrest4,
                                         Add = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
-                                    }                                
+                                    }
                                 },
                                 ArmorCrestDataList = new List<CDataArmorCrestData>() {
                                     new CDataArmorCrestData {
@@ -399,7 +403,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J1Crest4,
                                         Add = (ushort) (arisenPreset.J1C4Add1 << 8 | arisenPreset.J1C4Add2),
-                                    }                                
+                                    }
                                 },
                                 // Empty ArmorCrestDataList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
@@ -498,7 +502,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J2Crest4,
                                         Add = (ushort) (arisenPreset.J2C4Add1 << 8 | arisenPreset.J2C4Add2),
-                                    }                                
+                                    }
                                 },
                                 // Empty ArmorCrestDataList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
@@ -597,7 +601,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J3Crest4,
                                         Add = (ushort) (arisenPreset.J3C4Add1 << 8 | arisenPreset.J3C4Add2),
-                                    }                                
+                                    }
                                 },
                                 // Empty ArmorCrestDataList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
@@ -696,7 +700,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J4Crest4,
                                         Add = (ushort) (arisenPreset.J4C4Add1 << 8 | arisenPreset.J4C4Add2),
-                                    }                                
+                                    }
                                 },
                                 // Empty ArmorCrestDataList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
@@ -795,7 +799,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J5Crest4,
                                         Add = (ushort) (arisenPreset.J5C4Add1 << 8 | arisenPreset.J5C4Add2),
-                                    }                                
+                                    }
                                 },
                                 // Empty ArmorCrestDataList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
@@ -1121,6 +1125,21 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 client.Send(res);
             }
 
+            // Populate extra tables for the characters
+            CDataOrbGainExtendParam ExtendParams = new CDataOrbGainExtendParam();
+            if (!Database.InsertGainExtendParam(character.CommonId, ExtendParams))
+            {
+                Logger.Error(client, "Failed to create orb extend params");
+                res.Result = 1;
+                client.Send(res);
+            }
+
+            // Default unlock some secret abilities based on server admin desires
+            foreach (var ability in _AssetRepository.SecretAbilitiesAsset.DefaultSecretAbilities)
+            {
+                Database.InsertSecretAbilityUnlock(character.CommonId, ability);
+            }
+
             // Pawns
             LoadDefaultPawns(character);
             foreach (Pawn pawn in character.Pawns)
@@ -1152,7 +1171,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             pawn.PawnId = myPawnCsvData.PawnId;
             pawn.CharacterId = character.CharacterId; // pawns characterId, refers to the owner
             pawn.Server = Server.AssetRepository.ServerList[0]; // TODO: is it possible for a pawn to be in a different server than its owner?
-            
+
             pawn.HmType = myPawnCsvData.HmType;
             pawn.PawnType = myPawnCsvData.PawnType;
             pawn.Name = myPawnCsvData.Name;
@@ -1296,11 +1315,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     MDefDownResist = pcapPawn.Context.ResistInfo.MDefDownResist,
             }};
             pawn.Equipment = new Equipment(
-                new Dictionary<JobId, Dictionary<EquipType, List<Item>>>() 
-                { 
-                    { 
-                        myPawnCsvData.Job, 
-                        new Dictionary<EquipType, List<Item>> 
+                new Dictionary<JobId, Dictionary<EquipType, List<Item>>>()
+                {
+                    {
+                        myPawnCsvData.Job,
+                        new Dictionary<EquipType, List<Item>>
                         {
                             {
                                 EquipType.Performance,
@@ -1861,9 +1880,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     }
                 },
                 new Dictionary<JobId, List<Item>>()
-                { 
-                    { 
-                        myPawnCsvData.Job, 
+                {
+                    {
+                        myPawnCsvData.Job,
                         new List<Item>() {
                                 new Item()
                                 {
@@ -1878,7 +1897,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 }
             );
             pawn.LearnedNormalSkills = new List<CDataNormalSkillParam>();
-            pawn.EquippedCustomSkillsDictionary = new Dictionary<JobId, List<CustomSkill>>() 
+            pawn.EquippedCustomSkillsDictionary = new Dictionary<JobId, List<CustomSkill>>()
             {
                 {
                     myPawnCsvData.Job,

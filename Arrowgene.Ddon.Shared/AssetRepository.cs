@@ -32,6 +32,7 @@ namespace Arrowgene.Ddon.Shared
         public const string CraftingRecipesKey = "CraftingRecipes.json";
         public const string LearnedNormalSkillsKey = "LearnedNormalSkills.json";
         public const string GPCourseInfoKey = "GpCourseInfo.json";
+        public const string SecretAbilityKey = "DefaultSecretAbilities.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -66,6 +67,7 @@ namespace Arrowgene.Ddon.Shared
             CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
             LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
             GPCourseInfoAsset = new GPCourseInfoAsset();
+            SecretAbilitiesAsset = new SecretAbilityAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -83,6 +85,7 @@ namespace Arrowgene.Ddon.Shared
         public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
         public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
         public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
+        public SecretAbilityAsset SecretAbilitiesAsset { get; private set; }
 
         public void Initialize()
         {
@@ -101,6 +104,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
+            RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
         }
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)

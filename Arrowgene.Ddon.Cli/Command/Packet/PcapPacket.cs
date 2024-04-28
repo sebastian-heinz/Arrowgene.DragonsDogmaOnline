@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Cli.Command.Packet;
 
 public class PcapPacket
 {
-    public ServerType ServerType { get; set; }
+    public PacketServerType PacketServerType { get; set; }
     public PacketSource Source { get; set; }
     public string TimeStamp { get; set; }
     public uint Index { get; set; }

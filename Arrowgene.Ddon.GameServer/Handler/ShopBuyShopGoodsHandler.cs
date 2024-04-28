@@ -80,7 +80,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 // UPDATE CHARACTER WALLET
                 CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == shop.WalletType).Single();
-                wallet.Value = Math.Max(0, wallet.Value - totalPrice);
+                wallet.Value = (uint) Math.Max(0, (int)wallet.Value - (int)totalPrice);
                 Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
 
                 client.Send(new S2CItemUpdateCharacterItemNtc()

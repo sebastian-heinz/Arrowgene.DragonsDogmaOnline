@@ -35,8 +35,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Job = pawn.Job,
                         Level = pawn.ActiveCharacterJobData.Lv,
                         // TODO: Fetch from DB
-                        CraftRank = pcap.PawnList[0].PawnListData.CraftRank,
-                        PawnCraftSkillList = pcap.PawnList[0].PawnListData.PawnCraftSkillList
+                        CraftRank = pawn.CraftData.CraftRank,
+                        PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList
                         // TODO: CraftRank, PawnCraftSkillList, CommentSize, LatestReturnDate
                     }
                     // TODO: PawnState, ShareRange, Unk0, Unk1, Unk2

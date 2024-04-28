@@ -429,6 +429,45 @@ CREATE TABLE IF NOT EXISTS ddon_connection
     CONSTRAINT fk_connection_token_account_id FOREIGN KEY ("account_id") REFERENCES account ("id")
 );
 
+CREATE TABLE IF NOT EXISTS ddon_dragon_force_augmentation
+(
+    "character_common_id" INTEGER NOT NULL,
+    "element_id"          INTEGER NOT NULL,
+    "page_no"             INTEGER NOT NULL,
+    "group_no"            INTEGER NOT NULL,
+    "index_no"            INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_dragon_force_augmentation PRIMARY KEY (character_common_id, element_id)
+    CONSTRAINT fk_character_dragon_force_augmentation_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ddon_orb_gain_extend_param
+(
+    "character_common_id"   INTEGER NOT NULL,
+    "hp_max"                INTEGER NOT NULL,
+    "stamina_max"           INTEGER NOT NULL,
+    "physical_attack"       INTEGER NOT NULL,
+    "physical_defence"      INTEGER NOT NULL,
+    "magic_attack"          INTEGER NOT NULL,
+    "magic_defence"         INTEGER NOT NULL,
+    "ability_cost"          INTEGER NOT NULL,
+    "jewelry_slot"          INTEGER NOT NULL,
+    "use_item_slot"         INTEGER NOT NULL,
+    "material_item_slot"    INTEGER NOT NULL,
+    "equip_item_slot"       INTEGER NOT NULL,
+    "main_pawn_slot"        INTEGER NOT NULL,
+    "support_pawn_slot"     INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_orb_gain_extend_param PRIMARY KEY("character_common_id"),
+    CONSTRAINT fk_character_orb_gain_extend_param_character_common_id FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ddon_unlocked_secret_ability
+(
+    "character_common_id" INTEGER NOT NULL,
+    "ability_id"          INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_unlocked_secret_ability PRIMARY KEY("character_common_id", "ability_id"),
+    CONSTRAINT fk_unlocked_secret_ability_character_common_id FOREIGN KEY("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS "ddon_contact_list" (
     "id"                        INTEGER UNIQUE,
     "requester_character_id"	INTEGER NOT NULL,

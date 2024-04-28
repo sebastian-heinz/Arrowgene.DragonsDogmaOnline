@@ -89,6 +89,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public List<CDataItemUpdateResult> ConsumeItemByUIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> fromStorageTypes, string itemUId, uint consumeNum)
+        {
+            int remainingItems = (int) consumeNum;
+            List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
+            foreach (StorageType storageType in fromStorageTypes)
+            {
+                CDataItemUpdateResult? result = ConsumeItemByUId(server, character, storageType, itemUId, (uint) remainingItems);
+                if (result != null)
+                {
+                    results.Add(result);
+                    remainingItems += result.UpdateItemNum;
+                    if (remainingItems == 0)
+                    {
+                        return results;
+                    }
+                }
+            }
+
+            // TODO: Rollback transaction
+            throw new NotEnoughItemsException(itemUId, consumeNum, remainingItems);
+        }
+
         public CDataItemUpdateResult? ConsumeItemByUId(DdonServer<GameClient> server, Character character, StorageType fromStorageType, string itemUId, uint consumeNum)
         {
             var foundItem = character.Storage.getStorage(fromStorageType).findItemByUId(itemUId);
@@ -113,12 +135,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
         private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consuneNum)
         {
-            itemNum = Math.Max(0, itemNum - consuneNum);
+            uint finalItemNum = (uint) Math.Max(0, (int)itemNum - (int)consuneNum);
+            int finalConsumeNum = (int)itemNum - (int)finalItemNum;
 
             CDataItemUpdateResult ntcData = new CDataItemUpdateResult();
             ntcData.ItemList.ItemUId = item.UId;
             ntcData.ItemList.ItemId = item.ItemId;
-            ntcData.ItemList.ItemNum = itemNum;
+            ntcData.ItemList.ItemNum = finalItemNum;
             ntcData.ItemList.Unk3 = item.Unk3;
             ntcData.ItemList.StorageType = fromStorageType;
             ntcData.ItemList.SlotNo = slotNo;
@@ -131,9 +154,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
             ntcData.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
-            ntcData.UpdateItemNum = -(int)consuneNum;
+            ntcData.UpdateItemNum = -finalConsumeNum;
 
-            if(itemNum == 0)
+            if(finalItemNum == 0)
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
                 character.Storage.setStorageItem(null, 0, fromStorageType, slotNo);
@@ -141,8 +164,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else
             {
-                character.Storage.setStorageItem(item, itemNum, fromStorageType, slotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, item.UId, itemNum);
+                character.Storage.setStorageItem(item, finalItemNum, fromStorageType, slotNo);
+                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, item.UId, finalItemNum);
             }
 
             return ntcData;
@@ -213,6 +236,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             result.ItemList.EquipElementParamList = item.EquipElementParamList;
             result.UpdateItemNum = (int) addedItems;
             return result;
+        }
+    }
+
+    [Serializable]
+    internal class NotEnoughItemsException : Exception
+    {
+        private string itemUId;
+        private uint consumeNum;
+        private int remainingItems;
+
+        public NotEnoughItemsException(string itemUId, uint consumeNum, int remainingItems) : base($"Required {consumeNum} items of UID {itemUId}, missing {remainingItems} items")
+        {
+            this.itemUId = itemUId;
+            this.consumeNum = consumeNum;
+            this.remainingItems = remainingItems;
         }
     }
 }
