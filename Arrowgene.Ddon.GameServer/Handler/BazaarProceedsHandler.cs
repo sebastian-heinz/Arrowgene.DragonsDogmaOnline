@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // UPDATE CHARACTER WALLET
             CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
-            wallet.Value = (uint) Math.Max(0, wallet.Value - totalPrice);
+            wallet.Value = (uint) Math.Max(0, (int)wallet.Value - totalPrice);
             Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
             updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
             {

@@ -89,6 +89,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public List<CDataItemUpdateResult> ConsumeItemByUIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> fromStorageTypes, string itemUId, uint consumeNum)
+        {
+            int remainingItems = (int) consumeNum;
+            List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
+            foreach (StorageType storageType in fromStorageTypes)
+            {
+                CDataItemUpdateResult? result = ConsumeItemByUId(server, character, storageType, itemUId, (uint) remainingItems);
+                if (result != null)
+                {
+                    results.Add(result);
+                    remainingItems += result.UpdateItemNum;
+                    if (remainingItems == 0)
+                    {
+                        return results;
+                    }
+                }
+            }
+
+            // TODO: Rollback transaction
+            throw new NotEnoughItemsException(itemUId, consumeNum, remainingItems);
+        }
+
         public CDataItemUpdateResult? ConsumeItemByUId(DdonServer<GameClient> server, Character character, StorageType fromStorageType, string itemUId, uint consumeNum)
         {
             var foundItem = character.Storage.getStorage(fromStorageType).findItemByUId(itemUId);
@@ -113,7 +135,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
         private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consuneNum)
         {
-            itemNum = Math.Max(0, itemNum - consuneNum);
+            itemNum = (uint) Math.Max(0, (int)itemNum - (int)consuneNum);
 
             CDataItemUpdateResult ntcData = new CDataItemUpdateResult();
             ntcData.ItemList.ItemUId = item.UId;
@@ -213,6 +235,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             result.ItemList.EquipElementParamList = item.EquipElementParamList;
             result.UpdateItemNum = (int) addedItems;
             return result;
+        }
+    }
+
+    [Serializable]
+    internal class NotEnoughItemsException : Exception
+    {
+        private string itemUId;
+        private uint consumeNum;
+        private int remainingItems;
+
+        public NotEnoughItemsException(string itemUId, uint consumeNum, int remainingItems) : base($"Required {consumeNum} items of UID {itemUId}, missing {remainingItems} items")
+        {
+            this.itemUId = itemUId;
+            this.consumeNum = consumeNum;
+            this.remainingItems = remainingItems;
         }
     }
 }

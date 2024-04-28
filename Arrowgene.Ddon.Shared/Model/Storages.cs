@@ -141,8 +141,8 @@ namespace Arrowgene.Ddon.Shared.Model
         ItemBagJob = 0x4,
         Unk5 = 0x5,
         StorageBoxNormal = 0x6,
-        Unk7 = 0x7,
-        Unk8 = 0x8,
+        StorageBoxExpansion = 0x7,
+        StorageChest = 0x8, // The one in the Arisen Room
         Unk9 = 0x9,
         Unk10 = 0xA,
         Unk11 = 0xB,

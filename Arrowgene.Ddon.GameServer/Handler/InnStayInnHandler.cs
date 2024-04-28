@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Update character wallet
             CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == priceWalletType).Single();
-            wallet.Value = Math.Max(0, wallet.Value - price);
+            wallet.Value = (uint) Math.Max(0, (int)wallet.Value - (int)price);
             Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
 
             client.Send(new S2CInnStayInnRes()
