@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -24,27 +24,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte subGroupId = request.Structure.SubGroupId;
             client.Character.Stage = stageId;
 
-
-            List<Enemy> spawns = Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stageId, subGroupId)) ?? new List<Enemy>();
-            
-            // TODO test
-            // spawns.AddRange(_enemyManager.GetSpawns(new StageId(1,0,15), 0));
-
-            S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes();
-            response.LayoutId = stageId.ToStageLayoutId();
-            response.SubGroupId = subGroupId;
-            response.RandomSeed = CryptoRandom.Instance.GetRandomUInt32();
-
-            for (byte i = 0; i < spawns.Count; i++)
+            S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes
             {
-                Enemy spawn = spawns[i];
-                CDataLayoutEnemyData enemy = new CDataLayoutEnemyData
+                LayoutId = stageId.ToStageLayoutId(),
+                SubGroupId = subGroupId,
+                RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
+                EnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
                 {
-                    PositionIndex = i,
-                    EnemyInfo = spawn.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                };
-                response.EnemyList.Add(enemy);
-            }
+                    PositionIndex = (byte) index,
+                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                })
+                .ToList()
+            };
 
             client.Send(response);
         }

@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyKillReq> packet)
         {
-            Enemy enemyKilled = Server.AssetRepository.EnemySpawnAsset.Enemies[(StageId.FromStageLayoutId(packet.Structure.LayoutId), 0)][(int) packet.Structure.SetId];
+            Enemy enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(packet.Structure.LayoutId), 0)[(int) packet.Structure.SetId];
             List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
             if(instancedGatheringItems.Count > 0) {
                 client.Party.SendToAll(new S2CInstancePopDropItemNtc()

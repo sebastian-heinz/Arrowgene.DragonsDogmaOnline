@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer
         {
             UpdateIdentity();
             InstanceGatheringItemManager = new InstanceGatheringItemManager(assetRepository);
-            InstanceDropItemManager = new InstanceDropItemManager(assetRepository);
+            InstanceDropItemManager = new InstanceDropItemManager(this);
             InstanceShopManager = new InstanceShopManager(shopManager);
         }
 
@@ -41,9 +41,9 @@ namespace Arrowgene.Ddon.GameServer
         public Character Character { get; set; }
         
         public PartyGroup Party { get; set; }
-        public InstanceShopManager InstanceShopManager { get; set; }
-        public InstanceGatheringItemManager InstanceGatheringItemManager { get; set; }
-        public InstanceDropItemManager InstanceDropItemManager { get; set; }
+        public InstanceShopManager InstanceShopManager { get; }
+        public InstanceGatheringItemManager InstanceGatheringItemManager { get; }
+        public InstanceDropItemManager InstanceDropItemManager { get; }
 
         // TODO: Place somewhere else more sensible
         public uint LastWarpPointId { get; set; }

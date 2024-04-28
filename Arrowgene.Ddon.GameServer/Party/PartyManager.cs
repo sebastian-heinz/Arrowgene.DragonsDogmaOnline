@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using Arrowgene.Ddon.Shared;
 
 namespace Arrowgene.Ddon.GameServer.Party;
 
@@ -15,12 +16,16 @@ public class PartyManager
 
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyManager));
 
+    public readonly AssetRepository assetRepository;
+
     private readonly ConcurrentStack<uint> _idPool;
     private readonly ConcurrentDictionary<uint, PartyGroup> _parties;
     private readonly ConcurrentDictionary<GameClient, PartyInvitation> _invites;
 
-    public PartyManager()
+    public PartyManager(AssetRepository assetRepository)
     {
+        this.assetRepository = assetRepository;
+
         _idPool = new ConcurrentStack<uint>();
         for (uint i = 1; i < MaxNumParties + 1; i++)
         {
