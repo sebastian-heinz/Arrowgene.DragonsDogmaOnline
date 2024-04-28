@@ -264,6 +264,16 @@ namespace Arrowgene.Ddon.Server.Network
                     _readHeader = false;
                     read = _buffer.Position != _buffer.Size;
                 }
+                else
+                {
+                    if (_dataSize > PacketMinimumDataSize)
+                    {
+                        // If datasize was evaluated and is a valid size, assume that the data might be split across multiple TCP packets
+                        // reset position to before header was read and hope data arrives with the next packet
+                        _readHeader = false;
+                        _buffer.Position -= 2;
+                    }
+                }
             }
 
             if (_buffer.Position == _buffer.Size)
