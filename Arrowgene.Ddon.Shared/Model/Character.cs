@@ -33,6 +33,7 @@ namespace Arrowgene.Ddon.Shared.Model
             ArisenProfile = new CDataArisenProfile();
             Pawns = new List<Pawn>();
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
+            OnlineStatus = OnlineStatus.Offline;
         }
 
         public int AccountId { get; set; }

@@ -928,18 +928,18 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_FRIEND_GET_FRIEND_LIST_RES = new PacketId(16, 0, 2, "S2C_FRIEND_GET_FRIEND_LIST_RES", ServerType.Game, PacketSource.Server); // フレンドリスト取得に
         public static readonly PacketId C2S_FRIEND_APPLY_FRIEND_REQ = new PacketId(16, 1, 1, "C2S_FRIEND_APPLY_FRIEND_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_FRIEND_APPLY_FRIEND_RES = new PacketId(16, 1, 2, "S2C_FRIEND_APPLY_FRIEND_RES", ServerType.Game, PacketSource.Server); // フレンド申請に
-        public static readonly PacketId S2C_FRIEND_16_1_16_NTC = new PacketId(16, 1, 16, "S2C_FRIEND_16_1_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_FRIEND_APPLY_FRIEND_NTC = new PacketId(16, 1, 16, "S2C_FRIEND_APPLY_FRIEND_NTC", ServerType.Game, PacketSource.Server, "S2C_FRIEND_16_1_16_NTC");
         public static readonly PacketId C2S_FRIEND_APPROVE_FRIEND_REQ = new PacketId(16, 2, 1, "C2S_FRIEND_APPROVE_FRIEND_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_FRIEND_APPROVE_FRIEND_RES = new PacketId(16, 2, 2, "S2C_FRIEND_APPROVE_FRIEND_RES", ServerType.Game, PacketSource.Server); // フレンド承認に
-        public static readonly PacketId S2C_FRIEND_16_2_16_NTC = new PacketId(16, 2, 16, "S2C_FRIEND_16_2_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_FRIEND_APPROVE_FRIEND_NTC = new PacketId(16, 2, 16, "S2C_FRIEND_APPROVE_FRIEND_NTC", ServerType.Game, PacketSource.Server, "S2C_FRIEND_16_2_16_NTC");
         public static readonly PacketId C2S_FRIEND_REMOVE_FRIEND_REQ = new PacketId(16, 3, 1, "C2S_FRIEND_REMOVE_FRIEND_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_FRIEND_REMOVE_FRIEND_RES = new PacketId(16, 3, 2, "S2C_FRIEND_REMOVE_FRIEND_RES", ServerType.Game, PacketSource.Server); // フレンド解除に
-        public static readonly PacketId S2C_FRIEND_16_3_16_NTC = new PacketId(16, 3, 16, "S2C_FRIEND_16_3_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_FRIEND_REMOVE_FRIEND_NTC = new PacketId(16, 3, 16, "S2C_FRIEND_REMOVE_FRIEND_NTC", ServerType.Game, PacketSource.Server, "S2C_FRIEND_16_3_16_NTC");
         public static readonly PacketId C2S_FRIEND_REGISTER_FAVORITE_FRIEND_REQ = new PacketId(16, 4, 1, "C2S_FRIEND_REGISTER_FAVORITE_FRIEND_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_FRIEND_REGISTER_FAVORITE_FRIEND_RES = new PacketId(16, 4, 2, "S2C_FRIEND_REGISTER_FAVORITE_FRIEND_RES", ServerType.Game, PacketSource.Server); // お気に入りフレンド設定に
         public static readonly PacketId C2S_FRIEND_CANCEL_FRIEND_APPLICATION_REQ = new PacketId(16, 5, 1, "C2S_FRIEND_CANCEL_FRIEND_APPLICATION_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_FRIEND_CANCEL_FRIEND_APPLICATION_RES = new PacketId(16, 5, 2, "S2C_FRIEND_CANCEL_FRIEND_APPLICATION_RES", ServerType.Game, PacketSource.Server); // フレンド申請キャンセルに
-        public static readonly PacketId S2C_FRIEND_16_5_16_NTC = new PacketId(16, 5, 16, "S2C_FRIEND_16_5_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_FRIEND_CANCEL_FRIEND_APPLICATION_NTC = new PacketId(16, 5, 16, "S2C_FRIEND_CANCEL_FRIEND_APPLICATION_NTC", ServerType.Game, PacketSource.Server, "S2C_FRIEND_16_5_16_NTC");
         public static readonly PacketId C2S_FRIEND_GET_RECENT_CHARACTER_LIST_REQ = new PacketId(16, 6, 1, "C2S_FRIEND_GET_RECENT_CHARACTER_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_FRIEND_GET_RECENT_CHARACTER_LIST_RES = new PacketId(16, 6, 2, "S2C_FRIEND_GET_RECENT_CHARACTER_LIST_RES", ServerType.Game, PacketSource.Server); // 最近遊んだプレイヤー取得に
 
@@ -2834,18 +2834,18 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_FRIEND_GET_FRIEND_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_FRIEND_APPLY_FRIEND_REQ);
             AddPacketIdEntry(packetIds, S2C_FRIEND_APPLY_FRIEND_RES);
-            AddPacketIdEntry(packetIds, S2C_FRIEND_16_1_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_FRIEND_APPLY_FRIEND_NTC);
             AddPacketIdEntry(packetIds, C2S_FRIEND_APPROVE_FRIEND_REQ);
             AddPacketIdEntry(packetIds, S2C_FRIEND_APPROVE_FRIEND_RES);
-            AddPacketIdEntry(packetIds, S2C_FRIEND_16_2_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_FRIEND_APPROVE_FRIEND_NTC);
             AddPacketIdEntry(packetIds, C2S_FRIEND_REMOVE_FRIEND_REQ);
             AddPacketIdEntry(packetIds, S2C_FRIEND_REMOVE_FRIEND_RES);
-            AddPacketIdEntry(packetIds, S2C_FRIEND_16_3_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_FRIEND_REMOVE_FRIEND_NTC);
             AddPacketIdEntry(packetIds, C2S_FRIEND_REGISTER_FAVORITE_FRIEND_REQ);
             AddPacketIdEntry(packetIds, S2C_FRIEND_REGISTER_FAVORITE_FRIEND_RES);
             AddPacketIdEntry(packetIds, C2S_FRIEND_CANCEL_FRIEND_APPLICATION_REQ);
             AddPacketIdEntry(packetIds, S2C_FRIEND_CANCEL_FRIEND_APPLICATION_RES);
-            AddPacketIdEntry(packetIds, S2C_FRIEND_16_5_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_FRIEND_CANCEL_FRIEND_APPLICATION_NTC);
             AddPacketIdEntry(packetIds, C2S_FRIEND_GET_RECENT_CHARACTER_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_FRIEND_GET_RECENT_CHARACTER_LIST_RES);
 

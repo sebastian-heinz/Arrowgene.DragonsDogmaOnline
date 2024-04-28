@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -20,6 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SLobbyJoinReq> packet)
         {
+            client.Character.OnlineStatus = OnlineStatus.Online;
             var resp = new S2CLobbyJoinRes()
             {
                 CharacterId = client.Character.CharacterId,
@@ -33,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ClanName = "",
                         Unk0 = 1, // Platform PC?
                         Unk1 = 0,
-                        Unk2 = 8  // OnlineStatus?
+                        OnlineStatus = OnlineStatus.Online  // OnlineStatus?
                     },
                 }
             };
@@ -58,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             PawnId = 0,
                             Unk0 = 1,
                             Unk1 = 0,
-                            Unk2 = 8
+                            OnlineStatus = OnlineStatus.Online
                         }
                     );
 

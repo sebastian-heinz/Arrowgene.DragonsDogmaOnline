@@ -143,6 +143,17 @@ namespace Arrowgene.Ddon.Database
         bool DeleteConnection(int serverId, int accountId);
         bool DeleteConnectionsByAccountId(int accountId);
         bool DeleteConnectionsByServerId(int serverId);
+        
+        // ContactList
+        int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status,
+            ContactListType type, bool requesterFavorite, bool requestedFavorite);
+        int UpdateContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status,
+            ContactListType type, bool requesterFavorite, bool requestedFavorite);
+        int DeleteContact(uint requestingCharacterId, uint requestedCharacterId);
+        int DeleteContactById(uint id);
+        List<ContactListEntity> SelectContactsByCharacterId(uint characterId);
+        ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2);
+        ContactListEntity SelectContactListById(uint id);
 
         // Dragon Force Augmentation
         public bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo);

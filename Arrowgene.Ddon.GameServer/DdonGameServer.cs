@@ -40,6 +40,7 @@ using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -243,6 +244,11 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EquipUpdateHidePawnLanternHandler(this));
 
             AddHandler(new FriendGetFriendListHandler(this));
+            AddHandler(new FriendApplyFriendListHandler(this));
+            AddHandler(new FriendApproveFriendListHandler(this));
+            AddHandler(new FriendRemoveFriendHandler(this));
+            AddHandler(new FriendRegisterFavoriteFriendHandler(this));
+            AddHandler(new FriendCancelFriendApplicationHandler(this));
             AddHandler(new FriendGetRecentCharacterListHandler(this));
 
             AddHandler(new Gp_28_2_1_Handler(this));

@@ -231,6 +231,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataWeatherSchedule.Serializer());
             Create(new CDataWorldManageQuestOrderList.Serializer());
             Create(new CDataStageLayoutId.Serializer());
+            Create(new CDataFriendInfo.Serializer());
             Create(new UnkownCharacterData0Serializer());
 
             // Packet structure serializers
@@ -423,6 +424,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SWarpWarpEndNtc.Serializer());
             Create(new C2SWarpWarpReq.Serializer());
             Create(new C2SWarpWarpStartNtc.Serializer());
+            
+            Create(new C2SFriendApplyFriendReq.Serializer());
+            Create(new C2SFriendApproveFriendReq.Serializer());
+            Create(new C2SFriendRemoveFriendReq.Serializer());
+            Create(new C2SFriendRegisterFavoriteFriendReq.Serializer());
+            Create(new C2SFriendCancelFriendApplicationReq.Serializer());
+            Create(new C2SCharacterCommunityCharacterStatusGetReq.Serializer());
+            
             Create(new L2CCreateCharacterDataNtc.Serializer());
             Create(new L2CCreateCharacterDataRes.Serializer());
             Create(new L2CGetErrorMessageListNtc.Serializer());
@@ -705,6 +714,19 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CWarpRegisterFavoriteWarpRes.Serializer());
             Create(new S2CWarpReleaseWarpPointRes.Serializer());
             Create(new S2CWarpWarpRes.Serializer());
+            
+            Create(new S2CFriendGetFriendListRes.Serializer());
+            Create(new S2CFriendApplyFriendRes.Serializer());
+            Create(new S2CFriendApproveFriendRes.Serializer());
+            Create(new S2CFriendRemoveFriendRes.Serializer());
+            Create(new S2CFriendRegisterFavoriteFriendRes.Serializer());
+            Create(new S2CFriendCancelFriendApplicationRes.Serializer());
+            Create(new S2CCharacterCommunityCharacterStatusGetRes.Serializer());
+
+            Create(new S2CFriendApplyFriendNtc.Serializer());
+            Create(new S2CFriendApproveFriendNtc.Serializer());
+            Create(new S2CFriendRemoveFriendNtc.Serializer());
+            Create(new S2CFriendCancelFriendApplicationNtc.Serializer());
 
             Create(new ServerRes.Serializer());
         }

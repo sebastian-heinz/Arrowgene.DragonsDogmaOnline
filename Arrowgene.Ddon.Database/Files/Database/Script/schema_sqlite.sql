@@ -467,3 +467,17 @@ CREATE TABLE IF NOT EXISTS ddon_unlocked_secret_ability
     CONSTRAINT pk_ddon_unlocked_secret_ability PRIMARY KEY("character_common_id", "ability_id"),
     CONSTRAINT fk_unlocked_secret_ability_character_common_id FOREIGN KEY("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS "ddon_contact_list" (
+    "id"                        INTEGER UNIQUE,
+    "requester_character_id"	INTEGER NOT NULL,
+    "requested_character_id"	INTEGER NOT NULL,
+    "status"                    SMALLINT NOT NULL,
+    "type"                      SMALLINT NOT NULL,
+    "requester_favorite"	    BOOLEAN NOT NULL,
+    "requested_favorite"	    BOOLEAN NOT NULL,
+    FOREIGN KEY("requester_character_id") REFERENCES "ddon_character"("character_id"),
+    FOREIGN KEY("requested_character_id") REFERENCES "ddon_character"("character_id"),
+    PRIMARY KEY("id" AUTOINCREMENT),
+    UNIQUE("requester_character_id","requested_character_id")
+);
