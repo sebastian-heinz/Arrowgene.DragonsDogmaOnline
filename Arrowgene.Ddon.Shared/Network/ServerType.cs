@@ -1,8 +1,8 @@
 ﻿namespace Arrowgene.Ddon.Shared.Network
 {
-    public enum ServerType : ushort
+    public enum ServerType
     {
-        Login = 52100,
-        Game = 52000
+        Login,
+        Game
     }
 }

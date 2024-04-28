@@ -51,13 +51,13 @@ namespace Arrowgene.Ddon.Cli.Command
                 throw new PacketCommandException("No packets found to annotate.");
             }
 
-            ServerType serverType = pcapPackets[0].ServerType;
+            PacketServerType packetServerType = pcapPackets[0].PacketServerType;
             IPacketIdResolver packetIdResolver;
-            if (serverType == ServerType.Login)
+            if (packetServerType == PacketServerType.Login)
             {
                 packetIdResolver = PacketIdResolver.LoginPacketIdResolver;
             }
-            else if (serverType == ServerType.Game)
+            else if (packetServerType == PacketServerType.Game)
             {
                 packetIdResolver = PacketIdResolver.GamePacketIdResolver;
             }
@@ -135,12 +135,12 @@ namespace Arrowgene.Ddon.Cli.Command
 
             YamlPeer serverPeer;
             YamlPeer clientPeer;
-            if (yamlFile.peers[0].port is (ushort)ServerType.Login or (ushort)ServerType.Game)
+            if (yamlFile.peers[0].port is (ushort)PacketServerType.Login or (ushort)PacketServerType.Game)
             {
                 serverPeer = yamlFile.peers[0];
                 clientPeer = yamlFile.peers[1];
             }
-            else if (yamlFile.peers[1].port is (ushort)ServerType.Login or (ushort)ServerType.Game)
+            else if (yamlFile.peers[1].port is (ushort)PacketServerType.Login or (ushort)PacketServerType.Game)
             {
                 serverPeer = yamlFile.peers[1];
                 clientPeer = yamlFile.peers[0];
@@ -150,14 +150,14 @@ namespace Arrowgene.Ddon.Cli.Command
                 throw new PacketCommandException("Could not identify peer roles");
             }
 
-            ServerType serverType;
-            if (serverPeer.port == (ushort)ServerType.Login)
+            PacketServerType packetServerType;
+            if (serverPeer.port == (ushort)PacketServerType.Login)
             {
-                serverType = ServerType.Login;
+                packetServerType = PacketServerType.Login;
             }
-            else if (serverPeer.port == (ushort)ServerType.Game)
+            else if (serverPeer.port == (ushort)PacketServerType.Game)
             {
-                serverType = ServerType.Game;
+                packetServerType = PacketServerType.Game;
             }
             else
             {
@@ -167,7 +167,7 @@ namespace Arrowgene.Ddon.Cli.Command
             List<PcapPacket> pcapPackets = new List<PcapPacket>(yamlFile.packets.Count);
             foreach (YamlPacket yamlPacket in yamlFile.packets)
             {
-                if (yamlPacket.timestamp.StartsWith("0"))
+                if (yamlPacket.timestamp.StartsWith('0'))
                 {
                     Logger.Error($"Skipping broken packet {yamlPacket.packet} with invalid timestamp!");
                     continue;
@@ -188,7 +188,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     Logger.Error("Failed to identify packet peer owner");
                 }
 
-                pcapPacket.ServerType = serverType;
+                pcapPacket.PacketServerType = packetServerType;
                 pcapPacket.Index = yamlPacket.index;
                 pcapPacket.Data = Convert.FromBase64String(yamlPacket.data);
                 pcapPacket.TimeStamp = ToReadableTimestamp(yamlPacket.timestamp);
