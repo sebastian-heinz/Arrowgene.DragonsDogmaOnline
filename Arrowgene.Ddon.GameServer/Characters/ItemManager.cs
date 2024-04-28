@@ -135,12 +135,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
         private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consuneNum)
         {
-            itemNum = (uint) Math.Max(0, (int)itemNum - (int)consuneNum);
+            uint finalItemNum = (uint) Math.Max(0, (int)itemNum - (int)consuneNum);
+            int finalConsumeNum = (int)itemNum - (int)finalItemNum;
 
             CDataItemUpdateResult ntcData = new CDataItemUpdateResult();
             ntcData.ItemList.ItemUId = item.UId;
             ntcData.ItemList.ItemId = item.ItemId;
-            ntcData.ItemList.ItemNum = itemNum;
+            ntcData.ItemList.ItemNum = finalItemNum;
             ntcData.ItemList.Unk3 = item.Unk3;
             ntcData.ItemList.StorageType = fromStorageType;
             ntcData.ItemList.SlotNo = slotNo;
@@ -153,9 +154,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
             ntcData.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
-            ntcData.UpdateItemNum = -(int)consuneNum;
+            ntcData.UpdateItemNum = -finalConsumeNum;
 
-            if(itemNum == 0)
+            if(finalItemNum == 0)
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
                 character.Storage.setStorageItem(null, 0, fromStorageType, slotNo);
@@ -163,8 +164,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else
             {
-                character.Storage.setStorageItem(item, itemNum, fromStorageType, slotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, item.UId, itemNum);
+                character.Storage.setStorageItem(item, finalItemNum, fromStorageType, slotNo);
+                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, item.UId, finalItemNum);
             }
 
             return ntcData;
