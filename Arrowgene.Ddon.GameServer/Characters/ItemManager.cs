@@ -127,7 +127,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
         private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consuneNum)
         {
-            itemNum = Math.Max(0, itemNum - consuneNum);
+            itemNum = (uint) Math.Max(0, (int)itemNum - (int)consuneNum);
 
             CDataItemUpdateResult ntcData = new CDataItemUpdateResult();
             ntcData.ItemList.ItemUId = item.UId;

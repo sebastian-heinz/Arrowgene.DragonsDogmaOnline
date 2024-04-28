@@ -92,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Substract craft price
             CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
-            wallet.Value = Math.Max(0, wallet.Value - finalCraftCost);
+            wallet.Value = (uint) Math.Max(0, (int)wallet.Value - (int)finalCraftCost);
             Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
             updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
             {
