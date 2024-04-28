@@ -522,33 +522,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // TODO: Performance
             lock (equippedAbilities)
             {
-                // Need to shift all the abilities over so they are in the new order reflecting in the UI.
-                // We keep track of 2 "pointers" one which is currently iterating over the whole list and
-                // another which is keep tracking of the current spot which can be inserted into.
-                // Also, we can make some assumptions to make this operation less wasteful.
-                // 1. Assume all elements before the one removed are already in order properly.
-                // 2. Due to point #1, we only need to shift elements starting from slotNo (in the array)
-                // 3. There are no "holes" in the list (cases where we have -- object, null, object).
-                // 4. Due to #4, once we find the first NULL element, we can stop
-                //
-
-                // Set the slot to null to handle the edgecase of removing the last element of the list
+                // Seems client wants us to keep the abilities where it was added
+                // for the first time. So just null out the ability we want to remove
+                // in the position in the list. When inserting into the DB, we need to
+                // be careful and skip over null entries and continue to increment the
+                // slot index.
                 equippedAbilities[slotNo - 1] = null;
-                for (int i = slotNo; i < equippedAbilities.Count; i++)
-                {
-                    // Get the current ability
-                    var ability = equippedAbilities[i];
-
-                    // Place the ability in it's new slot in the list
-                    equippedAbilities[i - 1] = ability;
-                    if (ability == null)
-                    {
-                        break;
-                    }
-                }
-
-                database.ReplaceEquippedAbilities(character.CommonId, character.Job, character.EquippedAbilitiesDictionary[character.Job]);
             }
+
+            database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
 
             // Same as skills, i haven't found an Ability off NTC. It may not be required
         }
