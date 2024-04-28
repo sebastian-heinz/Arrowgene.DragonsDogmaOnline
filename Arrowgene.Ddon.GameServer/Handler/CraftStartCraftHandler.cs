@@ -8,13 +8,19 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class CraftStartCraftHandler : GameStructurePacketHandler<C2SCraftStartCraftReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
-        
+
+        private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
+            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
+            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
+        };
+
         private readonly ItemManager _itemManager;
 
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
@@ -43,33 +49,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Remove crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
             {
-                int consumedItems = 0;
-
-                // Take first from item bag
-                CDataItemUpdateResult? craftMaterialBagUpdateResult = _itemManager.ConsumeItemByUIdFromItemBag(Server, client.Character, craftMaterial.ItemUId, craftMaterial.ItemNum);
-                if(craftMaterialBagUpdateResult != null)
+                try
                 {
-                    updateCharacterItemNtc.UpdateItemList.Add(craftMaterialBagUpdateResult);
-                    consumedItems += craftMaterialBagUpdateResult.UpdateItemNum;
+                    List<CDataItemUpdateResult> updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, craftMaterial.ItemUId, craftMaterial.ItemNum);
                 }
-                
-                // If there weren't enough items in the item bag, take from the storage box
-                if (craftMaterial.ItemNum + consumedItems  >  0)
+                catch (NotEnoughItemsException e)
                 {
-                    CDataItemUpdateResult? craftMaterialStorageUpdateResult = _itemManager.ConsumeItemByUId(Server, client.Character, StorageType.StorageBoxNormal, craftMaterial.ItemUId, craftMaterial.ItemNum);
-                    if(craftMaterialStorageUpdateResult != null)
-                    {
-                        updateCharacterItemNtc.UpdateItemList.Add(craftMaterialStorageUpdateResult);
-                        consumedItems += craftMaterialStorageUpdateResult.UpdateItemNum;
-                    }
-                }
-
-                // TODO: GG storage box? Other storages?
-
-                if (craftMaterial.ItemNum + consumedItems != 0)
-                {
-                    // TODO: Rollback transaction
-                    Logger.Error("Consumed "+consumedItems+" items of UID "+craftMaterial.ItemUId+" but the crafting recipe required "+craftMaterial.ItemNum);
+                    Logger.Exception(e);
                     client.Send(new S2CCraftStartCraftRes()
                     {
                         Result = 1
@@ -92,7 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Substract craft price
             CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
-            wallet.Value = (uint) Math.Max(0, (int)wallet.Value - (int)finalCraftCost);
+            wallet.Value = (uint)Math.Max(0, (int)wallet.Value - (int)finalCraftCost);
             Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
             updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
             {
