@@ -80,19 +80,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Refining material and all that stuff
 
+            // TODO: Calculate final craft price with the discounts from the craft pawns
+            uint finalCraftCost = recipe.Cost * packet.Structure.CreateCount;
+
+            // Temporary solution for craft price when setting a second pawn of rank 1
+            // TODO: Remove
+            if(packet.Structure.CraftSupportPawnIDList.Count > 0)
+            {
+                finalCraftCost = (uint)(finalCraftCost*0.95);
+            }
+
             // Substract craft price
             CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
-            wallet.Value = Math.Max(0, wallet.Value - recipe.Cost);
+            wallet.Value = Math.Max(0, wallet.Value - finalCraftCost);
             Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
             updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
             {
                 Type = WalletType.Gold,
-                AddPoint = (int) -recipe.Cost,
+                AddPoint = (int)-finalCraftCost,
                 Value = wallet.Value
             });
 
             // Add crafted items
-            CDataItemUpdateResult? itemUpdateResult = _itemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount);
+            CDataItemUpdateResult? itemUpdateResult = _itemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num);
             updateCharacterItemNtc.UpdateItemList.Add(itemUpdateResult);
 
             client.Send(updateCharacterItemNtc);
