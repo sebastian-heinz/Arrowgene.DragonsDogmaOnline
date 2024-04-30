@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -11,13 +12,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LobbyLobbyLeaveHandler));
 
+        private CharacterManager _CharacterManager;
 
         public LobbyLobbyLeaveHandler(DdonGameServer server) : base(server)
         {
             server.ClientConnectionChangeEvent += OnClientConnectionChangeEvent;
+            _CharacterManager = server.CharacterManager;
         }
 
         // I have no idea on when this gets called, not when exiting the game, thats for sure
+        // - Return to title makes this happen
         public override void Handle(GameClient client, StructurePacket<C2SLobbyLeaveReq> packet)
         {
             client.Send(new S2CLobbyLeaveRes());
@@ -45,6 +49,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         otherClient.Send(ntc);
                     }
                 }
+
+                _CharacterManager.UpdateDatabaseOnExit(client.Character);
             }
         }
     }

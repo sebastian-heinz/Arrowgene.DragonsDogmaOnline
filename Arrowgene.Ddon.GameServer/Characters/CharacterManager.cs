@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterManager));
 
         public static readonly uint BASE_HEALTH = 760U;
-        public static readonly uint BASE_STAMINA = 750U;
+        public static readonly uint BASE_STAMINA = 450U;
         public static readonly uint DEFAULT_RING_COUNT = 1;
         public static readonly uint BASE_ABILITY_COST_AMOUNT = 15;
 
@@ -78,12 +78,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             character.StatusInfo.GainStamina = ExtendedParams.StaminaMax;
             character.StatusInfo.GainHP = ExtendedParams.HpMax;
 
-            // These values reflect in the UI what the health bar displays
-            // TODO: Remove this when C2SLobbyLobbyDataMsgReq parsing is supported
-            // TODO: Server alone is not able to account for HP added by gear
-            // TODO: So we need to "trust" the value sent to the server is correct
-            character.StatusInfo.HP = CharacterManager.BASE_HEALTH + ExtendedParams.HpMax;
-            character.StatusInfo.WhiteHP = CharacterManager.BASE_HEALTH + ExtendedParams.HpMax;
+            /**
+             * Seems the game wants MaxHP to always be 760 and MaxStamina to be 450.
+             * Then it takes the values from the GainHp and GainStamina and add them 
+             * to the Max values. Finally it seems to take the status from the armor
+             * and add them to the running total for each stat, resulting the status
+             * you see in game.
+             */
+            character.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
+            character.StatusInfo.MaxHP = CharacterManager.BASE_HEALTH;
+        }
+
+        public void UpdateDatabaseOnExit(Character character)
+        {
+            _Database.UpdateStatusInfo(character);
         }
 
         public void UpdateCharacterExtendedParamsNtc(GameClient client, Character character)
