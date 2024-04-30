@@ -32,8 +32,7 @@ CREATE TABLE IF NOT EXISTS ddon_character_common
     "character_common_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "job"                 SMALLINT                          NOT NULL,
     "hide_equip_head"     BOOLEAN                           NOT NULL,
-    "hide_equip_lantern"  BOOLEAN                           NOT NULL,
-    "jewelry_slot_num"    SMALLINT                          NOT NULL
+    "hide_equip_lantern"  BOOLEAN                           NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS ddon_character

@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CharacterCommonFields = new string[]
         {
-            "job", "hide_equip_head", "hide_equip_lantern", "jewelry_slot_num"
+            "job", "hide_equip_head", "hide_equip_lantern"
         };
 
         private static readonly string[] CDataEditInfoFields = new string[]
@@ -291,7 +291,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             common.CommonId = GetUInt32(reader, "character_common_id");
             common.Job = (JobId) GetByte(reader, "job");
-            common.JewelrySlotNum = GetByte(reader, "jewelry_slot_num");
             common.HideEquipHead = GetBoolean(reader, "hide_equip_head");
             common.HideEquipLantern = GetBoolean(reader, "hide_equip_lantern");
 
@@ -386,7 +385,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             // CharacterCommonFields
             AddParameter(command, "@character_common_id", common.CommonId);
             AddParameter(command, "@job", (byte) common.Job);
-            AddParameter(command, "@jewelry_slot_num", common.JewelrySlotNum);
             AddParameter(command, "@hide_equip_head", common.HideEquipHead);
             AddParameter(command, "@hide_equip_lantern", common.HideEquipLantern);
             // CDataEditInfoFields
