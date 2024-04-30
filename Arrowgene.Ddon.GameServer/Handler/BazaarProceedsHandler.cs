@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
@@ -64,8 +65,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         throw new Exception("Unexpected destination when buying goods: "+itemStorageIndicateNum.StorageType);
                 }
 
-                CDataItemUpdateResult? itemUpdateResult = _itemManager.AddItem(Server, client.Character, sendToItemBag, packet.Structure.ItemId, itemStorageIndicateNum.ItemNum);                
-                updateCharacterItemNtc.UpdateItemList.Add(itemUpdateResult);
+                List<CDataItemUpdateResult> itemUpdateResult = _itemManager.AddItem(Server, client.Character, sendToItemBag, packet.Structure.ItemId, itemStorageIndicateNum.ItemNum);                
+                updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);
             }
 
             // Send packets

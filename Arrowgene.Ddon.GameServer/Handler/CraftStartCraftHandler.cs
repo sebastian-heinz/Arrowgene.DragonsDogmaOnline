@@ -89,8 +89,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             });
 
             // Add crafted items
-            CDataItemUpdateResult? itemUpdateResult = _itemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num);
-            updateCharacterItemNtc.UpdateItemList.Add(itemUpdateResult);
+            List<CDataItemUpdateResult> itemUpdateResult = _itemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num);
+            updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);
 
             client.Send(updateCharacterItemNtc);
             client.Send(new S2CCraftStartCraftRes());

@@ -55,9 +55,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // UPDATE INVENTORY
-            CDataItemUpdateResult? itemUpdateResult = _itemManager.AddItem(Server, client.Character, sendToItemBag, good.ItemId, boughAmount);
+            List<CDataItemUpdateResult> itemUpdateResults = _itemManager.AddItem(Server, client.Character, sendToItemBag, good.ItemId, boughAmount);
 
-            if(itemUpdateResult.UpdateItemNum == 0)
+            boughAmount = (uint) itemUpdateResults.Select(result => result.UpdateItemNum).Sum();
+            if(boughAmount == 0)
             {
                 // Send empty response, no items bought
                 client.Send(new S2CItemUpdateCharacterItemNtc()
@@ -68,7 +69,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 // Substract stock, substract wallet points, and send response with the stock, wallet points and inventory
-                boughAmount = (uint) itemUpdateResult.UpdateItemNum;
                 totalPrice = good.Price * boughAmount;
 
                 // UPDATE SHOP
@@ -95,10 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             Value = wallet.Value
                         }
                     },
-                    UpdateItemList = new List<CDataItemUpdateResult>()
-                    {
-                        itemUpdateResult
-                    }
+                    UpdateItemList = itemUpdateResults
                 });
             }
 
