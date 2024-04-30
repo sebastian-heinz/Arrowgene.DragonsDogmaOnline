@@ -58,5 +58,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public double X { get; set; }
         public float Y { get; set; }
         public double Z { get; set; }
+
+        public uint GreenHp {  get; set; }
+        public uint WhiteHp { get; set; }
     }
 }

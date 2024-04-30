@@ -21,13 +21,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterManager));
 
         public static readonly uint BASE_HEALTH = 760U;
-        public static readonly uint BASE_STAMINA = 750U;
+        public static readonly uint BASE_STAMINA = 450U;
         public static readonly uint DEFAULT_RING_COUNT = 1;
         public static readonly uint BASE_ABILITY_COST_AMOUNT = 15;
 
+        public static readonly uint MAX_PLAYER_HP = uint.MaxValue;
+        public static readonly uint MAX_PLAYER_STAMINA = uint.MaxValue;
+
         private readonly DdonGameServer _Server;
 
-        public CharacterManager(DdonGameServer server) 
+        public CharacterManager(DdonGameServer server)
         {
             _Server = server;
         }
@@ -104,12 +107,48 @@ namespace Arrowgene.Ddon.GameServer.Characters
             character.StatusInfo.GainStamina = ExtendedParams.StaminaMax;
             character.StatusInfo.GainHP = ExtendedParams.HpMax;
 
-            // These values reflect in the UI what the health bar displays
-            // TODO: Remove this when C2SLobbyLobbyDataMsgReq parsing is supported
-            // TODO: Server alone is not able to account for HP added by gear
-            // TODO: So we need to "trust" the value sent to the server is correct
-            character.StatusInfo.HP = CharacterManager.BASE_HEALTH + ExtendedParams.HpMax;
-            character.StatusInfo.WhiteHP = CharacterManager.BASE_HEALTH + ExtendedParams.HpMax;
+            /**
+             * Seems when the game first loads, the game wants MaxHP to always be 760
+             * and MaxStamina to be 450. Then it takes the values from the GainHp and
+             * GainStamina and add them to the Max values. Finally it seems to take
+             * the stats from the armor/accessories and add them to the running total
+             * for each stat, resulting the stats you see in game.
+             *
+             * Later on when upgrading health at the dragon, if we leave these as
+             * the default, the health will get adjusted back down. One thing we
+             * can take advantage of is that if we set the character HP > MaxHP,
+             * it will only fill up to max HP. This will allow us to refill the
+             * health of the player when they upgrade with BO or in other
+             * scenarios where this may be required. The same trick also works
+             * for stamina.
+             */
+            if (character.StatusInfo.MaxHP != 0)
+            {
+                character.StatusInfo.HP = CharacterManager.MAX_PLAYER_HP;
+                character.StatusInfo.WhiteHP = CharacterManager.MAX_PLAYER_HP;
+            }
+            character.StatusInfo.MaxHP = CharacterManager.BASE_HEALTH;
+
+            if (character.StatusInfo.MaxStamina != 0)
+            {
+                character.StatusInfo.Stamina = CharacterManager.MAX_PLAYER_STAMINA;
+
+            }
+            character.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
+        }
+
+        public void UpdateDatabaseOnExit(Character character)
+        {
+            _Server.Database.UpdateStatusInfo(character);
+
+            foreach (var pawn in character.Pawns)
+            {
+                // Reset pawn HP to base max so next time we log in they are at full health
+                pawn.GreenHp = CharacterManager.BASE_HEALTH;
+                pawn.WhiteHp = CharacterManager.BASE_HEALTH;
+
+                _Server.Database.UpdateStatusInfo(pawn);
+            }
         }
 
         public void UpdateCharacterExtendedParamsNtc(GameClient client, Character character)

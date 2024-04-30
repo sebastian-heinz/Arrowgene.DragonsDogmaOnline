@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
         {
         }
 
-        public abstract void Handle(Character character, IBuffer buffer);
+        public abstract void Handle(Character character, RpcPacketHeader packetHeader, IBuffer buffer);
 
         public byte[] ReadBytes(IBuffer buffer, int length)
         {

@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         // Im not convinced most of these fields have to be stored in DB
         private static readonly string[] CDataStatusInfoFields = new string[]
         {
-            "character_common_id", "revive_point", "hp", "white_hp", "max_hp", "stamina", "max_stamina"
+            "character_common_id", "revive_point", "hp", "white_hp"
         };
 
         private readonly string SqlInsertCharacterCommon = $"INSERT INTO \"ddon_character_common\" ({BuildQueryField(CharacterCommonFields)}) VALUES ({BuildQueryInsert(CharacterCommonFields)});";
@@ -291,6 +291,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             common.Job = (JobId) GetByte(reader, "job");
             common.HideEquipHead = GetBoolean(reader, "hide_equip_head");
             common.HideEquipLantern = GetBoolean(reader, "hide_equip_lantern");
+            common.JewelrySlotNum = 0;
 
             common.EditInfo.Sex = GetByte(reader, "sex");
             common.EditInfo.Voice = GetByte(reader, "voice");
@@ -368,9 +369,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             common.StatusInfo.RevivePoint = GetByte(reader, "revive_point");
             common.StatusInfo.HP = GetUInt32(reader, "hp");
             common.StatusInfo.WhiteHP = GetUInt32(reader, "white_hp");
-            common.StatusInfo.MaxHP = GetUInt32(reader, "max_hp");
-            common.StatusInfo.Stamina = GetUInt32(reader, "stamina");
-            common.StatusInfo.MaxStamina = GetUInt32(reader, "max_stamina");
         }
 
         private void AddParameter(TCom command, CharacterCommon common)
@@ -454,11 +452,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@motion_filter", common.EditInfo.MotionFilter);
             // CDataStatusInfoFields
             AddParameter(command, "@revive_point", common.StatusInfo.RevivePoint);
-            AddParameter(command, "@hp", common.StatusInfo.HP);
-            AddParameter(command, "@white_hp", common.StatusInfo.WhiteHP);
-            AddParameter(command, "@max_hp", common.StatusInfo.MaxHP);
-            AddParameter(command, "@stamina", common.StatusInfo.Stamina);
-            AddParameter(command, "@max_stamina", common.StatusInfo.MaxStamina);
+            AddParameter(command, "@hp", common.GreenHp);
+            AddParameter(command, "@white_hp", common.WhiteHp);
         }
     }
 }

@@ -149,9 +149,6 @@ CREATE TABLE IF NOT EXISTS ddon_status_info
     "revive_point"        SMALLINT            NOT NULL,
     "hp"                  INTEGER             NOT NULL,
     "white_hp"            INTEGER             NOT NULL,
-    "max_hp"              INTEGER             NOT NULL,
-    "stamina"             INTEGER             NOT NULL,
-    "max_stamina"         INTEGER             NOT NULL,
     CONSTRAINT fk_status_info_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE
 );
 

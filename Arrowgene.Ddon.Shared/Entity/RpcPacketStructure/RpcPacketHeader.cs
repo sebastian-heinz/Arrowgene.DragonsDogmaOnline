@@ -20,9 +20,10 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
         public RpcMessageId MsgIdFull { get; set; }
         public UInt32 SearchId { get; set; }
 
-        public override void Handle(Character character, IBuffer buffer)
+        public override void Handle(Character character, RpcPacketHeader Header, IBuffer buffer)
         {
-            /* special case nothing to do */
+            /* special case nothing to do; should not be called */
+            throw new NotImplementedException();
         }
 
         public RpcPacketHeader Read(IBuffer buffer)
