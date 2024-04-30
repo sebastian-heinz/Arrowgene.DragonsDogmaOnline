@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -31,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Database = database;
         }
 
-        public Character SelectCharacter(uint characterId)
+        public Character SelectCharacter(DdonGameServer server, GameClient client, uint characterId)
         {
             Character character = _Database.SelectCharacter(characterId);
             if (character == null)
@@ -49,7 +50,32 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             UpdateCharacterExtendedParams(character);
 
+            client.Character = character;
+            client.Character.Server = server.AssetRepository.ServerList[0];
+            client.UpdateIdentity();
+
+            SelectPawns(character);
+
             return character;
+        }
+
+        private void SelectPawns(Character character)
+        {
+            character.Pawns = _Database.SelectPawnsByCharacterId(character.CharacterId);
+
+            foreach (var pawn in character.Pawns)
+            {
+                pawn.Server = character.Server;
+
+                pawn.ExtendedParams = _Database.SelectOrbGainExtendParam(pawn.CommonId);
+                if (pawn.ExtendedParams == null)
+                {
+                    // Old DB is in use and new table not populated with required data for character
+                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.CharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
+                }
+
+                UpdateCharacterExtendedParams(pawn);
+            }
         }
 
         public uint GetMaxAugmentAllocation(Character character)
@@ -57,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return CharacterManager.BASE_ABILITY_COST_AMOUNT + character.ExtendedParams.AbilityCost;
         }
 
-        private void UpdateCharacterExtendedParams(Character character)
+        private void UpdateCharacterExtendedParams(CharacterCommon character)
         {
             var ExtendedParams = character.ExtendedParams;
 
