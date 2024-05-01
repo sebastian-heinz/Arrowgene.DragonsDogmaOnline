@@ -1101,7 +1101,7 @@ namespace Arrowgene.Ddon.Shared.Entity
         protected void ReadServerResponse(IBuffer buffer, ServerResponse value)
         {
             value.Error = buffer.ReadUInt32(Endianness.Big);
-            value.Result = buffer.ReadUInt32(Endianness.Big);
+            value.Result = value.Error != 0 ? buffer.ReadUInt16(Endianness.Big) : buffer.ReadUInt32(Endianness.Big);
         }
 
         protected void WriteEntity<TEntity>(IBuffer buffer, TEntity entity) where TEntity : class, new()
