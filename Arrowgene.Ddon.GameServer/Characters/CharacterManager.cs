@@ -25,22 +25,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static readonly uint DEFAULT_RING_COUNT = 1;
         public static readonly uint BASE_ABILITY_COST_AMOUNT = 15;
 
-        private readonly IDatabase _Database;
+        private readonly DdonGameServer _Server;
 
-        public CharacterManager(IDatabase database) 
+        public CharacterManager(DdonGameServer server) 
         {
-            _Database = database;
+            _Server = server;
         }
 
-        public Character SelectCharacter(DdonGameServer server, GameClient client, uint characterId)
+        public Character SelectCharacter(GameClient client, uint characterId)
         {
-            Character character = _Database.SelectCharacter(characterId);
+            Character character = _Server.Database.SelectCharacter(characterId);
             if (character == null)
             {
                 return null;
             }
 
-            character.ExtendedParams = _Database.SelectOrbGainExtendParam(character.CommonId);
+            character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId);
             if (character.ExtendedParams == null)
             {
                 // Old DB is in use and new table not populated with required data for character
@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             UpdateCharacterExtendedParams(character);
 
             client.Character = character;
-            client.Character.Server = server.AssetRepository.ServerList[0];
+            client.Character.Server = _Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
 
             SelectPawns(character);
@@ -61,13 +61,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private void SelectPawns(Character character)
         {
-            character.Pawns = _Database.SelectPawnsByCharacterId(character.CharacterId);
+            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.CharacterId);
 
             foreach (var pawn in character.Pawns)
             {
                 pawn.Server = character.Server;
 
-                pawn.ExtendedParams = _Database.SelectOrbGainExtendParam(pawn.CommonId);
+                pawn.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(pawn.CommonId);
                 if (pawn.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character

@@ -92,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            Character character = _CharacterManager.SelectCharacter(Server, client, token.CharacterId);
+            Character character = _CharacterManager.SelectCharacter(client, token.CharacterId);
             if (character == null)
             {
                 Logger.Error(client, $"CharacterId:{token.CharacterId} not found");

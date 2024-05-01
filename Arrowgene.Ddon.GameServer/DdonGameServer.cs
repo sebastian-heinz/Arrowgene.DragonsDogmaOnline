@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.GameServer
             EquipManager = new EquipManager();
             ShopManager = new ShopManager(assetRepository, database);
             WalletManager = new WalletManager(database);
-            CharacterManager = new CharacterManager(database);
+            CharacterManager = new CharacterManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
