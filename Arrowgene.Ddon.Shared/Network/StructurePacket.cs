@@ -48,11 +48,17 @@ namespace Arrowgene.Ddon.Shared.Network
 
     public abstract class StructurePacket : Packet, IStructurePacket
     {
-        private static readonly ISerializer Serializer = new SerializerBuilder()
+        public static ISerializer YamlSerializer { get; } = new SerializerBuilder()
             .WithTypeInspector(inspector => new MyTypeInspector(inspector))
             .WithTypeConverter(new ByteArrayConverter())
             .Build();
-        
+
+        public static ISerializer JsonSerializer { get; } = new SerializerBuilder()
+            .WithTypeInspector(inspector => new MyTypeInspector(inspector))
+            .WithTypeConverter(new ByteArrayConverter())
+            .JsonCompatible()
+            .Build();
+
         protected StructurePacket(IPacket packet) : base(packet.Id, packet.Data, packet.Source, packet.Count)
         {
         }
@@ -66,7 +72,7 @@ namespace Arrowgene.Ddon.Shared.Network
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append(PrintHeader());
             stringBuilder.Append(Environment.NewLine);
-            Serializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), this);
+            YamlSerializer.Serialize(new IndentedTextWriter(new StringWriter(stringBuilder)), this);
             return stringBuilder.ToString();
         }
 

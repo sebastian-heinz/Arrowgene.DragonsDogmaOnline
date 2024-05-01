@@ -17,7 +17,7 @@ public class PacketCommandTest
         string testYaml = TestUtils.GetTestFileAsString("pcapng1-tcp-stream-33_reduced_test.yaml");
         List<PcapPacket> encryptedPackets = packetCommand.ReadYamlPcap(testYaml);
         List<PcapPacket> decryptedPackets = packetCommand.DecryptPackets(encryptedPackets, Encoding.ASCII.GetBytes("3jc6R11q__MGmP9YIn7fyiNVQgSUoiBc"));
-        string annotatedPacketDump = packetCommand.GetAnnotatedPacketDump(decryptedPackets, true);
+        string annotatedPacketDump = packetCommand.GetAnnotatedPacketDump(decryptedPackets, false, true, false);
 
         Assert.Contains("通信エラーが発生しました", annotatedPacketDump);
     }
@@ -35,12 +35,12 @@ public class PacketCommandTest
         Assert.Equal(762, encryptedPackets.Count);
         Assert.Equal(688, count);
     }
-    
+
     [Fact]
     public void TestDecryptPcap85SplitPacket()
     {
         string testYaml = TestUtils.GetTestFileAsString("stream85-marked.pcapng_tcp-stream-11_edge_case.yaml");
-      
+
         PacketCommand packetCommand = new PacketCommand();
         List<PcapPacket> encryptedPackets = packetCommand.ReadYamlPcap(testYaml);
         List<PcapPacket> decryptedPackets = packetCommand.DecryptPackets(encryptedPackets, Encoding.ASCII.GetBytes("hkNnBgyXz40de6kX3vkmAWGvatldB-Pp"));

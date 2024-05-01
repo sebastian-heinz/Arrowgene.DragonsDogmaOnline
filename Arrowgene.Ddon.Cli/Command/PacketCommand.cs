@@ -18,19 +18,33 @@ namespace Arrowgene.Ddon.Cli.Command
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(PacketCommand));
 
         public string Key => "packet";
+        private static string DecryptionKeySwitch => "--key";
+        private static string ByteDumpSwitch => "--byte-dump";
+        private static string ByteDumpPrefixSwitch => "--byte-dump-prefix";
+        private static string Utf8StringDumpSwitch => "--utf8-dump";
+        private static string StructureDumpSwitch => "--structure-dump";
 
-        public string Description => "Usage: `packet \"E:\\dumps\\58_9.yaml` J2g4pE2_heyqIAengWy0N6D1SEklxz8I";
+        public string Description =>
+            $"Usage: `{Key} \"E:\\dumps\\58_9.yaml` [{DecryptionKeySwitch}=]J2g4pE2_heyqIAengWy0N6D1SEklxz8I [{ByteDumpSwitch}[=,]] [{ByteDumpPrefixSwitch}=0x] [{Utf8StringDumpSwitch}] [{StructureDumpSwitch}[=JSON|YAML]]";
 
 
         public CommandResultType Run(CommandParameter parameter)
         {
             string yamlPath = parameter.Arguments[0];
-            string camelliaKey = parameter.SwitchMap.GetValueOrDefault("--key", null) ?? parameter.Arguments[1];
+
+            string camelliaKey = parameter.SwitchMap.GetValueOrDefault(DecryptionKeySwitch, null) ?? parameter.Arguments[1];
             byte[] camelliaKeyBytes = Encoding.UTF8.GetBytes(camelliaKey);
-            bool addUtf8EncodedByteDump = parameter.Switches.Contains("--utf8-dump");
+
+            bool addByteDump = parameter.Switches.Contains(ByteDumpSwitch) || parameter.SwitchMap.ContainsKey(ByteDumpSwitch);
+            string byteDumpSeparator = parameter.SwitchMap.GetValueOrDefault(ByteDumpSwitch, "");
+            string byteDumpPrefix = parameter.SwitchMap.GetValueOrDefault(ByteDumpPrefixSwitch, "");
+            bool addUtf8StringDump = parameter.Switches.Contains(Utf8StringDumpSwitch) || parameter.SwitchMap.ContainsKey(Utf8StringDumpSwitch);
+            bool addStructureDump = parameter.Switches.Contains(StructureDumpSwitch) || parameter.SwitchMap.ContainsKey(StructureDumpSwitch);
+            string structureDumpFormat = parameter.SwitchMap.GetValueOrDefault(StructureDumpSwitch, "JSON").ToLowerInvariant();
 
             List<PcapPacket> decryptedPcapPackets = DecryptPackets(yamlPath, camelliaKeyBytes);
-            string annotatedDump = GetAnnotatedPacketDump(decryptedPcapPackets, addUtf8EncodedByteDump);
+            string annotatedDump = GetAnnotatedPacketDump(decryptedPcapPackets, addByteDump, addUtf8StringDump, addStructureDump, byteDumpSeparator, byteDumpPrefix,
+                structureDumpFormat);
             string outputPath = yamlPath + ".annotated.txt";
             File.WriteAllText(outputPath, annotatedDump);
 
@@ -93,7 +107,8 @@ namespace Arrowgene.Ddon.Cli.Command
             return pcapPackets;
         }
 
-        public string GetAnnotatedPacketDump(List<PcapPacket> decryptedPcapPackets, bool addUtf8EncodedByteDump)
+        public string GetAnnotatedPacketDump(List<PcapPacket> decryptedPcapPackets, bool addByteDump, bool addUtf8ByteDump, bool addStructureDump, string byteDumpSeparator = "",
+            string byteDumpPrefix = "", string structureDumpFormat = "")
         {
             StringBuilder annotated = new StringBuilder();
             {
@@ -101,20 +116,42 @@ namespace Arrowgene.Ddon.Cli.Command
                 {
                     foreach (IPacket resolvedPacket in pcapPacket.ResolvedPackets)
                     {
-                        annotated.Append(resolvedPacket.PrintHeader());
-                        annotated.Append($" Pcap(No:{pcapPacket.Packet} Ts:{pcapPacket.TimeStamp})");
-                        annotated.Append(Environment.NewLine);
+                        annotated.AppendLine($"{resolvedPacket.PrintHeader()} Pcap(No:{pcapPacket.Packet} Ts:{pcapPacket.TimeStamp})");
                         annotated.Append(resolvedPacket.PrintData());
-                        annotated.Append(string.Join(", ", resolvedPacket.Data.Select(dataByte => String.Format("0x{0:X}", dataByte))));
-                        if (addUtf8EncodedByteDump)
+                        if (addStructureDump && resolvedPacket is IStructurePacket)
                         {
-                            annotated.Append(Environment.NewLine);
-                            annotated.Append(string.Concat(Encoding.UTF8.GetString(resolvedPacket.Data, 0, resolvedPacket.Data.Length).Select(c =>
-                                char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsSeparator(c) || char.IsSymbol(c) ? c : '·')));
+                            try
+                            {
+                                if (structureDumpFormat.Equals("yaml", StringComparison.InvariantCultureIgnoreCase))
+                                {
+                                    annotated.Append($"StructDump: {StructurePacket.YamlSerializer.Serialize(resolvedPacket)}");
+                                }
+                                else
+                                {
+                                    annotated.Append($"StructDump: {StructurePacket.JsonSerializer.Serialize(resolvedPacket)}");
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.Exception(new PacketCommandException(
+                                    $"Unable to parse structure for resolved packet {resolvedPacket.Id} within pcap {pcapPacket.Packet}. Skipping.", e));
+                            }
                         }
 
-                        annotated.Append(Environment.NewLine);
-                        annotated.Append(Environment.NewLine);
+                        if (addByteDump)
+                        {
+                            annotated.AppendLine($"ByteDump: {string.Join(byteDumpSeparator, resolvedPacket.Data.Select(dataByte => $"{byteDumpPrefix}{dataByte:X2}"))}");
+                        }
+
+                        if (addUtf8ByteDump)
+                        {
+                            string utf8dump = string.Concat(Encoding.UTF8.GetString(resolvedPacket.Data, 0, resolvedPacket.Data.Length).Select(c =>
+                                char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsSeparator(c) || char.IsSymbol(c) ? c : '·'));
+                            annotated.AppendLine($"StringDump: {utf8dump}");
+                        }
+
+                        annotated.AppendLine();
+                        annotated.AppendLine();
                     }
                 }
             }
@@ -172,7 +209,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     Logger.Error($"Skipping broken packet {yamlPacket.packet} with invalid timestamp!");
                     continue;
                 }
-                
+
                 PcapPacket pcapPacket = new PcapPacket();
                 if (yamlPacket.peer == serverPeer.peer)
                 {
