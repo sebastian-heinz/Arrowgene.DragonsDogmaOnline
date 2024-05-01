@@ -1145,6 +1145,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             foreach (Pawn pawn in character.Pawns)
             {
                 Database.CreatePawn(pawn);
+                Database.InsertGainExtendParam(pawn.CommonId, ExtendParams);
             }
 
             L2CCreateCharacterDataNtc ntc = new L2CCreateCharacterDataNtc();

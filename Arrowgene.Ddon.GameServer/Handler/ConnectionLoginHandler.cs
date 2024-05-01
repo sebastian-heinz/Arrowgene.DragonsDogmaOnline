@@ -92,23 +92,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            Character character = _CharacterManager.SelectCharacter(token.CharacterId);
+            Character character = _CharacterManager.SelectCharacter(client, token.CharacterId);
             if (character == null)
             {
                 Logger.Error(client, $"CharacterId:{token.CharacterId} not found");
                 res.Error = 1;
                 client.Send(res);
                 return;
-            }
-
-            client.Character = character;
-            client.Character.Server = Server.AssetRepository.ServerList[0];
-            client.UpdateIdentity();
-
-            client.Character.Pawns = Database.SelectPawnsByCharacterId(token.CharacterId);
-            foreach (Pawn pawn in client.Character.Pawns)
-            {
-                pawn.Server = client.Character.Server;
             }
 
             Logger.Info(client, "Logged Into GameServer");
