@@ -3,7 +3,9 @@ using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.RpcPacketStructure;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -53,39 +55,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            if(packet.Structure.RpcPacket.Length > 52)
-            {
-                IBuffer rpcPacketBuffer = new StreamBuffer(packet.Structure.RpcPacket);
-                rpcPacketBuffer.SetPositionStart();
-
-                // nNetMsgData::Head::deserialize
-                uint sessionId = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.SessionId
-                ulong rpcId = rpcPacketBuffer.ReadUInt64(Endianness.Big); // NetMsgData.Head.RpcId
-                uint msgIdFull = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.MsgIdFull
-                uint searchId = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.SearchId, seems to either a PawnId or 0
-
-                // There is theoretically a nNetMsgData::Base, but i cant even see the code that deserializes it in the client
-
-                // nNetMsgData::CtrlBase::deserialize
-                rpcPacketBuffer.ReadUInt64(Endianness.Big); // nNetMsgData::CtrlBase::stMsgCtrlBaseData.mUniqueId ?
-
-                // Apparently all received 3.4.16s:
-                //  - Have searchID of 0 (aren't related to pawns)
-                //  - Have CtrlBaseData.mUniqueId of 0x8000000000000001
-
-                // nNetMsgData::CtrlAction::deserialize
-                bool isEnemy = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsEnemy
-                bool isCharacter = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsCharacter
-                bool isHuman = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsHuman
-                bool isEnemyLarge = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsEnemyLarge
-
-                // From now on, the contents (subpackets) depend on MsgId, a set of flags
-                if((msgIdFull & 1) != 0) { // This is incomplete, msgIdFull is converted through a function first, (0x5FE8D0) but should work for most cases
-                    client.Character.X = rpcPacketBuffer.ReadDouble(Endianness.Big);
-                    client.Character.Y = rpcPacketBuffer.ReadFloat(Endianness.Big);
-                    client.Character.Z = rpcPacketBuffer.ReadDouble(Endianness.Big);
-                }
-            }
+            // Handle additional packet contents
+            RpcHandler.Handle(client, packet.Structure.Type, packet.Structure.RpcPacket);
         }
     }
 }
