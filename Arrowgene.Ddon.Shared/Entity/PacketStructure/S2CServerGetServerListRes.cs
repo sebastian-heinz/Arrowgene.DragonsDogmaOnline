@@ -12,11 +12,9 @@ public class S2CServerGetServerListRes : ServerResponse
     public S2CServerGetServerListRes()
     {
         GameServerListInfo = new List<CDataGameServerListInfo>();
-        IsReceived = false;
     }
 
     public List<CDataGameServerListInfo> GameServerListInfo { get; set; }
-    public bool IsReceived { get; set; }
 
 
     public class Serializer : PacketEntitySerializer<S2CServerGetServerListRes>
@@ -25,7 +23,6 @@ public class S2CServerGetServerListRes : ServerResponse
         {
             WriteServerResponse(buffer, obj);
             WriteEntityList<CDataGameServerListInfo>(buffer, obj.GameServerListInfo);
-            WriteBool(buffer, obj.IsReceived);
         }
 
         public override S2CServerGetServerListRes Read(IBuffer buffer)
@@ -33,7 +30,6 @@ public class S2CServerGetServerListRes : ServerResponse
             S2CServerGetServerListRes obj = new S2CServerGetServerListRes();
             ReadServerResponse(buffer, obj);
             obj.GameServerListInfo = ReadEntityList<CDataGameServerListInfo>(buffer);
-            obj.IsReceived = ReadBool(buffer);
             return obj;
         }
     }
