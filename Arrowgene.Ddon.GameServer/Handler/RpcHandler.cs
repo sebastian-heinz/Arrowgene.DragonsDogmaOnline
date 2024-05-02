@@ -21,10 +21,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             IBuffer buffer = new StreamBuffer(rpcData);
             buffer.SetPositionStart();
 
+            // It seems like MsgIdFull  is almost like a "message class"
+            // where RpcId is a unique action?
             RpcPacketHeader Header = new RpcPacketHeader().Read(buffer);
             if (gRpcPacketHandlers.ContainsKey(Header.MsgIdFull))
             {
-                gRpcPacketHandlers[Header.MsgIdFull].Handle(client.Character, buffer);
+                gRpcPacketHandlers[Header.MsgIdFull].Handle(client.Character, Header, buffer);
             }
         }
 

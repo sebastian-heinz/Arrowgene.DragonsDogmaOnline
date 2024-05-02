@@ -29,19 +29,31 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
         public UInt16 Unk4 { get; set; }
         public UInt16 Stamina { get; set; }
 
-        public override void Handle(Character character, IBuffer buffer)
+        public override void Handle(Character character, RpcPacketHeader packetHeader, IBuffer buffer)
         {
-            RpcHeartbeatPacket obj = Read(buffer);
+            // Seems like RPCId = 0x00000000000007d0 and SearchId = 0x00000000
+            // correspond with the players character
+            //
+            // Pawns get other packets with the same RpcPacketHeader.MsgIdFull value
+            // but different RpcId and SearchId values
+            // RpcId=0x00000000000007d1, SearchId = 0x00000001
+            // RpcId=0x00000000000007d2, SearchId = 0x00000002
+            // RpcId=0x00000000000007d3, SearchId = 0x00000003
 
-            if (obj.IsCharacter)
+            // Support only the player for now
+            if (packetHeader.RpcId == (ulong) RpcId.HeartBeatPlayer && packetHeader.SearchId == 0)
             {
+                RpcHeartbeatPacket obj = ReadPacketData(buffer);
                 character.X = obj.PosX;
                 character.Y = obj.PosY;
                 character.Z = obj.PosZ;
+
+                character.GreenHp = obj.GreenHP;
+                character.WhiteHp = obj.WhiteHP;
             }
         }
 
-        private RpcHeartbeatPacket Read(IBuffer buffer)
+        private RpcHeartbeatPacket ReadPacketData(IBuffer buffer)
         {
             RpcHeartbeatPacket obj = new RpcHeartbeatPacket();
             obj.Unk0 = ReadUInt64(buffer); // nNetMsgData::CtrlBase::stMsgCtrlBaseData.mUniqueId ?
