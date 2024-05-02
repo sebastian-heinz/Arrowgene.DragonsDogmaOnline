@@ -146,18 +146,12 @@ CREATE TABLE IF NOT EXISTS ddon_edit_info
 CREATE TABLE IF NOT EXISTS ddon_status_info
 (
     "character_common_id" INTEGER PRIMARY KEY NOT NULL,
-    "hp"                  INTEGER             NOT NULL,
-    "stamina"             INTEGER             NOT NULL,
     "revive_point"        SMALLINT            NOT NULL,
-    "max_hp"              INTEGER             NOT NULL,
-    "max_stamina"         INTEGER             NOT NULL,
+    "hp"                  INTEGER             NOT NULL,
     "white_hp"            INTEGER             NOT NULL,
-    "gain_hp"             INTEGER             NOT NULL,
-    "gain_stamina"        INTEGER             NOT NULL,
-    "gain_attack"         INTEGER             NOT NULL,
-    "gain_defense"        INTEGER             NOT NULL,
-    "gain_magic_attack"   INTEGER             NOT NULL,
-    "gain_magic_defense"  INTEGER             NOT NULL,
+    "max_hp"              INTEGER             NOT NULL,
+    "stamina"             INTEGER             NOT NULL,
+    "max_stamina"         INTEGER             NOT NULL,
     CONSTRAINT fk_status_info_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE
 );
 

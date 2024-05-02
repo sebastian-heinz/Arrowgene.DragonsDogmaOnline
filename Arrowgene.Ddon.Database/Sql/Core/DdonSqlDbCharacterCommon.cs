@@ -36,10 +36,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         // Im not convinced most of these fields have to be stored in DB
         private static readonly string[] CDataStatusInfoFields = new string[]
         {
-            "character_common_id", "hp", "stamina", "revive_point", "max_hp", "max_stamina", "white_hp", "gain_hp", "gain_stamina",
-            "gain_attack", "gain_defense", "gain_magic_attack", "gain_magic_defense"
+            "character_common_id", "revive_point", "hp", "white_hp", "max_hp", "stamina", "max_stamina"
         };
-
 
         private readonly string SqlInsertCharacterCommon = $"INSERT INTO \"ddon_character_common\" ({BuildQueryField(CharacterCommonFields)}) VALUES ({BuildQueryInsert(CharacterCommonFields)});";
         private readonly string SqlUpdateCharacterCommon = $"UPDATE \"ddon_character_common\" SET {BuildQueryUpdate(CharacterCommonFields)} WHERE \"character_common_id\" = @character_common_id;";
@@ -366,18 +364,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             common.EditInfo.Muscle = GetUInt16(reader, "muscle");
             common.EditInfo.MotionFilter = GetUInt16(reader, "motion_filter");
 
-            common.StatusInfo.HP = GetUInt32(reader, "hp");
-            common.StatusInfo.Stamina = GetUInt32(reader, "stamina");
+            // CDataStatusInfoFields
             common.StatusInfo.RevivePoint = GetByte(reader, "revive_point");
-            common.StatusInfo.MaxHP = GetUInt32(reader, "max_hp");
-            common.StatusInfo.MaxStamina = GetUInt32(reader, "max_stamina");
+            common.StatusInfo.HP = GetUInt32(reader, "hp");
             common.StatusInfo.WhiteHP = GetUInt32(reader, "white_hp");
-            common.StatusInfo.GainHP = GetUInt32(reader, "gain_hp");
-            common.StatusInfo.GainStamina = GetUInt32(reader, "gain_stamina");
-            common.StatusInfo.GainAttack = GetUInt32(reader, "gain_attack");
-            common.StatusInfo.GainDefense = GetUInt32(reader, "gain_defense");
-            common.StatusInfo.GainMagicAttack = GetUInt32(reader, "gain_magic_attack");
-            common.StatusInfo.GainMagicDefense = GetUInt32(reader, "gain_magic_defense");
+            common.StatusInfo.MaxHP = GetUInt32(reader, "max_hp");
+            common.StatusInfo.Stamina = GetUInt32(reader, "stamina");
+            common.StatusInfo.MaxStamina = GetUInt32(reader, "max_stamina");
         }
 
         private void AddParameter(TCom command, CharacterCommon common)
@@ -460,18 +453,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@muscle", common.EditInfo.Muscle);
             AddParameter(command, "@motion_filter", common.EditInfo.MotionFilter);
             // CDataStatusInfoFields
-            AddParameter(command, "@hp", common.StatusInfo.HP);
-            AddParameter(command, "@stamina", common.StatusInfo.Stamina);
             AddParameter(command, "@revive_point", common.StatusInfo.RevivePoint);
-            AddParameter(command, "@max_hp", common.StatusInfo.MaxHP);
-            AddParameter(command, "@max_stamina", common.StatusInfo.MaxStamina);
+            AddParameter(command, "@hp", common.StatusInfo.HP);
             AddParameter(command, "@white_hp", common.StatusInfo.WhiteHP);
-            AddParameter(command, "@gain_hp", common.StatusInfo.GainHP);
-            AddParameter(command, "@gain_stamina", common.StatusInfo.GainStamina);
-            AddParameter(command, "@gain_attack", common.StatusInfo.GainAttack);
-            AddParameter(command, "@gain_defense", common.StatusInfo.GainDefense);
-            AddParameter(command, "@gain_magic_attack", common.StatusInfo.GainMagicAttack);
-            AddParameter(command, "@gain_magic_defense", common.StatusInfo.GainMagicDefense);
+            AddParameter(command, "@max_hp", common.StatusInfo.MaxHP);
+            AddParameter(command, "@stamina", common.StatusInfo.Stamina);
+            AddParameter(command, "@max_stamina", common.StatusInfo.MaxStamina);
         }
     }
 }
