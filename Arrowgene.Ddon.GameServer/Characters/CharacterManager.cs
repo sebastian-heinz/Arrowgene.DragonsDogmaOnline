@@ -165,7 +165,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 S2CContextGetLobbyPlayerContextNtc ntc1 = new S2CContextGetLobbyPlayerContextNtc();
                 GameStructure.S2CContextGetLobbyPlayerContextNtc(ntc1, (Character) character);
-                client.Send(ntc1);
 
                 S2CExtendEquipSlotNtc ntc2 = new S2CExtendEquipSlotNtc()
                 {
@@ -173,6 +172,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     AddNum = 0,
                     TotalNum = character.JewelrySlotNum
                 };
+
+                if (client.Party != null)
+                {
+                    client.Party.SendToAll(ntc1);
+                }
+                else
+                {
+                    client.Send(ntc1);
+                }
 
                 client.Send(ntc2);
             }
@@ -185,7 +193,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return;
                 }
 
-                client.Send(((PawnPartyMember)partyMember).GetS2CContextGetParty_ContextNtc());
+                PawnPartyMember pawnPartyMember = (PawnPartyMember)partyMember;
+                if (client.Party != null)
+                {
+                    client.Party.SendToAll(pawnPartyMember.GetS2CContextGetParty_ContextNtc());
+                }
+                else
+                {
+                    // This should never be true but if it is, why?
+                    client.Send(pawnPartyMember.GetS2CContextGetParty_ContextNtc());
+                }
             }
         }
     }
