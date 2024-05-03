@@ -15,11 +15,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class PawnJoinPartyMypawnHandler : GameStructurePacketHandler<C2SPawnJoinPartyMypawnReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnJoinPartyMypawnHandler));
-        private readonly OrbUnlockManager _OrbUnlockManager;
 
         public PawnJoinPartyMypawnHandler(DdonGameServer server) : base(server)
         {
-            _OrbUnlockManager = server.OrbUnlockManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnJoinPartyMypawnReq> req)
