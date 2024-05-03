@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.RpcPacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.GameServer.Party;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -24,8 +25,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             488, // Fortress City Megado: Royal Palace Level
         };
 
+        private readonly PartyManager _PartyManager;
+
         public LobbyLobbyDataMsgHandler(DdonGameServer server) : base(server)
         {
+            _PartyManager = server.PartyManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SLobbyLobbyDataMsgReq> packet)
@@ -37,20 +41,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.RpcPacket = packet.Structure.RpcPacket;
             res.OnlineStatus = client.Character.OnlineStatus;
 
-            if (client.Party != null)
+            if(!LobbyStageIds.Contains(client.Character.Stage.Id))
             {
-                if(!LobbyStageIds.Contains(client.Character.Stage.Id))
+                // We stick this in a seperate if statement so if the client
+                // is not in a party, we don't enter into the else condition
+                if (client.Party != null)
                 {
                     client.Party.SendToAllExcept(res, client);
                 }
-                else
+            }
+            else
+            {
+                // We are in one of the common areas where players can see eachother
+                foreach (GameClient otherClient in Server.ClientLookup.GetAll())
                 {
-                    foreach (GameClient otherClient in Server.ClientLookup.GetAll())
+                    if (otherClient == client)
                     {
-                        if (otherClient != client && (client.Character.Stage.Id == otherClient.Character.Stage.Id || client.Party.Id == otherClient.Party.Id))
-                        {
-                            otherClient.Send(res);
-                        }
+                        // No point to send to oneself.
+                        continue;
+                    }
+
+                    if (client.Character.Stage.Id == otherClient.Character.Stage.Id || _PartyManager.ClientsInSameParty(client, otherClient))
+                    {
+                        otherClient.Send(res);
                     }
                 }
             }
