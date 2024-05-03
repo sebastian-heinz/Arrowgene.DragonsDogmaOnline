@@ -12,22 +12,22 @@ namespace Arrowgene.Ddon.Rpc.Command
 
         public ChatCommand()
         {
-            _since = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+            _sinceUnixMillis = long.MinValue;
         }
 
-        public ChatCommand(DateTime since)
+        public ChatCommand(long sinceUnixMillis)
         {
-            _since = since;
+            _sinceUnixMillis = sinceUnixMillis;
         }
 
         public IEnumerable<ChatMessageLogEntry> ChatMessageLog { get; set; }
 
-        private readonly DateTime _since;
+        private readonly long _sinceUnixMillis;
 
         public RpcCommandResult Execute(DdonGameServer gameServer)
         {
             ChatMessageLog = gameServer.ChatLogHandler.ChatMessageLog
-                .Where(entry => entry.DateTime >= _since);
+                .Where(entry => entry.UnixTimeMillis > _sinceUnixMillis);
             return new RpcCommandResult(this, true);
         }
     }

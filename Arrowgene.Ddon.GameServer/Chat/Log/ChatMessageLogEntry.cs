@@ -29,6 +29,7 @@ public class ChatMessageLogEntry
     }
 
     public DateTime DateTime { get; set; }
+    public long UnixTimeMillis { get => ((DateTimeOffset) DateTime.SpecifyKind(this.DateTime, DateTimeKind.Utc)).ToUnixTimeMilliseconds(); }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public uint CharacterId { get; set; }
