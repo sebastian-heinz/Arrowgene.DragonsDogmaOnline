@@ -10,6 +10,15 @@ public class ChatMessageLogEntry
     {
     }
 
+    public ChatMessageLogEntry(uint characterId, string firstName, string lastName, ChatMessage chatMessage)
+    {
+        DateTime = DateTime.UtcNow;
+        FirstName = firstName;
+        LastName = lastName;
+        CharacterId = characterId;
+        ChatMessage = chatMessage;
+    }
+
     public ChatMessageLogEntry(Character character, ChatMessage chatMessage)
     {
         DateTime = DateTime.UtcNow;
