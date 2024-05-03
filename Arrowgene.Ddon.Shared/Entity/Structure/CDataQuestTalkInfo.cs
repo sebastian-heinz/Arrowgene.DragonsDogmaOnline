@@ -1,4 +1,5 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -9,7 +10,16 @@ public class CDataQuestTalkInfo
     public uint Unk1 { get; set; }
     public ushort NpcId { get; set; }
     public bool IsOneOnly { get; set; }
-    
+    public CDataQuestTalkInfo()
+    {
+    }
+
+    public CDataQuestTalkInfo(NpcId npcId, uint talkNo, bool isOnOnly = false)
+    {
+        NpcId = (ushort) npcId;
+        Unk1 = talkNo;
+    }
+
     public class Serializer : EntitySerializer<CDataQuestTalkInfo>
     {
         public override void Write(IBuffer buffer, CDataQuestTalkInfo obj)

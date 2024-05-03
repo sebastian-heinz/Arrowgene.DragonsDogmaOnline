@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class C2SQuestGetTutorialQuestListRes : IPacketStructure
     {
-        public PacketId Id => PacketId.C2S_QUEST_GET_TUTORIAL_QUEST_LIST_REQ;
+        public PacketId Id => PacketId.S2C_QUEST_GET_TUTORIAL_QUEST_LIST_RES;
 
         public uint StageNo { get; set; }
 

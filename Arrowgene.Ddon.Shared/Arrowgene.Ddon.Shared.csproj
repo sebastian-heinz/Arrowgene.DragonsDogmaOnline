@@ -25,7 +25,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Asset\" />
+      <ContentWithTargetPath Remove="files\assets\Quests.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="files\assets\Quests.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="files\assets\Quests.json" />
     </ItemGroup>
 
 </Project>
