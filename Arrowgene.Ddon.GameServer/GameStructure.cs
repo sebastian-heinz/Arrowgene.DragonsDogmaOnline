@@ -111,7 +111,6 @@ public static class GameStructure
 
     public static void CDataPawnInfo(CDataPawnInfo cDataPawnInfo, Pawn pawn)
     {
-        
         cDataPawnInfo.Version = 0;
         cDataPawnInfo.Name = pawn.Name;
         cDataPawnInfo.EditInfo = pawn.EditInfo;
@@ -154,21 +153,7 @@ public static class GameStructure
             .ToList();
         // TODO: AbilityCostMax, ExtendParam
         cDataPawnInfo.AbilityCostMax = 15;
-        cDataPawnInfo.ExtendParam = new CDataOrbGainExtendParam() {
-            HpMax = 0x29E,
-            StaminaMax = 0x0,
-            Attack = 0x10,
-            Defence = 0x10,
-            MagicAttack = 0xF,
-            MagicDefence = 0x10,
-            AbilityCost = 0x0,
-            JewelrySlot = 0x0,
-            UseItemSlot = 0x0,
-            MaterialItemSlot = 0x0,
-            EquipItemSlot = 0x0,
-            MainPawnSlot = 0x0,
-            SupportPawnSlot = 0x0
-        };
+        cDataPawnInfo.ExtendParam = pawn.ExtendedParams;
         cDataPawnInfo.PawnType = pawn.PawnType;
         // TODO: ShareRange, Likability, Unk0, Unk1
         cDataPawnInfo.ShareRange = 1;
@@ -211,19 +196,14 @@ public static class GameStructure
 
     public static void CDataContextBase_common(CDataContextBase contextBase, CharacterCommon character)
     {
-        int StageNo = 0;
-        if (character is Character)
-        {
-            StageNo = (int)((Character)character).StageNo;
-        }
-
+        int StageNo = (int)(character.StageNo);
         if (StageNo == 0)
         {
             // WDT
             StageNo = 200;
         }
 
-        contextBase.StageNo = StageNo; 
+        contextBase.StageNo = StageNo;
         contextBase.Sex = character.EditInfo.Sex;
         contextBase.HideEquipHead = character.HideEquipHead;
         contextBase.HideEquipLantern = character.HideEquipLantern;

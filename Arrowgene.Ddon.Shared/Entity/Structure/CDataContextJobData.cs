@@ -1,5 +1,6 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -19,6 +20,16 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Lv=0;
             Exp=0;
             JobPoint=0;
+        }
+
+        public static List<CDataContextJobData> FromCDataCharacterJobData(List<CDataCharacterJobData> characterJobData)
+        {
+            List<CDataContextJobData> obj = new List<CDataContextJobData>();
+            foreach (var item in characterJobData)
+            {
+                obj.Add(new CDataContextJobData(item));
+            }
+            return obj;
         }
 
         public JobId Job { get; set; }

@@ -21715,9 +21715,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                List<SecretAbility> UnlockedAbilities = _Database.SelectAllUnlockedSecretAbilities(client.Character.CommonId);
-                Response.AbilityParamList = AllSecretAbilities
-                    .Where(x => UnlockedAbilities.Contains((SecretAbility) x.AbilityNo)).ToList();
+                // If the CharacterId is 0, it is the current player, otherwise it is one of the players pawns
+                uint commonId = packet.Structure.CharacterId;
+                if (commonId == 0)
+                {
+                    commonId = client.Character.CommonId;
+                }
+
+                List<SecretAbility> UnlockedAbilities = _Database.SelectAllUnlockedSecretAbilities(commonId);
+                Response.AbilityParamList = AllSecretAbilities.Where(x => UnlockedAbilities.Contains((SecretAbility)x.AbilityNo)).ToList();
             }
 
             client.Send(Response);

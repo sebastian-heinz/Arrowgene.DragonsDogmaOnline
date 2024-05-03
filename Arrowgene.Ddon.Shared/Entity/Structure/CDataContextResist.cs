@@ -10,6 +10,43 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
+        public static CDataContextResist FromCDataCharacterJobData(CDataCharacterJobData jobData)
+        {
+            return new CDataContextResist()
+            {
+                FireResist = jobData.FireResist,
+                IceResist = jobData.IceResist,
+                ThunderResist = jobData.ThunderResist,
+                HolyResist = jobData.HolyResist,
+                DarkResist = jobData.DarkResist,
+                SpreadResist = jobData.SpreadResist,
+                FreezeResist = jobData.FreezeResist,
+                ShockResist = jobData.ShockResist,
+                AbsorbResist = jobData.AbsorbResist,
+                DarkElmResist = jobData.DarkElmResist,
+                PoisonResist = jobData.PoisonResist,
+                SlowResist = jobData.SlowResist,
+                SleepResist = jobData.SleepResist,
+                StunResist = jobData.StunResist,
+                WetResist = jobData.WetResist,
+                OilResist = jobData.OilResist,
+                SealResist = jobData.SealResist,
+                CurseResist = jobData.CurseResist,
+                SoftResist = jobData.SoftResist,
+                StoneResist = jobData.StoneResist,
+                GoldResist = jobData.GoldResist,
+                FireReduceResist = jobData.FireReduceResist,
+                IceReduceResist = jobData.IceReduceResist,
+                ThunderReduceResist = jobData.ThunderReduceResist,
+                HolyReduceResist = jobData.HolyReduceResist,
+                DarkReduceResist = jobData.DarkReduceResist,
+                AtkDownResist = jobData.AtkDownResist,
+                DefDownResist = jobData.DefDownResist,
+                MAtkDownResist = jobData.MAtkDownResist,
+                MDefDownResist = jobData.MAtkDownResist
+            };
+        }
+
         public byte FireResist { get; set; }
         public byte IceResist { get; set; }
         public byte ThunderResist { get; set; }

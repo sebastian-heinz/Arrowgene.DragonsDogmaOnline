@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlInsertUnlockedSecretAbility = $"INSERT INTO \"ddon_unlocked_secret_ability\" ({BuildQueryField(UnlockedSecretAbilityFields)}) VALUES ({BuildQueryInsert(UnlockedSecretAbilityFields)});";
         private readonly string SqlInsertIfNotExistsUnlockedSecretAbility = $"INSERT INTO \"ddon_unlocked_secret_ability\" ({BuildQueryField(UnlockedSecretAbilityFields)}) SELECT " +
                                                                          $"{BuildQueryInsert(UnlockedSecretAbilityFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_unlocked_secret_ability\" WHERE " +
-                                                                         $"\"character_common_id\" = @character_common_id AND \"ability\" = @ability_id);";
+                                                                         $"\"character_common_id\" = @character_common_id AND \"ability_id\" = @ability_id);";
         private readonly string SqlSelectAllUnlockedSecretAbility = $"SELECT {BuildQueryField(UnlockedSecretAbilityFields)} FROM \"ddon_unlocked_secret_ability\" WHERE \"character_common_id\" = @character_common_id;";
 
 

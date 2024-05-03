@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -32,9 +32,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Character.StageNo = res.StageNo;
             client.Character.Stage = new StageId(packet.Structure.StageId, 0, 0);
-            
+
+            foreach (var pawn in client.Character.Pawns)
+            {
+                pawn.StageNo = res.StageNo;
+            }
+
             Logger.Info($"StageNo:{client.Character.StageNo} StageId{packet.Structure.StageId}");
-            
+
             if(client.Party.GetPlayerPartyMember(client).IsLeader && SafeStageIds.Contains(packet.Structure.StageId))
             {
                 client.Party.SendToAll(new S2CInstanceAreaResetNtc());
