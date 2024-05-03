@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.GameServer;
+﻿using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.Rpc.Web.Route;
 using Arrowgene.Ddon.WebServer;
 
@@ -20,7 +21,7 @@ namespace Arrowgene.Ddon.Rpc.Web
         {
             _webServer.AddRoute(new SpawnRoute(this));
             _webServer.AddRoute(new InfoRoute(this));
-            _webServer.AddRoute(new ChatRoute(this));
+            _webServer.AddRoute(new InterceptedRpcWebRoute(this, new ChatRoute(this), new AuthInterceptor(_gameServer.Database, AccountStateType.GameMaster)));
         }
     }
 }
