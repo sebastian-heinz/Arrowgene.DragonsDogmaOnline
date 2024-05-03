@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
@@ -143,5 +143,15 @@ public class PartyManager
         }
 
         Logger.Info($"Free party IDs: {_idPool.Count}/{MaxNumParties}");
+    }
+
+    public bool ClientsInSameParty(GameClient clientA, GameClient clientB)
+    {
+        if (clientA.Party == null || clientB.Party == null)
+        {
+            return false;
+        }
+
+        return (clientA.Party.Id == clientB.Party.Id);
     }
 }
