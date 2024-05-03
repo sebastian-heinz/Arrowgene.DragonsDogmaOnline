@@ -1,0 +1,18 @@
+namespace Arrowgene.Ddon.Shared.Model
+{
+    public enum QuestAnnounceType
+    {
+        Accept = 0,
+        Clear = 1,
+        Failed = 2,
+        Update = 3,
+        Discovered = 4,
+        Caution = 5,
+        Start = 6,
+        ExUpdate = 7,
+        End = 8,
+        StageStart = 9,
+        StageClear = 10,
+        Cancel = 11,
+    }
+}

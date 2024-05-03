@@ -5,8 +5,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataWalletPoint
     {
-        public WalletType Type;
-        public uint Value;
+        public WalletType Type { get; set; }
+        public uint Value { get; set; }
     
         public class Serializer : EntitySerializer<CDataWalletPoint>
         {

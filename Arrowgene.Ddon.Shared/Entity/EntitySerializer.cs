@@ -233,6 +233,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataStageLayoutId.Serializer());
             Create(new CDataFriendInfo.Serializer());
             Create(new UnkownCharacterData0Serializer());
+            Create(new CDataMainQuest.Serializer());
+            Create(new CDataQuestExp.Serializer());
 
             // Packet structure serializers
             Create(new C2LCreateCharacterDataReq.Serializer());
@@ -650,6 +652,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnTrainingSetTrainingStatusRes.Serializer());
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());
+
+            Create(new C2SQuestQuestProgressReq.Serializer());
+            Create(new S2CQuestQuestProgressRes.Serializer());
+            Create(new S2CQuestQuestProgressNtc.Serializer());
+
+            Create(new C2SQuestQuestLogInfoRes.Serializer());
+            Create(new CDataLightQuestClearList.Serializer());
 
             Create(new S2CQuestGetLightQuestListRes.Serializer());
             Create(new S2CQuestGetLotQuestListRes.Serializer());

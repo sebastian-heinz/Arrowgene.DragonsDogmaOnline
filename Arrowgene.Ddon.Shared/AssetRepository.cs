@@ -33,6 +33,7 @@ namespace Arrowgene.Ddon.Shared
         public const string LearnedNormalSkillsKey = "LearnedNormalSkills.json";
         public const string GPCourseInfoKey = "GpCourseInfo.json";
         public const string SecretAbilityKey = "DefaultSecretAbilities.json";
+        public const string QuestAssetKey = "Quests.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -68,6 +69,7 @@ namespace Arrowgene.Ddon.Shared
             LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
             GPCourseInfoAsset = new GPCourseInfoAsset();
             SecretAbilitiesAsset = new SecretAbilityAsset();
+            QuestAsset = new QuestAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -86,6 +88,7 @@ namespace Arrowgene.Ddon.Shared
         public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
         public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
         public SecretAbilityAsset SecretAbilitiesAsset { get; private set; }
+        public QuestAsset QuestAsset { get; private set; }
 
         public void Initialize()
         {
@@ -105,6 +108,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
             RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
+            RegisterAsset(value => QuestAsset = value, QuestAssetKey, new QuestAssetDeserializer());
         }
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
