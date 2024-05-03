@@ -14,6 +14,46 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             OcdActiveList=new List<CDataOcdActive>();
         }
 
+        public static CDataContextPlayerInfo FromPawn(Pawn pawn)
+        {
+            CDataContextPlayerInfo obj = new CDataContextPlayerInfo()
+            {
+                Job = pawn.Job,
+                HP = pawn.StatusInfo.HP,
+                MaxHP = pawn.StatusInfo.MaxHP,
+                WhiteHP = pawn.StatusInfo.WhiteHP,
+                Stamina = pawn.StatusInfo.Stamina,
+                MaxStamina = pawn.StatusInfo.MaxStamina,
+                // Weight
+                Lv = (ushort) pawn.ActiveCharacterJobData.Lv,
+                Exp = pawn.ActiveCharacterJobData.Exp,
+                Atk = pawn.ActiveCharacterJobData.Atk,
+                Def = pawn.ActiveCharacterJobData.Def,
+                MAtk = pawn.ActiveCharacterJobData.MAtk,
+                MDef = pawn.ActiveCharacterJobData.MDef,
+                Strength = pawn.ActiveCharacterJobData.Strength,
+                DownPower = pawn.ActiveCharacterJobData.DownPower,
+                ShakePower = pawn.ActiveCharacterJobData.ShakePower,
+                StanPower = pawn.ActiveCharacterJobData.StunPower,
+                Constitution = pawn.ActiveCharacterJobData.Consitution,
+                Guts = pawn.ActiveCharacterJobData.Guts,
+                JobPoint = pawn.ActiveCharacterJobData.JobPoint,
+                GainHp = pawn.StatusInfo.GainHP,
+                GainStamina = pawn.StatusInfo.GainStamina,
+                GainAttack = pawn.StatusInfo.GainAttack,
+                GainDefense = pawn.StatusInfo.GainDefense,
+                GainMagicAttack = pawn.StatusInfo.GainMagicAttack,
+                GainMagicDefense = pawn.StatusInfo.GainMagicDefense,
+                ActNo = 0,
+                RevivePoint = 0,
+                CustomSkillGroup = 0,
+                JobList = CDataContextJobData.FromCDataCharacterJobData(pawn.CharacterJobDataList)
+                // ChargeEffectList
+                // OcdActiveList
+            };
+            return obj;
+        }
+
         public JobId Job { get; set; }
         public float HP { get; set; }
         public float MaxHP { get; set; }

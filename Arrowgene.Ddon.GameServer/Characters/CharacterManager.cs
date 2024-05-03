@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -81,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public uint GetMaxAugmentAllocation(Character character)
+        public uint GetMaxAugmentAllocation(CharacterCommon character)
         {
             return CharacterManager.BASE_ABILITY_COST_AMOUNT + character.ExtendedParams.AbilityCost;
         }
@@ -151,26 +152,41 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void UpdateCharacterExtendedParamsNtc(GameClient client, Character character)
+        public void UpdateCharacterExtendedParamsNtc(GameClient client, CharacterCommon character)
         {
             UpdateCharacterExtendedParams(character);
             NotifyClientOfCharacterStatus(client, character);
         }
 
-        private void NotifyClientOfCharacterStatus(GameClient client, Character character)
+        private void NotifyClientOfCharacterStatus(GameClient client, CharacterCommon character)
         {
-            S2CContextGetLobbyPlayerContextNtc ntc1 = new S2CContextGetLobbyPlayerContextNtc();
-            GameStructure.S2CContextGetLobbyPlayerContextNtc(ntc1, character);
-            client.Send(ntc1);
 
-            S2CExtendEquipSlotNtc ntc2 = new S2CExtendEquipSlotNtc()
+            if (character is Character)
             {
-                EquipSlot = EquipCategory.Jewelry,
-                AddNum = 0,
-                TotalNum = character.JewelrySlotNum
-            };
+                S2CContextGetLobbyPlayerContextNtc ntc1 = new S2CContextGetLobbyPlayerContextNtc();
+                GameStructure.S2CContextGetLobbyPlayerContextNtc(ntc1, (Character) character);
+                client.Send(ntc1);
 
-            client.Send(ntc2);
+                S2CExtendEquipSlotNtc ntc2 = new S2CExtendEquipSlotNtc()
+                {
+                    EquipSlot = EquipCategory.Jewelry,
+                    AddNum = 0,
+                    TotalNum = character.JewelrySlotNum
+                };
+
+                client.Send(ntc2);
+            }
+            else
+            {
+                PartyMember partyMember = client.Party.GetPartyMemberByCharacter(character);
+                if (partyMember == null || partyMember is not PawnPartyMember)
+                {
+                    Logger.Error($"Failed to find party member in the list");
+                    return;
+                }
+
+                client.Send(((PawnPartyMember)partyMember).GetS2CContextGetParty_ContextNtc());
+            }
         }
     }
 }

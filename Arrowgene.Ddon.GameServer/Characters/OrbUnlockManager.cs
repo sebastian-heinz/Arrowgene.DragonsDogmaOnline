@@ -99,50 +99,50 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return Results;
         }
 
-        private CDataOrbGainExtendParam UpdateExtendedParamData(GameClient Client, CharacterCommon Character, DragonForceUpgrade Upgrade)
+        private CDataOrbGainExtendParam UpdateExtendedParamData(GameClient client, CharacterCommon character, DragonForceUpgrade upgrade)
         {
-            CDataOrbGainExtendParam obj = Character.ExtendedParams;
+            CDataOrbGainExtendParam obj = character.ExtendedParams;
 
-            switch (Upgrade.GainType)
+            switch (upgrade.GainType)
             {
                 case OrbGainParamType.HpMax:
-                    obj.HpMax += (ushort) Upgrade.Amount;
+                    obj.HpMax += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.StaminaMax:
-                    obj.StaminaMax += (ushort) Upgrade.Amount;
+                    obj.StaminaMax += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.PhysicalAttack:
-                    obj.Attack += (ushort) Upgrade.Amount;
+                    obj.Attack += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.PhysicalDefence:
-                    obj.Defence += (ushort) Upgrade.Amount;
+                    obj.Defence += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.MagicalAttack:
-                    obj.MagicAttack += (ushort) Upgrade.Amount;
+                    obj.MagicAttack += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.MagicalDefence:
-                    obj.MagicDefence += (ushort) Upgrade.Amount;
+                    obj.MagicDefence += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.AbilityCost:
-                    obj.AbilityCost += (ushort) Upgrade.Amount;
+                    obj.AbilityCost += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.AccessorySlot:
-                    obj.JewelrySlot += (ushort) Upgrade.Amount;
+                    obj.JewelrySlot += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.MainPawnSlot:
-                    obj.MainPawnSlot += (ushort) Upgrade.Amount;
+                    obj.MainPawnSlot += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.SupportPawnSlot:
-                    obj.SupportPawnSlot += (ushort) Upgrade.Amount;
+                    obj.SupportPawnSlot += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.UseItemSlot:
-                    obj.UseItemSlot += (ushort) Upgrade.Amount;
+                    obj.UseItemSlot += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.MaterialItemSlot:
-                    obj.MaterialItemSlot += (ushort) Upgrade.Amount;
+                    obj.MaterialItemSlot += (ushort)upgrade.Amount;
                     break;
                 case OrbGainParamType.EquipItemSlot:
-                    obj.EquipItemSlot += (ushort) Upgrade.Amount;
+                    obj.EquipItemSlot += (ushort)upgrade.Amount;
                     break;
                 // Unhandeled
                 case OrbGainParamType.PawnAdventureNum:
@@ -150,22 +150,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.MainPawnLostRate:
                     break;
                 case OrbGainParamType.SecretAbility:
-                    _JobManager.UnlockSecretAbility(Character, Upgrade.SecretAbility);
+                    _JobManager.UnlockSecretAbility(character, upgrade.SecretAbility);
                     break;
                 case OrbGainParamType.Rim:
-                    _WalletManager.AddToWalletNtc(Client, (Character)Character, WalletType.RiftPoints, Upgrade.Amount);
+                    _WalletManager.AddToWalletNtc(client, client.Character, WalletType.RiftPoints, upgrade.Amount);
                     break;
                 case OrbGainParamType.Gold:
-                    _WalletManager.AddToWalletNtc(Client, (Character)Character, WalletType.Gold, Upgrade.Amount);
+                    _WalletManager.AddToWalletNtc(client, client.Character, WalletType.Gold, upgrade.Amount);
                     break;
                 case OrbGainParamType.None:
                 default:
                     break;
             }
 
-            _Database.UpdateOrbGainExtendParam(Character.CommonId, obj);
+            _Database.UpdateOrbGainExtendParam(character.CommonId, obj);
 
-            switch (Upgrade.GainType)
+            switch (upgrade.GainType)
             {
                 case OrbGainParamType.HpMax:
                 case OrbGainParamType.StaminaMax:
@@ -175,15 +175,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.AccessorySlot:
                 case OrbGainParamType.MainPawnSlot:
                 case OrbGainParamType.SupportPawnSlot:
-                    if (Character is Character)
-                    {
-                        _CharacterManager.UpdateCharacterExtendedParamsNtc(Client, (Character)Character);
-                    }
+                    _CharacterManager.UpdateCharacterExtendedParamsNtc(client, character);
                     break;
                 case OrbGainParamType.AbilityCost:
                     // Handeled by S2CSkillGetAbilityCostRes
                     // Handeled by S2CProfileGetMyCharacterProfileRes
                     break;
+                case OrbGainParamType.MainPawnLostRate:
                 case OrbGainParamType.UseItemSlot:
                 case OrbGainParamType.MaterialItemSlot:
                 case OrbGainParamType.EquipItemSlot:
@@ -196,39 +194,77 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return obj;
         }
 
-        public void UnlockDragonForceAugmentationUpgrade(GameClient Client, CharacterCommon Character, uint ElementId)
+        private DragonForceUpgrade GetPlayerUpgrade(GameClient client, Character character, uint elementId)
         {
-            if (!gDragonForceUpgrades.ContainsKey(ElementId))
+            if (!gPlayerDragonForceUpgrades.ContainsKey(elementId))
             {
-                Logger.Error("Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Skill Doesn't Exist");
+                Logger.Error("Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
                 S2COrbDevoteReleaseHandlerRes Error = new S2COrbDevoteReleaseHandlerRes()
                 {
                     Error = 0x1baddeed
                 };
-                Client.Send(Error);
+                client.Send(Error);
+                return null;
+            }
+
+            return gPlayerDragonForceUpgrades[elementId];
+        }
+
+        private DragonForceUpgrade GetPawnUpgrade(GameClient client, Pawn character, uint elementId)
+        {
+            if (!gPawnDragonForceUpgrades.ContainsKey(elementId))
+            {
+                Logger.Error("Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
+                S2COrbDevoteReleasePawnOrbELementRes Error = new S2COrbDevoteReleasePawnOrbELementRes()
+                {
+                    Error = 0x1baddeed
+                };
+                client.Send(Error);
+                return null;
+            }
+
+            return gPawnDragonForceUpgrades[elementId];
+        }
+
+
+        public void UnlockDragonForceAugmentationUpgrade(GameClient client, CharacterCommon character, uint elementId)
+        {
+            DragonForceUpgrade upgrade = null;
+
+            if (character is Character)
+            {
+                upgrade = GetPlayerUpgrade(client, (Character) character, elementId);
+            }
+            else
+            {
+                upgrade = GetPawnUpgrade(client, (Pawn)character, elementId);
+
+            }
+
+            if (upgrade == null)
+            {
+                // Player/Pawn handler handles error request back so just return
                 return;
             }
 
-            var Upgrade = gDragonForceUpgrades[ElementId];
-
             // Check for Valid Conditions before continuing
             bool CheckPassed = true;
-            if (Upgrade.IsRestrictedByTotalLevels())
+            if (upgrade.IsRestrictedByTotalLevels())
             {
-                uint TotalLevels = TotalLevelsGained(Character);
-                if (TotalLevels < Upgrade.LvlUpCost)
+                uint TotalLevels = TotalLevelsGained(character);
+                if (TotalLevels < upgrade.LvlUpCost)
                 {
                     CheckPassed = false;
                 }
             }
-            else if (Upgrade.IsRestrictedByOrbCost())
+            else if (upgrade.IsRestrictedByOrbCost())
             {
-                if (_WalletManager.GetWalletAmount((Character)Character, WalletType.BloodOrbs) < Upgrade.LvlUpCost)
+                if (_WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs) < upgrade.LvlUpCost)
                 {
                     CheckPassed = false;
                 }
             }
-            else if (Upgrade.IsRestrictedByFullPageUnlock())
+            else if (upgrade.IsRestrictedByFullPageUnlock())
             {
                 // TODO: Figure out how to determine this
                 // TODO: Probably need to query the DB
@@ -246,28 +282,44 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     Error = 0x1baddeed
                 };
-                Client.Send(Error);
+                client.Send(Error);
                 return;
             }
 
-            if (Upgrade.IsRestrictedByOrbCost())
+            if (upgrade.IsRestrictedByOrbCost())
             {
-                _WalletManager.RemoveFromWallet((Character)Character, WalletType.BloodOrbs, Upgrade.LvlUpCost);
+                _WalletManager.RemoveFromWallet(client.Character, WalletType.BloodOrbs, upgrade.LvlUpCost);
             }
 
-            CDataOrbGainExtendParam ExtendParam = UpdateExtendedParamData(Client, Character, Upgrade);
+            CDataOrbGainExtendParam ExtendParam = UpdateExtendedParamData(client, character, upgrade);
 
-            _Database.InsertIfNotExistsDragonForceAugmentation(Character.CommonId, ElementId, Upgrade.PageNo, Upgrade.GroupNo, Upgrade.IndexNo);
+            _Database.InsertIfNotExistsDragonForceAugmentation(character.CommonId, elementId, upgrade.PageNo, upgrade.GroupNo, upgrade.IndexNo);
 
-            S2COrbDevoteReleaseHandlerRes Response = new S2COrbDevoteReleaseHandlerRes()
+            if (character is Character)
             {
-                GainParamType = Upgrade.GainType,
-                RestOrb = _WalletManager.GetWalletAmount((Character)Character, WalletType.BloodOrbs),
-                GainParamValue = Upgrade.Amount
-            };
+                S2COrbDevoteReleaseHandlerRes Response = new S2COrbDevoteReleaseHandlerRes()
+                {
+                    GainParamType = upgrade.GainType,
+                    RestOrb = _WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs),
+                    GainParamValue = upgrade.Amount
+                };
 
-            Client.Send(Response);
+                client.Send(Response);
+            }
+            else
+            {
+                S2COrbDevoteReleasePawnOrbELementRes Response = new S2COrbDevoteReleasePawnOrbELementRes()
+                {
+                    PawnId = ((Pawn)character).PawnId,
+                    GainParamType = upgrade.GainType,
+                    RestOrb = _WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs),
+                    GainParamValue = upgrade.Amount
+                };
+
+                client.Send(Response);
+            }
         }
+
         private uint TotalLevelsGained(CharacterCommon Character)
         {
             uint TotalLevels = 0;
@@ -419,7 +471,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Combat = 5,
         }
 
-        private static readonly Dictionary<uint, DragonForceUpgrade> gDragonForceUpgrades = new Dictionary<uint, DragonForceUpgrade>()
+        private static readonly Dictionary<uint, DragonForceUpgrade> gPlayerDragonForceUpgrades = new Dictionary<uint, DragonForceUpgrade>()
         {
             #region PAGE1
             [0x01] = new DragonForceUpgrade()
@@ -583,7 +635,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Unlocks(OrbGainParamType.SupportPawnSlot, 1), // Support Pawn Hires?
             [0x07] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group5, 2)
-                .HasTotalLevelsRestriction(12)
+                .HasTotalLevelsRestriction(28)
                 .Unlocks(OrbGainParamType.AccessorySlot, 1),
             [0x08] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group5, 3)
@@ -797,7 +849,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x5f] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group2, 3)
                 .HasOrbUnlockRestriction(600)
-                .Unlocks(OrbGainParamType.AbilityCost, 3),
+                .Unlocks(OrbGainParamType.AbilityCost, 4),
             [0x60] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group2, 4)
                 .HasOrbUnlockRestriction(750)
@@ -871,7 +923,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x71] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 5)
                 .HasOrbUnlockRestriction(600)
-                .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+                .Unlocks(OrbGainParamType.PhysicalDefence, 3),
             [0x72] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 6)
                 .HasOrbUnlockRestriction(500)
@@ -1038,6 +1090,630 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x94] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(1800)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 3)
+            #endregion
+        };
+
+        private static readonly Dictionary<uint, DragonForceUpgrade> gPawnDragonForceUpgrades = new Dictionary<uint, DragonForceUpgrade>()
+        {
+            #region PAGE1
+            [0x95] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group5, 1)
+                .HasPageUnlockRestriction()
+                .Unlocks(OrbGainParamType.AccessorySlot, 1),
+            [0x96] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group5, 2)
+                .HasTotalLevelsRestriction(12)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 5),
+            [0x97] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group5, 3)
+                .HasTotalLevelsRestriction(8)
+                .Unlocks(OrbGainParamType.HpMax, 100),
+            [0x98] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group5, 4)
+                .HasTotalLevelsRestriction(4)
+                .Unlocks(OrbGainParamType.MagicalAttack, 5),
+            [0x99] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group5, 5)
+                .HasTotalLevelsRestriction(1)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 5),
+
+            [0xa9] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group1, 1)
+                .HasOrbUnlockRestriction(10)
+                .Unlocks(OrbGainParamType.HpMax, 30),
+            [0xaa] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group1, 2)
+                .HasOrbUnlockRestriction(30)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xab] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group1, 3)
+                .HasOrbUnlockRestriction(10)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xac] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group1, 4)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.HpMax, 50),
+            [0xad] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group1, 5)
+                .HasOrbUnlockRestriction(40)
+                .Unlocks(OrbGainParamType.HpMax, 60),
+            [0xae] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group1, 6)
+                .HasOrbUnlockRestriction(30)
+                .Unlocks(OrbGainParamType.StaminaMax, 30),
+            [0xaf] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group1, 7)
+                .HasOrbUnlockRestriction(40)
+                .Unlocks(OrbGainParamType.HpMax, 60),
+            [0xb0] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group1, 8)
+                .HasOrbUnlockRestriction(20)
+                .Unlocks(OrbGainParamType.StaminaMax, 30),
+
+            [0xb1] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group2, 1)
+                .HasOrbUnlockRestriction(15)
+                .Unlocks(OrbGainParamType.Rim, 500),
+            [0xb2] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group2, 2)
+                .HasOrbUnlockRestriction(60)
+                .Unlocks(OrbGainParamType.AbilityCost, 3),
+            [0xb3] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group2, 3)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 3),
+            [0xb4] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group2, 4)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xb5] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group2, 5)
+                .HasOrbUnlockRestriction(10)
+                .Unlocks(OrbGainParamType.Rim, 350),
+            [0xb6] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group2, 6)
+                .HasOrbUnlockRestriction(30)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xb7] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group2, 7)
+                .HasOrbUnlockRestriction(20)
+                .Unlocks(OrbGainParamType.Gold, 3000),
+            [0xb8] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group2, 8)
+                .HasOrbUnlockRestriction(20)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 3),
+
+            [0xb9] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group3, 1)
+                .HasOrbUnlockRestriction(15)
+                .Unlocks(OrbGainParamType.MagicalAttack, 1),
+            [0xba] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group3, 2)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xbb] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group3, 3)
+                .HasOrbUnlockRestriction(15)
+                .Unlocks(OrbGainParamType.MagicalDefence, 2),
+            [0xbc] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group3, 4)
+                .HasOrbUnlockRestriction(30)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xbd] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group3, 5)
+                .HasOrbUnlockRestriction(20)
+                .Unlocks(OrbGainParamType.MagicalDefence, 2),
+            [0xbe] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group3, 6)
+                .HasOrbUnlockRestriction(30)
+                .Unlocks(OrbGainParamType.MagicalAttack, 2),
+            [0xbf] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group3, 7)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xc0] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group3, 8)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.MagicalDefence, 3),
+
+            [0xc1] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group4, 1)
+                .HasOrbUnlockRestriction(15)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 1),
+            [0xc2] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group4, 2)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xc3] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group4, 3)
+                .HasOrbUnlockRestriction(15)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+            [0xc4] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group4, 4)
+                .HasOrbUnlockRestriction(30)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xc5] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group4, 5)
+                .HasOrbUnlockRestriction(20)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+            [0xc6] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group4, 6)
+                .HasOrbUnlockRestriction(30)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 2),
+            [0xc7] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group4, 7)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xc8] = new DragonForceUpgrade()
+                .Location(PageNo.Page1, GroupNo.Group4, 8)
+                .HasOrbUnlockRestriction(25)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 3),
+            #endregion
+
+            #region PAGE2
+            [0x9a] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group5, 1)
+                .HasPageUnlockRestriction()
+                .Unlocks(OrbGainParamType.AccessorySlot, 1),
+            [0x9b] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group5, 2)
+                .HasTotalLevelsRestriction(28)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 5),
+            [0x9c] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group5, 3)
+                .HasTotalLevelsRestriction(24)
+                .Unlocks(OrbGainParamType.HpMax, 100),
+            [0x9d] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group5, 4)
+                .HasTotalLevelsRestriction(20)
+                .Unlocks(OrbGainParamType.MagicalDefence, 5),
+            [0x9e] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group5, 5)
+                .HasTotalLevelsRestriction(16)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 5),
+
+            [0xc9] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group1, 1)
+                .HasOrbUnlockRestriction(80)
+                .Unlocks(OrbGainParamType.HpMax, 30),
+            [0xca] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group1, 2)
+                .HasOrbUnlockRestriction(180)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xcb] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group1, 3)
+                .HasOrbUnlockRestriction(70)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xcc] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group1, 4)
+                .HasOrbUnlockRestriction(85)
+                .Unlocks(OrbGainParamType.HpMax, 30),
+            [0xcd] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group1, 5)
+                .HasOrbUnlockRestriction(120)
+                .Unlocks(OrbGainParamType.HpMax, 50),
+            [0xce] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group1, 6)
+                .HasOrbUnlockRestriction(120)
+                .Unlocks(OrbGainParamType.StaminaMax, 30),
+            [0xcf] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group1, 7)
+                .HasOrbUnlockRestriction(100)
+                .Unlocks(OrbGainParamType.HpMax, 40),
+            [0xd0] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group1, 8)
+                .HasOrbUnlockRestriction(180)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+
+            [0xd1] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group2, 1)
+                .HasOrbUnlockRestriction(90)
+                .Unlocks(OrbGainParamType.Rim, 2000),
+            [0xd2] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group2, 2)
+                .HasOrbUnlockRestriction(180)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xd3] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group2, 3)
+                .HasOrbUnlockRestriction(80)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 2),
+            [0xd4] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group2, 4)
+                .HasOrbUnlockRestriction(150)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xd5] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group2, 5)
+                .HasOrbUnlockRestriction(50)
+                .Unlocks(OrbGainParamType.Rim, 1000),
+            [0xd6] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group2, 6)
+                .HasOrbUnlockRestriction(180)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xd7] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group2, 7)
+                .HasOrbUnlockRestriction(50)
+                .Unlocks(OrbGainParamType.Gold, 10000),
+            [0xd8] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group2, 8)
+                .HasOrbUnlockRestriction(120)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 2),
+
+            [0xd9] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group3, 1)
+                .HasOrbUnlockRestriction(70)
+                .Unlocks(OrbGainParamType.MagicalAttack, 2),
+            [0xda] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group3, 2)
+                .HasOrbUnlockRestriction(80)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0xdb] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group3, 3)
+                .HasOrbUnlockRestriction(120)
+                .Unlocks(OrbGainParamType.MagicalAttack, 3),
+            [0xdc] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group3, 4)
+                .HasOrbUnlockRestriction(130)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xdd] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group3, 5)
+                .HasOrbUnlockRestriction(60)
+                .Unlocks(OrbGainParamType.MagicalDefence, 1),
+            [0xde] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group3, 6)
+                .HasOrbUnlockRestriction(100)
+                .Unlocks(OrbGainParamType.MagicalAttack, 2),
+            [0xdf] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group3, 7)
+                .HasOrbUnlockRestriction(80)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0xe0] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group3, 8)
+                .HasOrbUnlockRestriction(100)
+                .Unlocks(OrbGainParamType.MagicalDefence, 2),
+
+            [0xe1] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group4, 1)
+                .HasOrbUnlockRestriction(70)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 2),
+            [0xe2] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group4, 2)
+                .HasOrbUnlockRestriction(80)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0xe3] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group4, 3)
+                .HasOrbUnlockRestriction(120)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 3),
+            [0xe4] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group4, 4)
+                .HasOrbUnlockRestriction(130)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xe5] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group4, 5)
+                .HasOrbUnlockRestriction(60)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 1),
+            [0xe6] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group4, 6)
+                .HasOrbUnlockRestriction(100)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 2),
+            [0xe7] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group4, 7)
+                .HasOrbUnlockRestriction(80)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0xe8] = new DragonForceUpgrade()
+                .Location(PageNo.Page2, GroupNo.Group4, 8)
+                .HasOrbUnlockRestriction(100)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+            #endregion
+
+            #region PAGE3
+            [0x9f] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group5, 1)
+                .HasPageUnlockRestriction()
+                .Unlocks(OrbGainParamType.AccessorySlot, 1),
+            [0xa0] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group5, 2)
+                .HasTotalLevelsRestriction(44)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 5),
+            [0xa1] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group5, 3)
+                .HasTotalLevelsRestriction(40)
+                .Unlocks(OrbGainParamType.HpMax, 50),
+            [0xa2] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group5, 4)
+                .HasTotalLevelsRestriction(36)
+                .Unlocks(OrbGainParamType.MagicalAttack, 5),
+            [0xa3] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group5, 5)
+                .HasTotalLevelsRestriction(32)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 5),
+
+            [0xe9] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group1, 1)
+                .HasOrbUnlockRestriction(350)
+                .Unlocks(OrbGainParamType.HpMax, 30),
+            [0xea] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group1, 2)
+                .HasOrbUnlockRestriction(520)
+                .Unlocks(OrbGainParamType.AbilityCost, 3),
+            [0xeb] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group1, 3)
+                .HasOrbUnlockRestriction(480)
+                .Unlocks(OrbGainParamType.StaminaMax, 30),
+            [0xec] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group1, 4)
+                .HasOrbUnlockRestriction(400)
+                .Unlocks(OrbGainParamType.HpMax, 30),
+            [0xed] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group1, 5)
+                .HasOrbUnlockRestriction(500)
+                .Unlocks(OrbGainParamType.HpMax, 40),
+            [0xee] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group1, 6)
+                .HasOrbUnlockRestriction(380)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xef] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group1, 7)
+                .HasOrbUnlockRestriction(600)
+                .Unlocks(OrbGainParamType.HpMax, 50),
+            [0xf0] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group1, 8)
+                .HasOrbUnlockRestriction(380)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+
+            [0xf1] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group2, 1)
+                .HasOrbUnlockRestriction(550)
+                .Unlocks(OrbGainParamType.AbilityCost, 3),
+            [0xf2] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group2, 2)
+                .HasOrbUnlockRestriction(500)
+                .Unlocks(OrbGainParamType.Gold, 30000),
+            [0xf3] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group2, 3)
+                .HasOrbUnlockRestriction(350)
+                .Unlocks(OrbGainParamType.Rim, 3000),
+            [0xf4] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group2, 4)
+                .HasOrbUnlockRestriction(380)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0xf5] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group2, 5)
+                .HasOrbUnlockRestriction(400)
+                .Unlocks(OrbGainParamType.Rim, 5000),
+            [0xf6] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group2, 6)
+                .HasOrbUnlockRestriction(580)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 3),
+            [0xf7] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group2, 7)
+                .HasOrbUnlockRestriction(500)
+                .Unlocks(OrbGainParamType.AbilityCost, 3),
+            [0xf8] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group2, 8)
+                .HasOrbUnlockRestriction(450)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 2),
+
+            [0xf9] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group3, 1)
+                .HasOrbUnlockRestriction(280)
+                .Unlocks(OrbGainParamType.MagicalAttack, 1),
+            [0xfa] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group3, 2)
+                .HasOrbUnlockRestriction(320)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0xfb] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group3, 3)
+                .HasOrbUnlockRestriction(400)
+                .Unlocks(OrbGainParamType.MagicalDefence, 2),
+            [0xfc] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group3, 4)
+                .HasOrbUnlockRestriction(380)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0xfd] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group3, 5)
+                .HasOrbUnlockRestriction(420)
+                .Unlocks(OrbGainParamType.MagicalDefence, 2),
+            [0xfe] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group3, 6)
+                .HasOrbUnlockRestriction(450)
+                .Unlocks(OrbGainParamType.MagicalAttack, 2),
+            [0xff] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group3, 7)
+                .HasOrbUnlockRestriction(320)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0x100] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group3, 8)
+                .HasOrbUnlockRestriction(500)
+                .Unlocks(OrbGainParamType.MagicalDefence, 3),
+
+            [0x101] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group4, 1)
+                .HasOrbUnlockRestriction(300)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 1),
+            [0x102] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group4, 2)
+                .HasOrbUnlockRestriction(480)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0x103] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group4, 3)
+                .HasOrbUnlockRestriction(500)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+            [0x104] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group4, 4)
+                .HasOrbUnlockRestriction(580)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0x105] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group4, 5)
+                .HasOrbUnlockRestriction(600)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+            [0x106] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group4, 6)
+                .HasOrbUnlockRestriction(500)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 2),
+            [0x107] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group4, 7)
+                .HasOrbUnlockRestriction(750)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0x108] = new DragonForceUpgrade()
+                .Location(PageNo.Page3, GroupNo.Group4, 8)
+                .HasOrbUnlockRestriction(550)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 3),
+            #endregion
+
+            #region PAGE4
+
+             [0xa4] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group5, 1)
+                .HasPageUnlockRestriction()
+                .Unlocks(OrbGainParamType.AccessorySlot, 1),
+            [0xa5] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group5, 2)
+                .HasTotalLevelsRestriction(60)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 5),
+            [0xa6] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group5, 3)
+                .HasTotalLevelsRestriction(56)
+                .Unlocks(OrbGainParamType.HpMax, 80),
+            [0xa7] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group5, 4)
+                .HasTotalLevelsRestriction(52)
+                .Unlocks(OrbGainParamType.MagicalDefence, 5),
+            [0xa8] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group5, 5)
+                .HasTotalLevelsRestriction(48)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 5),
+
+            [0x109] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group1, 1)
+                .HasOrbUnlockRestriction(1250)
+                .Unlocks(OrbGainParamType.HpMax, 30),
+            [0x10a] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group1, 2)
+                .HasOrbUnlockRestriction(1750)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0x10b] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group1, 3)
+                .HasOrbUnlockRestriction(1250)
+                .Unlocks(OrbGainParamType.StaminaMax, 25),
+            [0x10c] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group1, 4)
+                .HasOrbUnlockRestriction(2000)
+                .Unlocks(OrbGainParamType.AbilityCost, 3),
+            [0x10d] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group1, 5)
+                .HasOrbUnlockRestriction(1500)
+                .Unlocks(OrbGainParamType.HpMax, 40),
+            [0x10e] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group1, 6)
+                .HasOrbUnlockRestriction(2250)
+                .Unlocks(OrbGainParamType.AbilityCost, 3),
+            [0x10f] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group1, 7)
+                .HasOrbUnlockRestriction(2000)
+                .Unlocks(OrbGainParamType.HpMax, 50),
+            [0x110] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group1, 8)
+                .HasOrbUnlockRestriction(1500)
+                .Unlocks(OrbGainParamType.StaminaMax, 25),
+
+            [0x111] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group2, 1)
+                .HasOrbUnlockRestriction(2750)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 3),
+            [0x112] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group2, 2)
+                .HasOrbUnlockRestriction(2000)
+                .Unlocks(OrbGainParamType.Rim, 10000),
+            [0x113] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group2, 3)
+                .HasOrbUnlockRestriction(1750)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+            [0x114] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group2, 4)
+                .HasOrbUnlockRestriction(2500)
+                .Unlocks(OrbGainParamType.MainPawnLostRate, 3),
+            [0x115] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group2, 5)
+                .HasOrbUnlockRestriction(1250)
+                .Unlocks(OrbGainParamType.Rim, 7500),
+            [0x116] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group2, 6)
+                .HasOrbUnlockRestriction(3000)
+                .Unlocks(OrbGainParamType.AbilityCost, 4),
+            [0x117] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group2, 7)
+                .HasOrbUnlockRestriction(1250)
+                .Unlocks(OrbGainParamType.Gold, 50000),
+            [0x118] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group2, 8)
+                .HasOrbUnlockRestriction(1750)
+                .Unlocks(OrbGainParamType.AbilityCost, 2),
+
+            [0x119] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group3, 1)
+                .HasOrbUnlockRestriction(1250)
+                .Unlocks(OrbGainParamType.MagicalAttack, 2),
+            [0x11a] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group3, 2)
+                .HasOrbUnlockRestriction(1000)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0x11b] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group3, 3)
+                .HasOrbUnlockRestriction(2000)
+                .Unlocks(OrbGainParamType.MagicalAttack, 4),
+            [0x11c] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group3, 4)
+                .HasOrbUnlockRestriction(1500)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0x11d] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group3, 5)
+                .HasOrbUnlockRestriction(1300)
+                .Unlocks(OrbGainParamType.MagicalDefence, 2),
+            [0x11e] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group3, 6)
+                .HasOrbUnlockRestriction(1500)
+                .Unlocks(OrbGainParamType.MagicalAttack, 3),
+            [0x11f] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group3, 7)
+                .HasOrbUnlockRestriction(1250)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0x120] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group3, 8)
+                .HasOrbUnlockRestriction(1600)
+                .Unlocks(OrbGainParamType.MagicalDefence, 3),
+
+            [0x121] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group4, 1)
+                .HasOrbUnlockRestriction(1250)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 2),
+            [0x122] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group4, 2)
+                .HasOrbUnlockRestriction(1000)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0x123] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group4, 3)
+                .HasOrbUnlockRestriction(2000)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 4),
+            [0x124] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group4, 4)
+                .HasOrbUnlockRestriction(1500)
+                .Unlocks(OrbGainParamType.StaminaMax, 20),
+            [0x125] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group4, 5)
+                .HasOrbUnlockRestriction(1300)
+                .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+            [0x126] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group4, 6)
+                .HasOrbUnlockRestriction(1500)
+                .Unlocks(OrbGainParamType.PhysicalAttack, 3),
+            [0x127] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group4, 7)
+                .HasOrbUnlockRestriction(1250)
+                .Unlocks(OrbGainParamType.StaminaMax, 15),
+            [0x128] = new DragonForceUpgrade()
+                .Location(PageNo.Page4, GroupNo.Group4, 8)
+                .HasOrbUnlockRestriction(1600)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 3)
             #endregion
         };

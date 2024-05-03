@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -15,7 +16,18 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ItemId=0;
             EquipSlotNo=0;
         }
-        
+
+        public static List<CDataContextEquipJobItemData> FromCDataEquipJobItems(List<CDataEquipJobItem> equipJobItems)
+        {
+            List<CDataContextEquipJobItemData> obj = new List<CDataContextEquipJobItemData>();
+            foreach (var equipJobItem in equipJobItems)
+            {
+                obj.Add(new CDataContextEquipJobItemData(equipJobItem));
+            }
+
+            return obj;
+        }
+
         public ushort ItemId { get; set; }
         public byte EquipSlotNo { get; set; }
 

@@ -424,14 +424,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SWarpWarpEndNtc.Serializer());
             Create(new C2SWarpWarpReq.Serializer());
             Create(new C2SWarpWarpStartNtc.Serializer());
-            
+
             Create(new C2SFriendApplyFriendReq.Serializer());
             Create(new C2SFriendApproveFriendReq.Serializer());
             Create(new C2SFriendRemoveFriendReq.Serializer());
             Create(new C2SFriendRegisterFavoriteFriendReq.Serializer());
             Create(new C2SFriendCancelFriendApplicationReq.Serializer());
             Create(new C2SCharacterCommunityCharacterStatusGetReq.Serializer());
-            
+
             Create(new L2CCreateCharacterDataNtc.Serializer());
             Create(new L2CCreateCharacterDataRes.Serializer());
             Create(new L2CGetErrorMessageListNtc.Serializer());
@@ -582,6 +582,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2COrbDevoteReleaseHandlerRes.Serializer());
             Create(new S2COrbDevoteGetOrbGainExtendParamRes.Serializer());
             Create(new S2COrb25_6_16_Ntc.Serializer());
+            Create(new C2SOrbDevoteGetPawnReleaseOrbElementListReq.Serializer());
+            Create(new S2COrbDevoteGetPawnReleaseOrbElementListRes.Serializer());
+            Create(new C2SOrbDevoteReleasePawnOrbElementReq.Serializer());
+            Create(new S2COrbDevoteReleasePawnOrbELementRes.Serializer());
 
             Create(new S2CJobPawnJobExpUpNtc.Serializer());
             Create(new S2CJobPawnJobLevelUpMemberNtc.Serializer());
@@ -628,7 +632,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawn_8_33_16Ntc.Serializer());
             Create(new S2CPawn_8_34_16Ntc.Serializer());
             Create(new S2CPawn_8_35_16Ntc.Serializer());
-            Create(new S2CPawn_8_36_16Ntc.Serializer());
+            Create(new S2CPawnGetPawnOrbDevoteInfoNtc.Serializer());
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());
@@ -714,7 +718,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CWarpRegisterFavoriteWarpRes.Serializer());
             Create(new S2CWarpReleaseWarpPointRes.Serializer());
             Create(new S2CWarpWarpRes.Serializer());
-            
+
             Create(new S2CFriendGetFriendListRes.Serializer());
             Create(new S2CFriendApplyFriendRes.Serializer());
             Create(new S2CFriendApproveFriendRes.Serializer());

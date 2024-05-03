@@ -8,13 +8,13 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class PawnJoinPartyMypawnHandler : GameStructurePacketHandler<C2SPawnJoinPartyMypawnReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnJoinPartyMypawnHandler));
-
 
         public PawnJoinPartyMypawnHandler(DdonGameServer server) : base(server)
         {
@@ -26,11 +26,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             PawnPartyMember partyMember = client.Party.Join(pawn);
             if (partyMember == null)
             {
-                Logger.Error(client,
-                    $"could not join pawn");
                 // TODO error response
+                Logger.Error(client, $"could not join pawn");
                 return;
             }
+
             client.Party.SendToAll(new S2CPawnJoinPartyPawnNtc() { PartyMember = partyMember.GetCDataPartyMember() });
             client.Party.SendToAll(partyMember.GetS2CContextGetParty_ContextNtc());
 

@@ -323,6 +323,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new OrbDevoteGetOrbGainExtendParamHandler(this));
             AddHandler(new OrbDevoteGetReleaseOrbElementListHandler(this));
             AddHandler(new OrbDevoteReleaseOrbElementHandler(this));
+            AddHandler(new OrbDevoteGetPawnReleaseOrbElementListHandler(this));
+            AddHandler(new OrbDevoteReleasePawnOrbElementHandler(this));
 
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));

@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             Id = id;
 
-            // TODO 
+            // TODO
             Contexts = new Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>>();
 
             InstanceEnemyManager = new InstanceEnemyManager(partyManager.assetRepository);
@@ -558,6 +558,42 @@ namespace Arrowgene.Ddon.GameServer.Party
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceDropItemManager.Clear();
             }
+        }
+
+        public PartyMember GetPartyMemberByCharacter(CharacterCommon characterCommon)
+        {
+            lock (_lock)
+            {
+                for (int i = 0; i < MaxSlots; i++)
+                {
+                    if (_slots[i] is PartyMember member)
+                    {
+                        if (member == null)
+                        {
+                            continue;
+                        }
+
+                        if (member is PawnPartyMember pawnMember && characterCommon is Pawn)
+                        {
+                            Pawn pawn = (Pawn)characterCommon;
+                            if (pawnMember.PawnId == pawn.PawnId)
+                            {
+                                return member;
+                            }
+                        }
+                        else if (member is PlayerPartyMember playerMember && characterCommon is Character)
+                        {
+                            Character character = (Character)characterCommon;
+                            if (playerMember.Client.Character.CharacterId == character.CharacterId)
+                            {
+                                return member;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
 
         private PlayerPartyMember GetByCharacterId(uint characterId)
