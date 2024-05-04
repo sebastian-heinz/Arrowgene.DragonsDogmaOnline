@@ -23,9 +23,10 @@ namespace Arrowgene.Ddon.Cli.Command
         private static string ByteDumpPrefixSwitch => "--byte-dump-prefix";
         private static string Utf8StringDumpSwitch => "--utf8-dump";
         private static string StructureDumpSwitch => "--structure-dump";
+        private static string PacketIncludeFilterSwitch => "--packet-include-filter";
 
         public string Description =>
-            $"Usage: `{Key} \"E:\\dumps\\58_9.yaml` [{DecryptionKeySwitch}=]J2g4pE2_heyqIAengWy0N6D1SEklxz8I [{ByteDumpSwitch}[=,]] [{ByteDumpPrefixSwitch}=0x] [{Utf8StringDumpSwitch}] [{StructureDumpSwitch}[=JSON|YAML]]";
+            $"Usage: `{Key} \"E:\\dumps\\58_9.yaml` [{DecryptionKeySwitch}=]J2g4pE2_heyqIAengWy0N6D1SEklxz8I [{ByteDumpSwitch}[=,]] [{ByteDumpPrefixSwitch}=0x] [{Utf8StringDumpSwitch}] [{StructureDumpSwitch}[=JSON|YAML]] [{PacketIncludeFilterSwitch}=11.21.2,S2C_QUEST_QUEST_PROGRESS_RES,...]";
 
 
         public CommandResultType Run(CommandParameter parameter)
@@ -41,10 +42,11 @@ namespace Arrowgene.Ddon.Cli.Command
             bool addUtf8StringDump = parameter.Switches.Contains(Utf8StringDumpSwitch) || parameter.SwitchMap.ContainsKey(Utf8StringDumpSwitch);
             bool addStructureDump = parameter.Switches.Contains(StructureDumpSwitch) || parameter.SwitchMap.ContainsKey(StructureDumpSwitch);
             string structureDumpFormat = parameter.SwitchMap.GetValueOrDefault(StructureDumpSwitch, "JSON").ToLowerInvariant();
+            string packetIncludeFilter = parameter.SwitchMap.GetValueOrDefault(PacketIncludeFilterSwitch, "");
 
             List<PcapPacket> decryptedPcapPackets = DecryptPackets(yamlPath, camelliaKeyBytes);
             string annotatedDump = GetAnnotatedPacketDump(decryptedPcapPackets, addByteDump, addUtf8StringDump, addStructureDump, byteDumpSeparator, byteDumpPrefix,
-                structureDumpFormat);
+                structureDumpFormat, packetIncludeFilter);
             string outputPath = yamlPath + ".annotated.txt";
             File.WriteAllText(outputPath, annotatedDump);
 
@@ -108,14 +110,20 @@ namespace Arrowgene.Ddon.Cli.Command
         }
 
         public string GetAnnotatedPacketDump(List<PcapPacket> decryptedPcapPackets, bool addByteDump, bool addUtf8ByteDump, bool addStructureDump, string byteDumpSeparator = "",
-            string byteDumpPrefix = "", string structureDumpFormat = "")
+            string byteDumpPrefix = "", string structureDumpFormat = "", string packetIncludeFilter = "")
         {
+            HashSet<string> packetIncludeFilterSet = new HashSet<string>(packetIncludeFilter.ToLowerInvariant().Split(','));
             StringBuilder annotated = new StringBuilder();
             {
                 foreach (PcapPacket pcapPacket in decryptedPcapPackets)
                 {
                     foreach (IPacket resolvedPacket in pcapPacket.ResolvedPackets)
                     {
+                        if (!(packetIncludeFilterSet.Contains(resolvedPacket.Id.Name.ToLowerInvariant()) || packetIncludeFilterSet.Contains(resolvedPacket.Id.ToString())))
+                        {
+                            continue;
+                        }
+
                         annotated.AppendLine($"{resolvedPacket.PrintHeader()} Pcap(No:{pcapPacket.Packet} Ts:{pcapPacket.TimeStamp})");
                         annotated.Append(resolvedPacket.PrintData());
                         if (addStructureDump && resolvedPacket is IStructurePacket)
