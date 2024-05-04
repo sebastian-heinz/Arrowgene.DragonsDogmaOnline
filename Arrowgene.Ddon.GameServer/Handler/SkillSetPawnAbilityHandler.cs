@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -25,11 +27,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 Logger.Error(client, $"Requesting to set an ability to slot 0");
             }
-            
+
             // For some reason JobId is received as 0, unlike in SkillSetAbilityHandler, where it's set to its correct value
             // This is, also for whatever reason, important so it works properly, so we have to set it ourselves
             // TODO: Investigate this more, or optimize this
-            JobId abilityJob = SkillGetAcquirableAbilityListHandler.AllAbilities
+
+            var AllAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Concat(SkillGetAcquirableAbilityListHandler.AllSecretAbilities);
+            JobId abilityJob = AllAbilities
                 .Where(aug => aug.AbilityNo == packet.Structure.SkillId )
                 .Select(aug => aug.Job)
                 .Single();
