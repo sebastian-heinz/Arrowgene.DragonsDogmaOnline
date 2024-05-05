@@ -1,13 +1,10 @@
 using System.Collections.Generic;
-using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.RpcPacketStructure;
 using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.GameServer.Party;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -55,7 +52,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // We are in one of the common areas where players can see eachother
                 foreach (GameClient otherClient in Server.ClientLookup.GetAll())
                 {
-                    if (otherClient == client)
+                    if (otherClient == null || otherClient == client)
                     {
                         // No point to send to oneself.
                         continue;
@@ -66,6 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         otherClient.Send(res);
                     }
                 }
+
             }
 
             // Handle additional packet contents
