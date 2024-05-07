@@ -24,6 +24,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte subGroupId = request.Structure.SubGroupId;
             client.Character.Stage = stageId;
 
+            Logger.Info($"GroupId={request.Structure.LayoutId.GroupId}, SubGroupId={request.Structure.SubGroupId}, LayerNo={request.Structure.LayoutId.LayerNo}");
+
             S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes
             {
                 LayoutId = stageId.ToStageLayoutId(),
