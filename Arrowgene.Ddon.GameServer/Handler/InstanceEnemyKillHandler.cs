@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(new S2CInstanceEnemyKillRes());
 
             foreach(PartyMember member in client.Party.Members)
-            {                
+            {
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = enemyKilled.Experience;

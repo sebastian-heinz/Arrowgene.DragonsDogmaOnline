@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
@@ -36,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                     {
                         new CDataQuestProcessState()
                         {
-                            // ProcessNo = 0x0, SequenceNo = 0x0, BlockNo = 0x1,
+                            ProcessNo = 0x0, SequenceNo = 0x0, BlockNo = 0x1,
                             CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                             {
                                 QuestManager.CheckCommand.IsEnemyFoundForOrder(StageNo.Lestania, 26, 0)
@@ -48,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                 return quest;
             }
 
-            public static List<CDataQuestProcessState> StateMachineExecute(GameClient client, uint keyId, uint questScheduleId, uint processNo, out QuestProcess processStatus)
+            public static List<CDataQuestProcessState> StateMachineExecute(GameClient client, uint keyId, uint questScheduleId, uint processNo, out QuestProcess processStatus, ExpManager expManager)
             {
                 List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
@@ -66,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                                 }),
                                 ResultCommandList = new List<CDataQuestCommand>()
                                 {
-                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept),
+                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept)
                                 }
                             }
                         };
@@ -77,10 +79,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                         {
                             new CDataQuestProcessState()
                             {
-                                ProcessNo = 2,
+                                ProcessNo = 1, SequenceNo = 0, BlockNo = 0,
                                 ResultCommandList = new List<CDataQuestCommand>()
                                 {
-                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Cancel),
+                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear),
+                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.End),
+                                    QuestManager.ResultCommand.EndEndQuest()
                                 }
                             }
                         };

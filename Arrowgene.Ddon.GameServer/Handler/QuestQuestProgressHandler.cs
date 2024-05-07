@@ -11,6 +11,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,9 +19,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestProgressHandler));
 
+        private readonly ExpManager _ExpManager;
 
         public QuestQuestProgressHandler(DdonGameServer server) : base(server)
         {
+            _ExpManager = server.ExpManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestQuestProgressReq> packet)
@@ -28,6 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes();
             res.QuestScheduleId = packet.Structure.QuestScheduleId;
+            res.QuestProgressResult = 0;
 
             Logger.Debug($"KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
@@ -50,8 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 Logger.Debug("============ World Quest activated ============");
                 Logger.Debug($"ProcessNo = {packet.Structure.ProcessNo}");
-                res.QuestProcessState = WorldQuests.LestaniaCyclops.StateMachineExecute(client, packet.Structure.KeyId, packet.Structure.QuestScheduleId, packet.Structure.ProcessNo, out process);
-                res.QuestProgressResult = 0;
+                res.QuestProcessState = WorldQuests.LestaniaCyclops.StateMachineExecute(client, packet.Structure.KeyId, packet.Structure.QuestScheduleId, packet.Structure.ProcessNo, out process, _ExpManager);
             }
             else
             {
@@ -62,7 +65,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Param01 = 0x173
                 });
 
-                res.QuestProgressResult = 0;
                 res.QuestScheduleId = 0x32f00;
                 res.QuestProcessState.Add(new CDataQuestProcessState()
                 {
@@ -73,23 +75,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 });
             }
 
+            if (process == QuestProcess.ProcessEnd)
+            {
+                S2CItemUpdateCharacterItemNtc rewardNtc = new S2CItemUpdateCharacterItemNtc();
+
+                rewardNtc.UpdateType = (ushort) ItemNoticeType.Quest;
+                rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.Gold, AddPoint = 390 });
+                rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.RiftPoints, AddPoint = 70 });
+                client.Send(rewardNtc);
+            }
+
             S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
             {
-                ProgressCharacterId = client.Character.CharacterId, // packet.Structure.ProgressCharacterId,
+                ProgressCharacterId = packet.Structure.ProgressCharacterId,
                 QuestScheduleId = res.QuestScheduleId,
-                QuestProcessStateList = res.QuestProcessState
+                QuestProcessStateList = res.QuestProcessState,
             };
             client.Party.SendToAllExcept(ntc, client);
 
             client.Send(res);
 
+
+#if false
             if (process == QuestProcess.ProcessEnd)
             {
                 var ntccomplete = new S2CQuestCompleteNtc() { QuestScheduleId = packet.Structure.QuestScheduleId };
                 client.Party.SendToAll(ntccomplete);
             }
-
-
+#endif
 #if false
             // Logger.Debug($"CharacterId={req.Structure.CharacterId}, QuestScheduleId={req.Structure.QuestScheduleId}, ProcessNo={req.Structure.ProcessNo}\n");
 

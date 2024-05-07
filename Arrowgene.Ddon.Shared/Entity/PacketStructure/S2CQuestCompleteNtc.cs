@@ -7,11 +7,38 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CQuestCompleteNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_QUEST_11_26_16_NTC;
-        // public PacketId Id => PacketId.S2C_QUEST_11_25_16_NTC; // Cancels the quest?
+        // public PacketId Id => PacketId.S2C_QUEST_11_7_16_NTC; 
+        // public PacketId Id => PacketId.S2C_QUEST_11_20_16_NTC;
         // public PacketId Id => PacketId.S2C_QUEST_11_32_16_NTC;
-        // public PacketId Id => PacketId.S2C_QUEST_11_91_16_NTC;
-        // public PacketId Id => PacketId.S2C_QUEST_11_7_16_NTC;
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_25_16_NTC;    // Quest Cancelled
+        // public PacketId Id => PacketId.S2C_QUEST_11_26_16_NTC;    // Quest Cancelled
+        public PacketId Id => PacketId.S2C_QUEST_11_27_16_NTC;
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_47_16_NTC
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_68_16_NTC; // Special Quest Board Reloaded
+
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_82_16_NTC;
+        // public PacketId Id => PacketId.S2C_QUEST_11_83_16_NTC;
+        // public PacketId Id => PacketId.S2C_QUEST_11_84_16_NTC; // Crashed game
+        // public PacketId Id => PacketId.S2C_QUEST_11_85_16_NTC;
+        // public PacketId Id => PacketId.S2C_QUEST_11_86_16_NTC;
+        // public PacketId Id => PacketId.S2C_QUEST_11_87_16_NTC;
+        // public PacketId Id => PacketId.S2C_QUEST_11_88_16_NTC; // nothing happened
+
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_90_16_NTC; // nothing happened
+        // public PacketId Id => PacketId.S2C_QUEST_11_91_16_NTC; // Mission Accepted
+        // public PacketId Id => PacketId.S2C_QUEST_11_92_16_NTC; // Mission Started
+        // public PacketId Id => PacketId.S2C_QUEST_11_93_16_NTC; // Mission completed
+        // public PacketId Id => PacketId.S2C_QUEST_11_94_16_NTC; // Mission  All completed
+        // public PacketId Id => PacketId.S2C_QUEST_11_95_16_NTC; // Crashed Game
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_126_16_NTC; // Quest Still visible after?
+
+
 
         public S2CQuestCompleteNtc()
         {

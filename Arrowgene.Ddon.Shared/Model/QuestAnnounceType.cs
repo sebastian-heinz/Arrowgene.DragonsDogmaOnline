@@ -13,6 +13,7 @@ namespace Arrowgene.Ddon.Shared.Model
         End = 8,
         StageStart = 9,
         StageClear = 10,
-        Cancel = 11,
+        UrgentUpdate = 11,
+        Unknown0 = 12,
     }
 }
