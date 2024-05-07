@@ -8,9 +8,9 @@ namespace Arrowgene.Ddon.Shared.Asset
     {
         public QuestAsset()
         {
-            MainQuests = new Dictionary<uint, CDataMainQuest>();
+            MainQuests = new Dictionary<uint, CDataQuestList>();
         }
 
-        public Dictionary<uint, CDataMainQuest> MainQuests;
+        public Dictionary<uint, CDataQuestList> MainQuests;
     }
 }

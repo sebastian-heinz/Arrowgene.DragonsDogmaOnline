@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -36,6 +36,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 })
                 .ToList()
             };
+
+            // TODO: Make this configurable
+            if (response.LayoutId.GroupId == 26)
+            {
+                // Knight's Bitter Enemy
+                response.QuestId = 20005010;
+            }
+            else if (response.LayoutId.GroupId == 2)
+            {
+                // Spirit Dragon
+                response.QuestId = 50300010;
+            }
 
             client.Send(response);
         }

@@ -2,6 +2,7 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public enum NpcId : uint
     {
+        None = 0,
         Abbas = 704,
         Abram = 4744,
         Achille = 587,

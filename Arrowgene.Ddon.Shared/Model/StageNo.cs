@@ -11,15 +11,12 @@ namespace Arrowgene.Ddon.Shared.Model
         Lestania = 100,
         WhiteDragonTemple = 200,
         AudienceChamber = 201,
-        Unknown0x44c = 0x44c, // Name in Japanese
-        Unknown0x44f = 0x44f, // Name in Japanese
-        // ShoppingDistrict
-        // RelayStationDistrict
-        // CraftRoom
-        // CaveHarbor
-        // FrontGate
-        // BeautySalon
-        // Tavern
-        // ShoppingDistrictAlley
+        SpiritDragonsRoost1 = 435,
+        SpiritDragonsRoost2 = 436,
+        SacredFlamePath = 1100,
+        EvilDragonsRoost1 = 1103,
+        EvilDragonsRoost2 = 1104,
+        EvilDragonsRoost3 = 1105,
+        EvilDragonsRoost4 = 1106,
     }
 }

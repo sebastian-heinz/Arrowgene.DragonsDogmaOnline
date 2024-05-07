@@ -590,7 +590,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_GET_TIME_LIMITED_QUEST_LIST_RES = new PacketId(11, 8, 2, "S2C_QUEST_GET_TIME_LIMITED_QUEST_LIST_RES", ServerType.Game, PacketSource.Server); // 期間限定クエストリストの取得に
         public static readonly PacketId C2S_QUEST_GET_WORLD_MANAGE_QUEST_LIST_REQ = new PacketId(11, 9, 1, "C2S_QUEST_GET_WORLD_MANAGE_QUEST_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_WORLD_MANAGE_QUEST_LIST_RES = new PacketId(11, 9, 2, "S2C_QUEST_GET_WORLD_MANAGE_QUEST_LIST_RES", ServerType.Game, PacketSource.Server); // 世界管理クエストリストの取得に
-        public static readonly PacketId S2C_QUEST_11_9_16_NTC = new PacketId(11, 9, 16, "S2C_QUEST_11_9_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_GET_WORLD_MANAGE_QUEST_LIST_NTC = new PacketId(11, 9, 16, "S2C_QUEST_GET_WORLD_MANAGE_QUEST_LIST_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_9_16_NTC");
         public static readonly PacketId C2S_QUEST_GET_END_CONTENTS_GROUP_REQ = new PacketId(11, 10, 1, "C2S_QUEST_GET_END_CONTENTS_GROUP_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_END_CONTENTS_GROUP_RES = new PacketId(11, 10, 2, "S2C_QUEST_GET_END_CONTENTS_GROUP_RES", ServerType.Game, PacketSource.Server); // エンドコンテンツクエストリストの取得に
         public static readonly PacketId C2S_QUEST_GET_QUEST_SCHEDULE_INFO_REQ = new PacketId(11, 11, 1, "C2S_QUEST_GET_QUEST_SCHEDULE_INFO_REQ", ServerType.Game, PacketSource.Client);
@@ -2496,7 +2496,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_TIME_LIMITED_QUEST_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_WORLD_MANAGE_QUEST_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_WORLD_MANAGE_QUEST_LIST_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_9_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_GET_WORLD_MANAGE_QUEST_LIST_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_END_CONTENTS_GROUP_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_END_CONTENTS_GROUP_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_QUEST_SCHEDULE_INFO_REQ);
