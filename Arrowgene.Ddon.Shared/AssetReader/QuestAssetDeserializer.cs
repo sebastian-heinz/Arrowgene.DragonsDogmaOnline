@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Csv
             string json = File.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
-            List<CDataMainQuest> missionData = JsonSerializer.Deserialize<List<CDataMainQuest>>(document.RootElement.GetProperty("missions"));
+            List<CDataQuestList> missionData = JsonSerializer.Deserialize<List<CDataQuestList>>(document.RootElement.GetProperty("missions"));
             foreach (var mission in missionData)
             {
                 asset.MainQuests[mission.QuestId] = mission;

@@ -11,24 +11,24 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CQuestGetMainQuestListRes()
         {
-            MainQuestList = new List<CDataMainQuest>();
+            MainQuestList = new List<CDataQuestList>();
         }
 
-        public List<CDataMainQuest> MainQuestList { get; set; }
+        public List<CDataQuestList> MainQuestList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CQuestGetMainQuestListRes>
         {
             public override void Write(IBuffer buffer, S2CQuestGetMainQuestListRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntityList<CDataMainQuest>(buffer, obj.MainQuestList);
+                WriteEntityList<CDataQuestList>(buffer, obj.MainQuestList);
             }
 
             public override S2CQuestGetMainQuestListRes Read(IBuffer buffer)
             {
                 S2CQuestGetMainQuestListRes obj = new S2CQuestGetMainQuestListRes();
                 ReadServerResponse(buffer, obj);
-                obj.MainQuestList = ReadEntityList<CDataMainQuest>(buffer);
+                obj.MainQuestList = ReadEntityList<CDataQuestList>(buffer);
                 return obj;
             }
         }

@@ -17,6 +17,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             GroupId = 0;
         }
 
+        public CDataStageLayoutId(uint stageId, byte layerNo, uint groupId)
+        {
+            StageId = stageId;
+            LayerNo = layerNo;
+            GroupId = groupId;
+        }
+
         public class Serializer : EntitySerializer<CDataStageLayoutId>
         {
             public override void Write(IBuffer buffer, CDataStageLayoutId obj)

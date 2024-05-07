@@ -1,6 +1,8 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Quests.Missions;
+using Arrowgene.Ddon.GameServer.Quests.WorldQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -26,63 +28,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes();
             res.QuestScheduleId = packet.Structure.QuestScheduleId;
-            res.QuestProgressResult = 0;
 
             Logger.Debug($"KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
-            if (packet.Structure.KeyId == 1337)
+            // TODO: These can be saved in some dictionary
+            // TODO: Extra params for which character it is for
+            // TODO: Make some interface they adhere to
+            // TODO: Other quests happen here as well, this is the main quest handler
+            // -- Missions
+            // -- World Quests
+            // -- Personal Requests
+            // -- Spirit Dragon
+            QuestProcess process = QuestProcess.ExecuteCommand;
+            if (packet.Structure.QuestScheduleId == 287350)
             {
-                switch (packet.Structure.ProcessNo)
-                {
-                    case 0:
-                        res.QuestProcessState = new List<CDataQuestProcessState>()
-                        {
-                            new CDataQuestProcessState() {
-                                ProcessNo = 1, SequenceNo = 0x0, BlockNo = 0x0,
-                                CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
-                                {
-                                    QuestManager.CheckCommand.DummyNotProgress(),
-                                    QuestManager.CheckCommand.IsStageNo(StageNo.AudienceChamber),
-                                }),
-                                ResultCommandList = new List<CDataQuestCommand>()
-                                {
-                                    // QuestManager.ResultCommand.EventExec(StageNo.WhiteDragonTemple, 1, StageNo.WhiteDragonTemple, 0x20),
-                                    // QuestManager.ResultCommand.SetCheckPoint(),
-                                    // Event numbers are files based on st<stageNo>ev<eventNo> in nativepc/rom/event and nativepc/movie
-                                    // QuestManager.ResultCommand.EventExec(StageNo.WhiteDragonTemple, 0, StageNo.WhiteDragonTemple, 0x1),
-                                    // QuestManager.ResultCommand.SetAnnounceType(QuestAnnounceType.Accept),
-                                    // QuestManager.ResultCommand.MyQstFlagOn(0x1234)
-                                    QuestManager.ResultCommand.EventExec(StageNo.WhiteDragonTemple, 0, StageNo.WhiteDragonTemple, 0x1),
-                                    QuestManager.ResultCommand.SetAnnounceType(QuestAnnounceType.Accept),
-                                    QuestManager.ResultCommand.MyQstFlagOn(0x1234),
-                                }
-                            }
-                        };
-                        break;
-                    case 1:
-                        res.QuestProcessState = new List<CDataQuestProcessState>()
-                        {
-                            new CDataQuestProcessState() {
-                                ProcessNo = 2, SequenceNo = 0x0, BlockNo = 0x0,
-                                ResultCommandList = new List<CDataQuestCommand>()
-                                {
-                                    QuestManager.ResultCommand.SetAnnounceType(QuestAnnounceType.Clear),
-                                    // QuestManager.ResultCommand.EventExec(StageNo.WhiteDragonTemple, 1, StageNo.WhiteDragonTemple, 0x20),
-                                    // QuestManager.ResultCommand.SetCheckPoint(),
-                                    // QuestManager.ResultCommand.SetAnnounceType(QuestAnnounceType.Accept)
-                                }
-                            }
-                        };
-                        break;
-                }
-
-                S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
-                {
-                    ProgressCharacterId = client.Character.CharacterId, // packet.Structure.ProgressCharacterId,
-                    QuestScheduleId = res.QuestScheduleId,
-                    QuestProcessStateList = res.QuestProcessState
-                };
-                client.Party.SendToAllExcept(ntc, client);
+                Logger.Debug("============ Main Story Quest activated ============");
+                Logger.Debug($"ProcessNo = {packet.Structure.ProcessNo}");
+                res.QuestProcessState = Mq000002_TheSlumberingGod.StateMachineExecute(packet.Structure.KeyId, packet.Structure.QuestScheduleId, packet.Structure.ProcessNo);
+            }
+            else if (packet.Structure.QuestScheduleId == 20005010)
+            {
+                Logger.Debug("============ World Quest activated ============");
+                Logger.Debug($"ProcessNo = {packet.Structure.ProcessNo}");
+                res.QuestProcessState = WorldQuests.LestaniaCyclops.StateMachineExecute(client, packet.Structure.KeyId, packet.Structure.QuestScheduleId, packet.Structure.ProcessNo, out process);
+                res.QuestProgressResult = 0;
             }
             else
             {
@@ -104,7 +73,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 });
             }
 
+            S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
+            {
+                ProgressCharacterId = client.Character.CharacterId, // packet.Structure.ProgressCharacterId,
+                QuestScheduleId = res.QuestScheduleId,
+                QuestProcessStateList = res.QuestProcessState
+            };
+            client.Party.SendToAllExcept(ntc, client);
+
             client.Send(res);
+
+            if (process == QuestProcess.ProcessEnd)
+            {
+                var ntccomplete = new S2CQuestCompleteNtc() { QuestScheduleId = packet.Structure.QuestScheduleId };
+                client.Party.SendToAll(ntccomplete);
+            }
+
 
 #if false
             // Logger.Debug($"CharacterId={req.Structure.CharacterId}, QuestScheduleId={req.Structure.QuestScheduleId}, ProcessNo={req.Structure.ProcessNo}\n");
@@ -115,7 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint data1 = inBuffer.ReadUInt32(Endianness.Big);
             uint data2 = inBuffer.ReadUInt32(Endianness.Big);
             Logger.Debug("data0: "+data0+" data1: "+data1+" data2: "+data2+"\n");
-            if(data2 == 287350){ 
+            if(data2 == 287350){
                 client.Send(GameFull.Dump_652);
             }
             else

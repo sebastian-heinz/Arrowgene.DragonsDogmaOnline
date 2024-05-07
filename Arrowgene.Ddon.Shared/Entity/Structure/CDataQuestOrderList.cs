@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure;
@@ -9,8 +9,8 @@ public class CDataQuestOrderList
     {
         FixedRewardItem = new List<CDataRewardItem>();
         FixedRewardSelectItem = new List<CDataRewardItem>();
-        Unk0 = new List<CDataWalletPoint>();
-        Unk1 = new List<CDataQuestListUnk1>();
+        BaseWalletPoints = new List<CDataWalletPoint>();
+        BaseExp = new List<CDataQuestExp>();
         Unk7 = new List<CDataQuestListUnk7>();
         QuestLog = new CDataQuestLog();
         QuestFlagList = new List<CDataQuestFlag>();
@@ -28,8 +28,8 @@ public class CDataQuestOrderList
     public uint AreaId { get; set; }
     public uint BaseLevel { get; set; }
     public ushort ContentJoinItemRank { get; set; }
-    public List<CDataWalletPoint> Unk0 { get; set; }
-    public List<CDataQuestListUnk1> Unk1 { get; set; }
+    public List<CDataWalletPoint> BaseWalletPoints { get; set; }
+    public List<CDataQuestExp> BaseExp { get; set; }
     public uint Unk2 { get; set;}
     public uint Unk3 { get; set;}
     public uint Unk4 { get; set;}
@@ -62,8 +62,8 @@ public class CDataQuestOrderList
             WriteUInt32(buffer, obj.AreaId);
             WriteUInt32(buffer, obj.BaseLevel);
             WriteUInt16(buffer, obj.ContentJoinItemRank);
-            WriteEntityList<CDataWalletPoint>(buffer, obj.Unk0);
-            WriteEntityList<CDataQuestListUnk1>(buffer, obj.Unk1);
+            WriteEntityList<CDataWalletPoint>(buffer, obj.BaseWalletPoints);
+            WriteEntityList<CDataQuestExp>(buffer, obj.BaseExp);
             WriteUInt32(buffer, obj.Unk2);
             WriteUInt32(buffer, obj.Unk3);
             WriteUInt32(buffer, obj.Unk4);
@@ -96,8 +96,8 @@ public class CDataQuestOrderList
             obj.AreaId = ReadUInt32(buffer);
             obj.BaseLevel = ReadUInt32(buffer);
             obj.ContentJoinItemRank = ReadUInt16(buffer);
-            obj.Unk0 = ReadEntityList<CDataWalletPoint>(buffer);
-            obj.Unk1 = ReadEntityList<CDataQuestListUnk1>(buffer);
+            obj.BaseWalletPoints = ReadEntityList<CDataWalletPoint>(buffer);
+            obj.BaseExp = ReadEntityList<CDataQuestExp>(buffer);
             obj.Unk2 = ReadUInt32(buffer);
             obj.Unk3 = ReadUInt32(buffer);
             obj.Unk4 = ReadUInt32(buffer);

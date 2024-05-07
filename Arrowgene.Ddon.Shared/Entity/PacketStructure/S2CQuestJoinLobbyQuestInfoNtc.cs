@@ -34,8 +34,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataMainQuestOrderList> MainQuestOrderList { get; set; }
         public List<CDataTutorialQuestOrderList> TutorialQuestOrderList { get; set; }
         public List<CDataLotQuestOrderList> LotQuestOrderList { get; set; }
-        public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0> Unk0 { get; set; }
-        public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk1> Unk1 { get; set; }
+        public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0> Unk0 { get; set; } // Probably those purple quests from season 3
+        public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk1> Unk1 { get; set; } // or maybe this
         public List<CDataTimeLimitedQuestOrderList> TimeLimitedQuestOrderList { get; set; }
         public List<CDataWorldManageQuestOrderList> WorldManageQuestOrderList { get; set; }
         public List<CDataExpiredQuestList> ExpiredQuestList { get; set; }
