@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class ItemManager
     {
-        private static readonly StorageType[] ItemBagStorageTypes = new StorageType[] { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
+        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
 
         private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
             {7789, (WalletType.Gold, 1)},
