@@ -26,6 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
 
             public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
             {
+                // TODO: Update and save this properly
                 S2CItemUpdateCharacterItemNtc rewardNtc = new S2CItemUpdateCharacterItemNtc();
                 rewardNtc.UpdateType = (ushort)ItemNoticeType.Quest;
                 rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.Gold, AddPoint = 390 });
@@ -100,7 +101,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                         {
                             new CDataQuestProcessState()
                             {
-                                ProcessNo = 1, SequenceNo = 0, BlockNo = 0,
+                                ProcessNo = 2, SequenceNo = 0, BlockNo = 0,
                                 ResultCommandList = new List<CDataQuestCommand>()
                                 {
                                     QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear),
@@ -114,6 +115,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                     default:
                         questState = QuestState.Unknown;
                         break;
+                }
+
+                if (questState != QuestState.Unknown)
+                {
+                    CurrentProcessNo = processNo + 1;
                 }
 
                 return result;

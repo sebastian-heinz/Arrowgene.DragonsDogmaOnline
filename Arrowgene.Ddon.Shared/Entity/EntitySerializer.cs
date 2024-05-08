@@ -398,6 +398,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestGetSetQuestListReq.Serializer());
             Create(new C2SQuestQuestCompleteFlagClearReq.Serializer());
             Create(new S2CQuestQuestCompleteFlagClearRes.Serializer());
+            Create(new S2CQuestQuestCancelNtc.Serializer());
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
             Create(new C2SSkillChangeExSkillReq.Serializer());
