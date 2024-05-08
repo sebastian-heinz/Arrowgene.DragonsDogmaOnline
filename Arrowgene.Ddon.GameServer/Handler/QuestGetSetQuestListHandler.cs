@@ -1,6 +1,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Quests.WorldQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -32,12 +33,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // client.Send(GameFull.Dump_132);
             S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes();
-
-            res.SetQuestList.Add(new CDataSetQuestList()
+            foreach (var quest in client.Character.Quests)
             {
-                Detail = new CDataSetQuestDetail() {IsDiscovery = true},
-                Param = WorldQuests.LestaniaCyclops.Create(),
-            });
+                if (quest.Value.QuestType == QuestType.World)
+                {
+                    res.SetQuestList.Add(new CDataSetQuestList()
+                    {
+                        Detail = new CDataSetQuestDetail() { IsDiscovery = quest.Value.IsDiscoverable },
+                        Param = quest.Value.ToCDataQuestList(),
+                    });
+                }
+            }
+
             client.Send(res);
         }
     }

@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -60,6 +61,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             SelectPawns(character);
 
+            SelectQuests(character);
+
             return character;
         }
 
@@ -80,6 +83,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 UpdateCharacterExtendedParams(pawn);
             }
+        }
+
+        private void SelectQuests(Character character)
+        {
+            // TODO: Grab from database instead.
+            character.Quests.Add(QuestId.LestaniaCyclops, QuestManager.GetQuest(QuestId.LestaniaCyclops));
+            character.Quests.Add(QuestId.TheSlumberingGod, QuestManager.GetQuest(QuestId.TheSlumberingGod));
         }
 
         public uint GetMaxAugmentAllocation(CharacterCommon character)

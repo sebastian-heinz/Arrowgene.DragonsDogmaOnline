@@ -39,16 +39,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .ToList()
             };
 
-            // TODO: Make this configurable
-            if (response.LayoutId.GroupId == 26)
+            foreach (var quest in client.Character.Quests)
             {
-                // Knight's Bitter Enemy
-                response.QuestId = 20005010;
-            }
-            else if (response.LayoutId.GroupId == 2)
-            {
-                // Spirit Dragon
-                response.QuestId = 50300010;
+                if (quest.Value.HasEnemiesInCurrentStageGroup(client.Character.StageNo, stageId.GroupId, subGroupId))
+                {
+                    response.QuestId = (uint) quest.Key;
+                }
             }
 
             client.Send(response);

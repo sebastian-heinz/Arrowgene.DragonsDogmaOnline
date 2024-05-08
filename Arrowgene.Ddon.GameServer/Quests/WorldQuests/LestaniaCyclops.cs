@@ -15,22 +15,43 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
 {
     public class WorldQuests
     {
-        public class LestaniaCyclops
+        public class LestaniaCyclops : Quest
         {
-            public static CDataQuestList Create()
+            public LestaniaCyclops() : base()
+            {
+                IsDiscoverable = true;
+                HasEnemy = true;
+                QuestType = QuestType.World;
+            }
+
+            public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
+            {
+                S2CItemUpdateCharacterItemNtc rewardNtc = new S2CItemUpdateCharacterItemNtc();
+                rewardNtc.UpdateType = (ushort)ItemNoticeType.Quest;
+                rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.Gold, AddPoint = 390 });
+                rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.RiftPoints, AddPoint = 70 });
+                return rewardNtc;
+            }
+
+            public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
+            {
+                return stageNo == (uint) StageNo.Lestania && groupId == 26;
+            }
+
+            public override CDataQuestList ToCDataQuestList()
             {
                 // http://ddon.wikidot.com/wq:theknightsbitterenemy
                 var quest = new CDataQuestList()
                 {
-                    QuestId = 20005010,
-                    QuestScheduleId = 20005010,
+                    QuestId = (uint) QuestId.LestaniaCyclops,
+                    QuestScheduleId = (uint) QuestId.LestaniaCyclops,
                     BaseLevel = 12,
                     BaseExp = new List<CDataQuestExp>()
                     {
                         new CDataQuestExp() {ExpMode = 1, Reward = 590},
                     },
                     BaseWalletPoints = new List<CDataWalletPoint>()
-                    { 
+                    {
                         new CDataWalletPoint() { Type = WalletType.Gold, Value = 390},
                         new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 70}
                     },
@@ -50,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                 return quest;
             }
 
-            public static List<CDataQuestProcessState> StateMachineExecute(GameClient client, uint keyId, uint questScheduleId, uint processNo, out QuestProcess processStatus, ExpManager expManager)
+            public override List<CDataQuestProcessState> StateMachineExecute(uint keyId, uint questScheduleId, uint processNo, out QuestState questState)
             {
                 List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
@@ -62,17 +83,17 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                             new CDataQuestProcessState()
                             {
                                 ProcessNo = 1,
+                                ResultCommandList = new List<CDataQuestCommand>()
+                                {
+                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1)
+                                },
                                 CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                                 {
                                     QuestManager.CheckCommand.DieEnemy(StageNo.Lestania, 26, 0)
-                                }),
-                                ResultCommandList = new List<CDataQuestCommand>()
-                                {
-                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept)
-                                }
+                                })
                             }
                         };
-                        processStatus = QuestProcess.ExecuteCommand;
+                        questState = QuestState.InProgress;
                         break;
                     case 1:
                         result = new List<CDataQuestProcessState>()
@@ -88,10 +109,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                                 }
                             }
                         };
-                        processStatus = QuestProcess.ProcessEnd;
+                        questState = QuestState.Cleared;
                         break;
                     default:
-                        processStatus = QuestProcess.Error;
+                        questState = QuestState.Unknown;
                         break;
                 }
 

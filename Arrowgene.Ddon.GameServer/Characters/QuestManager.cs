@@ -1,31 +1,54 @@
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Quests.MainQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using static Arrowgene.Ddon.GameServer.Characters.QuestManager;
+using static Arrowgene.Ddon.GameServer.Quests.WorldQuests.WorldQuests;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class QuestManager
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestManager));
-        private readonly QuestAsset _QuestAssets;
+
         public QuestManager(DdonGameServer server)
         {
-            _QuestAssets = server.AssetRepository.QuestAsset;
+        }
+
+        // TODO: Once everything is comfortably understood, we can probably serialize
+        // TODO: the quest data and load it from file when the server starts instead
+        private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>()
+        {
+            // Main Quests
+            [QuestId.TheSlumberingGod] = new Mq000002_TheSlumberingGod(),
+            // World Quests
+            [QuestId.LestaniaCyclops] = new LestaniaCyclops(),
+        };
+
+        public static void LoadQuests()
+        {
+            // TODO: Load additional quests from file?
+        }
+
+        public static Quest GetQuest(QuestId questId)
+        {
+            if (!gQuests.ContainsKey(questId))
+            {
+                return null;
+            }
+            return gQuests[questId];
+        }
+
+        public static Quest GetQuest(uint questId)
+        {
+            return GetQuest((QuestId)questId);
         }
 
         public class LayoutFlag
@@ -47,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public static CDataQuestList CloneMainQuest(QuestAsset questAssets, MainQuestId questId)
+        public static CDataQuestList CloneMainQuest(QuestAsset questAssets, QuestId questId)
         {
             var template = JsonSerializer.Serialize(questAssets.MainQuests[(uint)questId]);
             return JsonSerializer.Deserialize<CDataQuestList>(template);
@@ -74,7 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestOrderConditionParam() { Type = 0x3};
             }
 
-            public static CDataQuestOrderConditionParam MainQuestCompletionRestriction(MainQuestId questId)
+            public static CDataQuestOrderConditionParam MainQuestCompletionRestriction(QuestId questId)
             {
                 return new CDataQuestOrderConditionParam() { Type = 0x6, Param01 = (int)questId };
             }
@@ -2091,10 +2114,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             /**
              * @brief
              * @param announceType
+             * @param announceSubtype Some announce commands like accept use this parameter to distinguish between distinguish between "discovered (0)" and "accept (1)" banner.
              */
-            public static CDataQuestCommand SetAnnounce(QuestAnnounceType announceType, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand SetAnnounce(QuestAnnounceType announceType, int announceSubtype = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetAnnounce, Param01 = (int)announceType, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetAnnounce, Param01 = (int)announceType, Param02 = announceSubtype, Param03 = param03, Param04 = param04 };
             }
 
             /**

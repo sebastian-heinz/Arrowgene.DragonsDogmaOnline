@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -24,41 +25,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var res = new S2CQuestQuestOrderRes();
 
-            // TODO: Make this configurable
-            switch(packet.Structure.QuestScheduleId)
+            QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
+            if (client.Character.Quests.ContainsKey(questId))
             {
-                case 40000035:
-                    // A Personal Request
-                    res.QuestProcessStateList.Add(new CDataQuestProcessState()
-                    {
-                        CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
-                        {
-                            QuestManager.CheckCommand.DeliverItem(13805, 1)
-                        }),
-                        ResultCommandList = new List<CDataQuestCommand>()
-                        {
-                            QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept)
-                        }
-                    });
-                    break;
-
-                case 50300010:
-                    // Spirit Dragon EM as a Light Quest, yes
-                    res.QuestProcessStateList.Add(new CDataQuestProcessState()
-                    {
-                        CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
-                        { 
-                            // EmHpLess
-                            QuestManager.CheckCommand.EmHpLess(StageNo.SpiritDragonsRoost2, 2, 0, 60)
-                        }),
-                        ResultCommandList = new List<CDataQuestCommand>()
-                        {
-                            QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept),
-                            QuestManager.ResultCommand.StageJump(StageNo.SpiritDragonsRoost2, 0),
-                            QuestManager.ResultCommand.ExeEventAfterStageJump(StageNo.SpiritDragonsRoost2, 0, 0)
-                        }
-                    });
-                    break;
+                var quest = client.Character.Quests[questId];
+                res.QuestProcessStateList = quest.ToCDataQuestList().QuestProcessStateList;
             }
 
             client.Send(res);

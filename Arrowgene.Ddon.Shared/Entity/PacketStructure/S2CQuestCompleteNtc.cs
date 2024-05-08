@@ -13,7 +13,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         // public PacketId Id => PacketId.S2C_QUEST_11_25_16_NTC;    // Quest Cancelled
         // public PacketId Id => PacketId.S2C_QUEST_11_26_16_NTC;    // Quest Cancelled
-        public PacketId Id => PacketId.S2C_QUEST_11_27_16_NTC;
+
+        public PacketId Id => PacketId.S2C_QUEST_11_119_16_NTC;
+        // public PacketId Id => PacketId.S2C_QUEST_11_100_16_NTC;
+        // public PacketId Id => PacketId.S2C_QUEST_11_101_16_NTC;
+        // public PacketId Id => PacketId.S2C_QUEST_11_118_16_NTC;
 
         // public PacketId Id => PacketId.S2C_QUEST_11_47_16_NTC
 
