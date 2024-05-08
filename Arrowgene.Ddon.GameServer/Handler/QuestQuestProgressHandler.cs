@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -31,8 +32,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Logger.Debug($"KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
-            var quest = QuestManager.GetQuest(packet.Structure.QuestScheduleId);
-            if (quest == null)
+            QuestId questId = (QuestId) packet.Structure.QuestScheduleId;
+            if (!client.Character.Quests.ContainsKey(questId))
             {
                 List<CDataQuestCommand> ResultCommandList = new List<CDataQuestCommand>();
                 ResultCommandList.Add(new CDataQuestCommand()
@@ -52,11 +53,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
+                var quest = client.Character.Quests[questId];
                 res.QuestProcessState = quest.StateMachineExecute(packet.Structure.KeyId, packet.Structure.QuestScheduleId, packet.Structure.ProcessNo, out questState);
 
                 if (questState == QuestState.Cleared)
                 {
-                    client.Send(quest.CreateRewardsPacket());
+                    var rewards = quest.CreateRewardsPacket();
+                    client.Send(rewards);
+
+                    // Delete the quest
+                    client.Character.Quests.Remove(questId);
                 }
             }
 
@@ -71,10 +77,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
 
 #if false
+            if (questState == QuestState.Cleared)
+            {
+                // This seems set to some reset packet or something interesting
+                var complete = new S2CQuestCompleteNtc() { QuestScheduleId = packet.Structure.QuestScheduleId };
+                client.Party.SendToAll(complete);
+            }
+#endif
+
+#if false
             if (process == QuestProcess.ProcessEnd)
             {
-                var ntccomplete = new S2CQuestCompleteNtc() { QuestScheduleId = packet.Structure.QuestScheduleId };
-                client.Party.SendToAll(ntccomplete);
             }
 
             client.Send(res);
