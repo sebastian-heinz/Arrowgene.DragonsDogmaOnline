@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.GameServer.Quests;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -34,6 +35,8 @@ namespace Arrowgene.Ddon.Shared.Model
             Pawns = new List<Pawn>();
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
+
+            Quests = new Dictionary<QuestId, Quest>();
         }
 
         public int AccountId { get; set; }
@@ -58,6 +61,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipHeadPawn;
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
+
+        public Dictionary<QuestId, Quest> Quests;
 
         public List<Pawn> Pawns { get; set; }
 

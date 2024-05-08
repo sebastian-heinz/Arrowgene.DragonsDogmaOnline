@@ -1,26 +1,38 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace Arrowgene.Ddon.GameServer.Quests.Missions
+namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 {
-    public class Mq000002_TheSlumberingGod
+    public class Mq000002_TheSlumberingGod : Quest
     {
-        public static CDataQuestList Create(QuestAsset questAssets)
+        public Mq000002_TheSlumberingGod() : base()
         {
-            var refquest = QuestManager.CloneMainQuest(questAssets, MainQuestId.TheGreatAlchemist);
+            QuestType = QuestType.Main;
+        }
+
+        public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
+        {
+            S2CItemUpdateCharacterItemNtc rewardNtc = new S2CItemUpdateCharacterItemNtc();
+            // rewardNtc.UpdateType = (ushort)ItemNoticeType.Quest;
+            // rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.Gold, AddPoint = 390 });
+            // rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.RiftPoints, AddPoint = 70 });
+            return rewardNtc;
+        }
+
+        public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
+        {
+            return false;
+        }
+
+        public override CDataQuestList ToCDataQuestList()
+        {
+            // var refquest = QuestManager.CloneMainQuest(questAssets, MainQuestId.TheGreatAlchemist);
             var quest = new CDataQuestList();
-            quest.QuestId = (int)MainQuestId.TheSlumberingGod;
-            quest.QuestScheduleId = 287350;
-            quest.KeyId = 1337;
+            quest.QuestId = (int) QuestId.TheSlumberingGod;
+            quest.QuestScheduleId = (int) QuestId.TheSlumberingGod;
             quest.BaseLevel = 1;
             quest.Unk0 = 1;
             quest.Unk1 = 1;
@@ -29,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Missions
             quest.DistributionStartDate = 1440993600;
             quest.DistributionEndDate = 4103413199;
 
-            quest.QuestLayoutFlagList = refquest.QuestLayoutFlagList;
+            // quest.QuestLayoutFlagList = refquest.QuestLayoutFlagList;
 
             /**
              * Each ProcessNo is a step in the quest
@@ -50,8 +62,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Missions
 
             return quest;
         }
-
-        public static List<CDataQuestProcessState> StateMachineExecute(uint keyId, uint questScheduleId, uint processNo)
+        public override List<CDataQuestProcessState> StateMachineExecute(uint keyId, uint questScheduleId, uint processNo, out QuestState questState)
         {
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
@@ -73,6 +84,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Missions
                             }),
                         }
                     };
+                    questState = QuestState.InProgress;
                     break;
                 case 1:
                     result = new List<CDataQuestProcessState>()
@@ -85,6 +97,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.Missions
                             }),
                         }
                     };
+                    questState = QuestState.InProgress;
+                    break;
+                default:
+                    questState = QuestState.Unknown;
                     break;
             }
 

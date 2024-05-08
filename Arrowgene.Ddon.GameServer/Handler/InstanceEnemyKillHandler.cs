@@ -41,14 +41,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // TODO: EnemyId and KillNum
-            client.Send(new S2CInstanceEnemyKillRes());
+            client.Send(new S2CInstanceEnemyKillRes() { 
+                EnemyId = enemyKilled.Id,
+                KillNum = 1
+            });
 
             foreach(PartyMember member in client.Party.Members)
             {
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = enemyKilled.Experience;
-                uint extraBonusExp = 0; // TODO: Figure out what this is for
+                uint extraBonusExp = 0; // TODO: Figure out what this is for (gp bonus?)
 
                 GameClient memberClient;
                 CharacterCommon memberCharacter;

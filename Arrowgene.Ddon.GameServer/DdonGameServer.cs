@@ -164,6 +164,11 @@ namespace Arrowgene.Ddon.GameServer
             ChatManager.AddHandler(new ChatCommandHandler(this));
         }
 
+        private void LoadQuests()
+        {
+
+        }
+
         private void LoadPacketHandler()
         {
             SetFallbackHandler(new FallbackHandler<GameClient>(this));

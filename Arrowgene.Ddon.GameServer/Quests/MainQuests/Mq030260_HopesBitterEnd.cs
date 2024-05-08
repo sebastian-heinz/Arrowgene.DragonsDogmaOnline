@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arrowgene.Ddon.GameServer.Quests.Missions
+namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 {
 
     public class Mq030260_HopesBitterEnd
@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Missions
         {
             // var quest = QuestManager.CloneMainQuest(_QuestAssets, MainQuestId.HopesBitterEnd);
             var quest = new CDataQuestList();
-            quest.QuestId = (int)MainQuestId.HopesBitterEnd;
+            quest.QuestId = (int) QuestId.HopesBitterEnd;
             quest.KeyId = 36;
             quest.QuestScheduleId = 287350;
             quest.BaseLevel = 100;
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Missions
 
             quest.QuestOrderConditionParamList = new List<CDataQuestOrderConditionParam>()
             {
-                QuestManager.AcceptConditions.MainQuestCompletionRestriction(MainQuestId.TheRelicsOfTheFirstKing)
+                QuestManager.AcceptConditions.MainQuestCompletionRestriction(QuestId.TheRelicsOfTheFirstKing)
             };
 
             // These correspond with QstTalkChg items in CDataQuestProcessState[0].ResultCommandList
