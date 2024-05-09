@@ -1049,8 +1049,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.Storage = new Storages(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
             character.WalletPointList = new List<CDataWalletPoint>()
             {
-                // TODO: Figure out what other currencies there are.
-                // Pcap currencies:
                 new CDataWalletPoint() {
                     Type = WalletType.Gold,
                     Value = 10000
@@ -1064,44 +1062,56 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk4,
-                    Value = 5648
+                    Type = WalletType.SilverTickets,
+                    Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk6,
-                    Value = 99999
+                    Type = WalletType.GoldenGemstones,
+                    Value = 0
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.RentalPoints,
+                    Value = 0
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.ResetJobPoints,
+                    Value = 0
+                },
+                new CDataWalletPoint() {
+                    Type = WalletType.ResetCraftSkills,
+                    Value = 0
                 },
                 new CDataWalletPoint() {
                     Type = WalletType.HighOrbs,
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk10,
+                    Type = WalletType.DominionPoints,
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk11,
-                    Value = 8
+                    Type = WalletType.AdventurePassPoints,
+                    Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk12,
-                    Value = 219
+                    Type = WalletType.UnknownTickets,
+                    Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk13,
-                    Value = 2
+                    Type = WalletType.CustomMadeServiceTickets,
+                    Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk14,
-                    Value = 2
+                    Type = WalletType.GoldenDragonMark,
+                    Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk15,
-                    Value = 115
+                    Type = WalletType.SilverDragonMark,
+                    Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.Unk16,
-                    Value = 105
+                    Type = WalletType.RedDragonMark,
+                    Value = 0
                 }
             };
             // Value taken from pcaps
