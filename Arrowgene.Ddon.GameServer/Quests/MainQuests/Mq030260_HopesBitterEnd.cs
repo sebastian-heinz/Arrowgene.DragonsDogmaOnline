@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
@@ -11,19 +12,38 @@ using System.Threading.Tasks;
 namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 {
 
-    public class Mq030260_HopesBitterEnd
+    public class Mq030260_HopesBitterEnd : Quest
     {
-        public CDataQuestList Create()
+        public Mq030260_HopesBitterEnd() : base()
+        {
+            QuestType = QuestType.Main;
+        }
+
+        public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
+        {
+            return false;
+        }
+
+        public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
+        {
+            S2CItemUpdateCharacterItemNtc rewardNtc = new S2CItemUpdateCharacterItemNtc();
+            rewardNtc.UpdateType = (ushort)ItemNoticeType.Quest;
+            rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.Gold, AddPoint = 100000 });
+            rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.RiftPoints, AddPoint = 10000 });
+            return rewardNtc;
+        }
+
+        public override CDataQuestList ToCDataQuestList()
         {
             // var quest = QuestManager.CloneMainQuest(_QuestAssets, MainQuestId.HopesBitterEnd);
             var quest = new CDataQuestList();
-            quest.QuestId = (int) QuestId.HopesBitterEnd;
-            quest.KeyId = 36;
-            quest.QuestScheduleId = 287350;
+            quest.QuestId = (int)QuestId.HopesBitterEnd;
+            quest.KeyId = (int)QuestId.HopesBitterEnd;
+            quest.QuestScheduleId = (int)QuestId.HopesBitterEnd;
             quest.BaseLevel = 100;
-            quest.Unk0 = 1;
-            quest.Unk1 = 1;
-            quest.Unk2 = 1;
+            quest.OrderNpcId = NpcId.TheWhiteDragon;
+            quest.NameMsgId = 1;
+            quest.DetailMsgId = 1;
             quest.DistributionStartDate = 1440993600;
             quest.DistributionEndDate = 4103413199;
 
@@ -59,7 +79,6 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 0x1eb4 }); // This makes Lise, Gurdolin and Elliot appear
             quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 0x1f4d });
 
-            // I think each one of these represents a step in the quest
             quest.QuestProcessStateList = new List<CDataQuestProcessState>()
             {
                 new CDataQuestProcessState()
@@ -200,6 +219,22 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             };
 
             return quest;
+        }
+
+        public override List<CDataQuestProcessState> StateMachineExecute(uint keyId, uint questScheduleId, uint processNo, out QuestState questState)
+        {
+            List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
+
+            result = new List<CDataQuestProcessState>()
+            {
+                new CDataQuestProcessState() {
+                    ProcessNo = (ushort)(processNo + 1), SequenceNo = 0, BlockNo = 0,
+                }
+            };
+
+            questState = QuestState.InProgress;
+
+            return result;
         }
     }
 }

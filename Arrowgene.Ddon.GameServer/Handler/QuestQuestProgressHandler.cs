@@ -29,7 +29,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.QuestScheduleId = packet.Structure.QuestScheduleId;
             res.QuestProgressResult = 0;
 
-
             Logger.Debug($"KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
             QuestId questId = (QuestId) packet.Structure.QuestScheduleId;
@@ -62,9 +61,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Send(rewards);
 
                     // Delete the quest
-                    client.Character.Quests.Remove(questId);
+                    // client.Character.Quests.Remove(questId);
                 }
             }
+
+            client.Send(res);
 
             S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
             {
@@ -74,16 +75,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Party.SendToAllExcept(ntc, client);
 
-            client.Send(res);
-
-#if false
-            if (questState == QuestState.Cleared)
+            if (questState == QuestState.Complete)
             {
-                // This seems set to some reset packet or something interesting
-                var complete = new S2CQuestCompleteNtc() { QuestScheduleId = packet.Structure.QuestScheduleId };
+                var complete = new S2CQuestCompleteNtc() { QuestScheduleId = (uint)questId, IsUndiscoveredReward = true };
                 client.Party.SendToAll(complete);
             }
-#endif
 
 #if false
             if (process == QuestProcess.ProcessEnd)

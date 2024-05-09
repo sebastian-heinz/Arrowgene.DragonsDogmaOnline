@@ -7,8 +7,11 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
+using YamlDotNet.Core.Events;
+using YamlDotNet.Core.Tokens;
 using static Arrowgene.Ddon.GameServer.Characters.QuestManager;
 using static Arrowgene.Ddon.GameServer.Quests.WorldQuests.WorldQuests;
 
@@ -28,6 +31,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             // Main Quests
             [QuestId.TheSlumberingGod] = new Mq000002_TheSlumberingGod(),
+            [QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist(),
+            [QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd(),
             // World Quests
             [QuestId.LestaniaCyclops] = new LestaniaCyclops(),
         };
@@ -101,6 +106,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 return new CDataQuestOrderConditionParam() { Type = 0x6, Param01 = (int)questId };
             }
+
+            public static CDataQuestOrderConditionParam Unknown(int param01, int param02 = 0)
+            {
+                return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = param01, Param02 = param02 };
+            }
+        }
+
+        public static CDataQuestProcessState CreateQuestProcessState(ushort processNo, ushort sequenceNo, ushort blockNo, List<CDataQuestCommand> resultCommands, List<CDataQuestCommand> checkCommands)
+        {
+            return new CDataQuestProcessState()
+            {
+                ProcessNo = processNo, SequenceNo = sequenceNo, BlockNo = blockNo,
+                ResultCommandList = resultCommands,
+                CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkCommands)
+            };
         }
 
         public class CheckCommand

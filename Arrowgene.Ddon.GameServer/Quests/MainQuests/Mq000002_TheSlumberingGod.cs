@@ -34,9 +34,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.QuestId = (int) QuestId.TheSlumberingGod;
             quest.QuestScheduleId = (int) QuestId.TheSlumberingGod;
             quest.BaseLevel = 1;
-            quest.Unk0 = 1;
-            quest.Unk1 = 1;
-            quest.Unk2 = 1;
+            quest.OrderNpcId = NpcId.Leo0;
+            quest.NameMsgId = 1;
+            quest.DetailMsgId = 1;
             quest.BaseLevel = 1;
             quest.DistributionStartDate = 1440993600;
             quest.DistributionEndDate = 4103413199;
@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     result = new List<CDataQuestProcessState>()
                     {
                         new CDataQuestProcessState() {
-                            ProcessNo = 1, SequenceNo = 0x0, BlockNo = 0x0,
+                            ProcessNo = 1, SequenceNo = 0, BlockNo = 0,
                             ResultCommandList = new List<CDataQuestCommand>()
                             {
                                 QuestManager.ResultCommand.EventExec(StageNo.WhiteDragonTemple, 0, StageNo.WhiteDragonTemple, 0x1),
@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     result = new List<CDataQuestProcessState>()
                     {
                         new CDataQuestProcessState() {
-                            ProcessNo = 0x1, SequenceNo = 0x0, BlockNo = 0x0,
+                            ProcessNo = 2, SequenceNo = 0, BlockNo = 0,
                             CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                             {
                                 QuestManager.CheckCommand.MyQstFlagOn(0x129a)

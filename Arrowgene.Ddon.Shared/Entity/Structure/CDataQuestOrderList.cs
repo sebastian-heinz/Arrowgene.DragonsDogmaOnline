@@ -30,11 +30,11 @@ public class CDataQuestOrderList
     public ushort ContentJoinItemRank { get; set; }
     public List<CDataWalletPoint> BaseWalletPoints { get; set; }
     public List<CDataQuestExp> BaseExp { get; set; }
-    public uint Unk2 { get; set;}
-    public uint Unk3 { get; set;}
-    public uint Unk4 { get; set;}
-    public ulong Unk5 { get; set; } // EndDistributionDate?
-    public ulong Unk6 { get; set; } // EndDistributionDate?
+    public uint Unk2 { get; set;} // NpcId?
+    public uint Unk3 { get; set;} // MsgId?
+    public uint Unk4 { get; set;} // DetailMsgId
+    public ulong Unk5 { get; set; } // ??
+    public ulong Unk6 { get; set; } // OrderDate?
     public ulong Unk6A { get; set; } // EndDistributionDate?
     public List<CDataRewardItem> FixedRewardItem { get; set; }
     public List<CDataRewardItem> FixedRewardSelectItem { get; set; }

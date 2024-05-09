@@ -12,5 +12,6 @@ namespace Arrowgene.Ddon.Shared.Model
         InProgress = 1,
         Cleared = 2,
         Failed = 3,
+        Complete = 4,
     }
 }

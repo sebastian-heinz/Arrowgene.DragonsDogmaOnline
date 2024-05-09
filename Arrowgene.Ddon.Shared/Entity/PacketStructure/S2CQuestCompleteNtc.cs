@@ -7,13 +7,17 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CQuestCompleteNtc : IPacketStructure
     {
-        // public PacketId Id => PacketId.S2C_QUEST_11_7_16_NTC; 
-        // public PacketId Id => PacketId.S2C_QUEST_11_20_16_NTC;
-        // public PacketId Id => PacketId.S2C_QUEST_11_32_16_NTC;
+        public PacketId Id => PacketId.S2C_QUEST_11_27_16_NTC;
 
-        // public PacketId Id => PacketId.S2C_QUEST_11_25_16_NTC; // Quest Cancelled (quest party state out of sync?)
-        // public PacketId Id => PacketId.S2C_QUEST_11_26_16_NTC; // Cancels the quest cleanly (no left over shield)
-        // public PacketId Id => PacketId.S2C_QUEST_11_27_16_NTC; // Nothing appears to happen...
+        // public PacketId Id => PacketId.S2C_QUEST_11_7_16_NTC; // Nothing happened
+        // public PacketId Id => PacketId.S2C_QUEST_11_20_16_NTC; // Nothing happened
+
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_25_16_NTC; // S2C_QUEST_CANCEL_NOTICE?
+        // public PacketId Id => PacketId.S2C_QUEST_11_26_16_NTC;    // S2C_QUEST_ENABLE_NOTICE?
+        // public PacketId Id => PacketId.S2C_QUEST_11_27_16_NTC; // Nothing happened
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_32_16_NTC;
         // public PacketId Id => PacketId.S2C_QUEST_11_40_16_NTC; // Seems to do nothing
         // public PacketId Id => PacketId.S2C_QUEST_11_47_16_NTC; // <stslog_quest_progress_failed>
 
@@ -27,11 +31,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         // public PacketId Id => PacketId.S2C_QUEST_11_84_16_NTC; // Crashed game
         // public PacketId Id => PacketId.S2C_QUEST_11_85_16_NTC; // nothing happened
         // public PacketId Id => PacketId.S2C_QUEST_11_86_16_NTC; // Nothing happened
-        
-        public PacketId Id => PacketId.S2C_QUEST_11_87_16_NTC; // The knights bitter enemy has been accepted forever
-        // Quest accept?
-        // 2024-05-08 03:45:30 - Debug - QuestQuestProgressHandler: KeyId=0 ProgressCharacterId=0, QuestScheduleId=20005010, ProcessNo=1
-        // public PacketId Id => PacketId.S2C_QUEST_11_88_16_NTC; // nothing happened
+
+        // public PacketId Id => PacketId.S2C_QUEST_11_87_16_NTC; // Probably S2C_QUEST_MASTER_DATA_RELOAD_NOTICE
 
 
         // public PacketId Id => PacketId.S2C_QUEST_11_90_16_NTC; // nothing happened

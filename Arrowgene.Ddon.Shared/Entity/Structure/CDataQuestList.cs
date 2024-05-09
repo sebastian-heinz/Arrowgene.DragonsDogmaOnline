@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 
@@ -31,10 +32,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public UInt16 ContentJoinItemRank {  get; set; }
         public List<CDataWalletPoint> BaseWalletPoints { get; set; }
         public List<CDataQuestExp> BaseExp {  get; set; }
-        public UInt32 Unk0 { get; set; } // OrderNpcId?
-        public UInt32 Unk1 {  get; set; } // NameMsgId?
-        public UInt32 Unk2 { get; set; } // DetailMsgId?
-        public UInt64 DistributionStartDate {  get; set; }
+        public NpcId OrderNpcId { get; set; }
+        public UInt32 NameMsgId {  get; set; }
+        public UInt32 DetailMsgId { get; set; }
+        public UInt64 DistributionStartDate {  get; set; } // OrderDate?
         public UInt64 DistributionEndDate {  get; set; }
         public List<CDataRewardItem> FixedRewardItemList { get; set; }
         public List<CDataRewardItem> FixedRewardSelectItemList { get; set; }
@@ -61,9 +62,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt16(buffer, obj.ContentJoinItemRank);
                 WriteEntityList<CDataWalletPoint>(buffer, obj.BaseWalletPoints);
                 WriteEntityList<CDataQuestExp>(buffer, obj.BaseExp);
-                WriteUInt32(buffer, obj.Unk0);
-                WriteUInt32(buffer, obj.Unk1);
-                WriteUInt32(buffer, obj.Unk2);
+                WriteUInt32(buffer, (uint) obj.OrderNpcId);
+                WriteUInt32(buffer, obj.NameMsgId);
+                WriteUInt32(buffer, obj.DetailMsgId);
                 WriteUInt64(buffer, obj.DistributionStartDate);
                 WriteUInt64(buffer, obj.DistributionEndDate);
                 WriteEntityList<CDataRewardItem>(buffer, obj.FixedRewardItemList);
@@ -91,9 +92,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ContentJoinItemRank = ReadUInt16(buffer);
                 obj.BaseWalletPoints = ReadEntityList<CDataWalletPoint>(buffer);
                 obj.BaseExp = ReadEntityList<CDataQuestExp>(buffer);
-                obj.Unk0 = ReadUInt32(buffer);
-                obj.Unk1 = ReadUInt32(buffer);
-                obj.Unk2 = ReadUInt32(buffer);
+                obj.OrderNpcId = (NpcId) ReadUInt32(buffer);
+                obj.NameMsgId = ReadUInt32(buffer);
+                obj.DetailMsgId = ReadUInt32(buffer);
                 obj.DistributionStartDate = ReadUInt64(buffer);
                 obj.DistributionEndDate = ReadUInt64(buffer);
                 obj.FixedRewardItemList = ReadEntityList<CDataRewardItem>(buffer);
