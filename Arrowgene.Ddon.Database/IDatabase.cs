@@ -45,6 +45,12 @@ namespace Arrowgene.Ddon.Database
         bool DeletePawn(uint pawnId);
         bool UpdatePawnBaseInfo(Pawn pawn);
 
+        // Pawn Training Status
+        bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
+        bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
+        bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
+        bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
+
         // CharacterJobData
         bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
         bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData);

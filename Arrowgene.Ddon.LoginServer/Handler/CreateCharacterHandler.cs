@@ -2063,6 +2063,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     SpSkillLv = myPawnCsvData.SpSkillSlot3Lv
                 }
             }.Where(spSkill => spSkill.SpSkillId != 0).ToList();
+            pawn.TrainingPoints = int.MaxValue;
+            pawn.AvailableTraining = uint.MaxValue;
             return pawn;
         }
 

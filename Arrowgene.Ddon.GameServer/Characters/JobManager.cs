@@ -139,7 +139,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobResponse.EquipJobItemList = jobItems;
                 changeJobResponse.Unk0.Unk0 = (byte) jobId;
                 // changeJobResponse.Unk0.Unk1 = pawn.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList(); // TODO: What
-                // changeJobResponse.Unk1 // TODO: its the same thing as in CDataPawnInfo
+                changeJobResponse.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
                 changeJobResponse.SpSkillList = pawn.SpSkillList;
                 client.Send(changeJobResponse);
             }

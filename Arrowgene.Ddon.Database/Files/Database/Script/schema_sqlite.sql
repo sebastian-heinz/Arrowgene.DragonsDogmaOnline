@@ -62,8 +62,19 @@ CREATE TABLE IF NOT EXISTS ddon_pawn
     "name"                TEXT                              NOT NULL,
     "hm_type"             SMALLINT                          NOT NULL,
     "pawn_type"           SMALLINT                          NOT NULL,
+    "training_points"     INTEGER                           NOT NULL,
+    "available_training"  INTEGER                           NOT NULL,
     CONSTRAINT fk_pawn_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE,
     CONSTRAINT fk_character_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ddon_pawn_training_status
+(
+    "pawn_id"         INTEGER  NOT NULL,
+    "job"             SMALLINT NOT NULL,
+    "training_status" BLOB     NOT NULL,
+    CONSTRAINT pk_pawn_training_status PRIMARY KEY (pawn_id, job),
+    CONSTRAINT fk_pawn_training_status_pawn_id FOREIGN KEY ("pawn_id") REFERENCES ddon_pawn ("pawn_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ddon_edit_info

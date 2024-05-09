@@ -356,6 +356,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnJoinPartyMypawnHandler(this));
             AddHandler(new PawnPawnLostHandler(this));
             AddHandler(new PawnTrainingGetPreparetionInfoToAdviceHandler(this));
+            AddHandler(new PawnTrainingGetTrainingStatusHandler(this));
+            AddHandler(new PawnTrainingSetTrainingStatusHandler(this));
 
             AddHandler(new ProfileGetCharacterProfileHandler(this));
             AddHandler(new ProfileGetMyCharacterProfileHandler(this));

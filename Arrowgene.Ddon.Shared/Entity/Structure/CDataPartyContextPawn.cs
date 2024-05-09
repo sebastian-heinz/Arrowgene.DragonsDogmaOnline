@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Base = new CDataContextBase();
             PlayerInfo = new CDataContextPlayerInfo();
             PawnReactionList = new List<CDataPawnReaction>();
-            Unk0 = new byte[64];
+            TrainingStatus = new byte[64];
             SpSkillList = new List<CDataSpSkill>();
             ResistInfo = new CDataContextResist();
             EditInfo = new CDataEditInfo();
@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public CDataContextBase Base { get; set; }
         public CDataContextPlayerInfo PlayerInfo { get; set; }
         public List<CDataPawnReaction> PawnReactionList { get; set; }
-        public byte[] Unk0 { get; set; }
+        public byte[] TrainingStatus { get; set; }
         public List<CDataSpSkill> SpSkillList { get; set; }
         public CDataContextResist ResistInfo { get; set; }
         public CDataEditInfo EditInfo { get; set; }
@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntity<CDataContextBase>(buffer, obj.Base);
                 WriteEntity<CDataContextPlayerInfo>(buffer, obj.PlayerInfo);
                 WriteEntityList<CDataPawnReaction>(buffer, obj.PawnReactionList);
-                WriteByteArray(buffer, obj.Unk0);
+                WriteByteArray(buffer, obj.TrainingStatus);
                 WriteEntityList<CDataSpSkill>(buffer, obj.SpSkillList);
                 WriteEntity<CDataContextResist>(buffer, obj.ResistInfo);
                 WriteEntity<CDataEditInfo>(buffer, obj.EditInfo);
@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Base = ReadEntity<CDataContextBase>(buffer);
                 obj.PlayerInfo = ReadEntity<CDataContextPlayerInfo>(buffer);
                 obj.PawnReactionList = ReadEntityList<CDataPawnReaction>(buffer);
-                obj.Unk0 = ReadByteArray(buffer, 64);
+                obj.TrainingStatus = ReadByteArray(buffer, 64);
                 obj.SpSkillList = ReadEntityList<CDataSpSkill>(buffer);
                 obj.ResistInfo = ReadEntity<CDataContextResist>(buffer);
                 obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
