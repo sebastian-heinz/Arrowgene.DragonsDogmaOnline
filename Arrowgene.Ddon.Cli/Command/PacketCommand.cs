@@ -119,7 +119,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 {
                     foreach (IPacket resolvedPacket in pcapPacket.ResolvedPackets)
                     {
-                        if (!(packetIncludeFilterSet.Contains(resolvedPacket.Id.Name.ToLowerInvariant()) || packetIncludeFilterSet.Contains(resolvedPacket.Id.ToString())))
+                        if (packetIncludeFilter != "" && !packetIncludeFilterSet.Contains(resolvedPacket.Id.Name.ToLowerInvariant()) && !packetIncludeFilterSet.Contains(resolvedPacket.Id.ToString()))
                         {
                             continue;
                         }
