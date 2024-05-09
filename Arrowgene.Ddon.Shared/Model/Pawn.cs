@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -30,6 +31,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     new CDataPawnCraftSkill() {Type = 10, Level = 0}
                 }
             };
+            TrainingStatus = new Dictionary<JobId, byte[]>();
         }
         
         public Pawn(uint ownerCharacterId):this()
@@ -55,5 +57,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataPawnReaction> PawnReactionList { get; set; }
         public List<CDataSpSkill> SpSkillList { get; set; }
         public CDataPawnCraftData CraftData { get; set; }
+
+        public Dictionary<JobId, byte[]> TrainingStatus { get; set; }
+        public uint TrainingPoints { get; set; } // Training xp?
+        public uint AvailableTraining { get; set; } // Training lv?
     }
 }

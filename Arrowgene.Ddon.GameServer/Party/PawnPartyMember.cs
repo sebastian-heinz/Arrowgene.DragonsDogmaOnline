@@ -27,7 +27,7 @@ public class PawnPartyMember : PartyMember
         partyContextPawn.Base.HmType = Pawn.HmType;
         GameStructure.CDataContextPlayerInfo(partyContextPawn.PlayerInfo, Pawn);
         partyContextPawn.PawnReactionList = Pawn.PawnReactionList;
-        partyContextPawn.TrainingStatus = new byte[64];
+        partyContextPawn.TrainingStatus = Pawn.TrainingStatus.GetValueOrDefault(Pawn.Job, new byte[64]);
         partyContextPawn.SpSkillList = Pawn.SpSkillList;
         GameStructure.CDataContextResist(partyContextPawn.ResistInfo, Pawn);
         partyContextPawn.EditInfo = Pawn.EditInfo;

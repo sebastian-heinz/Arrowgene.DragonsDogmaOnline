@@ -158,7 +158,7 @@ public static class GameStructure
         // TODO: ShareRange, Likability, Unk0, Unk1
         cDataPawnInfo.ShareRange = 1;
         cDataPawnInfo.Likability = 2;
-        cDataPawnInfo.TrainingStatus = new byte[64];
+        cDataPawnInfo.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
         cDataPawnInfo.Unk1 = new CData_772E80() {Unk0 = 0x7530, Unk1 = 0x3, Unk2 = 0x3, Unk3 = 0x1, Unk4 = 0x3};
         cDataPawnInfo.SpSkillList = pawn.SpSkillList;
     }
