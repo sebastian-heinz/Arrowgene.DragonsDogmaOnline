@@ -1,4 +1,4 @@
-using Arrowgene.Ddon.Server.Network;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -27,7 +27,7 @@ public class PawnPartyMember : PartyMember
         partyContextPawn.Base.HmType = Pawn.HmType;
         GameStructure.CDataContextPlayerInfo(partyContextPawn.PlayerInfo, Pawn);
         partyContextPawn.PawnReactionList = Pawn.PawnReactionList;
-        partyContextPawn.Unk0 = new byte[64];
+        partyContextPawn.TrainingStatus = new byte[64];
         partyContextPawn.SpSkillList = Pawn.SpSkillList;
         GameStructure.CDataContextResist(partyContextPawn.ResistInfo, Pawn);
         partyContextPawn.EditInfo = Pawn.EditInfo;

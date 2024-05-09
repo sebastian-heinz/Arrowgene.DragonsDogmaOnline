@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataPawnTrainingPreparationInfoToAdvice
     {
         public uint PawnId { get; set; }
-        public uint Unk0 { get; set; }
+        public uint Unk0 { get; set; } // CDataPawnList.Unk2
         public uint Unk1 { get; set; }    
     
         public class Serializer : EntitySerializer<CDataPawnTrainingPreparationInfoToAdvice>
