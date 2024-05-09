@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.QuestId = (int) QuestId.TheSlumberingGod;
             quest.QuestScheduleId = (int) QuestId.TheSlumberingGod;
             quest.BaseLevel = 1;
-            quest.OrderNpcId = NpcId.Leo0;
+            quest.OrderNpcId = (uint) NpcId.Leo0;
             quest.NameMsgId = 1;
             quest.DetailMsgId = 1;
             quest.BaseLevel = 1;

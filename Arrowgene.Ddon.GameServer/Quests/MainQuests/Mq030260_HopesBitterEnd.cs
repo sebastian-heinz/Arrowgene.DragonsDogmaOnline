@@ -1,12 +1,16 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Handler;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
@@ -14,6 +18,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 
     public class Mq030260_HopesBitterEnd : Quest
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Mq030260_HopesBitterEnd));
+
         public Mq030260_HopesBitterEnd() : base()
         {
             QuestType = QuestType.Main;
@@ -35,17 +41,17 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 
         public override CDataQuestList ToCDataQuestList()
         {
-            // var quest = QuestManager.CloneMainQuest(_QuestAssets, MainQuestId.HopesBitterEnd);
             var quest = new CDataQuestList();
-            quest.QuestId = (int)QuestId.HopesBitterEnd;
             quest.KeyId = (int)QuestId.HopesBitterEnd;
             quest.QuestScheduleId = (int)QuestId.HopesBitterEnd;
+            quest.QuestId = (int)QuestId.HopesBitterEnd;
             quest.BaseLevel = 100;
-            quest.OrderNpcId = NpcId.TheWhiteDragon;
+            quest.ContentJoinItemRank = 0;
+            quest.OrderNpcId = (uint) NpcId.TheWhiteDragon;
             quest.NameMsgId = 1;
             quest.DetailMsgId = 1;
-            quest.DistributionStartDate = 1440993600;
-            quest.DistributionEndDate = 4103413199;
+            quest.DistributionStartDate = 1537405200;
+            quest.DistributionEndDate = 2145884400;
 
             quest.BaseExp = new List<CDataQuestExp>() {
                 new CDataQuestExp() {ExpMode = 1, Reward = 900000}
@@ -62,22 +68,24 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 new CDataRewardItem() {ItemId = 18826, Num = 5}
             };
 
+
             quest.QuestOrderConditionParamList = new List<CDataQuestOrderConditionParam>()
             {
-                QuestManager.AcceptConditions.MainQuestCompletionRestriction(QuestId.TheRelicsOfTheFirstKing)
+                QuestManager.AcceptConditions.MinimumLevelRestriction(100),
+                QuestManager.AcceptConditions.MainQuestCompletionRestriction(QuestId.TheRelicsOfTheFirstKing),
             };
 
             // These correspond with QstTalkChg items in CDataQuestProcessState[0].ResultCommandList
-            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.TheWhiteDragon, 0x57b1));
-            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Gillian0, 0x75d4));
-            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.LiberationArmySoldier0, 0x75a4));
-            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.LiberationArmySoldier1, 0x75a5));
-            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Gurdolin3, 0x7809));
-            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Lise0, 0x750a));
-            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Elliot0, 0x780b));
+            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.TheWhiteDragon, 22449));
+            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Gillian0, 30164));
+            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.LiberationArmySoldier3, 30116));
+            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.LiberationArmySoldier4, 30117));
+            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Gurdolin3, 30729));
+            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Lise0, 30730));
+            quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Elliot0, 30731));
 
-            quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 0x1eb4 }); // This makes Lise, Gurdolin and Elliot appear
-            quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 0x1f4d });
+            quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 7860 }); // This makes Lise, Gurdolin and Elliot appear
+            quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 8013 });
 
             quest.QuestProcessStateList = new List<CDataQuestProcessState>()
             {
@@ -86,16 +94,16 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0x0, SequenceNo = 0x0, BlockNo = 0x1,
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.QstTalkChg(NpcId.TheWhiteDragon, 0x57b1),
-                        QuestManager.ResultCommand.QstLayoutFlagOn(0x1eb4),
-                        QuestManager.ResultCommand.QstLayoutFlagOn(0x1f4d),
-                        QuestManager.ResultCommand.QstTalkChg(NpcId.Gillian0, 0x75d4),
-                        QuestManager.ResultCommand.WorldManageLayoutFlagOn(0x1f12, 0x42c9e69),
-                        QuestManager.ResultCommand.QstTalkChg(NpcId.LiberationArmySoldier0, 0x75a4),
-                        QuestManager.ResultCommand.QstTalkChg(NpcId.LiberationArmySoldier1, 0x75a5),
-                        QuestManager.ResultCommand.QstTalkChg(NpcId.Gurdolin3, 0x7809),
-                        QuestManager.ResultCommand.QstTalkChg(NpcId.Lise0, 0x780a),
-                        QuestManager.ResultCommand.QstTalkChg(NpcId.Elliot0, 0x780b),
+                        QuestManager.ResultCommand.QstTalkChg(NpcId.TheWhiteDragon, 22449),
+                        QuestManager.ResultCommand.QstLayoutFlagOn(7860),
+                        QuestManager.ResultCommand.QstLayoutFlagOn(8013),
+                        QuestManager.ResultCommand.QstTalkChg(NpcId.Gillian0, 30164),
+                        QuestManager.ResultCommand.WorldManageLayoutFlagOn(7954, 70033001), // Quest in QuestGetCycleContentsStateListHandler WorldManageQuestOrderList ntc
+                        QuestManager.ResultCommand.QstTalkChg(NpcId.LiberationArmySoldier3, 30116),
+                        QuestManager.ResultCommand.QstTalkChg(NpcId.LiberationArmySoldier4, 30117),
+                        QuestManager.ResultCommand.QstTalkChg(NpcId.Gurdolin3, 30729),
+                        QuestManager.ResultCommand.QstTalkChg(NpcId.Lise0, 30730),
+                        QuestManager.ResultCommand.QstTalkChg(NpcId.Elliot0, 30731),
                     },
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
@@ -107,7 +115,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0x1, SequenceNo = 0x0, BlockNo = 0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.MyQstFlagOn(0x129a)
+                        QuestManager.CheckCommand.MyQstFlagOn(4762)
                     }),
                 },
                 new CDataQuestProcessState()
@@ -115,9 +123,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0x2, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.MyQstFlagOn(0x129d),
+                        QuestManager.CheckCommand.MyQstFlagOn(4765),
                         QuestManager.CheckCommand.StageNoWithoutMarker(StageNo.EvilDragonsRoost1),
-                        QuestManager.CheckCommand.MyQstFlagOff(0x129e)
+                        QuestManager.CheckCommand.MyQstFlagOff(4766)
                     })
                 },
                 new CDataQuestProcessState()
@@ -125,8 +133,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0x3, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.MyQstFlagOn(0x133d),
-                        QuestManager.CheckCommand.MyQstFlagOff(0x1340),
+                        QuestManager.CheckCommand.MyQstFlagOn(4925),
+                        QuestManager.CheckCommand.MyQstFlagOff(4928),
                         QuestManager.CheckCommand.SceHitInWithoutMarker(StageNo.SacredFlamePath, 1)
                     })
                 },
@@ -135,8 +143,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0x4, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.MyQstFlagOn(0x133e),
-                        QuestManager.CheckCommand.MyQstFlagOff(0x1341),
+                        QuestManager.CheckCommand.MyQstFlagOn(4926),
+                        QuestManager.CheckCommand.MyQstFlagOff(4929),
                         QuestManager.CheckCommand.SceHitInWithoutMarker(StageNo.SacredFlamePath, 2)
                     })
                 },
@@ -145,8 +153,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0x5, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.MyQstFlagOn(0x133f),
-                        QuestManager.CheckCommand.MyQstFlagOff(0x1342),
+                        QuestManager.CheckCommand.MyQstFlagOn(4927),
+                        QuestManager.CheckCommand.MyQstFlagOff(4930),
                         QuestManager.CheckCommand.SceHitInWithoutMarker(StageNo.SacredFlamePath, 3)
                     })
                 },
@@ -155,7 +163,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0x6, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.MyQstFlagOn(0x129d),
+                        QuestManager.CheckCommand.MyQstFlagOn(4765),
                     })
                 },
                 new CDataQuestProcessState()
@@ -171,7 +179,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0x8, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.MyQstFlagOn(0x13bd),
+                        QuestManager.CheckCommand.MyQstFlagOn(5053),
                     })
                 },
                 new CDataQuestProcessState()
@@ -188,8 +196,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0xa, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.MyQstFlagOn(0x129d),
-                        QuestManager.CheckCommand.MyQstFlagOff(0x129e),
+                        QuestManager.CheckCommand.MyQstFlagOn(4765),
+                        QuestManager.CheckCommand.MyQstFlagOff(4766),
                     })
                 },
                 new CDataQuestProcessState()
@@ -202,21 +210,23 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 }
             };
 
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 0x155, Lv = 100, IsPartyRecommend = true });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 0x16d, Lv = 100, IsPartyRecommend = true });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 0x143, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 0x149, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 0x169, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 0x147, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 0x161, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 0x170, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 341, Lv = 100, IsPartyRecommend = true });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 365, Lv = 100, IsPartyRecommend = true });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 323, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 329, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 361, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 327, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 353, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 368, Lv = 100, IsPartyRecommend = false });
 
             quest.QuestLayoutFlagSetInfoList = new List<CDataQuestLayoutFlagSetInfo>() {
-                QuestManager.LayoutFlag.Create(0x00001eba, StageNo.SacredFlamePath, 0x11),
-                QuestManager.LayoutFlag.Create(0x00001eb8, StageNo.SacredFlamePath, 0x12),
-                QuestManager.LayoutFlag.Create(0x00001eb9, StageNo.SacredFlamePath, 0x3),
-                QuestManager.LayoutFlag.Create(0x00001ebb, StageNo.SacredFlamePath, 0x1),
+                QuestManager.LayoutFlag.Create(7866, StageNo.SacredFlamePath, 17),
+                QuestManager.LayoutFlag.Create(7864, StageNo.SacredFlamePath, 18),
+                QuestManager.LayoutFlag.Create(7865, StageNo.SacredFlamePath, 3),
+                QuestManager.LayoutFlag.Create(7867, StageNo.EvilDragonsRoost1, 1),
             };
+
+            Logger.Debug(JsonSerializer.Serialize<CDataQuestList>(quest));
 
             return quest;
         }
@@ -225,12 +235,31 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
         {
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
-            result = new List<CDataQuestProcessState>()
+            switch (processNo)
             {
-                new CDataQuestProcessState() {
-                    ProcessNo = (ushort)(processNo + 1), SequenceNo = 0, BlockNo = 0,
-                }
-            };
+                case 0:
+                    result = new List<CDataQuestProcessState>()
+                    {
+                        new CDataQuestProcessState() {
+                            ProcessNo = (ushort)(processNo + 1), SequenceNo = 0, BlockNo = 0,
+                            ResultCommandList = new List<CDataQuestCommand>()
+                            {
+                                QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept),
+                                // QuestManager.ResultCommand.StageJump(StageNo.EvilDragonsRoost1, 2),
+                                QuestManager.ResultCommand.MyQstFlagOn(4762),
+                            }
+                        }
+                    };
+                    break;
+                default:
+                    result = new List<CDataQuestProcessState>()
+                    {
+                        new CDataQuestProcessState() {
+                            ProcessNo = (ushort)(processNo + 1), SequenceNo = 0, BlockNo = 0,
+                        }
+                    };
+                    break;
+            }
 
             questState = QuestState.InProgress;
 

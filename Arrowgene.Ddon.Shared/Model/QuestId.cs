@@ -107,6 +107,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
         Unknown5004 = 5004,   // Entry is blank, just picture of a church?
 
         // World Quests
-        LestaniaCyclops = 20005010
+        LestaniaCyclops = 20005010,
+
+        // Personal Quests
+        CraftedTokenOfTheHeart = 60000016,
     }
 }
