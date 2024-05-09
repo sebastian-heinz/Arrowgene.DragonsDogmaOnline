@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] PawnFields = new string[]
         {
-            "character_common_id", "character_id", "name", "hm_type", "pawn_type"
+            "character_common_id", "character_id", "name", "hm_type", "pawn_type", "training_points", "available_training"
         };
 
         protected static readonly string[] CDataPawnReactionFields = new string[]
@@ -163,6 +163,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         pawn.SpSkillList.Add(ReadSpSkill(reader));
                     }
                 });
+
+            ExecuteReader(conn, SqlSelectPawnTrainingStatusByPawn,
+                command => { AddParameter(command, "@pawn_id", pawn.PawnId); },
+                reader =>
+                {
+                    while(reader.Read())
+                    {
+                        JobId job = (JobId) GetByte(reader, "job");
+                        byte[] trainingStatus = GetBytes(reader, "training_status", 64);
+                        pawn.TrainingStatus.Add(job, trainingStatus);
+                    }
+                });
         }
 
         private void StorePawnData(TCon conn, Pawn pawn)
@@ -177,6 +189,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             foreach (CDataSpSkill spSkill in pawn.SpSkillList)
             {
                 ReplaceSpSkill(conn, pawn.PawnId, spSkill);
+            }
+
+            foreach ((JobId job, byte[] trainingStatus) in pawn.TrainingStatus)
+            {
+                ReplacePawnTrainingStatus(conn, pawn.PawnId, job, trainingStatus);
             }
         }
 
@@ -350,6 +367,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             pawn.Name = GetString(reader, "name");
             pawn.HmType = GetByte(reader, "hm_type");
             pawn.PawnType = GetByte(reader, "pawn_type");
+            pawn.TrainingPoints = GetUInt32(reader, "training_points");
+            pawn.AvailableTraining = GetUInt32(reader, "available_training");
 
             return pawn;
         }
@@ -363,6 +382,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@name", pawn.Name);
             AddParameter(command, "@hm_type", pawn.HmType);
             AddParameter(command, "@pawn_type", pawn.PawnType);
+            AddParameter(command, "@training_points", pawn.TrainingPoints);
+            AddParameter(command, "@available_training", pawn.AvailableTraining);
         }
  
         private CDataPawnReaction ReadPawnReaction(TReader reader)

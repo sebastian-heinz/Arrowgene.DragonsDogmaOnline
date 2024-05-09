@@ -21,6 +21,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.TrainingStatus[packet.Structure.Job] = packet.Structure.TrainingStatus;
             pawn.TrainingPoints -= packet.Structure.SpentTrainingPoints;
 
+            Server.Database.ReplacePawnTrainingStatus(pawn.PawnId, packet.Structure.Job, packet.Structure.TrainingStatus);
+            Server.Database.UpdatePawnBaseInfo(pawn);
             
             S2CPawnTrainingSetTrainingStatusRes res = new S2CPawnTrainingSetTrainingStatusRes();
             client.Send(res);
