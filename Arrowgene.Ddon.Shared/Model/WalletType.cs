@@ -1,19 +1,31 @@
 namespace Arrowgene.Ddon.Shared.Model
 {
+    /**
+     * TODO: Values past 16 no longer show up in the season 3 client shop UI.
+     * TODO: Although there are more than 16 common_unit_name keys, we can't test their consumption currently.
+     * The currency symbols are defined in common_message.gmd via common_unit_* keys.
+     * The currency symbols for generic tickets (枚) and counters (個) are defined in gacha_res.gmd.
+     */
     public enum WalletType : byte
     {
-        Gold = 1,
-        RiftPoints = 2,
-        BloodOrbs = 3,
-        Unk4 = 4,
-        Unk6 = 6,
-        HighOrbs = 9,
-        Unk10 = 10,
-        Unk11 = 11,
-        Unk12 = 12,
-        Unk13 = 13,
-        Unk14 = 14,
-        Unk15 = 15,
-        Unk16 = 16,
+        Gold = 1, // G
+        RiftPoints = 2, // R
+        BloodOrbs = 3, // BO
+        SilverTickets = 4, // 枚
+        GoldenGemstones = 5, // 個
+        RentalPoints = 6, // RP
+        ResetJobPoints = 7, // JP_RESET => No icon, not testable, unsure
+        ResetCraftSkills = 8, // CP_RESET => No icon, not testable, unsure
+        HighOrbs = 9, // HO
+        DominionPoints = 10, // DP
+        AdventurePassPoints = 11, // BP
+        UnknownTickets = 12, // 枚
+        CustomMadeServiceTickets = 13, // 枚 Evoticket => not testable, unsure
+        GoldenDragonMark = 14, // 個
+        SilverDragonMark = 15, // 個
+        RedDragonMark = 16 // 個
+        // Play Points
+        // Clan Points
+        // Bitterblack Maze Reset Ticket
     }
 }
