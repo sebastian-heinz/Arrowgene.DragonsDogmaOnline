@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             BaseExp = new List<CDataQuestExp>();
             FixedRewardItemList = new List<CDataRewardItem>();
             FixedRewardSelectItemList = new List<CDataRewardItem>();
-            Unk3 = new List<CDataCommonU32>();
+            ContentsReleaseList = new List<CDataCharacterReleaseElement>();
             QuestOrderConditionParamList = new List<CDataQuestOrderConditionParam>();
             QuestAnnounceList = new List<CDataQuestAnnounce>();
             QuestTalkInfoList = new List<CDataQuestTalkInfo>();
@@ -32,14 +32,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public UInt16 ContentJoinItemRank {  get; set; }
         public List<CDataWalletPoint> BaseWalletPoints { get; set; }
         public List<CDataQuestExp> BaseExp {  get; set; }
-        public NpcId OrderNpcId { get; set; }
+        public UInt32 OrderNpcId { get; set; }
         public UInt32 NameMsgId {  get; set; }
         public UInt32 DetailMsgId { get; set; }
         public UInt64 DistributionStartDate {  get; set; } // OrderDate?
         public UInt64 DistributionEndDate {  get; set; }
         public List<CDataRewardItem> FixedRewardItemList { get; set; }
         public List<CDataRewardItem> FixedRewardSelectItemList { get; set; }
-        public List<CDataCommonU32> Unk3 { get; set; }
+        public List<CDataCharacterReleaseElement> ContentsReleaseList { get; set; }
         public List<CDataQuestOrderConditionParam> QuestOrderConditionParamList { get; set; }
         public List<CDataQuestAnnounce> QuestAnnounceList { get; set; }
         public List<CDataQuestTalkInfo> QuestTalkInfoList { get; set; }
@@ -50,6 +50,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataQuestLayoutFlagSetInfo> QuestLayoutFlagSetInfoList { get; set; }
         public List<CDataDeliveryItem> DeliveryItemList { get; set; }
         public bool IsClientOrder {  get; set; }
+        public bool IsEnable { get; set; }
+        // public bool CanProgress { get; set; }
 
         public class Serializer : EntitySerializer<CDataQuestList>
         {
@@ -62,17 +64,18 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt16(buffer, obj.ContentJoinItemRank);
                 WriteEntityList<CDataWalletPoint>(buffer, obj.BaseWalletPoints);
                 WriteEntityList<CDataQuestExp>(buffer, obj.BaseExp);
-                WriteUInt32(buffer, (uint) obj.OrderNpcId);
+                WriteUInt32(buffer, obj.OrderNpcId);
                 WriteUInt32(buffer, obj.NameMsgId);
                 WriteUInt32(buffer, obj.DetailMsgId);
                 WriteUInt64(buffer, obj.DistributionStartDate);
                 WriteUInt64(buffer, obj.DistributionEndDate);
                 WriteEntityList<CDataRewardItem>(buffer, obj.FixedRewardItemList);
                 WriteEntityList<CDataRewardItem>(buffer, obj.FixedRewardSelectItemList);
-                WriteEntityList<CDataCommonU32>(buffer, obj.Unk3);
+                WriteEntityList<CDataCharacterReleaseElement>(buffer, obj.ContentsReleaseList);
                 WriteEntityList<CDataQuestOrderConditionParam>(buffer, obj.QuestOrderConditionParamList);
-                WriteEntityList<CDataQuestAnnounce>(buffer, obj.QuestAnnounceList);
-                WriteEntityList<CDataQuestTalkInfo>(buffer, obj.QuestTalkInfoList);
+                // CQuestLog
+                    WriteEntityList<CDataQuestAnnounce>(buffer, obj.QuestAnnounceList);
+                    WriteEntityList<CDataQuestTalkInfo>(buffer, obj.QuestTalkInfoList);
                 WriteEntityList<CDataQuestFlag>(buffer, obj.QuestFlagList);
                 WriteEntityList<CDataQuestLayoutFlag>(buffer, obj.QuestLayoutFlagList);
                 WriteEntityList<CDataQuestProcessState>(buffer, obj.QuestProcessStateList);
@@ -92,14 +95,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ContentJoinItemRank = ReadUInt16(buffer);
                 obj.BaseWalletPoints = ReadEntityList<CDataWalletPoint>(buffer);
                 obj.BaseExp = ReadEntityList<CDataQuestExp>(buffer);
-                obj.OrderNpcId = (NpcId) ReadUInt32(buffer);
+                obj.OrderNpcId = ReadUInt32(buffer);
                 obj.NameMsgId = ReadUInt32(buffer);
                 obj.DetailMsgId = ReadUInt32(buffer);
                 obj.DistributionStartDate = ReadUInt64(buffer);
                 obj.DistributionEndDate = ReadUInt64(buffer);
                 obj.FixedRewardItemList = ReadEntityList<CDataRewardItem>(buffer);
                 obj.FixedRewardSelectItemList = ReadEntityList<CDataRewardItem>(buffer);
-                obj.Unk3 = ReadEntityList<CDataCommonU32>(buffer);
+                obj.ContentsReleaseList = ReadEntityList<CDataCharacterReleaseElement>(buffer);
                 obj.QuestOrderConditionParamList = ReadEntityList<CDataQuestOrderConditionParam>(buffer);
                 obj.QuestAnnounceList = ReadEntityList<CDataQuestAnnounce>(buffer);
                 obj.QuestTalkInfoList = ReadEntityList<CDataQuestTalkInfo>(buffer);

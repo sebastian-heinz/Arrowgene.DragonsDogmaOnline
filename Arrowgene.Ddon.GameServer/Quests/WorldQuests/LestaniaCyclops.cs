@@ -36,7 +36,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
 
             public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
             {
-                return stageNo == (uint) StageNo.Lestania && groupId == 26;
+                if (stageNo == (uint)StageNo.Lestania && groupId == 26)
+                {
+                    return true;
+                }
+
+                return false;
             }
 
             public override CDataQuestList ToCDataQuestList()
@@ -47,6 +52,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                     QuestId = (uint)QuestId.LestaniaCyclops,
                     QuestScheduleId = (uint)QuestId.LestaniaCyclops,
                     BaseLevel = 12,
+                    IsClientOrder = false,
+                    IsEnable = true,
                     BaseExp = new List<CDataQuestExp>()
                     {
                         new CDataQuestExp() { ExpMode = 1, Reward = 590 },
@@ -83,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                         {
                             new CDataQuestProcessState()
                             {
-                                ProcessNo = 1,
+                                ProcessNo = 0x1,
                                 ResultCommandList = new List<CDataQuestCommand>()
                                 {
                                     QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1)
@@ -94,33 +101,25 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                                 })
                             }
                         };
-                        questState = QuestState.InProgress;
                         break;
                     case 1:
                         result = new List<CDataQuestProcessState>()
                         {
                             new CDataQuestProcessState()
                             {
-                                ProcessNo = 2, SequenceNo = 0, BlockNo = 0,
+                                ProcessNo = 0x2,
                                 ResultCommandList = new List<CDataQuestCommand>()
                                 {
                                     QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear),
-                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.End),
+                                    // QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.End),
                                     QuestManager.ResultCommand.EndEndQuest(),
                                 }
                             }
                         };
-                        questState = QuestState.Cleared;
-                        break;
-                    default:
-                        questState = QuestState.Unknown;
                         break;
                 }
 
-                if (questState != QuestState.Unknown)
-                {
-                    CurrentProcessNo = processNo + 1;
-                }
+                questState = QuestState.InProgress;
 
                 return result;
             }

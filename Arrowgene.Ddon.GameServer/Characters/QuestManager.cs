@@ -107,9 +107,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestOrderConditionParam() { Type = 0x6, Param01 = (int)questId };
             }
 
-            public static CDataQuestOrderConditionParam Unknown(int param01, int param02 = 0)
+            public static CDataQuestOrderConditionParam ClearPersonalQuestRestriction(int param01, int param02 = 0)
             {
                 return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = param01, Param02 = param02 };
+            }
+
+            public static CDataQuestOrderConditionParam ClearPersonalQuestRestriction(QuestId questId, int param02 = 0)
+            {
+                return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = (int) questId, Param02 = param02 };
             }
         }
 

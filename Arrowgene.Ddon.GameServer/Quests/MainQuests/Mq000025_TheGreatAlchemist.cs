@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.QuestId = (int)QuestId.TheGreatAlchemist;
             quest.QuestScheduleId = (int)QuestId.TheGreatAlchemist;
             quest.BaseLevel = 25;
-            quest.OrderNpcId = NpcId.Leo0;
+            quest.OrderNpcId = (uint) NpcId.Leo0;
             quest.NameMsgId = 1;
             quest.DetailMsgId = 1;
             quest.BaseLevel = 1;
@@ -62,15 +62,15 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 new CDataRewardItem() {ItemId = 8398, Num = 1},
             };
 
-            quest.Unk3 = new List<CDataCommonU32>()
-            { 
-                new CDataCommonU32(36),
-                new CDataCommonU32(10),
+            quest.ContentsReleaseList = new List<CDataCharacterReleaseElement>()
+            {
+                new CDataCharacterReleaseElement(ContentsRelease.OrbEnemy),
+                new CDataCharacterReleaseElement(ContentsRelease.DragonForceAugmentation),
             };
 
             quest.QuestOrderConditionParamList = new List<CDataQuestOrderConditionParam>()
             {
-                QuestManager.AcceptConditions.Unknown(60000016)
+                QuestManager.AcceptConditions.ClearPersonalQuestRestriction(QuestId.CraftedTokenOfTheHeart) // Dependency on "tutorial (personal?)" quest 60000016
             };
 
             quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Leo0, 10853));
