@@ -13,6 +13,7 @@ namespace Arrowgene.Ddon.Shared.Model
         AudienceChamber = 201,
         SpiritDragonsRoost1 = 435,
         SpiritDragonsRoost2 = 436,
+        SmallCaveTombs = 503,
         SacredFlamePath = 1100,
         EvilDragonsRoost1 = 1103,
         EvilDragonsRoost2 = 1104,

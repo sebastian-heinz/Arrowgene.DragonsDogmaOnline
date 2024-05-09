@@ -44,17 +44,17 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                 // http://ddon.wikidot.com/wq:theknightsbitterenemy
                 var quest = new CDataQuestList()
                 {
-                    QuestId = (uint) QuestId.LestaniaCyclops,
-                    QuestScheduleId = (uint) QuestId.LestaniaCyclops,
+                    QuestId = (uint)QuestId.LestaniaCyclops,
+                    QuestScheduleId = (uint)QuestId.LestaniaCyclops,
                     BaseLevel = 12,
                     BaseExp = new List<CDataQuestExp>()
                     {
-                        new CDataQuestExp() {ExpMode = 1, Reward = 590},
+                        new CDataQuestExp() { ExpMode = 1, Reward = 590 },
                     },
                     BaseWalletPoints = new List<CDataWalletPoint>()
                     {
-                        new CDataWalletPoint() { Type = WalletType.Gold, Value = 390},
-                        new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 70}
+                        new CDataWalletPoint() { Type = WalletType.Gold, Value = 390 },
+                        new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 70 }
                     },
                     QuestProcessStateList = new List<CDataQuestProcessState>()
                     {
@@ -106,7 +106,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                                 {
                                     QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear),
                                     QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.End),
-                                    QuestManager.ResultCommand.EndEndQuest()
+                                    QuestManager.ResultCommand.EndEndQuest(),
                                 }
                             }
                         };

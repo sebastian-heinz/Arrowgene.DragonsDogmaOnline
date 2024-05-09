@@ -15,16 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.PersonalQuests
             S2CQuestGetLightQuestListRes pcap = EntitySerializer.Get<S2CQuestGetLightQuestListRes>().Read(pcap_data);
             S2CQuestGetLightQuestListRes res = new S2CQuestGetLightQuestListRes();
 
-            // TODO: Make these configurable
 
-            // Spirit Dragon EM
-            res.LightQuestList.Add(new CDataLightQuestList()
-            {
-                Param = new CDataQuestList() {
-                    QuestScheduleId = 50300010,
-                    QuestId = 50300010
-                }
-            });
             
             // A Personal Request
             res.LightQuestList.Add(new CDataLightQuestList()
@@ -52,4 +43,37 @@ namespace Arrowgene.Ddon.GameServer.Quests.PersonalQuests
                         }
                     });
                     break;
+----------------------------------
+               case 40000035:
+                {
+                    // A Personal Request
+                    S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes();
+                    res.QuestScheduleId = packet.Structure.QuestScheduleId;
+                    switch (packet.Structure.ProcessNo)
+                    {
+                        case 0:
+                            res.QuestProcessStateList = new List<CDataQuestProcessState>()
+                            {
+                                new CDataQuestProcessState()
+                                {
+                                    ProcessNo = 1,
+                                    ResultCommandList = new List<CDataQuestCommand>()
+                                    {
+                                        CDataQuestCommand.ResultSetAnnounce(CDataQuestCommand.AnnounceType.QUEST_ANNOUNCE_TYPE_CLEAR)
+                                    }
+                                }
+                            };
+                            break;
+                    }
+
+                    client.Send(res);
+
+                    // Sent for the rest of the party members
+                    S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc();
+                    ntc.ProgressCharacterId = packet.Structure.ProgressCharacterId;
+                    ntc.QuestScheduleId = res.QuestScheduleId;
+                    ntc.QuestProcessStateList = res.QuestProcessStateList;
+                    client.Party.SendToAllExcept(ntc, client);
+                    break;
+                }
 #endif
