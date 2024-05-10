@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -21,16 +22,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(new S2CQuestGetLightQuestListRes());
 
             S2CQuestGetLightQuestListRes res = new S2CQuestGetLightQuestListRes();
-            foreach (var quest in client.Character.Quests)
+            foreach (var questId in client.Character.ActiveQuests.Keys)
             {
-                if (quest.Value.QuestType == QuestType.PersonalQuest || quest.Value.QuestType == QuestType.ExtremeMissions)
+                var quest = QuestManager.GetQuest(questId);
+                if (quest.QuestType == QuestType.PersonalQuest || quest.QuestType == QuestType.ExtremeMissions)
                 {
                     res.LightQuestList.Add(new CDataLightQuestList()
                     {
                         Param = new CDataQuestList()
                         {
-                            QuestScheduleId = (uint)quest.Key,
-                            QuestId = (uint)quest.Key
+                            QuestScheduleId = (uint)questId,
+                            QuestId = (uint)questId
                         }
                     });
                 }

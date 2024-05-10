@@ -22,11 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
         {
             private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LestaniaCyclops));
 
-            public LestaniaCyclops() : base()
+            public LestaniaCyclops() : base(QuestType.World, true)
             {
-                IsDiscoverable = true;
-                HasEnemy = true;
-                QuestType = QuestType.World;
             }
 
             public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
@@ -84,17 +81,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                 return quest;
             }
 
-            public override List<CDataQuestProcessState> StateMachineExecute(uint keyId, uint questScheduleId, uint processNo, out QuestState questState)
+            public override List<CDataQuestProcessState> StateMachineExecute(uint processNo, uint reqNo, out QuestState questState)
             {
                 List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
-
-                if (!ProcessTracker.ContainsKey(processNo))
-                {
-                    // (ProcessId, Req#)
-                    ProcessTracker[processNo] = 0;
-                }
-
-                uint reqNo = ProcessTracker[processNo];
 
                 Logger.Debug($"Cyclops: processNo: {processNo}, reqNo = {reqNo}");
                 switch (processNo)
@@ -138,7 +127,6 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                         break;
                 }
 
-                ProcessTracker[processNo] += 1;
                 questState = QuestState.InProgress;
                 return result;
             }

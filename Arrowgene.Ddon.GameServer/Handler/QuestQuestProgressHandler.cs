@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -15,11 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestProgressHandler));
 
-        private readonly ExpManager _ExpManager;
-
         public QuestQuestProgressHandler(DdonGameServer server) : base(server)
         {
-            _ExpManager = server.ExpManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestQuestProgressReq> packet)
@@ -31,8 +29,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Logger.Debug($"KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
+            uint processNo = packet.Structure.ProcessNo;
             QuestId questId = (QuestId) packet.Structure.QuestScheduleId;
-            if (!client.Character.Quests.ContainsKey(questId))
+            if (!client.Character.ActiveQuests.ContainsKey(questId))
             {
                 List<CDataQuestCommand> ResultCommandList = new List<CDataQuestCommand>();
                 ResultCommandList.Add(new CDataQuestCommand()
@@ -52,17 +51,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                var quest = client.Character.Quests[questId];
-                res.QuestProcessState = quest.StateMachineExecute(packet.Structure.KeyId, packet.Structure.QuestScheduleId, packet.Structure.ProcessNo, out questState);
+                var activeQuests = client.Character.ActiveQuests;
 
-                if (questState == QuestState.Cleared)
+                if (!activeQuests.ContainsKey(questId))
                 {
-                    var rewards = quest.CreateRewardsPacket();
-                    client.Send(rewards);
-
-                    // Delete the quest
-                    // client.Character.Quests.Remove(questId);
+                    activeQuests[questId] = new Dictionary<uint, uint>();
                 }
+
+                if (!activeQuests[questId].ContainsKey(processNo))
+                {
+                    activeQuests[questId][processNo] = 0;
+                }
+
+                var quest = QuestManager.GetQuest(questId);
+                res.QuestProcessState = quest.StateMachineExecute(processNo, activeQuests[questId][processNo], out questState);
+                activeQuests[questId][processNo] += 1;
             }
 
             client.Send(res);
@@ -74,60 +77,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 QuestProcessStateList = res.QuestProcessState,
             };
             client.Party.SendToAllExcept(ntc, client);
-
-            if (questState == QuestState.Complete)
-            {
-                var complete = new S2CQuestCompleteNtc() { QuestScheduleId = (uint)questId, IsUndiscoveredReward = true };
-                client.Party.SendToAll(complete);
-            }
-
-#if false
-            if (process == QuestProcess.ProcessEnd)
-            {
-            }
-
-            client.Send(res);
-
-            // TODO: These can be saved in some dictionary
-            // TODO: Extra params for which character it is for
-            // TODO: Make some interface they adhere to
-            // TODO: Other quests happen here as well, this is the main quest handler
-            // -- Missions
-            // -- World Quests
-            // -- Personal Requests
-            // -- Spirit Dragon
-            QuestProcess process = QuestProcess.ExecuteCommand;
-            if (packet.Structure.QuestScheduleId == 287350)
-            {
-                Logger.Debug("============ Main Story Quest activated ============");
-                Logger.Debug($"ProcessNo = {packet.Structure.ProcessNo}");
-                res.QuestProcessState = Mq000002_TheSlumberingGod.StateMachineExecute(packet.Structure.KeyId, packet.Structure.QuestScheduleId, packet.Structure.ProcessNo);
-            }
-            else if (packet.Structure.QuestScheduleId == 20005010)
-            {
-                Logger.Debug("============ World Quest activated ============");
-                Logger.Debug($"ProcessNo = {packet.Structure.ProcessNo}");
-                res.QuestProcessState = WorldQuests.LestaniaCyclops.StateMachineExecute(client, packet.Structure.KeyId, packet.Structure.QuestScheduleId, packet.Structure.ProcessNo, out process, _ExpManager);
-            }
-            else
-            {
-                List<CDataQuestCommand> ResultCommandList = new List<CDataQuestCommand>();
-                ResultCommandList.Add(new CDataQuestCommand()
-                {
-                    Command = (ushort)QuestCommandCheckType.IsEndTimer,
-                    Param01 = 0x173
-                });
-
-                res.QuestScheduleId = 0x32f00;
-                res.QuestProcessState.Add(new CDataQuestProcessState()
-                {
-                    ProcessNo = 0x1b,
-                    SequenceNo = 0x1,
-                    BlockNo = 0x2,
-                    ResultCommandList = ResultCommandList
-                });
-            }
-#endif
         }
     }
 }
