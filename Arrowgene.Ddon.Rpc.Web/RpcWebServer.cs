@@ -21,7 +21,13 @@ namespace Arrowgene.Ddon.Rpc.Web
         {
             _webServer.AddRoute(new SpawnRoute(this));
             _webServer.AddRoute(new InfoRoute(this));
-            _webServer.AddRoute(new InterceptedRpcWebRoute(this, new ChatRoute(this), new AuthInterceptor(_gameServer.Database, AccountStateType.GameMaster)));
+
+            ChatRoute chatRoute = new ChatRoute(this);
+            _webServer.AddRoute(chatRoute);
+
+            AuthMiddleware authMiddleware = new AuthMiddleware(_gameServer.Database);
+            authMiddleware.Require(AccountStateType.GameMaster, chatRoute.Route);
+            _webServer.AddMiddleware(authMiddleware);
         }
     }
 }

@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Arrowgene.Ddon.Database;
@@ -8,22 +9,34 @@ using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
+using Arrowgene.WebServer.Middleware;
 
-public class AuthInterceptor : IInterceptor
+public class AuthMiddleware : IWebMiddleware
 {
-    private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(AuthInterceptor));
+    private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(AuthMiddleware));
 
     private readonly IDatabase _database;
-    private readonly AccountStateType _minimumState;
+    private readonly Dictionary<string, AccountStateType> _routeAndRequiredMinimumState;
 
-    public AuthInterceptor(IDatabase database, AccountStateType minimumState)
+    public AuthMiddleware(IDatabase database)
     {
         _database = database;
-        _minimumState = minimumState;
+        _routeAndRequiredMinimumState = new Dictionary<string, AccountStateType>();
     }
 
-    public async Task<WebResponse?> InterceptRequest(WebRequest request)
+    public void Require(AccountStateType minimumState, string route)
     {
+        _routeAndRequiredMinimumState.Add(route, minimumState);
+    }
+
+    public async Task<WebResponse> Handle(WebRequest request, WebMiddlewareDelegate next)
+    {
+        if(!_routeAndRequiredMinimumState.ContainsKey(request.Path))
+        {
+            // Don't intercept request if the request path isn't registered in the middleware
+            return await next(request);
+        }
+
         string authHeader = request.Header.Get("authorization");
         if(authHeader == null)
         {
@@ -77,15 +90,16 @@ public class AuthInterceptor : IInterceptor
             return response;
         }
 
-        if(account.State < _minimumState)
+        AccountStateType minimumRequiredAccountStateType = _routeAndRequiredMinimumState[request.Path];
+        if(account.State < minimumRequiredAccountStateType)
         {
-            Logger.Error($"Attempted to access auth protected route as {username} without enough permissions (Account has {account.State}, minimum required {_minimumState}).");
+            Logger.Error($"Attempted to access auth protected route as {username} without enough permissions (Account has {account.State}, minimum required {minimumRequiredAccountStateType}).");
             WebResponse response = new WebResponse();
             response.StatusCode = 403;
             await response.WriteAsync($"Attempted to access auth protected route as {username} without enough permissions.");
             return response;
         }
 
-        return null;
+        return await next(request);
     }
 }
