@@ -141,6 +141,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return result;
             }
 
+            public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AddCheckCommands(List<CDataQuestCommand> commands0, List<CDataQuestCommand> commands1)
+            {
+                List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> result = new List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand>();
+                result.Add(new CDataQuestProcessState.MtTypedArrayCDataQuestCommand());
+                result.Add(new CDataQuestProcessState.MtTypedArrayCDataQuestCommand());
+                result[0].ResultCommandList = commands0;
+                result[1].ResultCommandList = commands1;
+                return result;
+            }
+
             public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AppendCheckCommand(List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> obj, CDataQuestCommand command)
             {
                 obj[0].ResultCommandList.Add(command);
@@ -2102,6 +2112,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsReleaseSecretRoom, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
+
+            /**
+             * @brief Used when command is unknown but seen in packet captures.
+             */
+            public static CDataQuestCommand Unknown(ushort commandId, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            {
+                return new CDataQuestCommand() { Command = commandId, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
+            }
         }
 
         public class ResultCommand
@@ -2150,7 +2168,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @brief
              * @param type
              */
-            public static CDataQuestCommand UpdateAnnounce(QuestAnnounceType announceType, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand UpdateAnnounce(QuestAnnounceType announceType = QuestAnnounceType.Accept, int param02 = 0, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.UpdateAnnounce, Param01 = (int) announceType, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
@@ -3019,6 +3037,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public static CDataQuestCommand LinkageEnemyFlagOff(StageNo stageNo, int groupNo, int setNo, int flagId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.LinkageEnemyFlagOff, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = flagId };
+            }
+
+            /**
+             * @brief Used to send command values with unknown names
+             */
+            public static CDataQuestCommand Unknown(ushort commandId, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
+            {
+                return new CDataQuestCommand() { Command = commandId, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
         }
     }

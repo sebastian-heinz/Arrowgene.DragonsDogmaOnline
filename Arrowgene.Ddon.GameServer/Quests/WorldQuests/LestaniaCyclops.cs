@@ -1,9 +1,12 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
+using Arrowgene.Ddon.GameServer.Quests.MainQuests;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
     {
         public class LestaniaCyclops : Quest
         {
+            private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LestaniaCyclops));
+
             public LestaniaCyclops() : base()
             {
                 IsDiscoverable = true;
@@ -83,44 +88,58 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
             {
                 List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
+                if (!ProcessTracker.ContainsKey(processNo))
+                {
+                    // (ProcessId, Req#)
+                    ProcessTracker[processNo] = 0;
+                }
+
+                uint reqNo = ProcessTracker[processNo];
+
+                Logger.Debug($"Cyclops: processNo: {processNo}, reqNo = {reqNo}");
                 switch (processNo)
                 {
                     case 0:
-                        result = new List<CDataQuestProcessState>()
+                        switch (reqNo)
                         {
-                            new CDataQuestProcessState()
-                            {
-                                ProcessNo = 0x1,
-                                ResultCommandList = new List<CDataQuestCommand>()
+                            case 0:
+                                result = new List<CDataQuestProcessState>()
                                 {
-                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1)
-                                },
-                                CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
+                                    new CDataQuestProcessState()
+                                    {
+                                        ProcessNo = 0x0, SequenceNo = 0x0, BlockNo = 0x2,
+                                        ResultCommandList = new List<CDataQuestCommand>()
+                                        {
+                                            QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1)
+                                        },
+                                        CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
+                                        {
+                                            QuestManager.CheckCommand.DieEnemy(StageNo.Lestania, 26, 0)
+                                        })
+                                    }
+                                };
+                                break;
+                            case 1:
+                                result = new List<CDataQuestProcessState>()
                                 {
-                                    QuestManager.CheckCommand.DieEnemy(StageNo.Lestania, 26, 0)
-                                })
-                            }
-                        };
+                                    new CDataQuestProcessState()
+                                    {
+                                        ProcessNo = 0x0, SequenceNo = 0x1, BlockNo = 0x3,
+                                        ResultCommandList = new List<CDataQuestCommand>()
+                                        {
+                                            QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear),
+                                        }
+                                    }
+                                };
+                                break;
+                        }
                         break;
-                    case 1:
-                        result = new List<CDataQuestProcessState>()
-                        {
-                            new CDataQuestProcessState()
-                            {
-                                ProcessNo = 0x2,
-                                ResultCommandList = new List<CDataQuestCommand>()
-                                {
-                                    QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear),
-                                    // QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.End),
-                                    QuestManager.ResultCommand.EndEndQuest(),
-                                }
-                            }
-                        };
+                    default:
                         break;
                 }
 
+                ProcessTracker[processNo] += 1;
                 questState = QuestState.InProgress;
-
                 return result;
             }
         }

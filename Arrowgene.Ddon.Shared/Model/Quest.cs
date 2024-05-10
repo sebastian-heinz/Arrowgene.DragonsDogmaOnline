@@ -17,9 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public bool HasEnemy { get; set; }
         public uint CurrentProcessNo { get; set; }
         public QuestType QuestType { get; set; }
+        public Dictionary<uint, uint> ProcessTracker { get; set; }
 
         public Quest()
         {
+            ProcessTracker = new Dictionary<uint, uint>();
         }
         public abstract CDataQuestList ToCDataQuestList();
         public abstract List<CDataQuestProcessState> StateMachineExecute(uint keyId, uint questScheduleId, uint processNo, out QuestState questState);
