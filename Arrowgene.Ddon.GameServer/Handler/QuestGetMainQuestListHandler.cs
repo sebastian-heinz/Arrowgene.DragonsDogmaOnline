@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Asset;
@@ -23,11 +24,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(GameFull.Dump_123);
 
             S2CQuestGetMainQuestListRes res = new S2CQuestGetMainQuestListRes();
-            foreach (var quest in client.Character.Quests)
+            foreach (var questId in client.Character.ActiveQuests.Keys)
             {
-                if (quest.Value.QuestType == QuestType.Main)
+                var quest = QuestManager.GetQuest(questId);
+                if (quest.QuestType == QuestType.Main)
                 {
-                    res.MainQuestList.Add(quest.Value.ToCDataQuestList());
+                    res.MainQuestList.Add(quest.ToCDataQuestList());
                 }
             }
 

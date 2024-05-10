@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
@@ -39,11 +40,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .ToList()
             };
 
-            foreach (var quest in client.Character.Quests)
+            foreach (var questId in client.Character.ActiveQuests.Keys)
             {
-                if (quest.Value.HasEnemiesInCurrentStageGroup(client.Character.StageNo, stageId.GroupId, subGroupId))
+                var quest = QuestManager.GetQuest(questId);
+                if (quest.HasEnemiesInCurrentStageGroup(client.Character.StageNo, stageId.GroupId, subGroupId))
                 {
-                    response.QuestId = (uint) quest.Key;
+                    response.QuestId = (uint) questId;
                 }
             }
 

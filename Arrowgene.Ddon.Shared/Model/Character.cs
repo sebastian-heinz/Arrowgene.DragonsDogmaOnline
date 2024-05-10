@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Model
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
 
-            Quests = new Dictionary<QuestId, Quest>();
+            ActiveQuests = new Dictionary<QuestId, Dictionary<uint, uint>>();
         }
 
         public int AccountId { get; set; }
@@ -62,8 +62,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
 
-        public Dictionary<QuestId, Quest> Quests;
-
         public List<Pawn> Pawns { get; set; }
 
         public uint FavWarpSlotNum { get; set; }
@@ -73,6 +71,9 @@ namespace Arrowgene.Ddon.Shared.Model
 
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
+
+        // Tracks processes for active quests Dictionary<QuestId, Dictionary<ProcessNo, Sequence>>
+        public Dictionary<QuestId, Dictionary<uint, uint>> ActiveQuests { get; set; }
 
         public Pawn PawnBySlotNo(byte SlotNo)
         {

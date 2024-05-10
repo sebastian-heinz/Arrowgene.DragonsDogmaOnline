@@ -33,14 +33,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // client.Send(GameFull.Dump_132);
             S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes();
-            foreach (var quest in client.Character.Quests)
+            foreach (var questId in client.Character.ActiveQuests.Keys)
             {
-                if (quest.Value.QuestType == QuestType.World)
+                var quest = QuestManager.GetQuest(questId);
+                if (quest.QuestType == QuestType.World)
                 {
                     res.SetQuestList.Add(new CDataSetQuestList()
                     {
-                        Detail = new CDataSetQuestDetail() { IsDiscovery = quest.Value.IsDiscoverable },
-                        Param = quest.Value.ToCDataQuestList(),
+                        Detail = new CDataSetQuestDetail() { IsDiscovery = quest.IsDiscoverable },
+                        Param = quest.ToCDataQuestList(),
                     });
                 }
             }

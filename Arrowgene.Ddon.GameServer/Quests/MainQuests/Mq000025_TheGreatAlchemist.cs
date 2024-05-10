@@ -8,9 +8,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 {
     public class Mq000025_TheGreatAlchemist : Quest
     {
-        public Mq000025_TheGreatAlchemist() : base()
+        public Mq000025_TheGreatAlchemist() : base(QuestType.Main)
         {
-            QuestType = QuestType.Main;
         }
 
         public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
@@ -137,7 +136,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 
             return quest;
         }
-        public override List<CDataQuestProcessState> StateMachineExecute(uint keyId, uint questScheduleId, uint processNo, out QuestState questState)
+        public override List<CDataQuestProcessState> StateMachineExecute(uint processNo, uint reqNo, out QuestState questState)
         {
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 

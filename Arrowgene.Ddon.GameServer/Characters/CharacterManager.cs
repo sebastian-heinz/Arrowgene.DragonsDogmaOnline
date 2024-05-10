@@ -88,10 +88,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private void SelectQuests(Character character)
         {
             // TODO: Grab from database instead.
-            character.Quests.Add(QuestId.LestaniaCyclops, QuestManager.GetQuest(QuestId.LestaniaCyclops));
-            // character.Quests.Add(QuestId.TheSlumberingGod, QuestManager.GetQuest(QuestId.TheSlumberingGod));
-            // character.Quests.Add(QuestId.TheGreatAlchemist, QuestManager.GetQuest(QuestId.TheGreatAlchemist));
-            character.Quests.Add(QuestId.HopesBitterEnd, QuestManager.GetQuest(QuestId.HopesBitterEnd));
+            character.ActiveQuests[QuestId.LestaniaCyclops] = new Dictionary<uint, uint>();
+            character.ActiveQuests[QuestId.HopesBitterEnd] = new Dictionary<uint, uint>();
         }
 
         public uint GetMaxAugmentAllocation(CharacterCommon character)
