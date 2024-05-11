@@ -376,7 +376,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, uint extraBonusExp)
+        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, uint extraBonusExp, byte type = 0)
         {
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
             if (activeCharacterJobData != null && activeCharacterJobData.Lv < ExpManager.LV_CAP)
@@ -394,7 +394,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     expNtc.AddExp = gainedExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
-                    expNtc.Type = 0; // TODO: Figure out
+                    expNtc.Type = type; // TODO: Figure out
                     client.Send(expNtc);
                 }
                 else if(characterToAddExpTo is Pawn)
@@ -404,7 +404,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     expNtc.AddExp = gainedExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
-                    expNtc.Type = 0; // TODO: Figure out
+                    expNtc.Type = type; // TODO: Figure out
                     client.Send(expNtc);
                 }
 

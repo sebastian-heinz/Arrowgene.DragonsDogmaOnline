@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public Enemy(Enemy enemy)
         {
             Id = enemy.Id;
-            EnemyId = enemy.Id;
+            EnemyId = enemy.EnemyId;
             NamedEnemyParamsId = enemy.NamedEnemyParamsId;
             RaidBossId = enemy.RaidBossId;
             Scale = enemy.Scale;

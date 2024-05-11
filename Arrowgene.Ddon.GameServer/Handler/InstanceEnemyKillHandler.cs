@@ -9,6 +9,10 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.GameServer.Party;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Enemies;
+using System.Text.RegularExpressions;
+using Arrowgene.Ddon.GameServer.Characters;
+using static Arrowgene.Ddon.Server.Network.Challenge;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -26,8 +30,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyKillReq> packet)
         {
-            Enemy enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(packet.Structure.LayoutId), 0)[(int) packet.Structure.SetId];
-            List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
+            CDataStageLayoutId layoutId = packet.Structure.LayoutId;
+            InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0)[(int) packet.Structure.SetId];
+            List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
             if(instancedGatheringItems.Count > 0) {
                 client.Party.SendToAll(new S2CInstancePopDropItemNtc()
                 {
@@ -38,6 +43,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     PosY = packet.Structure.DropPosY,
                     PosZ = packet.Structure.DropPosZ
                 });
+            }
+
+            enemyKilled.IsKilled = true;
+
+            var group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0);
+            bool groupDestroyed = group.All(enemy => enemy.IsKilled);
+            if (groupDestroyed)
+            {
+                foreach (var questId in client.Character.ActiveQuests.Keys)
+                {
+                    var quest = QuestManager.GetQuest(questId);    
+                    if (quest.HasEnemiesInCurrentStageGroup(client.Character.StageNo, layoutId.GroupId, 0))
+                    {
+                        var questNtcs = quest.GetProgressWorkNotices(client.Character.StageNo, layoutId.GroupId, 0);
+                        foreach (var questNtc in questNtcs)
+                        {
+                            client.Party.SendToAll(questNtc);
+                        }
+                        break;
+                    }
+                }
+
+                S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
+                {
+                    LayoutId = packet.Structure.LayoutId,
+                    IsAreaBoss = enemyKilled.IsAreaBoss // TODO: How do we handle this for large groups???
+                };
+                client.Party.SendToAll(groupDestroyedNtc);
             }
 
             // TODO: EnemyId and KillNum

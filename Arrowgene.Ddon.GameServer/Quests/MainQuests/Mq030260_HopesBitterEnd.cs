@@ -1,9 +1,11 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,23 +22,47 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Mq030260_HopesBitterEnd));
 
-
         public Mq030260_HopesBitterEnd() : base(QuestType.Main)
         {
         }
 
+        public override List<CDataWalletPoint> WalletRewards => new List<CDataWalletPoint>()
+        {
+            new CDataWalletPoint() { Type = WalletType.Gold, Value = 100000 },
+            new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 10000},
+        };
+
+        public override List<CDataRewardItem> FixedItemRewards => new List<CDataRewardItem>()
+        {
+            new CDataRewardItem() {ItemId = 21281, Num = 2},
+            new CDataRewardItem() {ItemId = 18825, Num = 50},
+            new CDataRewardItem() {ItemId = 18826, Num = 5}
+        };
+
+        public override List<CDataQuestExp> ExpRewards => new List<CDataQuestExp>()
+        {
+            new CDataQuestExp() {ExpMode = 1, Reward = 900000}
+        };
+
         public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
         {
-            return (StageNo.SacredFlamePath == (StageNo)stageNo) && (groupId == 17 || groupId == 18);
+            return (StageNo.SacredFlamePath == (StageNo)stageNo) && (groupId == 3 || groupId == 17 || groupId == 18) ||
+                   (StageNo.EvilDragonsRoost1 == (StageNo)stageNo && groupId == 1);
         }
 
-        public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
+        public override List<S2CQuestQuestProgressWorkSaveNtc> GetProgressWorkNotices(uint stageNo, uint groupId, uint subGroupId)
         {
-            S2CItemUpdateCharacterItemNtc rewardNtc = new S2CItemUpdateCharacterItemNtc();
-            rewardNtc.UpdateType = (ushort)ItemNoticeType.Quest;
-            rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.Gold, AddPoint = 100000 });
-            rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.RiftPoints, AddPoint = 10000 });
-            return rewardNtc;
+            if (!gQuestProgressWork.ContainsKey((StageNo)stageNo))
+            {
+                return new List<S2CQuestQuestProgressWorkSaveNtc>();
+            }
+
+            if (!gQuestProgressWork[(StageNo)stageNo].ContainsKey(groupId))
+            {
+                return new List<S2CQuestQuestProgressWorkSaveNtc>();
+            }
+
+            return gQuestProgressWork[(StageNo)stageNo][groupId];
         }
 
         public override CDataQuestList ToCDataQuestList()
@@ -53,21 +79,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.DistributionStartDate = 1537405200;
             quest.DistributionEndDate = 2145884400;
 
-            quest.BaseExp = new List<CDataQuestExp>() {
-                new CDataQuestExp() {ExpMode = 1, Reward = 900000}
-            };
-
-            quest.BaseWalletPoints = new List<CDataWalletPoint>() {
-                new CDataWalletPoint() { Type = WalletType.Gold, Value = 100000 },
-                new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 10000},
-            };
-
-            quest.FixedRewardItemList = new List<CDataRewardItem> {
-                new CDataRewardItem() {ItemId = 21281, Num = 2},
-                new CDataRewardItem() {ItemId = 18825, Num = 50},
-                new CDataRewardItem() {ItemId = 18826, Num = 5}
-            };
-
+            quest.BaseExp = ExpRewards;
+            quest.BaseWalletPoints = WalletRewards;
+            quest.FixedRewardItemList = FixedItemRewards;
 
             quest.QuestOrderConditionParamList = new List<CDataQuestOrderConditionParam>()
             {
@@ -84,7 +98,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Lise0, 30730));
             quest.QuestTalkInfoList.Add(new CDataQuestTalkInfo(NpcId.Elliot0, 30731));
 
-            quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 7860 }); // This makes Lise, Gurdolin and Elliot appear
+            quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 7860 }); // This makes Lise, Gurdolin and Elliot appear in the audience chamber
             quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = 8013 });
 
             quest.QuestProcessStateList = new List<CDataQuestProcessState>()
@@ -251,14 +265,107 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 
             result.Add(processSteps[(int) reqNo]);
 
-            Logger.Info("========================================================================================");
-            Logger.Info($"Hopes Bitter End: ProcessNo={result[0].ProcessNo}, SequenceNo={result[0].SequenceNo}, BlockNo={result[0].BlockNo},");
-            Logger.Info("==========================================================================================");
-
-            questState = QuestState.InProgress;
+            if (result[0].ProcessNo == 0 && result[0].SequenceNo == 1)
+            {
+                questState = QuestState.Complete;
+            }
+            else
+            {
+                questState = QuestState.InProgress;
+            }
 
             return result;
         }
+
+        // groupNo, List<CDataQuestProgressWork>
+        private readonly Dictionary<StageNo, Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>> gQuestProgressWork = new Dictionary<StageNo, Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>>()
+        {
+            #region SacredFlamePath
+            [StageNo.SacredFlamePath] = new Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>()
+            {
+                [17] = new List<S2CQuestQuestProgressWorkSaveNtc>()
+                {
+                    new S2CQuestQuestProgressWorkSaveNtc()
+                    {
+                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        ProcessNo = 0, SequenceNo = 0, BlockNo = 8,
+                        WorkList = new List<CDataQuestProgressWork>
+                        {
+                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7866, StageNo.SacredFlamePath, 17)
+                        }
+                    },
+                    new S2CQuestQuestProgressWorkSaveNtc()
+                    {
+                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        ProcessNo = 3, SequenceNo = 0, BlockNo = 1,
+                        WorkList = new List<CDataQuestProgressWork>
+                        {
+                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7866, StageNo.SacredFlamePath, 17)
+                        }
+                    },
+                },
+                [18] = new List<S2CQuestQuestProgressWorkSaveNtc>()
+                {
+                    new S2CQuestQuestProgressWorkSaveNtc()
+                    {
+                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        ProcessNo = 0, SequenceNo = 0, BlockNo = 10,
+                        WorkList = new List<CDataQuestProgressWork>
+                        {
+                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7864, StageNo.SacredFlamePath, 18)
+                        }
+                    },
+                    new S2CQuestQuestProgressWorkSaveNtc()
+                    {
+                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        ProcessNo = 4, SequenceNo = 0, BlockNo = 1,
+                        WorkList = new List<CDataQuestProgressWork>
+                        {
+                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7864, StageNo.SacredFlamePath, 18)
+                        }
+                    },
+                },
+                [3] = new List<S2CQuestQuestProgressWorkSaveNtc>()
+                {
+                    new S2CQuestQuestProgressWorkSaveNtc()
+                    {
+                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        ProcessNo = 0, SequenceNo = 0, BlockNo = 12,
+                        WorkList = new List<CDataQuestProgressWork>
+                        {
+                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7865, StageNo.SacredFlamePath, 3)
+                        }
+                    },
+                    new S2CQuestQuestProgressWorkSaveNtc()
+                    {
+                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        ProcessNo = 5, SequenceNo = 0, BlockNo = 1,
+                        WorkList = new List<CDataQuestProgressWork>
+                        {
+                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7865, StageNo.SacredFlamePath, 3)
+                        }
+                    },
+                },
+            },
+            #endregion
+            #region EvilDragonsRoost
+            [StageNo.EvilDragonsRoost1] = new Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>()
+            {
+                [1] = new List<S2CQuestQuestProgressWorkSaveNtc>()
+                {
+                    new S2CQuestQuestProgressWorkSaveNtc()
+                    {
+                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        ProcessNo = 0, SequenceNo = 0, BlockNo = 19,
+                        WorkList = new List<CDataQuestProgressWork>
+                        {
+                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7867, StageNo.EvilDragonsRoost1, 1)
+                        }
+                    }
+                },
+            }
+            #endregion
+        };
 
         private readonly Dictionary<uint, List<CDataQuestProcessState>> gQuestProcesses = new Dictionary<uint, List<CDataQuestProcessState>>()
         {
@@ -423,7 +530,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.UpdateAnnounce(QuestAnnounceType.Accept),
+                        QuestManager.ResultCommand.UpdateAnnounce(),
                         QuestManager.ResultCommand.QstLayoutFlagOff(7864),
                         QuestManager.ResultCommand.QstLayoutFlagOn(8059),
                         QuestManager.ResultCommand.QstLayoutFlagOn(7865),
@@ -439,7 +546,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.UpdateAnnounce(QuestAnnounceType.Accept),
+                        QuestManager.ResultCommand.UpdateAnnounce(),
                     }
                 },
                 new CDataQuestProcessState()
@@ -451,7 +558,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.UpdateAnnounce(QuestAnnounceType.Accept),
+                        QuestManager.ResultCommand.UpdateAnnounce(),
                         QuestManager.ResultCommand.QstLayoutFlagOff(7865),
                         QuestManager.ResultCommand.WorldManageLayoutFlagOn(7955, 70033001),
                         QuestManager.ResultCommand.QstLayoutFlagOn(8060),
@@ -464,12 +571,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 14,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.Prt(StageNo.ScaredFlamePathUpperLevel, 21030, 2934, -1)
+                        QuestManager.CheckCommand.Prt(StageNo.ScaredFlamePathUpperLevel, 21030, 2934, -24797)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.Prt(StageNo.ScaredFlamePathUpperLevel, 21030, 2934, -1),
-                        QuestManager.ResultCommand.UpdateAnnounce(QuestAnnounceType.Accept),
+                        QuestManager.ResultCommand.Prt(StageNo.ScaredFlamePathUpperLevel, 21030, 2934, -24797),
+                        QuestManager.ResultCommand.UpdateAnnounce(),
                         QuestManager.ResultCommand.QstLayoutFlagOn(7904),
                         QuestManager.ResultCommand.MyQstFlagOn(4830),
                         QuestManager.ResultCommand.QstLayoutFlagOff(8063),

@@ -4,17 +4,16 @@ namespace Arrowgene.Ddon.GameServer.Enemies
 {
     public class InstancedEnemy : Enemy
     {
-#if false
-        public InstancedEnemy()
+        private InstancedEnemy()
         {
+
         }
-#endif
 
         public InstancedEnemy(Enemy enemy) : base(enemy)
         {
-            IsAlive = true;
+            IsKilled = false;
         }
 
-        public bool IsAlive { get; set; }
+        public bool IsKilled { get; set; }
     }
 }

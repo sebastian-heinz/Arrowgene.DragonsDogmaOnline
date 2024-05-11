@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         // 3: S2C_ITEM_USE_BAG_ITEM_RES
         // 4: S2C_ITEM_CONSUME_STORAGE_ITEM_RES
         // 8: S2C_ITEM_MOVE_ITEM_RES
+        // 16 : Quest
         // 0x24: changeCharacterEquip
         // 0x25: changePawnEquip
         // 0x26: changeCharacterStorageEquip

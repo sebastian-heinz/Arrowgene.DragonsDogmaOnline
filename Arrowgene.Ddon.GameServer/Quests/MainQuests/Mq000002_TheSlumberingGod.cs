@@ -12,18 +12,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
         {
         }
 
-        public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
-        {
-            S2CItemUpdateCharacterItemNtc rewardNtc = new S2CItemUpdateCharacterItemNtc();
-            // rewardNtc.UpdateType = (ushort)ItemNoticeType.Quest;
-            // rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.Gold, AddPoint = 390 });
-            // rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.RiftPoints, AddPoint = 70 });
-            return rewardNtc;
-        }
-
         public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
         {
             return false;
+        }
+
+        public override List<S2CQuestQuestProgressWorkSaveNtc> GetProgressWorkNotices(uint stageNo, uint groupId, uint subGroupId)
+        {
+            return new List<S2CQuestQuestProgressWorkSaveNtc>();
         }
 
         public override CDataQuestList ToCDataQuestList()

@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Quests.MainQuests;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -21,29 +22,39 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
         public class LestaniaCyclops : Quest
         {
             private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LestaniaCyclops));
-
             public LestaniaCyclops() : base(QuestType.World, true)
             {
             }
 
-            public override S2CItemUpdateCharacterItemNtc CreateRewardsPacket()
+            public override QuestRewardParams RewardParams => new QuestRewardParams()
             {
-                // TODO: Update and save this properly
-                S2CItemUpdateCharacterItemNtc rewardNtc = new S2CItemUpdateCharacterItemNtc();
-                rewardNtc.UpdateType = (ushort)ItemNoticeType.Quest;
-                rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.Gold, AddPoint = 390 });
-                rewardNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint() { Type = WalletType.RiftPoints, AddPoint = 70 });
-                return rewardNtc;
-            }
+                RandomRewardNum = 1
+            };
+
+            public override List<CDataWalletPoint> WalletRewards => new List<CDataWalletPoint>()
+            {
+                new CDataWalletPoint() { Type = WalletType.Gold, Value = 390 },
+                new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 70 }
+            };
+
+            public override List<CDataRewardItem> FixedItemRewards => new List<CDataRewardItem>()
+            {
+                new CDataRewardItem() {ItemId = 21281, Num = 2},
+            };
+
+            public override List<CDataQuestExp> ExpRewards => new List<CDataQuestExp>()
+            {
+                new CDataQuestExp() { ExpMode = 1, Reward = 590 }
+            };
 
             public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
             {
-                if (stageNo == (uint)StageNo.Lestania && groupId == 26)
-                {
-                    return true;
-                }
+                return (stageNo == (uint)StageNo.Lestania) && (groupId == 26);
+            }
 
-                return false;
+            public override List<S2CQuestQuestProgressWorkSaveNtc> GetProgressWorkNotices(uint stageNo, uint groupId, uint subGroupId)
+            {
+                return new List<S2CQuestQuestProgressWorkSaveNtc>();
             }
 
             public override CDataQuestList ToCDataQuestList()
@@ -56,15 +67,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                     BaseLevel = 12,
                     IsClientOrder = false,
                     IsEnable = true,
-                    BaseExp = new List<CDataQuestExp>()
-                    {
-                        new CDataQuestExp() { ExpMode = 1, Reward = 590 },
-                    },
-                    BaseWalletPoints = new List<CDataWalletPoint>()
-                    {
-                        new CDataWalletPoint() { Type = WalletType.Gold, Value = 390 },
-                        new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 70 }
-                    },
+                    BaseExp = ExpRewards,
+                    BaseWalletPoints = WalletRewards,
+                    FixedRewardItemList = FixedItemRewards,
                     QuestProcessStateList = new List<CDataQuestProcessState>()
                     {
                         new CDataQuestProcessState()
@@ -84,8 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
             public override List<CDataQuestProcessState> StateMachineExecute(uint processNo, uint reqNo, out QuestState questState)
             {
                 List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
-
-                Logger.Debug($"Cyclops: processNo: {processNo}, reqNo = {reqNo}");
+                questState = QuestState.InProgress;
                 switch (processNo)
                 {
                     case 0:
@@ -120,14 +124,15 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                                         }
                                     }
                                 };
+                                questState = QuestState.Complete;
                                 break;
                         }
                         break;
                     default:
+                        questState = QuestState.Unknown;
                         break;
                 }
 
-                questState = QuestState.InProgress;
                 return result;
             }
         }
