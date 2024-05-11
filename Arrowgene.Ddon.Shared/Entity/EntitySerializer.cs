@@ -588,6 +588,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceSetOmInstantKeyValueRes.Serializer());
             Create(new S2CInstanceTreasurePointGetCategoryListRes.Serializer());
             Create(new S2CInstanceTreasurePointGetListRes.Serializer());
+            Create(new S2CInstanceEnemyGroupDestroyNtc.Serializer());
             Create(new S2CItemConsumeStorageItemRes.Serializer());
             Create(new S2CItemExtendItemSlotNtc.Serializer());
             Create(new S2CItemGetStorageItemListRes.Serializer());
@@ -706,7 +707,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestQuestProgressNtc.Serializer());
             Create(new C2SQuestQuestProgressReq.Serializer());
             Create(new S2CQuestQuestProgressRes.Serializer());
-            Create(new S2CQuestCompleteNtc.Serializer());
+            Create(new S2CQuestCompleteNtc.Serializer()); // TODO: Might need to remove this?
+            Create(new S2CQuestQuestProgressWorkSaveNtc.Serializer());
 
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoNtc.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoRes.Serializer());

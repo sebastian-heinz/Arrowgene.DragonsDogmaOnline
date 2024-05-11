@@ -19,12 +19,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             _Database = Database;
         }
-        public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount)
+        public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount, ushort updateType = 0)
         {
             CDataUpdateWalletPoint UpdateWalletPoint = AddToWallet(Character, Type, Amount);
 
             S2CItemUpdateCharacterItemNtc UpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            UpdateCharacterItemNtc.UpdateType = 0;
+            UpdateCharacterItemNtc.UpdateType = updateType;
             UpdateCharacterItemNtc.UpdateWalletList.Add(UpdateWalletPoint);
 
             Client.Send(UpdateCharacterItemNtc);

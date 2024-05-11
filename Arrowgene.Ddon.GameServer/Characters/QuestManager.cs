@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -21,25 +22,32 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestManager));
 
-        public QuestManager(DdonGameServer server)
+        private QuestManager()
         {
         }
 
-        // TODO: Once everything is comfortably understood, we can probably serialize
-        // TODO: the quest data and load it from file when the server starts instead
-        private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>()
-        {
-            // Main Quests
-            [QuestId.TheSlumberingGod] = new Mq000002_TheSlumberingGod(),
-            [QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist(),
-            [QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd(),
-            // World Quests
-            [QuestId.LestaniaCyclops] = new LestaniaCyclops(),
-        };
+        private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
 
         public static void LoadQuests()
         {
             // TODO: Load additional quests from file?
+            // TODO: Once everything is comfortably understood, we can probably serialize
+            // TODO: the quest data and load it from file when the server starts instead
+
+            // Main Quests
+            gQuests[QuestId.TheSlumberingGod] = new Mq000002_TheSlumberingGod();
+            gQuests[QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist();
+            gQuests[QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd();
+            // World Quests
+            gQuests[QuestId.LestaniaCyclops] = new LestaniaCyclops();
+        }
+
+        /**
+         * @brief Should only be called when loading additional quests from file.
+         */
+        public static void AddQuest()
+        {
+
         }
 
         public static Quest GetQuest(QuestId questId)
@@ -3046,6 +3054,49 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 return new CDataQuestCommand() { Command = commandId, Param01 = param01, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
+        }
+
+        public class NotifyCommand
+        {
+            /**
+             * @brief Used to send progress work values with unknown names
+             */
+            public static CDataQuestProgressWork Unknown(uint commandNo, int work01 = 0, int work02 = 0, int work03 = 0, int work04 = 0)
+            {
+                return new CDataQuestProgressWork() { CommandNo = commandNo, Work01 = work01, Work02 = work02, Work03 = work03, Work04 = work04 };
+            }
+
+            /**
+             * @brief
+             * @param flagNo
+             * @param stageNo
+             * @param groupNo
+             */
+            public static CDataQuestProgressWork KilledTargetEnemySetGroup(int flagNo, StageNo stageNo, int groupNo, int work04 = 0)
+            {
+                return new CDataQuestProgressWork() { CommandNo = (uint) QuestNotifyCommand.KilledTargetEnemySetGroup, Work01 = flagNo, Work02 = (int)stageNo, Work03 = groupNo, Work04 = work04 };
+            }
+
+            /**
+             * @brief
+             * @param flagNo
+             * @param stageNo
+             * @param groupNo
+             */
+            public static CDataQuestProgressWork KilledTargetEmSetGrpNoMarker(int flagNo, StageNo stageNo, int groupNo, int work04 = 0)
+            {
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.KilledTargetEmSetGrpNoMarker, Work01 = flagNo, Work02 = (int)stageNo, Work03 = groupNo, Work04 = work04 };
+            }
+
+            /**
+             * @brief
+             * @param npcId
+             */
+            public static CDataQuestProgressWork KilledTargetEnemySetGroup1(NpcId npcId, int work02 = 0, int work03 = 0, int work04 = 0)
+            {
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem, Work01 = (int) npcId, Work02 = work02, Work03 = work03, Work04 = work04 };
+            }
+
         }
     }
 }

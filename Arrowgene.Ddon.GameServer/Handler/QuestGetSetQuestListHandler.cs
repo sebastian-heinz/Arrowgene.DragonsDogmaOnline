@@ -20,13 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetQuestPartyBonusListHandler));
 
-        private readonly QuestAsset _QuestAssets;
-        private readonly QuestManager _QuestManager;
-
         public QuestGetSetQuestListHandler(DdonGameServer server) : base(server)
         {
-            _QuestAssets = server.AssetRepository.QuestAsset;
-            _QuestManager = server.QuestManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestGetSetQuestListReq> packet)

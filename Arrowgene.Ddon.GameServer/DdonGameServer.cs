@@ -69,7 +69,6 @@ namespace Arrowgene.Ddon.GameServer
             WalletManager = new WalletManager(database);
             CharacterManager = new CharacterManager(this);
             BazaarManager = new BazaarManager(this);
-            QuestManager = new QuestManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -77,6 +76,9 @@ namespace Arrowgene.Ddon.GameServer
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
             StageList = stageListPacket.StageList;
+
+            // Load Builtin quests
+            QuestManager.LoadQuests();
         }
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
@@ -93,8 +95,6 @@ namespace Arrowgene.Ddon.GameServer
         public EquipManager EquipManager { get; }
         public BazaarManager BazaarManager { get; }
         public GameRouter Router { get; }
-
-        public QuestManager QuestManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
