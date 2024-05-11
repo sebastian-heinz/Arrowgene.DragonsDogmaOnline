@@ -10,6 +10,15 @@ public class ChatMessageLogEntry
     {
     }
 
+    public ChatMessageLogEntry(uint characterId, string firstName, string lastName, ChatMessage chatMessage)
+    {
+        DateTime = DateTime.UtcNow;
+        FirstName = firstName;
+        LastName = lastName;
+        CharacterId = characterId;
+        ChatMessage = chatMessage;
+    }
+
     public ChatMessageLogEntry(Character character, ChatMessage chatMessage)
     {
         DateTime = DateTime.UtcNow;
@@ -20,6 +29,7 @@ public class ChatMessageLogEntry
     }
 
     public DateTime DateTime { get; set; }
+    public long UnixTimeMillis { get => ((DateTimeOffset) DateTime.SpecifyKind(this.DateTime, DateTimeKind.Utc)).ToUnixTimeMilliseconds(); }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public uint CharacterId { get; set; }

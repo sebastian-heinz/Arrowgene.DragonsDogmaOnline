@@ -25,7 +25,8 @@ namespace Arrowgene.Ddon.Rpc.Command
                 _entry.LastName, 
                 _entry.ChatMessage.Type, 
                 gameServer.ClientLookup.GetAll()
-                );
+            );
+            gameServer.ChatLogHandler.AddEntry(0, _entry.FirstName, _entry.LastName, _entry.ChatMessage);
             return new RpcCommandResult(this, true);
         }
         

@@ -2,6 +2,7 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
+using Arrowgene.WebServer.Middleware;
 using Arrowgene.WebServer.Route;
 using Arrowgene.WebServer.Server;
 using Arrowgene.WebServer.Server.Kestrel;
@@ -33,10 +34,19 @@ namespace Arrowgene.Ddon.WebServer
                 Logger.Info(servingFile);
             }
 
-            _webService.AddMiddleware(staticFile);
+            AddMiddleware(staticFile);
 
             AddRoute(new IndexRoute());
             AddRoute(new AccountRoute(database));
+        }
+
+        public void AddMiddleware(IWebMiddleware middleware)
+        {
+            _webService.AddMiddleware(middleware);
+            if (_running)
+            {
+                Logger.Info($"Registered new middleware `{middleware.GetType().Name}`");
+            }
         }
 
         public void AddRoute(IWebRoute route)

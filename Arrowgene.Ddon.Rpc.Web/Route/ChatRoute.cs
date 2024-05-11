@@ -5,7 +5,6 @@ using Arrowgene.Logging;
 using Arrowgene.WebServer;
 using System.Text.Json;
 using Arrowgene.Ddon.GameServer.Chat.Log;
-using static Arrowgene.Ddon.GameServer.Chat.ChatManager;
 
 namespace Arrowgene.Ddon.Rpc.Web.Route
 {
@@ -27,7 +26,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
             {
                 string dateString = request.QueryParameter.Get("since");
                 try {
-                    chat = new ChatCommand(DateTime.Parse(dateString));
+                    chat = new ChatCommand(ParseSinceDate(dateString));
                 }
                 catch(FormatException e)
                 {
@@ -85,5 +84,19 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
             }
         }
 
+        private static long ParseSinceDate(string dateString)
+        {
+            if(DateTime.TryParse(dateString, out DateTime date))
+            {
+                return ((DateTimeOffset) DateTime.SpecifyKind(date, DateTimeKind.Utc)).ToUnixTimeMilliseconds();
+            }
+
+            if(long.TryParse(dateString, out long unixTimeMillis))
+            {
+                return unixTimeMillis;
+            }
+
+            throw new FormatException();
+        }
     }
 }
