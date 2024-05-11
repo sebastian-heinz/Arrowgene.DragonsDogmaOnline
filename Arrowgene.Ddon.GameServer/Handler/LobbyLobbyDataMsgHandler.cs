@@ -13,13 +13,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LobbyLobbyDataMsgHandler));
 
         // List of lobby areas, where you're supposed to see all other players.
-        // TODO: Complete with all the safe areas. Maybe move it to DB or config?
+        // TODO: Complete with all the safe areas.
         private static readonly HashSet<uint> LobbyStageIds = new HashSet<uint>(){
             2, // White Dragon Temple
+            5, // Cave Harbor
+            340, // Morfaul Centrum
             341, // Dana Centrum
-            486, // Fortress City Megado: Residential Level
+            377, // Glyndwr Centrum
+            467, // Fort Thines
+            341, // Dana Centrum
             487, // Fortress City Megado: Residential Level
-            488, // Fortress City Megado: Royal Palace Level
         };
 
         private readonly PartyManager _PartyManager;
