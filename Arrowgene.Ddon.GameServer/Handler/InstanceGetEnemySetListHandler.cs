@@ -46,6 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (quest.HasEnemiesInCurrentStageGroup(client.Character.StageNo, stageId.GroupId, subGroupId))
                 {
                     response.QuestId = (uint) questId;
+                    break;
                 }
             }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Enemies;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -48,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     LayerNo = layerNo,
                     GroupId = groupId
                 };
-                List<Enemy> enemySpawns = client.Party.InstanceEnemyManager.GetAssets(enemyGroup, subGroupId);
+                List<InstancedEnemy> enemySpawns = client.Party.InstanceEnemyManager.GetAssets(enemyGroup, subGroupId);
 
                 if (enemySpawns.Count <= positionIndex)
                 {
