@@ -270,7 +270,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // Obtain source item information
             var tuple = character.Storage.getStorage(fromStorage).Items
                 .Select((item, index) => new { item, slot = (ushort)(index+1) })
-                .Where(tuple => itemUId == tuple.item?.Item1.UId)
+                .Where(tuple => itemUId == tuple.item?.Item1.UId && tuple.item?.Item2 >= num)
                 .First();
             Item item = tuple.item!.Item1;
             ushort fromSlotNo = tuple.slot;
@@ -309,9 +309,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             results.Add(srcUpdateItem);
 
             // Add items to destination storage, adding multiple stacks if needed
-            long itemsToMove = num;
+            uint itemsToMove = Math.Min(num, oldSrcItemNum);
             while(itemsToMove > 0)
             {
+                ushort dstSlotNo;
                 if(toSlotNo != 0)
                 {
                     // Check item in the destination slot
@@ -327,13 +328,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         else
                         {
                             // If there's an item in it, and it's of the same type, add both counts
+                            // TODO: Verify an infinite loop can't happen if it tries to add over the stack limit
+                            // in a slot that already has items
                             oldDstItemNum = itemInDstSlot.Item2;
                         }
-                    } 
+                    }
+                    dstSlotNo = toSlotNo;
                 }
                 else
                 {
-                    // Check if there's already an stack of the item in the dst storage
+                    // Check if there's already an stack of the item in the dst storage that can fit new items
                     var itemInDstStorage = character.Storage.getStorage(toStorage).Items
                         .Select((item, index) => new { item, index })
                         .Where(tuple => itemUId == tuple.item?.Item1.UId && tuple.item?.Item2 < stackLimit)
@@ -343,21 +347,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         // If there's not, get the first free slot
                         oldDstItemNum = 0;
-                        toSlotNo = character.Storage.addStorageItem(item, oldDstItemNum, toStorage);
+                        dstSlotNo = character.Storage.addStorageItem(item, oldDstItemNum, toStorage);
                     }
                     else
                     {
                         // If there is, use that item's stack slot
                         oldDstItemNum = itemInDstStorage.item!.Item2;
-                        toSlotNo = (ushort) (itemInDstStorage.index+1);
+                        dstSlotNo = (ushort) (itemInDstStorage.index+1);
                     }
                 }
 
-                uint sanitizedItemFromToNum = Math.Min(num, oldSrcItemNum);
-                uint newDstItemNum = Math.Min(stackLimit, oldDstItemNum + sanitizedItemFromToNum);
+                uint newDstItemNum = Math.Min(stackLimit, oldDstItemNum + itemsToMove);
                 uint movedItemNum = newDstItemNum - oldDstItemNum;
-                character.Storage.setStorageItem(item, newDstItemNum, toStorage, toSlotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, toStorage, toSlotNo, item.UId, newDstItemNum);
+                character.Storage.setStorageItem(item, newDstItemNum, toStorage, dstSlotNo);
+                server.Database.ReplaceStorageItem(character.CharacterId, toStorage, dstSlotNo, item.UId, newDstItemNum);
 
                 CDataItemUpdateResult dstUpdateItem = new CDataItemUpdateResult();
                 dstUpdateItem.ItemList.ItemUId = itemUId;
@@ -365,7 +368,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 dstUpdateItem.ItemList.ItemNum = newDstItemNum;
                 dstUpdateItem.ItemList.Unk3 = item.Unk3;
                 dstUpdateItem.ItemList.StorageType = toStorage;
-                dstUpdateItem.ItemList.SlotNo = toSlotNo;
+                dstUpdateItem.ItemList.SlotNo = dstSlotNo;
                 dstUpdateItem.ItemList.Color = item.Color; // ?
                 dstUpdateItem.ItemList.PlusValue = item.PlusValue; // ?
                 dstUpdateItem.ItemList.Bind = false;
