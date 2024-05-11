@@ -316,12 +316,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     // Check item in the destination slot
                     Tuple<Item, uint>? itemInDstSlot = character.Storage.getStorageItem(toStorage, toSlotNo);
-                    if(itemInDstSlot != null && itemInDstSlot.Item1.UId != itemUId)
+                    if(itemInDstSlot != null)
                     {
-                        // If there's an item in it, and it's not of the same type, swap items.
-                        // Move the item in the destination slot to the source slot
-                        results.AddRange(MoveItem(server, character, toStorage, itemInDstSlot.Item1.UId, itemInDstSlot.Item2, fromStorage, fromSlotNo));
-                    }
+                        if(itemInDstSlot.Item1.UId != itemUId)
+                        {
+                            // If there's an item in it, and it's not of the same type, swap items.
+                            // Move the item in the destination slot to the source slot
+                            results.AddRange(MoveItem(server, character, toStorage, itemInDstSlot.Item1.UId, itemInDstSlot.Item2, fromStorage, fromSlotNo));
+                        }
+                        else
+                        {
+                            // If there's an item in it, and it's of the same type, add both counts
+                            oldDstItemNum = itemInDstSlot.Item2;
+                        }
+                    } 
                 }
                 else
                 {
