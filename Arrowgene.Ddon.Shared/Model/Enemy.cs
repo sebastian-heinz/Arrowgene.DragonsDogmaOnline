@@ -1,16 +1,44 @@
-﻿using System;
+using System;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
     public class Enemy
     {       
-        public Enemy() {
+        public Enemy()
+        {
             DropsTable = new DropsTable();
         }
 
+        public Enemy(Enemy enemy)
+        {
+            Id = enemy.Id;
+            EnemyId = enemy.Id;
+            NamedEnemyParamsId = enemy.NamedEnemyParamsId;
+            RaidBossId = enemy.RaidBossId;
+            Scale = enemy.Scale;
+            Lv = enemy.Lv;
+            HmPresetNo = enemy.HmPresetNo;
+            StartThinkTblNo = enemy.StartThinkTblNo;
+            RepopNum = enemy.RepopNum;
+            RepopCount = enemy.RepopCount;
+            EnemyTargetTypesId = enemy.EnemyTargetTypesId;
+            MontageFixNo = enemy.MontageFixNo;
+            SetType = enemy.SetType;
+            InfectionType = enemy.InfectionType;
+            IsBossGauge = enemy.IsBossGauge;
+            IsBossBGM = enemy.IsBossBGM;
+            IsManualSet = enemy.IsManualSet;
+            IsAreaBoss = enemy.IsAreaBoss;
+            BloodOrbs = enemy.BloodOrbs;
+            HighOrbs = enemy.HighOrbs;
+            SpawnTimeStart = enemy.SpawnTimeStart;
+            SpawnTimeEnd = enemy.SpawnTimeEnd;
+            Experience = enemy.Experience;
+            DropsTable = enemy.DropsTable;
+        }
+
         public uint Id { get; set; }
-        public TimeSpan Time { get; set; }
 
         public uint EnemyId { get; set; }
         public uint NamedEnemyParamsId { get; set; }

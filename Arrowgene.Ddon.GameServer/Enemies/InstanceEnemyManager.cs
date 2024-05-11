@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Enemies;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 
-public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, Enemy>
+public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedEnemy>
 {
     // Taken from the pcaps. A few days before DDOn release. Wednesday, 26 August 2015 15:00:00
     private static readonly long ORIGINAL_REAL_TIME_SEC = 0x55DDD470;
@@ -25,9 +26,9 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, Enemy>
         return _assetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, subGroupId)) ?? new List<Enemy>();
     }
 
-    protected override List<Enemy> InstanceAssets(List<Enemy> originals)
+    protected override List<InstancedEnemy> InstanceAssets(List<Enemy> originals)
     {
-        List<Enemy> filteredEnemyList = new List<Enemy>();
+        List<InstancedEnemy> filteredEnemyList = new List<InstancedEnemy>();
         foreach(Enemy original in originals)
         {
             // Calculate current game time
@@ -39,12 +40,12 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, Enemy>
                 // Morning range is 0 (midnight) to end time, Evening range is start time and onwards
                 if(gameTimeMSec <= original.SpawnTimeEnd || gameTimeMSec >= original.SpawnTimeStart)
                 {
-                    filteredEnemyList.Add(original);
+                    filteredEnemyList.Add(new InstancedEnemy(original));
                 }
             }
             else if(gameTimeMSec >= original.SpawnTimeStart && gameTimeMSec <= original.SpawnTimeEnd)
             {
-                filteredEnemyList.Add(original);
+                filteredEnemyList.Add(new InstancedEnemy(original));
             }
         }
         return filteredEnemyList;

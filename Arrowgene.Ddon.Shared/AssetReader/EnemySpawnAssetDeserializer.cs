@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -128,26 +128,27 @@ namespace Arrowgene.Ddon.Shared.Csv
 
             return asset;
         }
-                // this converts the time (07:00,18:00) as example, down into milliseconds, via splitting into hours/minutes and then combining each respect time into start/end
-            public void ConvertSpawnTimeToMilliseconds(string SpawnTime, out long startMilliseconds, out long endMilliseconds)
-            {
-                // Split the spawnTime string at the comma to get start and end times
-                string[] spawnTimes = SpawnTime.Split(',');
 
-                // Split the start time at the colon to get hours and minutes
-                string[] startTimeComponents = spawnTimes[0].Split(':');
-                int startHours = int.Parse(startTimeComponents[0]);
-                int startMinutes = int.Parse(startTimeComponents[1]);
+        // this converts the time (07:00,18:00) as example, down into milliseconds, via splitting into hours/minutes and then combining each respect time into start/end
+        public void ConvertSpawnTimeToMilliseconds(string SpawnTime, out long startMilliseconds, out long endMilliseconds)
+        {
+            // Split the spawnTime string at the comma to get start and end times
+            string[] spawnTimes = SpawnTime.Split(',');
 
-                // Split the end time at the colon to get hours and minutes
-                string[] endTimeComponents = spawnTimes[1].Split(':');
-                int endHours = int.Parse(endTimeComponents[0]);
-                int endMinutes = int.Parse(endTimeComponents[1]);
+            // Split the start time at the colon to get hours and minutes
+            string[] startTimeComponents = spawnTimes[0].Split(':');
+            int startHours = int.Parse(startTimeComponents[0]);
+            int startMinutes = int.Parse(startTimeComponents[1]);
 
-                // Convert hours and minutes into milliseconds
-                startMilliseconds = (startHours * 3600000) + (startMinutes * 60000);
-                endMilliseconds = (endHours * 3600000) + (endMinutes * 60000);
-            }
+            // Split the end time at the colon to get hours and minutes
+            string[] endTimeComponents = spawnTimes[1].Split(':');
+            int endHours = int.Parse(endTimeComponents[0]);
+            int endMinutes = int.Parse(endTimeComponents[1]);
+
+            // Convert hours and minutes into milliseconds
+            startMilliseconds = (startHours * 3600000) + (startMinutes * 60000);
+            endMilliseconds = (endHours * 3600000) + (endMinutes * 60000);
+        }
 
         protected uint ParseHexUInt(string str)
         {
