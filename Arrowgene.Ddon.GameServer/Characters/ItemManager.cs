@@ -270,7 +270,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // Obtain source item information
             var tuple = character.Storage.getStorage(fromStorage).Items
                 .Select((item, index) => new { item, slot = (ushort)(index+1) })
-                .Where(tuple => itemUId == tuple.item?.Item1.UId)
+                .Where(tuple => itemUId == tuple.item?.Item1.UId && tuple.item?.Item2 >= num)
                 .First();
             Item item = tuple.item!.Item1;
             ushort fromSlotNo = tuple.slot;
