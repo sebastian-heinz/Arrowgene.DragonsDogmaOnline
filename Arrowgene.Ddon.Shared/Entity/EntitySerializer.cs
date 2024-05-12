@@ -365,6 +365,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnGetRegisteredPawnDataReq.Serializer());
             Create(new C2SPawnJoinPartyMypawnReq.Serializer());
             Create(new C2SPawnPawnLostReq.Serializer());
+            Create(new C2SPawnSpSkillDeleteStockSkillReq.Serializer());
+            Create(new C2SPawnSpSkillGetActiveSkillReq.Serializer());
+            Create(new C2SPawnSpSkillGetStockSkillReq.Serializer());
+            Create(new C2SPawnSpSkillSetActiveSkillReq.Serializer());
             Create(new C2SPawnTrainingGetPreparetionInfoToAdviceReq.Serializer());
             Create(new C2SPawnTrainingGetTrainingStatusReq.Serializer());
             Create(new C2SPawnTrainingSetTrainingStatusReq.Serializer());
@@ -651,6 +655,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnGetRegisteredPawnDataRes.Serializer());
             Create(new S2CPawnJoinPartyMypawnRes.Serializer());
             Create(new S2CPawnPawnLostRes.Serializer());
+            Create(new S2CPawnSpSkillDeleteStockSkillRes.Serializer());
+            Create(new S2CPawnSpSkillGetActiveSkillRes.Serializer());
+            Create(new S2CPawnSpSkillGetStockSkillRes.Serializer());
+            Create(new S2CPawnSpSkillSetActiveSkillRes.Serializer());
             Create(new S2CPawnTrainingGetPreparetionInfoToAdviceRes.Serializer());
             Create(new S2CPawnTrainingGetTrainingStatusRes.Serializer());
             Create(new S2CPawnTrainingSetTrainingStatusRes.Serializer());
