@@ -7,12 +7,14 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class StageAreaChangeHandler : StructurePacketHandler<GameClient, C2SStageAreaChangeReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageAreaChangeHandler));
+        private readonly CharacterManager _CharacterManager;
 
         // List of "safe" areas, where the context reset NTC will be sent.
         // TODO: Complete with all the safe areas. Maybe move it to DB or config?
@@ -22,6 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public StageAreaChangeHandler(DdonGameServer server) : base(server)
         {
+            _CharacterManager = server.CharacterManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SStageAreaChangeReq> packet)
@@ -42,6 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if(client.Party.GetPlayerPartyMember(client).IsLeader && SafeStageIds.Contains(packet.Structure.StageId))
             {
+                _CharacterManager.ResetAllOmData(client.Character);
                 client.Party.SendToAll(new S2CInstanceAreaResetNtc());
                 client.Party.ResetInstance();
             }

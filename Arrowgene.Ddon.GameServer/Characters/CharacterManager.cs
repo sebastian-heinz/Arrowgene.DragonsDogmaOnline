@@ -215,5 +215,100 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
         }
+
+        public void SetOmData(Character character, uint stageId, ulong key, uint value)
+        {
+            lock (character.OmData)
+            {
+                if (!character.OmData.ContainsKey(stageId))
+                {
+                    character.OmData[stageId] = new Dictionary<ulong, uint>();
+                }
+
+                character.OmData[stageId][key] = value;
+            }
+        }
+
+        public uint GetOmData(Character character, uint stageId, ulong key)
+        {
+            uint result = 0;
+            lock (character.OmData)
+            {
+                if (!character.OmData.ContainsKey(stageId) || !character.OmData[stageId].ContainsKey(key))
+                {
+                    result = 0;
+                }
+                else
+                {
+                    result = character.OmData[stageId][key];
+                }
+            }
+
+            return result;
+        }
+
+        public Dictionary<ulong, uint> GetAllOmData(Character character, uint stageId)
+        {
+            Dictionary<ulong, uint> result = new Dictionary<ulong, uint>();
+            lock (character.OmData)
+            {
+                if (character.OmData.ContainsKey(stageId))
+                {
+                    // Make a shallow clone to return (dict is only integral types)
+                    result = new Dictionary<ulong, uint>(character.OmData[stageId]);
+                }
+            }
+            return result;
+        }
+
+        public uint ExchangeOmData(Character character, uint stageId, ulong key, uint value)
+        {
+            uint oldValue = 0;
+            lock (character.OmData)
+            {
+                if (character.OmData.ContainsKey(stageId) && character.OmData[stageId].ContainsKey(key))
+                {
+                    oldValue = character.OmData[stageId][key];
+                }
+
+                if (!character.OmData.ContainsKey(stageId))
+                {
+                    character.OmData[stageId] = new Dictionary<ulong, uint>();
+                }
+
+                character.OmData[stageId][key] = value;
+            }
+            return oldValue;
+        }
+
+        public void ClearOmData(Character character, uint stageId, ulong key)
+        {
+            lock (character.OmData)
+            {
+                if (character.OmData.ContainsKey(stageId) && character.OmData[stageId].ContainsKey(key))
+                {
+                    character.OmData[stageId].Remove(key);
+                }
+            }
+        }
+
+        public void ClearAllOmData(Character character, uint stageId)
+        {
+            lock (character.OmData)
+            {
+                if (character.OmData.ContainsKey(stageId))
+                {
+                    character.OmData.Remove(stageId);
+                }
+            }
+        }
+
+        public void ResetAllOmData(Character character)
+        {
+            lock (character.OmData)
+            {
+                character.OmData.Clear();
+            }
+        }
     }
 }

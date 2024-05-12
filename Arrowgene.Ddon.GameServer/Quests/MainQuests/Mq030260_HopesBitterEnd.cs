@@ -240,8 +240,6 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 QuestManager.LayoutFlag.Create(7867, StageNo.EvilDragonsRoost1, 1),
             };
 
-            Logger.Debug(JsonSerializer.Serialize<CDataQuestList>(quest));
-
             return quest;
         }
 
@@ -1036,7 +1034,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             },
             #endregion
             #region PROCESS11
-            [11] = new List<CDataQuestProcessState>() 
+            [11] = new List<CDataQuestProcessState>()
             {
                 new CDataQuestProcessState()
                 {

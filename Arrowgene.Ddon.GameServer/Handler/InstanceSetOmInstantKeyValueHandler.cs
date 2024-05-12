@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -11,22 +12,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceSetOmInstantKeyValueHandler));
 
+        private CharacterManager _CharacterManager;
 
         public InstanceSetOmInstantKeyValueHandler(DdonGameServer server) : base(server)
         {
+            _CharacterManager = server.CharacterManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceSetOmInstantKeyValueReq> req)
         {
-            S2CInstanceSetOmInstantKeyValueRes res = new S2CInstanceSetOmInstantKeyValueRes(req.Structure);
-            res.StageId = client.Character.Stage.Id;
-            client.Send(res);
+            _CharacterManager.SetOmData(client.Character, client.Character.Stage.Id, req.Structure.Key, req.Structure.Value);
 
-            S2CInstance_13_20_16_Ntc ntc = new S2CInstance_13_20_16_Ntc();
+            S2CInstanceSetOmInstantKeyValueNtc ntc = new S2CInstanceSetOmInstantKeyValueNtc();
             ntc.StageId = client.Character.Stage.Id;
-            ntc.Data0 = req.Structure.Data0;
-            ntc.Data1 = req.Structure.Data1;
-            client.Send(ntc);
+            ntc.Key = req.Structure.Key;
+            ntc.Value = req.Structure.Value;
+            client.Send(ntc); // Should this be sendtoall?
+
+            S2CInstanceSetOmInstantKeyValueRes res = new S2CInstanceSetOmInstantKeyValueRes();
+            res.StageId = client.Character.Stage.Id;
+            res.Key = req.Structure.Key;
+            res.Value = req.Structure.Value;
+            client.Send(res);
         }
     }
 }

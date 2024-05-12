@@ -21,14 +21,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            // client.Send(InGameDump.Dump_58);
-            S2CAreaGetAreaBaseInfoListRes pcap = EntitySerializer.Get<S2CAreaGetAreaBaseInfoListRes>().Read(InGameDump.data_Dump_58);
-            foreach (var areaBaseInfo in pcap.AreaBaseInfoList)
-            {
-                areaBaseInfo.Rank = 15;
-                areaBaseInfo.CanRankUp = false;
-            }
-            client.Send(pcap);
+            client.Send(InGameDump.Dump_58);
+            // S2CAreaGetAreaBaseInfoListRes pcap = EntitySerializer.Get<S2CAreaGetAreaBaseInfoListRes>().Read(InGameDump.data_Dump_58);
+            // foreach (var areaBaseInfo in pcap.AreaBaseInfoList)
+            // {
+            //    areaBaseInfo.Rank = 15;
+            //    areaBaseInfo.CanRankUp = false;
+            // }
+            // client.Send(pcap);
         }
     }
 }
