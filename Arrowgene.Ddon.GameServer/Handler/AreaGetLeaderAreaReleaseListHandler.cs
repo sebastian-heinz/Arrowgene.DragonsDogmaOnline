@@ -20,10 +20,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            // client.Send(GameFull.Dump_117);
+            client.Send(GameFull.Dump_117);
 
-            S2CAreaGetLeaderAreaReleaseListRes res = new S2CAreaGetLeaderAreaReleaseListRes();
-            client.Send(res);
+            // S2CAreaGetLeaderAreaReleaseListRes res = new S2CAreaGetLeaderAreaReleaseListRes();
+            // client.Send(res);
         }
     }
 }
