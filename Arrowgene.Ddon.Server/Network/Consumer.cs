@@ -17,6 +17,8 @@ namespace Arrowgene.Ddon.Server.Network
         private readonly ServerSetting _setting;
         private readonly IClientFactory<TClient> _clientFactory;
 
+        private IPacketHandler<TClient> _fallbackPacketHandler;
+        
         public Action<TClient> ClientDisconnected;
         public Action<TClient> ClientConnected;
 
@@ -46,6 +48,11 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 _packetHandlerLookup.Add(packetHandler.Id, packetHandler);
             }
+        }
+
+        public void SetFallbackHandler(IPacketHandler<TClient> packetHandler)
+        {
+            _fallbackPacketHandler = packetHandler;
         }
 
         protected override void HandleReceived(ITcpSocket socket, byte[] data)
@@ -79,6 +86,12 @@ namespace Arrowgene.Ddon.Server.Network
             if (!_packetHandlerLookup.ContainsKey(packet.Id))
             {
                 Logger.LogUnhandledPacket(client, packet);
+
+                if(_fallbackPacketHandler != null)
+                {
+                    _fallbackPacketHandler.Handle(client, packet);
+                }
+
                 return;
             }
 
