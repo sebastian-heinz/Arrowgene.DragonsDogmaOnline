@@ -3,40 +3,44 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CInstanceExchangeOmInstantKeyValueRes : IPacketStructure
+    public class S2CInstanceExchangeOmInstantKeyValueRes : ServerResponse
     {
-        public PacketId Id => PacketId.S2C_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_RES;
+        public override PacketId Id => PacketId.S2C_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_RES;
         
         public S2CInstanceExchangeOmInstantKeyValueRes()
         {
             StageId = 0;
-            Data0 = 0;
-            Data1 = 0;
+            Key = 0;
+            Value = 0;
+            OldValue = 0;
         }
 
         public uint StageId { get; set; }
-        public ulong Data0 { get; set; }
-        public uint Data1 { get; set; }
+        public ulong Key { get; set; }
+        public uint Value { get; set; }
+        public uint OldValue { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CInstanceExchangeOmInstantKeyValueRes>
         {
             public override void Write(IBuffer buffer, S2CInstanceExchangeOmInstantKeyValueRes obj)
             {
-                WriteUInt64(buffer, 0);
+                WriteServerResponse(buffer, obj);
                 WriteUInt32(buffer, obj.StageId);
-                WriteUInt64(buffer, obj.Data0);
-                WriteUInt32(buffer, obj.Data1);
-                WriteByteArray(buffer, obj.ResData);
+                WriteUInt64(buffer, obj.Key);
+                WriteUInt32(buffer, obj.Value);
+                WriteUInt32(buffer, obj.OldValue);
             }
 
             public override S2CInstanceExchangeOmInstantKeyValueRes Read(IBuffer buffer)
             {
                 S2CInstanceExchangeOmInstantKeyValueRes obj = new S2CInstanceExchangeOmInstantKeyValueRes();
+                ReadServerResponse(buffer, obj);
+                obj.StageId = ReadUInt32(buffer);
+                obj.Key = ReadUInt64(buffer);
+                obj.Value = ReadUInt32(buffer);
+                obj.OldValue = ReadUInt32(buffer);
                 return obj;
             }
         }
-
-        private readonly byte[] ResData = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-
     }
 }

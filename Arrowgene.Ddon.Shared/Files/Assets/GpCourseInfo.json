@@ -1,0 +1,852 @@
+﻿{
+  "comment": [
+    "You can find official course effects described at https://web.archive.org/web/20170711054053/https://members.dd-on.jp/shop/payment/stone/top",
+    "",
+    "It is possible to modify this file to change the course which is available to be used.",
+    "The 'valid_courses' key, contains a list of all valid courses for every character on the server.",
+    "The 'course_id' field corresponds to the 'id' field of the objects in the 'courses' key.",
+    "The 'start_time' and 'end_time' values are in unix timestamp format."
+  ],
+  "valid_courses": [
+    {
+      "course_id": 17,
+      "start_time": 1440993600,
+      "end_time": 4103413199,
+      "comment": "Course 17 valid until the year 2100"
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "name": "冒険パスポート",
+      "comment": "Adventure Passport",
+      "icon_path": "",
+      "description": "Resurrection power is restored as many times as you like！ A set of basic services that make playing DDON useful, such as expanding storage boxes.",
+      "url": "https://web.archive.org/web/20170711035052/https://members.dd-on.jp/shop/payment/course/1",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 70,
+      "announce_type": 2,
+      "effects": [ 1, 2, 3, 5, 6, 7, 9, 10, 11, 40, 41, 44, 50, 52, 128, 213, 215, 218, 253 ]
+    },
+    {
+      "id": 2,
+      "name": "報酬サポートコース",
+      "comment": "Reward Support Course",
+      "icon_path": "",
+      "description": "Rarely small items are available！ Acquisition amount of rims and blood orbs, acquisition number of collection/mining/treasure boxes, etc.",
+      "url": "https://web.archive.org/web/20170711035052/https://members.dd-on.jp/shop/payment/course/2",
+      "target": 1,
+      "priority_grp": 100,
+      "priority_same_time": 40,
+      "announce_type": 3,
+      "effects": [ 12, 13, 14, 15, 16, 17, 51, 59, 149 ]
+    },
+    {
+      "id": 3,
+      "name": "成長サポートコース",
+      "comment": "Growth Support Course",
+      "icon_path": "",
+      "description": "Experience of learners and pawns, a course to help grow learners and pawns that also raise area points！",
+      "url": "https://web.archive.org/web/20170711035052/https://members.dd-on.jp/shop/payment/course/3",
+      "target": 1,
+      "priority_grp": 100,
+      "priority_same_time": 30,
+      "announce_type": 3,
+      "effects": [ 18, 19, 20, 22, 23, 25, 26, 27, 70, 119, 150, 151, 208, 209, 210, 211, 212, 246, 254 ]
+    },
+    {
+      "id": 4,
+      "name": "安心アシストコース",
+      "comment": "Reliable Assist Course",
+      "icon_path": "",
+      "description": "Reduces damage to learners and pawns, as well as accumulation of abnormal conditions！ It reduces the danger of adventure and provides a reassuring life.",
+      "url": "https://web.archive.org/web/20170711035052/https://members.dd-on.jp/shop/payment/course/4",
+      "target": 1,
+      "priority_grp": 100,
+      "priority_same_time": 50,
+      "announce_type": 3,
+      "effects": [ 71, 72, 73, 74, 75 ]
+    },
+    {
+      "id": 5,
+      "name": "ダブル発動特典",
+      "comment": "Double Activation Benefit",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 90,
+      "priority_same_time": 20,
+      "announce_type": 1,
+      "effects": [ 189, 190, 191, 192, 193, 194, 195, 196, 248, 255, 266 ]
+    },
+    {
+      "id": 6,
+      "name": "トリプル発動特典",
+      "comment": "Triple Activation Benefit",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 80,
+      "priority_same_time": 10,
+      "announce_type": 1,
+      "effects": [ 197, 198, 199, 200, 201, 202, 203, 204, 247, 256, 264, 265, 267 ]
+    },
+    {
+      "id": 7,
+      "name": "グランドミッションコース",
+      "comment": "Grand Mission Course",
+      "icon_path": "",
+      "description": "Grand Mission Earnings Score and Job Points Up！Cumulative score rewards make it easier to aim for high rank rewards！",
+      "url": "https://web.archive.org/web/20170711035052/https://members.dd-on.jp/shop/payment/course/7",
+      "target": 0,
+      "priority_grp": 200,
+      "priority_same_time": 100,
+      "announce_type": 1,
+      "effects": []
+    },
+    {
+      "id": 8,
+      "name": "ネットカフェ特典コース",
+      "comment": "Internet Cafe Special Course",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 50,
+      "priority_same_time": 0,
+      "announce_type": 1,
+      "effects": [ 49, 1, 2, 3, 5, 6, 7, 9, 10, 11, 40, 41, 44, 50, 52, 128, 213, 215, 218, 253, 12, 13, 14, 15, 16, 17, 51, 59, 149, 18, 19, 20, 22, 23, 25, 26, 27, 70, 119, 150, 151, 208, 209, 210, 211, 212, 246, 254, 189, 190, 191, 192, 193, 194, 195, 196, 248, 255, 266, 69, 216, 217 ]
+    },
+    {
+      "id": 9,
+      "name": "格納チェストパスポート1",
+      "comment": "Storage Chest Passport 1",
+      "icon_path": "",
+      "description": "Store 400 additional items！A passport that makes playing DDON even more convenient！",
+      "url": "https://web.archive.org/web/20170711035052/https://members.dd-on.jp/shop/payment/course/9",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 80,
+      "announce_type": 2,
+      "effects": [ 69 ]
+    },
+    {
+      "id": 10,
+      "name": "討伐経験値5倍コース",
+      "comment": "Subjugation Experience Value 5x Course",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 25,
+      "announce_type": 3,
+      "effects": [ 76, 77, 78 ]
+    },
+    {
+      "id": 11,
+      "name": "格納チェストパスポート2",
+      "comment": "Storage Chest Passport 2",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 85,
+      "announce_type": 2,
+      "effects": [ 216 ]
+    },
+    {
+      "id": 12,
+      "name": "格納チェストパスポート3",
+      "comment": "Storage Chest Passport 3",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 90,
+      "announce_type": 2,
+      "effects": [ 217 ]
+    },
+    {
+      "id": 13,
+      "name": "PP獲得量3倍コース",
+      "comment": "3x PP Acquisition Course",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 24,
+      "announce_type": 3,
+      "effects": [ 219 ]
+    },
+    {
+      "id": 14,
+      "name": "PP獲得量5倍コース",
+      "comment": "5x PP Acquisition Course",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 23,
+      "announce_type": 3,
+      "effects": [ 229 ]
+    },
+    {
+      "id": 15,
+      "name": "全コース無料開放",
+      "comment": "All courses free of charge",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 20,
+      "priority_same_time": 0,
+      "announce_type": 3,
+      "effects": [ 1, 2, 3, 5, 6, 7, 9, 10, 11, 40, 41, 44, 50, 52, 128, 213, 215, 218, 253, 12, 13, 14, 15, 16, 17, 51, 59, 149, 18, 19, 20, 22, 23, 25, 26, 27, 70, 119, 150, 151, 208, 209, 210, 211, 212, 246, 254, 71, 72, 73, 74, 75, 69, 216, 217 ]
+    },
+    {
+      "id": 16,
+      "name": "PP獲得量5倍コースⅡ",
+      "comment": "5x PP Acquisition Course II",
+      "icon_path": "",
+      "description": "",
+      "url": "",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 22,
+      "announce_type": 3,
+      "effects": [ 261, 262 ]
+    },
+    {
+      "id": 17,
+      "name": "Arrowgene QOL Course",
+      "comment": "Example of custom made course effect.",
+      "icon_path": "",
+      "description": "Allows item boxes to be used outside the main city, enable expanded storage tabs and allows craft items to be consumed from the storage box.",
+      "url": "",
+      "target": 0,
+      "priority_grp": 100,
+      "priority_same_time": 70,
+      "announce_type": 2,
+      "effects": [ 2, 3, 69, 216, 217, 128 ]
+    }
+  ],
+  "effects": [
+    {
+      "uid": 1,
+      "id": 1,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_INFINITE_REVIVE"
+    },
+    {
+      "uid": 2,
+      "id": 2,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_STRAGE_EXTEND"
+    },
+    {
+      "uid": 3,
+      "id": 3,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_EXTRA_STRAGE_BOX"
+    },
+    {
+      "uid": 5,
+      "id": 5,
+      "param0": 100,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_FREE_MY_WARP_POINT"
+    },
+    {
+      "uid": 6,
+      "id": 6,
+      "param0": 50,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_WARP_DISCOUNT"
+    },
+    {
+      "uid": 7,
+      "id": 7,
+      "param0": 10,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_QUEST_ORDER_LIST_EXTEND"
+    },
+    {
+      "uid": 9,
+      "id": 9,
+      "param0": 5,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_BAZAAR_EXHIBIT_EXTEND"
+    },
+    {
+      "uid": 10,
+      "id": 10,
+      "param0": 86400,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_BAZAAR_RE_EXHIBIT_SHORTEN"
+    },
+    {
+      "uid": 11,
+      "id": 11,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_AREA_MASTER_SUPPLY"
+    },
+    {
+      "uid": 12,
+      "id": 12,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_WORLD_QUEST_REWARD_REALITY_UP"
+    },
+    {
+      "uid": 13,
+      "id": 13,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_WORLD_QUEST_SPECIAL_REWARD"
+    },
+    {
+      "uid": 14,
+      "id": 14,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_RIM_BQ_REWARD_UP"
+    },
+    {
+      "uid": 15,
+      "id": 15,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_RIM_WQ_REWARD_UP"
+    },
+    {
+      "uid": 16,
+      "id": 16,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_DROP_UP"
+    },
+    {
+      "uid": 17,
+      "id": 17,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_GATHERING_ITEM_NUM_UP"
+    },
+    {
+      "uid": 18,
+      "id": 18,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 19,
+      "id": 19,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_BQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 20,
+      "id": 20,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_WQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 22,
+      "id": 22,
+      "param0": 150,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_AREA_POINT_BQ_REWARD_UP"
+    },
+    {
+      "uid": 23,
+      "id": 23,
+      "param0": 150,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_AREA_POINT_WQ_REWARD_UP"
+    },
+    {
+      "uid": 25,
+      "id": 25,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 26,
+      "id": 26,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_BQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 27,
+      "id": 27,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_WQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 40,
+      "id": 28,
+      "param0": 150,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_CRAFT_EXP_UP"
+    },
+    {
+      "uid": 41,
+      "id": 4,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ALL_RELEASE_WARP_POINT"
+    },
+    {
+      "uid": 44,
+      "id": 38,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_REVIVE_BY_RIM"
+    },
+    {
+      "uid": 49,
+      "id": 40,
+      "param0": 1500,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_REGULARLY_SEND_MAIL"
+    },
+    {
+      "uid": 50,
+      "id": 34,
+      "param0": 50,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_RESCUE_MOTION_SHORTEN"
+    },
+    {
+      "uid": 51,
+      "id": 37,
+      "param0": 150,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_BLOOD_ORB_UP"
+    },
+    {
+      "uid": 52,
+      "id": 35,
+      "param0": 100,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_STAY_DISCOUNT"
+    },
+    {
+      "uid": 59,
+      "id": 41,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_EXM_REWARD_UP"
+    },
+    {
+      "uid": 69,
+      "id": 42,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_BAGGAGE_RENTAL01"
+    },
+    {
+      "uid": 70,
+      "id": 43,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_DISABLE_PARTY_ADJUST_ENEMY_EXP"
+    },
+    {
+      "uid": 71,
+      "id": 44,
+      "param0": 50,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_INCOMING_DAMAGE_CUT_OFF"
+    },
+    {
+      "uid": 72,
+      "id": 45,
+      "param0": 125,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENDURANCE_UP"
+    },
+    {
+      "uid": 73,
+      "id": 46,
+      "param0": 50,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_DEBUFF_DAMAGE_CUT_OFF"
+    },
+    {
+      "uid": 74,
+      "id": 47,
+      "param0": 66,
+      "param1": 200,
+      "comment": "GP_COURSE_EFFECT_ENABLE_LEVER_GACHA_ASSIST"
+    },
+    {
+      "uid": 75,
+      "id": 48,
+      "param0": 350,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_AUTO_RESCUE"
+    },
+    {
+      "uid": 76,
+      "id": 18,
+      "param0": 500,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 77,
+      "id": 25,
+      "param0": 500,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 78,
+      "id": 43,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_DISABLE_PARTY_ADJUST_ENEMY_EXP"
+    },
+    {
+      "uid": 119,
+      "id": 49,
+      "param0": 200,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
+    },
+    {
+      "uid": 128,
+      "id": 50,
+      "param0": 0,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_CRAFT_BAGGAGE_EXTEND"
+    },
+    {
+      "uid": 149,
+      "id": 51,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 150,
+      "id": 52,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 151,
+      "id": 53,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 189,
+      "id": 18,
+      "param0": 250,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 190,
+      "id": 19,
+      "param0": 250,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 191,
+      "id": 20,
+      "param0": 250,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_WQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 192,
+      "id": 52,
+      "param0": 250,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 193,
+      "id": 25,
+      "param0": 250,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 194,
+      "id": 26,
+      "param0": 250,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_BQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 195,
+      "id": 27,
+      "param0": 250,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_WQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 196,
+      "id": 53,
+      "param0": 250,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 197,
+      "id": 18,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 198,
+      "id": 19,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_BQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 199,
+      "id": 20,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_WQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 200,
+      "id": 52,
+      "param0": 300,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 201,
+      "id": 25,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_ENEMY_EXP_UP"
+    },
+    {
+      "uid": 202,
+      "id": 26,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_BQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 203,
+      "id": 27,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_PAWN_BQ_REWARD_EXP_UP"
+    },
+    {
+      "uid": 204,
+      "id": 53,
+      "param0": 300,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 208,
+      "id": 60,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 209,
+      "id": 61,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 210,
+      "id": 64,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 211,
+      "id": 65,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 212,
+      "id": 59,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 213,
+      "id": 63,
+      "param0": 0,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 215,
+      "id": 57,
+      "param0": 0,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 216,
+      "id": 54,
+      "param0": 0,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 217,
+      "id": 55,
+      "param0": 0,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 218,
+      "id": 62,
+      "param0": 0,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 219,
+      "id": 49,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
+    },
+    {
+      "uid": 229,
+      "id": 49,
+      "param0": 500,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
+    },
+    {
+      "uid": 246,
+      "id": 72,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 247,
+      "id": 49,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
+    },
+    {
+      "uid": 248,
+      "id": 49,
+      "param0": 250,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
+    },
+    {
+      "uid": 253,
+      "id": 58,
+      "param0": 0,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 254,
+      "id": 73,
+      "param0": 200,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 255,
+      "id": 73,
+      "param0": 250,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 256,
+      "id": 73,
+      "param0": 300,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 261,
+      "id": 49,
+      "param0": 500,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_PP_UP"
+    },
+    {
+      "uid": 262,
+      "id": 73,
+      "param0": 500,
+      "param1": 0,
+      "comment": ""
+    },
+    {
+      "uid": 264,
+      "id": 16,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_ENEMY_DROP_UP"
+    },
+    {
+      "uid": 265,
+      "id": 17,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_GATHERING_ITEM_NUM_UP"
+    },
+    {
+      "uid": 266,
+      "id": 37,
+      "param0": 250,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_BLOOD_ORB_UP"
+    },
+    {
+      "uid": 267,
+      "id": 37,
+      "param0": 300,
+      "param1": 0,
+      "comment": "GP_COURSE_EFFECT_BLOOD_ORB_UP"
+    }
+  ]
+}

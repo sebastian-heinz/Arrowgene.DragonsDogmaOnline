@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -8,7 +9,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class PartyPartyInviteEntryHandler : StructurePacketHandler<GameClient, C2SPartyPartyInviteEntryReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyInviteEntryHandler));
+        private static readonly ServerLogger Logger =
+            LogProvider.Logger<ServerLogger>(typeof(PartyPartyInviteEntryHandler));
 
         public PartyPartyInviteEntryHandler(DdonGameServer server) : base(server)
         {
@@ -21,9 +23,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CPartyPartyInviteEntryNtc ntc = new S2CPartyPartyInviteEntryNtc
             {
-                CharacterId = client.Character.Id,
-                NowMember = (uint) client.Party.Members.Count,
-                MaxMember = 4 // TODO: Check if i can place like 20 players or something
+                CharacterId = client.Character.CharacterId,
+                NowMember = (uint)client.Party.MemberCount(),
+                MaxMember = client.Party.MaxSlots // TODO: Check if i can place like 20 players or something
             };
             client.Party.SendToAll(ntc);
         }

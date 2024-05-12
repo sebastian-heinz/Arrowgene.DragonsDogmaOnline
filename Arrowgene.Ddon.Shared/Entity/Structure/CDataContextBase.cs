@@ -7,36 +7,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextBase
     {
-        public CDataContextBase(Character character)
-        {
-            CharacterId = character.Id;
-            FirstName = character.CharacterInfo.FirstName;
-            LastName = character.CharacterInfo.LastName;
-            StageNo = 200; // TODO: Replace with the actual stage the player is in. As it is right now it'll probably give issues when new players join outside of WDT
-            Sex = character.CharacterInfo.EditInfo.Sex;
-            HideEquipHead = character.CharacterInfo.HideEquipHead;
-            HideEquipLantern = character.CharacterInfo.HideEquipLantern;
-            // In the context equipment lists, the index is the slot. A 0,0,0 element has to be in place if a slot is not filled
-            ContextEquipPerformanceList = Enumerable.Range(1, 15)
-                .Select(i => new CDataContextEquipData(character.CharacterInfo.CharacterEquipDataList.SelectMany(x => x.Equips).Where(x => x.EquipSlot == i).SingleOrDefault(new CDataEquipItemInfo())))
-                .ToList();
-            ContextEquipVisualList = Enumerable.Range(1, 15)
-                .Select(i => new CDataContextEquipData(character.CharacterInfo.CharacterEquipViewDataList.SelectMany(x => x.Equips).Where(x => x.EquipSlot == i).SingleOrDefault(new CDataEquipItemInfo())))
-                .ToList();
-            ContextEquipJobItemList = character.CharacterInfo.CharacterEquipJobItemList
-                .Select(x => new CDataContextEquipJobItemData(x)).ToList();
-            ContextNormalSkillList = character.NormalSkills
-                .Where(x => x.Job == character.CharacterInfo.Job)
-                .Select(x => new CDataContextNormalSkillData(x)).ToList();
-            ContextSkillList = character.CustomSkills
-                .Where(x => x.Job == character.CharacterInfo.Job)
-                .Select(x => new CDataContextAcquirementData(x)).ToList();
-            ContextAbilityList = character.Abilities
-                .Where(x => x.Job == character.CharacterInfo.Job)
-                .Select(x => new CDataContextAcquirementData(x)).ToList();
-            Unk0List=new List<CDataContextBaseUnk0>(); // TODO: Figure this one out
-        }
-
         public CDataContextBase()
         {
             FirstName=string.Empty;

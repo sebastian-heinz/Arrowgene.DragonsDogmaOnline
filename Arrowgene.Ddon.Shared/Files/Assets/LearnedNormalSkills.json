@@ -1,0 +1,56 @@
+{
+    "1": [
+        {"skillno": [2], "jp": 700, "level": 9, "type": "GET", "name": "Dire Onslaught"},
+        {"skillno": [4], "jp": 1200, "level": 13, "type": "LVUP", "name": "Strong Guard Break"},
+        {"skillno": [12], "jp": 300, "level": 6, "type": "GET", "name": "Controlled Fall"}
+    ],
+    "2": [
+        {"skillno": [2], "jp": 500, "level": 9, "type": "GET", "name": "Roundhouse Kick"},
+        {"skillno": [4, 16], "jp": 800, "level": 13, "type": "LVUP", "name": "Scarlet/Hundred Slashes"},
+        {"skillno": [14], "jp": 900, "level": 16, "type": "GET", "name": "Double Jump"}
+    ],
+    "3": [
+        {"skillno": [3], "jp": 300, "level": 6, "type": "GET", "name": "Quick Bow Style"},
+        {"skillno": [6], "jp": 700, "level": 9, "type": "GET", "name": "Quick Charge Style"},
+        {"skillno": [7], "jp": 1200, "level": 13, "type": "GET", "name": "Keen Sight"}
+    ],
+    "4": [
+        {"skillno": [3], "jp": 1000, "level": 15, "type": "LVUP", "name": "Great Heal Aura"},
+        {"skillno": [5], "jp": 1000, "level": 15, "type": "LVUP", "name": "Greater Holy Aura"},
+        {"skillno": [8], "jp": 300, "level": 6, "type": "GET", "name": "Floating"}
+    ],
+    "5": [
+        {"skillno": [4], "jp": 300, "level": 6, "type": "LVUP", "name": "Penta Element Change"},
+        {"skillno": [12], "jp": 700, "level": 13, "type": "GET", "name": "Shield Sequence"},
+        {"skillno": [10], "jp": 1200, "level": 18, "type": "LVUP", "name": "More Attract"}
+    ],
+    "6": [
+        {"skillno": [3], "jp": 1200, "level": 15, "type": "GET", "name": "Magick Boost"},
+        {"skillno": [5], "jp": 700, "level": 9, "type": "GET", "name": "Back Move"},
+        {"skillno": [10], "jp": 300, "level": 6, "type": "GET", "name": "Floating"}
+    ],
+    "7": [
+        {"skillno": [2], "jp": 700, "level": 9, "type": "GET", "name": "Devastate"},
+        {"skillno": [4], "jp": 1200, "level": 18, "type": "LVUP", "name": "Indomitable Lash"},
+        {"skillno": [9], "jp": 300, "level": 6, "type": "GET", "name": "Controlled Fall"}
+    ],
+    "8": [
+        {"skillno": [4], "jp": 700, "level": 13, "type": "GET", "name": "Concentration: Seeker"},
+        {"skillno": [8], "jp": 700, "level": 9, "type": "GET", "name": "Concentration: True Aid"},
+        {"skillno": [11], "jp": 800, "level": 16, "type": "GET", "name": "God's Eye: Aim"}
+    ],
+    "9": [
+        {"skillno": [2], "jp": 500, "level": 9, "type": "GET", "name": "Alchemical Radius"},
+        {"skillno": [4, 12], "jp": 800, "level": 13, "type": "LVUP", "name": "Cluster/Concluster Magis"},
+        {"skillno": [10], "jp": 900, "level": 16, "type": "GET", "name": "Rex Leap"}
+    ],
+    "10": [
+        {"skillno": [2], "jp": 1200, "level": 25, "type": "GET", "name": "Thrust More"},
+        {"skillno": [4], "jp": 700, "level": 18, "type": "LVUP", "name": "Aid More"},
+        {"skillno": [12], "jp": 300, "level": 10, "type": "GET", "name": "Fall Move"}
+    ],
+    "11": [
+        {"skillno": [2], "jp": 700, "level": 9, "type": "GET", "name": "Arc Slash"},
+        {"skillno": [13], "jp": 200, "level": 6, "type": "GET", "name": "Controlled Fall"}
+    ]
+}

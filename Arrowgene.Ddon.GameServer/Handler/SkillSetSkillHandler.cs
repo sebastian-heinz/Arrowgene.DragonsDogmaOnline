@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -12,42 +13,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillSetSkillHandler));
 
+        private readonly DdonGameServer gameServer;
+
         public SkillSetSkillHandler(DdonGameServer server) : base(server)
         {
+            gameServer = server;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillSetSkillReq> packet)
         {
-            CDataSetAcquirementParam skillSlot = client.Character.CustomSkills
-                .Where(skill => skill.Job == packet.Structure.Job && skill.SlotNo == packet.Structure.SlotNo)
-                .FirstOrDefault();
-            
-            if(skillSlot == null)
-            {
-                skillSlot = new CDataSetAcquirementParam()
-                {
-                    Job = packet.Structure.Job,
-                    SlotNo = packet.Structure.SlotNo
-                };
-                client.Character.CustomSkills.Add(skillSlot);
-            }
-
-            skillSlot.AcquirementNo = packet.Structure.SkillId;
-            skillSlot.AcquirementLv = packet.Structure.SkillLv;
-
-            Database.UpdateCharacter(client.Character);
-
+            CustomSkill skillSlot = gameServer.JobManager.SetSkill(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
             client.Send(new S2CSkillSetSkillRes() {
-                Job = packet.Structure.Job,
+                Job = skillSlot.Job,
                 SlotNo = packet.Structure.SlotNo,
-                SkillId = packet.Structure.SkillId,
-                SkillLv = packet.Structure.SkillLv
+                SkillId = skillSlot.SkillId,
+                SkillLv = skillSlot.SkillLv
             });
-
-            // Inform party members of the change
-            S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc(client.Character);
-            partyPlayerContextNtc.Context.Base.MemberIndex = client.Party.Members.IndexOf(client);
-            client.Party.SendToAll(partyPlayerContextNtc);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public JobId Job { get; set; }
         public uint SkillId { get; set; }
-        public uint Unk0 { get; set; }
+        public uint PawnId { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SSkillChangeExSkillReq>
         {
@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteByte(buffer, (byte) obj.Job);
                 WriteUInt32(buffer, obj.SkillId);
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.PawnId);
             }
 
             public override C2SSkillChangeExSkillReq Read(IBuffer buffer)
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 C2SSkillChangeExSkillReq obj = new C2SSkillChangeExSkillReq();
                 obj.Job = (JobId) ReadByte(buffer);
                 obj.SkillId = ReadUInt32(buffer);
-                obj.Unk0 = ReadUInt32(buffer);
+                obj.PawnId = ReadUInt32(buffer);
                 return obj;
             }
         }

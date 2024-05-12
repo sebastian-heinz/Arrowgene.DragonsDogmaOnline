@@ -8,14 +8,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_SKILL_GET_ACQUIRABLE_ABILITY_LIST_REQ;
 
-        public uint Unk0 { get; set; }
+        public uint CharacterId { get; set; }
         public JobId Job { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SSkillGetAcquirableAbilityListReq>
         {
             public override void Write(IBuffer buffer, C2SSkillGetAcquirableAbilityListReq obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.CharacterId);
                 WriteByte(buffer, (byte) obj.Job);
             }
 
@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 return new C2SSkillGetAcquirableAbilityListReq
                 {
-                    Unk0 = ReadUInt32(buffer),
+                    CharacterId = ReadUInt32(buffer),
                     Job = (JobId) ReadByte(buffer)
                 };
             }

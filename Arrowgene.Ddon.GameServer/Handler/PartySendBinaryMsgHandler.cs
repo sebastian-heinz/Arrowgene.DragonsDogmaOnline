@@ -1,13 +1,12 @@
 using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartySendBinaryMsgHandler : StructurePacketHandler<GameClient, C2SPartySendBinaryMsgNtc>
+    public class PartySendBinaryMsgHandler : GameStructurePacketHandler<C2SPartySendBinaryMsgNtc>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartySendBinaryMsgHandler));
 
@@ -17,12 +16,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartySendBinaryMsgNtc> packet)
         {
-            foreach(Client otherClient in Server.Clients.Where(x => packet.Structure.CharacterIdList.Select(x => x.Value).Contains(x.Character.Id)))
+            foreach(GameClient otherClient in Server.Clients.Where(x => packet.Structure.CharacterIdList.Select(x => x.Value).Contains(x.Character.CharacterId)))
             {
                 S2CPartyRecvBinaryMsgNtc binaryMsgNtc = new S2CPartyRecvBinaryMsgNtc();
-                binaryMsgNtc.CharacterId = client.Character.Id;
+                binaryMsgNtc.CharacterId = client.Character.CharacterId;
                 binaryMsgNtc.Data = packet.Structure.Data;
-                binaryMsgNtc.OnlineStatus = client.OnlineStatus;
+                binaryMsgNtc.OnlineStatus = client.Character.OnlineStatus;
                 otherClient.Send(binaryMsgNtc);
             }
         }

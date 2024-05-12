@@ -1,12 +1,11 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestSendLeaderQuestOrderConditionInfoHandler : StructurePacketHandler<GameClient, C2SQuestSendLeaderQuestOrderConditionInfoReq>
+    public class QuestSendLeaderQuestOrderConditionInfoHandler : GameStructurePacketHandler<C2SQuestSendLeaderQuestOrderConditionInfoReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestSendLeaderQuestOrderConditionInfoHandler));
 
@@ -21,9 +20,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 S2CQuestSendLeaderQuestOrderConditionInfoNtc ntc = new S2CQuestSendLeaderQuestOrderConditionInfoNtc() {
                     OrderConditionInfoList = packet.Structure.OrderConditionInfoList
                 };
-                foreach(GameClient member in client.Party.Members)
+                foreach(GameClient member in client.Party.Clients)
                 {
-                    if(member.Character.Id != member.Party.Leader.Character.Id)
+                    if(member.Character.CharacterId != member.Party.Leader.Client.Character.CharacterId)
                     {
                         // Disconnects you for some reason
                         //member.Send(ntc);

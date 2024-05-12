@@ -2,8 +2,6 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class MyPawnCsv
     {
-
-
         public uint PawnId { get; set; }
         public uint MemberIndex { get; set; }
         public int StageNo { get; set; }
@@ -87,43 +85,43 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte CustomSkillLv4 { get; set; }
         //Abilities
         public uint CountAbility { get; set; }
-        public byte AbilitySlot1 { get; set; }
+        public byte AbilityJob1 { get; set; }
         public uint AbilityId1 { get; set; }
         public byte AbilityLv1 { get; set; }
 
-        public byte AbilitySlot2 { get; set; }
+        public byte AbilityJob2 { get; set; }
         public uint AbilityId2 { get; set; }
         public byte AbilityLv2 { get; set; }
 
-        public byte AbilitySlot3 { get; set; }
+        public byte AbilityJob3 { get; set; }
         public uint AbilityId3 { get; set; }
         public byte AbilityLv3 { get; set; }
 
-        public byte AbilitySlot4 { get; set; }
+        public byte AbilityJob4 { get; set; }
         public uint AbilityId4 { get; set; }
         public byte AbilityLv4 { get; set; }
 
-        public byte AbilitySlot5 { get; set; }
+        public byte AbilityJob5 { get; set; }
         public uint AbilityId5 { get; set; }
         public byte AbilityLv5 { get; set; }
 
-        public byte AbilitySlot6 { get; set; }
+        public byte AbilityJob6 { get; set; }
         public uint AbilityId6 { get; set; }
         public byte AbilityLv6 { get; set; }
 
-        public byte AbilitySlot7 { get; set; }
+        public byte AbilityJob7 { get; set; }
         public uint AbilityId7 { get; set; }
         public byte AbilityLv7 { get; set; }
 
-        public byte AbilitySlot8 { get; set; }
+        public byte AbilityJob8 { get; set; }
         public uint AbilityId8 { get; set; }
         public byte AbilityLv8 { get; set; }
 
-        public byte AbilitySlot9 { get; set; }
+        public byte AbilityJob9 { get; set; }
         public uint AbilityId9 { get; set; }
         public byte AbilityLv9 { get; set; }
 
-        public byte AbilitySlot10 { get; set; }
+        public byte AbilityJob10 { get; set; }
         public uint AbilityId10 { get; set; }
         public byte AbilityLv10 { get; set; }
         //Vocation
@@ -239,7 +237,5 @@ namespace Arrowgene.Ddon.Shared.Model
         public ushort Fat { get; set; }
         public ushort Muscle { get; set; }
         public ushort MotionFilter { get; set; }
-
-
     }
 }

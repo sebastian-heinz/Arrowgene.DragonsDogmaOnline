@@ -1,14 +1,12 @@
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyLeaveHandler : StructurePacketHandler<GameClient, C2SPartyPartyLeaveReq>
+    public class PartyPartyLeaveHandler : GameStructurePacketHandler<C2SPartyPartyLeaveReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyLeaveHandler));
 
@@ -18,14 +16,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyLeaveReq> packet)
         {
-            Party oldParty = client.Party;
+            PartyGroup party = client.Party;
+
+            if (party == null)
+            {
+                Logger.Error(client, "Could not leave party, does not exist");
+                // todo return error
+                return;
+            }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
-            partyLeaveNtc.CharacterId = client.Character.Id;
-            oldParty.SendToAll(partyLeaveNtc);
+            partyLeaveNtc.CharacterId = client.Character.CharacterId;
+            party.SendToAll(partyLeaveNtc);
 
-            oldParty.Members.Remove(client);
-            client.Party = null;
+            party.Leave(client);
+            Logger.Info(client, $"Left PartyId:{party.Id}");
 
             client.Send(new S2CPartyPartyLeaveRes());
         }

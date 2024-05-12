@@ -1,17 +1,16 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+﻿using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class JobGetJobChangeListHandler : PacketHandler<GameClient>
+    public class JobGetJobChangeListHandler : StructurePacketHandler<GameClient, C2SJobGetJobChangeListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobGetJobChangeListHandler));
 
@@ -20,19 +19,47 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_JOB_GET_JOB_CHANGE_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SJobGetJobChangeListReq> packet)
         {
-            S2CJobGetJobChangeListRes jobChangeList = EntitySerializer.Get<S2CJobGetJobChangeListRes>().Read(InGameDump.Dump_52.AsBuffer());
-            // Add Hunter info so you can see the hunter job on the skill change menu.
-            jobChangeList.JobReleaseInfo.Add(new CDataJobChangeInfo() {
-                JobId = JobId.Hunter
-            });
-            jobChangeList.JobChangeInfo.Add(new CDataJobChangeInfo() {
-                JobId = JobId.Hunter
-            });
+            S2CJobGetJobChangeListRes jobChangeList = new S2CJobGetJobChangeListRes();
+            jobChangeList.JobChangeInfo = this.buildJobChangeInfoList(client.Character);
+            jobChangeList.JobReleaseInfo = this.buildJobReleaseInfoList(client.Character);
+            jobChangeList.PawnJobChangeInfoList = client.Character.Pawns
+                .Select((pawn, index) => new CDataPawnJobChangeInfo()
+                {
+                    SlotNo = (byte) (index+1),
+                    PawnId = pawn.PawnId,
+                    JobChangeInfoList = this.buildJobChangeInfoList(pawn),
+                    JobReleaseInfoList = this.buildJobReleaseInfoList(pawn)
+                })
+                .ToList();
+            jobChangeList.PlayPointList = client.Character.PlayPointList;
             client.Send(jobChangeList);
+        }
+
+        private List<CDataJobChangeInfo> buildJobChangeInfoList(CharacterCommon common)
+        {
+            return common.CharacterJobDataList
+                .Select(jobData => this.getJobChangeInfo(common, jobData.Job))
+                .ToList();
+        }
+
+        private List<CDataJobChangeInfo> buildJobReleaseInfoList(CharacterCommon common)
+        {
+            return ((JobId[]) JobId.GetValues(typeof(JobId)))
+                .Select(jobId => this.getJobChangeInfo(common, jobId))
+                .ToList();
+        }
+
+        private CDataJobChangeInfo getJobChangeInfo(CharacterCommon common, JobId jobId)
+        {
+            return new CDataJobChangeInfo()
+            {
+                JobId = jobId,
+                EquipItemList = common.Equipment.getEquipmentAsCDataEquipItemInfo(jobId, EquipType.Performance)
+                    .Union(common.Equipment.getEquipmentAsCDataEquipItemInfo(jobId, EquipType.Visual))
+                    .ToList()
+            };
         }
     }
 }

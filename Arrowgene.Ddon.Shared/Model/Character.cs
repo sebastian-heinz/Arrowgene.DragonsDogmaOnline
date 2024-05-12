@@ -1,32 +1,86 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.GameServer.Quests;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public class Character
+    public class Character : CharacterCommon
     {
-        public Character()
+        public Character() : base()
         {
-            Created = DateTime.MinValue;
-            CharacterInfo = new CDataCharacterInfo();
-            NormalSkills = new List<CDataNormalSkillParam>();
-            CustomSkills = new List<CDataSetAcquirementParam>();
-            Abilities = new List<CDataSetAcquirementParam>();
-        }
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            Created = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+            PlayPointList = Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
+            {
+                Job = job,
+                PlayPoint = new CDataPlayPointData()
+                {
+                    ExpMode = 1, // EXP
+                    PlayPoint = 0
+                }
+            }).ToList();
+            Storage = new Storages(new Dictionary<StorageType, ushort>());
+            Unk0 = new List<UnknownCharacterData0>();
+            WalletPointList = new List<CDataWalletPoint>();
+            OrbStatusList = new List<CDataOrbPageStatus>();
+            MsgSetList = new List<CDataCharacterMsgSet>();
+            ShortCutList = new List<CDataShortCut>();
+            CommunicationShortCutList = new List<CDataCommunicationShortCut>();
+            MatchingProfile = new CDataMatchingProfile();
+            ArisenProfile = new CDataArisenProfile();
+            Pawns = new List<Pawn>();
+            ReleasedWarpPoints = new List<ReleasedWarpPoint>();
+            OnlineStatus = OnlineStatus.Offline;
 
-        // TODO: Remove this and use CharacterInfo.CharacterId directly in the references
-        public uint Id
-        { 
-            get { return CharacterInfo.CharacterId; }
-            set { this.CharacterInfo.CharacterId = value; }
+            ActiveQuests = new Dictionary<QuestId, Dictionary<uint, uint>>();
+
+            OmData = new Dictionary<uint, Dictionary<ulong, uint>>();
         }
 
         public int AccountId { get; set; }
         public DateTime Created { get; set; }
-        public CDataCharacterInfo CharacterInfo { get; set; }
-        public List<CDataNormalSkillParam> NormalSkills { get; set; }
-        public List<CDataSetAcquirementParam> CustomSkills { get; set;}
-        public List<CDataSetAcquirementParam> Abilities { get; set; }
+        public uint CharacterId;
+        public uint UserId;
+        public uint Version;
+        public string FirstName;
+        public string LastName;
+        public List<CDataJobPlayPoint> PlayPointList;
+        public Storages Storage;
+        public List<UnknownCharacterData0> Unk0;
+        public List<CDataWalletPoint> WalletPointList;
+        public byte MyPawnSlotNum;
+        public byte RentalPawnSlotNum;
+        public List<CDataOrbPageStatus> OrbStatusList;
+        public List<CDataCharacterMsgSet> MsgSetList;
+        public List<CDataShortCut> ShortCutList;
+        public List<CDataCommunicationShortCut> CommunicationShortCutList;
+        public CDataMatchingProfile MatchingProfile;
+        public CDataArisenProfile ArisenProfile;
+        public bool HideEquipHeadPawn;
+        public bool HideEquipLanternPawn;
+        public byte ArisenProfileShareRange;
+
+        public List<Pawn> Pawns { get; set; }
+
+        public uint FavWarpSlotNum { get; set; }
+        public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
+
+        // ---
+
+        // TODO: Move to a more sensible place
+        public uint LastEnteredShopId { get; set; }
+
+        // Tracks processes for active quests Dictionary<QuestId, Dictionary<ProcessNo, Sequence>>
+        public Dictionary<QuestId, Dictionary<uint, uint>> ActiveQuests { get; set; }
+        public Dictionary<uint, Dictionary<ulong, uint>> OmData;
+
+        public Pawn PawnBySlotNo(byte SlotNo)
+        {
+            return Pawns[SlotNo-1];
+        }
     }
 }

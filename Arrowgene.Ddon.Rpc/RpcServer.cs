@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Rpc
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(RpcServer));
 
-        private readonly DdonGameServer _gameServer;
+        protected readonly DdonGameServer _gameServer;
 
         public RpcServer(DdonGameServer gameServer)
         {

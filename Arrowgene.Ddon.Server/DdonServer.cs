@@ -20,10 +20,12 @@
  * along with Arrowgene.Ddon.LoginServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
@@ -33,24 +35,30 @@ namespace Arrowgene.Ddon.Server
     public abstract class DdonServer<TClient> : IClientFactory<TClient>
         where TClient : Client
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonServer<TClient>));
+        private readonly ServerLogger Logger;
 
         private readonly Consumer<TClient> _consumer;
         private readonly AsyncEventServer _server;
         private readonly ServerSetting _setting;
 
-        public DdonServer(ServerSetting setting, IDatabase database, AssetRepository assetRepository)
+        public readonly ServerType Type;
+
+        public DdonServer(ServerType type, ServerSetting setting, IDatabase database, AssetRepository assetRepository)
         {
+            LogProvider.ConfigureNamespace(GetType().Namespace, setting);
+            Logger = LogProvider.Logger<ServerLogger>(GetType());
+            
+            Type = type;
+
             _setting = setting;
             AssetRepository = assetRepository;
             Database = database;
 
-            LogProvider.Configure<ServerLogger>(_setting);
-
             _consumer = new Consumer<TClient>(
                 _setting,
                 _setting.ServerSocketSettings,
-                this
+                this,
+                Logger
             );
             _consumer.ClientConnected += ClientConnected;
             _consumer.ClientDisconnected += ClientDisconnected;
@@ -63,11 +71,16 @@ namespace Arrowgene.Ddon.Server
             );
         }
 
+        public int Id => _setting.Id;
+        public string Name => _setting.Name;
+
         public AssetRepository AssetRepository { get; }
         public IDatabase Database { get; }
 
         public virtual void Start()
         {
+            Database.DeleteConnectionsByServerId(Id);
+            Logger.Info($"[{_setting.ServerSocketSettings.Identity}] Listening: {_server.IpAddress}:{_server.Port}");
             _server.Start();
         }
 
@@ -81,9 +94,18 @@ namespace Arrowgene.Ddon.Server
             _consumer.AddHandler(packetHandler);
         }
 
+        protected void SetFallbackHandler(IPacketHandler<TClient> packetHandler)
+        {
+            _consumer.SetFallbackHandler(packetHandler);
+        }
+
         protected abstract void ClientConnected(TClient client);
         protected abstract void ClientDisconnected(TClient client);
         public abstract TClient NewClient(ITcpSocket socket);
-        public abstract List<TClient> Clients { get; }
+
+        [Obsolete("deprecated, use `ClientLookup.GetAll()` instead")]
+        public List<TClient> Clients => ClientLookup.GetAll();
+
+        public abstract ClientLookup<TClient> ClientLookup { get; }
     }
 }

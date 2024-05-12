@@ -18,14 +18,14 @@ namespace Arrowgene.Ddon.Test.Database
         {
             DatabaseSetting setting = new DatabaseSetting();
             setting.WipeOnStartup = true;
-            IDatabase database = DdonDatabaseBuilder.BuildSqLite(setting.SqLiteFolder, "character.test", true);
+            IDatabase database = DdonDatabaseBuilder.BuildSqLite(setting.DatabaseFolder, true);
 
             Account account = database.CreateAccount("test", "test", "test");
             Assert.NotNull(account);
 
             Character c = new Character();
-            c.CharacterInfo.FirstName = "Foo";
-            c.CharacterInfo.LastName = "Bar";
+            c.FirstName = "Foo";
+            c.LastName = "Bar";
             c.AccountId = account.Id;
 
             Assert.True(database.CreateCharacter(c));
@@ -34,15 +34,15 @@ namespace Arrowgene.Ddon.Test.Database
             Assert.NotEmpty(characters);
             Assert.True(characters.Count == 1);
 
-            c.CharacterInfo.FirstName = "NewName";
-            Assert.True(database.UpdateCharacter(c));
+            c.FirstName = "NewName";
+            Assert.True(database.UpdateCharacterBaseInfo(c));
 
             characters = database.SelectCharactersByAccountId(account.Id);
             Assert.NotEmpty(characters);
             Assert.True(characters.Count == 1);
-            Assert.Equal("NewName", characters[0].CharacterInfo.FirstName);
+            Assert.Equal("NewName", characters[0].FirstName);
 
-            Assert.True(database.DeleteCharacter(c.Id));
+            Assert.True(database.DeleteCharacter(c.CharacterId));
             
             characters = database.SelectCharactersByAccountId(account.Id);
             Assert.True(characters.Count == 0);

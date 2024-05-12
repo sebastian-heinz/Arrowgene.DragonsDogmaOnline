@@ -10,19 +10,22 @@ namespace Arrowgene.Ddon.Server.Network
 {
     public class Consumer<TClient> : ThreadedBlockingQueueConsumer where TClient : Client
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Consumer<TClient>));
+        private readonly ServerLogger Logger;
         private readonly Dictionary<PacketId, IPacketHandler<TClient>> _packetHandlerLookup;
         private readonly Dictionary<ITcpSocket, TClient> _clients;
         private readonly object _lock;
         private readonly ServerSetting _setting;
         private readonly IClientFactory<TClient> _clientFactory;
 
+        private IPacketHandler<TClient> _fallbackPacketHandler;
+        
         public Action<TClient> ClientDisconnected;
         public Action<TClient> ClientConnected;
 
-        public Consumer(ServerSetting setting, AsyncEventSettings socketSetting, IClientFactory<TClient> clientFactory)
+        public Consumer(ServerSetting setting, AsyncEventSettings socketSetting, IClientFactory<TClient> clientFactory, ServerLogger logger = null)
             : base(socketSetting, setting.Name)
         {
+            Logger = logger ?? LogProvider.Logger<ServerLogger>(GetType());
             _setting = setting;
             _clientFactory = clientFactory;
             _lock = new object();
@@ -45,6 +48,11 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 _packetHandlerLookup.Add(packetHandler.Id, packetHandler);
             }
+        }
+
+        public void SetFallbackHandler(IPacketHandler<TClient> packetHandler)
+        {
+            _fallbackPacketHandler = packetHandler;
         }
 
         protected override void HandleReceived(ITcpSocket socket, byte[] data)
@@ -78,6 +86,12 @@ namespace Arrowgene.Ddon.Server.Network
             if (!_packetHandlerLookup.ContainsKey(packet.Id))
             {
                 Logger.LogUnhandledPacket(client, packet);
+
+                if(_fallbackPacketHandler != null)
+                {
+                    _fallbackPacketHandler.Handle(client, packet);
+                }
+
                 return;
             }
 

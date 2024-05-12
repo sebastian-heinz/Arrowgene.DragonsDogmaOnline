@@ -1,0 +1,188 @@
+:toc:
+:toclevels: 1
+:toc-placement!:
+
+= Dragons Dogma Online - Server
+
+image::https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/actions/workflows/build.yaml/badge.svg[]
+
+Server Emulator for the Game Dragons Dogma Online.
+
+'''
+
+toc::[]
+
+'''
+
+== Disclaimer
+The project is intended for educational purpose only.
+
+== Developer Setup
+
+. Clone the repository
+.. `git clone https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline.git`
+. Install .NET 6.0 SDK or later https://dotnet.microsoft.com/download
+. Use your IDE of choice
+.. *Visual Studio*
+... Open the `DragonsDogmaOnline.sln`-file
+... Note: Minimum version of "Visual Studio 2022" or later.
+.. *VS Code*
+... Download IDE: https://code.visualstudio.com/download  
+... C# Plugin: https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp  
+... Open the Project Folder: `\Arrowgene.DragonsDogmaOnline`
+.. *IntelliJ Rider*
+... https://www.jetbrains.com/rider/
+... Note: Minimum version of "IntelliJ Rider 2021.3" or later.
+... Open the `DragonsDogmaOnline.sln`-file
+. Debug the Project
+.. Run the `Ddon.Cli`-Project with arguments `server start`
+
+== Deployment
+
+The application (server) requires the (ASP).NET runtime 6 to function. Alternatively the SDK also works and is required when building from source.
+
+On a high level, a total of four components are required to successfully connect a client:
+
+. Web server
+. Login server
+. Game server
+. Database
+
+All of these components are provided & automatically started up in the default developer setup outlined above.
+
+As the developer setup relies on an embedded https://www.sqlite.org/index.html[SQLite] database, this might not suite all production needs (e.g. the embedded SQLite setup currently lacks ARM binaries). Thus, two more relational databases are supported:
+
+. https://mariadb.org/[MariaDB]
+. https://www.postgresql.org/[PostgreSQL]
+
+=== Container setup
+
+It is also possible to run a containerized setup.
+A xref:./Dockerfile[Dockerfile] is provided which encapsulates everything required to build & publish the server from source. Three separate docker-compose files are provided depending on the desired database. None of these actually reference any image and instead rely on ad-hoc source code builds as the image is currently not publicly available.
+
+. xref:./docker-compose.yml[SQLite-enabled docker-compose]
+.. `docker-compose up`
+. xref:./docker-compose.mariadb.yml[MariaDB-enabled docker-compose]
+.. `docker-compose -f docker-compose.mariadb.yml up`
+. xref:./docker-compose.psql.yml[PostgreSQL-enabled docker-compose]
+.. `docker-compose -f docker-compose.psql.yml up`
+
+==== Useful run commands
+
+* Force rebuild `docker-compose up --build`
+* Clean up & delete persistent volumes (data) as well `docker-compose down -v`
+* Only build the image `docker-compose build`
+* Build for other runtimes, e.g. arm64 `RUNTIME=linux-arm64 docker-compose build`
+* All-in-one clean & rebuild `docker-compose down -v && docker-compose up --build`
+* All-in-one clean & rebuild & arm64 `RUNTIME=linux-arm64 docker-compose down -v && docker-compose up --build`
+
+== Server
+With default configuration the server will listen on following ports:
+
+[source]
+----
+52099 - http/download
+52000 - tcp/gameserver
+52100 - tcp/loginserver
+----
+
+ensure that no other local services listen on these ports.
+
+== Client
+Launch the client with the following args:
+
+`"DDO.exe" "addr=localhost port=52100 token=00000000000000000000 DL=http://127.0.0.1:52099/win/ LVer=03.04.003.20181115.0 RVer=3040008"`
+
+== Progress
+
+=== Login Server
+* [x] Account
+* [x] Character Creation
+
+=== Game Server
+==== Party Management (Party List)
+* [ ] Party Members
+** [x] View Arisen Profile
+** [ ] Send Tell
+** [ ] Send Friend Request
+** [ ] View Status and Equipment
+** [x] Promote to Party Leader
+** [x] Kick from Party
+** [ ] Invite to Group Chat
+** [x] Disband Party
+** [ ] Invite to Entryboard
+** [ ] Follow with Autorun
+** [ ] Cancel Party Invite
+** [ ] Decline Party Invite
+** [ ] View Party List
+** [x] Leave
+** [ ] Invite Directly to Clan
+* [ ] Main Pawns
+** [ ] View Pawn Profile
+** [x] Invite to Party
+** [x] Kick from Party
+** [ ] View Status and Equipment
+* [ ] Support Pawns
+* [ ] Party Search
+** [ ] Search
+** [ ] Simple Request
+* [ ] Player Search
+** [ ] View Arisen Profile
+** [x] Invite to Party
+** [ ] Send Tell
+** [ ] Send Friend Request
+** [ ] Invite to Group Chat
+** [ ] Invite to Entryboard
+** [x] Search
+
+== Guidelines
+=== Git 
+==== Workflow
+The work on this project should happen via `feature-branches`
+   
+Feature branches (or sometimes called topic branches) are used to develop new features for the upcoming or a distant future release. 
+When starting development of a feature, the target release in which this feature will be incorporated may well be unknown at that point. 
+The essence of a feature branch is that it exists as long as the feature is in development, 
+but will eventually be merged back into develop (to definitely add the new feature to the upcoming release) or discarded (in case of a disappointing experiment).
+
+1. Create a new `feature/feature-name` or `fix/bug-fix-name` branch from master
+2. Push all your changes to that branch
+3. Create a Pull Request to merge that branch into `master`
+
+=== Best Practise
+- Do not use Console.WriteLine etc., use the specially designed logger.
+- Own the Code: extract solutions, discard libraries.
+- Annotate functions with documentation comments (https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/documentation-comments).
+
+=== C# Coding Standards and Naming Conventions
+
+[options="header"]
+|=========================================================
+| Object Name      | Notation   | Char Mask  | Underscores
+| Class name       | PascalCase | [A-z][0-9] | No
+| Constructor name | PascalCase | [A-z][0-9] | No
+| Method name      | PascalCase | [A-z][0-9] | No
+| Method arguments | camelCase  | [A-z][0-9] | No
+| Local variables  | camelCase  | [A-z][0-9] | No
+| Constants name   | PascalCase | [A-z][0-9] | No
+| Field name       | _camelCase | [A-z][0-9] | Yes
+| Properties name  | PascalCase | [A-z][0-9] | No
+| Delegate name    | PascalCase | [A-z]      | No
+| Enum type name   | PascalCase | [A-z]      | No
+|=========================================================
+
+== Attribution
+=== Contributors / Making It Happening
+Let me preface with that this work could not exist without the excellent work of various individuals
+- Ando - Reverse Engineering & Tooling (Session Splitter, Camellia Key Cracker)
+- David - Reverse Engineering (unpacking PC Executable, defeating Anti Debug and CRC checks)
+- The White Dragon Temple
+- Nothilvien [@sebastian-heinz](https://github.com/sebastian-heinz) - Reverse Engineering & Server Code
+  
+(if you have been forgotten please reach out)
+
+=== 3rd Parties and Libraries
+- System.Data.SQLite (https://system.data.sqlite.org/)
+- KaitaiStruct.Runtime.Csharp (https://kaitai.io/)
+- Arrowgene.Networking (https://github.com/sebastian-heinz/Arrowgene.Networking)
+- .NET Standard (https://github.com/dotnet/standard)

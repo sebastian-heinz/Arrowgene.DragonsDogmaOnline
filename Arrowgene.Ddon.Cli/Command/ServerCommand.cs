@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using Arrowgene.Ddon.Database;
@@ -31,6 +33,55 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public CommandResultType Run(CommandParameter parameter)
         {
+            Logger.Info("*** NOTICE ***");
+            Logger.Info("This software is and always will be free of charge available at:");
+            Logger.Info("https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline");
+            Logger.Info($"***{Environment.NewLine}");
+
+            Logger.Info("*** WARNING ***");
+            Logger.Info("This software listens on ports for incoming requests and processes them,");
+            Logger.Info("serves files via http/https protocol and exposes APIs.");
+            Logger.Info("All of the above happens with no to limited authentication required.");
+            Logger.Info("Please be aware that it may expose or put your system at risk");
+            Logger.Info($"***{Environment.NewLine}");
+
+            Logger.Info("*** INFO ***");
+            Logger.Info($"GameServerVersion: {Util.GetVersion("GameServer")}");
+            Logger.Info($"Startup: {DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture)}");
+            Logger.Info($"OS: {Environment.OSVersion}");
+            Logger.Info($"x64 OS: {Environment.Is64BitOperatingSystem}");
+            Logger.Info($"Processors: {Environment.ProcessorCount}");
+            Logger.Info($".NET Version: {Environment.Version}");
+            Logger.Info($"x64 Process: {Environment.Is64BitProcess}");
+            Logger.Info($"CurrentDirectory: {Environment.CurrentDirectory}");
+            Logger.Info($"ApplicationDirectory: {Util.ExecutingDirectory()}");
+            Logger.Info($"RelativeApplicationDirectory: {Util.RelativeExecutingDirectory()}");
+            Logger.Info($"***{Environment.NewLine}");
+
+            Logger.Info("*** DEBUG ***");
+            Logger.Info("Locations:");
+            foreach (string location in Util.DebugGetLocations())
+            {
+                Logger.Info($"- {location}");
+            }
+
+            Logger.Info("Versions:");
+            foreach (Dictionary<string, string> version in Util.DebugGetVersions())
+            {
+                Logger.Info($"+ name: {version["name"]}");
+                foreach (string key in version.Keys)
+                {
+                    if (key == "name")
+                    {
+                        continue;
+                    }
+
+                    Logger.Info($"- {key}: {version[key]}");
+                }
+            }
+
+            Logger.Info($"***{Environment.NewLine}");
+
             bool isService = parameter.Switches.Contains("--service");
 
             if (_setting == null)
@@ -51,6 +102,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_database == null)
             {
+                _setting.DatabaseSetting ??= new DatabaseSetting();
                 _database = DdonDatabaseBuilder.Build(_setting.DatabaseSetting);
             }
 
@@ -112,7 +164,7 @@ namespace Arrowgene.Ddon.Cli.Command
                     waitHandle.WaitOne();
                     return CommandResultType.Exit;
                 }
-                
+
                 return CommandResultType.Completed;
             }
 

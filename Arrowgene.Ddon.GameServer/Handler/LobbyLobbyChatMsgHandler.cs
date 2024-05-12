@@ -1,4 +1,3 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -30,6 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 request.Structure.StrMessage
             );
             _chatManager.Handle(client, message);
+            client.Send(new S2CLobbyChatMsgRes());
         }
     }
 }

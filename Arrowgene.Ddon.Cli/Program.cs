@@ -26,7 +26,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using Arrowgene.Ddon.Cli.Command;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -54,11 +53,13 @@ namespace Arrowgene.Ddon.Cli
             PacketId.S2C_CONNECTION_PING_RES,
             PacketId.C2L_PING_REQ,
             PacketId.L2C_PING_RES,
+            PacketId.S2C_LOBBY_LOBBY_DATA_MSG_NTC,
         };
 
         private static void Main(string[] args)
         {
             Console.WriteLine("Program started");
+            Console.WriteLine($"Version: {Util.GetVersion("Cli")}");
             Program program = new Program();
             program.RunArguments(args);
             Console.WriteLine("Program ended");
@@ -92,6 +93,7 @@ namespace Arrowgene.Ddon.Cli
             AddCommand(new ServerCommand());
             AddCommand(new HelpCommand(_commands));
             AddCommand(new ClientCommand());
+            AddCommand(new PacketCommand());
         }
 
         private void RunArguments(string[] arguments)
@@ -107,7 +109,7 @@ namespace Arrowgene.Ddon.Cli
             ShowCopyright();
             CommandParameter parameter = ParseParameter(arguments);
             CommandResultType result = ProcessArguments(parameter);
-            
+
             if (result != CommandResultType.Exit)
             {
                 Logger.Info("Press `e'-key to exit.");
@@ -122,7 +124,7 @@ namespace Arrowgene.Ddon.Cli
             {
                 _lastCommand.Shutdown();
             }
-            
+
             // Wait for logs to be flushed to console
             Thread.Sleep(1000);
             LogProvider.Stop();
@@ -266,15 +268,16 @@ namespace Arrowgene.Ddon.Cli
         {
             Log log = e.Log;
             LogLevel logLevel = log.LogLevel;
-            
-            
+
+
             if (logLevel == LogLevel.Debug || logLevel == LogLevel.Info)
             {
-                if(log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Server.Kestrel"))
+                if (log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Server.Kestrel"))
                 {
                     // ignore internal web server logs
-                    return; 
+                    return;
                 }
+
                 if (log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Route.WebRouter"))
                 {
                     // ignore web route logs
@@ -343,7 +346,7 @@ namespace Arrowgene.Ddon.Cli
                         consoleColor = ConsoleColor.DarkRed;
                         break;
                 }
-                
+
                 if (logLevel == LogLevel.Error)
                 {
                     consoleColor = ConsoleColor.Red;
@@ -371,8 +374,11 @@ namespace Arrowgene.Ddon.Cli
                 Console.ForegroundColor = consoleColor;
                 Console.WriteLine(text);
                 Console.ResetColor();
+
+                // TODO perhaps some buffering and only flush after X logs
                 string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
-                File.AppendAllText(filePath, text);
+                using StreamWriter sw = new StreamWriter(filePath, append: true);
+                sw.WriteLine(text);
             }
         }
     }

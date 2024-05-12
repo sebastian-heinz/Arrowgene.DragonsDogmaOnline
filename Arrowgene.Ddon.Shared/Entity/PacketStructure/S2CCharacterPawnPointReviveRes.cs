@@ -7,17 +7,13 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_CHARACTER_PAWN_POINT_REVIVE_RES;
 
+        public uint PawnId { get; set; }
         public byte RevivePoint { get; set; }
-        public C2SCharacterPawnPointReviveReq PawnId { get; set; }
 
         public S2CCharacterPawnPointReviveRes()
         {
+            PawnId = 0;
             RevivePoint = 0;
-        }
-
-        public S2CCharacterPawnPointReviveRes(C2SCharacterPawnPointReviveReq req)
-        {
-            PawnId = req;
         }
 
         public class Serializer : PacketEntitySerializer<S2CCharacterPawnPointReviveRes>
@@ -25,15 +21,17 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
             public override void Write(IBuffer buffer, S2CCharacterPawnPointReviveRes obj)
             {
-                C2SCharacterPawnPointReviveReq req = obj.PawnId;
                 WriteServerResponse(buffer, obj);
-                WriteUInt32(buffer, req.PawnId);
+                WriteUInt32(buffer, obj.PawnId);
                 WriteByte(buffer, obj.RevivePoint);
             }
 
             public override S2CCharacterPawnPointReviveRes Read(IBuffer buffer)
             {
                 S2CCharacterPawnPointReviveRes obj = new S2CCharacterPawnPointReviveRes();
+                ReadServerResponse(buffer, obj);
+                obj.PawnId = ReadUInt32(buffer);
+                obj.RevivePoint = ReadByte(buffer);
                 return obj;
             }
         }

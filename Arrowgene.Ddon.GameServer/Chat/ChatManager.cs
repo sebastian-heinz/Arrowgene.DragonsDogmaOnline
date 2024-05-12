@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
@@ -24,6 +24,50 @@ namespace Arrowgene.Ddon.GameServer.Chat
         public void AddHandler(IChatHandler handler)
         {
             _handler.Add(handler);
+        }
+
+        public void SendMessage(string message, string firstName, string lastName, LobbyChatMsgType type,
+            params uint[] characterIds)
+        {
+            ChatResponse response = new ChatResponse();
+            response.Deliver = true;
+            response.Message = message;
+            response.FirstName = firstName;
+            response.LastName = lastName;
+            response.CharacterId = 0;
+            response.Type = type;
+            response.Unk2 = 0;
+            response.Unk3 = 0;
+            response.Unk4 = 0;
+            foreach (uint characterId in characterIds)
+            {
+                GameClient client = _server.ClientLookup.GetClientByCharacterId(characterId);
+                if (client == null)
+                {
+                    continue;
+                }
+
+                response.Recipients.Add(client);
+            }
+
+            _router.Send(response);
+        }
+
+        public void SendMessage(string message, string firstName, string lastName, LobbyChatMsgType type,
+            List<GameClient> recipients)
+        {
+            ChatResponse response = new ChatResponse();
+            response.Deliver = true;
+            response.Message = message;
+            response.FirstName = firstName;
+            response.LastName = lastName;
+            response.CharacterId = 0;
+            response.Type = type;
+            response.Unk2 = 0;
+            response.Unk3 = 0;
+            response.Unk4 = 0;
+            response.Recipients.AddRange(recipients);
+            _router.Send(response);
         }
 
         public void Handle(GameClient client, ChatMessage message)
@@ -63,8 +107,6 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
                 Deliver(client, response);
             }
-
-            client.Send(new S2CLobbyChatMsgRes());
         }
 
         private void Deliver(GameClient client, ChatResponse response)
@@ -72,7 +114,15 @@ namespace Arrowgene.Ddon.GameServer.Chat
             switch (response.Type)
             {
                 case LobbyChatMsgType.Say:
+                case LobbyChatMsgType.Shout:
                     response.Recipients.AddRange(_server.Clients);
+                    break;
+                case LobbyChatMsgType.Party:
+                    PartyGroup party = client.Party;
+                    if (party != null)
+                    {
+                        response.Recipients.AddRange(party.Clients);
+                    }
                     break;
                 default:
                     response.Recipients.Add(client);

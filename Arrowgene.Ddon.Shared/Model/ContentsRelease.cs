@@ -1,0 +1,100 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Arrowgene.Ddon.Shared.Model
+{
+    public enum ContentsRelease : uint
+    {
+        None = 0,
+        PartyPlayers = 1, // Party Play (With Other Players)
+        PawnandPartyPlay = 2, // Pawn and Party Play
+        WorldQuests = 3, // World Quests
+        GrandMissions = 4, // Grand Missions
+        ExtremeMissions = 5, // Extreme Missions
+        DressEquipment = 6, // Dress Equipment
+        LestaniaNews = 7, // Lestania News
+        JobTrainingLog = 8, // Job Training Log
+        RiftTeleport = 9, // Rift Teleport
+        DragonForceAugmentation = 10, // Dragon Force Augmentation
+        Craft = 11, // Craft
+        Riftstone = 12, // Riftstone
+        QuestBoard = 13, // Quest Board
+        AreaMaster = 15, // Area Master
+        AreaMastersWorldQuestInfo = 16, // Area Master's World Quest Info
+        FighterJobTraining = 17, // Fighter Job Training
+        HunterJobTraining = 18, // Hunter Job Training
+        PriestJobTraining = 19, // Priest Job Training
+        ShieldSageJobTraining = 20, // Shield Sage Job Training
+        SeekerJobTraining = 21, // Seeker Job Training
+        SorcererJobTraining = 22, // Sorcerer Job Training
+        WarriorJobTraining = 23, // Warrior Job Training
+        ElementArcherJobTraining = 24, // Element Archer Job Training
+        AlchemistJobTraining = 25, // Alchemist Job Training
+        ChangeVocations = 26, // Change Vocations
+        CreateandJoinClans = 27, // Create and Join Clans
+        MainMenu = 28, // Main Menu
+        MyrmidonsPledge = 29, // Myrmidon's Pledge
+        AdventureBroker = 32, // Adventure Broker
+        MatchingProfile = 33, // Matching Profile
+        QuickParty = 34, // Quick Party
+        OrbEnemy = 36, // Orb Enemy
+        WarSkillAugmentation = 37, // War Skill Augmentation
+        FighterWarSkillAugmentation = 38, // Fighter War Skill Augmentation
+        HunterWarSkillAugmentation = 39, // Hunter War Skill Augmentation
+        PriestWarSkillAugmentation = 40, // Priest War Skill Augmentation
+        ShieldSageWarSkillAugmentation = 41, // Shield Sage War Skill Augmentation
+        SeekerWarSkillAugmentation = 42, // Seeker War Skill Augmentation
+        SorcererWarSkillAugmentation = 43, // Sorcerer War Skill Augmentation
+        WarriorWarSkillAugmentation = 44, // Warrior War Skill Augmentation
+        ElementArcherWarSkillAugmentation = 45, // Element Archer War Skill Augmentation
+        AlchemistWarSkillAugmentation = 46, // Alchemist War Skill Augmentation
+        BloodbaneIsleWorldQuests = 47, // Bloodbane Isle World Quests
+        ChangeBgmIsland = 48, // Change BGM Island
+        MyRoom = 49, // My Room
+        Baggage = 50, // Baggage
+        SpiritLancerJobTraining = 51, // Spirit Lancer Job Training
+        SpiritLancerWarSkillAugmentation = 52, // Spirit Lancer War Skill Augmentation
+        MorrowForestWorldQuests = 53, // Morrow Forest World Quests
+        ElanWaterGroveWorldQuests = 54, // Elan Water Grove World Quests
+        FaranaPlainsWorldQuests = 55, // Farana Plains World Quests
+        KingalCanyonWorldQuests = 56, // Kingal Canyon World Quests
+        PlayPoints = 57, // Play Points
+        AreaInvestigation = 58, // Area Investigation
+        PawnTacticalTraining = 59, // Pawn Tactical Training
+        FighterVocationEmblem = 60, // Fighter Vocation Emblem
+        PriestVocationEmblem = 61, // Priest Vocation Emblem
+        HunterVocationEmblem = 62, // Hunter Vocation Emblem
+        ShieldSageVocationEmblem = 63, // Shield Sage Vocation Emblem
+        SeekerVocationEmblem = 64, // Seeker Vocation Emblem
+        SorcererVocationEmblem = 65, // Sorcerer Vocation Emblem
+        ElementArcherVocationEmblem = 66, // Element Archer Vocation Emblem
+        WarriorVocationEmblem = 67, // Warrior Vocation Emblem
+        AlchemistVocationEmblem = 68, // Alchemist Vocation Emblem
+        SpiritLancerVocationEmblem = 69, // Spirit Lancer Vocation Emblem
+        RathniteFoothillsWorldQuests = 70, // Rathnite Foothills World Quests
+        FeryanaWildernessWorldQuests = 71, // Feryana Wilderness World Quests
+        MandragoraBreeding = 72, // Mandragora Breeding
+        SpecialSkillAugmentation = 73, // Special Skill Augmentation
+        YourRoomsTerrace = 74, // Your Room's Terrace
+        CooperatorsoftheRoyalFamily = 75, // Cooperators of the Royal Family
+        HighScepterJobTraining = 76, // High Scepter Job Training
+        MegadosysPlateauWorldQuests = 77, // Megadosys Plateau World Quests
+        HighScepterVocationEmblem = 78, // High Scepter Vocation Emblem
+        ChangetoHighScepter = 79, // Change to High Scepter
+        PawnsNewSpecialSkills = 80, // Pawn's New Special Skills
+        HighScepterWarSkillAugmentation = 81, // High Scepter War Skill Augmentation
+        UrtecaMountainsWorldQuests = 84, // Urteca Mountains World Quests
+        Unknown85 = 85,
+        WildHunt = 86, // Wild Hunt
+        DismantlingofDragonArms = 87, // Dismantling of Dragon Arms
+        SynthesisofDragonAbilities = 88, // Synthesis of Dragon Abilities
+        ExtremeMission0 = 89, // Extreme Mission "黒界の門番"
+        ExtremeMission1 = 90, // Extreme Mission "狂宴に舞う蒼影"
+        ExtremeMission2 = 91, // Extreme Mission "黒き闇の覚者"
+        ExtremeMission3 = 92, // Extreme Mission "理を破壊する者"
+        AppraisalExchangeofDragonArmor = 93, // Appraisal Exchange of Dragon Armor
+    }
+}

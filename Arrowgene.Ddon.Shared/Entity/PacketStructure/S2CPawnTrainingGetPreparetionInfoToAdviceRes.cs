@@ -1,39 +1,39 @@
+using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CPawnTrainingGetPreparetionInfoToAdviceRes : IPacketStructure
+    public class S2CPawnTrainingGetPreparetionInfoToAdviceRes : ServerResponse
     {
-        public PacketId Id => PacketId.S2C_PAWN_TRAINING_GET_PREPARETION_INFO_TO_ADVICE_RES;
+        public override PacketId Id => PacketId.S2C_PAWN_TRAINING_GET_PREPARETION_INFO_TO_ADVICE_RES;
 
         public S2CPawnTrainingGetPreparetionInfoToAdviceRes()
         {
+            PawnTrainingPreparationInfoToAdvices = new List<CDataPawnTrainingPreparationInfoToAdvice>();
         }
 
-        public C2SPawnTrainingGetPreparetionInfoToAdviceReq PawnId { get; set; }
+        public uint Unk0 { get; set; }
+        public List<CDataPawnTrainingPreparationInfoToAdvice> PawnTrainingPreparationInfoToAdvices { get; set; } 
 
         public class Serializer : PacketEntitySerializer<S2CPawnTrainingGetPreparetionInfoToAdviceRes>
         {
             public override void Write(IBuffer buffer, S2CPawnTrainingGetPreparetionInfoToAdviceRes obj)
             {
-                WriteByteArray(buffer, Data);
+                WriteServerResponse(buffer, obj);
+                WriteUInt32(buffer, obj.Unk0);
+                WriteEntityList<CDataPawnTrainingPreparationInfoToAdvice>(buffer, obj.PawnTrainingPreparationInfoToAdvices);
             }
 
             public override S2CPawnTrainingGetPreparetionInfoToAdviceRes Read(IBuffer buffer)
             {
                 S2CPawnTrainingGetPreparetionInfoToAdviceRes obj = new S2CPawnTrainingGetPreparetionInfoToAdviceRes();
+                ReadServerResponse(buffer, obj);
+                obj.Unk0 = ReadUInt32(buffer);
+                obj.PawnTrainingPreparationInfoToAdvices = ReadEntityList<CDataPawnTrainingPreparationInfoToAdvice>(buffer);
                 return obj;
             }
-
-
-            private readonly byte[] Data =
-            {
-                0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0x3,
-                0x0, 0xDA, 0x5D, 0x4E, 0x0, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0, 0x0, 0x0, 0xDA, 0x66, 0x8D,
-                0x0, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0, 0x1, 0x0, 0xDA, 0xB2, 0xF3, 0x0, 0x0, 0x0, 0x0,
-                0x0, 0x0, 0x0, 0x6, 0x41, 0x6, 0x6A
-            };
         }
 
     }

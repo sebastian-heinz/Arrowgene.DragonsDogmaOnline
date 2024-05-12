@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public override PacketId Id => PacketId.S2C_INSTANCE_GET_ENEMY_SET_LIST_RES;
 
         public S2CInstanceGetEnemySetListRes() {
-            LayoutId=new CStageLayoutId();
+            LayoutId=new CDataStageLayoutId();
             SubGroupId=0;
             RandomSeed=61235;
             QuestId=0;
@@ -19,9 +19,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             NamedParamList=new List<CDataNamedEnemyParamClient>();
         }
 
-        public CStageLayoutId LayoutId { get; set; }
+        public CDataStageLayoutId LayoutId { get; set; }
         public byte SubGroupId { get; set; }
-         public uint RandomSeed { get; set; }
+        public uint RandomSeed { get; set; }
         public uint QuestId { get; set; }
         public List<CDataLayoutEnemyData> EnemyList { get; set; }
         public List<CDataDropItemSetInfo> DropItemSetList { get; set; }
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CInstanceGetEnemySetListRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntity<CStageLayoutId>(buffer, obj.LayoutId);
+                WriteEntity<CDataStageLayoutId>(buffer, obj.LayoutId);
                 WriteByte(buffer, obj.SubGroupId);
                 WriteUInt32(buffer, obj.RandomSeed);
                 WriteUInt32(buffer, obj.QuestId);
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CInstanceGetEnemySetListRes obj = new S2CInstanceGetEnemySetListRes();
                 ReadServerResponse(buffer, obj);
-                obj.LayoutId = ReadEntity<CStageLayoutId>(buffer);
+                obj.LayoutId = ReadEntity<CDataStageLayoutId>(buffer);
                 obj.SubGroupId = ReadByte(buffer);
                 obj.RandomSeed = ReadUInt32(buffer);
                 obj.QuestId = ReadUInt32(buffer);

@@ -6,17 +6,34 @@ using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared.Json;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Asset;
 
 namespace Arrowgene.Ddon.Shared
 {
     public class AssetRepository
     {
+        // Client data
         public const string ClientErrorCodesKey = "ClientErrorCodes.csv";
-        public const string EnemySpawnsKey = "EnemySpawn.csv";
+        public const string ItemListKey = "itemlist.csv";
+
+        // Server data
+        public const string EnemySpawnsKey = "EnemySpawn.json";
+        public const string GatheringItemsKey = "GatheringItem.csv";
         public const string MyPawnAssetKey = "MyPawn.csv";
         public const string MyRoomAssetKey = "MyRoom.csv";
         public const string ArisenAssetKey = "Arisen.csv";
+        public const string StorageKey = "Storage.csv";
+        public const string StorageItemKey = "StorageItem.csv";
+        public const string ShopKey = "Shop.json";
         public const string ServerListKey = "GameServerList.csv";
+        public const string WarpPointsKey = "WarpPoints.csv";
+        public const string CraftingRecipesKey = "CraftingRecipes.json";
+        public const string LearnedNormalSkillsKey = "LearnedNormalSkills.json";
+        public const string GPCourseInfoKey = "GpCourseInfo.json";
+        public const string SecretAbilityKey = "DefaultSecretAbilities.json";
+        public const string QuestAssetKey = "Quests.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -36,38 +53,71 @@ namespace Arrowgene.Ddon.Shared
 
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
-            ClientErrorCodes = new List<ClientErrorCode>();
-            EnemySpawns = new List<EnemySpawn>();
+            ClientErrorCodes = new List<CDataErrorMessage>();
+            ClientItemInfos = new List<ClientItemInfo>();
+            EnemySpawnAsset = new EnemySpawnAsset();
+            GatheringItems = new Dictionary<(StageId, uint), List<GatheringItem>>();
             ServerList = new List<CDataGameServerListInfo>();
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
             ArisenAsset = new List<ArisenCsv>();
+            StorageAsset = new List<CDataCharacterItemSlotInfo>();
+            StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
+            ShopAsset = new List<Shop>();
+            WarpPoints = new List<WarpPoint>();
+            CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
+            LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
+            GPCourseInfoAsset = new GPCourseInfoAsset();
+            SecretAbilitiesAsset = new SecretAbilityAsset();
+            QuestAsset = new QuestAsset();
         }
 
-        public List<ClientErrorCode> ClientErrorCodes { get; }
-        public List<EnemySpawn> EnemySpawns { get; }
-        public List<CDataGameServerListInfo> ServerList { get; }
-        public List<MyPawnCsv> MyPawnAsset { get; }
-        public List<MyRoomCsv> MyRoomAsset { get; }
-        public List<ArisenCsv> ArisenAsset { get; }
+        public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
+        public List<ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
+        public EnemySpawnAsset EnemySpawnAsset { get; private set; }
+        public Dictionary<(StageId, uint), List<GatheringItem>> GatheringItems { get; private set; }
+        public List<CDataGameServerListInfo> ServerList { get; private set; }
+        public List<MyPawnCsv> MyPawnAsset { get; private set; }
+        public List<MyRoomCsv> MyRoomAsset { get; private set; }
+        public List<ArisenCsv> ArisenAsset { get; private set; }
+        public List<CDataCharacterItemSlotInfo> StorageAsset { get; private set; }
+        public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; private set; }
+        public List<Shop> ShopAsset { get; private set; }
+        public List<WarpPoint> WarpPoints { get; private set; }
+        public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
+        public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
+        public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
+        public SecretAbilityAsset SecretAbilitiesAsset { get; private set; }
+        public QuestAsset QuestAsset { get; private set; }
 
         public void Initialize()
         {
-            RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsvReader());
-            RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsvReader());
-            RegisterAsset(MyPawnAsset, MyPawnAssetKey, new MyPawnCsvReader());
-            RegisterAsset(MyRoomAsset, MyRoomAssetKey, new MyRoomCsvReader());
-            RegisterAsset(ArisenAsset, ArisenAssetKey, new ArisenCsvReader());
-            RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsvReader());
+            RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeCsv());
+            RegisterAsset(value => ClientItemInfos = value, ItemListKey, new ClientItemInfoCsv());
+            RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer());
+            RegisterAsset(value => GatheringItems = value, GatheringItemsKey, new GatheringItemCsv());
+            RegisterAsset(value => MyPawnAsset = value, MyPawnAssetKey, new MyPawnCsvReader());
+            RegisterAsset(value => MyRoomAsset = value, MyRoomAssetKey, new MyRoomCsvReader());
+            RegisterAsset(value => ArisenAsset = value, ArisenAssetKey, new ArisenCsvReader());
+            RegisterAsset(value => ServerList = value, ServerListKey, new GameServerListInfoCsv());
+            RegisterAsset(value => StorageAsset = value, StorageKey, new StorageCsv());
+            RegisterAsset(value => StorageItemAsset = value, StorageItemKey, new StorageItemCsv());
+            RegisterAsset(value => ShopAsset = value, ShopKey, new JsonReaderWriter<List<Shop>>());
+            RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
+            RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
+            RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
+            RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
+            RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
+            RegisterAsset(value => QuestAsset = value, QuestAssetKey, new QuestAssetDeserializer());
         }
 
-        private void RegisterAsset<T>(List<T> list, string key, CsvReader<T> reader)
+        private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
-            Load(list, key, reader);
-            RegisterFileSystemWatcher(list, key, reader);
+            Load(onLoadAction, key, readerWriter);
+            RegisterFileSystemWatcher(onLoadAction, key, readerWriter);
         }
 
-        private void Load<T>(List<T> list, string key, CsvReader<T> reader)
+        private void Load<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
             string path = Path.Combine(_directory.FullName, key);
             FileInfo file = new FileInfo(path);
@@ -76,14 +126,19 @@ namespace Arrowgene.Ddon.Shared
                 Logger.Error($"Could not load '{key}', file does not exist");
             }
 
-            List<T> assets = reader.ReadPath(file.FullName);
-
-            list.Clear();
-            list.AddRange(assets);
-            OnAssetChanged(key, list);
+            try {
+                T asset = readerWriter.ReadPath(file.FullName);
+                onLoadAction.Invoke(asset);
+                OnAssetChanged(key, asset);
+            }
+            catch (Exception e)
+            {
+                Logger.Error($"Could not load '{key}', error reading the file contents");
+                Logger.Exception(e);
+            }
         }
 
-        private void RegisterFileSystemWatcher<T>(List<T> list, string key, CsvReader<T> reader)
+        private void RegisterFileSystemWatcher<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
             if (_fileSystemWatchers.ContainsKey(key))
             {
@@ -101,7 +156,7 @@ namespace Arrowgene.Ddon.Shared
                 {
                     try
                     {
-                        Load(list, key, reader);
+                        Load(onLoadAction, key, readerWriter);
                         break;
                     }
                     catch (IOException ex)

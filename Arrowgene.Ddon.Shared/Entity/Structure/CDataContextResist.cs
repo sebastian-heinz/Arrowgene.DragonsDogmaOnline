@@ -6,45 +6,45 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataContextResist
     {
-
-        public CDataContextResist(Character character)
-        {
-            CDataCharacterJobData characterJobData = character.CharacterInfo.ActiveCharacterJobData;
-
-            FireResist = characterJobData.FireResist;
-            IceResist = characterJobData.IceResist;
-            ThunderResist = characterJobData.ThunderResist;
-            HolyResist = characterJobData.HolyResist;
-            DarkResist = characterJobData.DarkResist;
-            SpreadResist = characterJobData.SpreadResist;
-            FreezeResist = characterJobData.FreezeResist;
-            ShockResist = characterJobData.ShockResist;
-            AbsorbResist = characterJobData.AbsorbResist;
-            DarkElmResist = characterJobData.DarkElmResist;
-            PoisonResist = characterJobData.PoisonResist;
-            SlowResist = characterJobData.SlowResist;
-            SleepResist = characterJobData.SleepResist;
-            StunResist = characterJobData.StunResist;
-            WetResist = characterJobData.WetResist;
-            OilResist = characterJobData.OilResist;
-            SealResist = characterJobData.SealResist;
-            CurseResist = characterJobData.CurseResist;
-            SoftResist = characterJobData.SoftResist;
-            StoneResist = characterJobData.StoneResist;
-            GoldResist = characterJobData.GoldResist;
-            FireReduceResist = characterJobData.FireReduceResist;
-            IceReduceResist = characterJobData.IceReduceResist;
-            ThunderReduceResist = characterJobData.ThunderReduceResist;
-            HolyReduceResist = characterJobData.HolyReduceResist;
-            DarkReduceResist = characterJobData.DarkReduceResist;
-            AtkDownResist = characterJobData.AtkDownResist;
-            DefDownResist = characterJobData.DefDownResist;
-            MAtkDownResist = characterJobData.MAtkDownResist;
-            MDefDownResist = characterJobData.MDefDownResist;
-        }
-
         public CDataContextResist()
         {
+        }
+
+        public static CDataContextResist FromCDataCharacterJobData(CDataCharacterJobData jobData)
+        {
+            return new CDataContextResist()
+            {
+                FireResist = jobData.FireResist,
+                IceResist = jobData.IceResist,
+                ThunderResist = jobData.ThunderResist,
+                HolyResist = jobData.HolyResist,
+                DarkResist = jobData.DarkResist,
+                SpreadResist = jobData.SpreadResist,
+                FreezeResist = jobData.FreezeResist,
+                ShockResist = jobData.ShockResist,
+                AbsorbResist = jobData.AbsorbResist,
+                DarkElmResist = jobData.DarkElmResist,
+                PoisonResist = jobData.PoisonResist,
+                SlowResist = jobData.SlowResist,
+                SleepResist = jobData.SleepResist,
+                StunResist = jobData.StunResist,
+                WetResist = jobData.WetResist,
+                OilResist = jobData.OilResist,
+                SealResist = jobData.SealResist,
+                CurseResist = jobData.CurseResist,
+                SoftResist = jobData.SoftResist,
+                StoneResist = jobData.StoneResist,
+                GoldResist = jobData.GoldResist,
+                FireReduceResist = jobData.FireReduceResist,
+                IceReduceResist = jobData.IceReduceResist,
+                ThunderReduceResist = jobData.ThunderReduceResist,
+                HolyReduceResist = jobData.HolyReduceResist,
+                DarkReduceResist = jobData.DarkReduceResist,
+                AtkDownResist = jobData.AtkDownResist,
+                DefDownResist = jobData.DefDownResist,
+                MAtkDownResist = jobData.MAtkDownResist,
+                MDefDownResist = jobData.MAtkDownResist
+            };
         }
 
         public byte FireResist { get; set; }

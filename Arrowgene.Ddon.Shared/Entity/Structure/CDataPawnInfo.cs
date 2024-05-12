@@ -21,9 +21,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ContextSkillList = new List<CDataContextAcquirementData>();
             ContextAbilityList = new List<CDataContextAcquirementData>();
             ExtendParam = new CDataOrbGainExtendParam();
-            Unk0 = new byte[64];
+            TrainingStatus = new byte[64];
             Unk1 = new CData_772E80();
-            Unk2 = new List<CDataSpSkill>();
+            SpSkillList = new List<CDataSpSkill>();
         }
 
         public uint Version { get; set; }
@@ -55,9 +55,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte PawnType { get; set; }
         public byte ShareRange { get; set; }
         public uint Likability { get; set; }
-        public byte[] Unk0 { get; set; }
+        public byte[] TrainingStatus { get; set; }
         public CData_772E80 Unk1 { get; set; }
-        public List<CDataSpSkill> Unk2 { get; set; }
+        public List<CDataSpSkill> SpSkillList { get; set; }
 
         public class Serializer : EntitySerializer<CDataPawnInfo>
         {
@@ -92,9 +92,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.PawnType);
                 WriteByte(buffer, obj.ShareRange);
                 WriteUInt32(buffer, obj.Likability);
-                WriteByteArray(buffer, obj.Unk0);
+                WriteByteArray(buffer, obj.TrainingStatus);
                 WriteEntity<CData_772E80>(buffer, obj.Unk1);
-                WriteEntityList<CDataSpSkill>(buffer, obj.Unk2);
+                WriteEntityList<CDataSpSkill>(buffer, obj.SpSkillList);
             }
 
             public override CDataPawnInfo Read(IBuffer buffer)
@@ -129,9 +129,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.PawnType = ReadByte(buffer);
                 obj.ShareRange = ReadByte(buffer);
                 obj.Likability = ReadUInt32(buffer);
-                obj.Unk0 = ReadByteArray(buffer, 64);
+                obj.TrainingStatus = ReadByteArray(buffer, 64);
                 obj.Unk1 = ReadEntity<CData_772E80>(buffer);
-                obj.Unk2 = ReadEntityList<CDataSpSkill>(buffer);
+                obj.SpSkillList = ReadEntityList<CDataSpSkill>(buffer);
                 return obj ;
             }
         }

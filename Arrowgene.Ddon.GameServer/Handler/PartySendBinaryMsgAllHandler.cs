@@ -1,12 +1,11 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartySendBinaryMsgAllHandler : StructurePacketHandler<GameClient, C2SPartySendBinaryMsgAllNtc>
+    public class PartySendBinaryMsgAllHandler : GameStructurePacketHandler<C2SPartySendBinaryMsgAllNtc>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartySendBinaryMsgAllHandler));
 
@@ -16,12 +15,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartySendBinaryMsgAllNtc> packet)
         {
-            foreach(Client otherClient in client.Party.Members)
+            foreach(GameClient otherClient in client.Party.Clients)
             {
                 S2CPartyRecvBinaryMsgAllNtc binaryMsgNtc = new S2CPartyRecvBinaryMsgAllNtc();
-                binaryMsgNtc.CharacterId = client.Character.Id;
+                binaryMsgNtc.CharacterId = client.Character.CharacterId;
                 binaryMsgNtc.Data = packet.Structure.Data;
-                binaryMsgNtc.OnlineStatus = client.OnlineStatus;
+                binaryMsgNtc.OnlineStatus = client.Character.OnlineStatus;
                 otherClient.Send(binaryMsgNtc);
             }
         }

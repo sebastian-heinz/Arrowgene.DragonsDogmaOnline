@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -29,6 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CSkillGetLearnedNormalSkillListRes obj = new S2CSkillGetLearnedNormalSkillListRes();
                 ReadServerResponse(buffer, obj);
                 obj.NormalSkillParamList = ReadEntityList<CDataNormalSkillParam>(buffer);
+
                 return obj;
             }
         }

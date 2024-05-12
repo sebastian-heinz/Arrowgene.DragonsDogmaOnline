@@ -1,6 +1,5 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -8,12 +7,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     public class S2CContextGetPartyPlayerContextNtc : IPacketStructure
     {
         public PacketId Id => PacketId.S2C_CONTEXT_GET_PARTY_PLAYER_CONTEXT_NTC;
-
-        public S2CContextGetPartyPlayerContextNtc(Character character)
-        {
-            CharacterId = character.Id;
-            Context = new CDataPartyPlayerContext(character);
-        }
 
         public S2CContextGetPartyPlayerContextNtc()
         {

@@ -30,6 +30,11 @@ namespace Arrowgene.Ddon.Client.Resource
             }
         }
 
+        protected override void Write(IBuffer buffer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         private Entry ReadEntry(IBuffer buffer)
         {
             Entry entry = new Entry();

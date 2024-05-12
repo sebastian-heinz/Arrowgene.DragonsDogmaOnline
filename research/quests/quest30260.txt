@@ -1,0 +1,1834 @@
+======== quest30260_p1
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x2
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=Prt (16)
+            00000025 Param01=451 (0x000001c3)
+            00000029 Param02=15 (0x0000000f)
+            0000002d Param03=18280 (0x00004768)
+            00000031 Param04=4294952703 (0xffffc6ff)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[16]
+        Element[0]
+            00000039 Result=SetAnnounce (4)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstTalkChg (10)
+            0000004d Param01=1 (0x00000001)
+            00000051 Param02=26018 (0x000065a2)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstTalkChg (10)
+            0000005f Param01=4 (0x00000004)
+            00000063 Param02=26019 (0x000065a3)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstTalkChg (10)
+            00000071 Param01=3 (0x00000003)
+            00000075 Param02=26020 (0x000065a4)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=QstTalkChg (10)
+            00000083 Param01=21 (0x00000015)
+            00000087 Param02=26021 (0x000065a5)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=QstTalkChg (10)
+            00000095 Param01=501 (0x000001f5)
+            00000099 Param02=26022 (0x000065a6)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+        Element[6]
+            000000a5 Result=QstTalkChg (10)
+            000000a7 Param01=13 (0x0000000d)
+            000000ab Param02=26023 (0x000065a7)
+            000000af Param03=0 (0x00000000)
+            000000b3 Param04=0 (0x00000000)
+        Element[7]
+            000000b7 Result=QstLayoutFlagOn (16)
+            000000b9 Param01=7861 (0x00001eb5)
+            000000bd Param02=0 (0x00000000)
+            000000c1 Param03=0 (0x00000000)
+            000000c5 Param04=0 (0x00000000)
+        Element[8]
+            000000c9 Result=QstTalkChg (10)
+            000000cb Param01=31 (0x0000001f)
+            000000cf Param02=26024 (0x000065a8)
+            000000d3 Param03=0 (0x00000000)
+            000000d7 Param04=0 (0x00000000)
+        Element[9]
+            000000db Result=QstTalkChg (10)
+            000000dd Param01=30 (0x0000001e)
+            000000e1 Param02=26025 (0x000065a9)
+            000000e5 Param03=0 (0x00000000)
+            000000e9 Param04=0 (0x00000000)
+        Element[10]
+            000000ed Result=QstTalkChg (10)
+            000000ef Param01=33 (0x00000021)
+            000000f3 Param02=26026 (0x000065aa)
+            000000f7 Param03=0 (0x00000000)
+            000000fb Param04=0 (0x00000000)
+        Element[11]
+            000000ff Result=Prt (15)
+            00000101 Param01=451 (0x000001c3)
+            00000105 Param02=15 (0x0000000f)
+            00000109 Param03=18280 (0x00004768)
+            0000010d Param04=4294952703 (0xffffc6ff)
+        Element[12]
+            00000111 Result=QstLayoutFlagOn (16)
+            00000113 Param01=7891 (0x00001ed3)
+            00000117 Param02=0 (0x00000000)
+            0000011b Param03=0 (0x00000000)
+            0000011f Param04=0 (0x00000000)
+        Element[13]
+            00000123 Result=QstLayoutFlagOff (17)
+            00000125 Param01=8013 (0x00001f4d)
+            00000129 Param02=0 (0x00000000)
+            0000012d Param03=0 (0x00000000)
+            00000131 Param04=0 (0x00000000)
+        Element[14]
+            00000135 Result=WorldManageLayoutFlagOff (42)
+            00000137 Param01=8036 (0x00001f64)
+            0000013b Param02=70033001 (0x042c9e69)
+            0000013f Param03=0 (0x00000000)
+            00000143 Param04=0 (0x00000000)
+        Element[15]
+            00000147 Result=MyQstFlagOn (8)
+            00000149 Param01=4762 (0x0000129a)
+            0000014d Param02=0 (0x00000000)
+            00000151 Param03=0 (0x00000000)
+            00000155 Param04=0 (0x00000000)
+
+======== quest30260_p2
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x1, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[2]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsLogin (107)
+            00000025 Param01=0 (0x00000000)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[3]
+        Element[0]
+            00000039 Command=MyQstFlagOn (9)
+            0000003b Param01=4765 (0x0000129d)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Command=IsMyquestLayoutFlagOff (125)
+            0000004d Param01=8200 (0x00002008)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Command=StageNoNotEq (28)
+            0000005f Param01=1103 (0x0000044f)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            00000073 Result=SetCheckPoint (47)
+            00000075 Param01=0 (0x00000000)
+            00000079 Param02=0 (0x00000000)
+            0000007d Param03=0 (0x00000000)
+            00000081 Param04=0 (0x00000000)
+
+======== quest30260_p3
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x3
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=EventEnd (15)
+            00000025 Param01=451 (0x000001c3)
+            00000029 Param02=20 (0x00000014)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=EventExec (13)
+            0000003b Param01=451 (0x000001c3)
+            0000003f Param02=20 (0x00000014)
+            00000043 Param03=451 (0x000001c3)
+            00000047 Param04=32 (0x00000020)
+        Element[1]
+            0000004b Result=SetCheckPoint (47)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p4
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x4
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=NewTalkNpc (72)
+            00000025 Param01=451 (0x000001c3)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=1 (0x00000001)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[10]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=ResetCheckPoint (55)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOn (16)
+            0000005f Param01=7862 (0x00001eb6)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstTalkChg (10)
+            00000071 Param01=30 (0x0000001e)
+            00000075 Param02=26028 (0x000065ac)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=QstTalkChg (10)
+            00000083 Param01=501 (0x000001f5)
+            00000087 Param02=26029 (0x000065ad)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=QstTalkChg (10)
+            00000095 Param01=13 (0x0000000d)
+            00000099 Param02=26030 (0x000065ae)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+        Element[6]
+            000000a5 Result=QstTalkChg (10)
+            000000a7 Param01=21 (0x00000015)
+            000000ab Param02=26031 (0x000065af)
+            000000af Param03=0 (0x00000000)
+            000000b3 Param04=0 (0x00000000)
+        Element[7]
+            000000b7 Result=QstTalkChg (10)
+            000000b9 Param01=33 (0x00000021)
+            000000bd Param02=26032 (0x000065b0)
+            000000c1 Param03=0 (0x00000000)
+            000000c5 Param04=0 (0x00000000)
+        Element[8]
+            000000c9 Result=QstTalkChg (10)
+            000000cb Param01=31 (0x0000001f)
+            000000cf Param02=22514 (0x000057f2)
+            000000d3 Param03=0 (0x00000000)
+            000000d7 Param04=0 (0x00000000)
+        Element[9]
+            000000db Result=QstLayoutFlagOff (17)
+            000000dd Param01=7860 (0x00001eb4)
+            000000e1 Param02=0 (0x00000000)
+            000000e5 Param03=0 (0x00000000)
+            000000e9 Param04=0 (0x00000000)
+
+======== quest30260_p5
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x5
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=NewTalkNpc (72)
+            00000025 Param01=139 (0x0000008b)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[6]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstTalkChg (10)
+            0000004d Param01=31 (0x0000001f)
+            00000051 Param02=26034 (0x000065b2)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstTalkChg (10)
+            0000005f Param01=576 (0x00000240)
+            00000063 Param02=26027 (0x000065ab)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstLayoutFlagOn (16)
+            00000071 Param01=7901 (0x00001edd)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=WorldManageLayoutFlagOff (42)
+            00000083 Param01=7967 (0x00001f1f)
+            00000087 Param02=70033001 (0x042c9e69)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=WorldManageLayoutFlagOn (41)
+            00000095 Param01=7968 (0x00001f20)
+            00000099 Param02=70033001 (0x042c9e69)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+
+======== quest30260_p6
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x6
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=StageNo (14)
+            00000025 Param01=1100 (0x0000044c)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[4]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstTalkChg (10)
+            0000004d Param01=4512 (0x000011a0)
+            00000051 Param02=26033 (0x000065b1)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=WorldManageLayoutFlagOn (41)
+            0000005f Param01=7954 (0x00001f12)
+            00000063 Param02=70033001 (0x042c9e69)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstLayoutFlagOn (16)
+            00000071 Param01=8059 (0x00001f7b)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+
+======== quest30260_p7
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x7
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsEnemyFound (36)
+            00000025 Param01=1100 (0x0000044c)
+            00000029 Param02=17 (0x00000011)
+            0000002d Param03=4294967295 (0xffffffff)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[4]
+        Element[0]
+            00000039 Result=QstLayoutFlagOn (16)
+            0000003b Param01=7866 (0x00001eba)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=MyQstFlagOn (8)
+            0000004d Param01=4925 (0x0000133d)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOff (17)
+            0000005f Param01=7862 (0x00001eb6)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstLayoutFlagOn (16)
+            00000071 Param01=8150 (0x00001fd6)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+
+======== quest30260_p8
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x3, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsKilledTargetEmSetGrpNoMarker (110)
+            00000025 Param01=7866 (0x00001eba)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=QstLayoutFlagOn (16)
+            0000003b Param01=8063 (0x00001f7f)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=SetCheckPoint (47)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p9
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x8
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsKilledTargetEnemySetGroup (109)
+            00000025 Param01=7866 (0x00001eba)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+
+======== quest30260_p10
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x9
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsEnemyFound (36)
+            00000025 Param01=1100 (0x0000044c)
+            00000029 Param02=18 (0x00000012)
+            0000002d Param03=4294967295 (0xffffffff)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[5]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstLayoutFlagOff (17)
+            0000004d Param01=7866 (0x00001eba)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOn (16)
+            0000005f Param01=7864 (0x00001eb8)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstLayoutFlagOn (16)
+            00000071 Param01=8061 (0x00001f7d)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=MyQstFlagOn (8)
+            00000083 Param01=4926 (0x0000133e)
+            00000087 Param02=0 (0x00000000)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+
+======== quest30260_p11
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x3, SequenceNo=0x0, BlockNo=0x2
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=StageNoWithoutMarker (118)
+            00000025 Param01=1101 (0x0000044d)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[4]
+        Element[0]
+            00000039 Result=MyQstFlagOn (8)
+            0000003b Param01=4928 (0x00001340)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstLayoutFlagOff (17)
+            0000004d Param01=8063 (0x00001f7f)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOn (16)
+            0000005f Param01=8146 (0x00001fd2)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstTalkChg (10)
+            00000071 Param01=21 (0x00000015)
+            00000075 Param02=30732 (0x0000780c)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+
+======== quest30260_p12
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x4, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsKilledTargetEmSetGrpNoMarker (110)
+            00000025 Param01=7864 (0x00001eb8)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=QstLayoutFlagOn (16)
+            0000003b Param01=8064 (0x00001f80)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=SetCheckPoint (47)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p13
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0xa
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsKilledTargetEnemySetGroup (109)
+            00000025 Param01=7864 (0x00001eb8)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+
+======== quest30260_p14
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0xb
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsEnemyFound (36)
+            00000025 Param01=1100 (0x0000044c)
+            00000029 Param02=3 (0x00000003)
+            0000002d Param03=4294967295 (0xffffffff)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[5]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstLayoutFlagOff (17)
+            0000004d Param01=7864 (0x00001eb8)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOn (16)
+            0000005f Param01=8059 (0x00001f7b)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstLayoutFlagOn (16)
+            00000071 Param01=7865 (0x00001eb9)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=MyQstFlagOn (8)
+            00000083 Param01=4927 (0x0000133f)
+            00000087 Param02=0 (0x00000000)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+
+======== quest30260_p15
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x4, SequenceNo=0x0, BlockNo=0x2
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=StageNoWithoutMarker (118)
+            00000025 Param01=1101 (0x0000044d)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[4]
+        Element[0]
+            00000039 Result=MyQstFlagOn (8)
+            0000003b Param01=4929 (0x00001341)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstLayoutFlagOff (17)
+            0000004d Param01=8064 (0x00001f80)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOn (16)
+            0000005f Param01=8147 (0x00001fd3)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstTalkChg (10)
+            00000071 Param01=13 (0x0000000d)
+            00000075 Param02=30733 (0x0000780d)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+
+======== quest30260_p16
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x5, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsKilledTargetEmSetGrpNoMarker (110)
+            00000025 Param01=7865 (0x00001eb9)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=QstLayoutFlagOn (16)
+            0000003b Param01=8062 (0x00001f7e)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=SetCheckPoint (47)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p17
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0xc
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsKilledTargetEnemySetGroup (109)
+            00000025 Param01=7865 (0x00001eb9)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+
+======== quest30260_p18
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0xd
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=StageNo (14)
+            00000025 Param01=1101 (0x0000044d)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[6]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstLayoutFlagOff (17)
+            0000004d Param01=7865 (0x00001eb9)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=WorldManageLayoutFlagOn (41)
+            0000005f Param01=7955 (0x00001f13)
+            00000063 Param02=70033001 (0x042c9e69)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstLayoutFlagOn (16)
+            00000071 Param01=8060 (0x00001f7c)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=QstLayoutFlagOn (16)
+            00000083 Param01=8065 (0x00001f81)
+            00000087 Param02=0 (0x00000000)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=WorldManageLayoutFlagOff (42)
+            00000095 Param01=8202 (0x0000200a)
+            00000099 Param02=70033001 (0x042c9e69)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+
+======== quest30260_p19
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x5, SequenceNo=0x0, BlockNo=0x2
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=StageNoWithoutMarker (118)
+            00000025 Param01=1101 (0x0000044d)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[4]
+        Element[0]
+            00000039 Result=QstLayoutFlagOff (17)
+            0000003b Param01=8062 (0x00001f7e)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=MyQstFlagOn (8)
+            0000004d Param01=4930 (0x00001342)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOn (16)
+            0000005f Param01=8148 (0x00001fd4)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstTalkChg (10)
+            00000071 Param01=501 (0x000001f5)
+            00000075 Param02=30734 (0x0000780e)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+
+======== quest30260_p20
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0xe
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=Prt (16)
+            00000025 Param01=1101 (0x0000044d)
+            00000029 Param02=21030 (0x00005226)
+            0000002d Param03=2934 (0x00000b76)
+            00000031 Param04=4294942499 (0xffff9f23)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[8]
+        Element[0]
+            00000039 Result=Prt (15)
+            0000003b Param01=1101 (0x0000044d)
+            0000003f Param02=21030 (0x00005226)
+            00000043 Param03=2934 (0x00000b76)
+            00000047 Param04=4294942499 (0xffff9f23)
+        Element[1]
+            0000004b Result=UpdateAnnounce (5)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOn (16)
+            0000005f Param01=7904 (0x00001ee0)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=MyQstFlagOn (8)
+            00000071 Param01=4830 (0x000012de)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=QstLayoutFlagOff (17)
+            00000083 Param01=8063 (0x00001f7f)
+            00000087 Param02=0 (0x00000000)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=QstLayoutFlagOff (17)
+            00000095 Param01=8064 (0x00001f80)
+            00000099 Param02=0 (0x00000000)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+        Element[6]
+            000000a5 Result=QstLayoutFlagOff (17)
+            000000a7 Param01=8062 (0x00001f7e)
+            000000ab Param02=0 (0x00000000)
+            000000af Param03=0 (0x00000000)
+            000000b3 Param04=0 (0x00000000)
+        Element[7]
+            000000b7 Result=QstLayoutFlagOff (17)
+            000000b9 Param01=7861 (0x00001eb5)
+            000000bd Param02=0 (0x00000000)
+            000000c1 Param03=0 (0x00000000)
+            000000c5 Param04=0 (0x00000000)
+
+======== quest30260_p21
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x3, SequenceNo=0x1, BlockNo=0x3
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[0]
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000023 Result=QstLayoutFlagOff (17)
+            00000025 Param01=8146 (0x00001fd2)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+        Element[1]
+            00000035 Result=ResetCheckPoint (55)
+            00000037 Param01=0 (0x00000000)
+            0000003b Param02=0 (0x00000000)
+            0000003f Param03=0 (0x00000000)
+            00000043 Param04=0 (0x00000000)
+
+======== quest30260_p22
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x4, SequenceNo=0x1, BlockNo=0x3
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[0]
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000023 Result=QstLayoutFlagOff (17)
+            00000025 Param01=8147 (0x00001fd3)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+        Element[1]
+            00000035 Result=ResetCheckPoint (55)
+            00000037 Param01=0 (0x00000000)
+            0000003b Param02=0 (0x00000000)
+            0000003f Param03=0 (0x00000000)
+            00000043 Param04=0 (0x00000000)
+
+======== quest30260_p23
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x5, SequenceNo=0x1, BlockNo=0x3
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[0]
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000023 Result=QstLayoutFlagOff (17)
+            00000025 Param01=8148 (0x00001fd4)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+        Element[1]
+            00000035 Result=ResetCheckPoint (55)
+            00000037 Param01=0 (0x00000000)
+            0000003b Param02=0 (0x00000000)
+            0000003f Param03=0 (0x00000000)
+            00000043 Param04=0 (0x00000000)
+
+======== quest30260_p24
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0xf
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=EventEnd (15)
+            00000025 Param01=1103 (0x0000044f)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=ExeEventAfterStageJumpContinue (86)
+            0000003b Param01=1103 (0x0000044f)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=1 (0x00000001)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=SetCheckPoint (47)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p25
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x10
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=StageNo (14)
+            00000025 Param01=1103 (0x0000044f)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            00000039 Result=StageJump (12)
+            0000003b Param01=1103 (0x0000044f)
+            0000003f Param02=1 (0x00000001)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+
+======== quest30260_p26
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x11
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsLinkageEnemyFlag (208)
+            00000025 Param01=1103 (0x0000044f)
+            00000029 Param02=1 (0x00000001)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=3 (0x00000003)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[8]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=MyQstFlagOn (8)
+            0000004d Param01=4765 (0x0000129d)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOn (16)
+            0000005f Param01=7867 (0x00001ebb)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstLayoutFlagOn (16)
+            00000071 Param01=7868 (0x00001ebc)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=SetDiePlayerReturnPos (51)
+            00000083 Param01=1103 (0x0000044f)
+            00000087 Param02=1 (0x00000001)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=BgmRequestFix (74)
+            00000095 Param01=1 (0x00000001)
+            00000099 Param02=264 (0x00000108)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+        Element[6]
+            000000a5 Result=126 (0x0000007e)
+            000000a7 Param01=2 (0x00000002)
+            000000ab Param02=0 (0x00000000)
+            000000af Param03=0 (0x00000000)
+            000000b3 Param04=0 (0x00000000)
+        Element[7]
+            000000b7 Result=QstLayoutFlagOff (17)
+            000000b9 Param01=7904 (0x00001ee0)
+            000000bd Param02=0 (0x00000000)
+            000000c1 Param03=0 (0x00000000)
+            000000c5 Param04=0 (0x00000000)
+
+======== quest30260_p27
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x2, SequenceNo=0x1, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[0]
+      MtArray<ddon::CDataQuestResult> ResultCommandList[36]
+        Element[0]
+            00000023 Result=PlayMessage (87)
+            00000025 Param01=22563 (0x00005823)
+            00000029 Param02=8 (0x00000008)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+        Element[1]
+            00000035 Result=PlayMessage (87)
+            00000037 Param01=22564 (0x00005824)
+            0000003b Param02=8 (0x00000008)
+            0000003f Param03=0 (0x00000000)
+            00000043 Param04=0 (0x00000000)
+        Element[2]
+            00000047 Result=PlayMessage (87)
+            00000049 Param01=22577 (0x00005831)
+            0000004d Param02=8 (0x00000008)
+            00000051 Param03=0 (0x00000000)
+            00000055 Param04=0 (0x00000000)
+        Element[3]
+            00000059 Result=PlayMessage (87)
+            0000005b Param01=22591 (0x0000583f)
+            0000005f Param02=8 (0x00000008)
+            00000063 Param03=0 (0x00000000)
+            00000067 Param04=0 (0x00000000)
+        Element[4]
+            0000006b Result=PlayMessage (87)
+            0000006d Param01=22584 (0x00005838)
+            00000071 Param02=8 (0x00000008)
+            00000075 Param03=0 (0x00000000)
+            00000079 Param04=0 (0x00000000)
+        Element[5]
+            0000007d Result=PlayMessage (87)
+            0000007f Param01=22565 (0x00005825)
+            00000083 Param02=8 (0x00000008)
+            00000087 Param03=0 (0x00000000)
+            0000008b Param04=0 (0x00000000)
+        Element[6]
+            0000008f Result=PlayMessage (87)
+            00000091 Param01=22566 (0x00005826)
+            00000095 Param02=8 (0x00000008)
+            00000099 Param03=0 (0x00000000)
+            0000009d Param04=0 (0x00000000)
+        Element[7]
+            000000a1 Result=PlayMessage (87)
+            000000a3 Param01=22578 (0x00005832)
+            000000a7 Param02=8 (0x00000008)
+            000000ab Param03=0 (0x00000000)
+            000000af Param04=0 (0x00000000)
+        Element[8]
+            000000b3 Result=PlayMessage (87)
+            000000b5 Param01=22585 (0x00005839)
+            000000b9 Param02=8 (0x00000008)
+            000000bd Param03=0 (0x00000000)
+            000000c1 Param04=0 (0x00000000)
+        Element[9]
+            000000c5 Result=PlayMessage (87)
+            000000c7 Param01=22592 (0x00005840)
+            000000cb Param02=8 (0x00000008)
+            000000cf Param03=0 (0x00000000)
+            000000d3 Param04=0 (0x00000000)
+        Element[10]
+            000000d7 Result=PlayMessage (87)
+            000000d9 Param01=22567 (0x00005827)
+            000000dd Param02=8 (0x00000008)
+            000000e1 Param03=0 (0x00000000)
+            000000e5 Param04=0 (0x00000000)
+        Element[11]
+            000000e9 Result=PlayMessage (87)
+            000000eb Param01=22568 (0x00005828)
+            000000ef Param02=8 (0x00000008)
+            000000f3 Param03=0 (0x00000000)
+            000000f7 Param04=0 (0x00000000)
+        Element[12]
+            000000fb Result=PlayMessage (87)
+            000000fd Param01=22586 (0x0000583a)
+            00000101 Param02=8 (0x00000008)
+            00000105 Param03=0 (0x00000000)
+            00000109 Param04=0 (0x00000000)
+        Element[13]
+            0000010d Result=PlayMessage (87)
+            0000010f Param01=22579 (0x00005833)
+            00000113 Param02=8 (0x00000008)
+            00000117 Param03=0 (0x00000000)
+            0000011b Param04=0 (0x00000000)
+        Element[14]
+            0000011f Result=PlayMessage (87)
+            00000121 Param01=22593 (0x00005841)
+            00000125 Param02=8 (0x00000008)
+            00000129 Param03=0 (0x00000000)
+            0000012d Param04=0 (0x00000000)
+        Element[15]
+            00000131 Result=PlayMessage (87)
+            00000133 Param01=22571 (0x0000582b)
+            00000137 Param02=8 (0x00000008)
+            0000013b Param03=0 (0x00000000)
+            0000013f Param04=0 (0x00000000)
+        Element[16]
+            00000143 Result=PlayMessage (87)
+            00000145 Param01=22570 (0x0000582a)
+            00000149 Param02=8 (0x00000008)
+            0000014d Param03=0 (0x00000000)
+            00000151 Param04=0 (0x00000000)
+        Element[17]
+            00000155 Result=PlayMessage (87)
+            00000157 Param01=22594 (0x00005842)
+            0000015b Param02=8 (0x00000008)
+            0000015f Param03=0 (0x00000000)
+            00000163 Param04=0 (0x00000000)
+        Element[18]
+            00000167 Result=PlayMessage (87)
+            00000169 Param01=22587 (0x0000583b)
+            0000016d Param02=8 (0x00000008)
+            00000171 Param03=0 (0x00000000)
+            00000175 Param04=0 (0x00000000)
+        Element[19]
+            00000179 Result=PlayMessage (87)
+            0000017b Param01=22580 (0x00005834)
+            0000017f Param02=8 (0x00000008)
+            00000183 Param03=0 (0x00000000)
+            00000187 Param04=0 (0x00000000)
+        Element[20]
+            0000018b Result=PlayMessage (87)
+            0000018d Param01=22572 (0x0000582c)
+            00000191 Param02=8 (0x00000008)
+            00000195 Param03=0 (0x00000000)
+            00000199 Param04=0 (0x00000000)
+        Element[21]
+            0000019d Result=PlayMessage (87)
+            0000019f Param01=22569 (0x00005829)
+            000001a3 Param02=8 (0x00000008)
+            000001a7 Param03=0 (0x00000000)
+            000001ab Param04=0 (0x00000000)
+        Element[22]
+            000001af Result=PlayMessage (87)
+            000001b1 Param01=22588 (0x0000583c)
+            000001b5 Param02=8 (0x00000008)
+            000001b9 Param03=0 (0x00000000)
+            000001bd Param04=0 (0x00000000)
+        Element[23]
+            000001c1 Result=PlayMessage (87)
+            000001c3 Param01=22581 (0x00005835)
+            000001c7 Param02=8 (0x00000008)
+            000001cb Param03=0 (0x00000000)
+            000001cf Param04=0 (0x00000000)
+        Element[24]
+            000001d3 Result=PlayMessage (87)
+            000001d5 Param01=22595 (0x00005843)
+            000001d9 Param02=8 (0x00000008)
+            000001dd Param03=0 (0x00000000)
+            000001e1 Param04=0 (0x00000000)
+        Element[25]
+            000001e5 Result=PlayMessage (87)
+            000001e7 Param01=22573 (0x0000582d)
+            000001eb Param02=8 (0x00000008)
+            000001ef Param03=0 (0x00000000)
+            000001f3 Param04=0 (0x00000000)
+        Element[26]
+            000001f7 Result=PlayMessage (87)
+            000001f9 Param01=22582 (0x00005836)
+            000001fd Param02=8 (0x00000008)
+            00000201 Param03=0 (0x00000000)
+            00000205 Param04=0 (0x00000000)
+        Element[27]
+            00000209 Result=PlayMessage (87)
+            0000020b Param01=22589 (0x0000583d)
+            0000020f Param02=8 (0x00000008)
+            00000213 Param03=0 (0x00000000)
+            00000217 Param04=0 (0x00000000)
+        Element[28]
+            0000021b Result=PlayMessage (87)
+            0000021d Param01=22596 (0x00005844)
+            00000221 Param02=8 (0x00000008)
+            00000225 Param03=0 (0x00000000)
+            00000229 Param04=0 (0x00000000)
+        Element[29]
+            0000022d Result=PlayMessage (87)
+            0000022f Param01=22574 (0x0000582e)
+            00000233 Param02=8 (0x00000008)
+            00000237 Param03=0 (0x00000000)
+            0000023b Param04=0 (0x00000000)
+        Element[30]
+            0000023f Result=PlayMessage (87)
+            00000241 Param01=22575 (0x0000582f)
+            00000245 Param02=8 (0x00000008)
+            00000249 Param03=0 (0x00000000)
+            0000024d Param04=0 (0x00000000)
+        Element[31]
+            00000251 Result=PlayMessage (87)
+            00000253 Param01=22590 (0x0000583e)
+            00000257 Param02=8 (0x00000008)
+            0000025b Param03=0 (0x00000000)
+            0000025f Param04=0 (0x00000000)
+        Element[32]
+            00000263 Result=PlayMessage (87)
+            00000265 Param01=22583 (0x00005837)
+            00000269 Param02=8 (0x00000008)
+            0000026d Param03=0 (0x00000000)
+            00000271 Param04=0 (0x00000000)
+        Element[33]
+            00000275 Result=PlayMessage (87)
+            00000277 Param01=22597 (0x00005845)
+            0000027b Param02=8 (0x00000008)
+            0000027f Param03=0 (0x00000000)
+            00000283 Param04=0 (0x00000000)
+        Element[34]
+            00000287 Result=PlayMessage (87)
+            00000289 Param01=22576 (0x00005830)
+            0000028d Param02=8 (0x00000008)
+            00000291 Param03=0 (0x00000000)
+            00000295 Param04=0 (0x00000000)
+        Element[35]
+            00000299 Result=SetCheckPoint (47)
+            0000029b Param01=0 (0x00000000)
+            0000029f Param02=0 (0x00000000)
+            000002a3 Param03=0 (0x00000000)
+            000002a7 Param04=0 (0x00000000)
+
+======== quest30260_p28
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x6, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=MyQstFlagOn (9)
+            00000025 Param01=4766 (0x0000129e)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=QstLayoutFlagOn (16)
+            0000003b Param01=7867 (0x00001ebb)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=SetCheckPoint (47)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p29
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0xa, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[2]
+        Element[0]
+            00000023 Command=MyQstFlagOn (9)
+            00000025 Param01=5054 (0x000013be)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+        Element[1]
+            00000035 Command=IsMyquestLayoutFlagOn (124)
+            00000037 Param01=7867 (0x00001ebb)
+            0000003b Param02=0 (0x00000000)
+            0000003f Param03=0 (0x00000000)
+            00000043 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            0000004b Result=SetCheckPoint (47)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p30
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x7, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=DummyNotProgress (97)
+            00000025 Param01=0 (0x00000000)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=MyQstFlagOn (8)
+            0000003b Param01=5053 (0x000013bd)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=ChangeMessage (6)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p31
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x8, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=DummyNotProgress (97)
+            00000025 Param01=0 (0x00000000)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=LinkageEnemyFlagOn (97)
+            0000003b Param01=1103 (0x0000044f)
+            0000003f Param02=1 (0x00000001)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=1 (0x00000001)
+        Element[1]
+            0000004b Result=SetCheckPoint (47)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p32
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x12
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=EmHpNotLess (47)
+            00000025 Param01=1103 (0x0000044f)
+            00000029 Param02=1 (0x00000001)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=100 (0x00000064)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[5]
+        Element[0]
+            00000039 Result=MyQstFlagOn (8)
+            0000003b Param01=5054 (0x000013be)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=MyQstFlagOff (62)
+            0000004d Param01=5053 (0x000013bd)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=ResetDiePlayerReturnPos (56)
+            0000005f Param01=0 (0x00000000)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=SetDiePlayerReturnPos (51)
+            00000071 Param01=1103 (0x0000044f)
+            00000075 Param02=2 (0x00000002)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=QstLayoutFlagOff (17)
+            00000083 Param01=7868 (0x00001ebc)
+            00000087 Param02=0 (0x00000000)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+
+======== quest30260_p33
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0xa, SequenceNo=0x0, BlockNo=0x2
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=243 (0x000000f3)
+            00000025 Param01=8277 (0x00002055)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            00000039 Result=QstLayoutFlagOn (16)
+            0000003b Param01=8277 (0x00002055)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+
+======== quest30260_p34
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0xb, SequenceNo=0x0, BlockNo=0x1
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsLinkageEnemyFlag (208)
+            00000025 Param01=1103 (0x0000044f)
+            00000029 Param02=1 (0x00000001)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=12 (0x0000000c)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=SetCheckPoint (47)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=LinkageEnemyFlagOff (98)
+            0000004d Param01=1103 (0x0000044f)
+            00000051 Param02=1 (0x00000001)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=12 (0x0000000c)
+
+======== quest30260_p35
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x13
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=IsKilledTargetEnemySetGroup (109)
+            00000025 Param01=7867 (0x00001ebb)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[4]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=BgmStop (32)
+            0000004d Param01=0 (0x00000000)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=BgmRequestFix (74)
+            0000005f Param01=1 (0x00000001)
+            00000063 Param02=272 (0x00000110)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstLayoutFlagOn (16)
+            00000071 Param01=8545 (0x00002161)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+
+======== quest30260_p36
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0xb, SequenceNo=0x0, BlockNo=0x2
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=DummyNotProgress (97)
+            00000025 Param01=0 (0x00000000)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[2]
+        Element[0]
+            00000039 Result=BgmStop (32)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=BgmRequestFix (74)
+            0000004d Param01=1 (0x00000001)
+            00000051 Param02=265 (0x00000109)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+
+======== quest30260_p37
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x14
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=EventEnd (15)
+            00000025 Param01=1103 (0x0000044f)
+            00000029 Param02=5 (0x00000005)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[8]
+        Element[0]
+            00000039 Result=EventExec (13)
+            0000003b Param01=1103 (0x0000044f)
+            0000003f Param02=5 (0x00000005)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstLayoutFlagOff (17)
+            0000004d Param01=7867 (0x00001ebb)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstLayoutFlagOff (17)
+            0000005f Param01=7903 (0x00001edf)
+            00000063 Param02=0 (0x00000000)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=MyQstFlagOn (8)
+            00000071 Param01=4766 (0x0000129e)
+            00000075 Param02=0 (0x00000000)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=StopMessage (88)
+            00000083 Param01=0 (0x00000000)
+            00000087 Param02=0 (0x00000000)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=BgmStop (32)
+            00000095 Param01=0 (0x00000000)
+            00000099 Param02=0 (0x00000000)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+        Element[6]
+            000000a5 Result=QstLayoutFlagOff (17)
+            000000a7 Param01=8277 (0x00002055)
+            000000ab Param02=0 (0x00000000)
+            000000af Param03=0 (0x00000000)
+            000000b3 Param04=0 (0x00000000)
+        Element[7]
+            000000b7 Result=QstLayoutFlagOff (17)
+            000000b9 Param01=8545 (0x00002161)
+            000000bd Param02=0 (0x00000000)
+            000000c1 Param03=0 (0x00000000)
+            000000c5 Param04=0 (0x00000000)
+
+======== quest30260_p38
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x6, SequenceNo=0x0, BlockNo=0x2
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=DummyNotProgress (97)
+            00000025 Param01=0 (0x00000000)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            00000039 Result=QstLayoutFlagOff (17)
+            0000003b Param01=7867 (0x00001ebb)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+
+======== quest30260_p39
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x15
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=NewTalkNpc (72)
+            00000025 Param01=1103 (0x0000044f)
+            00000029 Param02=1 (0x00000001)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[12]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstLayoutFlagOn (16)
+            0000004d Param01=7872 (0x00001ec0)
+            00000051 Param02=0 (0x00000000)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstTalkChg (10)
+            0000005f Param01=29 (0x0000001d)
+            00000063 Param02=26035 (0x000065b3)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstTalkChg (10)
+            00000071 Param01=31 (0x0000001f)
+            00000075 Param02=26037 (0x000065b5)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=QstTalkChg (10)
+            00000083 Param01=30 (0x0000001e)
+            00000087 Param02=26039 (0x000065b7)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=QstTalkChg (10)
+            00000095 Param01=501 (0x000001f5)
+            00000099 Param02=26040 (0x000065b8)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+        Element[6]
+            000000a5 Result=QstTalkChg (10)
+            000000a7 Param01=21 (0x00000015)
+            000000ab Param02=26041 (0x000065b9)
+            000000af Param03=0 (0x00000000)
+            000000b3 Param04=0 (0x00000000)
+        Element[7]
+            000000b7 Result=QstTalkChg (10)
+            000000b9 Param01=13 (0x0000000d)
+            000000bd Param02=26042 (0x000065ba)
+            000000c1 Param03=0 (0x00000000)
+            000000c5 Param04=0 (0x00000000)
+        Element[8]
+            000000c9 Result=ResetDiePlayerReturnPos (56)
+            000000cb Param01=0 (0x00000000)
+            000000cf Param02=0 (0x00000000)
+            000000d3 Param03=0 (0x00000000)
+            000000d7 Param04=0 (0x00000000)
+        Element[9]
+            000000db Result=QstLayoutFlagOff (17)
+            000000dd Param01=7868 (0x00001ebc)
+            000000e1 Param02=0 (0x00000000)
+            000000e5 Param03=0 (0x00000000)
+            000000e9 Param04=0 (0x00000000)
+        Element[10]
+            000000ed Result=QstLayoutFlagOff (17)
+            000000ef Param01=8277 (0x00002055)
+            000000f3 Param02=0 (0x00000000)
+            000000f7 Param03=0 (0x00000000)
+            000000fb Param04=0 (0x00000000)
+        Element[11]
+            000000ff Result=SetDiePlayerReturnPos (51)
+            00000101 Param01=1103 (0x0000044f)
+            00000105 Param02=2 (0x00000002)
+            00000109 Param03=0 (0x00000000)
+            0000010d Param04=0 (0x00000000)
+
+======== quest30260_p40
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x0, BlockNo=0x16
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[1]
+      MtArray<ddon::CDataQuestCommand> CheckCommandList[1]
+        Element[0]
+            00000023 Command=TalkNpc (1)
+            00000025 Param01=201 (0x000000c9)
+            00000029 Param02=1 (0x00000001)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+      MtArray<ddon::CDataQuestResult> ResultCommandList[14]
+        Element[0]
+            00000039 Result=UpdateAnnounce (5)
+            0000003b Param01=0 (0x00000000)
+            0000003f Param02=0 (0x00000000)
+            00000043 Param03=0 (0x00000000)
+            00000047 Param04=0 (0x00000000)
+        Element[1]
+            0000004b Result=QstTalkChg (10)
+            0000004d Param01=29 (0x0000001d)
+            00000051 Param02=26036 (0x000065b4)
+            00000055 Param03=0 (0x00000000)
+            00000059 Param04=0 (0x00000000)
+        Element[2]
+            0000005d Result=QstTalkChg (10)
+            0000005f Param01=31 (0x0000001f)
+            00000063 Param02=26038 (0x000065b6)
+            00000067 Param03=0 (0x00000000)
+            0000006b Param04=0 (0x00000000)
+        Element[3]
+            0000006f Result=QstTalkChg (10)
+            00000071 Param01=32 (0x00000020)
+            00000075 Param02=26043 (0x000065bb)
+            00000079 Param03=0 (0x00000000)
+            0000007d Param04=0 (0x00000000)
+        Element[4]
+            00000081 Result=QstTalkChg (10)
+            00000083 Param01=33 (0x00000021)
+            00000087 Param02=26044 (0x000065bc)
+            0000008b Param03=0 (0x00000000)
+            0000008f Param04=0 (0x00000000)
+        Element[5]
+            00000093 Result=QstTalkChg (10)
+            00000095 Param01=34 (0x00000022)
+            00000099 Param02=26045 (0x000065bd)
+            0000009d Param03=0 (0x00000000)
+            000000a1 Param04=0 (0x00000000)
+        Element[6]
+            000000a5 Result=QstTalkChg (10)
+            000000a7 Param01=4512 (0x000011a0)
+            000000ab Param02=30106 (0x0000759a)
+            000000af Param03=0 (0x00000000)
+            000000b3 Param04=0 (0x00000000)
+        Element[7]
+            000000b7 Result=QstTalkChg (10)
+            000000b9 Param01=3 (0x00000003)
+            000000bd Param02=26047 (0x000065bf)
+            000000c1 Param03=0 (0x00000000)
+            000000c5 Param04=0 (0x00000000)
+        Element[8]
+            000000c9 Result=QstTalkChg (10)
+            000000cb Param01=4 (0x00000004)
+            000000cf Param02=26048 (0x000065c0)
+            000000d3 Param03=0 (0x00000000)
+            000000d7 Param04=0 (0x00000000)
+        Element[9]
+            000000db Result=QstTalkChg (10)
+            000000dd Param01=1 (0x00000001)
+            000000e1 Param02=22599 (0x00005847)
+            000000e5 Param03=0 (0x00000000)
+            000000e9 Param04=0 (0x00000000)
+        Element[10]
+            000000ed Result=QstLayoutFlagOn (16)
+            000000ef Param01=8200 (0x00002008)
+            000000f3 Param02=0 (0x00000000)
+            000000f7 Param03=0 (0x00000000)
+            000000fb Param04=0 (0x00000000)
+        Element[11]
+            000000ff Result=ResetCheckPoint (55)
+            00000101 Param01=0 (0x00000000)
+            00000105 Param02=0 (0x00000000)
+            00000109 Param03=0 (0x00000000)
+            0000010d Param04=0 (0x00000000)
+        Element[12]
+            00000111 Result=ResetDiePlayerReturnPos (56)
+            00000113 Param01=0 (0x00000000)
+            00000117 Param02=0 (0x00000000)
+            0000011b Param03=0 (0x00000000)
+            0000011f Param04=0 (0x00000000)
+        Element[13]
+            00000123 Result=QstTalkChg (10)
+            00000125 Param01=576 (0x00000240)
+            00000129 Param02=26046 (0x000065be)
+            0000012d Param03=0 (0x00000000)
+            00000131 Param04=0 (0x00000000)
+
+======== quest30260_p41
+QuestProcessResult=0x0, QuestScheduleId=0x46276
+MtArray<CDataQuestProcessState>[1]
+  Element[0]
+    ProcessNo=0x0, SequenceNo=0x1, BlockNo=0x17
+      MtArray<ddon::CDataQuestProgressWork> WorkList[0]
+  ddon::CDataQuestCommand<CheckCommandList>[0]
+      MtArray<ddon::CDataQuestResult> ResultCommandList[1]
+        Element[0]
+            00000023 Result=SetAnnounce (4)
+            00000025 Param01=1 (0x00000001)
+            00000029 Param02=0 (0x00000000)
+            0000002d Param03=0 (0x00000000)
+            00000031 Param04=0 (0x00000000)
+

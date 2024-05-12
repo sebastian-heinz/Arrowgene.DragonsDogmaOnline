@@ -10,11 +10,11 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
-
+    <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
-      <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
-      <PackageReference Include="Arrowgene.Logging" Version="1.1.2" />
-      <PackageReference Include="YamlDotNet" Version="11.2.1" />
+        <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
+        <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
+        <PackageReference Include="YamlDotNet" Version="13.7.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,5 +23,17 @@
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
     </ItemGroup>
-     
+
+    <ItemGroup>
+      <ContentWithTargetPath Remove="files\assets\Quests.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="files\assets\Quests.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="files\assets\Quests.json" />
+    </ItemGroup>
+
 </Project>

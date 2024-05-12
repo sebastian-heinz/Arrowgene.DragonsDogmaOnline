@@ -1,52 +1,71 @@
-﻿using System.Linq;
+﻿using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyCreateHandler : StructurePacketHandler<GameClient, C2SPartyPartyCreateReq>
+    public class PartyPartyCreateHandler : GameStructurePacketHandler<C2SPartyPartyCreateReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyCreateHandler));
 
         public PartyPartyCreateHandler(DdonGameServer server) : base(server)
         {
-                              
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyCreateReq> packet)
         {
-            Party newParty = ((DdonGameServer) Server).NewParty();
-            newParty.Members.Add(client);
-            newParty.Host = client;
-            newParty.Leader = client;
-            client.Party = newParty;
-            
-            S2CPartyPartyJoinNtc partyJoinNtc = new S2CPartyPartyJoinNtc();
-            partyJoinNtc.HostCharacterId = client.Character.Id;
-            partyJoinNtc.LeaderCharacterId = client.Character.Id;
-            CDataPartyMember partyMember = new CDataPartyMember();
-            partyMember.CharacterListElement.ServerId = Server.AssetRepository.ServerList[0].Id;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = client.Character.Id;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = client.Character.CharacterInfo.FirstName;
-            partyMember.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = client.Character.CharacterInfo.LastName;
-            partyMember.CharacterListElement.CurrentJobBaseInfo.Job = client.Character.CharacterInfo.Job;
-            partyMember.CharacterListElement.CurrentJobBaseInfo.Level = (byte) client.Character.CharacterInfo.ActiveCharacterJobData.Lv;
-            partyMember.CharacterListElement.OnlineStatus = client.OnlineStatus;
-            partyMember.CharacterListElement.unk2 = 1;
-            partyMember.MemberType = 1;
-            partyMember.IsLeader = newParty.Leader == client;
-            partyMember.JoinState = JoinState.On;
-            partyJoinNtc.PartyMembers.Add(partyMember);
-            client.Send(partyJoinNtc);
-           
-            S2CPartyPartyCreateRes partyCreateRes = new S2CPartyPartyCreateRes();
-            partyCreateRes.PartyId = newParty.Id;
-            client.Send(partyCreateRes);
+            S2CPartyPartyCreateRes res = new S2CPartyPartyCreateRes();
+
+            PartyGroup party = Server.PartyManager.NewParty();
+            if (party == null)
+            {
+                Logger.Error(client, "can not create party (Server.PartyManager.NewParty() == null)");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
+                return;
+            }
+
+            ErrorRes<PlayerPartyMember> invite = party.Invite(client, client);
+            if (invite.HasError)
+            {
+                Logger.Error(client, "failed to invite to new party");
+                res.Error = (uint)invite.ErrorCode;
+                client.Send(res);
+                return;
+            }
+
+            ErrorRes<PlayerPartyMember> accept = party.Accept(client);
+            if (accept.HasError)
+            {
+                Logger.Error(client, "failed to accept new party");
+                res.Error = (uint)accept.ErrorCode;
+                client.Send(res);
+                return;
+            }
+
+            ErrorRes<PlayerPartyMember> join = party.Join(client);
+            if (join.HasError)
+            {
+                Logger.Error(client, "Failed to join new party");
+                res.Error = (uint)join.ErrorCode;
+                client.Send(res);
+                return;
+            }
+
+            S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
+            ntc.HostCharacterId = client.Character.CharacterId;
+            ntc.LeaderCharacterId = client.Character.CharacterId;
+            ntc.PartyMembers.Add(join.Value.GetCDataPartyMember());
+            client.Send(ntc);
+
+            res.PartyId = party.Id;
+            client.Send(res);
+
+            Logger.Info(client, $"created party with PartyId:{party.Id}");
         }
     }
 }

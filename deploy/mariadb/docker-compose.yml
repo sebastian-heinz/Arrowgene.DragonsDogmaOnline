@@ -1,0 +1,28 @@
+version: '3.8'
+
+volumes:
+  ddon-mariadb-volume:
+
+services:
+  mariadb:
+    container_name: ddon-mariadb
+    image: mariadb:11
+    ports:
+      - "3306:3306"
+    restart: no
+    volumes:
+      - ddon-mariadb-volume:/var/lib/mysql
+#      - $PWD/schema_mariadb.sql:/docker-entrypoint-initdb.d/schema_mariadb.sql:ro
+      - $PWD/mariadb.cnf:/etc/mysql/mariadb.conf.d/mariadb.cnf:ro
+    environment:
+      - MARIADB_USER=admin
+      - MARIADB_ROOT_PASSWORD=admin
+      - MARIADB_PASSWORD=admin
+      - MARIADB_DATABASE=mariadb
+      - LANG=C.UTF_8
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb --defaults-file=/var/lib/mysql/.my-healthcheck.cnf --skip-column-names -h localhost -e \"select 1 from information_schema.ENGINES WHERE ENGINE='InnoDB' AND support in ('YES', 'DEFAULT', 'ENABLED')\""]
+      interval: 10s
+      timeout: 1s
+      retries: 3

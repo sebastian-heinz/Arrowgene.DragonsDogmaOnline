@@ -8,11 +8,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     /// <summary>
     /// Implementation of Ddon database operations.
     /// </summary>
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
-        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom>));
+        private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom, TReader>));
 
         public DdonSqlDb()
         {
@@ -29,18 +30,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             for (int i = 0; i < fieldLists.Length; i++)
             {
                 string[] fieldList = fieldLists[i];
-                if(table != null)
+                for (int j = 0; j < fieldList.Length; j++)
                 {
-                    sb.Append('`');
-                    sb.Append(table);
-                    sb.Append("`.");
-                }
-                sb.Append('`');
-                sb.Append(string.Join("`, `", fieldList));
-                sb.Append('`');
-                if (i < fieldLists.Length - 1)
-                {
-                    sb.Append(", ");
+                    string field = fieldList[j];
+                    if(table != null)
+                    {
+                        sb.Append('\"');
+                        sb.Append(table);
+                        sb.Append("\".");
+                    }
+                    sb.Append('\"');
+                    sb.Append(field);
+                    sb.Append('\"');
+                    if (j < fieldList.Length - 1)
+                    {
+                        sb.Append(", ");
+                    }
                 }
             }
 
@@ -49,6 +54,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public static string BuildQueryUpdate(params string[][] fieldLists)
         {
+            return BuildQueryUpdateWithPrefix("@", fieldLists);
+        }
+
+        protected static string BuildQueryUpdateWithPrefix(string prefix, params string[][] fieldLists)
+        {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < fieldLists.Length; i++)
             {
@@ -56,7 +66,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 for (int j = 0; j < fieldList.Length; j++)
                 {
                     string field = fieldList[j];
-                    sb.Append($"`{field}`=@{field}");
+                    sb.Append($"\"{field}\"={prefix}{field}");
                     if (j < fieldList.Length - 1)
                     {
                         sb.Append(", ");
@@ -89,9 +99,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return sb.ToString();
         }
 
-        protected override void Exception(Exception ex)
+        protected override void Exception(Exception ex, string query)
         {
             Logger.Exception(ex);
+            if (query != null)
+            {
+                Logger.Error($"Exception during query: {query}");
+            }
         }
     }
 }

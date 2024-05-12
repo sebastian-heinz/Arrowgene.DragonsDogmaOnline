@@ -9,23 +9,38 @@ namespace Arrowgene.Ddon.Server.Network
 {
     public class Client
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Client));
+        private readonly ServerLogger Logger;
 
         protected readonly ITcpSocket Socket;
         private readonly PacketFactory _packetFactory;
         private Challenge _challenge;
 
+        /**
+         * Roundtrip Challenge completed
+         * The client considered to be initialized with crypto key
+         * and able to parse packet headers.
+         */
+        private bool _challengeCompleted;
+
         public Client(ITcpSocket socket, PacketFactory packetFactory)
         {
+            Logger = LogProvider.Logger<ServerLogger>(GetType());
             Socket = socket;
             _packetFactory = packetFactory;
             _challenge = null;
             Identity = socket.Identity;
+            _challengeCompleted = false;
         }
 
         public string Identity { get; protected set; }
 
         public DateTime PingTime { get; set; }
+
+        public void SetChallengeCompleted(bool challengeCompleted)
+        {
+            _challengeCompleted = challengeCompleted;
+            Logger.Info(this, $"SetChallengeCompleted:{_challengeCompleted}");
+        }
 
         public void Close()
         {
@@ -65,6 +80,19 @@ namespace Arrowgene.Ddon.Server.Network
 
         public void Send(Packet packet)
         {
+            if (!_challengeCompleted 
+                && packet.Id != PacketId.S2C_CERT_CLIENT_CHALLENGE_RES
+                && packet.Id != PacketId.L2C_CLIENT_CHALLENGE_RES
+                )
+            {
+                // at this point in time we only allow to send S2C_CERT_CLIENT_CHALLENGE_RES
+                // only after receiving the first client packet, we can assume the client is able
+                // to parse packets headers and process other packets.
+                Logger.Error(this,
+                    $"Tried to send Packet:\"{packet.PrintHeader()}\", while client not yet considered ready");
+                return;
+            }
+
             byte[] data;
             try
             {

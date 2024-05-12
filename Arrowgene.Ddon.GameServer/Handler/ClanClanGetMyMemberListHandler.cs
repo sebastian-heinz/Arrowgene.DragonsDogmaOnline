@@ -21,9 +21,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             S2CClanClanGetMyMemberListRes res = new S2CClanClanGetMyMemberListRes();
-            res.CharacterId = client.Character.Id;
-            res.FirstName = client.Character.CharacterInfo.FirstName;
-            res.LastName = client.Character.CharacterInfo.LastName;
+            res.CharacterId = client.Character.CharacterId;
+            res.FirstName = client.Character.FirstName;
+            res.LastName = client.Character.LastName;
             client.Send(res);
             
            // client.Send(InGameDump.Dump_67);

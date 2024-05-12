@@ -1,3 +1,4 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
@@ -8,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetCurrentSetSkillListHandler : PacketHandler<GameClient>
+    public class SkillGetCurrentSetSkillListHandler : StructurePacketHandler<GameClient, C2SSkillGetCurrentSetSkillListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetCurrentSetSkillListHandler));
 
@@ -16,15 +17,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_SKILL_GET_CURRENT_SET_SKILL_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SSkillGetCurrentSetSkillListReq> packet)
         {
-             // TODO: Filter so only the current job skills are sent?
+            // TODO: Check if its necessary to filter so only the current job skills are sent
             S2CSkillGetCurrentSetSkillListRes res = new S2CSkillGetCurrentSetSkillListRes();
-            res.NormalSkillList = client.Character.NormalSkills;
-            res.SetCustomSkillList = client.Character.CustomSkills;
-            res.SetAbilityList = client.Character.Abilities;
+            res.NormalSkillList = client.Character.LearnedNormalSkills
+                .Where(x => x.Job == client.Character.Job)
+                .ToList();
+            res.SetCustomSkillList = client.Character.EquippedCustomSkillsDictionary[client.Character.Job]
+                .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index+1)))
+                .Where(x => x != null)
+                .ToList();
+            res.SetAbilityList = client.Character.EquippedAbilitiesDictionary[client.Character.Job]
+                .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index+1)))
+                .Where(x => x != null)
+                .ToList();
             client.Send(res);
         }
     }

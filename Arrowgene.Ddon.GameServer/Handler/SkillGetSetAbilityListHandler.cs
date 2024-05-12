@@ -1,3 +1,4 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -16,7 +17,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetSetAbilityListReq> packet)
         {
-            client.Send(new S2CSkillGetSetAbilityListRes());
+            client.Send(new S2CSkillGetSetAbilityListRes() {
+                SetAcquierementParam = client.Character.EquippedAbilitiesDictionary[client.Character.Job]
+                    .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index+1)))
+                    .Where(x => x != null)
+                    .ToList()
+            });
         }
     }
 }

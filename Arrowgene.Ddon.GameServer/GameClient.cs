@@ -1,7 +1,10 @@
 ﻿using System;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.GatheringItems;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Networking.Tcp;
 
@@ -9,9 +12,12 @@ namespace Arrowgene.Ddon.GameServer
 {
     public class GameClient : Client
     {
-        public GameClient(ITcpSocket socket, PacketFactory packetFactory) : base(socket, packetFactory)
+        public GameClient(ITcpSocket socket, PacketFactory packetFactory, ShopManager shopManager, AssetRepository assetRepository) : base(socket, packetFactory)
         {
             UpdateIdentity();
+            InstanceGatheringItemManager = new InstanceGatheringItemManager(assetRepository);
+            InstanceDropItemManager = new InstanceDropItemManager(this);
+            InstanceShopManager = new InstanceShopManager(shopManager);
         }
 
         public void UpdateIdentity()
@@ -24,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer
 
             if (Character != null)
             {
-                newIdentity += $"[Cha:({Character.Id}){Character.CharacterInfo.FirstName} {Character.CharacterInfo.LastName}]";
+                newIdentity += $"[Cha:({Character.CharacterId}){Character.FirstName} {Character.LastName}]";
             }
 
             Identity = newIdentity;
@@ -33,18 +39,14 @@ namespace Arrowgene.Ddon.GameServer
         public Account Account { get; set; }
 
         public Character Character { get; set; }
-        public OnlineStatus OnlineStatus { get; set; }
+        
+        public PartyGroup Party { get; set; }
+        public InstanceShopManager InstanceShopManager { get; }
+        public InstanceGatheringItemManager InstanceGatheringItemManager { get; }
+        public InstanceDropItemManager InstanceDropItemManager { get; }
 
-        /// TODO combine into a location class ?
-        public StageId Stage { get; set; }
-        public uint StageNo { get; set; }
-        public double X { get; set; }
-        public float Y { get; set; }
-        public double Z { get; set; }
-        // ---
-
-        public Party PendingInvitedParty { get; set; } // Maybe its more clean to store this in the handlers ?
-        public Party Party { get; set; }
-
+        // TODO: Place somewhere else more sensible
+        public uint LastWarpPointId { get; set; }
+        public DateTime LastWarpDateTime { get; set; }
     }
 }

@@ -28,8 +28,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CInstanceEnemyKillRes Read(IBuffer buffer)
             {
                 S2CInstanceEnemyKillRes obj = new S2CInstanceEnemyKillRes();
-                obj.EnemyId = ReadUInt32(buffer);
-                obj.KillNum = ReadUInt32(buffer);
+                ReadServerResponse(buffer, obj);
+                if (obj.Error == 0)
+                {
+                    obj.EnemyId = ReadUInt32(buffer);
+                    obj.KillNum = ReadUInt32(buffer);
+                }
                 return obj;
             }
         }

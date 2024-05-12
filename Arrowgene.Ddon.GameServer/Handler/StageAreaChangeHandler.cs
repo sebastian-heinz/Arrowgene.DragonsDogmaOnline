@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -7,12 +7,14 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class StageAreaChangeHandler : StructurePacketHandler<GameClient, C2SStageAreaChangeReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageAreaChangeHandler));
+        private readonly CharacterManager _CharacterManager;
 
         // List of "safe" areas, where the context reset NTC will be sent.
         // TODO: Complete with all the safe areas. Maybe move it to DB or config?
@@ -22,6 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public StageAreaChangeHandler(DdonGameServer server) : base(server)
         {
+            _CharacterManager = server.CharacterManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SStageAreaChangeReq> packet)
@@ -30,15 +33,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.StageNo = ConvertIdToStageNo(packet.Structure.StageId);
             res.IsBase = false;
 
-            client.StageNo = res.StageNo;
-            client.Stage = new StageId(packet.Structure.StageId, 0, 0);
-            
-            Logger.Info($"StageNo:{client.StageNo} StageId{packet.Structure.StageId}");
-            
-            // TODO: Only send it when the party leader moves to a safe stage
-            if(SafeStageIds.Contains(packet.Structure.StageId))
+            client.Character.StageNo = res.StageNo;
+            client.Character.Stage = new StageId(packet.Structure.StageId, 0, 0);
+
+            foreach (var pawn in client.Character.Pawns)
             {
-                client.Send(new S2CInstance_13_42_16_Ntc());
+                pawn.StageNo = res.StageNo;
+            }
+
+            Logger.Info($"StageNo:{client.Character.StageNo} StageId{packet.Structure.StageId}");
+
+            if(client.Party.GetPlayerPartyMember(client).IsLeader && SafeStageIds.Contains(packet.Structure.StageId))
+            {
+                _CharacterManager.ResetAllOmData(client.Character);
+                client.Party.SendToAll(new S2CInstanceAreaResetNtc());
+                client.Party.ResetInstance();
             }
 
             client.Send(res);

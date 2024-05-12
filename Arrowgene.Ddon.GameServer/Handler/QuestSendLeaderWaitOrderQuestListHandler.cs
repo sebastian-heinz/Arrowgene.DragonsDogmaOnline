@@ -1,12 +1,13 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestSendLeaderWaitOrderQuestListHandler : StructurePacketHandler<GameClient, C2SQuestSendLeaderWaitOrderQuestListReq>
+    public class QuestSendLeaderWaitOrderQuestListHandler : GameStructurePacketHandler<C2SQuestSendLeaderWaitOrderQuestListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestSendLeaderWaitOrderQuestListHandler));
 
@@ -21,9 +22,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 S2CQuestSendLeaderWaitOrderQuestListNtc ntc = new S2CQuestSendLeaderWaitOrderQuestListNtc() {
                     QuestScheduleIdList = packet.Structure.QuestScheduleIdList
                 };
-                foreach(GameClient member in client.Party.Members)
+                foreach(GameClient member in client.Party.Clients)
                 {
-                    if(member.Character.Id != member.Party.Leader.Character.Id)
+                    if(member.Character.CharacterId != member.Party.Leader.Client.Character.CharacterId)
                     {
                         member.Send(ntc);
                     }

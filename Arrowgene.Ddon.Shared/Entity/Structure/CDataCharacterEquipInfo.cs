@@ -4,13 +4,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCharacterEquipInfo
     {
-        public CDataCharacterEquipInfo(CDataEquipItemInfo equipItemInfo)
-        {
-            EquipItemUId=equipItemInfo.ItemId.ToString(); // Perhaps?
-            EquipCategory=equipItemInfo.Unk0; // Maybe?
-            EquipType=equipItemInfo.EquipType;
-        }
-
         public CDataCharacterEquipInfo()
         {
             EquipItemUId=string.Empty;
@@ -19,8 +12,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public string EquipItemUId { get; set; }
-        public byte EquipCategory { get; set; }
-        public byte EquipType { get; set; }
+        public byte EquipCategory { get; set; } // Slot
+        public byte EquipType { get; set; } // Equip type (1 performance, 2 visual)
 
         public class Serializer : EntitySerializer<CDataCharacterEquipInfo>
         {

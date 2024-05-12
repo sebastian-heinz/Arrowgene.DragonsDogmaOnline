@@ -4,6 +4,10 @@ namespace Arrowgene.Ddon.GameServer.Chat
 {
     public class ChatMessage
     {
+        public ChatMessage()
+        {
+        }
+
         public ChatMessage(LobbyChatMsgType messageType, byte unk2, uint unk3, uint unk4, string message)
         {
             Type = messageType;
@@ -14,11 +18,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
             Deliver = true;
         }
 
-        public LobbyChatMsgType Type { get; }
+        public LobbyChatMsgType Type { get; set; }
         public byte Unk2 { get; set; }
         public uint Unk3 { get; set; }
         public uint Unk4 { get; set; }
-        public string Message { get; }
+        public string Message { get; set; }
         public bool Deliver { get; set; }
     }
 }

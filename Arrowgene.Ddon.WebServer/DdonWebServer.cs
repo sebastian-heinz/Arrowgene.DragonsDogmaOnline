@@ -2,6 +2,7 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
+using Arrowgene.WebServer.Middleware;
 using Arrowgene.WebServer.Route;
 using Arrowgene.WebServer.Server;
 using Arrowgene.WebServer.Server.Kestrel;
@@ -16,33 +17,75 @@ namespace Arrowgene.Ddon.WebServer
 
         private readonly WebService _webService;
         private readonly WebServerSetting _setting;
-        private readonly IDatabase _database;
+        private bool _running;
 
         public DdonWebServer(WebServerSetting setting, IDatabase database)
         {
             _setting = setting;
-            _database = database;
+            _running = false;
 
             IWebServerCore core = new KestrelWebServer(_setting.WebSetting);
             _webService = new WebService(core);
 
-            IFileProvider webFileProvider = new PhysicalFileProvider(_setting.WebSetting.WebFolder);
-            _webService.AddMiddleware(new StaticFileMiddleware("", webFileProvider));
+            Logger.Info($"Serving Directory: {_setting.WebSetting.WebFolder}");
+            var staticFile = new StaticFileMiddleware(new PhysicalFileProvider(_setting.WebSetting.WebFolder));
+            foreach (string servingFile in staticFile.GetServingFilesUrl(_setting.PublicWebEndPoint))
+            {
+                Logger.Info(servingFile);
+            }
 
-            _webService.AddRoute(new IndexRoute());
-            _webService.AddRoute(new AccountRoute(_database));
+            AddMiddleware(staticFile);
+
+            AddRoute(new IndexRoute());
+            AddRoute(new AccountRoute(database));
         }
 
-        public void AddRoute(IWebRoute route) => _webService.AddRoute(route);
+        public void AddMiddleware(IWebMiddleware middleware)
+        {
+            _webService.AddMiddleware(middleware);
+            if (_running)
+            {
+                Logger.Info($"Registered new middleware `{middleware.GetType().Name}`");
+            }
+        }
+
+        public void AddRoute(IWebRoute route)
+        {
+            _webService.AddRoute(route);
+            if (_running)
+            {
+                Logger.Info($"Registered new route `{route.Route}`, now serving endpoints:");
+                foreach (WebRequestMethod method in route.GetMethods())
+                {
+                    Logger.Info($"[{method}] {_setting.PublicWebEndPoint.GetUrl()}{route.Route}");
+                }
+            }
+        }
 
         public async Task Start()
         {
+            Logger.Info($"Serving Routes:");
+            foreach (string servingRoute in _webService.GetServingRoutes(_setting.PublicWebEndPoint))
+            {
+                Logger.Info(servingRoute);
+            }
+
+            _running = true;
+
+            foreach (WebEndPoint webEndPoint in _setting.WebSetting.WebEndpoints)
+            {
+                Logger.Info($"Listening: {webEndPoint.IpAddress}:{webEndPoint.Port}");
+            }
+
             await _webService.Start();
-            Logger.Info($"Running Web Server http://localhost/web/index.html");
+            // only returns once webserver stopped
+
+            _running = false;
         }
 
         public async Task Stop()
         {
+            _running = false;
             await _webService.Stop();
         }
     }

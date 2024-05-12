@@ -17,11 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         {
             StringBuilder sb = new StringBuilder();
             
-            sb.Append($"StageId:{client.Stage.Id} ");
-            sb.Append($"LayerNo:{client.Stage.LayerNo} ");
-            sb.Append($"GroupId:{client.Stage.GroupId} ");
-            sb.Append($"StageNo:{client.StageNo} ");
-            sb.Append($"Pos:[X:{client.X} Y:{client.Y} Z:{client.Z}]");
+            sb.Append($"StageId:{client.Character.Stage.Id} ");
+            sb.Append($"LayerNo:{client.Character.Stage.LayerNo} ");
+            sb.Append($"GroupId:{client.Character.Stage.GroupId} ");
+            sb.Append($"StageNo:{client.Character.StageNo} ");
+            sb.Append($"Pos:[X:{client.Character.X} Y:{client.Character.Y} Z:{client.Character.Z}]");
 
 
             ChatResponse response = new ChatResponse();

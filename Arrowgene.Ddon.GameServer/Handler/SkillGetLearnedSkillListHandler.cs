@@ -18,19 +18,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSkillGetLearnedSkillListReq> packet)
         {
-            client.Send(new S2CSkillGetLearnedSkillListRes() {
-                SetAcquierementParam = SkillGetAcquirableSkillListHandler.AllSkills
-                    .Select(skill => new CDataLearnedSetAcquirementParam() {
-                        Job = skill.Job,
-                        AcquirementNo = skill.SkillNo,
-                        AcquirementLv = (byte) (IsSkillEX(skill.SkillNo) ? 1 : 10) // EX skills must be Lv 1 to work, otherwise use Lv 10 (Max level)
-                    }).ToList()
+            client.Send(new S2CSkillGetLearnedSkillListRes()
+            {
+                SetAcquierementParam = client.Character.LearnedCustomSkills.Select(x => x.AsCDataLearnedSetAcquirementParam()).ToList()
             });
-        }
-
-        private bool IsSkillEX(uint skillNo)
-        {
-            return skillNo >= 100;
         }
     }
 }

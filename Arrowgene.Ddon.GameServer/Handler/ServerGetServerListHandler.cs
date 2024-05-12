@@ -28,7 +28,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CServerGetServerListRes response = new S2CServerGetServerListRes();
             response.GameServerListInfo = new List<CDataGameServerListInfo>(_assets.ServerList);
-            response.IsReceived = true;
             client.Send(response);
         }
     }
