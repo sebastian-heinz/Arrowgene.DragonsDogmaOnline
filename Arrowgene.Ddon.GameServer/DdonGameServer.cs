@@ -31,17 +31,17 @@ using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.Server.Handler;
-using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -166,8 +166,11 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
 
             AddHandler(new AreaGetAreaBaseInfoListHandler(this));
+            AddHandler(new AreaGetAreaMasterInfoHandler(this));
             AddHandler(new AreaGetAreaQuestHintListHandler(this));
+            AddHandler(new AreaGetAreaSupplyInfoHandler(this));
             AddHandler(new AreaGetLeaderAreaReleaseListHandler(this));
+            AddHandler(new AreaGetSpotInfoListHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
             AddHandler(new BazaarGetCharacterListHandler(this));
@@ -369,6 +372,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetAdventureGuideQuestListHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
             AddHandler(new QuestGetAreaBonusListHandler(this));
+            AddHandler(new QuestGetAreaInfoListHandler(this));
             AddHandler(new QuestGetCycleContentsStateListHandler(this));
             AddHandler(new QuestGetLevelBonusListHandler(this));
             AddHandler(new QuestGetLightQuestList(this));
@@ -381,6 +385,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetQuestPartyBonusListHandler(this));
             AddHandler(new QuestGetRewardBoxHandler(this));
             AddHandler(new QuestGetRewardBoxItemHandler(this));
+            AddHandler(new QuestGetSetQuestInfoListHandler(this));
             AddHandler(new QuestGetSetQuestListHandler(this));
             AddHandler(new QuestGetTutorialQuestListHandler(this));
             AddHandler(new QuestGetWorldManageQuestListHandler(this));
@@ -401,6 +406,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetGameSettingHandler(this));
             AddHandler(new ServerGetRealTimeHandler(this));
             AddHandler(new ServerGetServerListHandler(this));
+            AddHandler(new ServerWeatherForecastGetHandler(this));
 
             AddHandler(new SkillChangeExSkillHandler(this));
             AddHandler(new SkillGetAbilityCostHandler(this));
@@ -446,6 +452,7 @@ namespace Arrowgene.Ddon.GameServer
 			AddHandler(new StampBonusReceiveDailyHandler(this));
 
             AddHandler(new WarpAreaWarpHandler(this));
+            AddHandler(new WarpGetAreaWarpPointListHandler(this));
             AddHandler(new WarpGetFavoriteWarpPointListHandler(this));
             AddHandler(new WarpGetReleaseWarpPointListHandler(this));
             AddHandler(new WarpGetReturnLocationHandler(this));
