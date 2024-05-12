@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // new CDataCharacterReleaseElement(ContentsRelease.QuestBoard),
             // new CDataCharacterReleaseElement(ContentsRelease.Unknown79),
             // new CDataCharacterReleaseElement(ContentsRelease.AreaMaster),
-            // new CDataCharacterReleaseElement(ContentsRelease.Unknown80),
+            new CDataCharacterReleaseElement(ContentsRelease.SpecialSkillPawnTraining),
             // new CDataCharacterReleaseElement(ContentsRelease.QuestHint),
             new CDataCharacterReleaseElement(ContentsRelease.Unknown90),
             new CDataCharacterReleaseElement(ContentsRelease.JobChange),

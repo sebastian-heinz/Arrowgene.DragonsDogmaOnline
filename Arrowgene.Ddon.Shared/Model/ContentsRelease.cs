@@ -87,7 +87,7 @@ namespace Arrowgene.Ddon.Shared.Model
         Unknown77                      = 77, // Appears to be associated with QuestBoard
         Unknown78                      = 78,
         Unknown79                      = 79, // Appears to be associated with AreaMaster
-        Unknown80                      = 80, // Appears to be associated with QuestHint
+        SpecialSkillPawnTraining       = 80,
         Unknown81                      = 81,
         Unknown82                      = 82,
         Unknown83                      = 83,
