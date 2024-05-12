@@ -24,8 +24,10 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.LoginServer.Handler;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 
@@ -36,7 +38,7 @@ namespace Arrowgene.Ddon.LoginServer
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonLoginServer));
 
         public DdonLoginServer(LoginServerSetting setting, IDatabase database, AssetRepository assetRepository)
-            : base(setting.ServerSetting, database, assetRepository)
+            : base(ServerType.Login, setting.ServerSetting, database, assetRepository)
         {
             Setting = new LoginServerSetting(setting);
             ClientLookup = new LoginClientLookup();
@@ -73,6 +75,8 @@ namespace Arrowgene.Ddon.LoginServer
 
         private void LoadPacketHandler()
         {
+            SetFallbackHandler(new FallbackHandler<LoginClient>(this));
+
             AddHandler(new ClientChallengeHandler(this));
             AddHandler(new ClientLoginHandler(this));
             AddHandler(new ClientPingHandler(this));

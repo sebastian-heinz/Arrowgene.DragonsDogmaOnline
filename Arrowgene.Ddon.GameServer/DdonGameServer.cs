@@ -40,7 +40,8 @@ using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Server.Handler;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -52,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer
         public static readonly TimeSpan RevivalPowerRechargeTimeSpan = TimeSpan.FromDays(1);
 
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
-            : base(setting.ServerSetting, database, assetRepository)
+            : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
@@ -160,6 +161,8 @@ namespace Arrowgene.Ddon.GameServer
 
         private void LoadPacketHandler()
         {
+            SetFallbackHandler(new FallbackHandler<GameClient>(this));
+            
             AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
 
             AddHandler(new AreaGetAreaBaseInfoListHandler(this));
