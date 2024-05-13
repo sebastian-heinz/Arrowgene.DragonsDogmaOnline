@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.Cli.Command
                         foreach (IPacket resolvedPacket in pcapPacket.ResolvedPackets)
                         {
                             string fileName = Path.Combine(directoryInfo.FullName,
-                                $"{pcapPacket.Packet}_{resolvedPacket.Id.Name}.{resolvedPacket.Id.GroupId}_{resolvedPacket.Id.HandlerId}_{resolvedPacket.Id.HandlerSubId}");
+                                $"{pcapPacket.Packet}_{resolvedPacket.Id.Name}_{pcapPacket.TimeStamp.Replace(':', '_')}.{resolvedPacket.Id.GroupId}_{resolvedPacket.Id.HandlerId}_{resolvedPacket.Id.HandlerSubId}");
                             File.WriteAllBytes(fileName, resolvedPacket.GetHeaderBytes().Concat(resolvedPacket.Data).ToArray());
                         }
                     }
