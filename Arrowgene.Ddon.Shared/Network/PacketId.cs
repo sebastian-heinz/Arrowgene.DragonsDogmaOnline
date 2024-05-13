@@ -158,7 +158,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId L2C_CLIENT_CHALLENGE_RES = new PacketId(1, 0, 2, "L2C_CLIENT_CHALLENGE_RES", ServerType.Login, PacketSource.Server);
         public static readonly PacketId L2C_LOGIN_SERVER_CERT_NTC = new PacketId(1, 1, 16, "L2C_LOGIN_SERVER_CERT_NTC", ServerType.Login, PacketSource.Server);
 
-        public static readonly PacketId C2L_GET_GAME_SERVER_LIST_RES = new PacketId(2, 0, 1, "C2L_GET_GAME_SERVER_LIST_RES", ServerType.Login, PacketSource.Client);
+        public static readonly PacketId C2L_GET_GAME_SERVER_LIST_REQ = new PacketId(2, 0, 1, "C2L_GET_GAME_SERVER_LIST_REQ", ServerType.Login, PacketSource.Client);
         public static readonly PacketId L2C_GET_GAME_SERVER_LIST_RES = new PacketId(2, 0, 2, "L2C_GET_GAME_SERVER_LIST_RES", ServerType.Login, PacketSource.Server);
         public static readonly PacketId C2L_GET_GAME_SESSION_KEY_REQ = new PacketId(2, 1, 1, "C2L_GET_GAME_SESSION_KEY_REQ", ServerType.Login, PacketSource.Client);
         public static readonly PacketId L2C_GET_GAME_SESSION_KEY_RES = new PacketId(2, 1, 2, "L2C_GET_GAME_SESSION_KEY_RES", ServerType.Login, PacketSource.Server);
@@ -204,7 +204,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2L_CLIENT_CHALLENGE_REQ);
             AddPacketIdEntry(packetIds, L2C_CLIENT_CHALLENGE_RES);
             AddPacketIdEntry(packetIds, L2C_LOGIN_SERVER_CERT_NTC);
-            AddPacketIdEntry(packetIds, C2L_GET_GAME_SERVER_LIST_RES);
+            AddPacketIdEntry(packetIds, C2L_GET_GAME_SERVER_LIST_REQ);
             AddPacketIdEntry(packetIds, L2C_GET_GAME_SERVER_LIST_RES);
             AddPacketIdEntry(packetIds, C2L_GET_GAME_SESSION_KEY_REQ);
             AddPacketIdEntry(packetIds, L2C_GET_GAME_SESSION_KEY_RES);

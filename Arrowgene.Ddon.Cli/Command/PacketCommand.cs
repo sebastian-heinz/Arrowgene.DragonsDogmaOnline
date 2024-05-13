@@ -16,51 +16,35 @@ namespace Arrowgene.Ddon.Cli.Command
     public class PacketCommand : ICommand
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(PacketCommand));
-
         public string Key => "packet";
         private static string DecryptionKeySwitch => "--key";
-        private static string ByteDumpSwitch => "--byte-dump";
-        private static string ByteDumpPrefixSwitch => "--byte-dump-prefix";
-        private static string Utf8StringDumpSwitch => "--utf8-dump";
-        private static string StructureDumpSwitch => "--structure-dump";
-        private static string PacketIncludeFilterSwitch => "--packet-include-filter";
 
         public string Description =>
-            $"Usage: `{Key} \"E:\\dumps\\58_9.yaml` [{DecryptionKeySwitch}=]J2g4pE2_heyqIAengWy0N6D1SEklxz8I [{ByteDumpSwitch}[=,]] [{ByteDumpPrefixSwitch}=0x] [{Utf8StringDumpSwitch}] [{StructureDumpSwitch}[=JSON|YAML]] [{PacketIncludeFilterSwitch}=11.21.2,S2C_QUEST_QUEST_PROGRESS_RES,...]";
-
+            $"Usage: `{Key} \"E:\\dumps\\58_9.yaml` [{DecryptionKeySwitch}=]J2g4pE2_heyqIAengWy0N6D1SEklxz8I {PacketCommandOptions.GetUsage()}";
 
         public CommandResultType Run(CommandParameter parameter)
         {
             string yamlPath = parameter.Arguments[0];
-
             string camelliaKey = parameter.SwitchMap.GetValueOrDefault(DecryptionKeySwitch, null) ?? parameter.Arguments[1];
-            byte[] camelliaKeyBytes = Encoding.UTF8.GetBytes(camelliaKey);
+            byte[] camelliaBytes = Encoding.UTF8.GetBytes(camelliaKey);
+            PacketCommandOptions packetCommandOptions = new PacketCommandOptions(parameter);
 
-            bool addByteDump = parameter.Switches.Contains(ByteDumpSwitch) || parameter.SwitchMap.ContainsKey(ByteDumpSwitch);
-            string byteDumpSeparator = parameter.SwitchMap.GetValueOrDefault(ByteDumpSwitch, "");
-            string byteDumpPrefix = parameter.SwitchMap.GetValueOrDefault(ByteDumpPrefixSwitch, "");
-            bool addUtf8StringDump = parameter.Switches.Contains(Utf8StringDumpSwitch) || parameter.SwitchMap.ContainsKey(Utf8StringDumpSwitch);
-            bool addStructureDump = parameter.Switches.Contains(StructureDumpSwitch) || parameter.SwitchMap.ContainsKey(StructureDumpSwitch);
-            string structureDumpFormat = parameter.SwitchMap.GetValueOrDefault(StructureDumpSwitch, "JSON").ToLowerInvariant();
-            string packetIncludeFilter = parameter.SwitchMap.GetValueOrDefault(PacketIncludeFilterSwitch, "");
-
-            List<PcapPacket> decryptedPcapPackets = DecryptPackets(yamlPath, camelliaKeyBytes);
-            string annotatedDump = GetAnnotatedPacketDump(decryptedPcapPackets, addByteDump, addUtf8StringDump, addStructureDump, byteDumpSeparator, byteDumpPrefix,
-                structureDumpFormat, packetIncludeFilter);
+            List<PcapPacket> decryptedPcapPackets = DecryptPackets(yamlPath, camelliaBytes, packetCommandOptions.ExportDecryptedPackets);
+            string annotatedDump = GetAnnotatedPacketDump(decryptedPcapPackets, packetCommandOptions);
             string outputPath = yamlPath + ".annotated.txt";
             File.WriteAllText(outputPath, annotatedDump);
 
             return CommandResultType.Exit;
         }
 
-        public List<PcapPacket> DecryptPackets(string yamlPath, byte[] camelliaKeyBytes)
+        public List<PcapPacket> DecryptPackets(string yamlPath, byte[] camelliaKeyBytes, bool exportDecryptedPackets = false)
         {
             string yamlPcap = File.ReadAllText(yamlPath);
             List<PcapPacket> pcapPackets = ReadYamlPcap(yamlPcap);
-            return DecryptPackets(pcapPackets, camelliaKeyBytes);
+            return DecryptPackets(pcapPackets, camelliaKeyBytes, exportDecryptedPackets ? Path.GetFileNameWithoutExtension(yamlPath) : "");
         }
 
-        public List<PcapPacket> DecryptPackets(List<PcapPacket> pcapPackets, byte[] camelliaKeyBytes)
+        public List<PcapPacket> DecryptPackets(List<PcapPacket> pcapPackets, byte[] camelliaKeyBytes, string outputFolder = "")
         {
             if (pcapPackets == null || pcapPackets.Count <= 0)
             {
@@ -99,6 +83,17 @@ namespace Arrowgene.Ddon.Cli.Command
                     {
                         pcapPacket.ResolvedPackets = serverFactory.Read(pcapPacket.Data);
                     }
+
+                    if (!string.IsNullOrEmpty(outputFolder))
+                    {
+                        DirectoryInfo directoryInfo = Directory.CreateDirectory(outputFolder);
+                        foreach (IPacket resolvedPacket in pcapPacket.ResolvedPackets)
+                        {
+                            string fileName = Path.Combine(directoryInfo.FullName,
+                                $"{pcapPacket.Packet}_{resolvedPacket.Id.Name}_{pcapPacket.TimeStamp.Replace(':', '_')}.{resolvedPacket.Id.GroupId}_{resolvedPacket.Id.HandlerId}_{resolvedPacket.Id.HandlerSubId}");
+                            File.WriteAllBytes(fileName, resolvedPacket.GetHeaderBytes().Concat(resolvedPacket.Data).ToArray());
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -109,28 +104,28 @@ namespace Arrowgene.Ddon.Cli.Command
             return pcapPackets;
         }
 
-        public string GetAnnotatedPacketDump(List<PcapPacket> decryptedPcapPackets, bool addByteDump, bool addUtf8ByteDump, bool addStructureDump, string byteDumpSeparator = "",
-            string byteDumpPrefix = "", string structureDumpFormat = "", string packetIncludeFilter = "")
+        public string GetAnnotatedPacketDump(List<PcapPacket> decryptedPcapPackets, PacketCommandOptions packetCommandOptions)
         {
-            HashSet<string> packetIncludeFilterSet = new HashSet<string>(packetIncludeFilter.ToLowerInvariant().Split(','));
+            HashSet<string> packetIncludeFilterSet = new HashSet<string>(packetCommandOptions.PacketIncludeFilter.ToLowerInvariant().Split(','));
             StringBuilder annotated = new StringBuilder();
             {
                 foreach (PcapPacket pcapPacket in decryptedPcapPackets)
                 {
                     foreach (IPacket resolvedPacket in pcapPacket.ResolvedPackets)
                     {
-                        if (packetIncludeFilter != "" && !packetIncludeFilterSet.Contains(resolvedPacket.Id.Name.ToLowerInvariant()) && !packetIncludeFilterSet.Contains(resolvedPacket.Id.ToString()))
+                        if (packetCommandOptions.PacketIncludeFilter != "" && !packetIncludeFilterSet.Contains(resolvedPacket.Id.Name.ToLowerInvariant()) &&
+                            !packetIncludeFilterSet.Contains(resolvedPacket.Id.ToString()))
                         {
                             continue;
                         }
 
                         annotated.AppendLine($"{resolvedPacket.PrintHeader()} Pcap(No:{pcapPacket.Packet} Ts:{pcapPacket.TimeStamp})");
                         annotated.Append(resolvedPacket.PrintData());
-                        if (addStructureDump && resolvedPacket is IStructurePacket)
+                        if (packetCommandOptions.AddStructureDump && resolvedPacket is IStructurePacket)
                         {
                             try
                             {
-                                if (structureDumpFormat.Equals("yaml", StringComparison.InvariantCultureIgnoreCase))
+                                if (packetCommandOptions.StructureDumpFormat.Equals("yaml", StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     annotated.Append($"StructDump: {StructurePacket.YamlSerializer.Serialize(resolvedPacket)}");
                                 }
@@ -146,12 +141,22 @@ namespace Arrowgene.Ddon.Cli.Command
                             }
                         }
 
-                        if (addByteDump)
+                        if (packetCommandOptions.AddByteDump)
                         {
-                            annotated.AppendLine($"ByteDump: {string.Join(byteDumpSeparator, resolvedPacket.Data.Select(dataByte => $"{byteDumpPrefix}{dataByte:X2}"))}");
+                            string byteDump = "";
+                            if (packetCommandOptions.AddByteDumpHeader)
+                            {
+                                byteDump += string.Join(packetCommandOptions.ByteDumpSeparator,
+                                    resolvedPacket.GetHeaderBytes().Select(dataByte => $"{packetCommandOptions.ByteDumpPrefix}{dataByte:X2}"));
+                                byteDump += packetCommandOptions.ByteDumpSeparator;
+                            }
+
+                            byteDump += string.Join(packetCommandOptions.ByteDumpSeparator,
+                                resolvedPacket.Data.Select(dataByte => $"{packetCommandOptions.ByteDumpPrefix}{dataByte:X2}"));
+                            annotated.AppendLine($"ByteDump: {byteDump}");
                         }
 
-                        if (addUtf8ByteDump)
+                        if (packetCommandOptions.AddUtf8StringDump)
                         {
                             string utf8dump = string.Concat(Encoding.UTF8.GetString(resolvedPacket.Data, 0, resolvedPacket.Data.Length).Select(c =>
                                 char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsSeparator(c) || char.IsSymbol(c) ? c : '·'));
