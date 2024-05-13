@@ -94,7 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Party.SendToAll(completeNtc);
 
                     // Remove the quest data from the player object
-                    activeQuests.Remove(questId);
+                    // activeQuests.Remove(questId);
                 }
 
 

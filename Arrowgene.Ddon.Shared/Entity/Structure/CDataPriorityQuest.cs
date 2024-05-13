@@ -6,8 +6,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataPriorityQuest
     {
-        public CDataPriorityQuest() {
-            
+        public CDataPriorityQuest()
+        {
+            QuestAnnounceList = new List<CDataQuestAnnounce>();
+            WorkList = new List<CDataQuestProgressWork>();
         }
     
         public uint QuestScheduleId { get; set; }

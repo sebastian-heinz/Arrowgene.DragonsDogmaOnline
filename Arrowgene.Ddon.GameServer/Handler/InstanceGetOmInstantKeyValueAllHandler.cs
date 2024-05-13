@@ -13,11 +13,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetOmInstantKeyValueAllHandler));
 
-        private readonly CharacterManager _CharacterManager;
-
         public InstanceGetOmInstantKeyValueAllHandler(DdonGameServer server) : base(server)
         {
-            _CharacterManager = server.CharacterManager;
         }
 
         public override PacketId Id => PacketId.C2S_INSTANCE_GET_OM_INSTANT_KEY_VALUE_ALL_REQ;
@@ -26,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // client.Send(GameFull.Dump_112);
 
-            Dictionary<ulong, uint> omData = _CharacterManager.GetAllOmData(client.Character, client.Character.Stage.Id);
+            Dictionary<ulong, uint> omData = CharacterManager.GetAllOmData(client.Character, client.Character.Stage.Id);
 
             S2CInstanceGetOmInstantKeyValueAllRes res = new S2CInstanceGetOmInstantKeyValueAllRes()
             {

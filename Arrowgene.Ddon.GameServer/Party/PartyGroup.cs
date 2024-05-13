@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
@@ -557,6 +558,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceDropItemManager.Clear();
+                CharacterManager.ResetCharacterInstanceData(client.Character);
             }
         }
 

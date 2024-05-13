@@ -626,8 +626,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_CHECK_QUEST_DISTRIBUTION_RES = new PacketId(11, 24, 2, "S2C_QUEST_CHECK_QUEST_DISTRIBUTION_RES", ServerType.Game, PacketSource.Server); // クエスト配信チェックに
         public static readonly PacketId C2S_QUEST_QUEST_CANCEL_REQ = new PacketId(11, 25, 1, "C2S_QUEST_QUEST_CANCEL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_QUEST_CANCEL_RES = new PacketId(11, 25, 2, "S2C_QUEST_QUEST_CANCEL_RES", ServerType.Game, PacketSource.Server); // クエストキャンセルに
-        public static readonly PacketId S2C_QUEST_QUEST_CANCEL_NTC = new PacketId(11, 25, 16, "S2C_QUEST_QUEST_CANCEL_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_25_16_NTC");
-        public static readonly PacketId S2C_QUEST_11_26_16_NTC = new PacketId(11, 26, 16, "S2C_QUEST_11_26_16_NTC", ServerType.Game, PacketSource.Server); //  this also cancels the quest
+        public static readonly PacketId S2C_QUEST_11_25_16_NTC = new PacketId(11, 25, 16, "S2C_QUEST_11_25_16_NTC", ServerType.Game, PacketSource.Server); // This cancels the quest but got strange error about party state
+        public static readonly PacketId S2C_QUEST_11_26_16_NTC = new PacketId(11, 26, 16, "S2C_QUEST_11_26_16_NTC", ServerType.Game, PacketSource.Server); // This cancels the quest with no strange warnings
         public static readonly PacketId S2C_QUEST_11_27_16_NTC = new PacketId(11, 27, 16, "S2C_QUEST_11_27_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_QUEST_END_DISTRIBUTION_QUEST_CANCEL_REQ = new PacketId(11, 28, 1, "C2S_QUEST_END_DISTRIBUTION_QUEST_CANCEL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_END_DISTRIBUTION_QUEST_CANCEL_RES = new PacketId(11, 28, 2, "S2C_QUEST_END_DISTRIBUTION_QUEST_CANCEL_RES", ServerType.Game, PacketSource.Server); // 配信終了クエストキャンセルに
@@ -639,7 +639,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_GET_QUEST_COMPLETE_LIST_RES = new PacketId(11, 31, 2, "S2C_QUEST_GET_QUEST_COMPLETE_LIST_RES", ServerType.Game, PacketSource.Server); // クエストクリアリストの取得に
         public static readonly PacketId C2S_QUEST_SET_PRIORITY_QUEST_REQ = new PacketId(11, 32, 1, "C2S_QUEST_SET_PRIORITY_QUEST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_SET_PRIORITY_QUEST_RES = new PacketId(11, 32, 2, "S2C_QUEST_SET_PRIORITY_QUEST_RES", ServerType.Game, PacketSource.Server); // 優先クエストの設定に
-        public static readonly PacketId S2C_QUEST_11_32_16_NTC = new PacketId(11, 32, 16, "S2C_QUEST_11_32_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_SET_PRIORITY_QUEST_NTC = new PacketId(11, 32, 16, "S2C_QUEST_SET_PRIORITY_QUEST_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_32_16_NTC");
         public static readonly PacketId C2S_QUEST_CANCEL_PRIORITY_QUEST_REQ = new PacketId(11, 33, 1, "C2S_QUEST_CANCEL_PRIORITY_QUEST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_CANCEL_PRIORITY_QUEST_RES = new PacketId(11, 33, 2, "S2C_QUEST_CANCEL_PRIORITY_QUEST_RES", ServerType.Game, PacketSource.Server); // 優先クエストの解除に
         public static readonly PacketId C2S_QUEST_GET_PRIORITY_QUEST_REQ = new PacketId(11, 34, 1, "C2S_QUEST_GET_PRIORITY_QUEST_REQ", ServerType.Game, PacketSource.Client);
@@ -2534,7 +2534,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_CHECK_QUEST_DISTRIBUTION_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_QUEST_CANCEL_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_QUEST_CANCEL_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_QUEST_CANCEL_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_11_25_16_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_26_16_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_27_16_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_END_DISTRIBUTION_QUEST_CANCEL_REQ);
@@ -2547,7 +2547,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_QUEST_COMPLETE_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_SET_PRIORITY_QUEST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_SET_PRIORITY_QUEST_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_32_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_SET_PRIORITY_QUEST_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_CANCEL_PRIORITY_QUEST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_CANCEL_PRIORITY_QUEST_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_PRIORITY_QUEST_REQ);

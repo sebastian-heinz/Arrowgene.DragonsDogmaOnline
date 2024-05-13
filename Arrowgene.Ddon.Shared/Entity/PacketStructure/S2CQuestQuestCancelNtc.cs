@@ -7,7 +7,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CQuestQuestCancelNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_QUEST_QUEST_CANCEL_NTC;
+        // TODO: This NTC might be wrong, choose one after if not working as expected
+        public PacketId Id => PacketId.S2C_QUEST_11_25_16_NTC; 
 
 
         public S2CQuestQuestCancelNtc()

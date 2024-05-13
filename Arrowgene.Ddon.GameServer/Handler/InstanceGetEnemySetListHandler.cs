@@ -46,6 +46,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (quest.HasEnemiesInCurrentStageGroup(client.Character.StageNo, stageId.GroupId, subGroupId))
                 {
                     response.QuestId = (uint) questId;
+                    foreach(var enemy in response.EnemyList)
+                    {
+                        enemy.EnemyInfo.EnemyTargetTypesId = 4;
+                    }
                     break;
                 }
             }

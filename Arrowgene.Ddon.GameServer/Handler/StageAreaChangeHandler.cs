@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -43,11 +44,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Logger.Info($"StageNo:{client.Character.StageNo} StageId{packet.Structure.StageId}");
 
-            if(client.Party.GetPlayerPartyMember(client).IsLeader && SafeStageIds.Contains(packet.Structure.StageId))
+            if (SafeStageIds.Contains(packet.Structure.StageId))
             {
-                _CharacterManager.ResetAllOmData(client.Character);
-                client.Party.SendToAll(new S2CInstanceAreaResetNtc());
-                client.Party.ResetInstance();
+                bool shouldReset = true;
+                // Check to see if all player members are in a safe area.
+                foreach (var member in client.Party.Members)
+                {
+                    if (member == null || member.IsPawn)
+                    {
+                        continue;
+                    }
+
+                    // TODO: Is it safe to iterate over player party members this way?
+                    // TODO: Can this logic be made part of the party object instead?
+                    shouldReset &= SafeStageIds.Contains(((PlayerPartyMember)member).Client.Character.Stage.Id);
+                }
+
+                if (shouldReset)
+                {
+                    client.Party.ResetInstance();
+                    client.Party.SendToAll(new S2CInstanceAreaResetNtc());
+                }
             }
 
             client.Send(res);

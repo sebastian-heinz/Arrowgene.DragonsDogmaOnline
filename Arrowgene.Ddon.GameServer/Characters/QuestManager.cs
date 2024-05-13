@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             gQuests[QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist();
             gQuests[QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd();
             // World Quests
-            gQuests[QuestId.LestaniaCyclops] = new LestaniaCyclops();
+            gQuests[QuestId.TheKnightsBitterEnemy] = new Q20005010_TheKnightsBitterEnemy();
         }
 
         /**
@@ -48,6 +48,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static void AddQuest()
         {
 
+        }
+
+        public static List<KeyValuePair<QuestId, Quest>> GetQuestsByType(QuestType type)
+        {
+            List<KeyValuePair<QuestId, Quest>> results = new List<KeyValuePair<QuestId, Quest>>();
+
+            // TODO: We probably need to optimize this as more quests are added
+            foreach (var quest in gQuests)
+            {
+                if (quest.Value.QuestType == type)
+                {
+                    results.Add(quest);
+                }
+            }
+
+            return results;
         }
 
         public static Quest GetQuest(QuestId questId)

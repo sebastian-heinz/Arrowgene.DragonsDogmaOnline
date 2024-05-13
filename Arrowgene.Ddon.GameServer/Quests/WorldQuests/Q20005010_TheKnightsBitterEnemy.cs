@@ -19,10 +19,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
 {
     public class WorldQuests
     {
-        public class LestaniaCyclops : Quest
+        public class Q20005010_TheKnightsBitterEnemy : Quest
         {
-            private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LestaniaCyclops));
-            public LestaniaCyclops() : base(QuestType.World, true)
+            private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Q20005010_TheKnightsBitterEnemy));
+            public Q20005010_TheKnightsBitterEnemy() : base(QuestType.World, true)
             {
             }
 
@@ -62,8 +62,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                 // http://ddon.wikidot.com/wq:theknightsbitterenemy
                 var quest = new CDataQuestList()
                 {
-                    QuestId = (uint)QuestId.LestaniaCyclops,
-                    QuestScheduleId = (uint)QuestId.LestaniaCyclops,
+                    QuestId = (uint)QuestId.TheKnightsBitterEnemy,
+                    QuestScheduleId = (uint)QuestId.TheKnightsBitterEnemy,
                     BaseLevel = 12,
                     IsClientOrder = false,
                     IsEnable = true,
@@ -121,6 +121,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                                         ResultCommandList = new List<CDataQuestCommand>()
                                         {
                                             QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear),
+                                            QuestManager.ResultCommand.EndEndQuest(),
                                         }
                                     }
                                 };

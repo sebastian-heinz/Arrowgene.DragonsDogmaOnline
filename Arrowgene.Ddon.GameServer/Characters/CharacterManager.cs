@@ -85,10 +85,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public static void ResetWorldQuests(Character character)
+        {
+            var results = QuestManager.GetQuestsByType(QuestType.World);
+            foreach (var result in results)
+            {
+                // Throw away the old quest data or add it back if it was removed
+                character.ActiveQuests[result.Key] = new Dictionary<uint, uint>();
+            }
+        }
+
         private void SelectQuests(Character character)
         {
             // TODO: Grab from database instead.
-            character.ActiveQuests[QuestId.LestaniaCyclops] = new Dictionary<uint, uint>();
+            character.ActiveQuests[QuestId.TheKnightsBitterEnemy] = new Dictionary<uint, uint>();
             character.ActiveQuests[QuestId.HopesBitterEnd] = new Dictionary<uint, uint>();
         }
 
@@ -216,7 +226,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void SetOmData(Character character, uint stageId, ulong key, uint value)
+        public static void SetOmData(Character character, uint stageId, ulong key, uint value)
         {
             lock (character.OmData)
             {
@@ -229,7 +239,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public uint GetOmData(Character character, uint stageId, ulong key)
+        public static uint GetOmData(Character character, uint stageId, ulong key)
         {
             uint result = 0;
             lock (character.OmData)
@@ -247,7 +257,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return result;
         }
 
-        public Dictionary<ulong, uint> GetAllOmData(Character character, uint stageId)
+        public static Dictionary<ulong, uint> GetAllOmData(Character character, uint stageId)
         {
             Dictionary<ulong, uint> result = new Dictionary<ulong, uint>();
             lock (character.OmData)
@@ -261,7 +271,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return result;
         }
 
-        public uint ExchangeOmData(Character character, uint stageId, ulong key, uint value)
+        public static uint ExchangeOmData(Character character, uint stageId, ulong key, uint value)
         {
             uint oldValue = 0;
             lock (character.OmData)
@@ -281,7 +291,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return oldValue;
         }
 
-        public void ClearOmData(Character character, uint stageId, ulong key)
+        public static void ClearOmData(Character character, uint stageId, ulong key)
         {
             lock (character.OmData)
             {
@@ -292,7 +302,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void ClearAllOmData(Character character, uint stageId)
+        public static void ClearAllOmData(Character character, uint stageId)
         {
             lock (character.OmData)
             {
@@ -303,12 +313,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void ResetAllOmData(Character character)
+        public static void ResetAllOmData(Character character)
         {
             lock (character.OmData)
             {
                 character.OmData.Clear();
             }
+        }
+
+        public static void ResetCharacterInstanceData(Character character)
+        {
+            ResetAllOmData(character);
+            ResetWorldQuests(character);
         }
     }
 }
