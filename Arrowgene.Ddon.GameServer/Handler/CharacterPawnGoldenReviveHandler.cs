@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCharacterPawnGoldenReviveReq> req)
         {
             S2CCharacterPawnGoldenReviveRes res = new S2CCharacterPawnGoldenReviveRes(req.Structure);
-            res.GoldenGemstonePoint = 120;
+            res.GoldenGemstonePoint = 0; // TODO: Implement
             client.Send(res);
         }
     }
