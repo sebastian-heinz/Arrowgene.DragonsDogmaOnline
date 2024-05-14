@@ -5,6 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataPartyPlayerContext
     {
+        // CDataPartyContextPlayer
         public CDataPartyPlayerContext()
         {
             Base = new CDataContextBase();

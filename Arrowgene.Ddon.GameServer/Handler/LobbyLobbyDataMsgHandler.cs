@@ -52,9 +52,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // We are in one of the common areas where players can see eachother
                 foreach (GameClient otherClient in Server.ClientLookup.GetAll())
                 {
-                    if (otherClient == null || otherClient == client)
+                    if (otherClient == null || otherClient == client || otherClient.Character == null)
                     {
-                        // No point to send to oneself.
                         continue;
                     }
 

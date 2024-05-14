@@ -4,6 +4,8 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using System.IO;
 
 namespace Arrowgene.Ddon.GameServer.Party;
 
@@ -153,5 +155,18 @@ public class PartyManager
         }
 
         return (clientA.Party.Id == clientB.Party.Id);
+    }
+
+    public void CleanupOnExit(GameClient client)
+    {
+        client.Party.Leave(client);
+
+        Logger.Info(client, $"Left PartyId:{client.Party.Id}");
+
+        S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
+        partyLeaveNtc.CharacterId = client.Character.CharacterId;
+        client.Party.SendToAllExcept(partyLeaveNtc, client);
+
+        client.Send(new S2CPartyPartyLeaveRes());
     }
 }
