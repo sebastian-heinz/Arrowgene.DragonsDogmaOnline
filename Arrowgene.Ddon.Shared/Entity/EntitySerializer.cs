@@ -367,6 +367,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPartySendBinaryMsgAllNtc.Serializer());
             Create(new C2SPartySendBinaryMsgNtc.Serializer());
 
+            Create(new C2SPartyPartyMemberSetValueReq.Serializer());
+            Create(new S2CPartyPartyMemberSetValueRes.Serializer());
+            Create(new S2CPartyPartyMemberSetValueNtc.Serializer());
+
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
             Create(new C2SPawnGetMypawnListReq.Serializer());

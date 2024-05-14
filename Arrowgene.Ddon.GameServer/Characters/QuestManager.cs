@@ -109,7 +109,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             public static CDataQuestOrderConditionParam NoRestriction()
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x0};
+                return new CDataQuestOrderConditionParam() { Type = 0x0 };
             }
             public static CDataQuestOrderConditionParam MinimumLevelRestriction(uint level)
             {

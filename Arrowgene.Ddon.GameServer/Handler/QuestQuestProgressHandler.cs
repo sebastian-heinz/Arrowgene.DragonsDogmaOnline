@@ -94,13 +94,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Party.SendToAll(completeNtc);
 
                     // Remove the quest data from the player object
-                    // activeQuests.Remove(questId);
+                    activeQuests.Remove(questId);
                 }
 
-
-                Logger.Info("==========================================================================================");
-                Logger.Info($"{questId}: ProcessNo={res.QuestProcessState[0].ProcessNo}, SequenceNo={res.QuestProcessState[0].SequenceNo}, BlockNo={res.QuestProcessState[0].BlockNo},");
-                Logger.Info("==========================================================================================");
+                if (res.QuestProcessState.Count > 0)
+                {
+                    Logger.Info("==========================================================================================");
+                    Logger.Info($"{questId}: ProcessNo={res.QuestProcessState[0].ProcessNo}, SequenceNo={res.QuestProcessState[0].SequenceNo}, BlockNo={res.QuestProcessState[0].BlockNo},");
+                    Logger.Info("==========================================================================================");
+                }
             }
 
             client.Send(res);

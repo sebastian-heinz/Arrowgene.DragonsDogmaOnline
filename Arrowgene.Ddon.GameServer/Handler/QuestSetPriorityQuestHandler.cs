@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -17,14 +18,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestSetPriorityQuestReq> packet)
         {
+            client.Character.PriorityQuests.Add((QuestId) packet.Structure.QuestScheduleId);
+
             client.Send(new S2CQuestSetPriorityQuestRes()
             {
                 QuestScheduleId = packet.Structure.QuestScheduleId
             });
 
 #if false
-            // TODO: This does not clear properly currently
-            // TODO: need to debug why
             S2CQuestSetPriorityQuestNtc ntc = new S2CQuestSetPriorityQuestNtc()
             {
                 CharacterId = client.Character.CharacterId
@@ -34,10 +35,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 QuestScheduleId = packet.Structure.QuestScheduleId,
                 QuestId = packet.Structure.QuestScheduleId,
+
                 QuestAnnounceList = new List<CDataQuestAnnounce>()
                 {
                     new CDataQuestAnnounce(){ AnnounceNo = 0} // accept?
                 }
+
             });
             client.Party.SendToAll(ntc);
 #endif

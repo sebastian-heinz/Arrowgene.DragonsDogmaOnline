@@ -1,9 +1,12 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using YamlDotNet.Serialization;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -20,12 +23,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0);
-            buffer.WriteInt32(0);
-            buffer.WriteUInt32(0);
-            client.Send(new Packet(PacketId.S2C_QUEST_GET_PRIORITY_QUEST_RES, buffer.GetAllBytes()));
-            //client.Send(GameFull.Dump_144);
+            // client.Send(GameFull.Dump_144);
+            S2CQuestGetPriorityQuestRes res = new S2CQuestGetPriorityQuestRes();
+
+            var partyLeader = client.Party.Leader;
+
+            CDataPriorityQuestSetting setting = new CDataPriorityQuestSetting();
+            setting.CharacterId = partyLeader.Client.Character.CharacterId;
+
+            foreach (var questId in partyLeader.Client.Character.PriorityQuests)
+            {
+                setting.PriorityQuestList.Add(new CDataPriorityQuest()
+                {
+                    QuestId = (uint) questId,
+                    QuestScheduleId = (uint) questId,
+                });
+            }
+
+            res.PriorityQuestSettingsList.Add(setting);
+
+            client.Send(res);
         }
     }
 }
