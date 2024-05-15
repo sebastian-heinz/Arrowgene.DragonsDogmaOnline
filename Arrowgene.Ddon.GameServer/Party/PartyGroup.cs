@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Instance;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
@@ -29,6 +30,8 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
+        public Dictionary<uint, Dictionary<ulong, uint>> InstanceOmData { get; }
+
         public PartyGroup(uint id, PartyManager partyManager)
         {
             MaxSlots = MaxPartyMember;
@@ -43,6 +46,8 @@ namespace Arrowgene.Ddon.GameServer.Party
             Contexts = new Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>>();
 
             InstanceEnemyManager = new InstanceEnemyManager(partyManager.assetRepository);
+
+            InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
         }
 
         public Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>> Contexts { get; set; }
@@ -601,8 +606,9 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceDropItemManager.Clear();
-                CharacterManager.ResetCharacterInstanceData(client.Character);
+                CharacterManager.ResetWorldQuests(client.Character);
             }
+            OmManager.ResetAllOmData(InstanceOmData);
         }
 
         public PartyMember GetPartyMemberByCharacter(CharacterCommon characterCommon)

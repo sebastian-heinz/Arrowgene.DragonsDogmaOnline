@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Instance;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -23,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // client.Send(GameFull.Dump_112);
 
-            Dictionary<ulong, uint> omData = CharacterManager.GetAllOmData(client.Character, client.Character.Stage.Id);
+            Dictionary<ulong, uint> omData = OmManager.GetAllOmData(client.Party.InstanceOmData, client.Character.Stage.Id);
 
             S2CInstanceGetOmInstantKeyValueAllRes res = new S2CInstanceGetOmInstantKeyValueAllRes()
             {

@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Instance;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -17,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceExchangeOmInstantKeyValueReq> req)
         {
-            uint oldValue = CharacterManager.ExchangeOmData(client.Character, client.Character.Stage.Id, req.Structure.Key, req.Structure.Value);
+            uint oldValue = OmManager.ExchangeOmData(client.Party.InstanceOmData, client.Character.Stage.Id, req.Structure.Key, req.Structure.Value);
 
             S2CInstanceExchangeOmInstantKeyValueNtc ntc = new S2CInstanceExchangeOmInstantKeyValueNtc();
             ntc.StageId = client.Character.Stage.Id;

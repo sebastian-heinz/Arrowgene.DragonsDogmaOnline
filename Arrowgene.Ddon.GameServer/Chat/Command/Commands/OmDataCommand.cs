@@ -67,15 +67,15 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 }
             }
 
-            lock(client.Character.OmData)
+            lock(client.Party.InstanceOmData)
             {
-                if (!client.Character.OmData.ContainsKey(stageId))
+                if (!client.Party.InstanceOmData.ContainsKey(stageId))
                 {
                     responses.Add(new ChatResponse() { Message = $"StageId={stageId} has no OM data" });
                     return;
                 }
 
-                foreach (var datum in client.Character.OmData[stageId])
+                foreach (var datum in client.Party.InstanceOmData[stageId])
                 {
                     responses.Add(new ChatResponse() { Message = $"key=0x{datum.Key:x16}, value=0x{datum.Value:x8}"});
 
