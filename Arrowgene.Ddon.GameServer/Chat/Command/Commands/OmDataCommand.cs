@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -21,26 +22,6 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public OmDataCommand(DdonGameServer server)
         {
             _server = server;
-        }
-
-        public class Bitfield
-        {
-            public Bitfield(uint msb, uint lsb, string Name)
-            {
-                this.msb = msb;
-                this.lsb = lsb;
-                this.Name = Name;
-            }
-
-            public readonly uint msb;
-            public readonly uint lsb;
-            public readonly string Name;
-            public ulong Get(ulong value)
-            {
-                ulong mask = ((1U << (int)(msb - lsb)) - 1U);
-
-                return ((value >> (int) lsb) & mask);
-            }
         }
 
         protected class OmFields

@@ -40,12 +40,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             var partyLeader = party.Leader.Client.Character;
-            if (partyLeader.CommonId != client.Character.CommonId)
-            {
-                // Update player position when joining from a different stage
-                client.Character.StageNo = partyLeader.StageNo;
-                client.Character.Stage = new StageId(partyLeader.Stage.Id, 0, 0);
-            }
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = party.Host.Client.Character.CharacterId;

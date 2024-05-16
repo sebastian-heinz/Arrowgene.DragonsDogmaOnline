@@ -50,6 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
         }
 
+        // Contexts[UID] = ContextData
         public Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>> Contexts { get; set; }
 
         public uint MaxSlots { get; }
