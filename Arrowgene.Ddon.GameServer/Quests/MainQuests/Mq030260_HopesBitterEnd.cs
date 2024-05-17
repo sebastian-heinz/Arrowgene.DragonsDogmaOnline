@@ -1,5 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests.WorldQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -26,43 +28,76 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
         {
         }
 
-        public override List<CDataWalletPoint> WalletRewards => new List<CDataWalletPoint>()
+        public List<CDataWalletPoint> WalletRewards = new List<CDataWalletPoint>()
         {
             new CDataWalletPoint() { Type = WalletType.Gold, Value = 100000 },
             new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 10000},
         };
 
-        public override List<QuestReward> ItemRewards => new List<QuestReward>()
+#if false
+        public List<QuestReward> ItemRewards = new List<QuestReward>()
         {
             new QuestFixedRewardItem() {ItemId = 21281, Num = 2},
             new QuestFixedRewardItem() {ItemId = 18825, Num = 50},
             new QuestFixedRewardItem() {ItemId = 18826, Num = 5}
         };
+#endif
 
-        public override List<CDataQuestExp> ExpRewards => new List<CDataQuestExp>()
+        new public List<CDataQuestExp> ExpRewards = new List<CDataQuestExp>()
         {
             new CDataQuestExp() {ExpMode = 1, Reward = 900000}
         };
 
-        public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
+        public override bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId)
         {
-            return (StageNo.SacredFlamePath == (StageNo)stageNo) && (groupId == 3 || groupId == 17 || groupId == 18) ||
-                   (StageNo.EvilDragonsRoost1 == (StageNo)stageNo && groupId == 1);
+            return (StageNo.SacredFlamePath == (StageNo)stageId.Id) && (stageId.GroupId == 3 || stageId.GroupId == 17 || stageId.GroupId == 18) ||
+                   (StageNo.EvilDragonsRoost1 == (StageNo)stageId.Id && stageId.GroupId == 1);
         }
 
-        public override List<S2CQuestQuestProgressWorkSaveNtc> GetProgressWorkNotices(uint stageNo, uint groupId, uint subGroupId)
+        public override List<InstancedEnemy> GetEnemiesInStageGroup(StageId stageId, uint subGroupId)
         {
-            if (!gQuestProgressWork.ContainsKey((StageNo)stageNo))
+            List<InstancedEnemy> enemies = new List<InstancedEnemy>();
+#if false
+            foreach (var target in QuestTarget.Enemies)
             {
-                return new List<S2CQuestQuestProgressWorkSaveNtc>();
+                enemies.Add(new InstancedEnemy()
+                {
+                    Id = target.Id,
+                    Lv = target.Level,
+                    IsBossBGM = target.IsBoss,
+                    IsBossGauge = target.IsBoss,
+                    EnemyTargetTypesId = 4,
+                    Scale = 100
+                    // TODO: Get rest of properties added as optional in JSON
+                });
+            }
+#endif
+            return enemies;
+        }
+
+        public override void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
+        {
+            if (!gQuestProgressWork.ContainsKey((StageNo) stageId.Id))
+            {
+                client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc());
+                return;
             }
 
-            if (!gQuestProgressWork[(StageNo)stageNo].ContainsKey(groupId))
+            if (!gQuestProgressWork[(StageNo) stageId.Id].ContainsKey(stageId.GroupId))
             {
-                return new List<S2CQuestQuestProgressWorkSaveNtc>();
+                client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc());
+                return;
             }
 
-            return gQuestProgressWork[(StageNo)stageNo][groupId];
+            foreach (var work in gQuestProgressWork[(StageNo)stageId.Id][stageId.GroupId])
+            {
+                client.Party.SendToAll(work);
+            }
+        }
+
+        public override CDataQuestOrderList ToCDataQuestOrderList()
+        {
+            return null;
         }
 
         public override CDataQuestList ToCDataQuestList()
@@ -216,7 +251,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 },
                 new CDataQuestProcessState()
                 {
-                    ProcessNo=0xb, SequenceNo=0x0, BlockNo=0x0,
+                    ProcessNo=11, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
                         QuestManager.CheckCommand.IsLinkageEnemyFlag(StageNo.EvilDragonsRoost1, 1, 0, 3),
@@ -243,33 +278,33 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             return quest;
         }
 
-        public override List<CDataQuestProcessState> StateMachineExecute(uint processNo, uint reqNo, out QuestState questState)
+        public override List<CDataQuestProcessState> StateMachineExecute(QuestProcessState processState, out QuestProgressState questProgressState)
         {
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
-            questState = QuestState.InProgress;
-            if (!gQuestProcesses.ContainsKey(processNo))
+            questProgressState = QuestProgressState.InProgress;
+            if (!gQuestProcesses.ContainsKey(processState.ProcessNo))
             {
-                Logger.Error($"The processNo={processNo} does not exist. Unable to fetch step");
+                Logger.Error($"The processNo={processState.ProcessNo} does not exist. Unable to fetch step");
                 return result;
             }
 
-            var processSteps = gQuestProcesses[processNo];
-            if (reqNo >= processSteps.Count)
+            var processSteps = gQuestProcesses[processState.ProcessNo];
+            if (processState.BlockNo >= processSteps.Count)
             {
-                Logger.Error($"The processNo={processNo}, reqNo={reqNo} does not exist. Unable to fetch step");
+                Logger.Error($"The processNo={processState.ProcessNo}, reqNo={processState.BlockNo} does not exist. Unable to fetch step");
                 return result;
             }
 
-            result.Add(processSteps[(int) reqNo]);
+            result.Add(processSteps[processState.BlockNo]);
 
             if (result[0].ProcessNo == 0 && result[0].SequenceNo == 1)
             {
-                questState = QuestState.Complete;
+                questProgressState = QuestProgressState.Complete;
             }
             else
             {
-                questState = QuestState.InProgress;
+                questProgressState = QuestProgressState.InProgress;
             }
 
             return result;

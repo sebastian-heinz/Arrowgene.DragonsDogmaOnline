@@ -9,10 +9,10 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.GameServer.Party;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Enemies;
 using System.Text.RegularExpressions;
 using Arrowgene.Ddon.GameServer.Characters;
 using static Arrowgene.Ddon.Server.Network.Challenge;
+using Arrowgene.Ddon.GameServer.Quests;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -31,18 +31,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyKillReq> packet)
         {
             CDataStageLayoutId layoutId = packet.Structure.LayoutId;
-            InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0)[(int) packet.Structure.SetId];
-            List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
-            if(instancedGatheringItems.Count > 0) {
-                client.Party.SendToAll(new S2CInstancePopDropItemNtc()
+            StageId stageId = StageId.FromStageLayoutId(layoutId);
+
+            Quest quest = null;
+            bool IsQuestControlled = false;
+            foreach (var questId in client.Party.QuestState.StageQuests(stageId))
+            {
+                quest = QuestManager.GetQuest(questId);
+                var questState = client.Party.QuestState.GetQuestState(questId);
+                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, 0))
                 {
-                    LayoutId = packet.Structure.LayoutId,
-                    SetId = packet.Structure.SetId,
-                    MdlType = enemyKilled.DropsTable.MdlType,
-                    PosX = packet.Structure.DropPosX,
-                    PosY = packet.Structure.DropPosY,
-                    PosZ = packet.Structure.DropPosZ
-                });
+                    IsQuestControlled = true;
+                    break;
+                }
+            }
+
+            InstancedEnemy enemyKilled;
+            if (IsQuestControlled && quest != null)
+            {
+                // TODO: Add drops to Quest Monsters?
+                enemyKilled = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, 0)[(int)packet.Structure.SetId];
+            }
+            else
+            {
+                enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0)[(int)packet.Structure.SetId];
+                List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
+                if (instancedGatheringItems.Count > 0)
+                {
+                    client.Party.SendToAll(new S2CInstancePopDropItemNtc()
+                    {
+                        LayoutId = packet.Structure.LayoutId,
+                        SetId = packet.Structure.SetId,
+                        MdlType = enemyKilled.DropsTable.MdlType,
+                        PosX = packet.Structure.DropPosX,
+                        PosY = packet.Structure.DropPosY,
+                        PosZ = packet.Structure.DropPosZ
+                    });
+                }
             }
 
             enemyKilled.IsKilled = true;
@@ -51,18 +76,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool groupDestroyed = group.All(enemy => enemy.IsKilled);
             if (groupDestroyed)
             {
-                foreach (var questId in client.Character.ActiveQuests.Keys)
+                if (IsQuestControlled && quest != null)
                 {
-                    var quest = QuestManager.GetQuest(questId);    
-                    if (quest.HasEnemiesInCurrentStageGroup(client.Character.StageNo, layoutId.GroupId, 0))
-                    {
-                        var questNtcs = quest.GetProgressWorkNotices(client.Character.StageNo, layoutId.GroupId, 0);
-                        foreach (var questNtc in questNtcs)
-                        {
-                            client.Party.SendToAll(questNtc);
-                        }
-                        break;
-                    }
+                    quest.SendProgressWorkNotices(client, client.Character.Stage, 0);
                 }
 
                 S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
@@ -74,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // TODO: EnemyId and KillNum
-            client.Send(new S2CInstanceEnemyKillRes() { 
+            client.Send(new S2CInstanceEnemyKillRes() {
                 EnemyId = enemyKilled.Id,
                 KillNum = 1
             });
@@ -142,7 +158,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new Exception("Unknown member type");
                 }
 
-                _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, extraBonusExp);
+                if (gainedExp > 0)
+                {
+                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, extraBonusExp);
+                }
             }
         }
     }

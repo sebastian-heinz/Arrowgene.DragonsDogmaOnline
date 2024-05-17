@@ -11,6 +11,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -27,8 +28,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SQuestGetSetQuestListReq> packet)
         {
             // client.Send(GameFull.Dump_132);
+
             S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes();
-            foreach (var questId in client.Character.ActiveQuests.Keys)
+            foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
                 var quest = QuestManager.GetQuest(questId);
                 if (quest.QuestType == QuestType.World)

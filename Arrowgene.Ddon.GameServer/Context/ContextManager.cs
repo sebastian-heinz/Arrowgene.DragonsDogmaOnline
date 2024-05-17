@@ -1,9 +1,9 @@
-using Arrowgene.Ddon.GameServer.Enemies;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using System;
 using System.Collections.Generic;

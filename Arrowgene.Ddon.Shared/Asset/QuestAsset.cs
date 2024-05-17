@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -8,9 +9,29 @@ namespace Arrowgene.Ddon.Shared.Asset
     {
         public QuestAsset()
         {
-            MainQuests = new Dictionary<uint, CDataQuestList>();
+            Quests = new List<QuestAssetData>();
         }
 
-        public Dictionary<uint, CDataQuestList> MainQuests;
+        public List<QuestAssetData> Quests { get; set; }
+    }
+
+    public class QuestAssetData
+    {
+        public List<QuestBlock> Blocks { get; set; }
+        public QuestType Type { get; set; }
+        public QuestId QuestId { get; set; }
+        public ushort BaseLevel { get; set; }
+        public byte MinimumItemRank { get; set; }
+        public uint ExpReward { get; set; }
+        public bool Discoverable { get; set; }
+        public List<QuestRewardItem> RewardItems;
+        public List<QuestRewardCurrency> RewardCurrency;
+
+        public QuestAssetData()
+        {
+            Blocks = new List<QuestBlock>();
+            RewardItems = new List<QuestRewardItem>();
+            RewardCurrency = new List<QuestRewardCurrency>();
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(new S2CQuestGetLightQuestListRes());
 
             S2CQuestGetLightQuestListRes res = new S2CQuestGetLightQuestListRes();
-            foreach (var questId in client.Character.ActiveQuests.Keys)
+            foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
                 var quest = QuestManager.GetQuest(questId);
                 if (quest.QuestType == QuestType.PersonalQuest || quest.QuestType == QuestType.ExtremeMissions)

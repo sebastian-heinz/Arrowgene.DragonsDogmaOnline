@@ -52,9 +52,13 @@ namespace Arrowgene.Ddon.GameServer
         // TODO: Maybe place somewhere else
         public static readonly TimeSpan RevivalPowerRechargeTimeSpan = TimeSpan.FromDays(1);
 
+        private AssetRepository _AssetRepository;
+
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
+            _AssetRepository = assetRepository;
+
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ClientLookup = new GameClientLookup();
@@ -76,9 +80,6 @@ namespace Arrowgene.Ddon.GameServer
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
             StageList = stageListPacket.StageList;
-
-            // Load Builtin quests
-            QuestManager.LoadQuests();
         }
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
@@ -107,6 +108,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
+            QuestManager.LoadQuests(_AssetRepository);
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
@@ -162,11 +164,6 @@ namespace Arrowgene.Ddon.GameServer
         {
             ChatManager.AddHandler(ChatLogHandler);
             ChatManager.AddHandler(new ChatCommandHandler(this));
-        }
-
-        private void LoadQuests()
-        {
-
         }
 
         private void LoadPacketHandler()

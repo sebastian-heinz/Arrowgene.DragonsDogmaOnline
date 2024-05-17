@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Instance;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
@@ -30,6 +31,8 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
+        public PartyQuestState QuestState { get; }
+
         public Dictionary<uint, Dictionary<ulong, uint>> InstanceOmData { get; }
 
         public PartyGroup(uint id, PartyManager partyManager)
@@ -48,6 +51,8 @@ namespace Arrowgene.Ddon.GameServer.Party
             InstanceEnemyManager = new InstanceEnemyManager(partyManager.assetRepository);
 
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
+
+            QuestState = new PartyQuestState();
         }
 
         // Contexts[UID] = ContextData
@@ -607,8 +612,9 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceDropItemManager.Clear();
-                CharacterManager.ResetWorldQuests(client.Character);
             }
+
+            QuestState.ResetInstanceQuestState();
             OmManager.ResetAllOmData(InstanceOmData);
         }
 

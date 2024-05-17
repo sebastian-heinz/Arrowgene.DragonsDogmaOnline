@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
@@ -8,6 +10,8 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
+using static Arrowgene.Ddon.Server.Network.Challenge;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -27,31 +31,45 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Logger.Info($"GroupId={request.Structure.LayoutId.GroupId}, SubGroupId={request.Structure.SubGroupId}, LayerNo={request.Structure.LayoutId.LayerNo}");
 
-            S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes
+            Quest quest = null;
+            QuestState questState = null;
+            bool IsQuestControlled = false;
+            foreach (var questId in client.Party.QuestState.StageQuests(stageId))
+            {
+                quest = QuestManager.GetQuest(questId);
+                questState = client.Party.QuestState.GetQuestState(questId);
+
+                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, subGroupId))
+                {
+                    IsQuestControlled = true;
+                    break;
+                }
+            }
+
+            S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes()
             {
                 LayoutId = stageId.ToStageLayoutId(),
                 SubGroupId = subGroupId,
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
-                EnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
-                {
-                    PositionIndex = (byte) index,
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                })
-                .ToList()
             };
 
-            foreach (var questId in client.Character.ActiveQuests.Keys)
+            if (IsQuestControlled && quest != null)
             {
-                var quest = QuestManager.GetQuest(questId);
-                if (quest.HasEnemiesInCurrentStageGroup(client.Character.StageNo, stageId.GroupId, subGroupId))
+                response.QuestId = (uint) quest.QuestId;
+                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
                 {
-                    response.QuestId = (uint) questId;
-                    foreach(var enemy in response.EnemyList)
-                    {
-                        enemy.EnemyInfo.EnemyTargetTypesId = 4;
-                    }
-                    break;
-                }
+                    PositionIndex = (byte)index,
+                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                }).ToList();
+            }
+            else
+            {
+                response.EnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
+                {
+                    PositionIndex = (byte)index,
+                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                })
+                .ToList();
             }
 
             client.Send(response);

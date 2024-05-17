@@ -44,9 +44,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = 0
             };
 
-            List<CDataItemUpdateResult> rewardItems = new List<CDataItemUpdateResult>();
-            foreach (var reward in boxRewards.Rewards)
+            foreach (var boxReward in packet.Structure.GetRewardBoxItemList)
             {
+                var reward = boxRewards.Rewards[boxReward.UID];
+                
                 // TODO: Certain items like currencies should go directly to the currency tab instead
                 var result = _ItemManager.AddItem(Server, client.Character, StorageType.StorageBoxNormal, reward.ItemId, reward.Num);
                 updateCharacterItemNtc.UpdateItemList.AddRange(result);

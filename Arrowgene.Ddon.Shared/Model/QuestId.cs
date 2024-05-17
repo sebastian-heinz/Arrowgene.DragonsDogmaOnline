@@ -107,6 +107,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         Unknown5004 = 5004,   // Entry is blank, just picture of a church?
 
         // World Quests
+        ConfrontationWithScouts = 20005001,
+        AmbushInTheWellsDepths = 20005002,
         TheKnightsBitterEnemy = 20005010,
 
         // Personal Quests

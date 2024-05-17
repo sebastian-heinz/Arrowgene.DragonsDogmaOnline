@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             SelectPawns(character);
 
-            SelectQuests(character);
+            // TODO: Query things like main quest?
 
             return character;
         }
@@ -83,23 +83,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 UpdateCharacterExtendedParams(pawn);
             }
-        }
-
-        public static void ResetWorldQuests(Character character)
-        {
-            var results = QuestManager.GetQuestsByType(QuestType.World);
-            foreach (var result in results)
-            {
-                // Throw away the old quest data or add it back if it was removed
-                character.ActiveQuests[result.Key] = new Dictionary<uint, uint>();
-            }
-        }
-
-        private void SelectQuests(Character character)
-        {
-            // TODO: Grab from database instead.
-            character.ActiveQuests[QuestId.TheKnightsBitterEnemy] = new Dictionary<uint, uint>();
-            character.ActiveQuests[QuestId.HopesBitterEnd] = new Dictionary<uint, uint>();
         }
 
         public uint GetMaxAugmentAllocation(CharacterCommon character)

@@ -28,8 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             GameStructurePacketFactories = new Dictionary<PacketId, IStructurePacketFactory>();
 
             // Data structure serializers
-            Create(
-                new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
+            Create(new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
             Create(new CData_772E80.Serializer());
             Create(new CDataSpSkill.Serializer());
             Create(new CDataAbilityLevelParam.Serializer());
@@ -161,6 +160,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPartyMember.Serializer());
             Create(new CDataPartyMemberMinimum.Serializer());
             Create(new CDataPartyPlayerContext.Serializer());
+            Create(new CDataPartyQuestProgressInfo.Serializer());
             Create(new CDataPawnCraftData.Serializer());
             Create(new CDataPawnCraftSkill.Serializer());
             Create(new CDataPawnEquipInfo.Serializer());
@@ -374,6 +374,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPartyPartyMemberSetValueReq.Serializer());
             Create(new S2CPartyPartyMemberSetValueRes.Serializer());
             Create(new S2CPartyPartyMemberSetValueNtc.Serializer());
+            Create(new S2CPartyPartyQuestProgressNtc.Serializer());
 
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());

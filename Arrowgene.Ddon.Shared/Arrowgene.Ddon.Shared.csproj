@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <ContentWithTargetPath Remove="files\assets\Quests.json" />
+      <ContentWithTargetPath Remove="Files\Assets\quests\world_quests.json" />
     </ItemGroup>
 
     <ItemGroup>

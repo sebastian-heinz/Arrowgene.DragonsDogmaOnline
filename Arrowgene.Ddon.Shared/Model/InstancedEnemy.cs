@@ -1,10 +1,8 @@
-using Arrowgene.Ddon.Shared.Model;
-
-namespace Arrowgene.Ddon.GameServer.Enemies
+namespace Arrowgene.Ddon.Shared.Model
 {
     public class InstancedEnemy : Enemy
     {
-        private InstancedEnemy()
+        public InstancedEnemy()
         {
 
         }

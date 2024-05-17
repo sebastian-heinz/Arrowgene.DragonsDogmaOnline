@@ -9,6 +9,7 @@ public class CDataRewardBoxItem
 {
     public CDataRewardBoxItem()
     {
+        UID = "";
     }
 
     public UInt32 ItemId { get; set; }

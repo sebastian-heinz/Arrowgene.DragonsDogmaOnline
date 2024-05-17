@@ -36,7 +36,6 @@ namespace Arrowgene.Ddon.Shared.Model
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
 
-            ActiveQuests = new Dictionary<QuestId, Dictionary<uint, uint>>();
             PriorityQuests = new List<QuestId>();
             QuestRewards = new List<QuestBoxRewards>();
         }
@@ -76,8 +75,6 @@ namespace Arrowgene.Ddon.Shared.Model
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
 
-        // Tracks processes for active quests Dictionary<QuestId, Dictionary<ProcessNo, Sequence>>
-        public Dictionary<QuestId, Dictionary<uint, uint>> ActiveQuests { get; set; }
         public List<QuestId> PriorityQuests { get; set; }
         public List<QuestBoxRewards> QuestRewards { get; set; }
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Enemies;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;

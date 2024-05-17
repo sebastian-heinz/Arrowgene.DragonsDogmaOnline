@@ -2,6 +2,7 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Quests.MainQuests;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -14,7 +15,6 @@ using System.Text.Json;
 using YamlDotNet.Core.Events;
 using YamlDotNet.Core.Tokens;
 using static Arrowgene.Ddon.GameServer.Characters.QuestManager;
-using static Arrowgene.Ddon.GameServer.Quests.WorldQuests.WorldQuests;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -28,26 +28,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
 
-        public static void LoadQuests()
+        public static void LoadQuests(AssetRepository assetRepository)
         {
             // TODO: Load additional quests from file?
             // TODO: Once everything is comfortably understood, we can probably serialize
             // TODO: the quest data and load it from file when the server starts instead
 
             // Main Quests
-            gQuests[QuestId.TheSlumberingGod] = new Mq000002_TheSlumberingGod();
-            gQuests[QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist();
-            gQuests[QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd();
-            // World Quests
-            gQuests[QuestId.TheKnightsBitterEnemy] = new Q20005010_TheKnightsBitterEnemy();
+            // gQuests[QuestId.TheSlumberingGod] = new Mq000002_TheSlumberingGod();
+            // gQuests[QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist();
+            // gQuests[QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd();
+
+
+            // Load world quests from file
+            foreach (var questAsset in assetRepository.WorldQuestAsset.Quests)
+            {               
+                if (questAsset.Type == QuestType.World)
+                {
+                    gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
+                }
+            }
         }
 
         /**
          * @brief Should only be called when loading additional quests from file.
          */
-        public static void AddQuest()
+        public static void AddQuest(Quest quest)
         {
-
+            gQuests[quest.QuestId] = quest;
         }
 
         public static List<KeyValuePair<QuestId, Quest>> GetQuestsByType(QuestType type)
@@ -97,12 +105,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 };
             }
-        }
-
-        public static CDataQuestList CloneMainQuest(QuestAsset questAssets, QuestId questId)
-        {
-            var template = JsonSerializer.Serialize(questAssets.MainQuests[(uint)questId]);
-            return JsonSerializer.Deserialize<CDataQuestList>(template);
         }
 
         public class AcceptConditions
@@ -3112,7 +3114,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem, Work01 = (int) npcId, Work02 = work02, Work03 = work03, Work04 = work04 };
             }
-
         }
     }
 }

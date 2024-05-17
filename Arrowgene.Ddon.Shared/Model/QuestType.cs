@@ -27,4 +27,10 @@ namespace Arrowgene.Ddon.Shared.Model
         DebugTool = 11,
 #endif
     }
+
+    public enum QuestSubType : uint
+    {
+        None = 0,
+        KillEnemies = 1,
+    }
 }

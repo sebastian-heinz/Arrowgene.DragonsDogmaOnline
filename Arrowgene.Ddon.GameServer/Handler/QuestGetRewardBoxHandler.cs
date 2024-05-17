@@ -12,6 +12,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -46,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     ListNo = listNo,
                     QuestId = (uint) boxReward.QuestId,
-                    RewardItemList = boxReward.Rewards
+                    RewardItemList = boxReward.Rewards.Values.ToList()
                 });
 
                 listNo += 1;

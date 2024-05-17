@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests.MainQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
@@ -17,14 +18,17 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
 {
+#if false
     public class WorldQuests
     {
+
         public class Q20005010_TheKnightsBitterEnemy : Quest
         {
             private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Q20005010_TheKnightsBitterEnemy));
             public Q20005010_TheKnightsBitterEnemy() : base(QuestId.TheKnightsBitterEnemy, QuestType.World, true)
             {
             }
+
 
             public override QuestRewardParams RewardParams => new QuestRewardParams()
             {
@@ -65,14 +69,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                 new CDataQuestExp() { ExpMode = 1, Reward = 590 }
             };
 
-            public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
+        public override bool HasEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
             {
                 return (stageNo == (uint)StageNo.Lestania) && (groupId == 26);
             }
 
-            public override List<S2CQuestQuestProgressWorkSaveNtc> GetProgressWorkNotices(uint stageNo, uint groupId, uint subGroupId)
+            public override List<InstancedEnemy> GetEnemiesInCurrentStageGroup(uint stageNo, uint groupId, uint subGroupId)
             {
-                return new List<S2CQuestQuestProgressWorkSaveNtc>();
+                return new List<InstancedEnemy>();
             }
 
             public override CDataQuestList ToCDataQuestList()
@@ -157,4 +161,5 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
             }
         }
     }
+#endif
 }

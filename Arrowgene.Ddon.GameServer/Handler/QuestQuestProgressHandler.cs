@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -8,6 +9,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -31,17 +33,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestQuestProgressReq> packet)
         {
-            QuestState questState = QuestState.InProgress;
+            QuestProgressState questProgressState = QuestProgressState.InProgress;
             S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes();
             res.QuestScheduleId = packet.Structure.QuestScheduleId;
             res.QuestProgressResult = 0;
 
             Logger.Debug($"KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
-            uint processNo = packet.Structure.ProcessNo;
+            var partyQuestState = client.Party.QuestState;
+
+            ushort processNo = packet.Structure.ProcessNo;
             QuestId questId = (QuestId) packet.Structure.QuestScheduleId;
-            if (!client.Character.ActiveQuests.ContainsKey(questId))
+            if (!partyQuestState.HasQuest(questId))
             {
+                // Hack for making the random quests from static packets go away
                 List<CDataQuestCommand> ResultCommandList = new List<CDataQuestCommand>();
                 ResultCommandList.Add(new CDataQuestCommand()
                 {
@@ -60,22 +65,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                var activeQuests = client.Character.ActiveQuests;
-                if (!activeQuests.ContainsKey(questId))
-                {
-                    activeQuests[questId] = new Dictionary<uint, uint>();
-                }
-
-                if (!activeQuests[questId].ContainsKey(processNo))
-                {
-                    activeQuests[questId][processNo] = 0;
-                }
-
+                var processState = partyQuestState.GetProcessState(questId, processNo);
+                
                 var quest = QuestManager.GetQuest(questId);
-                res.QuestProcessState = quest.StateMachineExecute(processNo, activeQuests[questId][processNo], out questState);
-                activeQuests[questId][processNo] += 1;
+                res.QuestProcessState = quest.StateMachineExecute(processState, out questProgressState);
 
-                if (questState == QuestState.Complete)
+                partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
+
+                if (questProgressState == QuestProgressState.Complete)
                 {
                     SendRewards(client, client.Character, quest);
 
@@ -84,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         QuestScheduleId = (uint) questId,
                         RandomRewardNum = quest.RandomRewardNum(),
                         ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
-                        ProgressBonusNum = quest.RewardParams.ProgressBonusNum,
+                        ProgressBonusNum = quest.FixedRewardsNum(),
                         IsRepeatReward = quest.RewardParams.IsRepeatReward,
                         IsUndiscoveredReward = quest.RewardParams.IsUndiscoveredReward,
                         IsHelpReward = quest.RewardParams.IsHelpReward,
@@ -95,11 +92,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (quest.HasRewards())
                     {
-                        client.Character.QuestRewards.Add(quest.GetBoxRewards());
+                        foreach (var memberClient in client.Party.Clients) 
+                        {
+                            memberClient.Character.QuestRewards.Add(quest.GetBoxRewards());
+                        }
                     }
 
-                    // Remove the quest data from the player object
-                    activeQuests.Remove(questId);
+                    // Remove the quest data from the party object
+                    partyQuestState.CompleteQuest(questId);
                 }
 
                 if (res.QuestProcessState.Count > 0)
@@ -110,8 +110,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            client.Send(res);
-
             S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
             {
                 ProgressCharacterId = client.Character.CharacterId,
@@ -119,6 +117,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 QuestProcessStateList = res.QuestProcessState,
             };
             client.Party.SendToAllExcept(ntc, client);
+
+            client.Send(res);
         }
 
         private void SendRewards(GameClient client, Character character, Quest quest)

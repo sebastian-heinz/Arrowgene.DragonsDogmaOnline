@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 {
+ #if false
     public class Mq000025_TheGreatAlchemist : Quest
     {
         public Mq000025_TheGreatAlchemist() : base(QuestId.TheGreatAlchemist, QuestType.Main)
@@ -182,4 +184,5 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             return result;
         }
     }
+#endif
 }

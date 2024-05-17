@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(GameFull.Dump_123);
 
             S2CQuestGetMainQuestListRes res = new S2CQuestGetMainQuestListRes();
-            foreach (var questId in client.Character.ActiveQuests.Keys)
+            foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
                 var quest = QuestManager.GetQuest(questId);
                 if (quest.QuestType == QuestType.Main)

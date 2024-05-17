@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public enum QuestState : uint
+    public enum QuestProgressState : uint
     {
         Unknown = 0,
-        InProgress = 1,
+        Accepted = 1,
+        InProgress = 2,
         Cleared = 2,
         Failed = 3,
         Complete = 4,
+        ReportToNpc = 5,
     }
 }

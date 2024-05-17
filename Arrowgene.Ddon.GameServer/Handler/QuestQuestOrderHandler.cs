@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CQuestQuestOrderRes();
 
             QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
-            if (client.Character.ActiveQuests.ContainsKey(questId))
+            if (client.Party.QuestState.GetActiveQuestIds().Contains(questId))
             {
                 var quest = QuestManager.GetQuest(questId);
                 res.QuestProcessStateList = quest.ToCDataQuestList().QuestProcessStateList;

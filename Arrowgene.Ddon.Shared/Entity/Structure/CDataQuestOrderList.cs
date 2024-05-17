@@ -20,6 +20,7 @@ public class CDataQuestOrderList
         QuestEnemyInfoList = new List<CDataQuestEnemyInfo>();
         Unk8 = new List<CDataQuestOrderListUnk8>();
         DeliveryItemList = new List<CDataDeliveryItem>();
+        QuestLayoutFlagSetInfoList = new List<CDataQuestLayoutFlagSetInfo>();
     }
 
     public uint KeyId { get; set; }
