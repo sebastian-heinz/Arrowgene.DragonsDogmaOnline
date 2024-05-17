@@ -437,7 +437,7 @@ CREATE TABLE IF NOT EXISTS ddon_dragon_force_augmentation
     "page_no"             INTEGER NOT NULL,
     "group_no"            INTEGER NOT NULL,
     "index_no"            INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_dragon_force_augmentation PRIMARY KEY (character_common_id, element_id)
+    CONSTRAINT pk_ddon_dragon_force_augmentation PRIMARY KEY (character_common_id, element_id),
     CONSTRAINT fk_character_dragon_force_augmentation_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE
 );
 
@@ -470,7 +470,7 @@ CREATE TABLE IF NOT EXISTS ddon_unlocked_secret_ability
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_contact_list" (
-    "id"                        INTEGER UNIQUE,
+    "id"                        INTEGER PRIMARY KEY AUTOINCREMENT,
     "requester_character_id"	INTEGER NOT NULL,
     "requested_character_id"	INTEGER NOT NULL,
     "status"                    SMALLINT NOT NULL,
@@ -479,6 +479,5 @@ CREATE TABLE IF NOT EXISTS "ddon_contact_list" (
     "requested_favorite"	    BOOLEAN NOT NULL,
     FOREIGN KEY("requester_character_id") REFERENCES "ddon_character"("character_id"),
     FOREIGN KEY("requested_character_id") REFERENCES "ddon_character"("character_id"),
-    PRIMARY KEY("id" AUTOINCREMENT),
     UNIQUE("requester_character_id","requested_character_id")
 );
