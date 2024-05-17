@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 {
     public class Mq000002_TheSlumberingGod : Quest
     {
-        public Mq000002_TheSlumberingGod() : base(QuestType.Main)
+        public Mq000002_TheSlumberingGod() : base(QuestId.TheSlumberingGod, QuestType.Main)
         {
         }
 
@@ -26,8 +26,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
         {
             // var refquest = QuestManager.CloneMainQuest(questAssets, MainQuestId.TheGreatAlchemist);
             var quest = new CDataQuestList();
-            quest.QuestId = (int) QuestId.TheSlumberingGod;
-            quest.QuestScheduleId = (int) QuestId.TheSlumberingGod;
+            quest.QuestId = (uint) QuestId;
+            quest.QuestScheduleId = (uint) QuestId;
             quest.BaseLevel = 1;
             quest.OrderNpcId = (uint) NpcId.Leo0;
             quest.NameMsgId = 1;

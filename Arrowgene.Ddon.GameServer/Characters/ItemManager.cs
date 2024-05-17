@@ -191,15 +191,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, StorageType storageType, uint itemId, uint num)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
-            return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit);
-        }
-
-        public List<CDataItemUpdateResult> CreateRewardItem(DdonServer<GameClient> server, uint itemId, uint num)
-        {
-            List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
-
-            return results;
+            return DoAddItem(server.Database, character, storageType, itemId, num, clientItemInfo.StackLimit);
         }
 
         private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue)

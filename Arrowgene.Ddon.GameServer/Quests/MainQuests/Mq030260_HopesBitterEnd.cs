@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Mq030260_HopesBitterEnd));
 
-        public Mq030260_HopesBitterEnd() : base(QuestType.Main)
+        public Mq030260_HopesBitterEnd() : base(QuestId.HopesBitterEnd, QuestType.Main)
         {
         }
 
@@ -32,11 +32,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 10000},
         };
 
-        public override List<CDataRewardItem> FixedItemRewards => new List<CDataRewardItem>()
+        public override List<QuestReward> ItemRewards => new List<QuestReward>()
         {
-            new CDataRewardItem() {ItemId = 21281, Num = 2},
-            new CDataRewardItem() {ItemId = 18825, Num = 50},
-            new CDataRewardItem() {ItemId = 18826, Num = 5}
+            new QuestFixedRewardItem() {ItemId = 21281, Num = 2},
+            new QuestFixedRewardItem() {ItemId = 18825, Num = 50},
+            new QuestFixedRewardItem() {ItemId = 18826, Num = 5}
         };
 
         public override List<CDataQuestExp> ExpRewards => new List<CDataQuestExp>()
@@ -68,8 +68,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
         public override CDataQuestList ToCDataQuestList()
         {
             var quest = new CDataQuestList();
-            quest.KeyId = (int)QuestId.HopesBitterEnd;
-            quest.QuestScheduleId = (int)QuestId.HopesBitterEnd;
+            quest.KeyId = (uint) QuestId;
+            quest.QuestScheduleId = (uint) QuestId;
             quest.QuestId = (int)QuestId.HopesBitterEnd;
             quest.BaseLevel = 100;
             quest.ContentJoinItemRank = 0;
@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 
             quest.BaseExp = ExpRewards;
             quest.BaseWalletPoints = WalletRewards;
-            quest.FixedRewardItemList = FixedItemRewards;
+            quest.FixedRewardItemList = GetQuestFixedRewards();
 
             quest.QuestOrderConditionParamList = new List<CDataQuestOrderConditionParam>()
             {

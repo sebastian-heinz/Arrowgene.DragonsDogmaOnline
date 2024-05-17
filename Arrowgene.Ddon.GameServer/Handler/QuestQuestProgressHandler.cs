@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
                     {
                         QuestScheduleId = (uint) questId,
-                        RandomRewardNum = quest.RewardParams.RandomRewardNum,
+                        RandomRewardNum = quest.RandomRewardNum(),
                         ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
                         ProgressBonusNum = quest.RewardParams.ProgressBonusNum,
                         IsRepeatReward = quest.RewardParams.IsRepeatReward,
@@ -92,6 +92,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     };
 
                     client.Party.SendToAll(completeNtc);
+
+                    if (quest.HasRewards())
+                    {
+                        client.Character.QuestRewards.Add(quest.GetBoxRewards());
+                    }
 
                     // Remove the quest data from the player object
                     activeQuests.Remove(questId);
@@ -135,15 +140,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 });
             }
 
-            foreach (var itemReward in quest.FixedItemRewards)
-            {
-                updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult()
-                {
-                    ItemList = new CDataItemList() { ItemId = itemReward.ItemId, ItemNum = itemReward.Num}
-                });
-            }
-
-            if (updateCharacterItemNtc.UpdateWalletList.Count > 0 || updateCharacterItemNtc.UpdateItemList.Count > 0)
+            if (updateCharacterItemNtc.UpdateWalletList.Count > 0)
             {
                 client.Send(updateCharacterItemNtc);
             }

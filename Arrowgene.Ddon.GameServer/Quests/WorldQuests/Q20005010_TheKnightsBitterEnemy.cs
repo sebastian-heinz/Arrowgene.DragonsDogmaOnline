@@ -22,13 +22,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
         public class Q20005010_TheKnightsBitterEnemy : Quest
         {
             private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Q20005010_TheKnightsBitterEnemy));
-            public Q20005010_TheKnightsBitterEnemy() : base(QuestType.World, true)
+            public Q20005010_TheKnightsBitterEnemy() : base(QuestId.TheKnightsBitterEnemy, QuestType.World, true)
             {
             }
 
             public override QuestRewardParams RewardParams => new QuestRewardParams()
             {
-                RandomRewardNum = 1
             };
 
             public override List<CDataWalletPoint> WalletRewards => new List<CDataWalletPoint>()
@@ -37,12 +36,31 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                 new CDataWalletPoint() { Type = WalletType.RiftPoints, Value = 70 }
             };
 
-            public override List<CDataRewardItem> FixedItemRewards => new List<CDataRewardItem>()
+            public override List<QuestReward> ItemRewards => new List<QuestReward>()
             {
-                new CDataRewardItem() {ItemId = 21281, Num = 2},
+                new QuestRandomReward()
+                {
+                    LootPool = new List<QuestRandomRewardItem>()
+                    {
+                        new QuestRandomRewardItem() {ItemId = 18825, Num = 50, Chance = 0.7},
+                        new QuestRandomRewardItem() {ItemId = 18826, Num = 5, Chance = 0.3},
+                        new QuestRandomRewardItem() {ItemId = 21281, Num = 2, Chance = 0.1},
+                    }
+                },
+                new QuestRandomReward()
+                {
+                    LootPool = new List<QuestRandomRewardItem>()
+                    {
+                        new QuestRandomRewardItem() {ItemId = 62,   Num = 1, Chance = 0.5},
+                        new QuestRandomRewardItem() {ItemId = 1674, Num = 1, Chance = 0.4},
+                        new QuestRandomRewardItem() {ItemId = 2697, Num = 1, Chance = 0.3},
+                        new QuestRandomRewardItem() {ItemId = 3720, Num = 1, Chance = 0.2},
+                        new QuestRandomRewardItem() {ItemId = 4743, Num = 1, Chance = 0.1},
+                    }
+                }
             };
-
-            public override List<CDataQuestExp> ExpRewards => new List<CDataQuestExp>()
+                        
+            List<CDataQuestExp> ExpRewards => new List<CDataQuestExp>()
             {
                 new CDataQuestExp() { ExpMode = 1, Reward = 590 }
             };
@@ -62,14 +80,15 @@ namespace Arrowgene.Ddon.GameServer.Quests.WorldQuests
                 // http://ddon.wikidot.com/wq:theknightsbitterenemy
                 var quest = new CDataQuestList()
                 {
-                    QuestId = (uint)QuestId.TheKnightsBitterEnemy,
-                    QuestScheduleId = (uint)QuestId.TheKnightsBitterEnemy,
+                    QuestId = (uint) QuestId,
+                    QuestScheduleId = (uint) QuestId,
                     BaseLevel = 12,
                     IsClientOrder = false,
                     IsEnable = true,
                     BaseExp = ExpRewards,
                     BaseWalletPoints = WalletRewards,
-                    FixedRewardItemList = FixedItemRewards,
+                    FixedRewardItemList = GetQuestFixedRewards(),
+                    FixedRewardSelectItemList = GetQuestSelectableRewards(),
                     QuestProcessStateList = new List<CDataQuestProcessState>()
                     {
                         new CDataQuestProcessState()

@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 {
     public class Mq000025_TheGreatAlchemist : Quest
     {
-        public Mq000025_TheGreatAlchemist() : base(QuestType.Main)
+        public Mq000025_TheGreatAlchemist() : base(QuestId.TheGreatAlchemist, QuestType.Main)
         {
         }
 
@@ -22,13 +22,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             return new List<S2CQuestQuestProgressWorkSaveNtc>();
         }
 
-
         public override CDataQuestList ToCDataQuestList()
         {
             // var refquest = QuestManager.CloneMainQuest(questAssets, MainQuestId.TheGreatAlchemist);
             var quest = new CDataQuestList();
-            quest.QuestId = (int)QuestId.TheGreatAlchemist;
-            quest.QuestScheduleId = (int)QuestId.TheGreatAlchemist;
+            quest.QuestId = (uint)QuestId;
+            quest.QuestScheduleId = (uint)QuestId;
             quest.BaseLevel = 25;
             quest.OrderNpcId = (uint) NpcId.Leo0;
             quest.NameMsgId = 1;

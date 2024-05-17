@@ -37,6 +37,8 @@ namespace Arrowgene.Ddon.Shared.Model
             OnlineStatus = OnlineStatus.Offline;
 
             ActiveQuests = new Dictionary<QuestId, Dictionary<uint, uint>>();
+            PriorityQuests = new List<QuestId>();
+            QuestRewards = new List<QuestBoxRewards>();
         }
 
         public int AccountId { get; set; }
@@ -76,6 +78,8 @@ namespace Arrowgene.Ddon.Shared.Model
 
         // Tracks processes for active quests Dictionary<QuestId, Dictionary<ProcessNo, Sequence>>
         public Dictionary<QuestId, Dictionary<uint, uint>> ActiveQuests { get; set; }
+        public List<QuestId> PriorityQuests { get; set; }
+        public List<QuestBoxRewards> QuestRewards { get; set; }
 
         public Pawn PawnBySlotNo(byte SlotNo)
         {
