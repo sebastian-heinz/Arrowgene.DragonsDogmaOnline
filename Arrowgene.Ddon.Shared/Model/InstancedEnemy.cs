@@ -13,5 +13,6 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public bool IsKilled { get; set; }
+        public byte Index {  get; set; }
     }
 }

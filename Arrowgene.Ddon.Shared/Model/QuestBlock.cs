@@ -17,17 +17,22 @@ namespace Arrowgene.Ddon.Shared.Model
         public StageId StageId {  get; set; }
         public ushort SubGroupId {  get; set; }
         public uint SetNo { get; set; }
+        public uint QuestLayoutFlag {  get; set; }
+        public uint StartingIndex {  get; set; }
 
         public List<Enemy> Enemies { get; set; }
         public List<QuestDeliveryItem> DeliveryRequests {  get; set; }
         public QuestNpcOrder NpcOrderDetails {  get; set; }
-        public bool UpdateAnnounce {  get; set; }
+        public QuestAnnounceType AnnounceType {  get; set; }
+
+        public CDataQuestProcessState QuestProcessState { get; set; }
 
         public QuestBlock()
         {
             Enemies = new List<Enemy>();
             NpcOrderDetails = new QuestNpcOrder();
             DeliveryRequests = new List<QuestDeliveryItem>();
+            QuestProcessState = new CDataQuestProcessState();
         }
     }
 }

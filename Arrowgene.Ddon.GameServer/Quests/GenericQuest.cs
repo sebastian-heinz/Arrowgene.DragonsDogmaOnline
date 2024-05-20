@@ -1,14 +1,23 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Cryptography;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests.MainQuests;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Quests
 {
     public class GenericQuest : Quest
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GenericQuest));
+
         private List<QuestBlock> Blocks;
 
         public static GenericQuest FromAsset(QuestAssetData questAsset)
@@ -47,17 +56,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
-            quest.Blocks = questAsset.Blocks;
-
             foreach (var block in questAsset.Blocks)
             {
                 // This is used for replacing enemies in a quest
                 // So only report these for blocks which have mobs
-                if (block.BlockType != QuestBlockType.KillGroup || block.StageId.Id == 0)
+                if (block.BlockType != QuestBlockType.KillGroup)
                 {
                     continue;
                 }
-                quest.Locations.Add(new QuestLocation() { StageId = block.StageId, SubGroupId = block.SubGroupId });
+
+                quest.Locations.Add(new QuestLocation() { StageId = block.StageId, SubGroupId = block.SubGroupId, QuestLayoutFlag = block.QuestLayoutFlag});
+            }
+
+            quest.Blocks = questAsset.Blocks;
+
+            foreach (var block in quest.Blocks)
+            {
+                block.QuestProcessState = BlockAsCDataQuestProcessState(block, quest.Locations);
             }
 
             return quest;
@@ -65,6 +80,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public GenericQuest(QuestId questId, bool discoverable) : base(questId, QuestType.World, discoverable)
         {
+            Blocks = new List<QuestBlock>();
         }
 
         public override bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId)
@@ -78,7 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
 
                 var processState = questState.ProcessState[block.ProcessNo];
-                if (block.BlockNo > processState.BlockNo)
+                if (processState.BlockNo < block.BlockNo)
                 {
                     continue;
                 }
@@ -110,13 +126,53 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     continue;
                 }
 
+                byte index = 0;
                 foreach (var enemy in block.Enemies)
                 {
-                    enemies.Add(new InstancedEnemy(enemy));
+                    enemies.Add(new InstancedEnemy(enemy)
+                    {
+                        Index = (byte)(index + block.StartingIndex)
+                    });
+
+                    index += 1;
                 }
             }
 
             return enemies;
+        }
+
+        public override void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
+        {
+            QuestLocation questLocation = null;
+            foreach (var location in Locations)
+            {
+                if (location.ContainsStageId(stageId, (ushort) subGroupId))
+                {
+                    questLocation = location;
+                    break;
+                }
+            }
+
+            if (questLocation == null)
+            {
+                client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc());
+            }
+            else
+            {
+                var proccessState = client.Party.QuestState.GetProcessState(QuestId, 0);
+                // We need to signal the current block
+                client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc()
+                {
+                    QuestScheduleId = (uint)QuestId,
+                    ProcessNo = 0,
+                    SequenceNo = 0,
+                    BlockNo = proccessState.BlockNo,
+                    WorkList = new List<CDataQuestProgressWork>()
+                    {
+                        QuestManager.NotifyCommand.KilledTargetEnemySetGroup((int) questLocation.QuestLayoutFlag, StageManager.ConvertIdToStageNo(stageId), (int) stageId.GroupId)
+                    }
+                });
+            }
         }
 
         public override CDataQuestList ToCDataQuestList()
@@ -126,8 +182,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             quest.QuestProcessStateList = new List<CDataQuestProcessState>()
             {
-                BlockAsCDataQuestProcessState(firstBlock)
+                firstBlock.QuestProcessState
             };
+
+            foreach (var location in Locations)
+            {
+                StageNo stageNo = StageManager.ConvertIdToStageNo(location.StageId);
+                quest.QuestLayoutFlagSetInfoList.Add(QuestManager.LayoutFlag.Create(location.QuestLayoutFlag, stageNo, location.StageId.GroupId));
+            }
 
             return quest;
         }
@@ -139,7 +201,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             quest.QuestProcessStateList = new List<CDataQuestProcessState>()
             {
-                BlockAsCDataQuestProcessState(firstBlock)
+                firstBlock.QuestProcessState
             };
 
             return quest;
@@ -165,28 +227,29 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             return new List<CDataQuestProcessState>()
             {
-                BlockAsCDataQuestProcessState(questBlock)
+                questBlock.QuestProcessState
             };
         }
 
-        private CDataQuestProcessState BlockAsCDataQuestProcessState(QuestBlock questBlock)
+        private static CDataQuestProcessState BlockAsCDataQuestProcessState(QuestBlock questBlock, List<QuestLocation> locations)
         {
             CDataQuestProcessState result = new CDataQuestProcessState()
             {
                 ProcessNo = questBlock.ProcessNo,
-                SequenceNo = 0,
+                SequenceNo = questBlock.SequenceNo,
                 BlockNo = questBlock.BlockNo,
             };
 
-            if (questBlock.BlockNo > 1 && questBlock.SequenceNo != 1)
-            {
-                if (questBlock.BlockNo == 2)
+            if (questBlock.SequenceNo != 1)
+            {                
+                switch (questBlock.AnnounceType)
                 {
-                    result.ResultCommandList.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1));
-                }
-                else if (questBlock.UpdateAnnounce)
-                {
-                    result.ResultCommandList.Add(QuestManager.ResultCommand.UpdateAnnounce());
+                    case QuestAnnounceType.Accept:
+                        result.ResultCommandList.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1));
+                        break;
+                    case QuestAnnounceType.Update:
+                        result.ResultCommandList.Add(QuestManager.ResultCommand.UpdateAnnounce());
+                        break;
                 }
             }
 
@@ -205,7 +268,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case QuestBlockType.DiscoverEnemy:
                     result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, 0)
+                        // QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, 0)
+                        QuestManager.CheckCommand.IsEnemyFound(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, -1)
                     });
                     break;
                 case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
@@ -215,18 +279,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     });
                     break;
                 case QuestBlockType.End:
-                    result.ResultCommandList = new List<CDataQuestCommand>()
-                    {
-                        QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear),
-                        QuestManager.ResultCommand.EndEndQuest(),
-                    };
+                    result.ResultCommandList.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear));
+                    result.ResultCommandList.Add(QuestManager.ResultCommand.EndEndQuest());
                     break;
                 case QuestBlockType.KillGroup:
                     {
                         var checkCommands = new List<CDataQuestCommand>();
                         for (int i = 0; i < questBlock.Enemies.Count; i++)
                         {
-                            checkCommands.Add(QuestManager.CheckCommand.DieEnemy(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, i));
+                            checkCommands.Add(QuestManager.CheckCommand.DieEnemy(
+                                StageManager.ConvertIdToStageNo(questBlock.StageId),
+                                (int)questBlock.StageId.GroupId,
+                                (int)(i + questBlock.StartingIndex)));
                         }
                         result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkCommands);
                     }
@@ -236,6 +300,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         QuestManager.CheckCommand.TalkNpc(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails.NpcId)
                     });
+                    break;
+                default:
+                    Logger.Error($"Unexpected block found '{questBlock.BlockType}'. Unable to translate.");
                     break;
             }
 

@@ -56,9 +56,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
-                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
+                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, subGroupId).Select(enemy => new CDataLayoutEnemyData()
                 {
-                    PositionIndex = (byte)index,
+                    PositionIndex = (byte)(enemy.Index),
                     EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                 }).ToList();
             }

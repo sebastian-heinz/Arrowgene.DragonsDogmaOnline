@@ -551,7 +551,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.UpdateAnnounce(QuestAnnounceType.Accept),
+                        QuestManager.ResultCommand.UpdateAnnounce(),
                     }
                 },
                 new CDataQuestProcessState()

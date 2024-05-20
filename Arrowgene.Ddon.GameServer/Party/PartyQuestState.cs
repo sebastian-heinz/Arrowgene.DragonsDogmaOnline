@@ -89,6 +89,23 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public InstancedEnemy GetInstancedEnemy(QuestId questId, StageId stageId, ushort subGroupId, uint index)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[questId];
+                foreach (var enemy in questState.QuestEnemies[stageId])
+                {
+                    if (enemy.Index == index)
+                    {
+                        return enemy;
+                    }
+                }
+
+                return null;
+            }
+        }
+
         public void AddNewQuest(QuestId questId)
         {
             var quest = QuestManager.GetQuest(questId);

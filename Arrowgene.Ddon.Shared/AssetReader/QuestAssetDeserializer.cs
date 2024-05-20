@@ -13,6 +13,7 @@ using System.Collections;
 using System.Reflection.Emit;
 using System.Reflection.Metadata.Ecma335;
 using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
+using System.Security.Cryptography;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
@@ -172,11 +173,16 @@ namespace Arrowgene.Ddon.Shared.Csv
 
                 questBlock.BlockType = questBlockType;
                 questBlock.BlockNo = blockIndex;
-                questBlock.UpdateAnnounce = true;
+                questBlock.AnnounceType = QuestAnnounceType.None;
 
-                if (block.TryGetProperty("update_announce", out JsonElement jUpdateAnnounce))
+                if (block.TryGetProperty("announce_type", out JsonElement jUpdateAnnounce))
                 {
-                    questBlock.UpdateAnnounce = jUpdateAnnounce.GetBoolean();
+                    if (!Enum.TryParse(jUpdateAnnounce.GetString(), true, out QuestAnnounceType announceType))
+                    {
+                        Logger.Error($"Unable to parse the quest announce type @ index {blockIndex - 1}.");
+                        return false;
+                    }
+                    questBlock.AnnounceType = announceType;
                 }
 
                 switch (questBlockType)
@@ -205,6 +211,14 @@ namespace Arrowgene.Ddon.Shared.Csv
                     case QuestBlockType.KillGroup:
                         questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
                         questBlock.SubGroupId = block.GetProperty("subgroup_no").GetUInt16();
+                        questBlock.QuestLayoutFlag = GetQuestLayoutFlag(assetData.QuestId, questBlock.StageId, questBlock.SubGroupId, questBlock.ProcessNo, questBlock.BlockNo);
+                        questBlock.StartingIndex = 0;
+
+                        if (block.TryGetProperty("starting_index", out JsonElement jStartingIndex))
+                        {
+                            questBlock.StartingIndex = jStartingIndex.GetUInt32();
+                        }
+
                         foreach (var enemy in block.GetProperty("group").EnumerateArray())
                         {
                             bool IsBoss = enemy.GetProperty("is_boss").GetBoolean();
@@ -216,7 +230,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                                 IsBossBGM = IsBoss,
                                 IsBossGauge = IsBoss,
                                 Scale = 100,
-                                EnemyTargetTypesId = 4,
+                                EnemyTargetTypesId = 4
                             };
 
                             ApplyOptionalEnemyKeys(enemy, questEnemy);
@@ -360,10 +374,24 @@ namespace Arrowgene.Ddon.Shared.Csv
                 questEnemey.SpawnTimeStart = jSpawnTimeStart.GetUInt32();
             }
 
-            if (enemy.TryGetProperty("spawn_time_start", out JsonElement jSpawnTimeEnd))
+            if (enemy.TryGetProperty("spawn_time_end", out JsonElement jSpawnTimeEnd))
             {
                 questEnemey.SpawnTimeEnd = jSpawnTimeEnd.GetUInt32();
             }
+        }
+
+        private uint GetQuestLayoutFlag(QuestId questId, StageId stageId, uint subGroupNo, uint processNo, uint blockNo)
+        {
+            IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
+            hash.AppendData(BitConverter.GetBytes((uint)questId));
+            hash.AppendData(BitConverter.GetBytes(processNo));
+            hash.AppendData(BitConverter.GetBytes(blockNo));
+            hash.AppendData(BitConverter.GetBytes(stageId.Id));
+            hash.AppendData(BitConverter.GetBytes(stageId.GroupId));
+            hash.AppendData(BitConverter.GetBytes(stageId.LayerNo));
+            hash.AppendData(BitConverter.GetBytes(subGroupNo));
+
+            return Convert.ToUInt32(BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8), 16);
         }
     }
 }

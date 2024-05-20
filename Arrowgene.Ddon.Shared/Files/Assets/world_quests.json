@@ -64,6 +64,7 @@
                         "group_id": 26
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Accept",
                     "group": [
                         {
                             "enemy_id": "0x015000",
@@ -148,6 +149,8 @@
                         "group_id": 8
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Accept",
+                    "starting_index": 6,
                     "group": [
                         {
                             "enemy_id": "0x011110",
@@ -177,6 +180,8 @@
                         "group_id": 28
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
+                    "starting_index": 6,
                     "group": [
                         {
                             "enemy_id": "0x011110",
@@ -207,6 +212,7 @@
                         "group_id": 6
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
                     "group": [
                         {
                             "enemy_id": "0x011110",
@@ -216,12 +222,6 @@
                         },
                         {
                             "enemy_id": "0x011110",
-                            "level": 8,
-                            "exp": 50,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x011111",
                             "level": 8,
                             "exp": 50,
                             "is_boss": false
@@ -296,6 +296,7 @@
                         "group_id": 0
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Accept",
                     "group": [
                         {
                             "enemy_id": "0x015800",
@@ -401,6 +402,7 @@
                         "group_id": 30
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Accept",
                     "group": [
                         {
                             "enemy_id": "0x015302",
@@ -470,6 +472,7 @@
                         "group_id": 4
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Accept",
                     "group": [
                         {
                             "enemy_id": "0x015502",
@@ -535,6 +538,7 @@
                         "group_id": 94
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Accept",
                     "group": [
                         {
                             "enemy_id": "0x010600",
@@ -627,18 +631,20 @@
                     "stage_id": {
                         "id": 1,
                         "layer_no": 0,
-                        "group_id": 34
+                        "group_id": 33
                     },
-                    "subgroup_no": 0
+                    "subgroup_no": 0,
+                    "announce_type": "Accept"
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
                         "layer_no": 0,
-                        "group_id": 34
+                        "group_id": 33
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
                     "group": [
                         {
                             "enemy_id": "0x015800",
@@ -665,10 +671,10 @@
                     "stage_id": {
                         "id": 1,
                         "layer_no": 0,
-                        "group_id": 107
+                        "group_id": 34
                     },
                     "subgroup_no": 0,
-                    "update_announce": false,
+                    "announce_type": "None",
                     "group": [
                         {
                             "enemy_id": "0x015800",
@@ -698,6 +704,7 @@
                         "group_id": 0
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
                     "npc_id": "Heinz2",
                     "message_id": 0
                 }
@@ -759,6 +766,7 @@
                         "group_id": 83
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Accept",
                     "group": [
                         {
                             "enemy_id": "0x010600",
@@ -788,6 +796,7 @@
                         "group_id": 84
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
                     "group": [
                         {
                             "enemy_id": "0x010410",
@@ -823,6 +832,7 @@
                         "group_id": 81
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
                     "group": [
                         {
                             "enemy_id": "0x010411",
@@ -840,6 +850,7 @@
                         "group_id": 0
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
                     "npc_id": "Walter",
                     "message_id": 0
                 }
@@ -900,7 +911,8 @@
                         "layer_no": 0,
                         "group_id": 85
                     },
-                    "subgroup_no": 0
+                    "subgroup_no": 0,
+                    "announce_type": "Accept"
                 },
                 {
                     "type": "KillGroup",
@@ -910,6 +922,7 @@
                         "group_id": 85
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
                     "group": [
                         {
                             "enemy_id": "0x011002",
@@ -942,6 +955,7 @@
                         "group_id": 0
                     },
                     "subgroup_no": 0,
+                    "announce_type": "Update",
                     "npc_id": "Walter",
                     "message_id": 0
                 }

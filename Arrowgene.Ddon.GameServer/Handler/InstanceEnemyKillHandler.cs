@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (IsQuestControlled && quest != null)
             {
                 // TODO: Add drops to Quest Monsters?
-                enemyKilled = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, 0)[(int)packet.Structure.SetId];
+                enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest.QuestId, stageId, 0, packet.Structure.SetId);
             }
             else
             {
@@ -72,13 +72,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             enemyKilled.IsKilled = true;
 
-            var group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0);
+            
+            List<InstancedEnemy> group;
+            if (IsQuestControlled && quest != null)
+            {
+                group = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, 0);
+            }
+            else
+            {
+                group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0);
+            }
+
+#if false
             bool groupDestroyed = group.All(enemy => enemy.IsKilled);
             if (groupDestroyed)
             {
                 if (IsQuestControlled && quest != null)
                 {
-                    quest.SendProgressWorkNotices(client, client.Character.Stage, 0);
+                    quest.SendProgressWorkNotices(client, stageId, 0);
                 }
 
                 S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
@@ -88,6 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 };
                 client.Party.SendToAll(groupDestroyedNtc);
             }
+#endif
 
             // TODO: EnemyId and KillNum
             client.Send(new S2CInstanceEnemyKillRes() {
