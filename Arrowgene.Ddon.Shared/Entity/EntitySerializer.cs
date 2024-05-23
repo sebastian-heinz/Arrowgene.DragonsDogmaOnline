@@ -83,6 +83,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataDeliveryItem.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
             Create(new CDataEditInfoSerializer());
+            Create(new CDataEditParam.Serializer());
+            Create(new CDataEditParamPalette.Serializer());
             Create(new CDataEquipElementParam.Serializer());
             Create(new CDataWeaponCrestData.Serializer());
             Create(new CDataArmorCrestData.Serializer());
@@ -298,6 +300,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
             Create(new C2SGpGetGpReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
+            Create(new C2SGpGpEditGetVoiceListReq.Serializer());
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnStayInnReq.Serializer());
@@ -533,6 +536,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CExtendEquipSlotNtc.Serializer());
             Create(new S2CGpGetGpRes.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
+            Create(new S2CGpGpEditGetVoiceListRes.Serializer());
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());
             Create(new S2CGPCourseStartNtc.Serializer());
             Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
