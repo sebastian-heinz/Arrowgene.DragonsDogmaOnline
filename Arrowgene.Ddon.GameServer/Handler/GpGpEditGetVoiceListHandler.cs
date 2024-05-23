@@ -1,7 +1,8 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -20,7 +21,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(GameFull.Dump_703);
+            S2CGpGpEditGetVoiceListRes response = EntitySerializer.Get<S2CGpGpEditGetVoiceListRes>().Read(GameFull.data_Dump_703);
+            foreach (var voice in response.VoiceList)
+            {
+                voice.IsValid = true; // Unlock
+            }
+            client.Send(response);
         }
     }
 }
