@@ -54,6 +54,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateSpSkill = $"UPDATE \"ddon_sp_skill\" SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE \"pawn_id\" = @pawn_id AND \"sp_skill_id\"=@sp_skill_id;";
         private static readonly string SqlSelectSpSkillByPawnId = $"SELECT {BuildQueryField(CDataSpSkillFields)} FROM \"ddon_sp_skill\" WHERE \"pawn_id\" = @pawn_id;";
         private const string SqlDeleteSpSkill = "DELETE FROM \"ddon_sp_skill\" WHERE \"pawn_id\"=@pawn_id AND \"sp_skill_id\"=@sp_skill_id;";
+        private const string SqlDeleteSpSkills = "DELETE FROM \"ddon_sp_skill\" WHERE \"pawn_id\"=@pawn_id";
 
         public bool CreatePawn(Pawn pawn)
         {
@@ -186,6 +187,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ReplacePawnReaction(conn, pawn.PawnId, pawnReaction);
             }
 
+            DeleteSpSkills(conn, pawn.PawnId);
             foreach (CDataSpSkill spSkill in pawn.SpSkillList)
             {
                 ReplaceSpSkill(conn, pawn.PawnId, spSkill);
@@ -281,10 +283,30 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         public bool DeleteSpSkill(uint pawnId, byte spSkillId)
         {
-            return ExecuteNonQuery(SqlDeleteSpSkill, command =>
+            using TCon connection = OpenNewConnection();
+            return DeleteSpSkill(connection, pawnId, spSkillId);
+        }
+
+        public bool DeleteSpSkill(TCon conn, uint pawnId, byte spSkillId)
+        {
+            return ExecuteNonQuery(conn, SqlDeleteSpSkill, command =>
             {
                 AddParameter(command, "@pawn_id", pawnId);
                 AddParameter(command, "@sp_skill_id", spSkillId);
+            }) == 1;
+        }
+
+        public bool DeleteSpSkills(uint pawnId)
+        {
+            using TCon connection = OpenNewConnection();
+            return DeleteSpSkills(connection, pawnId);
+        }
+
+        public bool DeleteSpSkills(TCon conn,uint pawnId)
+        {
+            return ExecuteNonQuery(conn, SqlDeleteSpSkills, command =>
+            {
+                AddParameter(command, "@pawn_id", pawnId);
             }) == 1;
         }
         
