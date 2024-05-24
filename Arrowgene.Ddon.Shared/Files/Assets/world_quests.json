@@ -8,6 +8,175 @@
     "quests": [
         {
             "type": "World",
+            "comment": "q20000009 - Request For Medicine",
+            "quest_id": 20000009,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 350
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 20
+                },
+                {
+                    "type": "exp",
+                    "amount": 290
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 478,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 59,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "npc_id": "Henry",
+                    "message_id": 218
+                },
+                {
+                    "type": "Accept",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    }
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 0
+                    },
+                    "npc_id": "Vicelot",
+                    "message_id": 887
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 2
+                    },
+                    "announce_type": "Update",
+                    "layout_flags_on": [2216]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1
+                    },
+                    "announce_type": "Update",
+                    "layout_flags_on": [1133],
+                    "layout_flags_off": [2216]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 0
+                    },
+                    "layout_flags_off": [1133],
+                    "announce_type": "Update",
+                    "npc_id": "Vicelot",
+                    "message_id": 890
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "Henry",
+                    "message_id": 891
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20000001 - The Woes of A Merchant",
+            "quest_id": 20000001,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 400
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 20
+                },
+                {
+                    "type": "exp",
+                    "amount": 260
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 478,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 59,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 25,
+                        "group_id": 0
+                    },
+                    "npc_id": "Peddler",
+                    "message_id": 26,
+                    "layout_flags_on": [985]
+                },
+                {
+                    "type": "DeliverItems",
+                    "stage_id": {
+                        "id": 25,
+                        "group_id": 0
+                    },
+                    "npc_id": "Peddler",
+                    "announce_type": "Accept",
+                    "items": [
+                        {
+                            "id": 8928,
+                            "amount": 2
+                        }
+                    ],
+                    "message_id": 1124
+                }
+            ]
+        },
+        {
+            "type": "World",
             "comment": "q20005010_TheKnightsBitterEnemy",
             "quest_id": 20005010,
             "base_level": 12,
@@ -51,19 +220,15 @@
                     "type": "DiscoverEnemy",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 26
-                    },
-                    "subgroup_no": 0
+                    }
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 26
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Accept",
                     "group": [
                         {
@@ -136,19 +301,15 @@
                     "type": "DiscoverEnemy",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 8
-                    },
-                    "subgroup_no": 0
+                    }
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 8
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Accept",
                     "starting_index": 6,
                     "group": [
@@ -176,10 +337,8 @@
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 28
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "starting_index": 6,
                     "group": [
@@ -208,10 +367,8 @@
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 6
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "group": [
                         {
@@ -283,19 +440,15 @@
                     "type": "DiscoverEnemy",
                     "stage_id": {
                         "id": 134,
-                        "layer_no": 0,
                         "group_id": 0
-                    },
-                    "subgroup_no": 0
+                    }
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 134,
-                        "layer_no": 0,
                         "group_id": 0
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Accept",
                     "group": [
                         {
@@ -389,19 +542,15 @@
                     "type": "DiscoverEnemy",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 30
-                    },
-                    "subgroup_no": 0
+                    }
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 30
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Accept",
                     "group": [
                         {
@@ -459,19 +608,15 @@
                     "type": "DiscoverEnemy",
                     "stage_id": {
                         "id": 85,
-                        "layer_no": 0,
                         "group_id": 4
-                    },
-                    "subgroup_no": 0
+                    }
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 85,
-                        "layer_no": 0,
                         "group_id": 4
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Accept",
                     "group": [
                         {
@@ -525,19 +670,15 @@
                     "type": "DiscoverEnemy",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 94
-                    },
-                    "subgroup_no": 0
+                    }
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 94
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Accept",
                     "group": [
                         {
@@ -616,13 +757,11 @@
             ],
             "blocks": [
                 {
-                    "type": "NpcOrder",
+                    "type": "NpcTalkAndOrder",
                     "stage_id": {
                         "id": 2,
-                        "layer_no": 0,
                         "group_id": 0
                     },
-                    "subgroup_no": 0,
                     "npc_id": "Heinz2",
                     "message_id": 224
                 },
@@ -630,20 +769,16 @@
                     "type": "SeekOutEnemiesAtMarkedLocation",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 33
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Accept"
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 33
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "group": [
                         {
@@ -670,10 +805,8 @@
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 34
                     },
-                    "subgroup_no": 0,
                     "announce_type": "None",
                     "group": [
                         {
@@ -700,10 +833,8 @@
                     "type": "TalkToNpc",
                     "stage_id": {
                         "id": 2,
-                        "layer_no": 0,
                         "group_id": 0
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "npc_id": "Heinz2",
                     "message_id": 0
@@ -748,13 +879,11 @@
             ],
             "blocks": [
                 {
-                    "type": "NpcOrder",
+                    "type": "NpcTalkAndOrder",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 0
                     },
-                    "subgroup_no": 0,
                     "npc_id": "Walter",
                     "message_id": 31
                 },
@@ -762,10 +891,8 @@
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 83
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Accept",
                     "group": [
                         {
@@ -792,10 +919,8 @@
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 84
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "group": [
                         {
@@ -828,10 +953,8 @@
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 81
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "group": [
                         {
@@ -846,10 +969,8 @@
                     "type": "TalkToNpc",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 0
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "npc_id": "Walter",
                     "message_id": 0
@@ -894,34 +1015,34 @@
             ],
             "blocks": [
                 {
-                    "type": "NpcOrder",
+                    "type": "NpcTalkAndOrder",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 0
                     },
-                    "subgroup_no": 0,
                     "npc_id": "Walter",
                     "message_id": 30
+                },
+                {
+                    "type": "Accept",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    }
                 },
                 {
                     "type": "DiscoverEnemy",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 85
-                    },
-                    "subgroup_no": 0,
-                    "announce_type": "Accept"
+                    }
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 85
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "group": [
                         {
@@ -951,10 +1072,8 @@
                     "type": "TalkToNpc",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 0
                     },
-                    "subgroup_no": 0,
                     "announce_type": "Update",
                     "npc_id": "Walter",
                     "message_id": 0

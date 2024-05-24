@@ -26,12 +26,16 @@ namespace Arrowgene.Ddon.Shared.Asset
         public bool Discoverable { get; set; }
         public List<QuestRewardItem> RewardItems;
         public List<QuestRewardCurrency> RewardCurrency;
+        public List<uint> LayoutFlagsOn {  get; set; }
+        public List<uint> LayoutFlagsOff { get; set; }
 
         public QuestAssetData()
         {
             Blocks = new List<QuestBlock>();
             RewardItems = new List<QuestRewardItem>();
             RewardCurrency = new List<QuestRewardCurrency>();
+            LayoutFlagsOn = new List<uint>();
+            LayoutFlagsOff = new List<uint>();
         }
     }
 }

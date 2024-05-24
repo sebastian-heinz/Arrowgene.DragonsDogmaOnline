@@ -427,7 +427,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             /**
-             * @brief
+             * @brief Used to order a quest from an NPC with multiple talking options.
              * @param stageNo
              * @param npcId
              * @param noOrderGroupSerial
@@ -438,7 +438,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             /**
-             * @brief
+             * @brief Used to order a quest from an NPC with no additional talking options.
              * @param stageNo
              * @param npcId
              * @param noOrderGroupSerial

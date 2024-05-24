@@ -44,6 +44,7 @@ Each quest has some starting condition, either being ordered from an NPC or bein
   - [Boats Buddy (q20010001)](http://ddon.wikidot.com/wq:boatsbuddy)
   - [Beach Bandits (q20010000)](http://ddon.wikidot.com/wq:beachbandits)
   - Knight and Arisen (q20000015)
+  - Request For Medicine (q20000009)
 - Quest rewards can be claimed from the reward box after completing a quest.
   - ![](images/reward-box.png) 
 - New quests can be defined by updating the file `world_quests.json` in `Arrowgene.Ddon.Shared/files/assets`.
@@ -252,24 +253,21 @@ We need to define a rule which tells the quest state machine where we want to di
     "type": "DiscoverEnemy",
     "stage_id": {
         "id": 1,
-        "layer_no": 0,
         "group_no": 26
-    },
-    "subgroup_no": 0
+    }
 }
 ```
 
-Next we define a rule that we want to spawn some enemies and wait for them to be dead. We do that using the `KillGroup` type. We will use the values we collected about the monster from DDon-tools. Again, just like the previous rule, we need to tell the quest state machine where to find this group of enemies.
+Next we define a rule that we want to spawn some enemies and wait for them to be dead. First thing we need to do is when we move from the first state `DiscoverEnemy` to the next state `KillGroup` is that we need to "announce" that we have accepted this quest. We do this by setting the `announce_type` key to `Accept`. We will use the values we collected about the monster from DDon-tools. Again, just like the previous rule, we need to tell the quest state machine where to find this group of enemies.
 
 ```json
 {
     "type": "KillGroup",
     "stage_id": {
         "id": 1,
-        "layer_no": 0,
         "group_no": 26
     },
-    "subgroup_no": 0,
+    "announce_type": "Accept",
     "group": []
 }
 ```
@@ -280,10 +278,9 @@ In the group members, we then populate the information about the required monste
     "type": "KillGroup",
     "stage_id": {
         "id": 1,
-        "layer_no": 0,
         "group_no": 26
     },
-    "subgroup_no": 0,
+    "announce_type": "Accept",
     "group": [
          {
             "enemy_id": "0x015000",
@@ -356,19 +353,16 @@ Finally, your file should look like below. Save the file, reload the server and 
                     "type": "DiscoverEnemy",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 26
-                    },
-                    "subgroup_no": 0
+                    }
                 },
                 {
                     "type": "KillGroup",
                     "stage_id": {
                         "id": 1,
-                        "layer_no": 0,
                         "group_id": 26
                     },
-                    "subgroup_no": 0,
+                    "announce_type": "Accept",
                     "group": [
                         {
                             "enemy_id": "0x015000",

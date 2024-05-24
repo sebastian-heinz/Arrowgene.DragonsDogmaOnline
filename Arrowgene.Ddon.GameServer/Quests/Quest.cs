@@ -24,6 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         public StageId StageId { get; set; }
         public ushort SubGroupId { get; set; }
+
         public uint QuestLayoutFlag {  get; set; }
 
         public bool ContainsStageId(StageId stageId, ushort subGroupId)

@@ -185,15 +185,42 @@ namespace Arrowgene.Ddon.Shared.Csv
                     questBlock.AnnounceType = announceType;
                 }
 
+                questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
+                questBlock.SubGroupId = 0;
+                if (block.TryGetProperty("subgroup_no", out JsonElement jSubGroupNo))
+                {
+                    questBlock.SubGroupId = jSubGroupNo.GetUInt16();
+                }
+
+                if (block.TryGetProperty("layout_flags_on", out JsonElement jLayoutFlagsOn))
+                {
+                    foreach (var jLayoutFlag in jLayoutFlagsOn.EnumerateArray())
+                    {
+                        questBlock.QuestLayoutFlagsOn.Add(jLayoutFlag.GetUInt32());
+                    }
+                }
+
+                if (block.TryGetProperty("layout_flags_off", out JsonElement jLayoutFlagsOff))
+                {
+                    foreach (var jLayoutFlag in jLayoutFlagsOff.EnumerateArray())
+                    {
+                        questBlock.QuestLayoutFlagsOff.Add(jLayoutFlag.GetUInt32());
+                    }
+                }
+
                 switch (questBlockType)
                 {
-                    case QuestBlockType.DiscoverEnemy:
-                        questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
-                        questBlock.SubGroupId = block.GetProperty("subgroup_no").GetUInt16();
+                    case QuestBlockType.Accept:
+                        questBlock.AnnounceType = QuestAnnounceType.Accept;
                         break;
-                    case QuestBlockType.NpcOrder:
-                        questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
-                        questBlock.SubGroupId = block.GetProperty("subgroup_no").GetUInt16();
+                    case QuestBlockType.IsStageNo:
+                        break;
+                    case QuestBlockType.DummyBlock:
+                        break;
+                    case QuestBlockType.DiscoverEnemy:
+                    case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
+                        break;
+                    case QuestBlockType.NpcTalkAndOrder:
                         {
                             if (!Enum.TryParse(block.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
@@ -204,13 +231,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                             questBlock.NpcOrderDetails.MsgId = block.GetProperty("message_id").GetInt32();
                         }
                         break;
-                    case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
-                        questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
-                        questBlock.SubGroupId = block.GetProperty("subgroup_no").GetUInt16();
-                        break;
                     case QuestBlockType.KillGroup:
-                        questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
-                        questBlock.SubGroupId = block.GetProperty("subgroup_no").GetUInt16();
                         questBlock.QuestLayoutFlag = GetQuestLayoutFlag(assetData.QuestId, questBlock.StageId, questBlock.SubGroupId, questBlock.ProcessNo, questBlock.BlockNo);
                         questBlock.StartingIndex = 0;
 
@@ -240,8 +261,6 @@ namespace Arrowgene.Ddon.Shared.Csv
                         }
                         break;
                     case QuestBlockType.TalkToNpc:
-                        questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
-                        questBlock.SubGroupId = block.GetProperty("subgroup_no").GetUInt16();
                         {
                             if (!Enum.TryParse(block.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
@@ -252,8 +271,31 @@ namespace Arrowgene.Ddon.Shared.Csv
                             questBlock.NpcOrderDetails.MsgId = block.GetProperty("message_id").GetInt32();
                         }
                         break;
-                    default:
+                    case QuestBlockType.CollectItem:
+                        {
+                            questBlock.ShowMarker = true;
+                            if (block.TryGetProperty("show_marker", out JsonElement jShowMarker))
+                            {
+                                questBlock.ShowMarker = jShowMarker.GetBoolean();
+                            }
+                        }
+                        break;
                     case QuestBlockType.DeliverItems:
+                        foreach (var item in block.GetProperty("items").EnumerateArray())
+                        {
+                            questBlock.DeliveryRequests.Add(new QuestDeliveryItem()
+                            {
+                                ItemId = item.GetProperty("id").GetUInt32(),
+                                Amount = item.GetProperty("amount").GetUInt32()
+                            });
+                        }
+                        // DeliverItems is a bit more complicated
+                        // It needs to be split into 3 different actions
+                        // 1. Item check to see if you have the items
+                        // 2. Delivery of items
+                        // 3. Removal of items from inventory?
+                        break;
+                    default:
                         Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex - 1}.");
                         return false;
                 }
@@ -274,11 +316,17 @@ namespace Arrowgene.Ddon.Shared.Csv
             return true;
         }
 
-        private StageId ParseStageId(JsonElement jstageId)
+        private StageId ParseStageId(JsonElement jStageId)
         {
-            uint id = jstageId.GetProperty("id").GetUInt32();
-            byte layerNo = jstageId.GetProperty("layer_no").GetByte();
-            uint groupId = jstageId.GetProperty("group_id").GetUInt32();
+            uint id = jStageId.GetProperty("id").GetUInt32();
+
+            byte layerNo = 0;
+            if (jStageId.TryGetProperty("layer_no", out JsonElement jLayerNo))
+            {
+                layerNo = jLayerNo.GetByte();
+            }
+            
+            uint groupId = jStageId.GetProperty("group_id").GetUInt32();
             return new StageId(id, layerNo, groupId);
         }
 
