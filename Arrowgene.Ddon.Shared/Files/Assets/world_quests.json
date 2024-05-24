@@ -53,18 +53,12 @@
                     "message_id": 218
                 },
                 {
-                    "type": "Accept",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 0
-                    }
-                },
-                {
                     "type": "TalkToNpc",
                     "stage_id": {
                         "id": 2,
-                        "group_id": 0
+                        "group_id": 1
                     },
+                    "announce_type": "Accept",
                     "npc_id": "Vicelot",
                     "message_id": 887
                 },
@@ -91,7 +85,7 @@
                     "type": "TalkToNpc",
                     "stage_id": {
                         "id": 2,
-                        "group_id": 0
+                        "group_id": 1
                     },
                     "layout_flags_off": [1133],
                     "announce_type": "Update",
@@ -136,11 +130,11 @@
                     "type": "select",
                     "loot_pool": [
                         {
-                            "item_id": 478,
+                            "item_id": 426,
                             "num": 1
                         },
                         {
-                            "item_id": 59,
+                            "item_id": 34,
                             "num": 2
                         }
                     ]
@@ -151,7 +145,7 @@
                     "type": "NpcTalkAndOrder",
                     "stage_id": {
                         "id": 25,
-                        "group_id": 0
+                        "group_id": 1
                     },
                     "npc_id": "Peddler",
                     "message_id": 26,
@@ -161,7 +155,7 @@
                     "type": "DeliverItems",
                     "stage_id": {
                         "id": 25,
-                        "group_id": 0
+                        "group_id": 1
                     },
                     "npc_id": "Peddler",
                     "announce_type": "Accept",
@@ -979,7 +973,7 @@
         },
         {
             "type": "World",
-            "comment": "q20010000_BeachBandits",
+            "comment": "q20010000 - BeachBandits",
             "quest_id": 20010000,
             "base_level": 11,
             "minimum_item_rank": 0,
@@ -1020,8 +1014,9 @@
                         "id": 1,
                         "group_id": 0
                     },
-                    "npc_id": "Walter",
-                    "message_id": 30
+                    "npc_id": "Yuni",
+                    "message_id": 30,
+                    "layout_flags_on": [992]
                 },
                 {
                     "type": "Accept",
@@ -1075,7 +1070,7 @@
                         "group_id": 0
                     },
                     "announce_type": "Update",
-                    "npc_id": "Walter",
+                    "npc_id": "Yuni",
                     "message_id": 0
                 }
             ]

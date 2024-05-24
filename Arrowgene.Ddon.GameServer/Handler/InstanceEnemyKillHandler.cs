@@ -83,7 +83,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0);
             }
 
-#if false
             bool groupDestroyed = group.All(enemy => enemy.IsKilled);
             if (groupDestroyed)
             {
@@ -99,7 +98,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 };
                 client.Party.SendToAll(groupDestroyedNtc);
             }
-#endif
 
             // TODO: EnemyId and KillNum
             client.Send(new S2CInstanceEnemyKillRes() {

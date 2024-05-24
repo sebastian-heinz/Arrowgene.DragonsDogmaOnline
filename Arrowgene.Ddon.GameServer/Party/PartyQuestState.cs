@@ -73,10 +73,10 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                     // Populate Instance Enemy Data
                     ActiveQuests[quest.QuestId].QuestEnemies[location.StageId] = quest.GetEnemiesInStageGroup(location.StageId, location.SubGroupId);
-
-                    // Initialize Process State Table
-                    UpdateProcessState(quest.QuestId, quest.ToCDataQuestList().QuestProcessStateList);
                 }
+
+                // Initialize Process State Table
+                UpdateProcessState(quest.QuestId, quest.ToCDataQuestList().QuestProcessStateList);
             }
         }
 
@@ -233,7 +233,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 if (!ActiveQuests[questId].ProcessState.ContainsKey(processNo))
                 {
-                    ActiveQuests[questId].ProcessState[processNo] = new QuestProcessState() { ProcessNo = processNo };
+                    ActiveQuests[questId].ProcessState[processNo] = new QuestProcessState() { ProcessNo = processNo, BlockNo = 1 };
                 }
 
                 return ActiveQuests[questId].ProcessState[processNo];
