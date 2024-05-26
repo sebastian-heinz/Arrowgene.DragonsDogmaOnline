@@ -45,6 +45,7 @@ Each quest has some starting condition, either being ordered from an NPC or bein
   - [Beach Bandits (q20010000)](http://ddon.wikidot.com/wq:beachbandits)
   - Knight and Arisen (q20000015)
   - Request For Medicine (q20000009)
+  - The Woes of A Merchant (q20000001)
 - Quest rewards can be claimed from the reward box after completing a quest.
   - ![](images/reward-box.png) 
 - New quests can be defined by updating the file `world_quests.json` in `Arrowgene.Ddon.Shared/files/assets`.
@@ -55,14 +56,14 @@ Each quest has some starting condition, either being ordered from an NPC or bein
 > [!WARNING]
 > The reward box is not currently saved into the database. Claim all rewards before exiting the game.
 
+> [!WARNING]
+> In the quests `Boat's Buddy` and `Beach Bandits`, the nodes which appear to be used for the quest don't behave properly. You may need to reset the instance by going to WDT to get the group to spawn with quest monsters.
+
+> [!WARNING]
+> In the quest `Confrontation With Scouts`, if you kill monsters in a group which is used in the quest before starting the quest, those monsters will not respawn until you reset the instance in WDT.
+
 > [!NOTE]
 > If a quest completes in a safe area, the party leader needs to exit the area and reenter to restart the quest.
-
-> [!NOTE]
-> In the quest `Boat's Buddy`, the nodes which appear to be used for the quest don't behave properly. The last set of mobs are not marked with the blue marker for the quest but when killed the quest will progress.
-
-> [!NOTE]
-> The quest `Beach Bandits` is started from talking to the NPC Walter in Rotes instead of Yuni. The NPC Yuni appears to be missing.
 
 > [!NOTE]
 > The server currently treats every completion of the quest as the first time.

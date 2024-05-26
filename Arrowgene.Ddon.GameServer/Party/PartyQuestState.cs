@@ -20,6 +20,13 @@ namespace Arrowgene.Ddon.GameServer.Party
         public ushort BlockNo { get; set; }
     }
 
+    public class QuestDeliveryRecord
+    {
+        public uint ItemId { get; set; }
+        public uint AmountDelivered { get; set; }
+        public uint AmountRequired {  get; set; }
+    }
+
     public class QuestState
     {
         public QuestId QuestId { get; set; }
@@ -28,11 +35,65 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
         public Dictionary<StageId, List<InstancedEnemy>> QuestEnemies {  get; set; }
+        public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
 
         public QuestState()
         {
             ProcessState = new Dictionary<ushort, QuestProcessState>();
             QuestEnemies = new Dictionary<StageId, List<InstancedEnemy>>();
+            DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
+        }
+
+        public uint UpdateDeliveryRequest(uint itemId, uint amount)
+        {
+            lock (DeliveryRecords)
+            {
+                if (!DeliveryRecords.ContainsKey(itemId))
+                {
+                    // TODO: throw an exception?
+                    return uint.MaxValue;
+                }
+
+                var deliveryRecord = DeliveryRecords[itemId];
+
+                deliveryRecord.AmountDelivered += amount;
+
+                if (deliveryRecord.AmountDelivered > deliveryRecord.AmountRequired)
+                {
+                    // This should never happen
+                    return uint.MaxValue;
+                }
+
+                return deliveryRecord.AmountRequired - deliveryRecord.AmountDelivered;
+            }
+        }
+
+        public void AddDeliveryRequest(uint itemId, uint amountRequired)
+        {
+            lock (DeliveryRecords)
+            {
+                DeliveryRecords[itemId] = new QuestDeliveryRecord()
+                {
+                    ItemId = itemId,
+                    AmountRequired = amountRequired,
+                    AmountDelivered = 0
+                };
+            }
+        }
+
+        public bool DeliveryRequestComplete()
+        {
+            lock (DeliveryRecords)
+            {
+                foreach (var record in DeliveryRecords.Values)
+                {
+                    if (record.AmountDelivered != record.AmountRequired)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
     }
 
@@ -73,6 +134,11 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                     // Populate Instance Enemy Data
                     ActiveQuests[quest.QuestId].QuestEnemies[location.StageId] = quest.GetEnemiesInStageGroup(location.StageId, location.SubGroupId);
+                }
+
+                foreach (var request in quest.DeliveryItems)
+                {
+                    ActiveQuests[quest.QuestId].AddDeliveryRequest(request.ItemId, request.Amount);
                 }
 
                 // Initialize Process State Table

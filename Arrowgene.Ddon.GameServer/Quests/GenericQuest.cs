@@ -59,14 +59,22 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var block in questAsset.Blocks)
             {
-                // This is used for replacing enemies in a quest
-                // So only report these for blocks which have mobs
-                if (block.BlockType != QuestBlockType.KillGroup)
+                switch (block.BlockType)
                 {
-                    continue;
+                    case QuestBlockType.KillGroup:
+                        quest.Locations.Add(new QuestLocation() { StageId = block.StageId, SubGroupId = block.SubGroupId });
+                        break;
+                    case QuestBlockType.DeliverItems:
+                        foreach (var request in block.DeliveryRequests)
+                        {
+                            quest.DeliveryItems.Add(new QuestDeliveryItem()
+                            {
+                                ItemId = request.ItemId,
+                                Amount = request.Amount,
+                            });
+                        }
+                        break;
                 }
-
-                quest.Locations.Add(new QuestLocation() { StageId = block.StageId, SubGroupId = block.SubGroupId});
             }
 
             quest.Blocks = questAsset.Blocks;
@@ -192,10 +200,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 firstBlock.QuestProcessState
             };
 
+#if false
             foreach (var layoutFlag in QuestLayoutFlags)
             {
                 quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = layoutFlag });
             }
+#endif
 
             foreach (var location in Locations)
             {
@@ -344,6 +354,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             deliveryRequests.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount));
                         }
                         result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(deliveryRequests);
+                        result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfoQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, 1, 0));
                     }
                     break;
                 case QuestBlockType.TalkToNpc:

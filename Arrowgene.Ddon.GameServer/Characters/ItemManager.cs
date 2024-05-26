@@ -124,6 +124,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum);
             }
         }
+
+        public CDataItemUpdateResult? ConsumeItemByUIdFromItemBag(DdonServer<GameClient> server, Character character, string itemUId, uint consumeNum)
+        {
+            List<StorageType> itemBagStorage = new List<StorageType>() { StorageType.ItemBagConsumable, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.ItemBagMaterial};
+            foreach (var storageType in itemBagStorage)
+            {
+                var foundItem = character.Storage.getStorage(storageType).findItemByUId(itemUId);
+                if (foundItem != null)
+                {
+                    (ushort slotNo, Item item, uint itemNum) = foundItem;
+                    return ConsumeItem(server, character, storageType, slotNo, item, itemNum, consumeNum);
+                }
+            }
+
+            return null;
+        }
+
         public CDataItemUpdateResult? ConsumeItemInSlot(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, uint consumeNum)
         {
             var foundItem = character.Storage.getStorageItem(fromStorageType, slotNo);
@@ -135,6 +152,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum);
             }
         }
+
         private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consuneNum)
         {
             uint finalItemNum = (uint) Math.Max(0, (int)itemNum - (int)consuneNum);
@@ -391,6 +409,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return results;
+        }
+
+        public uint LookupItemByUID(DdonServer<GameClient> server, string itemUID)
+        {
+            var item = server.Database.SelectItem(itemUID);
+            if (item == null)
+            {
+                throw new ItemDoesntExistException(itemUID);
+            }
+
+            return item.ItemId;
+        }
+    }
+
+    [Serializable]
+    internal class ItemDoesntExistException : Exception
+    {
+        private string itemUID;
+
+        public ItemDoesntExistException(string itemUID) : base ($"An item with the UID ${itemUID} is missing in the database")
+        {
+            this.itemUID = itemUID;
         }
     }
 

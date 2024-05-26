@@ -720,10 +720,10 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_11_68_16_NTC = new PacketId(11, 68, 16, "S2C_QUEST_11_68_16_NTC", ServerType.Game, PacketSource.Server); // Special Quest Board Reloaded
         public static readonly PacketId C2S_QUEST_DELIVER_ITEM_REQ = new PacketId(11, 69, 1, "C2S_QUEST_DELIVER_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_DELIVER_ITEM_RES = new PacketId(11, 69, 2, "S2C_QUEST_DELIVER_ITEM_RES", ServerType.Game, PacketSource.Server); // 納品に
-        public static readonly PacketId S2C_QUEST_11_69_16_NTC = new PacketId(11, 69, 16, "S2C_QUEST_11_69_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_DELIVER_ITEM_NTC = new PacketId(11, 69, 16, "S2C_QUEST_DELIVER_ITEM_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_69_16_NTC");
         public static readonly PacketId C2S_QUEST_DECIDE_DELIVERY_ITEM_REQ = new PacketId(11, 70, 1, "C2S_QUEST_DECIDE_DELIVERY_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_DECIDE_DELIVERY_ITEM_RES = new PacketId(11, 70, 2, "S2C_QUEST_DECIDE_DELIVERY_ITEM_RES", ServerType.Game, PacketSource.Server); // 納品決定に
-        public static readonly PacketId S2C_QUEST_11_70_16_NTC = new PacketId(11, 70, 16, "S2C_QUEST_11_70_16_NTC", ServerType.Game, PacketSource.Server); // Delivery objective achieved
+        public static readonly PacketId S2C_QUEST_DECIDE_DELIVERY_ITEM_NTC = new PacketId(11, 70, 16, "S2C_QUEST_DECIDE_DELIVERY_ITEM_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_70_16_NTC"); // Delivery objective achieved
         public static readonly PacketId C2S_QUEST_GET_PARTY_QUEST_PROGRESS_INFO_REQ = new PacketId(11, 71, 1, "C2S_QUEST_GET_PARTY_QUEST_PROGRESS_INFO_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_PARTY_QUEST_PROGRESS_INFO_RES = new PacketId(11, 71, 2, "S2C_QUEST_GET_PARTY_QUEST_PROGRESS_INFO_RES", ServerType.Game, PacketSource.Server); // パーティークエスト進行情報取得に
         public static readonly PacketId C2S_QUEST_DEBUG_MAIN_QUEST_JUMP_REQ = new PacketId(11, 73, 1, "C2S_QUEST_DEBUG_MAIN_QUEST_JUMP_REQ", ServerType.Game, PacketSource.Client);
@@ -2628,10 +2628,10 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_11_68_16_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_DELIVER_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_DELIVER_ITEM_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_69_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_DELIVER_ITEM_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_DECIDE_DELIVERY_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_DECIDE_DELIVERY_ITEM_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_70_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_DECIDE_DELIVERY_ITEM_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_PARTY_QUEST_PROGRESS_INFO_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_PARTY_QUEST_PROGRESS_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_DEBUG_MAIN_QUEST_JUMP_REQ);

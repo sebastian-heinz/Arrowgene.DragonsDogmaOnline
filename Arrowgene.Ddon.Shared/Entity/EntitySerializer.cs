@@ -407,13 +407,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestSetPriorityQuestReq.Serializer());
             Create(new C2SQuestGetSetQuestListReq.Serializer());
             Create(new C2SQuestQuestCompleteFlagClearReq.Serializer());
-            Create(new S2CQuestQuestCompleteFlagClearRes.Serializer());
-            Create(new S2CQuestQuestCancelNtc.Serializer());
-            Create(new S2CQuestQuestEnableNtc.Serializer());
-            Create(new S2CQuestSetPriorityQuestNtc.Serializer());
-            Create(new S2CQuestGetPriorityQuestRes.Serializer());
-            Create(new S2CQuestGetRewardBoxListRes.Serializer());
-            Create(new S2CQuestGetRewardBoxItemRes.Serializer());
+            Create(new C2SQuestDeliverItemReq.Serializer());
+            Create(new C2SQuestQuestProgressReq.Serializer());
+            Create(new C2SQuestDecideDeliveryItemReq.Serializer());
+
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
             Create(new C2SSkillChangeExSkillReq.Serializer());
@@ -719,10 +716,20 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestPartyQuestProgressNtc.Serializer());
             Create(new S2CQuestQuestOrderRes.Serializer());
             Create(new S2CQuestQuestProgressNtc.Serializer());
-            Create(new C2SQuestQuestProgressReq.Serializer());
             Create(new S2CQuestQuestProgressRes.Serializer());
             Create(new S2CQuestCompleteNtc.Serializer()); // TODO: Might need to remove this?
             Create(new S2CQuestQuestProgressWorkSaveNtc.Serializer());
+            Create(new S2CQuestQuestCompleteFlagClearRes.Serializer());
+            Create(new S2CQuestQuestCancelNtc.Serializer());
+            Create(new S2CQuestQuestEnableNtc.Serializer());
+            Create(new S2CQuestSetPriorityQuestNtc.Serializer());
+            Create(new S2CQuestGetPriorityQuestRes.Serializer());
+            Create(new S2CQuestGetRewardBoxListRes.Serializer());
+            Create(new S2CQuestGetRewardBoxItemRes.Serializer());
+            Create(new S2CQuestDeliverItemRes.Serializer());
+            Create(new S2CQuestDeliverItemNtc.Serializer());
+            Create(new S2CQuestDecideDeliveryItemRes.Serializer());
+            Create(new S2CQuestDecideDeliveryItemNtc.Serializer());
 
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoNtc.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoRes.Serializer());

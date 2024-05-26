@@ -33,6 +33,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
         }
     }
 
+    public class QuestDeliveryItem
+    {
+        public uint ItemId { get; set; }
+        public uint Amount {  get; set; }
+    }
+
     public abstract class Quest
     {
         public readonly QuestId QuestId;
@@ -49,6 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestRewardItem> SelectedableItemRewards { get; protected set; }
         public List<CDataCharacterReleaseElement> ContentsReleaseRewards { get; protected set; }
         public List<QuestLocation> Locations { get; protected set; }
+        public List<QuestDeliveryItem> DeliveryItems { get; protected set; }
 
         public Quest(QuestId questId, QuestType questType, bool isDiscoverable = false)
         {
@@ -63,6 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             SelectedableItemRewards = new List<QuestRewardItem>();
             ContentsReleaseRewards = new List<CDataCharacterReleaseElement>();
             Locations = new List<QuestLocation>();
+            DeliveryItems = new List<QuestDeliveryItem>();
         }
 
         public virtual CDataQuestList ToCDataQuestList()

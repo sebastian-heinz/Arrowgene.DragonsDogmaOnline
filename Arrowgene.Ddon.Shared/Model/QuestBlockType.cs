@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model
     {
          None = 0,
          NpcTalkAndOrder,
+         NpcTouchAndOrder,
          QuestNpcTalkAndOrder,
          DiscoverEnemy,
          KillGroup,

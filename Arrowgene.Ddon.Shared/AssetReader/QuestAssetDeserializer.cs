@@ -221,7 +221,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
                         break;
                     case QuestBlockType.NpcTalkAndOrder:
-                        {
+                    {
                             if (!Enum.TryParse(block.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
                                 Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
@@ -289,11 +289,6 @@ namespace Arrowgene.Ddon.Shared.Csv
                                 Amount = item.GetProperty("amount").GetUInt32()
                             });
                         }
-                        // DeliverItems is a bit more complicated
-                        // It needs to be split into 3 different actions
-                        // 1. Item check to see if you have the items
-                        // 2. Delivery of items
-                        // 3. Removal of items from inventory?
                         break;
                     default:
                         Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex - 1}.");
