@@ -219,12 +219,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 
                 switch (questBlockType)
                 {
-                    case QuestBlockType.Accept:
-                        questBlock.AnnounceType = QuestAnnounceType.Accept;
-                        break;
                     case QuestBlockType.IsStageNo:
-                        break;
-                    case QuestBlockType.DummyBlock:
                         break;
                     case QuestBlockType.DiscoverEnemy:
                     case QuestBlockType.SeekOutEnemiesAtMarkedLocation:

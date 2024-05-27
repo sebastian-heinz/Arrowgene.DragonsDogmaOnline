@@ -291,10 +291,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             switch (questBlock.BlockType)
             {
-                case QuestBlockType.DummyBlock:
-                    /* Used to do things like advance quest state or turn some flags on/off without checking for any additional conditions */
-                    // TODO: Add a StageNo check?
-                    break;
                 case QuestBlockType.NpcTalkAndOrder:
                     result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
@@ -314,9 +310,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         QuestManager.CheckCommand.IsEnemyFound(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, -1)
                     });
-                    break;
-                case QuestBlockType.Accept:
-                    /* For quests which accept needs to be seperate from other events */
                     break;
                 case QuestBlockType.End:
                     result.ResultCommandList.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear));

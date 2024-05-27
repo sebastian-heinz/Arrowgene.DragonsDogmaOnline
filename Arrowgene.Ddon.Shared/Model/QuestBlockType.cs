@@ -19,9 +19,7 @@ namespace Arrowgene.Ddon.Shared.Model
          SeekOutEnemiesAtMarkedLocation,
          CollectItem,
          IsStageNo,
-         DummyBlock,
          Raw,
-         Accept,
          End
     }
 }
