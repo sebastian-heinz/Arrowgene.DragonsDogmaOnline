@@ -27,9 +27,12 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<Enemy> Enemies { get; set; }
         public List<QuestDeliveryItem> DeliveryRequests {  get; set; }
         public QuestNpcOrder NpcOrderDetails {  get; set; }
-        public FetchQuestItemLocation FetchItemLocation { get; set; }
 
         public CDataQuestProcessState QuestProcessState { get; set; }
+
+        // Used for raw blocks
+        public List<CDataQuestCommand> CheckCommands {  get; set; }
+        public List<CDataQuestCommand> ResultCommands { get; set; }
 
         public QuestBlock()
         {
@@ -37,16 +40,10 @@ namespace Arrowgene.Ddon.Shared.Model
             NpcOrderDetails = new QuestNpcOrder();
             DeliveryRequests = new List<QuestDeliveryItem>();
             QuestProcessState = new CDataQuestProcessState();
-            FetchItemLocation = new FetchQuestItemLocation();
             QuestLayoutFlagsOn = new List<uint>();
             QuestLayoutFlagsOff = new List<uint>();
+            CheckCommands = new List<CDataQuestCommand>();
+            ResultCommands = new List<CDataQuestCommand>();
         }
-    }
-
-    public class FetchQuestItemLocation
-    {
-        public double x {  get; set; }
-        public float y {  get; set; }
-        public double z {  get; set; }
     }
 }

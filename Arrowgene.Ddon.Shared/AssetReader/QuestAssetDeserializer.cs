@@ -57,6 +57,12 @@ namespace Arrowgene.Ddon.Shared.Csv
                 assetData.BaseLevel = quest.GetProperty("base_level").GetUInt16();
                 assetData.MinimumItemRank = quest.GetProperty("minimum_item_rank").GetByte();
                 assetData.Discoverable = quest.GetProperty("discoverable").GetBoolean();
+                assetData.NextQuestId = 0;
+
+                if (quest.TryGetProperty("next_quest", out JsonElement jNextQuest))
+                {
+                    assetData.NextQuestId = (QuestId) jNextQuest.GetUInt32();
+                }
 
                 ParseRewards(assetData, quest);
                 if (!ParseBlocks(assetData, quest))
@@ -185,11 +191,14 @@ namespace Arrowgene.Ddon.Shared.Csv
                     questBlock.AnnounceType = announceType;
                 }
 
-                questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
-                questBlock.SubGroupId = 0;
-                if (block.TryGetProperty("subgroup_no", out JsonElement jSubGroupNo))
+                if (questBlockType != QuestBlockType.Raw)
                 {
-                    questBlock.SubGroupId = jSubGroupNo.GetUInt16();
+                    questBlock.StageId = ParseStageId(block.GetProperty("stage_id"));
+                    questBlock.SubGroupId = 0;
+                    if (block.TryGetProperty("subgroup_no", out JsonElement jSubGroupNo))
+                    {
+                        questBlock.SubGroupId = jSubGroupNo.GetUInt16();
+                    }
                 }
 
                 if (block.TryGetProperty("layout_flags_on", out JsonElement jLayoutFlagsOn))
@@ -290,6 +299,13 @@ namespace Arrowgene.Ddon.Shared.Csv
                             });
                         }
                         break;
+                    case QuestBlockType.Raw:
+                        if (!ParseRawBlock(block, questBlock))
+                        {
+                            Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex - 1}.");
+                            return false;
+                        }
+                        break;
                     default:
                         Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex - 1}.");
                         return false;
@@ -332,7 +348,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 questEnemey.NamedEnemyParamsId = jNamedEnemyParamsId.GetUInt32();
             }
 
-            if (enemy.TryGetProperty("named_enemy_params_id", out JsonElement jRaidBossId))
+            if (enemy.TryGetProperty("raid_boss_id", out JsonElement jRaidBossId))
             {
                 questEnemey.RaidBossId = jRaidBossId.GetUInt32();
             }
@@ -435,6 +451,70 @@ namespace Arrowgene.Ddon.Shared.Csv
             hash.AppendData(BitConverter.GetBytes(subGroupNo));
 
             return Convert.ToUInt32(BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8), 16);
+        }
+
+        private bool ParseRawBlock(JsonElement jBlock, QuestBlock questBlock)
+        {
+            foreach (var jCheckCommand in jBlock.GetProperty("check_commands").EnumerateArray())
+            {
+                CDataQuestCommand command = new CDataQuestCommand();
+
+                if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
+                {
+                    return false;
+                }
+
+                command.Command = (ushort)type;
+                ParseCommandParams(jCheckCommand, command);
+
+                questBlock.CheckCommands.Add(command);
+            }
+
+            foreach (var jResultCommand in jBlock.GetProperty("result_commands").EnumerateArray())
+            {
+                CDataQuestCommand command = new CDataQuestCommand();
+
+                if (!Enum.TryParse(jResultCommand.GetProperty("type").GetString(), true, out QuestResultCommand type))
+                {
+                    return false;
+                }
+
+                command.Command = (ushort)type;
+                ParseCommandParams(jResultCommand, command);
+
+                questBlock.ResultCommands.Add(command);
+            }
+
+            return true;
+        }
+
+        private void ParseCommandParams(JsonElement jCommand, CDataQuestCommand command)
+        {
+            List<string> commandParams = new List<string>() { "Param1", "Param2", "Param3", "Param4" };
+            for (int i = 0; i < commandParams.Count; i++)
+            {
+                int paramValue = 0;
+                if (jCommand.TryGetProperty(commandParams[i], out JsonElement jParam))
+                {
+                    paramValue = jParam.GetInt32();
+                }
+
+                switch (i)
+                {
+                    case 0:
+                        command.Param01 = paramValue;
+                        break;
+                    case 1:
+                        command.Param02 = paramValue;
+                        break;
+                    case 2:
+                        command.Param03 = paramValue;
+                        break;
+                    case 3:
+                        command.Param04 = paramValue;
+                        break;
+                }
+            }
         }
     }
 }

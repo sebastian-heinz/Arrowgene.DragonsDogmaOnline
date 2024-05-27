@@ -47,6 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public uint BaseLevel { get; set; }
         public ushort MinimumItemRank { get; set; }
+        public QuestId NextQuestId {  get; protected set; }
 
         public QuestRewardParams RewardParams { get; protected set; }
         public List<CDataWalletPoint> WalletRewards { get; protected set; }

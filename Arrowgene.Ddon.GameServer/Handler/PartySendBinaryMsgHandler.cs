@@ -16,11 +16,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartySendBinaryMsgNtc> packet)
         {
-            S2CPartyRecvBinaryMsgNtc binaryMsgNtc = new S2CPartyRecvBinaryMsgNtc();
-            binaryMsgNtc.Data = packet.Structure.Data;
-            binaryMsgNtc.OnlineStatus = client.Character.OnlineStatus;
+            if (client.Party != null)
+            {
+                S2CPartyRecvBinaryMsgNtc binaryMsgNtc = new S2CPartyRecvBinaryMsgNtc();
+                binaryMsgNtc.Data = packet.Structure.Data;
+                binaryMsgNtc.OnlineStatus = client.Character.OnlineStatus;
 
-            client.Party.SendToAllExcept(binaryMsgNtc, client);
+                client.Party.SendToAllExcept(binaryMsgNtc, client);
+            }
         }
     }
 }

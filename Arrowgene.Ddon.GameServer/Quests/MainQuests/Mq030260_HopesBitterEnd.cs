@@ -481,7 +481,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         QuestManager.ResultCommand.QstTalkChg(NpcId.Cyril, 26027),
                         QuestManager.ResultCommand.QstLayoutFlagOn(7901),
                         QuestManager.ResultCommand.WorldManageLayoutFlagOff(7967, 70033001),
-                        QuestManager.ResultCommand.WorldManageLayoutFlagOn(7968,70033001)
+                        QuestManager.ResultCommand.WorldManageLayoutFlagOn(7968, 70033001)
                     }
                 },
                 new CDataQuestProcessState()

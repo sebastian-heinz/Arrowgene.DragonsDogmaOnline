@@ -46,6 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             ushort processNo = packet.Structure.ProcessNo;
             QuestId questId = (QuestId) packet.Structure.QuestScheduleId;
+
             if (!partyQuestState.HasQuest(questId))
             {
                 // Hack for making the random quests from static packets go away

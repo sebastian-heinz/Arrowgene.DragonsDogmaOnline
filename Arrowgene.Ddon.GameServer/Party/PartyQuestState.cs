@@ -208,6 +208,11 @@ namespace Arrowgene.Ddon.GameServer.Party
                 {
                     CompletedWorldQuests.Add(questId);
                 }
+
+                if (quest.NextQuestId != 0)
+                {
+                    AddNewQuest(quest.NextQuestId);
+                }
             }
         }
 

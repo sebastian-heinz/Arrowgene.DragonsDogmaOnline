@@ -1,4 +1,6 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -47,6 +49,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(res);
                 return;
             }
+
+            // TODO: Fetch this from the party leader from the database
+            // party.QuestState.AddNewQuest((QuestId) 1);
+            // party.QuestState.AddNewQuest((QuestId) 2);
+            // party.QuestState.AddNewQuest((QuestId) 3);
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;

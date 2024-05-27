@@ -159,14 +159,17 @@ public class PartyManager
 
     public void CleanupOnExit(GameClient client)
     {
-        client.Party.Leave(client);
+        if (client.Party != null)
+        {
+            client.Party.Leave(client);
 
-        Logger.Info(client, $"Left PartyId:{client.Party.Id}");
+            Logger.Info(client, $"Left PartyId:{client.Party.Id}");
 
-        S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
-        partyLeaveNtc.CharacterId = client.Character.CharacterId;
-        client.Party.SendToAllExcept(partyLeaveNtc, client);
+            S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
+            partyLeaveNtc.CharacterId = client.Character.CharacterId;
+            client.Party.SendToAllExcept(partyLeaveNtc, client);
 
-        client.Send(new S2CPartyPartyLeaveRes());
+            client.Send(new S2CPartyPartyLeaveRes());
+        }
     }
 }

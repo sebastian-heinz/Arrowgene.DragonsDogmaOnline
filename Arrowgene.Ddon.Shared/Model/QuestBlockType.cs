@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Model
          CollectItem,
          IsStageNo,
          DummyBlock,
-         RawBlock,
+         Raw,
          Accept,
          End
     }

@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestBlock> Blocks { get; set; }
         public QuestType Type { get; set; }
         public QuestId QuestId { get; set; }
+        public QuestId NextQuestId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
         public uint ExpReward { get; set; }

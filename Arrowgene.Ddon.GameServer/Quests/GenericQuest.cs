@@ -23,10 +23,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public static GenericQuest FromAsset(QuestAssetData questAsset)
         {
-            var quest = new GenericQuest(questAsset.QuestId, questAsset.Discoverable);
+            var quest = new GenericQuest(questAsset.QuestId, questAsset.Type, questAsset.Discoverable);
 
             quest.BaseLevel = questAsset.BaseLevel;
             quest.MinimumItemRank = questAsset.MinimumItemRank;
+            quest.NextQuestId = questAsset.NextQuestId;
 
             quest.ExpRewards.Add(new CDataQuestExp()
             {
@@ -92,7 +93,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public GenericQuest(QuestId questId, bool discoverable) : base(questId, QuestType.World, discoverable)
+        public GenericQuest(QuestId questId, QuestType questType, bool discoverable) : base(questId, questType, discoverable)
         {
             Blocks = new List<QuestBlock>();
             QuestLayoutFlags = new HashSet<uint>();
@@ -121,7 +122,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                 // Keep looking
             }
-
             return false;
         }
 
@@ -369,6 +369,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         QuestManager.CheckCommand.StageNo(StageManager.ConvertIdToStageNo(questBlock.StageId))
                     });
+                    break;
+                case QuestBlockType.Raw:
+                    result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(questBlock.CheckCommands);
+                    result.ResultCommandList.AddRange(questBlock.ResultCommands);
                     break;
                 default:
                     Logger.Error($"Unexpected block found '{questBlock.BlockType}'. Unable to translate.");

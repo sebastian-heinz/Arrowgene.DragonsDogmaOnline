@@ -42,11 +42,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Load world quests from file
             foreach (var questAsset in assetRepository.WorldQuestAsset.Quests)
-            {               
-                if (questAsset.Type == QuestType.World)
-                {
-                    gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
-                }
+            {
+                gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
+            }
+
+            // Load main quests from file
+            foreach (var questAsset in assetRepository.MainQuestAsset.Quests)
+            {
+                gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
             }
         }
 
