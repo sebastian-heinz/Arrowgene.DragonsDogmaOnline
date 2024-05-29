@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // In the pcaps ive only seen 3.4.16 packets whose RpcPacket length is either of these
             S2CLobbyLobbyDataMsgNotice res = new S2CLobbyLobbyDataMsgNotice();
-            res.Type = packet.Structure.Type; // I haven't seen any values other than 0x02
+            res.Type = packet.Structure.Type;
             res.CharacterId = client.Character.CharacterId; // Has to be overwritten since the request has the id set to 0
             res.RpcPacket = packet.Structure.RpcPacket;
             res.OnlineStatus = client.Character.OnlineStatus;

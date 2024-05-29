@@ -1,12 +1,13 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
 {
-    public class RpcHeartbeatPacket : RpcPacketBase
+    public class RpcCtrlPeriodicTop : RpcPacketBase
     {
-        public RpcHeartbeatPacket()
+        public RpcCtrlPeriodicTop()
         {
         }
 
@@ -31,19 +32,10 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
 
         public override void Handle(Character character, RpcPacketHeader packetHeader, IBuffer buffer)
         {
-            // Seems like RPCId = 0x00000000000007d0 and SearchId = 0x00000000
-            // correspond with the players character
-            //
-            // Pawns get other packets with the same RpcPacketHeader.MsgIdFull value
-            // but different RpcId and SearchId values
-            // RpcId=0x00000000000007d1, SearchId = 0x00000001
-            // RpcId=0x00000000000007d2, SearchId = 0x00000002
-            // RpcId=0x00000000000007d3, SearchId = 0x00000003
-
             // Support only the player for now
-            if (packetHeader.RpcId == (ulong) RpcId.HeartBeatPlayer && packetHeader.SearchId == 0)
+            if (packetHeader.SearchId == 0) // SearchId == CharacterId?
             {
-                RpcHeartbeatPacket obj = ReadPacketData(buffer);
+                RpcCtrlPeriodicTop obj = ReadPacketData(buffer);
                 character.X = obj.PosX;
                 character.Y = obj.PosY;
                 character.Z = obj.PosZ;
@@ -53,9 +45,9 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
             }
         }
 
-        private RpcHeartbeatPacket ReadPacketData(IBuffer buffer)
+        private RpcCtrlPeriodicTop ReadPacketData(IBuffer buffer)
         {
-            RpcHeartbeatPacket obj = new RpcHeartbeatPacket();
+            RpcCtrlPeriodicTop obj = new RpcCtrlPeriodicTop();
             obj.Unk0 = ReadUInt64(buffer); // nNetMsgData::CtrlBase::stMsgCtrlBaseData.mUniqueId ?
             obj.IsEnemy = ReadBool(buffer);
             obj.IsCharacter = ReadBool(buffer);
