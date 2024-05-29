@@ -600,6 +600,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceTreasurePointGetCategoryListRes.Serializer());
             Create(new S2CInstanceTreasurePointGetListRes.Serializer());
             Create(new S2CInstanceEnemyGroupDestroyNtc.Serializer());
+            Create(new S2CInstanceEnemyGroupResetNtc.Serializer());
             Create(new S2CItemConsumeStorageItemRes.Serializer());
             Create(new S2CItemExtendItemSlotNtc.Serializer());
             Create(new S2CItemGetStorageItemListRes.Serializer());

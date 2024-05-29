@@ -64,6 +64,22 @@ namespace Arrowgene.Ddon.Shared.Csv
                     assetData.NextQuestId = (QuestId) jNextQuest.GetUInt32();
                 }
 
+                if (quest.TryGetProperty("quest_layout_set_info_flags", out JsonElement jLayoutSetInfoFlags))
+                {
+                    foreach (var layoutFlag in jLayoutSetInfoFlags.EnumerateArray())
+                    {
+                        assetData.QuestLayoutSetInfoFlags.Add(QuestLayoutFlagSetInfo.FromQuestAssetJson(layoutFlag));
+                    }
+                }
+
+                if (quest.TryGetProperty("quest_layout_flags", out JsonElement jLayoutFlags))
+                {
+                    foreach (var layoutFlag in jLayoutFlags.EnumerateArray())
+                    {
+                        assetData.QuestLayoutFlags.Add(new QuestLayoutFlag() { FlagId = layoutFlag.GetUInt32()});
+                    }
+                }
+
                 ParseRewards(assetData, quest);
                 if (!ParseBlocks(assetData, quest))
                 {

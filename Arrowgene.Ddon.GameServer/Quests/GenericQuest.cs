@@ -19,7 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GenericQuest));
 
         private List<QuestBlock> Blocks;
-        private HashSet<uint> QuestLayoutFlags;
 
         public static GenericQuest FromAsset(QuestAssetData questAsset)
         {
@@ -28,6 +27,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.BaseLevel = questAsset.BaseLevel;
             quest.MinimumItemRank = questAsset.MinimumItemRank;
             quest.NextQuestId = questAsset.NextQuestId;
+            quest.QuestLayoutFlagSetInfo = questAsset.QuestLayoutSetInfoFlags;
+            quest.QuestLayoutFlags = questAsset.QuestLayoutFlags;
 
             quest.ExpRewards.Add(new CDataQuestExp()
             {
@@ -83,11 +84,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
             foreach (var block in quest.Blocks)
             {
                 block.QuestProcessState = BlockAsCDataQuestProcessState(block, quest.Locations);
-                
-                foreach (var layoutFlag in block.QuestLayoutFlagsOn)
-                {
-                    quest.QuestLayoutFlags.Add(layoutFlag);
-                }
             }
 
             return quest;
@@ -96,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public GenericQuest(QuestId questId, QuestType questType, bool discoverable) : base(questId, questType, discoverable)
         {
             Blocks = new List<QuestBlock>();
-            QuestLayoutFlags = new HashSet<uint>();
+            QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }
 
         public override bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId)
@@ -110,7 +106,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
 
                 var processState = questState.ProcessState[block.ProcessNo];
-                if (processState.BlockNo < block.BlockNo)
+                if (processState.BlockNo != block.BlockNo)
                 {
                     continue;
                 }
@@ -200,23 +196,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 firstBlock.QuestProcessState
             };
 
-#if false
-            foreach (var layoutFlag in QuestLayoutFlags)
-            {
-                quest.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag() { FlagId = layoutFlag });
-            }
-#endif
-
-            foreach (var location in Locations)
-            {
-                StageNo stageNo = StageManager.ConvertIdToStageNo(location.StageId);
-
-                if (location.QuestLayoutFlag != 0)
-                {
-                    quest.QuestLayoutFlagSetInfoList.Add(QuestManager.LayoutFlag.Create(location.QuestLayoutFlag, stageNo, location.StageId.GroupId));
-                }
-            }
-
             return quest;
         }
 
@@ -301,14 +280,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case QuestBlockType.DiscoverEnemy:
                     result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        // QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, 0)
-                        QuestManager.CheckCommand.IsEnemyFound(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, -1)
+                        QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, -1)
                     });
                     break;
                 case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
                     result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsEnemyFound(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, -1)
+                        QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, -1)
                     });
                     break;
                 case QuestBlockType.End:
@@ -317,15 +295,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     break;
                 case QuestBlockType.KillGroup:
                     {
-                        var checkCommands = new List<CDataQuestCommand>();
-                        for (int i = 0; i < questBlock.Enemies.Count; i++)
+                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                         {
-                            checkCommands.Add(QuestManager.CheckCommand.DieEnemy(
-                                StageManager.ConvertIdToStageNo(questBlock.StageId),
-                                (int)questBlock.StageId.GroupId,
-                                (int)(i + questBlock.StartingIndex)));
-                        }
-                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkCommands);
+                            QuestManager.CheckCommand.DieEnemy(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, -1)
+                        });
                     }
                     break;
                 case QuestBlockType.CollectItem:

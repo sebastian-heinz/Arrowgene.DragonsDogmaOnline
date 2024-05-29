@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 
 public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedEnemy>

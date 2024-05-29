@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 
@@ -57,6 +58,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<CDataCharacterReleaseElement> ContentsReleaseRewards { get; protected set; }
         public List<QuestLocation> Locations { get; protected set; }
         public List<QuestDeliveryItem> DeliveryItems { get; protected set; }
+        public List<QuestLayoutFlagSetInfo> QuestLayoutFlagSetInfo;
+        public List<QuestLayoutFlag> QuestLayoutFlags;
 
         public Quest(QuestId questId, QuestType questType, bool isDiscoverable = false)
         {
@@ -72,11 +75,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
             ContentsReleaseRewards = new List<CDataCharacterReleaseElement>();
             Locations = new List<QuestLocation>();
             DeliveryItems = new List<QuestDeliveryItem>();
+            QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
+            QuestLayoutFlags = new List<QuestLayoutFlag>();
         }
 
         public virtual CDataQuestList ToCDataQuestList()
         {
-            return new CDataQuestList()
+            var quest = new CDataQuestList()
             {
                 QuestId = (uint)QuestId,
                 QuestScheduleId = (uint)QuestId,
@@ -89,11 +94,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 FixedRewardItemList = GetQuestFixedRewards(),
                 FixedRewardSelectItemList = GetQuestSelectableRewards(),
             };
+
+            foreach (var questLayoutFlag in QuestLayoutFlags)
+            {
+                quest.QuestLayoutFlagList.Add(questLayoutFlag.AsCDataQuestLayoutFlag());
+            }
+
+            foreach (var questLayoutFlagSet in QuestLayoutFlagSetInfo)
+            {
+                quest.QuestLayoutFlagSetInfoList.Add(questLayoutFlagSet.AsCDataQuestLayoutFlagSetInfo());
+            }
+
+            return quest;
         }
 
         public virtual CDataQuestOrderList ToCDataQuestOrderList()
         {
-            return new CDataQuestOrderList()
+           var quest = new CDataQuestOrderList()
             {
                 QuestId = (uint)QuestId,
                 QuestScheduleId = (uint)QuestId,
@@ -106,6 +123,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 FixedRewardItem = GetQuestFixedRewards(),
                 FixedRewardSelectItem = GetQuestSelectableRewards(),
             };
+
+            foreach (var questLayoutFlag in QuestLayoutFlags)
+            {
+                quest.QuestLayoutFlagList.Add(questLayoutFlag.AsCDataQuestLayoutFlag());
+            }
+
+            foreach (var questLayoutFlagSet in QuestLayoutFlagSetInfo)
+            {
+                quest.QuestLayoutFlagSetInfoList.Add(questLayoutFlagSet.AsCDataQuestLayoutFlagSetInfo());
+            }
+
+            return quest;
         }
 
         public abstract List<CDataQuestProcessState> StateMachineExecute(QuestProcessState processState, out QuestProgressState questProgressState);

@@ -171,7 +171,7 @@
         },
         {
             "type": "World",
-            "comment": "q20005010_TheKnightsBitterEnemy",
+            "comment": "q20005010 - The Knights' Bitter Enemy",
             "quest_id": 20005010,
             "base_level": 12,
             "minimum_item_rank": 0,
@@ -237,11 +237,29 @@
         },
         {
             "type": "World",
-            "comment": "q20005001_ConfrontationWithScouts",
+            "comment": "q20005001 - Confrontation With Scouts",
             "quest_id": 20005001,
             "base_level": 8,
             "minimum_item_rank": 0,
             "discoverable": false,
+            "quest_layout_set_info_flags": [
+                {
+                    "flag_no": 346,
+                    "stage_no": 100,
+                    "group_id": 8
+                },
+                {
+                    "flag_no": 2213,
+                    "stage_no": 100,
+                    "group_id": 28
+
+                },
+                {
+                    "flag_no": 886,
+                    "stage_no": 100,
+                    "group_id": 6
+                }
+            ],
             "rewards": [
                 {
                     "type": "select",
@@ -395,7 +413,7 @@
         },
         {
             "type": "World",
-            "comment": "q20005002_AmbushInTheWellsDepths",
+            "comment": "q20005002 - Ambush In The Wells Depths",
             "quest_id": 20005002,
             "base_level": 11,
             "minimum_item_rank": 0,
@@ -493,7 +511,7 @@
         },
         {
             "type": "World",
-            "comment": "q20005000_SkyConcealingWings",
+            "comment": "q20005000 - Sky Concealing Wings",
             "quest_id": 20005000,
             "base_level": 14,
             "minimum_item_rank": 0,
@@ -559,7 +577,7 @@
         },
         {
             "type": "World",
-            "comment": "q20005003_DwellerInTheDarkness",
+            "comment": "q20005003 - Dweller In The Darkness",
             "quest_id": 20005003,
             "base_level": 15,
             "minimum_item_rank": 0,
@@ -625,7 +643,7 @@
         },
         {
             "type": "World",
-            "comment": "q20015005_DispatchAClamorofHarpies",
+            "comment": "q20015005 - Dispatch A Clamor of Harpies",
             "quest_id": 20015005,
             "base_level": 8,
             "minimum_item_rank": 0,
@@ -705,7 +723,7 @@
         },
         {
             "type": "World",
-            "comment": "q20000015_KnightAndArisen",
+            "comment": "q20000015 - Knight And Arisen",
             "quest_id": 20000015,
             "base_level": 10,
             "minimum_item_rank": 0,
@@ -837,7 +855,7 @@
         },
         {
             "type": "World",
-            "comment": "q20010001_BoatsBuddy",
+            "comment": "q20010001 - Boats Buddy",
             "quest_id": 20010001,
             "base_level": 8,
             "minimum_item_rank": 0,
@@ -973,7 +991,7 @@
         },
         {
             "type": "World",
-            "comment": "q20010000 - BeachBandits",
+            "comment": "q20010000 - Beach Bandits",
             "quest_id": 20010000,
             "base_level": 11,
             "minimum_item_rank": 0,
@@ -1019,14 +1037,8 @@
                     "layout_flags_on": [992]
                 },
                 {
-                    "type": "Accept",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 0
-                    }
-                },
-                {
                     "type": "DiscoverEnemy",
+					"announce_type": "Accept",
                     "stage_id": {
                         "id": 1,
                         "group_id": 85

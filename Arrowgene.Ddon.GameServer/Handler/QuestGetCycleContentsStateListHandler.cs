@@ -39,10 +39,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CQuestJoinLobbyQuestInfoNtc ntc = new S2CQuestJoinLobbyQuestInfoNtc();
 
             ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList; // Recover paths + change vocation
+
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
             ntc.MainQuestIdList = pcap.MainQuestIdList;
 
-            // ntc.MainQuestIdList = pcap.MainQuestIdList;
             client.Send(ntc);
 #endif
             IBuffer buffer = new StreamBuffer();

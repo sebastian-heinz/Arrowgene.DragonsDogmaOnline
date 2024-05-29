@@ -35,6 +35,8 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
         public Dictionary<StageId, List<InstancedEnemy>> QuestEnemies {  get; set; }
+        public Dictionary<StageId, bool> ResetEnemyGroup { get; set; }
+
         public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
 
         public QuestState()
@@ -42,6 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             ProcessState = new Dictionary<ushort, QuestProcessState>();
             QuestEnemies = new Dictionary<StageId, List<InstancedEnemy>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
+            ResetEnemyGroup = new Dictionary<StageId, bool>();
         }
 
         public uint UpdateDeliveryRequest(uint itemId, uint amount)
@@ -169,6 +172,17 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 return null;
+            }
+        }
+
+        public bool ShouldResetInstanceEnemyGroup(QuestId questId, StageId stageId)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[questId];
+                bool ShouldReset = !questState.ResetEnemyGroup.ContainsKey(stageId);
+                questState.ResetEnemyGroup[stageId] = false;
+                return ShouldReset;
             }
         }
 
