@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public enum QuestProcess : byte
+    public class QuestProcess
     {
-        ExecuteCommand = 0,
-        QuestProgress = 1,
-        WaitProgress = 2,
-        ProcessEnd = 3,
-        Error = 4
+        public ushort ProcessNo { get; set; }
+        public List<QuestBlock> Blocks {  get; set; }
+
+        public QuestProcess()
+        {
+            Blocks = new List<QuestBlock>();
+        }
     }
 }

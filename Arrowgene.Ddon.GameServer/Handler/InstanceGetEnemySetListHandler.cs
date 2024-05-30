@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
@@ -10,8 +9,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
-using static Arrowgene.Ddon.Server.Network.Challenge;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {

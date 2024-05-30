@@ -18,8 +18,13 @@ namespace Arrowgene.Ddon.Shared.Model
          DeliverItems,
          SeekOutEnemiesAtMarkedLocation,
          CollectItem,
+         CheckMyQstFlags,
+         SetMyQstFlags,
          IsStageNo,
+         IsQuestOrdered,
          Raw,
+         DummyBlock,
+         DummyBlockNoProgress,
          End
     }
 }

@@ -169,6 +169,285 @@
                 }
             ]
         },
+		{
+            "type": "World",
+            "comment": "q20000003 - An Assistant's Assistant",
+            "quest_id": 20000003,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+				{
+                    "type": "exp",
+                    "amount": 310
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 520
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 30
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 458,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 36,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+            "processes": [
+				{
+					"comment": "process 0",
+					"blocks": [
+						{
+							"type": "NpcTalkAndOrder",
+							"stage_id": {
+								"id": 3,
+								"group_id": 0
+							},
+							"npc_id": "Klaus0",
+							"message_id": 29
+						},
+						{
+							"type": "CheckMyQstFlags",
+							"announce_type": "Accept",
+							"flags": [1, 2, 3, 4, 5, 6, 7, 8]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 3,
+								"group_id": 0
+							},
+							"npc_id": "Klaus0",
+							"message_id": 21
+						},
+						{
+							"type": "TalkToNpc",
+							"announce_type": "Update",
+							"stage_id": {
+								"id": 66,
+								"group_id": 0
+							},
+							"npc_id": "Talcott",
+							"message_id": 21
+						},
+						{
+							"type": "TalkToNpc",
+							"announce_type": "Update",
+							"stage_id": {
+								"id": 3,
+								"group_id": 0
+							},
+							"npc_id": "Klaus0",
+							"message_id": 21
+						}
+					]
+				},
+				{
+					"comment": "process 1",
+					"blocks": [
+						{
+							"type": "IsQuestOrdered",
+							"quest_type": "World",
+							"quest_id": 20000003
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Cameron0",
+							"message_id": 21
+						},
+						{
+							"type": "SetMyQstFlags",
+							"announce_type": "Update",
+							"flags": [1]
+						}
+					]
+				},
+				{
+					"comment": "process 2",
+					"blocks": [
+						{
+							"type": "IsQuestOrdered",
+							"quest_type": "World",
+							"quest_id": 20000003
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Tonio",
+							"message_id": 21
+						},
+						{
+							"type": "SetMyQstFlags",
+							"announce_type": "Update",
+							"flags": [2]
+						}
+					]
+				},
+				{
+					"comment": "process 3",
+					"blocks": [
+						{
+							"type": "IsQuestOrdered",
+							"quest_type": "World",
+							"quest_id": 20000003
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Kittredge",
+							"message_id": 21
+						},
+						{
+							"type": "SetMyQstFlags",
+							"announce_type": "Update",
+							"flags": [3]
+						}
+					]
+				},
+				{
+					"comment": "process 4",
+					"blocks": [
+						{
+							"type": "IsQuestOrdered",
+							"quest_type": "World",
+							"quest_id": 20000003
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Morris",
+							"message_id": 21
+						},
+						{
+							"type": "SetMyQstFlags",
+							"announce_type": "Update",
+							"flags": [4]
+						}
+					]
+				},
+				{
+					"comment": "process 5",
+					"blocks": [
+						{
+							"type": "IsQuestOrdered",
+							"quest_type": "World",
+							"quest_id": 20000003
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Mayleaf0",
+							"message_id": 21
+						},
+						{
+							"type": "SetMyQstFlags",
+							"announce_type": "Update",
+							"flags": [5]
+						}
+					]
+				},
+				{
+					"comment": "process 6",
+					"blocks": [
+						{
+							"type": "IsQuestOrdered",
+							"quest_type": "World",
+							"quest_id": 20000003
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Ferguson",
+							"message_id": 21
+						},
+						{
+							"type": "SetMyQstFlags",
+							"announce_type": "Update",
+							"flags": [6]
+						}
+					]
+				},
+				{
+					"comment": "process 7",
+					"blocks": [
+						{
+							"type": "IsQuestOrdered",
+							"quest_type": "World",
+							"quest_id": 20000003
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Colette",
+							"message_id": 21
+						},
+						{
+							"type": "SetMyQstFlags",
+							"announce_type": "Update",
+							"flags": [7]
+						}
+					]
+				},
+				{
+					"comment": "process 8",
+					"blocks": [
+						{
+							"type": "IsQuestOrdered",
+							"quest_type": "World",
+							"quest_id": 20000003
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Vicelot",
+							"message_id": 21
+						},
+						{
+							"type": "SetMyQstFlags",
+							"announce_type": "Update",
+							"flags": [8]
+						}
+					]
+				}
+            ]
+        },
         {
             "type": "World",
             "comment": "q20005010 - The Knights' Bitter Enemy",

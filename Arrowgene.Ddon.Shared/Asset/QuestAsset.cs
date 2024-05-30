@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Asset
 
     public class QuestAssetData
     {
-        public List<QuestBlock> Blocks { get; set; }
+        public List<QuestProcess> Processes { get; set; }
         public QuestType Type { get; set; }
         public QuestId QuestId { get; set; }
         public QuestId NextQuestId { get; set; }
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Asset
 
         public QuestAssetData()
         {
-            Blocks = new List<QuestBlock>();
+            Processes = new List<QuestProcess>();
             RewardItems = new List<QuestRewardItem>();
             RewardCurrency = new List<QuestRewardCurrency>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();

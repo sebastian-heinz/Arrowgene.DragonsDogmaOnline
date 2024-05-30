@@ -22,11 +22,13 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint QuestLayoutFlag { get; set; } // For groups
         public List<uint> QuestLayoutFlagsOn {  get; set; }
         public List<uint> QuestLayoutFlagsOff { get; set; }
+        public List<uint> MyQstFlags {  get; set; }
         public bool ShowMarker { get; set; }
 
         public List<Enemy> Enemies { get; set; }
         public List<QuestDeliveryItem> DeliveryRequests {  get; set; }
-        public QuestNpcOrder NpcOrderDetails {  get; set; }
+        public List<QuestNpcOrder> NpcOrderDetails {  get; set; }
+        public QuestOrder QuestOrderDetails { get; set; }
 
         public CDataQuestProcessState QuestProcessState { get; set; }
 
@@ -37,13 +39,15 @@ namespace Arrowgene.Ddon.Shared.Model
         public QuestBlock()
         {
             Enemies = new List<Enemy>();
-            NpcOrderDetails = new QuestNpcOrder();
+            NpcOrderDetails = new List<QuestNpcOrder>();
             DeliveryRequests = new List<QuestDeliveryItem>();
             QuestProcessState = new CDataQuestProcessState();
             QuestLayoutFlagsOn = new List<uint>();
             QuestLayoutFlagsOff = new List<uint>();
+            MyQstFlags = new List<uint>();
             CheckCommands = new List<CDataQuestCommand>();
             ResultCommands = new List<CDataQuestCommand>();
+            QuestOrderDetails = new QuestOrder();
         }
     }
 }
