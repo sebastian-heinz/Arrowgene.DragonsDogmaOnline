@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             quest.ExpRewards.Add(new CDataQuestExp()
             {
-                Type = ExpType.ExperiencePoints,
+                Type = questAsset.ExpType,
                 Reward = questAsset.ExpReward
             });
 

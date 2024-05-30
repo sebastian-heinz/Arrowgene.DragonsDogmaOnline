@@ -196,6 +196,11 @@ namespace Arrowgene.Ddon.Shared.Csv
                         }
                         break;
                     case "exp":
+                        assetData.ExpType = ExpType.ExperiencePoints;
+                        assetData.ExpReward = reward.GetProperty("amount").GetUInt32();
+                        break;
+                    case "pp":
+                        assetData.ExpType = ExpType.PlayPoints;
                         assetData.ExpReward = reward.GetProperty("amount").GetUInt32();
                         break;
                     case "wallet":

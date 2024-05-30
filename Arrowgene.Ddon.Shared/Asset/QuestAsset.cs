@@ -23,6 +23,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestId NextQuestId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
+        public ExpType ExpType { get; set; }
         public uint ExpReward { get; set; }
         public bool Discoverable { get; set; }
         public List<QuestRewardItem> RewardItems;
