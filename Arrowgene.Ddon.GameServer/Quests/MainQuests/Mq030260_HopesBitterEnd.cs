@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 
         new public List<CDataQuestExp> ExpRewards = new List<CDataQuestExp>()
         {
-            new CDataQuestExp() {ExpMode = 1, Reward = 900000}
+            new CDataQuestExp() {Type = ExpType.ExperiencePoints, Reward = 900000}
         };
 
         public override bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId)

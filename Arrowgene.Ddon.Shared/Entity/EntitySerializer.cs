@@ -214,7 +214,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10Unk1.Serializer());
             Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0.Serializer());
             Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0Unk1.Serializer());
-            Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk1.Serializer());
+            Create(new CDataWildHuntQuestOrderList.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
             Create(new CDataSetQuestDetail.Serializer());
             Create(new CDataSetQuestList.Serializer());
