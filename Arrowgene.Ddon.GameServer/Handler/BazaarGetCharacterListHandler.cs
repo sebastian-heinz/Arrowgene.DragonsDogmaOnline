@@ -1,11 +1,11 @@
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BazaarGetCharacterListHandler : GameStructurePacketHandler<C2SBazaarGetCharacterListReq>
+    public class BazaarGetCharacterListHandler : GameRequestPacketHandler<C2SBazaarGetCharacterListReq, S2CBazaarGetCharacterListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarGetCharacterListHandler));
         
@@ -13,9 +13,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetCharacterListReq> packet)
+        public override S2CBazaarGetCharacterListRes Handle(GameClient client, C2SBazaarGetCharacterListReq request)
         {
-            client.Send(new S2CBazaarGetCharacterListRes());
+            S2CBazaarGetCharacterListRes response = new S2CBazaarGetCharacterListRes()
+            {
+                BazaarList = Server.BazaarManager.GetExhibitionsByCharacter(client.Character)
+                    .Select(exhibition => exhibition.Info)
+                    .ToList()
+            };
+            return response;
         }
     }
 }

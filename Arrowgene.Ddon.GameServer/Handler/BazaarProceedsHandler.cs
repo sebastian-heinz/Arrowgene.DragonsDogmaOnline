@@ -13,7 +13,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BazaarProceedsHandler : GameStructurePacketHandler<C2SBazaarProceedsReq>
+    public class BazaarProceedsHandler : GameRequestPacketHandler<C2SBazaarProceedsReq, S2CBazaarProceedsRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarProceedsHandler));
         
@@ -24,18 +24,38 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _itemManager = server.ItemManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SBazaarProceedsReq> packet)
+        public override S2CBazaarProceedsRes Handle(GameClient client, C2SBazaarProceedsReq request)
         {
-            // TODO: Fetch price by the BazaarId
-            ClientItemInfo boughtItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, packet.Structure.ItemId);
-            int totalItemAmount = packet.Structure.ItemStorageIndicateNum.Select(x => (int) x.ItemNum).Sum();
-            int totalPrice = boughtItemInfo.Price * totalItemAmount;
+            BazaarExhibition exhibition = Server.BazaarManager.GetExhibitionByBazaarId(request.BazaarId);
+            
+            int totalItemAmount = request.ItemStorageIndicateNum.Select(x => (int) x.ItemNum).Sum();
+            int totalPrice = (int) exhibition.Info.ItemInfo.ItemBaseInfo.Price * totalItemAmount;
 
-            S2CBazaarProceedsRes res = new S2CBazaarProceedsRes();
-            res.BazaarId = packet.Structure.BazaarId;
+            if(exhibition.Info.ItemInfo.ItemBaseInfo.ItemId != request.ItemId || exhibition.Info.ItemInfo.ItemBaseInfo.Num != totalItemAmount)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_BAZAAR_INTERNAL_ERROR);
+            }
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
+
+            // UPDATE INVENTORY
+            foreach (CDataItemStorageIndicateNum itemStorageIndicateNum in request.ItemStorageIndicateNum)
+            {
+                bool sendToItemBag;
+                switch(itemStorageIndicateNum.StorageType) {
+                    case 19:
+                        sendToItemBag = true;
+                        break;
+                    case 20:
+                        sendToItemBag = false;
+                        break;
+                    default:
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_BAZAAR_INTERNAL_ERROR, "Unexpected destination when buying goods: "+itemStorageIndicateNum.StorageType);
+                }
+                List<CDataItemUpdateResult> itemUpdateResult = _itemManager.AddItem(Server, client.Character, sendToItemBag, request.ItemId, itemStorageIndicateNum.ItemNum);                
+                updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);
+            }
 
             // UPDATE CHARACTER WALLET
             CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
@@ -48,31 +68,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Value = wallet.Value
             });
 
-            // UPDATE INVENTORY
-            foreach (CDataItemStorageIndicateNum itemStorageIndicateNum in packet.Structure.ItemStorageIndicateNum)
+            Server.BazaarManager.SetExhibitionState(exhibition.Info.ItemInfo.BazaarId, BazaarExhibitionState.Sold);
+
+            // Notify seller
+            GameClient seller = Server.ClientLookup.GetClientByCharacterId(exhibition.CharacterId);
+            if(seller != null)
             {
-                bool sendToItemBag;
-                switch(itemStorageIndicateNum.StorageType) {
-                    case 19:
-                        // If packet.Structure.Destination is 19: Send to corresponding item bag
-                        sendToItemBag = true;
-                        break;
-                    case 20:
-                        // If packet.Structure.Destination is 20: Send to storage 
-                        sendToItemBag = false;
-                        break;
-                    default:
-                        throw new Exception("Unexpected destination when buying goods: "+itemStorageIndicateNum.StorageType);
-                }
-
-                List<CDataItemUpdateResult> itemUpdateResult = _itemManager.AddItem(Server, client.Character, sendToItemBag, packet.Structure.ItemId, itemStorageIndicateNum.ItemNum);                
-                updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);
+                seller.Send(new S2CBazaarProceedsNtc()
+                {
+                    BazaarId = exhibition.Info.ItemInfo.BazaarId,
+                    ItemId = exhibition.Info.ItemInfo.ItemBaseInfo.ItemId,
+                    Proceeds = exhibition.Info.Proceeds
+                });
             }
-
+            
             // Send packets
             client.Send(updateCharacterItemNtc);
-            client.Send(res);
-            // TODO: Send the NTC to the seller?
+
+            return new S2CBazaarProceedsRes
+            {
+                BazaarId = exhibition.Info.ItemInfo.BazaarId
+            };
         }
     }
 }
