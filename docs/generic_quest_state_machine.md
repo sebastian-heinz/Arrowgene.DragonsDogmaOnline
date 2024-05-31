@@ -45,6 +45,7 @@ Each quest has some starting condition, either being ordered from an NPC or bein
   - Knight and Arisen (q20000015)
   - Request For Medicine (q20000009)
   - The Woes of A Merchant (q20000001)
+  - Crackdown on Store Vandals (q20000007)
 - Quest rewards can be claimed from the reward box after completing a quest.
   - ![](images/reward-box.png)
 - New quests can be defined by updating the file `world_quests.json` in `Arrowgene.Ddon.Shared/files/assets`.
@@ -587,7 +588,9 @@ StageNo(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0);
 EventEnd(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0);
 
 /**
- * @brief
+ * @brief Creates a glowing point where a party gathers to start some event.
+ * Use the integer values of x, y, z from the /info commands to get the coordinates.
+ * There is an equivalent CheckCommand which you can use to check if the party is here.
  * @param stageNo
  * @param x
  * @param y

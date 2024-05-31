@@ -14,18 +14,16 @@ namespace Arrowgene.Ddon.Shared.Model
         public ushort SequenceNo {  get; set; }
         public ushort BlockNo { get; set; }
         public QuestAnnounceType AnnounceType { get; set; }
-        // Used for enemy blocks
         public StageId StageId {  get; set; }
         public ushort SubGroupId {  get; set; }
         public uint SetNo { get; set; }
-        public uint StartingIndex {  get; set; }
         public uint QuestLayoutFlag { get; set; } // For groups
         public List<uint> QuestLayoutFlagsOn {  get; set; }
         public List<uint> QuestLayoutFlagsOff { get; set; }
         public List<uint> MyQstFlags {  get; set; }
         public bool ShowMarker { get; set; }
-
-        public List<Enemy> Enemies { get; set; }
+        public bool ResetGroup { get; set; }
+        public List<uint> EnemyGroupIds { get; set; }
         public List<QuestDeliveryItem> DeliveryRequests {  get; set; }
         public List<QuestNpcOrder> NpcOrderDetails {  get; set; }
         public QuestOrder QuestOrderDetails { get; set; }
@@ -38,7 +36,6 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public QuestBlock()
         {
-            Enemies = new List<Enemy>();
             NpcOrderDetails = new List<QuestNpcOrder>();
             DeliveryRequests = new List<QuestDeliveryItem>();
             QuestProcessState = new CDataQuestProcessState();
@@ -48,6 +45,7 @@ namespace Arrowgene.Ddon.Shared.Model
             CheckCommands = new List<CDataQuestCommand>();
             ResultCommands = new List<CDataQuestCommand>();
             QuestOrderDetails = new QuestOrder();
+            EnemyGroupIds = new List<uint>();
         }
     }
 }

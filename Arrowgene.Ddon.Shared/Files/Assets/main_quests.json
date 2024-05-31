@@ -11,61 +11,14 @@
             "minimum_item_rank": 0,
             "discoverable": false,
             "rewards": [],
-            "blocks": [
+			"enemy_groups": [
 				{
-					"type": "Raw",
-					"check_commands": [
-					    {"type": "EventEnd", "Param1": 101, "Param2": 0}
-					],
-					"result_commands": [
-						{"type": "QstLayoutFlagOn", "Param1": 284},
-						{"type": "QstLayoutFlagOn", "Param1": 937},
-					    {"type": "EventExec", "Param1": 101, "Param2": 0, "Param3": 101, "Param4": 0}
-					]
-				},
-				{
-					"type": "Raw",
-					"announce_type": "Accept",
-					"check_commands": [
-						{"type": "StageNo", "Param1": 423}
-					],
-					"result_commands": [
-						{"type": "PlayMessage", "Param1": 7369, "Param2": 5},
-						{"type": "PlayMessage", "Param1": 7371, "Param2": 5},
-						{"type": "QstLayoutFlagOn", "Param1": 1099},
-						{"type": "QstLayoutFlagOn", "Param1": 617},
-						{"type": "PlayMessage", "Param1": 7378, "Param2": 5},
-						{"type": "QstLayoutFlagOn", "Param1": 17},
-						
-						{"type": "PlayMessage", "Param1": 7372, "Param2": 5},
-						{"type": "PlayMessage", "Param1": 10660, "Param2": 7},
-						{"type": "QstLayoutFlagOn", "Param1": 4},
-						{"type": "QstLayoutFlagOn", "Param1": 13},
-						{"type": "PlayMessage", "Param1": 10658, "Param2": 5},
-						{"type": "QstLayoutFlagOn", "Param1": 19}
-					]
-				},
-				{
-					"type": "Raw",
-					"layout_flags_on": [],
-					"check_commands": [
-					    {"type": "EventEnd", "Param1": 423, "Param2": 0}
-					],
-					"result_commands": [
-						{"type": "QstLayoutFlagOff", "Param1": 284},
-						{"type": "QstLayoutFlagOn", "Param1": 1277},
-					    {"type": "EventExec", "Param1": 423, "Param2": 0, "Param3": 423, "Param4": 0}
-					]
-				},
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+					"stage_id": {
                         "id": 300,
                         "group_id": 0
                     },
-					"announce_type": "Update",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x015800",
                             "level": 12,
                             "exp": 0,
@@ -93,7 +46,58 @@
                             "is_boss": false,
 							"named_enemy_params_id": 125
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+				{
+					"type": "Raw",
+					"check_commands": [
+					    {"type": "EventEnd", "Param1": 101, "Param2": 0}
+					],
+					"result_commands": [
+						{"type": "QstLayoutFlagOn", "Param1": 284},
+						{"type": "QstLayoutFlagOn", "Param1": 937},
+					    {"type": "EventExec", "Param1": 101, "Param2": 0, "Param3": 101, "Param4": 0}
+					]
+				},
+				{
+					"type": "Raw",
+					"announce_type": "Accept",
+					"check_commands": [
+						{"type": "StageNo", "Param1": 423}
+					],
+					"result_commands": [
+						{"type": "PlayMessage", "Param1": 7369, "Param2": 5},
+						{"type": "PlayMessage", "Param1": 7371, "Param2": 5},
+						{"type": "QstLayoutFlagOn", "Param1": 1099},
+						{"type": "QstLayoutFlagOn", "Param1": 617},
+						{"type": "PlayMessage", "Param1": 7378, "Param2": 5},
+						{"type": "QstLayoutFlagOn", "Param1": 17},
+						{"type": "PlayMessage", "Param1": 7372, "Param2": 5},
+						{"type": "PlayMessage", "Param1": 10660, "Param2": 7},
+						{"type": "QstLayoutFlagOn", "Param1": 4},
+						{"type": "QstLayoutFlagOn", "Param1": 13},
+						{"type": "PlayMessage", "Param1": 10658, "Param2": 5},
+						{"type": "QstLayoutFlagOn", "Param1": 19}
+					]
+				},
+				{
+					"type": "Raw",
+					"layout_flags_on": [],
+					"check_commands": [
+					    {"type": "EventEnd", "Param1": 423, "Param2": 0}
+					],
+					"result_commands": [
+						{"type": "QstLayoutFlagOff", "Param1": 284},
+						{"type": "QstLayoutFlagOn", "Param1": 1277},
+					    {"type": "EventExec", "Param1": 423, "Param2": 0, "Param3": 423, "Param4": 0}
+					]
+				},
+                {
+                    "type": "KillGroup",
+					"announce_type": "Update",
+                    "groups": [0]
                 },
 				{
 					"type": "Raw",
@@ -216,6 +220,46 @@
                     "amount": 2300
                 }
 			],
+			"enemy_groups": [
+				{
+					"stage_id": {
+                        "id": 29,
+                        "group_id": 1
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x010500",
+                            "level": 4,
+                            "exp": 52,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010500",
+                            "level": 4,
+                            "exp": 52,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010500",
+                            "level": 4,
+                            "exp": 52,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010500",
+                            "level": 4,
+                            "exp": 52,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010500",
+                            "level": 4,
+                            "exp": 52,
+                            "is_boss": false
+                        }
+					]
+				}
+			],
             "blocks": [
 				{
 					"type": "Raw",
@@ -275,51 +319,13 @@
 				},
 				{
                     "type": "SeekOutEnemiesAtMarkedLocation",
-                    "stage_id": {
-                        "id": 29,
-                        "group_id": 1
-                    },
-                    "announce_type": "Update"
+                    "announce_type": "Update",
+					"groups": [0]
                 },
 				{
                     "type": "KillGroup",
-                    "stage_id": {
-                        "id": 29,
-                        "group_id": 1
-                    },
 					"announce_type": "Update",
-                    "group": [
-                        {
-                            "enemy_id": "0x010500",
-                            "level": 4,
-                            "exp": 52,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010500",
-                            "level": 4,
-                            "exp": 52,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010500",
-                            "level": 4,
-                            "exp": 52,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010500",
-                            "level": 4,
-                            "exp": 52,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010500",
-                            "level": 4,
-                            "exp": 52,
-                            "is_boss": false
-                        }
-                    ]
+                    "groups": [0]
                 },
 				{
                     "type": "TalkToNpc",

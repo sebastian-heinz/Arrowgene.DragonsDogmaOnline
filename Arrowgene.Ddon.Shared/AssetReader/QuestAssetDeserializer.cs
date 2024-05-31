@@ -14,6 +14,7 @@ using System.Reflection.Emit;
 using System.Reflection.Metadata.Ecma335;
 using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
@@ -94,6 +95,12 @@ namespace Arrowgene.Ddon.Shared.Csv
             }
 
             ParseRewards(assetData, jQuest);
+
+            if (!ParseEnemyGroups(assetData, jQuest))
+            {
+                Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Skipping.");
+                return false;
+            }
 
             if (jQuest.TryGetProperty("blocks", out JsonElement jBlocksV1))
             {
@@ -248,7 +255,6 @@ namespace Arrowgene.Ddon.Shared.Csv
                     }
                     questBlock.AnnounceType = announceType;
                 }
-
                 
                 if (jblock.TryGetProperty("stage_id", out JsonElement jStageId))
                 {
@@ -281,9 +287,6 @@ namespace Arrowgene.Ddon.Shared.Csv
                 {
                     case QuestBlockType.IsStageNo:
                         break;
-                    case QuestBlockType.DiscoverEnemy:
-                    case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
-                        break;
                     case QuestBlockType.NpcTalkAndOrder:
                     {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
@@ -299,32 +302,20 @@ namespace Arrowgene.Ddon.Shared.Csv
                             });
                         }
                         break;
+                    case QuestBlockType.DiscoverEnemy:
+                    case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
                     case QuestBlockType.KillGroup:
-                        questBlock.StartingIndex = 0;
-
-                        if (jblock.TryGetProperty("starting_index", out JsonElement jStartingIndex))
                         {
-                            questBlock.StartingIndex = jStartingIndex.GetUInt32();
-                        }
-
-                        foreach (var enemy in jblock.GetProperty("group").EnumerateArray())
-                        {
-                            bool IsBoss = enemy.GetProperty("is_boss").GetBoolean();
-                            var questEnemy = new Enemy()
+                            questBlock.ResetGroup = true;
+                            if (jblock.TryGetProperty("reset_group", out JsonElement jResetGroup))
                             {
-                                EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
-                                Lv = enemy.GetProperty("level").GetUInt16(),
-                                Experience = enemy.GetProperty("exp").GetUInt32(),
-                                IsBossBGM = IsBoss,
-                                IsBossGauge = IsBoss,
-                                Scale = 100,
-                                EnemyTargetTypesId = 4
-                            };
+                                questBlock.ResetGroup = jResetGroup.GetBoolean();
+                            }
 
-                            ApplyOptionalEnemyKeys(enemy, questEnemy);
-                            // ApplyEnemyDropTable
-
-                            questBlock.Enemies.Add(questEnemy);
+                            foreach (var groupId in jblock.GetProperty("groups").EnumerateArray())
+                            {
+                                questBlock.EnemyGroupIds.Add(groupId.GetUInt32());
+                            }
                         }
                         break;
                     case QuestBlockType.TalkToNpc:
@@ -440,6 +431,58 @@ namespace Arrowgene.Ddon.Shared.Csv
             
             uint groupId = jStageId.GetProperty("group_id").GetUInt32();
             return new StageId(id, layerNo, groupId);
+        }
+
+        private bool ParseEnemyGroups(QuestAssetData assetData, JsonElement quest)
+        {
+            if (!quest.TryGetProperty("enemy_groups", out JsonElement jGroups))
+            {
+                // No Enemy groups to parse
+                return true;
+            }
+
+            uint groupId = 0;
+            foreach (var jGroup in jGroups.EnumerateArray())
+            {
+                QuestEnemyGroup enemyGroup = new QuestEnemyGroup() { GroupId = groupId };
+
+                if (!jGroup.TryGetProperty("stage_id", out JsonElement jStageId))
+                {
+                    Logger.Info("Required stage_id field for enemy group not found.");
+                    return false;
+                }
+
+                enemyGroup.StageId = ParseStageId(jStageId);
+
+                if (jGroup.TryGetProperty("starting_index", out JsonElement jStartingIndex))
+                {
+                    enemyGroup.StartingIndex = jStartingIndex.GetUInt32();
+                }
+
+                foreach (var enemy in jGroup.GetProperty("enemies").EnumerateArray())
+                {
+                    bool IsBoss = enemy.GetProperty("is_boss").GetBoolean();
+                    var questEnemy = new Enemy()
+                    {
+                        EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
+                        Lv = enemy.GetProperty("level").GetUInt16(),
+                        Experience = enemy.GetProperty("exp").GetUInt32(),
+                        IsBossBGM = IsBoss,
+                        IsBossGauge = IsBoss,
+                        Scale = 100,
+                        EnemyTargetTypesId = 4
+                    };
+
+                    ApplyOptionalEnemyKeys(enemy, questEnemy);
+                    // ApplyEnemyDropTable
+
+                    enemyGroup.Enemies.Add(questEnemy);
+                }
+
+                assetData.EnemyGroups[groupId++] = enemyGroup;
+            }
+
+            return true;
         }
 
         private void ApplyOptionalEnemyKeys(JsonElement enemy, Enemy questEnemey)

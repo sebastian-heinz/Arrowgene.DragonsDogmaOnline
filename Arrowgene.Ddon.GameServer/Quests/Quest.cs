@@ -60,6 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestDeliveryItem> DeliveryItems { get; protected set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutFlagSetInfo;
         public List<QuestLayoutFlag> QuestLayoutFlags;
+        public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
 
         public Quest(QuestId questId, QuestType questType, bool isDiscoverable = false)
         {
@@ -77,6 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             DeliveryItems = new List<QuestDeliveryItem>();
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
+            EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
         }
 
         public virtual CDataQuestList ToCDataQuestList()

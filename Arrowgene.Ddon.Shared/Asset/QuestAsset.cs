@@ -32,6 +32,8 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestLayoutFlag> QuestLayoutFlags { get; set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
 
+        public Dictionary<uint, QuestEnemyGroup> EnemyGroups {  get; set; }
+
         public QuestAssetData()
         {
             Processes = new List<QuestProcess>();
@@ -39,6 +41,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             RewardCurrency = new List<QuestRewardCurrency>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
+            EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
         }
     }
 }

@@ -488,29 +488,32 @@
                     ]
                 }
             ],
-            "blocks": [
-                {
-                    "type": "DiscoverEnemy",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 26
-                    }
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+			"enemy_groups": [
+				{
+					"comment": "GroupId: 0",
+					"stage_id": {
                         "id": 1,
                         "group_id": 26
                     },
-                    "announce_type": "Accept",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x015000",
                             "level": 12,
                             "exp": 1860,
                             "is_boss": true
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
                 }
             ]
         },
@@ -587,52 +590,41 @@
                     "amount": 30
                 }
             ],
-            "blocks": [
-                {
-                    "type": "DiscoverEnemy",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 8
-                    }
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 8
-                    },
-                    "announce_type": "Accept",
-                    "starting_index": 6,
-                    "group": [
-                        {
-                            "enemy_id": "0x011110",
-                            "level": 8,
-                            "exp": 50,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x011110",
-                            "level": 8,
-                            "exp": 50,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x011111",
-                            "level": 8,
-                            "exp": 50,
-                            "is_boss": false
-                        }
-                    ]
-                },
-                {
-                    "type": "KillGroup",
+			"enemy_groups": [
+				{
+					"stage_id": {
+						"id": 1,
+						"group_id": 8
+					},
+					"starting_index": 6,
+					"enemies": [
+						{
+							"enemy_id": "0x011110",
+							"level": 8,
+							"exp": 50,
+							"is_boss": false
+						},
+						{
+							"enemy_id": "0x011110",
+							"level": 8,
+							"exp": 50,
+							"is_boss": false
+						},
+						{
+							"enemy_id": "0x011111",
+							"level": 8,
+							"exp": 50,
+							"is_boss": false
+						}
+					]
+				},
+				{
                     "stage_id": {
                         "id": 1,
                         "group_id": 28
                     },
-                    "announce_type": "Update",
-                    "starting_index": 6,
-                    "group": [
+					"starting_index": 6,
+					"enemies": [
                         {
                             "enemy_id": "0x011110",
                             "level": 8,
@@ -651,18 +643,15 @@
                             "exp": 50,
                             "is_boss": false
                         }
-
-                    ]
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+					]
+				},
+				{
+					"stage_id": {
                         "id": 1,
                         "group_id": 6
                     },
-                    "announce_type": "Update",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x011110",
                             "level": 8,
                             "exp": 50,
@@ -686,7 +675,28 @@
                             "exp": 50,
                             "is_boss": false
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+					"announce_type": "Accept",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [2]
                 }
             ]
         },
@@ -726,23 +736,14 @@
                     ]
                 }
             ],
-            "blocks": [
-                {
-                    "type": "DiscoverEnemy",
-                    "stage_id": {
-                        "id": 134,
-                        "group_id": 0
-                    }
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+			"enemy_groups" : [
+				{
+					"stage_id": {
                         "id": 134,
                         "group_id": 0
                     },
-                    "announce_type": "Accept",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x015800",
                             "level": 11,
                             "exp": 132,
@@ -784,7 +785,18 @@
                             "exp": 132,
                             "is_boss": false
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+					"groups": [0]
                 }
             ]
         },
@@ -828,29 +840,31 @@
                     ]
                 }
             ],
-            "blocks": [
-                {
-                    "type": "DiscoverEnemy",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 30
-                    }
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+			"enemy_groups" : [
+				{
+					"stage_id": {
                         "id": 1,
                         "group_id": 30
                     },
-                    "announce_type": "Accept",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x015302",
                             "level": 14,
                             "exp": 2780,
                             "is_boss": true
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
                 }
             ]
         },
@@ -894,29 +908,31 @@
                     ]
                 }
             ],
-            "blocks": [
-                {
-                    "type": "DiscoverEnemy",
-                    "stage_id": {
-                        "id": 85,
-                        "group_id": 4
-                    }
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+			"enemy_groups" : [
+				{
+					"stage_id": {
                         "id": 85,
                         "group_id": 4
                     },
-                    "announce_type": "Accept",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x015502",
                             "level": 15,
                             "exp": 2780,
                             "is_boss": true
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
                 }
             ]
         },
@@ -956,23 +972,14 @@
                     ]
                 }
             ],
-            "blocks": [
-                {
-                    "type": "DiscoverEnemy",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 94
-                    }
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+			"enemy_groups" : [
+				{
+					"stage_id": {
                         "id": 1,
                         "group_id": 94
                     },
-                    "announce_type": "Accept",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x010600",
                             "level": 4,
                             "exp": 94,
@@ -996,7 +1003,18 @@
                             "exp": 94,
                             "is_boss": false
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
                 }
             ]
         },
@@ -1046,6 +1064,60 @@
                     ]
                 }
             ],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 33
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+					]
+				},
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 34
+                    },
+                    "enemies": [
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+                    ]
+				}
+			],
             "blocks": [
                 {
                     "type": "NpcTalkAndOrder",
@@ -1058,67 +1130,17 @@
                 },
                 {
                     "type": "SeekOutEnemiesAtMarkedLocation",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 33
-                    },
-                    "announce_type": "Accept"
+                    "announce_type": "Accept",
+					"groups": [0]
                 },
                 {
                     "type": "KillGroup",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 33
-                    },
                     "announce_type": "Update",
-                    "group": [
-                        {
-                            "enemy_id": "0x015800",
-                            "level": 10,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x015800",
-                            "level": 10,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x015800",
-                            "level": 10,
-                            "exp": 94,
-                            "is_boss": false
-                        }
-                    ]
+                    "groups": [0]
                 },
                 {
                     "type": "KillGroup",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 34
-                    },
-                    "announce_type": "None",
-                    "group": [
-                        {
-                            "enemy_id": "0x015800",
-                            "level": 10,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x015800",
-                            "level": 10,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x015800",
-                            "level": 10,
-                            "exp": 94,
-                            "is_boss": false
-                        }
-                    ]
+					"groups": [1]
                 },
                 {
                     "type": "TalkToNpc",
@@ -1168,6 +1190,80 @@
                     ]
                 }
             ],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 83
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+					]
+				},
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 84
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x010410",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010410",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010410",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010410",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+					]
+				},
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 81
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x010411",
+                            "level": 4,
+                            "exp": 136,
+                            "is_boss": false
+                        }
+					]
+				}
+			],
             "blocks": [
                 {
                     "type": "NpcTalkAndOrder",
@@ -1180,81 +1276,19 @@
                 },
                 {
                     "type": "KillGroup",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 83
-                    },
                     "announce_type": "Accept",
-                    "group": [
-                        {
-                            "enemy_id": "0x010600",
-                            "level": 4,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010600",
-                            "level": 4,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010600",
-                            "level": 4,
-                            "exp": 94,
-                            "is_boss": false
-                        }
-                    ]
+                    "groups": [0]
                 },
                 {
                     "type": "KillGroup",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 84
-                    },
                     "announce_type": "Update",
-                    "group": [
-                        {
-                            "enemy_id": "0x010410",
-                            "level": 4,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010410",
-                            "level": 4,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010410",
-                            "level": 4,
-                            "exp": 94,
-                            "is_boss": false
-                        },
-                        {
-                            "enemy_id": "0x010410",
-                            "level": 4,
-                            "exp": 94,
-                            "is_boss": false
-                        }
-                    ]
+                    "groups": [1]
                 },
                 {
                     "type": "KillGroup",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 81
-                    },
+
                     "announce_type": "Update",
-                    "group": [
-                        {
-                            "enemy_id": "0x010411",
-                            "level": 4,
-                            "exp": 136,
-                            "is_boss": false
-                        }
-                    ]
+                    "groups": [2]
                 },
                 {
                     "type": "TalkToNpc",
@@ -1304,34 +1338,14 @@
                     ]
                 }
             ],
-            "blocks": [
-                {
-                    "type": "NpcTalkAndOrder",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 0
-                    },
-                    "npc_id": "Yuni",
-                    "message_id": 30,
-                    "layout_flags_on": [992]
-                },
-                {
-                    "type": "DiscoverEnemy",
-					"announce_type": "Accept",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 85
-                    }
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+			"enemy_groups": [
+				{
+					"stage_id": {
                         "id": 1,
                         "group_id": 85
                     },
-                    "announce_type": "Update",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x011002",
                             "level": 11,
                             "exp": 140,
@@ -1352,7 +1366,30 @@
                             "is_boss": false,
                             "hm_present_no": 47
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "npc_id": "Yuni",
+                    "message_id": 30,
+                    "layout_flags_on": [992]
+                },
+                {
+                    "type": "DiscoverEnemy",
+					"announce_type": "Accept",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+
+                    "announce_type": "Update",
+                    "groups": [0]
                 },
                 {
                     "type": "TalkToNpc",
@@ -1365,6 +1402,138 @@
                     "message_id": 0
                 }
             ]
-        }
+        },
+		{
+			"type": "World",
+			"comment": "q20000007 - Crackdown on Store Vandals",
+			"quest_id": 20000007,
+			"base_level": 8,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 310
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 260
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 30
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 9739,
+							"num": 1
+						},
+						{
+							"item_id": 37,
+							"num": 2
+						}
+					]
+				}
+			],
+			"enemy_groups": [
+				{
+					"comment": "GroupId: 0",
+					"stage_id": {
+						"id": 161,
+						"group_id": 0
+					},
+					"enemies": [
+						{
+							"enemy_id": "0x011002",
+							"level": 3,
+							"exp": 140,
+							"is_boss": false,
+							"hm_present_no": 47
+						},
+						{
+							"enemy_id": "0x011002",
+							"level": 3,
+							"exp": 140,
+							"is_boss": false,
+							"hm_present_no": 47
+						},
+						{
+							"enemy_id": "0x010200",
+							"level": 3,
+							"exp": 94,
+							"is_boss": false
+						}
+					]
+				},
+				{
+					"comment": "GroupId: 1",
+					"stage_id": {
+						"id": 161,
+						"group_id": 2
+					},
+					"enemies": [
+						{
+							"enemy_id": "0x011002",
+							"level": 9,
+							"exp": 140,
+							"is_boss": false,
+							"hm_present_no": 47
+						},
+						{
+							"enemy_id": "0x011002",
+							"level": 9,
+							"exp": 140,
+							"is_boss": false,
+							"hm_present_no": 47
+						}
+					]
+				}
+			],
+			"blocks": [
+				{
+					"type": "NpcTalkAndOrder",
+					"stage_id": {
+						"id": 23,
+						"group_id": 0
+					},
+					"npc_id": "Eterna",
+					"message_id": 216
+				},
+				{
+					"type": "SeekOutEnemiesAtMarkedLocation",
+					"announce_type": "Accept",
+					"groups": [0]
+				},
+				{
+					"type": "KillGroup",
+					"announce_type": "Update",
+					"groups": [0]
+				},
+				{
+					"type": "SeekOutEnemiesAtMarkedLocation",
+					"announce_type": "Update",
+					"groups": [1]
+				},
+				{
+					"type": "KillGroup",
+					"announce_type": "Update",
+					"groups": [1]
+				},
+				{
+					"type": "TalkToNpc",
+					"stage_id": {
+						"id": 23,
+						"group_id": 0
+					},
+					"announce_type": "Update",
+					"npc_id": "Eterna",
+					"message_id": 216
+				}
+			]
+		}
     ]
 }
