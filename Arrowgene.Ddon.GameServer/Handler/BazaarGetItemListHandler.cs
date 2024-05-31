@@ -18,6 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBazaarGetItemListRes Handle(GameClient client, C2SBazaarGetItemListReq request)
         {
+            // TODO: Optimize to run in one DB connection
             S2CBazaarGetItemListRes response = new S2CBazaarGetItemListRes();
             foreach (CDataCommonU32 itemId in request.ItemIdList)
             {

@@ -10,21 +10,17 @@ namespace Arrowgene.Ddon.GameServer
     public class BazaarManager
     {
         private static readonly double TAXES = 0.05; // 5%, value taken from the ingame menu
-        private static ulong LAST_BAZAAR_ID = 0;
 
         // TODO: Make it configurable
-        private static readonly TimeSpan EXHIBITION_TIME_SPAN = TimeSpan.FromDays(7);
+        private static readonly TimeSpan EXHIBITION_TIME_SPAN = TimeSpan.FromDays(3);
         private static readonly TimeSpan COOLDOWN_TIME_SPAN = TimeSpan.FromDays(1);
 
         public BazaarManager(DdonGameServer server)
         {
             Server = server;
-            Exhibitions = new List<BazaarExhibition>();
         }
 
         private DdonGameServer Server;
-
-        private List<BazaarExhibition> Exhibitions;
 
         public ulong Exhibit(GameClient client, StorageType storageType, string itemUID, ushort num, uint price, byte _flag)
         {
@@ -42,7 +38,6 @@ namespace Arrowgene.Ddon.GameServer
 
             BazaarExhibition exhibition = new BazaarExhibition();
             exhibition.CharacterId = client.Character.CharacterId;
-            exhibition.Info.ItemInfo.BazaarId = GenerateBazaarId();
             exhibition.Info.ItemInfo.Sequence = 0; // TODO: Figure out
             exhibition.Info.ItemInfo.ItemBaseInfo.ItemId = itemUpdateResult.ItemList.ItemId;
             exhibition.Info.ItemInfo.ItemBaseInfo.Num = num;
@@ -52,10 +47,8 @@ namespace Arrowgene.Ddon.GameServer
             exhibition.Info.Proceeds = (uint)Math.Clamp(totalPrice - totalPrice*TAXES, 0, uint.MaxValue);
             exhibition.Info.Expire = now.Add(EXHIBITION_TIME_SPAN);
 
-            // TODO: Save in DB
-            Exhibitions.Add(exhibition);
-
-            return exhibition.Info.ItemInfo.BazaarId;
+            ulong bazaarId = Server.Database.InsertBazaarExhibition(exhibition);
+            return bazaarId;
         }
 
         public ulong ReExhibit(ulong bazaarId, uint newPrice)
@@ -69,12 +62,11 @@ namespace Arrowgene.Ddon.GameServer
             }
 
             DateTimeOffset now = DateTimeOffset.UtcNow;
-            
-            // TODO: Update DB
             exhibition.Info.ItemInfo.ItemBaseInfo.Price = newPrice;
             exhibition.Info.ItemInfo.ExhibitionTime = now;
             exhibition.Info.Expire = now.Add(EXHIBITION_TIME_SPAN);
-            // TODO: Send NTC
+            Server.Database.UpdateBazaarExhibiton(exhibition);
+
             return exhibition.Info.ItemInfo.BazaarId;
         }
 
@@ -87,7 +79,7 @@ namespace Arrowgene.Ddon.GameServer
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_BAZAAR_STATE_CHANGED);
             }
 
-            Exhibitions.Remove(exhibition);
+            Server.Database.DeleteBazaarExhibition(exhibition.Info.ItemInfo.BazaarId);
 
             // TODO: Verify if items are supposed to go to the storage box
             List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, false, exhibition.Info.ItemInfo.ItemBaseInfo.ItemId, exhibition.Info.ItemInfo.ItemBaseInfo.Num);
@@ -97,62 +89,124 @@ namespace Arrowgene.Ddon.GameServer
             client.Send(itemUpdateNtc);
         }
 
+        public void Proceeds(GameClient client, ulong bazaarId, List<CDataItemStorageIndicateNum> itemStorageIndicateNumList)
+        {
+            BazaarExhibition exhibition = Server.BazaarManager.GetExhibitionByBazaarId(bazaarId);
+            
+            uint totalItemAmount = (uint) itemStorageIndicateNumList.Select(x => (int) x.ItemNum).Sum();
+            uint totalPrice = exhibition.Info.ItemInfo.ItemBaseInfo.Price * totalItemAmount;
+
+            if(exhibition.Info.ItemInfo.ItemBaseInfo.Num != totalItemAmount)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_BAZAAR_INTERNAL_ERROR);
+            }
+
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            updateCharacterItemNtc.UpdateType = 0;
+
+            // UPDATE INVENTORY
+            foreach (CDataItemStorageIndicateNum itemStorageIndicateNum in itemStorageIndicateNumList)
+            {
+                bool sendToItemBag;
+                switch(itemStorageIndicateNum.StorageType) {
+                    case 19:
+                        sendToItemBag = true;
+                        break;
+                    case 20:
+                        sendToItemBag = false;
+                        break;
+                    default:
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_BAZAAR_INTERNAL_ERROR, "Unexpected destination when buying goods: "+itemStorageIndicateNum.StorageType);
+                }
+                List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, sendToItemBag, exhibition.Info.ItemInfo.ItemBaseInfo.ItemId, itemStorageIndicateNum.ItemNum);
+                updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);
+            }
+
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalPrice);
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+
+            Server.BazaarManager.SetExhibitionState(exhibition.Info.ItemInfo.BazaarId, BazaarExhibitionState.Sold);
+
+            // Notify seller
+            GameClient seller = Server.ClientLookup.GetClientByCharacterId(exhibition.CharacterId);
+            if(seller != null)
+            {
+                seller.Send(new S2CBazaarProceedsNtc()
+                {
+                    BazaarId = exhibition.Info.ItemInfo.BazaarId,
+                    ItemId = exhibition.Info.ItemInfo.ItemBaseInfo.ItemId,
+                    Proceeds = exhibition.Info.Proceeds
+                });
+            }
+            
+            // Send packets
+            client.Send(updateCharacterItemNtc);
+        }
+
         public uint ReceiveProceeds(GameClient client)
         {
-            // TODO: Fetch from DB
-            List<BazaarExhibition> exhibitionsToReceive = Exhibitions
-                .Where(exhibition => exhibition.Info.State == BazaarExhibitionState.Sold)
-                .ToList();
+            List<BazaarExhibition> exhibitionsToReceive = GetSoldExhibitionsByCharacter(client.Character);
             
             uint totalProceeds = (uint) exhibitionsToReceive.Sum(exhibition => exhibition.Info.Proceeds);
             Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.Gold, totalProceeds);
 
-            // TODO: Save to DB
             DateTimeOffset now = DateTimeOffset.UtcNow;
             foreach (BazaarExhibition exhibition in exhibitionsToReceive)
             {
                 exhibition.Info.State = BazaarExhibitionState.Idle;
                 exhibition.Info.Expire = now.Add(COOLDOWN_TIME_SPAN);
+                Server.Database.UpdateBazaarExhibiton(exhibition);
             }
 
-            return totalProceeds;
+            return (uint) totalProceeds;
+        }
+
+        public void NotifySoldExhibitions(GameClient client)
+        {
+            List<BazaarExhibition> soldExhibitions = GetSoldExhibitionsByCharacter(client.Character);
+            foreach (BazaarExhibition soldExhibition in soldExhibitions)
+            {    
+                client.Send(new S2CBazaarProceedsNtc()
+                {
+                    BazaarId = soldExhibition.Info.ItemInfo.BazaarId,
+                    ItemId = soldExhibition.Info.ItemInfo.ItemBaseInfo.ItemId,
+                    Proceeds = soldExhibition.Info.Proceeds
+                });
+            }
         }
 
         public BazaarExhibition GetExhibitionByBazaarId(ulong bazaarId)
         {
-            return Exhibitions.Where(exhibition => exhibition.Info.ItemInfo.BazaarId == bazaarId).Single();
+            return Server.Database.SelectBazaarExhibitionByBazaarId(bazaarId);
         }
 
         public List<BazaarExhibition> GetExhibitionsByCharacter(Character character)
         {
-            // TODO: Clear on DB
-            Exhibitions.RemoveAll(exhibition => exhibition.Info.State == BazaarExhibitionState.Idle && exhibition.Info.Expire < DateTimeOffset.Now);
-            // TODO: Fetch from DB
-            return Exhibitions.Where(exhibition => exhibition.CharacterId == character.CharacterId).ToList();
+            return Server.Database.FetchCharacterBazaarExhibitions(character.CharacterId);
         }
 
-        public List<BazaarExhibition> GetActiveExhibitionsForItemId(uint itemId, Character filterOutCharacter = null)
+        public List<BazaarExhibition> GetActiveExhibitionsForItemId(uint itemId, Character filterOutCharacter)
         {
-            // TODO: Fetch from DB
-            return Exhibitions
-                .Where(
-                    exhibition => exhibition.Info.ItemInfo.ItemBaseInfo.ItemId == itemId 
-                    && exhibition.Info.State == BazaarExhibitionState.OnSale
-                    && exhibition.Info.Expire.CompareTo(DateTimeOffset.Now) > 0
-                    && (filterOutCharacter == null || filterOutCharacter.CharacterId != exhibition.CharacterId)
-                )
+            return Server.Database.SelectActiveBazaarExhibitionsByItemIdExcludingOwn(itemId, filterOutCharacter.CharacterId);
+        }
+
+        public List<BazaarExhibition> GetActiveExhibitionsForItemIds(List<uint> itemIds, Character filterOutCharacter)
+        {
+            return Server.Database.SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(itemIds, filterOutCharacter.CharacterId);
+        }
+
+        private void SetExhibitionState(ulong bazaarId, BazaarExhibitionState state)
+        {
+            BazaarExhibition exhibition = GetExhibitionByBazaarId(bazaarId);
+            exhibition.Info.State = state;
+            Server.Database.UpdateBazaarExhibiton(exhibition);
+        }
+
+        private List<BazaarExhibition> GetSoldExhibitionsByCharacter(Character character)
+        {
+            return GetExhibitionsByCharacter(character)
+                .Where(exhibition => exhibition.Info.State == BazaarExhibitionState.Sold)
                 .ToList();
-        }
-
-        public void SetExhibitionState(ulong bazaarId, BazaarExhibitionState state)
-        {
-            // TODO: Update DB
-            GetExhibitionByBazaarId(bazaarId).Info.State = state;
-        }
-
-        private ulong GenerateBazaarId()
-        {
-            return LAST_BAZAAR_ID++;
         }
     }
 }

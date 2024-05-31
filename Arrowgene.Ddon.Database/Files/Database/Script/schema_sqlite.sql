@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS setting
+﻿CREATE TABLE IF NOT EXISTS setting
 (
     "key"   VARCHAR(32) NOT NULL,
     "value" TEXT        NOT NULL,
@@ -481,4 +481,18 @@ CREATE TABLE IF NOT EXISTS "ddon_contact_list" (
     FOREIGN KEY("requester_character_id") REFERENCES "ddon_character"("character_id"),
     FOREIGN KEY("requested_character_id") REFERENCES "ddon_character"("character_id"),
     UNIQUE("requester_character_id","requested_character_id")
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_bazaar_exhibition" (
+    "bazaar_id"       INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "character_id"    INTEGER                           NOT NULL,
+    "sequence"        INTEGER                           NOT NULL,
+    "item_id"         INTEGER                           NOT NULL,
+    "num"             INTEGER                           NOT NULL,
+    "price"           INTEGER                           NOT NULL,
+    "exhibition_time" DATETIME                          NOT NULL,
+    "state"           SMALLINT                          NOT NULL,
+    "proceeds"        INTEGER                           NOT NULL,
+    "expire"          DATETIME                          NOT NULL,
+    FOREIGN KEY("character_id") REFERENCES "ddon_character"("character_id")
 );
