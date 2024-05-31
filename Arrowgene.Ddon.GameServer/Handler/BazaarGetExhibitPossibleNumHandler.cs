@@ -14,11 +14,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBazaarGetExhibitPossibleNumRes Handle(GameClient client, C2SBazaarGetExhibitPossibleNumReq request)
         {
-            // TODO: Fetch from DB
             return new S2CBazaarGetExhibitPossibleNumRes()
             {
-                Num = 10,
-                Add = 0
+                Num = client.Character.MaxBazaarExhibits,
+                Add = 0 // TODO: Figure out
             };
         }
     }

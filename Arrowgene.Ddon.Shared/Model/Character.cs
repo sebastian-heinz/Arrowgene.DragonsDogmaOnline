@@ -64,6 +64,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
 
+        public uint MaxBazaarExhibits { get; set; }
+
         // ---
 
         // TODO: Move to a more sensible place
