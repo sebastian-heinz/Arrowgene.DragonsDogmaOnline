@@ -1,16 +1,13 @@
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class LobbyLobbyJoinHandler : StructurePacketHandler<GameClient, C2SLobbyJoinReq>
+    public class LobbyLobbyJoinHandler : GameRequestPacketHandler<C2SLobbyJoinReq, S2CLobbyJoinRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LobbyLobbyJoinHandler));
 
@@ -19,27 +16,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SLobbyJoinReq> packet)
+        public override S2CLobbyJoinRes Handle(GameClient client, C2SLobbyJoinReq request)
         {
             client.Character.OnlineStatus = OnlineStatus.Online;
-            var resp = new S2CLobbyJoinRes()
-            {
-                CharacterId = client.Character.CharacterId,
-                LobbyMemberInfoList = new List<CDataLobbyMemberInfo>()
-                {
-                    new CDataLobbyMemberInfo()
-                    {
-                        CharacterId = client.Character.CharacterId,
-                        FirstName = client.Character.FirstName,
-                        LastName = client.Character.LastName,
-                        ClanName = "",
-                        Unk0 = 1, // Platform PC?
-                        Unk1 = 0,
-                        OnlineStatus = OnlineStatus.Online  // OnlineStatus?
-                    },
-                }
-            };
-            client.Send(resp);
 
             // Notify new player of already present players
             S2CUserListJoinNtc alreadyPresentUsersNtc = new S2CUserListJoinNtc();
@@ -80,7 +59,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Notify already present players of the new player
             S2CUserListJoinNtc newUserNtc = new S2CUserListJoinNtc();
-            newUserNtc.UserList = resp.LobbyMemberInfoList;
+            newUserNtc.UserList = new List<CDataLobbyMemberInfo>()
+            {
+                new CDataLobbyMemberInfo()
+                {
+                    CharacterId = client.Character.CharacterId,
+                    FirstName = client.Character.FirstName,
+                    LastName = client.Character.LastName,
+                    ClanName = "", // TODO: Clan
+                    Unk0 = 1, // Platform PC?
+                    Unk1 = 0,
+                    OnlineStatus = OnlineStatus.Online  // OnlineStatus?
+                },
+            };
 
             S2CContextGetLobbyPlayerContextNtc newUserContextNtc = new S2CContextGetLobbyPlayerContextNtc();
             GameStructure.S2CContextGetLobbyPlayerContextNtc(newUserContextNtc, client.Character);
@@ -92,6 +83,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     otherClient.Send(newUserContextNtc);
                 }
             }
+
+            Server.BazaarManager.NotifySoldExhibitions(client);
+
+            return new S2CLobbyJoinRes()
+            {
+                CharacterId = client.Character.CharacterId,
+                LobbyMemberInfoList = newUserNtc.UserList
+            };
         }
     }
 }
