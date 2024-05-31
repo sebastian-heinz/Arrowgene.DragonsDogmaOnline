@@ -243,12 +243,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LLoginReq.Serializer());
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
 
+            Create(new C2SBazaarCancelReq.Serializer());
+            Create(new C2SBazaarExhibitReq.Serializer());
             Create(new C2SBazaarGetCharacterListReq.Serializer());
             Create(new C2SBazaarGetExhibitPossibleNumReq.Serializer());
             Create(new C2SBazaarGetItemHistoryInfoReq.Serializer());
             Create(new C2SBazaarGetItemInfoReq.Serializer());
             Create(new C2SBazaarGetItemListReq.Serializer());
+            Create(new C2SBazaarGetItemPriceLimitReq.Serializer());
             Create(new C2SBazaarProceedsReq.Serializer());
+            Create(new C2SBazaarReceiveProceedsReq.Serializer());
+            Create(new C2SBazaarReExhibitReq.Serializer());
 
             Create(new C2SCharacterCharacterGoldenReviveReq.Serializer());
             Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
@@ -456,13 +461,18 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
 
+            Create(new S2CBazaarCancelRes.Serializer());
+            Create(new S2CBazaarExhibitRes.Serializer());
             Create(new S2CBazaarGetCharacterListRes.Serializer());
             Create(new S2CBazaarGetExhibitPossibleNumRes.Serializer());
             Create(new S2CBazaarGetItemHistoryInfoRes.Serializer());
             Create(new S2CBazaarGetItemInfoRes.Serializer());
             Create(new S2CBazaarGetItemListRes.Serializer());
+            Create(new S2CBazaarGetItemPriceLimitRes.Serializer());
             Create(new S2CBazaarProceedsNtc.Serializer());
             Create(new S2CBazaarProceedsRes.Serializer());
+            Create(new S2CBazaarReceiveProceedsRes.Serializer());
+            Create(new S2CBazaarReExhibitRes.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipLobbyNtc.Serializer());
 

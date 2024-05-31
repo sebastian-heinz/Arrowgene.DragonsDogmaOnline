@@ -1118,6 +1118,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             // TODO: Not hardcode it
             character.FavWarpSlotNum = 10;
 
+            // TODO: Figure out a proper default value and not hardcode it
+            character.MaxBazaarExhibits = 5;
+
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)
             {

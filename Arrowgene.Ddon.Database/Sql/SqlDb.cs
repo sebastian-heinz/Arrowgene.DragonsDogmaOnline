@@ -376,6 +376,16 @@ namespace Arrowgene.Ddon.Database.Sql
             return (ushort)reader.GetInt16(reader.GetOrdinal(column));
         }
 
+        protected long GetInt64(TReader reader, string column)
+        {
+            return reader.GetInt64(reader.GetOrdinal(column));
+        }
+
+        protected ulong GetUInt64(TReader reader, string column)
+        {
+            return (ulong)reader.GetInt64(reader.GetOrdinal(column));
+        }
+
         protected float GetFloat(TReader reader, string column)
         {
             return reader.GetFloat(reader.GetOrdinal(column));

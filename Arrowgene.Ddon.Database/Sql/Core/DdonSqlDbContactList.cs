@@ -10,26 +10,26 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TReader : DbDataReader
     {
         
-        private static readonly string TableName = "ddon_contact_list";
+        private static readonly string ContactListTableName = "ddon_contact_list";
         
         private static readonly string[] ContactListFields = new string[]
         { 
            /* id */ "requester_character_id", "requested_character_id", "status", "type", "requester_favorite", "requested_favorite"
         };
 
-        private static readonly string SqlInsertContact = $"INSERT INTO \"{TableName}\" ({BuildQueryField(ContactListFields)}) VALUES ({BuildQueryInsert(ContactListFields)});";
-        private static readonly string SqlSelectContactById = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" WHERE \"id\"=@id;";
-        private static readonly string SqlSelectContactsByCharacterId = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" WHERE \"requester_character_id\"=@character_id or \"requested_character_id\"=@character_id;";
+        private static readonly string SqlInsertContact = $"INSERT INTO \"{ContactListTableName}\" ({BuildQueryField(ContactListFields)}) VALUES ({BuildQueryInsert(ContactListFields)});";
+        private static readonly string SqlSelectContactById = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" WHERE \"id\"=@id;";
+        private static readonly string SqlSelectContactsByCharacterId = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" WHERE \"requester_character_id\"=@character_id or \"requested_character_id\"=@character_id;";
         
-        private static readonly string SqlSelectContactsByCharacterIds = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{TableName}\" " +
+        private static readonly string SqlSelectContactsByCharacterIds = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" " +
                                                                $"WHERE (\"requester_character_id\"=@character_id_1 and \"requested_character_id\"=@character_id_2) or " +
                                                                $"(\"requester_character_id\"=@character_id_2 and \"requested_character_id\"=@character_id_1);";
         
-        private static readonly string SqlDeleteContact = $"DELETE FROM \"{TableName}\" WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
-        private static readonly string SqlDeleteContactById = $"DELETE FROM \"{TableName}\" WHERE \"id\"=@id;";
+        private static readonly string SqlDeleteContact = $"DELETE FROM \"{ContactListTableName}\" WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
+        private static readonly string SqlDeleteContactById = $"DELETE FROM \"{ContactListTableName}\" WHERE \"id\"=@id;";
         
         
-        private static readonly string SqlUpdateContactByCharIds = $"UPDATE \"{TableName}\" SET \"status\"=@status, \"type\"=@type, \"requester_favorite\"=@requester_favorite, \"requested_favorite\"=@requested_favorite WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
+        private static readonly string SqlUpdateContactByCharIds = $"UPDATE \"{ContactListTableName}\" SET \"status\"=@status, \"type\"=@type, \"requester_favorite\"=@requester_favorite, \"requested_favorite\"=@requested_favorite WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
 
 
         public int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
@@ -94,7 +94,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     while (reader.Read())
                     {
-                        ContactListEntity e = EntityReader(reader);
+                        ContactListEntity e = ReadContactListEntity(reader);
                         entities.Add(e);
                     }
                 });
@@ -114,7 +114,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     if (reader.Read())
                     {
-                        entity = EntityReader(reader);
+                        entity = ReadContactListEntity(reader);
                     }
                 });
 
@@ -132,14 +132,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     if (reader.Read())
                     {
-                        entity = EntityReader(reader);
+                        entity = ReadContactListEntity(reader);
                     }
                 });
 
             return entity;
         }
 
-        private ContactListEntity EntityReader(TReader reader)
+        private ContactListEntity ReadContactListEntity(TReader reader)
         {
             ContactListEntity e = new ContactListEntity();
             e.Id = GetUInt32(reader, "id");

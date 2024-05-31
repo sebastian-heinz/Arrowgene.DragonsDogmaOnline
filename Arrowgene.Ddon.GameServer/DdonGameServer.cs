@@ -68,6 +68,7 @@ namespace Arrowgene.Ddon.GameServer
             ShopManager = new ShopManager(assetRepository, database);
             WalletManager = new WalletManager(database);
             CharacterManager = new CharacterManager(this);
+            BazaarManager = new BazaarManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -89,6 +90,7 @@ namespace Arrowgene.Ddon.GameServer
         public WalletManager WalletManager { get; }
         public CharacterManager CharacterManager { get; }
         public EquipManager EquipManager { get; }
+        public BazaarManager BazaarManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
@@ -173,12 +175,18 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AreaGetSpotInfoListHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
+            
+            AddHandler(new BazaarCancelHandler(this));
+            AddHandler(new BazaarExhibitHandler(this));
             AddHandler(new BazaarGetCharacterListHandler(this));
             AddHandler(new BazaarGetExhibitPossibleNumHandler(this));
             AddHandler(new BazaarGetItemHistoryInfoHandler(this));
             AddHandler(new BazaarGetItemInfoHandler(this));
             AddHandler(new BazaarGetItemListHandler(this));
+            AddHandler(new BazaarGetItemPriceLimitHandler(this));
             AddHandler(new BazaarProceedsHandler(this));
+            AddHandler(new BazaarReceiveProceedsHandler(this));
+            AddHandler(new BazaarReExhibitHandler(this));
 
             AddHandler(new BinarySaveSetCharacterBinSavedataHandler(this));
             AddHandler(new BlackListGetBlackListHandler(this));
