@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using static Arrowgene.Ddon.Server.Network.Challenge;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -27,16 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
         public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount)
         {
-            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
-
-            Wallet.Value += Amount;
-
-            _Database.UpdateWalletPoint(Character.CharacterId, Wallet);
-
-            CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
-            UpdateWalletPoint.Type = Type;
-            UpdateWalletPoint.AddPoint = (int) Amount;
-            UpdateWalletPoint.Value = Wallet.Value;
+            CDataUpdateWalletPoint UpdateWalletPoint = AddToWallet(Character, Type, Amount);
 
             S2CItemUpdateCharacterItemNtc UpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             UpdateCharacterItemNtc.UpdateType = 0;
@@ -47,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return true;
         }
 
-        public bool AddToWallet(Character Character, WalletType Type, uint Amount)
+        public CDataUpdateWalletPoint AddToWallet(Character Character, WalletType Type, uint Amount)
         {
             CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
 
@@ -55,32 +40,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             _Database.UpdateWalletPoint(Character.CharacterId, Wallet);
 
-            return true;
+            CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
+            UpdateWalletPoint.Type = Type;
+            UpdateWalletPoint.AddPoint = (int) Amount;
+            UpdateWalletPoint.Value = Wallet.Value;
+            return UpdateWalletPoint;
         }
 
-        public bool RemoveFromWallet(Character Character, WalletType Type, uint Amount)
+        public CDataUpdateWalletPoint RemoveFromWallet(Character Character, WalletType Type, uint Amount)
         {
             CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
 
             if (Wallet.Value < Amount)
             {
-                return false;
-            }
-
-            Wallet.Value -= Amount;
-
-            _Database.UpdateWalletPoint(Character.CharacterId, Wallet);
-
-            return true;
-        }
-
-        public bool RemoveFromWalletNtc(Client Client, Character Character, WalletType Type, uint Amount)
-        {
-            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
-
-            if (Wallet.Value < Amount)
-            {
-                return false;
+                return null;
             }
 
             Wallet.Value -= Amount;
@@ -91,6 +64,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
             UpdateWalletPoint.Type = Type;
             UpdateWalletPoint.AddPoint = -(int)Amount;
             UpdateWalletPoint.Value = Wallet.Value;
+
+            return UpdateWalletPoint;
+        }
+
+        public bool RemoveFromWalletNtc(Client Client, Character Character, WalletType Type, uint Amount)
+        {
+            CDataUpdateWalletPoint UpdateWalletPoint = RemoveFromWallet(Character, Type, Amount);
+
+            if(UpdateWalletPoint == null)
+            {
+                return false;
+            }
 
             S2CItemUpdateCharacterItemNtc UpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             UpdateCharacterItemNtc.UpdateType = 0;
