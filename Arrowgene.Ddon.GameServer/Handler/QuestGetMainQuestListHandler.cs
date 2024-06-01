@@ -1,7 +1,9 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -11,7 +13,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetMainQuestListHandler));
 
-
         public QuestGetMainQuestListHandler(DdonGameServer server) : base(server)
         {
         }
@@ -20,17 +21,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            client.Send(GameFull.Dump_123);
+            // client.Send(GameFull.Dump_123);
 
             S2CQuestGetMainQuestListRes res = new S2CQuestGetMainQuestListRes();
-            res.KeyId = 1;
-            res.QuestScheduleId = 1;
-            res.QuestId = 1;
-            res.NameMsgId = 1;
-            res.DetailMsgId = 2;
-            res.OrderNpcId = 1;
-            res.BaseLevel = 15;
-            //client.Send(res);
+            foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
+            {
+                var quest = QuestManager.GetQuest(questId);
+                if (quest.QuestType == QuestType.Main)
+                {
+                    res.MainQuestList.Add(quest.ToCDataQuestList());
+                }
+            }
+
+            // res.MainQuestList.Add(Quest25);    // Can't find this quest
+            // res.MainQuestList.Add(Quest30260); // Hopes Bitter End (White Dragon)
+            // res.MainQuestList.Add(Quest30270); // Those Who Follow the Dragon (White Dragon)
+            // res.MainQuestList.Add(Quest30410); // Japanese Name (Joseph Historian)
+
+            client.Send(res);
         }
     }
 }

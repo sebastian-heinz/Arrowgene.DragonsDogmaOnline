@@ -25,12 +25,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            party.Leave(client);
+            Logger.Info(client, $"Left PartyId:{party.Id}");
+
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
             partyLeaveNtc.CharacterId = client.Character.CharacterId;
             party.SendToAll(partyLeaveNtc);
-
-            party.Leave(client);
-            Logger.Info(client, $"Left PartyId:{party.Id}");
 
             client.Send(new S2CPartyPartyLeaveRes());
         }

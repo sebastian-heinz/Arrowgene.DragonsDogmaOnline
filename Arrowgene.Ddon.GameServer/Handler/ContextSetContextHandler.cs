@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -23,7 +25,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Or should it be sent immediately?
             // To the client or to all party?
             Tuple<CDataContextSetBase, CDataContextSetAdditional> context = new Tuple<CDataContextSetBase, CDataContextSetAdditional>(packet.Structure.Base, packet.Structure.Additional);
-            client.Party.Contexts[packet.Structure.Base.UniqueId] = context;
+
+            Logger.Debug("===================================================================");
+            Logger.Debug($"C2SSetContextNtc: ContextId: {context.Item1.ContextId}, UniqueId: 0x{context.Item1.UniqueId:x16}");
+            Logger.Debug("===================================================================");
+
+            ContextManager.SetContext(client.Party, context.Item1.UniqueId, context);
+
+            // Send to all or just the host?
+            client.Party.SendToAll(new S2CContextMasterChangeNtc()
+            {
+                Info = new List<CDataMasterInfo>()
+                {
+                    new CDataMasterInfo()
+                    {
+                        UniqueId = packet.Structure.Base.UniqueId,
+                        MasterIndex = 0
+                    }
+                }
+            });
         }        
     }
 }

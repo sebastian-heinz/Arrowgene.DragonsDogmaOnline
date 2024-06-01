@@ -104,6 +104,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
+            QuestManager.LoadQuests(this.AssetRepository);
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
@@ -404,10 +405,16 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestLeaderQuestProgressRequestHandler(this));
 			AddHandler(new QuestGetEndContentsGroup(this));
 			AddHandler(new QuestGetCycleContentsNewsList(this));
+            AddHandler(new QuestQuestOrderHandler(this));
             AddHandler(new QuestQuestProgressHandler(this));
             AddHandler(new QuestSendLeaderQuestOrderConditionInfoHandler(this));
             AddHandler(new QuestSendLeaderWaitOrderQuestListHandler(this));
             AddHandler(new QuestSetPriorityQuestHandler(this));
+            AddHandler(new QuestQuestLogInfoHandler(this));
+            AddHandler(new QuestQuestCompleteFlagClearHandler(this));
+            AddHandler(new Quest_11_60_16_Handler(this));
+            AddHandler(new QuestDeliverItemHandler(this));
+            AddHandler(new QuestDecideDeliveryItemHandler(this));
 
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));

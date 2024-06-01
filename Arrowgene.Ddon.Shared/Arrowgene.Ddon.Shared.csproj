@@ -27,5 +27,4 @@
     <ItemGroup>
       <Folder Include="Asset\" />
     </ItemGroup>
-
 </Project>

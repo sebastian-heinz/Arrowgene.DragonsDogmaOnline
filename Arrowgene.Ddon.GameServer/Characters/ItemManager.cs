@@ -37,6 +37,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // TODO: Find all items that add wallet points
         };
 
+        public bool IsItemWalletPoint(uint itemId)
+        {
+            return ItemIdWalletTypeAndQuantity.ContainsKey(itemId);
+        }
+
+        public (WalletType walletType, uint itemId) ItemToWalletPoint(uint itemId)
+        {
+            if (!IsItemWalletPoint(itemId))
+            {
+                return (WalletType.None, 0);
+            }
+            return ItemIdWalletTypeAndQuantity[itemId];
+        }
+
         // [[item]]
         // id = 16822 (Adds 100 XP)
         // old = '経験値結晶'
@@ -124,6 +138,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum);
             }
         }
+
+        public CDataItemUpdateResult? ConsumeItemByUIdFromItemBag(DdonServer<GameClient> server, Character character, string itemUId, uint consumeNum)
+        {
+            List<StorageType> itemBagStorage = new List<StorageType>() { StorageType.ItemBagConsumable, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.ItemBagMaterial };
+            List<CDataItemUpdateResult> results = ConsumeItemByUIdFromMultipleStorages(server, character, itemBagStorage, itemUId, consumeNum);
+            return results.Count > 0 ? results[0] : null;
+        }
+
         public CDataItemUpdateResult? ConsumeItemInSlot(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, uint consumeNum)
         {
             var foundItem = character.Storage.getStorageItem(fromStorageType, slotNo);
@@ -135,6 +157,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum);
             }
         }
+
         private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consuneNum)
         {
             uint finalItemNum = (uint) Math.Max(0, (int)itemNum - (int)consuneNum);
@@ -186,6 +209,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num);
             }
+        }
+
+        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, StorageType storageType, uint itemId, uint num)
+        {
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
+            if (ItemBagStorageTypes.Contains(storageType))
+            {
+                storageType = clientItemInfo.StorageType;
+            }
+
+            return DoAddItem(server.Database, character, storageType, itemId, num, clientItemInfo.StackLimit);
         }
 
         private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue)
@@ -385,6 +419,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return results;
+        }
+
+        public uint LookupItemByUID(DdonServer<GameClient> server, string itemUID)
+        {
+            var item = server.Database.SelectItem(itemUID);
+            if (item == null)
+            {
+                throw new ItemDoesntExistException(itemUID);
+            }
+
+            return item.ItemId;
+        }
+    }
+
+    [Serializable]
+    internal class ItemDoesntExistException : Exception
+    {
+        private string itemUID;
+
+        public ItemDoesntExistException(string itemUID) : base ($"An item with the UID ${itemUID} is missing in the database")
+        {
+            this.itemUID = itemUID;
         }
     }
 

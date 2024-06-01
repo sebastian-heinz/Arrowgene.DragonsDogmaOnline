@@ -1,6 +1,7 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -20,6 +21,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             client.Send(GameFull.Dump_117);
+
+            // S2CAreaGetLeaderAreaReleaseListRes res = new S2CAreaGetLeaderAreaReleaseListRes();
+            // client.Send(res);
         }
     }
 }

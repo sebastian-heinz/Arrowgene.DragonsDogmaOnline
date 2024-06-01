@@ -1,59 +1,142 @@
-﻿using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestQuestProgressHandler : PacketHandler<GameClient>
+    public class QuestQuestProgressHandler : GameStructurePacketHandler<C2SQuestQuestProgressReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestProgressHandler));
-
 
         public QuestQuestProgressHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_QUEST_PROGRESS_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SQuestQuestProgressReq> packet)
         {
-            IBuffer inBuffer = new StreamBuffer(packet.Data);
-            inBuffer.SetPositionStart();
-            uint data0 = inBuffer.ReadUInt32(Endianness.Big);
-            uint data1 = inBuffer.ReadUInt32(Endianness.Big);
-            uint data2 = inBuffer.ReadUInt32(Endianness.Big);
-            Logger.Debug("data0: "+data0+" data1: "+data1+" data2: "+data2+"\n");
-            if(data2 == 287350){ 
-            client.Send(GameFull.Dump_652);
+            QuestProgressState questProgressState = QuestProgressState.InProgress;
+            S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes();
+            res.QuestScheduleId = packet.Structure.QuestScheduleId;
+            res.QuestProgressResult = 0;
+
+            Logger.Debug($"KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
+
+            var partyQuestState = client.Party.QuestState;
+
+            ushort processNo = packet.Structure.ProcessNo;
+            QuestId questId = (QuestId) packet.Structure.QuestScheduleId;
+
+            if (!partyQuestState.HasQuest(questId))
+            {
+                // Hack for making the random quests from static packets go away
+                List<CDataQuestCommand> ResultCommandList = new List<CDataQuestCommand>();
+                ResultCommandList.Add(new CDataQuestCommand()
+                {
+                    Command = (ushort)QuestCommandCheckType.IsEndTimer,
+                    Param01 = 0x173
+                });
+
+                res.QuestScheduleId = 0x32f00;
+                res.QuestProcessState.Add(new CDataQuestProcessState()
+                {
+                    ProcessNo = 0x1b,
+                    SequenceNo = 0x1,
+                    BlockNo = 0x2,
+                    ResultCommandList = ResultCommandList
+                });
             }
-            else{
+            else
+            {
+                var processState = partyQuestState.GetProcessState(questId, processNo);
+                
+                var quest = QuestManager.GetQuest(questId);
+                res.QuestProcessState = quest.StateMachineExecute(processState, out questProgressState);
 
-            IBuffer outBuffer = new StreamBuffer();
-            outBuffer.WriteInt32(0, Endianness.Big);
-            outBuffer.WriteInt32(0, Endianness.Big);
-            outBuffer.WriteByte(0); // QuestProgressResult
-            outBuffer.WriteUInt32(data2, Endianness.Big); // QuestScheduleId
-            outBuffer.WriteUInt32(0, Endianness.Big); // QuestProgressStateList
-            //client.Send(new Packet(PacketId.S2C_QUEST_QUEST_PROGRESS_RES, outBuffer.GetAllBytes()));
+                partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
 
-            client.Send(GameFull.Dump_166);
-            client.Send(GameFull.Dump_168);
-            client.Send(GameFull.Dump_170);
-            client.Send(GameFull.Dump_172);
-            client.Send(GameFull.Dump_175);
-            client.Send(GameFull.Dump_177);
-            client.Send(GameFull.Dump_179);
-            client.Send(GameFull.Dump_181);
-            client.Send(GameFull.Dump_185);
-            client.Send(GameFull.Dump_188);
-            client.Send(GameFull.Dump_190);
-            client.Send(GameFull.Dump_294);
-            client.Send(GameFull.Dump_297);
-            client.Send(GameFull.Dump_299);
-            client.Send(GameFull.Dump_524);
+                if (questProgressState == QuestProgressState.Complete)
+                {
+                    SendRewards(client, client.Character, quest);
+
+                    S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
+                    {
+                        QuestScheduleId = (uint) questId,
+                        RandomRewardNum = quest.RandomRewardNum(),
+                        ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
+                        ProgressBonusNum = quest.FixedRewardsNum(),
+                        IsRepeatReward = quest.RewardParams.IsRepeatReward,
+                        IsUndiscoveredReward = quest.RewardParams.IsUndiscoveredReward,
+                        IsHelpReward = quest.RewardParams.IsHelpReward,
+                        IsPartyBonus = quest.RewardParams.IsPartyBonus,
+                    };
+
+                    client.Party.SendToAll(completeNtc);
+
+                    if (quest.HasRewards())
+                    {
+                        foreach (var memberClient in client.Party.Clients) 
+                        {
+                            memberClient.Character.QuestRewards.Add(quest.GetBoxRewards());
+                        }
+                    }
+
+                    // Remove the quest data from the party object
+                    partyQuestState.CompleteQuest(questId);
+                }
+
+                if (res.QuestProcessState.Count > 0)
+                {
+                    Logger.Info("==========================================================================================");
+                    Logger.Info($"{questId}: ProcessNo={res.QuestProcessState[0].ProcessNo}, SequenceNo={res.QuestProcessState[0].SequenceNo}, BlockNo={res.QuestProcessState[0].BlockNo},");
+                    Logger.Info("==========================================================================================");
+                }
+            }
+
+            S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
+            {
+                ProgressCharacterId = client.Character.CharacterId,
+                QuestScheduleId = res.QuestScheduleId,
+                QuestProcessStateList = res.QuestProcessState,
+            };
+            client.Party.SendToAllExcept(ntc, client);
+
+            client.Send(res);
+        }
+
+        private void SendRewards(GameClient client, Character character, Quest quest)
+        {
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = (ushort)ItemNoticeType.Quest
+            };
+
+            foreach (var walletReward in quest.WalletRewards)
+            {
+                Server.WalletManager.AddToWallet(character, walletReward.Type, walletReward.Value);
+
+                updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
+                {
+                    Type = walletReward.Type,
+                    Value = Server.WalletManager.GetWalletAmount(character, walletReward.Type),
+                    AddPoint = (int)walletReward.Value
+                });
+            }
+
+            if (updateCharacterItemNtc.UpdateWalletList.Count > 0)
+            {
+                client.Send(updateCharacterItemNtc);
+            }
+
+            foreach (var expPoint in quest.ExpRewards)
+            {
+                Server.ExpManager.AddExp(client, character, expPoint.Reward, 0, 2); // I think type 2 means quest
             }
         }
     }

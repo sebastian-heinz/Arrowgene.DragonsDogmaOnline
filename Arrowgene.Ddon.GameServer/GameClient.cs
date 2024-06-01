@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Party;

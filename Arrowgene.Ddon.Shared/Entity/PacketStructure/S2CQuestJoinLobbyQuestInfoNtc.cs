@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             TutorialQuestOrderList = new List<CDataTutorialQuestOrderList>();
             LotQuestOrderList = new List<CDataLotQuestOrderList>();
             Unk0 = new List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0>();
-            Unk1 = new List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk1>();
+            WildHuntQuestOrderList = new List<CDataWildHuntQuestOrderList>();
             TimeLimitedQuestOrderList = new List<CDataTimeLimitedQuestOrderList>();
             WorldManageQuestOrderList = new List<CDataWorldManageQuestOrderList>();
             ExpiredQuestList = new List<CDataExpiredQuestList>();
@@ -34,8 +34,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataMainQuestOrderList> MainQuestOrderList { get; set; }
         public List<CDataTutorialQuestOrderList> TutorialQuestOrderList { get; set; }
         public List<CDataLotQuestOrderList> LotQuestOrderList { get; set; }
-        public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0> Unk0 { get; set; }
-        public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk1> Unk1 { get; set; }
+        public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0> Unk0 { get; set; } // Probably those purple quests from season 3
+        public List<CDataWildHuntQuestOrderList> WildHuntQuestOrderList { get; set; } // or maybe this
         public List<CDataTimeLimitedQuestOrderList> TimeLimitedQuestOrderList { get; set; }
         public List<CDataWorldManageQuestOrderList> WorldManageQuestOrderList { get; set; }
         public List<CDataExpiredQuestList> ExpiredQuestList { get; set; }
@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataTutorialQuestOrderList>(buffer, obj.TutorialQuestOrderList);
                 WriteEntityList<CDataLotQuestOrderList>(buffer, obj.LotQuestOrderList);
                 WriteEntityList<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0>(buffer, obj.Unk0);
-                WriteEntityList<CDataS2CQuestJoinLobbyQuestInfoNtcUnk1>(buffer, obj.Unk1);
+                WriteEntityList<CDataWildHuntQuestOrderList>(buffer, obj.WildHuntQuestOrderList);
                 WriteEntityList<CDataTimeLimitedQuestOrderList>(buffer, obj.TimeLimitedQuestOrderList);
                 WriteEntityList<CDataWorldManageQuestOrderList>(buffer, obj.WorldManageQuestOrderList);
                 WriteEntityList<CDataExpiredQuestList>(buffer, obj.ExpiredQuestList);
@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.TutorialQuestOrderList = ReadEntityList<CDataTutorialQuestOrderList>(buffer);
                 obj.LotQuestOrderList = ReadEntityList<CDataLotQuestOrderList>(buffer);
                 obj.Unk0 = ReadEntityList<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0>(buffer);
-                obj.Unk1 = ReadEntityList<CDataS2CQuestJoinLobbyQuestInfoNtcUnk1>(buffer);
+                obj.WildHuntQuestOrderList = ReadEntityList<CDataWildHuntQuestOrderList>(buffer);
                 obj.TimeLimitedQuestOrderList = ReadEntityList<CDataTimeLimitedQuestOrderList>(buffer);
                 obj.WorldManageQuestOrderList = ReadEntityList<CDataWorldManageQuestOrderList>(buffer);
                 obj.ExpiredQuestList = ReadEntityList<CDataExpiredQuestList>(buffer);

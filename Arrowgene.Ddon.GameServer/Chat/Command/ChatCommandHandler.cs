@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             AddCommand(new VersionCommand());
             AddCommand(new PartyInviteCommand(server));
             AddCommand(new ReleaseCommand(server));
+            AddCommand(new OmDataCommand(server));
         }
 
         public void AddCommand(ChatCommand command)

@@ -11,23 +11,23 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         
         public S2CContextMasterChangeNtc()
         {
-            Unk0 = new List<CDataMasterInfo>();
+            Info = new List<CDataMasterInfo>();
         }
 
-        public List<CDataMasterInfo> Unk0 { get; set; } // Probably a list of heartbeats for the different contexts?
+        public List<CDataMasterInfo> Info { get; set; } // Probably a list of heartbeats for the different contexts?
 
         public class Serializer : PacketEntitySerializer<S2CContextMasterChangeNtc>
         {
 
             public override void Write(IBuffer buffer, S2CContextMasterChangeNtc obj)
             {
-                WriteEntityList<CDataMasterInfo>(buffer, obj.Unk0);
+                WriteEntityList<CDataMasterInfo>(buffer, obj.Info);
             }
 
             public override S2CContextMasterChangeNtc Read(IBuffer buffer)
             {
                 S2CContextMasterChangeNtc obj = new S2CContextMasterChangeNtc();
-                obj.Unk0 = ReadEntityList<CDataMasterInfo>(buffer);
+                obj.Info = ReadEntityList<CDataMasterInfo>(buffer);
                 return obj;
             }
         }

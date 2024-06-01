@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -59,6 +60,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             client.UpdateIdentity();
 
             SelectPawns(character);
+
+            // TODO: Query things like main quest?
 
             return character;
         }

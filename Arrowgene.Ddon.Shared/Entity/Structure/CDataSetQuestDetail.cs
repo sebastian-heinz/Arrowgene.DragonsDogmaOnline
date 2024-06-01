@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataSetQuestDetail() {
             UndiscoveryWalletPointRatio = new List<CDataWalletPoint>();
-            UndiscoveryExpRatio = new List<CDataQuestListUnk1>();
+            UndiscoveryExpRatio = new List<CDataQuestExp>();
         }
     
         public uint ImageId { get; set; }
@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ClearCharacterNum { get; set; }
         public uint BaseAreaPoint { get; set; }
         public List<CDataWalletPoint> UndiscoveryWalletPointRatio { get; set; } // usUndiscoveryGoldRatio, usUndiscoveryRimRatio?
-        public List<CDataQuestListUnk1> UndiscoveryExpRatio { get; set; } // usUndiscoveryExpRatio?
+        public List<CDataQuestExp> UndiscoveryExpRatio { get; set; } // usUndiscoveryExpRatio?
         public ushort LeaderCompleteNum { get; set; }
         public ushort RepeatRewardType { get; set; }
         public byte RepeatRewardValue { get; set; }
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.ClearCharacterNum);
                 WriteUInt32(buffer, obj.BaseAreaPoint);
                 WriteEntityList<CDataWalletPoint>(buffer, obj.UndiscoveryWalletPointRatio);
-                WriteEntityList<CDataQuestListUnk1>(buffer, obj.UndiscoveryExpRatio);
+                WriteEntityList<CDataQuestExp>(buffer, obj.UndiscoveryExpRatio);
                 WriteUInt16(buffer, obj.LeaderCompleteNum);
                 WriteUInt16(buffer, obj.RepeatRewardType);
                 WriteByte(buffer, obj.RepeatRewardValue);
@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ClearCharacterNum = ReadUInt32(buffer);
                 obj.BaseAreaPoint = ReadUInt32(buffer);
                 obj.UndiscoveryWalletPointRatio = ReadEntityList<CDataWalletPoint>(buffer);
-                obj.UndiscoveryExpRatio = ReadEntityList<CDataQuestListUnk1>(buffer);
+                obj.UndiscoveryExpRatio = ReadEntityList<CDataQuestExp>(buffer);
                 obj.LeaderCompleteNum = ReadUInt16(buffer);
                 obj.RepeatRewardType = ReadUInt16(buffer);
                 obj.RepeatRewardValue = ReadByte(buffer);

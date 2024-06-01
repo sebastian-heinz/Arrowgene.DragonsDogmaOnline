@@ -1,0 +1,1972 @@
+{
+    "state_machine": "GenericStateMachine",
+    "comment": [
+        "Handles quests which are simple enough where a single process is enough",
+        "to handle all conditions in the quest. Typcial kill x, y, z and other",
+        "types of fetch quests should use this state machine."
+    ],
+    "quests": [
+        {
+            "type": "World",
+            "comment": "q20000009 - Request For Medicine",
+            "quest_id": 20000009,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 350
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 20
+                },
+                {
+                    "type": "exp",
+                    "amount": 290
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 478,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 59,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "npc_id": "Henry",
+                    "message_id": 218
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 1
+                    },
+                    "announce_type": "Accept",
+                    "npc_id": "Vicelot",
+                    "message_id": 887
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 2
+                    },
+                    "announce_type": "Update",
+                    "layout_flags_on": [2216]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1
+                    },
+                    "announce_type": "Update",
+                    "layout_flags_on": [1133],
+                    "layout_flags_off": [2216]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 1
+                    },
+                    "layout_flags_off": [1133],
+                    "announce_type": "Update",
+                    "npc_id": "Vicelot",
+                    "message_id": 890
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "Henry",
+                    "message_id": 891
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20000001 - The Woes of A Merchant",
+            "quest_id": 20000001,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 400
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 20
+                },
+                {
+                    "type": "exp",
+                    "amount": 260
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 426,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 34,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 25,
+                        "group_id": 1
+                    },
+                    "npc_id": "Peddler",
+                    "message_id": 26,
+                    "layout_flags_on": [985]
+                },
+                {
+                    "type": "DeliverItems",
+                    "stage_id": {
+                        "id": 25,
+                        "group_id": 1
+                    },
+                    "npc_id": "Peddler",
+                    "announce_type": "Accept",
+                    "items": [
+                        {
+                            "id": 8928,
+                            "amount": 2
+                        }
+                    ],
+                    "message_id": 1124
+                }
+            ]
+        },
+		{
+            "type": "World",
+            "comment": "q20000003 - An Assistant's Assistant",
+            "quest_id": 20000003,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+				{
+                    "type": "exp",
+                    "amount": 310
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 520
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 30
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 458,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 36,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+            "processes": [
+				{
+					"comment": "process 0",
+					"blocks": [
+						{
+							"type": "NpcTalkAndOrder",
+							"stage_id": {
+								"id": 3,
+								"group_id": 0
+							},
+							"npc_id": "Klaus0",
+							"message_id": 29
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Accept",
+							"set_flags": [9],
+							"check_flags": [1, 2, 3, 4, 5, 6, 7, 8]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 3,
+								"group_id": 0
+							},
+							"npc_id": "Klaus0",
+							"message_id": 21
+						},
+						{
+							"type": "TalkToNpc",
+							"announce_type": "Update",
+							"stage_id": {
+								"id": 66,
+								"group_id": 0
+							},
+							"npc_id": "Talcott",
+							"message_id": 21
+						},
+						{
+							"type": "TalkToNpc",
+							"announce_type": "Update",
+							"stage_id": {
+								"id": 3,
+								"group_id": 0
+							},
+							"npc_id": "Klaus0",
+							"message_id": 21
+						}
+					]
+				},
+				{
+					"comment": "process 1",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [9]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Cameron0",
+							"message_id": 21
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [1]
+						}
+					]
+				},
+				{
+					"comment": "process 2",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [9]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Tonio",
+							"message_id": 21
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [2]
+						}
+					]
+				},
+				{
+					"comment": "process 3",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [9]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Kittredge",
+							"message_id": 21
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [3]
+						}
+					]
+				},
+				{
+					"comment": "process 4",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [9]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Morris",
+							"message_id": 21
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [4]
+						}
+					]
+				},
+				{
+					"comment": "process 5",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [9]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Mayleaf0",
+							"message_id": 21
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [5]
+						}
+					]
+				},
+				{
+					"comment": "process 6",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [9]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Ferguson",
+							"message_id": 21
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [6]
+						}
+					]
+				},
+				{
+					"comment": "process 7",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [9]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Colette",
+							"message_id": 21
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [7]
+						}
+					]
+				},
+				{
+					"comment": "process 8",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [9]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 2,
+								"group_id": 0
+							},
+							"npc_id": "Vicelot",
+							"message_id": 21
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [8]
+						}
+					]
+				}
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20005010 - The Knights' Bitter Enemy",
+            "quest_id": 20005010,
+            "base_level": 12,
+            "minimum_item_rank": 0,
+            "discoverable": false,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 390
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 70
+                },
+                {
+                    "type": "exp",
+                    "amount": 590
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 95,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 58,
+                            "num": 3
+                        },
+                        {
+                            "item_id": 10047,
+                            "num": 1
+                        }
+                    ]
+                }
+            ],
+			"enemy_groups": [
+				{
+					"comment": "GroupId: 0",
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 26
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x015000",
+                            "level": 12,
+                            "exp": 1860,
+                            "is_boss": true
+                        }
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20005001 - Confrontation With Scouts",
+            "quest_id": 20005001,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": false,
+            "quest_layout_set_info_flags": [
+                {
+                    "flag_no": 346,
+                    "stage_no": 100,
+                    "group_id": 8
+                },
+                {
+                    "flag_no": 2213,
+                    "stage_no": 100,
+                    "group_id": 28
+
+                },
+                {
+                    "flag_no": 886,
+                    "stage_no": 100,
+                    "group_id": 6
+                }
+            ],
+            "rewards": [
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 8163,
+                            "num": 1,
+                            "comment": "Blue-Edged Helm"
+                        },
+                        {
+                            "item_id": 9366,
+                            "num": 2,
+                            "comment": "Waking Draught"
+                        }
+                    ]
+                },
+                {
+                    "type": "random",
+                    "loot_pool": [
+                        {
+                            "item_id": 34,
+                            "num": 3,
+                            "chance": 0.5,
+                            "comment": "Healing Potion"
+                        },
+                        {
+                            "item_id": 36,
+                            "num": 3,
+                            "chance": 0.5,
+                            "comment": "Gala Extract"
+                        }
+                    ]
+                },
+                {
+                    "type": "exp",
+                    "amount": 510
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 420
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 30
+                }
+            ],
+			"enemy_groups": [
+				{
+					"stage_id": {
+						"id": 1,
+						"group_id": 8
+					},
+					"starting_index": 6,
+					"enemies": [
+						{
+							"enemy_id": "0x011110",
+							"level": 8,
+							"exp": 50,
+							"is_boss": false
+						},
+						{
+							"enemy_id": "0x011110",
+							"level": 8,
+							"exp": 50,
+							"is_boss": false
+						},
+						{
+							"enemy_id": "0x011111",
+							"level": 8,
+							"exp": 50,
+							"is_boss": false
+						}
+					]
+				},
+				{
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 28
+                    },
+					"starting_index": 6,
+					"enemies": [
+                        {
+                            "enemy_id": "0x011110",
+                            "level": 8,
+                            "exp": 50,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x011110",
+                            "level": 8,
+                            "exp": 50,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x011111",
+                            "level": 8,
+                            "exp": 50,
+                            "is_boss": false
+                        }
+					]
+				},
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 6
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x011110",
+                            "level": 8,
+                            "exp": 50,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x011110",
+                            "level": 8,
+                            "exp": 50,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x011111",
+                            "level": 8,
+                            "exp": 50,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x011111",
+                            "level": 8,
+                            "exp": 50,
+                            "is_boss": false
+                        }
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+					"announce_type": "Accept",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [2]
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20005002 - Ambush In The Wells Depths",
+            "quest_id": 20005002,
+            "base_level": 11,
+            "minimum_item_rank": 0,
+            "discoverable": false,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 270
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 30
+                },
+                {
+                    "type": "exp",
+                    "amount": 390
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 489,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 9368,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+                        "id": 134,
+                        "group_id": 0
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x015800",
+                            "level": 11,
+                            "exp": 132,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 11,
+                            "exp": 132,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 11,
+                            "exp": 132,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 11,
+                            "exp": 132,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 11,
+                            "exp": 132,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015801",
+                            "level": 11,
+                            "exp": 132,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015801",
+                            "level": 11,
+                            "exp": 132,
+                            "is_boss": false
+                        }
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+					"groups": [0]
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20005000 - Sky Concealing Wings",
+            "quest_id": 20005000,
+            "base_level": 14,
+            "minimum_item_rank": 0,
+            "discoverable": false,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 460
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 90
+                },
+                {
+                    "type": "exp",
+                    "amount": 800
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 8948,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 7810,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 9407,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 30
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x015302",
+                            "level": 14,
+                            "exp": 2780,
+                            "is_boss": true
+                        }
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20005003 - Dweller In The Darkness",
+            "quest_id": 20005003,
+            "base_level": 15,
+            "minimum_item_rank": 0,
+            "discoverable": false,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 540
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 90
+                },
+                {
+                    "type": "exp",
+                    "amount": 720
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 845,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 631,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 9403,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+                        "id": 85,
+                        "group_id": 4
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x015502",
+                            "level": 15,
+                            "exp": 2780,
+                            "is_boss": true
+                        }
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20015005 - Dispatch A Clamor of Harpies",
+            "quest_id": 20015005,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": false,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 220
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 30
+                },
+                {
+                    "type": "exp",
+                    "amount": 290
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 506,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 8543,
+                            "num": 1
+                        }
+                    ]
+                }
+            ],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 94
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20000015 - Knight And Arisen",
+            "quest_id": 20000015,
+            "base_level": 10,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 330
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 30
+                },
+                {
+                    "type": "exp",
+                    "amount": 460
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 423,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 39,
+                            "num": 2
+                        }
+                    ]
+                },
+                {
+                    "type": "random",
+                    "loot_pool": [
+                        {
+                            "item_id": 8658,
+                            "num": 1,
+                            "chance": 1.0
+                        }
+                    ]
+                }
+            ],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 33
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+					]
+				},
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 34
+                    },
+                    "enemies": [
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x015800",
+                            "level": 10,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+                    ]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 0
+                    },
+                    "npc_id": "Heinz2",
+                    "message_id": 224
+                },
+                {
+                    "type": "SeekOutEnemiesAtMarkedLocation",
+                    "announce_type": "Accept",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+					"groups": [1]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 0
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "Heinz2",
+                    "message_id": 0
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20010001 - Boats Buddy",
+            "quest_id": 20010001,
+            "base_level": 8,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 240
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 30
+                },
+                {
+                    "type": "exp",
+                    "amount": 390
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 502,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 9370,
+                            "num": 2
+                        }
+                    ]
+                }
+            ],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 83
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010600",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+					]
+				},
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 84
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x010410",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010410",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010410",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        },
+                        {
+                            "enemy_id": "0x010410",
+                            "level": 4,
+                            "exp": 94,
+                            "is_boss": false
+                        }
+					]
+				},
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 81
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x010411",
+                            "level": 4,
+                            "exp": 136,
+                            "is_boss": false
+                        }
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "npc_id": "Walter",
+                    "message_id": 31
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+
+                    "announce_type": "Update",
+                    "groups": [2]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "Walter",
+                    "message_id": 0
+                }
+            ]
+        },
+        {
+            "type": "World",
+            "comment": "q20010000 - Beach Bandits",
+            "quest_id": 20010000,
+            "base_level": 11,
+            "minimum_item_rank": 0,
+            "discoverable": true,
+            "rewards": [
+                {
+                    "type": "wallet",
+                    "wallet_type": "Gold",
+                    "amount": 300
+                },
+                {
+                    "type": "wallet",
+                    "wallet_type": "RiftPoints",
+                    "amount": 30
+                },
+                {
+                    "type": "exp",
+                    "amount": 360
+                },
+                {
+                    "type": "select",
+                    "loot_pool": [
+                        {
+                            "item_id": 9604,
+                            "num": 1
+                        },
+                        {
+                            "item_id": 489,
+                            "num": 1
+                        }
+                    ]
+                }
+            ],
+			"enemy_groups": [
+				{
+					"stage_id": {
+                        "id": 1,
+                        "group_id": 85
+                    },
+					"enemies": [
+						{
+                            "enemy_id": "0x011002",
+                            "level": 11,
+                            "exp": 140,
+                            "is_boss": false,
+                            "hm_present_no": 47
+                        },
+                        {
+                            "enemy_id": "0x011002",
+                            "level": 11,
+                            "exp": 140,
+                            "is_boss": false,
+                            "hm_present_no": 47
+                        },
+                        {
+                            "enemy_id": "0x011002",
+                            "level": 11,
+                            "exp": 140,
+                            "is_boss": false,
+                            "hm_present_no": 47
+                        }
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "npc_id": "Yuni",
+                    "message_id": 30,
+                    "layout_flags_on": [992]
+                },
+                {
+                    "type": "DiscoverEnemy",
+					"announce_type": "Accept",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "Yuni",
+                    "message_id": 0
+                }
+            ]
+        },
+		{
+			"type": "World",
+			"comment": "q20000007 - Crackdown on Store Vandals",
+			"quest_id": 20000007,
+			"base_level": 8,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 310
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 260
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 30
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 9739,
+							"num": 1
+						},
+						{
+							"item_id": 37,
+							"num": 2
+						}
+					]
+				}
+			],
+			"enemy_groups": [
+				{
+					"comment": "GroupId: 0",
+					"stage_id": {
+						"id": 161,
+						"group_id": 0
+					},
+					"enemies": [
+						{
+							"enemy_id": "0x011002",
+							"level": 3,
+							"exp": 140,
+							"is_boss": false,
+							"hm_present_no": 47
+						},
+						{
+							"enemy_id": "0x011002",
+							"level": 3,
+							"exp": 140,
+							"is_boss": false,
+							"hm_present_no": 47
+						},
+						{
+							"enemy_id": "0x010200",
+							"level": 3,
+							"exp": 94,
+							"is_boss": false
+						}
+					]
+				},
+				{
+					"comment": "GroupId: 1",
+					"stage_id": {
+						"id": 161,
+						"group_id": 2
+					},
+					"enemies": [
+						{
+							"enemy_id": "0x011002",
+							"level": 9,
+							"exp": 140,
+							"is_boss": false,
+							"hm_present_no": 47
+						},
+						{
+							"enemy_id": "0x011002",
+							"level": 9,
+							"exp": 140,
+							"is_boss": false,
+							"hm_present_no": 47
+						}
+					]
+				}
+			],
+			"blocks": [
+				{
+					"type": "NpcTalkAndOrder",
+					"stage_id": {
+						"id": 23,
+						"group_id": 0
+					},
+					"npc_id": "Eterna",
+					"message_id": 216
+				},
+				{
+					"type": "SeekOutEnemiesAtMarkedLocation",
+					"announce_type": "Accept",
+					"groups": [0]
+				},
+				{
+					"type": "KillGroup",
+					"announce_type": "Update",
+					"groups": [0]
+				},
+				{
+					"type": "SeekOutEnemiesAtMarkedLocation",
+					"announce_type": "Update",
+					"groups": [1]
+				},
+				{
+					"type": "KillGroup",
+					"announce_type": "Update",
+					"groups": [1]
+				},
+				{
+					"type": "TalkToNpc",
+					"stage_id": {
+						"id": 23,
+						"group_id": 0
+					},
+					"announce_type": "Update",
+					"npc_id": "Eterna",
+					"message_id": 216
+				}
+			]
+		},
+		{
+			"type": "World",
+			"comment": "q20000014 - A Heart Throbs Once More",
+			"quest_id": 20000014,
+			"base_level": 8,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 260
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 790
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 20
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 446,
+							"num": 1
+						},
+						{
+							"item_id": 34,
+							"num": 2
+						}
+					]
+				}
+			],
+			"blocks": [
+				{
+					"type": "NpcTalkAndOrder",
+					"stage_id": {
+						"id": 2,
+						"group_id": 1
+					},
+					"npc_id": "Mayleaf0",
+					"message_id": 223
+				},
+				{
+					"type": "DeliverItems",
+					"stage_id": {
+						"id": 2,
+						"group_id": 1
+					},
+					"npc_id": "Mayleaf0",
+					"announce_type": "Accept",
+					"items": [
+						{
+							"id": 8931,
+							"amount": 1
+						}
+					],
+					"message_id": 958
+				}
+			]
+		},
+		{
+			"type": "World",
+			"comment": "q20000017 - Fabio's Collectibles",
+			"quest_id": 20000017,
+			"base_level": 8,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 220
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 660
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 30
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 8928,
+							"num": 1
+						},
+						{
+							"item_id": 36,
+							"num": 2
+						}
+					]
+				}
+			],
+			"blocks": [
+				{
+					"type": "NpcTalkAndOrder",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"message_id": 226
+				},
+				{
+					"type": "DeliverItems",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"announce_type": "Accept",
+					"items": [
+						{
+							"id": 7858,
+							"amount": 2
+						}
+					],
+					"message_id": 962
+				},
+				{
+					"type": "DeliverItems",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"announce_type": "Update",
+					"items": [
+						{
+							"id": 7893,
+							"amount": 2
+						}
+					],
+					"message_id": 962
+				},
+				{
+					"type": "DeliverItems",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"announce_type": "Update",
+					"items": [
+						{
+							"id": 7854,
+							"amount": 2
+						}
+					],
+					"message_id": 962
+				}
+			]
+		},
+		{
+			"type": "World",
+			"comment": "q20000018 - Fabio and Monster-Slaying",
+			"quest_id": 20000018,
+			"base_level": 9,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 480
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 290
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 50
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 8143,
+							"num": 1
+						},
+						{
+							"item_id": 9365,
+							"num": 2
+						}
+					]
+				}
+			],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+						"id": 1,
+						"group_id": 21
+					},
+					"enemies": [
+						{
+							"enemy_id": "0x015504",
+							"level": 11,
+							"exp": 260,
+							"is_boss": false
+						},
+						{
+							"enemy_id": "0x015504",
+							"level": 11,
+							"exp": 260,
+							"is_boss": false
+						},
+						{
+							"enemy_id": "0x015504",
+							"level": 11,
+							"exp": 260,
+							"is_boss": false
+						}
+					]
+				}
+			],
+			"blocks": [
+				{
+					"type": "NpcTalkAndOrder",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"message_id": 227
+				},
+				{
+					"type": "DiscoverEnemy",
+					"announce_type": "Accept",
+					"groups": [0]
+				},
+				{
+					"type": "KillGroup",
+					"announce_type": "Update",
+					"groups": [0]
+				},
+				{
+					"type": "TalkToNpc",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"announce_type": "Update",
+					"npc_id": "Fabio0",
+					"message_id": 227
+				}
+			]
+		},
+		{
+			"type": "World",
+			"comment": "q20000002 - A Transporter's Tragedy",
+			"quest_id": 20000002,
+			"base_level": 9,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 320
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 320
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 30
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 963,
+							"num": 1
+						},
+						{
+							"item_id": 36,
+							"num": 3
+						}
+					]
+				}
+			],
+			"processes": [
+				{
+					"comment": "process 0",
+					"blocks": [
+						{
+							"type": "NpcTalkAndOrder",
+							"stage_id": {
+								"id": 1,
+								"group_id": 0
+							},
+							"npc_id": "WhiteKnight0",
+							"message_id": 27,
+							"layout_flags_on": [986]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Accept",
+							"set_flags": [6],
+							"check_flags": [1, 2, 3, 4, 5]
+						},
+						{
+							"type": "NpcTalkAndOrder",
+							"stage_id": {
+								"id": 1,
+								"group_id": 0
+							},
+							"npc_id": "WhiteKnight0",
+							"message_id": 27
+						}
+					]
+				},
+				{
+					"comment": "process 1",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 25,
+								"group_id": 0
+							},
+							"npc_id": "Bob",
+							"message_id": 27
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [1]
+						}
+					]
+				},
+				{
+					"comment": "process 2",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "CollectItem",
+							"stage_id": {
+								"id": 1,
+								"group_id": 2
+							},
+							"layout_flags_on": [1125]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"layout_flags_off": [1125],
+							"set_flags": [2]
+						}
+					]
+				},
+				{
+					"comment": "process 3",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "CollectItem",
+							"stage_id": {
+								"id": 1,
+								"group_id": 3
+							},
+							"layout_flags_on": [1126]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"layout_flags_off": [1126],
+							"set_flags": [3]
+						}
+					]
+				},
+				{
+					"comment": "process 4",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "CollectItem",
+							"stage_id": {
+								"id": 1,
+								"group_id": 4
+							},
+							"layout_flags_on": [1127]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"layout_flags_off": [1127],
+							"set_flags": [4]
+						}
+					]
+				},
+				{
+					"comment": "process 5",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "CollectItem",
+							"stage_id": {
+								"id": 1,
+								"group_id": 5
+							},
+							"layout_flags_on": [1128]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"layout_flags_off": [1128],
+							"set_flags": [5]
+						}
+					]
+				}
+			]
+		}
+    ]
+}
