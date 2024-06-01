@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -13,7 +14,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class WarpWarpHandler : StructurePacketHandler<GameClient, C2SWarpWarpReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WarpGetWarpPointListHandler));
-
 
         public WarpWarpHandler(DdonGameServer server) : base(server)
         {

@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private readonly DdonGameServer _server;
 
 
-            private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
+                private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
             StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
         };
@@ -46,8 +46,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Take(packet.Structure.Num)
                     .ToList(),
                 IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
+                //Logger.Debug("Packet stuff is going downnnnn");
             });
-            Logger.Debug("Packet stuff is going downnnnn");
+                
+        //    S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+        //    updateCharacterItemNtc.UpdateType = 0;
+
+
+
             
         }
     }

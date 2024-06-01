@@ -68,6 +68,7 @@ namespace Arrowgene.Ddon.GameServer
             ShopManager = new ShopManager(assetRepository, database);
             WalletManager = new WalletManager(database);
             CharacterManager = new CharacterManager(this);
+            BazaarManager = new BazaarManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -89,6 +90,7 @@ namespace Arrowgene.Ddon.GameServer
         public WalletManager WalletManager { get; }
         public CharacterManager CharacterManager { get; }
         public EquipManager EquipManager { get; }
+        public BazaarManager BazaarManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
@@ -102,6 +104,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
+            QuestManager.LoadQuests(this.AssetRepository);
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
@@ -173,12 +176,18 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AreaGetSpotInfoListHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
+            
+            AddHandler(new BazaarCancelHandler(this));
+            AddHandler(new BazaarExhibitHandler(this));
             AddHandler(new BazaarGetCharacterListHandler(this));
             AddHandler(new BazaarGetExhibitPossibleNumHandler(this));
             AddHandler(new BazaarGetItemHistoryInfoHandler(this));
             AddHandler(new BazaarGetItemInfoHandler(this));
             AddHandler(new BazaarGetItemListHandler(this));
+            AddHandler(new BazaarGetItemPriceLimitHandler(this));
             AddHandler(new BazaarProceedsHandler(this));
+            AddHandler(new BazaarReceiveProceedsHandler(this));
+            AddHandler(new BazaarReExhibitHandler(this));
 
             AddHandler(new BinarySaveSetCharacterBinSavedataHandler(this));
             AddHandler(new BlackListGetBlackListHandler(this));
@@ -398,10 +407,16 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestLeaderQuestProgressRequestHandler(this));
 			AddHandler(new QuestGetEndContentsGroup(this));
 			AddHandler(new QuestGetCycleContentsNewsList(this));
+            AddHandler(new QuestQuestOrderHandler(this));
             AddHandler(new QuestQuestProgressHandler(this));
             AddHandler(new QuestSendLeaderQuestOrderConditionInfoHandler(this));
             AddHandler(new QuestSendLeaderWaitOrderQuestListHandler(this));
             AddHandler(new QuestSetPriorityQuestHandler(this));
+            AddHandler(new QuestQuestLogInfoHandler(this));
+            AddHandler(new QuestQuestCompleteFlagClearHandler(this));
+            AddHandler(new Quest_11_60_16_Handler(this));
+            AddHandler(new QuestDeliverItemHandler(this));
+            AddHandler(new QuestDecideDeliveryItemHandler(this));
 
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));

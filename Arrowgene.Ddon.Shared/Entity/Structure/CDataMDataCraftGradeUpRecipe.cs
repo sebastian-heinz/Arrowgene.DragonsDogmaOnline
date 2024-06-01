@@ -44,6 +44,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 int materialCount = buffer.ReadInt32();
                 for (int i = 0; i < materialCount; i++)
                 {
+                    // Read each material individually
                     CDataMDataCraftMaterial material = new CDataMDataCraftMaterial
                     {
                         ItemId = buffer.ReadUInt32(),

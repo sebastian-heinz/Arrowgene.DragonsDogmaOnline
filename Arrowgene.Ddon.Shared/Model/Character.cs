@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -34,6 +35,9 @@ namespace Arrowgene.Ddon.Shared.Model
             Pawns = new List<Pawn>();
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
+
+            PriorityQuests = new List<QuestId>();
+            QuestRewards = new List<QuestBoxRewards>();
         }
 
         public int AccountId { get; set; }
@@ -64,10 +68,15 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
 
+        public uint MaxBazaarExhibits { get; set; }
+
         // ---
 
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
+
+        public List<QuestId> PriorityQuests { get; set; }
+        public List<QuestBoxRewards> QuestRewards { get; set; }
 
         public Pawn PawnBySlotNo(byte SlotNo)
         {

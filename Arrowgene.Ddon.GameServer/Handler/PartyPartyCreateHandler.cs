@@ -1,10 +1,13 @@
-﻿using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.ComponentModel;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -29,20 +32,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            ErrorRes<PlayerPartyMember> invite = party.Invite(client, client);
-            if (invite.HasError)
+            ErrorRes<PlayerPartyMember> host = party.AddHost(client);
+            if (host.HasError)
             {
-                Logger.Error(client, "failed to invite to new party");
-                res.Error = (uint)invite.ErrorCode;
-                client.Send(res);
-                return;
-            }
-
-            ErrorRes<PlayerPartyMember> accept = party.Accept(client);
-            if (accept.HasError)
-            {
-                Logger.Error(client, "failed to accept new party");
-                res.Error = (uint)accept.ErrorCode;
+                Logger.Error(client, "failed to create and join new party");
+                res.Error = (uint)host.ErrorCode;
                 client.Send(res);
                 return;
             }
@@ -55,6 +49,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(res);
                 return;
             }
+
+            // TODO: Fetch this from the party leader from the database
+            // party.QuestState.AddNewQuest((QuestId) 1);
+            // party.QuestState.AddNewQuest((QuestId) 2);
+            // party.QuestState.AddNewQuest((QuestId) 3);
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;

@@ -1,11 +1,10 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BazaarGetExhibitPossibleNumHandler : GameStructurePacketHandler<C2SBazaarGetExhibitPossibleNumReq>
+    public class BazaarGetExhibitPossibleNumHandler : GameRequestPacketHandler<C2SBazaarGetExhibitPossibleNumReq, S2CBazaarGetExhibitPossibleNumRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarGetExhibitPossibleNumHandler));
         
@@ -13,9 +12,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetExhibitPossibleNumReq> packet)
+        public override S2CBazaarGetExhibitPossibleNumRes Handle(GameClient client, C2SBazaarGetExhibitPossibleNumReq request)
         {
-            client.Send(new S2CBazaarGetExhibitPossibleNumRes());
+            return new S2CBazaarGetExhibitPossibleNumRes()
+            {
+                Num = client.Character.MaxBazaarExhibits,
+                Add = 0 // TODO: Figure out
+            };
         }
     }
 }

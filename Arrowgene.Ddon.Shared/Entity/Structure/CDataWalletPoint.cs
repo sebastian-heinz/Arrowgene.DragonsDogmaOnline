@@ -5,9 +5,20 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataWalletPoint
     {
-        public WalletType Type;
-        public uint Value;
-    
+        public WalletType Type { get; set; }
+        public uint Value { get; set; }
+
+        public CDataUpdateWalletPoint ToCDataUpdateWalletPoint(uint CurrentAmount, uint BonusAmount = 0)
+        {
+            return new CDataUpdateWalletPoint()
+            {
+                Type = Type,
+                AddPoint = (int) Value,
+                ExtraBonusPoint = BonusAmount,
+                Value = CurrentAmount
+            };
+        }
+
         public class Serializer : EntitySerializer<CDataWalletPoint>
         {
             public override void Write(IBuffer buffer, CDataWalletPoint obj)

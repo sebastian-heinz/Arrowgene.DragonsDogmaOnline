@@ -1,11 +1,10 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BazaarGetItemHistoryInfoHandler : GameStructurePacketHandler<C2SBazaarGetItemHistoryInfoReq>
+    public class BazaarGetItemHistoryInfoHandler : GameRequestPacketHandler<C2SBazaarGetItemHistoryInfoReq, S2CBazaarGetItemHistoryInfoRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarGetItemHistoryInfoHandler));
         
@@ -13,9 +12,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SBazaarGetItemHistoryInfoReq> packet)
+        public override S2CBazaarGetItemHistoryInfoRes Handle(GameClient client, C2SBazaarGetItemHistoryInfoReq request)
         {
-            client.Send(new S2CBazaarGetItemHistoryInfoRes());
+            return new S2CBazaarGetItemHistoryInfoRes();
         }
     }
 }

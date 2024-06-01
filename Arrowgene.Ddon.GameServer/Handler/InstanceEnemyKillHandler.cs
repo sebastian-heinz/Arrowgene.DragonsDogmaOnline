@@ -9,6 +9,11 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.GameServer.Party;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Arrowgene.Ddon.GameServer.Characters;
+using static Arrowgene.Ddon.Server.Network.Challenge;
+using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -26,29 +31,97 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyKillReq> packet)
         {
-            Enemy enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(packet.Structure.LayoutId), 0)[(int) packet.Structure.SetId];
-            List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
-            if(instancedGatheringItems.Count > 0) {
-                client.Party.SendToAll(new S2CInstancePopDropItemNtc()
+            CDataStageLayoutId layoutId = packet.Structure.LayoutId;
+            StageId stageId = StageId.FromStageLayoutId(layoutId);
+
+            Quest quest = null;
+            bool IsQuestControlled = false;
+            foreach (var questId in client.Party.QuestState.StageQuests(stageId))
+            {
+                quest = QuestManager.GetQuest(questId);
+                var questState = client.Party.QuestState.GetQuestState(questId);
+                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, 0))
+                {
+                    IsQuestControlled = true;
+                    break;
+                }
+            }
+
+            InstancedEnemy enemyKilled;
+            if (IsQuestControlled && quest != null)
+            {
+                // TODO: Add drops to Quest Monsters
+                enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest.QuestId, stageId, 0, packet.Structure.SetId);
+            }
+            else
+            {
+                enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0)[(int)packet.Structure.SetId];
+                List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
+                if (instancedGatheringItems.Count > 0)
+                {
+                    client.Party.SendToAll(new S2CInstancePopDropItemNtc()
+                    {
+                        LayoutId = packet.Structure.LayoutId,
+                        SetId = packet.Structure.SetId,
+                        MdlType = enemyKilled.DropsTable.MdlType,
+                        PosX = packet.Structure.DropPosX,
+                        PosY = packet.Structure.DropPosY,
+                        PosZ = packet.Structure.DropPosZ
+                    });
+                }
+            }
+
+            enemyKilled.IsKilled = true;
+
+            List<InstancedEnemy> group;
+            if (IsQuestControlled && quest != null)
+            {
+                group = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, 0);
+            }
+            else
+            {
+                group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0);
+            }
+
+            bool groupDestroyed = group.All(enemy => enemy.IsKilled);
+            if (groupDestroyed)
+            {
+                if (IsQuestControlled && quest != null)
+                {
+                    quest.SendProgressWorkNotices(client, stageId, 0);
+                }
+
+                bool IsAreaBoss = false;
+                foreach (var enemy in group)
+                {
+                    IsAreaBoss = IsAreaBoss || enemy.IsAreaBoss;
+                    if (IsAreaBoss)
+                    {
+                        break;
+                    }
+                }
+
+                // This is used for quests and things like key door monsters
+                S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                 {
                     LayoutId = packet.Structure.LayoutId,
-                    SetId = packet.Structure.SetId,
-                    MdlType = enemyKilled.DropsTable.MdlType,
-                    PosX = packet.Structure.DropPosX,
-                    PosY = packet.Structure.DropPosY,
-                    PosZ = packet.Structure.DropPosZ
-                });
+                    IsAreaBoss = IsAreaBoss
+                };
+                client.Party.SendToAll(groupDestroyedNtc);
             }
 
             // TODO: EnemyId and KillNum
-            client.Send(new S2CInstanceEnemyKillRes());
+            client.Send(new S2CInstanceEnemyKillRes() {
+                EnemyId = enemyKilled.Id,
+                KillNum = 1
+            });
 
             foreach(PartyMember member in client.Party.Members)
-            {                
+            {
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = enemyKilled.Experience;
-                uint extraBonusExp = 0; // TODO: Figure out what this is for
+                uint extraBonusExp = 0; // TODO: Figure out what this is for (gp bonus?)
 
                 GameClient memberClient;
                 CharacterCommon memberCharacter;
@@ -106,7 +179,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new Exception("Unknown member type");
                 }
 
-                _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, extraBonusExp);
+                if (gainedExp > 0)
+                {
+                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, extraBonusExp);
+                }
             }
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
@@ -6,12 +7,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataBazaarItemInfo() {
             ItemBaseInfo = new CDataBazaarItemBaseInfo();
+            ExhibitionTime = DateTimeOffset.UnixEpoch;
         }
 
         public ulong BazaarId { get; set; }
         public ushort Sequence { get; set; }
         public CDataBazaarItemBaseInfo ItemBaseInfo { get; set; }
-        public long ExhibitionTime { get; set; } // Probably a timestamp
+        public DateTimeOffset ExhibitionTime { get; set; }
     
         public class Serializer : EntitySerializer<CDataBazaarItemInfo>
         {
@@ -20,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt64(buffer, obj.BazaarId);
                 WriteUInt16(buffer, obj.Sequence);
                 WriteEntity<CDataBazaarItemBaseInfo>(buffer, obj.ItemBaseInfo);
-                WriteInt64(buffer, obj.ExhibitionTime);
+                WriteInt64(buffer, obj.ExhibitionTime.ToUnixTimeSeconds());
             }
         
             public override CDataBazaarItemInfo Read(IBuffer buffer)
@@ -29,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.BazaarId = ReadUInt64(buffer);
                 obj.Sequence = ReadUInt16(buffer);
                 obj.ItemBaseInfo = ReadEntity<CDataBazaarItemBaseInfo>(buffer);
-                obj.ExhibitionTime = ReadInt64(buffer);
+                obj.ExhibitionTime = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 return obj;
             }
         }

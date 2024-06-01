@@ -1,11 +1,10 @@
 [
   {
-    "Category": 0,
+    "Category": 1,
     "RecipeList": [
 	{
         "RecipeID": 1,
-        "ItemID": 62,
-		"GradeupItemID": 1674,
+        "ItemID": 1674,
         "Cost": 400,
         "Exp": 12,
         "CraftMaterialList": [

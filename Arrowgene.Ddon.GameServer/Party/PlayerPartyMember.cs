@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
@@ -29,5 +29,21 @@ public class PlayerPartyMember : PartyMember
         partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;
 
         return new StructurePacket<S2CContextGetPartyPlayerContextNtc>(partyPlayerContextNtc);
+    }
+
+    public S2CContextGetPartyPlayerContextNtc GetS2CContextGetParty_ContextNtcEx()
+    {
+        CDataPartyPlayerContext partyPlayerContext = new CDataPartyPlayerContext();
+        GameStructure.CDataContextBase(partyPlayerContext.Base, Client.Character);
+        GameStructure.CDataContextPlayerInfo(partyPlayerContext.PlayerInfo, Client.Character);
+        GameStructure.CDataContextResist(partyPlayerContext.ResistInfo, Client.Character);
+        partyPlayerContext.EditInfo = Client.Character.EditInfo;
+
+        S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc();
+        partyPlayerContextNtc.CharacterId = Client.Character.CharacterId;
+        partyPlayerContextNtc.Context = partyPlayerContext;
+        partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;
+
+        return partyPlayerContextNtc;
     }
 }

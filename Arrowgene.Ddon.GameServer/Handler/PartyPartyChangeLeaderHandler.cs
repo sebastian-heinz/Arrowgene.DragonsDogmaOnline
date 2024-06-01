@@ -29,7 +29,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            PlayerPartyMember currentLeader = party.Leader;
             ErrorRes<PlayerPartyMember> newLeader = party.ChangeLeader(client, newLeaderCharacterId);
             if (newLeader.HasError)
             {
@@ -45,8 +44,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(res);
 
-            Logger.Info(client,
-                $"changed party leader from {currentLeader.Client.Character.CharacterId} to {newLeader.Value.Client.Character.CharacterId} for PartyId:{party.Id}");
+            PlayerPartyMember currentLeader = party.Leader;
+            if (currentLeader != null)
+            {
+                Logger.Info(client, $"Party leader changed from {currentLeader.Client.Character.CharacterId} to {newLeader.Value.Client.Character.CharacterId} for PartyId:{party.Id}");
+            }
+            else
+            {
+                Logger.Info(client, $"The character {newLeader.Value.Client.Character.CharacterId} has been promoted to leader for PartyId:{party.Id}");
+            }
         }
     }
 }

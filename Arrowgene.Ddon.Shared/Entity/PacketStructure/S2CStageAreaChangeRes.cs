@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint StageNo { get; set; }
         public bool IsBase { get; set; }
         public List<CDataCommonU32> StageFeatureList { get; set; }
-        public List<object> Unk0 { get; set; }
+        public List<object> Unk0 { get; set; } // This is stage ID of something
         public List<object> Unk1 { get; set; }
 
         public S2CStageAreaChangeRes()

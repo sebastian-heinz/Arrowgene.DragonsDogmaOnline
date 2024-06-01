@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -25,7 +23,7 @@ namespace Arrowgene.Ddon.Database
         bool DeleteAccount(int accountId);
 
         // CharacterCommon
-        public bool UpdateCharacterCommonBaseInfo(CharacterCommon common);
+        bool UpdateCharacterCommonBaseInfo(CharacterCommon common);
         bool UpdateEditInfo(CharacterCommon character);
         bool UpdateStatusInfo(CharacterCommon character);
 
@@ -166,10 +164,19 @@ namespace Arrowgene.Ddon.Database
         ContactListEntity SelectContactListById(uint id);
 
         // Dragon Force Augmentation
-        public bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo);
-        public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId);
-        public bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
-        public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
-        public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId);
+        bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo);
+        List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId);
+        bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
+        bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
+        CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId);
+
+        // Bazaar
+        ulong InsertBazaarExhibition(BazaarExhibition exhibition);
+        int UpdateBazaarExhibiton(BazaarExhibition exhibition);
+        int DeleteBazaarExhibition(ulong bazaarId);
+        BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId);
+        List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId);
+        List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId);
+        List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId);
     }
 }
