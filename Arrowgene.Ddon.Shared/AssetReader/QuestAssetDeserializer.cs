@@ -144,6 +144,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private void ParseRewards(QuestAssetData assetData, JsonElement quest)
         {
+            uint randomRewards = 0;
             foreach (var reward in quest.GetProperty("rewards").EnumerateArray())
             {
                 var rewardType = reward.GetProperty("type").GetString();
@@ -160,6 +161,15 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         QuestRewardItem rewardItem = null;
                         if (questRewardType == QuestRewardType.Random)
                         {
+                            if (randomRewards >= 4)
+                            {
+                                Logger.Error("Client only supports a maximum of 4 random rewards per quest. Skipping.");
+                                continue;
+                            }
+
+                            // Keep track of random rewards for the quest
+                            randomRewards += 1;
+
                             rewardItem = new QuestRandomRewardItem();
                             foreach (var item in reward.GetProperty("loot_pool").EnumerateArray())
                             {
@@ -189,13 +199,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             rewardItem = new QuestFixedRewardItem()
                             {
                                 LootPool = new List<LootPoolItem>()
-                                        {
-                                            new FixedLootPoolItem()
-                                            {
-                                                ItemId = item.GetProperty("item_id").GetUInt32(),
-                                                Num = item.GetProperty("num").GetUInt16(),
-                                            }
-                                        }
+                                {
+                                    new FixedLootPoolItem()
+                                    {
+                                        ItemId = item.GetProperty("item_id").GetUInt32(),
+                                        Num = item.GetProperty("num").GetUInt16(),
+                                    }
+                                }
                             };
                         }
                         else

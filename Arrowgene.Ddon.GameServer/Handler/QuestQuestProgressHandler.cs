@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         foreach (var memberClient in client.Party.Clients) 
                         {
-                            memberClient.Character.QuestRewards.Add(quest.GetBoxRewards());
+                            Server.RewardManager.AddQuestRewards(memberClient, quest);
                         }
                     }
 

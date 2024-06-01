@@ -1,10 +1,7 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
@@ -96,9 +93,15 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
     public class QuestRandomRewardItem : QuestRewardItem
     {
+        public int ItemIndex { get; private set; }
+
         public QuestRandomRewardItem() : base(QuestRewardType.Random)
         {
+        }
 
+        public QuestRandomRewardItem(int itemIndex) : base(QuestRewardType.Random)
+        {
+            ItemIndex = itemIndex;
         }
 
         public override List<CDataRewardBoxItem> AsCDataRewardBoxItems()
@@ -109,11 +112,10 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             };
         }
 
-        private CDataRewardBoxItem AsCDataRewardBoxItem()
+        public CDataRewardBoxItem AsCDataRewardBoxItem()
         {
-            var itemIndex = Roll();
-            var item = LootPool[itemIndex];
-
+            
+            var item = LootPool[ItemIndex];
             return new CDataRewardBoxItem()
             {
                 ItemId = item.ItemId,
@@ -122,7 +124,24 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             };
         }
 
-        private int Roll()
+        public CDataRewardBoxItem AsCDataRewardBoxItem(int index)
+        {
+            var item = LootPool[index];
+            return new CDataRewardBoxItem()
+            {
+                ItemId = item.ItemId,
+                Num = item.Num,
+                Type = (byte)RewardType
+            };
+        }
+
+        public int Roll()
+        {
+            ItemIndex = RollInternal();
+            return ItemIndex;
+        }
+
+        private int RollInternal()
         {
             Random rnd = new Random();
             double target = rnd.NextDouble();
@@ -151,14 +170,15 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
     public class QuestBoxRewards
     {
+        public uint UniqRewardId { get; set; }
+        public uint CharacterCommonId { get; set; }
+        public QuestId QuestId { get; set; }
+        public int NumRandomRewards { get; set; }
+        public List<int> RandomRewardIndices { get; set; }
+
         public QuestBoxRewards()
         {
-            // Rewards = new List<CDataRewardBoxItem>();
-            Rewards = new Dictionary<string, CDataRewardBoxItem>();
+            RandomRewardIndices = new List<int>();
         }
-
-        public QuestId QuestId { get; set; }
-        // public List<CDataRewardBoxItem> Rewards { get; set; }
-        public Dictionary<string, CDataRewardBoxItem> Rewards { get; set; }
     }
 }

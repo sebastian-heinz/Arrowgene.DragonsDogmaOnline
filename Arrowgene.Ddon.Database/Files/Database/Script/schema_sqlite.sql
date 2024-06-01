@@ -496,3 +496,16 @@ CREATE TABLE IF NOT EXISTS "ddon_bazaar_exhibition" (
     "expire"          DATETIME                          NOT NULL,
     FOREIGN KEY("character_id") REFERENCES "ddon_character"("character_id")
 );
+
+CREATE TABLE IF NOT EXISTS "ddon_reward_box" (
+	"uniq_reward_id"	INTEGER NOT NULL,
+	"character_common_id"	INTEGER NOT NULL,
+	"quest_id"	INTEGER NOT NULL,
+	"num_random_rewards"	INTEGER NOT NULL,
+	"random_reward0_index"	INTEGER NOT NULL,
+	"random_reward1_index"	INTEGER NOT NULL,
+	"random_reward2_index"	INTEGER NOT NULL,
+	"random_reward3_index"	INTEGER NOT NULL,
+	PRIMARY KEY("uniq_reward_id" AUTOINCREMENT),
+	CONSTRAINT "fk_ddon_reward_box_character_common_id" FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
+);
