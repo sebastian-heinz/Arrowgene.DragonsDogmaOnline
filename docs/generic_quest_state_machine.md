@@ -1,8 +1,8 @@
 # Generic Quest State Machine
 
-The generic quest state machine is a first attempt and providing a way for simple quests such as world quests or personal quests without needing "too much" technical knowledge.
+The generic quest state machine is a first attempt and providing a way for quests to be implemented without too much technical knowledge.
 
-The generic implementation is intended to handle the following types of quests
+The generic implementation has currently proven to handle the following types of quests
 - Find and kill a world boss
 - Find and kill multiple groups of enemies
 - Talk to an NPC to receive directions for some task. Complete this task and return.
@@ -19,10 +19,13 @@ Researching the packet capture for the main quest "Hope's Bitter End", the follo
 - A quest can spawn multiple processes
 - As each processes moves to the next state the block number is incrementd by 1
 - When a process is completed, the block number is incremented by 1 and the sequence number is set to 1.
+- A quest process state that only has result commands appears to be a terminal block (the client does not ask for another update)
 
 ## Details about the generic quest implementation
 
-To simplify the enabling of simple quests, the generic quest state machine executes everything within a single process. The state machine assumes the following steps
+To simplify the enabling of simple quests, the generic quest state machine allows simple quests to be defined in a single process. For mre complex tasks it is possible to use multiple processes. It is up to the quest writer to decide.
+
+The state machine assumes the following steps:
 
 ![](images/state-machine-general-steps.png)
 
@@ -46,6 +49,10 @@ Each quest has some starting condition, either being ordered from an NPC or bein
   - Request For Medicine (q20000009)
   - The Woes of A Merchant (q20000001)
   - Crackdown on Store Vandals (q20000007)
+  - A Heart Throbs Once More (q20000014)
+  - Fabio's Collectibles (q20000017)
+  - Fabio and Monster-Slaying (q20000018)
+  - A Transporter's Tragedy (q20000002)
 - Quest rewards can be claimed from the reward box after completing a quest.
   - ![](images/reward-box.png)
 - New quests can be defined by updating the file `world_quests.json` in `Arrowgene.Ddon.Shared/files/assets`.
@@ -60,7 +67,7 @@ Each quest has some starting condition, either being ordered from an NPC or bein
 > In the quests `Boat's Buddy` and `Beach Bandits`, the nodes which appear to be used for the quest don't behave properly. You may need to reset the instance by going to WDT to get the group to spawn with quest monsters.
 
 > [!WARNING]
-> In the quest `Confrontation With Scouts`, if you kill monsters in a group which is used in the quest before starting the quest, those monsters will not respawn until you reset the instance in WDT.
+> In quests which require multiple monsters to be killed, if you kill groups before the quest starts, the state machine will consider them dead when you reach that point in the quest.
 
 > [!NOTE]
 > If a quest completes in a safe area, the party leader needs to exit the area and reenter to restart the quest.
@@ -103,7 +110,7 @@ There currently does not exist any tools to aid in adding new world quests. I su
 
 After installing `git`, clone the following repositories locally
 - [DDON-translation](https://github.com/Sapphiratelaemara/DDON-translation)
-- [DDon-tools](https://github.com/alborrajo/DDOn-Tools)
+- [DDOn-Tools](https://github.com/alborrajo/DDOn-Tools)
 - [ddon-data](https://github.com/ddon-research/ddon-data)
 
 Build `DDon-tools` from source to get the latest build.
@@ -173,6 +180,7 @@ New quests will be added to the array under the `quests` key. Each quest has the
     "minimum_item_rank": int,
     "discoverable": bool,
     "rewards": [],
+    "enemy_groups": [],
     "blocks": []
 }
 ```
@@ -181,12 +189,13 @@ First fill in the common items using the values we collected from the wiki. Curr
 ```json
 {
     "type": "World",
-    "comment": "q20005010_TheKnightsBitterEnemy",
+    "comment": "q20005010 - The Knights' Bitter Enemy",
     "quest_id": 20005010,
     "base_level": 12,
     "minimum_item_rank": 0,
     "discoverable": false,
     "rewards": [],
+    "enemy_groups": [],
     "blocks": []
 }
 ```
@@ -244,64 +253,80 @@ Putting this all together, we will get a reward list which looks like
 
 This should be added into the `rewards` array in the parent object.
 
+### Defining enemy groups
+
+A group of enemies may be referenced in multiple rules. To reduce repetition, all enememy groups are defined one time in the `enemy_groups` category. They they are referenced by their 0 based index in this array. For each group, we need to provide location information about where to find these enemies. Recall the stage ID value `(1, 0, 26, 0)` we recorded from DDon-tools. The `stage_id` parser only provides the `id` and `group_id` by default. Other values can be optionally provided. There is an optional comment which can be provided to help remember what this group is for.
+
+```json
+"enemy_groups": [
+    {
+        "comment": "GroupId: 0",
+        "stage_id": {
+            "id": 1,
+            "group_id": 26
+        },
+        "enemies": []
+    }
+]
+```
+
+Next we have an array of enemies in this group. Recall the values we recorded from DDOn-Tools the hexadecimal value of the enemy. We also need to provide a `level` and `exp` amount. There is a special flag `is_boss` which can be provided which assigns multiple flags used commonly with bosses. We set thgis to true.
+
+```json
+"enemy_groups": [
+    {
+        "comment": "GroupId: 0",
+        "stage_id": {
+            "id": 1,
+            "group_id": 26
+        },
+        "enemies": [
+            {
+                "enemy_id": "0x015000",
+                "level": 12,
+                "exp": 1860,
+                "is_boss": true
+            }
+        ]
+    }
+]
+```
+
+It is also possible to define the other attributes of the enemy seen in DDOn-Tools, but they are considered optional by the parser. If not provided, sane defaults will be selected.
+
+> [!NOTE]
+> The `enemy_id` is a hexstring that way we can see the information about the enemy easier (json doesn't allow hex literals). Presenting the number in hexadecimal allows easy visualization of certain attributes of the enemy encoded in it's ID.
+
+> [!NOTE]
+> More enemies can be defined in the `enemies` array. Also more groups can be defined in the `enemy_groups` array.
+
+
 ### Defining the quest blocks
 
-Finally, we need to add members to the `block` array. This describes all the steps required to start and complete the quest. As mentioned earlier in the document, there are 3 different types of `block` elements. There are blocks which are generally used to start a quest. Either `DiscoverEnemy` or `NpcOrder`. Then some variable amount of intermediate steps `DiscoverEnemy`, `KillGroup`, `TalkToNpc`, `SeekOutMarkedEnemy` or `DeliverItems`. Finally there is the end block type which is implicitly added by the generic quest state machine and doesn't need to be provided in the quest json.
+This quest is a simple quest so we will opt for a shorthand syntax where we just define a list of blocks. This list describes all the steps required to start and complete the quest. As mentioned earlier in the document, there are many types of `block` elements. There are blocks which are generally used to start a quest. Usually `DiscoverEnemy` or `NpcTalkAndOrder`. Then some variable amount of intermediate steps are provided. Finally there is the end block type which is implicitly added by the generic quest state machine and doesn't need to be provided in the quest json.
 
 This quest is simple in that it only has 2 major steps.
 - We discover the enemy
 - We kill the enemy
 
-We need to define a rule which tells the quest state machine where we want to discover the enemy. Recall the stage ID value `(1, 0, 26, 0)` we recorded from DDon-tools. We would create the first block as a `DiscoverEnemy` block. This block takes information about the location of the enemy and the node on the map they are associated with.
+We would create the first block as a `DiscoverEnemy` block. This block takes information about the location of the enemy and the node on the map they are associated with. The group id `0` is because this group of enemies is the `0` element in the `enemy_groups` array.
 
 ```json
 {
     "type": "DiscoverEnemy",
-    "stage_id": {
-        "id": 1,
-        "group_no": 26
-    }
+    "groups": [0]
 }
 ```
 
-Next we define a rule that we want to spawn some enemies and wait for them to be dead. First thing we need to do is when we move from the first state `DiscoverEnemy` to the next state `KillGroup` is that we need to "announce" that we have accepted this quest. We do this by setting the `announce_type` key to `Accept`. We will use the values we collected about the monster from DDon-tools. Again, just like the previous rule, we need to tell the quest state machine where to find this group of enemies.
+Next we define a rule that we want to wait for the enemy group to be dead. First thing we need to do is when we move from the first state `DiscoverEnemy` to the next state `KillGroup` is that we need to "announce" that we have accepted this quest. We do this by setting the `announce_type` key to `Accept`. Similar to the previous rule, we will then assign the group id value of `0` to associate this rule with the first element of the `enemy_groups` array.
 
 ```json
 {
     "type": "KillGroup",
-    "stage_id": {
-        "id": 1,
-        "group_no": 26
-    },
     "announce_type": "Accept",
-    "group": []
+    "groups": [0]
 }
 ```
-
-In the group members, we then populate the information about the required monsters.
-```json
-{
-    "type": "KillGroup",
-    "stage_id": {
-        "id": 1,
-        "group_no": 26
-    },
-    "announce_type": "Accept",
-    "group": [
-         {
-            "enemy_id": "0x015000",
-            "level": 12,
-            "exp": 1860,
-            "is_boss": true
-        }
-    ]
-}
-```
-
-It is possible to define the other attributes of the enemy seen in DDon-tools, but they are considered optional by the parser. If not provided, sane defaults will be selected.
-
-> [!NOTE]
-> The `enemy_id` is a hexstring that way we can see the information about the enemy easier (json doesn't allow hex literals). Presenting the number in hexadecimal allows easy visualization of certain attributes of the enemy encoded in it's ID.
 
 Finally, your file should look like below. Save the file, reload the server and try out your quest.
 
@@ -309,14 +334,12 @@ Finally, your file should look like below. Save the file, reload the server and 
 {
     "state_machine": "GenericStateMachine",
     "comment": [
-        "Handles quests which are simple enough where a single process is enough",
-        "to handle all conditions in the quest. Typcial kill x, y, z and other",
-        "types of fetch quests should use this state machine."
+        "World quests defined to be executed by the GenericStateMachine."
     ],
     "quests": [
-        {
+                {
             "type": "World",
-            "comment": "q20005010_TheKnightsBitterEnemy",
+            "comment": "q20005010 - The Knights' Bitter Enemy",
             "quest_id": 20005010,
             "base_level": 12,
             "minimum_item_rank": 0,
@@ -354,29 +377,32 @@ Finally, your file should look like below. Save the file, reload the server and 
                     ]
                 }
             ],
-            "blocks": [
-                {
-                    "type": "DiscoverEnemy",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 26
-                    }
-                },
-                {
-                    "type": "KillGroup",
-                    "stage_id": {
+			"enemy_groups": [
+				{
+					"comment": "GroupId: 0",
+					"stage_id": {
                         "id": 1,
                         "group_id": 26
                     },
-                    "announce_type": "Accept",
-                    "group": [
-                        {
+					"enemies": [
+						{
                             "enemy_id": "0x015000",
                             "level": 12,
                             "exp": 1860,
                             "is_boss": true
                         }
-                    ]
+					]
+				}
+			],
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Accept",
+                    "groups": [0]
                 }
             ]
         }
@@ -423,6 +449,10 @@ Used to talk with NPCs.
 ### IsStageNo
 
 Checks to see if the player is within a certain stage before progressing.
+
+### MyQstFlags
+
+Can set and/or check `MyQstFlag` values. Used to gate progress of processes in multi-process quests.
 
 ### Raw
 
