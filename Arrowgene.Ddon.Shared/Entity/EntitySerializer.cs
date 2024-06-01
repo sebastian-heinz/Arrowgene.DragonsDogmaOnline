@@ -144,6 +144,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMatchingProfileSerializer());
             Create(new CDataMDataCraftMaterial.Serializer());
             Create(new CDataMDataCraftRecipe.Serializer());
+            Create(new CDataMDataCraftGradeupRecipe.Serializer());
             Create(new CDataMoonSchedule.Serializer());
             Create(new CDataMoveItemUIDFromTo.Serializer());
             Create(new CDataNamedEnemyParamClient.Serializer());

@@ -39,13 +39,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Category = ReadByte(buffer);
                 obj.Offset = ReadUInt32(buffer);
                 obj.Num = ReadInt32(buffer);
-                int count = ReadInt32(buffer);
                 obj.ItemList = new List<CDataCommonU32>();
-                for (int i = 0; i < count; i++)
-                {
-                    // Use the Serializer's Read method
-                    obj.ItemList.Add(new CDataCommonU32.Serializer().Read(buffer));
-                }
                 return obj;
             }
         }
