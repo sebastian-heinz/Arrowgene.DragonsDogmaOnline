@@ -71237,5 +71237,25 @@
         ]
       }
     ]
+  },
+  {
+    "Category": 0,
+    "RecipeList": [
+        {
+          "RecipeID": 2009,
+          "ItemID": 63,
+          "GradeUpItemID": 1675,
+          "Cost": 400,
+          "Exp": 12,
+          "CraftMaterialList": [
+            {
+              "ItemId": 7859,
+              "Num": 1,
+              "SortNo": 1,
+              "IsSp": true
+            }
+          ]
+        }
+    ]
   }
 ]
