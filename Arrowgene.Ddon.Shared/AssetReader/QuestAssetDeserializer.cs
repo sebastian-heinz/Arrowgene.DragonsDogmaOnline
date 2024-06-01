@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using System;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using YamlDotNet.Core.Tokens;
+using System.Linq.Expressions;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -35,6 +36,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             Logger.Info($"Reading quest files from {path}");
             foreach (var file in info.EnumerateFiles())
             {
+                Logger.Info($"{file.FullName}");
+
                 string json = File.ReadAllText(file.FullName);
                 JsonDocument document = JsonDocument.Parse(json);
 
@@ -110,7 +113,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             if (jQuest.TryGetProperty("blocks", out JsonElement jBlocksV1))
             {
-                QuestProcess questProcess = new QuestProcess();
+                QuestProcess questProcess = new QuestProcess()
+                {
+                    ProcessNo = 0
+                };
+
                 if (!ParseBlocks(questProcess, jBlocksV1))
                 {
                     Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Skipping.");
@@ -262,6 +269,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 questBlock.BlockNo = blockIndex;
                 questBlock.AnnounceType = QuestAnnounceType.None;
 
+                questBlock.ShouldStageJump = false;
+                if (jblock.TryGetProperty("stage_jump", out JsonElement jStageJump))
+                {
+                    questBlock.ShouldStageJump = jStageJump.GetBoolean();
+                }
+
                 if (jblock.TryGetProperty("announce_type", out JsonElement jUpdateAnnounce))
                 {
                     if (!Enum.TryParse(jUpdateAnnounce.GetString(), true, out QuestAnnounceType announceType))
@@ -283,19 +296,18 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     questBlock.SubGroupId = jSubGroupNo.GetUInt16();
                 }
 
-                if (jblock.TryGetProperty("layout_flags_on", out JsonElement jLayoutFlagsOn))
+                if (jblock.TryGetProperty("flags", out JsonElement jFlags))
                 {
-                    foreach (var jLayoutFlag in jLayoutFlagsOn.EnumerateArray())
+                    // {"type": "MyQst", "operation": "Set", "value": 4}
+                    foreach (var jFlag in jFlags.EnumerateArray())
                     {
-                        questBlock.QuestLayoutFlagsOn.Add(jLayoutFlag.GetUInt32());
-                    }
-                }
-
-                if (jblock.TryGetProperty("layout_flags_off", out JsonElement jLayoutFlagsOff))
-                {
-                    foreach (var jLayoutFlag in jLayoutFlagsOff.EnumerateArray())
-                    {
-                        questBlock.QuestLayoutFlagsOff.Add(jLayoutFlag.GetUInt32());
+                        var questFlag = ParseQuestFlag(jFlag);
+                        if (questFlag == null)
+                        {
+                            Logger.Error($"Unable to parse the quest flags @ index {blockIndex - 1}.");
+                            return false;
+                        }
+                        questBlock.QuestFlags.Add(questFlag);
                     }
                 }
 
@@ -316,6 +328,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
                                 StageId = ParseStageId(jblock.GetProperty("stage_id"))
                             });
+                        }
+                        break;
+                    case QuestBlockType.PartyGather:
+                        {
+                            var jLocation = jblock.GetProperty("location");
+                            questBlock.PartyGatherPoint.x = jLocation.GetProperty("x").GetInt32();
+                            questBlock.PartyGatherPoint.y = jLocation.GetProperty("y").GetInt32();
+                            questBlock.PartyGatherPoint.z = jLocation.GetProperty("z").GetInt32();
                         }
                         break;
                     case QuestBlockType.DiscoverEnemy:
@@ -422,7 +442,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case QuestBlockType.DummyBlock:
-                        /* Filler block which might do some meta things like announce or set flags */
+                        /* Filler block which might do some meta things like announce or set/check flags */
                         break;
                     default:
                         Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex - 1}.");
@@ -472,6 +492,34 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             
             uint groupId = jStageId.GetProperty("group_id").GetUInt32();
             return new StageId(id, layerNo, groupId);
+        }
+
+        private QuestFlag ParseQuestFlag(JsonElement jFlag)
+        {
+            QuestFlag questFlag = new QuestFlag();
+
+            if (!Enum.TryParse(jFlag.GetProperty("type").GetString(), true, out QuestFlagType type))
+            {
+                Logger.Error($"Invalid QuestFlagType");
+                return null;
+            }
+
+            if (!Enum.TryParse(jFlag.GetProperty("action").GetString(), true, out QuestFlagAction action))
+            {
+                Logger.Error($"Invalid QuestFlagAction");
+                return null;
+            }
+
+            if (jFlag.TryGetProperty("quest_id", out JsonElement jQuestId))
+            {
+                questFlag.QuestId = jQuestId.GetInt32();
+            }
+
+            questFlag.Type = type;
+            questFlag.Action = action;
+            questFlag.Value = jFlag.GetProperty("value").GetInt32();
+
+            return questFlag;
         }
 
         private bool ParseEnemyGroups(QuestAssetData assetData, JsonElement quest)

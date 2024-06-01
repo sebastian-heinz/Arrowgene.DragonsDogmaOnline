@@ -239,6 +239,14 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public bool HasActiveQuest(QuestId questId)
+        {
+            lock (ActiveQuests)
+            {
+                return ActiveQuests.ContainsKey(questId);
+            }
+        }
+
         public List<QuestId> StageQuests(StageId stageId)
         {
             lock (ActiveQuests)

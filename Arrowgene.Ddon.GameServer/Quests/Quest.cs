@@ -142,13 +142,34 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public abstract List<CDataQuestProcessState> StateMachineExecute(QuestProcessState processState, out QuestProgressState questProgressState);
+        public abstract List<CDataQuestProcessState> StateMachineExecute(GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
         public abstract bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId);
         public abstract List<InstancedEnemy> GetEnemiesInStageGroup(StageId stageId, uint subGroupId);
 
         public virtual void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
         {
             client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc());
+        }
+
+        public virtual void ResetEnemiesForBlock(GameClient client, QuestId questId, QuestBlock questBlock)
+        {
+            var quest = QuestManager.GetQuest(questId);
+            foreach (var groupId in questBlock.EnemyGroupIds)
+            {
+                var enemyGroup = quest.EnemyGroups[groupId];
+
+                S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
+                {
+                    LayoutId = new CDataStageLayoutId()
+                    {
+                        StageId = enemyGroup.StageId.Id,
+                        GroupId = enemyGroup.StageId.GroupId,
+                        LayerNo = enemyGroup.StageId.LayerNo
+                    }
+                };
+
+                client.Party.SendToAll(resetNtc);
+            }
         }
 
         public List<QuestRewardItem> GetQuestRewards()

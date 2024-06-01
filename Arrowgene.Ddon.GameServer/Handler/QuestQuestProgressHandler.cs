@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var processState = partyQuestState.GetProcessState(questId, processNo);
                 
                 var quest = QuestManager.GetQuest(questId);
-                res.QuestProcessState = quest.StateMachineExecute(processState, out questProgressState);
+                res.QuestProcessState = quest.StateMachineExecute(client, processState, out questProgressState);
 
                 partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
 
@@ -67,10 +67,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
                     {
-                        QuestScheduleId = (uint) questId,
+                        QuestScheduleId = (uint)questId,
                         RandomRewardNum = quest.RandomRewardNum(),
                         ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
-                        ProgressBonusNum = quest.FixedRewardsNum(),
+                        ProgressBonusNum = quest.RewardParams.ProgressBonusNum,
                         IsRepeatReward = quest.RewardParams.IsRepeatReward,
                         IsUndiscoveredReward = quest.RewardParams.IsUndiscoveredReward,
                         IsHelpReward = quest.RewardParams.IsHelpReward,

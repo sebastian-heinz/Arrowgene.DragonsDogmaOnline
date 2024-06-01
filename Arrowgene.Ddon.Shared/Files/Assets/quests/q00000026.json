@@ -1,0 +1,125 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "A Servant's Pledge",
+    "quest_id": 26,
+    "next_quest": 25,
+    "base_level": 6,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2350
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 200
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 514,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 427,
+                    "num": 1
+                },
+                {
+                    "item_id": 459,
+                    "num": 1
+                },
+                {
+                    "item_id": 475,
+                    "num": 1
+                },
+                {
+                    "item_id": 443,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 78,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 273},
+                {"type": "QstLayout", "action": "Set", "value": 973, "comment": "Pawn Dungeon Entrance (wall)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 1262, "quest_id": 70000001, "comment": "Pawn Dungeon Entrance (back)"}
+            ],
+            "npc_id": "Alvar",
+            "message_id": 26
+        },
+        {
+            "type": "CollectItem",
+            "stage_id": {
+                "id": 142,
+                "group_id": 1
+            },
+            "announce_type": "Accept",
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 973, "comment": "Pawn Dungeon Entrance (Wall)"},
+                {"type": "QstLayout", "action": "Set", "value": 974, "comment": "Pawn Dungeon Entrance (Quest)"},
+                {"type": "QstLayout", "action": "Set", "value": 898, "comment": "Glowing Point for Quest"}
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 78,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 898},
+                {"type": "QstLayout", "action": "Set", "value": 973, "comment": "Pawn Dungeon Entrance (wall)"},
+                {"type": "QstLayout", "action": "Set", "value": 974, "comment": "Pawn Dungeon Entrance (Quest)"}
+            ],
+            "npc_id": "Alvar",
+            "message_id": 1064
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Mysial0",
+            "message_id": 1065
+        },
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 201, "Param2": 10}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 201, "Param2": 10, "Param3": 0, "Param4": 0}
+            ]
+        }
+    ]
+}

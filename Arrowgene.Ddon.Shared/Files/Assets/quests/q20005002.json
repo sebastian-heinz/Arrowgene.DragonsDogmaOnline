@@ -95,6 +95,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Accept",
+            "reset_group": false,
             "groups": [0]
         }
     ]

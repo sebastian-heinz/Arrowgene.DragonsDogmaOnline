@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "Envoy of Reconciliation",
     "quest_id": 3,
-    "next_quest": 0,
+    "next_quest": 4,
     "base_level": 2,
     "minimum_item_rank": 0,
     "discoverable": true,
@@ -21,6 +21,36 @@
         {
             "type": "exp",
             "amount": 2300
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 504,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 63,
+                    "num": 1
+                },
+                {
+                    "item_id": 81,
+                    "num": 1
+                },
+                {
+                    "item_id": 92,
+                    "num": 1
+                },
+                {
+                    "item_id": 74,
+                    "num": 1
+                }
+            ]
         }
     ],
     "enemy_groups": [
@@ -65,19 +95,27 @@
     ],
     "blocks": [
         {
-            "type": "Raw",
-            "layout_flags_on": [273],
-            "check_commands": [
-                {"type": "NpcTalkAndOrderUi", "Param1": 201, "Param2": 4}
+            "type": "NpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 273},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "Comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
             ],
-            "result_commands": [
-                {"type": "WorldManageLayoutFlagOn", "Param1": 1293, "Param2": 70000001},
-                {"type": "QstTalkChg", "Param1": 4}
-            ]
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "npc_id": "Leo0",
+            "message_id": 962
         },
         {
             "type": "Raw",
-            "layout_flags_on": [972],
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 972}
+            ],
             "check_commands": [
                 {"type": "EventEnd", "Param1": 201, "Param2": 5}
             ],
@@ -128,6 +166,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {
@@ -164,7 +203,7 @@
                 "group_id": 1
             },
             "announce_type": "Update",
-            "npc_id": "Joseph",
+            "npc_id": "Leo0",
             "message_id": 962
         }
     ]

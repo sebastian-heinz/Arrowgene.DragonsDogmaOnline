@@ -12,6 +12,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         NpcTalkAndOrder,
         NpcTouchAndOrder,
         QuestNpcTalkAndOrder,
+        PartyGather,
         DiscoverEnemy,
         KillGroup,
         TalkToNpc,

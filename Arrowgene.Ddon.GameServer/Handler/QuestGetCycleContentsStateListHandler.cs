@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
@@ -41,7 +42,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList; // Recover paths + change vocation
 
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
-            ntc.MainQuestIdList = pcap.MainQuestIdList;
+            ntc.MainQuestIdList = new List<CDataQuestId>()
+            {
+                new CDataQuestId() { QuestId = (uint) QuestId.ResolutionsAndOmens},
+                new CDataQuestId() { QuestId = (uint) QuestId.TheSlumberingGod},
+                new CDataQuestId() { QuestId = (uint) QuestId.EnvoyOfReconcilliation},
+                new CDataQuestId() { QuestId = (uint) QuestId.SolidersOfTheRift},
+                // new CDataQuestId() { QuestId = (uint) QuestId.AServantsPledge},
+            };
+            // pcap.MainQuestIdList;
 
             client.Send(ntc);
 #endif
