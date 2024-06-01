@@ -40,15 +40,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // gQuests[QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist();
             // gQuests[QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd();
 
-
-            // Load world quests from file
-            foreach (var questAsset in assetRepository.WorldQuestAsset.Quests)
-            {
-                gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
-            }
-
-            // Load main quests from file
-            foreach (var questAsset in assetRepository.MainQuestAsset.Quests)
+            // Load Quests defined in files
+            foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
                 gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
             }

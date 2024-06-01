@@ -1,0 +1,171 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "Envoy of Reconciliation",
+    "quest_id": 3,
+    "next_quest": 0,
+    "base_level": 2,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 200
+        },
+        {
+            "type": "exp",
+            "amount": 2300
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 29,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010500",
+                    "level": 4,
+                    "exp": 52,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010500",
+                    "level": 4,
+                    "exp": 52,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010500",
+                    "level": 4,
+                    "exp": 52,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010500",
+                    "level": 4,
+                    "exp": 52,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010500",
+                    "level": 4,
+                    "exp": 52,
+                    "is_boss": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "Raw",
+            "layout_flags_on": [273],
+            "check_commands": [
+                {"type": "NpcTalkAndOrderUi", "Param1": 201, "Param2": 4}
+            ],
+            "result_commands": [
+                {"type": "WorldManageLayoutFlagOn", "Param1": 1293, "Param2": 70000001},
+                {"type": "QstTalkChg", "Param1": 4}
+            ]
+        },
+        {
+            "type": "Raw",
+            "layout_flags_on": [972],
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 201, "Param2": 5}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 201, "Param2": 5, "Param3": 0, "Param4": 0}
+            ]
+        },
+        {
+            "type": "Raw",
+            "announce_type": "Accept",
+            "check_commands": [
+                {"type": "TouchActQuestNpc", "Param1": 100, "Param2": 1, "Param3": 1}
+            ],
+            "result_commands": []
+        },
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 100, "Param2": 10}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 100, "Param2": 10, "Param3": 0, "Param4": 0}
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 25,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Alfred",
+            "message_id": 957
+        },
+        {
+            "type": "Raw",
+            "announce_type": "Update",
+            "check_commands": [
+                {"type": "IsReleaseWarpPointAnyone", "Param1": 2}
+            ],
+            "result_commands": []
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 25,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Alfred",
+            "message_id": 960
+        },
+        {
+            "type": "Raw",
+            "announce_type": "Update",
+            "check_commands": [
+                {"type": "TouchActQuestNpc", "Param1": 100, "Param2": 1, "Param3": 1}
+            ],
+            "result_commands": []
+        },
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 100, "Param2": 15}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 100, "Param2": 15, "Param3": 0, "Param4": 0}
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Joseph",
+            "message_id": 962
+        }
+    ]
+}

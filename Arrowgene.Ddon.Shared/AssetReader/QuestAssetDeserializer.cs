@@ -24,38 +24,45 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         public QuestAsset ReadPath(string path)
         {
-            Logger.Info($"Reading {path}");
-
             var questAssets = new QuestAsset();
 
+            if (!ReadPath(path, questAssets))
+            {
+                Logger.Info($"Failed to parse {path}");
+            }
+
+            return questAssets;
+        }
+
+        public bool ReadPath(string path, QuestAsset questAssets)
+        {
+            // Logger.Info($"Reading {path}");
             string json = File.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
-            if (!Enum.TryParse(document.RootElement.GetProperty("state_machine").GetString(), true, out QuestStateMachineType questStateMachineType))
+            var jQuest = document.RootElement;
+            if (!Enum.TryParse(jQuest.GetProperty("state_machine").GetString(), true, out QuestStateMachineType questStateMachineType))
             {
                 Logger.Error($"Expected key 'state_machine' not in the root of the document. Unable to parse {path}.");
-                return questAssets;
+                return false;
             }
 
             if (questStateMachineType != QuestStateMachineType.GenericStateMachine)
             {
                 Logger.Error($"Unsupported QuestStateMachineType '{questStateMachineType}'. Unable to parse {path}.");
-                return questAssets;
+                return false;
             }
 
-            foreach (var jQuest in document.RootElement.GetProperty("quests").EnumerateArray())
+            QuestAssetData assetData = new QuestAssetData();
+            if (!ParseQuest(assetData, jQuest))
             {
-                QuestAssetData assetData = new QuestAssetData();
-
-                if (!ParseQuest(assetData, jQuest))
-                {
-                    continue;
-                }
-
-                questAssets.Quests.Add(assetData);
+                Logger.Error($"Unable to parse '{path}'. Skipping.");
+                return false;
             }
 
-            return questAssets;
+            questAssets.Quests.Add(assetData);
+
+            return true;
         }
 
         private bool ParseQuest(QuestAssetData assetData, JsonElement jQuest)
