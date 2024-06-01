@@ -288,7 +288,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     case QuestBlockType.IsStageNo:
                         break;
                     case QuestBlockType.NpcTalkAndOrder:
-                    {
+                        {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
                                 Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
@@ -345,12 +345,22 @@ namespace Arrowgene.Ddon.Shared.Csv
                             questBlock.QuestOrderDetails.QuestId = (QuestId) jblock.GetProperty("quest_id").GetUInt32();
                         }
                         break;
-                    case QuestBlockType.CheckMyQstFlags:
-                    case QuestBlockType.SetMyQstFlags:
+                    case QuestBlockType.MyQstFlags:
                         {
-                            foreach (var jMyQstFlag in jblock.GetProperty("flags").EnumerateArray())
+                            if (jblock.TryGetProperty("set_flags", out JsonElement jSetFlags))
                             {
-                                questBlock.MyQstFlags.Add(jMyQstFlag.GetUInt32());
+                                foreach (var jMyQstFlag in jSetFlags.EnumerateArray())
+                                {
+                                    questBlock.MyQstSetFlags.Add(jMyQstFlag.GetUInt32());
+                                }
+                            }
+
+                            if (jblock.TryGetProperty("check_flags", out JsonElement jCheckFlags))
+                            {
+                                foreach (var jMyQstFlag in jCheckFlags.EnumerateArray())
+                                {
+                                    questBlock.MyQstCheckFlags.Add(jMyQstFlag.GetUInt32());
+                                }
                             }
                         }
                         break;
@@ -364,13 +374,28 @@ namespace Arrowgene.Ddon.Shared.Csv
                         }
                         break;
                     case QuestBlockType.DeliverItems:
-                        foreach (var item in jblock.GetProperty("items").EnumerateArray())
                         {
-                            questBlock.DeliveryRequests.Add(new QuestDeliveryItem()
+                            if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                ItemId = item.GetProperty("id").GetUInt32(),
-                                Amount = item.GetProperty("amount").GetUInt32()
+                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
+                            {
+                                NpcId = npcId,
+                                MsgId = jblock.GetProperty("message_id").GetInt32(),
+                                StageId = ParseStageId(jblock.GetProperty("stage_id"))
                             });
+
+                            foreach (var item in jblock.GetProperty("items").EnumerateArray())
+                            {
+                                questBlock.DeliveryRequests.Add(new QuestDeliveryItem()
+                                {
+                                    ItemId = item.GetProperty("id").GetUInt32(),
+                                    Amount = item.GetProperty("amount").GetUInt32()
+                                });
+                            }
                         }
                         break;
                     case QuestBlockType.Raw:

@@ -20,7 +20,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint QuestLayoutFlag { get; set; } // For groups
         public List<uint> QuestLayoutFlagsOn {  get; set; }
         public List<uint> QuestLayoutFlagsOff { get; set; }
-        public List<uint> MyQstFlags {  get; set; }
+        public List<uint> MyQstSetFlags { get; set; }
+        public List<uint> MyQstCheckFlags { get; set; }
+
         public bool ShowMarker { get; set; }
         public bool ResetGroup { get; set; }
         public List<uint> EnemyGroupIds { get; set; }
@@ -41,7 +43,10 @@ namespace Arrowgene.Ddon.Shared.Model
             QuestProcessState = new CDataQuestProcessState();
             QuestLayoutFlagsOn = new List<uint>();
             QuestLayoutFlagsOff = new List<uint>();
-            MyQstFlags = new List<uint>();
+
+            MyQstSetFlags = new List<uint>();
+            MyQstCheckFlags = new List<uint>();
+
             CheckCommands = new List<CDataQuestCommand>();
             ResultCommands = new List<CDataQuestCommand>();
             QuestOrderDetails = new QuestOrder();

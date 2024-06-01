@@ -219,9 +219,10 @@
 							"message_id": 29
 						},
 						{
-							"type": "CheckMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Accept",
-							"flags": [1, 2, 3, 4, 5, 6, 7, 8]
+							"set_flags": [9],
+							"check_flags": [1, 2, 3, 4, 5, 6, 7, 8]
 						},
 						{
 							"type": "TalkToNpc",
@@ -258,9 +259,8 @@
 					"comment": "process 1",
 					"blocks": [
 						{
-							"type": "IsQuestOrdered",
-							"quest_type": "World",
-							"quest_id": 20000003
+							"type": "MyQstFlags",
+							"check_flags": [9]
 						},
 						{
 							"type": "TalkToNpc",
@@ -272,9 +272,9 @@
 							"message_id": 21
 						},
 						{
-							"type": "SetMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Update",
-							"flags": [1]
+							"set_flags": [1]
 						}
 					]
 				},
@@ -282,9 +282,8 @@
 					"comment": "process 2",
 					"blocks": [
 						{
-							"type": "IsQuestOrdered",
-							"quest_type": "World",
-							"quest_id": 20000003
+							"type": "MyQstFlags",
+							"check_flags": [9]
 						},
 						{
 							"type": "TalkToNpc",
@@ -296,9 +295,9 @@
 							"message_id": 21
 						},
 						{
-							"type": "SetMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Update",
-							"flags": [2]
+							"set_flags": [2]
 						}
 					]
 				},
@@ -306,9 +305,8 @@
 					"comment": "process 3",
 					"blocks": [
 						{
-							"type": "IsQuestOrdered",
-							"quest_type": "World",
-							"quest_id": 20000003
+							"type": "MyQstFlags",
+							"check_flags": [9]
 						},
 						{
 							"type": "TalkToNpc",
@@ -320,9 +318,9 @@
 							"message_id": 21
 						},
 						{
-							"type": "SetMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Update",
-							"flags": [3]
+							"set_flags": [3]
 						}
 					]
 				},
@@ -330,9 +328,8 @@
 					"comment": "process 4",
 					"blocks": [
 						{
-							"type": "IsQuestOrdered",
-							"quest_type": "World",
-							"quest_id": 20000003
+							"type": "MyQstFlags",
+							"check_flags": [9]
 						},
 						{
 							"type": "TalkToNpc",
@@ -344,9 +341,9 @@
 							"message_id": 21
 						},
 						{
-							"type": "SetMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Update",
-							"flags": [4]
+							"set_flags": [4]
 						}
 					]
 				},
@@ -354,9 +351,8 @@
 					"comment": "process 5",
 					"blocks": [
 						{
-							"type": "IsQuestOrdered",
-							"quest_type": "World",
-							"quest_id": 20000003
+							"type": "MyQstFlags",
+							"check_flags": [9]
 						},
 						{
 							"type": "TalkToNpc",
@@ -368,9 +364,9 @@
 							"message_id": 21
 						},
 						{
-							"type": "SetMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Update",
-							"flags": [5]
+							"set_flags": [5]
 						}
 					]
 				},
@@ -378,9 +374,8 @@
 					"comment": "process 6",
 					"blocks": [
 						{
-							"type": "IsQuestOrdered",
-							"quest_type": "World",
-							"quest_id": 20000003
+							"type": "MyQstFlags",
+							"check_flags": [9]
 						},
 						{
 							"type": "TalkToNpc",
@@ -392,9 +387,9 @@
 							"message_id": 21
 						},
 						{
-							"type": "SetMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Update",
-							"flags": [6]
+							"set_flags": [6]
 						}
 					]
 				},
@@ -402,9 +397,8 @@
 					"comment": "process 7",
 					"blocks": [
 						{
-							"type": "IsQuestOrdered",
-							"quest_type": "World",
-							"quest_id": 20000003
+							"type": "MyQstFlags",
+							"check_flags": [9]
 						},
 						{
 							"type": "TalkToNpc",
@@ -416,9 +410,9 @@
 							"message_id": 21
 						},
 						{
-							"type": "SetMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Update",
-							"flags": [7]
+							"set_flags": [7]
 						}
 					]
 				},
@@ -426,9 +420,8 @@
 					"comment": "process 8",
 					"blocks": [
 						{
-							"type": "IsQuestOrdered",
-							"quest_type": "World",
-							"quest_id": 20000003
+							"type": "MyQstFlags",
+							"check_flags": [9]
 						},
 						{
 							"type": "TalkToNpc",
@@ -440,9 +433,9 @@
 							"message_id": 21
 						},
 						{
-							"type": "SetMyQstFlags",
+							"type": "MyQstFlags",
 							"announce_type": "Update",
-							"flags": [8]
+							"set_flags": [8]
 						}
 					]
 				}
@@ -1532,6 +1525,446 @@
 					"announce_type": "Update",
 					"npc_id": "Eterna",
 					"message_id": 216
+				}
+			]
+		},
+		{
+			"type": "World",
+			"comment": "q20000014 - A Heart Throbs Once More",
+			"quest_id": 20000014,
+			"base_level": 8,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 260
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 790
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 20
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 446,
+							"num": 1
+						},
+						{
+							"item_id": 34,
+							"num": 2
+						}
+					]
+				}
+			],
+			"blocks": [
+				{
+					"type": "NpcTalkAndOrder",
+					"stage_id": {
+						"id": 2,
+						"group_id": 1
+					},
+					"npc_id": "Mayleaf0",
+					"message_id": 223
+				},
+				{
+					"type": "DeliverItems",
+					"stage_id": {
+						"id": 2,
+						"group_id": 1
+					},
+					"npc_id": "Mayleaf0",
+					"announce_type": "Accept",
+					"items": [
+						{
+							"id": 8931,
+							"amount": 1
+						}
+					],
+					"message_id": 958
+				}
+			]
+		},
+		{
+			"type": "World",
+			"comment": "q20000017 - Fabio's Collectibles",
+			"quest_id": 20000017,
+			"base_level": 8,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 220
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 660
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 30
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 8928,
+							"num": 1
+						},
+						{
+							"item_id": 36,
+							"num": 2
+						}
+					]
+				}
+			],
+			"blocks": [
+				{
+					"type": "NpcTalkAndOrder",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"message_id": 226
+				},
+				{
+					"type": "DeliverItems",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"announce_type": "Accept",
+					"items": [
+						{
+							"id": 7858,
+							"amount": 2
+						}
+					],
+					"message_id": 962
+				},
+				{
+					"type": "DeliverItems",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"announce_type": "Update",
+					"items": [
+						{
+							"id": 7893,
+							"amount": 2
+						}
+					],
+					"message_id": 962
+				},
+				{
+					"type": "DeliverItems",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"announce_type": "Update",
+					"items": [
+						{
+							"id": 7854,
+							"amount": 2
+						}
+					],
+					"message_id": 962
+				}
+			]
+		},
+		{
+			"type": "World",
+			"comment": "q20000018 - Fabio and Monster-Slaying",
+			"quest_id": 20000018,
+			"base_level": 9,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 480
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 290
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 50
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 8143,
+							"num": 1
+						},
+						{
+							"item_id": 9365,
+							"num": 2
+						}
+					]
+				}
+			],
+			"enemy_groups" : [
+				{
+					"stage_id": {
+						"id": 1,
+						"group_id": 21
+					},
+					"enemies": [
+						{
+							"enemy_id": "0x015504",
+							"level": 11,
+							"exp": 260,
+							"is_boss": false
+						},
+						{
+							"enemy_id": "0x015504",
+							"level": 11,
+							"exp": 260,
+							"is_boss": false
+						},
+						{
+							"enemy_id": "0x015504",
+							"level": 11,
+							"exp": 260,
+							"is_boss": false
+						}
+					]
+				}
+			],
+			"blocks": [
+				{
+					"type": "NpcTalkAndOrder",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"npc_id": "Fabio0",
+					"message_id": 227
+				},
+				{
+					"type": "DiscoverEnemy",
+					"announce_type": "Accept",
+					"groups": [0]
+				},
+				{
+					"type": "KillGroup",
+					"announce_type": "Update",
+					"groups": [0]
+				},
+				{
+					"type": "TalkToNpc",
+					"stage_id": {
+						"id": 2,
+						"group_id": 0
+					},
+					"announce_type": "Update",
+					"npc_id": "Fabio0",
+					"message_id": 227
+				}
+			]
+		},
+		{
+			"type": "World",
+			"comment": "q20000002 - A Transporter's Tragedy",
+			"quest_id": 20000002,
+			"base_level": 9,
+			"minimum_item_rank": 0,
+			"discoverable": true,
+			"rewards": [
+				{
+					"type": "exp",
+					"amount": 320
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "Gold",
+					"amount": 320
+				},
+				{
+					"type": "wallet",
+					"wallet_type": "RiftPoints",
+					"amount": 30
+				},
+				{
+					"type": "select",
+					"loot_pool": [
+						{
+							"item_id": 963,
+							"num": 1
+						},
+						{
+							"item_id": 36,
+							"num": 3
+						}
+					]
+				}
+			],
+			"processes": [
+				{
+					"comment": "process 0",
+					"blocks": [
+						{
+							"type": "NpcTalkAndOrder",
+							"stage_id": {
+								"id": 1,
+								"group_id": 0
+							},
+							"npc_id": "WhiteKnight0",
+							"message_id": 27,
+							"layout_flags_on": [986]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Accept",
+							"set_flags": [6],
+							"check_flags": [1, 2, 3, 4, 5]
+						},
+						{
+							"type": "NpcTalkAndOrder",
+							"stage_id": {
+								"id": 1,
+								"group_id": 0
+							},
+							"npc_id": "WhiteKnight0",
+							"message_id": 27
+						}
+					]
+				},
+				{
+					"comment": "process 1",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "TalkToNpc",
+							"stage_id": {
+								"id": 25,
+								"group_id": 0
+							},
+							"npc_id": "Bob",
+							"message_id": 27
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"set_flags": [1]
+						}
+					]
+				},
+				{
+					"comment": "process 2",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "CollectItem",
+							"stage_id": {
+								"id": 1,
+								"group_id": 2
+							},
+							"layout_flags_on": [1125]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"layout_flags_off": [1125],
+							"set_flags": [2]
+						}
+					]
+				},
+				{
+					"comment": "process 3",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "CollectItem",
+							"stage_id": {
+								"id": 1,
+								"group_id": 3
+							},
+							"layout_flags_on": [1126]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"layout_flags_off": [1126],
+							"set_flags": [3]
+						}
+					]
+				},
+				{
+					"comment": "process 4",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "CollectItem",
+							"stage_id": {
+								"id": 1,
+								"group_id": 4
+							},
+							"layout_flags_on": [1127]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"layout_flags_off": [1127],
+							"set_flags": [4]
+						}
+					]
+				},
+				{
+					"comment": "process 5",
+					"blocks": [
+						{
+							"type": "MyQstFlags",
+							"check_flags": [6]
+						},
+						{
+							"type": "CollectItem",
+							"stage_id": {
+								"id": 1,
+								"group_id": 5
+							},
+							"layout_flags_on": [1128]
+						},
+						{
+							"type": "MyQstFlags",
+							"announce_type": "Update",
+							"layout_flags_off": [1128],
+							"set_flags": [5]
+						}
+					]
 				}
 			]
 		}

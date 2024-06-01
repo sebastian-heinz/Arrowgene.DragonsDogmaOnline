@@ -1,17 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Security.Cryptography;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
-using Arrowgene.Ddon.GameServer.Quests.MainQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Arrowgene.Ddon.GameServer.Quests
 {
@@ -341,27 +336,25 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             deliveryRequests.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount));
                         }
                         result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(deliveryRequests);
-                        result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfoQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, 1, 0));
+                        result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, 1, 0));
+                        // result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfoQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, 1, 0));
                     }
                     break;
-                case QuestBlockType.CheckMyQstFlags:
+                case QuestBlockType.MyQstFlags:
                     {
-                        List<CDataQuestCommand> cmds = new List<CDataQuestCommand>();
-                        foreach (var flag in questBlock.MyQstFlags)
+                        List<CDataQuestCommand> checkFlags = new List<CDataQuestCommand>();
+                        foreach (var flag in questBlock.MyQstCheckFlags)
                         {
-                            cmds.Add(QuestManager.CheckCommand.MyQstFlagOn((int) flag));
+                            checkFlags.Add(QuestManager.CheckCommand.MyQstFlagOn((int)flag));
                         }
-                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(cmds);
-                    }
-                    break;
-                case QuestBlockType.SetMyQstFlags:
-                    {
-                        List<CDataQuestCommand> cmds = new List<CDataQuestCommand>();
-                        foreach (var flag in questBlock.MyQstFlags)
+                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkFlags);
+
+                        List<CDataQuestCommand> setFlags = new List<CDataQuestCommand>();
+                        foreach (var flag in questBlock.MyQstSetFlags)
                         {
-                            cmds.Add(QuestManager.ResultCommand.MyQstFlagOn((int)flag));
+                            setFlags.Add(QuestManager.ResultCommand.MyQstFlagOn((int)flag));
                         }
-                        result.ResultCommandList.AddRange(cmds);
+                        result.ResultCommandList.AddRange(setFlags);
                     }
                     break;
                 case QuestBlockType.TalkToNpc:
