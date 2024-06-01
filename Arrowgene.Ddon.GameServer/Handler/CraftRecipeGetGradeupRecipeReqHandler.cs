@@ -17,18 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftRecipeGetGradeupRecipeReqHandler));
 
-        private readonly DdonGameServer _server;
-
-
-                private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
-            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
-        };
-
-        private readonly ItemManager _itemManager;
         public CraftRecipeGetGradeupRecipeReqHandler(DdonGameServer server) : base(server)
         {
-            _itemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SGetCraftGradeupRecipeReq> packet)
@@ -46,15 +36,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Take(packet.Structure.Num)
                     .ToList(),
                 IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
-                //Logger.Debug("Packet stuff is going downnnnn");
             });
                 
-        //    S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-        //    updateCharacterItemNtc.UpdateType = 0;
-
-
-
-            
         }
     }
 }
