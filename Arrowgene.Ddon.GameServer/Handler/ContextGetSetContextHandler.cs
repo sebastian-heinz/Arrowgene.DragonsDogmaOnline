@@ -34,8 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // We believe it may be telling the client to load a persistent context.
             // If it's not sent, it will load a new context.
-            // Sending S2CInstance_13_42_16_Ntc resets it (Like its done in StageAreaChangeHandler)
-            //  Send to all or just the host?
+            // Sending S2CInstanceAreaResetNtc resets it (Like its done in StageAreaChangeHandler)
+            // Send to all or just the host?
 
             var baseContext = packet.Structure.Base;
             var context = ContextManager.GetContext(client.Party, packet.Structure.Base.UniqueId);

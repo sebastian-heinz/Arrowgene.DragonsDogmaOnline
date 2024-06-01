@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Asset
 {

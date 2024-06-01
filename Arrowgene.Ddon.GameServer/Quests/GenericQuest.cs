@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Quests

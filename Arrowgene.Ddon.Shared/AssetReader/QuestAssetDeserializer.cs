@@ -8,13 +8,13 @@ using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Text.Json.Serialization;
 using System;
-using Arrowgene.Ddon.GameServer.Quests;
 using System.Collections;
 using System.Reflection.Emit;
 using System.Reflection.Metadata.Ecma335;
 using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {

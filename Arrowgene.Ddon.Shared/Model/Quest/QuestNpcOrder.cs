@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arrowgene.Ddon.Shared.Model
+namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public class QuestNpcOrder
     {
@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public StageId StageId { get; set; }
 
-        public QuestNpcOrder() 
+        public QuestNpcOrder()
         {
             StageId = StageId.Invalid;
         }

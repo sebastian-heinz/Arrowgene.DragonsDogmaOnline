@@ -6,12 +6,12 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Arrowgene.Ddon.Shared.Model
+namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public class QuestLayoutFlagSetInfo
     {
-        public QuestLayoutFlagSetInfo() 
-        { 
+        public QuestLayoutFlagSetInfo()
+        {
         }
 
         public uint FlagNo { get; set; }

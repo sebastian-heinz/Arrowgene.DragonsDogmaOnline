@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arrowgene.Ddon.Shared.Model
+namespace Arrowgene.Ddon.Shared.Model.Quest
 {
-    public enum  QuestResultCommand : ushort
+    public enum QuestResultCommand : ushort
     {
         LotOn = 1, // (cQuestProcess* this, s32 stageNo, s32 lotNo, s32 param03, s32 param04))
         LotOff = 2, // (cQuestProcess* this, s32 stageNo, s32 lotNo, s32 param03, s32 param04))

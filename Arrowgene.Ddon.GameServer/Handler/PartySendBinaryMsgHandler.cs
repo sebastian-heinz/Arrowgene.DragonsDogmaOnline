@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (client.Party != null)
             {
                 S2CPartyRecvBinaryMsgNtc binaryMsgNtc = new S2CPartyRecvBinaryMsgNtc();
+                binaryMsgNtc.CharacterId = client.Character.CharacterId;
                 binaryMsgNtc.Data = packet.Structure.Data;
                 binaryMsgNtc.OnlineStatus = client.Character.OnlineStatus;
 

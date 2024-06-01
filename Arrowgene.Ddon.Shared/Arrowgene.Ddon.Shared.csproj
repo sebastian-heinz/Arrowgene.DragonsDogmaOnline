@@ -25,16 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ContentWithTargetPath Remove="files\assets\Quests.json" />
-      <ContentWithTargetPath Remove="Files\Assets\quests\world_quests.json" />
+      <Folder Include="Asset\" />
     </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="files\assets\Quests.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="files\assets\Quests.json" />
-    </ItemGroup>
-
 </Project>

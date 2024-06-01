@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -33,6 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach (var questId in partyLeader.Client.Character.PriorityQuests)
             {
+                // TODO: Currently we are using the questId as the schedule
+                // TODO: ID but we might want to make that unique at some point.
                 setting.PriorityQuestList.Add(new CDataPriorityQuest()
                 {
                     QuestId = (uint) questId,

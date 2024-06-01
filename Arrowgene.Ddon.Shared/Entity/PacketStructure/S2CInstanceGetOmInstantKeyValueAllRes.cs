@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CInstanceGetOmInstantKeyValueAllRes Read(IBuffer buffer)
             {
                 S2CInstanceGetOmInstantKeyValueAllRes obj = new S2CInstanceGetOmInstantKeyValueAllRes();
+                ReadServerResponse(buffer, obj);
                 obj.StageId = ReadUInt32(buffer);
                 obj.Values = ReadEntityList<CDataOmData>(buffer);
                 return obj;

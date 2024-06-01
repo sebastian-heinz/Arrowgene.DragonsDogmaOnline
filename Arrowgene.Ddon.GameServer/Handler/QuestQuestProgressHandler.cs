@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
@@ -18,7 +19,7 @@ using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestQuestProgressHandler : StructurePacketHandler<GameClient, C2SQuestQuestProgressReq>
+    public class QuestQuestProgressHandler : GameStructurePacketHandler<C2SQuestQuestProgressReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestProgressHandler));
 

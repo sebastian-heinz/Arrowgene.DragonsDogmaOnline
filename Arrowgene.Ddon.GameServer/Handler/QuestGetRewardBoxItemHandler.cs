@@ -13,15 +13,12 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetRewardBoxItemHandler : StructurePacketHandler<GameClient, C2SQuestGetRewardBoxItemReq>
+    public class QuestGetRewardBoxItemHandler : GameStructurePacketHandler<C2SQuestGetRewardBoxItemReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetRewardBoxItemHandler));
 
-        private readonly ItemManager _ItemManager;
-
         public QuestGetRewardBoxItemHandler(DdonGameServer server) : base(server)
         {
-            _ItemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestGetRewardBoxItemReq> packet)
@@ -47,9 +44,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var boxReward in packet.Structure.GetRewardBoxItemList)
             {
                 var reward = boxRewards.Rewards[boxReward.UID];
-                
-                // TODO: Certain items like currencies should go directly to the currency tab instead
-                var result = _ItemManager.AddItem(Server, client.Character, StorageType.StorageBoxNormal, reward.ItemId, reward.Num);
+
+                var result = Server.ItemManager.AddItem(Server, client.Character, StorageType.StorageBoxNormal, reward.ItemId, reward.Num);
                 updateCharacterItemNtc.UpdateItemList.AddRange(result);
             }
             client.Send(updateCharacterItemNtc);

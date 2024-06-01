@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             InstancedEnemy enemyKilled;
             if (IsQuestControlled && quest != null)
             {
-                // TODO: Add drops to Quest Monsters?
+                // TODO: Add drops to Quest Monsters
                 enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest.QuestId, stageId, 0, packet.Structure.SetId);
             }
             else
@@ -73,7 +73,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             enemyKilled.IsKilled = true;
 
-            
             List<InstancedEnemy> group;
             if (IsQuestControlled && quest != null)
             {
@@ -92,10 +91,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     quest.SendProgressWorkNotices(client, stageId, 0);
                 }
 
+                bool IsAreaBoss = false;
+                foreach (var enemy in group)
+                {
+                    IsAreaBoss = IsAreaBoss || enemy.IsAreaBoss;
+                    if (IsAreaBoss)
+                    {
+                        break;
+                    }
+                }
+
+                // This is used for quests and things like key door monsters
                 S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                 {
                     LayoutId = packet.Structure.LayoutId,
-                    IsAreaBoss = enemyKilled.IsAreaBoss // TODO: How do we handle this for large groups???
+                    IsAreaBoss = IsAreaBoss
                 };
                 client.Party.SendToAll(groupDestroyedNtc);
             }

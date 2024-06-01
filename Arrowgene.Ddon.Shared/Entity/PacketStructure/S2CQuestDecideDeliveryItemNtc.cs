@@ -1,6 +1,4 @@
 using Arrowgene.Buffers;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using System;
 

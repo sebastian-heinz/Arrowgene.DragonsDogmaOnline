@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arrowgene.Ddon.GameServer.Quests
+namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public enum QuestId : uint
     {

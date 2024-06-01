@@ -399,7 +399,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestGetLotQuestListReq.Serializer());
             Create(new C2SQuestGetPackageQuestListReq.Serializer());
             Create(new C2SQuestGetRewardBoxItemReq.Serializer());
-            Create(new C2SQuestGetTutorialQuestListRes.Serializer());
+            Create(new C2SQuestGetTutorialQuestListReq.Serializer());
             Create(new C2SQuestQuestOrderReq.Serializer());
             Create(new C2SQuestLeaderQuestProgressRequestReq.Serializer());
             Create(new C2SQuestSendLeaderQuestOrderConditionInfoReq.Serializer());
@@ -702,7 +702,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());
 
-            Create(new C2SQuestQuestLogInfoRes.Serializer());
+            Create(new S2CQuestQuestLogInfoRes.Serializer());
             Create(new CDataLightQuestClearList.Serializer());
 
             Create(new S2CQuestGetLightQuestListRes.Serializer());

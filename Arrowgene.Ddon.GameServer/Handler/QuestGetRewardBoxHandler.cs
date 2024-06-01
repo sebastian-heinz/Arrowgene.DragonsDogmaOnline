@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuest(boxReward.QuestId);
                 if (quest == null)
                 {
-                    // How did this happen?
+                    Logger.Error($"Failed to find quest for {boxReward.QuestId}. Unable to retrieve rewards.");
                     continue;
                 }
 

@@ -3,7 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 

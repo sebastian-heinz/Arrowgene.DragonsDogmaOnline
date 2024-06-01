@@ -7,28 +7,28 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class C2SQuestQuestLogInfoRes : ServerResponse
+    public class S2CQuestQuestLogInfoRes : ServerResponse
     {
         public override PacketId Id => PacketId.S2C_QUEST_QUEST_LOG_INFO_RES;
 
-        public C2SQuestQuestLogInfoRes()
+        public S2CQuestQuestLogInfoRes()
         {
             ClanQuestClearNumList = new List<CDataLightQuestClearList>();
         }
 
         public List<CDataLightQuestClearList> ClanQuestClearNumList {  get; set; }
 
-        public class Serializer : PacketEntitySerializer<C2SQuestQuestLogInfoRes>
+        public class Serializer : PacketEntitySerializer<S2CQuestQuestLogInfoRes>
         {
-            public override void Write(IBuffer buffer, C2SQuestQuestLogInfoRes obj)
+            public override void Write(IBuffer buffer, S2CQuestQuestLogInfoRes obj)
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntityList<CDataLightQuestClearList>(buffer, obj.ClanQuestClearNumList);
             }
 
-            public override C2SQuestQuestLogInfoRes Read(IBuffer buffer)
+            public override S2CQuestQuestLogInfoRes Read(IBuffer buffer)
             {
-                C2SQuestQuestLogInfoRes obj = new C2SQuestQuestLogInfoRes();
+                S2CQuestQuestLogInfoRes obj = new S2CQuestQuestLogInfoRes();
                 ReadServerResponse(buffer, obj);
                 obj.ClanQuestClearNumList = ReadEntityList<CDataLightQuestClearList>(buffer);
                 return obj;

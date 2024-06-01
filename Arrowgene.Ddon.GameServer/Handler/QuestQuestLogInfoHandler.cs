@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            C2SQuestQuestLogInfoRes obj = new C2SQuestQuestLogInfoRes();
+            S2CQuestQuestLogInfoRes obj = new S2CQuestQuestLogInfoRes();
             client.Send(obj);
         }
     }

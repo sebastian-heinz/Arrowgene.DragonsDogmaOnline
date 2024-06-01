@@ -1,4 +1,4 @@
-namespace Arrowgene.Ddon.Shared.Model
+namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public enum QuestAnnounceType
     {

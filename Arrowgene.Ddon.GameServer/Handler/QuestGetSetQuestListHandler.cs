@@ -7,7 +7,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections;
@@ -16,7 +16,7 @@ using System.Text.RegularExpressions;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetSetQuestListHandler : StructurePacketHandler<GameClient, C2SQuestGetSetQuestListReq>
+    public class QuestGetSetQuestListHandler : GameStructurePacketHandler<C2SQuestGetSetQuestListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetQuestPartyBonusListHandler));
 

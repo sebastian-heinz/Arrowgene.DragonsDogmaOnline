@@ -52,13 +52,9 @@ namespace Arrowgene.Ddon.GameServer
         // TODO: Maybe place somewhere else
         public static readonly TimeSpan RevivalPowerRechargeTimeSpan = TimeSpan.FromDays(1);
 
-        private AssetRepository _AssetRepository;
-
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
-            _AssetRepository = assetRepository;
-
             Setting = new GameServerSetting(setting);
             Router = new GameRouter();
             ClientLookup = new GameClientLookup();
@@ -108,7 +104,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
-            QuestManager.LoadQuests(_AssetRepository);
+            QuestManager.LoadQuests(this.AssetRepository);
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();

@@ -3,6 +3,7 @@ using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections;
 using System.Collections.Generic;

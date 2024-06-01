@@ -28,6 +28,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
+                // By observing packet captures we see this packet is sent.
+                // Still not 100% sure on what it is actually doing.
+                // To theorize, I think it may be attmepting to change
+                // Which client in the party is controlling the battle data
+                // for this enemy but I am not 100% confident that is the case yet.
                 Logger.Debug("=====================================================================");
                 Logger.Debug($"StageId={layout.StageId}, LayoutNo={layout.LayerNo}, GroupId={layout.GroupId}");
                 Logger.Debug($"InstanceEnemyGroupEntryHandler: Spawning in 0x{enemyId:x16}");

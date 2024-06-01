@@ -127,18 +127,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CDataItemUpdateResult? ConsumeItemByUIdFromItemBag(DdonServer<GameClient> server, Character character, string itemUId, uint consumeNum)
         {
-            List<StorageType> itemBagStorage = new List<StorageType>() { StorageType.ItemBagConsumable, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.ItemBagMaterial};
-            foreach (var storageType in itemBagStorage)
-            {
-                var foundItem = character.Storage.getStorage(storageType).findItemByUId(itemUId);
-                if (foundItem != null)
-                {
-                    (ushort slotNo, Item item, uint itemNum) = foundItem;
-                    return ConsumeItem(server, character, storageType, slotNo, item, itemNum, consumeNum);
-                }
-            }
-
-            return null;
+            List<StorageType> itemBagStorage = new List<StorageType>() { StorageType.ItemBagConsumable, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.ItemBagMaterial };
+            List<CDataItemUpdateResult> results = ConsumeItemByUIdFromMultipleStorages(server, character, itemBagStorage, itemUId, consumeNum);
+            return results.Count > 0 ? results[0] : null;
         }
 
         public CDataItemUpdateResult? ConsumeItemInSlot(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, uint consumeNum)
@@ -208,6 +199,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, StorageType storageType, uint itemId, uint num)
         {
+            // TODO: Certain items like currencies should go directly to the currency tab instead
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
             return DoAddItem(server.Database, character, storageType, itemId, num, clientItemInfo.StackLimit);
         }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Model
 {

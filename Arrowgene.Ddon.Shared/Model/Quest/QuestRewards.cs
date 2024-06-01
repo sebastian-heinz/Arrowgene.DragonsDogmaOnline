@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arrowgene.Ddon.Shared.Model
+namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public abstract class LootPoolItem
     {
@@ -52,7 +51,7 @@ namespace Arrowgene.Ddon.Shared.Model
             LootPool = new List<LootPoolItem>();
         }
 
-        public List<LootPoolItem> LootPool {  get; set; }
+        public List<LootPoolItem> LootPool { get; set; }
 
         public virtual List<CDataRewardItem> AsCDataRewardItems()
         {
@@ -131,7 +130,7 @@ namespace Arrowgene.Ddon.Shared.Model
             double sum = 0.0;
             for (int i = 0; i < LootPool.Count; i++)
             {
-                RandomLootPoolItem item = (RandomLootPoolItem) LootPool[i];
+                RandomLootPoolItem item = (RandomLootPoolItem)LootPool[i];
                 sum += item.Chance;
                 if (target <= sum)
                 {
@@ -160,6 +159,6 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public QuestId QuestId { get; set; }
         // public List<CDataRewardBoxItem> Rewards { get; set; }
-        public Dictionary<string, CDataRewardBoxItem> Rewards {  get; set; }
+        public Dictionary<string, CDataRewardBoxItem> Rewards { get; set; }
     }
 }

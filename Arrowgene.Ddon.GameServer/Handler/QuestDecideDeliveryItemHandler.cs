@@ -7,7 +7,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
-using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
