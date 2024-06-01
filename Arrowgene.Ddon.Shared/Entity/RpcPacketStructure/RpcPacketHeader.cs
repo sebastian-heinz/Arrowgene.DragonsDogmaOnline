@@ -15,9 +15,13 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
         {
         }
 
-        public UInt32 SessionId { get; set; }
-        public UInt64 RpcId { get; set; }
-        public RpcMessageId MsgIdFull { get; set; }
+        // public UInt32 SessionId { get; set; }
+
+        public UInt32 Unk0 {  get; set; }
+        public UInt32 Unk1 {  get; set; }
+        public UInt32 RpcId { get; set; }
+        public RpcNetMsgDti MsgDTI { get; set; }
+        public UInt16 MsgId { get; set; }
         public UInt32 SearchId { get; set; }
 
         public override void Handle(Character character, RpcPacketHeader Header, IBuffer buffer)
@@ -29,11 +33,51 @@ namespace Arrowgene.Ddon.Shared.Entity.RpcPacketStructure
         public RpcPacketHeader Read(IBuffer buffer)
         {
             RpcPacketHeader obj = new RpcPacketHeader();
-            obj.SessionId = ReadUInt32(buffer);    // NetMsgData.Head.SessionId
-            obj.RpcId = ReadUInt64(buffer); // NetMsgData.Head.RpcId
-            obj.MsgIdFull = (RpcMessageId) ReadUInt32(buffer);    // NetMsgData.Head.MsgIdFull
+            // obj.SessionId = ReadUInt32(buffer);    // NetMsgData.Head.SessionId
+            obj.Unk0 = ReadUInt32(buffer);
+            obj.Unk1 = ReadUInt32(buffer);
+            obj.RpcId = ReadUInt32(buffer); // NetMsgData.Head.RpcId
+            obj.MsgDTI = (RpcNetMsgDti) ReadUInt16(buffer);
+            obj.MsgId = ReadUInt16(buffer);
             obj.SearchId = ReadUInt32(buffer);     // NetMsgData.Head.SearchId, seems to either a PawnId or 0
             return obj;
+        }
+
+        private string GetMsgIdForDTI(RpcNetMsgDti type, ushort msgId)
+        {
+            string result;
+            switch (type)
+            {
+                case RpcNetMsgDti.cNetMsgCtrlAction:
+                    result = $"{(RpcMsgIdControl) msgId}";
+                    break;
+                case RpcNetMsgDti.cNetMsgSetNormal:
+                    result = $"{(RpcMsgIdSetNormal)msgId}";
+                    break;
+                case RpcNetMsgDti.cNetMsgGameNormal:
+                    result = $"{(RpcMsgIdGameNormal)msgId}";
+                    break;
+                case RpcNetMsgDti.cNetMsgGameEasy:
+                    result = $"{(RpcMsgIdGameEasy)msgId}";
+                    break;
+                case RpcNetMsgDti.cNetMsgToolNormal:
+                    result = $"{(RpcMsgIdToolNormal)msgId}";
+                    break;
+                case RpcNetMsgDti.cNetMsgToolEasy:
+                    result = $"{(RpcMsgIdToolEasy)msgId}";
+                    break;
+                default:
+                    result = $"Unknown (0x{msgId}:x)";
+                    break;
+            }
+
+            return result;
+        }
+
+        public string AsString()
+        {
+            string MessageIdName = GetMsgIdForDTI(MsgDTI, MsgId);
+            return $"Unk0=0x{Unk0:x}, Unk1=0x{Unk1:x} RpcId={RpcId}, MsgDTI={MsgDTI}, MessageId={MessageIdName}, SearchId={SearchId}";
         }
     }
 }
