@@ -8,6 +8,7 @@ namespace Arrowgene.Ddon.Shared.Model
      */
     public enum WalletType : byte
     {
+        None = 0,
         Gold = 1, // G
         RiftPoints = 2, // R
         BloodOrbs = 3, // BO

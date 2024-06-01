@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
                 var quest = QuestManager.GetQuest(questId);
-                if (quest.QuestType == QuestType.PersonalQuest || quest.QuestType == QuestType.ExtremeMissions)
+                if (quest.QuestType == QuestType.PersonalQuest)
                 {
                     res.LightQuestList.Add(new CDataLightQuestList()
                     {

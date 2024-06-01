@@ -1,21 +1,13 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -23,15 +15,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestProgressHandler));
 
-        private readonly WalletManager _WalletManager;
-        private readonly ExpManager _ExpManager;
-        private readonly ItemManager _ItemManager;
-
         public QuestQuestProgressHandler(DdonGameServer server) : base(server)
         {
-            _WalletManager = server.WalletManager;
-            _ExpManager = server.ExpManager;
-            _ItemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestQuestProgressReq> packet)
@@ -134,12 +119,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach (var walletReward in quest.WalletRewards)
             {
-                _WalletManager.AddToWallet(character, walletReward.Type, walletReward.Value);
+                Server.WalletManager.AddToWallet(character, walletReward.Type, walletReward.Value);
 
                 updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
                 {
                     Type = walletReward.Type,
-                    Value = _WalletManager.GetWalletAmount(character, walletReward.Type),
+                    Value = Server.WalletManager.GetWalletAmount(character, walletReward.Type),
                     AddPoint = (int)walletReward.Value
                 });
             }
@@ -151,7 +136,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach (var expPoint in quest.ExpRewards)
             {
-                _ExpManager.AddExp(client, character, expPoint.Reward, 0, 2); // I think type 2 means quest
+                Server.ExpManager.AddExp(client, character, expPoint.Reward, 0, 2); // I think type 2 means quest
             }
         }
     }

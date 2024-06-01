@@ -253,4 +253,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return (ItemRewards.Count > 0) || (SelectedableItemRewards.Count > 0);
         }
     }
+
+    public class QuestDoesNotExistException : ResponseErrorException
+    {
+        public QuestDoesNotExistException(QuestId questId) : base(ErrorCode.ERROR_CODE_QUEST_INTERNAL_ERROR, $"The quest ${questId} does not exist")
+        {
+        }
+    }
 }

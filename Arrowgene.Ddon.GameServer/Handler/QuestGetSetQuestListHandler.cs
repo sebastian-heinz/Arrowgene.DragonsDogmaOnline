@@ -34,6 +34,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuest(questId);
                 if (quest.QuestType == QuestType.World)
                 {
+                    /**
+                     * World quests get added here instead of QuestGetWorldManageQuestListHandler because
+                     * "World Manage Quests" are different from "World Quests". World manage quests appear
+                     * to control the state of the game world (doors, paths, gates, etc.). World quests
+                     * are random fetch, deliver and kill type quests.
+                     */
                     res.SetQuestList.Add(new CDataSetQuestList()
                     {
                         Detail = new CDataSetQuestDetail() { IsDiscovery = quest.IsDiscoverable },

@@ -37,6 +37,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // TODO: Find all items that add wallet points
         };
 
+        public bool IsItemWalletPoint(uint itemId)
+        {
+            return ItemIdWalletTypeAndQuantity.ContainsKey(itemId);
+        }
+
+        public (WalletType walletType, uint itemId) ItemToWalletPoint(uint itemId)
+        {
+            if (!IsItemWalletPoint(itemId))
+            {
+                return (WalletType.None, 0);
+            }
+            return ItemIdWalletTypeAndQuantity[itemId];
+        }
+
         // [[item]]
         // id = 16822 (Adds 100 XP)
         // old = '経験値結晶'
@@ -199,8 +213,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, StorageType storageType, uint itemId, uint num)
         {
-            // TODO: Certain items like currencies should go directly to the currency tab instead
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
+            if (ItemBagStorageTypes.Contains(storageType))
+            {
+                storageType = clientItemInfo.StorageType;
+            }
+
             return DoAddItem(server.Database, character, storageType, itemId, num, clientItemInfo.StackLimit);
         }
 

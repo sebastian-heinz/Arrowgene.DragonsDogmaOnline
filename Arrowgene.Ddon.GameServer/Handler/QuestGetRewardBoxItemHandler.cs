@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetRewardBoxItemHandler : GameStructurePacketHandler<C2SQuestGetRewardBoxItemReq>
+    public class QuestGetRewardBoxItemHandler : GameRequestPacketHandler<C2SQuestGetRewardBoxItemReq, S2CQuestGetRewardBoxItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetRewardBoxItemHandler));
 
@@ -21,16 +21,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestGetRewardBoxItemReq> packet)
+        public override S2CQuestGetRewardBoxItemRes Handle(GameClient client, C2SQuestGetRewardBoxItemReq packet)
         {
             // client.Send(GameFull.Dump_902);
 
-            var rewardIndex = packet.Structure.ListNo;
+            var rewardIndex = packet.ListNo;
             if (rewardIndex == 0 || rewardIndex > client.Character.QuestRewards.Count)
             {
                 Logger.Error($"Illegal reward request sent to server.");
-                client.Send(new S2CQuestGetRewardBoxItemRes() { Error = 1});
-                return;
+                return new S2CQuestGetRewardBoxItemRes() { Error = 1};
             }
 
             // Make zero based index
@@ -41,19 +40,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = 0
             };
 
-            foreach (var boxReward in packet.Structure.GetRewardBoxItemList)
+            foreach (var boxReward in packet.GetRewardBoxItemList)
             {
                 var reward = boxRewards.Rewards[boxReward.UID];
 
-                var result = Server.ItemManager.AddItem(Server, client.Character, StorageType.StorageBoxNormal, reward.ItemId, reward.Num);
-                updateCharacterItemNtc.UpdateItemList.AddRange(result);
+                if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
+                {
+                    (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
+                    var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount);
+                    updateCharacterItemNtc.UpdateWalletList.Add(result);
+                }
+                else
+                {
+                    var result = Server.ItemManager.AddItem(Server, client.Character, StorageType.StorageBoxNormal, reward.ItemId, reward.Num);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(result);
+                }
             }
             client.Send(updateCharacterItemNtc);
 
             // Remove this reward from the list
             client.Character.QuestRewards.RemoveAt((int)(rewardIndex - 1));
 
-            client.Send(new S2CQuestGetRewardBoxItemRes());
+            return new S2CQuestGetRewardBoxItemRes();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (quest == null)
                 {
                     Logger.Error($"Failed to find quest for {boxReward.QuestId}. Unable to retrieve rewards.");
-                    continue;
+                    throw new QuestDoesNotExistException(boxReward.QuestId);
                 }
 
                 res.RewardBoxRecordList.Add(new CDataRewardBoxRecord()
