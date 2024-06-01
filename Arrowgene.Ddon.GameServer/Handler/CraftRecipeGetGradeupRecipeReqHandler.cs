@@ -8,6 +8,8 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using Arrowgene.Ddon.Server.Network;
+using System.ComponentModel;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -31,15 +33,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SGetCraftGradeupRecipeReq> packet)
         {
-            CDataMDataCraftRecipe recipe = Server.AssetRepository.CraftingRecipesAsset
-                .SelectMany(recipes => recipes.RecipeList)
-                .Where(recipe => recipe.RecipeID == packet.Structure.Category)
-                .Single();
-                
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = 0;
+            List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
+                .Where(recipes => recipes.Category == packet.Structure.Category)
+                .Select(recipes => recipes.RecipeList)
+                .SingleOrDefault(new List<CDataMDataCraftGradeupRecipe>());
 
-            Logger.Debug("Packet stuff is going downnnnn");
+            client.Send(new S2CGetCraftGradeupRecipeRes()
+            {
+                Category = packet.Structure.Category,
+                RecipeList = allRecipesInCategory
+                    .Skip((int) packet.Structure.Offset)
+                    .Take(packet.Structure.Num)
+                    .ToList(),
+                IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
+                //Logger.Debug("Packet stuff is going downnnnn");
+            });
+                
+        //    S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+        //    updateCharacterItemNtc.UpdateType = 0;
+
+
 
             
         }

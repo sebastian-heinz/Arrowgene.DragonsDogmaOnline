@@ -1,0 +1,18 @@
+[
+  {
+    "Category": 1,
+    "RecipeList": [
+	{
+        "RecipeID": 1,
+        "ItemID": 1674,
+        "Cost": 400,
+        "Exp": 12,
+        "CraftMaterialList": [
+			{
+				"ItemID": 7858,
+				"Num": 2,
+				"SortNo": 1,
+				"IsSp": true
+			}
+		]
+	}
