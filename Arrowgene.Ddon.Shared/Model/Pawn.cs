@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Model
             Name = string.Empty;
             OnlineStatus = OnlineStatus.None;
             PawnReactionList = new List<CDataPawnReaction>();
-            SpSkillList = new List<CDataSpSkill>();
+            SpSkills = new Dictionary<JobId, List<CDataSpSkill>>();
             // TODO: Fetch from DB
             CraftData = new CDataPawnCraftData() {
                 CraftExp = 0,
@@ -55,10 +55,10 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte PawnType { get; set; }
 
         public List<CDataPawnReaction> PawnReactionList { get; set; }
-        public List<CDataSpSkill> SpSkillList { get; set; }
         public CDataPawnCraftData CraftData { get; set; }
 
         public Dictionary<JobId, byte[]> TrainingStatus { get; set; }
+        public Dictionary<JobId, List<CDataSpSkill>> SpSkills { get; set; }
         public uint TrainingPoints { get; set; } // Training xp?
         public uint AvailableTraining { get; set; } // Training lv?
     }

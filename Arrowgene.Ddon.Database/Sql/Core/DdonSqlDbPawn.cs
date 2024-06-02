@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         protected static readonly string[]  CDataSpSkillFields = new string[]
         {
-            "pawn_id", "sp_skill_id", "sp_skill_lv"
+            "pawn_id", "job", "sp_skill_id", "sp_skill_lv"
         };
 
         private readonly string SqlInsertPawn = $"INSERT INTO \"ddon_pawn\" ({BuildQueryField(PawnFields)}) VALUES ({BuildQueryInsert(PawnFields)});";
@@ -50,11 +50,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeletePawnReaction = "DELETE FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\"=@pawn_id AND \"reaction_type\"=@reaction_type;";
 
         private readonly string SqlInsertSpSkill = $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) VALUES ({BuildQueryInsert(CDataSpSkillFields)});";
-        private readonly string SqlInsertIfNotExistsSpSkill = $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) SELECT {BuildQueryInsert(CDataSpSkillFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_sp_skill\" WHERE \"pawn_id\" = @pawn_id);";
-        private static readonly string SqlUpdateSpSkill = $"UPDATE \"ddon_sp_skill\" SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE \"pawn_id\" = @pawn_id AND \"sp_skill_id\"=@sp_skill_id;";
-        private static readonly string SqlSelectSpSkillByPawnId = $"SELECT {BuildQueryField(CDataSpSkillFields)} FROM \"ddon_sp_skill\" WHERE \"pawn_id\" = @pawn_id;";
-        private const string SqlDeleteSpSkill = "DELETE FROM \"ddon_sp_skill\" WHERE \"pawn_id\"=@pawn_id AND \"sp_skill_id\"=@sp_skill_id;";
-        private const string SqlDeleteSpSkills = "DELETE FROM \"ddon_sp_skill\" WHERE \"pawn_id\"=@pawn_id";
+        private readonly string SqlInsertIfNotExistsSpSkill = $"INSERT INTO \"ddon_sp_skill\" ({BuildQueryField(CDataSpSkillFields)}) SELECT {BuildQueryInsert(CDataSpSkillFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_sp_skill\" WHERE \"pawn_id\" = @pawn_id AND \"job\"=@job AND \"sp_skill_id\"=@sp_skill_id);";
+        private static readonly string SqlUpdateSpSkill = $"UPDATE \"ddon_sp_skill\" SET {BuildQueryUpdate(CDataSpSkillFields)} WHERE \"pawn_id\" = @pawn_id AND \"job\"=@job AND \"sp_skill_id\"=@sp_skill_id;";
+        private static readonly string SqlSelectSpSkillsByPawnId = $"SELECT {BuildQueryField(CDataSpSkillFields)} FROM \"ddon_sp_skill\" WHERE \"pawn_id\" = @pawn_id;";
+        private const string SqlDeleteSpSkill = "DELETE FROM \"ddon_sp_skill\" WHERE \"pawn_id\"=@pawn_id AND \"job\"=@job AND \"sp_skill_id\"=@sp_skill_id;";
+        private const string SqlDeleteSpSkillByPawn = "DELETE FROM \"ddon_sp_skill\" WHERE \"pawn_id\"=@pawn_id;";
 
         public bool CreatePawn(Pawn pawn)
         {
@@ -155,13 +155,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
 
-            ExecuteReader(conn, SqlSelectSpSkillByPawnId,
+            ExecuteReader(conn, SqlSelectSpSkillsByPawnId,
                 command => { AddParameter(command, "@pawn_id", pawn.PawnId); },
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        pawn.SpSkillList.Add(ReadSpSkill(reader));
+                        JobId job = (JobId) GetByte(reader, "job");
+                        if(!pawn.SpSkills.ContainsKey(job))
+                        {
+                            pawn.SpSkills.Add(job, new List<CDataSpSkill>());
+                        }
+                        pawn.SpSkills[job].Add(ReadSpSkill(reader));
                     }
                 });
 
@@ -188,9 +193,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
 
             DeleteSpSkills(conn, pawn.PawnId);
-            foreach (CDataSpSkill spSkill in pawn.SpSkillList)
+            foreach (KeyValuePair<JobId, List<CDataSpSkill>> jobAndSpSkills in pawn.SpSkills)
             {
-                ReplaceSpSkill(conn, pawn.PawnId, spSkill);
+                JobId job = jobAndSpSkills.Key;
+                foreach (CDataSpSkill spSkill in jobAndSpSkills.Value)
+                {
+                    ReplaceSpSkill(conn, pawn.PawnId, job, spSkill);
+                }
             }
 
             foreach ((JobId job, byte[] trainingStatus) in pawn.TrainingStatus)
@@ -222,76 +231,77 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
         
-        public bool InsertIfNotExistsSpSkill(uint pawnId, CDataSpSkill spSkill)
+        public bool InsertIfNotExistsSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             using TCon connection = OpenNewConnection();
-            return InsertIfNotExistsSpSkill(connection, pawnId, spSkill);
+            return InsertIfNotExistsSpSkill(connection, pawnId, job, spSkill);
         }
 
-        public bool InsertIfNotExistsSpSkill(TCon conn, uint pawnId, CDataSpSkill spSkill)
+        public bool InsertIfNotExistsSpSkill(TCon conn, uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             return ExecuteNonQuery(conn, SqlInsertIfNotExistsSpSkill, command =>
             {
-                AddParameter(command, pawnId, spSkill);
+                AddParameter(command, pawnId, job, spSkill);
             }) == 1;
         }
         
-        public bool InsertSpSkill(uint pawnId, CDataSpSkill spSkill)
+        public bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             using TCon connection = OpenNewConnection();
-            return InsertSpSkill(connection, pawnId, spSkill);
+            return InsertSpSkill(connection, pawnId, job, spSkill);
         }
 
-        public bool InsertSpSkill(TCon conn, uint pawnId, CDataSpSkill spSkill)
+        public bool InsertSpSkill(TCon conn, uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             return ExecuteNonQuery(conn, SqlInsertSpSkill, command =>
             {
-                AddParameter(command, pawnId, spSkill);
+                AddParameter(command, pawnId, job, spSkill);
             }) == 1;
         }
 
-        public bool ReplaceSpSkill(uint pawnId, CDataSpSkill spSkill)
+        public bool ReplaceSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             using TCon connection = OpenNewConnection();
-            return ReplaceSpSkill(connection, pawnId, spSkill);
+            return ReplaceSpSkill(connection, pawnId, job, spSkill);
         }
 
-        public bool ReplaceSpSkill(TCon conn, uint pawnId, CDataSpSkill spSkill)
+        public bool ReplaceSpSkill(TCon conn, uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             Logger.Debug("Inserting SP Skill.");
-            if (!InsertIfNotExistsSpSkill(conn, pawnId, spSkill))
+            if (!InsertIfNotExistsSpSkill(conn, pawnId, job, spSkill))
             {
                 Logger.Debug("SP skill already exists, replacing.");
-                return UpdateSpSkill(conn, pawnId, spSkill);
+                return UpdateSpSkill(conn, pawnId, job, spSkill);
             }
             return true;
         }
 
-        public bool UpdateSpSkill(uint pawnId, CDataSpSkill spSkill)
+        public bool UpdateSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             using TCon connection = OpenNewConnection();
-            return UpdateSpSkill(connection, pawnId, spSkill);
+            return UpdateSpSkill(connection, pawnId, job, spSkill);
         }
 
-        public bool UpdateSpSkill(TCon connection, uint pawnId, CDataSpSkill spSkill)
+        public bool UpdateSpSkill(TCon connection, uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             return ExecuteNonQuery(connection, SqlUpdateSpSkill, command =>
             {
-                AddParameter(command, pawnId, spSkill);
+                AddParameter(command, pawnId, job, spSkill);
             }) == 1;
         }
         
-        public bool DeleteSpSkill(uint pawnId, byte spSkillId)
+        public bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId)
         {
             using TCon connection = OpenNewConnection();
-            return DeleteSpSkill(connection, pawnId, spSkillId);
+            return DeleteSpSkill(connection, pawnId, job, spSkillId);
         }
 
-        public bool DeleteSpSkill(TCon conn, uint pawnId, byte spSkillId)
+        public bool DeleteSpSkill(TCon conn, uint pawnId, JobId job, byte spSkillId)
         {
             return ExecuteNonQuery(conn, SqlDeleteSpSkill, command =>
             {
                 AddParameter(command, "@pawn_id", pawnId);
+                AddParameter(command, "@job", (byte) job);
                 AddParameter(command, "@sp_skill_id", spSkillId);
             }) == 1;
         }
@@ -302,9 +312,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return DeleteSpSkills(connection, pawnId);
         }
 
-        public bool DeleteSpSkills(TCon conn,uint pawnId)
+        public bool DeleteSpSkills(TCon conn, uint pawnId)
         {
-            return ExecuteNonQuery(conn, SqlDeleteSpSkills, command =>
+            return ExecuteNonQuery(conn, SqlDeleteSpSkillByPawn, command =>
             {
                 AddParameter(command, "@pawn_id", pawnId);
             }) == 1;
@@ -431,9 +441,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return spSkill;
         }
         
-        private void AddParameter(TCom command, uint pawnId, CDataSpSkill spSkill)
+        private void AddParameter(TCom command, uint pawnId, JobId job, CDataSpSkill spSkill)
         {
             AddParameter(command, "pawn_id", pawnId);
+            AddParameter(command, "job", (byte) job);
             AddParameter(command, "sp_skill_id", spSkill.SpSkillId);
             AddParameter(command, "sp_skill_lv", spSkill.SpSkillLv);
         }

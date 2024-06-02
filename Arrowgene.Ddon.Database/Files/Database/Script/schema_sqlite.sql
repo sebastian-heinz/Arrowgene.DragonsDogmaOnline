@@ -395,9 +395,10 @@ CREATE TABLE IF NOT EXISTS ddon_pawn_reaction
 CREATE TABLE IF NOT EXISTS ddon_sp_skill
 (
     "pawn_id"     INTEGER  NOT NULL,
+    "job"         SMALLINT NOT NULL,
     "sp_skill_id" SMALLINT NOT NULL,
     "sp_skill_lv" SMALLINT NOT NULL,
-    CONSTRAINT pk_ddon_sp_skill PRIMARY KEY (pawn_id, sp_skill_id),
+    CONSTRAINT pk_ddon_sp_skill PRIMARY KEY (pawn_id, job, sp_skill_id),
     CONSTRAINT fk_sp_skill_pawn_id FOREIGN KEY ("pawn_id") REFERENCES ddon_pawn ("pawn_id") ON DELETE CASCADE
 );
 
