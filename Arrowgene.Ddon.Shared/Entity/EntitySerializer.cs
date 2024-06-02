@@ -147,6 +147,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMDataCraftMaterial.Serializer());
             Create(new CDataMDataCraftRecipe.Serializer());
             Create(new CDataMDataCraftGradeupRecipe.Serializer());
+            Create(new CDataCurrentEquipInfo.Serializer());
+            Create(new CDataCraftStartEquipGradeUpUnk0Unk0.Serializer());
+            Create(new CDataCraftStartEquipGradeUpUnk0.Serializer());
+            Create(new CDataEquipSlot.Serializer());
             Create(new CDataMoonSchedule.Serializer());
             Create(new CDataMoveItemUIDFromTo.Serializer());
             Create(new CDataNamedEnemyParamClient.Serializer());
