@@ -9,6 +9,7 @@ using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Json;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.AssetReader;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -19,6 +20,7 @@ namespace Arrowgene.Ddon.Shared
         public const string ItemListKey = "itemlist.csv";
 
         // Server data
+        public const string NamedParamsKey = "named_param.ndp.json";
         public const string EnemySpawnsKey = "EnemySpawn.json";
         public const string GatheringItemsKey = "GatheringItem.csv";
         public const string MyPawnAssetKey = "MyPawn.csv";
@@ -56,6 +58,7 @@ namespace Arrowgene.Ddon.Shared
 
             ClientErrorCodes = new List<CDataErrorMessage>();
             ClientItemInfos = new List<ClientItemInfo>();
+            NamedParamAsset = new Dictionary<uint, NamedParam>();
             EnemySpawnAsset = new EnemySpawnAsset();
             GatheringItems = new Dictionary<(StageId, uint), List<GatheringItem>>();
             ServerList = new List<CDataGameServerListInfo>();
@@ -76,6 +79,7 @@ namespace Arrowgene.Ddon.Shared
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
         public List<ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
+        public Dictionary<uint, NamedParam> NamedParamAsset { get; private set; }
         public EnemySpawnAsset EnemySpawnAsset { get; private set; }
         public Dictionary<(StageId, uint), List<GatheringItem>> GatheringItems { get; private set; }
         public List<CDataGameServerListInfo> ServerList { get; private set; }
@@ -99,7 +103,8 @@ namespace Arrowgene.Ddon.Shared
         {
             RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeCsv());
             RegisterAsset(value => ClientItemInfos = value, ItemListKey, new ClientItemInfoCsv());
-            RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer());
+            RegisterAsset(value => NamedParamAsset = value, NamedParamsKey, new NamedParamAssetDeserializer());
+            RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer(this.NamedParamAsset));
             RegisterAsset(value => GatheringItems = value, GatheringItemsKey, new GatheringItemCsv());
             RegisterAsset(value => MyPawnAsset = value, MyPawnAssetKey, new MyPawnCsvReader());
             RegisterAsset(value => MyRoomAsset = value, MyRoomAssetKey, new MyRoomCsvReader());
@@ -113,8 +118,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
             RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
-            RegisterAsset(value => WorldQuestAsset = value, WorldQuestAssetKey, new QuestAssetDeserializer());
-            RegisterAsset(value => MainQuestAsset = value, MainQuestAssetKey, new QuestAssetDeserializer());
+            RegisterAsset(value => WorldQuestAsset = value, WorldQuestAssetKey, new QuestAssetDeserializer(this.NamedParamAsset));
+            RegisterAsset(value => MainQuestAsset = value, MainQuestAssetKey, new QuestAssetDeserializer(this.NamedParamAsset));
         }
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
