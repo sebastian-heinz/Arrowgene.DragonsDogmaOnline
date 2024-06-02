@@ -113,7 +113,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => ShopAsset = value, ShopKey, new JsonReaderWriter<List<Shop>>());
             RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
             RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
-            RegisterAsset(value => CraftingGradeUpRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CGetCraftGradeupRecipeRes>>());
+            RegisterAsset(value => CraftingGradeUpRecipesAsset = value, CraftingRecipesGradeUpKey, new JsonReaderWriter<List<S2CGetCraftGradeupRecipeRes>>());
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
             RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
