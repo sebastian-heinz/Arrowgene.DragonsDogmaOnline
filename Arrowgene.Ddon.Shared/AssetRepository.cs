@@ -114,7 +114,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
             RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
 
-            Load(value => QuestAssets = value, QuestAssestKey, new QuestAssetDeserializer(this.NamedParamAsset));
+            var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset);
+            questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);
         }
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
@@ -137,27 +138,11 @@ namespace Arrowgene.Ddon.Shared
             try {
                 if (info is DirectoryInfo)
                 {
-                    // Special handeling for quests
-                    if (readerWriter is QuestAssetDeserializer)
+                    foreach (var file in ((DirectoryInfo)info).EnumerateFiles())
                     {
-                        Logger.Info($"Reading quest assets under {path}");
-                        var questAssetDeserializer = (QuestAssetDeserializer)readerWriter;
-                        foreach (var file in ((DirectoryInfo)info).EnumerateFiles())
-                        {
-                            // TODO: Is it possible to enable hot reload?
-                            questAssetDeserializer.ReadPath(file.FullName, QuestAssets);
-                            // onLoadAction.Invoke(QuestAssets);
-                            // OnAssetChanged(file.FullName, asset);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var file in ((DirectoryInfo)info).EnumerateFiles())
-                        {
-                            T asset = readerWriter.ReadPath(file.FullName);
-                            onLoadAction.Invoke(asset);
-                            OnAssetChanged(file.FullName, asset);
-                        }
+                        T asset = readerWriter.ReadPath(file.FullName);
+                        onLoadAction.Invoke(asset);
+                        OnAssetChanged(file.FullName, asset);
                     }
                 }
                 else
