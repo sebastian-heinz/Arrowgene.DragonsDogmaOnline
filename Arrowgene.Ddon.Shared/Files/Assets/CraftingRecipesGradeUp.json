@@ -10,7 +10,7 @@
                 "Exp": 12,
                 "CraftMaterialList": [
                     {
-                        "ItemID": 7858,
+                        "ItemId": 7858,
                         "Num": 2,
                         "SortNo": 1,
                         "IsSp": true

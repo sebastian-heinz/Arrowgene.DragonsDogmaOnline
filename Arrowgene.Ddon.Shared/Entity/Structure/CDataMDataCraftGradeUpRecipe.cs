@@ -16,6 +16,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint GradeupItemID { get; set; }
         public uint Cost { get; set; }
         public uint Exp { get; set; }
+        public uint Unk0 { get; set; }
+        public bool Unk1 { get; set; }
         public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; }
 
         public class Serializer : EntitySerializer<CDataMDataCraftGradeupRecipe>
@@ -27,6 +29,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.GradeupItemID);
                 WriteUInt32(buffer, obj.Cost);
                 WriteUInt32(buffer, obj.Exp);
+                WriteUInt32(buffer, obj.Unk0);
+                WriteBool(buffer, obj.Unk1);
                 WriteEntityList<CDataMDataCraftMaterial>(buffer, obj.CraftMaterialList);
             }
 
@@ -38,6 +42,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     obj.GradeupItemID = ReadUInt32(buffer);
                     obj.Cost = ReadUInt32(buffer);
                     obj.Exp = ReadUInt32(buffer);
+                    obj.Unk0 = ReadUInt32(buffer);
+                    obj.Unk1 = ReadBool(buffer);
                     obj.CraftMaterialList = ReadEntityList<CDataMDataCraftMaterial>(buffer);
                     return obj;
                 

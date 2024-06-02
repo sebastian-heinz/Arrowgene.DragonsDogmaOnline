@@ -26,7 +26,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteByte(buffer, obj.Category);
                 WriteUInt32(buffer, obj.Offset);
                 WriteInt32(buffer, obj.Num);
-                WriteInt32(buffer, obj.ItemList.Count);
                 WriteEntityList<CDataCommonU32>(buffer, obj.ItemList);
             }
 
