@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
@@ -8,6 +9,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -196,32 +198,56 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return count;
         }
 
-        public QuestBoxRewards GetBoxRewards()
+        public static List<CDataRewardBoxItem> AsCDataRewardBoxItems(QuestBoxRewards rewards)
         {
-            QuestBoxRewards result = new QuestBoxRewards()
+            List<CDataRewardBoxItem> results = new List<CDataRewardBoxItem>();
+
+            var quest = QuestManager.GetQuest(rewards.QuestId);
+
+            foreach (var reward in quest.SelectedableItemRewards)
+            {
+                results.AddRange(reward.AsCDataRewardBoxItems());
+            }
+
+            List<QuestRandomRewardItem> randomRewards = new List<QuestRandomRewardItem>();
+            foreach (var reward in quest.ItemRewards)
+            {
+                if (reward.RewardType != QuestRewardType.Random)
+                {
+                    results.AddRange(reward.AsCDataRewardBoxItems());
+                }
+                else
+                {
+                    randomRewards.Add((QuestRandomRewardItem) reward);
+                }
+            }
+
+            foreach (var randomReward in rewards.RandomRewardIndices.Zip(randomRewards, Tuple.Create))
+            {
+                results.Add(randomReward.Item2.AsCDataRewardBoxItem(randomReward.Item1));
+            }
+
+            return results;
+        }
+
+        public QuestBoxRewards GenerateBoxRewards()
+        {
+            QuestBoxRewards obj = new QuestBoxRewards()
             {
                 QuestId = QuestId
             };
 
             foreach (var reward in ItemRewards)
             {
-                var cdataRewards = reward.AsCDataRewardBoxItems();
-                foreach (var cdataReward in cdataRewards)
+                if (reward.RewardType == QuestRewardType.Random)
                 {
-                    result.Rewards[cdataReward.UID] = cdataReward;
+                    var randomReward = (QuestRandomRewardItem)reward;
+                    obj.RandomRewardIndices.Add(randomReward.Roll());
                 }
             }
+            obj.NumRandomRewards = obj.RandomRewardIndices.Count;
 
-            foreach (var reward in SelectedableItemRewards)
-            {
-                var cdataRewards = reward.AsCDataRewardBoxItems();
-                foreach (var cdataReward in cdataRewards)
-                {
-                    result.Rewards[cdataReward.UID] = cdataReward;
-                }
-            }
-
-            return result;
+            return obj;
         }
 
         public List<CDataRewardItem> GetQuestFixedRewards()
