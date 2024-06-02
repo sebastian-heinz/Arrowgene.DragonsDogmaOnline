@@ -9,14 +9,12 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using Arrowgene.Networking.Tcp.Consumer.EventConsumption;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class CraftStartEquipGradeUpHandler : GameStructurePacketHandler<C2SCraftStartEquipGradeUpReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipGradeUpHandler));
-
         private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
             StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
@@ -34,15 +32,38 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var allRecipes = Server.AssetRepository.CraftingGradeUpRecipesAsset;
             var recipe = allRecipes.FirstOrDefault();
 
-            if (recipe != null)
+
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            updateCharacterItemNtc.UpdateType = 0;
+
+            // Remove crafting materials
+            foreach (var craftMaterial in packet.Structure.CraftMaterialList)
             {
+                try
+                {
+                    List<CDataItemUpdateResult> updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                }
+                catch (NotEnoughItemsException e)
+                {
+                    Logger.Exception(e);
+                    client.Send(new S2CCraftStartCraftRes()
+                    {
+                        Result = 1
+                    });
+                    return;
+                }
+            }
+
+            // TODO: Calculate final craft price with the discounts from the craft pawns
+            // uint finalCraftCost = recipe.Cost * packet.Structure.CreateCount;
+
+            // if(packet.Structure.CraftSupportPawnIDList.Count > 0)
+            // {
+            //     finalCraftCost = (uint)(finalCraftCost*0.95);
+            // }
+
             client.Send(new S2CCraftStartEquipGradeUpRes());
-            Logger.Debug("YOOOOO");
-            }
-            else
-            {
-                Logger.Debug("FAILURE FAILURE FAILURE");
-            }
         }
     }
 }
