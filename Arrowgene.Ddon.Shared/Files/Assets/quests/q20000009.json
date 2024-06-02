@@ -1,0 +1,99 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Request For Medicine",
+    "quest_id": 20000009,
+    "base_level": 8,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 350
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 20
+        },
+        {
+            "type": "exp",
+            "amount": 290
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 478,
+                    "num": 1
+                },
+                {
+                    "item_id": 59,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "npc_id": "Henry",
+            "message_id": 218
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 2,
+                "group_id": 1
+            },
+            "announce_type": "Accept",
+            "npc_id": "Vicelot",
+            "message_id": 887
+        },
+        {
+            "type": "CollectItem",
+            "stage_id": {
+                "id": 1,
+                "group_id": 2
+            },
+            "announce_type": "Update",
+            "layout_flags_on": [2216]
+        },
+        {
+            "type": "CollectItem",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "layout_flags_on": [1133],
+            "layout_flags_off": [2216]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 2,
+                "group_id": 1
+            },
+            "layout_flags_off": [1133],
+            "announce_type": "Update",
+            "npc_id": "Vicelot",
+            "message_id": 890
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "announce_type": "Update",
+            "npc_id": "Henry",
+            "message_id": 891
+        }
+    ]
+}

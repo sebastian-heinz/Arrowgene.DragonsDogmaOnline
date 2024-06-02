@@ -1,0 +1,185 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Transporter's Tragedy",
+    "quest_id": 20000002,
+    "base_level": 9,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 320
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 320
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 30
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 963,
+                    "num": 1
+                },
+                {
+                    "item_id": 36,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "npc_id": "WhiteKnight0",
+                    "message_id": 27,
+                    "layout_flags_on": [986]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Accept",
+                    "set_flags": [6],
+                    "check_flags": [1, 2, 3, 4, 5]
+                },
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 0
+                    },
+                    "npc_id": "WhiteKnight0",
+                    "message_id": 27
+                }
+            ]
+        },
+        {
+            "comment": "process 1",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [6]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 25,
+                        "group_id": 0
+                    },
+                    "npc_id": "Bob",
+                    "message_id": 27
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Update",
+                    "set_flags": [1]
+                }
+            ]
+        },
+        {
+            "comment": "process 2",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [6]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 2
+                    },
+                    "layout_flags_on": [1125]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Update",
+                    "layout_flags_off": [1125],
+                    "set_flags": [2]
+                }
+            ]
+        },
+        {
+            "comment": "process 3",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [6]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 3
+                    },
+                    "layout_flags_on": [1126]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Update",
+                    "layout_flags_off": [1126],
+                    "set_flags": [3]
+                }
+            ]
+        },
+        {
+            "comment": "process 4",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [6]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 4
+                    },
+                    "layout_flags_on": [1127]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Update",
+                    "layout_flags_off": [1127],
+                    "set_flags": [4]
+                }
+            ]
+        },
+        {
+            "comment": "process 5",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [6]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 5
+                    },
+                    "layout_flags_on": [1128]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Update",
+                    "layout_flags_off": [1128],
+                    "set_flags": [5]
+                }
+            ]
+        }
+    ]
+}
