@@ -68,6 +68,7 @@ namespace Arrowgene.Ddon.Shared
             ShopAsset = new List<Shop>();
             WarpPoints = new List<WarpPoint>();
             CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
+            CraftingGradeUpRecipesAsset = new List<S2CGetCraftGradeupRecipeRes>();
             LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
             GPCourseInfoAsset = new GPCourseInfoAsset();
             SecretAbilitiesAsset = new SecretAbilityAsset();

@@ -6,17 +6,17 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataMDataCraftGradeupRecipe
     {
+
+        public CDataMDataCraftGradeupRecipe()
+        {
+            CraftMaterialList = new List<CDataMDataCraftMaterial>();
+        }
         public uint RecipeID { get; set; }
         public uint ItemID { get; set; }
         public uint GradeupItemID { get; set; }
         public uint Cost { get; set; }
         public uint Exp { get; set; }
         public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; }
-
-        public CDataMDataCraftGradeupRecipe()
-        {
-            CraftMaterialList = new List<CDataMDataCraftMaterial>();
-        }
 
         public class Serializer : EntitySerializer<CDataMDataCraftGradeupRecipe>
         {
@@ -32,29 +32,15 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
             public override CDataMDataCraftGradeupRecipe Read(IBuffer buffer)
             {
-                CDataMDataCraftGradeupRecipe obj = new CDataMDataCraftGradeupRecipe
-                {
-                    RecipeID = buffer.ReadUInt32(),
-                    ItemID = buffer.ReadUInt32(),
-                    GradeupItemID = buffer.ReadUInt32(),
-                    Cost = buffer.ReadUInt32(),
-                    Exp = buffer.ReadUInt32()
-                };
-
-                int materialCount = buffer.ReadInt32();
-                for (int i = 0; i < materialCount; i++)
-                {
-                    CDataMDataCraftMaterial material = new CDataMDataCraftMaterial
-                    {
-                        ItemId = buffer.ReadUInt32(),
-                        Num = buffer.ReadUInt32(),
-                        SortNo = buffer.ReadUInt32(),
-                        IsSp = buffer.ReadBool()
-                    };
-                    obj.CraftMaterialList.Add(material);
-                }
-
-                return obj;
+                    CDataMDataCraftGradeupRecipe obj = new CDataMDataCraftGradeupRecipe();
+                    obj.RecipeID = ReadUInt32(buffer);
+                    obj.ItemID = ReadUInt32(buffer);
+                    obj.GradeupItemID = ReadUInt32(buffer);
+                    obj.Cost = ReadUInt32(buffer);
+                    obj.Exp = ReadUInt32(buffer);
+                    obj.CraftMaterialList = ReadEntityList<CDataMDataCraftMaterial>(buffer);
+                    return obj;
+                
             }
         }
     }

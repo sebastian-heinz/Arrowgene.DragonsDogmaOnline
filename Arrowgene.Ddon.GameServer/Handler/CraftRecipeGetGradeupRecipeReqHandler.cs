@@ -13,11 +13,11 @@ using System.ComponentModel;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftRecipeGetGradeupRecipeReqHandler : GameStructurePacketHandler<C2SGetCraftGradeupRecipeReq>
+    public class CraftRecipeGetGradeupRecipeHandler : GameStructurePacketHandler<C2SGetCraftGradeupRecipeReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftRecipeGetGradeupRecipeReqHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftRecipeGetGradeupRecipeHandler));
 
-        public CraftRecipeGetGradeupRecipeReqHandler(DdonGameServer server) : base(server)
+        public CraftRecipeGetGradeupRecipeHandler(DdonGameServer server) : base(server)
         {
         }
 
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Select(recipes => recipes.RecipeList)
                 .SingleOrDefault(new List<CDataMDataCraftGradeupRecipe>());
 
-            client.Send(new S2CGetCraftGradeupRecipeRes()
+            var res = new S2CGetCraftGradeupRecipeRes()
             {
                 Category = packet.Structure.Category,
                 RecipeList = allRecipesInCategory
@@ -36,8 +36,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Take(packet.Structure.Num)
                     .ToList(),
                 IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
-            });
+            };
+            client.Send(res);
+            }
                 
         }
     }
-}
+

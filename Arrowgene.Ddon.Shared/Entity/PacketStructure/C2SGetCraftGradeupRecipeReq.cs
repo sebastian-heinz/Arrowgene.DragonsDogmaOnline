@@ -27,10 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.Offset);
                 WriteInt32(buffer, obj.Num);
                 WriteInt32(buffer, obj.ItemList.Count);
-                foreach (var item in obj.ItemList)
-                {
-                    new CDataCommonU32.Serializer().Write(buffer, item);
-                }
+                WriteEntityList<CDataCommonU32>(buffer, obj.ItemList);
             }
 
             public override C2SGetCraftGradeupRecipeReq Read(IBuffer buffer)
@@ -39,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Category = ReadByte(buffer);
                 obj.Offset = ReadUInt32(buffer);
                 obj.Num = ReadInt32(buffer);
-                obj.ItemList = new List<CDataCommonU32>();
+                obj.ItemList = ReadEntityList<CDataCommonU32>(buffer);
                 return obj;
             }
         }
