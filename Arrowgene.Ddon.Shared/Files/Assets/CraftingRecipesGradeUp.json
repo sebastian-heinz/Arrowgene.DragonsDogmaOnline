@@ -16,6 +16,126 @@
                         "IsSp": true
                     }
                 ]
+            },
+			{
+				"RecipeID": 2,
+				"ItemID": 73,
+				"GradeupItemID": 1685,
+                "Cost": 400,
+                "Exp": 12,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+			{
+                "RecipeID": 3,
+                "ItemID": 942,
+                "GradeupItemID": 2554,
+                "Cost": 400,
+                "Exp": 12,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+			{
+                "RecipeID": 4,
+                "ItemID": 490,
+                "GradeupItemID": 2102,
+                "Cost": 400,
+                "Exp": 12,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+			{
+                "RecipeID": 5,
+                "ItemID": 497,
+                "GradeupItemID": 2109,
+                "Cost": 400,
+                "Exp": 12,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+			{
+                "RecipeID": 6,
+                "ItemID": 493,
+                "GradeupItemID": 2105,
+                "Cost": 400,
+                "Exp": 12,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+			{
+                "RecipeID": 7,
+                "ItemID": 499,
+                "GradeupItemID": 2111,
+                "Cost": 400,
+                "Exp": 12,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+			{
+                "RecipeID": 8,
+                "ItemID": 505,
+                "GradeupItemID": 2117,
+                "Cost": 400,
+                "Exp": 12,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+			{
+                "RecipeID": 9,
+                "ItemID": 8793,
+                "GradeupItemID": 8794,
+                "Cost": 400,
+                "Exp": 12,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
             }
         ]
     }

@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using Arrowgene.Networking.Tcp.Consumer.EventConsumption;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -25,12 +26,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
-            _itemManager = server.ItemManager;
+            _itemManager = server.ItemManager;;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
         {
+            var allRecipes = Server.AssetRepository.CraftingGradeUpRecipesAsset;
+            var recipe = allRecipes.FirstOrDefault();
+
+            if (recipe != null)
+            {
             client.Send(new S2CCraftStartEquipGradeUpRes());
+            Logger.Debug("YOOOOO");
+            }
+            else
+            {
+                Logger.Debug("FAILURE FAILURE FAILURE");
+            }
         }
     }
 }
