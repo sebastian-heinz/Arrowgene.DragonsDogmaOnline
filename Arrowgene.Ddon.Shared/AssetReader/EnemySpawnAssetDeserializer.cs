@@ -6,7 +6,7 @@ using System.Text.Json;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
-namespace Arrowgene.Ddon.Shared.Csv
+namespace Arrowgene.Ddon.Shared.AssetReader
 {
     public class EnemySpawnAssetDeserializer : IAssetDeserializer<EnemySpawnAsset>
     {
@@ -14,6 +14,13 @@ namespace Arrowgene.Ddon.Shared.Csv
 
         private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId", "SpawnTime"};
         private static readonly string[] DROPS_TABLE_HEADERS = new string[]{"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden", "DropChance"};
+
+        private Dictionary<uint, NamedParam> namedParams;
+
+        public EnemySpawnAssetDeserializer(Dictionary<uint, NamedParam> namedParams)
+        {
+            this.namedParams = namedParams;
+        }
 
         public EnemySpawnAsset ReadPath(string path)
         {
@@ -79,7 +86,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 Enemy enemy = new Enemy()
                 {
                     EnemyId = ParseHexUInt(row[enemySchemaIndexes["EnemyId"]].GetString()),
-                    NamedEnemyParamsId = row[enemySchemaIndexes["NamedEnemyParamsId"]].GetUInt32(),
+                    NamedEnemyParams = this.namedParams.GetValueOrDefault(row[enemySchemaIndexes["NamedEnemyParamsId"]].GetUInt32(), NamedParam.DEFAULT_NAMED_PARAM),
                     RaidBossId = row[enemySchemaIndexes["RaidBossId"]].GetUInt32(),
                     Scale = row[enemySchemaIndexes["Scale"]].GetUInt16(),
                     Lv = row[enemySchemaIndexes["Lv"]].GetUInt16(),

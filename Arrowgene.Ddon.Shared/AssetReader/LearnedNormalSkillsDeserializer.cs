@@ -6,7 +6,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Asset;
 
-namespace Arrowgene.Ddon.Shared.Csv
+namespace Arrowgene.Ddon.Shared.AssetReader
 {
     public class LearnedNormalSkillsDeserializer : IAssetDeserializer<LearnedNormalSkillsAsset>
     {

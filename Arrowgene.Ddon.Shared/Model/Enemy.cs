@@ -1,4 +1,3 @@
-using System;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -7,6 +6,7 @@ namespace Arrowgene.Ddon.Shared.Model
     {       
         public Enemy()
         {
+            NamedEnemyParams = NamedParam.DEFAULT_NAMED_PARAM;
             DropsTable = new DropsTable();
         }
 
@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             Id = enemy.Id;
             EnemyId = enemy.EnemyId;
-            NamedEnemyParamsId = enemy.NamedEnemyParamsId;
+            NamedEnemyParams = enemy.NamedEnemyParams;
             RaidBossId = enemy.RaidBossId;
             Scale = enemy.Scale;
             Lv = enemy.Lv;
@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint Id { get; set; }
 
         public uint EnemyId { get; set; }
-        public uint NamedEnemyParamsId { get; set; }
+        public NamedParam NamedEnemyParams { get; set; }
         public uint RaidBossId { get; set; }
         public ushort Scale { get; set; } // Scale as a percentage, 100(%) is normal
         public ushort Lv { get; set; } // Level
@@ -63,6 +63,11 @@ namespace Arrowgene.Ddon.Shared.Model
         public long SpawnTimeEnd { get; set; }
         public uint Experience { get; set; }
         public DropsTable DropsTable { get; set; }
+
+        public uint GetDroppedExperience()
+        {
+            return Experience * (NamedEnemyParams.Experience/100);
+        }
   
 
         public CDataStageLayoutEnemyPresetEnemyInfoClient asCDataStageLayoutEnemyPresetEnemyInfoClient()
@@ -70,7 +75,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return new CDataStageLayoutEnemyPresetEnemyInfoClient()
             {
                 EnemyId = EnemyId,
-                NamedEnemyParamsId = NamedEnemyParamsId,
+                NamedEnemyParamsId = NamedEnemyParams.Id,
                 RaidBossId = RaidBossId,
                 Scale = Scale,
                 Lv = Lv,

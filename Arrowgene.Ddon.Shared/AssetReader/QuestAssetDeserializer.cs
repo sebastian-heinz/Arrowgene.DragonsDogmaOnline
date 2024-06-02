@@ -6,21 +6,21 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using System.Text.Json.Serialization;
 using System;
-using System.Collections;
-using System.Reflection.Emit;
-using System.Reflection.Metadata.Ecma335;
-using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using Arrowgene.Ddon.Shared.Model.Quest;
 
-namespace Arrowgene.Ddon.Shared.Csv
+namespace Arrowgene.Ddon.Shared.AssetReader
 {
     public class QuestAssetDeserializer : IAssetDeserializer<QuestAsset>
     {
         private static readonly ILogger Logger = LogProvider.Logger(typeof(QuestAssetDeserializer));
+
+        private Dictionary<uint, NamedParam> namedParams;
+
+        public QuestAssetDeserializer(Dictionary<uint, NamedParam> namedParams)
+        {
+            this.namedParams = namedParams;
+        }
 
         public QuestAsset ReadPath(string path)
         {
@@ -514,7 +514,7 @@ namespace Arrowgene.Ddon.Shared.Csv
         {
             if (enemy.TryGetProperty("named_enemy_params_id", out JsonElement jNamedEnemyParamsId))
             {
-                questEnemey.NamedEnemyParamsId = jNamedEnemyParamsId.GetUInt32();
+                questEnemey.NamedEnemyParams = this.namedParams.GetValueOrDefault(jNamedEnemyParamsId.GetUInt32(), NamedParam.DEFAULT_NAMED_PARAM);
             }
 
             if (enemy.TryGetProperty("raid_boss_id", out JsonElement jRaidBossId))
