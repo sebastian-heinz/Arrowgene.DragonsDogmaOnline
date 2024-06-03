@@ -9,6 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CDataCraftStartEquipGradeUpUnk0()
         {
+            Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0>();
         }
 
         public List<CDataCraftStartEquipGradeUpUnk0Unk0> Unk0 { get; set; }

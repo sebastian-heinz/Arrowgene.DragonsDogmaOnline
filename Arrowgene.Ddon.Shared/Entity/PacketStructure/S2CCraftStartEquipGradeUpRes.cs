@@ -25,6 +25,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CCraftStartEquipGradeUpRes()
         {
+            GradeUpItemUID = string.Empty;
+            GradeUpItemIDList = new List<CDataCommonU32>();
+            CurrentEquip = new CDataCurrentEquipInfo();
+            Unk1 = new CDataCraftStartEquipGradeUpUnk0();
         }
 
         public class Serializer : PacketEntitySerializer<S2CCraftStartEquipGradeUpRes>
