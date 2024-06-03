@@ -12,10 +12,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
         public uint RecipeID { get; set; }
         public uint ItemID { get; set; }
+        public uint Unk0 { get; set; }
         public uint GradeupItemID { get; set; }
         public uint Cost { get; set; }
         public uint Exp { get; set; }
-        public uint Unk0 { get; set; }
         public bool Unk1 { get; set; }
         public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; }
 
@@ -25,10 +25,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.RecipeID);
                 WriteUInt32(buffer, obj.ItemID);
+                WriteUInt32(buffer, obj.Unk0);
                 WriteUInt32(buffer, obj.GradeupItemID);
                 WriteUInt32(buffer, obj.Cost);
                 WriteUInt32(buffer, obj.Exp);
-                WriteUInt32(buffer, obj.Unk0);
                 WriteBool(buffer, obj.Unk1);
                 WriteEntityList<CDataMDataCraftMaterial>(buffer, obj.CraftMaterialList);
             }
@@ -38,10 +38,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     CDataMDataCraftGradeupRecipe obj = new CDataMDataCraftGradeupRecipe();
                     obj.RecipeID = ReadUInt32(buffer);
                     obj.ItemID = ReadUInt32(buffer);
+                    obj.Unk0 = ReadUInt32(buffer);
                     obj.GradeupItemID = ReadUInt32(buffer);
                     obj.Cost = ReadUInt32(buffer);
                     obj.Exp = ReadUInt32(buffer);
-                    obj.Unk0 = ReadUInt32(buffer);
                     obj.Unk1 = ReadBool(buffer);
                     obj.CraftMaterialList = ReadEntityList<CDataMDataCraftMaterial>(buffer);
                     return obj;

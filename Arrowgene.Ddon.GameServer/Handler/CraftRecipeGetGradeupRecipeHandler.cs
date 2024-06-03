@@ -20,14 +20,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .Where(recipes => recipes.Category == packet.Structure.Category)
-                .Select(recipes => recipes.RecipeList)
-                .SingleOrDefault(new List<CDataMDataCraftGradeupRecipe>());
+                .SelectMany(recipes => recipes.RecipeList)
+                .Where(recipe => packet.Structure.ItemList.Any(itemId => itemId.Value == recipe.ItemID))
+                .ToList();
 
             var res = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
                 Category = packet.Structure.Category,
                 RecipeList = allRecipesInCategory
-                    .Skip((int) packet.Structure.Offset)
+                    .Skip((int)packet.Structure.Offset)
                     .Take((int)packet.Structure.Num)
                     .ToList(),
                 IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
