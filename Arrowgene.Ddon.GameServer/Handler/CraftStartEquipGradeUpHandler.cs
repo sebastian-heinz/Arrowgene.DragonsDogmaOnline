@@ -55,14 +55,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            // TODO: Calculate final craft price with the discounts from the craft pawns
-            // uint finalCraftCost = recipe.Cost * packet.Structure.CreateCount;
-
-            // if(packet.Structure.CraftSupportPawnIDList.Count > 0)
-            // {
-            //     finalCraftCost = (uint)(finalCraftCost*0.95);
-            // }
-
             client.Send(new S2CCraftStartEquipGradeUpRes());
         }
     }
