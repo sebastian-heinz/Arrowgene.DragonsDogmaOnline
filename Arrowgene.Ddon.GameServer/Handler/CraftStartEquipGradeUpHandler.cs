@@ -53,9 +53,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+            int currentTotalEquipPoint = 250;
+            int addEquipPoint = 100;
+            int accumulatedPoints = currentTotalEquipPoint + addEquipPoint;
+            // Dummy math just to make the bar slide up (HMMM HAPPY CHEMICALS)
+
             var res = new S2CCraftStartEquipGradeUpRes()
             {
-                GradeUpItemUID = equipItemUID, // I assume this needs to be set? Its empty otherwise.
+                GradeUpItemUID = equipItemUID, // I assume this needs to be set? Its empty otherwise. Dunno lol
+                TotalEquipPoint = accumulatedPoints,
             };
             client.Send(res);
         }
