@@ -69,6 +69,7 @@ namespace Arrowgene.Ddon.GameServer
             WalletManager = new WalletManager(database);
             CharacterManager = new CharacterManager(this);
             BazaarManager = new BazaarManager(this);
+            RewardManager = new RewardManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -91,6 +92,7 @@ namespace Arrowgene.Ddon.GameServer
         public CharacterManager CharacterManager { get; }
         public EquipManager EquipManager { get; }
         public BazaarManager BazaarManager { get; }
+        public RewardManager RewardManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
@@ -398,7 +400,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetPriorityQuestHandler(this));
             AddHandler(new QuestGetQuestCompletedListHandler(this));
             AddHandler(new QuestGetQuestPartyBonusListHandler(this));
-            AddHandler(new QuestGetRewardBoxHandler(this));
+            AddHandler(new QuestGetRewardBoxListHandler(this));
             AddHandler(new QuestGetRewardBoxItemHandler(this));
             AddHandler(new QuestGetSetQuestInfoListHandler(this));
             AddHandler(new QuestGetSetQuestListHandler(this));

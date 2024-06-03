@@ -1,0 +1,66 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Woes of A Merchant",
+    "quest_id": 20000001,
+    "base_level": 8,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 400
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 20
+        },
+        {
+            "type": "exp",
+            "amount": 260
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 426,
+                    "num": 1
+                },
+                {
+                    "item_id": 34,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 25,
+                "group_id": 1
+            },
+            "npc_id": "Peddler",
+            "message_id": 26,
+            "layout_flags_on": [985]
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 25,
+                "group_id": 1
+            },
+            "npc_id": "Peddler",
+            "announce_type": "Accept",
+            "items": [
+                {
+                    "id": 8928,
+                    "amount": 2
+                }
+            ],
+            "message_id": 1124
+        }
+    ]
+}

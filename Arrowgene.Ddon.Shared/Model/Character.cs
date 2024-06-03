@@ -37,7 +37,6 @@ namespace Arrowgene.Ddon.Shared.Model
             OnlineStatus = OnlineStatus.Offline;
 
             PriorityQuests = new List<QuestId>();
-            QuestRewards = new List<QuestBoxRewards>();
         }
 
         public int AccountId { get; set; }
@@ -76,7 +75,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint LastEnteredShopId { get; set; }
 
         public List<QuestId> PriorityQuests { get; set; }
-        public List<QuestBoxRewards> QuestRewards { get; set; }
 
         public Pawn PawnBySlotNo(byte SlotNo)
         {

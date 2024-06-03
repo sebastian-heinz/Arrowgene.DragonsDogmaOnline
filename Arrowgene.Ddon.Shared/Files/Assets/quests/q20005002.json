@@ -1,0 +1,101 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Ambush In The Wells Depths",
+    "quest_id": 20005002,
+    "base_level": 11,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 270
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 30
+        },
+        {
+            "type": "exp",
+            "amount": 390
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 489,
+                    "num": 1
+                },
+                {
+                    "item_id": 9368,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 134,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015800",
+                    "level": 11,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 11,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 11,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 11,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 11,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015801",
+                    "level": 11,
+                    "exp": 132,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015801",
+                    "level": 11,
+                    "exp": 132,
+                    "is_boss": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "groups": [0]
+        }
+    ]
+}

@@ -2048,24 +2048,30 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     MotionNo = myPawnCsvData.EndOfCombatId
                 }
             };
-            pawn.SpSkillList = new List<CDataSpSkill>()
+            pawn.SpSkills = new Dictionary<JobId, List<CDataSpSkill>>()
             {
-                new CDataSpSkill()
                 {
-                    SpSkillId = myPawnCsvData.SpSkillSlot1Id,
-                    SpSkillLv = myPawnCsvData.SpSkillSlot1Lv
-                },
-                new CDataSpSkill()
-                {
-                    SpSkillId = myPawnCsvData.SpSkillSlot2Id,
-                    SpSkillLv = myPawnCsvData.SpSkillSlot2Lv
-                },
-                new CDataSpSkill()
-                {
-                    SpSkillId = myPawnCsvData.SpSkillSlot3Id,
-                    SpSkillLv = myPawnCsvData.SpSkillSlot3Lv
+                    myPawnCsvData.Job,
+                    new List<CDataSpSkill>()
+                    {
+                        new CDataSpSkill()
+                        {
+                            SpSkillId = myPawnCsvData.SpSkillSlot1Id,
+                            SpSkillLv = myPawnCsvData.SpSkillSlot1Lv
+                        },
+                        new CDataSpSkill()
+                        {
+                            SpSkillId = myPawnCsvData.SpSkillSlot2Id,
+                            SpSkillLv = myPawnCsvData.SpSkillSlot2Lv
+                        },
+                        new CDataSpSkill()
+                        {
+                            SpSkillId = myPawnCsvData.SpSkillSlot3Id,
+                            SpSkillLv = myPawnCsvData.SpSkillSlot3Lv
+                        }
+                    }.Where(spSkill => spSkill.SpSkillId != 0).ToList()
                 }
-            }.Where(spSkill => spSkill.SpSkillId != 0).ToList();
+            };
             pawn.TrainingPoints = int.MaxValue;
             pawn.AvailableTraining = uint.MaxValue;
             return pawn;

@@ -1,0 +1,78 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Slumbering God",
+    "quest_id": 2,
+    "next_quest": 3,
+    "base_level": 1,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 200
+        },
+        {
+            "type": "exp",
+            "amount": 700
+        }
+    ],
+    "blocks": [
+        {
+            "type": "Raw",
+            "layout_flags_on": [273],
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 200, "Param2": 0}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 200, "Param2": 0, "Param3": 200, "Param4": 1}
+            ]
+        },
+        {
+            "type": "Raw",
+            "announce_type": "Accept",
+            "check_commands": [
+                {"type": "StageNo", "Param1": 201}
+            ],
+            "result_commands":[
+                {"type": "WorldManageLayoutFlagOn", "Param1": 1293, "Param2": 70000001}
+            ]
+        },
+        {
+            "type": "Raw",
+            "announce_type": "Update",
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 201, "Param2": 0}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 201, "Param2": 0, "Param3": 201, "Param4": 0}
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "TheWhiteDragon",
+            "message_id": 1494
+        },
+        {
+            "type": "Raw",
+            "layout_flags_on": [1225],
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 201, "Param2": 3}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 201, "Param2": 3, "Param3": 0, "Param4": 0}
+            ]
+        }
+    ]
+}

@@ -1,0 +1,137 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Knight And Arisen",
+    "quest_id": 20000015,
+    "base_level": 10,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 330
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 30
+        },
+        {
+            "type": "exp",
+            "amount": 460
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 423,
+                    "num": 1
+                },
+                {
+                    "item_id": 39,
+                    "num": 2
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 8658,
+                    "num": 1,
+                    "chance": 1.0
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 33
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015800",
+                    "level": 10,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 10,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 10,
+                    "exp": 94,
+                    "is_boss": false
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 34
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015800",
+                    "level": 10,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 10,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 10,
+                    "exp": 94,
+                    "is_boss": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 2,
+                "group_id": 0
+            },
+            "npc_id": "Heinz2",
+            "message_id": 224
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "groups": [1]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 2,
+                "group_id": 0
+            },
+            "announce_type": "Update",
+            "npc_id": "Heinz2",
+            "message_id": 0
+        }
+    ]
+}

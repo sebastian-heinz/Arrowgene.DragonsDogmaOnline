@@ -17,43 +17,33 @@ using System.Text.Json;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetRewardBoxHandler : PacketHandler<GameClient>
+    public class QuestGetRewardBoxListHandler : GameRequestPacketHandler<C2SQuestGetRewardBoxListReq, S2CQuestGetRewardBoxListRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetRewardBoxHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetRewardBoxListHandler));
 
-
-        public QuestGetRewardBoxHandler(DdonGameServer server) : base(server)
+        public QuestGetRewardBoxListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_GET_REWARD_BOX_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CQuestGetRewardBoxListRes Handle(GameClient client, C2SQuestGetRewardBoxListReq packet)
         {
             // client.Send(GameFull.Dump_901);
             S2CQuestGetRewardBoxListRes res = new S2CQuestGetRewardBoxListRes();
 
             uint listNo = 1;
-            foreach (var boxReward in client.Character.QuestRewards)
+            foreach (var boxReward in Server.RewardManager.GetQuestBoxRewards(client))
             {
-                var quest = QuestManager.GetQuest(boxReward.QuestId);
-                if (quest == null)
-                {
-                    Logger.Error($"Failed to find quest for {boxReward.QuestId}. Unable to retrieve rewards.");
-                    throw new QuestDoesNotExistException(boxReward.QuestId);
-                }
-
                 res.RewardBoxRecordList.Add(new CDataRewardBoxRecord()
                 {
                     ListNo = listNo,
-                    QuestId = (uint) boxReward.QuestId,
-                    RewardItemList = boxReward.Rewards.Values.ToList()
+                    QuestId = (uint)boxReward.QuestId,
+                    RewardItemList = Quest.AsCDataRewardBoxItems(boxReward)
                 });
 
                 listNo += 1;
             }
 
-            client.Send(res);
+            return res;
         }
     }
 }

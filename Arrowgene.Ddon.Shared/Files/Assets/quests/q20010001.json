@@ -1,0 +1,149 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Boats Buddy",
+    "quest_id": 20010001,
+    "base_level": 8,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 240
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 30
+        },
+        {
+            "type": "exp",
+            "amount": 390
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 502,
+                    "num": 1
+                },
+                {
+                    "item_id": 9370,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 83
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010600",
+                    "level": 4,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010600",
+                    "level": 4,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010600",
+                    "level": 4,
+                    "exp": 94,
+                    "is_boss": false
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 84
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010410",
+                    "level": 4,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010410",
+                    "level": 4,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010410",
+                    "level": 4,
+                    "exp": 94,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010410",
+                    "level": 4,
+                    "exp": 94,
+                    "is_boss": false
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 81
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010411",
+                    "level": 4,
+                    "exp": 136,
+                    "is_boss": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "npc_id": "Walter",
+            "message_id": 31
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [1]
+        },
+        {
+            "type": "KillGroup",
+
+            "announce_type": "Update",
+            "groups": [2]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "announce_type": "Update",
+            "npc_id": "Walter",
+            "message_id": 0
+        }
+    ]
+}

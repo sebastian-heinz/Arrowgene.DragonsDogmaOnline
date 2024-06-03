@@ -9,11 +9,8 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.GameServer.Party;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Arrowgene.Ddon.GameServer.Characters;
-using static Arrowgene.Ddon.Server.Network.Challenge;
 using Arrowgene.Ddon.GameServer.Quests;
-using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -120,7 +117,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
-                uint gainedExp = enemyKilled.Experience;
+                uint gainedExp = enemyKilled.GetDroppedExperience();
                 uint extraBonusExp = 0; // TODO: Figure out what this is for (gp bonus?)
 
                 GameClient memberClient;

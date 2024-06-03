@@ -6,56 +6,62 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using System.Text.Json.Serialization;
 using System;
-using System.Collections;
-using System.Reflection.Emit;
-using System.Reflection.Metadata.Ecma335;
-using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
-using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using YamlDotNet.Core.Tokens;
 
-namespace Arrowgene.Ddon.Shared.Csv
+namespace Arrowgene.Ddon.Shared.AssetReader
 {
-    public class QuestAssetDeserializer : IAssetDeserializer<QuestAsset>
+    public class QuestAssetDeserializer
     {
         private static readonly ILogger Logger = LogProvider.Logger(typeof(QuestAssetDeserializer));
 
-        public QuestAsset ReadPath(string path)
+        private Dictionary<uint, NamedParam> namedParams;
+
+        public QuestAssetDeserializer(Dictionary<uint, NamedParam> namedParams)
         {
-            Logger.Info($"Reading {path}");
+            this.namedParams = namedParams;
+        }
 
-            var questAssets = new QuestAsset();
-
-            string json = File.ReadAllText(path);
-            JsonDocument document = JsonDocument.Parse(json);
-
-            if (!Enum.TryParse(document.RootElement.GetProperty("state_machine").GetString(), true, out QuestStateMachineType questStateMachineType))
+        public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets)
+        {
+            DirectoryInfo info = new DirectoryInfo(path);
+            if (!info.Exists)
             {
-                Logger.Error($"Expected key 'state_machine' not in the root of the document. Unable to parse {path}.");
-                return questAssets;
+                Logger.Error($"The directory '{path}' does not exist");
+                return false;
             }
 
-            if (questStateMachineType != QuestStateMachineType.GenericStateMachine)
+            Logger.Info($"Reading quest files from {path}");
+            foreach (var file in info.EnumerateFiles())
             {
-                Logger.Error($"Unsupported QuestStateMachineType '{questStateMachineType}'. Unable to parse {path}.");
-                return questAssets;
-            }
+                string json = File.ReadAllText(file.FullName);
+                JsonDocument document = JsonDocument.Parse(json);
 
-            foreach (var jQuest in document.RootElement.GetProperty("quests").EnumerateArray())
-            {
+                var jQuest = document.RootElement;
+                if (!Enum.TryParse(jQuest.GetProperty("state_machine").GetString(), true, out QuestStateMachineType questStateMachineType))
+                {
+                    Logger.Error($"Expected key 'state_machine' not in the root of the document. Unable to parse {file.FullName}.");
+                    continue;
+                }
+
+                if (questStateMachineType != QuestStateMachineType.GenericStateMachine)
+                {
+                    Logger.Error($"Unsupported QuestStateMachineType '{questStateMachineType}'. Unable to parse {file.FullName}.");
+                    continue;
+                }
+
                 QuestAssetData assetData = new QuestAssetData();
-
                 if (!ParseQuest(assetData, jQuest))
                 {
+                    Logger.Error($"Unable to parse '{file.FullName}'. Skipping.");
                     continue;
                 }
 
                 questAssets.Quests.Add(assetData);
             }
 
-            return questAssets;
+            return true;
         }
 
         private bool ParseQuest(QuestAssetData assetData, JsonElement jQuest)
@@ -138,6 +144,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 
         private void ParseRewards(QuestAssetData assetData, JsonElement quest)
         {
+            uint randomRewards = 0;
             foreach (var reward in quest.GetProperty("rewards").EnumerateArray())
             {
                 var rewardType = reward.GetProperty("type").GetString();
@@ -154,6 +161,15 @@ namespace Arrowgene.Ddon.Shared.Csv
                         QuestRewardItem rewardItem = null;
                         if (questRewardType == QuestRewardType.Random)
                         {
+                            if (randomRewards >= 4)
+                            {
+                                Logger.Error("Client only supports a maximum of 4 random rewards per quest. Skipping.");
+                                continue;
+                            }
+
+                            // Keep track of random rewards for the quest
+                            randomRewards += 1;
+
                             rewardItem = new QuestRandomRewardItem();
                             foreach (var item in reward.GetProperty("loot_pool").EnumerateArray())
                             {
@@ -183,13 +199,13 @@ namespace Arrowgene.Ddon.Shared.Csv
                             rewardItem = new QuestFixedRewardItem()
                             {
                                 LootPool = new List<LootPoolItem>()
-                                        {
-                                            new FixedLootPoolItem()
-                                            {
-                                                ItemId = item.GetProperty("item_id").GetUInt32(),
-                                                Num = item.GetProperty("num").GetUInt16(),
-                                            }
-                                        }
+                                {
+                                    new FixedLootPoolItem()
+                                    {
+                                        ItemId = item.GetProperty("item_id").GetUInt32(),
+                                        Num = item.GetProperty("num").GetUInt16(),
+                                    }
+                                }
                             };
                         }
                         else
@@ -514,7 +530,7 @@ namespace Arrowgene.Ddon.Shared.Csv
         {
             if (enemy.TryGetProperty("named_enemy_params_id", out JsonElement jNamedEnemyParamsId))
             {
-                questEnemey.NamedEnemyParamsId = jNamedEnemyParamsId.GetUInt32();
+                questEnemey.NamedEnemyParams = this.namedParams.GetValueOrDefault(jNamedEnemyParamsId.GetUInt32(), NamedParam.DEFAULT_NAMED_PARAM);
             }
 
             if (enemy.TryGetProperty("raid_boss_id", out JsonElement jRaidBossId))

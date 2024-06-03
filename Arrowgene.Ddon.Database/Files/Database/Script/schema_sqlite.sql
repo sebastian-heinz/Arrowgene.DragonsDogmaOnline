@@ -395,9 +395,10 @@ CREATE TABLE IF NOT EXISTS ddon_pawn_reaction
 CREATE TABLE IF NOT EXISTS ddon_sp_skill
 (
     "pawn_id"     INTEGER  NOT NULL,
+    "job"         SMALLINT NOT NULL,
     "sp_skill_id" SMALLINT NOT NULL,
     "sp_skill_lv" SMALLINT NOT NULL,
-    CONSTRAINT pk_ddon_sp_skill PRIMARY KEY (pawn_id, sp_skill_id),
+    CONSTRAINT pk_ddon_sp_skill PRIMARY KEY (pawn_id, job, sp_skill_id),
     CONSTRAINT fk_sp_skill_pawn_id FOREIGN KEY ("pawn_id") REFERENCES ddon_pawn ("pawn_id") ON DELETE CASCADE
 );
 
@@ -495,4 +496,17 @@ CREATE TABLE IF NOT EXISTS "ddon_bazaar_exhibition" (
     "proceeds"        INTEGER                           NOT NULL,
     "expire"          DATETIME                          NOT NULL,
     FOREIGN KEY("character_id") REFERENCES "ddon_character"("character_id")
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_reward_box" (
+	"uniq_reward_id"	INTEGER NOT NULL,
+	"character_common_id"	INTEGER NOT NULL,
+	"quest_id"	INTEGER NOT NULL,
+	"num_random_rewards"	INTEGER NOT NULL,
+	"random_reward0_index"	INTEGER NOT NULL,
+	"random_reward1_index"	INTEGER NOT NULL,
+	"random_reward2_index"	INTEGER NOT NULL,
+	"random_reward3_index"	INTEGER NOT NULL,
+	PRIMARY KEY("uniq_reward_id" AUTOINCREMENT),
+	CONSTRAINT "fk_ddon_reward_box_character_common_id" FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
 );

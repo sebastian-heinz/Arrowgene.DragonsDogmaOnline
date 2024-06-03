@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -50,8 +52,8 @@ namespace Arrowgene.Ddon.Database
         bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
 
         // Pawn Sp Skills
-        bool InsertSpSkill(uint pawnId, CDataSpSkill spSkill);
-        bool DeleteSpSkill(uint pawnId, byte spSkillId);
+        bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill);
+        bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId);
 
         // CharacterJobData
         bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
@@ -178,5 +180,10 @@ namespace Arrowgene.Ddon.Database
         List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId);
         List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId);
         List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId);
+
+        // Rewards
+        bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards);
+        bool DeleteBoxRewardItem(uint commonId, uint uniqId);
+        List<QuestBoxRewards> SelectBoxRewardItems(uint commonId);
     }
 }

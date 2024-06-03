@@ -32,6 +32,7 @@ The state machine assumes the following steps:
 Each quest has some starting condition, either being ordered from an NPC or being discovered by chance out in the field. A number of intermediate steps are required by the quest. These steps can be, killing enemies, running to marked enemies, discovering enemies, delivering items to an NPC or talking to an NPC. Finally when all intermediate steps are completed, the quest is marked as complete and rewards are distributed.
 
 ![](images/example-quest-steps.png)
+![](images/multi-process-example.png)
 
 ## What works in the current implementation
 
@@ -48,6 +49,7 @@ Each quest has some starting condition, either being ordered from an NPC or bein
   - Knight and Arisen (q20000015)
   - Request For Medicine (q20000009)
   - The Woes of A Merchant (q20000001)
+  - An Assistant's Assistant (q20000003)
   - Crackdown on Store Vandals (q20000007)
   - A Heart Throbs Once More (q20000014)
   - Fabio's Collectibles (q20000017)
@@ -80,10 +82,12 @@ Each quest has some starting condition, either being ordered from an NPC or bein
 
 ## Overview of the generic quest JSON format
 
-The JSON for the state machine is split into 3 major parts.
+The JSON for the state machine is split into 4 major parts.
 - Generic details about the quest.
 - Rewards that can be earned by completing the quest.
+- Enemies unique to the quest.
 - Steps required for the quest to execute.
+    - Either `blocks` or `processes`
 
 ```json
 {
@@ -94,6 +98,7 @@ The JSON for the state machine is split into 3 major parts.
     "minimum_item_rank": int,
     "discoverable": bool,
     "rewards": [],
+    "enemy_groups": [],
     "blocks": []
 }
 ```
@@ -170,9 +175,13 @@ In this particular quest, this is all the information we need. Let's use it to c
 
 ### Populating the common information
 
-New quests will be added to the array under the `quests` key. Each quest has the following pattern.
+First let's create a new file under `Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\quests` called `q20005010.json`. The name of this file should reflect the quest id used by the client.
+
+Each file should start with the following generic format.
+
 ```json
 {
+    "state_machine": "GenericStateMachine",
     "type": string,
     "comment": string,
     "quest_id": int,
@@ -185,11 +194,15 @@ New quests will be added to the array under the `quests` key. Each quest has the
 }
 ```
 
-First fill in the common items using the values we collected from the wiki. Currently only `"World"` quest type will be used the server. The `discoverable` field controls if the quest shows up on the map before accepting it. In this quest we will set it to `false`.
+> [!NOTE]
+> This quest is simple so we use the simplied syntax of `blocks` to define the steps in the quest. In more complicated quests, you may instead see `processes` instead. Quests which use `blocks` are shorthand to say this quest only has one process in the quest state machine.
+
+First fill in the common items using the values we collected from the wiki. Quests starting with a prefix of `q2xxxxxx` are "World Quests", so we will fill in `"World"` as the quest type. The `discoverable` field controls if the quest shows up on the map before accepting it. In this quest we will set it to `false`.
 ```json
 {
+    "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "q20005010 - The Knights' Bitter Enemy",
+    "comment": "The Knights' Bitter Enemy",
     "quest_id": 20005010,
     "base_level": 12,
     "minimum_item_rank": 0,
@@ -333,78 +346,71 @@ Finally, your file should look like below. Save the file, reload the server and 
 ```json
 {
     "state_machine": "GenericStateMachine",
-    "comment": [
-        "World quests defined to be executed by the GenericStateMachine."
-    ],
-    "quests": [
+    "type": "World",
+    "comment": "The Knights' Bitter Enemy",
+    "quest_id": 20005010,
+    "base_level": 12,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 390
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 70
+        },
+        {
+            "type": "exp",
+            "amount": 590
+        },
+        {
+            "type": "select",
+            "loot_pool": [
                 {
-            "type": "World",
-            "comment": "q20005010 - The Knights' Bitter Enemy",
-            "quest_id": 20005010,
-            "base_level": 12,
-            "minimum_item_rank": 0,
-            "discoverable": false,
-            "rewards": [
-                {
-                    "type": "wallet",
-                    "wallet_type": "Gold",
-                    "amount": 390
+                    "item_id": 95,
+                    "num": 1
                 },
                 {
-                    "type": "wallet",
-                    "wallet_type": "RiftPoints",
-                    "amount": 70
+                    "item_id": 58,
+                    "num": 3
                 },
                 {
-                    "type": "exp",
-                    "amount": 590
-                },
-                {
-                    "type": "select",
-                    "loot_pool": [
-                        {
-                            "item_id": 95,
-                            "num": 1
-                        },
-                        {
-                            "item_id": 58,
-                            "num": 3
-                        },
-                        {
-                            "item_id": 10047,
-                            "num": 1
-                        }
-                    ]
-                }
-            ],
-			"enemy_groups": [
-				{
-					"comment": "GroupId: 0",
-					"stage_id": {
-                        "id": 1,
-                        "group_id": 26
-                    },
-					"enemies": [
-						{
-                            "enemy_id": "0x015000",
-                            "level": 12,
-                            "exp": 1860,
-                            "is_boss": true
-                        }
-					]
-				}
-			],
-            "blocks": [
-                {
-                    "type": "DiscoverEnemy",
-					"groups": [0]
-                },
-                {
-                    "type": "KillGroup",
-                    "announce_type": "Accept",
-                    "groups": [0]
+                    "item_id": 10047,
+                    "num": 1
                 }
             ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "comment": "GroupId: 0",
+            "stage_id": {
+                "id": 1,
+                "group_id": 26
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015000",
+                    "level": 12,
+                    "exp": 1860,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "groups": [0]
         }
     ]
 }

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -19,18 +21,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CPawnSpSkillSetActiveSkillRes res = new S2CPawnSpSkillSetActiveSkillRes();
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            if(packet.Structure.ToActiveSpSkill.SpSkillId == 0 && pawn.SpSkillList.Count < 3)
+            
+            List<CDataSpSkill> spSkills;
+            if (pawn.SpSkills.ContainsKey(packet.Structure.JobId))
+            {
+                spSkills = pawn.SpSkills[packet.Structure.JobId];
+            }
+            else
+            {
+                spSkills = new List<CDataSpSkill>();
+                pawn.SpSkills.Add(packet.Structure.JobId, spSkills);
+            }
+
+            if(packet.Structure.ToActiveSpSkill.SpSkillId == 0 && spSkills.Count < 3)
             {
                 // Add to an empty slot
-                pawn.SpSkillList.Add(packet.Structure.FromStockSpSkill);
-                Server.Database.InsertSpSkill(pawn.PawnId, packet.Structure.FromStockSpSkill);
+                spSkills.Add(packet.Structure.FromStockSpSkill);
+                Server.Database.InsertSpSkill(pawn.PawnId, packet.Structure.JobId, packet.Structure.FromStockSpSkill);
             }
-            else if(pawn.SpSkillList.IndexOf(packet.Structure.ToActiveSpSkill) is int index && index != -1)
+            else if(spSkills.IndexOf(packet.Structure.ToActiveSpSkill) is int index && index != -1)
             {
                 // Replace skill in slot
-                pawn.SpSkillList[index] = packet.Structure.FromStockSpSkill;
-                Server.Database.DeleteSpSkill(pawn.PawnId, packet.Structure.ToActiveSpSkill.SpSkillId);
-                Server.Database.InsertSpSkill(pawn.PawnId, packet.Structure.FromStockSpSkill);
+                spSkills[index] = packet.Structure.FromStockSpSkill;
+                Server.Database.DeleteSpSkill(pawn.PawnId, packet.Structure.JobId, packet.Structure.ToActiveSpSkill.SpSkillId);
+                Server.Database.InsertSpSkill(pawn.PawnId, packet.Structure.JobId, packet.Structure.FromStockSpSkill);
             }
             else
             {
