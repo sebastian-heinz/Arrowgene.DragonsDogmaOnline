@@ -5,7 +5,7 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CGetCraftGradeupRecipeRes : ServerResponse
+    public class S2CCraftRecipeGetCraftGradeupRecipeRes : ServerResponse
     {
         public override PacketId Id => PacketId.S2C_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_RES;
 
@@ -14,15 +14,15 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataCommonU32> UnknownItemList { get; set; }
         public bool IsEnd { get; set; }
 
-        public S2CGetCraftGradeupRecipeRes()
+        public S2CCraftRecipeGetCraftGradeupRecipeRes()
         {
             RecipeList = new List<CDataMDataCraftGradeupRecipe>();
             UnknownItemList = new List<CDataCommonU32>();
         }
 
-        public class Serializer : PacketEntitySerializer<S2CGetCraftGradeupRecipeRes>
+        public class Serializer : PacketEntitySerializer<S2CCraftRecipeGetCraftGradeupRecipeRes>
         {
-            public override void Write(IBuffer buffer, S2CGetCraftGradeupRecipeRes obj)
+            public override void Write(IBuffer buffer, S2CCraftRecipeGetCraftGradeupRecipeRes obj)
             {
                 WriteServerResponse(buffer, obj);
                 WriteByte(buffer, obj.Category);
@@ -31,9 +31,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteBool(buffer, obj.IsEnd);
             }
 
-            public override S2CGetCraftGradeupRecipeRes Read(IBuffer buffer)
+            public override S2CCraftRecipeGetCraftGradeupRecipeRes Read(IBuffer buffer)
             {
-                S2CGetCraftGradeupRecipeRes obj = new S2CGetCraftGradeupRecipeRes();
+                S2CCraftRecipeGetCraftGradeupRecipeRes obj = new S2CCraftRecipeGetCraftGradeupRecipeRes();
                 ReadServerResponse(buffer, obj);
                 obj.Category = ReadByte(buffer);
                 obj.RecipeList = ReadEntityList<CDataMDataCraftGradeupRecipe>(buffer);

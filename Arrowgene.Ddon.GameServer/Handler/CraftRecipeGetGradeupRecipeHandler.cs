@@ -8,7 +8,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftRecipeGetGradeupRecipeHandler : GameStructurePacketHandler<C2SGetCraftGradeupRecipeReq>
+    public class CraftRecipeGetGradeupRecipeHandler : GameStructurePacketHandler<C2SCraftRecipeGetCraftGradeupRecipeReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftRecipeGetGradeupRecipeHandler));
 
@@ -16,19 +16,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SGetCraftGradeupRecipeReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCraftRecipeGetCraftGradeupRecipeReq> packet)
         {
             List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .Where(recipes => recipes.Category == packet.Structure.Category)
                 .Select(recipes => recipes.RecipeList)
                 .SingleOrDefault(new List<CDataMDataCraftGradeupRecipe>());
 
-            var res = new S2CGetCraftGradeupRecipeRes()
+            var res = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
                 Category = packet.Structure.Category,
                 RecipeList = allRecipesInCategory
                     .Skip((int) packet.Structure.Offset)
-                    .Take(packet.Structure.Num)
+                    .Take((int)packet.Structure.Num)
                     .ToList(),
                 IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
             };

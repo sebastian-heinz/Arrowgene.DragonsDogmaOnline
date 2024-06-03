@@ -34,7 +34,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = packet.Structure.EquipItemUID;
              //TODO need to get access to RecipeList, since this contains a reference to Gold/Cost, etc.
 
-
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
 
@@ -56,12 +55,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-
             // TODO we need to implement Pawn craft levels since that affects the points that get added
             // These are dummy values just to have the bar do something, definitely needs to be done differently.
-            int currentTotalEquipPoint = 200;
-            int addEquipPoint = 150;
-
+            uint currentTotalEquipPoint = 200;
+            uint addEquipPoint = 150;
 
             var res = new S2CCraftStartEquipGradeUpRes()
             {

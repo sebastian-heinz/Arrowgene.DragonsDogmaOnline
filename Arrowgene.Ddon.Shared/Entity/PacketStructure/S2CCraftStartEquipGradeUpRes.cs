@@ -11,15 +11,15 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public override PacketId Id => PacketId.S2C_CRAFT_START_EQUIP_GRADE_UP_RES;
 
         public string GradeUpItemUID { get; set; }
-        public int GradeUpItemID { get; set; }
+        public uint GradeUpItemID { get; set; }
         public List<CDataCommonU32> GradeUpItemIDList { get; set; }
-        public int AddEquipPoint { get; set; }
-        public int TotalEquipPoint { get; set; }
-        public int EquipGrade { get; set; }
-        public int Gold { get; set; }
+        public uint AddEquipPoint { get; set; }
+        public uint TotalEquipPoint { get; set; }
+        public uint EquipGrade { get; set; }
+        public uint Gold { get; set; }
         public bool IsGreatSuccess { get; set; }
         public CDataCurrentEquipInfo CurrentEquip { get; set; }
-        public int BeforeItemID { get; set; }
+        public uint BeforeItemID { get; set; }
         public bool Unk0 { get; set; }
         public CDataCraftStartEquipGradeUpUnk0 Unk1 { get; set; }
 
@@ -37,15 +37,15 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteMtString(buffer, obj.GradeUpItemUID);
-                WriteInt32(buffer, obj.GradeUpItemID);
+                WriteUInt32(buffer, obj.GradeUpItemID);
                 WriteEntityList<CDataCommonU32>(buffer, obj.GradeUpItemIDList);
-                WriteInt32(buffer, obj.AddEquipPoint);
-                WriteInt32(buffer, obj.TotalEquipPoint);
-                WriteInt32(buffer, obj.EquipGrade);
-                WriteInt32(buffer, obj.Gold);
+                WriteUInt32(buffer, obj.AddEquipPoint);
+                WriteUInt32(buffer, obj.TotalEquipPoint);
+                WriteUInt32(buffer, obj.EquipGrade);
+                WriteUInt32(buffer, obj.Gold);
                 WriteBool(buffer, obj.IsGreatSuccess);
                 WriteEntity<CDataCurrentEquipInfo>(buffer, obj.CurrentEquip);
-                WriteInt32(buffer, obj.BeforeItemID);
+                WriteUInt32(buffer, obj.BeforeItemID);
                 WriteBool(buffer, obj.Unk0);
                 WriteEntity<CDataCraftStartEquipGradeUpUnk0>(buffer, obj.Unk1);
             }
@@ -55,15 +55,15 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CCraftStartEquipGradeUpRes obj = new S2CCraftStartEquipGradeUpRes();
                 ReadServerResponse(buffer, obj);
                 obj.GradeUpItemUID = ReadMtString(buffer);
-                obj.GradeUpItemID = ReadInt32(buffer);
+                obj.GradeUpItemID = ReadUInt32(buffer);
                 obj.GradeUpItemIDList = ReadEntityList<CDataCommonU32>(buffer);
-                obj.AddEquipPoint = ReadInt32(buffer);
-                obj.TotalEquipPoint = ReadInt32(buffer);
-                obj.EquipGrade = ReadInt32(buffer);
-                obj.Gold = ReadInt32(buffer);
+                obj.AddEquipPoint = ReadUInt32(buffer);
+                obj.TotalEquipPoint = ReadUInt32(buffer);
+                obj.EquipGrade = ReadUInt32(buffer);
+                obj.Gold = ReadUInt32(buffer);
                 obj.IsGreatSuccess = ReadBool(buffer);
                 obj.CurrentEquip = ReadEntity<CDataCurrentEquipInfo>(buffer);
-                obj.BeforeItemID = ReadInt32(buffer);
+                obj.BeforeItemID = ReadUInt32(buffer);
                 obj.Unk0 = ReadBool(buffer);
                 obj.Unk1 = ReadEntity<CDataCraftStartEquipGradeUpUnk0>(buffer);
                 return obj;

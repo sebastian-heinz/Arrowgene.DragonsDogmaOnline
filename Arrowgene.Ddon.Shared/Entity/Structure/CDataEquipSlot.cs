@@ -9,8 +9,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
-        public int Unk0 { get; set; }
-        public int Unk1 { get; set; }
+        public uint Unk0 { get; set; }
+        public uint Unk1 { get; set; }
         public byte Unk2 { get; set; }
         public ushort Unk3 { get; set; }
 
@@ -18,8 +18,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataEquipSlot obj)
             {
-                WriteInt32(buffer, obj.Unk0);
-                WriteInt32(buffer, obj.Unk1);
+                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.Unk1);
                 WriteByte(buffer, obj.Unk2);
                 WriteUInt16(buffer, obj.Unk3);
             }
@@ -27,8 +27,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataEquipSlot Read(IBuffer buffer)
             {
                     CDataEquipSlot obj = new CDataEquipSlot();
-                    obj.Unk0 = ReadInt32(buffer);
-                    obj.Unk1 = ReadInt32(buffer);
+                    obj.Unk0 = ReadUInt32(buffer);
+                    obj.Unk1 = ReadUInt32(buffer);
                     obj.Unk2 = ReadByte(buffer);
                     obj.Unk3 = ReadUInt16(buffer);
                     return obj;

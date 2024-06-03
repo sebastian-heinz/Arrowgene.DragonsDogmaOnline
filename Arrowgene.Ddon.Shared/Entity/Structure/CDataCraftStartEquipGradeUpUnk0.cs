@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public List<CDataCraftStartEquipGradeUpUnk0Unk0> Unk0 { get; set; }
         public byte Unk1 { get; set; }
-        public ushort Unk2 { get; set; }
+        public byte Unk2 { get; set; }
         public byte Unk3 { get; set; }
         public bool Unk4 { get; set; }
 
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteEntityList<CDataCraftStartEquipGradeUpUnk0Unk0>(buffer, obj.Unk0);
                 WriteByte(buffer, obj.Unk1);
-                WriteUInt16(buffer, obj.Unk2);
+                WriteByte(buffer, obj.Unk2);
                 WriteByte(buffer, obj.Unk3);
                 WriteBool(buffer, obj.Unk4);
             }
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     CDataCraftStartEquipGradeUpUnk0 obj = new CDataCraftStartEquipGradeUpUnk0();
                     obj.Unk0 = ReadEntityList<CDataCraftStartEquipGradeUpUnk0Unk0>(buffer);
                     obj.Unk1 = ReadByte(buffer);
-                    obj.Unk2 = ReadUInt16(buffer);
+                    obj.Unk2 = ReadByte(buffer);
                     obj.Unk3 = ReadByte(buffer);
                     obj.Unk4 = ReadBool(buffer);
                     return obj;

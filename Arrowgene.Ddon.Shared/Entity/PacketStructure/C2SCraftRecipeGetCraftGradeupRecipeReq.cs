@@ -5,36 +5,36 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class C2SGetCraftGradeupRecipeReq : IPacketStructure
+    public class C2SCraftRecipeGetCraftGradeupRecipeReq : IPacketStructure
     {
         public PacketId Id => PacketId.C2S_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_REQ;
 
         public byte Category { get; set; }
         public uint Offset { get; set; }
-        public int Num { get; set; }
+        public uint Num { get; set; }
         public List<CDataCommonU32> ItemList { get; set; }
 
-        public C2SGetCraftGradeupRecipeReq()
+        public C2SCraftRecipeGetCraftGradeupRecipeReq()
         {
             ItemList = new List<CDataCommonU32>();
         }
 
-        public class Serializer : PacketEntitySerializer<C2SGetCraftGradeupRecipeReq>
+        public class Serializer : PacketEntitySerializer<C2SCraftRecipeGetCraftGradeupRecipeReq>
         {
-            public override void Write(IBuffer buffer, C2SGetCraftGradeupRecipeReq obj)
+            public override void Write(IBuffer buffer, C2SCraftRecipeGetCraftGradeupRecipeReq obj)
             {
                 WriteByte(buffer, obj.Category);
                 WriteUInt32(buffer, obj.Offset);
-                WriteInt32(buffer, obj.Num);
+                WriteUInt32(buffer, obj.Num);
                 WriteEntityList<CDataCommonU32>(buffer, obj.ItemList);
             }
 
-            public override C2SGetCraftGradeupRecipeReq Read(IBuffer buffer)
+            public override C2SCraftRecipeGetCraftGradeupRecipeReq Read(IBuffer buffer)
             {
-                C2SGetCraftGradeupRecipeReq obj = new C2SGetCraftGradeupRecipeReq();
+                C2SCraftRecipeGetCraftGradeupRecipeReq obj = new C2SCraftRecipeGetCraftGradeupRecipeReq();
                 obj.Category = ReadByte(buffer);
                 obj.Offset = ReadUInt32(buffer);
-                obj.Num = ReadInt32(buffer);
+                obj.Num = ReadUInt32(buffer);
                 obj.ItemList = ReadEntityList<CDataCommonU32>(buffer);
                 return obj;
             }
