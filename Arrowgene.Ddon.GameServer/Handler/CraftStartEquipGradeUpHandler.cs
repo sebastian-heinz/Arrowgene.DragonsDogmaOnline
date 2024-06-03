@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Chat.Command.Commands;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -29,14 +30,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
         {
-            var allRecipes = Server.AssetRepository.CraftingGradeUpRecipesAsset;
-            var recipe = allRecipes.FirstOrDefault();
-
-
+            string equipItemUID = packet.Structure.EquipItemUID;
+             //Need to get access to RecipeList, since this contains a reference to Gold/Cost.
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
 
-            // Remove crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
             {
                 try
@@ -55,7 +53,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            client.Send(new S2CCraftStartEquipGradeUpRes());
+            var res = new S2CCraftStartEquipGradeUpRes()
+            {
+                GradeUpItemUID = equipItemUID, // I assume this needs to be set? Its empty otherwise.
+            };
+            client.Send(res);
         }
     }
 }

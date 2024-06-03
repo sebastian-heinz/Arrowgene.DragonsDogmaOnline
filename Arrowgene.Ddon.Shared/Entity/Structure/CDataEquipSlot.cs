@@ -8,6 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public CDataEquipSlot()
         {
         }
+
         public int Unk0 { get; set; }
         public int Unk1 { get; set; }
         public byte Unk2 { get; set; }
@@ -31,7 +32,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     obj.Unk2 = ReadByte(buffer);
                     obj.Unk3 = ReadUInt16(buffer);
                     return obj;
-                
             }
         }
     }

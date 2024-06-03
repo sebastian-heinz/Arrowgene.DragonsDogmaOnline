@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public int EquipGrade { get; set; }
         public int Gold { get; set; }
         public bool IsGreatSuccess { get; set; }
-        public CDataCurrentEquipInfo CurrentEquip { get; set; } // strange entry
+        public CDataCurrentEquipInfo CurrentEquip { get; set; }
         public int BeforeItemID { get; set; }
         public bool Unk0 { get; set; }
         public CDataCraftStartEquipGradeUpUnk0 Unk1 { get; set; }

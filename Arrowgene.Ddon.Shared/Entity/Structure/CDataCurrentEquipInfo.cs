@@ -9,6 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CDataCurrentEquipInfo()
         {
+            ItemUID = string.Empty;
         }
         public string ItemUID { get; set; }
         public CDataEquipSlot EquipSlot { get; set; }
