@@ -52,8 +52,8 @@ namespace Arrowgene.Ddon.Database
         bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
 
         // Pawn Sp Skills
-        bool InsertSpSkill(uint pawnId, CDataSpSkill spSkill);
-        bool DeleteSpSkill(uint pawnId, byte spSkillId);
+        bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill);
+        bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId);
 
         // CharacterJobData
         bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
