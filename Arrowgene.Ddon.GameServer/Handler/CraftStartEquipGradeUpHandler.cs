@@ -10,6 +10,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Chat.Command.Commands;
+using System.Data.Entity;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -31,7 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
         {
             string equipItemUID = packet.Structure.EquipItemUID;
-             //Need to get access to RecipeList, since this contains a reference to Gold/Cost.
+             //TODO need to get access to RecipeList, since this contains a reference to Gold/Cost, etc.
+
+
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
 
@@ -53,15 +56,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            int currentTotalEquipPoint = 250;
-            int addEquipPoint = 100;
-            int accumulatedPoints = currentTotalEquipPoint + addEquipPoint;
-            // Dummy math just to make the bar slide up (HMMM HAPPY CHEMICALS)
+
+            // TODO we need to implement Pawn craft levels since that affects the points that get added
+            // These are dummy values just to have the bar do something, definitely needs to be done differently.
+            int currentTotalEquipPoint = 200;
+            int addEquipPoint = 150;
+
 
             var res = new S2CCraftStartEquipGradeUpRes()
             {
-                GradeUpItemUID = equipItemUID, // I assume this needs to be set? Its empty otherwise. Dunno lol
-                TotalEquipPoint = accumulatedPoints,
+                GradeUpItemUID = equipItemUID, // I assume this needs to be set? without it points don't get added (and it GradeUpItemUID is empty?)
+                GradeUpItemID = 1674,
+                TotalEquipPoint = currentTotalEquipPoint + addEquipPoint, // Dummy math just to make the bar slide up (HMMM HAPPY CHEMICALS)
+                EquipGrade = 2,
+                IsGreatSuccess = true,
             };
             client.Send(res);
         }
