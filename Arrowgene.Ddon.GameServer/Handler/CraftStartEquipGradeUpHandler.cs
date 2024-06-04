@@ -34,7 +34,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = packet.Structure.EquipItemUID;
              //TODO need to get access to RecipeList, since this contains a reference to Gold/Cost, etc.
 
-            CDataMDataCraftGradeupRecipe json_data = new CDataMDataCraftGradeupRecipe();
+            CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
+                .SelectMany(recipes => recipes.RecipeList)
+                .First();
 
             // Define local variables for calculations
             uint gearupgradeID = json_data.GradeupItemID;
