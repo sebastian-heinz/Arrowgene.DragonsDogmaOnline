@@ -22,7 +22,7 @@
 			{
 				"RecipeID": 2,
 				"ItemID": 73,
-				"Unk0": 300,
+				"Unk0": 2,
 				"GradeupItemID": 1685,
                 "Cost": 400,
                 "Exp": 12,
@@ -39,7 +39,7 @@
 			{
                 "RecipeID": 3,
                 "ItemID": 942,
-				"Unk0": 300,
+				"Unk0": 2,
                 "GradeupItemID": 2554,
                 "Cost": 400,
                 "Exp": 12,
@@ -56,7 +56,7 @@
 			{
                 "RecipeID": 4,
                 "ItemID": 490,
-				"Unk0": 300,
+				"Unk0": 2,
                 "GradeupItemID": 2102,
                 "Cost": 400,
                 "Exp": 12,
@@ -73,7 +73,7 @@
 			{
                 "RecipeID": 5,
                 "ItemID": 497,
-				"Unk0": 300,
+				"Unk0": 2,
                 "GradeupItemID": 2109,
                 "Cost": 400,
                 "Exp": 12,
@@ -90,7 +90,7 @@
 			{
                 "RecipeID": 6,
                 "ItemID": 493,
-				"Unk0": 300,
+				"Unk0": 2,
                 "GradeupItemID": 2105,
                 "Cost": 400,
                 "Exp": 12,
@@ -107,7 +107,7 @@
 			{
                 "RecipeID": 7,
                 "ItemID": 499,
-				"Unk0": 300,
+				"Unk0": 2,
                 "GradeupItemID": 2111,
                 "Cost": 400,
                 "Exp": 12,
@@ -124,7 +124,7 @@
 			{
                 "RecipeID": 8,
                 "ItemID": 505,
-				"Unk0": 300,
+				"Unk0": 2,
                 "GradeupItemID": 2117,
                 "Cost": 400,
                 "Exp": 12,
@@ -141,7 +141,7 @@
 			{
                 "RecipeID": 9,
                 "ItemID": 8793,
-				"Unk0": 300,
+				"Unk0": 2,
                 "GradeupItemID": 8794,
                 "Cost": 400,
                 "Exp": 12,
