@@ -26,24 +26,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
-            _itemManager = server.ItemManager;;
+            _itemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
         {
             string equipItemUID = packet.Structure.EquipItemUID;
-             //TODO need to get access to RecipeList, since this contains a reference to Gold/Cost, etc.
+
+            uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID); 
 
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
+                .Where(recipe => recipe.ItemID == equipItemID)
                 .First();
 
             // Define local variables for calculations
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
-            uint nextGrade = json_data.Unk0;
-            uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its
-            uint addEquipPoint = 350;         // not in the JSON or Request.
+            uint nextGrade = json_data.Unk0; // This might be Unk0 in the JSON but is probably in the DB or something.
+            uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
+            uint addEquipPoint = 350;         
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
@@ -83,7 +85,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             });
 
             // Exchange upgraded items
-            List<CDataItemUpdateResult> AddItemResult = _itemManager.AddItem(Server, client.Character, false, 1674, 1 * 1);
+            List<CDataItemUpdateResult> AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
             List<CDataItemUpdateResult> RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
             updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
             updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
