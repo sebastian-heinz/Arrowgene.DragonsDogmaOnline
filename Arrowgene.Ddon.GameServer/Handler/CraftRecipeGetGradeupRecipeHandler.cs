@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCraftRecipeGetCraftGradeupRecipeReq> packet)
         {
             List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
-                .Where(recipes => recipes.Category == packet.Structure.Category)
+                // .Where(recipes => recipes.Category == packet.Structure.Category)
                 // .Select(recipes => recipes.RecipeList)
                 // .SingleOrDefault(new List<CDataMDataCraftGradeupRecipe>()); // OLD APPROACH, THIS POPULATES THE RECIPELIST CORRECTLY BUT CRAFTING BREAKS!!!
                 .SelectMany(recipes => recipes.RecipeList)

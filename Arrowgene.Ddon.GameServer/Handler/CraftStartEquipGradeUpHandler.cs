@@ -40,8 +40,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
             uint nextGrade = json_data.Unk0;
-            uint currentTotalEquipPoint = 200; // Equip Points are probably handled elsewhere, since its
-            uint addEquipPoint = 150;         // not in the JSON or Request.
+            uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its
+            uint addEquipPoint = 350;         // not in the JSON or Request.
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
