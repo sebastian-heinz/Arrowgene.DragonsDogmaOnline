@@ -33,8 +33,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             string equipItemUID = packet.Structure.EquipItemUID;
 
+
+            // Finding the Recipe we need based on the requested UID.
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID); 
 
+            // Getting access to the GradeUpRecipe JSON data.
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
                 .Where(recipe => recipe.ItemID == equipItemID)
@@ -45,11 +48,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint goldRequired = json_data.Cost;
             uint nextGrade = json_data.Unk0; // This might be Unk0 in the JSON but is probably in the DB or something.
             uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
-            uint addEquipPoint = 350;         
+            uint addEquipPoint = 350;   
+            uint test = json_data.RecipeID;      
+
+            // TODO we need to implement Pawn craft levels since that affects the points that get added
+
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
 
+
+            // Remove crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
             {
                 try
@@ -60,7 +69,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 catch (NotEnoughItemsException e)
                 {
                     Logger.Exception(e);
-                    client.Send(new S2CCraftStartCraftRes()
+                    client.Send(new S2CCraftStartEquipGradeUpRes()
                     {
                         Result = 1
                     });
@@ -68,12 +77,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+
+            // Subtract less Gold if supportpawn is used.
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
             {
                 goldRequired = (uint)(goldRequired*0.95);
             }
 
-            // Substract craft price
+            // Substract Gold based on JSON cost.
             CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
             wallet.Value = (uint)Math.Max(0, (int)wallet.Value - (int)goldRequired);
             Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
@@ -90,9 +101,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
             updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
 
-            // TODO we need to implement Pawn craft levels since that affects the points that get added
-
-
+            // Supplying the response packet with data
             var res = new S2CCraftStartEquipGradeUpRes()
             {
                 GradeUpItemUID = equipItemUID, // This seems to need tot be your current UID.
