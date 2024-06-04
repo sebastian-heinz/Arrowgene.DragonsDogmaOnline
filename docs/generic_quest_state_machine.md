@@ -37,39 +37,15 @@ Each quest has some starting condition, either being ordered from an NPC or bein
 ## What works in the current implementation
 
 - Currently only world quests are activated.
-- A small amount of world quests around the starting areas in Lestania has been added.
-  - [The Knights' Bitter Enemy (q20005010)](http://ddon.wikidot.com/wq:theknightsbitterenemy)
-  - [Confrontation With Scouts (q20005001)](http://ddon.wikidot.com/wq:confrontationwithscouts)
-  - [Ambush in the Well's Depths (q20005002)](http://ddon.wikidot.com/wq:ambushinthewellsdepths)
-  - [Sky-Concealing Wings (q20005000)](http://ddon.wikidot.com/wq:skyconcealingwings)
-  - [Dweller In The Darkness (q20005003)](http://ddon.wikidot.com/wq:dwellerinthedarkness)
-  - [Dispatch A Clamor of Harpies (q20015005)](http://ddon.wikidot.com/wq:dispatchaclamorofharpies)
-  - [Boats Buddy (q20010001)](http://ddon.wikidot.com/wq:boatsbuddy)
-  - [Beach Bandits (q20010000)](http://ddon.wikidot.com/wq:beachbandits)
-  - Knight and Arisen (q20000015)
-  - Request For Medicine (q20000009)
-  - The Woes of A Merchant (q20000001)
-  - An Assistant's Assistant (q20000003)
-  - Crackdown on Store Vandals (q20000007)
-  - A Heart Throbs Once More (q20000014)
-  - Fabio's Collectibles (q20000017)
-  - Fabio and Monster-Slaying (q20000018)
-  - A Transporter's Tragedy (q20000002)
 - Quest rewards can be claimed from the reward box after completing a quest.
   - ![](images/reward-box.png)
-- New quests can be defined by updating the file `world_quests.json` in `Arrowgene.Ddon.Shared/files/assets`.
+- New quests can be defined by updating or adding new files to [Arrowgene.Ddon.Shared/Files/Assets/quests](https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/tree/develop/Arrowgene.Ddon.Shared/Files/Assets/quests)
 
 > [!WARNING]
 > The quest system generally doesn't work well in parties with multiple players. The world quests will reward all players in the party, but only the party leader will get quest banners as the quest progresses and completes.
 
 > [!WARNING]
-> The reward box is not currently saved into the database. Claim all rewards before exiting the game.
-
-> [!WARNING]
 > In the quests `Boat's Buddy` and `Beach Bandits`, the nodes which appear to be used for the quest don't behave properly. You may need to reset the instance by going to WDT to get the group to spawn with quest monsters.
-
-> [!WARNING]
-> In quests which require multiple monsters to be killed, if you kill groups before the quest starts, the state machine will consider them dead when you reach that point in the quest.
 
 > [!NOTE]
 > If a quest completes in a safe area, the party leader needs to exit the area and reenter to restart the quest.
@@ -331,12 +307,13 @@ We would create the first block as a `DiscoverEnemy` block. This block takes inf
 }
 ```
 
-Next we define a rule that we want to wait for the enemy group to be dead. First thing we need to do is when we move from the first state `DiscoverEnemy` to the next state `KillGroup` is that we need to "announce" that we have accepted this quest. We do this by setting the `announce_type` key to `Accept`. Similar to the previous rule, we will then assign the group id value of `0` to associate this rule with the first element of the `enemy_groups` array.
+Next we define a rule that we want to wait for the enemy group to be dead. First thing we need to do is when we move from the first state `DiscoverEnemy` to the next state `KillGroup` is that we need to "announce" that we have accepted this quest. We do this by setting the `announce_type` key to `Accept`. Similar to the previous rule, we will then assign the group id value of `0` to associate this rule with the first element of the `enemy_groups` array. We also set this `reset_group` flag to `false`. We do this because the previous rule `DiscoverEnemy` already reset the group. If we do it in this rule as well, we will see the existing enemy dissapear and reappear (which we don't want to happen).
 
 ```json
 {
     "type": "KillGroup",
     "announce_type": "Accept",
+    "reset_group": false,
     "groups": [0]
 }
 ```
@@ -410,6 +387,7 @@ Finally, your file should look like below. Save the file, reload the server and 
         {
             "type": "KillGroup",
             "announce_type": "Accept",
+            "reset_group": false,
             "groups": [0]
         }
     ]
@@ -2502,19 +2480,70 @@ KilledTargetEnemySetGroup1(NpcId npcId, int work02 = 0, int work03 = 0, int work
 
 There exists an implementation of the following main story quests but they are currently disabled.
 
-- [Resolutions and Omens (q00000001)](http://ddon.wikidot.com/mq:resolutionsandomens)
-- [The Slumbering God (q00000002)](http://ddon.wikidot.com/mq:theslumberinggod)
-- [Envoy of Reconciliation (q00000003)](http://ddon.wikidot.com/mq:envoyofreconciliation)
-- Hopes' Bitter End (q00030260)
+#### Season 1.0
+
+| Quest Name | Comment |
+|:----------:|:-------:|
+| [Resolutions and Omens](http://ddon.wikidot.com/mq:resolutionsandomens) | Issues related to NPC FSM, high level characters and logging in after creating character. Also transition from MSQ1 to MSQ2 leaves you with tutorial gear equipped.
+| [The Slumbering God](http://ddon.wikidot.com/mq:theslumberinggod) | Working Well.
+| [Envoy of Reconciliation](http://ddon.wikidot.com/mq:envoyofreconciliation) | Working Well.
+| [Soldiers of the Rift](https://ddonline.tumblr.com/post/126992462344/mq-soldier-of-the-rift) | Working Well.
+| [A Servants Pledge](https://ddonline.tumblr.com/post/127075717759/mq-a-servants-pledge) | Mostly working well. Quest at end a little weird because we have pawns already. Pawn Dungeon needs more mob placement.
+| [The Crimson Crystal](https://ddonline.tumblr.com/post/127290993039/mq-the-crimson-crystal) | Working Well.
+| [The Dull Grey Ark](https://ddonline.tumblr.com/post/128250949024/wq-the-dull-grey-ark) | Working Well
+| [The Girl in the Forest](https://ddonline.tumblr.com/post/128253902059/mq-the-girl-in-the-forest) | Not Implemented.
+| [The Goblin King](https://ddonline.tumblr.com/post/128255137129/mq-the-goblin-king) | Not Implemented.
+| [The House of Steam](https://ddonline.tumblr.com/post/128376072499/mq-the-house-of-steam) | Not Implemented.
+| [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Not Implemented.
+| [The Castle of Dusk](https://ddonline.tumblr.com/post/128917708449/mq-the-castle-of-dusk) | Not Implemented.
+| [The Gods Awakening](https://ddonline.tumblr.com/post/128920334189/mq-the-gods-awakening) | Not Implemented.
+
+
+#### Season 3.3
+
+| Quest Name | Comment |
+|:----------:|:-------:|
+| Hopes' Bitter End (q00030260) | Disabled
+
+### World Quests
+
+| Hidell Plains                                                                    | Breya Coast
+|:--------------------------------------------------------------------------------:|:-------------:|
+| Request For Medicine                                                             | [Dispatch A Clamor of Harpies](http://ddon.wikidot.com/wq:dispatchaclamorofharpies)
+| The Woes of A Merchant                                                           | [Boats Buddy](http://ddon.wikidot.com/wq:boatsbuddy)
+| An Assistant's Assistant                                                         | [Beach Bandits](http://ddon.wikidot.com/wq:beachbandits)
+| Crackdown on Store Vandals                                                       |
+| A Heart Throbs Once More                                                         |
+| Fabio's Collectibles                                                             |
+| [Confrontation With Scouts](http://ddon.wikidot.com/wq:confrontationwithscouts)  |
+| Fabio and Monster-Slaying                                                        |
+| A Transporter's Tragedy                                                          |
+| Knight and Arisen                                                                |
+| [Ambush in the Well's Depths](http://ddon.wikidot.com/wq:ambushinthewellsdepths) |
+| [The Knights' Bitter Enemy](http://ddon.wikidot.com/wq:theknightsbitterenemy)    |
+| [Sky-Concealing Wings](http://ddon.wikidot.com/wq:skyconcealingwings)            |
+| [Dweller In The Darkness](http://ddon.wikidot.com/wq:dwellerinthedarkness)       |
 
 ### Quest Flags
 
 #### Main Quests
 
+##### A Servant's Pledge (q00000026)
+
+| Type      | Value | Comment                                                    |
+|:---------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | 973   | Changes Pawn Dungeon Entrace to a Wall with no dungeon entrance.
+| QstLayout | 974   | Changes Pawn Dungeon Entrace to teleport player to correct map for quest.
+| QstLayout | 975   | Changes Pawn Dungeon Entrance to go to a different stage with shiny spots you can tocuh.
+| QstLayout | 898   | Spawns glowing point for quest that player needs to touch.
+
+> [!NOTE]
+> Setting both flag 973 and 974 caused the game to query for lost pawns. When you don't set both, it doesn't do this.
+
 ##### The Dull Grey Arc (q00000005)
 
 | Type      | Value | Comment                                                    |
-|:---------:|:-----:|:----------------------------------------------------------:|
+|:---------:|:-----:|:-----------------------------------------------------------|
 | QstLayout | 907   | Dead knights in st0576                                     |
 | QstLayout | 911   | Blocks the boss area in st0576                             |
 | QstLayout | 976   | Spawns Fabio, Iris and Klaus in an injured state in st0576 |
@@ -2525,7 +2554,7 @@ There exists an implementation of the following main story quests but they are c
 ##### q70000001
 
 | Type              | Value  | Comment
-|:-----------------:|:------:|:----------------------------------------------------------:|
+|:-----------------:|:------:|:-----------------------------------------------------------|
 | WorldManageLayout | 1215   | Spawns Mysial in the audience chamber
 | WorldManageLayout | 1218   | Spawns Leo in the audience chamber
 | WorldManageLayout | 1219   | Spawns Iris in the audience chamber
@@ -2534,5 +2563,9 @@ There exists an implementation of the following main story quests but they are c
 ##### q70032001
 
 | Type              | Value  | Comment
-|:-----------------:|:------:|:----------------------------------------------------------:|
+|:-----------------:|:------:|:-----------------------------------------------------------|
 | WorldManageLayout | 7390   | Spawns The White Dragon in the audience chamber in the fully revived state
+
+### Events
+
+[The Audience Chamber (stage0201)](quests/events/st0201.md)
