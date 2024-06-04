@@ -34,17 +34,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = packet.Structure.EquipItemUID;
              //TODO need to get access to RecipeList, since this contains a reference to Gold/Cost, etc.
 
-            // Instantiate CDataCraftCustomGradeUp
-            CDataCraftCustomGradeUp gradeUpData = new CDataCraftCustomGradeUp();
-
+            CDataMDataCraftGradeupRecipe json_data = new CDataMDataCraftGradeupRecipe();
 
             // Define local variables for calculations
-            string gearUID = gradeUpData.GradeUpItemUID;
-            uint gearupgradeID = gradeUpData.GradeUpItemID;
-            uint goldRequired = gradeUpData.Gold;
-            uint currentTotalEquipPoint = gradeUpData.TotalEquipPoint;
-            uint addEquipPoint = gradeUpData.AddEquipPoint;
-            uint nextGrade = gradeUpData.EquipGrade;
+            uint gearupgradeID = json_data.GradeupItemID;
+            uint goldRequired = json_data.Cost;
+            uint nextGrade = json_data.Unk0;
+            uint currentTotalEquipPoint = 200; // Equip Points are probably handled elsewhere, since its
+            uint addEquipPoint = 150;         // not in the JSON or Request.
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
@@ -85,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Exchange upgraded items
             List<CDataItemUpdateResult> AddItemResult = _itemManager.AddItem(Server, client.Character, false, 1674, 1 * 1);
-            List<CDataItemUpdateResult> RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, gearUID, 1);
+            List<CDataItemUpdateResult> RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
             updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
             updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
 
@@ -94,11 +91,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var res = new S2CCraftStartEquipGradeUpRes()
             {
-                GradeUpItemUID = gearUID, // I assume this needs to be set? without it points don't get added (and it GradeUpItemUID is empty?)
-                GradeUpItemID = gearupgradeID,
+                GradeUpItemUID = equipItemUID, // This seems to need tot be your current UID.
+                GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                 TotalEquipPoint = currentTotalEquipPoint + addEquipPoint, // Dummy math just to make the bar slide up (HMMM HAPPY CHEMICALS)
-                EquipGrade = nextGrade,
-                IsGreatSuccess = true,
+                EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
+                IsGreatSuccess = true, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
             };
             client.Send(updateCharacterItemNtc);
             client.Send(res);

@@ -5,9 +5,11 @@
             {
                 "RecipeID": 1,
                 "ItemID": 62,
+				"Unk0": 2,
                 "GradeupItemID": 1674,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -20,9 +22,11 @@
 			{
 				"RecipeID": 2,
 				"ItemID": 73,
+				"Unk0": 300,
 				"GradeupItemID": 1685,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -35,9 +39,11 @@
 			{
                 "RecipeID": 3,
                 "ItemID": 942,
+				"Unk0": 300,
                 "GradeupItemID": 2554,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -50,9 +56,11 @@
 			{
                 "RecipeID": 4,
                 "ItemID": 490,
+				"Unk0": 300,
                 "GradeupItemID": 2102,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -65,9 +73,11 @@
 			{
                 "RecipeID": 5,
                 "ItemID": 497,
+				"Unk0": 300,
                 "GradeupItemID": 2109,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -80,9 +90,11 @@
 			{
                 "RecipeID": 6,
                 "ItemID": 493,
+				"Unk0": 300,
                 "GradeupItemID": 2105,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -95,9 +107,11 @@
 			{
                 "RecipeID": 7,
                 "ItemID": 499,
+				"Unk0": 300,
                 "GradeupItemID": 2111,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -110,9 +124,11 @@
 			{
                 "RecipeID": 8,
                 "ItemID": 505,
+				"Unk0": 300,
                 "GradeupItemID": 2117,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -125,9 +141,11 @@
 			{
                 "RecipeID": 9,
                 "ItemID": 8793,
+				"Unk0": 300,
                 "GradeupItemID": 8794,
                 "Cost": 400,
                 "Exp": 12,
+				"Unk1": false,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,

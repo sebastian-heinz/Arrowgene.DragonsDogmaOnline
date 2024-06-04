@@ -12,11 +12,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
         public uint RecipeID { get; set; }
         public uint ItemID { get; set; }
-        public uint Unk0 { get; set; }
+        public uint Unk0 { get; set; } // Potentially Time or NextGrade?
         public uint GradeupItemID { get; set; }
         public uint Cost { get; set; }
         public uint Exp { get; set; }
-        public bool Unk1 { get; set; }
+        public bool Unk1 { get; set; } // Potentially IsHide?
         public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; }
 
         public class Serializer : EntitySerializer<CDataMDataCraftGradeupRecipe>
