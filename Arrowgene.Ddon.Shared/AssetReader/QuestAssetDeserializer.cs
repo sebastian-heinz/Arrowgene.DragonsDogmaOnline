@@ -550,14 +550,19 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 foreach (var enemy in jGroup.GetProperty("enemies").EnumerateArray())
                 {
-                    bool IsBoss = enemy.GetProperty("is_boss").GetBoolean();
+                    bool isBoss = false;
+                    if (enemy.TryGetProperty("is_boss", out JsonElement jIsBoss))
+                    {
+                        isBoss = jIsBoss.GetBoolean();
+                    }
+
                     var questEnemy = new Enemy()
                     {
                         EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
                         Lv = enemy.GetProperty("level").GetUInt16(),
                         Experience = enemy.GetProperty("exp").GetUInt32(),
-                        IsBossBGM = IsBoss,
-                        IsBossGauge = IsBoss,
+                        IsBossBGM = isBoss,
+                        IsBossGauge = isBoss,
                         Scale = 100,
                         EnemyTargetTypesId = 4
                     };

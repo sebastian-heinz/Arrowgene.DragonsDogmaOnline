@@ -965,7 +965,7 @@ IsNotEndTimer(int timerNo, int param02 = 0, int param03 = 0, int param04 = 0);
 IsMainQuestClear(int questId, int param02 = 0, int param03 = 0, int param04 = 0);
 
 /**
- * @brief
+ * @brief Check is satisfied when player buys blood orb upgrade from the white dragon.
  */
 DogmaOrb(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 
@@ -2506,3 +2506,33 @@ There exists an implementation of the following main story quests but they are c
 - [The Slumbering God (q00000002)](http://ddon.wikidot.com/mq:theslumberinggod)
 - [Envoy of Reconciliation (q00000003)](http://ddon.wikidot.com/mq:envoyofreconciliation)
 - Hopes' Bitter End (q00030260)
+
+### Quest Flags
+
+#### Main Quests
+
+##### The Dull Grey Arc (q00000005)
+
+| Type      | Value | Comment                                                    |
+|:---------:|:-----:|:----------------------------------------------------------:|
+| QstLayout | 907   | Dead knights in st0576                                     |
+| QstLayout | 911   | Blocks the boss area in st0576                             |
+| QstLayout | 976   | Spawns Fabio, Iris and Klaus in an injured state in st0576 |
+| QstLayout | 1226  | Spawns Fabio in the Audience Chamber close to Leo          |
+
+#### World Manage Quest
+
+##### q70000001
+
+| Type              | Value  | Comment
+|:-----------------:|:------:|:----------------------------------------------------------:|
+| WorldManageLayout | 1215   | Spawns Mysial in the audience chamber
+| WorldManageLayout | 1218   | Spawns Leo in the audience chamber
+| WorldManageLayout | 1219   | Spawns Iris in the audience chamber
+| WorldManageLayout | 1293   | Spawns The White Dragon in the audience chamber in the most injured state
+
+##### q70032001
+
+| Type              | Value  | Comment
+|:-----------------:|:------:|:----------------------------------------------------------:|
+| WorldManageLayout | 7390   | Spawns The White Dragon in the audience chamber in the fully revived state

@@ -48,7 +48,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataQuestId() { QuestId = (uint) QuestId.TheSlumberingGod},
                 new CDataQuestId() { QuestId = (uint) QuestId.EnvoyOfReconcilliation},
                 new CDataQuestId() { QuestId = (uint) QuestId.SolidersOfTheRift},
-                // new CDataQuestId() { QuestId = (uint) QuestId.AServantsPledge},
+                new CDataQuestId() { QuestId = (uint) QuestId.AServantsPledge},
+                new CDataQuestId() { QuestId = (uint) QuestId.TheCrimsonCrystal},
             };
             // pcap.MainQuestIdList;
 

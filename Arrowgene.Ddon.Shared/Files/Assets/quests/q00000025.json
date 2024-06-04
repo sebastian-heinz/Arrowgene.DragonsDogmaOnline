@@ -1,0 +1,164 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Crimson Crystal",
+    "quest_id": 25,
+    "next_quest": 5,
+    "base_level": 10,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1800
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 250
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8813,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 8323,
+                    "num": 1
+                },
+                {
+                    "item_id": 8348,
+                    "num": 1
+                },
+                {
+                    "item_id": 8373,
+                    "num": 1
+                },
+                {
+                    "item_id": 8398,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 88,
+                "group_id": 3
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015000",
+                    "level": 10,
+                    "exp": 1092,
+                    "is_boss": true,
+                    "named_enemy_params_id": 456,
+                    "blood_orbs": 20
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 273},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
+            ],
+            "npc_id": "Leo0",
+            "message_id": 25
+        },
+        {
+            "type": "PartyGather",
+            "stage_id": {
+                "id": 66,
+                "group_id": 1
+            },
+            "location": {
+                "x": -3082,
+                "y": 0,
+                "z": -183
+            },
+            "announce_type": "Accept"
+        },
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 400, "Param2": 13}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 400, "Param2": 13, "Param3": 0, "Param4": 0}
+            ]
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 66,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Vanessa0",
+            "message_id": 1061
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Leo0",
+            "message_id": 1062
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Mysial0",
+            "message_id": 1245
+        },
+        {
+            "type": "raw",
+            "announce_type": "Update",
+            "check_commands": [
+                {"type": "DogmaOrb"}
+            ],
+            "result_commands": []
+        }
+    ]
+}
