@@ -24,6 +24,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         public bool ShouldStageJump {  get; set; }
 
+        public QuestEvent QuestEvent {  get; set; }
+
         public QuestPartyGatherPoint PartyGatherPoint {  get; set; }
 
         public bool ShowMarker { get; set; }
@@ -55,6 +57,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             EnemyGroupIds = new List<uint>();
 
             PartyGatherPoint = new QuestPartyGatherPoint();
+            QuestEvent = new QuestEvent();
         }
     }
 }

@@ -434,6 +434,21 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             }
                         }
                         break;
+                    case QuestBlockType.PlayEvent:
+                        {
+                            questBlock.QuestEvent.EventId = jblock.GetProperty("event_id").GetInt32();
+
+                            if (jblock.TryGetProperty("jump_stage_id", out JsonElement jStageJumpId))
+                            {
+                                questBlock.QuestEvent.JumpStageId = ParseStageId(jStageJumpId);
+                            }
+
+                            if (jblock.TryGetProperty("start_pos_no", out JsonElement jStartPosNo))
+                            {
+                                questBlock.QuestEvent.StartPosNo = jStartPosNo.GetInt32();
+                            }
+                        }
+                        break;
                     case QuestBlockType.Raw:
                         if (!ParseRawBlock(jblock, questBlock))
                         {
@@ -489,8 +504,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             {
                 layerNo = jLayerNo.GetByte();
             }
-            
-            uint groupId = jStageId.GetProperty("group_id").GetUInt32();
+
+            uint groupId = 0;
+            if (jStageId.TryGetProperty("group_id", out JsonElement jGroupId))
+            {
+                groupId = jGroupId.GetUInt32();
+            }
+
             return new StageId(id, layerNo, groupId);
         }
 

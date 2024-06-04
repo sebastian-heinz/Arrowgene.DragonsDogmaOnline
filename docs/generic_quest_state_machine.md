@@ -2491,7 +2491,7 @@ There exists an implementation of the following main story quests but they are c
 | [A Servants Pledge](https://ddonline.tumblr.com/post/127075717759/mq-a-servants-pledge) | Mostly working well. Quest at end a little weird because we have pawns already. Pawn Dungeon needs more mob placement.
 | [The Crimson Crystal](https://ddonline.tumblr.com/post/127290993039/mq-the-crimson-crystal) | Working Well.
 | [The Dull Grey Ark](https://ddonline.tumblr.com/post/128250949024/wq-the-dull-grey-ark) | Working Well
-| [The Girl in the Forest](https://ddonline.tumblr.com/post/128253902059/mq-the-girl-in-the-forest) | Not Implemented.
+| [The Girl in the Forest](https://ddonline.tumblr.com/post/128253902059/mq-the-girl-in-the-forest) | Working mostly well. Boss fight all monsters need to die, not just troll.
 | [The Goblin King](https://ddonline.tumblr.com/post/128255137129/mq-the-goblin-king) | Not Implemented.
 | [The House of Steam](https://ddonline.tumblr.com/post/128376072499/mq-the-house-of-steam) | Not Implemented.
 | [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Not Implemented.
@@ -2549,13 +2549,21 @@ There exists an implementation of the following main story quests but they are c
 | QstLayout | 976   | Spawns Fabio, Iris and Klaus in an injured state in st0576 |
 | QstLayout | 1226  | Spawns Fabio in the Audience Chamber close to Leo          |
 
+##### The Girl in the Forest (q00000006)
+
+| Type      | Value | Comment                                                    |
+|:---------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | 912   | Spawns wall to block exits during boss fight
+| QstLayout | 977   | Spawns Gerd and the White Knights outside Glowworm Cave
+| QstLayout | 979   | Spawns Gerd and Mayleaf inside Glowworm Cave
+
 #### World Manage Quest
 
 ##### q70000001
 
 | Type              | Value  | Comment
 |:-----------------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | 1215   | Spawns Mysial in the audience chamber
+| WorldManageLayout | 977    | Spawns Gerd and the White Knights outside 
 | WorldManageLayout | 1218   | Spawns Leo in the audience chamber
 | WorldManageLayout | 1219   | Spawns Iris in the audience chamber
 | WorldManageLayout | 1293   | Spawns The White Dragon in the audience chamber in the most injured state

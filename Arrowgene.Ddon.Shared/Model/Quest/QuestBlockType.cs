@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         MyQstFlags,
         IsStageNo,
         IsQuestOrdered,
+        PlayEvent,
         Raw,
         DummyBlock,
         DummyBlockNoProgress,

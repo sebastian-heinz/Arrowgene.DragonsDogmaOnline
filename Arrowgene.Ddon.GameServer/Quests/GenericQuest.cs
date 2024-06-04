@@ -385,6 +385,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case QuestBlockType.IsStageNo:
                     checkCommands.Add(QuestManager.CheckCommand.StageNo(StageManager.ConvertIdToStageNo(questBlock.StageId)));
                     break;
+                case QuestBlockType.PlayEvent:
+                    checkCommands.Add(QuestManager.CheckCommand.EventEnd(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.QuestEvent.EventId));
+                    resultCommands.Add(QuestManager.ResultCommand.EventExec(
+                        StageManager.ConvertIdToStageNo(questBlock.StageId),
+                        questBlock.QuestEvent.EventId,
+                        StageManager.ConvertIdToStageNo(questBlock.QuestEvent.JumpStageId),
+                        questBlock.QuestEvent.StartPosNo
+                    ));
+                    break;
                 case QuestBlockType.Raw:
                     checkCommands.AddRange(questBlock.CheckCommands);
                     resultCommands.AddRange(questBlock.ResultCommands);
