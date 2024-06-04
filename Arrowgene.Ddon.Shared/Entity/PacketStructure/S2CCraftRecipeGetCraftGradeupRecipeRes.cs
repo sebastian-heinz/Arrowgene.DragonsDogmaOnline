@@ -7,18 +7,18 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CCraftRecipeGetCraftGradeupRecipeRes : ServerResponse
     {
-        public override PacketId Id => PacketId.S2C_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_RES;
-
-        public byte Category { get; set; }
-        public List<CDataMDataCraftGradeupRecipe> RecipeList { get; set; }
-        public List<CDataCommonU32> UnknownItemList { get; set; }
-        public bool IsEnd { get; set; }
 
         public S2CCraftRecipeGetCraftGradeupRecipeRes()
         {
             RecipeList = new List<CDataMDataCraftGradeupRecipe>();
             UnknownItemList = new List<CDataCommonU32>();
         }
+        public override PacketId Id => PacketId.S2C_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_RES;
+
+        public byte Category { get; set; }
+        public List<CDataMDataCraftGradeupRecipe> RecipeList { get; set; }
+        public List<CDataCommonU32> UnknownItemList { get; set; }
+        public bool IsEnd { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCraftRecipeGetCraftGradeupRecipeRes>
         {

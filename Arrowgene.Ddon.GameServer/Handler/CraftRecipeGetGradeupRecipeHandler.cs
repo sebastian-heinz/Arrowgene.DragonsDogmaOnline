@@ -24,6 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Where(recipe => packet.Structure.ItemList.Any(itemId => itemId.Value == recipe.ItemID))
                 .ToList();
 
+                
             var res = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
                 Category = packet.Structure.Category,
