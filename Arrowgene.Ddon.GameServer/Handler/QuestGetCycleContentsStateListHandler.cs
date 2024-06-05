@@ -50,6 +50,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataQuestId() { QuestId = (uint) QuestId.SolidersOfTheRift},
                 new CDataQuestId() { QuestId = (uint) QuestId.AServantsPledge},
                 new CDataQuestId() { QuestId = (uint) QuestId.TheCrimsonCrystal},
+                new CDataQuestId() { QuestId = (uint) QuestId.TheDullGreyArk},
+                new CDataQuestId() { QuestId = (uint) QuestId.TheGirlInTheForest},
+                new CDataQuestId() { QuestId = (uint) QuestId.TheGoblinKing},
             };
             // pcap.MainQuestIdList;
 

@@ -2492,7 +2492,7 @@ There exists an implementation of the following main story quests but they are c
 | [The Crimson Crystal](https://ddonline.tumblr.com/post/127290993039/mq-the-crimson-crystal) | Working Well.
 | [The Dull Grey Ark](https://ddonline.tumblr.com/post/128250949024/wq-the-dull-grey-ark) | Working Well
 | [The Girl in the Forest](https://ddonline.tumblr.com/post/128253902059/mq-the-girl-in-the-forest) | Working mostly well. Boss fight all monsters need to die, not just troll.
-| [The Goblin King](https://ddonline.tumblr.com/post/128255137129/mq-the-goblin-king) | Not Implemented.
+| [The Goblin King](https://ddonline.tumblr.com/post/128255137129/mq-the-goblin-king) | Working Well.
 | [The House of Steam](https://ddonline.tumblr.com/post/128376072499/mq-the-house-of-steam) | Not Implemented.
 | [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Not Implemented.
 | [The Castle of Dusk](https://ddonline.tumblr.com/post/128917708449/mq-the-castle-of-dusk) | Not Implemented.

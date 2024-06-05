@@ -40,8 +40,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         TheGoldenKey = 24,
         TheCrimsonCrystal = 25,
         AServantsPledge = 26,
-        TheGreatAlchemist = 27,
-        TheGoblinKing = 28,
+        TheGoblinKing = 27,
+        TheGreatAlchemist = 28,
         ABriefRespite = 29,
         TheBeastsFinalMoments = 30,
 
