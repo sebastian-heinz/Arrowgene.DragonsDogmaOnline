@@ -89,6 +89,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     // Remove the quest data from the party object
                     partyQuestState.CompleteQuest(questId);
+
+                    if (quest.ResetPlayerAfterQuest)
+                    {
+                        foreach (var memberClient in client.Party.Clients)
+                        {
+                            Server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
+                        }
+                    }
                 }
 
                 if (res.QuestProcessState.Count > 0)

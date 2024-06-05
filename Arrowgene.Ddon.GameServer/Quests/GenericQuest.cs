@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public static GenericQuest FromAsset(QuestAssetData questAsset)
         {
-            var quest = new GenericQuest(questAsset.QuestId, questAsset.Type, questAsset.Discoverable);
+            var quest = new GenericQuest(questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
 
             quest.BaseLevel = questAsset.BaseLevel;
             quest.MinimumItemRank = questAsset.MinimumItemRank;
@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.QuestLayoutFlags = questAsset.QuestLayoutFlags;
             quest.Processes = questAsset.Processes;
             quest.EnemyGroups = questAsset.EnemyGroups;
+            quest.ResetPlayerAfterQuest = questAsset.ResetPlayerAfterQuest;
 
             quest.ExpRewards.Add(new CDataQuestExp()
             {
@@ -94,7 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public GenericQuest(QuestId questId, QuestType questType, bool discoverable) : base(questId, questType, discoverable)
+        public GenericQuest(QuestId questId, QuestId questScheduleId, QuestType questType, bool discoverable) : base(questId, questScheduleId, questType, discoverable)
         {
             Processes = new List<QuestProcess>();
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();

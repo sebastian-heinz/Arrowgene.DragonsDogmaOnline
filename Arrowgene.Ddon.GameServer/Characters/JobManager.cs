@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
 
-            if(activeCharacterJobData == null)
+            if (activeCharacterJobData == null)
             {
                 activeCharacterJobData = new CDataCharacterJobData();
                 activeCharacterJobData.Job = jobId;
@@ -54,11 +54,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .ToList();
 
             List<CDataSetAcquirementParam> skills = common.EquippedCustomSkillsDictionary[jobId]
-                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx + 1)))
                 .Where(x => x != null)
                 .ToList();
             List<CDataSetAcquirementParam> abilities = common.EquippedAbilitiesDictionary[jobId]
-                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx + 1)))
                 .Where(x => x != null)
                 .ToList();
             List<CDataLearnNormalSkillParam> normalSkills = common.LearnedNormalSkills
@@ -70,9 +70,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             // TODO: Move previous job equipment to storage box, and move new job equipment from storage box
 
-            if(common is Character)
+            if (common is Character)
             {
-                Character character = (Character) common;
+                Character character = (Character)common;
 
                 S2CJobChangeJobNtc changeJobNotice = new S2CJobChangeJobNtc();
                 changeJobNotice.CharacterId = character.CharacterId;
@@ -84,7 +84,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
 
-                foreach(GameClient otherClient in server.ClientLookup.GetAll())
+                foreach (GameClient otherClient in server.ClientLookup.GetAll())
                 {
                     otherClient.Send(changeJobNotice);
                 }
@@ -103,14 +103,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .Where(x => x.Job == jobId)
                     .Select(x => x.PlayPoint)
                     .FirstOrDefault(new CDataPlayPointData());
-                changeJobResponse.Unk0.Unk0 = (byte) jobId;
+                changeJobResponse.Unk0.Unk0 = (byte)jobId;
                 changeJobResponse.Unk0.Unk1 = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
 
                 client.Send(changeJobResponse);
             }
-            else if(common is Pawn)
+            else if (common is Pawn)
             {
-                Pawn pawn = (Pawn) common;
+                Pawn pawn = (Pawn)common;
 
                 S2CJobChangePawnJobNtc changeJobNotice = new S2CJobChangePawnJobNtc();
                 changeJobNotice.CharacterId = pawn.CharacterId;
@@ -122,7 +122,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
-                foreach(GameClient otherClient in server.ClientLookup.GetAll())
+                foreach (GameClient otherClient in server.ClientLookup.GetAll())
                 {
                     otherClient.Send(changeJobNotice);
                 }
@@ -138,7 +138,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobResponse.SetAbilityParamList = abilities;
                 changeJobResponse.LearnNormalSkillParamList = normalSkills;
                 changeJobResponse.EquipJobItemList = jobItems;
-                changeJobResponse.Unk0.Unk0 = (byte) jobId;
+                changeJobResponse.Unk0.Unk0 = (byte)jobId;
                 // changeJobResponse.Unk0.Unk1 = pawn.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList(); // TODO: What
                 changeJobResponse.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
                 changeJobResponse.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
@@ -155,7 +155,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // Check if there is a learned skill of the same ID (This unlock is a level upgrade)
             CustomSkill lowerLevelSkill = character.LearnedCustomSkills.Where(skill => skill != null && skill.Job == job && skill.SkillId == skillId).SingleOrDefault();
 
-            if(lowerLevelSkill == null)
+            if (lowerLevelSkill == null)
             {
                 // Add new skill
                 CustomSkill newSkill = new CustomSkill()
@@ -175,12 +175,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             // EX Skills
-            if(skillLv == 9)
+            if (skillLv == 9)
             {
                 // EX T Skill
-                uint exSkillTId = skillId+100;
+                uint exSkillTId = skillId + 100;
                 CDataSkillParam? exSkillT = SkillGetAcquirableSkillListHandler.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillTId).SingleOrDefault();
-                if(exSkillT != null)
+                if (exSkillT != null)
                 {
                     // Add new skill
                     CustomSkill newExSkillT = new CustomSkill()
@@ -193,12 +193,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     database.InsertLearnedCustomSkill(character.CommonId, newExSkillT);
                 }
             }
-            else if(skillLv == 10)
+            else if (skillLv == 10)
             {
                 // EX P Skill
-                uint exSkillPId = skillId+200;
+                uint exSkillPId = skillId + 200;
                 CDataSkillParam? exSkillP = SkillGetAcquirableSkillListHandler.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillPId).SingleOrDefault();
-                if(exSkillP != null)
+                if (exSkillP != null)
                 {
                     // Add new skill
                     CustomSkill newExSkillP = new CustomSkill()
@@ -224,7 +224,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             learnedSkillCharacterJobData.JobPoint -= jpCost;
             database.UpdateCharacterJobData(character.CommonId, learnedSkillCharacterJobData);
 
-            if(character is Character)
+            if (character is Character)
             {
                 client.Send(new S2CSkillLearnSkillRes()
                 {
@@ -234,11 +234,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     SkillLv = skillLv
                 });
             }
-            else if(character is Pawn)
+            else if (character is Pawn)
             {
                 client.Send(new S2CSkillLearnPawnSkillRes()
                 {
-                    PawnId = ((Pawn) character).PawnId,
+                    PawnId = ((Pawn)character).PawnId,
                     Job = job,
                     NewJobPoint = learnedSkillCharacterJobData.JobPoint,
                     SkillId = skillId,
@@ -253,9 +253,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             int paletteMask = slotNo & 0x10;
             for (int i = 0; i < character.EquippedCustomSkillsDictionary[job].Count; i++)
             {
-                byte removedSkillSlotNo = (byte)(i+1);
+                byte removedSkillSlotNo = (byte)(i + 1);
                 CustomSkill removedSkill = character.EquippedCustomSkillsDictionary[job][i];
-                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId && (removedSkillSlotNo&0x10) == paletteMask)
+                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId && (removedSkillSlotNo & 0x10) == paletteMask)
                 {
                     character.EquippedCustomSkillsDictionary[job][i] = null;
                     database.DeleteEquippedCustomSkill(character.CommonId, job, removedSkillSlotNo);
@@ -264,25 +264,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Add skill to the requested slot
             CustomSkill skill = character.LearnedCustomSkills.Where(skill => skill.Job == job && skill.SkillId == skillId).Single();
-            character.EquippedCustomSkillsDictionary[job][slotNo-1] = skill;
+            character.EquippedCustomSkillsDictionary[job][slotNo - 1] = skill;
             database.ReplaceEquippedCustomSkill(character.CommonId, slotNo, skill);
 
             // Inform party members of the change
-            if(job == character.Job)
+            if (job == character.Job)
             {
-                if(character is Character)
+                if (character is Character)
                 {
                     client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
                     {
-                        CharacterId = ((Character) character).CharacterId,
+                        CharacterId = ((Character)character).CharacterId,
                         ContextAcquirementData = skill.AsCDataContextAcquirementData(slotNo)
                     });
                 }
-                else if(character is Pawn)
+                else if (character is Pawn)
                 {
                     client.Party.SendToAll(new S2CSkillPawnCustomSkillSetNtc()
                     {
-                        PawnId = ((Pawn) character).PawnId,
+                        PawnId = ((Pawn)character).PawnId,
                         ContextAcquirementData = skill.AsCDataContextAcquirementData(slotNo)
                     });
                 }
@@ -302,11 +302,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Single();
 
             List<byte> affectedSlots = new List<byte>();
-            for(int i=0; i<character.EquippedCustomSkillsDictionary[job].Count; i++)
+            for (int i = 0; i < character.EquippedCustomSkillsDictionary[job].Count; i++)
             {
                 CustomSkill? equippedSkill = character.EquippedCustomSkillsDictionary[job][i];
-                byte slotNo = (byte)(i+1);
-                if(equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == GetBaseSkillId(affectedSkill.SkillId))
+                byte slotNo = (byte)(i + 1);
+                if (equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == GetBaseSkillId(affectedSkill.SkillId))
                 {
                     SetSkill(database, client, character, exSkill.Job, slotNo, exSkill.SkillId, exSkill.SkillLv);
                     affectedSlots.Add(slotNo);
@@ -322,7 +322,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void RemoveSkill(IDatabase database, CharacterCommon character, JobId job, byte slotNo)
         {
-            character.EquippedCustomSkillsDictionary[job][slotNo-1] = null;
+            character.EquippedCustomSkillsDictionary[job][slotNo - 1] = null;
 
             // TODO: Error handling
             database.DeleteEquippedCustomSkill(character.CommonId, job, slotNo);
@@ -429,7 +429,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Logger.Debug($"The Ability ID is {abilityId}");
 
-            if(lowerLevelAbility == null)
+            if (lowerLevelAbility == null)
             {
                 // New ability
                 Ability newAbility = new Ability()
@@ -463,7 +463,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             learnedAbilityCharacterJobData.JobPoint -= jpCost;
             database.UpdateCharacterJobData(character.CommonId, learnedAbilityCharacterJobData);
 
-            if(character is Character)
+            if (character is Character)
             {
                 client.Send(new S2CSkillLearnAbilityRes()
                 {
@@ -473,11 +473,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     AbilityLv = abilityLv
                 });
             }
-            else if(character is Pawn)
+            else if (character is Pawn)
             {
                 client.Send(new S2CSkillLearnPawnAbilityRes()
                 {
-                    PawnId = ((Pawn) character).PawnId,
+                    PawnId = ((Pawn)character).PawnId,
                     Job = learnedAbilityCharacterJobData.Job,
                     NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
                     AbilityId = abilityId,
@@ -492,24 +492,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Where(aug => aug.Job == abilityJob && aug.AbilityId == abilityId && aug.AbilityLv == abilityLv)
                 .Single();
 
-            character.EquippedAbilitiesDictionary[character.Job][slotNo-1] = ability;
+            character.EquippedAbilitiesDictionary[character.Job][slotNo - 1] = ability;
 
             database.ReplaceEquippedAbility(character.CommonId, character.Job, slotNo, ability);
 
             // Inform party members of the change
-            if(character is Character)
+            if (character is Character)
             {
                 client.Party.SendToAll(new S2CSkillAbilitySetNtc()
                 {
-                    CharacterId = ((Character) character).CharacterId,
+                    CharacterId = ((Character)character).CharacterId,
                     ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
                 });
             }
-            else if(character is Pawn)
+            else if (character is Pawn)
             {
                 client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
                 {
-                    PawnId = ((Pawn) character).PawnId,
+                    PawnId = ((Pawn)character).PawnId,
                     ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
                 });
             }
@@ -558,6 +558,40 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public bool UnlockSecretAbility(CharacterCommon Character, SecretAbility secretAbilityType)
         {
             return _Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
+        }
+
+        public void SetJobForMsqTutorial(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
+        {
+            var baseStats = ExpManager.CalculateBaseStats(jobId, 15);
+
+            S2CJobChangeJobNtc changeJobNotice = new S2CJobChangeJobNtc();
+            changeJobNotice.CharacterId = client.Character.CharacterId;
+            changeJobNotice.CharacterJobData = baseStats;
+            changeJobNotice.EquipItemInfo = new List<CDataEquipItemInfo>()
+            {
+                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.WepMain, ItemId = 9873},
+                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.WepSub, ItemId = 9874},
+                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.ArmorBody, ItemId = 9885},
+                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.ArmorArm, ItemId = 9884},
+                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.ArmorLeg, ItemId = 9886},
+                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.WearLeg, ItemId = 516},
+                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.WearBody, ItemId = 517},
+            };
+
+            changeJobNotice.SetAcquirementParamList = common.EquippedCustomSkillsDictionary[jobId]
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx + 1)))
+                .Where(x => x != null)
+                .ToList();
+            changeJobNotice.SetAbilityParamList = common.EquippedAbilitiesDictionary[jobId]
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx + 1)))
+                .Where(x => x != null)
+                .ToList();
+            changeJobNotice.LearnNormalSkillParamList = common.LearnedNormalSkills
+                .Where(x => x.Job == common.Job)
+                .Select(x => new CDataLearnNormalSkillParam(x))
+                .ToList();
+
+            client.Send(changeJobNotice);
         }
     }
 }

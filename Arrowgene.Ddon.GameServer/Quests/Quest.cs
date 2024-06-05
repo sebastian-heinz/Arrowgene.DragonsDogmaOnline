@@ -48,10 +48,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public readonly QuestId QuestId;
         public readonly bool IsDiscoverable;
         public readonly QuestType QuestType;
-
+        public readonly QuestId QuestScheduleId;
         public uint BaseLevel { get; set; }
         public ushort MinimumItemRank { get; set; }
         public QuestId NextQuestId {  get; protected set; }
+        public bool ResetPlayerAfterQuest { get; protected set; }
 
         public QuestRewardParams RewardParams { get; protected set; }
         public List<CDataWalletPoint> WalletRewards { get; protected set; }
@@ -65,10 +66,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestLayoutFlag> QuestLayoutFlags;
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
 
-        public Quest(QuestId questId, QuestType questType, bool isDiscoverable = false)
+        public Quest(QuestId questId, QuestId questScheduleId, QuestType questType, bool isDiscoverable = false)
         {
             QuestId = questId;
             QuestType = questType;
+            QuestScheduleId = questScheduleId;
             IsDiscoverable = isDiscoverable;
 
             RewardParams = new QuestRewardParams();
@@ -89,7 +91,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var quest = new CDataQuestList()
             {
                 QuestId = (uint)QuestId,
-                QuestScheduleId = (uint)QuestId,
+                QuestScheduleId = (uint)QuestScheduleId,
                 BaseLevel = BaseLevel,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = false,
@@ -118,7 +120,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
            var quest = new CDataQuestOrderList()
             {
                 QuestId = (uint)QuestId,
-                QuestScheduleId = (uint)QuestId,
+                QuestScheduleId = (uint)QuestScheduleId,
                 BaseLevel = BaseLevel,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = false,

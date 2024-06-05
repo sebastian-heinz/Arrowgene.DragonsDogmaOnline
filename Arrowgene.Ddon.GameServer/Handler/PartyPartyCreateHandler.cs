@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // TODO: Fetch this from the party leader from the database
-            // party.QuestState.AddNewQuest(QuestId.ResolutionsAndOmens);
+            party.QuestState.AddNewQuest(QuestId.ResolutionsAndOmens);
             // party.QuestState.AddNewQuest(QuestId.TheSlumberingGod);
             // party.QuestState.AddNewQuest(QuestId.EnvoyOfReconcilliation);
             // party.QuestState.AddNewQuest(QuestId.SolidersOfTheRift);
@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // party.QuestState.AddNewQuest(QuestId.TheGoblinKing);
             // party.QuestState.AddNewQuest(QuestId.TheHouseOfSteam);
             // party.QuestState.AddNewQuest(QuestId.TheAssailedFort);
-            party.QuestState.AddNewQuest(QuestId.TheCastleOfDusk);
+            // party.QuestState.AddNewQuest(QuestId.TheCastleOfDusk);
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;

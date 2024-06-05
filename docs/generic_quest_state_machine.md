@@ -2530,6 +2530,35 @@ There exists an implementation of the following main story quests but they are c
 
 #### Main Quests
 
+##### Resolutions and Omens (q00000001)
+
+| Type      | Stage | Value | Comment                                                    
+|:---------:|:-----:|:-----:|:-----------------------------------------------------------
+| QstLayout | 101   | 284   | Spawns Iris and Leo
+| QstLayout | 423   | 1277  | Spawns Talcott, Cyrus, Iris and Leo
+
+
+| MyQst     | 101   | 4     | Leo NPC State Machine (Waiting for action to begin)
+| MyQst     | 101   | 13    | Leo NPC State Machine (Flag 13 check)
+| MyQst     | 101   | 18    | Leo NPC State Machine (Flag 18 check)
+| MyQst     | 101   | 934   | Leo NPC State Machine (Move Start_t0000)
+| MyQst     | 101   | 935   | Leo NPC State Machine (Move in front of the enemy_t0000)
+| MyQst     | 101   | 936   | Leo NPC State Machine (936 Check)
+| MyQst     | 101   | 937   | Leo NPC State Machine (Flag 937 check)
+| MyQst     | 101   | 942   | Leo NPC State Machine (942 check_t0000)
+| MyQst     | 101   | 946   | Leo NPC State Machine (Battle_t0000)
+| MyQst     | 101   | 599   | Leo NPC State Machine (Flag 18 check)
+
+| MyQst     | 101   | 11    | Iris NPC State Machine (Leo's conversation waiting_t0000)
+| MyQst     | 101   | 19    | Iris NPC State Machine (Flag 19 check)
+| MyQst     | 101   | 935   | Iris NPC State Machine (Flag 935 check)
+| MyQst     | 101   | 937   | Iris NPC State Machine (Flag 937 check)
+| MyQst     | 101   | 936   | Iris NPC State Machine (Flag 936 check)
+| MyQst     | 101   | 942   | Iris NPC State Machine (Flag 942 check)
+| MyQst     | 101   | 598   | Iris NPC State Machine (Flag 598 check)
+| MyQst     | 101   | 599   | Iris NPC State Machine (18Check_t0000)
+| MyQst     | 101   | 1099  | Iris NPC State Machine (Waiting for conversation)
+
 ##### A Servant's Pledge (q00000026)
 
 | Type      | Value | Comment                                                    |

@@ -87,6 +87,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.NextQuestId = (QuestId)jNextQuest.GetUInt32();
             }
 
+            assetData.QuestScheduleId = assetData.QuestId;
+            if (jQuest.TryGetProperty("quest_schedule_id", out JsonElement jQuestScheduleId))
+            {
+                assetData.QuestScheduleId = (QuestId)jQuestScheduleId.GetUInt32();
+            }
+
             if (jQuest.TryGetProperty("quest_layout_set_info_flags", out JsonElement jLayoutSetInfoFlags))
             {
                 foreach (var layoutFlag in jLayoutSetInfoFlags.EnumerateArray())
@@ -101,6 +107,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     assetData.QuestLayoutFlags.Add(new QuestLayoutFlag() { FlagId = layoutFlag.GetUInt32() });
                 }
+            }
+
+            assetData.ResetPlayerAfterQuest = false;
+            if (jQuest.TryGetProperty("reset_player_after_quest", out JsonElement jResetPlayerAfterQuest))
+            {
+                assetData.ResetPlayerAfterQuest = true;
             }
 
             ParseRewards(assetData, jQuest);
