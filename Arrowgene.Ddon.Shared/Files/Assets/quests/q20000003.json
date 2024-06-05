@@ -46,7 +46,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Klaus0",
-                    "message_id": 29
+                    "message_id": 10722
                 },
                 {
                     "type": "MyQstFlags",
@@ -61,7 +61,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Klaus0",
-                    "message_id": 21
+                    "message_id": 10730
                 },
                 {
                     "type": "TalkToNpc",
@@ -71,7 +71,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Talcott",
-                    "message_id": 21
+                    "message_id": 14775
                 },
                 {
                     "type": "TalkToNpc",
@@ -81,7 +81,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Klaus0",
-                    "message_id": 21
+                    "message_id": 10731
                 }
             ]
         },
@@ -99,7 +99,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Cameron0",
-                    "message_id": 21
+                    "message_id": 11772
                 },
                 {
                     "type": "MyQstFlags",
@@ -122,7 +122,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Tonio",
-                    "message_id": 21
+                    "message_id": 11771
                 },
                 {
                     "type": "MyQstFlags",
@@ -145,7 +145,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Kittredge",
-                    "message_id": 21
+                    "message_id": 10727
                 },
                 {
                     "type": "MyQstFlags",
@@ -168,7 +168,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Morris",
-                    "message_id": 21
+                    "message_id": 10726
                 },
                 {
                     "type": "MyQstFlags",
@@ -190,8 +190,8 @@
                         "id": 2,
                         "group_id": 0
                     },
-                    "npc_id": "Mayleaf0",
-                    "message_id": 21
+                    "npc_id": "Nancy",
+                    "message_id": 10728
                 },
                 {
                     "type": "MyQstFlags",
@@ -214,7 +214,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Ferguson",
-                    "message_id": 21
+                    "message_id": 10725
                 },
                 {
                     "type": "MyQstFlags",
@@ -237,7 +237,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Colette",
-                    "message_id": 21
+                    "message_id": 10733
                 },
                 {
                     "type": "MyQstFlags",
@@ -260,7 +260,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Vicelot",
-                    "message_id": 21
+                    "message_id": 11770
                 },
                 {
                     "type": "MyQstFlags",
