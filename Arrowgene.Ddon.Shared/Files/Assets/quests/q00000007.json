@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "The House of Steam",
     "quest_id": 7,
-    "next_quest": 0,
+    "next_quest": 9,
     "base_level": 25,
     "minimum_item_rank": 0,
     "discoverable": true,
@@ -41,43 +41,7 @@
             ]
         }
     ],
-    "enemy_groups": [
-        {
-            "stage_id": {
-                "id": 67,
-                "group_id": 2
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015040",
-                    "level": 20,
-                    "exp": 4660,
-                    "named_enemy_params_id": 141,
-                    "is_boss": true
-                },
-                {
-                    "enemy_id": "0x010201",
-                    "level": 18,
-                    "exp": 64
-                },
-                {
-                    "enemy_id": "0x010201",
-                    "level": 18,
-                    "exp": 64
-                },
-                {
-                    "enemy_id": "0x010201",
-                    "level": 18,
-                    "exp": 64
-                },
-                {
-                    "enemy_id": "0x010201",
-                    "level": 18,
-                    "exp": 64
-                }
-            ]
-        }
-    ],
+    "enemy_groups": [],
     "blocks": [
         {
             "type": "NpcTalkAndOrder",

@@ -2493,8 +2493,8 @@ There exists an implementation of the following main story quests but they are c
 | [The Dull Grey Ark](https://ddonline.tumblr.com/post/128250949024/wq-the-dull-grey-ark) | Working Well
 | [The Girl in the Forest](https://ddonline.tumblr.com/post/128253902059/mq-the-girl-in-the-forest) | Working mostly well. Boss fight all monsters need to die, not just troll.
 | [The Goblin King](https://ddonline.tumblr.com/post/128255137129/mq-the-goblin-king) | Working Well.
-| [The House of Steam](https://ddonline.tumblr.com/post/128376072499/mq-the-house-of-steam) | Not Implemented.
-| [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Not Implemented.
+| [The House of Steam](https://ddonline.tumblr.com/post/128376072499/mq-the-house-of-steam) | Working Well.
+| [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Works mostly well. Some orcs missing at start. Front gate of gritten has two entrances.
 | [The Castle of Dusk](https://ddonline.tumblr.com/post/128917708449/mq-the-castle-of-dusk) | Not Implemented.
 | [The Gods Awakening](https://ddonline.tumblr.com/post/128920334189/mq-the-gods-awakening) | Not Implemented.
 
@@ -2562,6 +2562,15 @@ There exists an implementation of the following main story quests but they are c
 | Type      | Value | Comment                                                    |
 |:---------:|:-----:|:-----------------------------------------------------------|
 | QstLayout | 414   | Spawns Fabio in the hotsprings
+
+##### The Assailed Fort (q00000009)
+
+| Type      | Value | Comment                                                    |
+|:---------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | 982   | Spawns Vanessa in the Audience Chamber
+| QstLayout | 1236  | Spawns Gerd in the Audience Chamber
+| QstLayout | 1305  | Spawns barricades outside gritten fort (prevents entrance)
+| QstLayout | 1306  | Spawns barricades outside gritten fort (prevents entrance)
 
 #### World Manage Quest
 
