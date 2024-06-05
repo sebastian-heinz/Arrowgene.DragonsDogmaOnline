@@ -1,0 +1,170 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The House of Steam",
+    "quest_id": 7,
+    "next_quest": 0,
+    "base_level": 25,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 480
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8628,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8848,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 67,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015040",
+                    "level": 20,
+                    "exp": 4660,
+                    "named_enemy_params_id": 141,
+                    "is_boss": true
+                },
+                {
+                    "enemy_id": "0x010201",
+                    "level": 18,
+                    "exp": 64
+                },
+                {
+                    "enemy_id": "0x010201",
+                    "level": 18,
+                    "exp": 64
+                },
+                {
+                    "enemy_id": "0x010201",
+                    "level": 18,
+                    "exp": 64
+                },
+                {
+                    "enemy_id": "0x010201",
+                    "level": 18,
+                    "exp": 64
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
+            ],
+            "npc_id": "Leo0",
+            "message_id": 7
+        },
+        {
+            "type": "TalkToNpc",
+            "announce_type": "Accept",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "npc_id": "Klaus0",
+            "message_id": 975
+        },
+        {
+            "type": "IsStageNo",
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 80
+            }
+        },
+        {
+            "type": "TalkToNpc",
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 80,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 414, "comment": "Spawns Fabio at the hot springs"}
+            ],
+            "npc_id": "Roy",
+            "message_id": 975
+        },
+        {
+            "type": "PartyGather",
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 80
+            },
+            "location": {
+                "x": -69,
+                "y": 71,
+                "z": -6114
+            }
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 80
+            },
+            "event_id": 5
+        },
+        {
+            "type": "PartyGather",
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 3
+            },
+            "location": {
+                "x": -327,
+                "y": 9164,
+                "z": 511
+            }
+        },
+        {
+            "type": "PlayEvent",
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 414, "comment": "Spawns Fabio at the hot springs"}
+            ],
+            "stage_id": {
+                "id": 3
+            },
+            "event_id": 28
+        }
+    ]
+}

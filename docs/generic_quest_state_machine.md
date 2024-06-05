@@ -2557,6 +2557,12 @@ There exists an implementation of the following main story quests but they are c
 | QstLayout | 977   | Spawns Gerd and the White Knights outside Glowworm Cave
 | QstLayout | 979   | Spawns Gerd and Mayleaf inside Glowworm Cave
 
+##### The House of Steam (q00000007)
+
+| Type      | Value | Comment                                                    |
+|:---------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | 414   | Spawns Fabio in the hotsprings
+
 #### World Manage Quest
 
 ##### q70000001

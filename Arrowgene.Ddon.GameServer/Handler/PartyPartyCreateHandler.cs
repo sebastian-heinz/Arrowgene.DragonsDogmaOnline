@@ -59,7 +59,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // party.QuestState.AddNewQuest(QuestId.TheCrimsonCrystal);
             // party.QuestState.AddNewQuest(QuestId.TheDullGreyArk);
             // party.QuestState.AddNewQuest(QuestId.TheGirlInTheForest);
-            party.QuestState.AddNewQuest(QuestId.TheGoblinKing);
+            // party.QuestState.AddNewQuest(QuestId.TheGoblinKing);
+            party.QuestState.AddNewQuest(QuestId.TheHouseOfSteam);
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;
