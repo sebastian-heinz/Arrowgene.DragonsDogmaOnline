@@ -107,7 +107,7 @@
                 "group_id": 0
             },
             "npc_id": "Heinz2",
-            "message_id": 11371
+            "message_id": 11830
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
@@ -131,7 +131,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Heinz2",
-            "message_id": 11834
+            "message_id": 11835
         }
     ]
 }
