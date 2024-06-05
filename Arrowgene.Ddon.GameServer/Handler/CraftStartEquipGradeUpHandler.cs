@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Finding the Recipe we need based on the requested UID.
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID); 
 
+
             // Getting access to the GradeUpRecipe JSON data.
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
@@ -109,6 +110,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 TotalEquipPoint = currentTotalEquipPoint + addEquipPoint, // Dummy math just to make the bar slide up (HMMM HAPPY CHEMICALS)
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
                 IsGreatSuccess = true, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
+                BeforeItemID = equipItemID,
+                Unk0 = true,
             };
             client.Send(updateCharacterItemNtc);
             client.Send(res);

@@ -23,7 +23,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .SelectMany(recipes => recipes.RecipeList)
                 .Where(recipe => packet.Structure.ItemList.Any(itemId => itemId.Value == recipe.ItemID))
                 .ToList();
-
                 
             var res = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
@@ -32,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Skip((int)packet.Structure.Offset)
                     .Take((int)packet.Structure.Num)
                     .ToList(),
-                IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
+                IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count,
             };
             client.Send(res);
             }

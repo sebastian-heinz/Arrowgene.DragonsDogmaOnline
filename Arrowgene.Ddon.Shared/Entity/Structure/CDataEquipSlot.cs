@@ -9,10 +9,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
-        public uint Unk0 { get; set; }
-        public uint Unk1 { get; set; }
-        public byte Unk2 { get; set; }
-        public ushort Unk3 { get; set; }
+        public uint Unk0 { get; set; } // Potentially Character Id
+        public uint Unk1 { get; set; } // Potentially Pawn Id
+        public byte Unk2 { get; set; } // Potentially EquipType
+        public ushort Unk3 { get; set; } // Potentially EquipSlotNo 
 
         public class Serializer : EntitySerializer<CDataEquipSlot>
         {

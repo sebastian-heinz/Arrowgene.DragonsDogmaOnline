@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public byte Category { get; set; }
         public List<CDataMDataCraftGradeupRecipe> RecipeList { get; set; }
-        public List<CDataCommonU32> UnknownItemList { get; set; }
+        public List<CDataCommonU32> UnknownItemList { get; set; } // filled with random item IDs, didn't seem to do anything?
         public bool IsEnd { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCraftRecipeGetCraftGradeupRecipeRes>
