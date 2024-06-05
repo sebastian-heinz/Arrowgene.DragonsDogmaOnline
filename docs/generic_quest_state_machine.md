@@ -2494,10 +2494,12 @@ There exists an implementation of the following main story quests but they are c
 | [The Girl in the Forest](https://ddonline.tumblr.com/post/128253902059/mq-the-girl-in-the-forest) | Working mostly well. Boss fight all monsters need to die, not just troll.
 | [The Goblin King](https://ddonline.tumblr.com/post/128255137129/mq-the-goblin-king) | Working Well.
 | [The House of Steam](https://ddonline.tumblr.com/post/128376072499/mq-the-house-of-steam) | Working Well.
-| [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Works mostly well. Some orcs missing at start. Front gate of gritten has two entrances.
-| [The Castle of Dusk](https://ddonline.tumblr.com/post/128917708449/mq-the-castle-of-dusk) | Not Implemented.
-| [The Gods Awakening](https://ddonline.tumblr.com/post/128920334189/mq-the-gods-awakening) | Not Implemented.
+| [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Playable. Some orcs missing at start. Front gate of gritten has two entrances. Needs NPC state machines added.
+| [The Castle of Dusk](https://ddonline.tumblr.com/post/128917708449/mq-the-castle-of-dusk) | Mostly works. Unable to trigger cutscene on door enter for the boss. When boss lockout occurs, there are 2 doors in the location.
+| [The Gods Awakening](https://ddonline.tumblr.com/post/128920334189/mq-the-gods-awakening) | Working well.
 
+> [!WARNING]
+> Did not implement home point settings if a player dies during a fight yet.
 
 #### Season 3.3
 
@@ -2571,6 +2573,19 @@ There exists an implementation of the following main story quests but they are c
 | QstLayout | 1236  | Spawns Gerd in the Audience Chamber
 | QstLayout | 1305  | Spawns barricades outside gritten fort (prevents entrance)
 | QstLayout | 1306  | Spawns barricades outside gritten fort (prevents entrance)
+
+##### The Castle of Dusk (q00000010)
+
+| Type      | Value | Comment                                                    |
+|:---------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | 1237  | Spawns Gerd in the Audience Chamber
+| QstLayout | 276   | Holy Grail (inside castle)
+| QstLayout | 1108  | Solider Corpse (inside castle)
+| QstLayout | 983   | Spawns WhiteKnights and Gerd (inside castle)
+| QstLayout | 1291  | Boss barrier?
+| QstLayout | 1308  | Spawns more WhiteKnights (hint NPC?) (inside castle)
+| QstLayout | 1315  | Boss Room Locked Wooden Door (for boss fight)
+| QstLayout | 913   | Boss Room Locked Gate (for boss fight)
 
 #### World Manage Quest
 

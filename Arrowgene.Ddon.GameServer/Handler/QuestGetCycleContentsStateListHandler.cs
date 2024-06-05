@@ -54,6 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataQuestId() { QuestId = (uint) QuestId.TheGirlInTheForest},
                 new CDataQuestId() { QuestId = (uint) QuestId.TheGoblinKing},
                 new CDataQuestId() { QuestId = (uint) QuestId.TheHouseOfSteam},
+                new CDataQuestId() { QuestId = (uint) QuestId.TheAssailedFort},
             };
             // pcap.MainQuestIdList;
 
