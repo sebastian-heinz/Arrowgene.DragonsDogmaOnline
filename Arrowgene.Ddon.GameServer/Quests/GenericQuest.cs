@@ -334,10 +334,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         List<CDataQuestCommand> deliveryRequests = new List<CDataQuestCommand>();
                         foreach (var item in questBlock.DeliveryRequests)
                         {
-                            deliveryRequests.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount));
+                            deliveryRequests.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                         }
                         result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(deliveryRequests);
-                        result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, 1, 0));
+                        result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                         // result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfoQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, 1, 0));
                     }
                     break;
