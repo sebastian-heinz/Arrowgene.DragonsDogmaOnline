@@ -202,6 +202,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private void EquipItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, EquipType equipType, byte equipSlot, List<StorageType> storageTypes, string itemUId, uint characterId, uint pawnId)
         {
+            Item? previouslyEquippedItem = characterToEquipTo.Equipment.GetEquipItem(characterToEquipTo.Job, equipType, equipSlot);
+            if (previouslyEquippedItem?.UId == itemUId)
+            {
+                // Don't do anything
+                return;
+            }
+
             // Find in the storages the item to equip
             Item? itemToEquip = null;
             uint itemToEquipNum = 0;
