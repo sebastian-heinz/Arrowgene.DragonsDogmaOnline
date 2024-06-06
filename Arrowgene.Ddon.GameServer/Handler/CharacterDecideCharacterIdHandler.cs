@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
@@ -32,6 +33,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.CharacterId;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
+
+            if (Server.Database.GetCurrentMsqId(client.Character.CommonId) == QuestId.None &&
+                Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Main).Count == 0)
+            {
+                // TODO: Remove this in the future, it is needed for servers which keep progress before quests are added
+                Server.Database.InsertIfNotExistCompletedQuest(client.Character.CommonId, QuestId.ResolutionsAndOmens, QuestType.Main);
+                Server.Database.InsertQuestProgress(client.Character.CommonId, QuestId.TheSlumberingGod, QuestType.Main, 0);
+            }
 
             res.Unk0 = pcap.Unk0; // Removing this makes tons of tutorials pop up
             client.Send(res);
