@@ -183,10 +183,6 @@
     "blocks": [
         {
             "type": "Raw",
-            "stage_jump": true,
-            "stage_id": {
-                "id": 230
-            },
             "flags": [
                 {"type": "QstLayout", "action": "Set", "value": 284},
                 {"type": "QstLayout", "action": "Set", "value": 937}
@@ -195,7 +191,7 @@
                 {"type": "EventEnd", "Param1": 101, "Param2": 10}
             ],
             "result_commands": [
-                {"type": "EventExec", "Param1": 101, "Param2":  10, "Param3": 101, "Param4": 0}
+                {"type": "ExeEventAfterStageJump", "Param1": 101, "Param2": 10, "Param3": 0}
             ]
         },
         {

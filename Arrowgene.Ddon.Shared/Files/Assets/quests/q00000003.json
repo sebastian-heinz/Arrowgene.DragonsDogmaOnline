@@ -114,7 +114,7 @@
         {
             "type": "Raw",
             "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 972}
+                {"type": "QstLayout", "action": "Set", "value": 972, "comment": "Spawns Heinz and Gerd in Tel"}
             ],
             "check_commands": [
                 {"type": "EventEnd", "Param1": 201, "Param2": 5}
@@ -124,12 +124,16 @@
             ]
         },
         {
-            "type": "Raw",
+            "type": "PartyGather",
             "announce_type": "Accept",
-            "check_commands": [
-                {"type": "TouchActQuestNpc", "Param1": 100, "Param2": 1, "Param3": 1}
-            ],
-            "result_commands": []
+            "stage_id": {
+                "id": 1
+            },
+            "location": {
+                "x": -110952,
+                "y": 3893,
+                "z": -64650
+            }
         },
         {
             "type": "Raw",
@@ -180,12 +184,16 @@
             "message_id": 960
         },
         {
-            "type": "Raw",
+            "type": "PartyGather",
             "announce_type": "Update",
-            "check_commands": [
-                {"type": "TouchActQuestNpc", "Param1": 100, "Param2": 1, "Param3": 1}
-            ],
-            "result_commands": []
+            "stage_id": {
+                "id": 1
+            },
+            "location": {
+                "x": -110952,
+                "y": 3893,
+                "z": -64650
+            }
         },
         {
             "type": "Raw",
@@ -202,6 +210,9 @@
                 "id": 3,
                 "group_id": 1
             },
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 972, "comment": "Spawns Heinz and Gerd in Tel"}
+            ],
             "announce_type": "Update",
             "npc_id": "Leo0",
             "message_id": 962
