@@ -1,487 +1,4 @@
-# Generic Quest State Machine
-
-The generic quest state machine is a first attempt and providing a way for quests to be implemented without too much technical knowledge.
-
-The generic implementation has currently proven to handle the following types of quests
-- Find and kill a world boss
-- Find and kill multiple groups of enemies
-- Talk to an NPC to receive directions for some task. Complete this task and return.
-  - Both key item deliveries and item deliveries are implemented.
-
-## High Level overview of how a quest works
-
-The quest system in DDon seems to be fairly complicated. A quest can define multiple processes and each process can have what is known as a sequence and block number. It is suspected that a process is akin to a thread in the quest state machine. Each process block has 2 lists of quest commands which are known as check commands and result commands.
-
-The "result commands" are commands which actually do something (display the progress banner, teleport a player, start a custscene, etc.) The list of result commands are executed instantly when the block is fetched by the client.  The "check commands" are commands which wait for some condition to be satisfied. The quest process will only progress to the next block when all the check commands in the current block for the process are satisfied. The server can also send "work commands" which are async to the normal quest progress mechanism. The content of these commands looks similar to check commands.
-
-Researching the packet capture for the main quest "Hope's Bitter End", the following patterns were observed.
-
-- A quest can spawn multiple processes
-- As each processes moves to the next state the block number is incrementd by 1
-- When a process is completed, the block number is incremented by 1 and the sequence number is set to 1.
-- A quest process state that only has result commands appears to be a terminal block (the client does not ask for another update)
-
-## Details about the generic quest implementation
-
-To simplify the enabling of simple quests, the generic quest state machine allows simple quests to be defined in a single process. For mre complex tasks it is possible to use multiple processes. It is up to the quest writer to decide.
-
-The state machine assumes the following steps:
-
-![](images/state-machine-general-steps.png)
-
-Each quest has some starting condition, either being ordered from an NPC or being discovered by chance out in the field. A number of intermediate steps are required by the quest. These steps can be, killing enemies, running to marked enemies, discovering enemies, delivering items to an NPC or talking to an NPC. Finally when all intermediate steps are completed, the quest is marked as complete and rewards are distributed.
-
-![](images/example-quest-steps.png)
-![](images/multi-process-example.png)
-
-## What works in the current implementation
-
-- Currently only [Season 1.0 MSQ](#season-10) and a limited number of [World Quests](#world-quests) are activated.
-- Quest rewards can be claimed from the reward box after completing a quest.
-  - ![](images/reward-box.png)
-- New quests can be defined by updating or adding new files to [Arrowgene.Ddon.Shared/Files/Assets/quests](https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/tree/develop/Arrowgene.Ddon.Shared/Files/Assets/quests)
-
-> [!WARNING]
-> The quest system generally doesn't work well in parties with multiple players. The world quests will reward all players in the party, but only the party leader will get quest banners as the quest progresses and completes.
-
-> [!WARNING]
-> In the quests `Boat's Buddy` and `Beach Bandits`, the nodes which appear to be used for the quest don't behave properly. You may need to reset the instance by going to WDT to get the group to spawn with quest monsters.
-
-> [!WARNING]
-> Quest progress is only saved when a quest is completed. If you do some intermediate steps, then disconnect or log out, you will need to repeat all steps from the start.
-
-> [!NOTE]
-> If a quest completes in a safe area, the party leader needs to exit the area and reenter to restart the quest.
-
-> [!NOTE]
-> The server currently treats every completion of the quest as the first time.
-
-> [!NOTE]
-> The dialouge from NPCs for the quest is probably incorrect but I can't read the messages they say to correct them :)
-
-## Overview of the generic quest JSON format
-
-The JSON for the state machine is split into 4 major parts.
-- Generic details about the quest.
-- Rewards that can be earned by completing the quest.
-- Enemies unique to the quest.
-- Steps required for the quest to execute.
-    - Either `blocks` or `processes`
-
-```json
-{
-    "type": string,
-    "comment": string,
-    "quest_id": int,
-    "base_level": int,
-    "minimum_item_rank": int,
-    "discoverable": bool,
-    "rewards": [],
-    "enemy_groups": [],
-    "blocks": []
-}
-```
-
-A proper definition of the format should be defined but for now we will use an example to show how one can create a new quest.
-
-## How to add new quests
-
-There currently does not exist any tools to aid in adding new world quests. I suggest to install the following tools.
-
-- [ripgrep](https://github.com/BurntSushi/ripgrep)
-- [git](https://git-scm.com/download/win)
-- [arctool](http://redirect.viglink.com/?key=71fe2139a887ad501313cd8cce3053c5&subId=5490376&u=https%3A//www.fluffyquack.com/tools/ARCtool.rar)
-
-After installing `git`, clone the following repositories locally
-- [DDON-translation](https://github.com/Sapphiratelaemara/DDON-translation)
-- [DDOn-Tools](https://github.com/alborrajo/DDOn-Tools)
-- [ddon-data](https://github.com/ddon-research/ddon-data)
-
-Build `DDon-tools` from source to get the latest build.
-
-Use a wiki like [http://ddon.wikidot.com/](http://ddon.wikidot.com) to find the name of the quest in japanese.
-
-### Example: Implementing "The Knights' Bitter Enemy"
-
-Go to [http://ddon.wikidot.com/](http://ddon.wikidot.com/wq:theknightsbitterenemy) and copy the Japanese name of the quest `騎士団の仇敵`. Using `ripgrep`, search for this text in the DDON-translation repository you cloned and look for a match which looks like `DDON-Translation-TOML\ui\00_message\quest_info\q20005010_00.toml`
-
-```plaintext
-$ rg 騎士団の仇敵
-// lot's of text prints out ...
-DDON-Translation-CSV\ui\00_message\quest_info\q20005010_00.csv
-2:q20005010_00_289,騎士団の仇敵,The Knights' Bitter Enemy
-```
-
-The first part of this file name `q20005010` (really `20005010`) this is the quest ID used by the client to display information about the quest. I would also suggest to lookup the quest in [youtube](https://www.youtube.com/watch?v=eXns7McFY1E) using the japanese name to see how the quest should work.
-
-Using the wiki, we can learn the following details:
-
-- The quest is located at (x 193, Y 294)
-- The recommended level is 12
-- The exp and currency rewards from the quest
-    - 590 XP
-    - 390 G
-    - 70 R
-    - 80 AP (not implemented)
-- The selectable rewards of the quest (1 of the following three items)
-  - 1x [Knight's Honour](http://ddon.wikidot.com/weapons:knightshonour)
-  - 3x [Lumber Knife](http://ddon.wikidot.com/consumables:lumberknife)
-  - 1x [Cathedral Fire](http://ddon.wikidot.com/weapons:cathedralfire)
-
-Let's open up DDon-tools and find the information we require. After opening the tool, select the Lestania map and click on the enemies tab. Then start to move around the mouse until we are at the location (X:193, Y:294). We can tell the position in DDon-tools by looking in the upper right corner.
-
-![](images/tutorial-image-1.png)
-
-Once you have found the region, zoom in and we can see a bunch of nodes close to the area (red square boxes). This next part takes a bit of guess work. For this particular quest, the node with the cyclops in it is what we are interested in. Record the StageId values `(1, 0, 26, 0)` in the upper right corner after hovering over the node.
-
-![](images/tutorial-image-2.png)
-
-Next let's search for the Cyclops enemy ID. The enemies tab has a search input box you can use. Type in the name `cyclops` and record the hex number `0x015000` next to the name in the list.
-
-![](images/tutorial-image-3.png)
-
-Next select the item tab. Similar to enemies, we can search item ID's quickly.
-
-![](images/tutorial-image-4.png)
-
-After doing this for all three items, you should find
-
-- Knight's Honor (95)
-- Lumber Knife (58)
-- Cathedral Fire (10047)
-
-In this particular quest, this is all the information we need. Let's use it to construct the quest JSON object parsed by the server.
-
-### Populating the common information
-
-First let's create a new file under `Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\quests` called `q20005010.json`. The name of this file should reflect the quest id used by the client.
-
-Each file should start with the following generic format.
-
-```json
-{
-    "state_machine": "GenericStateMachine",
-    "type": string,
-    "comment": string,
-    "quest_id": int,
-    "base_level": int,
-    "minimum_item_rank": int,
-    "discoverable": bool,
-    "rewards": [],
-    "enemy_groups": [],
-    "blocks": []
-}
-```
-
-> [!NOTE]
-> This quest is simple so we use the simplied syntax of `blocks` to define the steps in the quest. In more complicated quests, you may instead see `processes` instead. Quests which use `blocks` are shorthand to say this quest only has one process in the quest state machine.
-
-First fill in the common items using the values we collected from the wiki. Quests starting with a prefix of `q2xxxxxx` are "World Quests", so we will fill in `"World"` as the quest type. The `discoverable` field controls if the quest shows up on the map before accepting it. In this quest we will set it to `false`.
-```json
-{
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Knights' Bitter Enemy",
-    "quest_id": 20005010,
-    "base_level": 12,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "rewards": [],
-    "enemy_groups": [],
-    "blocks": []
-}
-```
-
-### Adding Rewards
-
-Next we can define the rewards. The rewards have a variable format depending on the `type` field.
-
-```json
-{
-    "type": string
-}
-```
-
-- If the type is `wallet`, then it will contain the fields `wallet_type` and `amount`.
-- If the type is `exp`, then it will contain the field `amount`.
-- If the type is `select` it will describe a reward where 1 item can be selected.
-- If the type is `random` it will describe a reward where 1 random item will be selected.
-- If the type is `fixed` it will always reward the fixed item.
-
-Putting this all together, we will get a reward list which looks like
-```json
-{
-    "type": "wallet",
-    "wallet_type": "Gold",
-    "amount": 390
-},
-{
-    "type": "wallet",
-    "wallet_type": "RiftPoints",
-    "amount": 70
-},
-{
-    "type": "exp",
-    "amount": 590
-},
-{
-    "type": "select",
-    "loot_pool": [
-        {
-            "item_id": 95,
-            "num": 1
-        },
-        {
-            "item_id": 58,
-            "num": 3
-        },
-        {
-            "item_id": 10047,
-            "num": 1
-        }
-    ]
-}
-```
-
-This should be added into the `rewards` array in the parent object.
-
-### Defining enemy groups
-
-A group of enemies may be referenced in multiple rules. To reduce repetition, all enememy groups are defined one time in the `enemy_groups` category. They they are referenced by their 0 based index in this array. For each group, we need to provide location information about where to find these enemies. Recall the stage ID value `(1, 0, 26, 0)` we recorded from DDon-tools. The `stage_id` parser only provides the `id` and `group_id` by default. Other values can be optionally provided. There is an optional comment which can be provided to help remember what this group is for.
-
-```json
-"enemy_groups": [
-    {
-        "comment": "GroupId: 0",
-        "stage_id": {
-            "id": 1,
-            "group_id": 26
-        },
-        "enemies": []
-    }
-]
-```
-
-Next we have an array of enemies in this group. Recall the values we recorded from DDOn-Tools the hexadecimal value of the enemy. We also need to provide a `level` and `exp` amount. There is a special flag `is_boss` which can be provided which assigns multiple flags used commonly with bosses. We set thgis to true.
-
-```json
-"enemy_groups": [
-    {
-        "comment": "GroupId: 0",
-        "stage_id": {
-            "id": 1,
-            "group_id": 26
-        },
-        "enemies": [
-            {
-                "enemy_id": "0x015000",
-                "level": 12,
-                "exp": 1860,
-                "is_boss": true
-            }
-        ]
-    }
-]
-```
-
-It is also possible to define the other attributes of the enemy seen in DDOn-Tools, but they are considered optional by the parser. If not provided, sane defaults will be selected.
-
-> [!NOTE]
-> The `enemy_id` is a hexstring that way we can see the information about the enemy easier (json doesn't allow hex literals). Presenting the number in hexadecimal allows easy visualization of certain attributes of the enemy encoded in it's ID.
-
-> [!NOTE]
-> More enemies can be defined in the `enemies` array. Also more groups can be defined in the `enemy_groups` array.
-
-
-### Defining the quest blocks
-
-This quest is a simple quest so we will opt for a shorthand syntax where we just define a list of blocks. This list describes all the steps required to start and complete the quest. As mentioned earlier in the document, there are many types of `block` elements. There are blocks which are generally used to start a quest. Usually `DiscoverEnemy` or `NpcTalkAndOrder`. Then some variable amount of intermediate steps are provided. Finally there is the end block type which is implicitly added by the generic quest state machine and doesn't need to be provided in the quest json.
-
-This quest is simple in that it only has 2 major steps.
-- We discover the enemy
-- We kill the enemy
-
-We would create the first block as a `DiscoverEnemy` block. This block takes information about the location of the enemy and the node on the map they are associated with. The group id `0` is because this group of enemies is the `0` element in the `enemy_groups` array.
-
-```json
-{
-    "type": "DiscoverEnemy",
-    "groups": [0]
-}
-```
-
-Next we define a rule that we want to wait for the enemy group to be dead. First thing we need to do is when we move from the first state `DiscoverEnemy` to the next state `KillGroup` is that we need to "announce" that we have accepted this quest. We do this by setting the `announce_type` key to `Accept`. Similar to the previous rule, we will then assign the group id value of `0` to associate this rule with the first element of the `enemy_groups` array. We also set this `reset_group` flag to `false`. We do this because the previous rule `DiscoverEnemy` already reset the group. If we do it in this rule as well, we will see the existing enemy dissapear and reappear (which we don't want to happen).
-
-```json
-{
-    "type": "KillGroup",
-    "announce_type": "Accept",
-    "reset_group": false,
-    "groups": [0]
-}
-```
-
-Finally, your file should look like below. Save the file, reload the server and try out your quest.
-
-```json
-{
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Knights' Bitter Enemy",
-    "quest_id": 20005010,
-    "base_level": 12,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "rewards": [
-        {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 390
-        },
-        {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 70
-        },
-        {
-            "type": "exp",
-            "amount": 590
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 95,
-                    "num": 1
-                },
-                {
-                    "item_id": 58,
-                    "num": 3
-                },
-                {
-                    "item_id": 10047,
-                    "num": 1
-                }
-            ]
-        }
-    ],
-    "enemy_groups": [
-        {
-            "comment": "GroupId: 0",
-            "stage_id": {
-                "id": 1,
-                "group_id": 26
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015000",
-                    "level": 12,
-                    "exp": 1860,
-                    "is_boss": true
-                }
-            ]
-        }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
-}
-```
-
-## Block Types
-
-The generic state machine offers a bunch of pseudo blocks which implement common behavior used in many simple quests. For quests which require more control, the `Raw` block can be used to directly provide commands to the client quest state machine.
-
-### NpcTalkAndOrder
-
-Used when starting a quest by talking to an NPC.
-
-### DiscoveryEnemy
-
-Used when the quest starting point is when an enemy is encountered.
-
-### SeekOutEnemiesAtMarkedLocation
-
-Used when the quest requires you to find a group of enemies.
-
-### End
-
-This quest block is automatically inserted at the end of every list of blocks. This will generate the commands to complete/clear the quest. Do not add this block to the list of blocks in the JSON since it is implicitly added.
-
-### KillGroup
-
-Used to indicate enemies which need to be killed for a quest.
-
-### CollectItem
-
-Used to collect items from shiny points used in a quest.
-
-### DeliverItems
-
-Used to deliver items for a quest.
-
-### TalkToNpc
-
-Used to talk with NPCs.
-
-### IsStageNo
-
-Checks to see if the player is within a certain stage before progressing.
-
-### MyQstFlags
-
-Can set and/or check `MyQstFlag` values. Used to gate progress of processes in multi-process quests.
-
-### Raw
-
-The `Raw` block is a block type which accepts the raw commands understood by the game defined in the [Quest Commands](#quest-commands) section.
-
-```json
-{
-    "type": "Raw",
-    "check_commands": [],
-    "result_commands": []
-}
-```
-
-The check and result commands have a very similar format so they share the same JSON format. They all have a mandatory `type` argument and then accept up to 4 optional parameters. If a parameter is not provided it is assumed to be `0`.
-
-```json
-{
-    "type": string,
-    "Param1": int,
-    "Param2": int,
-    "Param3": int,
-    "Param4": int
-}
-```
-
-#### Example Raw Block
-
-```json
-{
-    "type": "Raw",
-    "check_commands": [
-        {"type": "EventEnd", "Param1": 101, "Param2": 0}
-    ],
-    "result_commands": [
-        {"type": "QstLayoutFlagOn", "Param1": 284},
-        {"type": "QstLayoutFlagOn", "Param1": 937},
-        {"type": "EventExec", "Param1": 101, "Param2": 0, "Param3": 101, "Param4": 0}
-    ]
-}
-```
-
-## Quest Commands
+# Quest Command Reference
 
 The quest commands are the commands used by the quest state machine in the client. As far as we can tell, the result commands are always executed first. Then the check commands are what control the progress of the state machine to request the next block for the process.
 
@@ -501,16 +18,22 @@ There are certain acronyms used in the command names
 > [!NOTE]
 > Some of the commands have misspellings in their names. I left them as originally sourced to help with searching/reverse engineering.
 
-### Check Commands
+## Check Commands
 
-```c
+Check commands are commands which gate the progress/advancement of the current quest block in a process to the next quest block in a process.
+
+### TalkNpc
+```
 /**
  * @brief
  * @param stageNo
  * @param npcId
  */
 TalkNpc(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0);
+```
 
+### DieEnemy
+```
 /**
  * @brief
  * @param stageNo
@@ -518,21 +41,32 @@ TalkNpc(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0);
  * @param setNo
  */
 DieEnemy(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### SceHitIn
+
+```
 /**
  * @brief
  * @param stageNo
  * @param sceNo
  */
 SceHitIn(StageNo stageNo, int sceNo, int param03 = 0, int param04 = 0);
+```
 
+### HaveItem
+
+```
 /**
  * @brief
  * @param itemId
  * @param itemNum
  */
 HaveItem(int itemId, int itemNum, int param03 = 0, int param04 = 0);
+```
+### DeliverItem
 
+```
 /**
  * @brief
  * @param itemId
@@ -541,7 +75,11 @@ HaveItem(int itemId, int itemNum, int param03 = 0, int param04 = 0);
  * @param msgNo
  */
 DeliverItem(int itemId, int itemNum, NpcId npcId = NpcId.None, int msgNo = 0);
+```
 
+### EmDieLight
+
+```
 /**
  * @brief
  * @param enemyId
@@ -549,61 +87,98 @@ DeliverItem(int itemId, int itemNum, NpcId npcId = NpcId.None, int msgNo = 0);
  * @param enemyNum
  */
 EmDieLight(int enemyId, int enemyLv, int enemyNum, int param04 = 0);
+```
 
+### QstFlagOn
+
+```
 /**
  * @brief
  * @param questId
  * @param flagNo
  */
 QstFlagOn(int questId, int flagNo, int param03 = 0, int param04 = 0);
+```
 
+### QstFlagOff
+
+```
 /**
  * @brief
  * @param questId
  * @param flagNo
  */
 QstFlagOff(int questId, int flagNo, int param03 = 0, int param04 = 0);
+```
 
+### MyQstFlagOn
+
+```
 /**
  * @brief
  * @param flagNo
  */
 MyQstFlagOn(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### MyQstFlagOff
+
+```
 /**
  * @brief
  * @param flagNo
  */
 MyQstFlagOff(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### Padding00
+```
 /**
  * @brief
  */
 Padding00(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### Padding01
+```
 /**
  * @brief
  */
 Padding01(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### Padding02
+```
 /**
  * @brief
  */
 Padding02(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### StageNo
+
+```
 /**
  * @brief
  * @param stageNo
  */
 StageNo(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### EventEnd
+
+```
 /**
  * @brief
  * @param stageNo
  * @param eventNo
  */
 EventEnd(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0);
+```
 
+### Prt
+
+```
 /**
  * @brief Creates a glowing point where a party gathers to start some event.
  * Use the integer values of x, y, z from the /info commands to get the coordinates.
@@ -614,59 +189,99 @@ EventEnd(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0);
  * @param z
  */
 Prt(StageNo stageNo, int x, int y, int z);
+```
 
+### Clearcount
+
+```
 /**
  * @brief
  * @param minCount
  * @param maxCount
  */
 Clearcount(int minCount, int maxCount, int param03 = 0, int param04 = 0);
+```
 
+### SceFlagOn
+
+```
 /**
  * @brief
  * @param flagNo
  */
 SceFlagOn(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### SceFlagOff
+
+```
 /**
  * @brief
  * @param flagNo
  */
 SceFlagOff(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### TouchActToNpc
+
+```
 /**
  * @brief
  * @param stageNo
  * @param npcId
  */
 TouchActToNpc(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0);
+```
 
+### OrderDecide
+
+```
 /**
  * @brief
  * @param npcId
  */
 OrderDecide(NpcId npcId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsEndCycle
+
+```
 /**
  * @brief
  */
 IsEndCycle(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsInterruptCycle
+
+```
 /**
  * @brief
  */
 IsInterruptCycle(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsFailedCycle
+
+```
 /**
  * @brief
  */
 IsFailedCycle(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsEndResult
+
+```
 /**
  * @brief
  */
 IsEndResult(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### NpcTalkAndOrderUi
+
+```
 /**
  * @brief Used to order a quest from an NPC with multiple talking options.
  * @param stageNo
@@ -674,7 +289,11 @@ IsEndResult(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param noOrderGroupSerial
  */
 NpcTalkAndOrderUi(StageNo stageNo, NpcId npcId, int noOrderGroupSerial, int param04 = 0);
+```
 
+### NpcTouchAndOrderUi
+
+```
 /**
  * @brief Used to order a quest from an NPC with no additional talking options.
  * @param stageNo
@@ -682,56 +301,92 @@ NpcTalkAndOrderUi(StageNo stageNo, NpcId npcId, int noOrderGroupSerial, int para
  * @param noOrderGroupSerial
  */
 NpcTouchAndOrderUi(StageNo stageNo, NpcId npcId, int noOrderGroupSerial, int param04 = 0);
+```
 
+### StageNoNotEq
+
+```
 /**
  * @brief
  * @param stageNo
  */
 StageNoNotEq(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### Warlevel
+
+```
 /**
  * @brief
  * @param warLevel
  */
 Warlevel(int warLevel, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### TalkNpcWithoutMarker
+
+```
 /**
  * @brief
  * @param stageNo
  * @param npcId
  */
 TalkNpcWithoutMarker(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0);
+```
 
+### HaveMoney
+
+```
 /**
  * @brief
  * @param gold
  * @param type
  */
 HaveMoney(int gold, int type, int param03 = 0, int param04 = 0);
+```
 
+### SetQuestClearNum
+
+```
 /**
  * @brief
  * @param clearNum
  * @param areaId
  */
 SetQuestClearNum(int clearNum, int areaId, int param03 = 0, int param04 = 0);
+```
 
+### MakeCraft
+
+```
 /**
  * @brief
  */
 MakeCraft(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PlayEmotion
+
+```
 /**
  * @brief
  */
 PlayEmotion(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsEndTimer
+
+```
 /**
  * @brief
  * @param timerNo
  */
 IsEndTimer(int timerNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsEnemyFound
+
+```
 /**
  * @brief
  * @param stageNo
@@ -739,77 +394,121 @@ IsEndTimer(int timerNo, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param setNo
  */
 IsEnemyFound(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### RandomEq
+
+```
 /**
  * @brief
  * @param randomNo
  * @param value
  */
 RandomEq(int randomNo, int value, int param03 = 0, int param04 = 0);
+```
 
+### RandomNotEq
+
+```
 /**
  * @brief
  * @param randomNo
  * @param value
  */
 RandomNotEq(int randomNo, int value, int param03 = 0, int param04 = 0);
+```
 
+### RandomLess
+
+```
 /**
  * @brief
  * @param randomNo
  * @param value
  */
 RandomLess(int randomNo, int value, int param03 = 0, int param04 = 0);
+```
 
+### RandomNotGreater
+
+```
 /**
  * @brief
  * @param randomNo
  * @param value
  */
 RandomNotGreater(int randomNo, int value, int param03 = 0, int param04 = 0);
+```
 
+### RandomGreater
+
+```
 /**
  * @brief
  * @param randomNo
  * @param value
  */
 RandomGreater(int randomNo, int value, int param03 = 0, int param04 = 0);
+```
 
+### RandomNotLess
+
+```
 /**
  * @brief
  * @param randomNo
  * @param value
  */
 RandomNotLess(int randomNo, int value, int param03 = 0, int param04 = 0);
+```
 
+### Clearcount02
+
+```
 /**
  * @brief
  * @param div
  * @param value
  */
 Clearcount02(int div, int value, int param03 = 0, int param04 = 0);
+```
 
+### IngameTimeRangeEq
+
+```
 /**
  * @brief
  * @param minTime
  * @param maxTime
  */
 IngameTimeRangeEq(int minTime, int maxTime, int param03 = 0, int param04 = 0);
+```
 
+### IngameTimeRangeNotEq
+
+```
 /**
  * @brief
  * @param minTime
  * @param maxTime
  */
 IngameTimeRangeNotEq(int minTime, int maxTime, int param03 = 0, int param04 = 0);
+```
 
+### PlHp
+
+```
 /**
  * @brief
  * @param hpRate
  * @param type
  */
 PlHp(int hpRate, int type, int param03 = 0, int param04 = 0);
+```
 
+### EmHpNotLess
+
+```
 /**
  * @brief
  * @param stageNo
@@ -818,7 +517,11 @@ PlHp(int hpRate, int type, int param03 = 0, int param04 = 0);
  * @param hpRate
  */
 EmHpNotLess(StageNo stageNo, int groupNo, int setNo, int hpRate);
+```
 
+### EmHpLess
+
+```
 /**
  * @brief
  * @param stageNo
@@ -827,55 +530,91 @@ EmHpNotLess(StageNo stageNo, int groupNo, int setNo, int hpRate);
  * @param hpRate
  */
 EmHpLess(StageNo stageNo, int groupNo, int setNo, int hpRate);
+```
 
+### WeatherEq
+
+```
 /**
  * @brief
  * @param weatherId
  */
 WeatherEq(int weatherId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### WeatherNotEq
+
+```
 /**
  * @brief
  * @param weatherId
  */
 WeatherNotEq(int weatherId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PlJobEq
+
+```
 /**
  * @brief
  * @param jobId
  */
 PlJobEq(int jobId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PlJobNotEq
+
+```
 /**
  * @brief
  * @param jobId
  */
 PlJobNotEq(int jobId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PlSexEq
+
+```
 /**
  * @brief
  * @param sex
  */
 PlSexEq(int sex, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PlSexNotEq
+
+```
 /**
  * @brief
  * @param sex
  */
 PlSexNotEq(int sex, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### SceHitOut
+
+```
 /**
  * @brief
  * @param stageNo
  * @param sceNo
  */
 SceHitOut(StageNo stageNo, int sceNo, int param03 = 0, int param04 = 0);
+```
 
+### WaitOrder
+
+```
 /**
  * @brief
  */
 WaitOrder(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OmSetTouch
+
+```
 /**
  * @brief
  * @param stageNo
@@ -883,7 +622,11 @@ WaitOrder(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param setNo
  */
 OmSetTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### OmReleaseTouch
+
+```
 /**
  * @brief
  * @param stageNo
@@ -891,65 +634,105 @@ OmSetTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
  * @param setNo
  */
 OmReleaseTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### JobLevelNotLess
+
+```
 /**
  * @brief
  * @param checkType
  * @param level
  */
 JobLevelNotLess(int checkType, int level, int param03 = 0, int param04 = 0);
+```
 
+### JobLevelLess
+
+```
 /**
  * @brief
  * @param checkType
  * @param level
  */
 JobLevelLess(int checkType, int level, int param03 = 0, int param04 = 0);
+```
 
+### MyQstFlagOnFromFsm
+
+```
 /**
  * @brief
  * @param flagNo
  */
 MyQstFlagOnFromFsm(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### SceHitInWithoutMarker
+
+```
 /**
  * @brief
  * @param stageNo
  * @param sceNo
  */
 SceHitInWithoutMarker(StageNo stageNo, int sceNo, int param03 = 0, int param04 = 0);
+```
 
+### SceHitOutWithoutMarker
+
+```
 /**
  * @brief
  * @param stageNo
  * @param sceNo
  */
 SceHitOutWithoutMarker(StageNo stageNo, int sceNo, int param03 = 0, int param04 = 0);
+```
 
+### KeyItemPoint
+
+```
 /**
  * @brief
  * @param idx
  * @param num
  */
 KeyItemPoint(int idx, int num, int param03 = 0, int param04 = 0);
+```
 
+### IsNotEndTimer
+
+```
 /**
  * @brief
  * @param timerNo
  */
 IsNotEndTimer(int timerNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsMainQuestClear
+
+```
 /**
  * @brief
  * @param questId
  */
 IsMainQuestClear(int questId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### DogmaOrb
+
+```
 /**
  * @brief Check is satisfied when player buys blood orb upgrade from the white dragon.
  */
 DogmaOrb(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsEnemyFoundForOrder
+
+```
 /**
  * @brief
  * @param stageNo
@@ -957,13 +740,21 @@ DogmaOrb(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param setNo
  */
 IsEnemyFoundForOrder(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### IsTutorialFlagOn
+
+```
 /**
  * @brief
  * @param flagNo
  */
 IsTutorialFlagOn(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### QuestOmSetTouch
+
+```
 /**
  * @brief
  * @param stageNo
@@ -971,7 +762,11 @@ IsTutorialFlagOn(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param setNo
  */
 QuestOmSetTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### QuestOmReleaseTouch
+
+```
 /**
  * @brief
  * @param stageNo
@@ -979,7 +774,11 @@ QuestOmSetTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
  * @param setNo
  */
 QuestOmReleaseTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### NewTalkNpc
+
+```
 /**
  * @brief
  * @param stageNo
@@ -988,7 +787,11 @@ QuestOmReleaseTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
  * @param questId
  */
 NewTalkNpc(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### NewTalkNpcWithoutMarker
+
+```
 /**
  * @brief
  * @param stageNo
@@ -997,25 +800,41 @@ NewTalkNpc(StageNo stageNo, int groupNo, int setNo, int questId);
  * @param questId
  */
 NewTalkNpcWithoutMarker(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### IsTutorialQuestClear
+
+```
 /**
  * @brief
  * @param questId
  */
 IsTutorialQuestClear(int questId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsMainQuestOrder
+
+```
 /**
  * @brief
  * @param questId
  */
 IsMainQuestOrder(int questId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsTutorialQuestOrder
+
+```
 /**
  * @brief
  * @param questId
  */
 IsTutorialQuestOrder(int questId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsTouchPawnDungeonOm
+
+```
 /**
  * @brief
  * @param stageNo
@@ -1023,7 +842,11 @@ IsTutorialQuestOrder(int questId, int param02 = 0, int param03 = 0, int param04 
  * @param setNo
  */
 IsTouchPawnDungeonOm(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### IsOpenDoorOmQuestSet
+
+```
 /**
  * @brief
  * @param stageNo
@@ -1032,7 +855,11 @@ IsTouchPawnDungeonOm(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
  * @param questId
  */
 IsOpenDoorOmQuestSet(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### EmDieForRandomDungeon
+
+```
 /**
  * @brief
  * @param stageNo
@@ -1040,7 +867,11 @@ IsOpenDoorOmQuestSet(StageNo stageNo, int groupNo, int setNo, int questId);
  * @param enemyNum
  */
 EmDieForRandomDungeon(StageNo stageNo, int enemyId, int enemyNum, int param04 = 0);
+```
 
+### NpcHpNotLess
+
+```
 /**
  * @brief
  * @param stageNo
@@ -1049,7 +880,11 @@ EmDieForRandomDungeon(StageNo stageNo, int enemyId, int enemyNum, int param04 = 
  * @param hpRate
  */
 NpcHpNotLess(StageNo stageNo, int groupNo, int setNo, int hpRate);
+```
 
+### NpcHpLess
+
+```
 /**
  * @brief
  * @param stageNo
@@ -1058,7 +893,11 @@ NpcHpNotLess(StageNo stageNo, int groupNo, int setNo, int hpRate);
  * @param hpRate
  */
 NpcHpLess(StageNo stageNo, int groupNo, int setNo, int hpRate);
+```
 
+### IsEnemyFoundWithoutMarker
+
+```
 /**
  * @brief
  * @param stageNo
@@ -1066,104 +905,177 @@ NpcHpLess(StageNo stageNo, int groupNo, int setNo, int hpRate);
  * @param setNo
  */
 IsEnemyFoundWithoutMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### IsEventBoardAccepted
+
+```
 /**
  * @brief
  */
 IsEventBoardAccepted(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### WorldManageQuestFlagOn
+
+```
 /**
  * @brief
  * @param flagNo
  * @param questId
  */
 WorldManageQuestFlagOn(int flagNo, int questId, int param03 = 0, int param04 = 0);
+```
 
+### WorldManageQuestFlagOff
+
+```
 /**
  * @brief
  * @param flagNo
  * @param questId
  */
 WorldManageQuestFlagOff(int flagNo, int questId, int param03 = 0, int param04 = 0);
+```
 
+### TouchEventBoard
+
+```
 /**
  * @brief
  */
 TouchEventBoard(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenEntryRaidBoss
+
+```
 /**
  * @brief
  */
 OpenEntryRaidBoss(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OepnEntryFortDefense
+
+```
 /**
  * @brief
  */
 OepnEntryFortDefense(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### DiePlayer
+
+```
 /**
  * @brief
  */
 DiePlayer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PartyNumNotLessWtihoutPawn
+
+```
 /**
  * @brief
  * @param partyMemberNum
  */
 PartyNumNotLessWtihoutPawn(int partyMemberNum, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PartyNumNotLessWithPawn
+
+```
 /**
  * @brief
  * @param partyMemberNum
  */
 PartyNumNotLessWithPawn(int partyMemberNum, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### LostMainPawn
+
+```
 /**
  * @brief
  */
 LostMainPawn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### SpTalkNpc
+
+```
 /**
  * @brief
  */
 SpTalkNpc(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OepnJobMaster
+
+```
 /**
  * @brief
  */
 OepnJobMaster(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### TouchRimStone
+
+```
 /**
  * @brief
  */
 TouchRimStone(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### GetAchievement
+
+```
 /**
  * @brief
  */
 GetAchievement(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### DummyNotProgress
+
+```
 /**
  * @brief
  */
 DummyNotProgress(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### DieRaidBoss
+
+```
 /**
  * @brief
  */
 DieRaidBoss(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### CycleTimerZero
+```
 /**
  * @brief
  */
 CycleTimerZero(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### CycleTimer
+```
 /**
  * @brief
  * @param timeSec
  */
 CycleTimer(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### QuestNpcTalkAndOrderUi
+```
 /**
  * @brief
  * @param stageNo
@@ -1172,7 +1084,10 @@ CycleTimer(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param questId
  */
 QuestNpcTalkAndOrderUi(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### QuestNpcTouchAndOrderUi
+```
 /**
  * @brief
  * @param stageNo
@@ -1181,7 +1096,10 @@ QuestNpcTalkAndOrderUi(StageNo stageNo, int groupNo, int setNo, int questId);
  * @param questId
  */
 QuestNpcTouchAndOrderUi(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### IsFoundRaidBoss
+```
 /**
  * @brief
  * @param stageNo
@@ -1190,7 +1108,10 @@ QuestNpcTouchAndOrderUi(StageNo stageNo, int groupNo, int setNo, int questId);
  * @param enemyId
  */
 IsFoundRaidBoss(StageNo stageNo, int groupNo, int setNo, int enemyId);
+```
 
+### QuestOmSetTouchWithoutMarker
+```
 /**
  * @brief
  * @param stageNo
@@ -1198,7 +1119,10 @@ IsFoundRaidBoss(StageNo stageNo, int groupNo, int setNo, int enemyId);
  * @param setNo
  */
 QuestOmSetTouchWithoutMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### QuestOmReleaseTouchWithoutMarker
+```
 /**
  * @brief
  * @param stageNo
@@ -1206,42 +1130,64 @@ QuestOmSetTouchWithoutMarker(StageNo stageNo, int groupNo, int setNo, int param0
  * @param setNo
  */
 QuestOmReleaseTouchWithoutMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### TutorialTalkNpc
+```
 /**
  * @brief
  * @param stageNo
  * @param npcId
  */
 TutorialTalkNpc(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0);
+```
 
+### IsLogin
+```
 /**
  * @brief
  */
 IsLogin(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsPlayEndFirstSeasonEndCredit
+```
 /**
  * @brief
  */
 IsPlayEndFirstSeasonEndCredit(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsKilledTargetEnemySetGroup
+```
 /**
  * @brief
  * @param flagNo
  */
 IsKilledTargetEnemySetGroup(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsKilledTargetEmSetGrpNoMarker
+
+```
 /**
  * @brief
  * @param flagNo
  */
 IsKilledTargetEmSetGrpNoMarker(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsLeftCycleTimer
+```
 /**
  * @brief
  * @param timeSec
  */
 IsLeftCycleTimer(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OmEndText
+```
 /**
  * @brief
  * @param stageNo
@@ -1249,7 +1195,10 @@ IsLeftCycleTimer(int timeSec, int param02 = 0, int param03 = 0, int param04 = 0)
  * @param setNo
  */
 OmEndText(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### QuestOmEndText
+```
 /**
  * @brief
  * @param stageNo
@@ -1257,36 +1206,54 @@ OmEndText(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
  * @param setNo
  */
 QuestOmEndText(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### OpenAreaMaster
+```
 /**
  * @brief
  * @param areaId
  */
 OpenAreaMaster(int areaId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### HaveItemAllBag
+```
 /**
  * @brief
  * @param itemId
  * @param itemNum
  */
 HaveItemAllBag(int itemId, int itemNum, int param03 = 0, int param04 = 0);
+```
 
+### OpenNewspaper
+```
 /**
  * @brief
  */
 OpenNewspaper(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenQuestBoard
+```
 /**
  * @brief
  */
 OpenQuestBoard(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### StageNoWithoutMarker
+```
 /**
  * @brief
  * @param stageNo
  */
 StageNoWithoutMarker(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### TalkQuestNpcUnitMarker
+```
 /**
  * @brief
  * @param stageNo
@@ -1295,7 +1262,10 @@ StageNoWithoutMarker(StageNo stageNo, int param02 = 0, int param03 = 0, int para
  * @param questId
  */
 TalkQuestNpcUnitMarker(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### TouchQuestNpcUnitMarker
+```
 /**
  * @brief
  * @param stageNo
@@ -1304,156 +1274,246 @@ TalkQuestNpcUnitMarker(StageNo stageNo, int groupNo, int setNo, int questId);
  * @param questId
  */
 TouchQuestNpcUnitMarker(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### IsExistSecondPawn
+```
 /**
  * @brief
  */
 IsExistSecondPawn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOrderJobTutorialQuest
+```
 /**
  * @brief
  */
 IsOrderJobTutorialQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOpenWarehouse
+```
 /**
  * @brief
  */
 IsOpenWarehouse(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsMyquestLayoutFlagOn
+```
 /**
  * @brief
  * @param FlagNo
  */
 IsMyquestLayoutFlagOn(int FlagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsMyquestLayoutFlagOff
+```
 /**
  * @brief
  * @param FlagNo
  */
 IsMyquestLayoutFlagOff(int FlagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOpenWarehouseReward
+```
 /**
  * @brief
  */
 IsOpenWarehouseReward(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOrderLightQuest
+```
 /**
  * @brief
  */
 IsOrderLightQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOrderWorldQuest
+```
 /**
  * @brief
  */
 IsOrderWorldQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsLostMainPawn
+```
 /**
  * @brief
  */
 IsLostMainPawn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsFullOrderQuest
+```
 /**
  * @brief
  */
 IsFullOrderQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsBadStatus
+```
 /**
  * @brief
  */
 IsBadStatus(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### CheckAreaRank
+```
 /**
  * @brief
  * @param AreaId
  * @param AreaRank
  */
 CheckAreaRank(int AreaId, int AreaRank, int param03 = 0, int param04 = 0);
+```
 
+### Padding133
+```
 /**
  * @brief
  */
 Padding133(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### EnablePartyWarp
+```
 /**
  * @brief
  */
 EnablePartyWarp(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsHugeble
+```
 /**
  * @brief
  */
 IsHugeble(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsDownEnemy
+```
 /**
  * @brief
  */
 IsDownEnemy(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenAreaMasterSupplies
+```
 /**
  * @brief
  */
 OpenAreaMasterSupplies(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenEntryBoard
+```
 /**
  * @brief
  */
 OpenEntryBoard(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### NoticeInterruptContents
+```
 /**
  * @brief
  */
 NoticeInterruptContents(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenRetrySelect
+```
 /**
  * @brief
  */
 OpenRetrySelect(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsPlWeakening
+```
 /**
  * @brief
  */
 IsPlWeakening(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### NoticePartyInvite
+```
 /**
  * @brief
  */
 NoticePartyInvite(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsKilledAreaBoss
+```
 /**
  * @brief
  */
 IsKilledAreaBoss(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsPartyReward
+```
 /**
  * @brief
  */
 IsPartyReward(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsFullBag
+```
 /**
  * @brief
  */
 IsFullBag(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenCraftExam
+```
 /**
  * @brief
  */
 OpenCraftExam(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### LevelUpCraft
+```
 /**
  * @brief
  */
 LevelUpCraft(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsClearLightQuest
+```
 /**
  * @brief
  */
 IsClearLightQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenJobMasterReward
+```
 /**
  * @brief
  */
 OpenJobMasterReward(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### TouchActQuestNpc
+```
 /**
  * @brief
  * @param stageNo
@@ -1462,66 +1522,102 @@ OpenJobMasterReward(int param01 = 0, int param02 = 0, int param03 = 0, int param
  * @param questId
  */
 TouchActQuestNpc(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### IsLeaderAndJoinPawn
+```
 /**
  * @brief
  * @param pawnNum
  */
 IsLeaderAndJoinPawn(int pawnNum, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsAcceptLightQuest
+```
 /**
  * @brief
  */
 IsAcceptLightQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsReleaseWarpPoint
+```
 /**
  * @brief
  */
 IsReleaseWarpPoint(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsSetPlayerSkill
+```
 /**
  * @brief
  */
 IsSetPlayerSkill(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOrderMyQuest
+```
 /**
  * @brief
  */
 IsOrderMyQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsNotOrderMyQuest
+```
 /**
  * @brief
  */
 IsNotOrderMyQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### HasMypawn
+```
 /**
  * @brief
  */
 HasMypawn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsFavoriteWarpPoint
+```
 /**
  * @brief
  * @param warpPointId
  */
 IsFavoriteWarpPoint(int warpPointId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### Craft
+```
 /**
  * @brief
  */
 Craft(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsKilledTargetEnemySetGroupGmMain
+```
 /**
  * @brief
  * @param flagNo
  */
 IsKilledTargetEnemySetGroupGmMain(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsKilledTargetEnemySetGroupGmSub
+```
 /**
  * @brief
  * @param flagNo
  */
 IsKilledTargetEnemySetGroupGmSub(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### HasUsedKey
+```
 /**
  * @brief
  * @param stageNo
@@ -1530,12 +1626,18 @@ IsKilledTargetEnemySetGroupGmSub(int flagNo, int param02 = 0, int param03 = 0, i
  * @param questId
  */
 HasUsedKey(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### IsCycleFlagOffPeriod
+```
 /**
  * @brief
  */
 IsCycleFlagOffPeriod(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsEnemyFoundGmMain
+```
 /**
  * @brief
  * @param stageNo
@@ -1543,7 +1645,10 @@ IsCycleFlagOffPeriod(int param01 = 0, int param02 = 0, int param03 = 0, int para
  * @param setNo
  */
 IsEnemyFoundGmMain(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### IsEnemyFoundGmSub
+```
 /**
  * @brief
  * @param stageNo
@@ -1551,85 +1656,133 @@ IsEnemyFoundGmMain(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
  * @param setNo
  */
 IsEnemyFoundGmSub(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### IsLoginBugFixedOnly
+```
 /**
  * @brief
  */
 IsLoginBugFixedOnly(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsSearchClan
+```
 /**
  * @brief
  */
 IsSearchClan(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOpenAreaListUi
+```
 /**
  * @brief
  */
 IsOpenAreaListUi(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsReleaseWarpPointAnyone
+```
 /**
  * @brief
  * @param warpPointId
  */
 IsReleaseWarpPointAnyone(int warpPointId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### DevidePlayer
+```
 /**
  * @brief
  */
 DevidePlayer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### NowPhase
+```
 /**
  * @brief
  * @param phaseId
  */
 NowPhase(int phaseId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsReleasePortal
+```
 /**
  * @brief
  */
 IsReleasePortal(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsGetAppraiseItem
+```
 /**
  * @brief
  */
 IsGetAppraiseItem(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsSetPartnerPawn
+```
 /**
  * @brief
  */
 IsSetPartnerPawn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsPresentPartnerPawn
+```
 /**
  * @brief
  */
 IsPresentPartnerPawn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsReleaseMyRoom
+```
 /**
  * @brief
  */
 IsReleaseMyRoom(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsExistDividePlayer
+```
 /**
  * @brief
  */
 IsExistDividePlayer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### NotDividePlayer
+```
 /**
  * @brief
  */
 NotDividePlayer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsGatherPartyInStage
+```
 /**
  * @brief
  * @param stageNo
  */
 IsGatherPartyInStage(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsFinishedEnemyDivideAction
+```
 /**
  * @brief
  */
 IsFinishedEnemyDivideAction(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOpenDoorOmQuestSetNoMarker
+```
 /**
  * @brief
  * @param stageNo
@@ -1638,19 +1791,28 @@ IsFinishedEnemyDivideAction(int param01 = 0, int param02 = 0, int param03 = 0, i
  * @param questId
  */
 IsOpenDoorOmQuestSetNoMarker(StageNo stageNo, int groupNo, int setNo, int questId);
+```
 
+### IsFinishedEventOrderNum
+```
 /**
  * @brief
  * @param stageNo
  * @param eventNo
  */
 IsFinishedEventOrderNum(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0);
+```
 
+### IsPresentPartnerPawnNoMarker
+```
 /**
  * @brief
  */
 IsPresentPartnerPawnNoMarker(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOmBrokenLayout
+```
 /**
  * @brief
  * @param stageNo
@@ -1658,7 +1820,10 @@ IsPresentPartnerPawnNoMarker(int param01 = 0, int param02 = 0, int param03 = 0, 
  * @param setNo
  */
 IsOmBrokenLayout(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### IsOmBrokenQuest
+```
 /**
  * @brief
  * @param stageNo
@@ -1666,78 +1831,120 @@ IsOmBrokenLayout(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
  * @param setNo
  */
 IsOmBrokenQuest(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### IsHoldingPeriodCycleContents
+```
 /**
  * @brief
  */
 IsHoldingPeriodCycleContents(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsNotHoldingPeriodCycleContents
+```
 /**
  * @brief
  */
 IsNotHoldingPeriodCycleContents(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsResetInstanceArea
+```
 /**
  * @brief
  */
 IsResetInstanceArea(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### CheckMoonAge
+```
 /**
  * @brief
  * @param moonAgeStart
  * @param moonAgeEnd
  */
 CheckMoonAge(int moonAgeStart, int moonAgeEnd, int param03 = 0, int param04 = 0);
+```
 
+### IsOrderPawnQuest
+```
 /**
  * @brief
  * @param orderGroupSerial
  * @param noOrderGroupSerial
  */
 IsOrderPawnQuest(int orderGroupSerial, int noOrderGroupSerial, int param03 = 0, int param04 = 0);
+```
 
+### IsTakePictures
+```
 /**
  * @brief
  */
 IsTakePictures(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsStageForMainQuest
+```
 /**
  * @brief
  * @param stageNo
  */
 IsStageForMainQuest(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsReleasePawnExpedition
+```
 /**
  * @brief
  */
 IsReleasePawnExpedition(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenPpMode
+```
 /**
  * @brief
  */
 OpenPpMode(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PpNotLess
+```
 /**
  * @brief
  * @param point
  */
 PpNotLess(int point, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### OpenPpShop
+```
 /**
  * @brief
  */
 OpenPpShop(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### TouchClanBoard
+```
 /**
  * @brief
  */
 TouchClanBoard(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOneOffGather
+```
 /**
  * @brief
  */
 IsOneOffGather(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsOmBrokenLayoutNoMarker
+```
 /**
  * @brief
  * @param stageNo
@@ -1745,7 +1952,10 @@ IsOneOffGather(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 
  * @param setNo
  */
 IsOmBrokenLayoutNoMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### IsOmBrokenQuestNoMarker
+```
 /**
  * @brief
  * @param stageNo
@@ -1753,32 +1963,47 @@ IsOmBrokenLayoutNoMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 
  * @param setNo
  */
 IsOmBrokenQuestNoMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
+```
 
+### KeyItemPointEq
+```
 /**
  * @brief
  * @param idx
  * @param num
  */
 KeyItemPointEq(int idx, int num, int param03 = 0, int param04 = 0);
+```
 
+### IsEmotion
+```
 /**
  * @brief
  * @param actNo
  */
 IsEmotion(int actNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsEquipColor
+```
 /**
  * @brief
  * @param color
  */
 IsEquipColor(int color, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsEquip
+```
 /**
  * @brief
  * @param itemId
  */
 IsEquip(int itemId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsTakePicturesNpc
+```
 /**
  * @brief
  * @param stageNo
@@ -1787,12 +2012,18 @@ IsEquip(int itemId, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param npcId03
  */
 IsTakePicturesNpc(StageNo stageNo, int npcId01, int npcId02, int npcId03);
+```
 
+### SayMessage
+```
 /**
  * @brief
  */
 SayMessage(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### IsTakePicturesWithoutPawn
+```
 /**
  * @brief
  * @param stageNo
@@ -1801,7 +2032,10 @@ SayMessage(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param z
  */
 IsTakePicturesWithoutPawn(StageNo stageNo, int x, int y, int z);
+```
 
+### IsLinkageEnemyFlag
+```
 /**
  * @brief
  * @param stageNo
@@ -1810,7 +2044,10 @@ IsTakePicturesWithoutPawn(StageNo stageNo, int x, int y, int z);
  * @param flagNo
  */
 IsLinkageEnemyFlag(StageNo stageNo, int groupNo, int setNo, int flagNo);
+```
 
+### IsLinkageEnemyFlagOff
+```
 /**
  * @brief
  * @param stageNo
@@ -1819,7 +2056,10 @@ IsLinkageEnemyFlag(StageNo stageNo, int groupNo, int setNo, int flagNo);
  * @param flagNo
  */
 IsLinkageEnemyFlagOff(StageNo stageNo, int groupNo, int setNo, int flagNo);
+```
 
+### IsReleaseSecretRoom
+```
 /**
  * @brief
  */
@@ -2451,9 +2691,11 @@ LinkageEnemyFlagOn(StageNo stageNo, int groupNo, int setNo, int flagId);
 LinkageEnemyFlagOff(StageNo stageNo, int groupNo, int setNo, int flagId);
 ```
 
-### Notify Commands
+## Notify Commands
 
-```c
+### KilledTargetEnemySetGroup
+
+```
 /**
  * @brief
  * @param flagNo
@@ -2461,7 +2703,11 @@ LinkageEnemyFlagOff(StageNo stageNo, int groupNo, int setNo, int flagId);
  * @param groupNo
  */
 KilledTargetEnemySetGroup(int flagNo, StageNo stageNo, int groupNo, int work04 = 0);
+```
 
+### KilledTargetEmSetGrpNoMarker
+
+```
 /**
  * @brief
  * @param flagNo
@@ -2469,171 +2715,14 @@ KilledTargetEnemySetGroup(int flagNo, StageNo stageNo, int groupNo, int work04 =
  * @param groupNo
  */
 KilledTargetEmSetGrpNoMarker(int flagNo, StageNo stageNo, int groupNo, int work04 = 0);
+```
 
+### KilledTargetEnemySetGroup1
+
+```
 /**
  * @brief
  * @param npcId
  */
 KilledTargetEnemySetGroup1(NpcId npcId, int work02 = 0, int work03 = 0, int work04 = 0);
 ```
-
-## Appendix
-
-### Main Story Quests
-
-There exists an implementation of the following main story quests.
-
-#### Season 1.0
-
-| Quest Name | Comment |
-|:----------:|:-------:|
-| [Resolutions and Omens](http://ddon.wikidot.com/mq:resolutionsandomens) | Some issues related to NPC FSM when transitioning between groups in the first area. Gear flickers for a moment after completing the quest.
-| [The Slumbering God](http://ddon.wikidot.com/mq:theslumberinggod) | Working Well.
-| [Envoy of Reconciliation](http://ddon.wikidot.com/mq:envoyofreconciliation) | Working Well.
-| [Soldiers of the Rift](https://ddonline.tumblr.com/post/126992462344/mq-soldier-of-the-rift) | Working Well.
-| [A Servants Pledge](https://ddonline.tumblr.com/post/127075717759/mq-a-servants-pledge) | Mostly working well. Quest at end a little weird because we have pawns already. Pawn Dungeon needs more mob placement.
-| [The Crimson Crystal](https://ddonline.tumblr.com/post/127290993039/mq-the-crimson-crystal) | Working Well.
-| [The Dull Grey Ark](https://ddonline.tumblr.com/post/128250949024/wq-the-dull-grey-ark) | Working Well
-| [The Girl in the Forest](https://ddonline.tumblr.com/post/128253902059/mq-the-girl-in-the-forest) | Working mostly well. Boss fight all monsters need to die, not just troll.
-| [The Goblin King](https://ddonline.tumblr.com/post/128255137129/mq-the-goblin-king) | Working Well.
-| [The House of Steam](https://ddonline.tumblr.com/post/128376072499/mq-the-house-of-steam) | Working Well.
-| [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Playable. Some orcs missing at start. Front gate of gritten has two entrances. Needs NPC state machines added.
-| [The Castle of Dusk](https://ddonline.tumblr.com/post/128917708449/mq-the-castle-of-dusk) | Mostly works. Unable to trigger cutscene on door enter for the boss. When boss lockout occurs, there are 2 doors in the location.
-| [The Gods Awakening](https://ddonline.tumblr.com/post/128920334189/mq-the-gods-awakening) | Working well.
-
-> [!WARNING]
-> Did not implement home point settings if a player dies during a fight yet.
-
-#### Season 3.3
-
-| Quest Name | Comment |
-|:----------:|:-------:|
-| Hopes' Bitter End (q00030260) | Disabled
-
-### World Quests
-
-| Hidell Plains                                                                    | Breya Coast
-|:--------------------------------------------------------------------------------:|:-------------:|
-| Request For Medicine                                                             | [Dispatch A Clamor of Harpies](http://ddon.wikidot.com/wq:dispatchaclamorofharpies)
-| The Woes of A Merchant                                                           | [Boats Buddy](http://ddon.wikidot.com/wq:boatsbuddy)
-| An Assistant's Assistant                                                         | [Beach Bandits](http://ddon.wikidot.com/wq:beachbandits)
-| Crackdown on Store Vandals                                                       |
-| A Heart Throbs Once More                                                         |
-| Fabio's Collectibles                                                             |
-| [Confrontation With Scouts](http://ddon.wikidot.com/wq:confrontationwithscouts)  |
-| Fabio and Monster-Slaying                                                        |
-| A Transporter's Tragedy                                                          |
-| Knight and Arisen                                                                |
-| [Ambush in the Well's Depths](http://ddon.wikidot.com/wq:ambushinthewellsdepths) |
-| [The Knights' Bitter Enemy](http://ddon.wikidot.com/wq:theknightsbitterenemy)    |
-| [Sky-Concealing Wings](http://ddon.wikidot.com/wq:skyconcealingwings)            |
-| [Dweller In The Darkness](http://ddon.wikidot.com/wq:dwellerinthedarkness)       |
-
-### Quest Flags
-
-#### Main Quests
-
-##### Resolutions and Omens (q00000001)
-
-| Type      | Stage | Value | Comment                                                    
-|:---------:|:-----:|:-----:|:-----------------------------------------------------------
-| QstLayout | 101   | 284   | Spawns Iris and Leo
-| QstLayout | 423   | 1277  | Spawns Talcott, Cyrus, Iris and Leo
-| MyQst     | 101   | 4     | Leo NPC State Machine (Waiting for action to begin)
-| MyQst     | 101   | 13    | Leo NPC State Machine (Flag 13 check)
-| MyQst     | 101   | 18    | Leo NPC State Machine (Flag 18 check)
-| MyQst     | 101   | 934   | Leo NPC State Machine (Move Start_t0000)
-| MyQst     | 101   | 935   | Leo NPC State Machine (Move in front of the enemy_t0000)
-| MyQst     | 101   | 936   | Leo NPC State Machine (936 Check)
-| MyQst     | 101   | 937   | Leo NPC State Machine (Flag 937 check)
-| MyQst     | 101   | 942   | Leo NPC State Machine (942 check_t0000)
-| MyQst     | 101   | 946   | Leo NPC State Machine (Battle_t0000)
-| MyQst     | 101   | 599   | Leo NPC State Machine (Flag 18 check)
-| MyQst     | 101   | 11    | Iris NPC State Machine (Leo's conversation waiting_t0000)
-| MyQst     | 101   | 19    | Iris NPC State Machine (Flag 19 check)
-| MyQst     | 101   | 935   | Iris NPC State Machine (Flag 935 check)
-| MyQst     | 101   | 937   | Iris NPC State Machine (Flag 937 check)
-| MyQst     | 101   | 936   | Iris NPC State Machine (Flag 936 check)
-| MyQst     | 101   | 942   | Iris NPC State Machine (Flag 942 check)
-| MyQst     | 101   | 598   | Iris NPC State Machine (Flag 598 check)
-| MyQst     | 101   | 599   | Iris NPC State Machine (18Check_t0000)
-| MyQst     | 101   | 1099  | Iris NPC State Machine (Waiting for conversation)
-
-##### A Servant's Pledge (q00000026)
-
-| Type      | Value | Comment                                                    |
-|:---------:|:-----:|:-----------------------------------------------------------|
-| QstLayout | 973   | Changes Pawn Dungeon Entrace to a Wall with no dungeon entrance.
-| QstLayout | 974   | Changes Pawn Dungeon Entrace to teleport player to correct map for quest.
-| QstLayout | 975   | Changes Pawn Dungeon Entrance to go to a different stage with shiny spots you can tocuh.
-| QstLayout | 898   | Spawns glowing point for quest that player needs to touch.
-
-> [!NOTE]
-> Setting both flag 973 and 974 caused the game to query for lost pawns. When you don't set both, it doesn't do this.
-
-##### The Dull Grey Arc (q00000005)
-
-| Type      | Value | Comment                                                    |
-|:---------:|:-----:|:-----------------------------------------------------------|
-| QstLayout | 907   | Dead knights in st0576                                     |
-| QstLayout | 911   | Blocks the boss area in st0576                             |
-| QstLayout | 976   | Spawns Fabio, Iris and Klaus in an injured state in st0576 |
-| QstLayout | 1226  | Spawns Fabio in the Audience Chamber close to Leo          |
-
-##### The Girl in the Forest (q00000006)
-
-| Type      | Value | Comment                                                    |
-|:---------:|:-----:|:-----------------------------------------------------------|
-| QstLayout | 912   | Spawns wall to block exits during boss fight
-| QstLayout | 977   | Spawns Gerd and the White Knights outside Glowworm Cave
-| QstLayout | 979   | Spawns Gerd and Mayleaf inside Glowworm Cave
-
-##### The House of Steam (q00000007)
-
-| Type      | Value | Comment                                                    |
-|:---------:|:-----:|:-----------------------------------------------------------|
-| QstLayout | 414   | Spawns Fabio in the hotsprings
-
-##### The Assailed Fort (q00000009)
-
-| Type      | Value | Comment                                                    |
-|:---------:|:-----:|:-----------------------------------------------------------|
-| QstLayout | 982   | Spawns Vanessa in the Audience Chamber
-| QstLayout | 1236  | Spawns Gerd in the Audience Chamber
-| QstLayout | 1305  | Spawns barricades outside gritten fort (prevents entrance)
-| QstLayout | 1306  | Spawns barricades outside gritten fort (prevents entrance)
-
-##### The Castle of Dusk (q00000010)
-
-| Type      | Value | Comment                                                    |
-|:---------:|:-----:|:-----------------------------------------------------------|
-| QstLayout | 1237  | Spawns Gerd in the Audience Chamber
-| QstLayout | 276   | Holy Grail (inside castle)
-| QstLayout | 1108  | Solider Corpse (inside castle)
-| QstLayout | 983   | Spawns WhiteKnights and Gerd (inside castle)
-| QstLayout | 1291  | Boss barrier?
-| QstLayout | 1308  | Spawns more WhiteKnights (hint NPC?) (inside castle)
-| QstLayout | 1315  | Boss Room Locked Wooden Door (for boss fight)
-| QstLayout | 913   | Boss Room Locked Gate (for boss fight)
-
-#### World Manage Quest
-
-##### q70000001
-
-| Type              | Value  | Comment
-|:-----------------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | 977    | Spawns Gerd and the White Knights outside 
-| WorldManageLayout | 1218   | Spawns Leo in the audience chamber
-| WorldManageLayout | 1219   | Spawns Iris in the audience chamber
-| WorldManageLayout | 1293   | Spawns The White Dragon in the audience chamber in the most injured state
-
-##### q70032001
-
-| Type              | Value  | Comment
-|:-----------------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | 7390   | Spawns The White Dragon in the audience chamber in the fully revived state
-
-### Events
-
-- [Lestania (stage0100)](quests/events/st0100.md)
-- [The Audience Chamber (stage0201)](quests/events/st0201.md)
