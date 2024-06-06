@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -26,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SEquipChangeCharacterEquipReq> packet)
         {
-            equipManager.HandleChangeEquipList(Server, client, client.Character, packet.Structure.ChangeCharacterEquipList, 0x24, StorageType.ItemBagEquipment, () => {
+            equipManager.HandleChangeEquipList(Server, client, client.Character, packet.Structure.ChangeCharacterEquipList, 0x24, new List<StorageType>() { StorageType.ItemBagEquipment }, () => {
                 client.Send(new S2CEquipChangeCharacterEquipRes()
                 {
                     CharacterEquipList = packet.Structure.ChangeCharacterEquipList
