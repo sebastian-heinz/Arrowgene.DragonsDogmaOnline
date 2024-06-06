@@ -43,7 +43,7 @@
                 "group_id": 0
             },
             "npc_id": "Henry",
-            "message_id": 218
+            "message_id": 10924
         },
         {
             "type": "TalkToNpc",
@@ -53,7 +53,7 @@
             },
             "announce_type": "Accept",
             "npc_id": "Vicelot",
-            "message_id": 887
+            "message_id": 10930
         },
         {
             "type": "CollectItem",
@@ -83,7 +83,7 @@
             "layout_flags_off": [1133],
             "announce_type": "Update",
             "npc_id": "Vicelot",
-            "message_id": 890
+            "message_id": 10931
         },
         {
             "type": "TalkToNpc",
@@ -93,7 +93,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Henry",
-            "message_id": 891
+            "message_id": 10927
         }
     ]
 }

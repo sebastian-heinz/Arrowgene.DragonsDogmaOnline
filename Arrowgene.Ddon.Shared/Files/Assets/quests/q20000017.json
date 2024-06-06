@@ -43,7 +43,7 @@
                 "group_id": 0
             },
             "npc_id": "Fabio0",
-            "message_id": 226
+            "message_id": 11373
         },
         {
             "type": "DeliverItems",
@@ -59,7 +59,7 @@
                     "amount": 2
                 }
             ],
-            "message_id": 962
+            "message_id": 11848
         },
         {
             "type": "DeliverItems",
@@ -75,7 +75,7 @@
                     "amount": 2
                 }
             ],
-            "message_id": 962
+            "message_id": 11849
         },
         {
             "type": "DeliverItems",
@@ -91,7 +91,7 @@
                     "amount": 2
                 }
             ],
-            "message_id": 962
+            "message_id": 11853
         }
     ]
 }

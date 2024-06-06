@@ -74,7 +74,7 @@
                 "group_id": 0
             },
             "npc_id": "Yuni",
-            "message_id": 30,
+            "message_id": 10782,
             "layout_flags_on": [992]
         },
         {
@@ -96,7 +96,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Yuni",
-            "message_id": 0
+            "message_id": 10785
         }
     ]
 }

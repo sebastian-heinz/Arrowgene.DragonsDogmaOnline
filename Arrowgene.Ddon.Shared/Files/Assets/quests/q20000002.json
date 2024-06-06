@@ -46,7 +46,7 @@
                         "group_id": 0
                     },
                     "npc_id": "WhiteKnight0",
-                    "message_id": 27,
+                    "message_id": 8629,
                     "layout_flags_on": [986]
                 },
                 {
@@ -62,7 +62,7 @@
                         "group_id": 0
                     },
                     "npc_id": "WhiteKnight0",
-                    "message_id": 27
+                    "message_id": 8633
                 }
             ]
         },
@@ -80,7 +80,7 @@
                         "group_id": 0
                     },
                     "npc_id": "Bob",
-                    "message_id": 27
+                    "message_id": 8630
                 },
                 {
                     "type": "MyQstFlags",
