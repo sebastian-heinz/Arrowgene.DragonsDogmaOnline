@@ -36,7 +36,7 @@ Each quest has some starting condition, either being ordered from an NPC or bein
 
 ## What works in the current implementation
 
-- Currently only world quests are activated.
+- Currently only [Season 1.0 MSQ](#season-10) and a limited number of [World Quests](#world-quests) are activated.
 - Quest rewards can be claimed from the reward box after completing a quest.
   - ![](images/reward-box.png)
 - New quests can be defined by updating or adding new files to [Arrowgene.Ddon.Shared/Files/Assets/quests](https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/tree/develop/Arrowgene.Ddon.Shared/Files/Assets/quests)
@@ -46,6 +46,9 @@ Each quest has some starting condition, either being ordered from an NPC or bein
 
 > [!WARNING]
 > In the quests `Boat's Buddy` and `Beach Bandits`, the nodes which appear to be used for the quest don't behave properly. You may need to reset the instance by going to WDT to get the group to spawn with quest monsters.
+
+> [!WARNING]
+> Quest progress is only saved when a quest is completed. If you do some intermediate steps, then disconnect or log out, you will need to repeat all steps from the start.
 
 > [!NOTE]
 > If a quest completes in a safe area, the party leader needs to exit the area and reenter to restart the quest.
@@ -2478,13 +2481,13 @@ KilledTargetEnemySetGroup1(NpcId npcId, int work02 = 0, int work03 = 0, int work
 
 ### Main Story Quests
 
-There exists an implementation of the following main story quests but they are currently disabled.
+There exists an implementation of the following main story quests.
 
 #### Season 1.0
 
 | Quest Name | Comment |
 |:----------:|:-------:|
-| [Resolutions and Omens](http://ddon.wikidot.com/mq:resolutionsandomens) | Issues related to NPC FSM, high level characters and logging in after creating character. Also transition from MSQ1 to MSQ2 leaves you with tutorial gear equipped.
+| [Resolutions and Omens](http://ddon.wikidot.com/mq:resolutionsandomens) | Some issues related to NPC FSM when transitioning between groups in the first area. Gear flickers for a moment after completing the quest.
 | [The Slumbering God](http://ddon.wikidot.com/mq:theslumberinggod) | Working Well.
 | [Envoy of Reconciliation](http://ddon.wikidot.com/mq:envoyofreconciliation) | Working Well.
 | [Soldiers of the Rift](https://ddonline.tumblr.com/post/126992462344/mq-soldier-of-the-rift) | Working Well.
@@ -2536,8 +2539,6 @@ There exists an implementation of the following main story quests but they are c
 |:---------:|:-----:|:-----:|:-----------------------------------------------------------
 | QstLayout | 101   | 284   | Spawns Iris and Leo
 | QstLayout | 423   | 1277  | Spawns Talcott, Cyrus, Iris and Leo
-
-
 | MyQst     | 101   | 4     | Leo NPC State Machine (Waiting for action to begin)
 | MyQst     | 101   | 13    | Leo NPC State Machine (Flag 13 check)
 | MyQst     | 101   | 18    | Leo NPC State Machine (Flag 18 check)
@@ -2548,7 +2549,6 @@ There exists an implementation of the following main story quests but they are c
 | MyQst     | 101   | 942   | Leo NPC State Machine (942 check_t0000)
 | MyQst     | 101   | 946   | Leo NPC State Machine (Battle_t0000)
 | MyQst     | 101   | 599   | Leo NPC State Machine (Flag 18 check)
-
 | MyQst     | 101   | 11    | Iris NPC State Machine (Leo's conversation waiting_t0000)
 | MyQst     | 101   | 19    | Iris NPC State Machine (Flag 19 check)
 | MyQst     | 101   | 935   | Iris NPC State Machine (Flag 935 check)
@@ -2635,4 +2635,5 @@ There exists an implementation of the following main story quests but they are c
 
 ### Events
 
-[The Audience Chamber (stage0201)](quests/events/st0201.md)
+- [Lestania (stage0100)](quests/events/st0100.md)
+- [The Audience Chamber (stage0201)](quests/events/st0201.md)
