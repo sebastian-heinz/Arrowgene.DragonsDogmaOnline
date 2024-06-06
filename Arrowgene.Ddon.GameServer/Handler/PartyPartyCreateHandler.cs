@@ -50,19 +50,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            // TODO: Fetch this from the party leader from the database
-            party.QuestState.AddNewQuest(QuestId.ResolutionsAndOmens);
-            // party.QuestState.AddNewQuest(QuestId.TheSlumberingGod);
-            // party.QuestState.AddNewQuest(QuestId.EnvoyOfReconcilliation);
-            // party.QuestState.AddNewQuest(QuestId.SolidersOfTheRift);
-            // party.QuestState.AddNewQuest(QuestId.AServantsPledge);
-            // party.QuestState.AddNewQuest(QuestId.TheCrimsonCrystal);
-            // party.QuestState.AddNewQuest(QuestId.TheDullGreyArk);
-            // party.QuestState.AddNewQuest(QuestId.TheGirlInTheForest);
-            // party.QuestState.AddNewQuest(QuestId.TheGoblinKing);
-            // party.QuestState.AddNewQuest(QuestId.TheHouseOfSteam);
-            // party.QuestState.AddNewQuest(QuestId.TheAssailedFort);
-            // party.QuestState.AddNewQuest(QuestId.TheCastleOfDusk);
+            QuestId questId = Server.Database.GetCurrentMsqId(client.Character.CommonId);
+            if (questId != QuestId.None)
+            {
+                party.QuestState.AddNewQuest(questId);
+            }
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;

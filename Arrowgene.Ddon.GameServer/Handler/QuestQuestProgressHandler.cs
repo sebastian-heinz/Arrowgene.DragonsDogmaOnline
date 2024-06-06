@@ -90,6 +90,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     // Remove the quest data from the party object
                     partyQuestState.CompleteQuest(questId);
 
+                    if (quest.QuestType == QuestType.Main)
+                    {
+                        var leaderCommonId = client.Party.Leader.Client.Character.CommonId;
+                        // TODO: Eventually handle all types of quests and for all members
+                        Server.Database.RemoveQuestProgress(leaderCommonId, quest.QuestType, quest.QuestId);
+                        if (quest.NextQuestId != QuestId.None)
+                        {
+                            var nextQuest = QuestManager.GetQuest(quest.NextQuestId);
+                            Server.Database.InsertQuestProgress(leaderCommonId, nextQuest.QuestId, nextQuest.QuestType, 0);
+                        }
+
+                        Server.Database.InsertIfNotExistCompletedQuest(leaderCommonId, quest.QuestId, quest.QuestType);
+                    }
+
                     if (quest.ResetPlayerAfterQuest)
                     {
                         foreach (var memberClient in client.Party.Clients)

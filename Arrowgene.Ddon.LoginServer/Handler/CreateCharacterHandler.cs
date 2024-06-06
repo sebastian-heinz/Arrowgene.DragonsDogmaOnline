@@ -12,6 +12,7 @@ using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -1159,6 +1160,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 Database.CreatePawn(pawn);
                 Database.InsertGainExtendParam(pawn.CommonId, ExtendParams);
+            }
+
+            // Insert the first main quest to start the chain
+            if (!Database.InsertQuestProgress(character.CommonId, QuestId.ResolutionsAndOmens, QuestType.Main, 0))
+            {
+                Logger.Error("Failed to seed first MSQ for player");
             }
 
             L2CCreateCharacterDataNtc ntc = new L2CCreateCharacterDataNtc();

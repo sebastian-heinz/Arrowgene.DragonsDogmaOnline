@@ -510,3 +510,18 @@ CREATE TABLE IF NOT EXISTS "ddon_reward_box" (
 	PRIMARY KEY("uniq_reward_id" AUTOINCREMENT),
 	CONSTRAINT "fk_ddon_reward_box_character_common_id" FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS "ddon_quest_progress" (
+	"character_common_id"	INTEGER NOT NULL,
+	"quest_type"	INTEGER NOT NULL,
+	"quest_id"	INTEGER NOT NULL,
+	"step"	INTEGER NOT NULL,
+	FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_completed_quests" (
+	"character_common_id"	INTEGER NOT NULL,
+	"quest_type"	INTEGER NOT NULL,
+	"quest_id"	INTEGER NOT NULL,
+    FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
+);

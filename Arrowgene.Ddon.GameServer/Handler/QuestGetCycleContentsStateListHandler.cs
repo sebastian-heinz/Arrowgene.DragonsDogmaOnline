@@ -35,27 +35,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CQuestJoinLobbyQuestInfoNtc pcap = serializer.Read(InGameDump.data_Dump_20A);
             client.Send(pcap);
 #else
-
             S2CQuestJoinLobbyQuestInfoNtc pcap = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>().Read(InGameDump.data_Dump_20A);
             S2CQuestJoinLobbyQuestInfoNtc ntc = new S2CQuestJoinLobbyQuestInfoNtc();
 
             ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList; // Recover paths + change vocation
 
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
-            ntc.MainQuestIdList = new List<CDataQuestId>()
+
+            var completedMsq = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Main);
+            foreach (var questId in completedMsq)
             {
-                new CDataQuestId() { QuestId = (uint) QuestId.ResolutionsAndOmens},
-                new CDataQuestId() { QuestId = (uint) QuestId.TheSlumberingGod},
-                new CDataQuestId() { QuestId = (uint) QuestId.EnvoyOfReconcilliation},
-                new CDataQuestId() { QuestId = (uint) QuestId.SolidersOfTheRift},
-                new CDataQuestId() { QuestId = (uint) QuestId.AServantsPledge},
-                new CDataQuestId() { QuestId = (uint) QuestId.TheCrimsonCrystal},
-                new CDataQuestId() { QuestId = (uint) QuestId.TheDullGreyArk},
-                new CDataQuestId() { QuestId = (uint) QuestId.TheGirlInTheForest},
-                new CDataQuestId() { QuestId = (uint) QuestId.TheGoblinKing},
-                new CDataQuestId() { QuestId = (uint) QuestId.TheHouseOfSteam},
-                new CDataQuestId() { QuestId = (uint) QuestId.TheAssailedFort},
-            };
+                ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) questId });
+            }
             // pcap.MainQuestIdList;
 
             client.Send(ntc);

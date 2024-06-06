@@ -185,5 +185,15 @@ namespace Arrowgene.Ddon.Database
         bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards);
         bool DeleteBoxRewardItem(uint commonId, uint uniqId);
         List<QuestBoxRewards> SelectBoxRewardItems(uint commonId);
+
+        // Completed Quests
+        List<QuestId> GetCompletedQuestsByType(uint characterCommonId, QuestType questType);
+        bool InsertIfNotExistCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType);
+
+        // Quest Progress
+        bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);
+        bool RemoveQuestProgress(uint characterCommonId, QuestType questType, QuestId questId);
+        QuestId GetCurrentMsqId(uint characterCommonId);
+        List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType);
     }
 }
