@@ -24,10 +24,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         };
 
         private readonly ItemManager _itemManager;
+        private readonly Random _random;
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = server.ItemManager;
+            _random = new Random();
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
@@ -69,12 +71,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint goldRequired = json_data.Cost;
             uint nextGrade = json_data.Unk0; // This might be Unk0 in the JSON but is probably in the DB or something.
             uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
-            uint addEquipPoint = 350;     
-            bool dogreatsucess = true;
+            uint addEquipPoint = 0;     
+            bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
 
+
+            if(dogreatsucess == true)
+            {
+                addEquipPoint = 500;
+            }
+            else
+            {
+                addEquipPoint = 200;
+            }
+            // TODO: Figure out why the bar always fills fully regardless of fed numbers? it wasn't doing this earlier on.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
-            // TODO: we need a dice roll to decide if greatsuccess is true or not. (also needs to add some amount of extra points if true.)
-            // TODO: we need to potentially track craft progress in the DB?
+            // TODO: we need to potentially track craft progress points in the DB?
             // TODO: You require atleast 2 pieces of the same gear to complete the Enhance cycle properly, or you don't get the info box after completing and can't
             // enhance it again to the next stage, though you can relog and it will allow you to.
 
@@ -126,12 +137,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 GradeUpItemUID = equipItemUID, // This seems to need tot be your current UID.
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
-                TotalEquipPoint = currentTotalEquipPoint + addEquipPoint, // Dummy math just to make the bar slide up (HMMM HAPPY CHEMICALS)
+                TotalEquipPoint = currentTotalEquipPoint,
+                AddEquipPoint = addEquipPoint,
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
                 Unk0 = true, // Unk0 being true says "Grade Up" when filling rather than "Grade Max", so we need to track when we hit max upgrade.
-                CurrentEquip = cei
+                CurrentEquip = cei // Dummy current equip data, need to get the real slot/type at somepoint.
             };
             client.Send(updateCharacterItemNtc);
             client.Send(res);
