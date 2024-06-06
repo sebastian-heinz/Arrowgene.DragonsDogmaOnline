@@ -19,10 +19,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCraftRecipeGetCraftGradeupRecipeReq> packet)
         {
             List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
-                // .Where(recipes => recipes.Category == packet.Structure.Category) // I think the game wants to do this? but it only returns Recipe 1 if we do this.
+                .Where(recipes => recipes.Category == packet.Structure.Category) // I think the game wants to do this? but it only returns Recipe 1 if we do this.
                 .SelectMany(recipes => recipes.RecipeList)
                 .Where(recipe => packet.Structure.ItemList.Any(itemId => itemId.Value == recipe.ItemID))
                 .ToList();
+
+            // To populate the UnknownItemList in Response with the current Itemlist, this seems to fix the infinite req/res spam soft lock.
+            List<CDataCommonU32> testlist = packet.Structure.ItemList;
                 
             var res = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
@@ -31,7 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Skip((int)packet.Structure.Offset)
                     .Take((int)packet.Structure.Num)
                     .ToList(),
-                IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count,
+                UnknownItemList = testlist, // Unknown why but populating this list fixes the infinite req/res spam, additionally the client is tracking upgrade progress.
+                IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
             };
             client.Send(res);
             }

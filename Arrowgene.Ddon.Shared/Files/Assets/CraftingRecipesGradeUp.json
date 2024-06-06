@@ -18,7 +18,10 @@
                         "IsSp": true
                     }
                 ]
-            },
+            }
+		],			
+		"Category": 2,
+        "RecipeList": [
 			{
 				"RecipeID": 2,
 				"ItemID": 73,

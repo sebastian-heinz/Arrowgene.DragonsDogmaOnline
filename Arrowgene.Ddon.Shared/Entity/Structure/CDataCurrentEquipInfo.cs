@@ -29,7 +29,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     obj.ItemUID = ReadMtString(buffer);
                     obj.EquipSlot = ReadEntity<CDataEquipSlot>(buffer);
                     return obj;
-                
             }
         }
     }
