@@ -37,12 +37,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Finding the Recipe we need based on the requested UID.
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID); 
-  
+
+
+            // TODO: Get the type & slot properly, hardcoded for quick testing.
             uint charid = client.Character.CharacterId;
             uint pawnid = packet.Structure.CraftMainPawnID;
+            byte equiptype = 1; 
+            ushort equipslot =  1;
+            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
+            {
+                Unk0 = charid,
+                Unk1 = pawnid,
+                Unk2 = equiptype,
+                Unk3 = equipslot,
+            };
+            CDataCurrentEquipInfo cei = new CDataCurrentEquipInfo()
+            {
+                ItemUID = equipItemUID,
+                EquipSlot = EquipmentSlot
+            };
 
-
-            // this ^ didn't seem to make any differences anywhere, possibly because our request packet isn't requested equipped gear.
 
             // Getting access to the GradeUpRecipe JSON data.
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -60,6 +74,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
             // TODO: we need a dice roll to decide if greatsuccess is true or not. (also needs to add some amount of extra points if true.)
+            // TODO: we need to potentially track craft progress in the DB?
+            // TODO: You require atleast 2 pieces of the same gear to complete the Enhance cycle properly, or you don't get the info box after completing and can't
+            // enhance it again to the next stage, though you can relog and it will allow you to.
 
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
@@ -93,22 +110,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // Substract Gold based on JSON cost.
-            // TODO: use WalletManager instead.
-            CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).Single();
-            wallet.Value = (uint)Math.Max(0, (int)wallet.Value - (int)goldRequired);
-            Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
-            updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
-            {
-                Type = WalletType.Gold,
-                AddPoint = (int)-goldRequired,
-                Value = wallet.Value
-            });
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             // Exchange upgraded items
             List<CDataItemUpdateResult> RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
             List<CDataItemUpdateResult> AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
             updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
             updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
+
+            // TODO: Check if the gear is equipped before Exchanging, if yes do it in the equipment instead.
 
             // Supplying the response packet with data
             var res = new S2CCraftStartEquipGradeUpRes()
@@ -120,6 +131,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
                 Unk0 = true, // Unk0 being true says "Grade Up" when filling rather than "Grade Max", so we need to track when we hit max upgrade.
+                CurrentEquip = cei
             };
             client.Send(updateCharacterItemNtc);
             client.Send(res);

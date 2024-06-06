@@ -18,12 +18,43 @@
                         "IsSp": true
                     }
                 ]
-            }
-		],			
-		"Category": 2,
-        "RecipeList": [
+            },
+            {
+                "RecipeID": 2,
+                "ItemID": 1674,
+				"Unk0": 3,
+                "GradeupItemID": 2697,
+                "Cost": 400,
+                "Exp": 12,
+				"Unk1": false,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
 			{
-				"RecipeID": 2,
+                "RecipeID": 3,
+                "ItemID": 63,
+				"Unk0": 2,
+                "GradeupItemID": 1675,
+                "Cost": 400,
+                "Exp": 12,
+				"Unk1": false,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 2,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+			{
+				"RecipeID": 4,
 				"ItemID": 73,
 				"Unk0": 2,
 				"GradeupItemID": 1685,
@@ -40,7 +71,7 @@
                 ]
             },
 			{
-                "RecipeID": 3,
+                "RecipeID": 5,
                 "ItemID": 942,
 				"Unk0": 2,
                 "GradeupItemID": 2554,
@@ -57,7 +88,7 @@
                 ]
             },
 			{
-                "RecipeID": 4,
+                "RecipeID": 6,
                 "ItemID": 490,
 				"Unk0": 2,
                 "GradeupItemID": 2102,
@@ -74,7 +105,7 @@
                 ]
             },
 			{
-                "RecipeID": 5,
+                "RecipeID": 7,
                 "ItemID": 497,
 				"Unk0": 2,
                 "GradeupItemID": 2109,
@@ -91,7 +122,7 @@
                 ]
             },
 			{
-                "RecipeID": 6,
+                "RecipeID": 8,
                 "ItemID": 493,
 				"Unk0": 2,
                 "GradeupItemID": 2105,
@@ -108,7 +139,7 @@
                 ]
             },
 			{
-                "RecipeID": 7,
+                "RecipeID": 9,
                 "ItemID": 499,
 				"Unk0": 2,
                 "GradeupItemID": 2111,
@@ -125,7 +156,7 @@
                 ]
             },
 			{
-                "RecipeID": 8,
+                "RecipeID": 10,
                 "ItemID": 505,
 				"Unk0": 2,
                 "GradeupItemID": 2117,
@@ -142,7 +173,7 @@
                 ]
             },
 			{
-                "RecipeID": 9,
+                "RecipeID": 11,
                 "ItemID": 8793,
 				"Unk0": 2,
                 "GradeupItemID": 8794,

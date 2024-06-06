@@ -19,7 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCraftRecipeGetCraftGradeupRecipeReq> packet)
         {
             List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
-                .Where(recipes => recipes.Category == packet.Structure.Category) // I think the game wants to do this? but it only returns Recipe 1 if we do this.
+                //.Where(recipes => recipes.Category == packet.Structure.Category)
+                // TODO: Figure out why trying to filter by Category ^ doesn't work, it doesn't populate anything below the highest Category Number,
+                // and even that list doesn't fully populate correctly.
                 .SelectMany(recipes => recipes.RecipeList)
                 .Where(recipe => packet.Structure.ItemList.Any(itemId => itemId.Value == recipe.ItemID))
                 .ToList();
