@@ -77,7 +77,7 @@
                 {"type": "WorldManageLayout", "action": "Clear", "value": 1262, "quest_id": 70000001, "comment": "Pawn Dungeon Entrance (back)"}
             ],
             "npc_id": "Alvar",
-            "message_id": 26
+            "message_id": 10904
         },
         {
             "type": "CollectItem",
@@ -105,7 +105,7 @@
                 {"type": "QstLayout", "action": "Set", "value": 974, "comment": "Pawn Dungeon Entrance (Quest)"}
             ],
             "npc_id": "Alvar",
-            "message_id": 1064
+            "message_id": 10909
         },
         {
             "type": "TalkToNpc",
@@ -115,7 +115,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Mysial0",
-            "message_id": 1065
+            "message_id": 10915
         },
         {
             "type": "Raw",

@@ -81,7 +81,7 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
             ],
             "npc_id": "Leo0",
-            "message_id": 27
+            "message_id": 10938
         },
         {
             "type": "TalkToNpc",
@@ -91,7 +91,7 @@
             },
             "announce_type": "Accept",
             "npc_id": "Gilstan",
-            "message_id": 1066
+            "message_id": 10951
         },
         {
             "type": "KillGroup",
@@ -106,7 +106,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Gilstan",
-            "message_id": 1068
+            "message_id": 10953
         },
         {
             "type": "TalkToNpc",
@@ -116,7 +116,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Leo0",
-            "message_id": 1069
+            "message_id": 10960
         }
     ]
 }

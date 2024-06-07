@@ -81,7 +81,7 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
             ],
             "npc_id": "Leo0",
-            "message_id": 10
+            "message_id": 7840
         },
         {
             "type": "TalkToNpc",
@@ -94,7 +94,7 @@
                 "group_id": 1
             },
             "npc_id": "Klaus0",
-            "message_id": 987
+            "message_id": 7845
         },
         {
             "type": "TalkToNpc",
@@ -104,7 +104,7 @@
                 "group_id": 1
             },
             "npc_id": "Leo0",
-            "message_id": 1197
+            "message_id": 7847
         },
         {
             "type": "PartyGather",
@@ -188,7 +188,7 @@
                 "group_id": 1
             },
             "npc_id": "Mysial0",
-            "message_id": 991
+            "message_id": 7863
         }
     ]
 }

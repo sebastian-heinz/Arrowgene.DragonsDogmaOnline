@@ -96,7 +96,7 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
             ],
             "npc_id": "Joseph",
-            "message_id": 6
+            "message_id": 7603
         },
         {
             "type": "PartyGather",
@@ -167,7 +167,7 @@
                 {"type": "QstLayout", "action": "Set", "value": 979, "comment": "Spawns Gerd1, Mayleaf0"}
             ],
             "npc_id": "Mayleaf0",
-            "message_id": 970
+            "message_id": 10934
         },
         {
             "type": "PartyGather",
@@ -196,7 +196,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Joseph",
-            "message_id": 972
+            "message_id": 7615
         }
     ]
 }

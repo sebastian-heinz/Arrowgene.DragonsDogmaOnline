@@ -63,7 +63,7 @@
                 "group_id": 1
             },
             "npc_id": "Iris",
-            "message_id": 5
+            "message_id": 0
         },
         {
             "type": "Raw",
@@ -82,7 +82,7 @@
             },
             "announce_type": "Accept",
             "npc_id": "Alfred",
-            "message_id": 964
+            "message_id": 7537
         },
         {
             "type": "raw",
@@ -108,7 +108,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Thomason",
-            "message_id": 1539
+            "message_id": 14773
         },
         {
             "type": "Raw",
@@ -126,7 +126,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Alvar",
-            "message_id": 1537
+            "message_id": 7539
         }
     ]
 }

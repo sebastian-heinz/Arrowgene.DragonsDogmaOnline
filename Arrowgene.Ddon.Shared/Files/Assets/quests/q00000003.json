@@ -114,7 +114,7 @@
                 "group_id": 1
             },
             "npc_id": "Leo0",
-            "message_id": 962
+            "message_id": 0
         },
         {
             "type": "Raw",
@@ -157,7 +157,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Alfred",
-            "message_id": 957
+            "message_id": 10873
         },
         {
             "type": "Raw",
@@ -186,7 +186,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Alfred",
-            "message_id": 960
+            "message_id": 10875
         },
         {
             "type": "PartyGather",
@@ -220,7 +220,7 @@
             ],
             "announce_type": "Update",
             "npc_id": "Leo0",
-            "message_id": 962
+            "message_id": 11019
         }
     ]
 }

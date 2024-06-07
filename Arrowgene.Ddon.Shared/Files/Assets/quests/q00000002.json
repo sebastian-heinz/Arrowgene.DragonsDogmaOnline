@@ -81,7 +81,7 @@
                 "group_id": 1
             },
             "npc_id": "Leo0",
-            "message_id": 954
+            "message_id": 0
         },
         {
             "type": "Raw",
@@ -100,7 +100,7 @@
                 "group_id": 1
             },
             "npc_id": "Leo0",
-            "message_id": 955
+            "message_id": 7454
         },
         {
             "type": "TalkToNpc",
@@ -109,7 +109,7 @@
                 "group_id": 1
             },
             "npc_id": "Mysial0",
-            "message_id": 955
+            "message_id": 7456
         },
         {
             "type": "TalkToNpc",
@@ -119,7 +119,7 @@
             },
             "announce_type": "Update",
             "npc_id": "TheWhiteDragon",
-            "message_id": 1494
+            "message_id": 0
         },
         {
             "type": "Raw",

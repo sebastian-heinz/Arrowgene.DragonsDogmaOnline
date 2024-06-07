@@ -87,7 +87,7 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
             ],
             "npc_id": "Leo0",
-            "message_id": 25
+            "message_id": 10853
         },
         {
             "type": "PartyGather",
@@ -130,7 +130,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Vanessa0",
-            "message_id": 1061
+            "message_id": 10848
         },
         {
             "type": "TalkToNpc",
@@ -140,7 +140,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Leo0",
-            "message_id": 1062
+            "message_id": 10850
         },
         {
             "type": "TalkToNpc",
@@ -150,7 +150,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Mysial0",
-            "message_id": 1245
+            "message_id": 10851
         },
         {
             "type": "raw",

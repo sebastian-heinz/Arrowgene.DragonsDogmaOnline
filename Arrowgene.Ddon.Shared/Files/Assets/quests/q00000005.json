@@ -94,7 +94,7 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
             ],
             "npc_id": "Leo0",
-            "message_id": 1
+            "message_id": 0
         },
         {
             "type": "Raw",
