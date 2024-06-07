@@ -129,7 +129,7 @@ After doing this for all three items, you should find
 
 In this particular quest, this is all the information we need. Let's use it to construct the quest JSON object parsed by the server.
 
-### Populating the common information
+#### Populating the common information
 
 First let's create a new file under `Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\quests` called `q20005010.json`. The name of this file should reflect the quest id used by the client.
 
@@ -169,7 +169,7 @@ First fill in the common items using the values we collected from the wiki. Ques
 }
 ```
 
-### Adding Rewards
+#### Adding Rewards
 
 Next we can define the rewards. The rewards have a variable format depending on the `type` field.
 
@@ -222,7 +222,7 @@ Putting this all together, we will get a reward list which looks like
 
 This should be added into the `rewards` array in the parent object.
 
-### Defining enemy groups
+#### Defining enemy groups
 
 A group of enemies may be referenced in multiple rules. To reduce repetition, all enememy groups are defined one time in the `enemy_groups` category. They they are referenced by their 0 based index in this array. For each group, we need to provide location information about where to find these enemies. Recall the stage ID value `(1, 0, 26, 0)` we recorded from DDon-tools. The `stage_id` parser only provides the `id` and `group_id` by default. Other values can be optionally provided. There is an optional comment which can be provided to help remember what this group is for.
 
@@ -270,7 +270,7 @@ It is also possible to define the other attributes of the enemy seen in DDOn-Too
 > More enemies can be defined in the `enemies` array. Also more groups can be defined in the `enemy_groups` array.
 
 
-### Defining the quest blocks
+#### Defining the quest blocks
 
 This quest is a simple quest so we will opt for a shorthand syntax where we just define a list of blocks. This list describes all the steps required to start and complete the quest. As mentioned earlier in the document, there are many types of `block` elements. There are blocks which are generally used to start a quest. Usually `DiscoverEnemy` or `NpcTalkAndOrder`. Then some variable amount of intermediate steps are provided. Finally there is the end block type which is implicitly added by the generic quest state machine and doesn't need to be provided in the quest json.
 
@@ -373,6 +373,22 @@ Finally, your file should look like below. Save the file, reload the server and 
     ]
 }
 ```
+
+### Taking a look at: "The Woes of A Merchant" delivery quest
+
+For this example, we will review a simple delivery quest which has NPC dialouge. This should teach you how to find the correct message id to use when chatting with an NPC.
+
+First let's find the quest file [q20000001](https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/blob/develop/Arrowgene.Ddon.Shared/Files/Assets/quests/q20000001.json) in the the sever respository. Next, head to the [DDON-translation](https://github.com/Sapphiratelaemara/DDON-translation) repository and locate the `@titles.txt` file under [DDON-Translation-TOML/ui/00_message/quest_info/](https://github.com/Sapphiratelaemara/DDON-translation/blob/main/DDON-Translation-TOML/ui/00_message/quest_info/%40titles.txt). Search for the Japanese name of the quest in the `@titles.txt` file, in our case it is "ある行商人の悩み". Use the Japanese quest name to search for gameplay videos of the quest. Use `DDON` before every search -- something like "DDON ある行商人の悩み". In the [ddon-data](https://github.com/ddon-research/ddon-data) respository, navigate to the quest directory `/client/03040008/quest/q20000001/ui/00_message/quest` and open the [gmd](https://github.com/ddon-research/ddon-data/blob/main/client/03040008/quest/q20000001/ui/00_message/quest/q20000001.gmd.json) and [mss](https://github.com/ddon-research/ddon-data/blob/main/client/03040008/quest/q20000001/ui/00_message/quest/q20000001.mss.json) files.
+
+Let's go back to the gameplay video. Be careful when watching it, because there's a catch, there's basic npc dialog and quest npc dialog. The quest dialog only starts to happen after you accept the quest, so no need to pay attention to any dialog before the quest UI. After the quest is accepted the quest dialog will start to happen immediately. Pay attention to two things -- the number of dialogs displayed for each interaction and the kanji characters order. For this quest, after accepting it, four dialogs are displayed, so we know we will use a `GroupSerial` that contains four `MsgSerial` IDs in it.
+
+Open the `q20000001.gmd` file and see if the kanji matches with the video. It is important to check because sometimes, there's multiple of the same messages with nuanced text. The `GroupSerial` for the first interaction with the NPCs will not always be at the top. For this message the correct messages are the first four in the gmd. Make notes of their GmdIndex value. They are `0`, `1`, `2` and `3` in this case.
+
+Go to the file `q20000001.json` and search for the `Peddler` NPC. The quest rule should have a `message_id` associated with it. Open the [NpcId.cs](https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline/blob/develop/Arrowgene.Ddon.Shared/Model/NpcId.cs) in the server repository and check the NpcId for Peddler -- it is `509` in this case. Open the file `q20000001.mss.json` and search for the `GroupSerial` with `MsgSerial` containing GmdIndex `0`, `1`, `2` and `3`. In this case, it is the first one, `"GroupSerial" : 10734`. Make sure that `GroupSerial` belongs to Peddler which is NpcId `509`. Go back to the file `q20000001.json` and change the first `message_id` for Peddler to the `GroupSerial` corresponding to his four dialogs, which is `10734` in this case.
+
+By analyzing the file `q20000001.json` we know that there's only one other `message_id` left. This is likely the dialog before completing the quest. Fast forward the video and repeat the previous steps for the new dialouge. As before, check for the number of dialogs and their corresponding kanji. Go to the file `q20000001.gmd` and compare the kanji with the ones in the video. You should find that the dialouge corresponds to `"MessageIndex" : 12`. Go back to the file `q20000001.mss.json` and remember to always check the NpcId. In this quest we only talk with one npc, but there's more complex quests than this one. Find the `GroupSerial` which has `"MessageIndex" : 12`. In this case it is `"GroupSerial" : 10737`. Go back to `q20000001.json` and change Peddler's last `message_id` to `10737`.
+
+That is it, but remember, the correct messages for the first `message_id` isn't always the first one, so it is important to double check the kanji with the video. The quest dialog only starts after accepting the quest. Some quests start the dialog immediately, others require a conversation with the npc to advance to the next step. Sometimes the NPC will display a generic dialog and only displays his quest dialog after the player selects the quest in the npc dialog menu to advance the quest. Remember to always check the NpcId in quests with multiple npcs so you don't mix their dialogs.
 
 ## Block Types
 
