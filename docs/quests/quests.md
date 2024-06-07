@@ -84,3 +84,16 @@ There exists an implementation of the following main story quests.
 | [Dispatch A Clamor of Harpies](http://ddon.wikidot.com/wq:dispatchaclamorofharpies)
 | [Boats Buddy](http://ddon.wikidot.com/wq:boatsbuddy) | Nodes used to spawn monsters appear to not always work as expected.
 | [Beach Bandits](http://ddon.wikidot.com/wq:beachbandits) | Nodes used to spawn monsters appear to not always work as expected.
+
+
+## Appendix
+
+### Quests Required before party play is allowed
+
+- 覚悟と兆し Resolutions and Omens
+- 横たわる神 The Slumbering God
+- 覚者の甲斐性 The Arisen's Abilities (q60000012)
+- 和解の使者 Envoy of Reconcilliation
+- 異界の戦士 Soliders of the Rift
+- しもべの契り A Servants Pledge
+- 確かな情報源 Reliable Source of Information (q60000014)

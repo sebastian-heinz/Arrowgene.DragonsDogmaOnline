@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public bool Discoverable { get; set; }
         public List<QuestRewardItem> RewardItems;
         public List<QuestRewardCurrency> RewardCurrency;
+        public List<QuestOrderCondition> OrderConditions;
         public bool ResetPlayerAfterQuest { get; set; }
         public List<QuestLayoutFlag> QuestLayoutFlags { get; set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
@@ -42,6 +43,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
+            OrderConditions = new List<QuestOrderCondition>();
         }
     }
 }

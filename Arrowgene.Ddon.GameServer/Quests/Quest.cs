@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public ushort MinimumItemRank { get; set; }
         public QuestId NextQuestId {  get; protected set; }
         public bool ResetPlayerAfterQuest { get; protected set; }
-
+        public List<QuestOrderCondition> OrderConditions {  get; protected set; }
         public QuestRewardParams RewardParams { get; protected set; }
         public List<CDataWalletPoint> WalletRewards { get; protected set; }
         public List<CDataQuestExp> ExpRewards { get; protected set; }
@@ -73,6 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestScheduleId = questScheduleId;
             IsDiscoverable = isDiscoverable;
 
+            OrderConditions = new List<QuestOrderCondition>();
             RewardParams = new QuestRewardParams();
             WalletRewards = new List<CDataWalletPoint>();
             ExpRewards = new List<CDataQuestExp>();
@@ -100,6 +101,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 BaseWalletPoints = WalletRewards,
                 FixedRewardItemList = GetQuestFixedRewards(),
                 FixedRewardSelectItemList = GetQuestSelectableRewards(),
+                QuestOrderConditionParamList = GetQuestOrderConditions(),
             };
 
             foreach (var questLayoutFlag in QuestLayoutFlags)
@@ -129,7 +131,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 BaseWalletPoints = WalletRewards,
                 FixedRewardItem = GetQuestFixedRewards(),
                 FixedRewardSelectItem = GetQuestSelectableRewards(),
-            };
+                QuestOrderConditionParam = GetQuestOrderConditions(),
+           };
 
             foreach (var questLayoutFlag in QuestLayoutFlags)
             {
@@ -295,6 +298,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
 
             return rewards;
+        }
+
+        public List<CDataQuestOrderConditionParam> GetQuestOrderConditions()
+        {
+            List<CDataQuestOrderConditionParam> orderConditions = new List<CDataQuestOrderConditionParam>();
+
+            foreach (var orderCondition in OrderConditions)
+            {
+                orderConditions.Add(orderCondition.ToCDataQuestOrderConditionParam());
+            }
+
+            return orderConditions;
         }
 
         public bool HasRewards()

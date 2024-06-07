@@ -10,6 +10,7 @@ using System;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using YamlDotNet.Core.Tokens;
 using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -116,6 +117,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
 
             ParseRewards(assetData, jQuest);
+            
+            if (!ParseOrderCondition(assetData, jQuest))
+            {
+                return false;
+            }
 
             if (!ParseEnemyGroups(assetData, jQuest))
             {
@@ -156,6 +162,42 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     assetData.Processes.Add(questProcess);
                     ProcessNo += 1;
                 }
+            }
+
+            return true;
+        }
+
+        private bool ParseOrderCondition(QuestAssetData assetData, JsonElement quest)
+        {
+            if (!quest.TryGetProperty("order_conditions", out JsonElement jOrderConditions))
+            {
+                return true;
+            }
+
+            foreach (var condition in jOrderConditions.EnumerateArray())
+            {
+                if (!Enum.TryParse(condition.GetProperty("type").GetString(), true, out QuestOrderConditionType orderConditionType))
+                {
+                    Logger.Error($"Unable to parse order condition type for '{assetData.QuestId}'. Skipping.");
+                    return false;
+                }
+
+                QuestOrderCondition questOrderCondition = new QuestOrderCondition()
+                {
+                    Type = orderConditionType
+                };
+
+                if (condition.TryGetProperty("Param1", out JsonElement jParam1))
+                {
+                    questOrderCondition.Param01 = jParam1.GetInt32();
+                }
+
+                if (condition.TryGetProperty("Param2", out JsonElement jParam2))
+                {
+                    questOrderCondition.Param02 = jParam2.GetInt32();
+                }
+
+                assetData.OrderConditions.Add(questOrderCondition);
             }
 
             return true;

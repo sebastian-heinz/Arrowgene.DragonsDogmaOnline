@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.Processes = questAsset.Processes;
             quest.EnemyGroups = questAsset.EnemyGroups;
             quest.ResetPlayerAfterQuest = questAsset.ResetPlayerAfterQuest;
+            quest.OrderConditions = questAsset.OrderConditions;
 
             quest.ExpRewards.Add(new CDataQuestExp()
             {
