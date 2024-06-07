@@ -77,11 +77,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if(dogreatsucess == true)
             {
-                addEquipPoint = 500;
+                currentTotalEquipPoint = 500;
             }
             else
             {
-                addEquipPoint = 200;
+                currentTotalEquipPoint = 200;
             }
             // TODO: Figure out why the bar always fills fully regardless of fed numbers? it wasn't doing this earlier on.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
@@ -114,6 +114,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
 
+            // Made a list of all bronzesword IDs 
+            uint firstid = 62;
+            uint secondid = 1674;
+            uint thirdid = 2697;
+            uint fourthid = 3720;
+            uint fifthid = 4743;
+            List<CDataCommonU32> dummygradeuplist = new List<CDataCommonU32>()
+            {
+                new CDataCommonU32(firstid),
+                new CDataCommonU32(secondid),
+                new CDataCommonU32(thirdid),
+                new CDataCommonU32(fourthid),
+                new CDataCommonU32(fifthid)
+            };
+
+
             // Subtract less Gold if supportpawn is used.
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
             {
@@ -135,8 +151,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Supplying the response packet with data
             var res = new S2CCraftStartEquipGradeUpRes()
             {
-                GradeUpItemUID = equipItemUID, // This seems to need tot be your current UID.
+                GradeUpItemUID = AddItemResult[0].ItemList.ItemUId, // Setting this to equipItemUID makes the results info box be accurate, but setting it to this stops upgrading multiple pieces.
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
+                //GradeUpItemIDList = dummygradeuplist, // This list is most likely inbetween the before & after IDs, due to points being broken it will always fill to max of what we give.
                 TotalEquipPoint = currentTotalEquipPoint,
                 AddEquipPoint = addEquipPoint,
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
@@ -145,8 +162,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk0 = true, // Unk0 being true says "Grade Up" when filling rather than "Grade Max", so we need to track when we hit max upgrade.
                 CurrentEquip = cei // Dummy current equip data, need to get the real slot/type at somepoint.
             };
-            client.Send(updateCharacterItemNtc);
             client.Send(res);
+            client.Send(updateCharacterItemNtc);
         }
     }
 }
