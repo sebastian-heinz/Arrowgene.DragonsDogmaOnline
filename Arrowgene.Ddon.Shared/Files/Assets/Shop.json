@@ -14808,5 +14808,95 @@
                 }
             ]
         }
+    },
+    {
+        "ShopId": 231,
+        "Data": {
+            "Unk0": 0,
+            "Unk1": 0,
+            "WalletType": 1,
+            "GoodsParamList": [
+                {
+                    "Index": 0,
+                    "ItemId": 507,
+                    "Price": 3000,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 1,
+                    "ItemId": 5188,
+                    "Price": 3900,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 2,
+                    "ItemId": 995,
+                    "Price": 12000,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 3,
+                    "ItemId": 5676,
+                    "Price": 15600,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 4,
+                    "ItemId": 8708,
+                    "Price": 8000,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 5,
+                    "ItemId": 8712,
+                    "Price": 10400,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 6,
+                    "ItemId": 8723,
+                    "Price": 17000,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 7,
+                    "ItemId": 8727,
+                    "Price": 22100,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                }
+            ]
+        }
     }
 ]
