@@ -67,11 +67,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ushort updateType, List<StorageType> storageTypes, Action sendResponse)
+        public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, Action sendResponse)
         {
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new()
             {
-                UpdateType = updateType
+                UpdateType = (ushort) updateType
             };
 
             foreach (CDataCharacterEquipInfo changeCharacterEquipInfo in changeCharacterEquipList)

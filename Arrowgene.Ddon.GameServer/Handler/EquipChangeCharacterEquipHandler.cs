@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SEquipChangeCharacterEquipReq> packet)
         {
-            equipManager.HandleChangeEquipList(Server, client, client.Character, packet.Structure.ChangeCharacterEquipList, 0x24, new List<StorageType>() { StorageType.ItemBagEquipment }, () => {
+            equipManager.HandleChangeEquipList(Server, client, client.Character, packet.Structure.ChangeCharacterEquipList, ItemNoticeType.ChangeEquip, new List<StorageType>() { StorageType.ItemBagEquipment }, () => {
                 client.Send(new S2CEquipChangeCharacterEquipRes()
                 {
                     CharacterEquipList = packet.Structure.ChangeCharacterEquipList
