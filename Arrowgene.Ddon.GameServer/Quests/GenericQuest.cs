@@ -328,20 +328,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             case QuestType.Main:
                                 checkCommands.Add(QuestManager.CheckCommand.IsMainQuestOrder((int)questBlock.QuestOrderDetails.QuestId));
                                 break;
-                            case QuestType.World:
-                                checkCommands.Add(QuestManager.CheckCommand.IsOrderWorldQuest((int)questBlock.QuestOrderDetails.QuestId));
-                                break;
-                            case QuestType.PersonalQuest:
+                            case QuestType.Light:
+                                // case QuestType.World:
                                 checkCommands.Add(QuestManager.CheckCommand.IsOrderLightQuest((int)questBlock.QuestOrderDetails.QuestId));
                                 break;
-                            case QuestType.PawnExpedition:
-                            case QuestType.PartnerPawnPersonalQuests:
-                                // TODO: Needs different arguments
-                                // questCommand = QuestManager.CheckCommand.IsOrderPawnQuest((int)questBlock.QuestOrderDetails.QuestId);
+                            case QuestType.WorldSetting:
+                                checkCommands.Add(QuestManager.CheckCommand.IsOrderWorldQuest((int)questBlock.QuestOrderDetails.QuestId));
                                 break;
-                            case QuestType.Board:
-                            case QuestType.Hidden:
-                            case QuestType.ExtremeMissions:
+                            case QuestType.Pawn:
+                                // checkCommands.Add(QuestManager.CheckCommand.IsOrderPawnQuest())
                                 break;
                         }
                     }
