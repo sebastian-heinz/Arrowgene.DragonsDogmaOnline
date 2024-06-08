@@ -17,8 +17,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GenericQuest));
 
-        private List<QuestProcess> Processes;
-
         public static GenericQuest FromAsset(QuestAssetData questAsset)
         {
             var quest = new GenericQuest(questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
@@ -57,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         quest.ItemRewards.Add(rewardItem);
                         break;
                     case QuestRewardType.Select:
-                        quest.SelectedableItemRewards.Add(rewardItem);
+                        quest.SelectableRewards.Add(rewardItem);
                         break;
                 }
             }
@@ -98,7 +96,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public GenericQuest(QuestId questId, QuestId questScheduleId, QuestType questType, bool discoverable) : base(questId, questScheduleId, questType, discoverable)
         {
-            Processes = new List<QuestProcess>();
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }
 
@@ -193,36 +190,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public override CDataQuestList ToCDataQuestList()
-        {
-            var quest = base.ToCDataQuestList();
-
-            foreach (var process in Processes)
-            {
-                if (process.Blocks.Count > 0)
-                {
-                    quest.QuestProcessStateList.Add(process.Blocks[0].QuestProcessState);
-                }
-            }
-
-            return quest;
-        }
-
-        public override CDataQuestOrderList ToCDataQuestOrderList()
-        {
-            var quest = base.ToCDataQuestOrderList();
-
-            foreach (var process in Processes)
-            {
-                if (process.Blocks.Count > 0)
-                {
-                    quest.QuestProcessStateList.Add(process.Blocks[0].QuestProcessState);
-                }
-            }
-
-            return quest;
-        }
-
         public override List<CDataQuestProcessState> StateMachineExecute(GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
         {
             if (processState.ProcessNo >= Processes.Count)
@@ -242,6 +209,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
             if (processState.ProcessNo == 0 && questBlock.SequenceNo == 1)
             {
                 questProgressState = QuestProgressState.Complete;
+            }
+            else if (questBlock.IsCheckpoint)
+            {
+                questProgressState = QuestProgressState.Checkpoint;
             }
             else
             {
@@ -271,11 +242,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
             List<CDataQuestCommand> resultCommands = new List<CDataQuestCommand>();
             List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
 
-            ParseQuestFlags(questBlock, resultCommands, checkCommands);
+            ParseQuestFlags(questBlock.QuestFlags, resultCommands, checkCommands);
 
             if (questBlock.ShouldStageJump)
             {
                 resultCommands.Add(QuestManager.ResultCommand.StageJump(StageManager.ConvertIdToStageNo(questBlock.StageId), 0));
+            }
+
+            if (questBlock.QuestCameraEvent.HasCameraEvent)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.PlayCameraEvent(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.QuestCameraEvent.EventNo));
             }
 
             if (questBlock.SequenceNo != 1)
@@ -418,80 +394,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
 
             return result;
-        }
-
-        private static void ParseQuestFlags(QuestBlock questBlock, List<CDataQuestCommand> resultFlags, List<CDataQuestCommand> checkFlags)
-        {
-            foreach (var questFlag in questBlock.QuestFlags)
-            {
-                switch (questFlag.Type)
-                {
-                    case QuestFlagType.QstLayout:
-                        switch (questFlag.Action)
-                        {
-                            case QuestFlagAction.Set:
-                                resultFlags.Add(QuestManager.ResultCommand.QstLayoutFlagOn(questFlag.Value));
-                                break;
-                            case QuestFlagAction.Clear:
-                                resultFlags.Add(QuestManager.ResultCommand.QstLayoutFlagOff(questFlag.Value));
-                                break;
-                            case QuestFlagAction.CheckOn:
-                            case QuestFlagAction.CheckOff:
-                                /* Invalid for Layout flags */
-                                return;
-                        }
-                        break;
-                    case QuestFlagType.WorldManageLayout:
-                        switch (questFlag.Action)
-                        {
-                            case QuestFlagAction.Set:
-                                resultFlags.Add(QuestManager.ResultCommand.WorldManageLayoutFlagOn(questFlag.Value, questFlag.QuestId));
-                                break;
-                            case QuestFlagAction.Clear:
-                                resultFlags.Add(QuestManager.ResultCommand.WorldManageLayoutFlagOff(questFlag.Value, questFlag.QuestId));
-                                break;
-                            case QuestFlagAction.CheckOn:
-                            case QuestFlagAction.CheckOff:
-                                /* Invalid for Layout flags */
-                                return;
-                        }
-                        break;
-                    case QuestFlagType.MyQst:
-                        switch (questFlag.Action)
-                        {
-                            case QuestFlagAction.Set:
-                                resultFlags.Add(QuestManager.ResultCommand.MyQstFlagOn(questFlag.Value));
-                                break;
-                            case QuestFlagAction.Clear:
-                                resultFlags.Add(QuestManager.ResultCommand.MyQstFlagOff(questFlag.Value));
-                                break;
-                            case QuestFlagAction.CheckOn:
-                                checkFlags.Add(QuestManager.CheckCommand.MyQstFlagOn(questFlag.Value));
-                                break;
-                            case QuestFlagAction.CheckOff:
-                                checkFlags.Add(QuestManager.CheckCommand.MyQstFlagOff(questFlag.Value));
-                                break;
-                        }
-                        break;
-                    case QuestFlagType.WorldManageQuest:
-                        switch (questFlag.Action)
-                        {
-                            case QuestFlagAction.Set:
-                                resultFlags.Add(QuestManager.ResultCommand.WorldManageQuestFlagOn(questFlag.Value, questFlag.QuestId));
-                                break;
-                            case QuestFlagAction.Clear:
-                                resultFlags.Add(QuestManager.ResultCommand.WorldManageQuestFlagOff(questFlag.Value, questFlag.QuestId));
-                                break;
-                            case QuestFlagAction.CheckOn:
-                                checkFlags.Add(QuestManager.CheckCommand.WorldManageQuestFlagOn(questFlag.Value, questFlag.QuestId));
-                                break;
-                            case QuestFlagAction.CheckOff:
-                                checkFlags.Add(QuestManager.CheckCommand.WorldManageQuestFlagOn(questFlag.Value, questFlag.QuestId));
-                                break;
-                        }
-                        break;
-                }
-            }
         }
     }
 }

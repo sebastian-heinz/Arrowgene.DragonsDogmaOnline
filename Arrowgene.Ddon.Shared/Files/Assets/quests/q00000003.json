@@ -118,6 +118,7 @@
         },
         {
             "type": "Raw",
+            "announce_type": "Accept",
             "flags": [
                 {"type": "QstLayout", "action": "Set", "value": 972, "comment": "Spawns Heinz and Gerd in Tel"}
             ],
@@ -130,7 +131,7 @@
         },
         {
             "type": "PartyGather",
-            "announce_type": "Accept",
+            "checkpoint": true,
             "stage_id": {
                 "id": 1
             },
@@ -142,6 +143,7 @@
         },
         {
             "type": "Raw",
+            "announce_type": "Update",
             "check_commands": [
                 {"type": "EventEnd", "Param1": 100, "Param2": 10}
             ],
@@ -150,18 +152,28 @@
             ]
         },
         {
+            "type": "IsStageNo",
+            "checkpoint": true,
+            "stage_id": {
+                "id": 25
+            }
+        },
+        {
             "type": "TalkToNpc",
             "stage_id": {
                 "id": 25,
                 "group_id": 1
             },
-            "announce_type": "Update",
+            "camera_event": {
+                "event_no": 90
+            },
             "npc_id": "Alfred",
             "message_id": 10873
         },
         {
             "type": "Raw",
             "announce_type": "Update",
+            "checkpoint": true,
             "check_commands": [
                 {"type": "IsReleaseWarpPointAnyone", "Param1": 2}
             ],
@@ -170,6 +182,7 @@
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Update",
+            "checkpoint": true,
             "groups": [0]
         },
         {
@@ -180,16 +193,18 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 25,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "npc_id": "Alfred",
             "message_id": 10875
         },
         {
             "type": "PartyGather",
+            "checkpoint": true,
             "announce_type": "Update",
             "stage_id": {
                 "id": 1
@@ -202,6 +217,7 @@
         },
         {
             "type": "Raw",
+            "announce_type": "Update",
             "check_commands": [
                 {"type": "EventEnd", "Param1": 100, "Param2": 15}
             ],
@@ -211,6 +227,7 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
             "stage_id": {
                 "id": 3,
                 "group_id": 1
@@ -218,7 +235,6 @@
             "flags": [
                 {"type": "QstLayout", "action": "Clear", "value": 972, "comment": "Spawns Heinz and Gerd in Tel"}
             ],
-            "announce_type": "Update",
             "npc_id": "Leo0",
             "message_id": 11019
         }

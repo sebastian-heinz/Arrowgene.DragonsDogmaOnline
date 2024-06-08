@@ -20,6 +20,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlInsertQuestProgress = $"INSERT INTO \"ddon_quest_progress\" ({BuildQueryField(QuestProgressFields)}) VALUES ({BuildQueryInsert(QuestProgressFields)});";
         private readonly string SqlDeleteQuestProgress = $"DELETE FROM \"ddon_quest_progress\" WHERE \"character_common_id\"=@character_common_id AND \"quest_type\"=@quest_type AND \"quest_id\"=@quest_id;";
 
+        private readonly string SqlUpdateQuestProgress = $"UPDATE \"ddon_quest_progress\" SET {BuildQueryUpdate(QuestProgressFields)} WHERE \"character_common_id\"=@character_common_id AND \"quest_type\"=@quest_type AND \"quest_id\"=@quest_id;";
+
         private readonly string SqlSelectQuestProgressByType = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
                                                                $"\"character_common_id\" = @character_common_id AND \"quest_type\" = @quest_type;";
 
@@ -61,13 +63,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return results;
         }
 
-        public bool RemoveQuestProgress(uint characterCommonId, QuestType questType, QuestId questId)
+        public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType)
         {
             using TCon connection = OpenNewConnection();
-            return RemoveQuestProgress(connection, characterCommonId, questType, questId);
+            return RemoveQuestProgress(connection, characterCommonId, questId, questType);
         }
 
-        public bool RemoveQuestProgress(TCon connection, uint characterCommonId, QuestType questType, QuestId questId)
+        public bool RemoveQuestProgress(TCon connection, uint characterCommonId, QuestId questId, QuestType questType)
         {
             return ExecuteNonQuery(connection, SqlDeleteQuestProgress, command =>
             {
@@ -92,6 +94,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "quest_type", (uint)questType);
                 AddParameter(command, "step", (uint) step);
             }) == 1;
+        }
+
+        public bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdateQuestProgress(connection, characterCommonId, questId, questType, step);
+        }
+
+        public bool UpdateQuestProgress(TCon connection, uint characterCommonId, QuestId questId, QuestType questType, uint step)
+        {
+            return ExecuteNonQuery(connection, SqlUpdateQuestProgress, command => 
+            {
+                AddParameter(command, "character_common_id", characterCommonId);
+                AddParameter(command, "quest_id", (uint)questId);
+                AddParameter(command, "quest_type", (uint)questType);
+                AddParameter(command, "step", (uint)step);
+            }) == 1; ;
         }
 
         private QuestProgress ReadQuestProgressByType(TReader reader)

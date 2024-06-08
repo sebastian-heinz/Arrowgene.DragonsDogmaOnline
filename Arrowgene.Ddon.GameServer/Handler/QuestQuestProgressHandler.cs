@@ -53,6 +53,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
 
+                if (questProgressState == QuestProgressState.Checkpoint)
+                {
+                    var leaderCommonId = client.Party.Leader.Client.Character.CommonId;
+
+                    var questState = client.Party.QuestState.GetQuestState(quest);
+                    questState.Step += 1;
+
+                    Server.Database.UpdateQuestProgress(leaderCommonId, quest.QuestId, quest.QuestType, questState.Step);
+                }
+
+
                 if (questProgressState == QuestProgressState.Complete)
                 {
                     SendRewards(client, client.Character, quest);
@@ -86,7 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         var leaderCommonId = client.Party.Leader.Client.Character.CommonId;
                         // TODO: Eventually handle all types of quests and for all members
-                        Server.Database.RemoveQuestProgress(leaderCommonId, quest.QuestType, quest.QuestId);
+                        Server.Database.RemoveQuestProgress(leaderCommonId, quest.QuestId, quest.QuestType);
                         if (quest.NextQuestId != QuestId.None)
                         {
                             var nextQuest = QuestManager.GetQuest(quest.NextQuestId);

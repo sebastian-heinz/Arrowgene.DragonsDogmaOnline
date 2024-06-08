@@ -338,7 +338,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     }
                     questBlock.AnnounceType = announceType;
                 }
-                
+
+                questBlock.IsCheckpoint = false;
+                if (jblock.TryGetProperty("checkpoint", out JsonElement jCheckpoint))
+                {
+                    questBlock.IsCheckpoint = jCheckpoint.GetBoolean();
+                }
+
                 if (jblock.TryGetProperty("stage_id", out JsonElement jStageId))
                 {
                     questBlock.StageId = ParseStageId(jStageId);
@@ -363,6 +369,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         questBlock.QuestFlags.Add(questFlag);
                     }
+                }
+
+                questBlock.QuestCameraEvent.HasCameraEvent = false;
+                if (jblock.TryGetProperty("camera_event", out JsonElement jCameraEvent))
+                {
+                    questBlock.QuestCameraEvent.HasCameraEvent = true;
+                    questBlock.QuestCameraEvent.EventNo = jCameraEvent.GetProperty("event_no").GetInt32();
                 }
 
                 switch (questBlockType)

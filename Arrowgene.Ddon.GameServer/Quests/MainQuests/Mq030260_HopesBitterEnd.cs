@@ -95,12 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             }
         }
 
-        public override CDataQuestOrderList ToCDataQuestOrderList()
-        {
-            return null;
-        }
-
-        public override CDataQuestList ToCDataQuestList()
+        public override CDataQuestList ToCDataQuestList(uint step = 0)
         {
             var quest = new CDataQuestList();
             quest.KeyId = (uint) QuestId;

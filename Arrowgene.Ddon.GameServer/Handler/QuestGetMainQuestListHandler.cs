@@ -29,7 +29,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuest(questId);
                 if (quest.QuestType == QuestType.Main)
                 {
-                    res.MainQuestList.Add(quest.ToCDataQuestList());
+                    var questState = client.Party.QuestState.GetQuestState(questId);
+                    res.MainQuestList.Add(quest.ToCDataQuestList(questState.Step));
                 }
             }
 

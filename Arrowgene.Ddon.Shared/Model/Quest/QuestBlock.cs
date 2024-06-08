@@ -23,8 +23,10 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<QuestFlag> QuestFlags { get; set; }
 
         public bool ShouldStageJump {  get; set; }
+        public bool IsCheckpoint { get; set; }
 
         public QuestEvent QuestEvent {  get; set; }
+        public QuestCameraEvent QuestCameraEvent { get; set; }
 
         public QuestPartyGatherPoint PartyGatherPoint {  get; set; }
 
@@ -58,6 +60,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
             PartyGatherPoint = new QuestPartyGatherPoint();
             QuestEvent = new QuestEvent();
+            QuestCameraEvent = new QuestCameraEvent();
         }
     }
 }

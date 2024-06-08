@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuest(questId);
                 if (quest.QuestType == QuestType.World)
                 {
+                    var questState = client.Party.QuestState.GetQuestState(questId);
                     /**
                      * World quests get added here instead of QuestGetWorldManageQuestListHandler because
                      * "World Manage Quests" are different from "World Quests". World manage quests appear
@@ -43,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     res.SetQuestList.Add(new CDataSetQuestList()
                     {
                         Detail = new CDataSetQuestDetail() { IsDiscovery = quest.IsDiscoverable },
-                        Param = quest.ToCDataQuestList(),
+                        Param = quest.ToCDataQuestList(questState.Step),
                     });
                 }
             }

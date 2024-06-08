@@ -11,6 +11,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         ExtremeMissions = 6,
         PawnExpedition = 7,
         PartnerPawnPersonalQuests = 8,
+        Tutorial = 9,
 
 #if false
         Main = 0,

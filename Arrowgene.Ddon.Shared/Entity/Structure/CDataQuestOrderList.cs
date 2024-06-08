@@ -31,7 +31,7 @@ public class CDataQuestOrderList
     public ushort ContentJoinItemRank { get; set; }
     public List<CDataWalletPoint> BaseWalletPoints { get; set; }
     public List<CDataQuestExp> BaseExp { get; set; }
-    public uint Unk2 { get; set;} // NpcId?
+    public uint NpcId { get; set;} // NpcId?
     public uint Unk3 { get; set;} // MsgId?
     public uint Unk4 { get; set;} // DetailMsgId
     public ulong Unk5 { get; set; } // ??
@@ -65,7 +65,7 @@ public class CDataQuestOrderList
             WriteUInt16(buffer, obj.ContentJoinItemRank);
             WriteEntityList<CDataWalletPoint>(buffer, obj.BaseWalletPoints);
             WriteEntityList<CDataQuestExp>(buffer, obj.BaseExp);
-            WriteUInt32(buffer, obj.Unk2);
+            WriteUInt32(buffer, obj.NpcId);
             WriteUInt32(buffer, obj.Unk3);
             WriteUInt32(buffer, obj.Unk4);
             WriteUInt64(buffer, obj.Unk5);
@@ -99,7 +99,7 @@ public class CDataQuestOrderList
             obj.ContentJoinItemRank = ReadUInt16(buffer);
             obj.BaseWalletPoints = ReadEntityList<CDataWalletPoint>(buffer);
             obj.BaseExp = ReadEntityList<CDataQuestExp>(buffer);
-            obj.Unk2 = ReadUInt32(buffer);
+            obj.NpcId = ReadUInt32(buffer);
             obj.Unk3 = ReadUInt32(buffer);
             obj.Unk4 = ReadUInt32(buffer);
             obj.Unk5 = ReadUInt64(buffer);

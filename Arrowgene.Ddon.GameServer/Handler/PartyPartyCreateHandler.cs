@@ -50,10 +50,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            QuestId questId = Server.Database.GetCurrentMsqId(client.Character.CommonId);
-            if (questId != QuestId.None)
+            var mainQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Main);
+            foreach (var mainQuest in mainQuests)
             {
-                party.QuestState.AddNewQuest(questId);
+                party.QuestState.AddNewQuest(mainQuest.QuestId, mainQuest.Step);
             }
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();

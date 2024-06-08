@@ -47,6 +47,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) questId });
             }
+
+#if false
+            foreach (var quest in QuestManager.GetQuestsByType(QuestType.Tutorial))
+            {
+                ntc.TutorialQuestOrderList.Add(quest.Value.ToCDataTutorialQuestOrderList());
+            }
+#endif
+
             // pcap.MainQuestIdList;
 
             client.Send(ntc);
