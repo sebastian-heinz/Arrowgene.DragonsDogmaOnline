@@ -18,10 +18,17 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public ushort SubGroupId { get; set; }
         public uint SetNo { get; set; }
         public uint QuestLayoutFlag { get; set; } // For groups
-        public List<uint> QuestLayoutFlagsOn { get; set; }
-        public List<uint> QuestLayoutFlagsOff { get; set; }
         public List<uint> MyQstSetFlags { get; set; }
         public List<uint> MyQstCheckFlags { get; set; }
+        public List<QuestFlag> QuestFlags { get; set; }
+
+        public bool ShouldStageJump {  get; set; }
+        public bool IsCheckpoint { get; set; }
+
+        public QuestEvent QuestEvent {  get; set; }
+        public QuestCameraEvent QuestCameraEvent { get; set; }
+
+        public QuestPartyGatherPoint PartyGatherPoint {  get; set; }
 
         public bool ShowMarker { get; set; }
         public bool ResetGroup { get; set; }
@@ -41,9 +48,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             NpcOrderDetails = new List<QuestNpcOrder>();
             DeliveryRequests = new List<QuestDeliveryItem>();
             QuestProcessState = new CDataQuestProcessState();
-            QuestLayoutFlagsOn = new List<uint>();
-            QuestLayoutFlagsOff = new List<uint>();
 
+            QuestFlags = new List<QuestFlag>();
             MyQstSetFlags = new List<uint>();
             MyQstCheckFlags = new List<uint>();
 
@@ -51,6 +57,10 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             ResultCommands = new List<CDataQuestCommand>();
             QuestOrderDetails = new QuestOrder();
             EnemyGroupIds = new List<uint>();
+
+            PartyGatherPoint = new QuestPartyGatherPoint();
+            QuestEvent = new QuestEvent();
+            QuestCameraEvent = new QuestCameraEvent();
         }
     }
 }

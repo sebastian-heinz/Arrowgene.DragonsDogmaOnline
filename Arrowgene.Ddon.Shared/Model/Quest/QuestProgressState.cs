@@ -15,5 +15,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Failed = 3,
         Complete = 4,
         ReportToNpc = 5,
+        Checkpoint = 6,
     }
 }

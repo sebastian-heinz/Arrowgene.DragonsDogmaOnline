@@ -1,7 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -15,11 +17,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GenericQuest));
 
-        private List<QuestProcess> Processes;
-
         public static GenericQuest FromAsset(QuestAssetData questAsset)
         {
-            var quest = new GenericQuest(questAsset.QuestId, questAsset.Type, questAsset.Discoverable);
+            var quest = new GenericQuest(questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
 
             quest.BaseLevel = questAsset.BaseLevel;
             quest.MinimumItemRank = questAsset.MinimumItemRank;
@@ -28,6 +28,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.QuestLayoutFlags = questAsset.QuestLayoutFlags;
             quest.Processes = questAsset.Processes;
             quest.EnemyGroups = questAsset.EnemyGroups;
+            quest.ResetPlayerAfterQuest = questAsset.ResetPlayerAfterQuest;
+            quest.OrderConditions = questAsset.OrderConditions;
 
             quest.ExpRewards.Add(new CDataQuestExp()
             {
@@ -53,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         quest.ItemRewards.Add(rewardItem);
                         break;
                     case QuestRewardType.Select:
-                        quest.SelectedableItemRewards.Add(rewardItem);
+                        quest.SelectableRewards.Add(rewardItem);
                         break;
                 }
             }
@@ -92,9 +94,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public GenericQuest(QuestId questId, QuestType questType, bool discoverable) : base(questId, questType, discoverable)
+        public GenericQuest(QuestId questId, QuestId questScheduleId, QuestType questType, bool discoverable) : base(questId, questScheduleId, questType, discoverable)
         {
-            Processes = new List<QuestProcess>();
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }
 
@@ -160,7 +161,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLocation questLocation = null;
             foreach (var location in Locations)
             {
-                if (location.ContainsStageId(stageId, (ushort) subGroupId))
+                if (location.ContainsStageId(stageId, (ushort)subGroupId))
                 {
                     questLocation = location;
                     break;
@@ -189,37 +190,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public override CDataQuestList ToCDataQuestList()
-        {
-            var quest = base.ToCDataQuestList();
-
-            foreach (var process in Processes)
-            {
-                if (process.Blocks.Count > 0)
-                {
-                    quest.QuestProcessStateList.Add(process.Blocks[0].QuestProcessState);
-                }
-            }
-
-            return quest;
-        }
-
-        public override CDataQuestOrderList ToCDataQuestOrderList()
-        {
-            var quest = base.ToCDataQuestOrderList();
-
-            foreach (var process in Processes)
-            {
-                if (process.Blocks.Count > 0)
-                {
-                    quest.QuestProcessStateList.Add(process.Blocks[0].QuestProcessState);
-                }
-            }
-
-            return quest;
-        }
-
-        public override List<CDataQuestProcessState> StateMachineExecute(QuestProcessState processState, out QuestProgressState questProgressState)
+        public override List<CDataQuestProcessState> StateMachineExecute(GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
         {
             if (processState.ProcessNo >= Processes.Count)
             {
@@ -239,9 +210,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 questProgressState = QuestProgressState.Complete;
             }
+            else if (questBlock.IsCheckpoint)
+            {
+                questProgressState = QuestProgressState.Checkpoint;
+            }
             else
             {
                 questProgressState = QuestProgressState.InProgress;
+            }
+
+            if (questBlock.ResetGroup)
+            {
+                ResetEnemiesForBlock(client, QuestId, questBlock);
             }
 
             return new List<CDataQuestProcessState>()
@@ -259,63 +239,65 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 BlockNo = questBlock.BlockNo,
             };
 
+            List<CDataQuestCommand> resultCommands = new List<CDataQuestCommand>();
+            List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
+
+            ParseQuestFlags(questBlock.QuestFlags, resultCommands, checkCommands);
+
+            if (questBlock.ShouldStageJump)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.StageJump(StageManager.ConvertIdToStageNo(questBlock.StageId), 0));
+            }
+
+            if (questBlock.QuestCameraEvent.HasCameraEvent)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.PlayCameraEvent(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.QuestCameraEvent.EventNo));
+            }
+
             if (questBlock.SequenceNo != 1)
-            {                
+            {
                 switch (questBlock.AnnounceType)
                 {
                     case QuestAnnounceType.Accept:
-                        result.ResultCommandList.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1));
+                        resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1));
                         break;
                     case QuestAnnounceType.Update:
-                        result.ResultCommandList.Add(QuestManager.ResultCommand.UpdateAnnounce());
+                        resultCommands.Add(QuestManager.ResultCommand.UpdateAnnounce());
                         break;
                 }
-            }
-
-            foreach (var layoutFlag in questBlock.QuestLayoutFlagsOn)
-            {
-                result.ResultCommandList.Add(QuestManager.ResultCommand.QstLayoutFlagOn((int) layoutFlag));
-            }
-
-            foreach (var layoutFlag in questBlock.QuestLayoutFlagsOff)
-            {
-                result.ResultCommandList.Add(QuestManager.ResultCommand.QstLayoutFlagOff((int)layoutFlag));
             }
 
             switch (questBlock.BlockType)
             {
                 case QuestBlockType.NpcTalkAndOrder:
-                    result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
-                    {
-                        QuestManager.CheckCommand.NpcTalkAndOrderUi(StageManager.ConvertIdToStageNo(questBlock.NpcOrderDetails[0].StageId), questBlock.NpcOrderDetails[0].NpcId, 0)
-                    });
-                    result.ResultCommandList.Add(QuestManager.ResultCommand.QstTalkChg(questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                    checkCommands.Add(QuestManager.CheckCommand.NpcTalkAndOrderUi(StageManager.ConvertIdToStageNo(questBlock.NpcOrderDetails[0].StageId), questBlock.NpcOrderDetails[0].NpcId, 0));
+                    resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                    break;
+                case QuestBlockType.PartyGather:
+                    checkCommands.Add(QuestManager.CheckCommand.Prt(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.PartyGatherPoint.x, questBlock.PartyGatherPoint.y, questBlock.PartyGatherPoint.z));
+                    resultCommands.Add(QuestManager.ResultCommand.Prt(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.PartyGatherPoint.x, questBlock.PartyGatherPoint.y, questBlock.PartyGatherPoint.z));
                     break;
                 case QuestBlockType.DiscoverEnemy:
                 case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
                     {
-                        List<CDataQuestCommand> cmds = new List<CDataQuestCommand>();
                         foreach (var groupId in questBlock.EnemyGroupIds)
                         {
                             var enemyGroup = quest.EnemyGroups[groupId];
-                            cmds.Add(QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, -1));
+                            checkCommands.Add(QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, -1));
                         }
-                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(cmds);
                     }
                     break;
                 case QuestBlockType.End:
-                    result.ResultCommandList.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear));
-                    result.ResultCommandList.Add(QuestManager.ResultCommand.EndEndQuest());
+                    resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear));
+                    resultCommands.Add(QuestManager.ResultCommand.EndEndQuest());
                     break;
                 case QuestBlockType.KillGroup:
                     {
-                        List<CDataQuestCommand> cmds = new List<CDataQuestCommand>();
                         foreach (var groupId in questBlock.EnemyGroupIds)
                         {
                             var enemyGroup = quest.EnemyGroups[groupId];
-                            cmds.Add(QuestManager.CheckCommand.DieEnemy(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, -1));
+                            checkCommands.Add(QuestManager.CheckCommand.DieEnemy(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, -1));
                         }
-                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(cmds);
                     }
                     break;
                 case QuestBlockType.CollectItem:
@@ -323,84 +305,71 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         var questCommand = questBlock.ShowMarker ?
                             QuestManager.CheckCommand.QuestOmSetTouch(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, 1) :
                             QuestManager.CheckCommand.QuestOmSetTouchWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, 1);
-                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
-                        {
-                            questCommand
-                        });
+                        checkCommands.Add(questCommand);
                     }
                     break;
                 case QuestBlockType.DeliverItems:
                     {
-                        List<CDataQuestCommand> deliveryRequests = new List<CDataQuestCommand>();
                         foreach (var item in questBlock.DeliveryRequests)
                         {
-                            deliveryRequests.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                            checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                         }
-                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(deliveryRequests);
-                        result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
-                        // result.ResultCommandList.Add(QuestManager.ResultCommand.SetDeliverInfoQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.StageId.GroupId, 1, 0));
+                        resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                    }
+                    break;
+                case QuestBlockType.TalkToNpc:
+                    checkCommands.Add(QuestManager.CheckCommand.TalkNpc(StageManager.ConvertIdToStageNo(questBlock.NpcOrderDetails[0].StageId), questBlock.NpcOrderDetails[0].NpcId));
+                    resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                    break;
+                case QuestBlockType.IsQuestOrdered:
+                    {
+                        switch (questBlock.QuestOrderDetails.QuestType)
+                        {
+                            case QuestType.Main:
+                                checkCommands.Add(QuestManager.CheckCommand.IsMainQuestOrder((int)questBlock.QuestOrderDetails.QuestId));
+                                break;
+                            case QuestType.Light:
+                                // case QuestType.World:
+                                checkCommands.Add(QuestManager.CheckCommand.IsOrderLightQuest((int)questBlock.QuestOrderDetails.QuestId));
+                                break;
+                            case QuestType.WorldSetting:
+                                checkCommands.Add(QuestManager.CheckCommand.IsOrderWorldQuest((int)questBlock.QuestOrderDetails.QuestId));
+                                break;
+                            case QuestType.Pawn:
+                                // checkCommands.Add(QuestManager.CheckCommand.IsOrderPawnQuest())
+                                break;
+                        }
                     }
                     break;
                 case QuestBlockType.MyQstFlags:
                     {
-                        List<CDataQuestCommand> checkFlags = new List<CDataQuestCommand>();
                         foreach (var flag in questBlock.MyQstCheckFlags)
                         {
-                            checkFlags.Add(QuestManager.CheckCommand.MyQstFlagOn((int)flag));
+                            checkCommands.Add(QuestManager.CheckCommand.MyQstFlagOn((int)flag));
                         }
-                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkFlags);
 
                         List<CDataQuestCommand> setFlags = new List<CDataQuestCommand>();
                         foreach (var flag in questBlock.MyQstSetFlags)
                         {
-                            setFlags.Add(QuestManager.ResultCommand.MyQstFlagOn((int)flag));
+                            resultCommands.Add(QuestManager.ResultCommand.MyQstFlagOn((int)flag));
                         }
-                        result.ResultCommandList.AddRange(setFlags);
-                    }
-                    break;
-                case QuestBlockType.TalkToNpc:
-                    result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
-                    {
-                        QuestManager.CheckCommand.TalkNpc(StageManager.ConvertIdToStageNo(questBlock.NpcOrderDetails[0].StageId), questBlock.NpcOrderDetails[0].NpcId)
-                    });
-                    result.ResultCommandList.Add(QuestManager.ResultCommand.QstTalkChg(questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
-                    break;
-                case QuestBlockType.IsQuestOrdered:
-                    {
-                        CDataQuestCommand questCommand = null;
-                        switch (questBlock.QuestOrderDetails.QuestType)
-                        {
-                            case QuestType.Main:
-                                questCommand = QuestManager.CheckCommand.IsMainQuestOrder((int) questBlock.QuestOrderDetails.QuestId);
-                                break;
-                            case QuestType.World:
-                                questCommand = QuestManager.CheckCommand.IsOrderWorldQuest((int) questBlock.QuestOrderDetails.QuestId);
-                                break;
-                            case QuestType.PersonalQuest:
-                                questCommand = QuestManager.CheckCommand.IsOrderLightQuest((int) questBlock.QuestOrderDetails.QuestId);
-                                break;
-                            case QuestType.PawnExpedition:
-                            case QuestType.PartnerPawnPersonalQuests:
-                                // TODO: Needs different arguments
-                                // questCommand = QuestManager.CheckCommand.IsOrderPawnQuest((int)questBlock.QuestOrderDetails.QuestId);
-                                break;
-                            case QuestType.Board:
-                            case QuestType.Hidden:
-                            case QuestType.ExtremeMissions:
-                                break;
-                        }
-                        result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>() { questCommand });
                     }
                     break;
                 case QuestBlockType.IsStageNo:
-                    result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
-                    {
-                        QuestManager.CheckCommand.StageNo(StageManager.ConvertIdToStageNo(questBlock.StageId))
-                    });
+                    checkCommands.Add(QuestManager.CheckCommand.StageNo(StageManager.ConvertIdToStageNo(questBlock.StageId)));
+                    break;
+                case QuestBlockType.PlayEvent:
+                    checkCommands.Add(QuestManager.CheckCommand.EventEnd(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.QuestEvent.EventId));
+                    resultCommands.Add(QuestManager.ResultCommand.EventExec(
+                        StageManager.ConvertIdToStageNo(questBlock.StageId),
+                        questBlock.QuestEvent.EventId,
+                        StageManager.ConvertIdToStageNo(questBlock.QuestEvent.JumpStageId),
+                        questBlock.QuestEvent.StartPosNo
+                    ));
                     break;
                 case QuestBlockType.Raw:
-                    result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(questBlock.CheckCommands);
-                    result.ResultCommandList.AddRange(questBlock.ResultCommands);
+                    checkCommands.AddRange(questBlock.CheckCommands);
+                    resultCommands.AddRange(questBlock.ResultCommands);
                     break;
                 case QuestBlockType.DummyBlock:
                     /* Filler block which might do some meta things like announce or set flags */
@@ -411,6 +380,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 default:
                     Logger.Error($"Unexpected block found '{questBlock.BlockType}'. Unable to translate.");
                     break;
+            }
+
+            result.ResultCommandList = resultCommands;
+            if (checkCommands.Count > 0)
+            {
+                result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkCommands);
             }
 
             return result;

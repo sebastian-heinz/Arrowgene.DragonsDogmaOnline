@@ -33,6 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         public QuestId QuestId { get; set; }
         public QuestType QuestType { get; set; }
         public QuestProgressState State { get; set; }
+        public uint Step {  get; set; }
 
         public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
         public Dictionary<StageId, List<InstancedEnemy>> QuestEnemies {  get; set; }
@@ -117,14 +118,15 @@ namespace Arrowgene.Ddon.GameServer.Party
             CompletedWorldQuests.AddRange(QuestManager.GetQuestsByType(QuestType.World).Select(x => x.Key));
         }
 
-        public void AddNewQuest(Quest quest)
+        public void AddNewQuest(Quest quest, uint step = 0)
         {
             lock (ActiveQuests) 
             {
                 ActiveQuests[quest.QuestId] = new QuestState()
                 {
                     QuestId = quest.QuestId,
-                    QuestType = quest.QuestType
+                    QuestType = quest.QuestType,
+                    Step = step
                 };
 
                 foreach (var location in quest.Locations)
@@ -146,7 +148,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 // Initialize Process State Table
-                UpdateProcessState(quest.QuestId, quest.ToCDataQuestList().QuestProcessStateList);
+                UpdateProcessState(quest.QuestId, quest.ToCDataQuestList(step).QuestProcessStateList);
             }
         }
 
@@ -187,10 +189,10 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public void AddNewQuest(QuestId questId)
+        public void AddNewQuest(QuestId questId, uint step = 0)
         {
             var quest = QuestManager.GetQuest(questId);
-            AddNewQuest(quest);
+            AddNewQuest(quest, step);
         }
 
         public void RemoveQuest(QuestId questId)
@@ -236,6 +238,14 @@ namespace Arrowgene.Ddon.GameServer.Party
             lock (ActiveQuests)
             {
                 return ActiveQuests.Keys.ToList();
+            }
+        }
+
+        public bool HasActiveQuest(QuestId questId)
+        {
+            lock (ActiveQuests)
+            {
+                return ActiveQuests.ContainsKey(questId);
             }
         }
 

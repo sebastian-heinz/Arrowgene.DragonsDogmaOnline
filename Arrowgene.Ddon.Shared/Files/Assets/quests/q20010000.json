@@ -75,7 +75,9 @@
             },
             "npc_id": "Yuni",
             "message_id": 10782,
-            "layout_flags_on": [992]
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 992}
+            ]
         },
         {
             "type": "DiscoverEnemy",
@@ -86,6 +88,7 @@
             "type": "KillGroup",
 
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {

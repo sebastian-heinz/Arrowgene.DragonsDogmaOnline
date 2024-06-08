@@ -358,6 +358,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return true;
         }
 
+        public static CDataCharacterJobData CalculateBaseStats(JobId jobId, uint Level)
+        {
+            CDataCharacterJobData JobData = new CDataCharacterJobData();
+
+            BaseStats baseStats = BASE_STATS_TABLE[jobId];
+            JobData.Atk = (ushort)(baseStats.Atk + (Level - 1) * baseStats.AtkRate);
+            JobData.Def = (ushort)(baseStats.Def + (Level - 1) * baseStats.DefRate);
+            JobData.MAtk = (ushort)(baseStats.MAtk + (Level - 1) * baseStats.MAtkRate);
+            JobData.MDef = (ushort)(baseStats.MDef + (Level - 1) * baseStats.MDefRate);
+
+            return JobData;
+        }
+
         public static CDataCharacterJobData CalculateBaseStats(CharacterCommon Character)
         {
             CDataCharacterJobData JobData = new CDataCharacterJobData();

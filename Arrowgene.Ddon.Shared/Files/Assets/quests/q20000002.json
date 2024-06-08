@@ -47,7 +47,9 @@
                     },
                     "npc_id": "WhiteKnight0",
                     "message_id": 8629,
-                    "layout_flags_on": [986]
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 986}
+                    ]
                 },
                 {
                     "type": "MyQstFlags",

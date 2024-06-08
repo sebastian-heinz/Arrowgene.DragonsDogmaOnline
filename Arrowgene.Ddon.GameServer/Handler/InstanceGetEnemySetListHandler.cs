@@ -58,15 +58,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     PositionIndex = (byte)(enemy.Index),
                     EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                 }).ToList();
-
-                if (client.Party.QuestState.ShouldResetInstanceEnemyGroup(quest.QuestId, stageId))
-                {
-                    S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
-                    {
-                        LayoutId = stageId.ToStageLayoutId()
-                    };
-                    client.Party.SendToAll(resetNtc);
-                }
             }
             else
             {

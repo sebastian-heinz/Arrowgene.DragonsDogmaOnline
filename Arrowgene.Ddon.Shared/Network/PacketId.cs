@@ -924,6 +924,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_WARP_GET_START_POINT_LIST_RES = new PacketId(14, 14, 2, "S2C_WARP_GET_START_POINT_LIST_RES", ServerType.Game, PacketSource.Server); // ゲーム開始ポイントの取得に
 
 // Group: 15
+        public static readonly PacketId C2S_EVENT_START_NTC = new PacketId(15, 0, 16, "C2S_EVENT_START_NTC", ServerType.Game, PacketSource.Client, "C2S_15_0_16_NTC");
+        public static readonly PacketId C2S_EVENT_END_NTC = new PacketId(15, 1, 16, "C2S_EVENT_END_NTC", ServerType.Game, PacketSource.Client, "C2S_15_1_16_NTC");
         public static readonly PacketId S2C_15_65535_255 = new PacketId(15, 65535, 255, "S2C_15_65535_255", ServerType.Game, PacketSource.Server);
 
 // Group: 16 - (FRIEND)
@@ -2832,6 +2834,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_WARP_GET_START_POINT_LIST_RES);
 
 // Group: 15
+            AddPacketIdEntry(packetIds, C2S_EVENT_START_NTC);
+            AddPacketIdEntry(packetIds, C2S_EVENT_END_NTC);
             AddPacketIdEntry(packetIds, S2C_15_65535_255);
 
 // Group: 16 - (FRIEND)

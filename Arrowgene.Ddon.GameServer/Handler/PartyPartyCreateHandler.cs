@@ -1,6 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
-using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -50,10 +50,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            // TODO: Fetch this from the party leader from the database
-            // party.QuestState.AddNewQuest((QuestId) 1);
-            // party.QuestState.AddNewQuest((QuestId) 2);
-            // party.QuestState.AddNewQuest((QuestId) 3);
+            // TODO: Fetch all quests for the party, not just MSQ
+            var mainQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Main);
+            foreach (var mainQuest in mainQuests)
+            {
+                party.QuestState.AddNewQuest(mainQuest.QuestId, mainQuest.Step);
+            }
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;
