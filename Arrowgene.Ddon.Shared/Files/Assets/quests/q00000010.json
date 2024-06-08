@@ -56,11 +56,13 @@
                 "id": 69,
                 "group_id": 19
             },
+            "starting_index": 2,
             "enemies": [
                 {
                     "enemy_id": "0x015709",
-                    "level": 35,
+                    "level": 36,
                     "exp": 1336,
+                    "named_enemy_params_id": 148,
                     "is_boss": true
                 }
             ]
@@ -129,6 +131,7 @@
         },
         {
             "type": "PlayEvent",
+            "announce_type": "Update",
             "stage_id": {
                 "id": 69
             },
@@ -136,7 +139,7 @@
         },
         {
             "type": "PartyGather",
-            "announce_type": "Update",
+            "checkpoint": true,
             "flags": [
                 {"type": "QstLayout", "action": "Set", "value": 983, "comment": "Spawns Gerd and Knights"},
                 {"type": "QstLayout", "action": "Set", "value": 1108, "comment": "Solider Corpse"}
@@ -160,6 +163,7 @@
         {
             "type": "KillGroup",
             "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 276, "comment": "Holy Grail"},
                 {"type": "QstLayout", "action": "Set", "value": 1315, "comment": "Locks player in boss room"},
                 {"type": "QstLayout", "action": "Set", "value": 913, "comment": "Locks player in boss room"},
                 {"type": "MyQst", "action": "Set", "value": 95, "comment": "Makes NPCs fight"}
@@ -169,20 +173,30 @@
         },
         {
             "type": "PlayEvent",
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 1315, "comment": "Locks player in boss romm"},
+                {"type": "QstLayout", "action": "Clear", "value": 913, "comment": "Locks player in boss romm"},
+                {"type": "QstLayout", "action": "Clear", "value": 983, "comment": "Spawns Gerd and Knights"},
+                {"type": "QstLayout", "action": "Set", "value": 1237, "comment": "Spawns Gerd in the Audience Chamber"}
+            ],
             "stage_id": {
                 "id": 69
             },
             "event_id": 10
         },
         {
+            "type": "PlayEvent",
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 276, "comment": "Holy Grail"}
+            ],
+            "stage_id": {
+                "id": 69
+            },
+            "event_id": 15
+        },
+        {
             "type": "TalkToNpc",
             "announce_type": "Update",
-             "flags": [
-                {"type": "QstLayout", "action": "Clear", "value": 1315, "comment": "Locks player in boss romm"},
-                {"type": "QstLayout", "action": "Clear", "value": 913, "comment": "Locks player in boss romm"},
-                {"type": "QstLayout", "action": "Clear", "value": 983, "comment": "Spawns Gerd and Knights"},
-                {"type": "QstLayout", "action": "Set", "value": 1237, "comment": "Spawns Gerd in the Audience Chamber"}
-            ],
             "stage_id": {
                 "id": 3,
                 "group_id": 1
