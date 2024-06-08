@@ -67,11 +67,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ushort updateType, StorageType storageType, Action sendResponse)
+        public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, Action sendResponse)
         {
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new()
             {
-                UpdateType = updateType
+                UpdateType = (ushort) updateType
             };
 
             foreach (CDataCharacterEquipInfo changeCharacterEquipInfo in changeCharacterEquipList)
@@ -98,11 +98,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 if(itemUId.Length == 0)
                 {
-                    this.UnequipItem(server, client, characterToEquipTo, updateCharacterItemNtc, equipType, equipSlot, storageType, characterId, pawnId);
+                    this.UnequipItem(server, client, characterToEquipTo, updateCharacterItemNtc, equipType, equipSlot, storageTypes, characterId, pawnId);
                 }
                 else
                 {
-                    this.EquipItem(server, client, characterToEquipTo, updateCharacterItemNtc, equipType, equipSlot, storageType, itemUId, characterId, pawnId);
+                    this.EquipItem(server, client, characterToEquipTo, updateCharacterItemNtc, equipType, equipSlot, storageTypes, itemUId, characterId, pawnId);
                 }
             }
 
@@ -144,8 +144,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             client.Send(updateCharacterItemNtc);
         }
 
-        private void UnequipItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, EquipType equipType, byte equipSlot, StorageType storageType, uint characterId, uint pawnId)
+        private void UnequipItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, EquipType equipType, byte equipSlot, List<StorageType> storageTypes, uint characterId, uint pawnId)
         {
+            // TODO: Move to the other storage types if the first one is full
+            StorageType storageType = storageTypes[0];
+
             // Find in equipment the item to unequip
             Item item = characterToEquipTo.Equipment.GetEquipItem(characterToEquipTo.Job, equipType, equipSlot) ?? throw new Exception("No item found in this slot");
 
@@ -197,18 +200,46 @@ namespace Arrowgene.Ddon.GameServer.Characters
             });
         }
 
-        private void EquipItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, EquipType equipType, byte equipSlot, StorageType storageType, string itemUId, uint characterId, uint pawnId)
+        private void EquipItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, EquipType equipType, byte equipSlot, List<StorageType> storageTypes, string itemUId, uint characterId, uint pawnId)
         {
-            // Find in the bag the item to equip
-            var tuple = client.Character.Storage.getStorage(storageType).Items
-                .Select((item, index) => new { item, slot = (ushort) (index+1)})
-                .Where(tuple => tuple.item?.Item1.UId == itemUId)
-                .First();
-            Item itemToEquip = tuple.item!.Item1;
-            uint itemToEquipNum = tuple.item.Item2;
-            ushort storageSlotNo = tuple.slot;
+            Item? previouslyEquippedItem = characterToEquipTo.Equipment.GetEquipItem(characterToEquipTo.Job, equipType, equipSlot);
+            if (previouslyEquippedItem?.UId == itemUId)
+            {
+                // Don't do anything
+                return;
+            }
 
-            Item? previouslyEquippedItem = characterToEquipTo.Equipment.SetEquipItem(itemToEquip, characterToEquipTo.Job, equipType, equipSlot);
+            // Find in the storages the item to equip
+            Item? itemToEquip = null;
+            uint itemToEquipNum = 0;
+            ushort storageSlotNo = 0;
+            StorageType storageType = 0;
+            foreach (StorageType storageTypeToCheck in storageTypes)
+            {
+                try
+                {
+                    var tuple = client.Character.Storage.getStorage(storageTypeToCheck).Items
+                        .Select((item, index) => new { item, slot = (ushort) (index+1)})
+                        .Where(tuple => tuple.item?.Item1.UId == itemUId)
+                        .First();
+                    itemToEquip = tuple.item!.Item1;
+                    itemToEquipNum = tuple.item.Item2;
+                    storageSlotNo = tuple.slot;
+                    storageType = storageTypeToCheck;
+                    break;
+                }
+                catch(InvalidOperationException)
+                {
+                    // Do nothing, continue and try other storage
+                }
+            }
+
+            if (itemToEquip == null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND, "Couldn't find the item to equip");
+            }
+
+            characterToEquipTo.Equipment.SetEquipItem(itemToEquip, characterToEquipTo.Job, equipType, equipSlot);
             
             server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemToEquip.UId);
 
