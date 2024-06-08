@@ -25,16 +25,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectQuestProgressByType = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
                                                                $"\"character_common_id\" = @character_common_id AND \"quest_type\" = @quest_type;";
 
-        public QuestId GetCurrentMsqId(uint characterCommonId)
-        {
-            var results = GetQuestProgressByType(characterCommonId, QuestType.Main);
-            if (results.Count == 0)
-            {
-                return QuestId.None;
-            }
-            return results[0].QuestId;
-        }
-
         public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType)
         {
             using TCon connection = OpenNewConnection();

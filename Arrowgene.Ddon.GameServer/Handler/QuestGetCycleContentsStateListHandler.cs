@@ -31,6 +31,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
 #if false
+            /*
+             * @note If something goes wrong, we can always change this preprocessor directive to
+             * true and get back the original functionality before we started to play with this function.
+             */
             EntitySerializer<S2CQuestJoinLobbyQuestInfoNtc> serializer = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>();
             S2CQuestJoinLobbyQuestInfoNtc pcap = serializer.Read(InGameDump.data_Dump_20A);
             client.Send(pcap);
@@ -42,20 +46,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
 
+            // pcap.MainQuestIdList; (this will add back all missing functionality which depends on complete MSQ)
             var completedMsq = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Main);
             foreach (var questId in completedMsq)
             {
                 ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) questId });
             }
-
-#if false
-            foreach (var quest in QuestManager.GetQuestsByType(QuestType.Tutorial))
-            {
-                ntc.TutorialQuestOrderList.Add(quest.Value.ToCDataTutorialQuestOrderList());
-            }
-#endif
-
-            // pcap.MainQuestIdList;
 
             client.Send(ntc);
 #endif

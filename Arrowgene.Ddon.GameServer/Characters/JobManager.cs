@@ -559,39 +559,5 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return _Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
         }
-
-        public void SetJobForMsqTutorial(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
-        {
-            var baseStats = ExpManager.CalculateBaseStats(jobId, 15);
-
-            S2CJobChangeJobNtc changeJobNotice = new S2CJobChangeJobNtc();
-            changeJobNotice.CharacterId = client.Character.CharacterId;
-            changeJobNotice.CharacterJobData = baseStats;
-            changeJobNotice.EquipItemInfo = new List<CDataEquipItemInfo>()
-            {
-                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.WepMain, ItemId = 9873},
-                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.WepSub, ItemId = 9874},
-                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.ArmorBody, ItemId = 9885},
-                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.ArmorArm, ItemId = 9884},
-                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.ArmorLeg, ItemId = 9886},
-                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.WearLeg, ItemId = 516},
-                new CDataEquipItemInfo() {EquipSlot = (byte) EquipSlot.WearBody, ItemId = 517},
-            };
-
-            changeJobNotice.SetAcquirementParamList = common.EquippedCustomSkillsDictionary[jobId]
-                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx + 1)))
-                .Where(x => x != null)
-                .ToList();
-            changeJobNotice.SetAbilityParamList = common.EquippedAbilitiesDictionary[jobId]
-                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx + 1)))
-                .Where(x => x != null)
-                .ToList();
-            changeJobNotice.LearnNormalSkillParamList = common.LearnedNormalSkills
-                .Where(x => x.Job == common.Job)
-                .Select(x => new CDataLearnNormalSkillParam(x))
-                .ToList();
-
-            client.Send(changeJobNotice);
-        }
     }
 }

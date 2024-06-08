@@ -2,7 +2,7 @@
 
 This document describes currently implemented quest information and known issues associated with quests.
 
-If you are interested in modifying or creating new quests, see the [generic quest state machine document]() for the details.
+If you are interested in modifying or creating new quests, see the [generic quest state machine document](generic_quest_state_machine.md) for the details.
 
 ## What works in the current implementation
 

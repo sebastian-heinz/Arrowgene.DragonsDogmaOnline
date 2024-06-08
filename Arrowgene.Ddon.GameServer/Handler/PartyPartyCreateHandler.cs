@@ -50,6 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            // TODO: Fetch all quests for the party, not just MSQ
             var mainQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Main);
             foreach (var mainQuest in mainQuests)
             {
