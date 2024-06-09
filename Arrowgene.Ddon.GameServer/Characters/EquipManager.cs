@@ -304,6 +304,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipElementParamList = itemToEquip.EquipElementParamList
                 }
             });
+            
         }
+        // Searching if the input UID is in the equipped list.
+        public bool IsItemEquipped(CharacterCommon character, string itemUID)
+        {
+            foreach (var equipList in character.Equipment.GetAllEquipment().Values)
+            {
+                foreach (var itemList in equipList.Values)
+                {
+                    if (itemList != null)
+                    {
+                        foreach (var item in itemList)
+                        {
+                            if (item != null && item.UId == itemUID)
+                            {
+                                return true; // Found the item, return true
+                            }
+                        }
+                    }
+                }
+            }
+            return false; // Item not found
+        }
+        
     }
 }

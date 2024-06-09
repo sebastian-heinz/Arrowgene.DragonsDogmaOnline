@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Chat.Command.Commands;
 using System.Data.Entity;
 using Arrowgene.Ddon.Database.Sql;
+using System.Runtime.CompilerServices;
+using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -24,41 +26,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
         };
 
         private readonly ItemManager _itemManager;
+        private readonly EquipManager _equipManager;
         private readonly Random _random;
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
-            _itemManager = server.ItemManager;
+            _itemManager = Server.ItemManager;
+            _equipManager = Server.EquipManager;
             _random = new Random();
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
         {
+
+            Character common = client.Character;
+             
             string equipItemUID = packet.Structure.EquipItemUID;
-
-
-            // Finding the Recipe we need based on the requested UID.
-            uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID); 
-
-
-            // TODO: Get the type & slot properly, hardcoded for quick testing.
+            uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID); // Finding the Recipe we need based on the requested UID. 
+            ushort equipslot = 0;
+            byte equiptype = 0;
             uint charid = client.Character.CharacterId;
             uint pawnid = packet.Structure.CraftMainPawnID;
-            byte equiptype = 1; 
-            ushort equipslot =  1;
-            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
-            {
-                Unk0 = charid,
-                Unk1 = pawnid,
-                Unk2 = equiptype,
-                Unk3 = equipslot,
-            };
-            CDataCurrentEquipInfo cei = new CDataCurrentEquipInfo()
-            {
-                ItemUID = equipItemUID,
-                EquipSlot = EquipmentSlot
-            };
-
 
             // Getting access to the GradeUpRecipe JSON data.
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -89,7 +77,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: You require atleast 2 pieces of the same gear to complete the Enhance cycle properly, or you don't get the info box after completing and can't
             // enhance it again to the next stage, though you can relog and it will allow you to.
 
-
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
 
@@ -115,6 +102,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             // Made a list of all bronzesword IDs 
+            // This list should start from the next gradeup ID from the current, (if you're upgrading a 1674, the list should start as 2697.)
             uint firstid = 62;
             uint secondid = 1674;
             uint thirdid = 2697;
@@ -130,6 +118,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
 
+            // More dummy data
+            CDataCraftStartEquipGradeUpUnk0Unk0 internaldummydata = new CDataCraftStartEquipGradeUpUnk0Unk0()
+            {
+                Unk0 = 1,
+                Unk1 = 0,  
+                Unk2 = 0,
+                Unk3 = 0,
+                Unk4 = false,      
+            };
+
+            // Dummy data for Unk1.
+            CDataCraftStartEquipGradeUpUnk0 dummydata = new CDataCraftStartEquipGradeUpUnk0()
+            {
+                Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { internaldummydata },
+                Unk1 = 1,
+                Unk2 = 0,
+                Unk3 = 0,
+                Unk4 = false,
+            };
+            // TODO: Source these values accurately, believed to be equipped gear data? but theres way more info inside this so its hard to say.
+
             // Subtract less Gold if supportpawn is used.
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
             {
@@ -140,11 +149,52 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
-            // Exchange upgraded items
-            List<CDataItemUpdateResult> RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
-            List<CDataItemUpdateResult> AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
-            updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
-            updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
+            List<CDataItemUpdateResult> AddItemResult;
+            bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
+            if (isEquipped)
+            {
+                // Exchange upgraded items with equipped items
+
+                List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
+                    .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
+                    .ToList();
+
+            
+                var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
+
+                equipslot = equipInfo.EquipCategory;
+                equiptype = equipInfo.EquipType;
+
+                AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
+                Logger.Debug("Item was equipped, added upgraded items.");
+                return;
+            }
+            else
+            {
+                // Exchange upgraded items from Storages
+                List<CDataItemUpdateResult> RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
+                AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
+                updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
+                updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
+                Logger.Debug("Item was not equipped, added upgraded items from storage.");
+            };
+
+
+
+            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
+            {
+                Unk0 = charid,
+                Unk1 = pawnid,
+                Unk2 = equiptype, // type
+                Unk3 = equipslot, // slot
+            };
+            CDataCurrentEquipInfo cei = new CDataCurrentEquipInfo()
+            {
+                ItemUID = equipItemUID,
+                EquipSlot = EquipmentSlot
+            };
+
+
 
             // TODO: Check if the gear is equipped before Exchanging, if yes do it in the equipment instead.
 
@@ -153,14 +203,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 GradeUpItemUID = AddItemResult[0].ItemList.ItemUId, // Setting this to equipItemUID makes the results info box be accurate, but setting it to this stops upgrading multiple pieces.
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
-                //GradeUpItemIDList = dummygradeuplist, // This list is most likely inbetween the before & after IDs, due to points being broken it will always fill to max of what we give.
+                GradeUpItemIDList = dummygradeuplist, // This list should start with the next ID.
+                AddEquipPoint = addEquipPoint,              
                 TotalEquipPoint = currentTotalEquipPoint,
-                AddEquipPoint = addEquipPoint,
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
+                Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
+                CurrentEquip = cei, // Dummy current equip data, need to get the real slot/type at somepoint.               
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
                 Unk0 = true, // Unk0 being true says "Grade Up" when filling rather than "Grade Max", so we need to track when we hit max upgrade.
-                CurrentEquip = cei // Dummy current equip data, need to get the real slot/type at somepoint.
+                Unk1 = dummydata // Since nothing appears to happen this is probably related to equipped gradeup gear.
             };
             client.Send(res);
             client.Send(updateCharacterItemNtc);
