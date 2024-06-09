@@ -582,6 +582,25 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 2400  | 9     | Quest specified message OM (誘導５-- (クエスト指定メッセージOM))
 | MyQst     | 788   |       | Leo begins battle
 
+#### The Roars of A Thousand (q00000014)
+
+| Type      | Value | id/grp | Comment                                                    |
+|:---------:|:-----:|:------:|:-----------------------------------------------------------|
+| QstLayout | 1009  | st0200 | Spawns Gerd in the audience chamber
+| QstLayout | 1239  | st0200 | Spawns Heinz in the Audience Chamber
+| QstLayout | 1240  | st0200 | Spawns Vanessa in the Audience Chamber
+| QstLayout | 1107  | st0100 | Knight Corpse lying face down (騎士死体うつ伏せ)
+| QstLayout | 1010  | st0100 | Spawns White Knights, Heinz and Gerd
+| QstLayout | 1100  | st0100 | Spawns Heinz
+| QstLayout | 1257  | st0100 | Vessel of life (small) (命の器（小）)
+| QstLayout | 1621  | st0100 | Allied NPC - For advance squad (共闘NPC−先発部隊用) (first battle in hidell)
+| QstLayout | 1622  | st0100 | Gonghe NPC-For supporting troops (共闘NPC−支援部隊用) (second battle in hidell)
+| MyQst     | 624   |        | Starts NPC FSM for advance squad (flag 1621)
+| MyQst     | 600   |        | Stops NPC FSM for first battle and starts FSM for support groups (flag 1621 and 1622)
+| MyQst     | 723   |        | Stops NPC FSM for 1 of the supporting group NPCs (flag 1622)
+| MyQst     | 728   |        | Stops NPC FSM for 1 of the supporting group NPCs (flag 1622)
+| MyQst     | 208   |        | Starts NPC FSM for Heinz, Gerd and White Knights (flag 1010)
+
 #### World Manage Quest
 
 ##### q70000001

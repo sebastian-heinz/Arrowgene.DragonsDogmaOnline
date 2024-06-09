@@ -1,0 +1,368 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Roars of A Thousand",
+    "quest_id": 14,
+    "next_quest": 15,
+    "base_level": 41,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 8000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 6400
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 820
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9644,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9669,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9019,
+                    "num": 1
+                }
+            ]
+        }
+
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment" : "Orc Invader",
+                    "enemy_id": "0x015800",
+                    "level": 40,
+                    "exp": 3742,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "comment" : "Orc Invader",
+                    "enemy_id": "0x015800",
+                    "level": 40,
+                    "exp": 3742,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "comment" : "Orc Invader",
+                    "enemy_id": "0x015800",
+                    "level": 40,
+                    "exp": 3742,
+                    "named_enemy_params_id": 125
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment" : "Orc Invader",
+                    "enemy_id": "0x015800",
+                    "level": 40,
+                    "exp": 3742,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "comment" : "Orc Invader",
+                    "enemy_id": "0x015800",
+                    "level": 40,
+                    "exp": 3742,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "comment" : "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 41,
+                    "exp": 4200
+                },
+                {
+                    "comment" : "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 41,
+                    "exp": 4200
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 10
+            },
+            "enemies": [
+                {
+                    "comment" : "Orc Invader",
+                    "enemy_id": "0x015800",
+                    "level": 40,
+                    "exp": 3742,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "comment" : "Orc Invader",
+                    "enemy_id": "0x015800",
+                    "level": 40,
+                    "exp": 3742,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "comment" : "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 41,
+                    "exp": 4200
+                },
+                {
+                    "comment" : "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 41,
+                    "exp": 4200
+                },
+                {
+                    "comment" : "Orc Invader",
+                    "enemy_id": "0x015800",
+                    "level": 40,
+                    "exp": 3742,
+                    "named_enemy_params_id": 125
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 4
+            },
+            "starting_index": 2,
+            "enemies": [
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085000",
+                    "level": 40,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085001",
+                    "level": 40,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085002",
+                    "level": 40,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085003",
+                    "level": 40,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Captain Orc",
+                    "enemy_id": "0x085004",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Behemoth",
+                    "enemy_id": "0x015709",
+                    "level": 40,
+                    "exp": 3742
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
+                        {"type": "QstLayout", "action": "Set", "value": 1009, "comment": "Spawns Gerd in the Audience Chamber"},
+                        {"type": "QstLayout", "action": "Set", "value": 1239, "comment": "Spawns Heinz in the Audience Chamber"},
+                        {"type": "QstLayout", "action": "Set", "value": 1240, "comment": "Spawns Vanessa in the Audience Chamber"}
+                    ],
+                    "npc_id": "Gerd1",
+                    "message_id": 0
+                },
+                {
+                    "type": "PlayEvent",
+                    "announce_type": "Accept",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 50
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1621, "comment": "Spawns White Knights for battle1_00"},
+                        {"type": "MyQst", "action": "Set", "value": 624, "comment": "Starts White Knight FSM for battle1"}
+                    ],
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [],
+                    "reset_group": false,
+                    "groups": [0]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 600, "comment": "Starts White Knight FSM for other battles and stops fsm for battle1"},
+                        {"type": "QstLayout", "action": "Set", "value": 1622, "comment": "Spawns White Knights for other battles"}
+                    ],
+                    "set_flags": [1],
+                    "check_flags": [2, 3]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "MyQst", "action": "Clear", "value": 1, "comment": "Stops Process 1 and 2 from restarting from checkpoint"},
+                        {"type": "MyQst", "action": "Set", "value": 723, "comment": "Stops FSM for this group"},
+                        {"type": "MyQst", "action": "Set", "value": 728, "comment": "Stops FSM for this group"}
+                    ],
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "location": {
+                        "x": -126259,
+                        "y": 2969,
+                        "z": -91223
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1257, "comment": "Spawns the Vessel of life"},
+                        {"type": "QstLayout", "action": "Set", "value": 1010, "comment": "Spawns Heinz, Gerd and White Knights"}
+                    ],
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 45
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 208, "comment": "Starts NPC FSM for battle"}
+                    ],
+                    "groups": [3]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1257, "comment": "Spawns the Vessel of life"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1010, "comment": "Spawns Heinz, Gerd and White Knights"}
+
+
+                    ],
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 50
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "bgm_stop": true,
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 8044
+                }
+            ]
+        },
+        {
+            "comment": "Process1 (orc group 1)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [],
+                    "groups": [1]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 723, "comment": "Stops FSM for this group"}
+                    ],
+                    "set_flags": [2]
+                }
+            ]
+        },
+        {
+            "comment": "Process2 (orc group 2)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [],
+                    "groups": [2]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 728, "comment": "Stops FSM for this group"}
+                    ],
+                    "set_flags": [3]
+                }
+            ]
+        }
+    ]
+}
