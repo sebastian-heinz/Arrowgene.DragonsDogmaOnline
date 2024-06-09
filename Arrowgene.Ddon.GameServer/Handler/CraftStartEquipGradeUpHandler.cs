@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // More dummy data
             CDataCraftStartEquipGradeUpUnk0Unk0 internaldummydata = new CDataCraftStartEquipGradeUpUnk0Unk0()
             {
-                Unk0 = 1,
+                Unk0 = 0,
                 Unk1 = 0,  
                 Unk2 = 0,
                 Unk3 = 0,
@@ -132,7 +132,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftStartEquipGradeUpUnk0 dummydata = new CDataCraftStartEquipGradeUpUnk0()
             {
                 Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { internaldummydata },
-                Unk1 = 1,
+                Unk1 = 0,
                 Unk2 = 0,
                 Unk3 = 0,
                 Unk4 = false,
@@ -167,7 +167,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
                 Logger.Debug("Item was equipped, added upgraded items.");
-                return;
             }
             else
             {
@@ -193,6 +192,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ItemUID = equipItemUID,
                 EquipSlot = EquipmentSlot
             };
+            Logger.Debug($"Your info sir: charid: {cei.EquipSlot.Unk0}, pawnid {cei.EquipSlot.Unk1}, type {cei.EquipSlot.Unk2}, slot {cei.EquipSlot.Unk3}, thank you.");
 
 
 
@@ -203,7 +203,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 GradeUpItemUID = AddItemResult[0].ItemList.ItemUId, // Setting this to equipItemUID makes the results info box be accurate, but setting it to this stops upgrading multiple pieces.
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
-                GradeUpItemIDList = dummygradeuplist, // This list should start with the next ID.
+                //GradeUpItemIDList = dummygradeuplist, // This list should start with the next ID.
                 AddEquipPoint = addEquipPoint,              
                 TotalEquipPoint = currentTotalEquipPoint,
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
@@ -212,7 +212,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = cei, // Dummy current equip data, need to get the real slot/type at somepoint.               
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
                 Unk0 = true, // Unk0 being true says "Grade Up" when filling rather than "Grade Max", so we need to track when we hit max upgrade.
-                Unk1 = dummydata // Since nothing appears to happen this is probably related to equipped gradeup gear.
+                //Unk1 = dummydata // Since nothing appears to happen this is probably related to equipped gradeup gear.
             };
             client.Send(res);
             client.Send(updateCharacterItemNtc);
