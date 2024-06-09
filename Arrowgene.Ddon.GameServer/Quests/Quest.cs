@@ -139,13 +139,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
-            // Eliminate any announce steps that might be in the quest block when resuming a quest.
+            // Eliminate any announce or free item steps when resuming a quest.
             foreach (var processState in result)
             {
-                // Make a shallow copy of the result commands without annoucne and update
+                // Make a shallow copy of the result commands without announce and update
                 processState.ResultCommandList = processState.ResultCommandList
                     .Select(x => x)
-                    .Where(x => x.Command != (ushort)QuestResultCommand.UpdateAnnounce && x.Command != (ushort)QuestResultCommand.SetAnnounce)
+                    .Where(x => x.Command != (ushort)QuestResultCommand.UpdateAnnounce &&
+                                x.Command != (ushort)QuestResultCommand.SetAnnounce &&
+                                x.Command != (ushort)QuestResultCommand.HandItem &&
+                                x.Command != (ushort)QuestResultCommand.PushImteToPlBag)
                     .ToList();
             }
 

@@ -180,9 +180,8 @@ EventEnd(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0);
 
 ```
 /**
- * @brief Creates a glowing point where a party gathers to start some event.
- * Use the integer values of x, y, z from the /info commands to get the coordinates.
- * There is an equivalent CheckCommand which you can use to check if the party is here.
+ * @brief Checks to see if all members of the party are ready before proceding.
+ * There is an equivalent ResultCommand which spawns this point.
  * @param stageNo
  * @param x
  * @param y
@@ -2066,84 +2065,134 @@ IsLinkageEnemyFlagOff(StageNo stageNo, int groupNo, int setNo, int flagNo);
 IsReleaseSecretRoom(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 ```
 
-### Result Commands
+## Result Commands
 
-```c
+### LotOn
+
+```
 /**
  * @brief
  * @param stageNo
  * @param lotNo
  */
 LotOn(StageNo stageNo, int lotNo, int param03 = 0, int param04 = 0);
+```
 
+### LotOff
+
+```
 /**
  * @brief
  * @param stageNo
  * @param lotNo
  */
 LotOff(StageNo stageNo, int lotNo, int param03 = 0, int param04 = 0);
+```
 
+### HandItem
+
+```
 /**
  * @brief
  * @param itemId
  * @param itemNum
  */
 HandItem(int itemId, int itemNum, int param03 = 0, int param04 = 0);
+```
 
+### SetAnnounce
+
+```
 /**
  * @brief
  * @param announceType
  * @param announceSubtype Some announce commands like accept use this parameter to distinguish between distinguish between "discovered (0)" and "accept (1)" banner.
  */
 SetAnnounce(QuestAnnounceType announceType, int announceSubtype = 0, int param03 = 0, int param04 = 0);
+```
 
+### UpdateAnnounce
+
+```
 /**
  * @brief
  * @param type
  */
 UpdateAnnounce(QuestAnnounceType announceType = QuestAnnounceType.Accept, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ChangeMessage
+
+```
 /**
  * @brief
  */
 ChangeMessage(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### QstFlagOn
+
+```
 /**
  * @brief
  */
 QstFlagOn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### MyQstFlagOn
+
+```
 /**
  * @brief
  * @param flagNo
  */
 MyQstFlagOn(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### GlobalFlagOn
+
+```
 /**
  * @brief
  */
 GlobalFlagOn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### QstTalkChg
+
+```
 /**
  * @brief
  * @param npcId
  * @param msgNo
  */
 QstTalkChg(NpcId npcId, int msgNo, int param03 = 0, int param04 = 0);
+```
 
+### QstTalkDel
+
+```
 /**
  * @brief
  * @param npcId
  */
 QstTalkDel(NpcId npcId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### StageJump
+
+```
 /**
  * @brief
  * @param stageNo
  * @param startPos
  */
 StageJump(StageNo stageNo, int startPos, int param03 = 0, int param04 = 0);
+```
 
+### EventExec
+
+```
 /**
  * @brief
  * @param stageNo
@@ -2152,66 +2201,110 @@ StageJump(StageNo stageNo, int startPos, int param03 = 0, int param04 = 0);
  * @param jumpStartPosNo
  */
 EventExec(StageNo stageNo, int eventNo, StageNo jumpStageNo, int jumpStartPosNo);
+```
 
+### CallMessage
+
+```
 /**
  * @brief
  */
 CallMessage(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### Prt
+
+```
 /**
- * @brief
+ * @brief Creates a glowing point where a party gathers to start some event.
+ * Use the integer values of x, y, z from the /info commands to get the coordinates.
+ * There is an equivalent CheckCommand which you can use to check if the party is here.
  * @param stageNo
  * @param x
  * @param y
  * @param z
  */
 Prt(StageNo stageNo, int x, int y, int z);
+```
 
+### QstLayoutFlagOn
+
+```
 /**
  * @brief
  * @param flagNo
  */
 QstLayoutFlagOn(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### QstLayoutFlagOff
+
+```
 /**
  * @brief
  * @param flagNo
  */
 QstLayoutFlagOff(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### QstSceFlagOn
+
+```
 /**
  * @brief
  */
 QstSceFlagOn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### QstDogmaOrb
+
+```
 /**
  * @brief
  * @param orbNum
  */
 QstDogmaOrb(int orbNum, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### GotoMainPwanEdit
+
+```
 /**
  * @brief
  */
 GotoMainPwanEdit(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### AddFsmNpcList
+
+```
 /**
  * @brief
  * @param npcId
  */
 AddFsmNpcList(NpcId npcId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### EndCycle
+
+```
 /**
  * @brief
  */
 EndCycle(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### AddCycleTimer
+```
 /**
  * @brief
  * @param sec
  */
 AddCycleTimer(int sec, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### AddMarkerAtItem
+```
 /**
  * @brief
  * @param stageNo
@@ -2220,7 +2313,10 @@ AddCycleTimer(int sec, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param z
  */
 AddMarkerAtItem(StageNo stageNo, int x, int y, int z);
+```
 
+### AddMarkerAtDest
+```
 /**
  * @brief
  * @param stageNo
@@ -2229,27 +2325,39 @@ AddMarkerAtItem(StageNo stageNo, int x, int y, int z);
  * @param z
  */
 AddMarkerAtDest(StageNo stageNo, int x, int y, int z);
+```
 
+### AddResultPoint
+```
 /**
  * @brief
  * @param tableIndex
  */
 AddResultPoint(int tableIndex, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PushImteToPlBag
+```
 /**
  * @brief
  * @param itemId
  * @param itemNum
  */
 PushImteToPlBag(int itemId, int itemNum, int param03 = 0, int param04 = 0);
+```
 
+### StartTimer
+```
 /**
  * @brief
  * @param timerNo
  * @param sec
  */
 StartTimer(int timerNo, int sec, int param03 = 0, int param04 = 0);
+```
 
+### SetRandom
+```
 /**
  * @brief
  * @param randomNo
@@ -2258,25 +2366,37 @@ StartTimer(int timerNo, int sec, int param03 = 0, int param04 = 0);
  * @param resultValue
  */
 SetRandom(int randomNo, int minValue, int maxValue, int resultValue);
+```
 
+### ResetRandom
+```
 /**
  * @brief
  * @param randomNo
  */
 ResetRandom(int randomNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### BgmRequest
+```
 /**
  * @brief
  * @param type
  * @param bgmId
  */
 BgmRequest(int type, int bgmId, int param03 = 0, int param04 = 0);
+```
 
+### BgmStop
+```
 /**
  * @brief
  */
 BgmStop(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### SetWaypoint
+```
 /**
  * @brief
  * @param npcId
@@ -2285,110 +2405,164 @@ BgmStop(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
  * @param waypointNo2
  */
 SetWaypoint(NpcId npcId, int waypointNo0, int waypointNo1, int waypointNo2);
+```
 
+### ForceTalkQuest
+```
 /**
  * @brief
  * @param npcId
  * @param groupSerial
  */
 ForceTalkQuest(NpcId npcId, int groupSerial, int param03 = 0, int param04 = 0);
+```
 
+### TutorialDialog
+```
 /**
  * @brief
  * @param guideNo
  */
 TutorialDialog(int guideNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### AddKeyItemPoint
+```
 /**
  * @brief
  * @param keyItemIdx
  * @param pointNum
  */
 AddKeyItemPoint(int keyItemIdx, int pointNum, int param03 = 0, int param04 = 0);
+```
 
+### DontSaveProcess
+```
 /**
  * @brief
  */
 DontSaveProcess(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### InterruptCycleContents
+```
 /**
  * @brief
  */
 InterruptCycleContents(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### QuestEvaluationPoint
+```
 /**
  * @brief
  * @param point
  */
 QuestEvaluationPoint(int point, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### CheckOrderCondition
+```
 /**
  * @brief
  */
 CheckOrderCondition(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### WorldManageLayoutFlagOn
+```
 /**
  * @brief
  * @param flagNo
  * @param questId
  */
 WorldManageLayoutFlagOn(int flagNo, int questId, int param03 = 0, int param04 = 0);
+```
 
+### WorldManageLayoutFlagOff
+```
 /**
  * @brief
  * @param flagNo
  * @param questId
  */
 WorldManageLayoutFlagOff(int flagNo, int questId, int param03 = 0, int param04 = 0);
+```
 
+### PlayEndingForFirstSeason
+```
 /**
  * @brief
  */
 PlayEndingForFirstSeason(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### AddCyclePurpose
+```
 /**
  * @brief
  * @param announceNo
  * @param type
  */
 AddCyclePurpose(int announceNo, int type, int param03 = 0, int param04 = 0);
+```
 
+### RemoveCyclePurpose
+```
 /**
  * @brief
  * @param announceNo
  */
 RemoveCyclePurpose(int announceNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### UpdateAnnounceDirect
+```
 /**
  * @brief
  * @param announceNo
  * @param type
  */
 UpdateAnnounceDirect(int announceNo, int type, int param03 = 0, int param04 = 0);
+```
 
+### SetCheckPoint
+```
 /**
  * @brief
  */
 SetCheckPoint(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ReturnCheckPoint
+```
 /**
  * @brief
  * @param processNo
  */
 ReturnCheckPoint(int processNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### CallGeneralAnnounce
+```
 /**
  * @brief
  * @param type
  * @param msgNo
  */
 CallGeneralAnnounce(int type, int msgNo, int param03 = 0, int param04 = 0);
+```
 
+### TutorialEnemyInvincibleOff
+```
 /**
  * @brief
  */
 TutorialEnemyInvincibleOff(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### SetDiePlayerReturnPos
+```
 /**
  * @brief
  * @param stageNo
@@ -2396,117 +2570,178 @@ TutorialEnemyInvincibleOff(int param01 = 0, int param02 = 0, int param03 = 0, in
  * @param outSceNo
  */
 SetDiePlayerReturnPos(StageNo stageNo, int startPos, int outSceNo, int param04 = 0);
+```
 
+### WorldManageQuestFlagOn
+```
 /**
  * @brief
  * @param flagNo
  * @param questId
  */
 WorldManageQuestFlagOn(int flagNo, int questId, int param03 = 0, int param04 = 0);
+```
 
+### WorldManageQuestFlagOff
+```
 /**
  * @brief
  * @param flagNo
  * @param questId
  */
 WorldManageQuestFlagOff(int flagNo, int questId, int param03 = 0, int param04 = 0);
+```
 
+### ReturnCheckPointEx
+```
 /**
  * @brief
  * @param processNo
  */
 ReturnCheckPointEx(int processNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ResetCheckPoint
+```
 /**
  * @brief
  */
 ResetCheckPoint(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ResetDiePlayerReturnPos
+```
 /**
  * @brief
  * @param stageNo
  * @param startPos
  */
 ResetDiePlayerReturnPos(StageNo stageNo, int startPos, int param03 = 0, int param04 = 0);
+```
 
+### SetBarricade
+```
 /**
  * @brief
  */
 SetBarricade(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ResetBarricade
+```
 /**
  * @brief
  */
 ResetBarricade(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### TutorialEnemyInvincibleOn
+```
 /**
  * @brief
  */
 TutorialEnemyInvincibleOn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ResetTutorialFlag
+```
 /**
  * @brief
  */
 ResetTutorialFlag(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### StartContentsTimer
+```
 /**
  * @brief
  */
 StartContentsTimer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### MyQstFlagOff
+```
 /**
  * @brief
  * @param flagNo
  */
 MyQstFlagOff(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PlayCameraEvent
+```
 /**
- * @brief
+ * @brief Plays quicktime events defined in the `stage/<stid>/<stid>/scr/<stid>/fsm/<stid>ev<eventid>.fsm.json files.
+ * @note These events will only play if they are triggered when you are in the same StageNo.
  * @param stageNo
  * @param eventNo
  */
 PlayCameraEvent(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0);
+```
 
+### EndEndQuest
+```
 /**
  * @brief
  */
 EndEndQuest(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ReturnAnnounce
+```
 /**
  * @brief
  */
 ReturnAnnounce(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### AddEndContentsPurpose
+```
 /**
  * @brief
  * @param announceNo
  * @param type
  */
 AddEndContentsPurpose(int announceNo, int type, int param03 = 0, int param04 = 0);
+```
 
+### RemoveEndContentsPurpose
+```
 /**
  * @brief
  * @param announceNo
  */
 RemoveEndContentsPurpose(int announceNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### StopCycleTimer
+```
 /**
  * @brief
  */
 StopCycleTimer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### RestartCycleTimer
+```
 /**
  * @brief
  */
 RestartCycleTimer(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### AddAreaPoint
+```
 /**
  * @brief
  * @param AreaId
  * @param AddPoint
  */
 AddAreaPoint(int AreaId, int AddPoint, int param03 = 0, int param04 = 0);
+```
 
+### LayoutFlagRandomOn
+```
 /**
  * @brief
  * @param FlanNo1
@@ -2515,7 +2750,10 @@ AddAreaPoint(int AreaId, int AddPoint, int param03 = 0, int param04 = 0);
  * @param ResultNo
  */
 LayoutFlagRandomOn(int FlanNo1, int FlanNo2, int FlanNo3, int ResultNo);
+```
 
+### SetDeliverInfo
+```
 /**
  * @brief
  * @param stageNo
@@ -2523,7 +2761,10 @@ LayoutFlagRandomOn(int FlanNo1, int FlanNo2, int FlanNo3, int ResultNo);
  * @param groupSerial
  */
 SetDeliverInfo(StageNo stageNo, NpcId npcId, int groupSerial, int param04 = 0);
+```
 
+### SetDeliverInfoQuest
+```
 /**
  * @brief
  * @param stageNo
@@ -2532,14 +2773,20 @@ SetDeliverInfo(StageNo stageNo, NpcId npcId, int groupSerial, int param04 = 0);
  * @param groupSerial
  */
 SetDeliverInfoQuest(StageNo stageNo, int groupNo, int setNo, int groupSerial);
+```
 
+### BgmRequestFix
+```
 /**
  * @brief
  * @param type
  * @param bgmId
  */
 BgmRequestFix(int type, int bgmId, int param03 = 0, int param04 = 0);
+```
 
+### EventExecCont
+```
 /**
  * @brief
  * @param stageNo
@@ -2548,57 +2795,87 @@ BgmRequestFix(int type, int bgmId, int param03 = 0, int param04 = 0);
  * @param jumpStartPosNo
  */
 EventExecCont(StageNo stageNo, int eventNo, int jumpStageNo, int jumpStartPosNo);
+```
 
+### PlPadOff
+```
 /**
  * @brief
  */
 PlPadOff(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### PlPadOn
+```
 /**
  * @brief
  */
 PlPadOn(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### EnableGetSetQuestList
+```
 /**
  * @brief
  */
 EnableGetSetQuestList(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### StartMissionAnnounce
+```
 /**
  * @brief
  */
 StartMissionAnnounce(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### StageAnnounce
+```
 /**
  * @brief
  * @param type
  * @param num
  */
 StageAnnounce(int type, int num, int param03 = 0, int param04 = 0);
+```
 
+### ReleaseAnnounce
+```
 /**
  * @brief
  * @param id
  */
 ReleaseAnnounce(int id, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ButtonGuideFlagOn
+```
 /**
  * @brief
  * @param buttonGuideNo
  */
 ButtonGuideFlagOn(int buttonGuideNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ButtonGuideFlagOff
+```
 /**
  * @brief
  * @param buttonGuideNo
  */
 ButtonGuideFlagOff(int buttonGuideNo, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### AreaJumpFadeContinue
+```
 /**
  * @brief
  */
 AreaJumpFadeContinue(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ExeEventAfterStageJump
+```
 /**
  * @brief
  * @param stageNo
@@ -2606,7 +2883,10 @@ AreaJumpFadeContinue(int param01 = 0, int param02 = 0, int param03 = 0, int para
  * @param startPos
  */
 ExeEventAfterStageJump(StageNo stageNo, int eventNo, int startPos, int param04 = 0);
+```
 
+### ExeEventAfterStageJumpContinue
+```
 /**
  * @brief
  * @param stageNo
@@ -2614,64 +2894,97 @@ ExeEventAfterStageJump(StageNo stageNo, int eventNo, int startPos, int param04 =
  * @param startPos
  */
 ExeEventAfterStageJumpContinue(StageNo stageNo, int eventNo, int startPos, int param04 = 0);
+```
 
+### PlayMessage
+```
 /**
  * @brief
  * @param groupNo
  * @param waitTime
  */
 PlayMessage(int groupNo, int waitTime, int param03 = 0, int param04 = 0);
+```
 
+### StopMessage
+```
 /**
  * @brief
  */
 StopMessage(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### DecideDivideArea
+```
 /**
  * @brief
  * @param stageNo
  * @param startPosNo
  */
 DecideDivideArea(StageNo stageNo, int startPosNo, int param03 = 0, int param04 = 0);
+```
 
+### ShiftPhase
+```
 /**
  * @brief
  * @param phaseId
  */
 ShiftPhase(int phaseId, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### ReleaseMyRoom
+```
 /**
  * @brief
  */
 ReleaseMyRoom(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### DivideSuccess
+```
 /**
  * @brief
  */
 DivideSuccess(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### DivideFailed
+```
 /**
  * @brief
  */
 DivideFailed(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### SetProgressBonus
+```
 /**
  * @brief
  * @param rewardRank
  */
 SetProgressBonus(int rewardRank, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### RefreshOmKeyDisp
+```
 /**
  * @brief
  */
 RefreshOmKeyDisp(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### SwitchPawnQuestTalk
+```
 /**
  * @brief
  * @param type
  */
 SwitchPawnQuestTalk(int type, int param02 = 0, int param03 = 0, int param04 = 0);
+```
 
+### LinkageEnemyFlagOn
+```
 /**
  * @brief
  * @param stageNo
@@ -2680,7 +2993,10 @@ SwitchPawnQuestTalk(int type, int param02 = 0, int param03 = 0, int param04 = 0)
  * @param flagId
  */
 LinkageEnemyFlagOn(StageNo stageNo, int groupNo, int setNo, int flagId);
+```
 
+### LinkageEnemyFlagOff
+```
 /**
  * @brief
  * @param stageNo

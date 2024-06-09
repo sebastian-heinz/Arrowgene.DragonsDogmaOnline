@@ -33,7 +33,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public bool ShowMarker { get; set; }
         public bool ResetGroup { get; set; }
         public List<uint> EnemyGroupIds { get; set; }
-        public List<QuestDeliveryItem> DeliveryRequests { get; set; }
+        public List<QuestItem> DeliveryRequests { get; set; }
+        public List<QuestItem> HandPlayerItems {  get; set; }
         public List<QuestNpcOrder> NpcOrderDetails { get; set; }
         public QuestOrder QuestOrderDetails { get; set; }
 
@@ -46,7 +47,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public QuestBlock()
         {
             NpcOrderDetails = new List<QuestNpcOrder>();
-            DeliveryRequests = new List<QuestDeliveryItem>();
+            DeliveryRequests = new List<QuestItem>();
+            HandPlayerItems = new List<QuestItem>();
             QuestProcessState = new CDataQuestProcessState();
 
             QuestFlags = new List<QuestFlag>();
