@@ -55,7 +55,7 @@ There exists an implementation of the following main story quests.
 | Quest Name | Comment |
 |:----------:|:-------:|
 | [The Girl Clad in Darkness](https://ddonline.tumblr.com/post/131221518489/mq-the-girl-clad-in-darkness) | Mayleaf still present in shopping district when should not be. Skips step where player needs to complete a world quest in Mysree Grove.
-| [The Stolen Heart](https://ddonline.tumblr.com/post/131318384484/mq-the-stolen-heart)  | Not implemented.
+| [The Stolen Heart](https://ddonline.tumblr.com/post/131318384484/mq-the-stolen-heart)  | Key gimick not working exactly as original. One of the quest markers spawns in a different place than in video (was it moved in a patch?).
 | [The Roars of A Thousand](https://ddonline.tumblr.com/post/131415639659/mq-the-roars-of-a-thousand) | Not implemented.
 | [Return to Yore](https://ddonline.tumblr.com/post/132128346939/mq-return-to-yore) | Not implemented.
 | [A Friendly Visit](https://ddonline.tumblr.com/post/132718212509/mq-a-friends-visit) | Not implemented.

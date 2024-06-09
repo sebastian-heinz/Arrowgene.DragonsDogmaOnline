@@ -1,0 +1,348 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Stolen Heart",
+    "quest_id": 13,
+    "next_quest": 0,
+    "base_level": 40,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 7000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 6000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 780
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9579,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 987,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8748,
+                    "num": 1
+                }
+            ]
+        }
+
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 74,
+                "group_id": 8
+            },
+            "enemies": [
+                {
+                    "comment" : "???",
+                    "enemy_id": "0x011043",
+                    "level": 40,
+                    "exp": 3742,
+                    "hm_present_no": 86,
+                    "named_enemy_params_id": 2298,
+                    "is_boss_bgm": true
+                },
+                {
+                    "comment" : "Witch",
+                    "enemy_id": "0x015604",
+                    "level": 40,
+                    "exp": 3742,
+                    "is_boss_bgm": true
+                },
+                {
+                    "comment" : "Alchemized Goblin",
+                    "enemy_id": "0x011120",
+                    "level": 40,
+                    "exp": 3742,
+                    "is_boss_bgm": true
+                },
+                {
+                    "comment" : "Alchemized Goblin",
+                    "enemy_id": "0x011120",
+                    "level": 40,
+                    "exp": 3742,
+                    "is_boss_bgm": true
+                },
+                {
+                    "comment" : "Alchemized Goblin",
+                    "enemy_id": "0x011120",
+                    "level": 40,
+                    "exp": 3742,
+                    "is_boss_bgm": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
+
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1112, "quest_id": 70000001, "comment": "Open Water Flow Control Door"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1672, "quest_id": 70000001, "comment": "Open Lever Door  (Stone Door, middle)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1111, "quest_id": 70000001, "comment": "Closed Water Flow Control Door"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1671, "quest_id": 70000001, "comment": "Closed Lever Door (Stone Door, middle)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1317, "quest_id": 70000001, "comment": "Waterfalls"}
+                    ],
+                    "npc_id": "Klaus0",
+                    "message_id": 0
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Accept",
+                    "checkpoint": true,
+                    "flags": [],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "location": {
+                        "x": -136,
+                        "y": 9164,
+                        "z": -474
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 45
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 7936
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 66
+                    },
+                    "npc_id": "Scherzo",
+                    "message_id": 14860
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [],
+                    "stage_id": {
+                        "id": 74
+                    }
+                },
+                {
+                    "type": "CollectItem",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2396, "comment": "First Examination Point"}
+                    ],
+                    "stage_id": {
+                        "id": 74,
+                        "group_id": 5
+                    },
+                    "layout_flags_on": []
+                },
+                {
+                    "type": "CollectItem",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2397, "comment": "Second Examination Point"}
+                    ],
+                    "stage_id": {
+                        "id": 74,
+                        "group_id": 6
+                    }
+                },
+                {
+                    "type": "CollectItem",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2398, "comment": "Third Examination Point"}
+                    ],
+                    "stage_id": {
+                        "id": 74,
+                        "group_id": 7
+                    }
+                },
+                {
+                    "type": "CollectItem",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2399, "comment": "Fourth Examination Point"}
+                    ],
+                    "stage_id": {
+                        "id": 74,
+                        "group_id": 8
+                    }
+                },
+                {
+                    "type": "CollectItem",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2400, "comment": "Fifth Examination Point"}
+                    ],
+                    "stage_id": {
+                        "id": 74,
+                        "group_id": 9
+                    }
+                },
+                {
+                    "type": "PartyGather",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "comment": "Activate the waterflow lever",
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1111, "quest_id": 70000001, "comment": "Closed Water Flow Control Door"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1112, "quest_id": 70000001, "comment": "Open Water Flow Control Door"}
+                    ],
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "location": {
+                        "x": -1,
+                        "y": 2191,
+                        "z": -23455
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1317, "quest_id": 70000001, "comment": "Waterfalls"}
+                    ],
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "event_id": 90
+                },
+                {
+                    "type": "PartyGather",
+                    "checkpoint": true,
+                    "comment": "Gather for the battle",
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1671, "quest_id": 70000001, "comment": "Closed Lever Door (Stone Door, middle)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1672, "quest_id": 70000001, "comment": "Open Lever Door  (Stone Door, middle)"}
+                    ],
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "location": {
+                        "x": -44,
+                        "y": -1666,
+                        "z": -28094
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1008, "comment": "Spawn Leo for battle"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1317, "quest_id": 70000001, "comment": "Respawn Waterfall to block exit"}
+                    ],
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 788, "comment": "Makes Leo fight"}
+                    ],
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1008, "comment": "Remove Leo"}
+                    ],
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "event_id": 10
+                },
+                {
+                    "type": "PartyGather",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "comment": "Gather outside the temple",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "location": {
+                        "x": -45018,
+                        "y": 7183,
+                        "z": -174769
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 40
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 7952
+                }
+            ]
+        }
+    ]
+}

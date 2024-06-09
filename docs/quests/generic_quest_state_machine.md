@@ -567,6 +567,21 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 1315  | Boss Room Locked Wooden Door (for boss fight)
 | QstLayout | 913   | Boss Room Locked Gate (for boss fight)
 
+#### The Stolen Heart (q00000013)
+
+| Type      | Value |GroupNo| Comment                                                    |
+|:---------:|:-----:|:-----:|:-----------------------------------------------------------|
+| QstLayout | 902   | 1     | General purpose glitter for research (汎用キラキラポイント（調べる用)
+| QstLayout | 914   | 2     | Template of purification gimmick gimmick (ミソギの滝ギミック)
+| QstLayout | 1007  | 3     | Boss Door barrier??
+| QstLayout | 1008  | 4     | Spawns Leo at the boss fight
+| QstLayout | 2396  | 5     | Quest specified message OM (誘導１ -- (クエスト指定メッセージOM))
+| QstLayout | 2397  | 6     | Quest specified message OM (誘導２-- (クエスト指定メッセージOM))
+| QstLayout | 2398  | 7     | Quest specified message OM (誘導３-- (クエスト指定メッセージOM))
+| QstLayout | 2399  | 8     | Quest specified message OM (誘導４-- (クエスト指定メッセージOM))
+| QstLayout | 2400  | 9     | Quest specified message OM (誘導５-- (クエスト指定メッセージOM))
+| MyQst     | 788   |       | Leo begins battle
+
 #### World Manage Quest
 
 ##### q70000001
@@ -574,11 +589,19 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | Type              | StageNo | Value  | Comment
 |:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
 | WorldManageLayout | st0100  | 977    | Spawns Gerd and the White Knights outside 
+|
 | WorldManageLayout | st0201  | 1218   | Spawns Leo in the audience chamber
 | WorldManageLayout | st0201  | 1219   | Spawns Iris in the audience chamber
 | WorldManageLayout | st0201  | 1293   | Spawns The White Dragon in the audience chamber in the most injured state
+|
 | WorldManageLayout | st0403  | 1109   | Locks the double doors to the Chapel at (x:51,y:89)
 | WorldManageLayout | st0403  | 1110   | Unlocks the double doors to the Chapel at (x:51,y:89)
+|
+| WorldManageLayout | st0408  | 1111   | Closed Water Flow Control Room Door
+| WorldManageLayout | st0408  | 1112   | Open Water Flow Control Room Door
+| WorldManageLayout | st0408  | 1317   | Water Falls Gimick
+| WorldManageLayout | st0408  | 1671   | Closed Lever Door (Stone Door, middle)
+| WorldManageLayout | st0408  | 1672   | Open Lever Door  (Stone Door, middle)
 
 ##### q70032001
 
