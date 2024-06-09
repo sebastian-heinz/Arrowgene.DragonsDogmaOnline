@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "The God’s Awakening",
     "quest_id": 11,
-    "next_quest": 0,
+    "next_quest": 12,
     "base_level": 35,
     "minimum_item_rank": 0,
     "discoverable": true,
