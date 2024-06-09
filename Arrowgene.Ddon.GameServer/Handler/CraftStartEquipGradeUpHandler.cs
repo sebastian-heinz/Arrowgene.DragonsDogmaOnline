@@ -177,16 +177,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
-                bool isBoxItem = RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
+                bool isBagItem = RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
                                                                 result.ItemList.StorageType == StorageType.StorageBoxExpansion);
-                AddItemResult = _itemManager.AddItem(Server, client.Character, isBoxItem, gearupgradeID, 1 * 1);
+                AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1 * 1);
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
 
                 var addedStorageTypes = GetStorageTypes(AddItemResult);
                 foreach (var storageType in addedStorageTypes)
                 {
-                    Logger.Debug($"Added item in storage type: {storageType}, and your bool is- {isBoxItem}");
+                    Logger.Debug($"Added item in storage type: {storageType}, and your bool is- {isBagItem}");
                 }
             };
 
