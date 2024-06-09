@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Mq030260_HopesBitterEnd));
 
-        public Mq030260_HopesBitterEnd() : base(QuestId.HopesBitterEnd, QuestType.Main)
+        public Mq030260_HopesBitterEnd() : base(QuestId.HopesBitterEnd, QuestId.HopesBitterEnd, QuestType.Main)
         {
         }
 
@@ -95,12 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             }
         }
 
-        public override CDataQuestOrderList ToCDataQuestOrderList()
-        {
-            return null;
-        }
-
-        public override CDataQuestList ToCDataQuestList()
+        public override CDataQuestList ToCDataQuestList(uint step = 0)
         {
             var quest = new CDataQuestList();
             quest.KeyId = (uint) QuestId;
@@ -278,7 +273,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             return quest;
         }
 
-        public override List<CDataQuestProcessState> StateMachineExecute(QuestProcessState processState, out QuestProgressState questProgressState)
+        public override List<CDataQuestProcessState> StateMachineExecute(GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
         {
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 

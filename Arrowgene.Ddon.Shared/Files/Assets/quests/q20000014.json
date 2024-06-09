@@ -43,7 +43,7 @@
                 "group_id": 1
             },
             "npc_id": "Mayleaf0",
-            "message_id": 223
+            "message_id": 11370
         },
         {
             "type": "DeliverItems",
@@ -59,7 +59,7 @@
                     "amount": 1
                 }
             ],
-            "message_id": 958
+            "message_id": 11826
         }
     ]
 }

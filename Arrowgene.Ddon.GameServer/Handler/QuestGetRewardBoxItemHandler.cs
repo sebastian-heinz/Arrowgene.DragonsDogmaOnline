@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 else
                 {
-                    var result = Server.ItemManager.AddItem(Server, client.Character, StorageType.StorageBoxNormal, reward.ItemId, reward.Num);
+                    var result = Server.ItemManager.AddItem(Server, client.Character, false, reward.ItemId, reward.Num);
                     updateCharacterItemNtc.UpdateItemList.AddRange(result);
                 }
             }

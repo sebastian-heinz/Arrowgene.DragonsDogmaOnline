@@ -97,7 +97,7 @@
                 "group_id": 0
             },
             "npc_id": "Eterna",
-            "message_id": 216
+            "message_id": 10980
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
@@ -127,7 +127,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Eterna",
-            "message_id": 216
+            "message_id": 10983
         }
     ]
 }

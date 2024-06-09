@@ -26,30 +26,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.QuestScheduleId = packet.Structure.QuestScheduleId;
             res.QuestProgressResult = 0;
 
-            Logger.Debug($"KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
-
             var partyQuestState = client.Party.QuestState;
 
             ushort processNo = packet.Structure.ProcessNo;
             QuestId questId = (QuestId) packet.Structure.QuestScheduleId;
 
+            Logger.Debug($"QuestId={questId}, KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
+
             if (!partyQuestState.HasQuest(questId))
             {
-                // Hack for making the random quests from static packets go away
-                List<CDataQuestCommand> ResultCommandList = new List<CDataQuestCommand>();
-                ResultCommandList.Add(new CDataQuestCommand()
-                {
-                    Command = (ushort)QuestCommandCheckType.IsEndTimer,
-                    Param01 = 0x173
-                });
-
-                res.QuestScheduleId = 0x32f00;
+                // Tell the quest state machine that for these static quest packets
+                // these processes are terminated
                 res.QuestProcessState.Add(new CDataQuestProcessState()
                 {
-                    ProcessNo = 0x1b,
+                    ProcessNo = processNo,
                     SequenceNo = 0x1,
-                    BlockNo = 0x2,
-                    ResultCommandList = ResultCommandList
+                    BlockNo = 0xffff,
                 });
             }
             else
@@ -57,9 +49,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var processState = partyQuestState.GetProcessState(questId, processNo);
                 
                 var quest = QuestManager.GetQuest(questId);
-                res.QuestProcessState = quest.StateMachineExecute(processState, out questProgressState);
+                res.QuestProcessState = quest.StateMachineExecute(client, processState, out questProgressState);
 
                 partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
+
+                if (questProgressState == QuestProgressState.Checkpoint)
+                {
+                    var leaderCommonId = client.Party.Leader.Client.Character.CommonId;
+
+                    var questState = client.Party.QuestState.GetQuestState(quest);
+                    questState.Step += 1;
+
+                    Server.Database.UpdateQuestProgress(leaderCommonId, quest.QuestId, quest.QuestType, questState.Step);
+                }
+
 
                 if (questProgressState == QuestProgressState.Complete)
                 {
@@ -67,10 +70,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
                     {
-                        QuestScheduleId = (uint) questId,
+                        QuestScheduleId = (uint)questId,
                         RandomRewardNum = quest.RandomRewardNum(),
                         ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
-                        ProgressBonusNum = quest.FixedRewardsNum(),
+                        ProgressBonusNum = quest.RewardParams.ProgressBonusNum,
                         IsRepeatReward = quest.RewardParams.IsRepeatReward,
                         IsUndiscoveredReward = quest.RewardParams.IsUndiscoveredReward,
                         IsHelpReward = quest.RewardParams.IsHelpReward,
@@ -89,6 +92,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     // Remove the quest data from the party object
                     partyQuestState.CompleteQuest(questId);
+
+                    if (quest.QuestType == QuestType.Main)
+                    {
+                        var leaderCommonId = client.Party.Leader.Client.Character.CommonId;
+                        // TODO: Eventually handle all types of quests and for all members
+                        Server.Database.RemoveQuestProgress(leaderCommonId, quest.QuestId, quest.QuestType);
+                        if (quest.NextQuestId != QuestId.None)
+                        {
+                            var nextQuest = QuestManager.GetQuest(quest.NextQuestId);
+                            Server.Database.InsertQuestProgress(leaderCommonId, nextQuest.QuestId, nextQuest.QuestType, 0);
+                        }
+
+                        Server.Database.InsertIfNotExistCompletedQuest(leaderCommonId, quest.QuestId, quest.QuestType);
+                    }
+
+                    if (quest.ResetPlayerAfterQuest)
+                    {
+                        foreach (var memberClient in client.Party.Clients)
+                        {
+                            Server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
+                        }
+                    }
                 }
 
                 if (res.QuestProcessState.Count > 0)

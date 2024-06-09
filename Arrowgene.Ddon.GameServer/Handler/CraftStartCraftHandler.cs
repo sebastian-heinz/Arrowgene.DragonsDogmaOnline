@@ -16,16 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
 
-        private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
-            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
-        };
-
-        private readonly ItemManager _itemManager;
-
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
-            _itemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartCraftReq> packet)
@@ -51,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 try
                 {
-                    List<CDataItemUpdateResult> updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
                 catch (NotEnoughItemsException e)
@@ -82,7 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             // Add crafted items
-            List<CDataItemUpdateResult> itemUpdateResult = _itemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num);
+            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num);
             updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);
 
             client.Send(updateCharacterItemNtc);

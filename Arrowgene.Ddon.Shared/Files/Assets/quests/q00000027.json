@@ -1,0 +1,122 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Goblin King",
+    "quest_id": 27,
+    "next_quest": 7,
+    "base_level": 21,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 3600
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 420
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9649,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8833,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8966,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 174
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015200",
+                    "level": 21,
+                    "exp": 1771,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
+            ],
+            "npc_id": "Leo0",
+            "message_id": 10938
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 95,
+                "group_id": 1
+            },
+            "announce_type": "Accept",
+            "npc_id": "Gilstan",
+            "message_id": 10951
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 95,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Gilstan",
+            "message_id": 10953
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Leo0",
+            "message_id": 10960
+        }
+    ]
+}

@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestType Type { get; set; }
         public QuestId QuestId { get; set; }
         public QuestId NextQuestId { get; set; }
+        public QuestId QuestScheduleId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
         public ExpType ExpType { get; set; }
@@ -28,10 +29,10 @@ namespace Arrowgene.Ddon.Shared.Asset
         public bool Discoverable { get; set; }
         public List<QuestRewardItem> RewardItems;
         public List<QuestRewardCurrency> RewardCurrency;
-
+        public List<QuestOrderCondition> OrderConditions;
+        public bool ResetPlayerAfterQuest { get; set; }
         public List<QuestLayoutFlag> QuestLayoutFlags { get; set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
-
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups {  get; set; }
 
         public QuestAssetData()
@@ -42,6 +43,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
+            OrderConditions = new List<QuestOrderCondition>();
         }
     }
 }
