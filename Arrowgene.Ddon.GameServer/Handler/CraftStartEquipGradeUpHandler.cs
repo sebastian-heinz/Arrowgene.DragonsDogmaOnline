@@ -58,6 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
             uint nextGrade = json_data.Unk0; // This might be Unk0 in the JSON but is probably in the DB or something.
+            bool canContinue = json_data.Unk1;
             uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
             uint addEquipPoint = 0;     
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
@@ -65,11 +66,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if(dogreatsucess == true)
             {
-                currentTotalEquipPoint = 500;
+                currentTotalEquipPoint = 10;
+                addEquipPoint = 100;
             }
             else
             {
-                currentTotalEquipPoint = 200;
+                currentTotalEquipPoint = 10;
+                addEquipPoint = 30;
             }
             // TODO: Figure out why the bar always fills fully regardless of fed numbers? it wasn't doing this earlier on.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
@@ -101,20 +104,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
 
-            // Made a list of all bronzesword IDs 
-            // This list should start from the next gradeup ID from the current, (if you're upgrading a 1674, the list should start as 2697.)
-            uint firstid = 62;
-            uint secondid = 1674;
-            uint thirdid = 2697;
-            uint fourthid = 3720;
-            uint fifthid = 4743;
-            List<CDataCommonU32> dummygradeuplist = new List<CDataCommonU32>()
+            // This list should contain the next ID you will go into, if you happen to have enough points to go into multiple we must include those too.
+            // For now I just hardcode the next ID without accounting for the potential for being able to do it multiple times.
+            List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
             {
-                new CDataCommonU32(firstid),
-                new CDataCommonU32(secondid),
-                new CDataCommonU32(thirdid),
-                new CDataCommonU32(fourthid),
-                new CDataCommonU32(fifthid)
+                new CDataCommonU32(gearupgradeID)
             };
 
 
@@ -210,7 +204,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 GradeUpItemUID = AddItemResult[0].ItemList.ItemUId, // Setting this to equipItemUID makes the results info box be accurate, but setting it to this stops upgrading multiple pieces.
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
-                //GradeUpItemIDList = dummygradeuplist, // This list should start with the next ID.
+                GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                 AddEquipPoint = addEquipPoint,              
                 TotalEquipPoint = currentTotalEquipPoint,
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
@@ -218,8 +212,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
                 CurrentEquip = cei, // Dummy current equip data, need to get the real slot/type at somepoint.               
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
-                Unk0 = true, // Unk0 being true says "Grade Up" when filling rather than "Grade Max", so we need to track when we hit max upgrade.
-                Unk1 = dummydata // Since nothing appears to happen this is probably related to equipped gradeup gear.
+                Unk0 = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
+                //Unk1 = dummydata // Since nothing appears to happen this is probably related to equipped gradeup gear.
             };
             client.Send(res);
             client.Send(updateCharacterItemNtc);

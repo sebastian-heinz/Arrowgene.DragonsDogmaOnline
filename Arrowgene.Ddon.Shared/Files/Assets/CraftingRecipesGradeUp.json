@@ -9,7 +9,7 @@
                 "GradeupItemID": 1674,
                 "Cost": 400,
                 "Exp": 12,
-				"Unk1": false,
+				"Unk1": true,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -26,7 +26,7 @@
                 "GradeupItemID": 2697,
                 "Cost": 400,
                 "Exp": 12,
-				"Unk1": false,
+				"Unk1": true,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -36,14 +36,14 @@
                     }
                 ]
             },
-			{
+            {
                 "RecipeID": 3,
-                "ItemID": 63,
-				"Unk0": 2,
-                "GradeupItemID": 1675,
+                "ItemID": 2697,
+				"Unk0": 4,
+                "GradeupItemID": 3720,
                 "Cost": 400,
                 "Exp": 12,
-				"Unk1": false,
+				"Unk1": true,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -53,11 +53,11 @@
                     }
                 ]
             },
-			{
-				"RecipeID": 4,
-				"ItemID": 73,
-				"Unk0": 2,
-				"GradeupItemID": 1685,
+            {
+                "RecipeID": 4,
+                "ItemID": 3720,
+				"Unk0": 5,
+                "GradeupItemID": 4743,
                 "Cost": 400,
                 "Exp": 12,
 				"Unk1": false,
@@ -72,12 +72,12 @@
             },
 			{
                 "RecipeID": 5,
-                "ItemID": 942,
+                "ItemID": 63,
 				"Unk0": 2,
-                "GradeupItemID": 2554,
+                "GradeupItemID": 1675,
                 "Cost": 400,
                 "Exp": 12,
-				"Unk1": false,
+				"Unk1": true,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -88,13 +88,13 @@
                 ]
             },
 			{
-                "RecipeID": 6,
-                "ItemID": 490,
-				"Unk0": 2,
-                "GradeupItemID": 2102,
+				"RecipeID": 6,
+				"ItemID": 1675,
+				"Unk0": 3,
+				"GradeupItemID": 2698,
                 "Cost": 400,
                 "Exp": 12,
-				"Unk1": false,
+				"Unk1": true,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -105,13 +105,13 @@
                 ]
             },
 			{
-                "RecipeID": 7,
-                "ItemID": 497,
-				"Unk0": 2,
-                "GradeupItemID": 2109,
+				"RecipeID": 7,
+				"ItemID": 2698,
+				"Unk0": 4,
+				"GradeupItemID": 3721,
                 "Cost": 400,
                 "Exp": 12,
-				"Unk1": false,
+				"Unk1": true,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
@@ -122,61 +122,10 @@
                 ]
             },
 			{
-                "RecipeID": 8,
-                "ItemID": 493,
-				"Unk0": 2,
-                "GradeupItemID": 2105,
-                "Cost": 400,
-                "Exp": 12,
-				"Unk1": false,
-                "CraftMaterialList": [
-                    {
-                        "ItemId": 7858,
-                        "Num": 2,
-                        "SortNo": 1,
-                        "IsSp": true
-                    }
-                ]
-            },
-			{
-                "RecipeID": 9,
-                "ItemID": 499,
-				"Unk0": 2,
-                "GradeupItemID": 2111,
-                "Cost": 400,
-                "Exp": 12,
-				"Unk1": false,
-                "CraftMaterialList": [
-                    {
-                        "ItemId": 7858,
-                        "Num": 2,
-                        "SortNo": 1,
-                        "IsSp": true
-                    }
-                ]
-            },
-			{
-                "RecipeID": 10,
-                "ItemID": 505,
-				"Unk0": 2,
-                "GradeupItemID": 2117,
-                "Cost": 400,
-                "Exp": 12,
-				"Unk1": false,
-                "CraftMaterialList": [
-                    {
-                        "ItemId": 7858,
-                        "Num": 2,
-                        "SortNo": 1,
-                        "IsSp": true
-                    }
-                ]
-            },
-			{
-                "RecipeID": 11,
-                "ItemID": 8793,
-				"Unk0": 2,
-                "GradeupItemID": 8794,
+				"RecipeID": 8,
+				"ItemID": 3721,
+				"Unk0": 5,
+				"GradeupItemID": 4744,
                 "Cost": 400,
                 "Exp": 12,
 				"Unk1": false,
