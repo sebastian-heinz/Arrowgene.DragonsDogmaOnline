@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public byte Category { get; set; }
         public uint Offset { get; set; }
-        public uint Num { get; set; }
+        public int Num { get; set; }
         public List<CDataCommonU32> ItemList { get; set; }
 
         public C2SCraftRecipeGetCraftGradeupRecipeReq()
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteByte(buffer, obj.Category);
                 WriteUInt32(buffer, obj.Offset);
-                WriteUInt32(buffer, obj.Num);
+                WriteInt32(buffer, obj.Num);
                 WriteEntityList<CDataCommonU32>(buffer, obj.ItemList);
             }
 
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 C2SCraftRecipeGetCraftGradeupRecipeReq obj = new C2SCraftRecipeGetCraftGradeupRecipeReq();
                 obj.Category = ReadByte(buffer);
                 obj.Offset = ReadUInt32(buffer);
-                obj.Num = ReadUInt32(buffer);
+                obj.Num = ReadInt32(buffer);
                 obj.ItemList = ReadEntityList<CDataCommonU32>(buffer);
                 return obj;
             }

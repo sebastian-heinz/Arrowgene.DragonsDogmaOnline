@@ -137,6 +137,91 @@
                         "IsSp": true
                     }
                 ]
+            },
+            {
+				"RecipeID": 9,
+				"ItemID": 438,
+				"Unk0": 2,
+				"GradeupItemID": 2050,
+                "Cost": 140,
+                "Exp": 12,
+				"Unk1": true,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 1,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+            {
+				"RecipeID": 10,
+				"ItemID": 2050,
+				"Unk0": 3,
+				"GradeupItemID": 3073,
+                "Cost": 140,
+                "Exp": 12,
+				"Unk1": true,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 1,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+            {
+				"RecipeID": 11,
+				"ItemID": 3073,
+				"Unk0": 4,
+				"GradeupItemID": 4096,
+                "Cost": 140,
+                "Exp": 12,
+				"Unk1": true,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 1,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+            {
+				"RecipeID": 12,
+				"ItemID": 4096,
+				"Unk0": 5,
+				"GradeupItemID": 5119,
+                "Cost": 140,
+                "Exp": 12,
+				"Unk1": true,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 1,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
+            },
+            {
+				"RecipeID": 13,
+				"ItemID": 73,
+				"Unk0": 2,
+				"GradeupItemID": 1685,
+                "Cost": 140,
+                "Exp": 12,
+				"Unk1": true,
+                "CraftMaterialList": [
+                    {
+                        "ItemId": 7858,
+                        "Num": 1,
+                        "SortNo": 1,
+                        "IsSp": true
+                    }
+                ]
             }
         ]
     }

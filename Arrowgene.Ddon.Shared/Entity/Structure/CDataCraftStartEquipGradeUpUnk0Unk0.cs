@@ -11,11 +11,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
-        public byte Unk0 { get; set; }
-        public uint Unk1 { get; set; }
-        public ushort Unk2 { get; set; }
-        public ushort Unk3 { get; set; }
-        public bool Unk4 { get; set; }
+        public byte Unk0 { get; set; } // Probably Crest Slot I guess? Byte too small to be much else.
+        public uint Unk1 { get; set; }  // Maybe the Crest ID? Can't tell.
+        public ushort Unk2 { get; set; } // Filling this above 0 prevents the "UP" display? Unknown
+        public ushort Unk3 { get; set; } // Displays "UP" next to the crest upon succesful enhance.
+        public bool Unk4 { get; set; } // Displays "MAX" next to the crest icon.
 
 
         public class Serializer : EntitySerializer<CDataCraftStartEquipGradeUpUnk0Unk0>

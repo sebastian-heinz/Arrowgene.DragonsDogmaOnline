@@ -115,21 +115,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // More dummy data
             CDataCraftStartEquipGradeUpUnk0Unk0 internaldummydata = new CDataCraftStartEquipGradeUpUnk0Unk0()
             {
-                Unk0 = 1,
-                Unk1 = 0,  
-                Unk2 = 0,
-                Unk3 = 0,
-                Unk4 = false,      
+                Unk0 = 1,          // Crest Slot No?  maybe?        
+                Unk1 = 0,
+                Unk2 = 0,          // setting this to a value above 0 seems to stop displaying "UP" ?
+                Unk3 = 1,          // displays "UP" next to the crest upon succesful enhance.
+                Unk4 = false,      // displays Max on the crest popup.
             };
 
             // Dummy data for Unk1.
             CDataCraftStartEquipGradeUpUnk0 dummydata = new CDataCraftStartEquipGradeUpUnk0()
             {
                 Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { internaldummydata },
-                Unk1 = 1,
+                Unk1 = 0,
                 Unk2 = 0,
-                Unk3 = 1,
-                Unk4 = false,
+                Unk3 = 0,
+                Unk4 = true,    // makes the crest popup appear.
             };
             // TODO: Source these values accurately when we know what they are. ^
 
@@ -161,29 +161,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 
-                AddItemResult = _itemManager.AddItem(Server, client.Character, true, gearupgradeID, 1 * 1); // Need AddItemResult param in here too because we use it on Response.
+                AddItemResult = _itemManager.AddItem(Server, client.Character, true, gearupgradeID, 1); // Need AddItemResult param in here too because we use it on Response.
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);                              // For now I just give the item the same as though it wasn't equipped.
 
                 Logger.Debug("EQUIPPED");
 
                 // TODO: Figure out how to exchange the equipment correctly.
-
-
             }
             else
             {
                 RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
                 bool isBagItem = RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
                                                                 result.ItemList.StorageType == StorageType.StorageBoxExpansion);
-                AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1 * 1);
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
+                AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1);
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
-
-                var addedStorageTypes = GetStorageTypes(AddItemResult);
-                foreach (var storageType in addedStorageTypes)
-                {
-                    Logger.Debug($"Added item in storage type: {storageType}, and your bool is- {isBagItem}");
-                }
             };
 
 
@@ -200,15 +192,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EquipSlot = EquipmentSlot
             };
 
-
             // Supplying the response packet with data
             var res = new S2CCraftStartEquipGradeUpRes()
             {
-                GradeUpItemUID = AddItemResult[0].ItemList.ItemUId, // Setting this to equipItemUID makes the results info box be accurate, but setting it to this stops upgrading multiple pieces.
+                GradeUpItemUID = equipItemUID, // Setting this to equipItemUID makes the results info box be accurate, but setting it to this stops upgrading multiple pieces.
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                 GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
-                AddEquipPoint = addEquipPoint,              
-                TotalEquipPoint = currentTotalEquipPoint,
+                AddEquipPoint = addEquipPoint,
+                TotalEquipPoint = currentTotalEquipPoint, // If you have 2 of the same UID it applies this value correctly.
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
                 Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.

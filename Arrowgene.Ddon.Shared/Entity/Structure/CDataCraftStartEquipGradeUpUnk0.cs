@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte Unk1 { get; set; }
         public byte Unk2 { get; set; }
         public byte Unk3 { get; set; }
-        public bool Unk4 { get; set; }
+        public bool Unk4 { get; set; } // Displays the crest pentagon icon on the enhance screen.
 
         public class Serializer : EntitySerializer<CDataCraftStartEquipGradeUpUnk0>
         {
