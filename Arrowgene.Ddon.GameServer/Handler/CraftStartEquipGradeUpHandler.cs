@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             // TODO: Figure out why the bar always fills fully regardless of fed numbers? it wasn't doing this earlier on.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
-            // TODO: we need to potentially track craft progress points in the DB?
+            // TODO: we need to track the EquipPoints in the DB.
             // TODO: You require atleast 2 pieces of the same gear to complete the Enhance cycle properly, or you don't get the info box after completing and can't
             // enhance it again to the next stage, though you can relog and it will allow you to.
 
@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // More dummy data
             CDataCraftStartEquipGradeUpUnk0Unk0 internaldummydata = new CDataCraftStartEquipGradeUpUnk0Unk0()
             {
-                Unk0 = 0,
+                Unk0 = 1,
                 Unk1 = 0,  
                 Unk2 = 0,
                 Unk3 = 0,
@@ -132,12 +132,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftStartEquipGradeUpUnk0 dummydata = new CDataCraftStartEquipGradeUpUnk0()
             {
                 Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { internaldummydata },
-                Unk1 = 0,
+                Unk1 = 1,
                 Unk2 = 0,
-                Unk3 = 0,
+                Unk3 = 1,
                 Unk4 = false,
             };
-            // TODO: Source these values accurately, believed to be equipped gear data? but theres way more info inside this so its hard to say.
+            // TODO: Source these values accurately when we know what they are. ^
 
             // Subtract less Gold if supportpawn is used.
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
@@ -153,20 +153,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
             if (isEquipped)
             {
-                // Exchange upgraded items with equipped items
+                // Exchange upgraded item with equipped item.
+                // Finding Slot & Type value of the equipped gear.
 
                 List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
                     .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
                     .ToList();
 
-            
                 var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
 
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 
                 AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
-                Logger.Debug("Item was equipped, added upgraded items.");
+                updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
+
+                // TODO: Figure out how to exchange the equipment correctly.
             }
             else
             {
@@ -175,9 +177,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
-                Logger.Debug("Item was not equipped, added upgraded items from storage.");
             };
-
 
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
@@ -192,11 +192,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ItemUID = equipItemUID,
                 EquipSlot = EquipmentSlot
             };
-            Logger.Debug($"Your info sir: charid: {cei.EquipSlot.Unk0}, pawnid {cei.EquipSlot.Unk1}, type {cei.EquipSlot.Unk2}, slot {cei.EquipSlot.Unk3}, thank you.");
 
-
-
-            // TODO: Check if the gear is equipped before Exchanging, if yes do it in the equipment instead.
 
             // Supplying the response packet with data
             var res = new S2CCraftStartEquipGradeUpRes()
@@ -212,7 +208,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = cei, // Dummy current equip data, need to get the real slot/type at somepoint.               
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
                 Unk0 = true, // Unk0 being true says "Grade Up" when filling rather than "Grade Max", so we need to track when we hit max upgrade.
-                //Unk1 = dummydata // Since nothing appears to happen this is probably related to equipped gradeup gear.
+                Unk1 = dummydata // Since nothing appears to happen this is probably related to equipped gradeup gear.
             };
             client.Send(res);
             client.Send(updateCharacterItemNtc);
