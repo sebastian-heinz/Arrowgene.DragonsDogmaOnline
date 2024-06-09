@@ -16,6 +16,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         DiscoverEnemy,
         KillGroup,
         TalkToNpc,
+        NewTalkToNpc,
         DeliverItems,
         SeekOutEnemiesAtMarkedLocation,
         CollectItem,

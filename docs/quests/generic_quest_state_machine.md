@@ -571,12 +571,14 @@ See the [quest command reference document](quest_command_reference.md) for more 
 
 ##### q70000001
 
-| Type              | Value  | Comment
-|:-----------------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | 977    | Spawns Gerd and the White Knights outside 
-| WorldManageLayout | 1218   | Spawns Leo in the audience chamber
-| WorldManageLayout | 1219   | Spawns Iris in the audience chamber
-| WorldManageLayout | 1293   | Spawns The White Dragon in the audience chamber in the most injured state
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st0100  | 977    | Spawns Gerd and the White Knights outside 
+| WorldManageLayout | st0201  | 1218   | Spawns Leo in the audience chamber
+| WorldManageLayout | st0201  | 1219   | Spawns Iris in the audience chamber
+| WorldManageLayout | st0201  | 1293   | Spawns The White Dragon in the audience chamber in the most injured state
+| WorldManageLayout | st0403  | 1109   | Locks the double doors to the Chapel at (x:51,y:89)
+| WorldManageLayout | st0403  | 1110   | Unlocks the double doors to the Chapel at (x:51,y:89)
 
 ##### q70032001
 
