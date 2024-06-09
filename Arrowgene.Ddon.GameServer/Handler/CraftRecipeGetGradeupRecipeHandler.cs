@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .ToList();
 
             // To populate the UnknownItemList in Response with the current Itemlist, this seems to fix the infinite req/res spam soft lock.
-            List<CDataCommonU32> testlist = packet.Structure.ItemList;
+            List<CDataCommonU32> ItemList = packet.Structure.ItemList;
                 
             var res = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .Skip((int)packet.Structure.Offset)
                     .Take((int)packet.Structure.Num)
                     .ToList(),
-                UnknownItemList = testlist, // Unknown why but populating this list fixes the infinite req/res spam, additionally the client is tracking upgrade progress.
+                UnknownItemList = ItemList, // Unknown why but populating this list fixes the infinite req/res spam.
                 IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
             };
             client.Send(res);

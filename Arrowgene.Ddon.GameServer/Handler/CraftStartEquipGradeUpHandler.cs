@@ -64,6 +64,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
 
 
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            updateCharacterItemNtc.UpdateType = 0x1a;
+
             if(dogreatsucess == true)
             {
                 currentTotalEquipPoint = 10;
@@ -75,13 +78,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 addEquipPoint = 30;
             }
             // TODO: Figure out why the bar always fills fully regardless of fed numbers? it wasn't doing this earlier on.
+            // TODO: we need to track the EquipPoints in the DB, and anywhere we set it to 0 it should pull the correct points from the DB instead.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
-            // TODO: we need to track the EquipPoints in the DB.
             // TODO: You require atleast 2 pieces of the same gear to complete the Enhance cycle properly, or you don't get the info box after completing and can't
-            // enhance it again to the next stage, though you can relog and it will allow you to.
-
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = 0;
+            // enhance it again because it doesn't update the recipe list properly, guess the client doesn't consider it done correctly.
 
 
             // Remove crafting materials
@@ -144,6 +144,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
 
+
+            // TODO: Figure out how to stop the server thinking an item is equipped just because it has same UID as a non-equipped gear you're trying to upgrade.
             // Checking if the Gear is equipped or not first.
             List<CDataItemUpdateResult> AddItemResult;
             List<CDataItemUpdateResult> RemoveItemResult;
@@ -213,7 +215,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = cei, // Dummy current equip data, need to get the real slot/type at somepoint.               
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
                 Unk0 = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
-                //Unk1 = dummydata // Since nothing appears to happen this is probably related to equipped gradeup gear.
+                Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
             };
             client.Send(res);
             client.Send(updateCharacterItemNtc);

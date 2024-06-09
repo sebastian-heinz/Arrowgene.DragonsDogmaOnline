@@ -7,13 +7,13 @@
                 "ItemID": 62,
 				"Unk0": 2,
                 "GradeupItemID": 1674,
-                "Cost": 400,
+                "Cost": 10,
                 "Exp": 12,
 				"Unk1": true,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
-                        "Num": 2,
+                        "Num": 1,
                         "SortNo": 1,
                         "IsSp": true
                     }
@@ -24,13 +24,13 @@
                 "ItemID": 1674,
 				"Unk0": 3,
                 "GradeupItemID": 2697,
-                "Cost": 400,
+                "Cost": 10,
                 "Exp": 12,
 				"Unk1": true,
                 "CraftMaterialList": [
                     {
-                        "ItemId": 7858,
-                        "Num": 2,
+                        "ItemId": 7773,
+                        "Num": 1,
                         "SortNo": 1,
                         "IsSp": true
                     }
@@ -41,13 +41,13 @@
                 "ItemID": 2697,
 				"Unk0": 4,
                 "GradeupItemID": 3720,
-                "Cost": 400,
+                "Cost": 10,
                 "Exp": 12,
 				"Unk1": true,
                 "CraftMaterialList": [
                     {
-                        "ItemId": 7858,
-                        "Num": 2,
+                        "ItemId": 7961,
+                        "Num": 1,
                         "SortNo": 1,
                         "IsSp": true
                     }
@@ -58,13 +58,13 @@
                 "ItemID": 3720,
 				"Unk0": 5,
                 "GradeupItemID": 4743,
-                "Cost": 400,
+                "Cost": 10,
                 "Exp": 12,
 				"Unk1": false,
                 "CraftMaterialList": [
                     {
-                        "ItemId": 7858,
-                        "Num": 2,
+                        "ItemId": 7750,
+                        "Num": 1,
                         "SortNo": 1,
                         "IsSp": true
                     }
@@ -75,13 +75,13 @@
                 "ItemID": 63,
 				"Unk0": 2,
                 "GradeupItemID": 1675,
-                "Cost": 400,
+                "Cost": 140,
                 "Exp": 12,
 				"Unk1": true,
                 "CraftMaterialList": [
                     {
-                        "ItemId": 7858,
-                        "Num": 2,
+                        "ItemId": 7750,
+                        "Num": 1,
                         "SortNo": 1,
                         "IsSp": true
                     }
@@ -92,13 +92,13 @@
 				"ItemID": 1675,
 				"Unk0": 3,
 				"GradeupItemID": 2698,
-                "Cost": 400,
+                "Cost": 140,
                 "Exp": 12,
 				"Unk1": true,
                 "CraftMaterialList": [
                     {
                         "ItemId": 7858,
-                        "Num": 2,
+                        "Num": 1,
                         "SortNo": 1,
                         "IsSp": true
                     }
@@ -109,13 +109,13 @@
 				"ItemID": 2698,
 				"Unk0": 4,
 				"GradeupItemID": 3721,
-                "Cost": 400,
+                "Cost": 140,
                 "Exp": 12,
 				"Unk1": true,
                 "CraftMaterialList": [
                     {
-                        "ItemId": 7858,
-                        "Num": 2,
+                        "ItemId": 7767,
+                        "Num": 1,
                         "SortNo": 1,
                         "IsSp": true
                     }
@@ -126,13 +126,13 @@
 				"ItemID": 3721,
 				"Unk0": 5,
 				"GradeupItemID": 4744,
-                "Cost": 400,
+                "Cost": 140,
                 "Exp": 12,
 				"Unk1": false,
                 "CraftMaterialList": [
                     {
-                        "ItemId": 7858,
-                        "Num": 2,
+                        "ItemId": 7917,
+                        "Num": 1,
                         "SortNo": 1,
                         "IsSp": true
                     }
