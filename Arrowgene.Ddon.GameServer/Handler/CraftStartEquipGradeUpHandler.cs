@@ -149,13 +149,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
+
+            // Checking if the Gear is equipped or not first.
             List<CDataItemUpdateResult> AddItemResult;
+            List<CDataItemUpdateResult> RemoveItemResult;
             bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
             if (isEquipped)
             {
-                // Exchange upgraded item with equipped item.
-                // Finding Slot & Type value of the equipped gear.
-
                 List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
                     .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
                     .ToList();
@@ -165,18 +165,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 
-                AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
-                updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
+                AddItemResult = _itemManager.AddItem(Server, client.Character, true, gearupgradeID, 1 * 1); // Need AddItemResult param in here too because we use it on Response.
+                updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);                              // For now I just give the item the same as though it wasn't equipped.
+
+                Logger.Debug("EQUIPPED");
 
                 // TODO: Figure out how to exchange the equipment correctly.
+
+
             }
             else
             {
-                // Exchange upgraded items from Storages
-                List<CDataItemUpdateResult> RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
-                AddItemResult = _itemManager.AddItem(Server, client.Character, false, gearupgradeID, 1 * 1);
+                RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
+                bool isBoxItem = RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
+                                                                result.ItemList.StorageType == StorageType.StorageBoxExpansion);
+                AddItemResult = _itemManager.AddItem(Server, client.Character, isBoxItem, gearupgradeID, 1 * 1);
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
+
+                var addedStorageTypes = GetStorageTypes(AddItemResult);
+                foreach (var storageType in addedStorageTypes)
+                {
+                    Logger.Debug($"Added item in storage type: {storageType}, and your bool is- {isBoxItem}");
+                }
             };
 
 
@@ -212,6 +223,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(res);
             client.Send(updateCharacterItemNtc);
+        }
+
+        // Method to extract storage types from the item update result list
+        private List<StorageType> GetStorageTypes(List<CDataItemUpdateResult> itemUpdateResults)
+        {
+            return itemUpdateResults.Select(result => result.ItemList.StorageType).ToList();
         }
     }
 }
