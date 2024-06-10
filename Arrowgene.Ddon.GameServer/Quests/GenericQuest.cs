@@ -359,11 +359,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 // case QuestType.World:
                                 checkCommands.Add(QuestManager.CheckCommand.IsOrderLightQuest((int)questBlock.QuestOrderDetails.QuestId));
                                 break;
-                            case QuestType.WorldSetting:
+                            case QuestType.WorldManage:
                                 checkCommands.Add(QuestManager.CheckCommand.IsOrderWorldQuest((int)questBlock.QuestOrderDetails.QuestId));
-                                break;
-                            case QuestType.Pawn:
-                                // checkCommands.Add(QuestManager.CheckCommand.IsOrderPawnQuest())
                                 break;
                         }
                     }

@@ -2,6 +2,25 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public enum QuestType : uint
     {
+        Unknown = 0,
+        Light = 1,
+        Set = 2,
+        Main = 3,
+        Tutorial = 4,
+        Limited = 5,
+        CycleContents = 6,
+        CycleContentsQuest = 7,
+        WorldManage = 8,
+        TimeGain = 9, // Queried when logging in
+        Unk0 = 10,
+        Unk1 = 11, // Queried when logging in
+
+        // Pseudo Categories
+        World = 1,
+
+#if false
+// Seems game has 2 different sets of quest IDs
+// which one is the right one to use???
         Main = 0,
         Set = 1,
         Light = 2,
@@ -15,8 +34,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Pawn = 10,
         DebugTool = 11,
         ManagerNum = 12,
-
-        // Pseudo Categories
-        World = 2,
+#endif
     }
 }
