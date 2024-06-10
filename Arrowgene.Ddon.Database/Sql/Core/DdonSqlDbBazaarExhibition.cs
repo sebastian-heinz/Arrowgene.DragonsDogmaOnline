@@ -168,7 +168,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "@excluded_character_id", excludedCharacterId);
                 }, reader =>
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         BazaarExhibition e = ReadBazaarExhibition(reader);
                         entities.Add(e);
