@@ -7,6 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataCraftStartEquipGradeUpUnk0Unk0
     {
         // This might be entirely Dragon Force related
+        // TODO: Implement Dragon Force to further test & validate.
         public CDataCraftStartEquipGradeUpUnk0Unk0()
         {
         }

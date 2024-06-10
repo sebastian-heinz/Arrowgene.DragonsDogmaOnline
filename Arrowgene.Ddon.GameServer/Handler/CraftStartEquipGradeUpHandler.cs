@@ -115,11 +115,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // More dummy data
             CDataCraftStartEquipGradeUpUnk0Unk0 internaldummydata = new CDataCraftStartEquipGradeUpUnk0Unk0()
             {
-                Unk0 = 1,          // Crest Slot No?  maybe?
+                Unk0 = 1,          // Probably Dragon Force related.
                 Unk1 = 0,
                 Unk2 = 0,          // setting this to a value above 0 seems to stop displaying "UP" ?
-                Unk3 = 1,          // displays "UP" next to the crest upon succesful enhance. This appears to be dragon force related.
-                Unk4 = false,      // displays Max on the crest popup. This appears to be dragon force related.
+                Unk3 = 1,          // displays "UP" next to the DF upon succesful enhance. This appears to be dragon force related.
+                Unk4 = false,      // displays Max on the DF popup. This appears to be dragon force related.
             };
 
             // Dummy data for Unk1.
@@ -171,7 +171,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
-                bool isBagItem = RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
+                bool isBagItem =! RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
                                                                 result.ItemList.StorageType == StorageType.StorageBoxExpansion);
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
                 AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1);
@@ -210,12 +210,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(res);
             client.Send(updateCharacterItemNtc);
-        }
-
-        // Method to extract storage types from the item update result list
-        private List<StorageType> GetStorageTypes(List<CDataItemUpdateResult> itemUpdateResults)
-        {
-            return itemUpdateResults.Select(result => result.ItemList.StorageType).ToList();
         }
     }
 }
