@@ -12,11 +12,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0>();
         }
 
-        public List<CDataCraftStartEquipGradeUpUnk0Unk0> Unk0 { get; set; }
+        public List<CDataCraftStartEquipGradeUpUnk0Unk0> Unk0 { get; set; } // Potentially just dragon force related data?
         public byte Unk1 { get; set; }
         public byte Unk2 { get; set; }
         public byte Unk3 { get; set; }
-        public bool Unk4 { get; set; } // Displays the crest pentagon icon on the enhance screen.
+        public bool Unk4 { get; set; } // Displays a Dragon Froce icon on the enhance screen.
 
         public class Serializer : EntitySerializer<CDataCraftStartEquipGradeUpUnk0>
         {

@@ -115,11 +115,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // More dummy data
             CDataCraftStartEquipGradeUpUnk0Unk0 internaldummydata = new CDataCraftStartEquipGradeUpUnk0Unk0()
             {
-                Unk0 = 1,          // Crest Slot No?  maybe?        
+                Unk0 = 1,          // Crest Slot No?  maybe?
                 Unk1 = 0,
                 Unk2 = 0,          // setting this to a value above 0 seems to stop displaying "UP" ?
-                Unk3 = 1,          // displays "UP" next to the crest upon succesful enhance.
-                Unk4 = false,      // displays Max on the crest popup.
+                Unk3 = 1,          // displays "UP" next to the crest upon succesful enhance. This appears to be dragon force related.
+                Unk4 = false,      // displays Max on the crest popup. This appears to be dragon force related.
             };
 
             // Dummy data for Unk1.

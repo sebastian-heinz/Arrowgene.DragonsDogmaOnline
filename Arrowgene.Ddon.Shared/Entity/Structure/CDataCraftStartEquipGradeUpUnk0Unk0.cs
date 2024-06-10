@@ -6,16 +6,16 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCraftStartEquipGradeUpUnk0Unk0
     {
-
+        // This might be entirely Dragon Force related
         public CDataCraftStartEquipGradeUpUnk0Unk0()
         {
         }
 
-        public byte Unk0 { get; set; } // Probably Crest Slot I guess? Byte too small to be much else.
-        public uint Unk1 { get; set; }  // Maybe the Crest ID? Can't tell.
+        public byte Unk0 { get; set; } // Maybe the Dragon Force Type?
+        public uint Unk1 { get; set; }  // Maybe the Dragon Force ID? Can't tell.
         public ushort Unk2 { get; set; } // Filling this above 0 prevents the "UP" display? Unknown
-        public ushort Unk3 { get; set; } // Displays "UP" next to the crest upon succesful enhance.
-        public bool Unk4 { get; set; } // Displays "MAX" next to the crest icon.
+        public ushort Unk3 { get; set; } // Displays "UP" next to the Dragon Force upon succesful enhance.
+        public bool Unk4 { get; set; } // Displays "MAX" next to the Dragon Force icon.
 
 
         public class Serializer : EntitySerializer<CDataCraftStartEquipGradeUpUnk0Unk0>
