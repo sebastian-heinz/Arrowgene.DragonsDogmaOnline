@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         DeliverItems,
         SeekOutEnemiesAtMarkedLocation,
         CollectItem,
+        OmInteractEvent,
         MyQstFlags,
         IsStageNo,
         IsQuestOrdered,

@@ -334,6 +334,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstanceSetOmInstantKeyValueReq.Serializer());
             Create(new C2SInstanceTreasurePointGetCategoryListReq.Serializer());
             Create(new C2SInstanceTreasurePointGetListReq.Serializer());
+            Create(new C2SInstancePlTouchOmNtc.Serializer());
 
             Create(new C2SItemConsumeStorageItemReq.Serializer());
             Create(new C2SItemGetStorageItemListReq.Serializer());

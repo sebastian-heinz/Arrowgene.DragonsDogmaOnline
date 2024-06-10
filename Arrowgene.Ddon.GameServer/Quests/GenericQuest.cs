@@ -255,6 +255,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 resultCommands.Add(QuestManager.ResultCommand.PlayCameraEvent(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.QuestCameraEvent.EventNo));
             }
 
+            if (questBlock.BgmStop)
+            {
+                // TODO: This probably needs Start/Stop/Fix behavior
+                resultCommands.Add(QuestManager.ResultCommand.BgmStop());
+            }
+
             if (questBlock.SequenceNo != 1)
             {
                 switch (questBlock.AnnounceType)
@@ -315,8 +321,79 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case QuestBlockType.CollectItem:
                     {
                         var questCommand = questBlock.ShowMarker ?
-                            QuestManager.CheckCommand.QuestOmSetTouch(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, 1) :
-                            QuestManager.CheckCommand.QuestOmSetTouchWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, 1);
+                            QuestManager.CheckCommand.QuestOmSetTouch(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo) :
+                            QuestManager.CheckCommand.QuestOmSetTouchWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                    }
+                    break;
+                case QuestBlockType.OmInteractEvent:
+                    {
+                        CDataQuestCommand questCommand = new CDataQuestCommand();
+                        switch (questBlock.OmInteractEvent.QuestType)
+                        {
+                            case OmQuestType.MyQuest:
+                                switch (questBlock.OmInteractEvent.InteractType)
+                                {
+                                    case OmInteractType.Touch:
+                                        questCommand = questBlock.ShowMarker ?
+                                            QuestManager.CheckCommand.QuestOmSetTouch(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo) :
+                                            QuestManager.CheckCommand.QuestOmSetTouchWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    case OmInteractType.Release:
+                                        questCommand = questBlock.ShowMarker ?
+                                            QuestManager.CheckCommand.QuestOmReleaseTouch(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo) :
+                                            QuestManager.CheckCommand.QuestOmReleaseTouchWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    case OmInteractType.EndText:
+                                        questCommand = QuestManager.CheckCommand.QuestOmEndText(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    default:
+                                        /* TODO: throw exception */
+                                        break;
+                                }
+                                break;
+                            case OmQuestType.WorldManageQuest:
+                                switch (questBlock.OmInteractEvent.InteractType)
+                                {
+                                    case OmInteractType.Touch:
+                                        questCommand = QuestManager.CheckCommand.OmSetTouch(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    case OmInteractType.Release:
+                                        questCommand = QuestManager.CheckCommand.OmReleaseTouch(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    case OmInteractType.EndText:
+                                        questCommand = QuestManager.CheckCommand.OmEndText(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    case OmInteractType.OpenDoor:
+                                        questCommand = questBlock.ShowMarker ?
+                                            QuestManager.CheckCommand.IsOpenDoorOmQuestSet(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, (int)questBlock.OmInteractEvent.QuestId) :
+                                            QuestManager.CheckCommand.IsOpenDoorOmQuestSetNoMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, (int)questBlock.OmInteractEvent.QuestId);
+                                        break;
+                                    case OmInteractType.IsTouchPawnDungon:
+                                        questCommand = QuestManager.CheckCommand.IsTouchPawnDungeonOm(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    case OmInteractType.IsBrokenLayout:
+                                        questCommand = questBlock.ShowMarker ?
+                                            QuestManager.CheckCommand.IsOmBrokenLayout(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo) :
+                                            QuestManager.CheckCommand.IsOmBrokenLayoutNoMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    case OmInteractType.IsBrokenQuest:
+                                        questCommand = questBlock.ShowMarker ?
+                                            QuestManager.CheckCommand.IsOmBrokenQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo) :
+                                            QuestManager.CheckCommand.IsOmBrokenQuestNoMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                                        break;
+                                    case OmInteractType.TouchNpcUnitMarker:
+                                        questCommand = QuestManager.CheckCommand.TouchQuestNpcUnitMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, (int)questBlock.OmInteractEvent.QuestId);
+                                        break;
+                                    case OmInteractType.TouchActNpc:
+                                        questCommand = QuestManager.CheckCommand.TouchActQuestNpc(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, (int)questBlock.OmInteractEvent.QuestId);
+                                        break;
+                                    default:
+                                        /* TODO: throw exception */
+                                        break;
+                                }
+                                break;
+                        }
+
                         checkCommands.Add(questCommand);
                     }
                     break;

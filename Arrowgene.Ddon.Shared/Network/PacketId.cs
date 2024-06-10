@@ -846,6 +846,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_INSTANCE_GET_DROP_ITEM_LIST_RES = new PacketId(13, 10, 2, "S2C_INSTANCE_GET_DROP_ITEM_LIST_RES", ServerType.Game, PacketSource.Server); // ドロップアイテムリストを取得
         public static readonly PacketId C2S_INSTANCE_GET_DROP_ITEM_REQ = new PacketId(13, 11, 1, "C2S_INSTANCE_GET_DROP_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_INSTANCE_GET_DROP_ITEM_RES = new PacketId(13, 11, 2, "S2C_INSTANCE_GET_DROP_ITEM_RES", ServerType.Game, PacketSource.Server); // ドロップアイテムを取得
+        public static readonly PacketId C2S_INSTANCE_PL_TOUCH_OM_NTC = new PacketId(13, 12, 16, "C2S_INSTANCE_PL_TOUCH_OM_NTC", ServerType.Game, PacketSource.Client, "C2S_INSTANCE_13_12_16_NTC"); // Sent after clicking on World OM Glitter
         public static readonly PacketId C2S_INSTANCE_13_13_1_REQ = new PacketId(13, 13, 1, "C2S_INSTANCE_13_13_1_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_INSTANCE_13_13_2_RES = new PacketId(13, 13, 2, "S2C_INSTANCE_13_13_2_RES", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_INSTANCE_TRANING_ROOM_GET_ENEMY_LIST_REQ = new PacketId(13, 14, 1, "C2S_INSTANCE_TRANING_ROOM_GET_ENEMY_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -2756,6 +2757,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_INSTANCE_GET_DROP_ITEM_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_INSTANCE_GET_DROP_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_INSTANCE_GET_DROP_ITEM_RES);
+            AddPacketIdEntry(packetIds, C2S_INSTANCE_PL_TOUCH_OM_NTC);
             AddPacketIdEntry(packetIds, C2S_INSTANCE_13_13_1_REQ);
             AddPacketIdEntry(packetIds, S2C_INSTANCE_13_13_2_RES);
             AddPacketIdEntry(packetIds, C2S_INSTANCE_TRANING_ROOM_GET_ENEMY_LIST_REQ);

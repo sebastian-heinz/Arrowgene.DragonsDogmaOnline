@@ -11,6 +11,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using YamlDotNet.Core.Tokens;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -368,6 +369,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     }
                 }
 
+                questBlock.BgmStop = false;
+                if (jblock.TryGetProperty("bgm_stop", out JsonElement jBgmStop))
+                {
+                    questBlock.BgmStop = jBgmStop.GetBoolean();
+                }
+
                 if (jblock.TryGetProperty("flags", out JsonElement jFlags))
                 {
                     // {"type": "MyQst", "operation": "Set", "value": 4}
@@ -529,6 +536,40 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.ShowMarker = jShowMarker.GetBoolean();
                             }
+
+                            if (!jblock.GetProperty("stage_id").TryGetProperty("layer_no", out JsonElement jLayerNo))
+                            {
+                                questBlock.StageId = new StageId(questBlock.StageId.Id, 1, questBlock.StageId.GroupId);
+                            }
+                        }
+                        break;
+                    case QuestBlockType.OmInteractEvent:
+                        {
+                            if (!Enum.TryParse(jblock.GetProperty("quest_type").GetString(), true, out OmQuestType questType))
+                            {
+                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            if (!Enum.TryParse(jblock.GetProperty("interact_type").GetString(), true, out OmInteractType interactType))
+                            {
+                                Logger.Error($"Unable to parse the quest typ in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            questBlock.ShowMarker = true;
+                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
+                            {
+                                questBlock.ShowMarker = jShowMarker.GetBoolean();
+                            }
+
+                            if (jblock.TryGetProperty("quest_id", out JsonElement jQuestId))
+                            {
+                                questBlock.OmInteractEvent.QuestId = (QuestId) jQuestId.GetUInt32();
+                            }
+
+                            questBlock.OmInteractEvent.QuestType = questType;
+                            questBlock.OmInteractEvent.InteractType = interactType;
                         }
                         break;
                     case QuestBlockType.DeliverItems:
