@@ -586,9 +586,9 @@ See the [quest command reference document](quest_command_reference.md) for more 
 
 | Type      | Value | id/grp | Comment                                                    |
 |:---------:|:-----:|:------:|:-----------------------------------------------------------|
-| QstLayout | 1009  | st0200 | Spawns Gerd in the audience chamber
-| QstLayout | 1239  | st0200 | Spawns Heinz in the Audience Chamber
-| QstLayout | 1240  | st0200 | Spawns Vanessa in the Audience Chamber
+| QstLayout | 1009  | st0201 | Spawns Gerd in the audience chamber
+| QstLayout | 1239  | st0201 | Spawns Heinz in the Audience Chamber
+| QstLayout | 1240  | st0201 | Spawns Vanessa in the Audience Chamber
 | QstLayout | 1107  | st0100 | Knight Corpse lying face down (騎士死体うつ伏せ)
 | QstLayout | 1010  | st0100 | Spawns White Knights, Heinz and Gerd
 | QstLayout | 1100  | st0100 | Spawns Heinz
@@ -600,6 +600,17 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | MyQst     | 723   |        | Stops NPC FSM for 1 of the supporting group NPCs (flag 1622)
 | MyQst     | 728   |        | Stops NPC FSM for 1 of the supporting group NPCs (flag 1622)
 | MyQst     | 208   |        | Starts NPC FSM for Heinz, Gerd and White Knights (flag 1010)
+
+#### Return to Yore (q00000015)
+| Type      | Value | id/grp | Comment                                                    |
+|:---------:|:-----:|:------:|:-----------------------------------------------------------|
+| QstLayout | 1241  | st0201 | Spawns Mayleaf in the audience chamber.
+| QstLayout | 903   | st0404 | General-purpose glitter points (for research purposes) (key?) (汎用キラキラポイント（調べる用）)
+| QstLayout | 915   | st0404 | Large door in front of El Tedinanbos (エルテディナンボス前大型扉)
+| QstLayout | 1011  | st0404 | Spawns Leo
+| QstLayout | 1012  | st0404 | Spawns Kieshildt
+| QstLayout | 1258  | st0404 | Vessel of Life (small) (命の器（小）)
+| QstLayout | 2395  | st0404 | Spawns Kieshildt and Leo?
 
 #### World Manage Quest
 
@@ -621,6 +632,12 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | WorldManageLayout | st0408  | 1317   | Water Falls Gimick
 | WorldManageLayout | st0408  | 1671   | Closed Lever Door (Stone Door, middle)
 | WorldManageLayout | st0408  | 1672   | Open Lever Door  (Stone Door, middle)
+
+##### q70002001
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st0403  | 1113   | Large Door Closed in Erte Deenan
+| WorldManageLayout | st0403  | 1114   | Large Door Open in Erte Deenan
 
 ##### q70032001
 
