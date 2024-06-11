@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte Unk2 { get; set; }
         public uint Unk3 { get; set; }
         public uint Unk4 { get; set; }
-        public bool Unk5 { get; set; }
+        public bool IsGreatSuccess { get; set; }
     
         public class Serializer : EntitySerializer<CDataS2CCraftStartQualityUpResUnk0>
         {
@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.Unk2);
                 WriteUInt32(buffer, obj.Unk3);
                 WriteUInt32(buffer, obj.Unk4);
-                WriteBool(buffer, obj.Unk5);
+                WriteBool(buffer, obj.IsGreatSuccess);
             }
         
             public override CDataS2CCraftStartQualityUpResUnk0 Read(IBuffer buffer)
@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Unk2 = ReadByte(buffer);
                 obj.Unk3 = ReadUInt32(buffer);
                 obj.Unk4 = ReadUInt32(buffer);
-                obj.Unk5 = ReadBool(buffer);
+                obj.IsGreatSuccess = ReadBool(buffer);
                 return obj;
             }
         }

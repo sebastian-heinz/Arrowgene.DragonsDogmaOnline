@@ -18,9 +18,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Unk3 = new List<CDataCommonU32>();
         }
 
-        public string Unk0 { get; set; } // Possibly UIDs
-        public string Unk1 { get; set; } // Possibly UIDs
-        public ushort Unk2 { get; set; } 
+        public string Unk0 { get; set; } // The gear you want to upgrade UID
+        public string Unk1 { get; set; } // The Rock you're using to upgrade UID 
+        public ushort Unk2 { get; set; }
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }

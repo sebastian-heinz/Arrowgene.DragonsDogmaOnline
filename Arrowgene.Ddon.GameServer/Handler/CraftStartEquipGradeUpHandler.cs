@@ -9,11 +9,6 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Chat.Command.Commands;
-using System.Data.Entity;
-using Arrowgene.Ddon.Database.Sql;
-using System.Runtime.CompilerServices;
-using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -195,7 +190,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk2 = equiptype, // type
                 Unk3 = equipslot, // slot
             };
-            CDataCurrentEquipInfo cei = new CDataCurrentEquipInfo()
+            CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
                 ItemUID = equipItemUID,
                 EquipSlot = EquipmentSlot
@@ -212,7 +207,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
                 Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
-                CurrentEquip = cei, // Dummy current equip data, need to get the real slot/type at somepoint.               
+                CurrentEquip = CurrentEquipInfo, // Dummy current equip data, need to get the real slot/type at somepoint.               
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
                 Unk0 = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
                 Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
