@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ItemId { get; set; }
         public byte Unk3 { get; set; } // QualityParam?
         public byte Color { get; set; }
-        public byte PlusValue { get; set; }
+        public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/4
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
         public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
