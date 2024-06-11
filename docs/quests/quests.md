@@ -6,7 +6,7 @@ If you are interested in modifying or creating new quests, see the [generic ques
 
 ## What works in the current implementation
 
-- Currently only [Season 1.0 MSQ](#season-10) and a limited number of [World Quests](#world-quests) are activated.
+- Currently only [Season 1.0 MSQ](#season-10), [Season 1.1 MSQ](#season-11) and a limited number of [World Quests](#world-quests) are activated.
 - Quest rewards can be claimed from the reward box after completing a quest.
   - ![](images/reward-box.png)
 
@@ -57,9 +57,9 @@ There exists an implementation of the following main story quests.
 | [The Girl Clad in Darkness](https://ddonline.tumblr.com/post/131221518489/mq-the-girl-clad-in-darkness) | Mayleaf still present in shopping district when should not be. Skips step where player needs to complete a world quest in Mysree Grove.
 | [The Stolen Heart](https://ddonline.tumblr.com/post/131318384484/mq-the-stolen-heart)  | Key gimick not working exactly as original. One of the quest markers spawns in a different place than in video (was it moved in a patch?).
 | [The Roars of A Thousand](https://ddonline.tumblr.com/post/131415639659/mq-the-roars-of-a-thousand) | Some monsters spawn with less than max health. Seems to be related to the fact low level monsters are being replaced with very high level monsters. Need to teleport after the battle completed.
-| [Return to Yore](https://ddonline.tumblr.com/post/132128346939/mq-return-to-yore) | Not implemented.
-| [A Friendly Visit](https://ddonline.tumblr.com/post/132718212509/mq-a-friends-visit) | Not implemented.
-| [The Course of Life](https://ddonline.tumblr.com/post/132719715094/mq-the-course-of-life) | Not implemented
+| [Return to Yore](https://ddonline.tumblr.com/post/132128346939/mq-return-to-yore) | Needs some better mob placement in a few places.
+| [A Friendly Visit](https://ddonline.tumblr.com/post/132718212509/mq-a-friends-visit) | Unable to figure out how to mark World Manage OMs as quest objective.
+| [The Course of Life](https://ddonline.tumblr.com/post/132719715094/mq-the-course-of-life) | Working well.
 
 ### Season 1.2
 

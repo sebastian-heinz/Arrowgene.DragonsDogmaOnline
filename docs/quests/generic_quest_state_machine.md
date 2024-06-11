@@ -612,6 +612,14 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 1258  | st0404 | Vessel of Life (small) (命の器（小）)
 | QstLayout | 2395  | st0404 | Spawns Kieshildt and Leo?
 
+#### A Friendly Visit (q00000016)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1013  | st0201          | Spawns Vanessa
+| QstLayout | 900   | st0100 (group1) | General-purpose glitter points (for research) (汎用キラキラポイント（調べる用）)
+| QstLayout | 916   | st0402 (group1) | Gardnok Fort large door (ガルドノック砦大型ドア) (boss room lock)
+| QstLayout | 1014  | st0402          | Spawns Arisen Corps Regimental Soldier, Stark, Talcott and Leo
+
 #### World Manage Quest
 
 ##### q70000001
@@ -636,8 +644,14 @@ See the [quest command reference document](quest_command_reference.md) for more 
 ##### q70002001
 | Type              | StageNo | Value  | Comment
 |:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st0402  |   0    | Solider Corpse message
+| WorldManageLayout | st0402  | 3859   | Floor Lever
+| WorldManageLayout | st0402  | 3859   | Large Door Inside Gardnock Fort
+| WorldManageLayout | st0402  | 3860   | Large Door Inside Gardnock Fort
+|
 | WorldManageLayout | st0403  | 1113   | Large Door Closed in Erte Deenan
 | WorldManageLayout | st0403  | 1114   | Large Door Open in Erte Deenan
+
 
 ##### q70032001
 
