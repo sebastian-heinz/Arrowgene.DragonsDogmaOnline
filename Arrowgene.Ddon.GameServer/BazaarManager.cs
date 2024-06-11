@@ -26,8 +26,6 @@ namespace Arrowgene.Ddon.GameServer
         {
             // TODO: Figure out what _flag is for
 
-            uint totalPrice = num*price;
-
             CDataItemUpdateResult itemUpdateResult = Server.ItemManager.ConsumeItemByUId(Server, client.Character, storageType, itemUID, num);
 
             S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc();
@@ -44,7 +42,7 @@ namespace Arrowgene.Ddon.GameServer
             exhibition.Info.ItemInfo.ItemBaseInfo.Price = price;
             exhibition.Info.ItemInfo.ExhibitionTime = now;
             exhibition.Info.State = BazaarExhibitionState.OnSale;
-            exhibition.Info.Proceeds = (uint)Math.Clamp(totalPrice - totalPrice*TAXES, 0, uint.MaxValue);
+            exhibition.Info.Proceeds = calculateProceeds(exhibition.Info.ItemInfo.ItemBaseInfo);
             exhibition.Info.Expire = now.Add(EXHIBITION_TIME_SPAN);
 
             ulong bazaarId = Server.Database.InsertBazaarExhibition(exhibition);
@@ -64,6 +62,7 @@ namespace Arrowgene.Ddon.GameServer
             DateTimeOffset now = DateTimeOffset.UtcNow;
             exhibition.Info.ItemInfo.ItemBaseInfo.Price = newPrice;
             exhibition.Info.ItemInfo.ExhibitionTime = now;
+            exhibition.Info.Proceeds = calculateProceeds(exhibition.Info.ItemInfo.ItemBaseInfo);
             exhibition.Info.Expire = now.Add(EXHIBITION_TIME_SPAN);
             Server.Database.UpdateBazaarExhibiton(exhibition);
 
@@ -94,12 +93,12 @@ namespace Arrowgene.Ddon.GameServer
             BazaarExhibition exhibition = Server.BazaarManager.GetExhibitionByBazaarId(bazaarId);
             
             uint totalItemAmount = (uint) itemStorageIndicateNumList.Select(x => (int) x.ItemNum).Sum();
-            uint totalPrice = exhibition.Info.ItemInfo.ItemBaseInfo.Price * totalItemAmount;
-
             if(exhibition.Info.ItemInfo.ItemBaseInfo.Num != totalItemAmount)
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_BAZAAR_INTERNAL_ERROR);
             }
+
+            uint totalPrice = exhibition.Info.ItemInfo.ItemBaseInfo.Price * exhibition.Info.ItemInfo.ItemBaseInfo.Num;
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
@@ -207,6 +206,12 @@ namespace Arrowgene.Ddon.GameServer
             return GetExhibitionsByCharacter(character)
                 .Where(exhibition => exhibition.Info.State == BazaarExhibitionState.Sold)
                 .ToList();
+        }
+
+        private uint calculateProceeds(CDataBazaarItemBaseInfo itemBaseInfo)
+        {
+            uint totalPrice = itemBaseInfo.Num*itemBaseInfo.Price;
+            return (uint)Math.Clamp(totalPrice - totalPrice*TAXES, 0, uint.MaxValue);
         }
     }
 }
