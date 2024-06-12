@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "A Brief Respite",
     "quest_id": 28,
-    "next_quest": 0,
+    "next_quest": 18,
     "base_level": 45,
     "minimum_item_rank": 0,
     "discoverable": true,

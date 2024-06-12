@@ -32,13 +32,13 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         ReturnToYore = 15,
         AFriendlyVisit = 16,
         TheCourseOfLife = 17,
+        TheArkOnceMore = 18,
 
         TheCrimsonCrystal = 25,
         AServantsPledge = 26,
         TheGoblinKing = 27,
         ABriefRespite = 28,
 
-        TheArkOnceMore = 19,
         ThinkingOfAFriend = 20,
         TheEntrustedFuture = 21,
         TheQuandaryOfSoliders = 22,

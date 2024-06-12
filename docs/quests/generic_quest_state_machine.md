@@ -634,6 +634,14 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | MainQst   | 586   |                 | NPC FSM: Mysial reaches pier?
 
 
+#### The Ark, Once More (q00000018)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1242  | st0201          | Spawns Heinz in the audience chamber
+| QstLayout | 917   | st0571          | Force player to Dungeon Exit (肉塊的に対応した封鎖扉)
+| QstLayout | 924   | st0571          | Adult Atari OM 40m (大人アタリＯＭ 40m)
+| QstLayout | 1015  | st0571          | Spawns Joseph inside the Ark
+
 #### World Manage Quest
 
 ##### q70000001
@@ -641,6 +649,10 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | Type              | StageNo | Value  | Comment
 |:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
 | WorldManageLayout | st0100  | 977    | Spawns Gerd and the White Knights outside 
+| WorldManageLayout | st0100  | 1263   | The 2nd Ark (random) (st0574)
+| WorldManageLayout | st0100  | 2201   | The 1st Ark (random) (st0573)
+| WorldManageLayout | st0100  | 2204   | The 2nd Ark (quest) (st0571)
+| WorldManageLayout | st0100  | 2204   | The 1st Ark (quest) (st0576)
 |
 | WorldManageLayout | st0201  | 1218   | Spawns Leo in the audience chamber
 | WorldManageLayout | st0201  | 1219   | Spawns Iris in the audience chamber
@@ -654,6 +666,7 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | WorldManageLayout | st0408  | 1317   | Water Falls Gimick
 | WorldManageLayout | st0408  | 1671   | Closed Lever Door (Stone Door, middle)
 | WorldManageLayout | st0408  | 1672   | Open Lever Door  (Stone Door, middle)
+
 
 ##### q70002001
 | Type              | StageNo | Value  | Comment
