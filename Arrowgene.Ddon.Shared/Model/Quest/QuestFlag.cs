@@ -21,7 +21,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         CheckOn,
         CheckOff,
         Set,
-        Clear
+        Clear,
+        CheckSetFromFsm
     }
 
     public class QuestFlag

@@ -65,7 +65,7 @@ There exists an implementation of the following main story quests.
 
 | Quest Name | Comment |
 |:----------:|:-------:|
-| [A Brief Respite](https://ddonline.tumblr.com/post/136167664409/mq-a-brief-respite) | Not implemented
+| [A Brief Respite](https://ddonline.tumblr.com/post/136167664409/mq-a-brief-respite) | Works well.
 | [The Ark, Once More](https://ddonline.tumblr.com/post/136513169984/mq-the-ark-once-more) | Not implemented
 | [Thinking of A Friend](https://ddonline.tumblr.com/post/137011945944/mq-thinking-of-a-friend) | Not implemented
 | [The Beast’s Final Moments](https://ddonline.tumblr.com/post/137802732454/mq-the-beasts-final-moments) | Not implemented

@@ -516,6 +516,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             case QuestFlagAction.CheckOff:
                                 checkFlags.Add(QuestManager.CheckCommand.MyQstFlagOff(questFlag.Value));
                                 break;
+                            case QuestFlagAction.CheckSetFromFsm:
+                                checkFlags.Add(QuestManager.CheckCommand.MyQstFlagOnFromFsm(questFlag.Value));
+                                break;
                         }
                         break;
                     case QuestFlagType.WorldManageQuest:

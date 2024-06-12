@@ -1,0 +1,207 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "A Brief Respite",
+    "quest_id": 28,
+    "next_quest": 0,
+    "base_level": 45,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {
+            "type": "SoloWithPawnCount",
+            "Param1": 3
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 5000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 2500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 500
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8623,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9043,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"}
+                    ],
+                    "npc_id": "Joseph",
+                    "message_id": 11553
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Accept",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1016, "comment": "Spawns Mysial at the relay station"}
+                    ],
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 1
+                    },
+                    "npc_id": "Cameron0",
+                    "message_id": 16086
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Mysial0",
+                    "message_id": 11554
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 170, "comment": "Mysial Starts to walk to Mel"},
+                        {"type": "MyQst", "action": "CheckSetFromFsm", "value": 171, "comment": "Wait for Mysial to finish talking"}
+                    ],
+                    "check_commands": [],
+                    "result_commands": []
+                },
+                {
+                    "type": "TalkToNpc",
+                    "show_marker": false,
+                    "flags": [],
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "npc_id": "Mysial0",
+                    "message_id": 11559
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 172, "comment": "Mysial Starts to watch the sunset"},
+                        {"type": "MyQst", "action": "CheckSetFromFsm", "value": 173, "comment": "Wait for Mysial to reach the destination"}
+                    ],
+                    "check_commands": [],
+                    "result_commands": []
+                },
+                {
+                    "type": "TalkToNpc",
+                    "show_marker": false,
+                    "flags": [],
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "npc_id": "Mysial0",
+                    "message_id": 11565
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 174, "comment": "Mysial Starts to walking into the tavern"},
+                        {"type": "MyQst", "action": "CheckSetFromFsm", "value": 175, "comment": "Wait for Mysial to reach top of stairs"}
+                    ],
+                    "check_commands": [],
+                    "result_commands": []
+                },
+                {
+                    "type": "TalkToNpc",
+                    "show_marker": false,
+                    "flags": [],
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "npc_id": "Mysial0",
+                    "message_id": 11568
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 176, "comment": "Mysial Starts to walking down the stairs in the tavern"},
+                        {"type": "MyQst", "action": "CheckSetFromFsm", "value": 568, "comment": "Mysial reaches railing in tavern"}
+                    ],
+                    "check_commands": [],
+                    "result_commands": []
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "TouchActToNpc", "Param1": 200, "Param2": 2, "comment": "Touch Mysial to start the CS"}
+                    ],
+                    "result_commands": []
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1016, "comment": "Spawns Mysial at the relay station"}
+                    ],
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "event_id": 10
+                }
+            ]
+        },
+        {
+            "comment": "Process 1",
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "flags": [
+                        {"type": "MyQst", "action": "CheckOn", "value": 170, "comment": "Mysial tour starts"}
+                    ],
+                    "check_commands": [],
+                    "result_commands": []
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "TalkQuestNpcUnitMarker", "Param1": 200, "Param2": 1, "Param3": 1, "Param4": 0}
+                    ],
+                    "result_commands": []
+                }
+            ]
+        }
+    ]
+}

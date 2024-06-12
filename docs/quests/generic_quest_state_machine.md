@@ -620,6 +620,20 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 916   | st0402 (group1) | Gardnok Fort large door (ガルドノック砦大型ドア) (boss room lock)
 | QstLayout | 1014  | st0402          | Spawns Arisen Corps Regimental Soldier, Stark, Talcott and Leo
 
+#### A Brief Respite (q00000028)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1016  | st0200          | Spawns Mysial
+| MyQst     | 170   |                 | NPC FSM: Mysial starts walking to Mel
+| MainQst   | 171   |                 | NPC FSM: Set when Mysial is done talking to Mel
+| MyQst     | 172   |                 | NPC FSM: Mysial starts walking to watch the sunset
+| MainQst   | 173   |                 | NPC FSM: Set when Mysial reaches the destination to watch sunset
+| MyQst     | 174   |                 | NPC FSM: Walk into Tavern
+| MainQst   | 175   |                 | NPC FSM: Set when Mysial reaches stairs in tavern
+| MyQst     | 176   |                 | NPC FSM: Mysial starts walking down the stairs into the tavern
+| MainQst   | 586   |                 | NPC FSM: Mysial reaches pier?
+
+
 #### World Manage Quest
 
 ##### q70000001
@@ -662,4 +676,5 @@ See the [quest command reference document](quest_command_reference.md) for more 
 ### Events
 
 - [Lestania (stage0100)](events/st0100.md)
+- [White Dragon Temple (stage0200)](events/st0200.md)
 - [The Audience Chamber (stage0201)](events/st0201.md)

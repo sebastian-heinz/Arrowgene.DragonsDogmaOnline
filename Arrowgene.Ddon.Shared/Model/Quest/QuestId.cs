@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         TheCrimsonCrystal = 25,
         AServantsPledge = 26,
         TheGoblinKing = 27,
+        ABriefRespite = 28,
 
         TheArkOnceMore = 19,
         ThinkingOfAFriend = 20,
@@ -43,8 +44,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         TheQuandaryOfSoliders = 22,
         TheDwellersOfTheGoldenLand = 23,
         TheGoldenKey = 24,
-        TheGreatAlchemist = 28,
-        ABriefRespite = 29,
+        TheGreatAlchemist = 29,
         TheBeastsFinalMoments = 30,
 
         BeForevermoreWhiteDragon = 20010,

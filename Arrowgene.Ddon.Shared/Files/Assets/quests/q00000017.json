@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "The Course of Life",
     "quest_id": 17,
-    "next_quest": 0,
+    "next_quest": 28,
     "base_level": 43,
     "minimum_item_rank": 0,
     "discoverable": true,
