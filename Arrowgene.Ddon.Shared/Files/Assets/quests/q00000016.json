@@ -1,0 +1,358 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "A Friendly Visit",
+    "quest_id": 16,
+    "next_quest": 17,
+    "base_level": 43,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 10500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 8000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 960
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8618,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8743,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8878,
+                    "num": 1
+                }
+            ]
+        }
+
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 285
+            },
+            "enemies": [
+                {
+                    "comment" : "Captain Orc",
+                    "enemy_id": "0x085004",
+                    "level": 43,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085001",
+                    "level": 43,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085002",
+                    "level": 43,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085003",
+                    "level": 43,
+                    "exp": 3742
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 68,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "comment" : "Mogok",
+                    "enemy_id": "0x015840",
+                    "level": 43,
+                    "exp": 52640,
+                    "is_boss": true
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085001",
+                    "level": 42,
+                    "exp": 4706,
+                    "is_boss_bgm": true
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085002",
+                    "level": 42,
+                    "exp": 3742,
+                    "is_boss_bgm": true
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 68,
+                "group_id": 15
+            },
+            "enemies": [
+                {
+                    "comment" : "Colossus",
+                    "enemy_id": "0x015020",
+                    "level": 43,
+                    "exp": 5264,
+                    "is_boss_bgm": true
+                },
+                {
+                    "comment" : "General Orc",
+                    "enemy_id": "0x085001",
+                    "level": 42,
+                    "exp": 5264,
+                    "is_boss_bgm": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 3859, "quest_id": 70002001, "comment": "Floor Mounted Levers in for gardnox, Large Door"}
+                    ],
+                    "npc_id": "Leo0",
+                    "message_id": 0
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 60
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Accept",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 46
+                    },
+                    "npc_id": "Gort",
+                    "message_id": 11548
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 53
+                    },
+                    "npc_id": "Sunny",
+                    "message_id": 14876
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [],
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "flags": [],
+                    "groups": [0]
+                },
+                {
+                    "type": "CollectItem",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 900, "comment": "General-purpose glitter points (key)"}
+                    ],
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 2
+                    },
+                    "layout_flags_on": []
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 900, "comment": "General-purpose glitter points (key)"}
+                    ],
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 68
+                    }
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "announce_type": "Update",
+                    "flags": [],
+                    "quest_type": "WorldManageQuest",
+                    "interact_type": "Release",
+                    "quest_id": 70002001,
+                    "stage_id": {
+                        "id": 68,
+                        "group_id": 1,
+                        "layer_no": 1
+                    }
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Update",
+                    "flags": [],
+                    "set_flags": [1],
+                    "check_flags": [2, 3]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "MyQst", "action": "Clear", "value": 1, "comment": "Clears flag that started lever processes (used for quest checkpoint)"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 3859, "quest_id": 70002001, "comment": "Floor Mounted Levers in for gardnox, Large Door"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 3860, "quest_id": 70002001, "comment": "Large Door"}
+                    ],
+                    "stage_id": {
+                        "id": 68
+                    },
+                    "location": {
+                        "x": -1006,
+                        "y": -38,
+                        "z": -13241
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 68
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 916, "comment": "Gardnok Fort Large Door (lock boss room)"},
+                        {"type": "QstLayout", "action": "Set", "value": 1014, "comment": "Spawn NPCS for battle"},
+                        {"type": "MyQst", "action": "Set", "value": 111, "comment": "Start NPC battle FSM"}
+                    ],
+                    "groups": [1, 2]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 916, "comment": "Gardnok Fort Large Door (lock boss room)"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1014, "comment": "Spawn NPCS for battle"}
+                    ],
+                    "stage_id": {
+                        "id": 68
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [],
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 8118
+                }
+            ]
+        },
+        {
+            "comment": "Process 1 (handles lever)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "quest_type": "WorldManageQuest",
+                    "interact_type": "Release",
+                    "quest_id": 70002001,
+                    "stage_id": {
+                        "id": 68,
+                        "group_id": 2,
+                        "layer_no": 1
+                    }
+                },
+                {
+                    "type": "MyQstFlags",
+                    "flags": [],
+                    "set_flags": [2]
+                }
+            ]
+        },
+        {
+            "comment": "Process 2 (handles lever)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "quest_type": "WorldManageQuest",
+                    "interact_type": "Release",
+                    "quest_id": 70002001,
+                    "stage_id": {
+                        "id": 68,
+                        "group_id": 2,
+                        "layer_no": 2
+                    }
+                },
+                {
+                    "type": "MyQstFlags",
+                    "flags": [],
+                    "set_flags": [3]
+                }
+            ]
+        }
+    ]
+}

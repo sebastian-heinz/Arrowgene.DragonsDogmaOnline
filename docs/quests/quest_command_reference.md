@@ -615,7 +615,7 @@ WaitOrder(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0);
 
 ```
 /**
- * @brief
+ * @brief Used to touch objects spawned by World Manage Quests.
  * @param stageNo
  * @param groupNo
  * @param setNo
@@ -627,7 +627,7 @@ OmSetTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0);
 
 ```
 /**
- * @brief
+ * @brief Used to detect released objects spawned by World Manage Quests.
  * @param stageNo
  * @param groupNo
  * @param setNo

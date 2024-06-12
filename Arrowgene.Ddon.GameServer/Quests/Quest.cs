@@ -94,7 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         private List<CDataQuestProcessState> GetProcessState(uint step, out uint announceNoCount)
         {
-            List<QuestFlag> questFlags = new List<QuestFlag>();
+            Dictionary<QuestFlagType, Dictionary<int, QuestFlag>> questFlags = new Dictionary<QuestFlagType, Dictionary<int, QuestFlag>>();
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
             int i = 0;
@@ -118,7 +118,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     if (flag.Action == QuestFlagAction.Set || flag.Action == QuestFlagAction.Clear)
                     {
-                        questFlags.Add(flag);
+                        if (!questFlags.ContainsKey(flag.Type))
+                        {
+                            questFlags[flag.Type] = new Dictionary<int, QuestFlag>();
+                        }
+
+                        questFlags[flag.Type][flag.Value] = flag;
                     }
                 }
 
@@ -155,11 +160,19 @@ namespace Arrowgene.Ddon.GameServer.Quests
             // Generate a block that replays all the flags that got set and cleared
             if (questFlags.Count > 0)
             {
+
+                var flags = new List<QuestFlag>();
+                foreach (var flag in questFlags)
+                {
+                    flags.AddRange(flag.Value.Values.ToList());
+                }
+                
+
                 var questBlock = new QuestBlock()
                 {
                     ProcessNo = (ushort)Processes.Count,
                     SequenceNo = 1,
-                    QuestFlags = questFlags
+                    QuestFlags = flags
                 };
 
                 result.Add(Quest.BlockAsCDataQuestProcessState(questBlock));
