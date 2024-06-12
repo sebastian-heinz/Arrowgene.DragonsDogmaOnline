@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Model
         }
         
         public uint ItemId { get; set; }
-        public byte Unk3 { get; set; } // QualityParam?
+        public byte Unk3 { get; set; } // Looks like this adds a padlock to gear?
         public byte Color { get; set; }
         public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/4
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }

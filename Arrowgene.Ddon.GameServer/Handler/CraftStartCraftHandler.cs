@@ -65,23 +65,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     return;
                 }
             }
-            // Remove Refinement material (and increase odds of better Stars)
-            foreach (var craftMaterial in packet.Structure.CraftMaterialList)
+            
+            // Check if a refinematerial is set
+            if (!string.IsNullOrEmpty(RefineMaterial))
             {
-                try
+                // Remove Refinement material (and increase odds of better Stars)
+                foreach (var craftMaterial in packet.Structure.CraftMaterialList)
                 {
-                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                    D100 = D100 + 30;
-                }
-                catch (NotEnoughItemsException e)
-                {
-                    Logger.Exception(e);
-                    client.Send(new S2CCraftStartCraftRes()
+                    try
                     {
-                        Result = 1
-                    });
-                    return;
+                        List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
+                        updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                        D100 = D100 + 30;
+                    }
+                    catch (NotEnoughItemsException e)
+                    {
+                        Logger.Exception(e);
+                        client.Send(new S2CCraftStartCraftRes()
+                        {
+                            Result = 1
+                        });
+                        return;
+                    }
                 }
             }
 

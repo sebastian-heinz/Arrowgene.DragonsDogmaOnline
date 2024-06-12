@@ -275,7 +275,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.Unk3 = item.Unk3;
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
-                result.ItemList.Color = item.Color; // ?
+                result.ItemList.Color = item.Color;
                 result.ItemList.PlusValue = item.PlusValue;
                 result.ItemList.Bind = false;
                 result.ItemList.EquipPoint = 0;
