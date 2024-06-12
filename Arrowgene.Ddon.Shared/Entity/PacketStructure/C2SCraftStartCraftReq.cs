@@ -12,16 +12,16 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public C2SCraftStartCraftReq()
         {
             CraftMaterialList = new List<CDataCraftMaterial>();
-            wstrToppingUID = string.Empty;
+            RefineMaterialUID = string.Empty;
             Unk1 = new List<CDataCraftMaterial>();
             CraftSupportPawnIDList = new List<CDataCraftSupportPawnID>();
         }
 
         public uint RecipeID { get; set; }
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
-        public string wstrToppingUID { get; set; }
+        public string RefineMaterialUID { get; set; } // Refine material UID
         public ushort Unk0 { get; set; }
-        public List<CDataCraftMaterial> Unk1 { get; set; } // Probably the refining material?
+        public List<CDataCraftMaterial> Unk1 { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
         public List<CDataCommonU32> Unk3 { get; set; }
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteUInt32(buffer, obj.RecipeID);
                 WriteEntityList<CDataCraftMaterial>(buffer, obj.CraftMaterialList);
-                WriteMtString(buffer, obj.wstrToppingUID);
+                WriteMtString(buffer, obj.RefineMaterialUID);
                 WriteUInt16(buffer, obj.Unk0);
                 WriteEntityList<CDataCraftMaterial>(buffer, obj.Unk1);
                 WriteUInt32(buffer, obj.CraftMainPawnID);
@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 C2SCraftStartCraftReq obj = new C2SCraftStartCraftReq();
                 obj.RecipeID = ReadUInt32(buffer);
                 obj.CraftMaterialList = ReadEntityList<CDataCraftMaterial>(buffer);
-                obj.wstrToppingUID = ReadMtString(buffer);
+                obj.RefineMaterialUID = ReadMtString(buffer);
                 obj.Unk0 = ReadUInt16(buffer);
                 obj.Unk1 = ReadEntityList<CDataCraftMaterial>(buffer);
                 obj.CraftMainPawnID = ReadUInt32(buffer);

@@ -15,6 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartCraftHandler : GameStructurePacketHandler<C2SCraftStartCraftReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
+        private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> 
+        {
+            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
+            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
+        };
         private readonly Random _random;
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
@@ -35,33 +40,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Instead of giving the player the item immediately
             // save the crafting to DB, and notify the player when the craft
             // time passes.
-
+            string RefineMaterial = packet.Structure.RefineMaterialUID;
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
-
-            if (D100 >= 90)
-            {
-                RandomQuality = 4;
-            }
-            else if (D100 <= 50)
-            {
-                RandomQuality = 0;
-            }
-            else if (D100 >= 51 && D100 <= 60)
-            {
-                RandomQuality = 1;
-            }
-            else if (D100 >= 61 && D100 <= 70)
-            {
-                RandomQuality = 2;
-            }
-            else if (D100 >= 71 && D100 <= 89)
-            {
-                RandomQuality = 3;
-            }
-
-
-            Logger.Debug($"your diceroll, {RandomQuality}");
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
@@ -84,6 +65,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     return;
                 }
             }
+            // Remove Refinement material (and increase odds of better Stars)
+            foreach (var craftMaterial in packet.Structure.CraftMaterialList)
+            {
+                try
+                {
+                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                    D100 = D100 + 30;
+                }
+                catch (NotEnoughItemsException e)
+                {
+                    Logger.Exception(e);
+                    client.Send(new S2CCraftStartCraftRes()
+                    {
+                        Result = 1
+                    });
+                    return;
+                }
+            }
 
             // TODO: Refining material and all that stuff
 
@@ -95,6 +95,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
             {
                 finalCraftCost = (uint)(finalCraftCost*0.95);
+                D100 = D100 + 10;
+            }
+
+            if (D100 >= 90)
+            {
+                RandomQuality = 4;
+            }
+            else if (D100 <= 50)
+            {
+                RandomQuality = 0;
+            }
+            else if (D100 >= 51 && D100 <= 60)
+            {
+                RandomQuality = 1;
+            }
+            else if (D100 >= 61 && D100 <= 70)
+            {
+                RandomQuality = 2;
+            }
+            else if (D100 >= 71 && D100 <= 89)
+            {
+                RandomQuality = 3;
             }
 
             // Substract craft price
