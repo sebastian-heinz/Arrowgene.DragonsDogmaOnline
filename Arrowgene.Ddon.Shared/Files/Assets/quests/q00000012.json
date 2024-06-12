@@ -93,7 +93,7 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"}
             ],
             "npc_id": "Joseph",
-            "message_id": 0
+            "message_id": 7898
         },
         {
             "type": "TalkToNpc",
@@ -142,7 +142,7 @@
                 "id": 137
             },
             "npc_id": "Christine",
-            "message_id": 14856
+            "message_id": 14858
         },
         {
             "type": "PartyGather",

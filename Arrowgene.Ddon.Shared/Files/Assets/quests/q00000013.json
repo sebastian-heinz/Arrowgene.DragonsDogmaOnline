@@ -121,7 +121,7 @@
                         {"type": "WorldManageLayout", "action": "Set", "value": 1317, "quest_id": 70000001, "comment": "Waterfalls"}
                     ],
                     "npc_id": "Klaus0",
-                    "message_id": 0
+                    "message_id": 7931
                 },
                 {
                     "type": "PartyGather",

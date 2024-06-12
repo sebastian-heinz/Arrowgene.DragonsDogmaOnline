@@ -24,7 +24,7 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"}
             ],
             "npc_id": "Mysial0",
-            "message_id": 11929
+            "message_id": 0
         },
         {
             "type": "PlayEvent",
@@ -65,7 +65,7 @@
                 "group_id": 1
             },
             "npc_id": "Joseph",
-            "message_id": 10999
+            "message_id": 11533
         }
     ]
 }
