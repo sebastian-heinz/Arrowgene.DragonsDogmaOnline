@@ -36,7 +36,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // save the crafting to DB, and notify the player when the craft
             // time passes.
 
-            byte RandomQuality = (byte)_random.Next(5);
+            byte RandomQuality = 0;
+            int D100 =  _random.Next(100);
+
+            if (D100 >= 90)
+            {
+                RandomQuality = 4;
+            }
+            else if (D100 <= 50)
+            {
+                RandomQuality = 0;
+            }
+            else if (D100 >= 51 && D100 <= 60)
+            {
+                RandomQuality = 1;
+            }
+            else if (D100 >= 61 && D100 <= 70)
+            {
+                RandomQuality = 2;
+            }
+            else if (D100 >= 71 && D100 <= 89)
+            {
+                RandomQuality = 3;
+            }
+
+
             Logger.Debug($"your diceroll, {RandomQuality}");
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();

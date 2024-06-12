@@ -205,7 +205,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if(itemBag)
             {
                 // Limit stacks when adding to the item bag.
-                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit, getplusvalue);
+                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit);
             }
             else
             {
@@ -218,7 +218,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 else
                 {
                     // Move to storage box without stack limit if it's not equipment
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, getplusvalue);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num);
                 }
             }
         }
