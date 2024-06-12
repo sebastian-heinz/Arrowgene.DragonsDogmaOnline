@@ -536,11 +536,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.ShowMarker = jShowMarker.GetBoolean();
                             }
-
-                            if (!jblock.GetProperty("stage_id").TryGetProperty("layer_no", out JsonElement jLayerNo))
-                            {
-                                questBlock.StageId = new StageId(questBlock.StageId.Id, 1, questBlock.StageId.GroupId);
-                            }
                         }
                         break;
                     case QuestBlockType.OmInteractEvent:

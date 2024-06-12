@@ -164,7 +164,8 @@
                     ],
                     "stage_id": {
                         "id": 70,
-                        "group_id": 1
+                        "group_id": 1,
+                        "layer_no": 1
                     },
                     "layout_flags_on": []
                 },
