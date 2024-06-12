@@ -11,6 +11,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using YamlDotNet.Core.Tokens;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -356,6 +357,24 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     questBlock.SubGroupId = jSubGroupNo.GetUInt16();
                 }
 
+                if (jblock.TryGetProperty("hand_items", out JsonElement jHandItems))
+                {
+                    foreach (var item in jHandItems.EnumerateArray())
+                    {
+                        questBlock.HandPlayerItems.Add(new QuestItem()
+                        {
+                            ItemId = item.GetProperty("id").GetUInt32(),
+                            Amount = item.GetProperty("amount").GetUInt32()
+                        });
+                    }
+                }
+
+                questBlock.BgmStop = false;
+                if (jblock.TryGetProperty("bgm_stop", out JsonElement jBgmStop))
+                {
+                    questBlock.BgmStop = jBgmStop.GetBoolean();
+                }
+
                 if (jblock.TryGetProperty("flags", out JsonElement jFlags))
                 {
                     // {"type": "MyQst", "operation": "Set", "value": 4}
@@ -381,6 +400,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 switch (questBlockType)
                 {
                     case QuestBlockType.IsStageNo:
+                        {
+                            questBlock.ShowMarker = true;
+                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
+                            {
+                                questBlock.ShowMarker = jShowMarker.GetBoolean();
+                            }
+                        }
                         break;
                     case QuestBlockType.NpcTalkAndOrder:
                         {
@@ -428,11 +454,47 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
                                 return false;
                             }
+
+                            questBlock.ShowMarker = true;
+                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
+                            {
+                                questBlock.ShowMarker = jShowMarker.GetBoolean();
+                            }
+
                             questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
                             {
                                 NpcId = npcId,
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
                                 StageId = ParseStageId(jblock.GetProperty("stage_id"))
+                            });
+                        }
+                        break;
+                    case QuestBlockType.NewTalkToNpc:
+                        {
+                            if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
+                            {
+                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            questBlock.ShowMarker = true;
+                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
+                            {
+                                questBlock.ShowMarker = jShowMarker.GetBoolean();
+                            }
+
+                            QuestId questId = QuestId.None;
+                            if (jblock.TryGetProperty("quest_id", out JsonElement jQuestId))
+                            {
+                                questId = (QuestId) jQuestId.GetUInt32();
+                            }
+
+                            questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
+                            {
+                                NpcId = npcId,
+                                MsgId = jblock.GetProperty("message_id").GetInt32(),
+                                StageId = ParseStageId(jblock.GetProperty("stage_id")),
+                                QuestId = questId
                             });
                         }
                         break;
@@ -476,6 +538,35 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             }
                         }
                         break;
+                    case QuestBlockType.OmInteractEvent:
+                        {
+                            if (!Enum.TryParse(jblock.GetProperty("quest_type").GetString(), true, out OmQuestType questType))
+                            {
+                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            if (!Enum.TryParse(jblock.GetProperty("interact_type").GetString(), true, out OmInteractType interactType))
+                            {
+                                Logger.Error($"Unable to parse the quest typ in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            questBlock.ShowMarker = true;
+                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
+                            {
+                                questBlock.ShowMarker = jShowMarker.GetBoolean();
+                            }
+
+                            if (jblock.TryGetProperty("quest_id", out JsonElement jQuestId))
+                            {
+                                questBlock.OmInteractEvent.QuestId = (QuestId) jQuestId.GetUInt32();
+                            }
+
+                            questBlock.OmInteractEvent.QuestType = questType;
+                            questBlock.OmInteractEvent.InteractType = interactType;
+                        }
+                        break;
                     case QuestBlockType.DeliverItems:
                         {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
@@ -493,7 +584,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                             foreach (var item in jblock.GetProperty("items").EnumerateArray())
                             {
-                                questBlock.DeliveryRequests.Add(new QuestDeliveryItem()
+                                questBlock.DeliveryRequests.Add(new QuestItem()
                                 {
                                     ItemId = item.GetProperty("id").GetUInt32(),
                                     Amount = item.GetProperty("amount").GetUInt32()

@@ -83,7 +83,8 @@
             "type": "CollectItem",
             "stage_id": {
                 "id": 142,
-                "group_id": 1
+                "group_id": 1,
+                "layer_no": 1
             },
             "announce_type": "Accept",
             "flags": [

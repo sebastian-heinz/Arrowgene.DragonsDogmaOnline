@@ -102,7 +102,8 @@
                     "type": "CollectItem",
                     "stage_id": {
                         "id": 1,
-                        "group_id": 2
+                        "group_id": 2,
+                        "layer_no": 1
                     },
                     "layout_flags_on": [1125]
                 },
@@ -125,7 +126,8 @@
                     "type": "CollectItem",
                     "stage_id": {
                         "id": 1,
-                        "group_id": 3
+                        "group_id": 3,
+                        "layer_no": 1
                     },
                     "layout_flags_on": [1126]
                 },
@@ -148,7 +150,8 @@
                     "type": "CollectItem",
                     "stage_id": {
                         "id": 1,
-                        "group_id": 4
+                        "group_id": 4,
+                        "layer_no": 1
                     },
                     "layout_flags_on": [1127]
                 },
@@ -171,7 +174,8 @@
                     "type": "CollectItem",
                     "stage_id": {
                         "id": 1,
-                        "group_id": 5
+                        "group_id": 5,
+                        "layer_no": 1
                     },
                     "layout_flags_on": [1128]
                 },

@@ -567,16 +567,91 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 1315  | Boss Room Locked Wooden Door (for boss fight)
 | QstLayout | 913   | Boss Room Locked Gate (for boss fight)
 
+#### The Stolen Heart (q00000013)
+
+| Type      | Value |GroupNo| Comment                                                    |
+|:---------:|:-----:|:-----:|:-----------------------------------------------------------|
+| QstLayout | 902   | 1     | General purpose glitter for research (汎用キラキラポイント（調べる用)
+| QstLayout | 914   | 2     | Template of purification gimmick gimmick (ミソギの滝ギミック)
+| QstLayout | 1007  | 3     | Boss Door barrier??
+| QstLayout | 1008  | 4     | Spawns Leo at the boss fight
+| QstLayout | 2396  | 5     | Quest specified message OM (誘導１ -- (クエスト指定メッセージOM))
+| QstLayout | 2397  | 6     | Quest specified message OM (誘導２-- (クエスト指定メッセージOM))
+| QstLayout | 2398  | 7     | Quest specified message OM (誘導３-- (クエスト指定メッセージOM))
+| QstLayout | 2399  | 8     | Quest specified message OM (誘導４-- (クエスト指定メッセージOM))
+| QstLayout | 2400  | 9     | Quest specified message OM (誘導５-- (クエスト指定メッセージOM))
+| MyQst     | 788   |       | Leo begins battle
+
+#### The Roars of A Thousand (q00000014)
+
+| Type      | Value | id/grp | Comment                                                    |
+|:---------:|:-----:|:------:|:-----------------------------------------------------------|
+| QstLayout | 1009  | st0201 | Spawns Gerd in the audience chamber
+| QstLayout | 1239  | st0201 | Spawns Heinz in the Audience Chamber
+| QstLayout | 1240  | st0201 | Spawns Vanessa in the Audience Chamber
+| QstLayout | 1107  | st0100 | Knight Corpse lying face down (騎士死体うつ伏せ)
+| QstLayout | 1010  | st0100 | Spawns White Knights, Heinz and Gerd
+| QstLayout | 1100  | st0100 | Spawns Heinz
+| QstLayout | 1257  | st0100 | Vessel of life (small) (命の器（小）)
+| QstLayout | 1621  | st0100 | Allied NPC - For advance squad (共闘NPC−先発部隊用) (first battle in hidell)
+| QstLayout | 1622  | st0100 | Gonghe NPC-For supporting troops (共闘NPC−支援部隊用) (second battle in hidell)
+| MyQst     | 624   |        | Starts NPC FSM for advance squad (flag 1621)
+| MyQst     | 600   |        | Stops NPC FSM for first battle and starts FSM for support groups (flag 1621 and 1622)
+| MyQst     | 723   |        | Stops NPC FSM for 1 of the supporting group NPCs (flag 1622)
+| MyQst     | 728   |        | Stops NPC FSM for 1 of the supporting group NPCs (flag 1622)
+| MyQst     | 208   |        | Starts NPC FSM for Heinz, Gerd and White Knights (flag 1010)
+
+#### Return to Yore (q00000015)
+| Type      | Value | id/grp | Comment                                                    |
+|:---------:|:-----:|:------:|:-----------------------------------------------------------|
+| QstLayout | 1241  | st0201 | Spawns Mayleaf in the audience chamber.
+| QstLayout | 903   | st0404 | General-purpose glitter points (for research purposes) (key?) (汎用キラキラポイント（調べる用）)
+| QstLayout | 915   | st0404 | Large door in front of El Tedinanbos (エルテディナンボス前大型扉)
+| QstLayout | 1011  | st0404 | Spawns Leo
+| QstLayout | 1012  | st0404 | Spawns Kieshildt
+| QstLayout | 1258  | st0404 | Vessel of Life (small) (命の器（小）)
+| QstLayout | 2395  | st0404 | Spawns Kieshildt and Leo?
+
+#### A Friendly Visit (q00000016)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1013  | st0201          | Spawns Vanessa
+| QstLayout | 900   | st0100 (group1) | General-purpose glitter points (for research) (汎用キラキラポイント（調べる用）)
+| QstLayout | 916   | st0402 (group1) | Gardnok Fort large door (ガルドノック砦大型ドア) (boss room lock)
+| QstLayout | 1014  | st0402          | Spawns Arisen Corps Regimental Soldier, Stark, Talcott and Leo
+
 #### World Manage Quest
 
 ##### q70000001
 
-| Type              | Value  | Comment
-|:-----------------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | 977    | Spawns Gerd and the White Knights outside 
-| WorldManageLayout | 1218   | Spawns Leo in the audience chamber
-| WorldManageLayout | 1219   | Spawns Iris in the audience chamber
-| WorldManageLayout | 1293   | Spawns The White Dragon in the audience chamber in the most injured state
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st0100  | 977    | Spawns Gerd and the White Knights outside 
+|
+| WorldManageLayout | st0201  | 1218   | Spawns Leo in the audience chamber
+| WorldManageLayout | st0201  | 1219   | Spawns Iris in the audience chamber
+| WorldManageLayout | st0201  | 1293   | Spawns The White Dragon in the audience chamber in the most injured state
+|
+| WorldManageLayout | st0403  | 1109   | Locks the double doors to the Chapel at (x:51,y:89)
+| WorldManageLayout | st0403  | 1110   | Unlocks the double doors to the Chapel at (x:51,y:89)
+|
+| WorldManageLayout | st0408  | 1111   | Closed Water Flow Control Room Door
+| WorldManageLayout | st0408  | 1112   | Open Water Flow Control Room Door
+| WorldManageLayout | st0408  | 1317   | Water Falls Gimick
+| WorldManageLayout | st0408  | 1671   | Closed Lever Door (Stone Door, middle)
+| WorldManageLayout | st0408  | 1672   | Open Lever Door  (Stone Door, middle)
+
+##### q70002001
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st0402  |   0    | Solider Corpse message
+| WorldManageLayout | st0402  | 3859   | Floor Lever
+| WorldManageLayout | st0402  | 3859   | Large Door Inside Gardnock Fort
+| WorldManageLayout | st0402  | 3860   | Large Door Inside Gardnock Fort
+|
+| WorldManageLayout | st0403  | 1113   | Large Door Closed in Erte Deenan
+| WorldManageLayout | st0403  | 1114   | Large Door Open in Erte Deenan
+
 
 ##### q70032001
 

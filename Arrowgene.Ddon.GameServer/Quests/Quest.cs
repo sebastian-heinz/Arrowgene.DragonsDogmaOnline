@@ -94,7 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         private List<CDataQuestProcessState> GetProcessState(uint step, out uint announceNoCount)
         {
-            List<QuestFlag> questFlags = new List<QuestFlag>();
+            Dictionary<QuestFlagType, Dictionary<int, QuestFlag>> questFlags = new Dictionary<QuestFlagType, Dictionary<int, QuestFlag>>();
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
             int i = 0;
@@ -118,7 +118,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     if (flag.Action == QuestFlagAction.Set || flag.Action == QuestFlagAction.Clear)
                     {
-                        questFlags.Add(flag);
+                        if (!questFlags.ContainsKey(flag.Type))
+                        {
+                            questFlags[flag.Type] = new Dictionary<int, QuestFlag>();
+                        }
+
+                        questFlags[flag.Type][flag.Value] = flag;
                     }
                 }
 
@@ -139,24 +144,35 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
-            // Eliminate any announce steps that might be in the quest block when resuming a quest.
+            // Eliminate any announce or free item steps when resuming a quest.
             foreach (var processState in result)
             {
-                // Make a shallow copy of the result commands without annoucne and update
+                // Make a shallow copy of the result commands without announce and update
                 processState.ResultCommandList = processState.ResultCommandList
                     .Select(x => x)
-                    .Where(x => x.Command != (ushort)QuestResultCommand.UpdateAnnounce && x.Command != (ushort)QuestResultCommand.SetAnnounce)
+                    .Where(x => x.Command != (ushort)QuestResultCommand.UpdateAnnounce &&
+                                x.Command != (ushort)QuestResultCommand.SetAnnounce &&
+                                x.Command != (ushort)QuestResultCommand.HandItem &&
+                                x.Command != (ushort)QuestResultCommand.PushImteToPlBag)
                     .ToList();
             }
 
             // Generate a block that replays all the flags that got set and cleared
             if (questFlags.Count > 0)
             {
+
+                var flags = new List<QuestFlag>();
+                foreach (var flag in questFlags)
+                {
+                    flags.AddRange(flag.Value.Values.ToList());
+                }
+                
+
                 var questBlock = new QuestBlock()
                 {
                     ProcessNo = (ushort)Processes.Count,
                     SequenceNo = 1,
-                    QuestFlags = questFlags
+                    QuestFlags = flags
                 };
 
                 result.Add(Quest.BlockAsCDataQuestProcessState(questBlock));

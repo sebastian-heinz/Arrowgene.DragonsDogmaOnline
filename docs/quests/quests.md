@@ -6,7 +6,7 @@ If you are interested in modifying or creating new quests, see the [generic ques
 
 ## What works in the current implementation
 
-- Currently only [Season 1.0 MSQ](#season-10) and a limited number of [World Quests](#world-quests) are activated.
+- Currently only [Season 1.0 MSQ](#season-10), [Season 1.1 MSQ](#season-11) and a limited number of [World Quests](#world-quests) are activated.
 - Quest rewards can be claimed from the reward box after completing a quest.
   - ![](images/reward-box.png)
 
@@ -49,6 +49,32 @@ There exists an implementation of the following main story quests.
 | [The Assailed Fort](https://ddonline.tumblr.com/post/128754598369/mq-the-assailed-fort) | Playable. Some orcs missing at start. Front gate of gritten has two entrances. Needs NPC state machines added.
 | [The Castle of Dusk](https://ddonline.tumblr.com/post/128917708449/mq-the-castle-of-dusk) | Mostly works. Unable to trigger cutscene on door enter for the boss. When boss lockout occurs, there are 2 doors in the location.
 | [The Gods Awakening](https://ddonline.tumblr.com/post/128920334189/mq-the-gods-awakening) | Working well.
+
+### Season 1.1
+
+| Quest Name | Comment |
+|:----------:|:-------:|
+| [The Girl Clad in Darkness](https://ddonline.tumblr.com/post/131221518489/mq-the-girl-clad-in-darkness) | Mayleaf still present in shopping district when should not be. Skips step where player needs to complete a world quest in Mysree Grove.
+| [The Stolen Heart](https://ddonline.tumblr.com/post/131318384484/mq-the-stolen-heart)  | Key gimick not working exactly as original. One of the quest markers spawns in a different place than in video (was it moved in a patch?).
+| [The Roars of A Thousand](https://ddonline.tumblr.com/post/131415639659/mq-the-roars-of-a-thousand) | Some monsters spawn with less than max health. Seems to be related to the fact low level monsters are being replaced with very high level monsters. Need to teleport after the battle completed.
+| [Return to Yore](https://ddonline.tumblr.com/post/132128346939/mq-return-to-yore) | Needs some better mob placement in a few places.
+| [A Friendly Visit](https://ddonline.tumblr.com/post/132718212509/mq-a-friends-visit) | Unable to figure out how to mark World Manage OMs as quest objective.
+| [The Course of Life](https://ddonline.tumblr.com/post/132719715094/mq-the-course-of-life) | Working well.
+
+### Season 1.2
+
+| Quest Name | Comment |
+|:----------:|:-------:|
+| [A Brief Respite](https://ddonline.tumblr.com/post/136167664409/mq-a-brief-respite) | Not implemented
+| [The Ark, Once More](https://ddonline.tumblr.com/post/136513169984/mq-the-ark-once-more) | Not implemented
+| [Thinking of A Friend](https://ddonline.tumblr.com/post/137011945944/mq-thinking-of-a-friend) | Not implemented
+| [The Beast’s Final Moments](https://ddonline.tumblr.com/post/137802732454/mq-the-beasts-final-moments) | Not implemented
+| [The Entrusted Future](http://ddon.wikidot.com/mq:theentrustedfuture) | Not implemented
+| [The Quandary of Soldiers](http://ddon.wikidot.com/mq:thequandaryofsoldiers) | Not implemented
+| [The Dwellers of the Golden Land](http://ddon.wikidot.com/mq:thedwellersofthegoldenland) | Not implemented
+| [The Golden Key](http://ddon.wikidot.com/mq:thegoldenkey) | Not implemented
+| [The Great Alchemist](http://ddon.wikidot.com/mq:thegreatalchemist) | Not implemented
+| [Be Forevermore, White Dragon](http://ddon.wikidot.com/mq:beforevermorewhitedragon) | Not implemented
 
 ### Season 3.3
 

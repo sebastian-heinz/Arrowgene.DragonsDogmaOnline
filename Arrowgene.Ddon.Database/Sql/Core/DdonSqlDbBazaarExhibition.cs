@@ -25,7 +25,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                                                $"WHERE \"item_id\" = @item_id " +
                                                                $"AND \"state\" = {(byte)BazaarExhibitionState.OnSale} " +
                                                                $"AND \"expire\" > DATETIME(\"now\") " +
-                                                               $"AND \"character_id\" <> @excluded_character_id;";
+                                                               $"AND \"character_id\" <> @excluded_character_id " +
+                                                               $"ORDER BY price ASC;";
         
         private static readonly string SqlDeleteBazaarExhibitionByBazaarId = $"DELETE FROM \"{BazaarExhibitionTableName}\" WHERE \"bazaar_id\"=@bazaar_id;";
         private static readonly string SqlDeleteBazaarExhibitionOutdated = $"DELETE FROM \"{BazaarExhibitionTableName}\" WHERE \"state\"={(byte)BazaarExhibitionState.Idle} AND \"expire\" < DATETIME(\"now\");";
@@ -168,7 +169,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "@excluded_character_id", excludedCharacterId);
                 }, reader =>
                 {
-                    if (reader.Read())
+                    while (reader.Read())
                     {
                         BazaarExhibition e = ReadBazaarExhibition(reader);
                         entities.Add(e);
