@@ -170,17 +170,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                                                 result.ItemList.StorageType == StorageType.StorageBoxExpansion);
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
                 AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1);
-                foreach (var result in AddItemResult)
-                    {
-                        if (result.ItemList.PlusValue < 4)
-                        {
-                            result.ItemList.PlusValue =+ 1;
-                        }
-                    }
-                    // This is just a test to see what it did, this is Quality (+0/1/2/3/4) on Equipment.
-                    // This code just makes the Client see this, the DB is hardcoded to 0 currently.
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
-            };
+            //     foreach (var result in AddItemResult)
+            //         {
+            //             if (result.ItemList.PlusValue < 4)
+            //             {
+            //                 result.ItemList.PlusValue =+ 1;
+            //             }
+            //         }
+            //          This was my experiment to validate star skipping works, change the 1 to anything up to 4.
+             };
+            
 
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()

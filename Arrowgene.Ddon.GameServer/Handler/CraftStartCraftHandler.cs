@@ -15,9 +15,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartCraftHandler : GameStructurePacketHandler<C2SCraftStartCraftReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
-
+        private readonly Random _random;
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
+            _random = new Random();
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartCraftReq> packet)
@@ -34,6 +35,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Instead of giving the player the item immediately
             // save the crafting to DB, and notify the player when the craft
             // time passes.
+
+            byte RandomQuality = (byte)_random.Next(5);
+            Logger.Debug($"your diceroll, {RandomQuality}");
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
@@ -74,8 +78,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             // Add crafted items
-            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num);
-            updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);
+            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num, RandomQuality);
+            updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);                                                       
 
             client.Send(updateCharacterItemNtc);
             client.Send(new S2CCraftStartCraftRes());

@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -198,13 +199,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return ntcData;
         }
 
-        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num)
+        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte getplusvalue = 0)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
             if(itemBag)
             {
                 // Limit stacks when adding to the item bag.
-                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit);
+                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit, getplusvalue);
             }
             else
             {
@@ -212,17 +213,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if(clientItemInfo.StorageType == StorageType.ItemBagEquipment)
                 {
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, getplusvalue);
                 }
                 else
                 {
                     // Move to storage box without stack limit if it's not equipment
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, getplusvalue);
                 }
             }
         }
 
-        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue)
+        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte setplusvalue = 0)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
             // The stack limit is specified by the stackLimit arg
@@ -251,7 +252,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         ItemId = itemId,
                         Unk3 = 0,
                         Color = 0,
-                        PlusValue = 0,
+                        PlusValue = setplusvalue, // TODO: Figure out why the server doesn't allow me to skip to higher than 1.
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                         ArmorCrestDataList = new List<CDataArmorCrestData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()
@@ -274,7 +275,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
                 result.ItemList.Color = item.Color; // ?
-                result.ItemList.PlusValue = item.PlusValue; // ?
+                result.ItemList.PlusValue = item.PlusValue;
                 result.ItemList.Bind = false;
                 result.ItemList.EquipPoint = 0;
                 result.ItemList.EquipCharacterID = 0;
