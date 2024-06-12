@@ -235,6 +235,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .Select((itemAndCount, index) => new {item = itemAndCount, slot = (ushort) (index + 1)})
                     .Where(itemAndNumWithSlot => (
                         itemAndNumWithSlot.item?.Item1.ItemId == itemId
+                        && itemAndNumWithSlot.item?.Item1.PlusValue == setplusvalue
                         && itemAndNumWithSlot.item?.Item2 < stackLimit
                     ))
                     .FirstOrDefault();
@@ -252,7 +253,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         ItemId = itemId,
                         Unk3 = 0,
                         Color = 0,
-                        PlusValue = setplusvalue, // TODO: Figure out why the server doesn't allow me to skip to higher than 1.
+                        PlusValue = setplusvalue,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                         ArmorCrestDataList = new List<CDataArmorCrestData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()
