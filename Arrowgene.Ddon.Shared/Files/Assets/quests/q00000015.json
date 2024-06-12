@@ -54,6 +54,45 @@
     "enemy_groups": [
         {
             "stage_id": {
+                "id": 1,
+                "group_id": 320
+            },
+            "enemies": [
+                {
+                    "comment" : "Captain Orc",
+                    "enemy_id": "0x085004",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085000",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085001",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085002",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085003",
+                    "level": 41,
+                    "exp": 3742
+                }
+
+            ]
+        },
+        {
+            "stage_id": {
                 "id": 70,
                 "group_id": 23
             },
@@ -203,7 +242,7 @@
                         {"type": "QstLayout", "action": "Set", "value": 915, "comment": "Lock boss door"}
                     ],
                     "announce_type": "Update",
-                    "groups": [0, 1]
+                    "groups": [1, 2]
                 },
                 {
                     "type": "PlayEvent",

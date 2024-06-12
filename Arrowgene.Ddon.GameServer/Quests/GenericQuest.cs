@@ -323,6 +323,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         var questCommand = questBlock.ShowMarker ?
                             QuestManager.CheckCommand.QuestOmSetTouch(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo) :
                             QuestManager.CheckCommand.QuestOmSetTouchWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo);
+                        checkCommands.Add(questCommand);
                     }
                     break;
                 case QuestBlockType.OmInteractEvent:
