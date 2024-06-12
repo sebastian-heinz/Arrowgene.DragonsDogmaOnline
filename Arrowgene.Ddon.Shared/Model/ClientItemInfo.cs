@@ -14,8 +14,11 @@ namespace Arrowgene.Ddon.Shared.Model
         { 
             get
             {
-                if (Category == 5)
-                    // Job Items have a category of 5, but Job Items StorageType is 4
+                // For consumables, materials and equipment, itemlist.ipa Category
+                // matches with StorageType values. But key and job items differ.
+                if (Category == 4)
+                    return StorageType.KeyItems;
+                else if (Category == 5)
                     return StorageType.ItemBagJob;
                 else
                     return (StorageType) Category;

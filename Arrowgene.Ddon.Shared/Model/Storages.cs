@@ -139,7 +139,7 @@ namespace Arrowgene.Ddon.Shared.Model
         ItemBagMaterial = 0x2,
         ItemBagEquipment = 0x3, 
         ItemBagJob = 0x4,
-        Unk5 = 0x5,
+        KeyItems = 0x5,
         StorageBoxNormal = 0x6,
         StorageBoxExpansion = 0x7,
         StorageChest = 0x8, // The one in the Arisen Room
