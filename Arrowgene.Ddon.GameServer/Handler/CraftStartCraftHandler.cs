@@ -43,6 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string RefineMaterial = packet.Structure.RefineMaterialUID;
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
+            ushort AddStat = packet.Structure.Unk0;
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
@@ -103,25 +104,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 D100 = D100 + 10;
             }
 
-            if (D100 >= 90)
+            if (D100 >= 95)
             {
-                RandomQuality = 4;
+                RandomQuality = 3;
             }
-            else if (D100 <= 50)
+            else if (D100 <= 60)
             {
                 RandomQuality = 0;
             }
-            else if (D100 >= 51 && D100 <= 60)
+            else if (D100 >= 61 && D100 <= 80)
             {
                 RandomQuality = 1;
             }
-            else if (D100 >= 61 && D100 <= 70)
+            else if (D100 >= 81 && D100 <= 94)
             {
                 RandomQuality = 2;
-            }
-            else if (D100 >= 71 && D100 <= 89)
-            {
-                RandomQuality = 3;
             }
 
             // Substract craft price
