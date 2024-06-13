@@ -34,7 +34,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartQualityUpReq> packet)
         {
 
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            updateCharacterItemNtc.UpdateType = 0;
             string equipItemUID = packet.Structure.Unk0;
+            uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID);
             Character common = client.Character;
             ushort equipslot = 0;
             byte equiptype = 0;
@@ -79,6 +82,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk4 = 0,
                 IsGreatSuccess = true
             };
+
+            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, equipItemID, 1, 2);
+            updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);  
 
             var res = new S2CCraftStartQualityUpRes()
             {

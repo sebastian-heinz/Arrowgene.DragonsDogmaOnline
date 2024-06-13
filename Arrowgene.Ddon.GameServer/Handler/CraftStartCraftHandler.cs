@@ -93,19 +93,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             // TODO: Remove most logic since it should happen in the handler for when the craft time completes.
-            // TODO: Additional Status stuff?
+            // TODO: Additional Status stuff? No clear place for this to be set though?
 
             // TODO: Calculate final craft price with the discounts from the craft pawns
             uint finalCraftCost = recipe.Cost * packet.Structure.CreateCount;
 
             // Temporary solution for craft price when setting a second pawn of rank 1
-
+            // Temporary solution for Quality result, need to take pawn high quality into account instead.
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
             {
                 finalCraftCost = (uint)(finalCraftCost*0.95);
                 D100 = D100 + 10;
             }
-
+            
             if (D100 >= 95)
             {
                 RandomQuality = 3;

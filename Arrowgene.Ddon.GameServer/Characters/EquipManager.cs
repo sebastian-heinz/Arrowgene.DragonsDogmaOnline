@@ -358,6 +358,27 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             return false; // Item not found
         }
-        
+        public void ChangeEquippedItemUID(DdonGameServer server, CharacterCommon character, string currentUid, string newUid, Item Theitem)
+        {
+            foreach (var equipList in character.Equipment.GetAllEquipment().Values)
+            {
+                foreach (var itemList in equipList.Values)
+                {
+                    if (itemList != null)
+                    {
+                        foreach (var item in itemList)
+                        {
+                            if (item != null && item.UId == currentUid)
+                            {
+                                item.UId = newUid;
+                                server.Database.InsertItem(Theitem);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            throw new Exception($"Item with UID '{currentUid}' not found in equipped items.");
+        }
     }
 }

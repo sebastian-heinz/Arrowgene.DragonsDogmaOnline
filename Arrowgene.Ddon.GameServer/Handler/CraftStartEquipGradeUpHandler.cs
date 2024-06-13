@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using Arrowgene.Ddon.Database;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,6 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
             StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
+        };
+        private static readonly List<StorageType> StorageEquipNBox = new List<StorageType> {
+            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
         };
 
         private readonly ItemManager _itemManager;
@@ -60,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = 0x1a;
+            updateCharacterItemNtc.UpdateType = 0;
 
             if(dogreatsucess == true)
             {
@@ -127,6 +131,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk4 = true,    // makes the crest popup appear.
             };
             // TODO: Source these values accurately when we know what they are. ^
+            // TODO: one of these is probably PlusValue, we need to source the current plusvalue to retain it during upgrades.
 
             // Subtract less Gold if supportpawn is used.
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
@@ -144,6 +149,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Checking if the Gear is equipped or not first.
             List<CDataItemUpdateResult> AddItemResult;
             List<CDataItemUpdateResult> RemoveItemResult;
+
+                Item UpgradedItem = new Item()
+                {
+                    ItemId = gearupgradeID,
+                    Unk3 = 0,   // Safety setting,
+                    Color = 0,
+                    PlusValue = 0,
+                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                    ArmorCrestDataList = new List<CDataArmorCrestData>(),
+                    EquipElementParamList = new List<CDataEquipElementParam>()
+                };
+
             bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
             if (isEquipped)
             {
@@ -153,14 +170,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
 
+
+
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 
-                AddItemResult = _itemManager.AddItem(Server, client.Character, true, gearupgradeID, 1); // Need AddItemResult param in here too because we use it on Response.
-                updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);                              // For now I just give the item the same as though it wasn't equipped.
+                _equipManager.ChangeEquippedItemUID(Server, common, equipItemUID, UpgradedItem.UId, UpgradedItem);
+
+                updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
+                    UpdateItemNum = 1,
+                    ItemList = new CDataItemList() {
+                        ItemUId = UpgradedItem.UId,
+                        ItemId = gearupgradeID,
+                        ItemNum = 1,
+                        Unk3 = UpgradedItem.Unk3,
+                        StorageType = StorageType.Unk14, 
+                        SlotNo = equipslot,
+                        Color = UpgradedItem.Color,
+                        PlusValue = UpgradedItem.PlusValue,
+                        Bind = true,
+                        EquipPoint = 0,
+                        EquipCharacterID = charid,
+                        EquipPawnID = pawnid,
+                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                        ArmorCrestDataList = new List<CDataArmorCrestData>(),
+                        EquipElementParamList = new List<CDataEquipElementParam>()
+                    }
+                });       
 
                 Logger.Debug("EQUIPPED");
-
+                // TODO: Figure out why I'm crashing the client :)
                 // TODO: Figure out how to exchange the equipment correctly.
             }
             else
@@ -171,14 +210,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
                 AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1);
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
-            //     foreach (var result in AddItemResult)
-            //         {
-            //             if (result.ItemList.PlusValue < 4)
-            //             {
-            //                 result.ItemList.PlusValue =+ 1;
-            //             }
-            //         }
-            //          This was my experiment to validate star skipping works, change the 1 to anything up to 4.
              };
             
 
@@ -199,7 +230,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Supplying the response packet with data
             var res = new S2CCraftStartEquipGradeUpRes()
             {
-                GradeUpItemUID = equipItemUID, // Setting this to equipItemUID makes the results info box be accurate, but setting it to this stops upgrading multiple pieces.
+                GradeUpItemUID = UpgradedItem.UId,
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                 GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                 AddEquipPoint = addEquipPoint,
