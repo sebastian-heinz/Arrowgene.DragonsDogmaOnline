@@ -30,15 +30,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CDataStageLayoutId layoutId = packet.Structure.LayoutId;
             StageId stageId = StageId.FromStageLayoutId(layoutId);
+            ushort subGroupId = 0;
 
             Quest quest = null;
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
                 quest = QuestManager.GetQuest(questId);
+                var qSubGroupId = client.Party.QuestState.GetInstanceSubgroupId(quest, stageId);
                 var questState = client.Party.QuestState.GetQuestState(questId);
-                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, 0))
+                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, qSubGroupId))
                 {
+                    subGroupId = qSubGroupId;
                     IsQuestControlled = true;
                     break;
                 }
@@ -48,11 +51,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (IsQuestControlled && quest != null)
             {
                 // TODO: Add drops to Quest Monsters
-                enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest.QuestId, stageId, 0, packet.Structure.SetId);
+                // TODO: How does subgroup work?
+                enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest, stageId, subGroupId, packet.Structure.SetId);
             }
             else
             {
-                enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0)[(int)packet.Structure.SetId];
+                enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId)[(int)packet.Structure.SetId];
                 List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
                 if (instancedGatheringItems.Count > 0)
                 {
@@ -73,11 +77,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<InstancedEnemy> group;
             if (IsQuestControlled && quest != null)
             {
-                group = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, 0);
+                group = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, subGroupId);
             }
             else
             {
-                group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), 0);
+                group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId);
             }
 
             bool groupDestroyed = group.All(enemy => enemy.IsKilled);
@@ -85,7 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 if (IsQuestControlled && quest != null)
                 {
-                    quest.SendProgressWorkNotices(client, stageId, 0);
+                    quest.SendProgressWorkNotices(client, stageId, subGroupId);
                 }
 
                 bool IsAreaBoss = false;

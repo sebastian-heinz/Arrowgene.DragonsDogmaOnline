@@ -172,6 +172,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     ProcessNo = (ushort)Processes.Count,
                     SequenceNo = 1,
+                    BlockNo = 1,
                     QuestFlags = flags
                 };
 

@@ -352,9 +352,9 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 }
 
                 questBlock.SubGroupId = 0;
-                if (jblock.TryGetProperty("subgroup_no", out JsonElement jSubGroupNo))
+                if (jblock.TryGetProperty("subgroup_id", out JsonElement jSubGroupId))
                 {
-                    questBlock.SubGroupId = jSubGroupNo.GetUInt16();
+                    questBlock.SubGroupId = jSubGroupId.GetUInt16();
                 }
 
                 if (jblock.TryGetProperty("hand_items", out JsonElement jHandItems))
@@ -435,6 +435,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     case QuestBlockType.DiscoverEnemy:
                     case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
                     case QuestBlockType.KillGroup:
+                    case QuestBlockType.SpawnGroup:
                         {
                             questBlock.ResetGroup = true;
                             if (jblock.TryGetProperty("reset_group", out JsonElement jResetGroup))
@@ -705,7 +706,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             uint groupId = 0;
             foreach (var jGroup in jGroups.EnumerateArray())
             {
-                QuestEnemyGroup enemyGroup = new QuestEnemyGroup() { GroupId = groupId };
+                QuestEnemyGroup enemyGroup = new QuestEnemyGroup();
 
                 if (!jGroup.TryGetProperty("stage_id", out JsonElement jStageId))
                 {
@@ -714,6 +715,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 }
 
                 enemyGroup.StageId = ParseStageId(jStageId);
+
+                enemyGroup.SubGroupId = 0;
+                if (jGroup.TryGetProperty("subgroup_id", out JsonElement jSubGroupId))
+                {
+                    enemyGroup.SubGroupId = jSubGroupId.GetUInt32();
+                }
 
                 if (jGroup.TryGetProperty("starting_index", out JsonElement jStartingIndex))
                 {

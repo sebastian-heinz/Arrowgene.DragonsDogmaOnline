@@ -68,11 +68,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     switch (block.BlockType)
                     {
                         case QuestBlockType.KillGroup:
+                        case QuestBlockType.SpawnGroup:
                             {
                                 foreach (var groupId in block.EnemyGroupIds)
                                 {
                                     var enemyGroup = quest.EnemyGroups[groupId];
-                                    quest.Locations.Add(new QuestLocation() { StageId = enemyGroup.StageId, SubGroupId = 0 });
+                                    quest.Locations.Add(new QuestLocation() { StageId = enemyGroup.StageId, SubGroupId = (ushort) enemyGroup.SubGroupId });
                                 }
                             }
                             break;
@@ -102,32 +103,29 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public override bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId)
         {
-            // Search to see if a target is required for the current process
-            foreach (var process in Processes)
+
+            foreach (var processState in questState.ProcessState.Values)
             {
-                foreach (var block in process.Blocks)
+                if (processState.ProcessNo >= Processes.Count)
                 {
-                    if (!questState.ProcessState.ContainsKey(block.ProcessNo))
-                    {
-                        continue;
-                    }
+                    // An extra process gets added when resuming state
+                    // That is not accounted for in the static array
+                    // So skip it
+                    continue;
+                }
 
-                    var processState = questState.ProcessState[block.ProcessNo];
-                    if (processState.BlockNo != block.BlockNo)
-                    {
-                        continue;
-                    }
+                var block = Processes[processState.ProcessNo].Blocks[processState.BlockNo - 1];
+                foreach (var groupId in block.EnemyGroupIds)
+                {
+                    var enemyGroup = EnemyGroups[groupId];
 
-                    foreach (var groupId in block.EnemyGroupIds)
+                    if (enemyGroup.StageId.Equals(stageId) && enemyGroup.SubGroupId == subGroupId)
                     {
-                        var enemyGroup = EnemyGroups[groupId];
-                        if ((enemyGroup.StageId.Id == stageId.Id) && (enemyGroup.StageId.GroupId == stageId.GroupId))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
+
             return false;
         }
 
@@ -137,7 +135,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var enemyGroup in EnemyGroups.Values)
             {
-                if (enemyGroup.StageId.Id != stageId.Id || enemyGroup.StageId.GroupId != stageId.GroupId)
+                if (!enemyGroup.StageId.Equals(stageId) || enemyGroup.SubGroupId != subGroupId)
                 {
                     continue;
                 }
@@ -312,6 +310,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             checkCommands.Add(QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, -1));
                         }
                     }
+                    break;
+                case QuestBlockType.SpawnGroup:
+                    /* This block is used just to control nodes to spawn/not spawn enemies */
                     break;
                 case QuestBlockType.End:
                     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -41,6 +41,11 @@ namespace Arrowgene.Ddon.Shared.Model
         public override int GetHashCode()
         {
             return HashCode.Combine(Id, LayerNo, GroupId);
+        }
+
+        public override string ToString()
+        {
+            return $"StageId(Id={Id}, LayerNo={LayerNo}, GroupId={GroupId})";
         }
     }
 }
