@@ -91,13 +91,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            // TODO: Refining material and all that stuff
+
+            // TODO: Remove most logic since it should happen in the handler for when the craft time completes.
+            // TODO: Additional Status stuff?
 
             // TODO: Calculate final craft price with the discounts from the craft pawns
             uint finalCraftCost = recipe.Cost * packet.Structure.CreateCount;
 
             // Temporary solution for craft price when setting a second pawn of rank 1
-            // TODO: Remove
+
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
             {
                 finalCraftCost = (uint)(finalCraftCost*0.95);
