@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
@@ -17,6 +13,20 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             Enemies = new List<Enemy>();
             StageId = StageId.Invalid;
+        }
+
+        public List<InstancedEnemy> AsInstancedEnemies()
+        {
+            List<InstancedEnemy> results = new List<InstancedEnemy>();
+            for (var i = 0; i < Enemies.Count; i++)
+            {
+                var enemy = Enemies[i];
+                results.Add(new InstancedEnemy(enemy)
+                {
+                    Index = (byte)(i + StartingIndex)
+                });
+            }
+            return results;
         }
     }
 }

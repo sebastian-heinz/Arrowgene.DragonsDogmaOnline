@@ -29,14 +29,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Logger.Info($"GroupId={request.Structure.LayoutId.GroupId}, SubGroupId={request.Structure.SubGroupId}, LayerNo={request.Structure.LayoutId.LayerNo}");
 
             Quest quest = null;
-            QuestState questState = null;
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
                 quest = QuestManager.GetQuest(questId);
-                questState = client.Party.QuestState.GetQuestState(questId);
-
-                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, subGroupId))
+                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
                 {
                     IsQuestControlled = true;
                     break;

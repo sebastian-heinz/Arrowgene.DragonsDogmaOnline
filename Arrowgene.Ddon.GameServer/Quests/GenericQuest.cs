@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -101,60 +102,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }
 
-        public override bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId)
-        {
-
-            foreach (var processState in questState.ProcessState.Values)
-            {
-                if (processState.ProcessNo >= Processes.Count)
-                {
-                    // An extra process gets added when resuming state
-                    // That is not accounted for in the static array
-                    // So skip it
-                    continue;
-                }
-
-                var block = Processes[processState.ProcessNo].Blocks[processState.BlockNo - 1];
-                foreach (var groupId in block.EnemyGroupIds)
-                {
-                    var enemyGroup = EnemyGroups[groupId];
-
-                    if (enemyGroup.StageId.Equals(stageId) && enemyGroup.SubGroupId == subGroupId)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        public override List<InstancedEnemy> GetEnemiesInStageGroup(StageId stageId, uint subGroupId)
-        {
-            List<InstancedEnemy> enemies = new List<InstancedEnemy>();
-
-            foreach (var enemyGroup in EnemyGroups.Values)
-            {
-                if (!enemyGroup.StageId.Equals(stageId) || enemyGroup.SubGroupId != subGroupId)
-                {
-                    continue;
-                }
-
-                byte index = 0;
-                foreach (var enemy in enemyGroup.Enemies)
-                {
-                    enemies.Add(new InstancedEnemy(enemy)
-                    {
-                        Index = (byte)(index + enemyGroup.StartingIndex)
-                    });
-
-                    index += 1;
-                }
-            }
-
-            return enemies;
-        }
-
         public override void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
         {
             QuestLocation questLocation = null;
@@ -218,9 +165,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 questProgressState = QuestProgressState.InProgress;
             }
 
+            foreach (var enemyGroupId in questBlock.EnemyGroupIds)
+            {
+                var enemies = EnemyGroups[enemyGroupId];
+                client.Party.QuestState.SetInstanceEnemies(this, enemies.StageId, (ushort) enemies.SubGroupId, enemies.AsInstancedEnemies());
+            }
+
             if (questBlock.ResetGroup)
             {
-                ResetEnemiesForBlock(client, QuestId, questBlock);
+                ResetEnemiesForBlock(client, questBlock);
             }
 
             return new List<CDataQuestProcessState>()

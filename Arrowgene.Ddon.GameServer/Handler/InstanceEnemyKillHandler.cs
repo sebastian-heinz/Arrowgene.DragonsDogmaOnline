@@ -38,8 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 quest = QuestManager.GetQuest(questId);
                 var qSubGroupId = client.Party.QuestState.GetInstanceSubgroupId(quest, stageId);
-                var questState = client.Party.QuestState.GetQuestState(questId);
-                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, qSubGroupId))
+                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, qSubGroupId))
                 {
                     subGroupId = qSubGroupId;
                     IsQuestControlled = true;
@@ -51,7 +50,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (IsQuestControlled && quest != null)
             {
                 // TODO: Add drops to Quest Monsters
-                // TODO: How does subgroup work?
                 enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest, stageId, subGroupId, packet.Structure.SetId);
             }
             else
