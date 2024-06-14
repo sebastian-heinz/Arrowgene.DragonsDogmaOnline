@@ -175,16 +175,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 
-                _equipManager.ChangeEquippedItemUID(Server, common, equipItemUID, UpgradedItem.UId, UpgradedItem);
+                 _equipManager.ChangeEquippedItemUID(Server, common, equipItemUID, UpgradedItem.UId, UpgradedItem);
 
                 updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
-                    UpdateItemNum = 1,
                     ItemList = new CDataItemList() {
                         ItemUId = UpgradedItem.UId,
                         ItemId = gearupgradeID,
                         ItemNum = 1,
                         Unk3 = UpgradedItem.Unk3,
-                        StorageType = StorageType.Unk14, 
+                        StorageType = StorageType.ItemBagEquipment, 
                         SlotNo = equipslot,
                         Color = UpgradedItem.Color,
                         PlusValue = UpgradedItem.PlusValue,
@@ -195,12 +194,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                         ArmorCrestDataList = new List<CDataArmorCrestData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()
-                    }
+                    },
+                    UpdateItemNum = 1,
                 });       
 
                 Logger.Debug("EQUIPPED");
-                // TODO: Figure out why I'm crashing the client :)
-                // TODO: Figure out how to exchange the equipment correctly.
+                // TODO: Figure out how to exchange the equipment correctly. 
             }
             else
             {
