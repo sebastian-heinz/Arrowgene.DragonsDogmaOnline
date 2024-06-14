@@ -180,7 +180,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                     ItemList = new CDataItemList() {
                         ItemUId = UpgradedItem.UId,
-                        ItemId = gearupgradeID,
+                        ItemId = UpgradedItem.ItemId,
                         ItemNum = 1,
                         Unk3 = UpgradedItem.Unk3,
                         StorageType = StorageType.ItemBagEquipment, 
@@ -191,9 +191,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         EquipPoint = 0,
                         EquipCharacterID = charid,
                         EquipPawnID = pawnid,
-                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                        ArmorCrestDataList = new List<CDataArmorCrestData>(),
-                        EquipElementParamList = new List<CDataEquipElementParam>()
+                        WeaponCrestDataList = UpgradedItem.WeaponCrestDataList,
+                        ArmorCrestDataList = UpgradedItem.ArmorCrestDataList,
+                        EquipElementParamList = UpgradedItem.EquipElementParamList
                     },
                     UpdateItemNum = 1,
                 });       
