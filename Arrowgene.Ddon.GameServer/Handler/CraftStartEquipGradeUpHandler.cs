@@ -143,6 +143,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
+            var equipItem = Server.Database.SelectItem(equipItemUID);
+            byte currentPlusValue = equipItem.PlusValue;
+
+            // TODO: Figure out why the plus value doesn't perist on every enhance
+
 
 
             // TODO: Figure out how to stop the server thinking an item is equipped just because it has same UID as a non-equipped gear you're trying to upgrade.
@@ -155,7 +160,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     ItemId = gearupgradeID,
                     Unk3 = 0,   // Safety setting,
                     Color = 0,
-                    PlusValue = 0,
+                    PlusValue = currentPlusValue,
                     WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                     ArmorCrestDataList = new List<CDataArmorCrestData>(),
                     EquipElementParamList = new List<CDataEquipElementParam>()
@@ -198,7 +203,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     UpdateItemNum = 1,
                 });       
 
-                Logger.Debug("EQUIPPED");
                 // TODO: Figure out how to exchange the equipment correctly. 
             }
             else
@@ -207,7 +211,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 bool isBagItem =! RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
                                                                 result.ItemList.StorageType == StorageType.StorageBoxExpansion);
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
-                AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1);
+                AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1, currentPlusValue);
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
              };
             
