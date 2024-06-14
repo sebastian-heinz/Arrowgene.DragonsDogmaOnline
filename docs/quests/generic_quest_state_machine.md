@@ -650,6 +650,15 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 971   | st0100          | Field closure (landslide) (フィールド封鎖（崖崩れ)
 | QstLayout | 1017  | st0100          | Spawns Iris
 
+#### The Beast's Final Moments (q00000029)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1246  | st0201          | Spawns Gerd
+| QstLayout | 1247  | st0201          | Spawns Gerd, Heniz and Mayleaf
+| QstLayout | 922   | st0571          | Boss Door (肉塊的に対応した封鎖扉)
+| QstLayout | 1021  | st0571          | Spawns Leo
+| MyQst     | 790   |                 | Starts Leos NPC FSM
+
 #### World Manage Quest
 
 ##### q70000001
