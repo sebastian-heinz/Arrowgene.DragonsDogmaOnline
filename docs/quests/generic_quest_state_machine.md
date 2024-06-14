@@ -642,6 +642,14 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 924   | st0571          | Adult Atari OM 40m (大人アタリＯＭ 40m)
 | QstLayout | 1015  | st0571          | Spawns Joseph inside the Ark
 
+#### Thinking of A Friend (q00000019)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1243  | st0201          | Spawns Gerd
+| QstLayout | 274   | st0100          | Quest specified message OM (クエスト指定メッセージOM)
+| QstLayout | 971   | st0100          | Field closure (landslide) (フィールド封鎖（崖崩れ)
+| QstLayout | 1017  | st0100          | Spawns Iris
+
 #### World Manage Quest
 
 ##### q70000001
