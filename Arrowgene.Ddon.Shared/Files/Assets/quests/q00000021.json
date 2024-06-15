@@ -1,0 +1,373 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Quandary of Soldiers",
+    "quest_id": 21,
+    "next_quest": 0,
+    "base_level": 50,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 13800
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 13000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1250
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8633,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8758,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 1018,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "comment": "Boss Group 1",
+            "stage_id": {
+                "id": 145,
+                "group_id": 7
+            },
+            "enemies": [
+               {
+                    "comment" : "Leo",
+                    "enemy_id": "0x011042",
+                    "level": 50,
+                    "exp": 5936,
+                    "hm_present_no": 76,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Meat Monsters (2, 2)",
+            "stage_id": {
+                "id": 145,
+                "group_id": 2
+            },
+            "subgroup_id": 2,
+            "enemies": [
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "comment": "Meat Monsters (3, 2)",
+            "stage_id": {
+                "id": 145,
+                "group_id": 3
+            },
+            "subgroup_id": 2,
+            "enemies": [
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "comment": "Meat Monsters (21, 2)",
+            "stage_id": {
+                "id": 145,
+                "group_id": 21
+            },
+            "subgroup_id": 2,
+            "enemies": [
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "comment": "Meat Monsters (25, 2)",
+            "stage_id": {
+                "id": 145,
+                "group_id": 25
+            },
+            "subgroup_id": 2,
+            "enemies": [
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Blob",
+                    "enemy_id": "0x010910",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 50,
+                    "exp": 5936,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
+
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1103, "quest_id": 70003001, "comment": "Third Ark Spawn Point"},
+                        {"type": "QstLayout", "action": "Set", "value": 1025, "comment": "Spawns Heinz in the audience chamber"}
+                    ],
+                    "npc_id": "Heinz2",
+                    "message_id": 8394
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 5
+                    },
+                    "npc_id": "Gershwin",
+                    "message_id": 8399
+                },
+                {
+                    "type": "IsStageNo",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 145
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 277, "comment": "Third Ark Quest Spawn Point"},
+                        {"type": "QstLayout", "action": "Set", "value": 1026, "comment": "Spawns Karno, White Knight and Gerd"}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 145
+                    },
+                    "npc_id": "Gerd1",
+                    "message_id": 8400
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 145
+                    },
+                    "location": {
+                        "x": 2,
+                        "y": -1799,
+                        "z": -35822
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 145
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1026, "comment": "Spawns Karno, White Knight and Gerd"},
+                        {"type": "QstLayout", "action": "Set", "value": 919, "comment": "Blocks Boss Room"}
+                    ],
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 145
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 919, "comment": "Blocks Boss Room"},
+                        {"type": "QstLayout", "action": "Set", "value": 1027, "comment": "Spawns Heinz"}
+                    ],
+                    "stage_id": {
+                        "id": 145
+                    },
+                    "location": {
+                        "x": 22,
+                        "y": -4499,
+                        "z": -73090
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 145
+                    },
+                    "event_id": 10,
+                    "jump_stage_id": {
+                        "id": 1
+                    },
+                    "start_pos_no": 0
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 65,
+                    "jump_stage_id": {
+                        "id": 145
+                    },
+                    "start_pos_no": 1
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 145
+                    },
+                    "event_id": 15
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1027, "comment": "Spawns Heinz"}
+                    ],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 11743
+                }
+            ]
+        },
+        {
+            "comment": "Meat Spawner",
+            "blocks": [
+                {
+                    "comment": "Spawns Enemies for meat monsters",
+                    "type": "SpawnGroup",
+                    "groups": [1, 2, 3]
+                }
+            ]
+        }
+    ]
+}

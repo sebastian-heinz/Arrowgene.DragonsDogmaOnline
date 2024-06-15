@@ -35,18 +35,15 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         TheArkOnceMore = 18,
         ThinkingOfAFriend = 19,
         TheFutureEntrustedToUs = 20,
-
+        TheQuandaryOfSoliders = 21,
+        TheDwellersOfTheGoldenLand = 22,
+        TheGoldenKey = 23,
+        TheGreatAlchemist = 24,
         TheCrimsonCrystal = 25,
         AServantsPledge = 26,
         TheGoblinKing = 27,
         ABriefRespite = 28,
         TheBeastsFinalMoments = 29,
-
-        TheQuandaryOfSoliders = 22,
-        TheDwellersOfTheGoldenLand = 23,
-        TheGoldenKey = 24,
-        TheGreatAlchemist = 30,
-        
 
         BeForevermoreWhiteDragon = 20010,
         TheStormThatBoughtATragedy = 20020,

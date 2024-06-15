@@ -659,7 +659,7 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 1021  | st0571          | Spawns Leo
 | MyQst     | 790   |                 | Starts Leos NPC FSM
 
-### The future entrusted to us (q00000029)
+### The future entrusted to us (q00000020)
 | Type      | Value | id/grp          | Comment                                                    |
 |:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
 | QstLayout | 1248  | st0201          | Spawns Gerd
@@ -671,6 +671,17 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 1023  | st0411          | Spawns Leo
 | QstLayout | 1024  | st0411          | Spawns Iris
 | MyQst     | 120   | st0411          | Starts Leos combat FSM for boss battle
+
+### The Quandary of Soldiers (q00000021)
+| Type      | stage  | Value | Comment                                                    |
+|:---------:|:------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | st0201 | 1025  | Spawns Heinz
+| QstLayout | st0201 | 1252  | Spawns Mayleaf
+| QstLayout | st0203 | 277   | Transparent Warp and Glitter (フロア移動用透明ワープＯＭ) (汎用キラキラポイント（調べる用）)
+| QstLayout | st0572 | 919   | Blocks boss room exits? (メルゴダ汎用スライトドア) (肉塊的に対応した封鎖扉) (メルゴダ汎用スライトドア)
+| QstLayout | st0572 | 1026  | Spawns Karno, White Knights and Gerd
+| QstLayout | st0572 | 1027  | Spawns Heinz
+| QstLayout | st0572 | 1312  | bow? (船頭)
 
 #### World Manage Quest
 
@@ -724,6 +735,8 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | WorldManageLayout | st0411  | 1202   | Mergoda Warp OFF? (Quest Specified Message) (ver1.2OFF_メルゴダワープ系) (クエスト指定メッセージOM)
 | WorldManageLayout | st0411  | 1203   | Mergoda TO ON?  Lost City Dungeon (ver1.2ON_メルゴダ行き) (レーゼ行きワープ(亡都ダンジョン))
 | WorldManageLayout | st0411  | 2458   | Quest Specified Message (ver1.2メルゴダ大扉用メッセージＯＭ) (クエスト指定メッセージOM)
+|
+| WorldManageLayout | st0203  | 1103   | ver1.2 3rd Arc OM General purpose Glitter (ver1.2第三アーク行OM) (汎用キラキラポイント（調べる用）)
 
 ##### q70032001
 

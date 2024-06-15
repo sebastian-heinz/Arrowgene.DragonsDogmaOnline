@@ -70,7 +70,7 @@ There exists an implementation of the following main story quests.
 | [Thinking of A Friend](https://ddonline.tumblr.com/post/137011945944/mq-thinking-of-a-friend) | Works mostly well. There is a waypoint system from WDT to Zoma. This is hard to enforce with players already having many points unlocked. Moved quest update point to area master lounge to account for it.
 | [The Beast’s Final Moments](https://ddonline.tumblr.com/post/137802732454/mq-the-beasts-final-moments) | Works well. Some monsters in dungeon scaled to the previous Ark mission.
 | [The Entrusted Future](http://ddon.wikidot.com/mq:theentrustedfuture) | Works mostly well. Didn't implement Leo following the player around. Some mobs need better placement.
-| [The Quandary of Soldiers](http://ddon.wikidot.com/mq:thequandaryofsoldiers) | Not implemented
+| [The Quandary of Soldiers](http://ddon.wikidot.com/mq:thequandaryofsoldiers) | Quest works but dungeon monster placement is severly lacking. Can't find some nodes in ddon-tools for some of the meat monsters.
 | [The Dwellers of the Golden Land](http://ddon.wikidot.com/mq:thedwellersofthegoldenland) | Not implemented
 | [The Golden Key](http://ddon.wikidot.com/mq:thegoldenkey) | Not implemented
 | [The Great Alchemist](http://ddon.wikidot.com/mq:thegreatalchemist) | Not implemented

@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "The future entrusted to us",
     "quest_id": 20,
-    "next_quest": 0,
+    "next_quest": 21,
     "base_level": 49,
     "minimum_item_rank": 0,
     "discoverable": true,
