@@ -1130,6 +1130,23 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 }
             }
 
+            // Add current job's equipment to the equipment storage
+            List<Item?> performanceEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Performance);
+            for (int i = 0; i < performanceEquipItems.Count; i++)
+            {
+                Item? item = performanceEquipItems[i];
+                ushort slot = (ushort)(i+1);
+                character.Storage.setStorageItem(item, 1, StorageType.CharacterEquipment, slot);
+            }
+
+            List<Item?> visualEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Visual);
+            for (int i = 0; i < visualEquipItems.Count; i++)
+            {
+                Item? item = visualEquipItems[i];
+                ushort slot = (ushort)(i+Equipment.EQUIP_SLOT_NUMBER+1);
+                character.Storage.setStorageItem(item, 1, StorageType.CharacterEquipment, slot);
+            }
+
             L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
             if (!Database.CreateCharacter(character))
             {
