@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Shared.Model
             storages[storageType] = storage;
         }
 
-        public List<CDataItemList> getStorageAsCDataItemList(StorageType storageType)
+        public List<CDataItemList> getStorageAsCDataItemList(Character character, StorageType storageType)
         {
             return getStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
@@ -63,8 +63,8 @@ namespace Arrowgene.Ddon.Shared.Model
                     PlusValue = tuple.item.Item1.PlusValue,
                     Bind = true,
                     EquipPoint = 0,
-                    EquipCharacterID = 0,
-                    EquipPawnID = 0,
+                    EquipCharacterID = determineCharacterId(character, storageType, tuple.slot),
+                    EquipPawnID = determinePawnId(character, storageType, tuple.slot),
                     WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,
                     ArmorCrestDataList = tuple.item.Item1.ArmorCrestDataList,
                     EquipElementParamList = tuple.item.Item1.EquipElementParamList
@@ -98,6 +98,31 @@ namespace Arrowgene.Ddon.Shared.Model
                 ? null
                 : new Tuple<Item, uint>(newItem, itemCount);
             return oldItem;
+        }
+
+        private uint determineCharacterId(Character character, StorageType storageType, ushort slot)
+        {
+            if(storageType == StorageType.CharacterEquipment)
+            {
+                return character.CharacterId;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        private uint determinePawnId(Character character, StorageType storageType, ushort slot)
+        {
+            if(storageType == StorageType.PawnEquipment)
+            {
+                int pawnIndex = slot / (Equipment.EQUIP_SLOT_NUMBER * 2);
+                return character.Pawns[pawnIndex].PawnId;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 
@@ -148,8 +173,8 @@ namespace Arrowgene.Ddon.Shared.Model
         Unk11 = 0xB,
         Unk12 = 0xC,
         Unk13 = 0xD,
-        Unk14 = 0xE,
-        Unk15 = 0xF,
+        CharacterEquipment = 0xE,
+        PawnEquipment = 0xF,
         Unk16 = 0x10,
         Unk17 = 0x11,
     }

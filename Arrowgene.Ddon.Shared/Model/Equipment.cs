@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Model
     #nullable enable
     public class Equipment
     {
-        private static readonly byte EQUIP_SLOT_NUMBER = 15;
+        public static readonly byte EQUIP_SLOT_NUMBER = 15;
         private static readonly byte JOB_ITEM_SLOT_NUMBER = 2; // TODO: Verify
 
         private readonly Dictionary<JobId, Dictionary<EquipType, List<Item?>>> equipment;
@@ -129,7 +129,6 @@ namespace Arrowgene.Ddon.Shared.Model
                 })
                 .ToList();
         }
-
 
         public List<CDataEquipJobItem> getJobItemsAsCDataEquipJobItem(JobId job)
         {
