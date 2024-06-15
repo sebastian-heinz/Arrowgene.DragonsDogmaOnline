@@ -1131,6 +1131,51 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 }
             }
 
+            // Add current job's equipment to the equipment storage
+            List<Item?> performanceEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Performance);
+            for (int i = 0; i < performanceEquipItems.Count; i++)
+            {
+                Item? item = performanceEquipItems[i];
+                ushort slot = (ushort)(i+1);
+                character.Storage.setStorageItem(item, 1, StorageType.CharacterEquipment, slot);
+            }
+
+            List<Item?> visualEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Visual);
+            for (int i = 0; i < visualEquipItems.Count; i++)
+            {
+                Item? item = visualEquipItems[i];
+                ushort slot = (ushort)(i+Equipment.EQUIP_SLOT_NUMBER+1);
+                character.Storage.setStorageItem(item, 1, StorageType.CharacterEquipment, slot);
+            }
+
+            // Pawns
+            for (int i = 0; i < Server.AssetRepository.MyPawnAsset.Count; i++)
+            {
+                MyPawnCsv myPawnCsvData = Server.AssetRepository.MyPawnAsset[i];
+                Pawn pawn = LoadDefaultPawn(character, myPawnCsvData);
+                Database.CreatePawn(pawn);
+                Database.InsertGainExtendParam(pawn.CommonId, new CDataOrbGainExtendParam());
+            
+                // Add pawn's current job equipment to storage
+                int pawnSlotOffset = i * Equipment.EQUIP_SLOT_NUMBER * 2;
+
+                List<Item?> pawnPerformanceEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Performance);
+                for (int j = 0; j < pawnPerformanceEquipItems.Count; j++)
+                {
+                    Item? item = pawnPerformanceEquipItems[j];
+                    ushort slot = (ushort)(pawnSlotOffset+j+1);
+                    character.Storage.setStorageItem(item, 1, StorageType.PawnEquipment, slot);
+                }
+
+                List<Item?> pawnVisualEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Visual);
+                for (int j = 0; j < pawnVisualEquipItems.Count; j++)
+                {
+                    Item? item = pawnVisualEquipItems[j];
+                    ushort slot = (ushort)(pawnSlotOffset+j+Equipment.EQUIP_SLOT_NUMBER+1);
+                    character.Storage.setStorageItem(item, 1, StorageType.PawnEquipment, slot);
+                }
+            }
+
             L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
             if (!Database.CreateCharacter(character))
             {
@@ -1154,14 +1199,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Database.InsertSecretAbilityUnlock(character.CommonId, ability);
             }
 
-            // Pawns
-            LoadDefaultPawns(character);
-            foreach (Pawn pawn in character.Pawns)
-            {
-                Database.CreatePawn(pawn);
-                Database.InsertGainExtendParam(pawn.CommonId, ExtendParams);
-            }
-
             // Insert the first main quest to start the chain
             if (!Database.InsertQuestProgress(character.CommonId, QuestId.ResolutionsAndOmens, QuestType.Main, 0))
             {
@@ -1178,11 +1215,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             res.Result = 0;
             res.WaitNum = 0;
             client.Send(res);
-        }
-
-        public void LoadDefaultPawns(Character character)
-        {
-            character.Pawns = Server.AssetRepository.MyPawnAsset.Select(myPawnCsvData => LoadDefaultPawn(character, myPawnCsvData)).ToList();
         }
 
         private Pawn LoadDefaultPawn(Character character, MyPawnCsv myPawnCsvData)
