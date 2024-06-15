@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         TheCourseOfLife = 17,
         TheArkOnceMore = 18,
         ThinkingOfAFriend = 19,
+        TheFutureEntrustedToUs = 20,
 
         TheCrimsonCrystal = 25,
         AServantsPledge = 26,
@@ -41,7 +42,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         ABriefRespite = 28,
         TheBeastsFinalMoments = 29,
 
-        TheEntrustedFuture = 21,
         TheQuandaryOfSoliders = 22,
         TheDwellersOfTheGoldenLand = 23,
         TheGoldenKey = 24,

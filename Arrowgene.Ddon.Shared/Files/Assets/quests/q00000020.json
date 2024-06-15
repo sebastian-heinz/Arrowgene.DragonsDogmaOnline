@@ -1,0 +1,461 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The future entrusted to us",
+    "quest_id": 20,
+    "next_quest": 0,
+    "base_level": 49,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 13500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 12500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1200
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 992,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8638,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9006,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "comment": "Meat Monsters (14, 2)",
+            "stage_id": {
+                "id": 77,
+                "group_id": 14
+            },
+            "subgroup_id": 2,
+            "enemies": [
+                {
+                    "comment" : "Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "level": 51,
+                    "exp": 6040,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "level": 51,
+                    "exp": 6040,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "level": 51,
+                    "exp": 6040,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Skeleton Warrior",
+                    "enemy_id": "0x010302",
+                    "level": 51,
+                    "exp": 6040,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "comment": "Boss Group 1",
+            "stage_id": {
+                "id": 77,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment" : "Damned Golem",
+                    "enemy_id": "0x015103",
+                    "level": 48,
+                    "exp": 5734
+                },
+                {
+                    "comment" : "Iris",
+                    "enemy_id": "0x011040",
+                    "level": 48,
+                    "exp": 57340,
+                    "hm_present_no": 74,
+                    "is_boss": true
+                },
+                {
+                    "comment" : "Damned Golem",
+                    "enemy_id": "0x015103",
+                    "level": 48,
+                    "exp": 5734
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
+
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1106, "quest_id": 70003001, "comment": "Front Door Levers"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1104, "quest_id": 70003001, "comment": "Large Front Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1119, "quest_id": 70003001, "comment": "Alchemy Research Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1121, "quest_id": 70003001, "comment": "Military Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1123, "quest_id": 70003001, "comment": "Special Research Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1202, "quest_id": 70003001, "comment": "Mergoda Warp Off"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 2458, "quest_id": 70003001, "comment": "Quest Specified Message"},
+
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1105, "quest_id": 70003001, "comment": "Large Front Door Open"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1120, "quest_id": 70003001, "comment": "Alchemy Research Door Open"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1123, "quest_id": 70003001, "comment": "Military Door Open"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1124, "quest_id": 70003001, "comment": "Special Research Door Open"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1203, "quest_id": 70003001, "comment": "Mergoda Warp on"}
+                    ],
+                    "npc_id": "Joseph",
+                    "message_id": 8308
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1248, "comment": "Spawns Gerd in audience chamber"},
+                        {"type": "QstLayout", "action": "Set", "value": 1022, "comment": "Spawns Leo at entrance of Mergoda"}
+                    ],
+                    "stage_id": {
+                        "id": 77,
+                        "group_id": 5,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 8315
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "comment": "Interact with main door",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Start Subprocess for marking door Main Door"},
+                        {"type": "MyQst", "action": "Set", "value": 116, "comment": "Start Leo follow FSM"}
+                    ],
+                    "quest_type": "WorldManageQuest",
+                    "quest_id": 70003001,
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 77,
+                        "group_id": 13,
+                        "layer_no": 1
+                    }
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "comment": "Interact with side door",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 2, "comment": "Signal to subprocess main door was touched"}
+                    ],
+                    "quest_type": "WorldManageQuest",
+                    "quest_id": 70003001,
+                    "interact_type": "Touch",
+                    "stage_id": {
+                        "id": 77,
+                        "group_id": 5,
+                        "layer_no": 2
+                    }
+                },
+                {
+                    "type": "CollectItem",
+                    "checkpoint": true,
+                    "checkpoint_flags": [
+                        {"type": "MyQst", "action": "Clear", "value": 1, "comment": "Start Subprocess for marking Alchemy Door"},
+                        {"type": "MyQst", "action": "Clear", "value": 2, "comment": "Signal to subprocess main door was touched"}
+                    ],
+                    "announce_type": "Update",
+                    "comment": "Find key for side door",
+                    "stage_id": {
+                        "id": 77,
+                        "group_id": 3,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 3, "comment": "Signal to subprocess door was touched"},
+                        {"type": "QstLayout", "action": "Set", "value": 906, "comment": "Spawns glitter in military facility"}
+                    ]
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "checkpoint": true,
+                    "checkpoint_flags": [
+                        {"type": "MyQst", "action": "Clear", "value": 3, "comment": "Signal to subprocess glitter was found"}
+                    ],
+                    "announce_type": "Update",
+                    "comment": "Open side door",
+                    "hand_items": [
+                        {"id": 1029, "amount": 1}
+                    ],
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 4, "comment": "Signal to subprocess glitter was found"},
+                        {"type": "QstLayout", "action": "Clear", "value": 906, "comment": "Spawns glitter for door"}
+                    ],
+                    "quest_type": "WorldManageQuest",
+                    "quest_id": 70003001,
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 77,
+                        "group_id": 5,
+                        "layer_no": 2
+                    }
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "checkpoint": true,
+                    "consume_items": [
+                        {"id": 1029, "amount": 1}
+                    ],
+                    "checkpoint_flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1119, "quest_id": 70003001, "comment": "Alchemy Research Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1120, "quest_id": 70003001, "comment": "Alchemy Research Door Open"},
+                        {"type": "MyQst", "action": "Clear", "value": 4, "comment": "Signal to subprocess glitter was found"}
+                    ],
+                    "announce_type": "Update",
+                    "comment": "Pull Lever",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 5, "comment": "Signal to subprocess to mark lever"}
+                    ],
+                    "quest_type": "WorldManageQuest",
+                    "quest_id": 70003001,
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 77,
+                        "group_id": 1,
+                        "layer_no": 1
+                    }
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "checkpoint_flags": [
+                        {"type": "MyQst", "action": "Clear", "value": 5, "comment": "Signal to subprocess lever was pulled"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1104, "quest_id": 70003001, "comment": "Large Front Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1105, "quest_id": 70003001, "comment": "Large Front Door Open"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 2458, "quest_id": 70003001, "comment": "Quest Specified Message"}
+                    ],
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 6, "comment": "Signal to subprocess lever was pulled"}
+                    ],
+                    "stage_id": {
+                        "id": 77
+                    },
+                    "location": {
+                        "x": -80,
+                        "y": -271,
+                        "z": 1642
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 77
+                    },
+                    "jump_stage_id": {
+                        "id": 77
+                    },
+                    "start_pos_no": 4,
+                    "event_id": 0
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1022, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 1023, "comment": "Spawns Leo"},
+                        {"type": "MyQst", "action": "Set", "value": 120, "comment": "Starts Leo's FSM"}
+                    ],
+                    "announce_type": "Update",
+                    "groups": [1]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 77
+                    },
+                    "jump_stage_id": {
+                        "id": 77
+                    },
+                    "start_pos_no": 1,
+                    "event_id": 5
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1023, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 1024, "comment": "Spawns Iris"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1248, "comment": "Spawns Gerd"},
+                        {"type": "QstLayout", "action": "Set", "value": 1249, "comment": "Spawns Gerd and Heinz in audience chamber"}
+                    ],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "location": {
+                        "x": -672,
+                        "y": 9164,
+                        "z": -414
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 80
+                }
+            ]
+        },
+        {
+            "comment": "Process 1 (Marks Large Door)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "comment": "Wait for player to talk with Leo",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "Raw",
+                    "flags": [],
+                    "check_commands": [
+                        [
+                            {"type": "IsOpenDoorOmQuestSet", "Param1": 411, "Param2": 2, "Param3": 1, "Param4": 70003001}
+                        ],
+                        [
+                            {"type": "MyQstFlagOn", "Param1": 2}
+                        ]
+                    ],
+                    "result_commands": []
+                }
+            ]
+        },
+        {
+            "comment": "Process 2 (Marks Small Door)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "comment": "Wait for player to interact with the first door",
+                    "check_flags": [2]
+                },
+                {
+                    "type": "Raw",
+                    "flags": [],
+                    "check_commands": [
+                        [
+                            {"type": "IsOpenDoorOmQuestSet", "Param1": 411, "Param2": 5, "Param3": 2, "Param4": 70003001}
+                        ],
+                        [
+                            {"type": "MyQstFlagOn", "Param1": 3}
+                        ]
+                    ],
+                    "result_commands": []
+                }
+            ]
+        },
+        {
+            "comment": "Process 3 (Marks Small Door second time)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "comment": "Wait for player to find glitter",
+                    "check_flags": [4]
+                },
+                {
+                    "type": "Raw",
+                    "flags": [],
+                    "check_commands": [
+                        [
+                            {"type": "IsOpenDoorOmQuestSet", "Param1": 411, "Param2": 5, "Param3": 2, "Param4": 70003001}
+                        ],
+                        [
+                            {"type": "MyQstFlagOn", "Param1": 5}
+                        ]
+                    ],
+                    "result_commands": []
+                }
+            ]
+        },
+        {
+            "comment": "Process 4 (Marks Lever)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "comment": "Wait for player to pull Lever",
+                    "check_flags": [5]
+                },
+                {
+                    "type": "Raw",
+                    "flags": [],
+                    "check_commands": [
+                        [
+                            {"type": "IsOpenDoorOmQuestSet", "Param1": 411, "Param2": 1, "Param3": 1, "Param4": 70003001}
+                        ],
+                        [
+                            {"type": "MyQstFlagOn", "Param1": 6}
+                        ]
+                    ],
+                    "result_commands": []
+                }
+            ]
+        },
+        {
+            "comment": "Meat Spawner",
+            "blocks": [
+                {
+                    "comment": "Spawns Enemies for meat monsters",
+                    "type": "SpawnGroup",
+                    "groups": [0]
+                }
+            ]
+        }
+    ]
+}

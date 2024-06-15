@@ -659,6 +659,19 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 1021  | st0571          | Spawns Leo
 | MyQst     | 790   |                 | Starts Leos NPC FSM
 
+### The future entrusted to us (q00000029)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1248  | st0201          | Spawns Gerd
+| QstLayout | 1249  | st0201          | Spawns Gerd, Heinz
+| QstLayout | 904   | st0411          | Alchemy Research Building -- General Purpose Glitter (錬金研究棟のカギ) -- (汎用キラキラポイント (調べる用))
+| QstLayout | 905   | st0411          | Special Research Zone Key -- General Purpose Glitter (特別研究区のカギ) -- (汎用キラキラポイント (調べる用))
+| QstLayout | 906   | st0411          | Military Instructor's Room Key -- General Purpose Glitter (軍事指導官部屋のカギ) -- (汎用キラキラポイント (調べる用))
+| QstLayout | 1022  | st0411          | Spawns Leo
+| QstLayout | 1023  | st0411          | Spawns Leo
+| QstLayout | 1024  | st0411          | Spawns Iris
+| MyQst     | 120   | st0411          | Starts Leos combat FSM for boss battle
+
 #### World Manage Quest
 
 ##### q70000001
@@ -696,6 +709,21 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | WorldManageLayout | st0403  | 1113   | Large Door Closed in Erte Deenan
 | WorldManageLayout | st0403  | 1114   | Large Door Open in Erte Deenan
 
+##### q70003001
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st0411  | 1106   | Front Door Lever (floor mounted) (ver1.2_正面扉用_レバー) (床置きレバー（遺跡用)
+| WorldManageLayout | st0411  | 1104   | Front Large Door Closed (ver1.2閉じ_正面扉) (メルゴダ扉・大)
+| WorldManageLayout | st0411  | 1105   | Front Large Door Open (ver1.2開き_正面扉) (メルゴダ扉・大)
+| WorldManageLayout | st0411  | 1119   | Closed Alchemy Research Building Door (ver1.2閉じ_錬金研究棟扉) (メルゴダ扉・中片扉)
+| WorldManageLayout | st0411  | 1120   | Open Alchemy Research Building Door (ver1.2開き_錬金研究棟扉) (メルゴダ扉・中片扉)
+| WorldManageLayout | st0411  | 1121   | Closed Military Instructors Door (small door) (ver1.2閉じ_軍事指導官扉) (メルゴダ扉・小片扉)
+| WorldManageLayout | st0411  | 1122   | Open Military Instructors Door (ver1.2開き_軍事指導官扉) (メルゴダ扉・小片扉)
+| WorldManageLayout | st0411  | 1123   | Closed Special Research Door (ver1.2閉じ_特別研究区扉) (メルゴダ扉・小片扉)
+| WorldManageLayout | st0411  | 1124   | Open Special Research Door (ver1.2開き_特別研究区扉) (メルゴダ扉・小片扉)
+| WorldManageLayout | st0411  | 1202   | Mergoda Warp OFF? (Quest Specified Message) (ver1.2OFF_メルゴダワープ系) (クエスト指定メッセージOM)
+| WorldManageLayout | st0411  | 1203   | Mergoda TO ON?  Lost City Dungeon (ver1.2ON_メルゴダ行き) (レーゼ行きワープ(亡都ダンジョン))
+| WorldManageLayout | st0411  | 2458   | Quest Specified Message (ver1.2メルゴダ大扉用メッセージＯＭ) (クエスト指定メッセージOM)
 
 ##### q70032001
 

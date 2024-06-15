@@ -69,7 +69,7 @@ There exists an implementation of the following main story quests.
 | [The Ark, Once More](https://ddonline.tumblr.com/post/136513169984/mq-the-ark-once-more) | Unable to use OM which forces player to end of the dungeon because unable to detect player reached end. Works well otherwise. Can't find spawning node for 1 meat monster.
 | [Thinking of A Friend](https://ddonline.tumblr.com/post/137011945944/mq-thinking-of-a-friend) | Works mostly well. There is a waypoint system from WDT to Zoma. This is hard to enforce with players already having many points unlocked. Moved quest update point to area master lounge to account for it.
 | [The Beast’s Final Moments](https://ddonline.tumblr.com/post/137802732454/mq-the-beasts-final-moments) | Works well. Some monsters in dungeon scaled to the previous Ark mission.
-| [The Entrusted Future](http://ddon.wikidot.com/mq:theentrustedfuture) | Not implemented
+| [The Entrusted Future](http://ddon.wikidot.com/mq:theentrustedfuture) | Works mostly well. Didn't implement Leo following the player around. Some mobs need better placement.
 | [The Quandary of Soldiers](http://ddon.wikidot.com/mq:thequandaryofsoldiers) | Not implemented
 | [The Dwellers of the Golden Land](http://ddon.wikidot.com/mq:thedwellersofthegoldenland) | Not implemented
 | [The Golden Key](http://ddon.wikidot.com/mq:thegoldenkey) | Not implemented
