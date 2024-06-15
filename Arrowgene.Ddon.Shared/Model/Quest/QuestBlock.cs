@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public CDataQuestProcessState QuestProcessState { get; set; }
 
         // Used for raw blocks
-        public List<CDataQuestCommand> CheckCommands { get; set; }
+        public List<List<CDataQuestCommand>> CheckCommands { get; set; }
         public List<CDataQuestCommand> ResultCommands { get; set; }
 
         public QuestBlock()
@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             MyQstSetFlags = new List<uint>();
             MyQstCheckFlags = new List<uint>();
 
-            CheckCommands = new List<CDataQuestCommand>();
+            CheckCommands = new List<List<CDataQuestCommand>>();
             ResultCommands = new List<CDataQuestCommand>();
             QuestOrderDetails = new QuestOrder();
             EnemyGroupIds = new List<uint>();

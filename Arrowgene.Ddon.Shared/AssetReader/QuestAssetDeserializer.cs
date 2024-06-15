@@ -12,6 +12,7 @@ using YamlDotNet.Core.Tokens;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
+using System.Text.Json.Nodes;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -858,19 +859,50 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private bool ParseRawBlock(JsonElement jBlock, QuestBlock questBlock)
         {
-            foreach (var jCheckCommand in jBlock.GetProperty("check_commands").EnumerateArray())
+            var jCheckCommands = jBlock.GetProperty("check_commands").EnumerateArray().ToList();
+            if (jCheckCommands.Count > 0)
             {
-                CDataQuestCommand command = new CDataQuestCommand();
-
-                if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
+                if (jCheckCommands[0].ValueKind == JsonValueKind.Array)
                 {
-                    return false;
+                    // New way which supports OR conditions
+                    foreach (var jCheckGroup in jCheckCommands)
+                    {
+                        List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
+                        foreach (var jCheckCommand in jCheckGroup.EnumerateArray())
+                        {
+                            CDataQuestCommand command = new CDataQuestCommand();
+                            if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
+                            {
+                                return false;
+                            }
+
+                            command.Command = (ushort)type;
+                            ParseCommandParams(jCheckCommand, command);
+
+                            checkCommands.Add(command);
+                        }
+                        questBlock.CheckCommands.Add(checkCommands);
+                    }
                 }
+                else
+                {
+                    // Legacy Way
+                    List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
+                    foreach (var jCheckCommand in jCheckCommands)
+                    {
+                        CDataQuestCommand command = new CDataQuestCommand();
+                        if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
+                        {
+                            return false;
+                        }
 
-                command.Command = (ushort)type;
-                ParseCommandParams(jCheckCommand, command);
+                        command.Command = (ushort)type;
+                        ParseCommandParams(jCheckCommand, command);
 
-                questBlock.CheckCommands.Add(command);
+                        checkCommands.Add(command);
+                    }
+                    questBlock.CheckCommands.Add(checkCommands);
+                }
             }
 
             foreach (var jResultCommand in jBlock.GetProperty("result_commands").EnumerateArray())
@@ -888,6 +920,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 questBlock.ResultCommands.Add(command);
             }
 
+            return true;
+        }
+
+        private bool ParseAltConditions(JsonElement jAltConditions, QuestBlock questBlock)
+        {
             return true;
         }
 

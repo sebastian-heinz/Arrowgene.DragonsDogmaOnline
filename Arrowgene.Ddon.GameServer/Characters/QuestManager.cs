@@ -174,6 +174,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return result;
             }
 
+            public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AddCheckCommands(List<List<CDataQuestCommand>> commands)
+            {
+                List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> result = new List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand>();
+                foreach (List<CDataQuestCommand> commandList in commands)
+                {
+                    var checkCommands = new CDataQuestProcessState.MtTypedArrayCDataQuestCommand();
+                    checkCommands.ResultCommandList = commandList;
+                    result.Add(checkCommands);
+                }
+                return result;
+            }
+
             public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AppendCheckCommand(List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> obj, CDataQuestCommand command)
             {
                 obj[0].ResultCommandList.Add(command);

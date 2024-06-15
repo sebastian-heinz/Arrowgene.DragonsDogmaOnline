@@ -260,7 +260,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
-        public abstract List<CDataQuestProcessState> StateMachineExecute(GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
+        public abstract List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
 
         public virtual void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
         {

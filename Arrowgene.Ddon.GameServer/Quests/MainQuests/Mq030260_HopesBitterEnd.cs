@@ -254,7 +254,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             return quest;
         }
 
-        public override List<CDataQuestProcessState> StateMachineExecute(GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
+        public override List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
         {
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 
