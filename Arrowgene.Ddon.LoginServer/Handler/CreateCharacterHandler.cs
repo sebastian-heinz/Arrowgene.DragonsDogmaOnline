@@ -1148,6 +1148,23 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 character.Storage.setStorageItem(item, 1, StorageType.CharacterEquipment, slot);
             }
 
+            L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
+            if (!Database.CreateCharacter(character))
+            {
+                Logger.Error(client, "Failed to create character");
+                res.Result = 1;
+                client.Send(res);
+            }
+
+            // Populate extra tables for the characters
+            CDataOrbGainExtendParam ExtendParams = new CDataOrbGainExtendParam();
+            if (!Database.InsertGainExtendParam(character.CommonId, ExtendParams))
+            {
+                Logger.Error(client, "Failed to create orb extend params");
+                res.Result = 1;
+                client.Send(res);
+            }
+
             // Pawns
             for (int i = 0; i < Server.AssetRepository.MyPawnAsset.Count; i++)
             {
@@ -1165,6 +1182,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Item? item = pawnPerformanceEquipItems[j];
                     ushort slot = (ushort)(pawnSlotOffset+j+1);
                     character.Storage.setStorageItem(item, 1, StorageType.PawnEquipment, slot);
+                    if(item != null)
+                    {
+                        Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, item.UId, 1);
+                    }
                 }
 
                 List<Item?> pawnVisualEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Visual);
@@ -1173,24 +1194,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Item? item = pawnVisualEquipItems[j];
                     ushort slot = (ushort)(pawnSlotOffset+j+Equipment.EQUIP_SLOT_NUMBER+1);
                     character.Storage.setStorageItem(item, 1, StorageType.PawnEquipment, slot);
+                    if(item != null)
+                    {
+                        Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, item.UId, 1);
+                    }
                 }
-            }
-
-            L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();
-            if (!Database.CreateCharacter(character))
-            {
-                Logger.Error(client, "Failed to create character");
-                res.Result = 1;
-                client.Send(res);
-            }
-
-            // Populate extra tables for the characters
-            CDataOrbGainExtendParam ExtendParams = new CDataOrbGainExtendParam();
-            if (!Database.InsertGainExtendParam(character.CommonId, ExtendParams))
-            {
-                Logger.Error(client, "Failed to create orb extend params");
-                res.Result = 1;
-                client.Send(res);
             }
 
             // Default unlock some secret abilities based on server admin desires
