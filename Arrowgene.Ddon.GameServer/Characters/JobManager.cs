@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -18,18 +15,44 @@ namespace Arrowgene.Ddon.GameServer.Characters
     public class JobManager
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobManager));
-        private readonly IDatabase _Database;
+        private readonly DdonGameServer _Server;
 
-        public JobManager(IDatabase database)
+        public JobManager(DdonGameServer server)
         {
-            _Database = database;
+            _Server = server;
         }
 
-        public void SetJob(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
+        public void SetJob(GameClient client, CharacterCommon common, JobId jobId)
         {
+            // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
+
+            JobId oldJobId = common.Job;
             common.Job = jobId;
 
-            server.Database.UpdateCharacterCommonBaseInfo(common);
+            // Swap equipment
+            int pawnIdx;
+            StorageType equipmentStorageType;
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            if (common is Character)
+            {
+                pawnIdx = 0;
+                equipmentStorageType = StorageType.CharacterEquipment;
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangeJob;
+            }
+            else if (common is Pawn)
+            {
+                Pawn pawn = (Pawn)common;
+                pawnIdx = client.Character.Pawns.IndexOf(pawn);
+                equipmentStorageType = StorageType.PawnEquipment;
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangePawnJob;
+            }
+            else
+            {
+                throw new Exception("Unknown character type");
+            }
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, pawnIdx, equipmentStorageType, oldJobId, jobId, EquipType.Performance));
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, pawnIdx, equipmentStorageType, oldJobId, jobId, EquipType.Visual));
+            client.Send(updateCharacterItemNtc);
 
             CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
 
@@ -42,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 activeCharacterJobData.Lv = 1;
                 // TODO: All the other stats
                 common.CharacterJobDataList.Add(activeCharacterJobData);
-                server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData);
+                _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData);
             }
 
             // TODO: Figure out if it should send all equips or just the ones for the current job
@@ -67,9 +90,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .ToList();
             List<CDataEquipJobItem> jobItems = common.Equipment.getJobItemsAsCDataEquipJobItem(common.Job);
 
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            // TODO: Move previous job equipment to storage box, and move new job equipment from storage box
-
             if (common is Character)
             {
                 Character character = (Character)common;
@@ -84,7 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
 
-                foreach (GameClient otherClient in server.ClientLookup.GetAll())
+                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
                 {
                     otherClient.Send(changeJobNotice);
                 }
@@ -122,7 +142,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
-                foreach (GameClient otherClient in server.ClientLookup.GetAll())
+                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
                 {
                     otherClient.Send(changeJobNotice);
                 }
@@ -148,6 +168,73 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 throw new Exception("Unknown character type");
             }
+        }
+
+        private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, int pawnIdx, StorageType equipmentStorageType, JobId oldJobId, JobId newJobId, EquipType equipType)
+        {
+            int equipmentStorageSlotOffset = pawnIdx * Equipment.EQUIP_SLOT_NUMBER * 2;
+            if(equipType == EquipType.Visual)
+            {
+                equipmentStorageSlotOffset += Equipment.EQUIP_SLOT_NUMBER;
+            }
+
+            List<CDataItemUpdateResult> itemUpdateResultList = new List<CDataItemUpdateResult>();
+            List<Item?> oldPerformanceEquipment = common.Equipment.GetEquipment(oldJobId, EquipType.Performance);
+            List<Item?> performanceEquipment = common.Equipment.GetEquipment(newJobId, EquipType.Performance);
+            for (int i = 0; i < performanceEquipment.Count; i++)
+            {
+                ushort equipSlot = (ushort)(i+1);
+                ushort equipmentStorageSlot = (ushort)(equipSlot + equipmentStorageSlotOffset);
+                Item? oldEquippedItem = oldPerformanceEquipment[i];
+                Item? equippedItem = performanceEquipment[i];
+                if(oldEquippedItem != null && equippedItem == null)
+                {
+                    // Unequip item from an empty slot
+                    try
+                    {
+                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, equipmentStorageType, oldEquippedItem.UId, 1, StorageType.StorageBoxNormal, 0);
+                        itemUpdateResultList.AddRange(moveResult);
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        // Handle the item not being in equipment storage
+                        // This should probably return an error response instead? Logging and handling gracefully prevents messy situations, but may be undesirable
+                        Logger.Error($"Failed to unequip item {oldEquippedItem.UId} from {equipType} slot {equipSlot} of {oldJobId}. The item wasn't in the equipment storage");
+                        common.Equipment.SetEquipItem(null, oldJobId, equipType, (byte) equipSlot);
+                        _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, (byte) equipSlot);
+                    }
+                }
+                else if (equippedItem != null && equippedItem.UId != oldEquippedItem?.UId)
+                {
+                    // Equip item to a slot, if it's not already equipped. Search item in multiple storages
+                    List<CDataItemUpdateResult>? moveResult = null;
+                    foreach (StorageType searchStorageType in ItemManager.BothStorageTypes)
+                    {
+                        try
+                        {
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, StorageType.ItemBagEquipment, equippedItem.UId, 1, equipmentStorageType, equipmentStorageSlot);
+                            itemUpdateResultList.AddRange(moveResult);
+                            break;
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            // Do nothing, item to equip not in this storage type.
+                        }
+                    }
+                    
+                    if (moveResult == null)
+                    {
+                        // Handle the item not being in storage anymore
+                        common.Equipment.SetEquipItem(null, newJobId, equipType, (byte) equipSlot);
+                        _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, (byte) equipSlot);
+                    }
+                }
+            }
+
+            // Persist job change in DB
+            _Server.Database.UpdateCharacterCommonBaseInfo(common);
+
+            return itemUpdateResultList;
         }
 
         public void UnlockSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv)
@@ -557,7 +644,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public bool UnlockSecretAbility(CharacterCommon Character, SecretAbility secretAbilityType)
         {
-            return _Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
+            return _Server.Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
         }
     }
 }

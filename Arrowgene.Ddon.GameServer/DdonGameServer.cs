@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer
             ItemManager = new ItemManager();
             PartyManager = new PartyManager(assetRepository);
             ExpManager = new ExpManager(database, ClientLookup);
-            JobManager = new JobManager(database);
+            JobManager = new JobManager(this);
             EquipManager = new EquipManager();
             ShopManager = new ShopManager(assetRepository, database);
             WalletManager = new WalletManager(database);
