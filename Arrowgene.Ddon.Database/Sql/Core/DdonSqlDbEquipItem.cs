@@ -1,5 +1,4 @@
 using System.Data.Common;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -18,7 +17,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlInsertIfNotExistsEquipItem = $"INSERT INTO \"ddon_equip_item\" ({BuildQueryField(CDataEquipItemFields)}) SELECT {BuildQueryInsert(CDataEquipItemFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"equip_type\"=@equip_type AND \"equip_slot\"=@equip_slot);";
         private static readonly string SqlUpdateEquipItem = $"UPDATE \"ddon_equip_item\" SET {BuildQueryUpdate(CDataEquipItemFields)} WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"equip_type\"=@equip_type AND \"equip_slot\"=@equip_slot;";
         private static readonly string SqlSelectEquipItemByCharacter = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id;";
-        private static readonly string SqlDeleteEquipItem = "DELETE FROM \"ddon_equip_item\" WHERE \"item_uid\"=@item_uid AND \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"equip_type\"=@equip_type AND \"equip_slot\"=@equip_slot;";
+        private static readonly string SqlDeleteEquipItem = "DELETE FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"equip_type\"=@equip_type AND \"equip_slot\"=@equip_slot;";
         
         public bool InsertIfNotExistsEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
@@ -79,21 +78,26 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
+        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot)
         {
             return ExecuteNonQuery(SqlDeleteEquipItem, command =>
             {
-                AddParameter(command, commonId, job, equipType, equipSlot, itemUId);
+                AddParameter(command, commonId, job, equipType, equipSlot);
             }) == 1;
+        }
+
+        private void AddParameter(TCom command, uint commonId, JobId job, EquipType equipType, byte equipSlot)
+        {
+            AddParameter(command, "character_common_id", commonId);
+            AddParameter(command, "job", (byte) job);
+            AddParameter(command, "equip_type", (byte) equipType);
+            AddParameter(command, "equip_slot", equipSlot);
         }
 
         private void AddParameter(TCom command, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
             AddParameter(command, "item_uid", itemUId);
-            AddParameter(command, "character_common_id", commonId);
-            AddParameter(command, "job", (byte) job);
-            AddParameter(command, "equip_type", (byte) equipType);
-            AddParameter(command, "equip_slot", equipSlot);
+            AddParameter(command, commonId, job, equipType, equipSlot);
         }
     }
 }
