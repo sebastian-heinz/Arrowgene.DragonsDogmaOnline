@@ -40,10 +40,11 @@
             "comment": "process 0",
             "blocks": [
                 {
-                    "type": "NpcTalkAndOrder",
+                    "type": "NewNpcTalkAndOrder",
                     "stage_id": {
                         "id": 1,
-                        "group_id": 0
+                        "group_id": 1,
+                        "layer_no": 1
                     },
                     "npc_id": "WhiteKnight0",
                     "message_id": 8629,
@@ -58,10 +59,11 @@
                     "check_flags": [1, 2, 3, 4, 5]
                 },
                 {
-                    "type": "NpcTalkAndOrder",
+                    "type": "NewTalkToNpc",
                     "stage_id": {
                         "id": 1,
-                        "group_id": 0
+                        "group_id": 1,
+                        "layer_no": 1
                     },
                     "npc_id": "WhiteKnight0",
                     "message_id": 8633
@@ -78,8 +80,7 @@
                 {
                     "type": "TalkToNpc",
                     "stage_id": {
-                        "id": 25,
-                        "group_id": 0
+                        "id": 25
                     },
                     "npc_id": "Bob",
                     "message_id": 8630
@@ -105,12 +106,16 @@
                         "group_id": 2,
                         "layer_no": 1
                     },
-                    "layout_flags_on": [1125]
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1125}
+                    ]
                 },
                 {
                     "type": "MyQstFlags",
                     "announce_type": "Update",
-                    "layout_flags_off": [1125],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1125}
+                    ],
                     "set_flags": [2]
                 }
             ]
@@ -129,13 +134,17 @@
                         "group_id": 3,
                         "layer_no": 1
                     },
-                    "layout_flags_on": [1126]
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1126}
+                    ]
                 },
                 {
                     "type": "MyQstFlags",
                     "announce_type": "Update",
-                    "layout_flags_off": [1126],
-                    "set_flags": [3]
+                    "set_flags": [3],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1126}
+                    ]
                 }
             ]
         },
@@ -153,13 +162,17 @@
                         "group_id": 4,
                         "layer_no": 1
                     },
-                    "layout_flags_on": [1127]
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1127}
+                    ]
                 },
                 {
                     "type": "MyQstFlags",
                     "announce_type": "Update",
-                    "layout_flags_off": [1127],
-                    "set_flags": [4]
+                    "set_flags": [4],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1127}
+                    ]
                 }
             ]
         },
@@ -177,13 +190,17 @@
                         "group_id": 5,
                         "layer_no": 1
                     },
-                    "layout_flags_on": [1128]
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1128}
+                    ]
                 },
                 {
                     "type": "MyQstFlags",
                     "announce_type": "Update",
-                    "layout_flags_off": [1128],
-                    "set_flags": [5]
+                    "set_flags": [5],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1128}
+                    ]
                 }
             ]
         }

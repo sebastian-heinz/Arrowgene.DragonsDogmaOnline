@@ -287,6 +287,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                     }
                     break;
+                case QuestBlockType.NewNpcTalkAndOrder:
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.QuestNpcTalkAndOrderUi(
+                            StageManager.ConvertIdToStageNo(questBlock.NpcOrderDetails[0].StageId),
+                            (int)questBlock.NpcOrderDetails[0].StageId.GroupId,
+                            questBlock.NpcOrderDetails[0].StageId.LayerNo,
+                            (int)quest.QuestId));
+                        resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                    }
+                    break;
                 case QuestBlockType.PartyGather:
                     {
                         checkCommands.Add(QuestManager.CheckCommand.Prt(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.PartyGatherPoint.x, questBlock.PartyGatherPoint.y, questBlock.PartyGatherPoint.z));
@@ -420,8 +430,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         var orderDetails = questBlock.NpcOrderDetails[0];
                         var questCommand = questBlock.ShowMarker ?
-                            QuestManager.CheckCommand.NewTalkNpc(StageManager.ConvertIdToStageNo(orderDetails.StageId), (int)orderDetails.StageId.GroupId, orderDetails.StageId.LayerNo, (int)orderDetails.QuestId) :
-                            QuestManager.CheckCommand.NewTalkNpcWithoutMarker(StageManager.ConvertIdToStageNo(orderDetails.StageId), (int)orderDetails.StageId.GroupId, orderDetails.StageId.LayerNo, (int)orderDetails.QuestId);
+                            QuestManager.CheckCommand.NewTalkNpc(StageManager.ConvertIdToStageNo(orderDetails.StageId), (int)orderDetails.StageId.GroupId, orderDetails.StageId.LayerNo, (int) quest.QuestId) :
+                            QuestManager.CheckCommand.NewTalkNpcWithoutMarker(StageManager.ConvertIdToStageNo(orderDetails.StageId), (int)orderDetails.StageId.GroupId, orderDetails.StageId.LayerNo, (int) quest.QuestId);
                         checkCommands.Add(questCommand);
                         resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(orderDetails.NpcId, orderDetails.MsgId));
                     }
