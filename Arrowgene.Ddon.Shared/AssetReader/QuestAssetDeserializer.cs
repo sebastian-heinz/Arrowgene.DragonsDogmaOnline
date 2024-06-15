@@ -409,6 +409,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case QuestBlockType.NpcTalkAndOrder:
+                    case QuestBlockType.NewNpcTalkAndOrder:
                         {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
@@ -483,18 +484,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 questBlock.ShowMarker = jShowMarker.GetBoolean();
                             }
 
-                            QuestId questId = QuestId.None;
-                            if (jblock.TryGetProperty("quest_id", out JsonElement jQuestId))
-                            {
-                                questId = (QuestId) jQuestId.GetUInt32();
-                            }
-
                             questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
                             {
                                 NpcId = npcId,
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
-                                StageId = ParseStageId(jblock.GetProperty("stage_id")),
-                                QuestId = questId
+                                StageId = ParseStageId(jblock.GetProperty("stage_id"))
                             });
                         }
                         break;

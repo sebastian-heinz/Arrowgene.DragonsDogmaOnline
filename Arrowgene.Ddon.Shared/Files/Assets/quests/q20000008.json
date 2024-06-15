@@ -67,7 +67,7 @@
                     "exp": 80,
                     "is_boss": false
                 }
-            ]					
+            ]
         },
         {
             "stage_id": {
@@ -103,32 +103,34 @@
                     "enemy_id": "0x015801",
                     "level": 11,
                     "exp": 80,
-                    "is_boss": false					
+                    "is_boss": false
                 }
             ]
         }
     ],
     "blocks": [
         {
-            "type": "NpcTalkAndOrder",
+            "type": "NewNpcTalkAndOrder",
             "stage_id": {
-                "id": 1
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
             },
             "npc_id": "ArisenCorpsRegimentalSoldier8",
             "message_id": 11000,
             "flags": [
-            {"type": "QstLayout", "action": "Set", "value": 989, "comment": "write something when you figure out what it does"}
-             ]
+                {"type": "QstLayout", "action": "Set", "value": 989, "comment": "Spawns Arisen Corps Regimental Solider"}
+            ]
         },
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
             "groups": [0]
         },
-        {			
+        {
             "type": "KillGroup",
             "announce_type": "Update",
-			"reset_group": false,
+            "reset_group": false,
             "groups": [0]
         },
         {
@@ -136,20 +138,22 @@
             "announce_type": "Update",
             "groups": [1]
         },
-        {			
+        {
             "type": "KillGroup",
             "announce_type": "Update",
-			"reset_group": false,
-            "groups": [1]			
+            "reset_group": false,
+            "groups": [1]
         },
         {
-            "type": "TalkToNpc",
+            "type": "NewTalkToNpc",
             "stage_id": {
-                "id": 1
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "ArisenCorpsRegimentalSoldier8",
             "message_id": 11005
-		    }
-	   ]
+        }
+    ]
 }

@@ -68,12 +68,13 @@
     ],
     "blocks": [
         {
-            "type": "NpcTalkAndOrder",
+            "type": "NewNpcTalkAndOrder",
+            "npc_id": "Yuni",
             "stage_id": {
                 "id": 1,
-                "group_id": 0
+                "group_id": 1,
+                "layer_no": 1
             },
-            "npc_id": "Yuni",
             "message_id": 10782,
             "flags": [
                 {"type": "QstLayout", "action": "Set", "value": 992}
@@ -92,13 +93,14 @@
             "groups": [0]
         },
         {
-            "type": "TalkToNpc",
+            "type": "NewTalkToNpc",
+            "npc_id": "Yuni",
             "stage_id": {
                 "id": 1,
-                "group_id": 0
+                "group_id": 1,
+                "group_id": 1
             },
             "announce_type": "Update",
-            "npc_id": "Yuni",
             "message_id": 10785
         }
     ]
