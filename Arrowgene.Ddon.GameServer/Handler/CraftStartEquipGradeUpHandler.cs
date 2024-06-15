@@ -167,9 +167,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .ToList();
 
                 var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-
-
-
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 

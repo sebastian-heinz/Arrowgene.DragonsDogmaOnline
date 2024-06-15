@@ -33,6 +33,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Where(recipe => recipe.RecipeID == packet.Structure.RecipeID)
                 .Single();
 
+            // TODO: Need to check if the item is a Fighter Shield or Rod, these appear to not be intended for the Quality system?
+
             // TODO: Run in transaction
 
             // TODO: Validate the info in the packet is consistent with the recipe
