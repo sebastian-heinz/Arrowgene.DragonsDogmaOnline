@@ -128,6 +128,19 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     }
                 }
 
+                foreach (var flag in block.CheckpointQuestFlags)
+                {
+                    if (flag.Action == QuestFlagAction.Set || flag.Action == QuestFlagAction.Clear)
+                    {
+                        if (!questFlags.ContainsKey(flag.Type))
+                        {
+                            questFlags[flag.Type] = new Dictionary<int, QuestFlag>();
+                        }
+
+                        questFlags[flag.Type][flag.Value] = flag;
+                    }
+                }
+
                 if (stepsFound == step)
                 {
                     break;

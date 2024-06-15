@@ -174,7 +174,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var item in questBlock.HandPlayerItems)
             {
-                server.ItemManager.AddItem(server, client.Character, true, item.ItemId, item.Amount);
+                var result = server.ItemManager.AddItem(server, client.Character, true, item.ItemId, item.Amount);
+                client.Send(new S2CItemUpdateCharacterItemNtc()
+                {
+                    UpdateType = 0,
+                    UpdateItemList = result
+                });
+            }
+
+            foreach (var item in questBlock.ConsumePlayerItems)
+            {
+                var uidItem = new Item() { ItemId =  item.ItemId };
+                var result = server.ItemManager.ConsumeItemByUIdFromItemBag(server, client.Character, uidItem.UId, item.Amount);
+                client.Send(new S2CItemUpdateCharacterItemNtc()
+                {
+                    UpdateType = 0,
+                    UpdateItemList = new List<CDataItemUpdateResult>() { result }
+                });
             }
 
             if (questBlock.ResetGroup)
@@ -463,7 +479,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
 
             result.ResultCommandList = resultCommands;
-            if (checkCommands.Count > 0)
+            if (checkCommands.Count > 0 && checkCommands[0].Count > 0)
             {
                 result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkCommands);
             }

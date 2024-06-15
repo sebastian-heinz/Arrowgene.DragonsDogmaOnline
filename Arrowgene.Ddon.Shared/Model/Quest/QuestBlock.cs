@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<uint> MyQstSetFlags { get; set; }
         public List<uint> MyQstCheckFlags { get; set; }
         public List<QuestFlag> QuestFlags { get; set; }
+        public List<QuestFlag> CheckpointQuestFlags { get; set; }
 
         public bool ShouldStageJump {  get; set; }
         public bool IsCheckpoint { get; set; }
@@ -37,6 +38,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<uint> EnemyGroupIds { get; set; }
         public List<QuestItem> DeliveryRequests { get; set; }
         public List<QuestItem> HandPlayerItems {  get; set; }
+        public List<QuestItem> ConsumePlayerItems { get; set; }
         public List<QuestNpcOrder> NpcOrderDetails { get; set; }
         public QuestOrder QuestOrderDetails { get; set; }
 
@@ -51,9 +53,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             NpcOrderDetails = new List<QuestNpcOrder>();
             DeliveryRequests = new List<QuestItem>();
             HandPlayerItems = new List<QuestItem>();
+            ConsumePlayerItems = new List<QuestItem>();
             QuestProcessState = new CDataQuestProcessState();
 
             QuestFlags = new List<QuestFlag>();
+            CheckpointQuestFlags = new List<QuestFlag>();
             MyQstSetFlags = new List<uint>();
             MyQstCheckFlags = new List<uint>();
 

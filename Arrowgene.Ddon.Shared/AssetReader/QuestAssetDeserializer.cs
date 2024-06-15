@@ -370,6 +370,18 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     }
                 }
 
+                if (jblock.TryGetProperty("consume_items", out JsonElement jConsumeItems))
+                {
+                    foreach (var item in jConsumeItems.EnumerateArray())
+                    {
+                        questBlock.ConsumePlayerItems.Add(new QuestItem()
+                        {
+                            ItemId = item.GetProperty("id").GetUInt32(),
+                            Amount = item.GetProperty("amount").GetUInt32()
+                        });
+                    }
+                }
+
                 questBlock.BgmStop = false;
                 if (jblock.TryGetProperty("bgm_stop", out JsonElement jBgmStop))
                 {
@@ -388,6 +400,21 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             return false;
                         }
                         questBlock.QuestFlags.Add(questFlag);
+                    }
+                }
+
+                if (jblock.TryGetProperty("checkpoint_flags", out JsonElement jCheckpointFlags))
+                {
+                    // {"type": "MyQst", "operation": "Set", "value": 4}
+                    foreach (var jFlag in jCheckpointFlags.EnumerateArray())
+                    {
+                        var questFlag = ParseQuestFlag(jFlag);
+                        if (questFlag == null)
+                        {
+                            Logger.Error($"Unable to parse the checkpoint quest flags @ index {blockIndex - 1}.");
+                            return false;
+                        }
+                        questBlock.CheckpointQuestFlags.Add(questFlag);
                     }
                 }
 
