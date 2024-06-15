@@ -59,6 +59,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equiptype = equipInfo.EquipType;
             }
 
+
+            List<CDataArmorCrestData> ArmorCrestDataList = new List<CDataArmorCrestData>();
+            ArmorCrestDataList.Add(new CDataArmorCrestData { u0 = 1, u1 = 1, u2 = 25654, u3 = 25654 });
+
+
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
                 Unk0 = charid,
@@ -75,11 +80,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // figuring out what this is
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
-                Unk0 = 0,
-                Unk1 = 0,
-                Unk2 = 0,
-                Unk3 = 0,
-                Unk4 = 0,
+                Unk0 = 25654,
+                Unk1 = 25654,
+                Unk2 = 1,
+                Unk3 = 25654,
+                Unk4 = 25654,
                 IsGreatSuccess = true
             };
 
@@ -89,9 +94,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CCraftStartQualityUpRes()
             {
                 Unk0 = dummydata,
+                ArmorCrestDataList = ArmorCrestDataList,
                 CurrentEquip = CurrentEquipInfo
             };
             client.Send(res);
+            client.Send(updateCharacterItemNtc);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
-        public List<CDataCommonU32> Unk3 { get; set; }
+        public List<CDataCommonU32> Unk3 { get; set; } // Same list seen in GradeUp Request? Potentially crests or  Dragonforce?
 
         public class Serializer : PacketEntitySerializer<C2SCraftStartQualityUpReq>
         {

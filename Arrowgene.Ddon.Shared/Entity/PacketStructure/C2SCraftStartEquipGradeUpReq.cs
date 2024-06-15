@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
-        public List<CDataCommonU32> Unk0 { get; set; }
+        public List<CDataCommonU32> Unk0 { get; set; } // maybe a list of crests or dragonforce data? 
         
 
         public class Serializer : PacketEntitySerializer<C2SCraftStartEquipGradeUpReq>

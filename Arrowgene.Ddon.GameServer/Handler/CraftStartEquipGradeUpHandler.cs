@@ -46,6 +46,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte equiptype = 0;
             uint charid = client.Character.CharacterId;
             uint pawnid = packet.Structure.CraftMainPawnID;
+            var equipItem = Server.Database.SelectItem(equipItemUID);
+            byte currentPlusValue = equipItem.PlusValue;
 
             // Getting access to the GradeUpRecipe JSON data.
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -128,7 +130,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk1 = 0,
                 Unk2 = 0,
                 Unk3 = 0,
-                Unk4 = true,    // makes the crest popup appear.
+                Unk4 = false,    // makes the Dragonforce slot popup appear if set to true.
             };
             // TODO: Source these values accurately when we know what they are. ^
             // TODO: one of these is probably PlusValue, we need to source the current plusvalue to retain it during upgrades.
@@ -143,9 +145,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
-            var equipItem = Server.Database.SelectItem(equipItemUID);
-            byte currentPlusValue = equipItem.PlusValue;
-
             // TODO: Figure out why the plus value doesn't perist on every enhance
 
 
@@ -155,16 +154,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataItemUpdateResult> AddItemResult;
             List<CDataItemUpdateResult> RemoveItemResult;
 
-                Item UpgradedItem = new Item()
-                {
-                    ItemId = gearupgradeID,
-                    Unk3 = 0,   // Safety setting,
-                    Color = 0,
-                    PlusValue = currentPlusValue,
-                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                    ArmorCrestDataList = new List<CDataArmorCrestData>(),
-                    EquipElementParamList = new List<CDataEquipElementParam>()
-                };
+            Item UpgradedItem = new Item()
+            {
+                ItemId = gearupgradeID,
+                Unk3 = 0,   // Safety setting,
+                Color = 0,
+                PlusValue = currentPlusValue,
+                WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                ArmorCrestDataList = new List<CDataArmorCrestData>(),
+                EquipElementParamList = new List<CDataEquipElementParam>()
+            };
 
             bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
             if (isEquipped)
@@ -233,11 +232,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Supplying the response packet with data
             var res = new S2CCraftStartEquipGradeUpRes()
             {
-                GradeUpItemUID = UpgradedItem.UId,
+                GradeUpItemUID = UpgradedItem.UId, // Should be the UID for the gradeupitem.
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                 GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                 AddEquipPoint = addEquipPoint,
-                TotalEquipPoint = currentTotalEquipPoint, // If you have 2 of the same UID it applies this value correctly.
+                TotalEquipPoint = currentTotalEquipPoint,
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
                 Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
