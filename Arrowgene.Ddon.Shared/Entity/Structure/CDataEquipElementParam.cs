@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataEquipElementParam
     {
-        public byte SlotNo;
-        public ushort ItemId;
+        public byte SlotNo; // Which Crest slot?
+        public ushort ItemId;  // Crest ID?
         
         public class Serializer : EntitySerializer<CDataEquipElementParam>
         {
