@@ -1,0 +1,71 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Man-Eating Ogre Appears!",
+    "quest_id": 20005011,
+    "base_level": 26,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 850
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 130
+        },
+        {
+            "type": "exp",
+            "amount": 1020
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 842,
+                    "num": 1
+                },
+                {
+                    "item_id": 35,
+                    "num": 3
+                },
+                {
+                    "item_id": 9396,
+                    "num": 2					
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 11
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015500",
+                    "level": 26,
+                    "exp": 1024,
+                    "is_boss": true					
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [0]
+        }
+    ]
+}
+
