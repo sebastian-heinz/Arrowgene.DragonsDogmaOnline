@@ -1,0 +1,85 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Beloved Forest",
+    "quest_id": 20000013,
+    "base_level": 15,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 490
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 80
+        },
+        {
+            "type": "exp",
+            "amount": 750
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 64,
+                    "num": 1
+                },
+                {
+                    "item_id": 42,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 72
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015502",
+                    "level": 15,
+                    "exp": 1500,
+                    "is_boss": true			
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 2
+            },
+            "npc_id": "Mayleaf0",
+            "message_id": 11000
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {			
+            "type": "KillGroup",
+            "announce_type": "Update",
+			"reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 2
+            },
+            "announce_type": "Update",
+            "npc_id": "Mayleaf0",
+            "message_id": 11005
+		    }
+	   ]
+}
+

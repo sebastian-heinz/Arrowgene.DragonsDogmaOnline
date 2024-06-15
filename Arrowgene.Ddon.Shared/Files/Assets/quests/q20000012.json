@@ -1,0 +1,101 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Seeking Peace",
+    "quest_id": 20000012,
+    "base_level": 42,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1380
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 270
+        },
+        {
+            "type": "exp",
+            "amount": 2420
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 9196,
+                    "num": 1
+                },
+                {
+                    "item_id": 7553,
+                    "num": 3
+                },
+                {
+                    "item_id": 9421,
+                    "num": 1					
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 290
+            },
+			"starting_index": 5,
+            "enemies": [
+                {
+                    "enemy_id": "0x015500",
+                    "level": 40,
+                    "exp": 3445,
+                    "is_boss": true			
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 3
+            },
+            "npc_id": "Joseph",
+            "message_id": 11000		
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {			
+            "type": "KillGroup",
+            "announce_type": "Update",
+			"reset_group": false,
+            "groups": [0]		
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 50,
+                "group_id": 0
+            },
+            "announce_type": "Update",
+            "npc_id": "Brandon",			
+            "message_id": 10915
+        },
+        {			
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3,
+                "group_id": 0
+            },
+            "announce_type": "Update",
+            "npc_id": "Joseph",
+            "message_id": 11005
+		    }
+	   ]
+}
+
