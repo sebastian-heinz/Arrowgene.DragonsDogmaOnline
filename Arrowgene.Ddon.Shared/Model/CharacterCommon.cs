@@ -1,7 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Linq;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -27,6 +26,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .Select(jobId => (jobId, Enumerable.Repeat<Ability?>(null, 10).ToList()))
                 .ToDictionary(pair => pair.jobId, pair => pair.Item2);
             OnlineStatus = OnlineStatus.Offline;
+            ExtendedParams = new CDataOrbGainExtendParam();
         }
 
         public CDataCharacterJobData? ActiveCharacterJobData
