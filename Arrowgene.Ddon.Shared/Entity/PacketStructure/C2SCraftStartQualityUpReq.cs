@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public string Unk0 { get; set; } // The gear you want to upgrade UID
         public string Unk1 { get; set; } // The Rock you're using to upgrade UID 
-        public ushort Unk2 { get; set; } // Additional Status ID
+        public ushort Unk2 { get; set; } // Additional Status ID?
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }

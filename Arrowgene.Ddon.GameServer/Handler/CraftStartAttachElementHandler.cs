@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class CraftStartAttachElementHandler : GameStructurePacketHandler<C2SCraftStartAttachElementReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartQualityUpHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartAttachElementHandler));
         private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
             StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
@@ -32,10 +32,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartAttachElementReq> packet)
         {
 
+
+            // TODO: All the logic needed for crests
+
             List<CDataEquipElementParam> elementlist = new List<CDataEquipElementParam>();
             elementlist.Add(new CDataEquipElementParam { SlotNo = 1, ItemId = 13398});
-
-
 
             var res = new S2CCraftStartAttachElementRes()
             {

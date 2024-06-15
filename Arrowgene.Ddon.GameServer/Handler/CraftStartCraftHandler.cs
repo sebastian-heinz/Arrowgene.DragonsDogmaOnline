@@ -77,7 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                        D100 = D100 + 30;
+                        D100 = D100 + 10;
                     }
                     catch (NotEnoughItemsException e)
                     {
@@ -122,6 +122,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 RandomQuality = 2;
             }
+
+            
 
             // Substract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, finalCraftCost);

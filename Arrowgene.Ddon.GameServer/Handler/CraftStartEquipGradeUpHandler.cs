@@ -37,9 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
         {
-
             Character common = client.Character;
-             
             string equipItemUID = packet.Structure.EquipItemUID;
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID); // Finding the Recipe we need based on the requested UID. 
             ushort equipslot = 0;
@@ -60,22 +58,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint goldRequired = json_data.Cost;
             uint nextGrade = json_data.Unk0; // This might be Unk0 in the JSON but is probably in the DB or something.
             bool canContinue = json_data.Unk1;
-            uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
+            uint currentTotalEquipPoint = 10; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
             uint addEquipPoint = 0;     
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
-
+            
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
 
             if(dogreatsucess == true)
             {
-                currentTotalEquipPoint = 10;
+
                 addEquipPoint = 100;
             }
             else
             {
-                currentTotalEquipPoint = 10;
                 addEquipPoint = 30;
             }
             // TODO: Figure out why the bar always fills fully regardless of fed numbers? it wasn't doing this earlier on.
@@ -83,6 +80,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
             // TODO: You require atleast 2 pieces of the same gear to complete the Enhance cycle properly, or you don't get the info box after completing and can't
             // enhance it again because it doesn't update the recipe list properly, guess the client doesn't consider it done correctly.
+            // TODO: Figure out why the plus value doesn't perist on every enhance
 
 
             // Remove crafting materials
@@ -144,10 +142,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Substract Gold based on JSON cost.
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-
-            // TODO: Figure out why the plus value doesn't perist on every enhance
-
-
 
             // TODO: Figure out how to stop the server thinking an item is equipped just because it has same UID as a non-equipped gear you're trying to upgrade.
             // Checking if the Gear is equipped or not first.
@@ -236,7 +230,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                 GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                 AddEquipPoint = addEquipPoint,
-                TotalEquipPoint = currentTotalEquipPoint,
+                TotalEquipPoint = currentTotalEquipPoint + addEquipPoint,
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
                 Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.

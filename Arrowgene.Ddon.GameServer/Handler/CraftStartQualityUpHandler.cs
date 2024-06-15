@@ -43,10 +43,79 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte equiptype = 0;
             uint charid = client.Character.CharacterId;
             uint pawnid = packet.Structure.CraftMainPawnID;
+            var equipItem = Server.Database.SelectItem(equipItemUID);
+            byte currentPlusValue = equipItem.PlusValue;
             bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
+            bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
+            string RefineMaterial = packet.Structure.Unk1;
+            byte RandomQuality = 0;
+            int D100 =  _random.Next(100);
+
+            // Check if a refinematerial is set
+            if (!string.IsNullOrEmpty(RefineMaterial))
+            {
+                // Remove Refinement material (and increase odds of better Stars)
+                foreach (var craftMaterial in packet.Structure.CraftMaterialList)
+                {
+                    try
+                    {
+                        List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
+                        updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                        D100 = D100 + 10;
+                    }
+                    catch (NotEnoughItemsException e)
+                    {
+                        Logger.Exception(e);
+                        client.Send(new S2CCraftStartCraftRes()
+                        {
+                            Result = 1
+                        });
+                        return;
+                    }
+                }
+            }
+
+            
+            if (D100 >= 95)
+            {
+                RandomQuality = 3;
+            }
+            else if (D100 <= 60)
+            {
+                RandomQuality = 0;
+            }
+            else if (D100 >= 61 && D100 <= 80)
+            {
+                RandomQuality = 1;
+            }
+            else if (D100 >= 81 && D100 <= 94)
+            {
+                RandomQuality = 2;
+            }
+
+            // Someone said a GreatSuccess gave 2 Crests instead of 1? so I guess take the result and Add 1? But Clamp to 3.
+            if (dogreatsucess)
+            {
+                RandomQuality += 1;
+                if (RandomQuality > 3)
+                {
+                    RandomQuality = 3;
+                }
+            }
 
 
-            // Can probably also changed Equipped Gear considering it asks for slot & info.
+            Item UpgradedItem = new Item()
+            {
+                ItemId = equipItemID,
+                Unk3 = 0,   // Safety setting,
+                Color = 0,
+                PlusValue = currentPlusValue,
+                WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                ArmorCrestDataList = new List<CDataArmorCrestData>(),
+                EquipElementParamList = new List<CDataEquipElementParam>()
+            };
+
+
             if (isEquipped)
             {
                 List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
@@ -57,12 +126,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
+
+                // TODO: Actually handle equipped item stuff
+            }
+            else
+            {
+                // TODO: Need to figure out how to update an existing items params
             }
 
 
             List<CDataArmorCrestData> ArmorCrestDataList = new List<CDataArmorCrestData>();
-            ArmorCrestDataList.Add(new CDataArmorCrestData { u0 = 1, u1 = 1, u2 = 25654, u3 = 25654 });
-
+            ArmorCrestDataList.Add(new CDataArmorCrestData { u0 = 0, u1 = 0, u2 = 0, u3 = 0 });
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
@@ -80,16 +154,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // figuring out what this is
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
-                Unk0 = 25654,
-                Unk1 = 25654,
-                Unk2 = 1,
-                Unk3 = 25654,
-                Unk4 = 25654,
-                IsGreatSuccess = true
+                Unk0 = 0,
+                Unk1 = 0,
+                Unk2 = 0,
+                Unk3 = 0,
+                Unk4 = 0,
+                IsGreatSuccess = dogreatsucess
             };
-
-            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, equipItemID, 1, 2);
-            updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);  
 
             var res = new S2CCraftStartQualityUpRes()
             {
