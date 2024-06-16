@@ -63,8 +63,8 @@ namespace Arrowgene.Ddon.Shared.Model
                     PlusValue = tuple.item.Item1.PlusValue,
                     Bind = true,
                     EquipPoint = 0,
-                    EquipCharacterID = determineCharacterId(character, storageType, tuple.slot),
-                    EquipPawnID = determinePawnId(character, storageType, tuple.slot),
+                    EquipCharacterID = DetermineCharacterId(character, storageType, tuple.slot),
+                    EquipPawnID = DeterminePawnId(character, storageType, tuple.slot),
                     WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,
                     ArmorCrestDataList = tuple.item.Item1.ArmorCrestDataList,
                     EquipElementParamList = tuple.item.Item1.EquipElementParamList
@@ -100,7 +100,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return oldItem;
         }
 
-        private uint determineCharacterId(Character character, StorageType storageType, ushort slot)
+        private uint DetermineCharacterId(Character character, StorageType storageType, ushort slot)
         {
             if(storageType == StorageType.CharacterEquipment)
             {
@@ -112,7 +112,7 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         }
 
-        private uint determinePawnId(Character character, StorageType storageType, ushort slot)
+        private uint DeterminePawnId(Character character, StorageType storageType, ushort slot)
         {
             if(storageType == StorageType.PawnEquipment)
             {
