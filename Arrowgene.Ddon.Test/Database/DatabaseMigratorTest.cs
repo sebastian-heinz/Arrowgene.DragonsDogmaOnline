@@ -191,7 +191,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteConnectionsByServerId(int serverId) { return true; }
         public int DeleteContact(uint requestingCharacterId, uint requestedCharacterId) { return 1; }
         public int DeleteContactById(uint id) { return 1; }
-        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
+        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot) { return true; }
         public bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo) { return true; }
         public bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob) { return true; }
         public bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo) { return true; }
