@@ -1,0 +1,285 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Great Alchemist",
+    "quest_id": 24,
+    "next_quest": 0,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 16500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 18000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1600
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 989,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 1006,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 1023,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "comment": "Boss Phase 1",
+            "stage_id": {
+                "id": 84,
+                "group_id": 20
+            },
+            "enemies": [
+                {
+                    "comment" : "Diamantes (Human)",
+                    "enemy_id": "0x011041",
+                    "level": 55,
+                    "exp": 6746,
+                    "hm_present_no": 75,
+                    "is_boss": true
+                }
+           ]
+        },
+        {
+            "comment": "Boss Phase 2",
+            "stage_id": {
+                "id": 84,
+                "group_id": 15
+            },
+            "enemies": [
+                {
+                    "comment" : "Diamantes (True)",
+                    "enemy_id": "0x020500",
+                    "level": 55,
+                    "exp": 64760,
+                    "is_boss": true
+                }
+           ]
+        },
+        {
+            "comment": "Boss Adds",
+            "stage_id": {
+                "id": 84,
+                "group_id": 16
+            },
+            "enemies": [
+                {
+                    "comment" : "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 53,
+                    "exp": 6254,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 53,
+                    "exp": 6254,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Alchemized Goblin",
+                    "enemy_id": "0x011120",
+                    "level": 53,
+                    "exp": 6254,
+                    "enemy_target_types_id": 1
+                }
+           ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
+
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1098, "quest_id": 70003001, "comment": "Close Diametes Door"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1713, "quest_id": 70003001, "comment": "Open Diametes Door"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 2456, "quest_id": 70003001, "comment": "Controls access to door for royal Palace where boss fight takes place"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 0, "quest_id": 70003001, "comment": "Controls access to door for royal Palace where boss fight takes place"}
+                    ],
+                    "npc_id": "Joseph",
+                    "message_id": 0
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 90
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Accept",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1034, "comment": "Spawns Klaus"}
+                    ],
+                    "stage_id": {
+                        "id": 84
+                    },
+                    "location": {
+                        "x": -17453,
+                        "y": 2948,
+                        "z": -31111
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                    ],
+                    "stage_id": {
+                        "id": 84
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1713, "quest_id": 70003001, "comment": "Open Diametes Door"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1098, "quest_id": 70003001, "comment": "Close Diametes Door"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1034, "comment": "Spawns Klaus"},
+                        {"type": "QstLayout", "action": "Set", "value": 1035, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 1099, "comment": "Diametes door?"}
+                    ],
+                    "stage_id": {
+                        "id": 84
+                    },
+                    "location": {
+                        "x": -29498,
+                        "y": 5784,
+                        "z": -30556
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 84
+                    },
+                    "event_id": 10
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 84
+                    },
+                    "event_id": 15
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Starts adds process"},
+                        {"type": "MyQst", "action": "Set", "value": 137, "comment": "Starts Leo FSM"},
+                        {"type": "QstLayout", "action": "Set", "value": 921, "comment": "Blocks Exit"}
+                    ],
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 2, "comment": "Destroys left over adds"}
+                    ],
+                    "stage_id": {
+                        "id": 84
+                    },
+                    "jump_stage_id": {
+                        "id": 84
+                    },
+                    "start_pos_no": 4,
+                    "event_id": 20
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [1]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 84
+                    },
+                    "event_id": 25
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "MyQst", "action": "Clear", "value": 1, "comment": "Starts adds process"},
+                        {"type": "MyQst", "action": "Clear", "value": 2, "comment": "Destroys left over adds"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1035, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 1101, "comment": "Spawns Klaus"},
+                        {"type": "QstLayout", "action": "Clear", "value": 921, "comment": "Blocks Exit"}
+                    ],
+                    "npc_id": "Joseph",
+                    "message_id": 8538
+                }
+            ]
+        },
+        {
+            "comment": "Boss Adds",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "comment": "Wait for player to start fight",
+                    "check_flags": [1]
+                },
+                {
+                    "comment": "Spawns Add Enemies",
+                    "type": "SpawnGroup",
+                    "groups": [2],
+                    "check_commands": [
+                        {"type": "MyQstFlagOn", "Param1": 2}
+                    ]
+                },
+                {
+                    "type": "DestroyGroup",
+                    "groups": [2]
+                }
+            ]
+        }
+    ]
+}

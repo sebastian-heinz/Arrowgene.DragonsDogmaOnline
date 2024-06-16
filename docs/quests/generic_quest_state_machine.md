@@ -633,7 +633,6 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | MyQst     | 176   |                 | NPC FSM: Mysial starts walking down the stairs into the tavern
 | MainQst   | 586   |                 | NPC FSM: Mysial reaches pier?
 
-
 #### The Ark, Once More (q00000018)
 | Type      | Value | id/grp          | Comment                                                    |
 |:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
@@ -670,6 +669,7 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 1022  | st0411          | Spawns Leo
 | QstLayout | 1023  | st0411          | Spawns Leo
 | QstLayout | 1024  | st0411          | Spawns Iris
+| MyQst     | 116   | st0411          | Starts Leo follow FSM for the stage
 | MyQst     | 120   | st0411          | Starts Leos combat FSM for boss battle
 
 ### The Quandary of Soldiers (q00000021)
@@ -706,6 +706,17 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | st0418 | 923   | Mergoda Door Middle (メルゴダ扉・中両扉)
 | QstLayout | st0418 | 1032  | Spawns Leo
 | QstLayout | st0418 | 1324  | Mergoda Door Middle, Transparent warp OM for moving around the floor (メルゴダ扉・中両扉, フロア移動用透明ワープＯＭ)
+
+### The Golden Key (q00000024)
+| Type      | stage  | Value | Comment                                                    |
+|:---------:|:------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | st0201 | 1033  | Spawns Heinz, Gerd, Vanessa and Mayleaf
+| QstLayout | st0418 | 921   | Blocks something? (大人アタリＯＭ 40m, メルゴダ浮遊石(中), )
+| QstLayout | st0418 | 1034  | Spawns Klaus
+| QstLayout | st0418 | 1035  | Spawns Leo
+| QstLayout | st0418 | 1099  | Diametes Sealed Door (ディアマンテス封印扉)
+| QstLayout | st0418 | 1101  | Spawns Klaus
+| MyQst     |        | 137   | Start Leo battl FSM
 
 #### World Manage Quest
 
