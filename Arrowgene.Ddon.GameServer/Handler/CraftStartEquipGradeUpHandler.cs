@@ -171,26 +171,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equiptype = equipInfo.EquipType;
 
                  _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, UpgradedItem.UId, gearupgradeID, UpgradedItem, (EquipType)equiptype, (byte)equipslot);
-                
+
+                //_equipManager.HandleChangeEquipList(Server, client, common, characterEquipList, ItemNoticeType.ChangeEquip, StorageEquipNBox, ;
+
                 updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                     ItemList = new CDataItemList() {
                         ItemUId = UpgradedItem.UId,
                         ItemId = UpgradedItem.ItemId,
-                        ItemNum = 1,
+                        ItemNum = 0,
                         Unk3 = UpgradedItem.Unk3,
-                        StorageType = StorageType.Unk14, 
-                        SlotNo = equipslot,
+                        StorageType = StorageType.Unk14,
+                        SlotNo = 1,
                         Color = UpgradedItem.Color,
                         PlusValue = UpgradedItem.PlusValue,
                         Bind = true,
                         EquipPoint = 0,
                         EquipCharacterID = charid,
-                        EquipPawnID = pawnid,
+                        EquipPawnID = 0,
                         WeaponCrestDataList = UpgradedItem.WeaponCrestDataList,
                         ArmorCrestDataList = UpgradedItem.ArmorCrestDataList,
                         EquipElementParamList = UpgradedItem.EquipElementParamList
                     },
-                    UpdateItemNum = 1,
+                    UpdateItemNum = 0,
                 });    
 
                 // TODO: Figure out how to update the NTC without crashing the client.
