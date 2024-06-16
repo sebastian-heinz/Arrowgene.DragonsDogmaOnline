@@ -166,10 +166,21 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 questProgressState = QuestProgressState.InProgress;
             }
 
-            foreach (var enemyGroupId in questBlock.EnemyGroupIds)
+            if (questBlock.BlockType != QuestBlockType.DestroyGroup)
             {
-                var enemies = EnemyGroups[enemyGroupId];
-                client.Party.QuestState.SetInstanceEnemies(this, enemies.StageId, (ushort) enemies.SubGroupId, enemies.AsInstancedEnemies());
+                foreach (var enemyGroupId in questBlock.EnemyGroupIds)
+                {
+                    var enemies = EnemyGroups[enemyGroupId];
+                    client.Party.QuestState.SetInstanceEnemies(this, enemies.StageId, (ushort)enemies.SubGroupId, enemies.AsInstancedEnemies());
+                }
+            }
+            else
+            {
+                foreach (var enemyGroupId in questBlock.EnemyGroupIds)
+                {
+                    var enemies = EnemyGroups[enemyGroupId];
+                    client.Party.QuestState.SetInstanceEnemies(this, enemies.StageId, (ushort)enemies.SubGroupId, new List<InstancedEnemy>());
+                }
             }
 
             foreach (var item in questBlock.HandPlayerItems)
@@ -193,7 +204,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 });
             }
 
-            if (questBlock.ResetGroup)
+            if (questBlock.BlockType == QuestBlockType.DestroyGroup)
+            {
+                DestroyEnemiesForBlock(client, questBlock);
+            }
+
+            if (questBlock.ResetGroup || questBlock.BlockType == QuestBlockType.DestroyGroup)
             {
                 ResetEnemiesForBlock(client, questBlock);
             }
@@ -493,7 +509,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     }
                     break;
                 case QuestBlockType.Raw:
-                    resultCommands.AddRange(questBlock.ResultCommands);
+                    /* handled generically for all blocks */
+                    break;
+                case QuestBlockType.DestroyGroup:
+                    /* This is a pseudo block handeled at the state machine level */
                     break;
                 case QuestBlockType.DummyBlock:
                     /* Filler block which might do some meta things like announce or set flags */
@@ -506,29 +525,25 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     break;
             }
 
+            /* Add in any additional result commands */
+            resultCommands.AddRange(questBlock.ResultCommands);
+
             result.ResultCommandList = resultCommands;
 
-            if (questBlock.BlockType == QuestBlockType.Raw)
+            List<List<CDataQuestCommand>> complexCheckCommands = new List<List<CDataQuestCommand>>();
+            if (checkCommands.Count > 0)
             {
-                List<List<CDataQuestCommand>> complexCheckCommands = new List<List<CDataQuestCommand>>();
-                if (checkCommands.Count > 0)
-                {
-                    complexCheckCommands.Add(checkCommands);
-                }
-
-                if (questBlock.CheckCommands.Count > 0)
-                {
-                    complexCheckCommands.AddRange(questBlock.CheckCommands);
-                }
-
-                if (complexCheckCommands.Count > 0)
-                {
-                    result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(complexCheckCommands);
-                }
+                complexCheckCommands.Add(checkCommands);
             }
-            else if (checkCommands.Count > 0)
+
+            if (questBlock.CheckCommands.Count > 0)
             {
-                result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkCommands);
+                complexCheckCommands.AddRange(questBlock.CheckCommands);
+            }
+
+            if (complexCheckCommands.Count > 0)
+            {
+                result.CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(complexCheckCommands);
             }
 
             return result;

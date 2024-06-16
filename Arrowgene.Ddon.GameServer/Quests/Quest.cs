@@ -288,15 +288,25 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                 S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
                 {
-                    LayoutId = new CDataStageLayoutId()
-                    {
-                        StageId = enemyGroup.StageId.Id,
-                        GroupId = enemyGroup.StageId.GroupId,
-                        LayerNo = enemyGroup.StageId.LayerNo
-                    }
+                    LayoutId = enemyGroup.StageId.ToStageLayoutId()
                 };
 
                 client.Party.SendToAll(resetNtc);
+            }
+        }
+
+        public virtual void DestroyEnemiesForBlock(GameClient client, QuestBlock questBlock)
+        {
+            foreach (var groupId in questBlock.EnemyGroupIds)
+            {
+                var enemyGroup = EnemyGroups[groupId];
+
+                S2CInstanceEnemyGroupDestroyNtc destroyNtc = new S2CInstanceEnemyGroupDestroyNtc()
+                {
+                    LayoutId = enemyGroup.StageId.ToStageLayoutId()
+                };
+
+                client.Party.SendToAll(destroyNtc);
             }
         }
 

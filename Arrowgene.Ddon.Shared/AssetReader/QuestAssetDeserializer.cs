@@ -465,6 +465,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     case QuestBlockType.KillGroup:
                     case QuestBlockType.SpawnGroup:
                     case QuestBlockType.WeakenGroup:
+                    case QuestBlockType.DestroyGroup:
                         {
                             questBlock.ResetGroup = true;
                             if (jblock.TryGetProperty("reset_group", out JsonElement jResetGroup))
@@ -648,11 +649,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case QuestBlockType.Raw:
-                        if (!ParseRawBlock(jblock, questBlock))
-                        {
-                            Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex - 1}.");
-                            return false;
-                        }
                         break;
                     case QuestBlockType.DummyBlock:
                         /* Filler block which might do some meta things like announce or set/check flags */
@@ -660,6 +656,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     default:
                         Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex - 1}.");
                         return false;
+                }
+
+                if (!ParseRawBlock(jblock, questBlock))
+                {
+                    Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex - 1}.");
+                    return false;
                 }
 
                 questProcess.Blocks.Add(questBlock);
@@ -903,16 +905,42 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private bool ParseRawBlock(JsonElement jBlock, QuestBlock questBlock)
         {
-            var jCheckCommands = jBlock.GetProperty("check_commands").EnumerateArray().ToList();
-            if (jCheckCommands.Count > 0)
+            if (jBlock.TryGetProperty("check_commands", out JsonElement jCheckCommands))
             {
-                if (jCheckCommands[0].ValueKind == JsonValueKind.Array)
+                var jCheckCommandList = jCheckCommands.EnumerateArray().ToList();
+                if (jCheckCommandList.Count > 0)
                 {
-                    // New way which supports OR conditions
-                    foreach (var jCheckGroup in jCheckCommands)
+                    if (jCheckCommands[0].ValueKind == JsonValueKind.Array)
                     {
+                        // New way which supports OR conditions
+                        foreach (var jCheckGroup in jCheckCommandList)
+                        {
+                            List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
+                            foreach (var jCheckCommand in jCheckGroup.EnumerateArray())
+                            {
+                                CDataQuestCommand command = new CDataQuestCommand();
+                                if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
+                                {
+                                    return false;
+                                }
+
+                                command.Command = (ushort)type;
+                                ParseCommandParams(jCheckCommand, command);
+
+                                checkCommands.Add(command);
+                            }
+
+                            if (checkCommands.Count > 0)
+                            {
+                                questBlock.CheckCommands.Add(checkCommands);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Legacy Way
                         List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
-                        foreach (var jCheckCommand in jCheckGroup.EnumerateArray())
+                        foreach (var jCheckCommand in jCheckCommandList)
                         {
                             CDataQuestCommand command = new CDataQuestCommand();
                             if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
@@ -932,44 +960,23 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                     }
                 }
-                else
-                {
-                    // Legacy Way
-                    List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
-                    foreach (var jCheckCommand in jCheckCommands)
-                    {
-                        CDataQuestCommand command = new CDataQuestCommand();
-                        if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
-                        {
-                            return false;
-                        }
-
-                        command.Command = (ushort)type;
-                        ParseCommandParams(jCheckCommand, command);
-
-                        checkCommands.Add(command);
-                    }
-
-                    if (checkCommands.Count > 0)
-                    {
-                        questBlock.CheckCommands.Add(checkCommands);
-                    }
-                }
             }
 
-            foreach (var jResultCommand in jBlock.GetProperty("result_commands").EnumerateArray())
+            if (jBlock.TryGetProperty("result_commands", out JsonElement jResultCommands))
             {
-                CDataQuestCommand command = new CDataQuestCommand();
-
-                if (!Enum.TryParse(jResultCommand.GetProperty("type").GetString(), true, out QuestResultCommand type))
+                foreach (var jResultCommand in jResultCommands.EnumerateArray())
                 {
-                    return false;
+                    CDataQuestCommand command = new CDataQuestCommand();
+                    if (!Enum.TryParse(jResultCommand.GetProperty("type").GetString(), true, out QuestResultCommand type))
+                    {
+                        return false;
+                    }
+
+                    command.Command = (ushort)type;
+                    ParseCommandParams(jResultCommand, command);
+
+                    questBlock.ResultCommands.Add(command);
                 }
-
-                command.Command = (ushort)type;
-                ParseCommandParams(jResultCommand, command);
-
-                questBlock.ResultCommands.Add(command);
             }
 
             return true;

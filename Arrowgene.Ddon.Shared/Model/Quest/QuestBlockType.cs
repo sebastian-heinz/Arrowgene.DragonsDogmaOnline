@@ -17,6 +17,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         KillGroup,
         SpawnGroup,
         WeakenGroup,
+        DestroyGroup,
         TalkToNpc,
         NewTalkToNpc,
         NewNpcTalkAndOrder,
