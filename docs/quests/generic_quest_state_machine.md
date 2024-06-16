@@ -683,6 +683,19 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | st0572 | 1027  | Spawns Heinz
 | QstLayout | st0572 | 1312  | bow? (船頭)
 
+### The Dwellers of the Golden Land (q00000022)
+| Type      | stage  | Value | Comment                                                    |
+|:---------:|:------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | st0201 | 1028  | Spawn Heinz, Gerd and Vanessa.
+| QstLayout | st0201 | 1253  | Spawn Mayleaf and Vanessa.
+| QstLayout | st0410 | 920   | Slide Door (Melgoda General-purpose Slight Door) (スライドドア) (メルゴダ汎用スライトドア)
+| QstLayout | st0410 | 1029  | Spawn Klaus
+| QstLayout | st0410 | 2464  | Spawn blockaide and FLoating Stone (封鎖岩とアタリ) (大人アタリＯＭ 40m) (メルゴダ浮遊石(中))
+| QstLayout | st0411 | 1102  | Spawn Klaus
+| QstLayout | st0411 | 1307  | Blockaide and exit? (大人アタリＯＭ 60m)
+| QstLayout | st0418 | 1098  | Diamantes Sealed Door (ディアマンテス封印扉)
+| QstLayout | st0622 | 1030  | Spawn Klaus
+
 #### World Manage Quest
 
 ##### q70000001
