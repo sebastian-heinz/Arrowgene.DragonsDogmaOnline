@@ -170,30 +170,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 
-                 _equipManager.ChangeEquippedItemUID(Server, common, equipItemUID, UpgradedItem.UId, UpgradedItem);
+                 _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, UpgradedItem.UId, gearupgradeID, UpgradedItem, (EquipType)equiptype, (byte)equipslot);
+                
+                // updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
+                //     ItemList = new CDataItemList() {
+                //         ItemUId = UpgradedItem.UId,
+                //         ItemId = UpgradedItem.ItemId,
+                //         ItemNum = 1,
+                //         Unk3 = UpgradedItem.Unk3,
+                //         StorageType = StorageType.Unk14, 
+                //         SlotNo = equipslot,
+                //         Color = UpgradedItem.Color,
+                //         PlusValue = UpgradedItem.PlusValue,
+                //         Bind = true,
+                //         EquipPoint = 0,
+                //         EquipCharacterID = charid,
+                //         EquipPawnID = pawnid,
+                //         WeaponCrestDataList = UpgradedItem.WeaponCrestDataList,
+                //         ArmorCrestDataList = UpgradedItem.ArmorCrestDataList,
+                //         EquipElementParamList = UpgradedItem.EquipElementParamList
+                //     },
+                //     UpdateItemNum = 1,
+                // });    
 
-                updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
-                    ItemList = new CDataItemList() {
-                        ItemUId = UpgradedItem.UId,
-                        ItemId = UpgradedItem.ItemId,
-                        ItemNum = 1,
-                        Unk3 = UpgradedItem.Unk3,
-                        StorageType = StorageType.ItemBagEquipment, 
-                        SlotNo = equipslot,
-                        Color = UpgradedItem.Color,
-                        PlusValue = UpgradedItem.PlusValue,
-                        Bind = true,
-                        EquipPoint = 0,
-                        EquipCharacterID = charid,
-                        EquipPawnID = pawnid,
-                        WeaponCrestDataList = UpgradedItem.WeaponCrestDataList,
-                        ArmorCrestDataList = UpgradedItem.ArmorCrestDataList,
-                        EquipElementParamList = UpgradedItem.EquipElementParamList
-                    },
-                    UpdateItemNum = 1,
-                });       
-
-                // TODO: Figure out how to exchange the equipment correctly. 
+                // TODO: Figure out how to update the NTC without crashing the client.
             }
             else
             {

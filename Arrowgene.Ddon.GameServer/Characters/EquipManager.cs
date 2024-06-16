@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -350,15 +351,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         {
                             if (item != null && item.UId == itemUID)
                             {
-                                return true; // Found the item, return true
+                                return true;
                             }
                         }
                     }
                 }
             }
-            return false; // Item not found
+            return false;
         }
-        public void ChangeEquippedItemUID(DdonGameServer server, CharacterCommon character, string currentUid, string newUid, Item Theitem)
+        public void ReplaceEquippedItem(DdonGameServer server, GameClient client, Character character, StorageType storageType, string currentUid, string newUid, uint newId, Item newItem, EquipType equipType=EquipType.Performance, byte equipSlot=0)
         {
             foreach (var equipList in character.Equipment.GetAllEquipment().Values)
             {
@@ -366,19 +367,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     if (itemList != null)
                     {
-                        foreach (var item in itemList)
+                        for (int i = 0; i < itemList.Count; i++)
                         {
+                            var item = itemList[i];
                             if (item != null && item.UId == currentUid)
                             {
-                                item.UId = newUid;
-                                server.Database.InsertItem(Theitem);
-                                return;
+                                newItem.UId = newUid;
+                                newItem.ItemId = newId;
+                                itemList[i] = newItem;
+
+                                server.Database.ReplaceEquipItem(character.CommonId, character.Job, equipType, equipSlot, newUid);
                             }
                         }
                     }
                 }
             }
-            throw new Exception($"Item with UID '{currentUid}' not found in equipped items.");
         }
     }
 }
