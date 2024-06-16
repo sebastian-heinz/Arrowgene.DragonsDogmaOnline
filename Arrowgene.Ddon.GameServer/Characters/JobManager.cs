@@ -172,10 +172,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, int pawnIdx, StorageType equipmentStorageType, JobId oldJobId, JobId newJobId, EquipType equipType)
         {
-            int equipmentStorageSlotOffset = pawnIdx * Equipment.EQUIP_SLOT_NUMBER * 2;
+            // TODO: Run in a transaction
+
+            int equipmentStorageSlotOffset = pawnIdx * Equipment.TOTAL_EQUIP_SLOTS * 2;
             if(equipType == EquipType.Visual)
             {
-                equipmentStorageSlotOffset += Equipment.EQUIP_SLOT_NUMBER;
+                equipmentStorageSlotOffset += Equipment.TOTAL_EQUIP_SLOTS;
             }
 
             List<CDataItemUpdateResult> itemUpdateResultList = new List<CDataItemUpdateResult>();
@@ -190,6 +192,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if(oldEquippedItem != null && equippedItem == null)
                 {
                     // Unequip item from an empty slot
+                    // TODO: Attempt moving into other storages if the storage box is full
                     try
                     {
                         List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, equipmentStorageType, oldEquippedItem.UId, 1, StorageType.StorageBoxNormal, 0);

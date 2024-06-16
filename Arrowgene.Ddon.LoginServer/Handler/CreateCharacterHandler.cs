@@ -1143,7 +1143,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             for (int i = 0; i < visualEquipItems.Count; i++)
             {
                 Item? item = visualEquipItems[i];
-                ushort slot = (ushort)(i+Equipment.EQUIP_SLOT_NUMBER+1);
+                ushort slot = (ushort)(i+Equipment.TOTAL_EQUIP_SLOTS+1);
                 character.Storage.setStorageItem(item, 1, StorageType.CharacterEquipment, slot);
             }
 
