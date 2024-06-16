@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "The Dwellers of the Golden Land",
     "quest_id": 22,
-    "next_quest": 0,
+    "next_quest": 23,
     "base_level": 51,
     "minimum_item_rank": 0,
     "discoverable": true,

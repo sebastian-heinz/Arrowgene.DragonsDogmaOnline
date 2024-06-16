@@ -72,7 +72,7 @@ There exists an implementation of the following main story quests.
 | [The Entrusted Future](http://ddon.wikidot.com/mq:theentrustedfuture) | Works mostly well. Didn't implement Leo following the player around. Some mobs need better placement.
 | [The Quandary of Soldiers](http://ddon.wikidot.com/mq:thequandaryofsoldiers) | Quest works but dungeon monster placement is severly lacking. Can't find some nodes in ddon-tools for some of the meat monsters.
 | [The Dwellers of the Golden Land](http://ddon.wikidot.com/mq:thedwellersofthegoldenland) | Not sure if all area locks are in place.
-| [The Golden Key](http://ddon.wikidot.com/mq:thegoldenkey) | Not implemented
+| [The Golden Key](http://ddon.wikidot.com/mq:thegoldenkey) | Works mostly well. Door in boss room can be opened twice during the fight, but stays locked.
 | [The Great Alchemist](http://ddon.wikidot.com/mq:thegreatalchemist) | Not implemented
 | [Be Forevermore, White Dragon](http://ddon.wikidot.com/mq:beforevermorewhitedragon) | Not implemented
 

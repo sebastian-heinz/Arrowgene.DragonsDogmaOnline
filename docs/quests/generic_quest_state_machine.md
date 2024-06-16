@@ -696,6 +696,17 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | st0418 | 1098  | Diamantes Sealed Door (ディアマンテス封印扉)
 | QstLayout | st0622 | 1030  | Spawn Klaus
 
+### The Golden Key (q00000023)
+| Type      | stage  | Value | Comment                                                    |
+|:---------:|:------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | st0201 | 1254  | Spawns Gerd, Heinz and Mayleaf
+| QstLayout | st0201 | 1255  | Spawns Heinz and Mayleaf
+| QstLayout | st0622 | 1031  | Spawns Klaus
+| QstLayout | st0418 | 901   | General Purpose Glitter (汎用キラキラポイント（調べる用）)
+| QstLayout | st0418 | 923   | Mergoda Door Middle (メルゴダ扉・中両扉)
+| QstLayout | st0418 | 1032  | Spawns Leo
+| QstLayout | st0418 | 1324  | Mergoda Door Middle, Transparent warp OM for moving around the floor (メルゴダ扉・中両扉, フロア移動用透明ワープＯＭ)
+
 #### World Manage Quest
 
 ##### q70000001
@@ -750,6 +761,10 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | WorldManageLayout | st0411  | 2458   | Quest Specified Message (ver1.2メルゴダ大扉用メッセージＯＭ) (クエスト指定メッセージOM)
 |
 | WorldManageLayout | st0203  | 1103   | ver1.2 3rd Arc OM General purpose Glitter (ver1.2第三アーク行OM) (汎用キラキラポイント（調べる用）)
+|
+| WorldManageLayout | st0418  | 1098   | ver1.2 Closed_Diamantes Door (ver1.2閉じ_ディアマンテス扉)
+| WorldManageLayout | st0418  | 1713   | ver1.2 Opening_Diamantes Door (ver1.2開き_ディアマンテス扉)
+| WorldManageLayout | st0418  | 2456   | ver1.2 Royal Palace and Residential Area Door Warp OM (ver1.2王宮と住居区の扉ワープOM, フロア移動用透明ワープＯＭ)
 
 ##### q70032001
 
