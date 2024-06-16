@@ -1176,7 +1176,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 // Add pawn's current job equipment to storage
                 int pawnSlotOffset = i * Equipment.TOTAL_EQUIP_SLOTS * 2;
 
-                List<Item?> pawnPerformanceEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Performance);
+                List<Item?> pawnPerformanceEquipItems = pawn.Equipment.GetEquipment(pawn.Job, EquipType.Performance);
                 for (int j = 0; j < pawnPerformanceEquipItems.Count; j++)
                 {
                     Item? item = pawnPerformanceEquipItems[j];
@@ -1188,7 +1188,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     }
                 }
 
-                List<Item?> pawnVisualEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Visual);
+                List<Item?> pawnVisualEquipItems = pawn.Equipment.GetEquipment(pawn.Job, EquipType.Visual);
                 for (int j = 0; j < pawnVisualEquipItems.Count; j++)
                 {
                     Item? item = pawnVisualEquipItems[j];
