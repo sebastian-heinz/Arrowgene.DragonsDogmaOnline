@@ -78,10 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Figure out why the bar always fills fully regardless of fed numbers? it wasn't doing this earlier on.
             // TODO: we need to track the EquipPoints in the DB, and anywhere we set it to 0 it should pull the correct points from the DB instead.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
-            // TODO: You require atleast 2 pieces of the same gear to complete the Enhance cycle properly, or you don't get the info box after completing and can't
-            // enhance it again because it doesn't update the recipe list properly, guess the client doesn't consider it done correctly.
-            // TODO: Figure out why the plus value doesn't perist on every enhance
-
+            // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next
 
             // Remove crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
@@ -131,7 +128,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk4 = false,    // makes the Dragonforce slot popup appear if set to true.
             };
             // TODO: Source these values accurately when we know what they are. ^
-            // TODO: one of these is probably PlusValue, we need to source the current plusvalue to retain it during upgrades.
 
             // Subtract less Gold if supportpawn is used.
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
@@ -170,9 +166,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 
-                 _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, UpgradedItem.UId, gearupgradeID, UpgradedItem, (EquipType)equiptype, (byte)equipslot);
-
-                //_equipManager.HandleChangeEquipList(Server, client, common, characterEquipList, ItemNoticeType.ChangeEquip, StorageEquipNBox, ;
+                _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, UpgradedItem.UId, gearupgradeID, UpgradedItem, (EquipType)equiptype, (byte)equipslot);
 
                 updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                     ItemList = new CDataItemList() {
@@ -192,10 +186,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ArmorCrestDataList = UpgradedItem.ArmorCrestDataList,
                         EquipElementParamList = UpgradedItem.EquipElementParamList
                     },
-                    UpdateItemNum = 0,
+                    UpdateItemNum = 1,
                 });    
 
-                // TODO: Figure out how to update the NTC without crashing the client.
+
+                // TODO: Figure out how to update the NTC without crashing the client, confirmed possible by this
+                // S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
+                // GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
+                // client.Send(lobbyPlayerContextNtc);
+                // only drawback is that this drops PlusValue and will probably drop a lot of data, like color/crests etc.
             }
             else
             {
@@ -207,8 +206,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
              };
             
-
-
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
                 Unk0 = charid,
@@ -233,7 +230,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
                 Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
                 IsGreatSuccess = dogreatsucess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
-                CurrentEquip = CurrentEquipInfo, // Dummy current equip data, need to get the real slot/type at somepoint.               
+                CurrentEquip = CurrentEquipInfo, // Client uses this to determine whats equipped to show the Arisen sign in the menu.              
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
                 Unk0 = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
                 Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
