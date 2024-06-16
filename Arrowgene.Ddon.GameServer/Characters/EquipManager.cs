@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 if(equipType == EquipType.Visual)
                 {
-                    storageSlot += Equipment.EQUIP_SLOT_NUMBER;
+                    storageSlot += Equipment.TOTAL_EQUIP_SLOTS;
                 }
 
                 uint characterId, pawnId;
@@ -99,7 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     characterId = pawn.CharacterId;
                     pawnId = pawn.PawnId; 
                     equipmentStorageType = StorageType.PawnEquipment;
-                    storageSlot = (ushort)(storageSlot + client.Character.Pawns.IndexOf(pawn)*Equipment.EQUIP_SLOT_NUMBER*2);
+                    storageSlot = (ushort)(storageSlot + client.Character.Pawns.IndexOf(pawn)*Equipment.TOTAL_EQUIP_SLOTS*2);
                 }
                 else
                 {

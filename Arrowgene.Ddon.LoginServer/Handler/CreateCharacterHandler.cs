@@ -1144,7 +1144,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             for (int i = 0; i < visualEquipItems.Count; i++)
             {
                 Item? item = visualEquipItems[i];
-                ushort slot = (ushort)(i+Equipment.EQUIP_SLOT_NUMBER+1);
+                ushort slot = (ushort)(i+Equipment.TOTAL_EQUIP_SLOTS+1);
                 character.Storage.setStorageItem(item, 1, StorageType.CharacterEquipment, slot);
             }
 
@@ -1174,7 +1174,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Database.InsertGainExtendParam(pawn.CommonId, new CDataOrbGainExtendParam());
             
                 // Add pawn's current job equipment to storage
-                int pawnSlotOffset = i * Equipment.EQUIP_SLOT_NUMBER * 2;
+                int pawnSlotOffset = i * Equipment.TOTAL_EQUIP_SLOTS * 2;
 
                 List<Item?> pawnPerformanceEquipItems = character.Equipment.GetEquipment(character.Job, EquipType.Performance);
                 for (int j = 0; j < pawnPerformanceEquipItems.Count; j++)
@@ -1192,7 +1192,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 for (int j = 0; j < pawnVisualEquipItems.Count; j++)
                 {
                     Item? item = pawnVisualEquipItems[j];
-                    ushort slot = (ushort)(pawnSlotOffset+j+Equipment.EQUIP_SLOT_NUMBER+1);
+                    ushort slot = (ushort)(pawnSlotOffset+j+Equipment.TOTAL_EQUIP_SLOTS+1);
                     character.Storage.setStorageItem(item, 1, StorageType.PawnEquipment, slot);
                     if(item != null)
                     {

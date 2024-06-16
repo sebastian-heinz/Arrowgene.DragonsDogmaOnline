@@ -8,8 +8,8 @@ namespace Arrowgene.Ddon.Shared.Model
     #nullable enable
     public class Equipment
     {
-        public static readonly byte EQUIP_SLOT_NUMBER = 15;
-        private static readonly byte JOB_ITEM_SLOT_NUMBER = 2; // TODO: Verify
+        public static readonly byte TOTAL_EQUIP_SLOTS = 15;
+        private static readonly byte TOTAL_JOB_ITEM_SLOT = 2; // TODO: Verify
 
         private readonly Dictionary<JobId, Dictionary<EquipType, List<Item?>>> equipment;
         private readonly Dictionary<JobId, List<Item?>> jobItems;
@@ -28,14 +28,14 @@ namespace Arrowgene.Ddon.Shared.Model
                 equipment[job] = new Dictionary<EquipType, List<Item?>>();
                 foreach (EquipType equipType in Enum.GetValues(typeof(EquipType)))
                 {
-                    equipment[job][equipType] = Enumerable.Repeat<Item?>(null, EQUIP_SLOT_NUMBER).ToList();
+                    equipment[job][equipType] = Enumerable.Repeat<Item?>(null, TOTAL_EQUIP_SLOTS).ToList();
                 }
             }
 
             jobItems = new Dictionary<JobId, List<Item?>>();
             foreach (JobId job in Enum.GetValues(typeof(JobId)))
             {
-                jobItems[job] = Enumerable.Repeat<Item?>(null, JOB_ITEM_SLOT_NUMBER).ToList();
+                jobItems[job] = Enumerable.Repeat<Item?>(null, TOTAL_JOB_ITEM_SLOT).ToList();
             }
         }
 
