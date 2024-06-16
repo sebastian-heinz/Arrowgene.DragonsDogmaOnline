@@ -619,6 +619,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             questBlock.QuestEvent.EventId = jblock.GetProperty("event_id").GetInt32();
 
+                            questBlock.QuestEvent.JumpType = QuestJumpType.After;
+                            if (jblock.TryGetProperty("jump_type", out JsonElement jJumpType))
+                            {
+                                if (!Enum.TryParse(jJumpType.GetString(), true, out QuestJumpType jumpType))
+                                {
+                                    Logger.Error($"Unable to parse the event jump type in block @ index {blockIndex - 1}.");
+                                    return false;
+                                }
+                                questBlock.QuestEvent.JumpType = jumpType;
+                            }
+
                             if (jblock.TryGetProperty("jump_stage_id", out JsonElement jStageJumpId))
                             {
                                 questBlock.QuestEvent.JumpStageId = ParseStageId(jStageJumpId);
@@ -908,7 +919,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                             checkCommands.Add(command);
                         }
-                        questBlock.CheckCommands.Add(checkCommands);
+
+                        if (checkCommands.Count > 0)
+                        {
+                            questBlock.CheckCommands.Add(checkCommands);
+                        }
                     }
                 }
                 else

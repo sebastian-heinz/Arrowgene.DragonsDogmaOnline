@@ -455,13 +455,33 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     }
                     break;
                 case QuestBlockType.PlayEvent:
-                    checkCommands[0].Add(QuestManager.CheckCommand.EventEnd(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.QuestEvent.EventId));
-                    resultCommands.Add(QuestManager.ResultCommand.EventExec(
-                        StageManager.ConvertIdToStageNo(questBlock.StageId),
-                        questBlock.QuestEvent.EventId,
-                        StageManager.ConvertIdToStageNo(questBlock.QuestEvent.JumpStageId),
-                        questBlock.QuestEvent.StartPosNo
-                    ));
+                    {
+                        checkCommands[0].Add(QuestManager.CheckCommand.EventEnd(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.QuestEvent.EventId));
+                        switch (questBlock.QuestEvent.JumpType)
+                        {
+                            case QuestJumpType.None:
+                            case QuestJumpType.After:
+                                resultCommands.Add(QuestManager.ResultCommand.EventExec(
+                                                        StageManager.ConvertIdToStageNo(questBlock.StageId),
+                                                        questBlock.QuestEvent.EventId,
+                                                        StageManager.ConvertIdToStageNo(questBlock.QuestEvent.JumpStageId),
+                                                        questBlock.QuestEvent.StartPosNo));
+                                break;
+                            case QuestJumpType.Before:
+                                resultCommands.Add(QuestManager.ResultCommand.ExeEventAfterStageJump(
+                                                        StageManager.ConvertIdToStageNo(questBlock.StageId),
+                                                        questBlock.QuestEvent.EventId,
+                                                        questBlock.QuestEvent.StartPosNo));
+                                break;
+                            case QuestJumpType.Continue:
+                                resultCommands.Add(QuestManager.ResultCommand.EventExecCont(
+                                                        StageManager.ConvertIdToStageNo(questBlock.StageId),
+                                                        questBlock.QuestEvent.EventId,
+                                                        StageManager.ConvertIdToStageNo(questBlock.QuestEvent.JumpStageId),
+                                                        questBlock.QuestEvent.StartPosNo));
+                                break;
+                        }
+                    }
                     break;
                 case QuestBlockType.Raw:
                     checkCommands.AddRange(questBlock.CheckCommands);

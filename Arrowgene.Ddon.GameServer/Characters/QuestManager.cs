@@ -2859,9 +2859,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param jumpStageNo
              * @param jumpStartPosNo
              */
-            public static CDataQuestCommand EventExecCont(StageNo stageNo, int eventNo, int jumpStageNo, int jumpStartPosNo)
+            public static CDataQuestCommand EventExecCont(StageNo stageNo, int eventNo, StageNo jumpStageNo, int jumpStartPosNo)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = jumpStageNo, Param04 = jumpStartPosNo };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = (int) jumpStageNo, Param04 = jumpStartPosNo };
             }
 
             /**
