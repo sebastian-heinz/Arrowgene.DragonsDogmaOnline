@@ -35,6 +35,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public bool ShowMarker { get; set; }
         public bool ResetGroup { get; set; }
         public bool BgmStop { get; set; }
+        public int EnemyHpPrecent {  get; set; }
         public List<uint> EnemyGroupIds { get; set; }
         public List<QuestItem> DeliveryRequests { get; set; }
         public List<QuestItem> HandPlayerItems {  get; set; }

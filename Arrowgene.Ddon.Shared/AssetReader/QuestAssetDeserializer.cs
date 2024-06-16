@@ -464,11 +464,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
                     case QuestBlockType.KillGroup:
                     case QuestBlockType.SpawnGroup:
+                    case QuestBlockType.WeakenGroup:
                         {
                             questBlock.ResetGroup = true;
                             if (jblock.TryGetProperty("reset_group", out JsonElement jResetGroup))
                             {
                                 questBlock.ResetGroup = jResetGroup.GetBoolean();
+                            }
+
+                            if (jblock.TryGetProperty("percent", out JsonElement jPercent))
+                            {
+                                questBlock.EnemyHpPrecent = jPercent.GetInt32();
                             }
 
                             foreach (var groupId in jblock.GetProperty("groups").EnumerateArray())

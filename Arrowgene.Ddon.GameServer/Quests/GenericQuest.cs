@@ -304,6 +304,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         }
                     }
                     break;
+                case QuestBlockType.WeakenGroup:
+                    {
+                        foreach (var groupId in questBlock.EnemyGroupIds)
+                        {
+                            var enemyGroup = quest.EnemyGroups[groupId];
+                            foreach (var enemy in enemyGroup.AsInstancedEnemies())
+                            {
+                                checkCommands.Add(QuestManager.CheckCommand.EmHpLess(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, enemy.Index, questBlock.EnemyHpPrecent));
+                            }
+                        }
+                    }
+                    break;
                 case QuestBlockType.CollectItem:
                     {
                         var questCommand = questBlock.ShowMarker ?
