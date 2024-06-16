@@ -102,6 +102,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // This list should contain the next ID you will go into, if you happen to have enough points to go into multiple we must include those too.
             // For now I just hardcode the next ID without accounting for the potential for being able to do it multiple times.
+            // TODO: I guess figure this out lol
             List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
             {
                 new CDataCommonU32(gearupgradeID)
@@ -140,7 +141,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             // TODO: Figure out how to stop the server thinking an item is equipped just because it has same UID as a non-equipped gear you're trying to upgrade.
-            // Checking if the Gear is equipped or not first.
+
             List<CDataItemUpdateResult> AddItemResult;
             List<CDataItemUpdateResult> RemoveItemResult;
 
@@ -188,8 +189,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     },
                     UpdateItemNum = 1,
                 });    
-
-
                 // TODO: Figure out how to update the NTC without crashing the client, confirmed possible by this
                 // S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
                 // GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
@@ -204,6 +203,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
                 AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1, currentPlusValue);
                 updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
+                //TODO: Adapt the Equipped code here, since that behaves in a more intended way.
              };
             
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
@@ -235,8 +235,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk0 = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
                 Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
             };
-            client.Send(res);
             client.Send(updateCharacterItemNtc);
+            client.Send(res);
         }
     }
 }
