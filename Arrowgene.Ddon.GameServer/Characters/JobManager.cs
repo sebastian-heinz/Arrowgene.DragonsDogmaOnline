@@ -41,8 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else if (common is Pawn)
             {
-                Pawn pawn = (Pawn)common;
-                pawnIdx = client.Character.Pawns.IndexOf(pawn);
+                pawnIdx = client.Character.Pawns.IndexOf((Pawn)common);
                 equipmentStorageType = StorageType.PawnEquipment;
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangePawnJob;
             }
@@ -181,14 +180,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             List<CDataItemUpdateResult> itemUpdateResultList = new List<CDataItemUpdateResult>();
-            List<Item?> oldPerformanceEquipment = common.Equipment.GetEquipment(oldJobId, EquipType.Performance);
-            List<Item?> performanceEquipment = common.Equipment.GetEquipment(newJobId, EquipType.Performance);
-            for (int i = 0; i < performanceEquipment.Count; i++)
+            List<Item?> oldEquipment = common.Equipment.GetEquipment(oldJobId, equipType);
+            List<Item?> equipment = common.Equipment.GetEquipment(newJobId, equipType);
+            for (int i = 0; i < equipment.Count; i++)
             {
                 ushort equipSlot = (ushort)(i+1);
                 ushort equipmentStorageSlot = (ushort)(equipSlot + equipmentStorageSlotOffset);
-                Item? oldEquippedItem = oldPerformanceEquipment[i];
-                Item? equippedItem = performanceEquipment[i];
+                Item? oldEquippedItem = oldEquipment[i];
+                Item? equippedItem = equipment[i];
                 if(oldEquippedItem != null && equippedItem == null)
                 {
                     // Unequip item from an empty slot
@@ -202,20 +201,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         // Handle the item not being in equipment storage
                         // This should probably return an error response instead? Logging and handling gracefully prevents messy situations, but may be undesirable
-                        Logger.Error($"Failed to unequip item {oldEquippedItem.UId} from {equipType} slot {equipSlot} of {oldJobId}. The item wasn't in the equipment storage");
+                        Logger.Error($"Failed to unequip item {oldEquippedItem.UId} from {equipType} slot {equipSlot} of {oldJobId}. The item wasn't in the {equipmentStorageType} slot {equipmentStorageSlot}");
                         common.Equipment.SetEquipItem(null, oldJobId, equipType, (byte) equipSlot);
                         _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, (byte) equipSlot);
                     }
                 }
                 else if (equippedItem != null && equippedItem.UId != oldEquippedItem?.UId)
                 {
-                    // Equip item to a slot, if it's not already equipped. Search item in multiple storages
+                    // Equip item to a slot, if said item is not already equipped. Search item in multiple storages
                     List<CDataItemUpdateResult>? moveResult = null;
                     foreach (StorageType searchStorageType in ItemManager.BothStorageTypes)
                     {
                         try
                         {
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, StorageType.ItemBagEquipment, equippedItem.UId, 1, equipmentStorageType, equipmentStorageSlot);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, searchStorageType, equippedItem.UId, 1, equipmentStorageType, equipmentStorageSlot);
                             itemUpdateResultList.AddRange(moveResult);
                             break;
                         }
