@@ -943,7 +943,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                         checkCommands.Add(command);
                     }
-                    questBlock.CheckCommands.Add(checkCommands);
+
+                    if (checkCommands.Count > 0)
+                    {
+                        questBlock.CheckCommands.Add(checkCommands);
+                    }
                 }
             }
 
