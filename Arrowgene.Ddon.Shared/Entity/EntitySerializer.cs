@@ -570,6 +570,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftStartEquipGradeUpRes.Serializer());
             Create(new S2CCraftStartQualityUpRes.Serializer());
             Create(new S2CCraftStartAttachElementRes.Serializer());
+            Create(new S2CCraft_30_21_16_NTC.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());
