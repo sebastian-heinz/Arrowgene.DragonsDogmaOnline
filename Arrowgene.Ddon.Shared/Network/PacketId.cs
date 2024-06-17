@@ -868,7 +868,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_INSTANCE_GET_OM_INSTANT_KEY_VALUE_ALL_RES = new PacketId(13, 22, 2, "S2C_INSTANCE_GET_OM_INSTANT_KEY_VALUE_ALL_RES", ServerType.Game, PacketSource.Server); // OMインスタンスエリア共有メモリ全取得に
         public static readonly PacketId C2S_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_REQ = new PacketId(13, 23, 1, "C2S_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_RES = new PacketId(13, 23, 2, "S2C_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_RES", ServerType.Game, PacketSource.Server); // OMインスタンスエリア共有メモリ交換に
-        public static readonly PacketId S2C_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_NTC = new PacketId(13, 23, 16, "S2C_INSTANCE_13_23_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_NTC = new PacketId(13, 23, 16, "S2C_INSTANCE_EXCHANGE_OM_INSTANT_KEY_VALUE_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_INSTANCE_SET_INSTANT_KEY_VALUE_UL_REQ = new PacketId(13, 24, 1, "C2S_INSTANCE_SET_INSTANT_KEY_VALUE_UL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_INSTANCE_SET_INSTANT_KEY_VALUE_UL_RES = new PacketId(13, 24, 2, "S2C_INSTANCE_SET_INSTANT_KEY_VALUE_UL_RES", ServerType.Game, PacketSource.Server); // インスタンスエリア共有メモリ保存(u32)に
         public static readonly PacketId C2S_INSTANCE_GET_INSTANT_KEY_VALUE_UL_REQ = new PacketId(13, 25, 1, "C2S_INSTANCE_GET_INSTANT_KEY_VALUE_UL_REQ", ServerType.Game, PacketSource.Client);

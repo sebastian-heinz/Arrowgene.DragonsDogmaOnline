@@ -36,17 +36,17 @@ namespace Arrowgene.Ddon.GameServer.Party
         public uint Step {  get; set; }
 
         public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
-        public Dictionary<StageId, List<InstancedEnemy>> QuestEnemies {  get; set; }
-        public Dictionary<StageId, bool> ResetEnemyGroup { get; set; }
+        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies {  get; set; }
+        public Dictionary<StageId, ushort> CurrentSubgroup { get; set; }
 
         public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
 
         public QuestState()
         {
             ProcessState = new Dictionary<ushort, QuestProcessState>();
-            QuestEnemies = new Dictionary<StageId, List<InstancedEnemy>>();
+            QuestEnemies = new Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
-            ResetEnemyGroup = new Dictionary<StageId, bool>();
+            CurrentSubgroup = new Dictionary<StageId, ushort>();
         }
 
         public uint UpdateDeliveryRequest(uint itemId, uint amount)
@@ -138,8 +138,13 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                     QuestLookupTable[location.StageId].Add(quest.QuestId);
 
-                    // Populate Instance Enemy Data
-                    ActiveQuests[quest.QuestId].QuestEnemies[location.StageId] = quest.GetEnemiesInStageGroup(location.StageId, location.SubGroupId);
+                    // Populate data structures for Instance Enemy Data
+                    if (!ActiveQuests[quest.QuestId].QuestEnemies.ContainsKey(location.StageId))
+                    {
+                        ActiveQuests[quest.QuestId].QuestEnemies[location.StageId] = new Dictionary<uint, List<InstancedEnemy>>();
+                    }
+
+                    ActiveQuests[quest.QuestId].QuestEnemies[location.StageId][location.SubGroupId] = new List<InstancedEnemy>();
                 }
 
                 foreach (var request in quest.DeliveryItems)
@@ -149,24 +154,54 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 // Initialize Process State Table
                 UpdateProcessState(quest.QuestId, quest.ToCDataQuestList(step).QuestProcessStateList);
+
+                // Initialize enemy data are the current point
+                quest.PopulateStartingEnemyData(this);
+            }
+        }
+
+        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId, uint subGroupId)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[quest.QuestId];
+                if (!questState.QuestEnemies.ContainsKey(stageId))
+                {
+                    return false;
+                }
+
+                return questState.QuestEnemies[stageId].ContainsKey(subGroupId);
+            }
+        }
+
+        public void SetInstanceEnemies(Quest quest, StageId stageId, ushort subGroupId, List<InstancedEnemy> enemies)
+        {
+            lock (ActiveQuests)
+            {
+                ActiveQuests[quest.QuestId].QuestEnemies[stageId][subGroupId] = enemies;
+            }
+        }
+
+        public List<InstancedEnemy> GetInstancedEnemies(Quest quest, StageId stageId, ushort subGroupId)
+        {
+            lock (ActiveQuests)
+            {
+                return ActiveQuests[quest.QuestId].QuestEnemies[stageId][subGroupId];
             }
         }
 
         public List<InstancedEnemy> GetInstancedEnemies(QuestId questId, StageId stageId, ushort subGroupId)
         {
-            lock (ActiveQuests)
-            {
-                var questState = ActiveQuests[questId];
-                return questState.QuestEnemies[stageId];
-            }
+            var quest = QuestManager.GetQuest(questId);
+            return GetInstancedEnemies(quest, stageId, subGroupId);
         }
 
-        public InstancedEnemy GetInstancedEnemy(QuestId questId, StageId stageId, ushort subGroupId, uint index)
+        public InstancedEnemy GetInstancedEnemy(Quest quest, StageId stageId, ushort subGroupId, uint index)
         {
             lock (ActiveQuests)
             {
-                var questState = ActiveQuests[questId];
-                foreach (var enemy in questState.QuestEnemies[stageId])
+                var questState = ActiveQuests[quest.QuestId];
+                foreach (var enemy in questState.QuestEnemies[stageId][subGroupId])
                 {
                     if (enemy.Index == index)
                     {
@@ -178,14 +213,31 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public bool ShouldResetInstanceEnemyGroup(QuestId questId, StageId stageId)
+        public InstancedEnemy GetInstancedEnemy(QuestId questId, StageId stageId, ushort subGroupId, uint index)
+        {
+            var quest = QuestManager.GetQuest(questId);
+            return GetInstancedEnemy(quest, stageId, subGroupId, index);
+        }
+
+        public void SetInstanceSubgroupId(Quest quest, StageId stageId, ushort subgroupId)
         {
             lock (ActiveQuests)
             {
-                var questState = ActiveQuests[questId];
-                bool ShouldReset = !questState.ResetEnemyGroup.ContainsKey(stageId);
-                questState.ResetEnemyGroup[stageId] = false;
-                return ShouldReset;
+                var questState = ActiveQuests[quest.QuestId];
+                questState.CurrentSubgroup[stageId] = subgroupId;
+            }
+        }
+
+        public ushort GetInstanceSubgroupId(Quest quest, StageId stageId)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[quest.QuestId];
+                if (!questState.CurrentSubgroup.ContainsKey(stageId))
+                {
+                    return 0;
+                }
+                return questState.CurrentSubgroup[stageId];
             }
         }
 

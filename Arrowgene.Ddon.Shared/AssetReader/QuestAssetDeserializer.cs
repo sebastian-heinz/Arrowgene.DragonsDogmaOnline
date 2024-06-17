@@ -12,6 +12,7 @@ using YamlDotNet.Core.Tokens;
 using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
+using System.Text.Json.Nodes;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -352,9 +353,9 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 }
 
                 questBlock.SubGroupId = 0;
-                if (jblock.TryGetProperty("subgroup_no", out JsonElement jSubGroupNo))
+                if (jblock.TryGetProperty("subgroup_id", out JsonElement jSubGroupId))
                 {
-                    questBlock.SubGroupId = jSubGroupNo.GetUInt16();
+                    questBlock.SubGroupId = jSubGroupId.GetUInt16();
                 }
 
                 if (jblock.TryGetProperty("hand_items", out JsonElement jHandItems))
@@ -362,6 +363,18 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     foreach (var item in jHandItems.EnumerateArray())
                     {
                         questBlock.HandPlayerItems.Add(new QuestItem()
+                        {
+                            ItemId = item.GetProperty("id").GetUInt32(),
+                            Amount = item.GetProperty("amount").GetUInt32()
+                        });
+                    }
+                }
+
+                if (jblock.TryGetProperty("consume_items", out JsonElement jConsumeItems))
+                {
+                    foreach (var item in jConsumeItems.EnumerateArray())
+                    {
+                        questBlock.ConsumePlayerItems.Add(new QuestItem()
                         {
                             ItemId = item.GetProperty("id").GetUInt32(),
                             Amount = item.GetProperty("amount").GetUInt32()
@@ -387,6 +400,21 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             return false;
                         }
                         questBlock.QuestFlags.Add(questFlag);
+                    }
+                }
+
+                if (jblock.TryGetProperty("checkpoint_flags", out JsonElement jCheckpointFlags))
+                {
+                    // {"type": "MyQst", "operation": "Set", "value": 4}
+                    foreach (var jFlag in jCheckpointFlags.EnumerateArray())
+                    {
+                        var questFlag = ParseQuestFlag(jFlag);
+                        if (questFlag == null)
+                        {
+                            Logger.Error($"Unable to parse the checkpoint quest flags @ index {blockIndex - 1}.");
+                            return false;
+                        }
+                        questBlock.CheckpointQuestFlags.Add(questFlag);
                     }
                 }
 
@@ -435,11 +463,19 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     case QuestBlockType.DiscoverEnemy:
                     case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
                     case QuestBlockType.KillGroup:
+                    case QuestBlockType.SpawnGroup:
+                    case QuestBlockType.WeakenGroup:
+                    case QuestBlockType.DestroyGroup:
                         {
                             questBlock.ResetGroup = true;
                             if (jblock.TryGetProperty("reset_group", out JsonElement jResetGroup))
                             {
                                 questBlock.ResetGroup = jResetGroup.GetBoolean();
+                            }
+
+                            if (jblock.TryGetProperty("percent", out JsonElement jPercent))
+                            {
+                                questBlock.EnemyHpPrecent = jPercent.GetInt32();
                             }
 
                             foreach (var groupId in jblock.GetProperty("groups").EnumerateArray())
@@ -590,6 +626,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             questBlock.QuestEvent.EventId = jblock.GetProperty("event_id").GetInt32();
 
+                            questBlock.QuestEvent.JumpType = QuestJumpType.After;
+                            if (jblock.TryGetProperty("jump_type", out JsonElement jJumpType))
+                            {
+                                if (!Enum.TryParse(jJumpType.GetString(), true, out QuestJumpType jumpType))
+                                {
+                                    Logger.Error($"Unable to parse the event jump type in block @ index {blockIndex - 1}.");
+                                    return false;
+                                }
+                                questBlock.QuestEvent.JumpType = jumpType;
+                            }
+
                             if (jblock.TryGetProperty("jump_stage_id", out JsonElement jStageJumpId))
                             {
                                 questBlock.QuestEvent.JumpStageId = ParseStageId(jStageJumpId);
@@ -602,11 +649,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case QuestBlockType.Raw:
-                        if (!ParseRawBlock(jblock, questBlock))
-                        {
-                            Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex - 1}.");
-                            return false;
-                        }
                         break;
                     case QuestBlockType.DummyBlock:
                         /* Filler block which might do some meta things like announce or set/check flags */
@@ -614,6 +656,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     default:
                         Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex - 1}.");
                         return false;
+                }
+
+                if (!ParseRawBlock(jblock, questBlock))
+                {
+                    Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex - 1}.");
+                    return false;
                 }
 
                 questProcess.Blocks.Add(questBlock);
@@ -705,7 +753,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             uint groupId = 0;
             foreach (var jGroup in jGroups.EnumerateArray())
             {
-                QuestEnemyGroup enemyGroup = new QuestEnemyGroup() { GroupId = groupId };
+                QuestEnemyGroup enemyGroup = new QuestEnemyGroup();
 
                 if (!jGroup.TryGetProperty("stage_id", out JsonElement jStageId))
                 {
@@ -714,6 +762,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 }
 
                 enemyGroup.StageId = ParseStageId(jStageId);
+
+                enemyGroup.SubGroupId = 0;
+                if (jGroup.TryGetProperty("subgroup_id", out JsonElement jSubGroupId))
+                {
+                    enemyGroup.SubGroupId = jSubGroupId.GetUInt32();
+                }
 
                 if (jGroup.TryGetProperty("starting_index", out JsonElement jStartingIndex))
                 {
@@ -851,36 +905,85 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private bool ParseRawBlock(JsonElement jBlock, QuestBlock questBlock)
         {
-            foreach (var jCheckCommand in jBlock.GetProperty("check_commands").EnumerateArray())
+            if (jBlock.TryGetProperty("check_commands", out JsonElement jCheckCommands))
             {
-                CDataQuestCommand command = new CDataQuestCommand();
-
-                if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
+                var jCheckCommandList = jCheckCommands.EnumerateArray().ToList();
+                if (jCheckCommandList.Count > 0)
                 {
-                    return false;
+                    if (jCheckCommands[0].ValueKind == JsonValueKind.Array)
+                    {
+                        // New way which supports OR conditions
+                        foreach (var jCheckGroup in jCheckCommandList)
+                        {
+                            List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
+                            foreach (var jCheckCommand in jCheckGroup.EnumerateArray())
+                            {
+                                CDataQuestCommand command = new CDataQuestCommand();
+                                if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
+                                {
+                                    return false;
+                                }
+
+                                command.Command = (ushort)type;
+                                ParseCommandParams(jCheckCommand, command);
+
+                                checkCommands.Add(command);
+                            }
+
+                            if (checkCommands.Count > 0)
+                            {
+                                questBlock.CheckCommands.Add(checkCommands);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Legacy Way
+                        List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
+                        foreach (var jCheckCommand in jCheckCommandList)
+                        {
+                            CDataQuestCommand command = new CDataQuestCommand();
+                            if (!Enum.TryParse(jCheckCommand.GetProperty("type").GetString(), true, out QuestCommandCheckType type))
+                            {
+                                return false;
+                            }
+
+                            command.Command = (ushort)type;
+                            ParseCommandParams(jCheckCommand, command);
+
+                            checkCommands.Add(command);
+                        }
+
+                        if (checkCommands.Count > 0)
+                        {
+                            questBlock.CheckCommands.Add(checkCommands);
+                        }
+                    }
                 }
-
-                command.Command = (ushort)type;
-                ParseCommandParams(jCheckCommand, command);
-
-                questBlock.CheckCommands.Add(command);
             }
 
-            foreach (var jResultCommand in jBlock.GetProperty("result_commands").EnumerateArray())
+            if (jBlock.TryGetProperty("result_commands", out JsonElement jResultCommands))
             {
-                CDataQuestCommand command = new CDataQuestCommand();
-
-                if (!Enum.TryParse(jResultCommand.GetProperty("type").GetString(), true, out QuestResultCommand type))
+                foreach (var jResultCommand in jResultCommands.EnumerateArray())
                 {
-                    return false;
+                    CDataQuestCommand command = new CDataQuestCommand();
+                    if (!Enum.TryParse(jResultCommand.GetProperty("type").GetString(), true, out QuestResultCommand type))
+                    {
+                        return false;
+                    }
+
+                    command.Command = (ushort)type;
+                    ParseCommandParams(jResultCommand, command);
+
+                    questBlock.ResultCommands.Add(command);
                 }
-
-                command.Command = (ushort)type;
-                ParseCommandParams(jResultCommand, command);
-
-                questBlock.ResultCommands.Add(command);
             }
 
+            return true;
+        }
+
+        private bool ParseAltConditions(JsonElement jAltConditions, QuestBlock questBlock)
+        {
             return true;
         }
 

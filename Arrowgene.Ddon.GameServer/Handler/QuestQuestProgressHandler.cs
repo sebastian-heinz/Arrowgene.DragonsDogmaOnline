@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var processState = partyQuestState.GetProcessState(questId, processNo);
                 
                 var quest = QuestManager.GetQuest(questId);
-                res.QuestProcessState = quest.StateMachineExecute(client, processState, out questProgressState);
+                res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, out questProgressState);
 
                 partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
 

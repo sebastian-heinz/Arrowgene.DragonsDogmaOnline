@@ -661,7 +661,8 @@ JobLevelLess(int checkType, int level, int param03 = 0, int param04 = 0);
 
 ```
 /**
- * @brief
+ * @brief Checks for flags set by the NPC FSM. These flags would be the "FlagNo" values
+ * under the "MainQstFlagOn" container name inside the npc fsm JSON files.
  * @param flagNo
  */
 MyQstFlagOnFromFsm(int flagNo, int param02 = 0, int param03 = 0, int param04 = 0);
@@ -1254,7 +1255,7 @@ StageNoWithoutMarker(StageNo stageNo, int param02 = 0, int param03 = 0, int para
 ### TalkQuestNpcUnitMarker
 ```
 /**
- * @brief
+ * @brief Used when a NPC walks between multiple points. The marker will continue to float over the NPCs head.
  * @param stageNo
  * @param groupNo
  * @param setNo

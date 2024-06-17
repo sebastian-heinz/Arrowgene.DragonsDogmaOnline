@@ -620,6 +620,104 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | 916   | st0402 (group1) | Gardnok Fort large door (ガルドノック砦大型ドア) (boss room lock)
 | QstLayout | 1014  | st0402          | Spawns Arisen Corps Regimental Soldier, Stark, Talcott and Leo
 
+#### A Brief Respite (q00000028)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1016  | st0200          | Spawns Mysial
+| MyQst     | 170   |                 | NPC FSM: Mysial starts walking to Mel
+| MainQst   | 171   |                 | NPC FSM: Set when Mysial is done talking to Mel
+| MyQst     | 172   |                 | NPC FSM: Mysial starts walking to watch the sunset
+| MainQst   | 173   |                 | NPC FSM: Set when Mysial reaches the destination to watch sunset
+| MyQst     | 174   |                 | NPC FSM: Walk into Tavern
+| MainQst   | 175   |                 | NPC FSM: Set when Mysial reaches stairs in tavern
+| MyQst     | 176   |                 | NPC FSM: Mysial starts walking down the stairs into the tavern
+| MainQst   | 586   |                 | NPC FSM: Mysial reaches pier?
+
+#### The Ark, Once More (q00000018)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1242  | st0201          | Spawns Heinz in the audience chamber
+| QstLayout | 917   | st0571          | Force player to Dungeon Exit (肉塊的に対応した封鎖扉)
+| QstLayout | 924   | st0571          | Adult Atari OM 40m (大人アタリＯＭ 40m)
+| QstLayout | 1015  | st0571          | Spawns Joseph inside the Ark
+
+#### Thinking of A Friend (q00000019)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1243  | st0201          | Spawns Gerd
+| QstLayout | 274   | st0100          | Quest specified message OM (クエスト指定メッセージOM)
+| QstLayout | 971   | st0100          | Field closure (landslide) (フィールド封鎖（崖崩れ)
+| QstLayout | 1017  | st0100          | Spawns Iris
+
+#### The Beast's Final Moments (q00000029)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1246  | st0201          | Spawns Gerd
+| QstLayout | 1247  | st0201          | Spawns Gerd, Heniz and Mayleaf
+| QstLayout | 922   | st0571          | Boss Door (肉塊的に対応した封鎖扉)
+| QstLayout | 1021  | st0571          | Spawns Leo
+| MyQst     | 790   |                 | Starts Leos NPC FSM
+
+### The future entrusted to us (q00000020)
+| Type      | Value | id/grp          | Comment                                                    |
+|:---------:|:-----:|:---------------:|:-----------------------------------------------------------|
+| QstLayout | 1248  | st0201          | Spawns Gerd
+| QstLayout | 1249  | st0201          | Spawns Gerd, Heinz
+| QstLayout | 904   | st0411          | Alchemy Research Building -- General Purpose Glitter (錬金研究棟のカギ) -- (汎用キラキラポイント (調べる用))
+| QstLayout | 905   | st0411          | Special Research Zone Key -- General Purpose Glitter (特別研究区のカギ) -- (汎用キラキラポイント (調べる用))
+| QstLayout | 906   | st0411          | Military Instructor's Room Key -- General Purpose Glitter (軍事指導官部屋のカギ) -- (汎用キラキラポイント (調べる用))
+| QstLayout | 1022  | st0411          | Spawns Leo
+| QstLayout | 1023  | st0411          | Spawns Leo
+| QstLayout | 1024  | st0411          | Spawns Iris
+| MyQst     | 116   | st0411          | Starts Leo follow FSM for the stage
+| MyQst     | 120   | st0411          | Starts Leos combat FSM for boss battle
+
+### The Quandary of Soldiers (q00000021)
+| Type      | stage  | Value | Comment                                                    |
+|:---------:|:------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | st0201 | 1025  | Spawns Heinz
+| QstLayout | st0201 | 1252  | Spawns Mayleaf
+| QstLayout | st0203 | 277   | Transparent Warp and Glitter (フロア移動用透明ワープＯＭ) (汎用キラキラポイント（調べる用）)
+| QstLayout | st0572 | 919   | Blocks boss room exits? (メルゴダ汎用スライトドア) (肉塊的に対応した封鎖扉) (メルゴダ汎用スライトドア)
+| QstLayout | st0572 | 1026  | Spawns Karno, White Knights and Gerd
+| QstLayout | st0572 | 1027  | Spawns Heinz
+| QstLayout | st0572 | 1312  | bow? (船頭)
+
+### The Dwellers of the Golden Land (q00000022)
+| Type      | stage  | Value | Comment                                                    |
+|:---------:|:------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | st0201 | 1028  | Spawn Heinz, Gerd and Vanessa.
+| QstLayout | st0201 | 1253  | Spawn Mayleaf and Vanessa.
+| QstLayout | st0410 | 920   | Slide Door (Melgoda General-purpose Slight Door) (スライドドア) (メルゴダ汎用スライトドア)
+| QstLayout | st0410 | 1029  | Spawn Klaus
+| QstLayout | st0410 | 2464  | Spawn blockaide and FLoating Stone (封鎖岩とアタリ) (大人アタリＯＭ 40m) (メルゴダ浮遊石(中))
+| QstLayout | st0411 | 1102  | Spawn Klaus
+| QstLayout | st0411 | 1307  | Blockaide and exit? (大人アタリＯＭ 60m)
+| QstLayout | st0418 | 1098  | Diamantes Sealed Door (ディアマンテス封印扉)
+| QstLayout | st0622 | 1030  | Spawn Klaus
+
+### The Golden Key (q00000023)
+| Type      | stage  | Value | Comment                                                    |
+|:---------:|:------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | st0201 | 1254  | Spawns Gerd, Heinz and Mayleaf
+| QstLayout | st0201 | 1255  | Spawns Heinz and Mayleaf
+| QstLayout | st0622 | 1031  | Spawns Klaus
+| QstLayout | st0418 | 901   | General Purpose Glitter (汎用キラキラポイント（調べる用）)
+| QstLayout | st0418 | 923   | Mergoda Door Middle (メルゴダ扉・中両扉)
+| QstLayout | st0418 | 1032  | Spawns Leo
+| QstLayout | st0418 | 1324  | Mergoda Door Middle, Transparent warp OM for moving around the floor (メルゴダ扉・中両扉, フロア移動用透明ワープＯＭ)
+
+### The Golden Key (q00000024)
+| Type      | stage  | Value | Comment                                                    |
+|:---------:|:------:|:-----:|:-----------------------------------------------------------|
+| QstLayout | st0201 | 1033  | Spawns Heinz, Gerd, Vanessa and Mayleaf
+| QstLayout | st0418 | 921   | Blocks something? (大人アタリＯＭ 40m, メルゴダ浮遊石(中), )
+| QstLayout | st0418 | 1034  | Spawns Klaus
+| QstLayout | st0418 | 1035  | Spawns Leo
+| QstLayout | st0418 | 1099  | Diametes Sealed Door (ディアマンテス封印扉)
+| QstLayout | st0418 | 1101  | Spawns Klaus
+| MyQst     |        | 137   | Start Leo battl FSM
+
 #### World Manage Quest
 
 ##### q70000001
@@ -627,6 +725,10 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | Type              | StageNo | Value  | Comment
 |:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
 | WorldManageLayout | st0100  | 977    | Spawns Gerd and the White Knights outside 
+| WorldManageLayout | st0100  | 1263   | The 2nd Ark (random) (st0574)
+| WorldManageLayout | st0100  | 2201   | The 1st Ark (random) (st0573)
+| WorldManageLayout | st0100  | 2204   | The 2nd Ark (quest) (st0571)
+| WorldManageLayout | st0100  | 2204   | The 1st Ark (quest) (st0576)
 |
 | WorldManageLayout | st0201  | 1218   | Spawns Leo in the audience chamber
 | WorldManageLayout | st0201  | 1219   | Spawns Iris in the audience chamber
@@ -641,6 +743,7 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | WorldManageLayout | st0408  | 1671   | Closed Lever Door (Stone Door, middle)
 | WorldManageLayout | st0408  | 1672   | Open Lever Door  (Stone Door, middle)
 
+
 ##### q70002001
 | Type              | StageNo | Value  | Comment
 |:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
@@ -652,6 +755,27 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | WorldManageLayout | st0403  | 1113   | Large Door Closed in Erte Deenan
 | WorldManageLayout | st0403  | 1114   | Large Door Open in Erte Deenan
 
+##### q70003001
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st0411  | 1106   | Front Door Lever (floor mounted) (ver1.2_正面扉用_レバー) (床置きレバー（遺跡用)
+| WorldManageLayout | st0411  | 1104   | Front Large Door Closed (ver1.2閉じ_正面扉) (メルゴダ扉・大)
+| WorldManageLayout | st0411  | 1105   | Front Large Door Open (ver1.2開き_正面扉) (メルゴダ扉・大)
+| WorldManageLayout | st0411  | 1119   | Closed Alchemy Research Building Door (ver1.2閉じ_錬金研究棟扉) (メルゴダ扉・中片扉)
+| WorldManageLayout | st0411  | 1120   | Open Alchemy Research Building Door (ver1.2開き_錬金研究棟扉) (メルゴダ扉・中片扉)
+| WorldManageLayout | st0411  | 1121   | Closed Military Instructors Door (small door) (ver1.2閉じ_軍事指導官扉) (メルゴダ扉・小片扉)
+| WorldManageLayout | st0411  | 1122   | Open Military Instructors Door (ver1.2開き_軍事指導官扉) (メルゴダ扉・小片扉)
+| WorldManageLayout | st0411  | 1123   | Closed Special Research Door (ver1.2閉じ_特別研究区扉) (メルゴダ扉・小片扉)
+| WorldManageLayout | st0411  | 1124   | Open Special Research Door (ver1.2開き_特別研究区扉) (メルゴダ扉・小片扉)
+| WorldManageLayout | st0411  | 1202   | Mergoda Warp OFF? (Quest Specified Message) (ver1.2OFF_メルゴダワープ系) (クエスト指定メッセージOM)
+| WorldManageLayout | st0411  | 1203   | Mergoda TO ON?  Lost City Dungeon (ver1.2ON_メルゴダ行き) (レーゼ行きワープ(亡都ダンジョン))
+| WorldManageLayout | st0411  | 2458   | Quest Specified Message (ver1.2メルゴダ大扉用メッセージＯＭ) (クエスト指定メッセージOM)
+|
+| WorldManageLayout | st0203  | 1103   | ver1.2 3rd Arc OM General purpose Glitter (ver1.2第三アーク行OM) (汎用キラキラポイント（調べる用）)
+|
+| WorldManageLayout | st0418  | 1098   | ver1.2 Closed_Diamantes Door (ver1.2閉じ_ディアマンテス扉)
+| WorldManageLayout | st0418  | 1713   | ver1.2 Opening_Diamantes Door (ver1.2開き_ディアマンテス扉)
+| WorldManageLayout | st0418  | 2456   | ver1.2 Royal Palace and Residential Area Door Warp OM (ver1.2王宮と住居区の扉ワープOM, フロア移動用透明ワープＯＭ)
 
 ##### q70032001
 
@@ -662,4 +786,5 @@ See the [quest command reference document](quest_command_reference.md) for more 
 ### Events
 
 - [Lestania (stage0100)](events/st0100.md)
+- [White Dragon Temple (stage0200)](events/st0200.md)
 - [The Audience Chamber (stage0201)](events/st0201.md)

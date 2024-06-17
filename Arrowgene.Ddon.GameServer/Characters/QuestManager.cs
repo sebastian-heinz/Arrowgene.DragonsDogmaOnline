@@ -174,6 +174,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return result;
             }
 
+            public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AddCheckCommands(List<List<CDataQuestCommand>> commands)
+            {
+                List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> result = new List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand>();
+                foreach (List<CDataQuestCommand> commandList in commands)
+                {
+                    var checkCommands = new CDataQuestProcessState.MtTypedArrayCDataQuestCommand();
+                    checkCommands.ResultCommandList = commandList;
+                    result.Add(checkCommands);
+                }
+                return result;
+            }
+
             public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AppendCheckCommand(List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> obj, CDataQuestCommand command)
             {
                 obj[0].ResultCommandList.Add(command);
@@ -2847,9 +2859,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param jumpStageNo
              * @param jumpStartPosNo
              */
-            public static CDataQuestCommand EventExecCont(StageNo stageNo, int eventNo, int jumpStageNo, int jumpStartPosNo)
+            public static CDataQuestCommand EventExecCont(StageNo stageNo, int eventNo, StageNo jumpStageNo, int jumpStartPosNo)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = jumpStageNo, Param04 = jumpStartPosNo };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = (int) jumpStageNo, Param04 = jumpStartPosNo };
             }
 
             /**
