@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "The Great Alchemist",
     "quest_id": 24,
-    "next_quest": 0,
+    "next_quest": 30,
     "base_level": 55,
     "minimum_item_rank": 0,
     "discoverable": true,

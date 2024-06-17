@@ -73,8 +73,8 @@ There exists an implementation of the following main story quests.
 | [The Quandary of Soldiers](http://ddon.wikidot.com/mq:thequandaryofsoldiers) | Quest works but dungeon monster placement is severly lacking. Can't find some nodes in ddon-tools for some of the meat monsters.
 | [The Dwellers of the Golden Land](http://ddon.wikidot.com/mq:thedwellersofthegoldenland) | Not sure if all area locks are in place.
 | [The Golden Key](http://ddon.wikidot.com/mq:thegoldenkey) | Works mostly well. Door in boss room can be opened twice during the fight, but stays locked.
-| [The Great Alchemist](http://ddon.wikidot.com/mq:thegreatalchemist) | Not implemented
-| [Be Forevermore, White Dragon](http://ddon.wikidot.com/mq:beforevermorewhitedragon) | Not implemented
+| [The Great Alchemist](http://ddon.wikidot.com/mq:thegreatalchemist) | Some quirks with the lighting. Also, having hard time to get proper spawn point for second boss.
+| [Be Forevermore, White Dragon](http://ddon.wikidot.com/mq:beforevermorewhitedragon) | Some weird flashing with the dragon. Seems cutscene uses it's own model instead of the one from the world manage quest.
 
 ### Season 3.3
 
