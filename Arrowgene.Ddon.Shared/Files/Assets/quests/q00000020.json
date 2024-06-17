@@ -226,9 +226,6 @@
                 {
                     "type": "OmInteractEvent",
                     "checkpoint": true,
-                    "checkpoint_flags": [
-                        {"type": "MyQst", "action": "Clear", "value": 3, "comment": "Signal to subprocess glitter was found"}
-                    ],
                     "announce_type": "Update",
                     "comment": "Open side door",
                     "hand_items": [
@@ -240,7 +237,7 @@
                     ],
                     "quest_type": "WorldManageQuest",
                     "quest_id": 70003001,
-                    "interact_type": "Release",
+                    "interact_type": "UsedKey",
                     "stage_id": {
                         "id": 77,
                         "group_id": 5,
@@ -402,30 +399,7 @@
             ]
         },
         {
-            "comment": "Process 3 (Marks Small Door second time)",
-            "blocks": [
-                {
-                    "type": "MyQstFlags",
-                    "comment": "Wait for player to find glitter",
-                    "check_flags": [4]
-                },
-                {
-                    "type": "Raw",
-                    "flags": [],
-                    "check_commands": [
-                        [
-                            {"type": "IsOpenDoorOmQuestSet", "Param1": 411, "Param2": 5, "Param3": 2, "Param4": 70003001}
-                        ],
-                        [
-                            {"type": "MyQstFlagOn", "Param1": 5}
-                        ]
-                    ],
-                    "result_commands": []
-                }
-            ]
-        },
-        {
-            "comment": "Process 4 (Marks Lever)",
+            "comment": "Process 3 (Marks Lever)",
             "blocks": [
                 {
                     "type": "MyQstFlags",

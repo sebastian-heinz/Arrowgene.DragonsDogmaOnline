@@ -402,6 +402,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                     case OmInteractType.TouchActNpc:
                                         questCommand = QuestManager.CheckCommand.TouchActQuestNpc(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, (int)questBlock.OmInteractEvent.QuestId);
                                         break;
+                                    case OmInteractType.UsedKey:
+                                        questCommand = QuestManager.CheckCommand.HasUsedKey(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, (int)questBlock.OmInteractEvent.QuestId);
+                                        break;
                                     default:
                                         /* TODO: throw exception */
                                         break;

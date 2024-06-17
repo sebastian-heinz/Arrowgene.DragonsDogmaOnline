@@ -231,6 +231,9 @@
                 {
                     "type": "KillGroup",
                     "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 138, "comment": "Starts Leo FSM for phase 2"}
+                    ],
                     "groups": [1]
                 },
                 {
