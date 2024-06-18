@@ -774,6 +774,18 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     enemyGroup.StartingIndex = jStartingIndex.GetUInt32();
                 }
 
+                enemyGroup.PlacementType = QuestEnemyPlacementType.Automatic;
+                if (jGroup.TryGetProperty("placement_type", out JsonElement jPlacementType))
+                {
+                    if (!Enum.TryParse(jPlacementType.GetString(), true, out QuestEnemyPlacementType placementType))
+                    {
+                        Logger.Error($"Invalid Quest Enemy Placement Type");
+                        return false;
+                    }
+
+                    enemyGroup.PlacementType = placementType;
+                }
+
                 foreach (var enemy in jGroup.GetProperty("enemies").EnumerateArray())
                 {
                     bool isBoss = false;
@@ -782,7 +794,18 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         isBoss = jIsBoss.GetBoolean();
                     }
 
-                    var questEnemy = new Enemy()
+                    byte index = 0;
+                    if (enemyGroup.PlacementType == QuestEnemyPlacementType.Manual)
+                    {
+                        if (!enemy.TryGetProperty("index", out JsonElement jEnemyIndex))
+                        {
+                            Logger.Error($"Manual placed enemy group requires an index value. Unable to parse.");
+                            return false;
+                        }
+                        index = jEnemyIndex.GetByte();
+                    }
+
+                    var questEnemy = new InstancedEnemy()
                     {
                         EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
                         Lv = enemy.GetProperty("level").GetUInt16(),
@@ -790,7 +813,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         IsBossBGM = isBoss,
                         IsBossGauge = isBoss,
                         Scale = 100,
-                        EnemyTargetTypesId = 4
+                        EnemyTargetTypesId = 4,
+                        Index = index,
                     };
 
                     ApplyOptionalEnemyKeys(enemy, questEnemy);
