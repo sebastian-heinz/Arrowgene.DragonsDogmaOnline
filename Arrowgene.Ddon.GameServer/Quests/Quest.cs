@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -105,7 +106,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             for (; i < Processes[0].Blocks.Count && stepsFound < step; i++)
             {
                 var block = Processes[0].Blocks[i];
-                if (block.IsCheckpoint)
+                if (block.IsCheckpoint || block.AnnounceType == QuestAnnounceType.Accept)
                 {
                     stepsFound += 1;
                 }
@@ -147,23 +148,22 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
-            result.Add(Processes[0].Blocks[i].QuestProcessState);
+            result.Add(new CDataQuestProcessState(Processes[0].Blocks[i].QuestProcessState));
 
             for (int j = 1; j < Processes.Count; j++)
             {
                 var process = Processes[j];
                 if (process.Blocks.Count > 0)
                 {
-                    result.Add(process.Blocks[0].QuestProcessState);
+                    result.Add(new CDataQuestProcessState(process.Blocks[0].QuestProcessState));
                 }
             }
 
             // Eliminate any announce or free item steps when resuming a quest.
             foreach (var processState in result)
             {
-                // Make a shallow copy of the result commands without announce and update
+                // Make copy of the result commands
                 processState.ResultCommandList = processState.ResultCommandList
-                    .Select(x => x)
                     .Where(x => x.Command != (ushort)QuestResultCommand.UpdateAnnounce &&
                                 x.Command != (ushort)QuestResultCommand.SetAnnounce &&
                                 x.Command != (ushort)QuestResultCommand.HandItem &&
@@ -238,6 +238,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
                 IsEnable = true,
+                CanProgress = true,
                 BaseExp = ExpRewards,
                 BaseWalletPoints = WalletRewards,
                 FixedRewardItem = GetQuestFixedRewards(),
@@ -270,6 +271,33 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return new CDataTutorialQuestOrderList()
             {
                 Param = ToCDataQuestOrderList(step)
+            };
+        }
+
+        public virtual CDataPriorityQuest ToCDataPriorityQuest(uint step)
+        {
+            var questProcessStateList = GetProcessState(step, out uint announceNoCount);
+
+            var result = new CDataPriorityQuest()
+            {
+                QuestId = (uint) QuestId,
+                QuestScheduleId = (uint) QuestScheduleId,
+
+            };
+
+            for (uint i = 0; i < announceNoCount; i++)
+            {
+                result.QuestAnnounceList.Add(new CDataQuestAnnounce() { AnnounceNo = i });
+            }
+
+            return result;
+        }
+
+        public virtual CDataMainQuestList ToCDataMainQuestList(uint step)
+        {
+            return new CDataMainQuestList()
+            {
+                Param = ToCDataQuestList(step)
             };
         }
 

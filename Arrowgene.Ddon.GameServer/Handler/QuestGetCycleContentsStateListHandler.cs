@@ -48,9 +48,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // pcap.MainQuestIdList; (this will add back all missing functionality which depends on complete MSQ)
             var completedMsq = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Main);
-            foreach (var questId in completedMsq)
+            foreach (var msq in completedMsq)
             {
-                ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) questId });
+                ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) msq.QuestId });
+            }
+
+            if (client.Party != null)
+            {
+                var priorityQuests = Server.Database.GetPriorityQuests(client.Party.Leader.Client.Character.CommonId);
+                foreach (var questId in priorityQuests)
+                {
+                    var quest = QuestManager.GetQuest(questId);
+                    ntc.PriorityQuestList.Add(new CDataPriorityQuest()
+                    {
+                        QuestId = (uint)quest.QuestId,
+                        QuestScheduleId = (uint)quest.QuestScheduleId
+                    });
+                }
             }
 
             client.Send(ntc);

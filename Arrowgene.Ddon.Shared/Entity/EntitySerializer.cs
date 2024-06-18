@@ -141,6 +141,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataLobbyMemberInfoSerializer());
             Create(new CDataLoginSettingSerializer());
             Create(new CDataLotQuestOrderList.Serializer());
+            Create(new CDataMainQuestList.Serializer());
             Create(new CDataMainQuestOrderList.Serializer());
             Create(new CDataMasterInfo.Serializer());
             Create(new CDataMatchingProfileSerializer());
@@ -154,6 +155,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataOrbCategoryStatusSerializer());
             Create(new CDataOrbGainExtendParam.Serializer());
             Create(new CDataOrbPageStatusSerializer());
+            Create(new CDataOrderConditionInfo.Serializer());
             Create(new CDataPartnerPawnInfo.Serializer());
             Create(new CDataPartyContextPawn.Serializer());
             Create(new CDataPartyListInfo.Serializer());
@@ -396,6 +398,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
 
+            Create(new C2SQuestCancelPriorityQuestReq.Serializer());
             Create(new C2SQuestGetLightQuestListReq.Serializer());
             Create(new C2SQuestGetLotQuestListReq.Serializer());
             Create(new C2SQuestGetPackageQuestListReq.Serializer());
@@ -708,13 +711,15 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CQuestQuestLogInfoRes.Serializer());
             Create(new CDataLightQuestClearList.Serializer());
-
+            Create(new S2CQuestCancelPriorityQuestRes.Serializer());
             Create(new S2CQuestGetQuestCompleteListRes.Serializer());
             Create(new S2CQuestGetLightQuestListRes.Serializer());
             Create(new S2CQuestGetLotQuestListRes.Serializer());
             Create(new S2CQuestGetMainQuestListRes.Serializer());
+            Create(new S2CQuestGetMainQuestNtc.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CQuestGetSetQuestListRes.Serializer());
+            Create(new S2CQuestGetSetQuestListNtc.Serializer());
             Create(new S2CQuestGetWorldManageQuestListNtc.Serializer());
             Create(new S2CQuestGetWorldManageQuestListRes.Serializer());
             Create(new S2CQuestJoinLobbyQuestInfoNtc.Serializer());

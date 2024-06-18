@@ -91,6 +91,7 @@
         },
         {
             "type": "PartyGather",
+            "checkpoint": true,
             "announce_type": "Update",
             "stage_id": {
                 "id": 80
@@ -110,6 +111,7 @@
         },
         {
             "type": "PartyGather",
+            "checkpoint": true,
             "announce_type": "Update",
             "stage_id": {
                 "id": 3

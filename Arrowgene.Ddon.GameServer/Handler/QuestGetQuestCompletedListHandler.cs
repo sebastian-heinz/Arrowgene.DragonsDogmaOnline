@@ -27,12 +27,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 QuestType = packet.QuestType
             };
 
-            var completedQuestIds = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, (QuestType) packet.QuestType);
-            foreach (var questId in completedQuestIds)
+            var completedQuests = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, (QuestType) packet.QuestType);
+            foreach (var completedQuest in completedQuests)
             {
                 result.QuestIdList.Add(new CDataQuestId()
                 {
-                    QuestId = (uint) questId
+                    QuestId = (uint) completedQuest.QuestId
                 });
             }
 

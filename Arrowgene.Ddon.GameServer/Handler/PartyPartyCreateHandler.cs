@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -50,11 +51,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            // TODO: Fetch all quests for the party, not just MSQ
-            var mainQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Main);
-            foreach (var mainQuest in mainQuests)
+            var quests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var quest in quests)
             {
-                party.QuestState.AddNewQuest(mainQuest.QuestId, mainQuest.Step);
+                party.QuestState.AddNewQuest(quest.QuestId, quest.Step);
+            }
+
+            var worldQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.World).Select(x => x.QuestId).ToList();
+            foreach (var quest in QuestManager.GetQuestsByType(QuestType.World))
+            {
+                if (!worldQuests.Contains(quest.Key))
+                {
+                    party.QuestState.AddNewQuest(quest.Key, 0);
+                }
             }
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();

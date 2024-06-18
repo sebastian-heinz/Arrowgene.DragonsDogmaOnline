@@ -127,12 +127,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     QuestScheduleId = (uint)QuestId,
                     ProcessNo = proccessState.ProcessNo,
-                    SequenceNo = 0,
+                    SequenceNo = proccessState.SequenceNo,
                     BlockNo = proccessState.BlockNo,
+#if false
                     WorkList = new List<CDataQuestProgressWork>()
                     {
                         QuestManager.NotifyCommand.KilledTargetEnemySetGroup((int) questLocation.QuestLayoutFlag, StageManager.ConvertIdToStageNo(stageId), (int) stageId.GroupId)
                     }
+#endif
                 });
             }
         }
@@ -160,6 +162,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
             else if (questBlock.IsCheckpoint)
             {
                 questProgressState = QuestProgressState.Checkpoint;
+            }
+            else if (questBlock.AnnounceType == QuestAnnounceType.Accept)
+            {
+                questProgressState = QuestProgressState.Accepted;
             }
             else
             {

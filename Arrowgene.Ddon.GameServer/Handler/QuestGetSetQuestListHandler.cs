@@ -34,6 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuest(questId);
                 if (quest.QuestType == QuestType.World)
                 {
+
+                    var questStats = Server.Database.GetCompletedQuestsById(client.Party.Leader.Client.Character.CommonId, quest.QuestId);
                     var questState = client.Party.QuestState.GetQuestState(questId);
                     /**
                      * World quests get added here instead of QuestGetWorldManageQuestListHandler because
@@ -43,11 +45,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                      */
                     res.SetQuestList.Add(new CDataSetQuestList()
                     {
-                        Detail = new CDataSetQuestDetail() { IsDiscovery = quest.IsDiscoverable },
+                        Detail = new CDataSetQuestDetail() 
+                        { 
+                            IsDiscovery = (questStats == null) ? quest.IsDiscoverable : true,
+                            ClearCount = (questStats == null) ? 0 : questStats.ClearCount
+                        },
                         Param = quest.ToCDataQuestList(questState.Step),
                     });
                 }
             }
+
+            S2CQuestGetSetQuestListNtc ntc = new S2CQuestGetSetQuestListNtc()
+            { 
+                SelectCharacterId = client.Party.Leader.Client.Character.CharacterId,
+                SetQuestList = res.SetQuestList
+            };
+
+            client.Party.SendToAll(ntc);
+
 
             client.Send(res);
         }

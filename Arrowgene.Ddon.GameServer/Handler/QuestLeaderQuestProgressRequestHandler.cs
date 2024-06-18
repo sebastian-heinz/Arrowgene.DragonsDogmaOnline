@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ProcessNo = packet.Structure.ProcessNo
             });
 
-            // TODO: Send NTC
+            // TODO: Send NTC?
         }
     }
 }

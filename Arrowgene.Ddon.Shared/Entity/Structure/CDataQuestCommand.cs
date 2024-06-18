@@ -9,6 +9,19 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public int Param02 { get; set; }
         public int Param03 { get; set; }
         public int Param04 { get; set; }
+
+        public CDataQuestCommand()
+        {
+        }
+
+        public CDataQuestCommand(CDataQuestCommand obj)
+        {
+            Command = obj.Command;
+            Param01 = obj.Param01;
+            Param02 = obj.Param02;
+            Param03 = obj.Param03;
+            Param04 = obj.Param04;
+        }
     
         public class Serializer : EntitySerializer<CDataQuestCommand>
         {

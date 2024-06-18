@@ -4,6 +4,19 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataQuestProgressWork
     {
+        public CDataQuestProgressWork()
+        {
+        }
+
+        public CDataQuestProgressWork(CDataQuestProgressWork obj)
+        {
+            CommandNo = obj.CommandNo;
+            Work01 = obj.Work01;
+            Work02 = obj.Work02;
+            Work03 = obj.Work03;
+            Work04 = obj.Work04;
+        }
+
         public uint CommandNo { get; set; }
         public int Work01 { get; set; }
         public int Work02 { get; set; }
