@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId);
             }
 
-            bool groupDestroyed = group.All(enemy => enemy.IsKilled);
+            bool groupDestroyed = group.Where(x => x.IsRequired).All(x => x.IsKilled);
             if (groupDestroyed)
             {
                 if (IsQuestControlled && quest != null)
