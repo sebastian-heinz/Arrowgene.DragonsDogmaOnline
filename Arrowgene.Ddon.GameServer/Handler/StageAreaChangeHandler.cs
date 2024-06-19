@@ -19,7 +19,47 @@ namespace Arrowgene.Ddon.GameServer.Handler
         // List of "safe" areas, where the context reset NTC will be sent.
         // TODO: Complete with all the safe areas. Maybe move it to DB or config?
         private static readonly HashSet<uint> SafeStageIds = new HashSet<uint>(){
-            2 // White Dragon Temple
+            2, // White Dragon Temple
+            341, // Dana Centrum
+            487, // Fortress City Megado: Residential Level
+            4, // Craft Room
+            5, // Cave Harbor
+            24, // White Deer Inn
+            25, // Black Grape Inn
+            26, // Sea Dragon Inn
+            48, // Singing Winds Inn
+            52, // Red Crystal Inn
+            53, // Sleeping Wolf Inn
+            61, // Golden Tankard Inn
+            66, // Gritten Fort
+            78, // Pawn Cathedral
+            98, // Hobolic Cave
+            137, // Mysree Grove Shrine
+            139, // Zandora Wastelands Shrine
+            237, // Mergoda Residential Area
+            317, // Expedition Garrison
+            339, // Protector's Retreat
+            340, // Morfaul Centrum
+            347, // Clan Hall
+            348, // Arisen's Room
+            377, // Glyndwr Centrum            
+            384, // Hollow of Beginnings: Gathering Area
+            400, // Tower of Ivanos         
+            401, // Spirit Arts Hut
+            411, // Manun Village
+            467, // Fort Thines
+            478, // Lookout Castle
+            480, // Bertha's Bandit Group Hideout
+            511, // Piremoth Traveler's Inn
+            512, // Rothgill Traveler's Inn
+            520, // Mephite Traveler's Inn
+            549, // Heroic Spirit Sleeping Path: Rathnite Foothills
+            557, // Heroic Spirit Sleeping Path: Feryana Wilderness
+            558, // Old Heroic Spirit Shrine
+            576, // Fort Thines: Great Dining Hall
+            580, // Fortress City Megado: Craft Room
+            584, // Eli Guard Tower
+            594 // Northern Bandit Hideout
         };
 
         public StageAreaChangeHandler(DdonGameServer server) : base(server)
