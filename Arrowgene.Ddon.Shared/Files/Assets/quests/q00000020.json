@@ -96,26 +96,30 @@
                 "id": 77,
                 "group_id": 0
             },
+            "placement_type": "Manual",
             "enemies": [
-                {
-                    "comment" : "Damned Golem",
-                    "enemy_id": "0x015103",
-                    "level": 48,
-                    "exp": 5734
-                },
                 {
                     "comment" : "Iris",
                     "enemy_id": "0x011040",
                     "level": 48,
                     "exp": 57340,
                     "hm_present_no": 74,
-                    "is_boss": true
+                    "is_boss": true,
+                    "index": 0
                 },
                 {
                     "comment" : "Damned Golem",
                     "enemy_id": "0x015103",
                     "level": 48,
-                    "exp": 5734
+                    "exp": 5734,
+                    "index": 3
+                },
+                {
+                    "comment" : "Damned Golem",
+                    "enemy_id": "0x015103",
+                    "level": 48,
+                    "exp": 5734,
+                    "index": 4
                 }
             ]
         }
