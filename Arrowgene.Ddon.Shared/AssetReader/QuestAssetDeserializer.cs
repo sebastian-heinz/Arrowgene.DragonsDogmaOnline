@@ -805,6 +805,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         index = jEnemyIndex.GetByte();
                     }
 
+                    bool isRequired = true;
+                    if (enemy.TryGetProperty("is_required", out JsonElement jIsRequired))
+                    {
+                        isRequired = jIsRequired.GetBoolean();
+                    }
+
                     var questEnemy = new InstancedEnemy()
                     {
                         EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
@@ -813,8 +819,9 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         IsBossBGM = isBoss,
                         IsBossGauge = isBoss,
                         Scale = 100,
-                        EnemyTargetTypesId = 4,
+                        EnemyTargetTypesId = (byte)(isRequired ? 4 : 1),
                         Index = index,
+                        IsRequired = isRequired
                     };
 
                     ApplyOptionalEnemyKeys(enemy, questEnemy);

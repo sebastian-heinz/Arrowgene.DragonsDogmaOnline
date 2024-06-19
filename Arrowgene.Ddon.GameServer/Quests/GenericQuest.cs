@@ -204,12 +204,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 });
             }
 
+            bool ShouldResetGroup = false;
             if (questBlock.BlockType == QuestBlockType.DestroyGroup)
             {
+                ShouldResetGroup = true;
                 DestroyEnemiesForBlock(client, questBlock);
             }
 
-            if (questBlock.ResetGroup || questBlock.BlockType == QuestBlockType.DestroyGroup)
+            if (questBlock.ResetGroup || ShouldResetGroup)
             {
                 ResetEnemiesForBlock(client, questBlock);
             }
