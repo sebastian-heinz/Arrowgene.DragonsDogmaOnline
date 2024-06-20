@@ -585,6 +585,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInnGetStayPriceRes.Serializer());
             Create(new S2CInnStayInnRes.Serializer());
             Create(new S2CInnStayPenaltyHealInnRes.Serializer());
+            Create(new S2CInstanceEnemyDieNtc.Serializer());
             Create(new S2CInstanceSetOmInstantKeyValueNtc.Serializer());
             Create(new S2CInstanceExchangeOmInstantKeyValueNtc.Serializer());
             Create(new S2CInstanceAreaResetNtc.Serializer());

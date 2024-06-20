@@ -330,7 +330,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var groupId in process.Blocks[(int)processState.BlockNo - 1].EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[groupId];
-                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.AsInstancedEnemies());
+                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
                 }
             }
         }

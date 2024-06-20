@@ -143,8 +143,6 @@ namespace Arrowgene.Ddon.GameServer.Party
                     {
                         ActiveQuests[quest.QuestId].QuestEnemies[location.StageId] = new Dictionary<uint, List<InstancedEnemy>>();
                     }
-
-                    ActiveQuests[quest.QuestId].QuestEnemies[location.StageId][location.SubGroupId] = new List<InstancedEnemy>();
                 }
 
                 foreach (var request in quest.DeliveryItems)
