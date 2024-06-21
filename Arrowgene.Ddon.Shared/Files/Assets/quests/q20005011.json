@@ -8,6 +8,10 @@
     "discoverable": false,
     "rewards": [
         {
+            "type": "exp",
+            "amount": 1020
+        },
+        {
             "type": "wallet",
             "wallet_type": "Gold",
             "amount": 850
@@ -18,23 +22,22 @@
             "amount": 130
         },
         {
-            "type": "exp",
-            "amount": 1020
-        },
-        {
             "type": "select",
             "loot_pool": [
                 {
+                    "comment" : "Sergeant's Helm",
                     "item_id": 842,
                     "num": 1
                 },
                 {
-                    "item_id": 35,
+                    "comment" : "Wine-Boiled Mushroom",
+                    "item_id": 9411,
                     "num": 3
                 },
                 {
+                    "comment" : "Throwing Rock",
                     "item_id": 9396,
-                    "num": 2					
+                    "num": 2
                 }
             ]
         }
@@ -47,10 +50,12 @@
             },
             "enemies": [
                 {
+                    "comment" : "Ogre",
                     "enemy_id": "0x015500",
+                    "named_enemy_params_id": 54,
                     "level": 26,
-                    "exp": 1024,
-                    "is_boss": true					
+                    "exp": 7600,
+                    "is_boss": true
                 }
             ]
         }
@@ -68,4 +73,3 @@
         }
     ]
 }
-
