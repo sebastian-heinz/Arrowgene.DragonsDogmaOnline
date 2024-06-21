@@ -8,6 +8,10 @@
     "discoverable": true,
     "rewards": [
         {
+            "type": "exp",
+            "amount": 700
+        },
+        {
             "type": "wallet",
             "wallet_type": "Gold",
             "amount": 420
@@ -18,17 +22,15 @@
             "amount": 60
         },
         {
-            "type": "exp",
-            "amount": 700
-        },
-        {
             "type": "select",
             "loot_pool": [
                 {
+                    "comment" : "Dull Iron Ingot",
                     "item_id": 7872,
                     "num": 3
                 },
                 {
+                    "comment" : "Recovery Decoction",
                     "item_id": 9373,
                     "num": 2
                 }
@@ -43,40 +45,60 @@
             },
             "enemies": [
                 {
-                    "enemy_id": "0x010301",
+                    "comment" : "Undead (Male)",
+                    "enemy_id": "0x010500",
+                    "named_enemy_params_id": 53,
                     "level": 13,
-                    "exp": 37,
-                    "is_boss": false
+                    "exp": 214
                 },
                 {
-                    "enemy_id": "0x010301",
+                    "comment" : "Undead (Male)",
+                    "enemy_id": "0x010500",
+                    "named_enemy_params_id": 53,
                     "level": 13,
-                    "exp": 37,
-                    "is_boss": false
+                    "exp": 214
                 },
                 {
-                    "enemy_id": "0x010301",
+                    "comment" : "Undead (Male)",
+                    "enemy_id": "0x010500",
+                    "named_enemy_params_id": 53,
                     "level": 13,
-                    "exp": 37,
-                    "is_boss": false
+                    "exp": 214
                 },
                 {
-                    "enemy_id": "0x010301",
+                    "comment" : "Undead (Male)",
+                    "enemy_id": "0x010500",
+                    "named_enemy_params_id": 53,
                     "level": 13,
-                    "exp": 37,
-                    "is_boss": false
+                    "exp": 214
                 },
                 {
-                    "enemy_id": "0x010301",
+                    "comment" : "Undead (Male)",
+                    "enemy_id": "0x010500",
+                    "named_enemy_params_id": 53,
                     "level": 13,
-                    "exp": 37,
-                    "is_boss": false				
+                    "exp": 214
                 },
                 {
-                    "enemy_id": "0x010301",
+                    "comment" : "Undead (Male)",
+                    "enemy_id": "0x010500",
+                    "named_enemy_params_id": 53,
                     "level": 13,
-                    "exp": 37,
-                    "is_boss": false			
+                    "exp": 214
+                },
+                {
+                    "comment" : "Undead (Male)",
+                    "enemy_id": "0x010500",
+                    "named_enemy_params_id": 53,
+                    "level": 13,
+                    "exp": 214
+                },
+                {
+                    "comment" : "Undead (Male)",
+                    "enemy_id": "0x010500",
+                    "named_enemy_params_id": 53,
+                    "level": 13,
+                    "exp": 214
                 }
             ]
         }
@@ -88,17 +110,17 @@
                 "id": 3
             },
             "npc_id": "Joseph",
-            "message_id": 11000
+            "message_id": 10714
         },
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
             "groups": [0]
         },
-        {			
+        {           
             "type": "KillGroup",
             "announce_type": "Update",
-			"reset_group": false,
+            "reset_group": false,
             "groups": [0]
         },
         {
@@ -108,8 +130,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Joseph",
-            "message_id": 11005
-		    }
-	   ]
+            "message_id": 10718
+        }
+    ]
 }
-
