@@ -16,12 +16,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageAreaChangeHandler));
 
-        // List of "safe" areas, where the context reset NTC will be sent.
-        // TODO: Complete with all the safe areas. Maybe move it to DB or config?
-        private static readonly HashSet<uint> SafeStageIds = new HashSet<uint>(){
-            2 // White Dragon Temple
-        };
-
         public StageAreaChangeHandler(DdonGameServer server) : base(server)
         {
         }
@@ -29,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SStageAreaChangeReq> packet)
         {
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
-            res.StageNo = ConvertIdToStageNo(packet.Structure.StageId);
+            res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.Structure.StageId);
             res.IsBase = false; // This is set true for audience chamber and WDT for exmaple
 
             client.Character.StageNo = res.StageNo;
@@ -42,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Logger.Info($"StageNo:{client.Character.StageNo} StageId{packet.Structure.StageId}");
 
-            if (SafeStageIds.Contains(packet.Structure.StageId))
+            if (StageManager.IsSafeArea(client.Character.Stage))
             {
                 res.IsBase = true;
 
@@ -57,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     // TODO: Is it safe to iterate over player party members this way?
                     // TODO: Can this logic be made part of the party object instead?
-                    shouldReset &= SafeStageIds.Contains(((PlayerPartyMember)member).Client.Character.Stage.Id);
+                    shouldReset &= StageManager.IsSafeArea(((PlayerPartyMember)member).Client.Character.Stage);
                     if (!shouldReset)
                     {
                         // No need to loop over rest of party members
@@ -73,18 +67,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             client.Send(res);
-        }
-
-        private uint ConvertIdToStageNo(uint stageId)
-        {
-            foreach(CDataStageInfo stageInfo in (Server as DdonGameServer).StageList)
-            {
-                if(stageInfo.Id == stageId)
-                    return stageInfo.StageNo;
-            }
-
-            Logger.Error($"No stage found with Id:{stageId}");
-            return 0; // TODO: Maybe throw an exception?
         }
     }
 }
