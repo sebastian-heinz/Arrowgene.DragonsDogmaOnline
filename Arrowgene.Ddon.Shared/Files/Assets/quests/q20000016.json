@@ -8,6 +8,10 @@
     "discoverable": true,
     "rewards": [
         {
+            "type": "exp",
+            "amount": 1380
+        },
+        {
             "type": "wallet",
             "wallet_type": "Gold",
             "amount": 990
@@ -18,21 +22,20 @@
             "amount": 150
         },
         {
-            "type": "exp",
-            "amount": 1380
-        },
-        {
             "type": "select",
             "loot_pool": [
                 {
+                    "comment" : "Saintly Hood",
                     "item_id": 734,
                     "num": 1
                 },
                 {
+                    "comment" : "Enhanced Pickaxe",
                     "item_id": 9401,
                     "num": 2
                 },
                 {
+                    "comment" : "Fortifier",
                     "item_id": 9377,
                     "num": 3
                 }
@@ -48,16 +51,18 @@
             "starting_index": 2,
             "enemies": [
                 {
+                    "comment" : "Orc Soldier",
                     "enemy_id": "0x015800",
+                    "named_enemy_params_id": 54,
                     "level": 30,
-                    "exp": 250,
-                    "is_boss": false
+                    "exp": 996
                 },
                 {
+                    "comment" : "Orc Soldier",
                     "enemy_id": "0x015800",
+                    "named_enemy_params_id": 54,
                     "level": 30,
-                    "exp": 250,
-                    "is_boss": false
+                    "exp": 996
                 }
             ]
         }
@@ -111,4 +116,3 @@
         }
     ]
 }
-
