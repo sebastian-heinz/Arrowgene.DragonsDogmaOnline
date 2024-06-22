@@ -8,6 +8,10 @@
     "discoverable": false,
     "rewards": [
         {
+            "type": "exp",
+            "amount": 600
+        },
+        {
             "type": "wallet",
             "wallet_type": "Gold",
             "amount": 420
@@ -18,21 +22,20 @@
             "amount": 60
         },
         {
-            "type": "exp",
-            "amount": 600
-        },
-        {
             "type": "select",
             "loot_pool": [
                 {
+                    "comment" : "Palm Flower",
                     "item_id": 83,
                     "num": 1
                 },
                 {
+                    "comment" : "Pickaxe",
                     "item_id": 57,
                     "num": 3
                 },
                 {
+                    "comment" : "Recovery Decoction",
                     "item_id": 9373,
                     "num": 2					
                 }
@@ -47,9 +50,11 @@
             },
             "enemies": [
                 {
+                    "comment" : "Wight",
                     "enemy_id": "0x015600",
+                    "named_enemy_params_id": 53,
                     "level": 13,
-                    "exp": 480,
+                    "exp": 2140,
                     "is_boss": true			
                 }
             ]
@@ -68,4 +73,3 @@
         }
     ]
 }
-

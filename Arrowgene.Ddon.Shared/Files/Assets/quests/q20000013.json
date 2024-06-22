@@ -3,10 +3,14 @@
     "type": "World",
     "comment": "Beloved Forest",
     "quest_id": 20000013,
-    "base_level": 15,
+    "base_level": 12,
     "minimum_item_rank": 0,
     "discoverable": true,
     "rewards": [
+        {
+            "type": "exp",
+            "amount": 750
+        },
         {
             "type": "wallet",
             "wallet_type": "Gold",
@@ -18,17 +22,15 @@
             "amount": 80
         },
         {
-            "type": "exp",
-            "amount": 750
-        },
-        {
             "type": "select",
             "loot_pool": [
                 {
+                    "comment" : "Mace",
                     "item_id": 64,
                     "num": 1
                 },
                 {
+                    "comment" : "Conqueror's Periapt",
                     "item_id": 42,
                     "num": 2
                 }
@@ -43,9 +45,11 @@
             },
             "enemies": [
                 {
+                    "comment" : "Dread Ape",
                     "enemy_id": "0x015502",
+                    "named_enemy_params_id": 53,
                     "level": 15,
-                    "exp": 1500,
+                    "exp": 2760,
                     "is_boss": true			
                 }
             ]
@@ -58,7 +62,7 @@
                 "id": 2
             },
             "npc_id": "Mayleaf0",
-            "message_id": 11000
+            "message_id": 11369
         },
         {
             "type": "DiscoverEnemy",
@@ -78,8 +82,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Mayleaf0",
-            "message_id": 11005
-		    }
-	   ]
+            "message_id": 11818
+        }
+    ]
 }
-
