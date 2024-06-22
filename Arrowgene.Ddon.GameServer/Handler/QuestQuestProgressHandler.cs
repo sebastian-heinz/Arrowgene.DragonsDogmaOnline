@@ -62,12 +62,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     foreach (var memberClient in client.Party.Clients)
                     {
                         var questProgress = Server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
-                        if (questProgress == null)
+                        if (questProgress != null)
                         {
-                            if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0))
-                            {
-                                Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
-                            }
+                            continue;
+                        }
+
+                        // Add a new world quest record for the player
+                        if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0))
+                        {
+                            Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
                         }
                     }
                 }

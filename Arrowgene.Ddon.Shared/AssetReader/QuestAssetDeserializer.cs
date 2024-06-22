@@ -678,6 +678,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     ProcessNo = questProcess.ProcessNo,
                     BlockNo = blockIndex,
                     SequenceNo = 1,
+                    AnnounceType = QuestAnnounceType.None
                 });
             }
             else
@@ -689,6 +690,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     BlockType = QuestBlockType.None,
                     BlockNo = blockIndex,
                     SequenceNo = 1,
+                    AnnounceType = QuestAnnounceType.None
                 });
             }
 

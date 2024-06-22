@@ -428,7 +428,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             var questState = party.QuestState.GetQuestState(quest);
             foreach (var memberClient in party.Clients)
             {
-                var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, questId);
+                var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
                 if (result == null)
                 {
                     continue;
@@ -439,8 +439,8 @@ namespace Arrowgene.Ddon.GameServer.Party
                     continue;
                 }
 
-                server.Database.DeletePriorityQuest(memberClient.Character.CommonId, questId);
-                server.Database.RemoveQuestProgress(memberClient.Character.CommonId, questId, quest.QuestType);
+                server.Database.DeletePriorityQuest(memberClient.Character.CommonId, quest.QuestId);
+                server.Database.RemoveQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
                 if (quest.NextQuestId != QuestId.None)
                 {
                     var nextQuest = QuestManager.GetQuest(quest.NextQuestId);

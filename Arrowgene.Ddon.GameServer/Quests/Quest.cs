@@ -1,5 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -49,6 +51,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
     public abstract class Quest
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Quest));
+
         protected List<QuestProcess> Processes { get; set; }
         public readonly QuestId QuestId;
         public readonly bool IsDiscoverable;
@@ -141,11 +145,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         questFlags[flag.Type][flag.Value] = flag;
                     }
                 }
+            }
 
-                if (stepsFound == step)
-                {
-                    break;
-                }
+            if (step != stepsFound)
+            {
+                throw new QuestRestoreProgressFailedException(QuestId, step, stepsFound);
             }
 
             result.Add(new CDataQuestProcessState(Processes[0].Blocks[i].QuestProcessState));
@@ -607,6 +611,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
     public class QuestDoesNotExistException : ResponseErrorException
     {
         public QuestDoesNotExistException(QuestId questId) : base(ErrorCode.ERROR_CODE_QUEST_INTERNAL_ERROR, $"The quest ${questId} does not exist")
+        {
+        }
+    }
+
+    public class QuestRestoreProgressFailedException : ResponseErrorException
+    {
+        public QuestRestoreProgressFailedException(QuestId questId, uint step, uint stepsFound) : 
+            base(ErrorCode.ERROR_CODE_QUEST_DIFFERENT_PROGRESS, $"Failed to restore progress for {questId} (Step({step}) != StepsFound({stepsFound}))")
         {
         }
     }
