@@ -260,6 +260,22 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public void CancelQuest(QuestId questId)
+        {
+            lock (CompletedWorldQuests)
+            {
+                var quest = QuestManager.GetQuest(questId);
+                RemoveQuest(questId);
+
+                // Save the quest if it was a world quest
+                // so we can add it back on instance reset
+                if (quest.QuestType == QuestType.World)
+                {
+                    CompletedWorldQuests.Add(questId);
+                }
+            }
+        }
+
         public void CompleteQuest(QuestId questId)
         {
             lock (CompletedWorldQuests)

@@ -416,6 +416,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestDecideDeliveryItemReq.Serializer());
             Create(new C2SQuestGetRewardBoxListReq.Serializer());
             Create(new C2SQuestGetQuestCompleteListReq.Serializer());
+            Create(new C2SQuestQuestCancelReq.Serializer());
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
@@ -728,9 +729,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestQuestOrderRes.Serializer());
             Create(new S2CQuestQuestProgressNtc.Serializer());
             Create(new S2CQuestQuestProgressRes.Serializer());
-            Create(new S2CQuestCompleteNtc.Serializer()); // TODO: Might need to remove this?
+            Create(new S2CQuestCompleteNtc.Serializer());
             Create(new S2CQuestQuestProgressWorkSaveNtc.Serializer());
             Create(new S2CQuestQuestCompleteFlagClearRes.Serializer());
+            Create(new S2CQuestQuestCancelRes.Serializer());
             Create(new S2CQuestQuestCancelNtc.Serializer());
             Create(new S2CQuestQuestEnableNtc.Serializer());
             Create(new S2CQuestSetPriorityQuestNtc.Serializer());
