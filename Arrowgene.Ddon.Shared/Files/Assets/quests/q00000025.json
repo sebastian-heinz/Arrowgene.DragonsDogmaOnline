@@ -91,6 +91,7 @@
         },
         {
             "type": "PartyGather",
+            "announce_type": "Accept",
             "stage_id": {
                 "id": 66,
                 "group_id": 1
@@ -99,8 +100,7 @@
                 "x": -3082,
                 "y": 0,
                 "z": -183
-            },
-            "announce_type": "Accept"
+            }
         },
         {
             "type": "Raw",
@@ -113,6 +113,7 @@
         },
         {
             "type": "DiscoverEnemy",
+            "checkpoint": true,
             "announce_type": "Update",
             "groups": [0]
         },
@@ -124,6 +125,7 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
             "stage_id": {
                 "id": 66,
                 "group_id": 1
@@ -134,6 +136,7 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
             "stage_id": {
                 "id": 3,
                 "group_id": 1
@@ -144,6 +147,7 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
             "stage_id": {
                 "id": 3,
                 "group_id": 1

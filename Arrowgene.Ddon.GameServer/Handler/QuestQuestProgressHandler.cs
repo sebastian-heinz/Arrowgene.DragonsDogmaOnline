@@ -1,13 +1,17 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -53,67 +57,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
 
-                if (questProgressState == QuestProgressState.Checkpoint)
+                if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
                 {
-                    var leaderCommonId = client.Party.Leader.Client.Character.CommonId;
+                    foreach (var memberClient in client.Party.Clients)
+                    {
+                        var questProgress = Server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
+                        if (questProgress != null)
+                        {
+                            continue;
+                        }
 
-                    var questState = client.Party.QuestState.GetQuestState(quest);
-                    questState.Step += 1;
-
-                    Server.Database.UpdateQuestProgress(leaderCommonId, quest.QuestId, quest.QuestType, questState.Step);
+                        // Add a new world quest record for the player
+                        if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0))
+                        {
+                            Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
+                        }
+                    }
                 }
 
-
-                if (questProgressState == QuestProgressState.Complete)
+                if (questProgressState == QuestProgressState.Checkpoint || questProgressState == QuestProgressState.Accepted)
                 {
-                    SendRewards(client, client.Character, quest);
-
-                    S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
-                    {
-                        QuestScheduleId = (uint)questId,
-                        RandomRewardNum = quest.RandomRewardNum(),
-                        ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
-                        ProgressBonusNum = quest.RewardParams.ProgressBonusNum,
-                        IsRepeatReward = quest.RewardParams.IsRepeatReward,
-                        IsUndiscoveredReward = quest.RewardParams.IsUndiscoveredReward,
-                        IsHelpReward = quest.RewardParams.IsHelpReward,
-                        IsPartyBonus = quest.RewardParams.IsPartyBonus,
-                    };
-
-                    client.Party.SendToAll(completeNtc);
-
-                    if (quest.HasRewards())
-                    {
-                        foreach (var memberClient in client.Party.Clients) 
-                        {
-                            Server.RewardManager.AddQuestRewards(memberClient, quest);
-                        }
-                    }
-
-                    // Remove the quest data from the party object
-                    partyQuestState.CompleteQuest(questId);
-
-                    if (quest.QuestType == QuestType.Main)
-                    {
-                        var leaderCommonId = client.Party.Leader.Client.Character.CommonId;
-                        // TODO: Eventually handle all types of quests and for all members
-                        Server.Database.RemoveQuestProgress(leaderCommonId, quest.QuestId, quest.QuestType);
-                        if (quest.NextQuestId != QuestId.None)
-                        {
-                            var nextQuest = QuestManager.GetQuest(quest.NextQuestId);
-                            Server.Database.InsertQuestProgress(leaderCommonId, nextQuest.QuestId, nextQuest.QuestType, 0);
-                        }
-
-                        Server.Database.InsertIfNotExistCompletedQuest(leaderCommonId, quest.QuestId, quest.QuestType);
-                    }
-
-                    if (quest.ResetPlayerAfterQuest)
-                    {
-                        foreach (var memberClient in client.Party.Clients)
-                        {
-                            Server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
-                        }
-                    }
+                    partyQuestState.UpdatePartyQuestProgress(Server, client.Party, questId);
+                }
+                else if (questProgressState == QuestProgressState.Complete)
+                {
+                    res.QuestProgressResult = 3; // ProcessEnd
+                    CompleteQuest(quest, client, client.Party, partyQuestState);
                 }
 
                 if (res.QuestProcessState.Count > 0)
@@ -124,44 +93,68 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
+            foreach (var memberClient in client.Party.Clients)
             {
-                ProgressCharacterId = client.Character.CharacterId,
-                QuestScheduleId = res.QuestScheduleId,
-                QuestProcessStateList = res.QuestProcessState,
-            };
-            client.Party.SendToAllExcept(ntc, client);
+                if (memberClient == client)
+                {
+                    continue;
+                }
+
+                S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
+                {
+                    ProgressCharacterId = memberClient.Character.CharacterId,
+                    QuestScheduleId = res.QuestScheduleId,
+                    QuestProcessStateList = res.QuestProcessState,
+                };
+
+                memberClient.Send(ntc);
+            }
 
             client.Send(res);
         }
 
-        private void SendRewards(GameClient client, Character character, Quest quest)
+        private void CompleteQuest(Quest quest, GameClient client, PartyGroup party, PartyQuestState partyQuestState)
         {
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
+            // Distribute rewards to the party
+            partyQuestState.DistributePartyQuestRewards(Server, party, quest.QuestId);
+
+            // Resolve quest state for all members participating in the quest
+            partyQuestState.CompletePartyQuestProgress(Server, party, quest.QuestId);
+
+            S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
             {
-                UpdateType = (ushort)ItemNoticeType.Quest
+                QuestScheduleId = (uint)quest.QuestId,
+                RandomRewardNum = quest.RandomRewardNum(),
+                ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
+                ProgressBonusNum = quest.RewardParams.ProgressBonusNum,
+                IsRepeatReward = quest.RewardParams.IsRepeatReward,
+                IsUndiscoveredReward = quest.RewardParams.IsUndiscoveredReward,
+                IsHelpReward = quest.RewardParams.IsHelpReward,
+                IsPartyBonus = quest.RewardParams.IsPartyBonus,
+            };
+            client.Party.SendToAll(completeNtc);
+
+            S2CQuestSetPriorityQuestNtc priorityNtc = new S2CQuestSetPriorityQuestNtc()
+            {
+                CharacterId = client.Character.CharacterId
             };
 
-            foreach (var walletReward in quest.WalletRewards)
+            // Get the new list of priority quests from the leader
+            var prioirtyQuests = Server.Database.GetPriorityQuests(party.Leader.Client.Character.CommonId);
+            foreach (var priorityQuestId in prioirtyQuests)
             {
-                Server.WalletManager.AddToWallet(character, walletReward.Type, walletReward.Value);
+                var priorityQuest = QuestManager.GetQuest(priorityQuestId);
+                var priorityQuestState = party.QuestState.GetQuestState(priorityQuestId);
+                priorityNtc.PriorityQuestList.Add(priorityQuest.ToCDataPriorityQuest(priorityQuestState.Step));
+            }
+            client.Party.SendToAll(priorityNtc);
 
-                updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
+            if (quest.ResetPlayerAfterQuest)
+            {
+                foreach (var memberClient in client.Party.Clients)
                 {
-                    Type = walletReward.Type,
-                    Value = Server.WalletManager.GetWalletAmount(character, walletReward.Type),
-                    AddPoint = (int)walletReward.Value
-                });
-            }
-
-            if (updateCharacterItemNtc.UpdateWalletList.Count > 0)
-            {
-                client.Send(updateCharacterItemNtc);
-            }
-
-            foreach (var expPoint in quest.ExpRewards)
-            {
-                Server.ExpManager.AddExp(client, character, expPoint.Reward, 0, 2); // I think type 2 means quest
+                    Server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
+                }
             }
         }
     }

@@ -86,19 +86,21 @@
         },
         {
             "type": "raw",
+            "checkpoint": true,
+            "announce_type": "Update",
             "check_commands": [
                 {"type": "OpenAreaMaster", "Param1": 1}
             ],
-            "result_commands": [],
-            "announce_type": "Update"
+            "result_commands": []
         },
         {
             "type": "IsStageNo",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 78,
                 "group_id": 1
-            },
-            "announce_type": "Update"
+            }
         },
         {
             "type": "TalkToNpc",
@@ -113,6 +115,7 @@
         {
             "type": "Raw",
             "announce_type": "Update",
+            "checkpoint": true,
             "check_commands": [
                 {"type": "IsReleaseWarpPointAnyone", "Param1": 4}
             ],
@@ -120,11 +123,12 @@
         },
         {
             "type": "TalkToNpc",
+            "announce_type": "Update",
+            "checkpoint": true,
             "stage_id": {
                 "id": 78,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "npc_id": "Alvar",
             "message_id": 7539
         }

@@ -35,8 +35,6 @@ namespace Arrowgene.Ddon.Shared.Model
             Pawns = new List<Pawn>();
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
-
-            PriorityQuests = new List<QuestId>();
         }
 
         public int AccountId { get; set; }
@@ -73,8 +71,6 @@ namespace Arrowgene.Ddon.Shared.Model
 
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
-
-        public List<QuestId> PriorityQuests { get; set; }
 
         public Pawn PawnBySlotNo(byte SlotNo)
         {
