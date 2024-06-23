@@ -448,7 +448,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 NpcId = npcId,
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
-                                StageId = ParseStageId(jblock.GetProperty("stage_id"))
+                                StageId = questBlock.StageId
                             });
                         }
                         break;

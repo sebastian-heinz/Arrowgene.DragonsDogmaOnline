@@ -86,7 +86,6 @@
         },
         {
             "type": "raw",
-            "checkpoint": true,
             "announce_type": "Update",
             "check_commands": [
                 {"type": "OpenAreaMaster", "Param1": 1}
@@ -109,6 +108,7 @@
                 "group_id": 1
             },
             "announce_type": "Update",
+            "checkpoint": true,
             "npc_id": "Thomason",
             "message_id": 14773
         },

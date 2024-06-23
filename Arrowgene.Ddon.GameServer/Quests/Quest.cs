@@ -145,6 +145,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         questFlags[flag.Type][flag.Value] = flag;
                     }
                 }
+
+                if (step == stepsFound)
+                {
+                    break;
+                }
             }
 
             if (step != stepsFound)

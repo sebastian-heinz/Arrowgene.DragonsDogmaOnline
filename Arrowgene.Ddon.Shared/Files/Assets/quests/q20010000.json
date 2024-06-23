@@ -94,13 +94,13 @@
         },
         {
             "type": "NewTalkToNpc",
+            "announce_type": "Update",
             "npc_id": "Yuni",
             "stage_id": {
                 "id": 1,
                 "group_id": 1,
-                "group_id": 1
+                "layer_no": 1
             },
-            "announce_type": "Update",
             "message_id": 10785
         }
     ]
