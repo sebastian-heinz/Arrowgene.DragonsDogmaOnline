@@ -134,20 +134,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Party.SendToAll(completeNtc);
 
-            S2CQuestSetPriorityQuestNtc priorityNtc = new S2CQuestSetPriorityQuestNtc()
-            {
-                CharacterId = client.Character.CharacterId
-            };
-
-            // Get the new list of priority quests from the leader
-            var prioirtyQuests = Server.Database.GetPriorityQuests(party.Leader.Client.Character.CommonId);
-            foreach (var priorityQuestId in prioirtyQuests)
-            {
-                var priorityQuest = QuestManager.GetQuest(priorityQuestId);
-                var priorityQuestState = party.QuestState.GetQuestState(priorityQuestId);
-                priorityNtc.PriorityQuestList.Add(priorityQuest.ToCDataPriorityQuest(priorityQuestState.Step));
-            }
-            client.Party.SendToAll(priorityNtc);
+            // Update the priority quest list
+            client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party);
 
             if (quest.ResetPlayerAfterQuest)
             {

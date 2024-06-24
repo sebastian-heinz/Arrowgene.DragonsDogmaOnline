@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -256,6 +257,22 @@ namespace Arrowgene.Ddon.GameServer.Party
                     {
                         QuestLookupTable[location.StageId].Remove(questId);
                     }
+                }
+            }
+        }
+
+        public void CancelQuest(QuestId questId)
+        {
+            lock (CompletedWorldQuests)
+            {
+                var quest = QuestManager.GetQuest(questId);
+                RemoveQuest(questId);
+
+                // Save the quest if it was a world quest
+                // so we can add it back on instance reset
+                if (quest.QuestType == QuestType.World)
+                {
+                    CompletedWorldQuests.Add(questId);
                 }
             }
         }
@@ -519,6 +536,25 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 server.ExpManager.AddExp(client, client.Character, expPoint.Reward, 0, 2); // I think type 2 means quest
             }
+        }
+
+        public void UpdatePriorityQuestList(DdonGameServer server, PartyGroup party)
+        {
+            var leaderClient = party.Leader.Client;
+
+            S2CQuestSetPriorityQuestNtc prioNtc = new S2CQuestSetPriorityQuestNtc()
+            {
+                CharacterId = leaderClient.Character.CharacterId
+            };
+
+            var prioirtyQuests = server.Database.GetPriorityQuests(leaderClient.Character.CommonId);
+            foreach (var priorityQuestId in prioirtyQuests)
+            {
+                var priorityQuest = QuestManager.GetQuest(priorityQuestId);
+                var questState = party.QuestState.GetQuestState(priorityQuest.QuestId);
+                prioNtc.PriorityQuestList.Add(priorityQuest.ToCDataPriorityQuest(questState.Step));
+            }
+            party.SendToAll(prioNtc);
         }
     }
 }
