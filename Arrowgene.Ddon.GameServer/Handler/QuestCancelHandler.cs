@@ -41,19 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (Server.Database.DeletePriorityQuest(client.Character.CommonId, questId))
             {
-                S2CQuestSetPriorityQuestNtc prioNtc = new S2CQuestSetPriorityQuestNtc()
-                {
-                    CharacterId = client.Character.CharacterId
-                };
-
-                var prioirtyQuests = Server.Database.GetPriorityQuests(client.Character.CommonId);
-                foreach (var priorityQuestId in prioirtyQuests)
-                {
-                    var priorityQuest = QuestManager.GetQuest(priorityQuestId);
-                    var questState = client.Party.QuestState.GetQuestState(priorityQuest.QuestId);
-                    prioNtc.PriorityQuestList.Add(priorityQuest.ToCDataPriorityQuest(questState.Step));
-                }
-                client.Party.SendToAll(prioNtc);
+                client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party);
             }
 
             return new S2CQuestQuestCancelRes()
