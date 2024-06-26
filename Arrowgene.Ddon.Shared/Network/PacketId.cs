@@ -329,7 +329,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_SET_ONLINE_STATUS_RES = new PacketId(2, 38, 2, "S2C_CHARACTER_SET_ONLINE_STATUS_RES", ServerType.Game, PacketSource.Server); // オンラインステータス設定に
         public static readonly PacketId C2S_CHARACTER_SWITCH_GAME_MODE_REQ = new PacketId(2, 39, 1, "C2S_CHARACTER_SWITCH_GAME_MODE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_SWITCH_GAME_MODE_RES = new PacketId(2, 39, 2, "S2C_CHARACTER_SWITCH_GAME_MODE_RES", ServerType.Game, PacketSource.Server); // ゲームモードのスイッチ要求
-        public static readonly PacketId S2C_CHARACTER_2_39_16_NTC = new PacketId(2, 39, 16, "S2C_CHARACTER_2_39_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_SWITCH_GAME_MODE_NTC = new PacketId(2, 39, 16, "S2C_CHARACTER_SWITCH_GAME_MODE_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_39_16_NTC");
         public static readonly PacketId C2S_CHARACTER_CREATE_MODE_CHARACTER_EDIT_PARAM_REQ = new PacketId(2, 40, 1, "C2S_CHARACTER_CREATE_MODE_CHARACTER_EDIT_PARAM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_CREATE_MODE_CHARACTER_EDIT_PARAM_RES = new PacketId(2, 40, 2, "S2C_CHARACTER_CREATE_MODE_CHARACTER_EDIT_PARAM_RES", ServerType.Game, PacketSource.Server); // モードキャラ作成
 
@@ -2240,7 +2240,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_SET_ONLINE_STATUS_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_SWITCH_GAME_MODE_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_SWITCH_GAME_MODE_RES);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_39_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_SWITCH_GAME_MODE_NTC);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_CREATE_MODE_CHARACTER_EDIT_PARAM_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_CREATE_MODE_CHARACTER_EDIT_PARAM_RES);
 
