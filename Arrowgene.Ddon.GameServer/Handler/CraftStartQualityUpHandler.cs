@@ -76,31 +76,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             
-            if (D100 >= 95)
+            var thresholds = new (int Threshold, int Quality)[]
             {
-                RandomQuality = 3;
-            }
-            else if (D100 <= 60)
-            {
-                RandomQuality = 0;
-            }
-            else if (D100 >= 61 && D100 <= 80)
-            {
-                RandomQuality = 1;
-            }
-            else if (D100 >= 81 && D100 <= 94)
-            {
-                RandomQuality = 2;
-            }
+                (75, 2),
+                (25, 1),
+                (0, 0)  // This should always be the last one to catch all remaining cases
+            };
+
+            RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
 
             // Someone said a GreatSuccess gave 2 Crests instead of 1? so I guess take the result and Add 1? But Clamp to 3.
             if (dogreatsucess)
             {
-                RandomQuality += 1;
-                if (RandomQuality > 3)
-                {
-                    RandomQuality = 3;
-                }
+                RandomQuality = 3;
             }
 
 

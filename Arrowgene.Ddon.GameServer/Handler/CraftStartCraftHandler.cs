@@ -108,24 +108,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 D100 = D100 + 10;
             }
             
-            if (D100 >= 95)
-            {
-                RandomQuality = 3;
-            }
-            else if (D100 <= 70)
-            {
-                RandomQuality = 0;
-            }
-            else if (D100 >= 71 && D100 <= 80)
-            {
-                RandomQuality = 1;
-            }
-            else if (D100 >= 81 && D100 <= 94)
-            {
-                RandomQuality = 2;
-            }
 
-            
+            var thresholds = new (int Threshold, int Quality)[]
+            {
+                (95, 3),
+                (80, 2),
+                (70, 1),
+                (0, 0)  // This should always be the last one to catch all remaining cases
+            };
+
+            RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
+
+
 
             // Substract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, finalCraftCost);
