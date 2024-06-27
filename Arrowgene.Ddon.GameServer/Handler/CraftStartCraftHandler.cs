@@ -112,11 +112,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 RandomQuality = 3;
             }
-            else if (D100 <= 60)
+            else if (D100 <= 70)
             {
                 RandomQuality = 0;
             }
-            else if (D100 >= 61 && D100 <= 80)
+            else if (D100 >= 71 && D100 <= 80)
             {
                 RandomQuality = 1;
             }

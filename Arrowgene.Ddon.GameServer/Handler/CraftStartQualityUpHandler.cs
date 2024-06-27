@@ -131,7 +131,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                // TODO: Need to figure out how to update an existing items params
+                List<CDataItemUpdateResult> AddItemResult;
+                List<CDataItemUpdateResult> RemoveItemResult;
+                RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
+                bool isBagItem =! RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
+                                                                result.ItemList.StorageType == StorageType.StorageBoxExpansion);
+                AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, equipItemID, 1, RandomQuality);
+                updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
+                updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
+                //TODO: When we figure out swapping items directly correctly, do that here too. Its almost done in CraftStartEquipGradeUpHandler in the Equipped section, just need client to reflect accurately.
+                //TODO: bug caused by doing it this way, the end screen will show a blank item because the item it wants to show is consumed 
             }
 
 
