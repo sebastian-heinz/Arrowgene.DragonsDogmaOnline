@@ -12,14 +12,20 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             BattleContentUnk1 = new List<CDataBattleContentUnk1>();
             Unk2 = new List<CDataCommonU32>();
             Unk3 = new List<CDataCommonU32>();
+            Unk4 = new CDataBattleContentUnk0();
+            Unk5 = new List<CDataBattleContentUnk2>();
         }
 
         public uint Unk0 { get; set; }
         public string ContentName { get; set; }
         public List<CDataBattleContentStage> BattleContentStageList { get; set; }
         public List<CDataBattleContentUnk1> BattleContentUnk1 {  get; set; }
-        public List<CDataCommonU32> Unk2 { get; set; }
-        public List<CDataCommonU32> Unk3 { get; set; }
+        public List<CDataCommonU32> Unk2 { get; set; } // Appears to be items like "Bitterblack Deed Box"
+        public List<CDataCommonU32> Unk3 { get; set; } // Appears to be items/rewards like "Fruit of Inspiration (Concentration)"
+
+        // These two might be wrong
+        public CDataBattleContentUnk0 Unk4 { get; set; }
+        public List<CDataBattleContentUnk2> Unk5 { get; set; }
 
         public class Serializer : EntitySerializer<CDataBattleContentListEntry>
         {
@@ -31,6 +37,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList(buffer, obj.BattleContentUnk1);
                 WriteEntityList(buffer, obj.Unk2);
                 WriteEntityList(buffer, obj.Unk3);
+                WriteEntity(buffer, obj.Unk4);
+                WriteEntityList(buffer, obj.Unk5);
             }
 
             public override CDataBattleContentListEntry Read(IBuffer buffer)
@@ -42,6 +50,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.BattleContentUnk1 = ReadEntityList<CDataBattleContentUnk1>(buffer);
                 obj.Unk2 = ReadEntityList<CDataCommonU32>(buffer);
                 obj.Unk3 = ReadEntityList<CDataCommonU32>(buffer);
+                obj.Unk4 = ReadEntity<CDataBattleContentUnk0>(buffer);
+                obj.Unk5 = ReadEntityList<CDataBattleContentUnk2>(buffer);
                 return obj;
             }
         }

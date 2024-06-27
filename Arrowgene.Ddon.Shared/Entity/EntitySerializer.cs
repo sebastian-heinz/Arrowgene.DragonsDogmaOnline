@@ -41,7 +41,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataArisenProfileSerializer());
             Create(new CDataBattleContentListEntry.Serializer());
             Create(new CDataBattleContentStage.Serializer());
+            Create(new CDataBattleContentUnk0.Serializer());
             Create(new CDataBattleContentUnk1.Serializer());
+            Create(new CDataBattleContentUnk2.Serializer());
             Create(new CDataCharacterEquipDataSerializer());
             Create(new CDataCharacterEquipInfo.Serializer());
             Create(new CDataCharacterInfoSerializer());
@@ -271,6 +273,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SBattleContentGetContentStatusFromOmReq.Serializer());
             Create(new C2SBattleContentInfoListReq.Serializer());
+            Create(new C2SBattleContentContentEntryReq.Serializer());
 
             Create(new C2SBazaarCancelReq.Serializer());
             Create(new C2SBazaarExhibitReq.Serializer());
@@ -524,6 +527,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CBattleContentGetContentStatusFromOmRes.Serializer());
             Create(new S2CBattleContentInfoListRes.Serializer());
+            Create(new S2CBattleContentContentEntryRes.Serializer());
+            Create(new S2CBattleContentContentEntryNtc.Serializer());
 
             Create(new S2CBazaarCancelRes.Serializer());
             Create(new S2CBazaarExhibitRes.Serializer());
