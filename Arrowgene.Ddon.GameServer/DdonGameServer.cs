@@ -178,6 +178,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AreaGetSpotInfoListHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
+            AddHandler(new BattleContentGetContentStatusFromOmHandler(this));
             
             AddHandler(new BazaarCancelHandler(this));
             AddHandler(new BazaarExhibitHandler(this));

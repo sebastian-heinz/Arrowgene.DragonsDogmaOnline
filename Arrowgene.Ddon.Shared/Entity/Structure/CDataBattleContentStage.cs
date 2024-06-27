@@ -1,0 +1,32 @@
+using System.Collections.Generic;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
+        
+namespace Arrowgene.Ddon.Shared.Entity.Structure
+{
+    public class CDataBattleContentStage
+    {
+        public uint Unk0 { get; set; }
+        public string StageName { get; set; }
+        public uint Unk1 { get; set; }
+
+        public class Serializer : EntitySerializer<CDataBattleContentStage>
+        {
+            public override void Write(IBuffer buffer, CDataBattleContentStage obj)
+            {
+                WriteUInt32(buffer, obj.Unk0);
+                WriteMtString(buffer, obj.StageName);
+                WriteUInt32(buffer, obj.Unk1);
+            }
+
+            public override CDataBattleContentStage Read(IBuffer buffer)
+            {
+                CDataBattleContentStage obj = new CDataBattleContentStage();
+                obj.Unk0 = ReadUInt32(buffer);
+                obj.StageName = ReadMtString(buffer);
+                obj.Unk1 = ReadUInt32(buffer);
+                return obj;
+            }
+        }
+    }
+}
