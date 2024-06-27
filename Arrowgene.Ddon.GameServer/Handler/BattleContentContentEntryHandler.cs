@@ -3,6 +3,8 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.Shared.Entity;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,13 +18,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentContentEntryRes Handle(GameClient client, C2SBattleContentContentEntryReq request)
         {
+            EntitySerializer<S2CBattleContentInfoListRes> serializer = EntitySerializer.Get<S2CBattleContentInfoListRes>();
+            S2CBattleContentInfoListRes pcap = serializer.Read(InGameDump.Dump_93.AsBuffer());
+
             S2CBattleContentContentEntryNtc ntc = new S2CBattleContentContentEntryNtc()
             {
                 StageId = 2001,
-                Unk0 = new CDataBattleContentUnk0()
-                {
-                    
-                }
+                Unk0 = pcap.Unk0
             };
             client.Send(ntc);
 

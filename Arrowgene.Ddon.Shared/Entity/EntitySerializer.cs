@@ -44,6 +44,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataBattleContentUnk0.Serializer());
             Create(new CDataBattleContentUnk1.Serializer());
             Create(new CDataBattleContentUnk2.Serializer());
+            Create(new CDataBattleContentUnk3.Serializer());
             Create(new CDataCharacterEquipDataSerializer());
             Create(new CDataCharacterEquipInfo.Serializer());
             Create(new CDataCharacterInfoSerializer());

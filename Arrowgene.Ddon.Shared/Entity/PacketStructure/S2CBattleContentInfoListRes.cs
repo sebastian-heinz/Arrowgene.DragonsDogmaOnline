@@ -12,9 +12,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public S2CBattleContentInfoListRes()
         {
             BattleContentInfoList = new List<CDataBattleContentListEntry>();
+            Unk0 = new List<CDataBattleContentUnk3>();
         }
 
         public List<CDataBattleContentListEntry> BattleContentInfoList { get; set; }
+        public List<CDataBattleContentUnk3> Unk0 { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CBattleContentInfoListRes>
         {
@@ -22,6 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntityList<CDataBattleContentListEntry>(buffer, obj.BattleContentInfoList);
+                WriteEntityList(buffer, obj.Unk0);
             }
 
             public override S2CBattleContentInfoListRes Read(IBuffer buffer)
@@ -29,6 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CBattleContentInfoListRes obj = new S2CBattleContentInfoListRes();
                 ReadServerResponse(buffer, obj);
                 obj.BattleContentInfoList = ReadEntityList<CDataBattleContentListEntry>(buffer);
+                obj.Unk0 = ReadEntityList<CDataBattleContentUnk3>(buffer);
                 return obj;
             }
         }
