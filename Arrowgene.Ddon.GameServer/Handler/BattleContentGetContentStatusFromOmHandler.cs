@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             return new S2CBattleContentGetContentStatusFromOmRes()
             {
-                Unk0 = 603, // Shows up as first argument of C2S_BATTLE_CONTENT_CONTENT_ENTRY_REQ (stage?)
+                Unk0 = request.StageLayoutId.StageId, // Shows up as first argument of C2S_BATTLE_CONTENT_CONTENT_ENTRY_REQ (stage?)
                 Unk1 = 0, // Setting this to 0 allowed me to enter
                 Unk2 = 3,
                 Unk3 = 4, // ???

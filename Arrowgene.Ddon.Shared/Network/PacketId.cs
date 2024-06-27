@@ -2123,7 +2123,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_RES = new PacketId(71, 20, 2, "S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_RES", ServerType.Game, PacketSource.Server); // パーティメンバのバトルコンテンツ情報を取得
         public static readonly PacketId C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_REQ = new PacketId(71, 21, 1, "C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_RES = new PacketId(71, 21, 2, "S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_RES", ServerType.Game, PacketSource.Server); // 特定のパーティメンバーのバトルコンテンツ情報更新
-        public static readonly PacketId S2C_BATTLE_71_21_16_NTC = new PacketId(71, 21, 16, "S2C_BATTLE_71_21_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_NTC = new PacketId(71, 21, 16, "S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_NTC", ServerType.Game, PacketSource.Server, "S2C_BATTLE_71_21_16_NTC");
         public static readonly PacketId C2S_BATTLE_CONTENT_INFO_LIST_REQ = new PacketId(71, 22, 1, "C2S_BATTLE_CONTENT_INFO_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BATTLE_CONTENT_INFO_LIST_RES = new PacketId(71, 22, 2, "S2C_BATTLE_CONTENT_INFO_LIST_RES", ServerType.Game, PacketSource.Server); // バトルコンテンツ情報を取得
         public static readonly PacketId C2S_BATTLE_CONTENT_INSTANT_COMPLETE_REQ = new PacketId(71, 23, 1, "C2S_BATTLE_CONTENT_INSTANT_COMPLETE_REQ", ServerType.Game, PacketSource.Client);
@@ -4034,7 +4034,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_REQ);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_RES);
-            AddPacketIdEntry(packetIds, S2C_BATTLE_71_21_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_PARTY_MEMBER_INFO_UPDATE_NTC);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_INFO_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_INFO_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_INSTANT_COMPLETE_REQ);

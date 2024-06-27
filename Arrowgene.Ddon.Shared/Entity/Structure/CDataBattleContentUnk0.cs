@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Shared.Model;
         
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
+    // Suspect this might be some sort of progress
     public class CDataBattleContentUnk0
     {
         public CDataBattleContentUnk0()
