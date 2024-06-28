@@ -79,7 +79,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                        D100 = D100 + 10;
+                        
+                        var thresholds = new (int Threshold, int Quality)[]
+                        {
+                            (95, 3),
+                            (80, 2),
+                            (70, 1),
+                            (0, 0)  // This should always be the last one to catch all remaining cases
+                        };
+
+                        RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
                     }
                     catch (NotEnoughItemsException e)
                     {
@@ -105,21 +114,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
             {
                 finalCraftCost = (uint)(finalCraftCost*0.95);
-                D100 = D100 + 10;
+                D100 =+ 10;
             }
             
-
-            var thresholds = new (int Threshold, int Quality)[]
-            {
-                (95, 3),
-                (80, 2),
-                (70, 1),
-                (0, 0)  // This should always be the last one to catch all remaining cases
-            };
-
-            RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
-
-
 
             // Substract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, finalCraftCost);
