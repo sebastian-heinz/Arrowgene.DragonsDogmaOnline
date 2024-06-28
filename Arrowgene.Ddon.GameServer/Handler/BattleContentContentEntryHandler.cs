@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CBattleContentContentEntryNtc ntc = new S2CBattleContentContentEntryNtc()
             {
-                StageId = 2001,
+                StageId = request.StageId,
                 Unk0 = pcap.Unk0
             };
             client.Send(ntc);

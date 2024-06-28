@@ -1,0 +1,43 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Summer! Beach festival",
+    "quest_id": 60200033,
+    "base_level": 1,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [],
+    "rewards": [],
+    "enemy_groups": [],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 7823, "comment": "Spawns Ray and Samantha"},
+                        {"type": "QstLayout", "action": "Set", "value": 7798, "comment": "Spawns Ray and Samantha"},
+                        {"type": "QstLayout", "action": "Set", "value": 6371, "comment": "Warp?"},
+                        {"type": "QstLayout", "action": "Set", "value": 6634, "comment": "NPC"}
+
+                    ],
+                    "stage_id": {
+                        "id": 2,
+                        "group_id": 1
+                    },
+                    "npc_id": "Freddy",
+                    "message_id": 962
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "StageNo", "Param1": 2005}
+                    ],
+                    "result_commands": [
+                        {"type": "StageJump", "Param1": 2005, "Param2":  0}
+                    ]
+                }
+            ]
+        }
+    ]
+}

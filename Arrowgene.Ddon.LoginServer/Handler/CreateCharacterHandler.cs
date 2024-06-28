@@ -1099,7 +1099,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.CustomMadeServiceTickets,
+                    Type = WalletType.BitterblackMazeResetTicket,
                     Value = 0
                 },
                 new CDataWalletPoint() {

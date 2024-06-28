@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -18,15 +19,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentPartyMemberInfoUpdateRes Handle(GameClient client, C2SBattleContentPartyMemberInfoUpdateReq request)
         {
-            // TODO: Probably need to send an NTC for each character?
-            // S2CBattleContentPartyMemberInfoUpdateNtc
+            EntitySerializer<S2CBattleContentInfoListRes> serializer = EntitySerializer.Get<S2CBattleContentInfoListRes>();
+            S2CBattleContentInfoListRes pcap = serializer.Read(InGameDump.Dump_93.AsBuffer());
 
-            S2CBattleContentPartyMemberInfoUpdateNtc ntc = new S2CBattleContentPartyMemberInfoUpdateNtc()
+            foreach (var item in pcap.Unk0)
             {
-                CharacterId = 1,
-                JobLevel = 8
-            };
-            client.Send(ntc);
+                S2CBattleContentPartyMemberInfoUpdateNtc ntc = new S2CBattleContentPartyMemberInfoUpdateNtc()
+                {
+                    Progress = item.Unk0,
+                    Unk0 = item.Unk1
+                };
+                client.Send(ntc);
+            }
 
             return new S2CBattleContentPartyMemberInfoUpdateRes();
         }
