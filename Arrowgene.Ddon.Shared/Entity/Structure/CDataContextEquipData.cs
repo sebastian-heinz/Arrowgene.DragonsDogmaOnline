@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             ItemId = (ushort) equipItemInfo.ItemId;
             ColorNo = equipItemInfo.Color;
-            // QualityParam?
+            PlusValue = equipItemInfo.PlusValue;
             WeaponCrestDataList = equipItemInfo.WeaponCrestDataList;
             ArmorCrestDataList = equipItemInfo.ArmorCrestDataList;
         }
@@ -18,14 +18,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             ItemId=0;
             ColorNo=0;
-            QualityParam=0;
+            PlusValue=0;
             WeaponCrestDataList=new List<CDataWeaponCrestData>();
             ArmorCrestDataList=new List<CDataArmorCrestData>();
         }
 
         public ushort ItemId { get; set; }
         public byte ColorNo { get; set; }
-        public uint QualityParam { get; set; }
+        public uint PlusValue { get; set; }
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
         public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
 
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt16(buffer, obj.ItemId);
                 WriteByte(buffer, obj.ColorNo);
-                WriteUInt32(buffer, obj.QualityParam);
+                WriteUInt32(buffer, obj.PlusValue);
                 WriteEntityList<CDataWeaponCrestData>(buffer, obj.WeaponCrestDataList);
                 WriteEntityList<CDataArmorCrestData>(buffer, obj.ArmorCrestDataList);
             }
@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataContextEquipData obj = new CDataContextEquipData();
                 obj.ItemId = ReadUInt16(buffer);
                 obj.ColorNo = ReadByte(buffer);
-                obj.QualityParam = ReadUInt32(buffer);
+                obj.PlusValue = ReadUInt32(buffer);
                 obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);
                 obj.ArmorCrestDataList = ReadEntityList<CDataArmorCrestData>(buffer);
                 return obj;

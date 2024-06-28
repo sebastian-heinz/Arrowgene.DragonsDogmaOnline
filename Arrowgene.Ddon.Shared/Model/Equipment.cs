@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 {
                     ItemId = (ushort) x.ItemId,
                     ColorNo = x.Color,
-                    QualityParam = x.Unk3,
+                    PlusValue = x.PlusValue,
                     WeaponCrestDataList = x.WeaponCrestDataList,
                     ArmorCrestDataList = x.ArmorCrestDataList
                 })
