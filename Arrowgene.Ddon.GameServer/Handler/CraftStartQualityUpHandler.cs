@@ -92,12 +92,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
 
-            Item UpgradedItem = new Item()
+            Item QualityUpItem = new Item()
             {
                 ItemId = equipItemID,
                 Unk3 = 0,   // Safety setting,
                 Color = 0,
-                PlusValue = currentPlusValue,
+                PlusValue = RandomQuality,
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                 ArmorCrestDataList = new List<CDataArmorCrestData>(),
                 EquipElementParamList = new List<CDataEquipElementParam>()
@@ -111,11 +111,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .ToList();
 
                 var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-
                 equipslot = equipInfo.EquipCategory;
                 equiptype = equipInfo.EquipType;
 
-                // TODO: Actually handle equipped item stuff
+                _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, QualityUpItem.UId, QualityUpItem.ItemId, QualityUpItem, (EquipType)equiptype, (byte)equipslot);
+                S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
+                GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
+                client.Send(lobbyPlayerContextNtc);
             }
             else
             {

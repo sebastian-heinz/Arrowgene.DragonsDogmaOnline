@@ -169,27 +169,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, UpgradedItem.UId, gearupgradeID, UpgradedItem, (EquipType)equiptype, (byte)equipslot);
 
-                // updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
-                //     ItemList = new CDataItemList() {
-                //         ItemUId = UpgradedItem.UId,
-                //         ItemId = UpgradedItem.ItemId,
-                //         ItemNum = 0,
-                //         Unk3 = UpgradedItem.Unk3,
-                //         StorageType = StorageType.Unk14,
-                //         SlotNo = 1,
-                //         Color = UpgradedItem.Color,
-                //         PlusValue = UpgradedItem.PlusValue,
-                //         Bind = true,
-                //         EquipPoint = 0,
-                //         EquipCharacterID = charid,
-                //         EquipPawnID = 0,
-                //         WeaponCrestDataList = UpgradedItem.WeaponCrestDataList,
-                //         ArmorCrestDataList = UpgradedItem.ArmorCrestDataList,
-                //         EquipElementParamList = UpgradedItem.EquipElementParamList
-                //     },
-                //     UpdateItemNum = 1,
-                // });    
-                // TODO: Figure out how to update the NTC without crashing the client, confirmed possible by this
                 S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
                 GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
                 client.Send(lobbyPlayerContextNtc);
