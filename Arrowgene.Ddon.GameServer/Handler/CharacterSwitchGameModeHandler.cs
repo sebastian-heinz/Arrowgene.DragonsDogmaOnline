@@ -25,11 +25,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCharacterSwitchGameModeRes Handle(GameClient client, C2SCharacterSwitchGameModeReq packet)
         {
-            Logger.Info($"GameMode={packet.Unk0}");
+            Logger.Info($"GameMode={packet.GameMode}");
 
             S2CCharacterSwitchGameModeNtc ntc = new S2CCharacterSwitchGameModeNtc()
             {
-                Unk0 = (uint) packet.Unk0,
+                Unk0 = (uint) packet.GameMode, // Probably not right? int vs uint
                 Unk1 = false,
 
                 CharacterInfo = new CDataCharacterInfo()
@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             return new S2CCharacterSwitchGameModeRes()
             {
-                Unk0 = packet.Unk0,
+                GameMode = packet.GameMode,
             };
         }
     }
