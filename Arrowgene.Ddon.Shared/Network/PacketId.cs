@@ -2090,8 +2090,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_BATTLE_CONTENT_CONTENT_ENTRY_REQ = new PacketId(71, 3, 1, "C2S_BATTLE_CONTENT_CONTENT_ENTRY_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BATTLE_CONTENT_CONTENT_ENTRY_RES = new PacketId(71, 3, 2, "S2C_BATTLE_CONTENT_CONTENT_ENTRY_RES", ServerType.Game, PacketSource.Server); // コンテンツのエントリーに
         public static readonly PacketId S2C_BATTLE_CONTENT_CONTENT_ENTRY_NTC = new PacketId(71, 3, 16, "S2C_BATTLE_CONTENT_CONTENT_ENTRY_NTC", ServerType.Game, PacketSource.Server, "S2C_BATTLE_71_3_16_NTC");
-        public static readonly PacketId C2S_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_REQ = new PacketId(71, 4, 1, "C2S_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_REQ", ServerType.Game, PacketSource.Client);
-        public static readonly PacketId S2C_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_RES = new PacketId(71, 4, 2, "S2C_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_RES", ServerType.Game, PacketSource.Server); // バトルコンテンツ最初のフェーズ変更
+        public static readonly PacketId C2S_BATTLE_CONTENT_CONTENT_FIRST_PHASE_CHANGE_REQ = new PacketId(71, 4, 1, "C2S_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_REQ", ServerType.Game, PacketSource.Client, "C2S_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_REQ");
+        public static readonly PacketId S2C_BATTLE_CONTENT_CONTENT_FIRST_PHASE_CHANGE_RES = new PacketId(71, 4, 2, "S2C_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_RES", ServerType.Game, PacketSource.Server, "S2C_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_RES"); // バトルコンテンツ最初のフェーズ変更
         public static readonly PacketId C2S_BATTLE_CONTENT_CONTENT_RESET_REQ = new PacketId(71, 5, 1, "C2S_BATTLE_CONTENT_CONTENT_RESET_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_BATTLE_CONTENT_CONTENT_RESET_RES = new PacketId(71, 5, 2, "S2C_BATTLE_CONTENT_CONTENT_RESET_RES", ServerType.Game, PacketSource.Server); // バトルコンテンツ：リセット
         public static readonly PacketId S2C_BATTLE_71_5_16_NTC = new PacketId(71, 5, 16, "S2C_BATTLE_71_5_16_NTC", ServerType.Game, PacketSource.Server);
@@ -4001,8 +4001,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_CONTENT_ENTRY_REQ);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_CONTENT_ENTRY_RES);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_CONTENT_ENTRY_NTC);
-            AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_REQ);
-            AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_CONTENT_FIRST_FHASE_CHANGE_RES);
+            AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_CONTENT_FIRST_PHASE_CHANGE_REQ);
+            AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_CONTENT_FIRST_PHASE_CHANGE_RES);
             AddPacketIdEntry(packetIds, C2S_BATTLE_CONTENT_CONTENT_RESET_REQ);
             AddPacketIdEntry(packetIds, S2C_BATTLE_CONTENT_CONTENT_RESET_RES);
             AddPacketIdEntry(packetIds, S2C_BATTLE_71_5_16_NTC);
