@@ -23,6 +23,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             return new S2CBattleContentInstantClearInfoRes()
             {
+                Unk0 = new List<CDataBattleContentUnk4>()
+                {
+                    new CDataBattleContentUnk4()
+                    {
+                        UnknownString = "Test?",
+                        Unk0 = client.Character.CharacterId,
+                        Unk1 = client.Character.CharacterId,
+                        Unk3 = new List<CDataBattleContentUnk5>()
+                        {
+                            new CDataBattleContentUnk5() {Unk0 = 1, Unk1 = 2}
+                        }
+                    }
+                }
             };
         }
     }

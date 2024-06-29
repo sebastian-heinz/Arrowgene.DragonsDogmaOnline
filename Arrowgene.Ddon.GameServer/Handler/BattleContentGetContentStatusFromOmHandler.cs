@@ -19,9 +19,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk0 = request.StageLayoutId.StageId, // Shows up as first argument of C2S_BATTLE_CONTENT_CONTENT_ENTRY_REQ (stage?)
                 Unk1 = 1, // Setting this to 0 allowed me to enter
                 Unk2 = 1,
-                Unk3 = 1, // ???
-                Unk4 = 1, // ???
+                Unk3 = 0, // ???
+                Unk4 = 0, // ???
             };
+
+            // 0, 0, 0, 0 says can't do content
+            // 1, 1, 1, 1 bring up chaarcter slect board
+            // 1, 1, 0, 0 introduces phase change req packet???
         }
     }
 }

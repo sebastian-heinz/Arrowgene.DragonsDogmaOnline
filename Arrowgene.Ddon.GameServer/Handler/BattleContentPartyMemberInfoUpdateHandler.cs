@@ -26,8 +26,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 S2CBattleContentPartyMemberInfoUpdateNtc ntc = new S2CBattleContentPartyMemberInfoUpdateNtc()
                 {
+                    CharacterId = client.Character.CharacterId,
+                    Job = (byte) client.Character.Job,
                     Progress = item.Unk0,
-                    Unk0 = item.Unk1
+                    Unk0 = item.Unk1,
+                    Status = true
                 };
                 client.Send(ntc);
             }

@@ -31,10 +31,10 @@
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "StageNo", "Param1": 2005}
+                        {"type": "StageNo", "Param1": 2000}
                     ],
                     "result_commands": [
-                        {"type": "StageJump", "Param1": 2005, "Param2":  0}
+                        {"type": "StageJump", "Param1": 2000, "Param2":  1}
                     ]
                 }
             ]

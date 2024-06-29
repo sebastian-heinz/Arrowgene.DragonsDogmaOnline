@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public uint CharacterId { get; set; }
-        public byte JobLevel {  get; set; }
+        public byte Job {  get; set; }
         public CDataBattleContentUnk0 Progress {  get; set; }
         public List<CDataBattleContentUnk2> Unk0 {  get; set; }
         public bool Status { get; set; }
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CBattleContentPartyMemberInfoUpdateNtc obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);
-                WriteByte(buffer, obj.JobLevel);
+                WriteByte(buffer, obj.Job);
                 WriteEntity(buffer, obj.Progress);
                 WriteEntityList(buffer, obj.Unk0);
                 WriteBool(buffer, obj.Status);
@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CBattleContentPartyMemberInfoUpdateNtc obj = new S2CBattleContentPartyMemberInfoUpdateNtc();
                 obj.CharacterId = ReadUInt32(buffer);
-                obj.JobLevel = ReadByte(buffer);
+                obj.Job = ReadByte(buffer);
                 obj.Progress = ReadEntity<CDataBattleContentUnk0>(buffer);
                 obj.Unk0 = ReadEntityList<CDataBattleContentUnk2>(buffer);
                 obj.Status = ReadBool(buffer);
