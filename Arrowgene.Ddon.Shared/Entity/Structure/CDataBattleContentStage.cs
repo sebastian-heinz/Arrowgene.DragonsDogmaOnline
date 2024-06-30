@@ -6,25 +6,25 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataBattleContentStage
     {
-        public uint Unk0 { get; set; }
+        public uint Id { get; set; }
         public string StageName { get; set; }
-        public uint Unk1 { get; set; }
+        public BattleContentMode Mode { get; set; }
 
         public class Serializer : EntitySerializer<CDataBattleContentStage>
         {
             public override void Write(IBuffer buffer, CDataBattleContentStage obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.Id);
                 WriteMtString(buffer, obj.StageName);
-                WriteUInt32(buffer, obj.Unk1);
+                WriteUInt32(buffer, (uint) obj.Mode);
             }
 
             public override CDataBattleContentStage Read(IBuffer buffer)
             {
                 CDataBattleContentStage obj = new CDataBattleContentStage();
-                obj.Unk0 = ReadUInt32(buffer);
+                obj.Id = ReadUInt32(buffer);
                 obj.StageName = ReadMtString(buffer);
-                obj.Unk1 = ReadUInt32(buffer);
+                obj.Mode = (BattleContentMode) ReadUInt32(buffer);
                 return obj;
             }
         }

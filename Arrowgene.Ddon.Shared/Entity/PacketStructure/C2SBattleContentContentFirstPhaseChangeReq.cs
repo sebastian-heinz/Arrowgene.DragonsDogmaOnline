@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_BATTLE_CONTENT_CONTENT_FIRST_PHASE_CHANGE_REQ;
 
-        public uint StageId {  get; set; } // COmes as 602 at first door (Bitterblack Maze Cove)
+        public uint StageId {  get; set; } // Comes as 602 at first door (Bitterblack Maze Cove)
         public uint Unk1 {  get; set; }
 
         public C2SBattleContentContentFirstPhaseChangeReq()

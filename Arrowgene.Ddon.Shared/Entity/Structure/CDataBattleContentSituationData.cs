@@ -6,28 +6,28 @@ using Arrowgene.Ddon.Shared.Model;
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     // Suspect this might be some sort of progress
-    public class CDataBattleContentUnk0
+    public class CDataBattleContentSituationData
     {
-        public CDataBattleContentUnk0()
+        public CDataBattleContentSituationData()
         {
         }
 
-        public uint Unk0 { get; set; } // 0x4
+        public uint Unk0 { get; set; } // 0x4 (impacts BBM announce/situation; seems like if not 2, it is messed up?)
         public ulong Unk1 { get; set; } // 0x8
-        public bool Unk2 { get; set; } // 0x10
+        public bool Unk2 { get; set; } // 0x10 // Controls Reward message (true = Rewards not available)
         public bool Unk3 { get; set; } // 0x11
-        public byte Unk4 { get; set; } // 0x12
+        public byte Unk4 { get; set; } // 0x12 // Related to reward bonus?
         public uint Unk5 { get; set; } // 0x14
-        public uint Unk6 { get; set; } // 0x18
+        public uint Unk6 { get; set; } // 0x18 // Related to status (Lyka gets !)
         public uint Unk7 { get; set; } // 0x1c
         public byte Unk8 { get; set; } // 0x20
         public ulong Unk9 { get; set; } // 0x28
         public uint Unk10 { get; set; } // 0x30
         public uint Unk11 { get; set; } // 0x34
 
-        public class Serializer : EntitySerializer<CDataBattleContentUnk0>
+        public class Serializer : EntitySerializer<CDataBattleContentSituationData>
         {
-            public override void Write(IBuffer buffer, CDataBattleContentUnk0 obj)
+            public override void Write(IBuffer buffer, CDataBattleContentSituationData obj)
             {
                 WriteUInt32(buffer, obj.Unk0);
                 WriteUInt64(buffer, obj.Unk1);
@@ -43,9 +43,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.Unk11);
             }
 
-            public override CDataBattleContentUnk0 Read(IBuffer buffer)
+            public override CDataBattleContentSituationData Read(IBuffer buffer)
             {
-                CDataBattleContentUnk0 obj = new CDataBattleContentUnk0();
+                CDataBattleContentSituationData obj = new CDataBattleContentSituationData();
                 obj.Unk0 = ReadUInt32(buffer);
                 obj.Unk1 = ReadUInt64(buffer);
                 obj.Unk2 = ReadBool(buffer);

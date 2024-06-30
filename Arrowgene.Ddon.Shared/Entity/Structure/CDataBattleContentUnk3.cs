@@ -9,11 +9,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataBattleContentUnk3()
         {
-            Unk0 = new CDataBattleContentUnk0();
+            Unk0 = new CDataBattleContentSituationData();
             Unk1 = new List<CDataBattleContentUnk2>();
         }
 
-        public CDataBattleContentUnk0 Unk0 { get; set; }
+        public CDataBattleContentSituationData Unk0 { get; set; }
         public List<CDataBattleContentUnk2> Unk1 { get; set; }
 
         public class Serializer : EntitySerializer<CDataBattleContentUnk3>
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataBattleContentUnk3 Read(IBuffer buffer)
             {
                 CDataBattleContentUnk3 obj = new CDataBattleContentUnk3();
-                obj.Unk0 = ReadEntity<CDataBattleContentUnk0>(buffer);
+                obj.Unk0 = ReadEntity<CDataBattleContentSituationData>(buffer);
                 obj.Unk1 = ReadEntityList<CDataBattleContentUnk2>(buffer);
                 return obj;
             }

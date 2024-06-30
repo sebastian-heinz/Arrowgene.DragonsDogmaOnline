@@ -11,21 +11,21 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
-        public uint Unk0 { get; set; }
+        public uint Id { get; set; }
         public byte Unk1 { get; set; }
 
         public class Serializer : EntitySerializer<CDataBattleContentUnk2>
         {
             public override void Write(IBuffer buffer, CDataBattleContentUnk2 obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.Id);
                 WriteByte(buffer, obj.Unk1);
             }
 
             public override CDataBattleContentUnk2 Read(IBuffer buffer)
             {
                 CDataBattleContentUnk2 obj = new CDataBattleContentUnk2();
-                obj.Unk0 = ReadUInt32(buffer);
+                obj.Id = ReadUInt32(buffer);
                 obj.Unk1 = ReadByte(buffer);
                 return obj;
             }

@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             EntitySerializer<S2CBattleContentInfoListRes> serializer = EntitySerializer.Get<S2CBattleContentInfoListRes>();
             S2CBattleContentInfoListRes pcap = serializer.Read(InGameDump.Dump_93.AsBuffer());
+            pcap.Unk0[0].Unk0.Unk9 = 4875391515;
 
             return pcap;
         }

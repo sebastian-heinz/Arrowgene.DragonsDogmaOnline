@@ -9,13 +9,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataBattleContentUnk6()
         {
-            Unk2 = new CDataBattleContentUnk0();
+            Unk2 = new CDataBattleContentSituationData();
             Unk3 = new List<CDataBattleContentUnk2>();
         }
 
         public uint Unk0 { get; set; }
         public byte Unk1 { get; set; }
-        public CDataBattleContentUnk0 Unk2 {  get; set; }
+        public CDataBattleContentSituationData Unk2 {  get; set; }
         public List<CDataBattleContentUnk2> Unk3 {  get; set; }
         public bool Unk4 {  get; set; }
 
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataBattleContentUnk6 obj = new CDataBattleContentUnk6();
                 obj.Unk0 = ReadUInt32(buffer);
                 obj.Unk1 = ReadByte(buffer);
-                obj.Unk2 = ReadEntity<CDataBattleContentUnk0>(buffer);
+                obj.Unk2 = ReadEntity<CDataBattleContentSituationData>(buffer);
                 obj.Unk3 = ReadEntityList<CDataBattleContentUnk2>(buffer);
                 obj.Unk4 = ReadBool(buffer);
                 return obj;

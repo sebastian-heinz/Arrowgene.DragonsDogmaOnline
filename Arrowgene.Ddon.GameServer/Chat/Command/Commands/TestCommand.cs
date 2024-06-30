@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 {

@@ -22,18 +22,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             EntitySerializer<S2CBattleContentInfoListRes> serializer = EntitySerializer.Get<S2CBattleContentInfoListRes>();
             S2CBattleContentInfoListRes pcap = serializer.Read(InGameDump.Dump_93.AsBuffer());
 
-            foreach (var item in pcap.Unk0)
+
+            S2CBattleContentPartyMemberInfoUpdateNtc ntc = new S2CBattleContentPartyMemberInfoUpdateNtc()
             {
-                S2CBattleContentPartyMemberInfoUpdateNtc ntc = new S2CBattleContentPartyMemberInfoUpdateNtc()
+                CharacterId = client.Character.CharacterId,
+                Pos = 0,
+                Progress = new CDataBattleContentSituationData()
                 {
-                    CharacterId = client.Character.CharacterId,
-                    Job = (byte) client.Character.Job,
-                    Progress = item.Unk0,
-                    Unk0 = item.Unk1,
-                    Status = true
-                };
-                client.Send(ntc);
-            }
+                    
+                },
+                // Progress = item.Unk0,
+                // Unk0 = item.Unk1,
+                Status = true
+            };
+            client.Send(ntc);
 
             return new S2CBattleContentPartyMemberInfoUpdateRes();
         }
