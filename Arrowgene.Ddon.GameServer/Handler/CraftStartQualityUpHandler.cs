@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartQualityUpReq> packet)
         {
 
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();    
             updateCharacterItemNtc.UpdateType = 0;
             string equipItemUID = packet.Structure.Unk0;
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID);
@@ -50,8 +50,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string RefineMaterial = packet.Structure.Unk1;
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
+            S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
 
-            // Check if a refinematerial is set
+            // Check if a refinematerial is set (shouldn't be possible to have annything run without it but heyho)
             if (!string.IsNullOrEmpty(RefineMaterial))
             {
                 // Remove Refinement material (and increase odds of better Stars)
@@ -85,12 +86,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
 
-            // Someone said a GreatSuccess gave 2 Crests instead of 1? so I guess take the result and Add 1? But Clamp to 3.
             if (dogreatsucess)
             {
                 RandomQuality = 3;
             }
-
 
             Item QualityUpItem = new Item()
             {
@@ -102,7 +101,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ArmorCrestDataList = new List<CDataArmorCrestData>(),
                 EquipElementParamList = new List<CDataEquipElementParam>()
             };
-
+            
 
             if (isEquipped)
             {
@@ -115,23 +114,62 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equiptype = equipInfo.EquipType;
 
                 _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, QualityUpItem.UId, QualityUpItem.ItemId, QualityUpItem, (EquipType)equiptype, (byte)equipslot);
-                S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-                GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
+                lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
+                GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, common);
                 client.Send(lobbyPlayerContextNtc);
             }
             else
             {
-                List<CDataItemUpdateResult> AddItemResult;
-                List<CDataItemUpdateResult> RemoveItemResult;
-                RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
-                bool isBagItem =! RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
-                                                                result.ItemList.StorageType == StorageType.StorageBoxExpansion);
-                AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, equipItemID, 1, RandomQuality);
-                updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
-                updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
-                //TODO: When we figure out swapping items directly correctly, do that here too. Its almost done in CraftStartEquipGradeUpHandler in the Equipped section, just need client to reflect accurately.
-                //TODO: bug caused by doing it this way, the end screen will show a blank item because the item it wants to show is consumed 
+
+                StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
+                Logger.Debug($"this is it {storageType}");
+                // TODO: Looks like this is mostly fine but some potential issues if items share UIDs? I need to explore this further.
+                // unfortunately this didn't fix the bug of not losing the item icon when you change quality lol
+                ushort slotno = 0;
+                uint itemnum = 0;
+                Item item;
+                var foundItem = common.Storage.getStorage(StorageType.ItemBagEquipment).findItemByUId(equipItemUID);
+
+                switch (storageType)
+                {
+                    case StorageType.ItemBagEquipment:
+                        foundItem = common.Storage.getStorage(StorageType.ItemBagEquipment).findItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageBoxNormal:
+                        foundItem = common.Storage.getStorage(StorageType.StorageBoxNormal).findItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageBoxExpansion:
+                        foundItem = common.Storage.getStorage(StorageType.StorageBoxExpansion).findItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageChest:
+                        foundItem = common.Storage.getStorage(StorageType.StorageChest).findItemByUId(equipItemUID);
+                        break;
+                }
+
+                if (foundItem != null)
+                {
+                    (slotno, item, itemnum) = foundItem;
+                    _itemManager.ReplaceStorageItem(
+                        Server,
+                        client,
+                        charid,
+                        storageType,
+                        QualityUpItem,
+                        QualityUpItem.UId,
+                        (byte)slotno
+                    );
+                    Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
+                }
+                else
+                {
+                    Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
+                }
+
+                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, charid, storageType, QualityUpItem, QualityUpItem.UId, (byte)slotno);
+                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+            
             }
+
 
 
             List<CDataArmorCrestData> ArmorCrestDataList = new List<CDataArmorCrestData>();
@@ -169,6 +207,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(res);
             client.Send(updateCharacterItemNtc);
+        }
+        private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
+        {
+            foreach (var storageType in STORAGE_TYPES)
+            {
+                var foundItem = character.Storage.getStorage(storageType).findItemByUId(itemUID);
+                if (foundItem != null)
+                {
+                    return (storageType, (foundItem.Item1, foundItem.Item2, foundItem.Item3));
+                }
+            }
+            return (null, null);
         }
     }
 }

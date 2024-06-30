@@ -433,6 +433,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return item.ItemId;
         }
+
+        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, string newUid, byte slotNo)
+        {
+            Console.WriteLine("Yea we're getting called");
+
+            server.Database.ReplaceStorageItem(characterID, storageType, slotNo, newUid, 1);
+
+            CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
+            updateResult.ItemList.ItemUId = newUid;
+            updateResult.ItemList.ItemId = newItem.ItemId;
+            updateResult.ItemList.ItemNum = 1; // Assuming you always replace with 1 item
+            updateResult.ItemList.Unk3 = newItem.Unk3;
+            updateResult.ItemList.StorageType = storageType;
+            updateResult.ItemList.SlotNo = slotNo;
+            updateResult.ItemList.Color = newItem.Color;
+            updateResult.ItemList.PlusValue = newItem.PlusValue;
+            updateResult.ItemList.Bind = false;
+            updateResult.ItemList.EquipPoint = 0;
+            updateResult.ItemList.EquipCharacterID = 0;
+            updateResult.ItemList.EquipPawnID = 0;
+            updateResult.ItemList.WeaponCrestDataList = newItem.WeaponCrestDataList;
+            updateResult.ItemList.ArmorCrestDataList = newItem.ArmorCrestDataList;
+            updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
+            updateResult.UpdateItemNum = 1;
+
+            return new List<CDataItemUpdateResult> { updateResult };
+        }
+
     }
 
     [Serializable]
