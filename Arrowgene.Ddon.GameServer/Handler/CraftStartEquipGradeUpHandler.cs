@@ -179,6 +179,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Logger.Debug($"this is it {storageType}");
                 // TODO: Looks like this is mostly fine but some potential issues if items share UIDs? I need to explore this further.
                 // unfortunately this didn't fix the bug of not losing the item icon when you change quality lol
+
+                // TODO: Sometimes an error happens, need to look into that.
                 ushort slotno = 0;
                 uint itemnum = 0;
                 Item item;
