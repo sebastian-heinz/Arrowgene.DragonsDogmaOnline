@@ -168,7 +168,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, charid, storageType, QualityUpItem, QualityUpItem.UId, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             
-            }
+            };
 
 
 

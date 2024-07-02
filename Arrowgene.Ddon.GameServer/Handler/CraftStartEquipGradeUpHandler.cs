@@ -175,14 +175,54 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                RemoveItemResult = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, equipItemUID, 1);
-                bool isBagItem =! RemoveItemResult.Any(result => result.ItemList.StorageType == StorageType.StorageBoxNormal ||
-                                                                result.ItemList.StorageType == StorageType.StorageBoxExpansion);
-                updateCharacterItemNtc.UpdateItemList.AddRange(RemoveItemResult);
-                AddItemResult = _itemManager.AddItem(Server, client.Character, isBagItem, gearupgradeID, 1, currentPlusValue);
-                updateCharacterItemNtc.UpdateItemList.AddRange(AddItemResult);
-                //TODO: Adapt the Equipped code here, since that behaves in a more intended way.
-             };
+                StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
+                Logger.Debug($"this is it {storageType}");
+                // TODO: Looks like this is mostly fine but some potential issues if items share UIDs? I need to explore this further.
+                // unfortunately this didn't fix the bug of not losing the item icon when you change quality lol
+                ushort slotno = 0;
+                uint itemnum = 0;
+                Item item;
+                var foundItem = common.Storage.getStorage(StorageType.ItemBagEquipment).findItemByUId(equipItemUID);
+
+                switch (storageType)
+                {
+                    case StorageType.ItemBagEquipment:
+                        foundItem = common.Storage.getStorage(StorageType.ItemBagEquipment).findItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageBoxNormal:
+                        foundItem = common.Storage.getStorage(StorageType.StorageBoxNormal).findItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageBoxExpansion:
+                        foundItem = common.Storage.getStorage(StorageType.StorageBoxExpansion).findItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageChest:
+                        foundItem = common.Storage.getStorage(StorageType.StorageChest).findItemByUId(equipItemUID);
+                        break;
+                }
+
+                if (foundItem != null)
+                {
+                    (slotno, item, itemnum) = foundItem;
+                    _itemManager.ReplaceStorageItem(
+                        Server,
+                        client,
+                        charid,
+                        storageType,
+                        UpgradedItem,
+                        UpgradedItem.UId,
+                        (byte)slotno
+                    );
+                    Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
+                }
+                else
+                {
+                    Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
+                }
+
+                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, charid, storageType, UpgradedItem, UpgradedItem.UId, (byte)slotno);
+                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+            
+            };
             
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
@@ -215,6 +255,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(updateCharacterItemNtc);
             client.Send(res);
+        }
+        private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
+        {
+            foreach (var storageType in STORAGE_TYPES)
+            {
+                var foundItem = character.Storage.getStorage(storageType).findItemByUId(itemUID);
+                if (foundItem != null)
+                {
+                    return (storageType, (foundItem.Item1, foundItem.Item2, foundItem.Item3));
+                }
+            }
+            return (null, null);
         }
     }
 }
