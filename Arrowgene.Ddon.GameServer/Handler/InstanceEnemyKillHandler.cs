@@ -109,6 +109,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Party.SendToAll(groupDestroyedNtc);
             }
 
+            if (client.GameMode == GameMode.BitterBlackMaze && enemyKilled.IsAreaBoss)
+            {
+                S2CBattleContentClearNtc contentClearNtc = new S2CBattleContentClearNtc()
+                {
+                    Unk0 = 2,
+                    TierName = "YOOOOO"
+                };
+                client.Party.SendToAll(contentClearNtc);
+            }
+
             // TODO: EnemyId and KillNum
             client.Send(new S2CInstanceEnemyKillRes() {
                 EnemyId = enemyKilled.Id,

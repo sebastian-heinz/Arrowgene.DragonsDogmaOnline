@@ -27,6 +27,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Logger.Info($"GameMode={packet.GameMode}");
 
+            client.GameMode = packet.GameMode;
+
             S2CCharacterSwitchGameModeNtc ntc = new S2CCharacterSwitchGameModeNtc()
             {
                 Unk0 = (uint) packet.GameMode, // Probably not right? int vs uint
