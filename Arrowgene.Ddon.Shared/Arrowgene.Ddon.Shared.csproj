@@ -31,8 +31,4 @@
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Asset\" />
-    </ItemGroup>
 </Project>

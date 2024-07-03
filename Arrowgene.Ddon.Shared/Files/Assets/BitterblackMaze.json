@@ -1,0 +1,78 @@
+{
+    "maze_configurations": {
+		"normal": [
+			{
+			    "tier": 1,
+				"name": "Bitterblack Maze: Netherworld 1",
+				"stage_id": {
+					"id": 602,
+					"group_id": 26,
+					"layer_no": 0
+				},
+				"destinations": [610, 611, 612]
+			},
+			{
+				"tier": 2,
+				"name": "Bitterblack Maze: Netherworld 2",
+				"stage_id": {
+					"id": 603,
+					"group_id": 26,
+					"layer_no": 0
+				},
+				"destinations": [614, 615, 616]
+			},
+			{
+				"tier": 3,
+				"name": "Bitterblack Maze: Netherworld 3",
+				"stage_id": {
+					"id": 604,
+					"group_id": 26,
+					"layer_no": 0
+				},
+				"destinations": [617, 618, 619, 620, 621, 622]
+			}
+		],
+		"abyss": [
+			{
+				"tier": 1,
+				"name": "Bitterblack Maze Abyss: Netherworld 1",
+				"stage_id": {
+					"id": 602,
+					"group_id": 27,
+					"layer_no": 0
+				},
+				"destinations": [686, 687, 688]
+			},
+			{
+				"tier": 2,
+				"name": "Bitterblack Maze Abyss: Netherworld 2",
+				"stage_id": {
+					"id": 682,
+					"group_id": 27,
+					"layer_no": 0
+				},
+				"destinations": [689, 690, 691]
+			},
+			{
+				"tier": 3,
+				"name": "Bitterblack Maze Abyss: Netherworld 3",
+				"stage_id": {
+					"id": 683,
+					"group_id": 27,
+					"layer_no": 0
+				},
+				"destinations": [692, 693, 694]
+			},
+			{
+				"tier": 4,
+				"name": "Bitterblack Maze Abyss: Netherworld 3",
+				"stage_id": {
+					"id": 684,
+					"group_id": 27,
+					"layer_no": 0
+				},
+				"destinations": [695, 696, 697, 715, 716, 717]
+			}
+		]
+	}
+}

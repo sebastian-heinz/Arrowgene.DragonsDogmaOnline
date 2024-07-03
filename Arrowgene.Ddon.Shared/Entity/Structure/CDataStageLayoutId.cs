@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -22,6 +23,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             StageId = stageId;
             LayerNo = layerNo;
             GroupId = groupId;
+        }
+
+        public StageId AsStageId()
+        {
+            return new StageId(this);
         }
 
         public class Serializer : EntitySerializer<CDataStageLayoutId>
