@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte Unk1 { get; set; }
         public byte Unk2 { get; set; }
         public byte Unk3 { get; set; }
-        public bool Unk4 { get; set; } // Displays a Dragon Froce icon on the enhance screen.
+        public bool DragonFroce { get; set; } // Displays a Dragon Froce icon on the enhance screen.
 
         public class Serializer : EntitySerializer<CDataCraftStartEquipGradeUpUnk0>
         {
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.Unk1);
                 WriteByte(buffer, obj.Unk2);
                 WriteByte(buffer, obj.Unk3);
-                WriteBool(buffer, obj.Unk4);
+                WriteBool(buffer, obj.DragonFroce);
             }
 
             public override CDataCraftStartEquipGradeUpUnk0 Read(IBuffer buffer)
@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     obj.Unk1 = ReadByte(buffer);
                     obj.Unk2 = ReadByte(buffer);
                     obj.Unk3 = ReadByte(buffer);
-                    obj.Unk4 = ReadBool(buffer);
+                    obj.DragonFroce = ReadBool(buffer);
                     return obj;
                 
             }

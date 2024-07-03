@@ -15,8 +15,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte Unk0 { get; set; } // Maybe the Dragon Force Type?
         public uint Unk1 { get; set; }  // Maybe the Dragon Force ID? Can't tell.
         public ushort Unk2 { get; set; } // Filling this above 0 prevents the "UP" display? Unknown
-        public ushort Unk3 { get; set; } // Displays "UP" next to the Dragon Force upon succesful enhance.
-        public bool Unk4 { get; set; } // Displays "MAX" next to the Dragon Force icon.
+        public ushort Unk3 { get; set; } // Displays "UP" next to the Dragon Force upon succesful enhance, probably some ID for dragonforce levels?
+        public bool IsMax { get; set; } // Displays "MAX" next to the Dragon Force icon.
 
 
         public class Serializer : EntitySerializer<CDataCraftStartEquipGradeUpUnk0Unk0>
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.Unk1);
                 WriteUInt16(buffer, obj.Unk2);
                 WriteUInt16(buffer, obj.Unk3);
-                WriteBool(buffer, obj.Unk4);
+                WriteBool(buffer, obj.IsMax);
             }
 
             public override CDataCraftStartEquipGradeUpUnk0Unk0 Read(IBuffer buffer)
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     obj.Unk1 = ReadUInt32(buffer);
                     obj.Unk2 = ReadUInt16(buffer);
                     obj.Unk3 = ReadUInt16(buffer);
-                    obj.Unk4 = ReadBool(buffer);
+                    obj.IsMax = ReadBool(buffer);
                     return obj;
             }
         }

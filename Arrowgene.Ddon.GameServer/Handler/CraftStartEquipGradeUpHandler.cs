@@ -106,24 +106,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
 
-            // More dummy data
-            CDataCraftStartEquipGradeUpUnk0Unk0 internaldummydata = new CDataCraftStartEquipGradeUpUnk0Unk0()
+            // More dummy data, looks like its dragonfroce related.
+            CDataCraftStartEquipGradeUpUnk0Unk0 DragonForceData = new CDataCraftStartEquipGradeUpUnk0Unk0()
             {
                 Unk0 = 1,          // Probably Dragon Force related.
                 Unk1 = 0,
                 Unk2 = 0,          // setting this to a value above 0 seems to stop displaying "UP" ?
                 Unk3 = 1,          // displays "UP" next to the DF upon succesful enhance.
-                Unk4 = false,      // displays Max on the DF popup.
+                IsMax = false,      // displays Max on the DF popup.
             };
 
             // Dummy data for Unk1.
             CDataCraftStartEquipGradeUpUnk0 dummydata = new CDataCraftStartEquipGradeUpUnk0()
             {
-                Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { internaldummydata },
+                Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { DragonForceData },
                 Unk1 = 0,
                 Unk2 = 0,
-                Unk3 = 0,
-                Unk4 = false,    // makes the Dragonforce slot popup appear if set to true.
+                Unk3 = 0,               // No idea what these 3 bytes are for
+                DragonFroce = false,    // makes the Dragonforce slot popup appear if set to true.
             };
             // TODO: Source these values accurately when we know what they are. ^
 
