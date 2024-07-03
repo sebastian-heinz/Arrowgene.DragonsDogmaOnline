@@ -175,6 +175,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
+                Logger.Debug($"Attempting to find {equipItemUID}");
                 StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
                 Logger.Debug($"this is it {storageType}");
                 // TODO: Looks like this is mostly fine but some potential issues if items share UIDs? I need to explore this further.
@@ -200,6 +201,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     case StorageType.StorageChest:
                         foundItem = common.Storage.getStorage(StorageType.StorageChest).findItemByUId(equipItemUID);
                         break;
+                    default:
+                        Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
+                        break;
                 }
 
                 if (foundItem != null)
@@ -208,6 +212,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     _itemManager.ReplaceStorageItem(
                         Server,
                         client,
+                        common,
                         charid,
                         storageType,
                         UpgradedItem,
@@ -221,7 +226,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
 
-                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, charid, storageType, UpgradedItem, UpgradedItem.UId, (byte)slotno);
+                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, UpgradedItem, UpgradedItem.UId, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             
             };

@@ -434,10 +434,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return item.ItemId;
         }
 
-        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, string newUid, byte slotNo)
+        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, string newUid, byte slotNo)
         {
-            Console.WriteLine("Yea we're getting called");
 
+            Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newUid}, NewItemID={newItem.ItemId}");
+
+            character.Storage.setStorageItem(newItem, 1, storageType, slotNo);
             server.Database.ReplaceStorageItem(characterID, storageType, slotNo, newUid, 1);
 
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
@@ -458,10 +460,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
             updateResult.UpdateItemNum = 1;
 
+            Console.WriteLine($"Item successfully replaced in storage: UID={newUid}, SlotNo={slotNo}");
+
             return new List<CDataItemUpdateResult> { updateResult };
         }
-
     }
+
 
     [Serializable]
     internal class ItemDoesntExistException : Exception

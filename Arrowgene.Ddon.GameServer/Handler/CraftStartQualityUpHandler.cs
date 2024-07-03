@@ -120,7 +120,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-
+                Logger.Debug($"Attempting to find {equipItemUID}");
                 StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
                 Logger.Debug($"this is it {storageType}");
                 // TODO: Looks like this is mostly fine but some potential issues if items share UIDs? I need to explore this further.
@@ -146,6 +146,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     case StorageType.StorageChest:
                         foundItem = common.Storage.getStorage(StorageType.StorageChest).findItemByUId(equipItemUID);
                         break;
+                    default:
+                        Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
+                        break;
                 }
 
                 if (foundItem != null)
@@ -154,6 +157,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     _itemManager.ReplaceStorageItem(
                         Server,
                         client,
+                        common,
                         charid,
                         storageType,
                         QualityUpItem,
@@ -167,12 +171,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
 
-                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, charid, storageType, QualityUpItem, QualityUpItem.UId, (byte)slotno);
+                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, QualityUpItem.UId, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             
             };
-
-
 
             List<CDataArmorCrestData> ArmorCrestDataList = new List<CDataArmorCrestData>();
             ArmorCrestDataList.Add(new CDataArmorCrestData { u0 = 0, u1 = 0, u2 = 0, u3 = 0 });
