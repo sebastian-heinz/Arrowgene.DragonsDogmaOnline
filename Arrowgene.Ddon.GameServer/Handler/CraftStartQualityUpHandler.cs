@@ -122,11 +122,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 Logger.Debug($"Attempting to find {equipItemUID}");
                 StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
-                Logger.Debug($"this is it {storageType}");
-                // TODO: Looks like this is mostly fine but some potential issues if items share UIDs? I need to explore this further.
-                // unfortunately this didn't fix the bug of not losing the item icon when you change quality lol
-
-                // TODO: Sometimes an error happens, need to look into that.
                 ushort slotno = 0;
                 uint itemnum = 0;
                 Item item;
@@ -173,6 +168,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, QualityUpItem.UId, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                //TODO: Figure out why when changing the Quality of an unequipped item it doesn't show an icon.
             
             };
 
@@ -192,7 +188,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EquipSlot = EquipmentSlot
             };
 
-            // figuring out what this is
+            // TODO: figuring out what this is
+            // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
                 Unk0 = 0,
@@ -209,8 +206,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ArmorCrestDataList = ArmorCrestDataList,
                 CurrentEquip = CurrentEquipInfo
             };
-            client.Send(res);
             client.Send(updateCharacterItemNtc);
+            client.Send(res);
         }
         private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
         {

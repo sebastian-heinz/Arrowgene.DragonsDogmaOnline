@@ -376,6 +376,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                                 newItem.ItemId = newId;
                                 itemList[i] = newItem;
 
+                                character.Equipment.SetEquipItem(newItem, character.Job, equipType, equipSlot);
                                 server.Database.ReplaceEquipItem(character.CommonId, character.Job, equipType, equipSlot, newUid);
                             }
                         }

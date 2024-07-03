@@ -75,10 +75,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 addEquipPoint = 30;
             }
-            // TODO: Figure out why the bar always fills fully regardless of fed numbers? it wasn't doing this earlier on.
-            // TODO: we need to track the EquipPoints in the DB, and anywhere we set it to 0 it should pull the correct points from the DB instead.
+            // TODO: We might need to track equippoints in the DB? potentially related to AddtionalStatus found in QualityUp, some gear specific value that we can't find.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
-            // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next
+            // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next (potentially related to how we use UIDs)
 
             // Remove crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
@@ -100,9 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
 
-            // This list should contain the next ID you will go into, if you happen to have enough points to go into multiple we must include those too.
-            // For now I just hardcode the next ID without accounting for the potential for being able to do it multiple times.
-            // TODO: I guess figure this out lol
+            // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
             List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
             {
                 new CDataCommonU32(gearupgradeID)
@@ -115,8 +112,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk0 = 1,          // Probably Dragon Force related.
                 Unk1 = 0,
                 Unk2 = 0,          // setting this to a value above 0 seems to stop displaying "UP" ?
-                Unk3 = 1,          // displays "UP" next to the DF upon succesful enhance. This appears to be dragon force related.
-                Unk4 = false,      // displays Max on the DF popup. This appears to be dragon force related.
+                Unk3 = 1,          // displays "UP" next to the DF upon succesful enhance.
+                Unk4 = false,      // displays Max on the DF popup.
             };
 
             // Dummy data for Unk1.
@@ -139,8 +136,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Substract Gold based on JSON cost.
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-
-            // TODO: Figure out how to stop the server thinking an item is equipped just because it has same UID as a non-equipped gear you're trying to upgrade.
 
             List<CDataItemUpdateResult> AddItemResult;
             List<CDataItemUpdateResult> RemoveItemResult;
@@ -175,13 +170,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                Logger.Debug($"Attempting to find {equipItemUID}");
                 StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
-                Logger.Debug($"this is it {storageType}");
-                // TODO: Looks like this is mostly fine but some potential issues if items share UIDs? I need to explore this further.
-                // unfortunately this didn't fix the bug of not losing the item icon when you change quality lol
-
-                // TODO: Sometimes an error happens, need to look into that.
                 ushort slotno = 0;
                 uint itemnum = 0;
                 Item item;
