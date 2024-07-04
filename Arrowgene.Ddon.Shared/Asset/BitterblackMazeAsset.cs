@@ -9,9 +9,11 @@ namespace Arrowgene.Ddon.Shared.Asset
         public BitterblackMazeAsset()
         {
             Stages = new Dictionary<StageId, BitterblackMazeConfig>();
+            Appraisals = new List<BitterblackMazeAppraisalItem>();
         }
 
         public Dictionary<StageId, BitterblackMazeConfig> Stages { get; set; }
+        public List<BitterblackMazeAppraisalItem> Appraisals { get; set; }
     }
 }
 

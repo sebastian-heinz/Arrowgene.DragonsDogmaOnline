@@ -88,6 +88,15 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCraftSupportPawnID.Serializer());
             Create(new CDataCraftTimeSaveCost.Serializer());
             Create(new CDataCraftSkillAnalyzeResult.Serializer());
+            Create(new CDataDispelItemCategoryInfo.Serializer());
+            Create(new CDataDispelBaseItem.Serializer());
+            Create(new CDataDispelBaseItemData.Serializer());
+            Create(new CDataDispelLotData.Serializer());
+            Create(new CDataDispelLotItem.Serializer());
+            Create(new CDataDispelLotCrest.Serializer());
+            Create(new CDataDispelLotCrestUnk2.Serializer());
+            Create(new CDataDispelLotColor.Serializer());
+            Create(new CDataDispelLotPlus.Serializer());
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDeliveryItem.Serializer());
@@ -331,6 +340,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCraftStartCraftReq.Serializer());
             Create(new C2SCraftSkillAnalyzeReq.Serializer());
 
+            Create(new C2SDispelGetDispelItemSettingsReq.Serializer());
+            Create(new C2SDispelGetDispelItemListReq.Serializer());
+
             Create(new C2SEquipChangeCharacterEquipJobItemReq.Serializer());
             Create(new C2SEquipChangeCharacterEquipReq.Serializer());
             Create(new C2SEquipChangeCharacterStorageEquipReq.Serializer());
@@ -543,7 +555,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CBattleContentPartyMemberInfoUpdateNtc.Serializer());
             Create(new S2CBattleContentContentFirstPhaseChangeRes.Serializer());
             Create(new S2CBattleContentClearNtc.Serializer());
-            Create(new S2CBattleContentClearResults.Serializer());
+            Create(new S2CBattleContentClearStatsNtc.Serializer());
 
             Create(new S2C_BATTLE_71_12_16_NTC.Serializer());
             Create(new S2C_BATTLE_71_13_16_NTC.Serializer());
@@ -617,6 +629,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftRecipeGetCraftRecipeRes.Serializer());
             Create(new S2CCraftStartCraftRes.Serializer());
             Create(new S2CCraftSkillAnalyzeRes.Serializer());
+
+            Create(new S2CDispelGetDispelItemSettingsRes.Serializer());
+            Create(new S2CDispelGetDispelItemListRes.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());

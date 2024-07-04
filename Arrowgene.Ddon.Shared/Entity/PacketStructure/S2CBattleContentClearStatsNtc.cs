@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CBattleContentClearResults : IPacketStructure
+    public class S2CBattleContentClearStatsNtc : IPacketStructure
     {
         public PacketId Id => PacketId.S2C_BATTLE_71_14_16_NTC;
 
-        public S2CBattleContentClearResults()
+        public S2CBattleContentClearStatsNtc()
         {
         }
 
@@ -19,9 +19,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public bool Unk3 {  get; set; }
         public ulong ClearTime { get; set; }
 
-        public class Serializer : PacketEntitySerializer<S2CBattleContentClearResults>
+        public class Serializer : PacketEntitySerializer<S2CBattleContentClearStatsNtc>
         {
-            public override void Write(IBuffer buffer, S2CBattleContentClearResults obj)
+            public override void Write(IBuffer buffer, S2CBattleContentClearStatsNtc obj)
             {
                 WriteUInt32(buffer, obj.Unk0);
                 WriteMtString(buffer, obj.Unk1);
@@ -30,9 +30,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt64(buffer, obj.ClearTime);
             }
 
-            public override S2CBattleContentClearResults Read(IBuffer buffer)
+            public override S2CBattleContentClearStatsNtc Read(IBuffer buffer)
             {
-                S2CBattleContentClearResults obj = new S2CBattleContentClearResults();
+                S2CBattleContentClearStatsNtc obj = new S2CBattleContentClearStatsNtc();
                 obj.Unk0 = ReadUInt32(buffer);
                 obj.Unk1 = ReadMtString(buffer);
                 obj.Unk2 = ReadUInt32(buffer);
