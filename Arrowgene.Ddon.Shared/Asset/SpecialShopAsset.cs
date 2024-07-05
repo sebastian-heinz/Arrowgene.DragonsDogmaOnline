@@ -1,0 +1,19 @@
+using System.Collections.Generic;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Appraisal;
+using Arrowgene.Ddon.Shared.Model.BattleContent;
+
+namespace Arrowgene.Ddon.Shared.Asset
+{
+    public class SpecialShopAsset
+    {
+        public SpecialShopAsset()
+        {
+            SpecialShops = new Dictionary<ShopType, List<ShopCategory>>();
+            ShopCategories = new Dictionary<uint, ShopCategory>();
+        }
+
+        public Dictionary<ShopType, List<ShopCategory>> SpecialShops { get; set; }
+        public Dictionary<uint, ShopCategory> ShopCategories { get; set; }
+    }
+}

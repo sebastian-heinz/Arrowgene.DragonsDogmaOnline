@@ -5,6 +5,9 @@ using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Model;
+using System;
+using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
+using Arrowgene.Ddon.Shared.Model.Appraisal;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -41,29 +44,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     asset.Stages[configElement.StageId] = configElement;
                 }
-            }
-
-            var jAppraisals = document.RootElement.GetProperty("appraisals").EnumerateArray();
-            foreach (var jAppraisal in jAppraisals)
-            {
-                BitterblackMazeAppraisalItem item = new BitterblackMazeAppraisalItem()
-                {
-                    ItemId = jAppraisal.GetProperty("item_id").GetUInt32(),
-                    Name = jAppraisal.GetProperty("name").GetString()
-                };
-
-                foreach (var jLotItem in jAppraisal.GetProperty("pool").EnumerateArray())
-                {
-                    BitterblackAppraisalLotteryItem lotItem = new BitterblackAppraisalLotteryItem()
-                    {
-                        ItemId = jLotItem.GetProperty("item_id").GetUInt32(),
-                        Name = jLotItem.GetProperty("name").GetString(),
-                        Amount = jLotItem.GetProperty("amount").GetUInt32()
-                    };
-                    item.LootPool.Add(lotItem);
-                }
-
-                asset.Appraisals.Add(item);
             }
 
             return asset;

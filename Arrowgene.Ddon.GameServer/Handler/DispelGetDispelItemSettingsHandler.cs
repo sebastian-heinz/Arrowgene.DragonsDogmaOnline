@@ -21,13 +21,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CDispelGetDispelItemSettingsRes Handle(GameClient client, C2SDispelGetDispelItemSettingsReq request)
         {
             var res = new S2CDispelGetDispelItemSettingsRes();
-            if (request.ShopCategory == ShopCategory.BitterblackMaze)
+
+            var specialShops = Server.AssetRepository.SpecialShopAsset.SpecialShops;
+            if (specialShops.ContainsKey(request.ShopType))
             {
-                res.CategoryList.Add(new CDataDispelItemCategoryInfo() 
-                { 
-                    Category = (uint) request.ShopCategory,
-                    CategoryName = "BBM Exchange"
-                });
+                foreach (var category in specialShops[request.ShopType])
+                {
+                    res.CategoryList.Add(new CDataDispelItemCategoryInfo()
+                    {
+                        Category = category.Id,
+                        CategoryName = category.Label
+                    });
+                }
             }
 
             return res;

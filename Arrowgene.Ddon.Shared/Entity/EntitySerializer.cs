@@ -97,6 +97,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataDispelLotCrestUnk2.Serializer());
             Create(new CDataDispelLotColor.Serializer());
             Create(new CDataDispelLotPlus.Serializer());
+            Create(new CDataGetDispelItem.Serializer());
+            Create(new CDataDispelResultInfo.Serializer());
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDeliveryItem.Serializer());
@@ -342,6 +344,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SDispelGetDispelItemSettingsReq.Serializer());
             Create(new C2SDispelGetDispelItemListReq.Serializer());
+            Create(new C2SDispelExchangeDispelItemReq.Serializer());
 
             Create(new C2SEquipChangeCharacterEquipJobItemReq.Serializer());
             Create(new C2SEquipChangeCharacterEquipReq.Serializer());
@@ -632,6 +635,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CDispelGetDispelItemSettingsRes.Serializer());
             Create(new S2CDispelGetDispelItemListRes.Serializer());
+            Create(new S2CDispelExchangeDispelItemRes.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());

@@ -254,6 +254,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new DailyMissionListGetHandler(this));
             AddHandler(new DispelGetDispelItemSettingsHandler(this));
             AddHandler(new DispelGetDispelItemListHandler(this));
+            AddHandler(new DispelExchangeDispelItemHandler(this));
 
             AddHandler(new EquipChangeCharacterEquipHandler(this));
             AddHandler(new EquipChangeCharacterEquipJobItemHandler(this));

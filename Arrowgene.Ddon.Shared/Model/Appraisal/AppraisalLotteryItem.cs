@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Arrowgene.Ddon.Shared.Model.BattleContent
+namespace Arrowgene.Ddon.Shared.Model.Appraisal
 {
-    public class BitterblackAppraisalLotteryItem
+    public class AppraisalLotteryItem
     {
         public uint ItemId { get; set; }
         public string Name { get; set; }
-        public uint Amount {  get; set; }
+        public uint Amount { get; set; }
 
-        public BitterblackAppraisalLotteryItem()
+        public AppraisalLotteryItem()
         {
             Name = "";
         }

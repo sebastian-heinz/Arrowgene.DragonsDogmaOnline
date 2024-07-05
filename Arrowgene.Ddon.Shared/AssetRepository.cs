@@ -38,6 +38,7 @@ namespace Arrowgene.Ddon.Shared
         public const string SecretAbilityKey = "DefaultSecretAbilities.json";
         public const string QuestAssestKey = "quests";
         public const string BitterblackMazeKey = "BitterblackMaze.json";
+        public const string SpecialShopKey = "SpecialShops.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -76,6 +77,7 @@ namespace Arrowgene.Ddon.Shared
             SecretAbilitiesAsset = new SecretAbilityAsset();
             QuestAssets = new QuestAsset();
             BitterblackMazeAsset = new BitterblackMazeAsset();
+            SpecialShopAsset = new SpecialShopAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -96,6 +98,7 @@ namespace Arrowgene.Ddon.Shared
         public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
         public SecretAbilityAsset SecretAbilitiesAsset { get; private set; }
         public QuestAsset QuestAssets { get; set; }
+        public SpecialShopAsset SpecialShopAsset {  get; private set; }
         public BitterblackMazeAsset BitterblackMazeAsset { get; private set; }
 
         public void Initialize()
@@ -117,6 +120,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
             RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
+            RegisterAsset(value => SpecialShopAsset = value, SpecialShopKey, new SpecialShopDeserializer());
             RegisterAsset(value => BitterblackMazeAsset = value, BitterblackMazeKey, new BitterblackMazeAssetDeserializer());
 
             var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset);

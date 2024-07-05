@@ -1,0 +1,118 @@
+{
+	"comment": [
+		"The 'shop_type' field is an enum defined inside of the server code.",
+		"This is the value send when you click on a particular NPC for some content.",
+		"Each NPC can have multiple categories of items listed in their store.",
+		"Each of these categories requires a string label and a unique ID to identify it.",
+		"",
+		"The 'appraisal_id' is also a unique ID per shop. The ids should be in the format such that",
+		"the most significant byte of the u32 is the byte value of the 'shop_type'. The bottom 7 bytes",
+		"can be whatever value you want, as long as they are unique to the shop for each item."
+	],
+	"shops": [
+		{
+			"shop_type": "BitterBlackMaze",
+			"categories": [
+				{
+					"label": "BBM Exchange",
+					"appraisals": [
+						{
+							"label": "Bitterblack Deed Box Exchange",
+							"appraisal_id": "0x06000001",
+							"base_items": [
+								{
+									"item_id": 21630,
+									"name": "Bitterblack Deed Box",
+									"amount": 1
+								}
+							],
+							"pool": [
+								{
+									"item_id": 21651,
+									"name": "Bitterblack Bracelet",
+									"amount": 1
+								}
+							]
+						},
+						{
+							"label": "Bitterblack Orb Exchange",
+							"appraisal_id": "0x06000002",
+							"base_items": [
+								{
+									"item_id": 23364,
+									"name": "Bitterblack Orb",
+									"amount": 1
+								}
+							],
+							"pool": [
+								{
+									"item_id": 21380,
+									"name": "Fruit of Inspiration (Harden)",
+									"amount": 1
+								},
+								{
+								   "item_id": 21381,
+								   "name": "Fruit of Inspiration (Heavy)",
+								   "amount": 1
+								},
+								{
+								   "item_id": 21382,
+								   "name": "Fruit of Inspiration (Restoration)",
+								   "amount": 1
+								},
+								{
+								   "item_id": 21383,
+								   "name": "Fruit of Inspiration (Protection)",
+								   "amount": 1
+								},
+								{
+								   "item_id": 21384,
+								   "name": "Fruit of Inspiration (Weaken)",
+								   "amount": 1
+								},
+								{
+								   "item_id": 21385,
+								   "name": "Fruit of Inspiration (Attraction)",
+								   "amount": 1
+								},
+								{
+								   "item_id": 21386,
+								   "name": "Fruit of Inspiration (Fearless)",
+								   "amount": 1
+								},
+								{
+								   "item_id": 21387,
+								   "name": "Fruit of Inspiration (Concentration)",
+								   "amount": 1
+								},
+								{
+								   "item_id": 21388,
+								   "name": "Fruit of Inspiration (Resurrection)",
+								   "amount": 1
+								}
+							]
+						},
+						{
+							"appraisal_id": "0x06000003",
+							"label": "Bitterblack Chest of the Farthest End Exchange",
+							"base_items": [
+								{
+									"item_id": 24723,
+									"name": "Bitterblack Chest of the Farthest End",
+									"amount": 1
+								}
+							],
+							"pool": [
+								{
+									"item_id": 23711,
+									"name": "Bitterblack Earring",
+									"amount": 1
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}	

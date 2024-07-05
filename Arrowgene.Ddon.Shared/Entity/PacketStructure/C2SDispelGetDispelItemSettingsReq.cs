@@ -14,19 +14,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public ShopCategory ShopCategory { get; set; }
+        public ShopType ShopType { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SDispelGetDispelItemSettingsReq>
         {
             public override void Write(IBuffer buffer, C2SDispelGetDispelItemSettingsReq obj)
             {
-                WriteUInt32(buffer, (uint) obj.ShopCategory);
+                WriteUInt32(buffer, (uint) obj.ShopType);
             }
 
             public override C2SDispelGetDispelItemSettingsReq Read(IBuffer buffer)
             {
                 C2SDispelGetDispelItemSettingsReq obj = new C2SDispelGetDispelItemSettingsReq();
-                obj.ShopCategory = (ShopCategory) ReadUInt32(buffer);
+                obj.ShopType = (ShopType) ReadUInt32(buffer);
                 return obj;
             }
         }

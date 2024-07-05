@@ -21,15 +21,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CDispelGetDispelItemListRes res = new S2CDispelGetDispelItemListRes();
 
-            if ((ShopCategory) request.Category == ShopCategory.BitterblackMaze)
+            var shopCategories = Server.AssetRepository.SpecialShopAsset.ShopCategories;
+            if (shopCategories.ContainsKey(request.Category))
             {
-                var appraisalList = Server.AssetRepository.BitterblackMazeAsset.Appraisals;
-
-                for (int i = 0; i < appraisalList.Count; i++)
+                var shopCategory = shopCategories[request.Category];
+                uint sortId = 0;
+                foreach (var item in shopCategory.Items)
                 {
-                    var lotItem = appraisalList[i];
-                    var itemResult = lotItem.AsCDataDispelBaseItem();
-                    itemResult.SortId = (uint)i;
+                    var itemResult = item.AsCDataDispelBaseItem();
+                    itemResult.SortId = sortId++;
                     res.DispelBaseItemList.Add(itemResult);
                 }
             }
