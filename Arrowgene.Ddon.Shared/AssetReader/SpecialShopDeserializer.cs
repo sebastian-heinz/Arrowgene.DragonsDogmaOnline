@@ -51,11 +51,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         Id = categoryId++,
                     };
 
+                    ushort appraisialId = 0;
                     foreach (var jAppraisal in jCategory.GetProperty("appraisals").EnumerateArray())
                     {
                         AppraisalItem item = new AppraisalItem()
                         {
-                            AppraisalId = Convert.ToUInt32(jAppraisal.GetProperty("appraisal_id").GetString(), 16),
+                            AppraisalId = CreateAppraisalId(shopType, shopCategory.Id, appraisialId++),
                             Label = jAppraisal.GetProperty("label").GetString()
                         };
 
@@ -76,10 +77,19 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 ItemId = jLotItem.GetProperty("item_id").GetUInt32(),
                                 Name = jLotItem.GetProperty("name").GetString(),
-                                Amount = jLotItem.GetProperty("amount").GetUInt32()
+                                Amount = jLotItem.GetProperty("amount").GetUInt32(),
+                                Slots = 0
                             };
+
+                            if (jLotItem.TryGetProperty("slots", out JsonElement jSlots))
+                            {
+                                lotItem.Slots = jSlots.GetUInt32();
+                            }
+
                             item.LootPool.Add(lotItem);
                         }
+
+                        asset.AppraisalItems[item.AppraisalId] = item;
 
                         shopCategory.Items.Add(item);
                     }
@@ -90,6 +100,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
 
             return asset;
+        }
+
+        private uint CreateAppraisalId(ShopType shopType, uint categoryId,  ushort appraisalId)
+        {
+            byte bShopType = (byte) shopType;
+            byte bCatId = (byte) categoryId;
+            return (uint)((bShopType << 24) | (bCatId << 16) | appraisalId);
         }
     }
 }

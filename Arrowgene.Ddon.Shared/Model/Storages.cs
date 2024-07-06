@@ -152,5 +152,6 @@ namespace Arrowgene.Ddon.Shared.Model
         Unk15 = 0xF,
         Unk16 = 0x10,
         Unk17 = 0x11,
+        Unk18 = 0x12,
     }
 }

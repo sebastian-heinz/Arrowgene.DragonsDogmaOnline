@@ -11,10 +11,10 @@ public class CDataGetDispelItem
         UIDList = new List<CDataItemUIdList>();
     }
 
-    public byte StorageType { get; set; }
+    public byte StorageType { get; set; } // Storage where the item exists
     public uint Id { get; set; } // Corresponds with the ID field in CDataDispelBaseItem
     public uint Unk1 { get; set; }
-    public List<CDataItemUIdList> UIDList { get; set; }
+    public List<CDataItemUIdList> UIDList { get; set; } // Items consumed in the exchange
 
     public class Serializer : EntitySerializer<CDataGetDispelItem>
     {

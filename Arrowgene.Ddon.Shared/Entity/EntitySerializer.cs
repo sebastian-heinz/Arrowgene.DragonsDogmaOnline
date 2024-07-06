@@ -106,9 +106,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEditInfoSerializer());
             Create(new CDataEditParam.Serializer());
             Create(new CDataEditParamPalette.Serializer());
+            Create(new CDataEquipItemInfoUnk2.Serializer());
             Create(new CDataEquipElementParam.Serializer());
-            Create(new CDataWeaponCrestData.Serializer());
-            Create(new CDataArmorCrestData.Serializer());
+            Create(new CDataEquipItemInfoUnk1.Serializer());
             Create(new CDataBazaarCharacterInfo.Serializer());
             Create(new CDataBazaarItemBaseInfo.Serializer());
             Create(new CDataBazaarItemHistoryInfo.Serializer());

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -15,9 +15,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             EquipSlot = 0;
             Color = 0;
             PlusValue = 0;
-            WeaponCrestDataList = new List<CDataWeaponCrestData>();
-            ArmorCrestDataList = new List<CDataArmorCrestData>();
             EquipElementParamList = new List<CDataEquipElementParam>();
+            Unk1 = new List<CDataEquipItemInfoUnk1>();
+            Unk2 = new List<CDataEquipItemInfoUnk2>();
         }
 
         public uint ItemId { get; set; }
@@ -26,9 +26,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public ushort EquipSlot { get; set; }
         public byte Color { get; set; }
         public byte PlusValue { get; set; }
-        public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
-        public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
-        public List<CDataEquipElementParam> EquipElementParamList { get; set; }
+        public List<CDataEquipElementParam> EquipElementParamList { get; set; } // Used for storing crest properties
+        public List<CDataEquipItemInfoUnk1> Unk1 { get; set; }
+        public List<CDataEquipItemInfoUnk2> Unk2 { get; set; }
         
         public class Serializer : EntitySerializer<CDataEquipItemInfo>
         {
@@ -40,9 +40,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt16(buffer, obj.EquipSlot);
                 WriteByte(buffer, obj.Color);
                 WriteByte(buffer, obj.PlusValue);
-                WriteEntityList(buffer, obj.WeaponCrestDataList);
-                WriteEntityList(buffer, obj.ArmorCrestDataList);
                 WriteEntityList(buffer, obj.EquipElementParamList);
+                WriteEntityList(buffer, obj.Unk1);
+                WriteEntityList(buffer, obj.Unk2);
             }
 
             public override CDataEquipItemInfo Read(IBuffer buffer)
@@ -54,9 +54,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.EquipSlot = ReadUInt16(buffer);
                 obj.Color = ReadByte(buffer);
                 obj.PlusValue = ReadByte(buffer);
-                obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);
-                obj.ArmorCrestDataList = ReadEntityList<CDataArmorCrestData>(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
+                obj.Unk1 = ReadEntityList<CDataEquipItemInfoUnk1>(buffer);
+                obj.Unk2 = ReadEntityList<CDataEquipItemInfoUnk2>(buffer);
                 return obj;
             }
         }

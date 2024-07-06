@@ -11,9 +11,11 @@ namespace Arrowgene.Ddon.Shared.Asset
         {
             SpecialShops = new Dictionary<ShopType, List<ShopCategory>>();
             ShopCategories = new Dictionary<uint, ShopCategory>();
+            AppraisalItems = new Dictionary<uint, AppraisalItem>();
         }
 
         public Dictionary<ShopType, List<ShopCategory>> SpecialShops { get; set; }
         public Dictionary<uint, ShopCategory> ShopCategories { get; set; }
+        public Dictionary<uint, AppraisalItem> AppraisalItems { get; set; }
     }
 }

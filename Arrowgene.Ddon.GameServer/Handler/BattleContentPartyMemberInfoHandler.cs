@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 Unk0 = 0,
                 Unk1 = "Yooo",
-                StageId = 605,
+                StageId = 611,
                 StartPos = 0,
                 Unk4 = true,
             };

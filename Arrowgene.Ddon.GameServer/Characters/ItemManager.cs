@@ -252,9 +252,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Unk3 = 0,
                         Color = 0,
                         PlusValue = 0,
-                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                        ArmorCrestDataList = new List<CDataArmorCrestData>(),
-                        EquipElementParamList = new List<CDataEquipElementParam>()
+                        WeaponCrestDataList = new List<CDataEquipElementParam>(),
+                        ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>(),
+                        EquipElementParamList = new List<CDataEquipItemInfoUnk2>()
                     };
                     database.InsertItem(item);
                     slot = character.Storage.addStorageItem(item, newItemNum, destinationStorageType);

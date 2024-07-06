@@ -18,7 +18,6 @@
 					"appraisals": [
 						{
 							"label": "Bitterblack Deed Box Exchange",
-							"appraisal_id": "0x06000001",
 							"base_items": [
 								{
 									"item_id": 21630,
@@ -30,13 +29,13 @@
 								{
 									"item_id": 21651,
 									"name": "Bitterblack Bracelet",
-									"amount": 1
+									"amount": 1,
+									"slots": 1
 								}
 							]
 						},
 						{
 							"label": "Bitterblack Orb Exchange",
-							"appraisal_id": "0x06000002",
 							"base_items": [
 								{
 									"item_id": 23364,
@@ -93,7 +92,6 @@
 							]
 						},
 						{
-							"appraisal_id": "0x06000003",
 							"label": "Bitterblack Chest of the Farthest End Exchange",
 							"base_items": [
 								{
