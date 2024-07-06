@@ -145,7 +145,7 @@ namespace Arrowgene.Ddon.GameServer
         public uint ReceiveProceeds(GameClient client)
         {
             List<BazaarExhibition> exhibitionsToReceive = GetSoldExhibitionsByCharacter(client.Character);
-            
+
             uint totalProceeds = (uint) exhibitionsToReceive.Sum(exhibition => exhibition.Info.Proceeds);
             Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.Gold, totalProceeds);
 
@@ -211,7 +211,8 @@ namespace Arrowgene.Ddon.GameServer
         private uint calculateProceeds(CDataBazaarItemBaseInfo itemBaseInfo)
         {
             uint totalPrice = itemBaseInfo.Num*itemBaseInfo.Price;
-            return (uint)Math.Clamp(totalPrice - totalPrice*TAXES, 0, uint.MaxValue);
+            uint taxDeduction = (uint)(totalPrice * TAXES);
+            return Math.Clamp(totalPrice - taxDeduction, 0, uint.MaxValue);
         }
     }
 }
