@@ -9,6 +9,12 @@
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
     <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj" />
