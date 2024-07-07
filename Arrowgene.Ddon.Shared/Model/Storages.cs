@@ -135,6 +135,7 @@ namespace Arrowgene.Ddon.Shared.Model
     // Check nItem::E_STORAGE_TYPE in the PS4 debug symbols for IDs?
     public enum StorageType : byte
     {
+        Unknown = 0,
         ItemBagConsumable = 0x1,
         ItemBagMaterial = 0x2,
         ItemBagEquipment = 0x3, 

@@ -431,6 +431,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return item.ItemId;
         }
+
+        public bool HasItem(DdonServer<GameClient> server, Character character, StorageType fromStorage, string itemUId, uint num)
+        {
+            var foundItem = character.Storage.getStorage(fromStorage).findItemByUId(itemUId);
+            if (foundItem == null)
+            {
+                return false;
+            }
+
+            return foundItem.Item3 >= num;
+        }
+
+        public bool HasItem(DdonServer<GameClient> server, Character character, List<StorageType> storages, string itemUId, uint num)
+        {
+            uint amountFound = 0;
+            foreach (var storage in storages)
+            {
+                var foundItem = character.Storage.getStorage(storage).findItemByUId(itemUId);
+                if (foundItem == null)
+                {
+                    continue;
+                }
+
+                amountFound += foundItem.Item3;
+            }
+
+            return amountFound >= num;
+        }
     }
 
     [Serializable]

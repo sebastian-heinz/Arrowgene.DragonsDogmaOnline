@@ -10,7 +10,6 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         Unknown = 0,
         Trinkets = 1, // Does this shop have a proper name (NPC Gregory)?
-        // Trinkets 1 might need to be expanded if NPC has multiple options
         BitterblackMaze = 6,
         ExtremeMission = 27,
     }
