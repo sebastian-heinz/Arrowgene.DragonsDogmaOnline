@@ -178,9 +178,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.EquipPoint = 0;
             ntcData.ItemList.EquipCharacterID = 0;
             ntcData.ItemList.EquipPawnID = 0;
-            ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            ntcData.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
+            ntcData.ItemList.Unk1 = item.Unk1;
+            ntcData.ItemList.Unk2 = item.Unk2;
             ntcData.UpdateItemNum = -finalConsumeNum;
 
             if(finalItemNum == 0)
@@ -197,7 +197,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return ntcData;
         }
-
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
@@ -252,9 +251,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Unk3 = 0,
                         Color = 0,
                         PlusValue = 0,
-                        WeaponCrestDataList = new List<CDataEquipElementParam>(),
-                        ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>(),
-                        EquipElementParamList = new List<CDataEquipItemInfoUnk2>()
+                        EquipElementParamList = new List<CDataEquipElementParam>(),
+                        Unk1 = new List<CDataEquipItemInfoUnk1>(),
+                        Unk2 = new List<CDataEquipItemInfoUnk2>()
                     };
                     database.InsertItem(item);
                     slot = character.Storage.addStorageItem(item, newItemNum, destinationStorageType);
@@ -279,9 +278,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.EquipPoint = 0;
                 result.ItemList.EquipCharacterID = 0;
                 result.ItemList.EquipPawnID = 0;
-                result.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                result.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
                 result.ItemList.EquipElementParamList = item.EquipElementParamList;
+                result.ItemList.Unk1 = item.Unk1;
+                result.ItemList.Unk2 = item.Unk2;
                 result.UpdateItemNum = (int) addedItems;
                 results.Add(result);
             }
@@ -336,9 +335,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             srcUpdateItem.ItemList.EquipPoint = 0;
             srcUpdateItem.ItemList.EquipCharacterID = 0;
             srcUpdateItem.ItemList.EquipPawnID = 0;
-            srcUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            srcUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             srcUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
+            srcUpdateItem.ItemList.Unk1 = item.Unk1;
+            srcUpdateItem.ItemList.Unk2 = item.Unk2;
             srcUpdateItem.UpdateItemNum = (int) -num;
             results.Add(srcUpdateItem);
 
@@ -409,9 +408,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 dstUpdateItem.ItemList.EquipPoint = 0;
                 dstUpdateItem.ItemList.EquipCharacterID = 0;
                 dstUpdateItem.ItemList.EquipPawnID = 0;
-                dstUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                dstUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
                 dstUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
+                dstUpdateItem.ItemList.Unk1 = item.Unk1;
+                dstUpdateItem.ItemList.Unk2 = item.Unk2;
                 dstUpdateItem.UpdateItemNum = (int) movedItemNum;
                 results.Add(dstUpdateItem);
 

@@ -224,5 +224,11 @@ namespace Arrowgene.Ddon.Database
         List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId);
         bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived);
         bool DeleteSystemMailAttachment(ulong messageId);
+
+        // Crests
+        bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
+        bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
+        bool RemoveCrest(uint characterCommonId, string itemUId, uint slot);
+        List<Crest> GetCrests(uint characterCommonId, string itemUId);
     }
 }

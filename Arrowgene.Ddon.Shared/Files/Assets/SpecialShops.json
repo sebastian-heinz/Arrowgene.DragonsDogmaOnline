@@ -164,7 +164,12 @@
                                 {
                                     "item_id": 21651,
                                     "name": "Bitterblack Bracelet",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "BitterBlackBracelet"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -238,7 +243,12 @@
                                 {
                                     "item_id": 23711,
                                     "name": "Bitterblack Earring",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "BitterBlackEarring"
+                                        }
+                                    ]
                                 }
                             ]
                         }

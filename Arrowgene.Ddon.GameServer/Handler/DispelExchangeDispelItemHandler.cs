@@ -60,9 +60,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
+                
+
                 var updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
                 {
-                    UpdateType = 0x10a
+                    UpdateType = ItemNoticeType.ShopGoods_buy
                 };
 
                 // Consume payment
@@ -72,9 +74,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
 
-                var purchase = AppraiseItem(appraisialItems[item.Id]);
+                var purchase = AppraiseItem(client.Character, appraisialItems[item.Id]);
 
                 List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, toBag, purchase.ItemId, purchase.ItemNum);
+
+                if (purchase.EquipElementParamList.Count > 0)
+                {
+                    foreach (var elementParam in purchase.EquipElementParamList)
+                    {
+                        Server.Database.InsertCrest(client.Character.CommonId, itemUpdateResults[0].ItemList.ItemUId, elementParam.SlotNo, elementParam.CrestId, elementParam.Add);
+                    }
+
+                    itemUpdateResults[0].ItemList.EquipElementParamList = purchase.EquipElementParamList;
+                }
+
                 updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResults);
 
                 client.Send(updateCharacterItemNtc);
@@ -85,7 +98,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return res;
         }
 
-        private CDataDispelResultInfo AppraiseItem(AppraisalItem item)
+        private CDataDispelResultInfo AppraiseItem(Character character, AppraisalItem item)
         {
             var lotResult = item.LootPool[(new Random()).Next(0, item.LootPool.Count)];
 
@@ -95,14 +108,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ItemNum = lotResult.Amount
             };
 
-            for (int i = 0; i < lotResult.Slots; i++)
+            for (int i = 0; i < lotResult.Crests.Count; i++)
             {
-                itemResult.EquipElementParamList.Add(new CDataEquipElementParam()
+                var appraisalCrest = lotResult.Crests[i];
+
+                var equipElement = new CDataEquipElementParam()
                 {
-                    SlotNo = (byte) i,
-                    CrestId = 13662,
-                    Add = 3,
-                });
+                    SlotNo = (byte)(i + 1)
+                };
+
+                switch (appraisalCrest.CrestType)
+                {
+                    case AppraisalCrestType.Imbued:
+                        equipElement.CrestId = appraisalCrest.CrestId;
+                        equipElement.Add = appraisalCrest.Amount;
+                        break;
+                    case AppraisalCrestType.BitterBlackEarring:
+                        equipElement.CrestId = BitterBlackManager.RollEarringCrest(character.Job);
+                        equipElement.Add = BitterBlackManager.RollEarringPercent(character.Job);
+                        break;
+                    case AppraisalCrestType.BitterBlackBracelet:
+                        equipElement.CrestId = BitterBlackManager.RollBraceletCrest();
+                        break;
+                }
+
+                itemResult.EquipElementParamList.Add(equipElement);
             }
 
             return itemResult;

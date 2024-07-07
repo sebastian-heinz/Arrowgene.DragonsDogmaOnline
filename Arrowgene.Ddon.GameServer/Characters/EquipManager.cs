@@ -173,9 +173,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipPoint = 0,
                     EquipCharacterID = characterId,
                     EquipPawnID = pawnId,
-                    WeaponCrestDataList = item.WeaponCrestDataList,
-                    ArmorCrestDataList = item.ArmorCrestDataList,
-                    EquipElementParamList = item.EquipElementParamList
+                    EquipElementParamList = item.EquipElementParamList,
+                    Unk1 = item.Unk1,
+                    Unk2 = item.Unk2
                 }
             });
             updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
@@ -193,9 +193,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipPoint = 0,
                     EquipCharacterID = 0,
                     EquipPawnID = 0,
-                    WeaponCrestDataList = item.WeaponCrestDataList,
-                    ArmorCrestDataList = item.ArmorCrestDataList,
-                    EquipElementParamList = item.EquipElementParamList
+                    EquipElementParamList = item.EquipElementParamList,
+                    Unk1 = item.Unk1,
+                    Unk2 = item.Unk2
                 }
             });
         }
@@ -239,6 +239,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND, "Couldn't find the item to equip");
             }
 
+            List<Crest> crests = server.Database.GetCrests(client.Character.CommonId, itemToEquip.UId);
+            itemToEquip.EquipElementParamList = new List<CDataEquipElementParam>();
+            foreach (var crest in crests)
+            {
+                itemToEquip.EquipElementParamList.Add(crest.ToCDataEquipElementParam());
+            }
+
             characterToEquipTo.Equipment.SetEquipItem(itemToEquip, characterToEquipTo.Job, equipType, equipSlot);
             
             server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemToEquip.UId);
@@ -263,9 +270,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         EquipPoint = 0,
                         EquipCharacterID = characterId,
                         EquipPawnID = pawnId,
-                        WeaponCrestDataList = previouslyEquippedItem.WeaponCrestDataList,
-                        ArmorCrestDataList = previouslyEquippedItem.ArmorCrestDataList,
-                        EquipElementParamList = previouslyEquippedItem.EquipElementParamList
+                        EquipElementParamList = previouslyEquippedItem.EquipElementParamList,
+                        Unk1 = previouslyEquippedItem.Unk1,
+                        Unk2 = previouslyEquippedItem.Unk2
                     }
                 });
                 updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
@@ -283,9 +290,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         EquipPoint = 0,
                         EquipCharacterID = 0,
                         EquipPawnID = 0,
-                        WeaponCrestDataList = previouslyEquippedItem.WeaponCrestDataList,
-                        ArmorCrestDataList = previouslyEquippedItem.ArmorCrestDataList,
-                        EquipElementParamList = previouslyEquippedItem.EquipElementParamList
+                        EquipElementParamList = previouslyEquippedItem.EquipElementParamList,
+                        Unk1 = previouslyEquippedItem.Unk1,
+                        Unk2 = previouslyEquippedItem.Unk2
                     }
                 });
             }
@@ -310,9 +317,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipPoint = 0,
                     EquipCharacterID = characterId,
                     EquipPawnID = pawnId,
-                    WeaponCrestDataList = itemToEquip.WeaponCrestDataList,
-                    ArmorCrestDataList = itemToEquip.ArmorCrestDataList,
-                    EquipElementParamList = itemToEquip.EquipElementParamList
+                    EquipElementParamList = itemToEquip.EquipElementParamList,
+                    Unk1 = itemToEquip.Unk1,
+                    Unk2 = itemToEquip.Unk2
                 }
             });
             updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
@@ -330,9 +337,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipPoint = 0,
                     EquipCharacterID = characterId,
                     EquipPawnID = pawnId,
-                    WeaponCrestDataList = itemToEquip.WeaponCrestDataList,
-                    ArmorCrestDataList = itemToEquip.ArmorCrestDataList,
-                    EquipElementParamList = itemToEquip.EquipElementParamList
+                    EquipElementParamList = itemToEquip.EquipElementParamList,
+                    Unk1 = itemToEquip.Unk1,
+                    Unk2 = itemToEquip.Unk2
                 }
             });
         }

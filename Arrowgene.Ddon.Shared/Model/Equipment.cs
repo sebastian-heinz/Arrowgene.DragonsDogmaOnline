@@ -91,8 +91,8 @@ namespace Arrowgene.Ddon.Shared.Model
                     ItemId = (ushort) x.ItemId,
                     ColorNo = x.Color,
                     QualityParam = x.Unk3,
-                    WeaponCrestDataList = x.WeaponCrestDataList,
-                    ArmorCrestDataList = x.ArmorCrestDataList
+                    WeaponCrestDataList = x.EquipElementParamList,
+                    ArmorCrestDataList = x.Unk1
                 })
                 .ToList();
         }
@@ -109,9 +109,9 @@ namespace Arrowgene.Ddon.Shared.Model
                     EquipSlot = tuple.slot,
                     Color = tuple.item?.Color ?? 0,
                     PlusValue = tuple.item?.PlusValue ?? 0,
-                    EquipElementParamList = tuple.item?.WeaponCrestDataList ?? new List<CDataEquipElementParam>(),
-                    Unk1 = tuple.item?.ArmorCrestDataList ?? new List<CDataEquipItemInfoUnk1>(),
-                    Unk2 = tuple.item?.EquipElementParamList ?? new List<CDataEquipItemInfoUnk2>()
+                    EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>(),
+                    Unk1 = tuple.item?.Unk1 ?? new List<CDataEquipItemInfoUnk1>(),
+                    Unk2 = tuple.item?.Unk2 ?? new List<CDataEquipItemInfoUnk2>()
                 })
                 .ToList();
         }

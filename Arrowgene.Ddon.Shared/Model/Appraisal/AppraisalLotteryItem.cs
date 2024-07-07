@@ -11,11 +11,12 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
         public uint ItemId { get; set; }
         public string Name { get; set; }
         public uint Amount { get; set; }
-        public uint Slots { get; set; }
+        public List<AppraisalCrest> Crests { get; set; }
 
         public AppraisalLotteryItem()
         {
             Name = "";
+            Crests = new List<AppraisalCrest>();
         }
     }
 }

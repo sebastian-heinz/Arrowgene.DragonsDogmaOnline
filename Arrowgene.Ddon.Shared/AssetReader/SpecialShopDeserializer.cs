@@ -10,6 +10,7 @@ using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
 using Arrowgene.Ddon.Shared.Model.Appraisal;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -78,12 +79,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 ItemId = jLotItem.GetProperty("item_id").GetUInt32(),
                                 Name = jLotItem.GetProperty("name").GetString(),
                                 Amount = jLotItem.GetProperty("amount").GetUInt32(),
-                                Slots = 0
                             };
 
-                            if (jLotItem.TryGetProperty("slots", out JsonElement jSlots))
+                            if (jLotItem.TryGetProperty("crests", out JsonElement jCrests))
                             {
-                                lotItem.Slots = jSlots.GetUInt32();
+                                if (!ParseAppraisalCrests(jCrests, lotItem.Crests))
+                                {
+                                    return null;
+                                }
                             }
 
                             item.LootPool.Add(lotItem);
@@ -100,6 +103,40 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
 
             return asset;
+        }
+
+        private bool ParseAppraisalCrests(JsonElement jCrests, List<AppraisalCrest> results)
+        {
+            foreach (var crest in jCrests.EnumerateArray())
+            {
+                if (!Enum.TryParse(crest.GetProperty("type").GetString(), true, out AppraisalCrestType crestType))
+                {
+                    var invalidType = crest.GetProperty("type").GetString();
+                    Logger.Error($"Invalid crest type '{invalidType}'. Unable to parse.");
+                    return false;
+                }
+
+                uint crestId = 0;
+                if (crest.TryGetProperty("crest_id", out JsonElement jCrestId))
+                {
+                    crestId = jCrestId.GetUInt32();
+                }
+
+                ushort amount = 0;
+                if (crest.TryGetProperty("amount", out JsonElement jAmount))
+                {
+                    amount = jAmount.GetUInt16();
+                }
+
+                results.Add(new AppraisalCrest()
+                {
+                    CrestType = crestType,
+                    CrestId = crestId,
+                    Amount = amount
+                });
+            }
+
+            return true;
         }
 
         private uint CreateAppraisalId(ShopType shopType, uint categoryId,  ushort appraisalId)
