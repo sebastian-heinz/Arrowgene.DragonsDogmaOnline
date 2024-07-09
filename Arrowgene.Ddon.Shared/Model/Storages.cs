@@ -74,7 +74,7 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public Tuple<Item, uint>? GetStorageItem(StorageType storageType, ushort slot) {
-            return storages[storageType].Items[slot-1];
+            return storages[storageType].Items[slot - 1];
         }
 
         public ushort AddStorageItem(Item newItem, uint itemCount, StorageType storageType) {

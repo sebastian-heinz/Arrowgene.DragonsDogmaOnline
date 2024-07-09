@@ -108,8 +108,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             sendResponse.Invoke();
 
+            client.Send(updateCharacterItemNtc);
+
             // Notify other players
-            if(characterToEquipTo is Character character)
+            if (characterToEquipTo is Character character)
             {
                 S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
                 {
@@ -247,7 +249,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // When equipping over an already equipped slot, move item in that slot to storage
                 client.Character.Storage.SetStorageItem(previouslyEquippedItem, 1, storageType, storageSlotNo);
-                server.Database.ReplaceStorageItem(client.Character.CharacterId, storageType, storageSlotNo, previouslyEquippedItem, 1);
+                server.Database.UpdateStorageItem(client.Character.CharacterId, storageType, storageSlotNo, previouslyEquippedItem, 1);
                 updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                     UpdateItemNum = 0,
                     ItemList = new CDataItemList() {

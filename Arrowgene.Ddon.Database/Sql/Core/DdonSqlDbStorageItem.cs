@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectStorageItemsByCharacter = $"SELECT {BuildQueryField(StorageItemFields)} FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id;";
         private static readonly string SqlSelectStorageItemsByCharacterAndStorageType = $"SELECT {BuildQueryField(StorageItemFields)} FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type;";
         private static readonly string SqlDeleteStorageItem = "DELETE FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type AND \"slot_no\"=@slot_no;";
-        private static readonly string SqlUpdateStorageItem = $"UPDATE \"ddon_storage_item\" SET {BuildQueryUpdate(StorageItemFields)} WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type AND \"slot_no\"=@slot_no;";
+        private static readonly string SqlUpdateStorageItem = $"UPDATE \"ddon_storage_item\" SET {BuildQueryUpdate(StorageItemFields)} WHERE \"character_id\"=@character_id AND \"item_uid\"=@item_uid;";
 
         public bool InsertIfNotExistsStorageItem(TCon conn, uint characterId, StorageType storageType, ushort slotNo, Item item, uint itemNum)
         {
@@ -66,23 +66,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             using TCon connection = OpenNewConnection();
             return InsertStorageItem(connection, characterId, storageType, slotNo, item, itemNum);
-        }
-
-        public bool ReplaceStorageItem(TCon conn, uint characterId, StorageType storageType, ushort slotNo, Item item, uint itemNum)
-        {
-            Logger.Debug("Inserting storage item.");
-            if (!InsertIfNotExistsStorageItem(conn, characterId, storageType, slotNo, item, itemNum))
-            {
-                Logger.Debug("Storage item already exists, replacing.");
-                return ReplaceStorageItem(conn, characterId, storageType, slotNo, item, itemNum);
-            }
-            return true;
-        }
-
-        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, Item item, uint itemNum)
-        {
-            using TCon connection = OpenNewConnection();
-            return ReplaceStorageItem(connection, characterId, storageType, slotNo, item, itemNum);
         }
 
         public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo)
