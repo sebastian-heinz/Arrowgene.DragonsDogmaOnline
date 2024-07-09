@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -17,16 +18,16 @@ namespace Arrowgene.Ddon.Shared.Model
             storages = new Dictionary<StorageType, Storage>();
             foreach (var tuple in maxSlotsDict)
             {
-                addStorage(tuple.Key, new Storage(tuple.Value));
+                AddStorage(tuple.Key, new Storage(tuple.Value));
             }
         }
 
-        public Dictionary<StorageType, Storage> getAllStorages()
+        public Dictionary<StorageType, Storage> GetAllStorages()
         {
             return storages;
         }
 
-        public List<CDataCharacterItemSlotInfo> getAllStoragesAsCDataCharacterItemSlotInfoList()
+        public List<CDataCharacterItemSlotInfo> GetAllStoragesAsCDataCharacterItemSlotInfoList()
         {
             return storages
                 .Select(storage => new CDataCharacterItemSlotInfo() {
@@ -36,19 +37,19 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public Storage getStorage(StorageType storageType)
+        public Storage GetStorage(StorageType storageType)
         {
             return storages[storageType];
         }
 
-        public void addStorage(StorageType storageType, Storage storage)
+        public void AddStorage(StorageType storageType, Storage storage)
         {
             storages[storageType] = storage;
         }
 
         public List<CDataItemList> getStorageAsCDataItemList(StorageType storageType)
         {
-            return getStorage(storageType).Items
+            return GetStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataItemList()
@@ -72,28 +73,28 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public Tuple<Item, uint>? getStorageItem(StorageType storageType, ushort slot) {
+        public Tuple<Item, uint>? GetStorageItem(StorageType storageType, ushort slot) {
             return storages[storageType].Items[slot-1];
         }
 
-        public ushort addStorageItem(Item newItem, uint itemCount, StorageType storageType) {
+        public ushort AddStorageItem(Item newItem, uint itemCount, StorageType storageType) {
             // TODO: Limit itemCount to the item ID's max stack size in storageType
-            var tuple = getStorage(storageType).Items
+            var tuple = GetStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item == null)
                 .First();
-            setStorageItem(newItem, itemCount, storageType, tuple.slot);
+            SetStorageItem(newItem, itemCount, storageType, tuple.slot);
             return tuple.slot;
         }
 
-        public Tuple<Item, uint>? setStorageItem(Item? newItem, uint itemCount, StorageType storageType, ushort slot) {
+        public Tuple<Item, uint>? SetStorageItem(Item? newItem, uint itemCount, StorageType storageType, ushort slot) {
             if(newItem != null && newItem.ItemId == 0)
             {
                 throw new ArgumentException("Item Id can't be 0", "newItem");
             }
             
             // TODO: Limit itemCount to the item ID's max stack size in storageType
-            Tuple<Item, uint>? oldItem = getStorageItem(storageType, slot);
+            Tuple<Item, uint>? oldItem = GetStorageItem(storageType, slot);
             storages[storageType].Items[slot-1] = newItem == null
                 ? null
                 : new Tuple<Item, uint>(newItem, itemCount);
@@ -117,14 +118,14 @@ namespace Arrowgene.Ddon.Shared.Model
             SortData = sortData;
         }
 
-        public Tuple<ushort, Item, uint>? findItemByUId(string itemUId)
+        public Tuple<ushort, Item, uint>? FindItemByUId(string itemUId)
         {
             for(int index = 0; index < this.Items.Count; index++)
             {
                 var itemAndCount = this.Items[index];
                 if(itemAndCount?.Item1.UId == itemUId)
                 {
-                    return new Tuple<ushort, Item, uint>((ushort)(index+1), itemAndCount.Item1, itemAndCount.Item2);
+                    return new Tuple<ushort, Item, uint>((ushort)(index + 1), itemAndCount.Item1, itemAndCount.Item2);
                 }
             }
 

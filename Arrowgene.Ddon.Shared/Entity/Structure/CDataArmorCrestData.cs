@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -8,6 +8,18 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte u1;
         public ushort u2;
         public ushort u3;
+
+        public CDataArmorCrestData()
+        {
+        }
+
+        public CDataArmorCrestData(CDataArmorCrestData obj)
+        {
+            u0 = obj.u0;
+            u1 = obj.u1;
+            u2 = obj.u2;
+            u3 = obj.u3;
+        }
 
         public class Serializer : EntitySerializer<CDataArmorCrestData>
         {

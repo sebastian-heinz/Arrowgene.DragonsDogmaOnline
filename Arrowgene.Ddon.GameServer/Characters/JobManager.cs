@@ -104,7 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .Select(x => x.PlayPoint)
                     .FirstOrDefault(new CDataPlayPointData());
                 changeJobResponse.Unk0.Unk0 = (byte)jobId;
-                changeJobResponse.Unk0.Unk1 = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
+                changeJobResponse.Unk0.Unk1 = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
 
                 client.Send(changeJobResponse);
             }

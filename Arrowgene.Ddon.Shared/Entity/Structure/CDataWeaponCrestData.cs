@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -7,6 +7,17 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte SlotNo { get; set; } // Index starts at 1
         public uint CrestId { get; set; }
         public ushort Add { get; set; }
+
+        public CDataWeaponCrestData()
+        {
+        }
+
+        public CDataWeaponCrestData(CDataWeaponCrestData obj)
+        {
+            SlotNo = obj.SlotNo;
+            CrestId = obj.CrestId;
+            Add = obj.Add;
+        }
         
         public class Serializer : EntitySerializer<CDataWeaponCrestData>
         {

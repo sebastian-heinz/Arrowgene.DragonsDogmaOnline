@@ -126,13 +126,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         byte equipSlot = GetByte(reader, "equip_slot");
 
                         using TCon connection = OpenNewConnection();
-                        ExecuteReader(connection, SqlSelectItem,
-                            command2 => { AddParameter(command2, "@uid", UId); },
+                        ExecuteReader(connection, SqlSelectStorageItemByUId,
+                            command2 => { AddParameter(command2, "@item_uid", UId); },
                             reader2 =>
                             {
                                 if(reader2.Read())
                                 {
-                                    Item item = ReadItem(reader2);
+                                    Item item = ReadStorageItem(reader2);
                                     common.Equipment.SetEquipItem(item, job, equipType, equipSlot);
                                 }
                             });
@@ -151,13 +151,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         byte equipSlot = GetByte(reader, "equip_slot");
 
                         using TCon connection = OpenNewConnection();
-                        ExecuteReader(connection, SqlSelectItem,
-                            command2 => { AddParameter(command2, "@uid", UId); },
+                        ExecuteReader(connection, SqlSelectStorageItemByUId,
+                            command2 => { AddParameter(command2, "@item_uid", UId); },
                             reader2 =>
                             {
                                 if(reader2.Read())
                                 {
-                                    Item item = ReadItem(reader2);
+                                    Item item = ReadStorageItem(reader2);
                                     common.Equipment.SetJobItem(item, job, equipSlot);
                                 }
                             });

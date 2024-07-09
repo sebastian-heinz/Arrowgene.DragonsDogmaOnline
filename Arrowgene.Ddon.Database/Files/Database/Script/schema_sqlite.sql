@@ -265,24 +265,17 @@ CREATE TABLE IF NOT EXISTS ddon_wallet_point
     CONSTRAINT fk_wallet_point_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS ddon_item
-(
-    -- See Item.cs, uid is at most of size 8.
-    "uid"        VARCHAR(8) NOT NULL,
-    "item_id"    INTEGER    NOT NULL,
-    unk3         SMALLINT   NOT NULL,
-    "color"      SMALLINT   NOT NULL,
-    "plus_value" SMALLINT   NOT NULL,
-    PRIMARY KEY ("uid")
-);
-
 CREATE TABLE IF NOT EXISTS ddon_storage_item
 (
     "item_uid"     VARCHAR(8) NOT NULL,
+    "item_id"      INTEGER    NOT NULL,
     "character_id" INTEGER    NOT NULL,
     "storage_type" SMALLINT   NOT NULL,
     "slot_no"      SMALLINT   NOT NULL,
     "item_num"     INTEGER    NOT NULL,
+    "unk3"         INTEGER    NOT NULL,
+    "color"        INTEGER    NOT NULL,
+    "plus_value"   INTEGER    NOT NULL,
     CONSTRAINT pk_ddon_storage_item PRIMARY KEY (character_id, storage_type, slot_no),
     CONSTRAINT fk_storage_item_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_item ("uid") ON DELETE CASCADE,
     CONSTRAINT fk_storage_item_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE

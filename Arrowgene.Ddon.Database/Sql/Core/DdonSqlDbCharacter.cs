@@ -215,7 +215,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     while (reader.Read())
                     {
                         Tuple<StorageType, Storage> tuple = ReadStorage(reader);
-                        character.Storage.addStorage(tuple.Item1, tuple.Item2);
+                        character.Storage.AddStorage(tuple.Item1, tuple.Item2);
                     }
                 });
             ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
@@ -230,14 +230,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         uint itemNum = GetUInt32(reader2, "item_num");
 
                         using TCon connection = OpenNewConnection();
-                        ExecuteReader(connection, SqlSelectItem,
-                            command3 => { AddParameter(command3, "@uid", UId); },
+                        ExecuteReader(connection, SqlSelectStorageItemByUId,
+                            command3 => { AddParameter(command3, "@item_uid", UId); },
                             reader3 =>
                             {
                                 if(reader3.Read())
                                 {
-                                    Item item = ReadItem(reader3);
-                                    character.Storage.setStorageItem(item, itemNum, storageType, slot);
+                                    Item item = ReadStorageItem(reader3);
+                                    character.Storage.SetStorageItem(item, itemNum, storageType, slot);
                                 }
                             });
                     }
@@ -280,9 +280,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ReplaceCommunicationShortcut(conn, character.CharacterId, communicationShortcut);
             }
 
-            foreach(StorageType storageType in character.Storage.getAllStorages().Keys)
+            foreach(StorageType storageType in character.Storage.GetAllStorages().Keys)
             {
-                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.getStorage(storageType));
+                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.GetStorage(storageType));
             }
 
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)
@@ -294,7 +294,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private void CreateItems(TCon conn, Character character)
         {
             // Create storage items
-            foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.getAllStorages())
+            foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.GetAllStorages())
             {
                 StorageType storageType = storage.Key;
                 for(ushort index=0; index < storage.Value.Items.Count; index++)
@@ -304,8 +304,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Item item = storage.Value.Items[index].Item1;
                         uint itemNum = storage.Value.Items[index].Item2;
                         ushort slot = (ushort)(index+1);
-                        InsertItem(conn, item);
-                        InsertStorageItem(conn, character.CharacterId, storageType, slot, item.UId, itemNum);
+                        InsertStorageItem(conn, character.CharacterId, storageType, slot, item, itemNum);
                     }
                 }
             }
@@ -323,7 +322,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         if(item != null)
                         {
                             byte slot = (byte)(index+1);
-                            InsertItem(conn, item);
                             InsertEquipItem(conn, character.CommonId, job, equipType, slot, item.UId);
                         }
                     }

@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 itemUpdateResults.Add(itemUpdate);
 
-                uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
+                uint itemId = Server.ItemManager.LookupItemByUId(Server, item.UId);
                 if (!deliveredItems.ContainsKey(itemId))
                 {
                     deliveredItems[itemId] = new CDataDeliveredItem()

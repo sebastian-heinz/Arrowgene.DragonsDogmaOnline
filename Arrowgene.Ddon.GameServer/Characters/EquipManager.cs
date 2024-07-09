@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 else
                 {
                     // EQUIP
-                    Item item = server.Database.SelectItem(changeEquipJobItem.EquipJobItemUId);
+                    Item item = server.Database.SelectStorageItemByUId(changeEquipJobItem.EquipJobItemUId);
                     characterToEquipTo.Equipment.SetJobItem(item, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
                     server.Database.ReplaceEquipJobItem(item.UId, characterToEquipTo.CommonId, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
                 }
@@ -155,8 +155,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             characterToEquipTo.Equipment.SetEquipItem(null, characterToEquipTo.Job, equipType, equipSlot);
             server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, item.UId);
             
-            ushort dstSlotNo = client.Character.Storage.addStorageItem(item, 1, storageType);
-            server.Database.InsertStorageItem(client.Character.CharacterId, storageType, dstSlotNo, item.UId, 1);
+            ushort dstSlotNo = client.Character.Storage.AddStorageItem(item, 1, storageType);
+            server.Database.InsertStorageItem(client.Character.CharacterId, storageType, dstSlotNo, item, 1);
 
             updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                 UpdateItemNum = 0,
@@ -218,7 +218,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 try
                 {
-                    var tuple = client.Character.Storage.getStorage(storageTypeToCheck).Items
+                    var tuple = client.Character.Storage.GetStorage(storageTypeToCheck).Items
                         .Select((item, index) => new { item, slot = (ushort) (index+1)})
                         .Where(tuple => tuple.item?.Item1.UId == itemUId)
                         .First();
@@ -246,8 +246,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if(previouslyEquippedItem != null)
             {
                 // When equipping over an already equipped slot, move item in that slot to storage
-                client.Character.Storage.setStorageItem(previouslyEquippedItem, 1, storageType, storageSlotNo);
-                server.Database.ReplaceStorageItem(client.Character.CharacterId, storageType, storageSlotNo, previouslyEquippedItem.UId, 1);
+                client.Character.Storage.SetStorageItem(previouslyEquippedItem, 1, storageType, storageSlotNo);
+                server.Database.ReplaceStorageItem(client.Character.CharacterId, storageType, storageSlotNo, previouslyEquippedItem, 1);
                 updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult() {
                     UpdateItemNum = 0,
                     ItemList = new CDataItemList() {
@@ -291,7 +291,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else
             {
-                client.Character.Storage.setStorageItem(null, 0, storageType, storageSlotNo);
+                client.Character.Storage.SetStorageItem(null, 0, storageType, storageSlotNo);
                 server.Database.DeleteStorageItem(client.Character.CharacterId, storageType, storageSlotNo);
             }
 

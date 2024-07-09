@@ -86,8 +86,11 @@ namespace Arrowgene.Ddon.Database
         bool DeleteReleasedWarpPoint(uint characterId, uint warpPointId);
 
         // Item
+#if false
         bool InsertItem(Item item);
         Item SelectItem(string uid);
+        bool DeleteItem(string uid);
+#endif
 
         //Storage
         bool InsertStorage(uint characterId, StorageType storageType, Storage storage);
@@ -95,9 +98,11 @@ namespace Arrowgene.Ddon.Database
         bool DeleteStorage(uint characterId, StorageType storageType);
 
         // Storage Item
-        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
-        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
+        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, Item item, uint itemNum);
+        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, Item item, uint itemNum);
+        bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, Item item, uint itemNum);
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
+        Item SelectStorageItemByUId(string uid);
 
         // Equip
         bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);

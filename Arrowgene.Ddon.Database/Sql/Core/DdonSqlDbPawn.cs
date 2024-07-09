@@ -223,7 +223,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         if(item != null)
                         {
                             byte slot = (byte)(index+1);
-                            InsertItem(conn, item);
+                            InsertStorageItem(pawn.CharacterId, StorageType.ItemBagEquipment, slot, item, 1);
                             InsertEquipItem(conn, pawn.CommonId, job, equipType, slot, item.UId);
                         }
                     }

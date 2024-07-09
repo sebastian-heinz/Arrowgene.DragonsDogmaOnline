@@ -1127,7 +1127,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 if(tuple.Item3.ItemId != 0)
                 {
-                    character.Storage.addStorageItem(tuple.Item3, tuple.Item2, tuple.Item1);
+                    character.Storage.AddStorageItem(tuple.Item3, tuple.Item2, tuple.Item1);
                 }
             }
 

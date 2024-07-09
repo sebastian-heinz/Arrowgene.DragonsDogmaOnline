@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterEquipJobItemList = character.Equipment.getJobItemsAsCDataEquipJobItem(character.Job);
             JewelrySlotNum = character.JewelrySlotNum;
             Unk0 = character.Unk0;
-            CharacterItemSlotInfoList = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
+            CharacterItemSlotInfoList = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
             WalletPointList = character.WalletPointList;
             MyPawnSlotNum = character.MyPawnSlotNum;
             RentalPawnSlotNum = character.RentalPawnSlotNum;

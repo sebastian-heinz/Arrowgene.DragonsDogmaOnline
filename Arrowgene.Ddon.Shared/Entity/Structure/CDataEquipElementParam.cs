@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -6,7 +6,17 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public byte SlotNo;
         public ushort ItemId;
-        
+
+        public CDataEquipElementParam()
+        {
+        }
+
+        public CDataEquipElementParam(CDataEquipElementParam obj)
+        {
+            SlotNo = obj.SlotNo;
+            ItemId = obj.ItemId;
+        }
+
         public class Serializer : EntitySerializer<CDataEquipElementParam>
         {
             public override void Write(IBuffer buffer, CDataEquipElementParam obj)

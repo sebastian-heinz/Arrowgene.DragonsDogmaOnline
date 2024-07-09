@@ -1,5 +1,9 @@
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
+
+#if false
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -16,9 +20,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         // Items don't get updated or deleted once created as the same row is shared among all players.
         // Making a distinction wouldn't make sense, as upgrading/changin crests would generate a new item with a different UID
         protected virtual string SqlInsertOrIgnoreItem { get; } =
-            $"INSERT INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) SELECT {BuildQueryInsert(ItemFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_item\" WHERE \"uid\"=@uid);";
+            $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(ItemFields)}) SELECT {BuildQueryInsert(ItemFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_item\" WHERE \"uid\"=@uid);";
 
         private static readonly string SqlSelectItem = $"SELECT {BuildQueryField(ItemFields)} FROM \"ddon_item\" WHERE \"uid\"=@uid;";
+
+        private readonly string SqlDeleteItem = $"DELETE FROM \"ddon_item\" WHERE \"uid\"=@uid;";
 
         public bool InsertItem(TCon conn, Item item)
         {
@@ -52,6 +58,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return item;
         }
 
+        public bool DeleteItem(string uid)
+        {
+            using TCon connection = OpenNewConnection();
+            return DeleteItem(connection, uid);
+            
+        }
+
+        public bool DeleteItem(TCon connection, string uid)
+        {
+            return ExecuteNonQuery(connection, SqlDeleteItem, command =>
+            {
+                AddParameter(command, "uid", uid);
+            }) == 1;
+        }
+
         private Item ReadItem(TReader reader)
         {
             Item item = new Item();
@@ -73,3 +94,5 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         }
     }
 }
+
+#endif
