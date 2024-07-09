@@ -136,7 +136,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             client.Send(updateCharacterItemNtc);
 
             // Notify other players
-            if(characterToEquipTo is Character character)
+            if (characterToEquipTo is Character character)
             {
                 S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
                 {
