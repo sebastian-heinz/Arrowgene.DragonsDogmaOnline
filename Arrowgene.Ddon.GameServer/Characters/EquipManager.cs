@@ -133,6 +133,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             sendResponse.Invoke();
 
+            client.Send(updateCharacterItemNtc);
+
             // Notify other players
             if(characterToEquipTo is Character character)
             {
@@ -165,9 +167,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     otherClient.Send(changePawnEquipNtc);
                 }
             }
-            
-            client.Send(updateCharacterItemNtc);
-
         }
     }
 }
