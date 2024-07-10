@@ -168,7 +168,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, QualityUpItem.UId, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                //TODO: Figure out why when changing the Quality of an unequipped item it doesn't show an icon.
+                //TODO: Figure out why when changing the Quality of an unequipped item it doesn't show the item icon in the box.
             
             };
 
@@ -177,10 +177,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
-                Unk0 = charid,
-                Unk1 = pawnid,
-                Unk2 = equiptype, // type
-                Unk3 = equipslot, // slot
+                CharId = charid,
+                PawnId = pawnid,
+                EquipType = equiptype,
+                EquipSlot = equipslot,
             };
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {

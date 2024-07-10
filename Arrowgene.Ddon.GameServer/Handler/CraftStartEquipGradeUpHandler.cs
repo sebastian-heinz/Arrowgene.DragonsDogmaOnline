@@ -222,10 +222,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
-                Unk0 = charid,
-                Unk1 = pawnid,
-                Unk2 = equiptype, // type
-                Unk3 = equipslot, // slot
+                CharId = charid,
+                PawnId = pawnid,
+                EquipType = equiptype,
+                EquipSlot = equipslot,
             };
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
