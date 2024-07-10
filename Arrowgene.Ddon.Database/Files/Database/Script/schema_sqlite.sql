@@ -536,3 +536,26 @@ CREATE TABLE IF NOT EXISTS "ddon_priority_quests" (
 	"quest_id"	INTEGER NOT NULL,
 	FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS "ddon_system_mail" (
+    "message_id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "character_id" INTEGER NOT NULL,
+    "message_state" INTEGER NOT NULL,
+    "sender_name" VARCHAR(256),
+    "message_title" VARCHAR(256),
+    "message_body" VARCHAR(2048),
+    "send_date" INTEGER,
+    CONSTRAINT fk_ddon_system_mail_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_system_mail_attachment" (
+    "message_id" INTEGER NOT NULL,
+    "attachment_id" INTEGER NOT NULL,
+    "attachment_type" INTEGER NOT NULL,
+    "is_received" BOOLEAN NOT NULL,
+    "param0" VARCHAR(256),
+    "param1" INTEGER,
+    "param2" INTEGER,
+    "param3" INTEGER,
+    CONSTRAINT fk_ddon_system_mail_attachment FOREIGN KEY ("message_id") REFERENCES ddon_character ("ddon_system_mail") ON DELETE CASCADE
+);
