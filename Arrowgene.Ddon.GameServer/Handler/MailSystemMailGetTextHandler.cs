@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var pcap = new S2CMailSystemMailGetTextRes.Serializer().Read(pcap_data);
 
             var message = Server.Database.SelectSystemMailMessage(request.MailId);
-            var attachments = Server.Database.SelectAttachmentsForMail(request.MailId);
+            var attachments = Server.Database.SelectAttachmentsForSystemMail(request.MailId);
 
             var result = new S2CMailSystemMailGetTextRes()
             {

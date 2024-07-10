@@ -24,13 +24,15 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectSystemMailAttachments = $"SELECT {BuildQueryField(SystemMailAttachmentFields)} FROM \"ddon_system_mail_attachment\" WHERE \"message_id\" = @message_id;";
         private readonly string SqlDeleteSystemMailAttachment = $"DELETE FROM \"ddon_system_mail_attachment\" WHERE \"message_id\"=@message_id AND \"attachment_id\"=@attachment_id;";
 
-        public List<SystemMailAttachment> SelectAttachmentsForMail(ulong messageId)
+        private readonly string SqlUpdateSystemMailAttachment = $"UPDATE \"ddon_system_mail_attachment\" SET \"is_received\"=@is_received WHERE \"message_id\"=@message_id AND \"attachment_id\"=@attachment_id;";
+
+        public List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId)
         {
             using TCon connection = OpenNewConnection();
-            return SelectAttachmentsForMail(connection, messageId);
+            return SelectAttachmentsForSystemMail(connection, messageId);
         }
 
-        public List<SystemMailAttachment> SelectAttachmentsForMail(TCon conn, ulong messageId)
+        public List<SystemMailAttachment> SelectAttachmentsForSystemMail(TCon conn, ulong messageId)
         {
             List<SystemMailAttachment> results = new List<SystemMailAttachment>();
 
@@ -49,6 +51,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
 
             return results;
+        }
+
+        public bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdateSystemMailAttachmentReceivedStatus(connection, messageId, attachmentId, isReceived);
+        }
+
+        bool UpdateSystemMailAttachmentReceivedStatus(TCon conn, ulong messageId, ulong attachmentId, bool isReceived)
+        {
+            return ExecuteNonQuery(conn, SqlUpdateSystemMailAttachment, command =>
+            {
+                AddParameter(command, "message_id", messageId);
+                AddParameter(command, "attachment_id", attachmentId);
+                AddParameter(command, "is_received", isReceived);
+            }) == 1; ;
         }
 
         public bool DeleteSystemMailAttachment(ulong messageId)
