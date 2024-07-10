@@ -190,13 +190,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: figuring out what this is
             // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
+            // I think this must be related to Crests or Dragon Force, since plugging in a bunch of data has 0 noticable changes.
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
-                Unk0 = 0,
-                Unk1 = 0,
-                Unk2 = 0,
-                Unk3 = 0,
-                Unk4 = 0,
+                Unk0 = equipItemID, // Potentially an ID? I tried the weappon ID but does nothing.
+                Unk1 = packet.Structure.Unk2, // AddStatus is also a ushort so maybe it goes in here? (doesn't seem to work tho)
+                Unk2 = 0, // Genuinely no idea what this could be for. 
+                Unk3 = 0, // Potentially an ID for something?
+                Unk4 = 0, // Potentially an ID for something too?
                 IsGreatSuccess = dogreatsucess
             };
 
