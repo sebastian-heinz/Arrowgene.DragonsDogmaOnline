@@ -21,6 +21,24 @@ import shutil
 
 from pathlib import Path
 
+    # item_uid, character_id, storage_type, slot_no, item_num, item_id, unk3, color, plus_value
+create_storage_table_statement = \
+"""
+CREATE TABLE IF NOT EXISTS ddon_storage_item (
+    item_uid     VARCHAR(8) NOT NULL,
+    character_id INTEGER NOT NULL,
+    storage_type SMALLINT NOT NULL,
+    slot_no      SMALLINT NOT NULL,
+    item_num     INTEGER NOT NULL,
+    item_id      INTEGER NOT NULL,
+    unk3         INTEGER NOT NULL,
+    color        INTEGER NOT NULL,
+    plus_value   INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_storage_item PRIMARY KEY (character_id, storage_type, slot_no),
+    CONSTRAINT fk_storage_item_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
+);
+"""
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("input", help="The sqlite3 database file to read")
@@ -46,9 +64,29 @@ def main():
 
     # UID, ItemId, unk3, color, plus_value
     # ('9886A725', 35, 0, 0, 0)
+    ddon_characters = [a for a in cur.execute("SELECT * FROM ddon_character")]
+    ddon_pawns = [a for a in cur.execute("SELECT * FROM ddon_pawn")]
     ddon_items = [a for a in cur.execute("SELECT * FROM ddon_item")]
     ddon_storage_items = [a for a in cur.execute("SELECT * FROM ddon_storage_item")]
+    ddon_equip_items = [a for a in cur.execute("SELECT * FROM ddon_equip_item")]
     con.close()
+
+    character_common_mapping = {}
+    for character in ddon_characters:
+        # character_id, character_common_id
+        character_id = character[0]
+        character_common_id = character[1]
+        character_common_mapping[character_common_id] = {
+                "id": character_id,
+                "type": "character"
+        }
+
+    for pawn in ddon_pawns:
+        # pawn_id, character_common_id, character_id
+        character_common_mapping[pawn[1]] = {
+            "id": pawn[2],
+            "type": "pawn"
+        }
 
     item_mapping = {}
     uid = 1
@@ -79,14 +117,34 @@ def main():
             item_mapping[old_uid]['item_id'], item_mapping[old_uid]['unk3'], item_mapping[old_uid]['color'], item_mapping[old_uid]['plus_value'])
         )
 
+    # item_uid, character_common_id, job, equip_type, equip_slot
+    for equip_item in ddon_equip_items:
+        old_uid = equip_item[0]
+        new_uid = uid
+
+        if equip_item[1] not in character_common_mapping:
+            continue
+
+        character_id = character_common_mapping[equip_item[1]]["id"]
+        storage_items.append(
+            (new_uid, character_id, 6, 0, 1, item_mapping[old_uid]['item_id'], item_mapping[old_uid]['unk3'], item_mapping[old_uid]['color'], item_mapping[old_uid]['plus_value'])
+        )
+
+        uid += 1
+
     shutil.copyfile(args.input, args.output)
     con = sqlite3.connect(args.output)
     cur = con.cursor()
 
     cur.execute("DROP TABLE ddon_item")
+    cur.execute("DROP TABLE ddon_storage_item")
     cur.execute("DELETE FROM ddon_equip_item")
     cur.execute("DELETE FROM ddon_equip_job_item")
-    cur.execute("DELETE FROM ddon_storage_item")
+    con.commit();
+
+    cur.execute(create_storage_table_statement)
+    con.commit();
+
     cur.executemany("INSERT INTO ddon_storage_item VALUES (?,?,?,?,?,?,?,?,?)", storage_items)
     con.commit()
     con.close()
