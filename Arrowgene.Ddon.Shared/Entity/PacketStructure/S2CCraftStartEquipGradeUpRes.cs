@@ -20,8 +20,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public bool IsGreatSuccess { get; set; }
         public CDataCurrentEquipInfo CurrentEquip { get; set; }
         public uint BeforeItemID { get; set; }
-        public bool Unk0 { get; set; }  // This appears to be "canContinue", when true the item can keep upgrading but when False it displays "grade max". 
-        public CDataCraftStartEquipGradeUpUnk0 Unk1 { get; set; } // Based on structure this looks like a bunch of info about crests, dye n such?
+        public bool Upgradable { get; set; }  // When true the item can keep upgrading but when False it displays "grade max". (you can keep upgrading if it can though, strictly UI.)
+        public CDataCraftStartEquipGradeUpUnk0 Unk1 { get; set; } // Based on structure this looks like a bunch of info about crests n such?
 
         public S2CCraftStartEquipGradeUpRes()
         {
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteBool(buffer, obj.IsGreatSuccess);
                 WriteEntity<CDataCurrentEquipInfo>(buffer, obj.CurrentEquip);
                 WriteUInt32(buffer, obj.BeforeItemID);
-                WriteBool(buffer, obj.Unk0);
+                WriteBool(buffer, obj.Upgradable);
                 WriteEntity<CDataCraftStartEquipGradeUpUnk0>(buffer, obj.Unk1);
             }
 
@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.IsGreatSuccess = ReadBool(buffer);
                 obj.CurrentEquip = ReadEntity<CDataCurrentEquipInfo>(buffer);
                 obj.BeforeItemID = ReadUInt32(buffer);
-                obj.Unk0 = ReadBool(buffer);
+                obj.Upgradable = ReadBool(buffer);
                 obj.Unk1 = ReadEntity<CDataCraftStartEquipGradeUpUnk0>(buffer);
                 return obj;
             }

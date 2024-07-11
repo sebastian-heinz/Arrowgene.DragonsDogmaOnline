@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Character common = client.Character;
             string equipItemUID = packet.Structure.EquipItemUID;
-            uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID); // Finding the Recipe we need based on the requested UID. 
+            uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID);
             ushort equipslot = 0;
             byte equiptype = 0;
             uint charid = client.Character.CharacterId;
@@ -47,18 +47,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var equipItem = Server.Database.SelectItem(equipItemUID);
             byte currentPlusValue = equipItem.PlusValue;
 
-            // Getting access to the GradeUpRecipe JSON data.
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
                 .Where(recipe => recipe.ItemID == equipItemID)
                 .First();
 
-            // Define local variables for calculations
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
             uint nextGrade = json_data.Unk0; // This might be Unk0 in the JSON but is probably in the DB or something.
             bool canContinue = json_data.Unk1;
-            uint currentTotalEquipPoint = 10; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
+            uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
             uint addEquipPoint = 0;     
             bool dogreatsuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             
@@ -69,11 +67,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if(dogreatsuccess == true)
             {
 
-                addEquipPoint = 100;
+                addEquipPoint = 0;
             }
             else
             {
-                addEquipPoint = 30;
+                addEquipPoint = 0;
             }
             // TODO: We might need to track equippoints in the DB? potentially related to AddtionalStatus found in QualityUp, some gear specific value that we can't find.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
@@ -136,9 +134,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Substract Gold based on JSON cost.
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-
-            List<CDataItemUpdateResult> AddItemResult;
-            List<CDataItemUpdateResult> RemoveItemResult;
 
             Item UpgradedItem = new Item()
             {
@@ -233,20 +228,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EquipSlot = EquipmentSlot
             };
 
-            // Supplying the response packet with data
+            // If GradeUpItemID & UID are populated it will auto fill the bar, I guess I need an if check somewhere to decide if we send that data or not. 
             var res = new S2CCraftStartEquipGradeUpRes()
             {
                 GradeUpItemUID = UpgradedItem.UId, // Should be the UID for the gradeupitem.
                 GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                 GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                 AddEquipPoint = addEquipPoint,
-                TotalEquipPoint = currentTotalEquipPoint + addEquipPoint,
+                TotalEquipPoint = currentTotalEquipPoint,
                 EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
                 Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
                 IsGreatSuccess = dogreatsuccess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
                 CurrentEquip = CurrentEquipInfo, // Client uses this to determine whats equipped to show the Arisen sign in the menu.              
                 BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
-                Unk0 = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
+                Upgradable = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
                 Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
             };
             client.Send(updateCharacterItemNtc);
