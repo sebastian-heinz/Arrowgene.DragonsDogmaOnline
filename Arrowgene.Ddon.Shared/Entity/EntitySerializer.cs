@@ -373,6 +373,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMailSystemMailGetListDataReq.Serializer());
             Create(new C2SMailSystemMailGetTextReq.Serializer());
             Create(new C2SMailSystemMailGetAllItemReq.Serializer());
+            Create(new C2SMailSystemMailDeleteReq.Serializer());
 
             Create(new C2SMandragoraGetMyMandragoraReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
@@ -682,6 +683,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMailSystemMailGetListDataRes.Serializer());
             Create(new S2CMailSystemMailGetTextRes.Serializer());
             Create(new S2CMailSystemGetAllItemRes.Serializer());
+            Create(new S2CMailSystemMailDeleteRes.Serializer());
 
             Create(new S2CMandragoraGetMyMandragoraRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());

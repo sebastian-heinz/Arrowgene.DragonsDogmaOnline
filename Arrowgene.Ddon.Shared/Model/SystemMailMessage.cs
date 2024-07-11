@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public string Body { get; set; }
         public ulong SendDate { get; set; }
 
-        public CDataMailInfo ToCDataMailInfo()
+        public CDataMailInfo ToCDataMailInfo(byte itemState)
         {
             return new CDataMailInfo()
             {
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 SenderName = SenderName,
                 MailText = Title,
                 SenderDate = SendDate,
-                ItemState = 3,
+                ItemState = itemState
             };
         }
     }

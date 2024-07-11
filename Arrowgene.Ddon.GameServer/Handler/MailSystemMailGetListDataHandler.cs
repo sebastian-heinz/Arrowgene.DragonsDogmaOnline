@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Model;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -21,10 +22,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CMailSystemMailGetListDataRes result = new S2CMailSystemMailGetListDataRes();
 
+
+
             var messages = Server.Database.SelectSystemMailMessages(client.Character.CharacterId);
             foreach (var message in messages)
             {
-                result.MailInfo.Add(message.ToCDataMailInfo());
+                // 3 means has item? 1 means claimed?
+
+                byte itemState = 1;
+                var attachments = Server.Database.SelectAttachmentsForSystemMail(message.MessageId);
+                if (attachments.Count > 0)
+                {
+                    itemState = (byte)(attachments.All(x => x.IsReceived) ? 1 : 3);
+                }
+
+                result.MailInfo.Add(message.ToCDataMailInfo(itemState));
             }
 
             return result;

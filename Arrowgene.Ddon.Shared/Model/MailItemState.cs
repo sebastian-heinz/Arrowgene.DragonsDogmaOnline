@@ -9,10 +9,10 @@ namespace Arrowgene.Ddon.Shared.Model
     public enum MailItemState : byte
     {
         None   = 0,
-        Exist  = 1 << 0,
-        Item   = 1 << 1,
-        GP     = 1 << 2,
-        Course = 1 << 3,
-        Pawn   = 1 << 4,
+        Exist  = 1 << 0, // 1
+        Item   = 1 << 1, // 2
+        GP     = 1 << 2, // 4
+        Course = 1 << 3, // 8
+        Pawn   = 1 << 4, // 16
     }
 }

@@ -22,6 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var message = Server.Database.SelectSystemMailMessage(request.MailId);
             var attachments = Server.Database.SelectAttachmentsForSystemMail(request.MailId);
 
+            Server.Database.UpdateSystemMailMessageState(request.MailId, MailState.Opened);
+
             var result = new S2CMailSystemMailGetTextRes()
             {
                 MailId = request.MailId,

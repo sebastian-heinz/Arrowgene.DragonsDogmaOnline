@@ -5,6 +5,7 @@ using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Linq;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -24,13 +25,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 MessageId = request.MessageId,
             };
+            
+            bool toItemBag = false;
+            switch (request.StorageType)
+            {
+                case 13: // ItemPost   StorageType = 13
+                    toItemBag = false;
+                    break;
+                case 19: // ItemBag    StorageType = 19
+                    toItemBag = true;
+                    break;
+                case 20: // StorageBox StorageType = 20
+                    toItemBag = false;
+                    break;
+            }
 
-            // ItemPost   StorageType = 13
-            // ItemBag    StorageType = 19
-            // StorageBox StorageType = 20
-
-            // Send S2C_ITEM_UPDATE_CHARACTER_ITEM_NTC to deliver items to player
-            // {"Structure": {"UpdateType": 18, "UpdateItemList": [{"ItemList": {"ItemUId": "62CFAB88", "ItemId": 8052, "ItemNum": 4, "Unk3": 0, "StorageType": "Unk13", "SlotNo": 190, "Color": 0, "PlusValue": 0, "Bind": false, "EquipPoint": 0, "EquipCharacterID": 0, "EquipPawnID": 0, "WeaponCrestDataList": [], "ArmorCrestDataList": [], "EquipElementParamList": []}, "UpdateItemNum": 4}], "UpdateWalletList": [{"Type": "GoldenGemstones", "Value": 0, "AddPoint": 0, "ExtraBonusPoint": 0}]}}
+            S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = 18 // value from pcap
+            };
 
             var attachments = Server.Database.SelectAttachmentsForSystemMail(request.MessageId);
             foreach (var attachment in attachments)
@@ -40,6 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     case SystemMailAttachmentType.Item:
                         result.AttachmentList.ItemList.Add(attachment.ToCDataMailItemInfo());
+                        itemUpdateNtc.UpdateItemList.AddRange(Server.ItemManager.AddItem(Server, client.Character, toItemBag, attachment.Param1, attachment.Param2));
                         break;
                     case SystemMailAttachmentType.GP:
                         result.AttachmentList.GPList.Add(attachment.ToCDataMailGPInfo());
@@ -52,6 +66,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         break;
                 }
                 Server.Database.UpdateSystemMailAttachmentReceivedStatus(attachment.MessageId, attachment.AttachmentId, true);
+            }
+
+            if (itemUpdateNtc.UpdateItemList.Count > 0)
+            {
+                client.Send(itemUpdateNtc);
             }
 
             return result;

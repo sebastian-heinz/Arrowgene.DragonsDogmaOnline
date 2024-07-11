@@ -330,6 +330,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MailSystemMailGetListHeadHandler(this));
             AddHandler(new MailSystemMailGetTextHandler(this));
             AddHandler(new MailSystemMailGetAllItemHandler(this));
+            AddHandler(new MailSystemMailDeleteHandler(this));
 
             AddHandler(new MandragoraGetMyMandragoraHandler(this));
 
