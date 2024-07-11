@@ -48,12 +48,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var attachments = Server.Database.SelectAttachmentsForSystemMail(request.MessageId);
             foreach (var attachment in attachments)
             {
-                attachment.IsReceived = true;
+                try
+                {
+                    if (attachment.AttachmentType == SystemMailAttachmentType.Item && !attachment.IsReceived)
+                    {
+                        itemUpdateNtc.UpdateItemList.AddRange(Server.ItemManager.AddItem(Server, client.Character, toItemBag, attachment.Param1, attachment.Param2));
+                    }
+                    attachment.IsReceived = true;
+                }
+                catch (Exception ex)
+                {
+                    // Squelch the exception.
+                    // Something happened so the attachment can't be received
+                    attachment.IsReceived = false;
+                }
+
                 switch (attachment.AttachmentType)
                 {
                     case SystemMailAttachmentType.Item:
                         result.AttachmentList.ItemList.Add(attachment.ToCDataMailItemInfo());
-                        itemUpdateNtc.UpdateItemList.AddRange(Server.ItemManager.AddItem(Server, client.Character, toItemBag, attachment.Param1, attachment.Param2));
                         break;
                     case SystemMailAttachmentType.GP:
                         result.AttachmentList.GPList.Add(attachment.ToCDataMailGPInfo());
@@ -65,7 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         result.AttachmentList.LegendPawnList.Add(attachment.ToCDataMailLegendPawnInfo());
                         break;
                 }
-                Server.Database.UpdateSystemMailAttachmentReceivedStatus(attachment.MessageId, attachment.AttachmentId, true);
+                Server.Database.UpdateSystemMailAttachmentReceivedStatus(attachment.MessageId, attachment.AttachmentId, attachment.IsReceived);
             }
 
             if (itemUpdateNtc.UpdateItemList.Count > 0)
