@@ -66,8 +66,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if(dogreatsuccess == true)
             {
-
-                addEquipPoint = 35;
+                addEquipPoint = 200;
                 currentTotalEquipPoint += addEquipPoint;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
 
@@ -82,7 +81,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                addEquipPoint = 200;
+                addEquipPoint = 35;
+                currentTotalEquipPoint += addEquipPoint;
+                bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
+
+                if (updateSuccessful)
+                {
+                    Console.WriteLine("Equip points updated successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to update equip points.");
+                }
             }
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
             // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next (potentially related to how we use UIDs)
