@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint goldRequired = json_data.Cost;
             uint nextGrade = json_data.Unk0; // This might be Unk0 in the JSON but is probably in the DB or something.
             bool canContinue = json_data.Unk1;
-            uint currentTotalEquipPoint = 0; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
+            uint currentTotalEquipPoint = equipItem.EquipPoints; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
             uint addEquipPoint = 0;     
             bool dogreatsuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             
@@ -67,17 +67,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if(dogreatsuccess == true)
             {
 
-                addEquipPoint = 0;
+                addEquipPoint = 35;
+                currentTotalEquipPoint += addEquipPoint;
+                bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
+
+                if (updateSuccessful)
+                {
+                    Console.WriteLine("Equip points updated successfully!");
+                }
+                else
+                {
+                    Console.WriteLine("Failed to update equip points.");
+                }
             }
             else
             {
-                addEquipPoint = 0;
+                addEquipPoint = 200;
             }
-            // TODO: We might need to track equippoints in the DB? potentially related to AddtionalStatus found in QualityUp, some gear specific value that we can't find.
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
             // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next (potentially related to how we use UIDs)
 
-            // Remove crafting materials
+            // Removes crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
             {
                 try
@@ -138,9 +148,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Item UpgradedItem = new Item()
             {
                 ItemId = gearupgradeID,
-                Unk3 = 0,   // Safety setting,
-                Color = 0,
+                Unk3 = equipItem.Unk3,   // Safety setting,
+                Color = equipItem.Color,
                 PlusValue = currentPlusValue,
+                EquipPoints = currentTotalEquipPoint,
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                 ArmorCrestDataList = new List<CDataArmorCrestData>(),
                 EquipElementParamList = new List<CDataEquipElementParam>()

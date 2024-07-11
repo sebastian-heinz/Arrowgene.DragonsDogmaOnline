@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         protected static readonly string[] ItemFields = new string[]
         {
-            "uid", "item_id", "unk3", "color", "plus_value"
+            "uid", "item_id", "unk3", "color", "plus_value", "equip_points"
         };
 
         // Items don't get updated or deleted once created as the same row is shared among all players.
@@ -19,6 +19,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             $"INSERT INTO \"ddon_item\" ({BuildQueryField(ItemFields)}) SELECT {BuildQueryInsert(ItemFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_item\" WHERE \"uid\"=@uid);";
 
         private static readonly string SqlSelectItem = $"SELECT {BuildQueryField(ItemFields)} FROM \"ddon_item\" WHERE \"uid\"=@uid;";
+
+        private static readonly string SqlUpdateEquipPoints =
+            "UPDATE \"ddon_item\" SET \"equip_points\" = @equip_points " +
+            "WHERE \"uid\" = @uid;";
 
         public bool InsertItem(TCon conn, Item item)
         {
@@ -32,6 +36,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             using TCon connection = OpenNewConnection();
             return InsertItem(connection, item);
+        }
+
+        public bool UpdateItemEquipPoints(string uid, uint equipPoints)
+        {
+            using (TCon connection = OpenNewConnection())
+            {
+                return ExecuteNonQuery(connection, SqlUpdateEquipPoints, command =>
+                {
+                    AddParameter(command, "uid", uid);
+                    AddParameter(command, "equip_points", equipPoints);
+                }) == 1;
+            }
         }
 
         public Item SelectItem(string uid)
@@ -60,6 +76,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             item.Unk3 = GetByte(reader, "unk3");
             item.Color = GetByte(reader, "color");
             item.PlusValue = GetByte(reader, "plus_value");
+            item.EquipPoints = GetUInt32(reader, "equip_points");
             return item;
         }
 
@@ -70,6 +87,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "unk3", item.Unk3);
             AddParameter(command, "color", item.Color);
             AddParameter(command, "plus_value", item.PlusValue);
+            AddParameter(command, "equip_points", item.EquipPoints);
         }
     }
 }

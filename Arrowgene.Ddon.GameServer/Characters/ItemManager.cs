@@ -254,6 +254,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Unk3 = 0,
                         Color = 0,
                         PlusValue = setplusvalue,
+                        EquipPoints = 0,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                         ArmorCrestDataList = new List<CDataArmorCrestData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()

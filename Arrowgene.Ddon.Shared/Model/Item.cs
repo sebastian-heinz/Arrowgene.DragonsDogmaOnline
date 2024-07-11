@@ -28,6 +28,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte Unk3 { get; set; } // This is safety setting.
         public byte Color { get; set; }
         public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/
+        public uint EquipPoints { get; set;}
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
         public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
