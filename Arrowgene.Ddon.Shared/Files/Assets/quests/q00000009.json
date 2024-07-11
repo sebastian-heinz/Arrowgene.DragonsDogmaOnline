@@ -217,6 +217,7 @@
         },
         {
             "type": "PartyGather",
+            "checkpoint": true,
             "announce_type": "Update",
             "flags": [
                 {"type": "QstLayout", "action": "Clear", "value": 982, "comment": "Spawns Vanessa in the Audience Chamber"},

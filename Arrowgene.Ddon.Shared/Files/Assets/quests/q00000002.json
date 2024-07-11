@@ -94,6 +94,7 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
             "announce_type": "Update",
             "stage_id": {
                 "id": 3,
@@ -104,6 +105,7 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
             "stage_id": {
                 "id": 3,
                 "group_id": 1
@@ -113,11 +115,12 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 3,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "npc_id": "TheWhiteDragon",
             "message_id": 0
         },

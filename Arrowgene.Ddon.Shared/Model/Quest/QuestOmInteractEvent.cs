@@ -23,6 +23,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         IsBrokenQuest,
         TouchNpcUnitMarker,
         TouchActNpc,
+        UsedKey
     }
 
     public class QuestOmInteractEvent

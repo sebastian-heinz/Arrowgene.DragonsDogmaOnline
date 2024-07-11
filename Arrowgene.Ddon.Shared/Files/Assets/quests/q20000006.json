@@ -1,0 +1,112 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Evil Lurking in the Tombs",
+    "quest_id": 20000006,
+    "base_level": 30,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1480
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 990
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 130
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment" : "Battle Sallet",
+                    "item_id": 524,
+                    "num": 1
+                },
+                {
+                    "comment" : "Healing Elixir",
+                    "item_id": 7552,
+                    "num": 3
+                },
+                {
+                    "comment" : "Sprite's Amulet",
+                    "item_id": 9384,
+                    "num": 2                    
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 238,
+                "group_id": 9
+            },
+            "enemies": [
+                {
+                    "comment" : "Wight",
+                    "enemy_id": "0x015600",
+                    "named_enemy_params_id": 54,
+                    "level": 30,
+                    "exp": 9960         
+                },
+                {
+                    "comment" : "Wight",
+                    "enemy_id": "0x015600",
+                    "named_enemy_params_id": 54,
+                    "level": 30,
+                    "exp": 9960         
+                },
+                {
+                    "comment" : "Stout Undead",
+                    "enemy_id": "0x010502",
+                    "level": 28,
+                    "exp": 874         
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Christoph",
+            "message_id": 11011,
+            "flags": [
+            {"type": "QstLayout", "action": "Set", "value": 988}    
+             ]          
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {           
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Christoph",
+            "message_id": 11014
+        }
+    ]
+}

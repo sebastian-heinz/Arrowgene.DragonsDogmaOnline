@@ -188,7 +188,8 @@ namespace Arrowgene.Ddon.Database
         List<QuestBoxRewards> SelectBoxRewardItems(uint commonId);
 
         // Completed Quests
-        List<QuestId> GetCompletedQuestsByType(uint characterCommonId, QuestType questType);
+        List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType);
+        CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId);
         bool InsertIfNotExistCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType);
 
         // Quest Progress
@@ -196,5 +197,11 @@ namespace Arrowgene.Ddon.Database
         bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);
         bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType);
         List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType);
+        QuestProgress GetQuestProgressById(uint characterCommonId, QuestId questId);
+
+        // Quest Priority
+        bool InsertPriorityQuest(uint characterCommonId, QuestId questId);
+        List<QuestId> GetPriorityQuests(uint characterCommonId);
+        bool DeletePriorityQuest(uint characterCommonId, QuestId questId);
     }
 }

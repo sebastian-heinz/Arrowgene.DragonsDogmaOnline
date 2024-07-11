@@ -95,11 +95,12 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 78,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "flags": [
                 {"type": "QstLayout", "action": "Clear", "value": 898},
                 {"type": "QstLayout", "action": "Set", "value": 973, "comment": "Pawn Dungeon Entrance (wall)"},
@@ -110,11 +111,12 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 3,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "npc_id": "Mysial0",
             "message_id": 10915
         },

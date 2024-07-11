@@ -29,14 +29,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Logger.Info($"GroupId={request.Structure.LayoutId.GroupId}, SubGroupId={request.Structure.SubGroupId}, LayerNo={request.Structure.LayoutId.LayerNo}");
 
             Quest quest = null;
-            QuestState questState = null;
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
                 quest = QuestManager.GetQuest(questId);
-                questState = client.Party.QuestState.GetQuestState(questId);
-
-                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, subGroupId))
+                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
                 {
                     IsQuestControlled = true;
                     break;
@@ -53,11 +50,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
-                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, subGroupId).Select(enemy => new CDataLayoutEnemyData()
+                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId).Select(enemy => new CDataLayoutEnemyData()
                 {
                     PositionIndex = (byte)(enemy.Index),
                     EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                 }).ToList();
+
+                client.Party.QuestState.SetInstanceSubgroupId(quest, stageId, subGroupId);
             }
             else
             {
@@ -67,6 +66,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                 })
                 .ToList();
+            }
+
+            if (subGroupId > 0)
+            {
+                S2CInstanceEnemySubGroupAppearNtc subgroupNtc = new S2CInstanceEnemySubGroupAppearNtc()
+                {
+                    SubGroupId = subGroupId,
+                    LayoutId = stageId.ToStageLayoutId(),
+                };
+
+                client.Party.SendToAll(subgroupNtc);
             }
 
             client.Send(response);

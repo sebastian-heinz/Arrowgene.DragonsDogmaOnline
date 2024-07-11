@@ -95,26 +95,29 @@
         },
         {
             "type": "KillGroup",
+            "checkpoint": true,
             "announce_type": "Update",
             "groups": [0]
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 95,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "npc_id": "Gilstan",
             "message_id": 10953
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 3,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "npc_id": "Leo0",
             "message_id": 10960
         }

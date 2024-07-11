@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure;
@@ -10,6 +11,16 @@ public class CDataQuestProcessState
         WorkList = new List<CDataQuestProgressWork>();
         CheckCommandList = new List<MtTypedArrayCDataQuestCommand>();
         ResultCommandList = new List<CDataQuestCommand>();
+    }
+
+    public CDataQuestProcessState(CDataQuestProcessState obj)
+    {
+        ProcessNo = obj.ProcessNo;
+        SequenceNo = obj.SequenceNo;
+        BlockNo = obj.BlockNo;
+        WorkList = obj.WorkList.Select(x => new CDataQuestProgressWork(x)).ToList();
+        ResultCommandList = obj.ResultCommandList.Select(x => new CDataQuestCommand(x)).ToList();
+        CheckCommandList = obj.CheckCommandList.Select(x => new MtTypedArrayCDataQuestCommand(x)).ToList();
     }
 
     public ushort ProcessNo { get; set; }
@@ -51,6 +62,11 @@ public class CDataQuestProcessState
         public MtTypedArrayCDataQuestCommand()
         {
             ResultCommandList = new List<CDataQuestCommand>();
+        }
+
+        public MtTypedArrayCDataQuestCommand(MtTypedArrayCDataQuestCommand obj)
+        {
+            ResultCommandList = obj.ResultCommandList.Select(x => new CDataQuestCommand(x)).ToList();
         }
 
         public class Serializer : EntitySerializer<MtTypedArrayCDataQuestCommand>

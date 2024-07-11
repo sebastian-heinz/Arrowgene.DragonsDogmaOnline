@@ -11,5 +11,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public int EventId { get; set; }
         public StageId JumpStageId { get; set; }
         public int StartPosNo { get; set; }
+        public QuestJumpType JumpType { get; set; }
     }
 }

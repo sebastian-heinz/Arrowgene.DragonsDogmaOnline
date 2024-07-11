@@ -17,6 +17,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         // Pseudo Categories
         World = 1,
+        All
 
 #if false
 // Seems game has 2 different sets of quest IDs

@@ -48,32 +48,13 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             new CDataQuestExp() {Type = ExpType.ExperiencePoints, Reward = 900000}
         };
 
+#if false
         public override bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId)
         {
             return (StageNo.SacredFlamePath == (StageNo)stageId.Id) && (stageId.GroupId == 3 || stageId.GroupId == 17 || stageId.GroupId == 18) ||
                    (StageNo.EvilDragonsRoost1 == (StageNo)stageId.Id && stageId.GroupId == 1);
         }
-
-        public override List<InstancedEnemy> GetEnemiesInStageGroup(StageId stageId, uint subGroupId)
-        {
-            List<InstancedEnemy> enemies = new List<InstancedEnemy>();
-#if false
-            foreach (var target in QuestTarget.Enemies)
-            {
-                enemies.Add(new InstancedEnemy()
-                {
-                    Id = target.Id,
-                    Lv = target.Level,
-                    IsBossBGM = target.IsBoss,
-                    IsBossGauge = target.IsBoss,
-                    EnemyTargetTypesId = 4,
-                    Scale = 100
-                    // TODO: Get rest of properties added as optional in JSON
-                });
-            }
 #endif
-            return enemies;
-        }
 
         public override void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
         {
@@ -273,7 +254,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             return quest;
         }
 
-        public override List<CDataQuestProcessState> StateMachineExecute(GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
+        public override List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
         {
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 

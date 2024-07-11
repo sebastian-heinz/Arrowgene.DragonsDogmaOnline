@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<uint> MyQstSetFlags { get; set; }
         public List<uint> MyQstCheckFlags { get; set; }
         public List<QuestFlag> QuestFlags { get; set; }
+        public List<QuestFlag> CheckpointQuestFlags { get; set; }
 
         public bool ShouldStageJump {  get; set; }
         public bool IsCheckpoint { get; set; }
@@ -34,16 +35,18 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public bool ShowMarker { get; set; }
         public bool ResetGroup { get; set; }
         public bool BgmStop { get; set; }
+        public int EnemyHpPrecent {  get; set; }
         public List<uint> EnemyGroupIds { get; set; }
         public List<QuestItem> DeliveryRequests { get; set; }
         public List<QuestItem> HandPlayerItems {  get; set; }
+        public List<QuestItem> ConsumePlayerItems { get; set; }
         public List<QuestNpcOrder> NpcOrderDetails { get; set; }
         public QuestOrder QuestOrderDetails { get; set; }
 
         public CDataQuestProcessState QuestProcessState { get; set; }
 
         // Used for raw blocks
-        public List<CDataQuestCommand> CheckCommands { get; set; }
+        public List<List<CDataQuestCommand>> CheckCommands { get; set; }
         public List<CDataQuestCommand> ResultCommands { get; set; }
 
         public QuestBlock()
@@ -51,13 +54,15 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             NpcOrderDetails = new List<QuestNpcOrder>();
             DeliveryRequests = new List<QuestItem>();
             HandPlayerItems = new List<QuestItem>();
+            ConsumePlayerItems = new List<QuestItem>();
             QuestProcessState = new CDataQuestProcessState();
 
             QuestFlags = new List<QuestFlag>();
+            CheckpointQuestFlags = new List<QuestFlag>();
             MyQstSetFlags = new List<uint>();
             MyQstCheckFlags = new List<uint>();
 
-            CheckCommands = new List<CDataQuestCommand>();
+            CheckCommands = new List<List<CDataQuestCommand>>();
             ResultCommands = new List<CDataQuestCommand>();
             QuestOrderDetails = new QuestOrder();
             EnemyGroupIds = new List<uint>();

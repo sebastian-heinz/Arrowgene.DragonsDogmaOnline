@@ -1,16 +1,20 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using YamlDotNet.Core.Tokens;
 
 
@@ -47,6 +51,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
     public abstract class Quest
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Quest));
+
         protected List<QuestProcess> Processes { get; set; }
         public readonly QuestId QuestId;
         public readonly bool IsDiscoverable;
@@ -104,7 +110,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             for (; i < Processes[0].Blocks.Count && stepsFound < step; i++)
             {
                 var block = Processes[0].Blocks[i];
-                if (block.IsCheckpoint)
+                if (block.IsCheckpoint || block.AnnounceType == QuestAnnounceType.Accept)
                 {
                     stepsFound += 1;
                 }
@@ -127,29 +133,46 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     }
                 }
 
-                if (stepsFound == step)
+                foreach (var flag in block.CheckpointQuestFlags)
+                {
+                    if (flag.Action == QuestFlagAction.Set || flag.Action == QuestFlagAction.Clear)
+                    {
+                        if (!questFlags.ContainsKey(flag.Type))
+                        {
+                            questFlags[flag.Type] = new Dictionary<int, QuestFlag>();
+                        }
+
+                        questFlags[flag.Type][flag.Value] = flag;
+                    }
+                }
+
+                if (step == stepsFound)
                 {
                     break;
                 }
             }
 
-            result.Add(Processes[0].Blocks[i].QuestProcessState);
+            if (step != stepsFound)
+            {
+                throw new QuestRestoreProgressFailedException(QuestId, step, stepsFound);
+            }
+
+            result.Add(new CDataQuestProcessState(Processes[0].Blocks[i].QuestProcessState));
 
             for (int j = 1; j < Processes.Count; j++)
             {
                 var process = Processes[j];
                 if (process.Blocks.Count > 0)
                 {
-                    result.Add(process.Blocks[0].QuestProcessState);
+                    result.Add(new CDataQuestProcessState(process.Blocks[0].QuestProcessState));
                 }
             }
 
             // Eliminate any announce or free item steps when resuming a quest.
             foreach (var processState in result)
             {
-                // Make a shallow copy of the result commands without announce and update
+                // Make copy of the result commands
                 processState.ResultCommandList = processState.ResultCommandList
-                    .Select(x => x)
                     .Where(x => x.Command != (ushort)QuestResultCommand.UpdateAnnounce &&
                                 x.Command != (ushort)QuestResultCommand.SetAnnounce &&
                                 x.Command != (ushort)QuestResultCommand.HandItem &&
@@ -172,6 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     ProcessNo = (ushort)Processes.Count,
                     SequenceNo = 1,
+                    BlockNo = 1,
                     QuestFlags = flags
                 };
 
@@ -223,6 +247,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
                 IsEnable = true,
+                CanProgress = true,
                 BaseExp = ExpRewards,
                 BaseWalletPoints = WalletRewards,
                 FixedRewardItem = GetQuestFixedRewards(),
@@ -258,33 +283,92 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
-        public abstract List<CDataQuestProcessState> StateMachineExecute(GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
-        public abstract bool HasEnemiesInCurrentStageGroup(QuestState questState, StageId stageId, uint subGroupId);
-        public abstract List<InstancedEnemy> GetEnemiesInStageGroup(StageId stageId, uint subGroupId);
+        public virtual CDataPriorityQuest ToCDataPriorityQuest(uint step)
+        {
+            var questProcessStateList = GetProcessState(step, out uint announceNoCount);
+
+            var result = new CDataPriorityQuest()
+            {
+                QuestId = (uint) QuestId,
+                QuestScheduleId = (uint) QuestScheduleId,
+
+            };
+
+            for (uint i = 0; i < announceNoCount; i++)
+            {
+                result.QuestAnnounceList.Add(new CDataQuestAnnounce() { AnnounceNo = i });
+            }
+
+            return result;
+        }
+
+        public virtual CDataMainQuestList ToCDataMainQuestList(uint step)
+        {
+            return new CDataMainQuestList()
+            {
+                Param = ToCDataQuestList(step)
+            };
+        }
+
+        public abstract List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
 
         public virtual void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
         {
             client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc());
         }
 
-        public virtual void ResetEnemiesForBlock(GameClient client, QuestId questId, QuestBlock questBlock)
+        public virtual void ResetEnemiesForBlock(GameClient client, QuestBlock questBlock)
         {
-            var quest = QuestManager.GetQuest(questId);
             foreach (var groupId in questBlock.EnemyGroupIds)
             {
-                var enemyGroup = quest.EnemyGroups[groupId];
+                var enemyGroup = EnemyGroups[groupId];
 
                 S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
                 {
-                    LayoutId = new CDataStageLayoutId()
-                    {
-                        StageId = enemyGroup.StageId.Id,
-                        GroupId = enemyGroup.StageId.GroupId,
-                        LayerNo = enemyGroup.StageId.LayerNo
-                    }
+                    LayoutId = enemyGroup.StageId.ToStageLayoutId()
                 };
 
                 client.Party.SendToAll(resetNtc);
+            }
+        }
+
+        public virtual void DestroyEnemiesForBlock(GameClient client, QuestBlock questBlock)
+        {
+            foreach (var groupId in questBlock.EnemyGroupIds)
+            {
+                var enemyGroup = EnemyGroups[groupId];
+
+                S2CInstanceEnemyGroupDestroyNtc destroyNtc = new S2CInstanceEnemyGroupDestroyNtc()
+                {
+                    LayoutId = enemyGroup.StageId.ToStageLayoutId()
+                };
+
+                client.Party.SendToAll(destroyNtc);
+            }
+        }
+
+        public virtual void PopulateStartingEnemyData(PartyQuestState partyQuestState)
+        {
+            var questState = partyQuestState.GetQuestState(this.QuestId);
+            foreach (var processState in questState.ProcessState.Values)
+            {
+                if (processState.ProcessNo >= Processes.Count)
+                {
+                    continue;
+                }
+
+                var process = Processes[processState.ProcessNo];
+                if (processState.BlockNo > process.Blocks.Count)
+                {
+                    // @note BlockNo counts from 1
+                    continue;
+                }
+
+                foreach (var groupId in process.Blocks[(int)processState.BlockNo - 1].EnemyGroupIds)
+                {
+                    var enemyGroup = EnemyGroups[groupId];
+                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                }
             }
         }
 
@@ -479,6 +563,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             case QuestFlagAction.CheckOff:
                                 checkFlags.Add(QuestManager.CheckCommand.MyQstFlagOff(questFlag.Value));
                                 break;
+                            case QuestFlagAction.CheckSetFromFsm:
+                                checkFlags.Add(QuestManager.CheckCommand.MyQstFlagOnFromFsm(questFlag.Value));
+                                break;
                         }
                         break;
                     case QuestFlagType.WorldManageQuest:
@@ -529,6 +616,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
     public class QuestDoesNotExistException : ResponseErrorException
     {
         public QuestDoesNotExistException(QuestId questId) : base(ErrorCode.ERROR_CODE_QUEST_INTERNAL_ERROR, $"The quest ${questId} does not exist")
+        {
+        }
+    }
+
+    public class QuestRestoreProgressFailedException : ResponseErrorException
+    {
+        public QuestRestoreProgressFailedException(QuestId questId, uint step, uint stepsFound) : 
+            base(ErrorCode.ERROR_CODE_QUEST_DIFFERENT_PROGRESS, $"Failed to restore progress for {questId} (Step({step}) != StepsFound({stepsFound}))")
         {
         }
     }

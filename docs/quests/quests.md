@@ -65,16 +65,16 @@ There exists an implementation of the following main story quests.
 
 | Quest Name | Comment |
 |:----------:|:-------:|
-| [A Brief Respite](https://ddonline.tumblr.com/post/136167664409/mq-a-brief-respite) | Not implemented
-| [The Ark, Once More](https://ddonline.tumblr.com/post/136513169984/mq-the-ark-once-more) | Not implemented
-| [Thinking of A Friend](https://ddonline.tumblr.com/post/137011945944/mq-thinking-of-a-friend) | Not implemented
-| [The Beast’s Final Moments](https://ddonline.tumblr.com/post/137802732454/mq-the-beasts-final-moments) | Not implemented
-| [The Entrusted Future](http://ddon.wikidot.com/mq:theentrustedfuture) | Not implemented
-| [The Quandary of Soldiers](http://ddon.wikidot.com/mq:thequandaryofsoldiers) | Not implemented
-| [The Dwellers of the Golden Land](http://ddon.wikidot.com/mq:thedwellersofthegoldenland) | Not implemented
-| [The Golden Key](http://ddon.wikidot.com/mq:thegoldenkey) | Not implemented
-| [The Great Alchemist](http://ddon.wikidot.com/mq:thegreatalchemist) | Not implemented
-| [Be Forevermore, White Dragon](http://ddon.wikidot.com/mq:beforevermorewhitedragon) | Not implemented
+| [A Brief Respite](https://ddonline.tumblr.com/post/136167664409/mq-a-brief-respite) | Works well.
+| [The Ark, Once More](https://ddonline.tumblr.com/post/136513169984/mq-the-ark-once-more) | Unable to use OM which forces player to end of the dungeon because unable to detect player reached end. Works well otherwise. Can't find spawning node for 1 meat monster.
+| [Thinking of A Friend](https://ddonline.tumblr.com/post/137011945944/mq-thinking-of-a-friend) | Works mostly well. There is a waypoint system from WDT to Zoma. This is hard to enforce with players already having many points unlocked. Moved quest update point to area master lounge to account for it.
+| [The Beast’s Final Moments](https://ddonline.tumblr.com/post/137802732454/mq-the-beasts-final-moments) | Works well. Some monsters in dungeon scaled to the previous Ark mission.
+| [The Entrusted Future](http://ddon.wikidot.com/mq:theentrustedfuture) | Works mostly well. Didn't implement Leo following the player around. Some mobs need better placement.
+| [The Quandary of Soldiers](http://ddon.wikidot.com/mq:thequandaryofsoldiers) | Quest works but dungeon monster placement is severly lacking. Can't find some nodes in ddon-tools for some of the meat monsters.
+| [The Dwellers of the Golden Land](http://ddon.wikidot.com/mq:thedwellersofthegoldenland) | Not sure if all area locks are in place.
+| [The Golden Key](http://ddon.wikidot.com/mq:thegoldenkey) | Works mostly well. Door in boss room can be opened twice during the fight, but stays locked.
+| [The Great Alchemist](http://ddon.wikidot.com/mq:thegreatalchemist) | Some quirks with the lighting. Also, having hard time to get proper spawn point for second boss.
+| [Be Forevermore, White Dragon](http://ddon.wikidot.com/mq:beforevermorewhitedragon) | Some weird flashing with the dragon. Seems cutscene uses it's own model instead of the one from the world manage quest.
 
 ### Season 3.3
 

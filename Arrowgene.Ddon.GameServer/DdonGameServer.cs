@@ -387,6 +387,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ProfileGetCharacterProfileHandler(this));
             AddHandler(new ProfileGetMyCharacterProfileHandler(this));
 
+            AddHandler(new QuestCancelPriorityQuestHandler(this));
             AddHandler(new QuestEndDistributionQuestCancelHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestListHandler(this));
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
@@ -421,6 +422,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new Quest_11_60_16_Handler(this));
             AddHandler(new QuestDeliverItemHandler(this));
             AddHandler(new QuestDecideDeliveryItemHandler(this));
+            AddHandler(new QuestCancelHandler(this));
 
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));

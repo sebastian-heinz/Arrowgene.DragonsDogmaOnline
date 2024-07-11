@@ -24,11 +24,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlSelectQuestProgressByType = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
                                                                $"\"character_common_id\" = @character_common_id AND \"quest_type\" = @quest_type;";
+        private readonly string SqlSelectQuestProgressById = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
+                                                               $"\"character_common_id\" = @character_common_id AND \"quest_id\" = @quest_id;";
+        private readonly string SqlSelectAllQuestProgress = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
+                                                               $"\"character_common_id\" = @character_common_id;";
 
         public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType)
         {
             using TCon connection = OpenNewConnection();
-            return GetQuestProgressByType(connection, characterCommonId, questType);
+            if (questType == QuestType.All)
+            {
+                return GetAllQuestProgress(connection, characterCommonId);
+            }
+            else
+            {
+                return GetQuestProgressByType(connection, characterCommonId, questType);
+            }
         }
 
         public List<QuestProgress> GetQuestProgressByType(TCon connection, uint characterCommonId, QuestType questType)
@@ -44,13 +55,63 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }, reader => {
                         while (reader.Read())
                         {
-                            var result = ReadQuestProgressByType(reader);
+                            var result = ReadQuestProgress(reader);
                             results.Add(result);
                         }
                     });
             });
 
             return results;
+        }
+
+        private List<QuestProgress> GetAllQuestProgress(TCon connection, uint characterCommonId)
+        {
+            List<QuestProgress> results = new List<QuestProgress>();
+
+            ExecuteInTransaction(conn =>
+            {
+                ExecuteReader(conn, SqlSelectAllQuestProgress,
+                    command => {
+                        AddParameter(command, "@character_common_id", characterCommonId);
+                    }, reader => {
+                        while (reader.Read())
+                        {
+                            var result = ReadQuestProgress(reader);
+                            results.Add(result);
+                        }
+                    });
+            });
+
+            return results;
+        }
+
+
+        public QuestProgress GetQuestProgressById(uint characterCommonId, QuestId questId)
+        {
+            using TCon connection = OpenNewConnection();
+            return GetQuestProgressById(connection, characterCommonId, questId);
+        }
+
+        public QuestProgress GetQuestProgressById(TCon connection, uint characterCommonId, QuestId questId)
+        {
+            QuestProgress result = null;
+            ExecuteInTransaction(connection =>
+            {
+                ExecuteReader(connection, SqlSelectQuestProgressById,
+                    command =>
+                    {
+                        AddParameter(command, "@character_common_id", characterCommonId);
+                        AddParameter(command, "@quest_id", (uint)questId);
+                    },
+                    reader =>
+                    {
+                        if (reader.Read())
+                        {
+                            result = ReadQuestProgress(reader);
+                        }
+                    });
+            });
+            return result;
         }
 
         public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType)
@@ -103,7 +164,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1; ;
         }
 
-        private QuestProgress ReadQuestProgressByType(TReader reader)
+        private QuestProgress ReadQuestProgress(TReader reader)
         {
             QuestProgress obj = new QuestProgress();
             obj.CharacterCommonId = GetUInt32(reader, "character_common_id");

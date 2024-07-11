@@ -108,6 +108,7 @@
         },
         {
             "type": "PartyGather",
+            "announce_type": "Accept",
             "stage_id": {
                 "id": 240,
                 "group_id": 1
@@ -117,7 +118,6 @@
                 "y": -3049,
                 "z": -49369
             },
-            "announce_type": "Accept",
             "flags": [
                 {"type": "QstLayout", "action": "Set", "value": 907, "comment": "Dead Knights (Ark 576)"},
                 {"type": "QstLayout", "action": "Set", "value": 976, "comment": "NPC: Klaus0, Iris, Fabio0"},
@@ -155,6 +155,7 @@
         },
         {
             "type": "PartyGather",
+            "checkpoint": true,
             "announce_type": "Update",
             "flags": [
                 {"type": "QstLayout", "action": "Clear", "value": 911, "comment": "Blocks boss fight exits"},

@@ -613,9 +613,8 @@ namespace Arrowgene.Ddon.GameServer.Party
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceDropItemManager.Clear();
             }
-
-            QuestState.ResetInstanceQuestState();
             OmManager.ResetAllOmData(InstanceOmData);
+            QuestState.ResetInstanceQuestState();
         }
 
         public PartyMember GetPartyMemberByCharacter(CharacterCommon characterCommon)

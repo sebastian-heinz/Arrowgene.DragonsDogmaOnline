@@ -1,5 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -36,17 +38,17 @@ namespace Arrowgene.Ddon.GameServer.Party
         public uint Step {  get; set; }
 
         public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
-        public Dictionary<StageId, List<InstancedEnemy>> QuestEnemies {  get; set; }
-        public Dictionary<StageId, bool> ResetEnemyGroup { get; set; }
+        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies {  get; set; }
+        public Dictionary<StageId, ushort> CurrentSubgroup { get; set; }
 
         public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
 
         public QuestState()
         {
             ProcessState = new Dictionary<ushort, QuestProcessState>();
-            QuestEnemies = new Dictionary<StageId, List<InstancedEnemy>>();
+            QuestEnemies = new Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
-            ResetEnemyGroup = new Dictionary<StageId, bool>();
+            CurrentSubgroup = new Dictionary<StageId, ushort>();
         }
 
         public uint UpdateDeliveryRequest(uint itemId, uint amount)
@@ -113,9 +115,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             ActiveQuests = new Dictionary<QuestId, QuestState>();
             QuestLookupTable = new Dictionary<StageId, List<QuestId>>();
             CompletedWorldQuests = new List<QuestId>();
-
-            // Populate world into the completed category so when the instance gets reloaded they are set
-            CompletedWorldQuests.AddRange(QuestManager.GetQuestsByType(QuestType.World).Select(x => x.Key));
         }
 
         public void AddNewQuest(Quest quest, uint step = 0)
@@ -138,8 +137,11 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                     QuestLookupTable[location.StageId].Add(quest.QuestId);
 
-                    // Populate Instance Enemy Data
-                    ActiveQuests[quest.QuestId].QuestEnemies[location.StageId] = quest.GetEnemiesInStageGroup(location.StageId, location.SubGroupId);
+                    // Populate data structures for Instance Enemy Data
+                    if (!ActiveQuests[quest.QuestId].QuestEnemies.ContainsKey(location.StageId))
+                    {
+                        ActiveQuests[quest.QuestId].QuestEnemies[location.StageId] = new Dictionary<uint, List<InstancedEnemy>>();
+                    }
                 }
 
                 foreach (var request in quest.DeliveryItems)
@@ -149,24 +151,54 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 // Initialize Process State Table
                 UpdateProcessState(quest.QuestId, quest.ToCDataQuestList(step).QuestProcessStateList);
+
+                // Initialize enemy data are the current point
+                quest.PopulateStartingEnemyData(this);
+            }
+        }
+
+        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId, uint subGroupId)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[quest.QuestId];
+                if (!questState.QuestEnemies.ContainsKey(stageId))
+                {
+                    return false;
+                }
+
+                return questState.QuestEnemies[stageId].ContainsKey(subGroupId);
+            }
+        }
+
+        public void SetInstanceEnemies(Quest quest, StageId stageId, ushort subGroupId, List<InstancedEnemy> enemies)
+        {
+            lock (ActiveQuests)
+            {
+                ActiveQuests[quest.QuestId].QuestEnemies[stageId][subGroupId] = enemies;
+            }
+        }
+
+        public List<InstancedEnemy> GetInstancedEnemies(Quest quest, StageId stageId, ushort subGroupId)
+        {
+            lock (ActiveQuests)
+            {
+                return ActiveQuests[quest.QuestId].QuestEnemies[stageId][subGroupId];
             }
         }
 
         public List<InstancedEnemy> GetInstancedEnemies(QuestId questId, StageId stageId, ushort subGroupId)
         {
-            lock (ActiveQuests)
-            {
-                var questState = ActiveQuests[questId];
-                return questState.QuestEnemies[stageId];
-            }
+            var quest = QuestManager.GetQuest(questId);
+            return GetInstancedEnemies(quest, stageId, subGroupId);
         }
 
-        public InstancedEnemy GetInstancedEnemy(QuestId questId, StageId stageId, ushort subGroupId, uint index)
+        public InstancedEnemy GetInstancedEnemy(Quest quest, StageId stageId, ushort subGroupId, uint index)
         {
             lock (ActiveQuests)
             {
-                var questState = ActiveQuests[questId];
-                foreach (var enemy in questState.QuestEnemies[stageId])
+                var questState = ActiveQuests[quest.QuestId];
+                foreach (var enemy in questState.QuestEnemies[stageId][subGroupId])
                 {
                     if (enemy.Index == index)
                     {
@@ -178,18 +210,35 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public bool ShouldResetInstanceEnemyGroup(QuestId questId, StageId stageId)
+        public InstancedEnemy GetInstancedEnemy(QuestId questId, StageId stageId, ushort subGroupId, uint index)
+        {
+            var quest = QuestManager.GetQuest(questId);
+            return GetInstancedEnemy(quest, stageId, subGroupId, index);
+        }
+
+        public void SetInstanceSubgroupId(Quest quest, StageId stageId, ushort subgroupId)
         {
             lock (ActiveQuests)
             {
-                var questState = ActiveQuests[questId];
-                bool ShouldReset = !questState.ResetEnemyGroup.ContainsKey(stageId);
-                questState.ResetEnemyGroup[stageId] = false;
-                return ShouldReset;
+                var questState = ActiveQuests[quest.QuestId];
+                questState.CurrentSubgroup[stageId] = subgroupId;
             }
         }
 
-        public void AddNewQuest(QuestId questId, uint step = 0)
+        public ushort GetInstanceSubgroupId(Quest quest, StageId stageId)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[quest.QuestId];
+                if (!questState.CurrentSubgroup.ContainsKey(stageId))
+                {
+                    return 0;
+                }
+                return questState.CurrentSubgroup[stageId];
+            }
+        }
+
+        public void AddNewQuest(QuestId questId, uint step)
         {
             var quest = QuestManager.GetQuest(questId);
             AddNewQuest(quest, step);
@@ -212,6 +261,22 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public void CancelQuest(QuestId questId)
+        {
+            lock (CompletedWorldQuests)
+            {
+                var quest = QuestManager.GetQuest(questId);
+                RemoveQuest(questId);
+
+                // Save the quest if it was a world quest
+                // so we can add it back on instance reset
+                if (quest.QuestType == QuestType.World)
+                {
+                    CompletedWorldQuests.Add(questId);
+                }
+            }
+        }
+
         public void CompleteQuest(QuestId questId)
         {
             lock (CompletedWorldQuests)
@@ -228,7 +293,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 if (quest.NextQuestId != 0)
                 {
-                    AddNewQuest(quest.NextQuestId);
+                    AddNewQuest(quest.NextQuestId, 0);
                 }
             }
         }
@@ -341,10 +406,155 @@ namespace Arrowgene.Ddon.GameServer.Party
             // Add all world quests
             foreach (var questId in CompletedWorldQuests)
             {
-                AddNewQuest(questId);
+                AddNewQuest(questId, 0);
             }
 
             CompletedWorldQuests.Clear();
+        }
+
+        public bool UpdatePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)
+        {
+            Quest quest = QuestManager.GetQuest(questId);
+
+            var questState = party.QuestState.GetQuestState(quest);
+            foreach (var memberClient in party.Clients)
+            {
+                var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, questId);
+                if (result == null)
+                {
+                    continue;
+                }
+
+                if (result.Step != questState.Step)
+                {
+                    continue;
+                }
+
+                server.Database.UpdateQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, questState.Step + 1);
+            }
+
+            questState.Step += 1;
+
+            return true;
+        }
+
+        public bool CompletePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)
+        {
+            Quest quest = QuestManager.GetQuest(questId);
+
+            var questState = party.QuestState.GetQuestState(quest);
+            foreach (var memberClient in party.Clients)
+            {
+                var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
+                if (result == null)
+                {
+                    continue;
+                }
+
+                if (result.Step != questState.Step)
+                {
+                    continue;
+                }
+
+                server.Database.DeletePriorityQuest(memberClient.Character.CommonId, quest.QuestId);
+                server.Database.RemoveQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
+                if (quest.NextQuestId != QuestId.None)
+                {
+                    var nextQuest = QuestManager.GetQuest(quest.NextQuestId);
+                    server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestId, nextQuest.QuestType, 0);
+                }
+
+                server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
+            }
+
+            // Remove the quest data from the party object
+            CompleteQuest(quest.QuestId);
+
+            return true;
+        }
+
+        public bool DistributePartyQuestRewards(DdonGameServer server, PartyGroup party, QuestId questId)
+        {
+            Quest quest = QuestManager.GetQuest(questId);
+
+            var questState = party.QuestState.GetQuestState(quest);
+            foreach (var memberClient in party.Clients)
+            {
+                // If this is a main quest, check to see that the member is currently on this quest, otherwise don't reward
+                if (quest.QuestType == QuestType.Main)
+                {
+                    var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, questId);
+                    if (result == null)
+                    {
+                        continue;
+                    }
+
+                    if (result.Step != questState.Step)
+                    {
+                        continue;
+                    }
+                }
+
+                // Check for Item Rewards
+                if (quest.HasRewards())
+                {
+                    server.RewardManager.AddQuestRewards(memberClient, quest);
+                }
+
+                // Check for Exp, Rift and Gold Rewards
+                SendWalletRewards(server, memberClient, quest);
+            }
+
+            return true;
+        }
+
+        private void SendWalletRewards(DdonGameServer server, GameClient client, Quest quest)
+        {
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = (ushort)ItemNoticeType.Quest
+            };
+
+            foreach (var walletReward in quest.WalletRewards)
+            {
+                server.WalletManager.AddToWallet(client.Character, walletReward.Type, walletReward.Value);
+
+                updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
+                {
+                    Type = walletReward.Type,
+                    Value = server.WalletManager.GetWalletAmount(client.Character, walletReward.Type),
+                    AddPoint = (int)walletReward.Value
+                });
+            }
+
+            if (updateCharacterItemNtc.UpdateWalletList.Count > 0)
+            {
+                client.Send(updateCharacterItemNtc);
+            }
+
+            foreach (var expPoint in quest.ExpRewards)
+            {
+                server.ExpManager.AddExp(client, client.Character, expPoint.Reward, 0, 2); // I think type 2 means quest
+            }
+        }
+
+        public void UpdatePriorityQuestList(DdonGameServer server, PartyGroup party)
+        {
+            var leaderClient = party.Leader.Client;
+
+            S2CQuestSetPriorityQuestNtc prioNtc = new S2CQuestSetPriorityQuestNtc()
+            {
+                CharacterId = leaderClient.Character.CharacterId
+            };
+
+            var prioirtyQuests = server.Database.GetPriorityQuests(leaderClient.Character.CommonId);
+            foreach (var priorityQuestId in prioirtyQuests)
+            {
+                var priorityQuest = QuestManager.GetQuest(priorityQuestId);
+                var questState = party.QuestState.GetQuestState(priorityQuest.QuestId);
+                prioNtc.PriorityQuestList.Add(priorityQuest.ToCDataPriorityQuest(questState.Step));
+            }
+            party.SendToAll(prioNtc);
         }
     }
 }

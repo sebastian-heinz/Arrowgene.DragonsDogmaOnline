@@ -122,6 +122,7 @@
         },
         {
             "type": "PartyGather",
+            "checkpoint": true,
             "stage_id": {
                 "id": 67
             },
@@ -156,11 +157,12 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 67,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "flags": [
                 {"type": "QstLayout", "action": "Clear", "value": 912, "comment": "Mine Rock Wall"},
                 {"type": "QstLayout", "action": "Clear", "value": 977, "comment": "Spawns Gerd and the White Knights outside Glowworm Cave"},
@@ -171,6 +173,8 @@
         },
         {
             "type": "PartyGather",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 1
             },
@@ -178,8 +182,7 @@
                 "x": -76088,
                 "y": 4285,
                 "z": 32829
-            },
-            "announce_type": "Update"
+            }
         },
         {
             "type": "PlayEvent",
@@ -190,11 +193,12 @@
         },
         {
             "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
             "stage_id": {
                 "id": 3,
                 "group_id": 1
             },
-            "announce_type": "Update",
             "npc_id": "Joseph",
             "message_id": 7615
         }

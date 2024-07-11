@@ -500,7 +500,7 @@ CREATE TABLE IF NOT EXISTS "ddon_bazaar_exhibition" (
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_reward_box" (
-	"uniq_reward_id"	INTEGER NOT NULL,
+	"uniq_reward_id"	INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	"character_common_id"	INTEGER NOT NULL,
 	"quest_id"	INTEGER NOT NULL,
 	"num_random_rewards"	INTEGER NOT NULL,
@@ -508,7 +508,6 @@ CREATE TABLE IF NOT EXISTS "ddon_reward_box" (
 	"random_reward1_index"	INTEGER NOT NULL,
 	"random_reward2_index"	INTEGER NOT NULL,
 	"random_reward3_index"	INTEGER NOT NULL,
-	PRIMARY KEY("uniq_reward_id" AUTOINCREMENT),
 	CONSTRAINT "fk_ddon_reward_box_character_common_id" FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
 );
 
@@ -524,5 +523,12 @@ CREATE TABLE IF NOT EXISTS "ddon_completed_quests" (
 	"character_common_id"	INTEGER NOT NULL,
 	"quest_type"	INTEGER NOT NULL,
 	"quest_id"	INTEGER NOT NULL,
+    "clear_count"	INTEGER NOT NULL DEFAULT 0,
     FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_priority_quests" (
+	"character_common_id"	INTEGER NOT NULL,
+	"quest_id"	INTEGER NOT NULL,
+	FOREIGN KEY("character_common_id") REFERENCES "ddon_character_common"("character_common_id") ON DELETE CASCADE
 );

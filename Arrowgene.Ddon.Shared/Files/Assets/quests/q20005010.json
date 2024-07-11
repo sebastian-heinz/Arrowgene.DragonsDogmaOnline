@@ -41,13 +41,13 @@
     ],
     "enemy_groups": [
         {
-            "comment": "GroupId: 0",
             "stage_id": {
                 "id": 1,
                 "group_id": 26
             },
             "enemies": [
                 {
+                    "comment": "Cyclops",
                     "enemy_id": "0x015000",
                     "level": 12,
                     "exp": 1860,
