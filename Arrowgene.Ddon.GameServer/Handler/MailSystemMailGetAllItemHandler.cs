@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             switch (request.StorageType)
             {
                 case 13: // ItemPost   StorageType = 13
+                    // TODO: Add support for ItemPost
                     toItemBag = false;
                     break;
                 case 19: // ItemBag    StorageType = 19
