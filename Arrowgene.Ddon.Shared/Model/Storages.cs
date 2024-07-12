@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     Color = tuple.item.Item1.Color,
                     PlusValue = tuple.item.Item1.PlusValue,
                     Bind = true,
-                    EquipPoint = 0,
+                    EquipPoint = tuple.item.Item1.EquipPoints,
                     EquipCharacterID = 0,
                     EquipPawnID = 0,
                     WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,

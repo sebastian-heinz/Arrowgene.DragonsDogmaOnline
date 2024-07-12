@@ -176,7 +176,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.Color = item.Color;
             ntcData.ItemList.PlusValue = item.PlusValue;
             ntcData.ItemList.Bind = false;
-            ntcData.ItemList.EquipPoint = 0;
+            ntcData.ItemList.EquipPoint = item.EquipPoints;
             ntcData.ItemList.EquipCharacterID = 0;
             ntcData.ItemList.EquipPawnID = 0;
             ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
@@ -279,7 +279,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.Color = item.Color;
                 result.ItemList.PlusValue = item.PlusValue;
                 result.ItemList.Bind = false;
-                result.ItemList.EquipPoint = 0;
+                result.ItemList.EquipPoint = item.EquipPoints;
                 result.ItemList.EquipCharacterID = 0;
                 result.ItemList.EquipPawnID = 0;
                 result.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
@@ -336,7 +336,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             srcUpdateItem.ItemList.Color = item.Color; // ?
             srcUpdateItem.ItemList.PlusValue = item.PlusValue; // ?
             srcUpdateItem.ItemList.Bind = false;
-            srcUpdateItem.ItemList.EquipPoint = 0;
+            srcUpdateItem.ItemList.EquipPoint = item.EquipPoints;
             srcUpdateItem.ItemList.EquipCharacterID = 0;
             srcUpdateItem.ItemList.EquipPawnID = 0;
             srcUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
@@ -409,7 +409,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 dstUpdateItem.ItemList.Color = item.Color; // ?
                 dstUpdateItem.ItemList.PlusValue = item.PlusValue; // ?
                 dstUpdateItem.ItemList.Bind = false;
-                dstUpdateItem.ItemList.EquipPoint = 0;
+                dstUpdateItem.ItemList.EquipPoint = item.EquipPoints;
                 dstUpdateItem.ItemList.EquipCharacterID = 0;
                 dstUpdateItem.ItemList.EquipPawnID = 0;
                 dstUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
@@ -453,7 +453,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.Color = newItem.Color;
             updateResult.ItemList.PlusValue = newItem.PlusValue;
             updateResult.ItemList.Bind = false;
-            updateResult.ItemList.EquipPoint = 0;
+            updateResult.ItemList.EquipPoint = newItem.EquipPoints;
             updateResult.ItemList.EquipCharacterID = 0;
             updateResult.ItemList.EquipPawnID = 0;
             updateResult.ItemList.WeaponCrestDataList = newItem.WeaponCrestDataList;

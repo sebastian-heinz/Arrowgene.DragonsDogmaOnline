@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntcData0.ItemList.Color = item.Color; // ?
             ntcData0.ItemList.PlusValue = item.PlusValue; // ?
             ntcData0.ItemList.Bind = false;
-            ntcData0.ItemList.EquipPoint = 0;
+            ntcData0.ItemList.EquipPoint = item.EquipPoints;
             ntcData0.ItemList.EquipCharacterID = 0;
             ntcData0.ItemList.EquipPawnID = 0;
             ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;

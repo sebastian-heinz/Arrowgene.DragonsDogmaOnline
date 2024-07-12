@@ -24,6 +24,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "UPDATE \"ddon_item\" SET \"equip_points\" = @equip_points " +
             "WHERE \"uid\" = @uid;";
 
+
         public bool InsertItem(TCon conn, Item item)
         {
             return ExecuteNonQuery(conn, SqlInsertOrIgnoreItem, command =>
@@ -44,8 +45,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 return ExecuteNonQuery(connection, SqlUpdateEquipPoints, command =>
                 {
-                    AddParameter(command, "uid", uid);
                     AddParameter(command, "equip_points", equipPoints);
+                    AddParameter(command, "uid", uid);
                 }) == 1;
             }
         }

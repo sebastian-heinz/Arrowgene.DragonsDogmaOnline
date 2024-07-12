@@ -97,6 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk3 = 0,   // Safety setting,
                 Color = 0,
                 PlusValue = RandomQuality,
+                EquipPoints = equipItem.EquipPoints,
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                 ArmorCrestDataList = new List<CDataArmorCrestData>(),
                 EquipElementParamList = new List<CDataEquipElementParam>()
