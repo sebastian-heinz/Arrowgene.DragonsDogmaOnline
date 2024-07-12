@@ -45,8 +45,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 return ExecuteNonQuery(connection, SqlUpdateEquipPoints, command =>
                 {
-                    AddParameter(command, "equip_points", equipPoints);
                     AddParameter(command, "uid", uid);
+                    AddParameter(command, "equip_points", equipPoints);
                 }) == 1;
             }
         }

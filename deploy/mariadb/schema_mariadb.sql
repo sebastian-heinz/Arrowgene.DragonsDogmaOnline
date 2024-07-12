@@ -264,7 +264,7 @@ CREATE TABLE IF NOT EXISTS ddon_item
     unk3         SMALLINT    NOT NULL,
     "color"      SMALLINT    NOT NULL,
     "plus_value" SMALLINT    NOT NULL,
-    "equip_points" INTEGER  NOT NULL,
+    "equip_points" INTEGER   NOT NULL,
     PRIMARY KEY ("uid")
 );
 

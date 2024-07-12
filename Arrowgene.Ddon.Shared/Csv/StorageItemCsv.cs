@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                     ItemId = itemId,
                     Unk3 = unk3,
                     Color = color,
-                    PlusValue = plusValue
+                    PlusValue = plusValue,
                 });
         }
     }
