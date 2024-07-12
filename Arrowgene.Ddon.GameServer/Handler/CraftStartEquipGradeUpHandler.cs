@@ -221,7 +221,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         charid,
                         storageType,
                         UpgradedItem,
-                        UpgradedItem.UId,
                         (byte)slotno
                     );
                     Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
@@ -231,7 +230,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
 
-                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, UpgradedItem, UpgradedItem.UId, (byte)slotno);
+                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, UpgradedItem, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             
             };

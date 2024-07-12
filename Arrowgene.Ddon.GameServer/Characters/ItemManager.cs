@@ -435,16 +435,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return item.ItemId;
         }
 
-        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, string newUid, byte slotNo)
+        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
         {
 
-            Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newUid}, NewItemID={newItem.ItemId}");
+            Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newItem.UId}, NewItemID={newItem.ItemId}");
 
             character.Storage.setStorageItem(newItem, 1, storageType, slotNo);
-            server.Database.ReplaceStorageItem(characterID, storageType, slotNo, newUid, 1);
+            server.Database.ReplaceStorageItem(characterID, storageType, slotNo, newItem.UId, 1);
 
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
-            updateResult.ItemList.ItemUId = newUid;
+            updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;
             updateResult.ItemList.ItemNum = 1; // Assuming you always replace with 1 item
             updateResult.ItemList.Unk3 = newItem.Unk3;
@@ -461,7 +461,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
             updateResult.UpdateItemNum = 1;
 
-            Console.WriteLine($"Item successfully replaced in storage: UID={newUid}, SlotNo={slotNo}");
+            Console.WriteLine($"Item successfully replaced in storage: UID={newItem.UId}, SlotNo={slotNo}");
 
             return new List<CDataItemUpdateResult> { updateResult };
         }

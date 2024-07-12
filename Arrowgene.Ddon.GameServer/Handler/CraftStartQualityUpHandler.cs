@@ -157,7 +157,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         charid,
                         storageType,
                         QualityUpItem,
-                        QualityUpItem.UId,
                         (byte)slotno
                     );
                     Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
@@ -167,7 +166,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
 
-                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, QualityUpItem.UId, (byte)slotno);
+                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 //TODO: Figure out why when changing the Quality of an unequipped item it doesn't show the item icon in the box.
             
