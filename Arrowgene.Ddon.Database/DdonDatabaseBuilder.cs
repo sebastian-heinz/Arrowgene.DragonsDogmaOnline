@@ -1,10 +1,14 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
+using Arrowgene.Ddon.Database.Migrations;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql;
 using Arrowgene.Logging;
+using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -16,6 +20,7 @@ namespace Arrowgene.Ddon.Database
         public static IDatabase Build(DatabaseSetting settings)
         {
             Enum.TryParse(settings.Type, true, out DatabaseType dbType);
+
             IDatabase database = dbType switch
             {
                 DatabaseType.SQLite => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup),
@@ -42,12 +47,10 @@ namespace Arrowgene.Ddon.Database
         {
             string sqLitePath = Path.Combine(databaseFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
             DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath, wipeOnStartup);
-            if (db.CreateDatabase())
+            
+            if (!db.CreateDatabase())
             {
-                string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
-                String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                
-                db.Execute(schema);
+                return null;
             }
 
             return db;
@@ -56,15 +59,9 @@ namespace Arrowgene.Ddon.Database
         public static DdonPostgresDb BuildPostgres(string databaseFolder, string host, string user, string password, string database, bool wipeOnStartup)
         {
             DdonPostgresDb db = new DdonPostgresDb(host, user, password, database, wipeOnStartup);
-            if (db.CreateDatabase())
+            if (!db.CreateDatabase())
             {
-                string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
-                String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                schema = Regex.Replace(schema, "(\\s)DATETIME(\\s|,)", "$1TIMESTAMP WITH TIME ZONE$2");
-                schema = Regex.Replace(schema, "(\\s)INTEGER PRIMARY KEY AUTOINCREMENT(\\s|,)", "$1SERIAL PRIMARY KEY$2");
-                schema = Regex.Replace(schema, "(\\s)BLOB(\\s|,)", "$1BYTEA$2");
-                
-                db.Execute(schema);
+                return null;
             }
 
             return db;
@@ -73,16 +70,36 @@ namespace Arrowgene.Ddon.Database
         public static DdonMariaDb BuildMariaDB(string databaseFolder, string host, string user, string password, string database, bool wipeOnStartup)
         {
             DdonMariaDb db = new DdonMariaDb(host, user, password, database, wipeOnStartup);
-            if (db.CreateDatabase())
+            if (!db.CreateDatabase())
             {
-                string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
-                String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                schema = Regex.Replace(schema, "(\\s)AUTOINCREMENT(\\s|,)", "$1AUTO_INCREMENT$2");
-                
-                db.Execute(schema);
+                return null;
             }
 
             return db;
+        }
+
+        /// <summary>
+        /// Update the database
+        /// </summary>
+        public static void UpdateDatabase(IServiceProvider serviceProvider)
+        {
+            // Instantiate the runner
+            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+
+            // Execute the migrations
+            runner.MigrateUp();
+        }
+
+        /// <summary>
+        /// Downgrade the database
+        /// </summary>
+        public static void DowngradeDatabase(IServiceProvider serviceProvider, long version)
+        {
+            // Instantiate the runner
+            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+
+            // Execute the migrations
+            runner.MigrateDown(version);
         }
     }
 }

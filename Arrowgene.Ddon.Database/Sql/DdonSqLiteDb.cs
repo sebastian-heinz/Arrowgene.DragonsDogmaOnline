@@ -1,8 +1,13 @@
-﻿using System;
+using System;
+using System.Data;
 using System.Data.SQLite;
 using System.IO;
+using Arrowgene.Ddon.Database.Migrations;
 using Arrowgene.Ddon.Database.Sql.Core;
 using Arrowgene.Logging;
+using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
+using YamlDotNet.Serialization;
 
 namespace Arrowgene.Ddon.Database.Sql
 {
@@ -16,11 +21,9 @@ namespace Arrowgene.Ddon.Database.Sql
 
         private readonly string _databasePath;
         private string _connectionString;
-        private SQLiteConnection _memoryConnection;
 
         public DdonSqLiteDb(string databasePath, bool wipeOnStartup)
         {
-            _memoryConnection = null;
             _databasePath = databasePath;
             if (wipeOnStartup)
             {
@@ -45,26 +48,25 @@ namespace Arrowgene.Ddon.Database.Sql
                 return false;
             }
 
+            using (var serviceProvider = CreateServices())
+            using (var scope = serviceProvider.CreateScope())
+            {
+                DdonDatabaseBuilder.UpdateDatabase(scope.ServiceProvider);
+            }
+
             ReusableConnection = new SQLiteConnection(_connectionString);
 
             if (_databasePath == MemoryDatabasePath)
             {
                 throw new NotSupportedException("Connections are utilized via `using`, disposing the connection. In Memory DB only available for lifetime of connection");
-                _memoryConnection = new SQLiteConnection(_connectionString);
-                _memoryConnection.Open();
-                return true;
             }
 
             if (!File.Exists(_databasePath))
             {
-                FileStream fs = File.Create(_databasePath);
-                fs.Close();
-                fs.Dispose();
-                Logger.Info($"Created new v{Version} database");
-                return true;
+                return false;
             }
 
-            return false;
+            return true;
         }
 
         private string BuildConnectionString(string source)
@@ -82,6 +84,24 @@ namespace Arrowgene.Ddon.Database.Sql
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");
             return connectionString;
+        }
+
+        public ServiceProvider CreateServices()
+        {
+            return new ServiceCollection()
+                // Add common FluentMigrator services
+                .AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb
+                    // Add SQLite support to FluentMigrator
+                    .AddSQLite()
+                    // Set the connection string
+                    .WithGlobalConnectionString($"Data Source={_databasePath}")
+                    // Define the assembly containing the migrations
+                    .ScanIn(typeof(DatabaseCreate).Assembly).For.Migrations())
+                // Enable logging to console in the FluentMigrator way
+                .AddLogging(lb => lb.AddFluentMigratorConsole())
+                // Build the service provider
+                .BuildServiceProvider(false);
         }
 
         protected override SQLiteConnection OpenNewConnection()

@@ -20,6 +20,10 @@
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
+      <PackageReference Include="FluentMigrator" Version="5.2.0" />
+      <PackageReference Include="FluentMigrator.Runner" Version="5.2.0" />
+      <PackageReference Include="FluentMigrator.Runner.SQLite" Version="5.2.0" />
+      <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
     </ItemGroup>
     
 </Project>

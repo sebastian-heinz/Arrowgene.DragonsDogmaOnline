@@ -13,6 +13,9 @@
     <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
       <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
+      <PackageReference Include="FluentMigrator.Runner" Version="5.2.0" />
+      <PackageReference Include="FluentMigrator.Runner.SQLite" Version="5.2.0" />
+      <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
       <PackageReference Include="System.Data.SQLite" Version="1.0.115.5" />
       <PackageReference Include="Npgsql" Version="7.0.6" />
       <PackageReference Include="MySqlConnector" Version="2.2.7" />

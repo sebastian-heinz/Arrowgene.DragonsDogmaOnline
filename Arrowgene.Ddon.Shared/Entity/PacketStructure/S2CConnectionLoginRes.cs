@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -6,6 +6,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     public class S2CConnectionLoginRes : ServerResponse
     {
         public override PacketId Id => PacketId.S2C_CONNECTION_LOGIN_RES;
+
+        public S2CConnectionLoginRes()
+        {
+            OneTimeToken = string.Empty;
+        }
 
         public string OneTimeToken { get; set; }
         public bool IsCogLogin { get; set; }

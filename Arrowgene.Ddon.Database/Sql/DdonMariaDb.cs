@@ -1,6 +1,9 @@
-﻿using System;
+using System;
+using Arrowgene.Ddon.Database.Migrations;
 using Arrowgene.Ddon.Database.Sql.Core;
 using Arrowgene.Logging;
+using FluentMigrator.Runner;
+using Microsoft.Extensions.DependencyInjection;
 using MySqlConnector;
 
 namespace Arrowgene.Ddon.Database.Sql
@@ -28,6 +31,12 @@ namespace Arrowgene.Ddon.Database.Sql
                 return false;
             }
 
+            using (var serviceProvider = CreateServices())
+            using (var scope = serviceProvider.CreateScope())
+            {
+                DdonDatabaseBuilder.UpdateDatabase(scope.ServiceProvider);
+            }
+
             ReusableConnection = new MySqlConnection(_connectionString);
             return true;
         }
@@ -46,6 +55,24 @@ namespace Arrowgene.Ddon.Database.Sql
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");
             return connectionString;
+        }
+
+        public ServiceProvider CreateServices()
+        {
+            return new ServiceCollection()
+                // Add common FluentMigrator services
+                .AddFluentMigratorCore()
+                .ConfigureRunner(rb => rb
+                    // Add MariaDb support to FluentMigrator
+                    .AddMySql5()
+                    // Set the connection string
+                    .WithGlobalConnectionString(_connectionString)
+                    // Define the assembly containing the migrations
+                    .ScanIn(typeof(DatabaseCreate).Assembly).For.Migrations())
+                // Enable logging to console in the FluentMigrator way
+                .AddLogging(lb => lb.AddFluentMigratorConsole())
+                // Build the service provider
+                .BuildServiceProvider(false);
         }
 
         protected override MySqlConnection OpenNewConnection()

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This file is part of Arrowgene.Ddon.Cli
  *
  * Arrowgene.Ddon.Cli is a server implementation for the game "Dragons Dogma Online".
@@ -94,6 +94,7 @@ namespace Arrowgene.Ddon.Cli
             AddCommand(new HelpCommand(_commands));
             AddCommand(new ClientCommand());
             AddCommand(new PacketCommand());
+            AddCommand(new DbMigrationCommand());
         }
 
         private void RunArguments(string[] arguments)

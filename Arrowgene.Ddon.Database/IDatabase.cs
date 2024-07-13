@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -15,6 +16,8 @@ namespace Arrowgene.Ddon.Database
         /// Return true if database was created, or false if not.
         /// </summary>
         bool CreateDatabase();
+
+        ServiceProvider CreateServices();
 
         // Account
         Account CreateAccount(string name, string mail, string hash);

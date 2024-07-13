@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
@@ -7,6 +7,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     public class C2SConnectionLoginReq : IPacketStructure
     {
         public PacketId Id => PacketId.C2S_CONNECTION_LOGIN_REQ;
+
+        public C2SConnectionLoginReq()
+        {
+            SessionKey = string.Empty;
+        }
 
         public string SessionKey { get; set; }
         
