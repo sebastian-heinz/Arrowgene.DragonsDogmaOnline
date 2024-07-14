@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ColorNo = equipItemInfo.Color;
             PlusValue = equipItemInfo.PlusValue;
             WeaponCrestDataList = equipItemInfo.WeaponCrestDataList;
-            ArmorCrestDataList = equipItemInfo.ArmorCrestDataList;
+            AddStatusData = equipItemInfo.AddStatusData;
         }
 
         public CDataContextEquipData()
@@ -20,14 +20,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ColorNo=0;
             PlusValue=0;
             WeaponCrestDataList=new List<CDataWeaponCrestData>();
-            ArmorCrestDataList=new List<CDataArmorCrestData>();
+            AddStatusData=new List<CDataAddStatusData>();
         }
 
         public ushort ItemId { get; set; }
         public byte ColorNo { get; set; }
         public uint PlusValue { get; set; }
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
-        public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
+        public List<CDataAddStatusData> AddStatusData { get; set; }
 
         public class Serializer : EntitySerializer<CDataContextEquipData>
         {
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.ColorNo);
                 WriteUInt32(buffer, obj.PlusValue);
                 WriteEntityList<CDataWeaponCrestData>(buffer, obj.WeaponCrestDataList);
-                WriteEntityList<CDataArmorCrestData>(buffer, obj.ArmorCrestDataList);
+                WriteEntityList<CDataAddStatusData>(buffer, obj.AddStatusData);
             }
 
             public override CDataContextEquipData Read(IBuffer buffer)
@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ColorNo = ReadByte(buffer);
                 obj.PlusValue = ReadUInt32(buffer);
                 obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);
-                obj.ArmorCrestDataList = ReadEntityList<CDataArmorCrestData>(buffer);
+                obj.AddStatusData = ReadEntityList<CDataAddStatusData>(buffer);
                 return obj;
             }
         }

@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte Color { get; set; }
         public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
-        public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
+        public List<CDataAddStatusData> AddStatusData { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
 
         private string _uid;
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public Item()
         {
             WeaponCrestDataList = new List<CDataWeaponCrestData>();
-            ArmorCrestDataList = new List<CDataArmorCrestData>();
+            AddStatusData = new List<CDataAddStatusData>();
             EquipElementParamList = new List<CDataEquipElementParam>();
         }
 
@@ -54,12 +54,12 @@ namespace Arrowgene.Ddon.Shared.Model
                 hash.AppendData(BitConverter.GetBytes(weaponCrestData.CrestId));
                 hash.AppendData(BitConverter.GetBytes(weaponCrestData.Add));
             }
-            foreach (var armorCrestData in ArmorCrestDataList)
+            foreach (var addStatData in AddStatusData)
             {
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u0));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u1));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u2));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u3));
+                hash.AppendData(BitConverter.GetBytes(addStatData.IsAddStat1));
+                hash.AppendData(BitConverter.GetBytes(addStatData.IsAddStat2));
+                hash.AppendData(BitConverter.GetBytes(addStatData.AdditionalStatus1));
+                hash.AppendData(BitConverter.GetBytes(addStatData.AdditionalStatus2));
             }
             foreach (var equipElementParam in EquipElementParamList)
             {

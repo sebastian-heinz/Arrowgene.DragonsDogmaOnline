@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();    
             updateCharacterItemNtc.UpdateType = 0;
-            string equipItemUID = packet.Structure.Unk0;
+            string equipItemUID = packet.Structure.ItemUID;
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID);
             Character common = client.Character;
             ushort equipslot = 0;
@@ -47,9 +47,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte currentPlusValue = equipItem.PlusValue;
             bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
-            string RefineMaterial = packet.Structure.Unk1;
+            string RefineMaterial = packet.Structure.RefineUID;
+            ushort AddStatusID = packet.Structure.AddStatusID;
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
+            CDataAddStatusData AddStat = new CDataAddStatusData()
+            {
+                IsAddStat1 = 0,
+                IsAddStat2 = 0,
+                AdditionalStatus1 = 0,
+                AdditionalStatus2 = 0,
+            };
+
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
 
             // Check if a refinematerial is set (shouldn't be possible to have annything run without it but heyho)
@@ -91,6 +100,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomQuality = 3;
             }
 
+            if (AddStatusID >= 0)
+            {
+            AddStat = new CDataAddStatusData()
+                {
+                    IsAddStat1 = 1,
+                    IsAddStat2 = 0,
+                    AdditionalStatus1 = AddStatusID,
+                    AdditionalStatus2 = 0,
+                };
+            };
+
+            List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>()
+            {
+                AddStat
+            };
+
             Item QualityUpItem = new Item()
             {
                 ItemId = equipItemID,
@@ -98,7 +123,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Color = 0,
                 PlusValue = RandomQuality,
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                ArmorCrestDataList = new List<CDataArmorCrestData>(),
+                AddStatusData = AddStatList,
                 EquipElementParamList = new List<CDataEquipElementParam>()
             };
             
@@ -172,9 +197,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             };
 
-            List<CDataArmorCrestData> ArmorCrestDataList = new List<CDataArmorCrestData>();
-            ArmorCrestDataList.Add(new CDataArmorCrestData { u0 = 0, u1 = 0, u2 = 0, u3 = 0 });
-
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
                 CharId = charid,
@@ -193,8 +215,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // I think this must be related to Crests or Dragon Force, since plugging in a bunch of data has 0 noticable changes.
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
-                Unk0 = equipItemID, // Potentially an ID?
-                Unk1 = packet.Structure.Unk2, // AddStatus is also a ushort so maybe it goes in here? (doesn't seem to work tho)
+                Unk0 = 0, // Potentially an ID?
+                Unk1 = 0,
                 Unk2 = 0, // Genuinely no idea what this could be for. 
                 Unk3 = 0, // Potentially an ID for something?
                 Unk4 = 0, // Potentially an ID for something too?
@@ -204,7 +226,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CCraftStartQualityUpRes()
             {
                 Unk0 = dummydata,
-                ArmorCrestDataList = ArmorCrestDataList,
+                AddStatusDataList = AddStatList,
                 CurrentEquip = CurrentEquipInfo
             };
             client.Send(updateCharacterItemNtc);

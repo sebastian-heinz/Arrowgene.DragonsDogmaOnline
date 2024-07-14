@@ -180,7 +180,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.EquipCharacterID = 0;
             ntcData.ItemList.EquipPawnID = 0;
             ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            ntcData.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+            ntcData.ItemList.AddStatusData = item.AddStatusData;
             ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
             ntcData.UpdateItemNum = -finalConsumeNum;
 
@@ -255,7 +255,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Color = 0,
                         PlusValue = setplusvalue,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                        ArmorCrestDataList = new List<CDataArmorCrestData>(),
+                        AddStatusData = new List<CDataAddStatusData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()
                     };
                     database.InsertItem(item);
@@ -282,7 +282,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.EquipCharacterID = 0;
                 result.ItemList.EquipPawnID = 0;
                 result.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                result.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+                result.ItemList.AddStatusData = item.AddStatusData;
                 result.ItemList.EquipElementParamList = item.EquipElementParamList;
                 result.UpdateItemNum = (int) addedItems;
                 results.Add(result);
@@ -339,7 +339,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             srcUpdateItem.ItemList.EquipCharacterID = 0;
             srcUpdateItem.ItemList.EquipPawnID = 0;
             srcUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            srcUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+            srcUpdateItem.ItemList.AddStatusData = item.AddStatusData;
             srcUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
             srcUpdateItem.UpdateItemNum = (int) -num;
             results.Add(srcUpdateItem);
@@ -412,7 +412,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 dstUpdateItem.ItemList.EquipCharacterID = 0;
                 dstUpdateItem.ItemList.EquipPawnID = 0;
                 dstUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                dstUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+                dstUpdateItem.ItemList.AddStatusData = item.AddStatusData;
                 dstUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
                 dstUpdateItem.UpdateItemNum = (int) movedItemNum;
                 results.Add(dstUpdateItem);
@@ -456,7 +456,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipCharacterID = 0;
             updateResult.ItemList.EquipPawnID = 0;
             updateResult.ItemList.WeaponCrestDataList = newItem.WeaponCrestDataList;
-            updateResult.ItemList.ArmorCrestDataList = newItem.ArmorCrestDataList;
+            updateResult.ItemList.AddStatusData = newItem.AddStatusData;
             updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
             updateResult.UpdateItemNum = 1;
 

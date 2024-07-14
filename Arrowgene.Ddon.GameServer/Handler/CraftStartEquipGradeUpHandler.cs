@@ -142,7 +142,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Color = 0,
                 PlusValue = currentPlusValue,
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                ArmorCrestDataList = new List<CDataArmorCrestData>(),
+                AddStatusData = new List<CDataAddStatusData>(),
                 EquipElementParamList = new List<CDataEquipElementParam>()
             };
 

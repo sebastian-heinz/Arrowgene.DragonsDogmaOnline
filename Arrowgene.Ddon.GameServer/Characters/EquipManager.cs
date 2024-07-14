@@ -175,7 +175,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipCharacterID = characterId,
                     EquipPawnID = pawnId,
                     WeaponCrestDataList = item.WeaponCrestDataList,
-                    ArmorCrestDataList = item.ArmorCrestDataList,
+                    AddStatusData = item.AddStatusData,
                     EquipElementParamList = item.EquipElementParamList
                 }
             });
@@ -195,7 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipCharacterID = 0,
                     EquipPawnID = 0,
                     WeaponCrestDataList = item.WeaponCrestDataList,
-                    ArmorCrestDataList = item.ArmorCrestDataList,
+                    AddStatusData = item.AddStatusData,
                     EquipElementParamList = item.EquipElementParamList
                 }
             });
@@ -265,7 +265,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         EquipCharacterID = characterId,
                         EquipPawnID = pawnId,
                         WeaponCrestDataList = previouslyEquippedItem.WeaponCrestDataList,
-                        ArmorCrestDataList = previouslyEquippedItem.ArmorCrestDataList,
+                        AddStatusData = previouslyEquippedItem.AddStatusData,
                         EquipElementParamList = previouslyEquippedItem.EquipElementParamList
                     }
                 });
@@ -285,7 +285,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         EquipCharacterID = 0,
                         EquipPawnID = 0,
                         WeaponCrestDataList = previouslyEquippedItem.WeaponCrestDataList,
-                        ArmorCrestDataList = previouslyEquippedItem.ArmorCrestDataList,
+                        AddStatusData = previouslyEquippedItem.AddStatusData,
                         EquipElementParamList = previouslyEquippedItem.EquipElementParamList
                     }
                 });
@@ -312,7 +312,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipCharacterID = characterId,
                     EquipPawnID = pawnId,
                     WeaponCrestDataList = itemToEquip.WeaponCrestDataList,
-                    ArmorCrestDataList = itemToEquip.ArmorCrestDataList,
+                    AddStatusData = itemToEquip.AddStatusData,
                     EquipElementParamList = itemToEquip.EquipElementParamList
                 }
             });
@@ -332,7 +332,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipCharacterID = characterId,
                     EquipPawnID = pawnId,
                     WeaponCrestDataList = itemToEquip.WeaponCrestDataList,
-                    ArmorCrestDataList = itemToEquip.ArmorCrestDataList,
+                    AddStatusData = itemToEquip.AddStatusData,
                     EquipElementParamList = itemToEquip.EquipElementParamList
                 }
             });

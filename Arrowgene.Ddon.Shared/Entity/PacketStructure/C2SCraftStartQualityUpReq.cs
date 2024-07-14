@@ -11,16 +11,16 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SCraftStartQualityUpReq()
         {
-            Unk0 = string.Empty;
-            Unk1 = string.Empty;
+            ItemUID = string.Empty;
+            RefineUID = string.Empty;
             CraftMaterialList = new List<CDataCraftMaterial>();
             CraftSupportPawnIDList = new List<CDataCraftSupportPawnID>();
             Unk3 = new List<CDataCommonU32>();
         }
 
-        public string Unk0 { get; set; } // The gear you want to upgrade UID
-        public string Unk1 { get; set; } // The Rock you're using to upgrade UID 
-        public ushort Unk2 { get; set; } // Additional Status ID?
+        public string ItemUID { get; set; } // The gear you want to upgrade UID
+        public string RefineUID { get; set; } // The Rock you're using to upgrade UID 
+        public ushort AddStatusID { get; set; } // Additional Status ID?
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
@@ -30,9 +30,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, C2SCraftStartQualityUpReq obj)
             {
-                WriteMtString(buffer, obj.Unk0);
-                WriteMtString(buffer, obj.Unk1);
-                WriteUInt16(buffer, obj.Unk2);
+                WriteMtString(buffer, obj.ItemUID);
+                WriteMtString(buffer, obj.RefineUID);
+                WriteUInt16(buffer, obj.AddStatusID);
                 WriteEntityList<CDataCraftMaterial>(buffer, obj.CraftMaterialList);
                 WriteUInt32(buffer, obj.CraftMainPawnID);
                 WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftSupportPawnIDList);
@@ -42,9 +42,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SCraftStartQualityUpReq Read(IBuffer buffer)
             {
                 C2SCraftStartQualityUpReq obj = new C2SCraftStartQualityUpReq();
-                obj.Unk0 = ReadMtString(buffer);
-                obj.Unk1 = ReadMtString(buffer);
-                obj.Unk2 = ReadUInt16(buffer);
+                obj.ItemUID = ReadMtString(buffer);
+                obj.RefineUID = ReadMtString(buffer);
+                obj.AddStatusID = ReadUInt16(buffer);
                 obj.CraftMaterialList = ReadEntityList<CDataCraftMaterial>(buffer);
                 obj.CraftMainPawnID = ReadUInt32(buffer);
                 obj.CraftSupportPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
