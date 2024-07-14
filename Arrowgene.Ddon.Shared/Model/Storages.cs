@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     EquipCharacterID = 0,
                     EquipPawnID = 0,
                     WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,
-                    ArmorCrestDataList = tuple.item.Item1.ArmorCrestDataList,
+                    AddStatusData = tuple.item.Item1.AddStatusData,
                     EquipElementParamList = tuple.item.Item1.EquipElementParamList
                 })
                 .ToList();

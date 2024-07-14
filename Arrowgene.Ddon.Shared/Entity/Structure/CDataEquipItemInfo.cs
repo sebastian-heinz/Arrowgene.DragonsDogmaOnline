@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Color = 0;
             PlusValue = 0;
             WeaponCrestDataList = new List<CDataWeaponCrestData>();
-            ArmorCrestDataList = new List<CDataArmorCrestData>();
+            AddStatusData = new List<CDataAddStatusData>();
             EquipElementParamList = new List<CDataEquipElementParam>();
         }
 
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte Color { get; set; }
         public byte PlusValue { get; set; }
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
-        public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
+        public List<CDataAddStatusData> AddStatusData { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
         
         public class Serializer : EntitySerializer<CDataEquipItemInfo>
@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.Color);
                 WriteByte(buffer, obj.PlusValue);
                 WriteEntityList(buffer, obj.WeaponCrestDataList);
-                WriteEntityList(buffer, obj.ArmorCrestDataList);
+                WriteEntityList(buffer, obj.AddStatusData);
                 WriteEntityList(buffer, obj.EquipElementParamList);
             }
 
@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Color = ReadByte(buffer);
                 obj.PlusValue = ReadByte(buffer);
                 obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);
-                obj.ArmorCrestDataList = ReadEntityList<CDataArmorCrestData>(buffer);
+                obj.AddStatusData = ReadEntityList<CDataAddStatusData>(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 return obj;
             }
