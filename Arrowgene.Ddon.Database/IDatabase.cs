@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -11,6 +12,8 @@ namespace Arrowgene.Ddon.Database
 {
     public interface IDatabase
     {
+        DatabaseMigrator Migrator { get; set; }
+
         void Execute(string sql);
         void Execute(DbConnection conn, string sql);
         bool ExecuteInTransaction(Action<DbConnection> action);

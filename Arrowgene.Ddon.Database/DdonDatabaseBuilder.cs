@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql;
+using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
 
@@ -15,7 +16,7 @@ namespace Arrowgene.Ddon.Database
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonDatabaseBuilder));
         private const string DefaultSchemaFile = "Script/schema_sqlite.sql";
 
-        public const uint Version = 2;
+        public const uint Version = 1;
 
         public static IDatabase Build(DatabaseSetting settings)
         {
@@ -27,6 +28,10 @@ namespace Arrowgene.Ddon.Database
                 DatabaseType.MariaDb => BuildMariaDB(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
                 _ => throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!")
             };
+
+            database.Migrator = new DatabaseMigrator(new List<IMigrationStrategy>()
+            {
+            });
 
             database.CreateMeta(new DatabaseMeta()
             {

@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Data.Common;
 using System.Text;
+using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
 
@@ -15,6 +16,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TReader : DbDataReader
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom, TReader>));
+
+        public DatabaseMigrator Migrator { get; set; }
 
         public DdonSqlDb()
         {
@@ -114,7 +117,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool MigrateDatabase(uint toVersion)
         {
-            throw new NotImplementedException();
+            if(Migrator == null)
+            {
+                return false;
+            }
+
+            uint currentVersion = GetMeta().DatabaseVersion;
+            bool result = Migrator.MigrateDatabase(this, currentVersion, toVersion);
+            if (result)
+            {
+                SetMeta(new DatabaseMeta()
+                {
+                    DatabaseVersion = DdonDatabaseBuilder.Version
+                });
+            }
+            return result;
         }
 
         protected override void Exception(Exception ex, string query)
