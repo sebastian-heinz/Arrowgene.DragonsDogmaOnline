@@ -28,6 +28,11 @@ namespace Arrowgene.Ddon.Database
                 _ => throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!")
             };
 
+            database.CreateMeta(new DatabaseMeta()
+            {
+                DatabaseVersion = Version
+            });
+
             if (database == null)
             {
                 Logger.Error("Database could not be created, exiting...");
