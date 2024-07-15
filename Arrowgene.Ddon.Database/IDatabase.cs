@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -11,6 +12,8 @@ namespace Arrowgene.Ddon.Database
     public interface IDatabase
     {
         void Execute(string sql);
+        void Execute(DbConnection conn, string sql);
+        bool ExecuteInTransaction(Action<DbConnection> action);
 
         /// <summary>
         /// Return true if database was created, or false if not.
