@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.Database
         /// Return true if database was created, or false if not.
         /// </summary>
         bool CreateDatabase();
+        bool MigrateDatabase(uint toVersion);
 
         // Meta
         bool CreateMeta(DatabaseMeta meta);

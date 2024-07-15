@@ -112,6 +112,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return base.ExecuteInTransaction((conn) => action.Invoke(conn));
         }
 
+        public bool MigrateDatabase(uint toVersion)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void Exception(Exception ex, string query)
         {
             Logger.Exception(ex);
