@@ -66,6 +66,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 Logger.Debug("Storage item already exists, replacing.");
                 return UpdateStorageItem(conn, characterId, storageType, slotNo, itemUId, itemNum);
             }
+            else
+            {
+                Logger.Debug($"Your values, charid: {characterId}, storage: {storageType}, slot: {slotNo}, UID: {itemUId}, quantity: {itemNum}");
+            }
             return true;
         }
 

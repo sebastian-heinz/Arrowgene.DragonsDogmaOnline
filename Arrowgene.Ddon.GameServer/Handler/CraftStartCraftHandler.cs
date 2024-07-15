@@ -104,6 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             // TODO: Remove most logic since it should happen in the handler for when the craft time completes.
+            
             // TODO: Refactor this code to create the new Item here, and add the Quality & AdditionalStatus like that.
 
             // TODO: Calculate final craft price with the discounts from the craft pawns

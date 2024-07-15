@@ -440,13 +440,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newItem.UId}, NewItemID={newItem.ItemId}");
 
+            server.Database.InsertItem(newItem);
             character.Storage.setStorageItem(newItem, 1, storageType, slotNo);
             server.Database.ReplaceStorageItem(characterID, storageType, slotNo, newItem.UId, 1);
 
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
             updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;
-            updateResult.ItemList.ItemNum = 1; // Assuming you always replace with 1 item
+            updateResult.ItemList.ItemNum = 1;
             updateResult.ItemList.Unk3 = newItem.Unk3;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
