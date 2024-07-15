@@ -77,7 +77,6 @@ namespace Arrowgene.Ddon.Database
         // Item
         bool InsertItem(Item item);
         Item SelectItem(string uid);
-        bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
 
         //Storage
         bool InsertStorage(uint characterId, StorageType storageType, Storage storage);

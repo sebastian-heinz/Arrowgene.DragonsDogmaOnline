@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-#if false
+#if true
             /*
              * @note If something goes wrong, we can always change this preprocessor directive to
              * true and get back the original functionality before we started to play with this function.
