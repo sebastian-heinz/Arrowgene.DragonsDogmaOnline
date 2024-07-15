@@ -52,9 +52,14 @@ namespace Arrowgene.Ddon.Database
             return database;
         }
 
+        public static string BuildSqLitePath(string databaseFolder, uint version)
+        {
+            return Path.Combine(databaseFolder, $"db.v{version}.sqlite");
+        }
+
         public static DdonSqLiteDb BuildSqLite(string databaseFolder, bool wipeOnStartup)
         {
-            string sqLitePath = Path.Combine(databaseFolder, $"db.v{DdonSqLiteDb.Version}.sqlite");
+            string sqLitePath = BuildSqLitePath(databaseFolder, Version);
             DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath, wipeOnStartup);
             if (db.CreateDatabase())
             {
