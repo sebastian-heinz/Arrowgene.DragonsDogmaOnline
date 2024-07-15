@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Database
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonDatabaseBuilder));
         private const string DefaultSchemaFile = "Script/schema_sqlite.sql";
 
-        public const uint Version = 1;
+        public const uint Version = 2;
 
         public static IDatabase Build(DatabaseSetting settings)
         {
@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.Database
 
             database.Migrator = new DatabaseMigrator(new List<IMigrationStrategy>()
             {
+                new MailMigration(settings)
             });
 
             database.CreateMeta(new DatabaseMeta()

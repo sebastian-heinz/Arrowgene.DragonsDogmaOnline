@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS meta
+﻿CREATE TABLE IF NOT EXISTS meta
 (
     "db_version" INTEGER NOT NULL
 );
