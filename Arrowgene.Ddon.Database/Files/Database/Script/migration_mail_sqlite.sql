@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "ddon_system_mail" (
+CREATE TABLE "ddon_system_mail" (
 	"message_id"	INTEGER NOT NULL,
 	"character_id"	INTEGER NOT NULL,
 	"message_state"	INTEGER NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS "ddon_system_mail" (
 	PRIMARY KEY("message_id" AUTOINCREMENT)
 );
 
-CREATE TABLE IF NOT EXISTS "ddon_system_mail_attachment" (
+CREATE TABLE "ddon_system_mail_attachment" (
 	"message_id"	INTEGER NOT NULL,
 	"attachment_id"	INTEGER NOT NULL,
 	"attachment_type"	INTEGER NOT NULL,

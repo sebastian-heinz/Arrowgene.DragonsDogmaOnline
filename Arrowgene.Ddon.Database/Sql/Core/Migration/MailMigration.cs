@@ -1,6 +1,8 @@
+using System;
 using System.Data.Common;
 using System.IO;
 using System.Text;
+using Arrowgene.Ddon.Database.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
@@ -20,7 +22,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
         {
             string schemaFilePath = Path.Combine(DatabaseSetting.DatabaseFolder, "Script/migration_mail_sqlite.sql");
             string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-            db.Execute(conn, schema);
+            DatabaseType databaseType = (DatabaseType) Enum.Parse(typeof(DatabaseType), DatabaseSetting.Type, true);
+            string adaptedSchema = DdonDatabaseBuilder.AdaptSQLiteSchemaTo(databaseType, schema);
+            db.Execute(conn, adaptedSchema);
             return true;
         }
     }

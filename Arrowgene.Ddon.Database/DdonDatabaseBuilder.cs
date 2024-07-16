@@ -53,6 +53,35 @@ namespace Arrowgene.Ddon.Database
             return database;
         }
 
+        public static string AdaptSQLiteSchemaToPostgreSQL(string schema)
+        {
+            schema = Regex.Replace(schema, "(\\s)DATETIME(\\s|,)", "$1TIMESTAMP WITH TIME ZONE$2");
+            schema = Regex.Replace(schema, "(\\s)INTEGER PRIMARY KEY AUTOINCREMENT(\\s|,)", "$1SERIAL PRIMARY KEY$2");
+            schema = Regex.Replace(schema, "(\\s)BLOB(\\s|,)", "$1BYTEA$2");
+            return schema;
+        }
+
+        public static string AdaptSQLiteSchemaToMariaDB(string schema)
+        {
+            schema = Regex.Replace(schema, "(\\s)AUTOINCREMENT(\\s|,)", "$1AUTO_INCREMENT$2");
+            return schema;
+        }
+
+        public static string AdaptSQLiteSchemaTo(DatabaseType databaseType, string schema)
+        {
+            switch (databaseType)
+            {
+                case DatabaseType.SQLite:
+                    return schema;
+                case DatabaseType.PostgreSQL:
+                    return AdaptSQLiteSchemaToPostgreSQL(schema);
+                case DatabaseType.MariaDb:
+                    return AdaptSQLiteSchemaToMariaDB(schema);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public static string BuildSqLitePath(string databaseFolder)
         {
             return Path.Combine(databaseFolder, $"db.sqlite");
@@ -82,9 +111,7 @@ namespace Arrowgene.Ddon.Database
             {
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                schema = Regex.Replace(schema, "(\\s)DATETIME(\\s|,)", "$1TIMESTAMP WITH TIME ZONE$2");
-                schema = Regex.Replace(schema, "(\\s)INTEGER PRIMARY KEY AUTOINCREMENT(\\s|,)", "$1SERIAL PRIMARY KEY$2");
-                schema = Regex.Replace(schema, "(\\s)BLOB(\\s|,)", "$1BYTEA$2");
+                schema = AdaptSQLiteSchemaToPostgreSQL(schema);
                 
                 db.Execute(schema);
             }
@@ -99,8 +126,7 @@ namespace Arrowgene.Ddon.Database
             {
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                schema = Regex.Replace(schema, "(\\s)AUTOINCREMENT(\\s|,)", "$1AUTO_INCREMENT$2");
-                
+                schema = AdaptSQLiteSchemaToMariaDB(schema);
                 db.Execute(schema);
             }
 
