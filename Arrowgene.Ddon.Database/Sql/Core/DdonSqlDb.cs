@@ -17,8 +17,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom, TReader>));
 
-        public DatabaseMigrator Migrator { get; set; }
-
         public DdonSqlDb()
         {
         }
@@ -115,15 +113,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return base.ExecuteInTransaction((conn) => action.Invoke(conn));
         }
 
-        public bool MigrateDatabase(uint toVersion)
+        public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion)
         {
-            if(Migrator == null)
-            {
-                return false;
-            }
-
             uint currentVersion = GetMeta().DatabaseVersion;
-            bool result = Migrator.MigrateDatabase(this, currentVersion, toVersion);
+            bool result = migrator.MigrateDatabase(this, currentVersion, toVersion);
             if (result)
             {
                 SetMeta(new DatabaseMeta()

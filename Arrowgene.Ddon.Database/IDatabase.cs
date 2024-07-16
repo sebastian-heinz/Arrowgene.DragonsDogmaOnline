@@ -12,8 +12,6 @@ namespace Arrowgene.Ddon.Database
 {
     public interface IDatabase
     {
-        DatabaseMigrator Migrator { get; set; }
-
         void Execute(string sql);
         void Execute(DbConnection conn, string sql);
         bool ExecuteInTransaction(Action<DbConnection> action);
@@ -22,7 +20,7 @@ namespace Arrowgene.Ddon.Database
         /// Return true if database was created, or false if not.
         /// </summary>
         bool CreateDatabase();
-        bool MigrateDatabase(uint toVersion);
+        bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion);
 
         // Meta
         bool CreateMeta(DatabaseMeta meta);

@@ -42,8 +42,15 @@ namespace Arrowgene.Ddon.Cli.Command
                 return CommandResultType.Exit;
             }
 
+            // Instance all implementations of IMigrationStrategy located in the Migration namespace
+            // supplying the adequate arguments to the constructor
+            DatabaseMigrator migrator = new DatabaseMigrator(typeof(IMigrationStrategy).Assembly.GetTypes()
+                .Where(type => type != typeof(IMigrationStrategy) && typeof(IMigrationStrategy).IsAssignableFrom(type) && type.Namespace == typeof(IMigrationStrategy).Namespace)
+                .Select(type => InstanceMigrationStrategy(type, dbSettings))
+                .ToList());
+
             // TODO: Warn that migration is destructive
-            bool result = database.MigrateDatabase(DdonDatabaseBuilder.Version);
+            bool result = database.MigrateDatabase(migrator, DdonDatabaseBuilder.Version);
 
             // TODO: Better logging
             if(result)
@@ -60,6 +67,32 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public void Shutdown()
         {
+        }
+
+        private IMigrationStrategy InstanceMigrationStrategy(Type type, DatabaseSetting databaseSetting)
+        {
+            foreach(ConstructorInfo constructorInfo in type.GetConstructors())
+            {
+                List<object> parameters = new List<object>();
+                foreach (var constructorParam in constructorInfo.GetParameters())
+                {
+                    if(constructorParam.ParameterType == typeof(DatabaseSetting))
+                    {
+                        parameters.Add(databaseSetting);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if(parameters.Count == constructorInfo.GetParameters().Length)
+                {
+                    return (IMigrationStrategy) constructorInfo.Invoke(parameters.ToArray());
+                }
+            }
+
+            throw new MissingMethodException("No suitable constructor found in "+type.Name);
         }
     }
 }

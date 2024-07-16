@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql;
-using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
 
@@ -28,11 +26,6 @@ namespace Arrowgene.Ddon.Database
                 DatabaseType.MariaDb => BuildMariaDB(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
                 _ => throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!")
             };
-
-            database.Migrator = new DatabaseMigrator(new List<IMigrationStrategy>()
-            {
-                new MailMigration(settings)
-            });
 
             database.CreateMeta(new DatabaseMeta()
             {
