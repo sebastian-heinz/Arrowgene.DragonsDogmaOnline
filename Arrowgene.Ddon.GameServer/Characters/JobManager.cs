@@ -369,13 +369,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // From what I tested it doesn't seem to be necessary
         }
 
-        public void UnlockLearnedNormalSkill(AssetRepository AssetRepo, IDatabase Database, GameClient Client, CharacterCommon Character, JobId Job, uint SkillIndex)
+        public void UnlockLearnedNormalSkill(AssetRepository assetRepo, IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillIndex)
         {
-            CDataCharacterJobData CharacterJobData = Character.CharacterJobDataList.Where(cjd => cjd.Job == Job).Single();
+            CDataCharacterJobData characterJobData = character.CharacterJobDataList.Where(cjd => cjd.Job == job).Single();
 
-            Dictionary<JobId, List<LearnedNormalSkill>> LearnedNormalSkillsMap = AssetRepo.LearnedNormalSkillsAsset.LearnedNormalSkills;
+            Dictionary<JobId, List<LearnedNormalSkill>> learnedNormalSkillsMap = assetRepo.LearnedNormalSkillsAsset.LearnedNormalSkills;
 
-            if (!LearnedNormalSkillsMap.ContainsKey(Job) || SkillIndex == 0 || ((SkillIndex - 1) > LearnedNormalSkillsMap[Job].Count()))
+            if (!learnedNormalSkillsMap.ContainsKey(job) || skillIndex == 0 || ((skillIndex - 1) > learnedNormalSkillsMap[job].Count()))
             {
                 // Something strange happened, either there is a new job (unlikely)
                 // or there is a missing skill, or someone tried to craft a custom
@@ -387,12 +387,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Error = 0xabaddeed
                 };
 
-                Client.Send(S2CResult);
+                client.Send(S2CResult);
                 return;
             }
 
-            LearnedNormalSkill Skill = LearnedNormalSkillsMap[Job][(int)(SkillIndex - 1)];
-            if (CharacterJobData.JobPoint < Skill.JpCost || CharacterJobData.Lv < Skill.RequiredLevel)
+            LearnedNormalSkill Skill = learnedNormalSkillsMap[job][(int)(skillIndex - 1)];
+            if (characterJobData.JobPoint < Skill.JpCost || characterJobData.Lv < Skill.RequiredLevel)
             {
                 // This shouldn't happen, but if it does, don't learn the skill and
                 // return an error packet to the client.
@@ -403,55 +403,55 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Error = 0xabaddeed
                 };
 
-                Client.Send(S2CResult);
+                client.Send(S2CResult);
                 return;
             }
 
             foreach (uint SkillNo in Skill.SkillNo)
             {
-                List<CDataNormalSkillParam> Matches = Character.LearnedNormalSkills.Where(skill => skill != null && skill.Job == Job && skill.SkillNo == SkillNo).ToList();
-                if (Matches.Count() == 0)
+                List<CDataNormalSkillParam> matches = character.LearnedNormalSkills.Where(skill => skill != null && skill.Job == job && skill.SkillNo == SkillNo).ToList();
+                if (matches.Count() == 0)
                 {
 
-                    CDataNormalSkillParam NewSkill = new CDataNormalSkillParam()
+                    CDataNormalSkillParam newSkill = new CDataNormalSkillParam()
                     {
-                        Job = Job,
-                        Index = SkillIndex, // 1, 2, 3 based offset from packet
+                        Job = job,
+                        Index = skillIndex, // 1, 2, 3 based offset from packet
                         SkillNo = SkillNo,  // Skill ID
                         PreSkillNo = 0
                     };
 
-                    Character.LearnedNormalSkills.Add(NewSkill);
-                    Database.InsertIfNotExistsNormalSkillParam(Character.CommonId, NewSkill);
+                    character.LearnedNormalSkills.Add(newSkill);
+                    database.InsertIfNotExistsNormalSkillParam(character.CommonId, newSkill);
                 }
             }
 
             // Subtract Job points and update the DB with the new result
-            CharacterJobData.JobPoint -= Skill.JpCost;
-            Database.UpdateCharacterJobData(Character.CommonId, CharacterJobData);
+            characterJobData.JobPoint -= Skill.JpCost;
+            database.UpdateCharacterJobData(character.CommonId, characterJobData);
 
-            if (Character is Character)
-            {
-                var Result = new S2CSkillLearnNormalSkillRes()
+            if (character is Character)
                 {
-                    Job = Job,
-                    SkillIndex = SkillIndex,
-                    NewJobPoint = CharacterJobData.JobPoint,
+                var result = new S2CSkillLearnNormalSkillRes()
+                {
+                    Job = job,
+                    SkillIndex = skillIndex,
+                    NewJobPoint = characterJobData.JobPoint,
                 };
 
-                Client.Send(Result);
+                client.Send(result);
             }
             else
             {
-                var Result = new S2CSkillLearnPawnNormalSkillRes()
+                var result = new S2CSkillLearnPawnNormalSkillRes()
                 {
-                    PawnId = ((Pawn)Character).PawnId,
-                    Job = Job,
-                    SkillIndex = SkillIndex,
-                    NewJobPoint = CharacterJobData.JobPoint,
+                    PawnId = ((Pawn)character).PawnId,
+                    Job = job,
+                    SkillIndex = skillIndex,
+                    NewJobPoint = characterJobData.JobPoint,
                 };
 
-                Client.Send(Result);
+                client.Send(result);
             }
 
             // TODO: Send data to rest of party
