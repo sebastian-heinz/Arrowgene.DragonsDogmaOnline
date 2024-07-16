@@ -233,6 +233,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     SkillId = skillId,
                     SkillLv = skillLv
                 });
+
+                //Find on the palletes (if any) where the skill is set and notify party. Can occur at two locations (Main + Secondary) for players.
+                List<CustomSkill?> equippedCustomSkillList = character.EquippedCustomSkillsDictionary[job];
+                var slotIndices = Enumerable.Range(0, equippedCustomSkillList.Count)
+                    .Where(i => equippedCustomSkillList[i] != null && equippedCustomSkillList[i].SkillId == skillId)
+                    .ToList();
+                foreach (int slotIndex in slotIndices)
+                {
+                    client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
+                    {
+                        CharacterId = ((Character)character).CharacterId,
+                        ContextAcquirementData = new CDataContextAcquirementData()
+                        {
+                            SlotNo = (byte)(slotIndex + 1),
+                            AcquirementNo = skillId,
+                            AcquirementLv = skillLv
+                        }
+                    });
+                }       
             }
             else if (character is Pawn)
             {
@@ -244,6 +263,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     SkillId = skillId,
                     SkillLv = skillLv
                 });
+
+                //Find on the palletes (if any) where the skill is set. 
+                List<CustomSkill?> equippedCustomSkillList = character.EquippedCustomSkillsDictionary[job];
+                var slotIndices = Enumerable.Range(0, equippedCustomSkillList.Count)
+                    .Where(i => equippedCustomSkillList[i] != null && equippedCustomSkillList[i].SkillId == skillId)
+                    .ToList();
+                foreach (int slotIndex in slotIndices)
+                {
+                    client.Party.SendToAll(new S2CSkillPawnCustomSkillSetNtc()
+                    {
+                        PawnId = ((Pawn)character).PawnId,
+                        ContextAcquirementData = new CDataContextAcquirementData()
+                        {
+                            SlotNo = (byte)(slotIndex + 1),
+                            AcquirementNo = skillId,
+                            AcquirementLv = skillLv
+                        }
+                    });
+                }
             }
         }
 
