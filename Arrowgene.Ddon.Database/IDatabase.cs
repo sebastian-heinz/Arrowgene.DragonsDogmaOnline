@@ -203,5 +203,9 @@ namespace Arrowgene.Ddon.Database
         bool InsertPriorityQuest(uint characterCommonId, QuestId questId);
         List<QuestId> GetPriorityQuests(uint characterCommonId);
         bool DeletePriorityQuest(uint characterCommonId, QuestId questId);
+
+        // Additional Status
+        bool InsertAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2);
+        bool InsertIfNotExistsAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2);
     }
 }

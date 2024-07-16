@@ -272,6 +272,18 @@ CREATE TABLE IF NOT EXISTS ddon_item
     PRIMARY KEY ("uid")
 );
 
+CREATE TABLE IF NOT EXISTS ddon_additional_status
+(
+    "item_uid"          VARCHAR(8) NOT NULL,
+    "character_id"      INTEGER NOT NULL,
+    "is_add_stat1"      TINYINT NOT NULL DEFAULT 0,
+    "is_add_stat2"      TINYINT NOT NULL DEFAULT 0,
+    "additional_status1" SMALLINT NOT NULL DEFAULT 0,
+    "additional_status2" SMALLINT NOT NULL DEFAULT 0,
+    CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_item ("uid") ON DELETE CASCADE,
+    CONSTRAINT fk_additional_status_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS ddon_storage_item
 (
     "item_uid"     VARCHAR(8) NOT NULL,

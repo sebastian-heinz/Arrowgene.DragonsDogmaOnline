@@ -99,17 +99,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 RandomQuality = 3;
             }
-
+            
             if (AddStatusID >= 0)
             {
-            AddStat = new CDataAddStatusData()
+                bool success = Server.Database.InsertAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
+
+                if (success)
+                    {
+                        Console.WriteLine("Additional status added successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Failed to add additional status.");
+                    }
+
+                AddStat = new CDataAddStatusData()
                 {
                     IsAddStat1 = 1,
                     IsAddStat2 = 0,
                     AdditionalStatus1 = AddStatusID,
                     AdditionalStatus2 = 0,
                 };
-            };
+            }
+
 
             List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>()
             {
