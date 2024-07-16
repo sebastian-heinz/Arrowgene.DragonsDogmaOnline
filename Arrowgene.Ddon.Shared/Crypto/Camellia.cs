@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Crypto
 {
@@ -343,17 +343,26 @@ namespace Arrowgene.Ddon.Shared.Crypto
 
         private byte s2(int x)
         {
-            return (byte) ((S[x] << 1) + (S[x] >> 7));
+            unchecked
+            {
+                return (byte)((S[x] << 1) + (S[x] >> 7));
+            }
         }
 
         private byte s3(int x)
         {
-            return (byte) ((S[x] << 7) + (S[x] >> 1));
+            unchecked
+            {
+                return (byte)((S[x] << 7) + (S[x] >> 1));
+            }
         }
 
         private byte s4(int x)
         {
-            return S[(byte) (x << 1) + (x >> 7)];
+            unchecked
+            {
+                return S[(byte)(x << 1) + (x >> 7)];
+            }
         }
 
         /* dst[] <- src1[] ^ src2[] */
@@ -404,14 +413,17 @@ namespace Arrowgene.Ddon.Shared.Crypto
         /* x[] <<<= 1 */
         private void rot1(int nOctets, Span<byte> x)
         {
-            byte x0 = x[0];
-            nOctets--;
-            for (int i = 0; i < nOctets; i++)
+            unchecked
             {
-                x[i] = (byte) ((x[i] << 1) ^ (x[i + 1] >> 7));
-            }
+                byte x0 = x[0];
+                nOctets--;
+                for (int i = 0; i < nOctets; i++)
+                {
+                    x[i] = (byte)((x[i] << 1) ^ (x[i + 1] >> 7));
+                }
 
-            x[nOctets] = (byte) ((x[nOctets] << 1) ^ (x0 >> 7));
+                x[nOctets] = (byte)((x[nOctets] << 1) ^ (x0 >> 7));
+            }
         }
 
         /* rotate 128-bit data to the left by 16 bits */
@@ -433,17 +445,20 @@ namespace Arrowgene.Ddon.Shared.Crypto
         /* rotate 128-bit data to the left by 15 bits */
         private void rot15(Span<byte> x)
         {
-            byte x15;
-            int i;
-
-            rot16(x);
-            x15 = x[15];
-            for (i = 15; i >= 1; i--)
+            unchecked
             {
-                x[i] = (byte) ((x[i] >> 1) ^ (x[i - 1] << 7));
-            }
+                byte x15;
+                int i;
 
-            x[0] = (byte) ((x[0] >> 1) ^ (x15 << 7));
+                rot16(x);
+                x15 = x[15];
+                for (i = 15; i >= 1; i--)
+                {
+                    x[i] = (byte)((x[i] >> 1) ^ (x[i - 1] << 7));
+                }
+
+                x[0] = (byte)((x[0] >> 1) ^ (x15 << 7));
+            }
         }
 
         /* rotate 128-bit data to the left by 17 bits */
