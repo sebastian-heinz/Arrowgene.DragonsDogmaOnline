@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
@@ -15,24 +16,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
         public bool MigrateDatabase(IDatabase db, uint fromVersion, uint toVersion)
         {
             return db.ExecuteInTransaction((conn) => {
-                foreach (var strategy in FindStrategies(fromVersion, toVersion))
+                List<IMigrationStrategy> strategies = FindStrategies(fromVersion, toVersion, out bool completesMigration);
+                if(!completesMigration)
+                {
+                    throw new Exception("No migration possible from "+fromVersion+" to "+toVersion);
+                }
+
+                foreach (var strategy in strategies)
                 {
                     strategy.Migrate(db, conn);
                 }
             });
         }
 
-        private List<IMigrationStrategy> FindStrategies(uint fromVersion, uint toVersion)
-        {
-            return FindStrategies(fromVersion, toVersion, out bool _);
-        }
-
         // Recursively find a list of strategies to ugprade the database from fromVersion to toVersion
-        private List<IMigrationStrategy> FindStrategies(uint fromVersion, uint toVersion, out bool done)
+        private List<IMigrationStrategy> FindStrategies(uint fromVersion, uint toVersion, out bool completesMigration)
         {
             if(fromVersion == toVersion)
             {
-                done = true;
+                completesMigration = true;
                 return new List<IMigrationStrategy>();
             }
 
@@ -43,8 +45,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
             List<IMigrationStrategy>? candidateStrategies = null;
             foreach (var strategy in strategiesFromVersion)
             {
-                List<IMigrationStrategy> nextStrategies = FindStrategies(strategy.To, toVersion, out bool nextDone);
-                if(nextDone && (candidateStrategies == null || (nextStrategies.Count+1) < candidateStrategies.Count))
+                List<IMigrationStrategy> nextStrategies = FindStrategies(strategy.To, toVersion, out bool nextStrategiesCompleteMigration);
+                if(nextStrategiesCompleteMigration && (candidateStrategies == null || (nextStrategies.Count+1) < candidateStrategies.Count))
                 {
                     candidateStrategies = new List<IMigrationStrategy>() { strategy }.Concat(nextStrategies).ToList();;
                 }
@@ -52,12 +54,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 
             if (candidateStrategies != null)
             {
-                done = true;
+                completesMigration = true;
                 return candidateStrategies;
             }
             else
             {
-                done = false;
+                completesMigration = false;
                 return new List<IMigrationStrategy>();
             }
         }

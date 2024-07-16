@@ -34,7 +34,9 @@ namespace Arrowgene.Ddon.Test.Database
                 from2to3
             };
             var migrator = new DatabaseMigrator(strategies);
-            migrator.MigrateDatabase(db, 0, 3);
+            bool result = migrator.MigrateDatabase(db, 0, 3);
+
+            Assert.True(result);
 
             Assert.True(from0to1.Called);
             Assert.True(from0to1.CallOrder == 0);
@@ -59,7 +61,9 @@ namespace Arrowgene.Ddon.Test.Database
                 from0to3,
             };
             var migrator = new DatabaseMigrator(strategies);
-            migrator.MigrateDatabase(db, 0, 3);
+            bool result = migrator.MigrateDatabase(db, 0, 3);
+
+            Assert.True(result);
 
             Assert.False(from0to1.Called);
             Assert.False(from1to2.Called);
@@ -81,7 +85,9 @@ namespace Arrowgene.Ddon.Test.Database
                 from0to2,
             };
             var migrator = new DatabaseMigrator(strategies);
-            migrator.MigrateDatabase(db, 0, 3);
+            bool result = migrator.MigrateDatabase(db, 0, 3);
+
+            Assert.True(result);
 
             Assert.True(from0to2.Called);
             Assert.True(from0to2.CallOrder == 0);
@@ -108,7 +114,9 @@ namespace Arrowgene.Ddon.Test.Database
                 from0to1
             };
             var migrator = new DatabaseMigrator(strategies);
-            migrator.MigrateDatabase(db, 0, 4);
+            bool result = migrator.MigrateDatabase(db, 0, 4);
+
+            Assert.True(result);
 
             Assert.True(from0to1.Called);
             Assert.True(from0to1.CallOrder == 0);
@@ -132,7 +140,8 @@ namespace Arrowgene.Ddon.Test.Database
                 from2to3
             };
             var migrator = new DatabaseMigrator(strategies);
-            migrator.MigrateDatabase(db, 0, 4);
+
+            Assert.Throws<Exception>(() => migrator.MigrateDatabase(db, 0, 4));
 
             Assert.False(from0to1.Called);
             Assert.False(from1to2.Called);
@@ -152,7 +161,9 @@ namespace Arrowgene.Ddon.Test.Database
                 from2to3
             };
             var migrator = new DatabaseMigrator(strategies);
-            migrator.MigrateDatabase(db, 3, 3);
+            bool result = migrator.MigrateDatabase(db, 3, 3);
+
+            Assert.True(result);
 
             Assert.False(from0to1.Called);
             Assert.False(from1to2.Called);
@@ -162,8 +173,6 @@ namespace Arrowgene.Ddon.Test.Database
 
     class MockDatabase : IDatabase
     {
-        public DatabaseMigrator Migrator { get; set; }
-
         public bool ExecuteInTransaction(Action<DbConnection> action) { 
             action.Invoke(null); return true; 
         }
@@ -302,7 +311,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateStatusInfo(CharacterCommon character) { return true; }
         public bool UpdateStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
-        public bool MigrateDatabase(uint toVersion) { return true; }
+        public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
     }
 
     class MockMigrationStrategy : IMigrationStrategy
