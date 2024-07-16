@@ -1,9 +1,12 @@
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
-using System;
+using System.Linq;
 using System.IO;
+using System.Reflection;
+using System;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Cli.Command
 {
@@ -15,8 +18,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public string Description => $"Commandline tool to update the database\n\n" +
                                      $"usage:\n" +
-                                     $"{Key} <previous version>\n" +
-                                     $"The previous version argument is required only when using sqlite as the database engine.";
+                                     $"{Key}\n";
 
         public CommandResultType Run(CommandParameter parameter)
         {
@@ -32,38 +34,6 @@ namespace Arrowgene.Ddon.Cli.Command
             if (dbSettings == null)
             {
                 return CommandResultType.Exit;
-            }
-
-            Enum.TryParse(dbSettings.Type, true, out DatabaseType dbType);
-            if (dbType == DatabaseType.SQLite)
-            {
-                if (parameter.Arguments.Count < 1)
-                {
-                    Logger.Error("The previous version argument is required when using sqlite as the database engine.");
-                    return CommandResultType.Exit;
-                }
-
-                if(!uint.TryParse(parameter.Arguments[0], out uint previousVersion))
-                {
-                    Logger.Error($"Failed to parse the version value '{parameter.Arguments[1]}'.");
-                    return CommandResultType.Exit;
-                }
-
-                string oldSqlitePath = DdonDatabaseBuilder.BuildSqLitePath(dbSettings.DatabaseFolder, previousVersion);
-                if (!File.Exists(oldSqlitePath))
-                {
-                    Logger.Error($"The previous version database file '{oldSqlitePath}' does not exist.");
-                    return CommandResultType.Exit;
-                }
-
-                string newSqlitePath = DdonDatabaseBuilder.BuildSqLitePath(dbSettings.DatabaseFolder, DdonDatabaseBuilder.Version);
-                if (File.Exists(newSqlitePath))
-                {
-                    Logger.Error($"Cannot migrate the database, the file '{newSqlitePath}' already exists.");
-                    return CommandResultType.Exit;
-                }
-
-                File.Copy(oldSqlitePath, newSqlitePath);
             }
 
             IDatabase database = DdonDatabaseBuilder.Build(dbSettings);

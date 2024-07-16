@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -53,14 +53,14 @@ namespace Arrowgene.Ddon.Database
             return database;
         }
 
-        public static string BuildSqLitePath(string databaseFolder, uint version)
+        public static string BuildSqLitePath(string databaseFolder)
         {
-            return Path.Combine(databaseFolder, $"db.v{version}.sqlite");
+            return Path.Combine(databaseFolder, $"db.sqlite");
         }
 
         public static DdonSqLiteDb BuildSqLite(string databaseFolder, bool wipeOnStartup)
         {
-            string sqLitePath = BuildSqLitePath(databaseFolder, Version);
+            string sqLitePath = BuildSqLitePath(databaseFolder);
             DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath, wipeOnStartup);
             if (db.CreateDatabase())
             {
