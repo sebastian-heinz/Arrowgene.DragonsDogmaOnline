@@ -15,12 +15,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CBazaarGetItemPriceLimitRes Handle(GameClient client, C2SBazaarGetItemPriceLimitReq request)
         {
             // TODO: Take values from itemlist.csv?
+            // New values from the JP Wiki.
             return new S2CBazaarGetItemPriceLimitRes()
             {
                 ItemId = request.ItemId,
-                Low = uint.MinValue,
-                High = int.MaxValue, // Has to be int, apparently the client understands this field as an int, a number too high is seen as negative
-                Num = ushort.MaxValue // I recall it being 10 in most of the cases
+                Low = 1,
+                High = 99999, // Has to be int, apparently the client understands this field as an int, a number too high is seen as negative
+                Num = 20 // I recall it being 10 in most of the cases
             };
         }
     }
