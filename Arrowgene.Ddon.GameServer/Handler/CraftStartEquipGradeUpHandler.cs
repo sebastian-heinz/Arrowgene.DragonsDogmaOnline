@@ -54,9 +54,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
-            uint nextGrade = json_data.Unk0; // This might be Unk0 in the JSON but is probably in the DB or something.
-            bool canContinue = json_data.Unk1;
-            uint currentTotalEquipPoint = equipItem.EquipPoints; // Equip Points are probably handled elsewhere, since its not in the JSON or Request.
+            uint nextGrade = json_data.Unk0; // This is Unk0 I guess?
+            bool canContinue = true;
+            uint currentTotalEquipPoint = equipItem.EquipPoints;
             uint previousTotalEquipPoint = equipItem.EquipPoints;
             uint addEquipPoint = 0;     
             bool dogreatsuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
@@ -97,6 +97,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     Console.WriteLine("Failed to update equip points.");
                 }
+            }
+
+            if(currentTotalEquipPoint >= 1500)
+            {
+                canContinue = false;
             }
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
             // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next (potentially related to how we use UIDs)
