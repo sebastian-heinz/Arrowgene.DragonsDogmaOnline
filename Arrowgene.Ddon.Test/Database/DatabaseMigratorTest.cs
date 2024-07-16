@@ -292,6 +292,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId) { return new List<ReleasedWarpPoint>(); }
         public GameToken SelectToken(string tokenStr) { return new GameToken(); }
         public GameToken SelectTokenByAccountId(int accountId) { return new GameToken(); }
+        public List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId) { return new List<EquipItem>(); }
         public bool SetMeta(DatabaseMeta meta) { return true; }
         public bool SetToken(GameToken token) { return true; }
         public bool UpdateAccount(Account account) { return true; }

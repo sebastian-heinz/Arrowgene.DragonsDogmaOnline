@@ -1375,9 +1375,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CRAFT_RELEASED_CRAFT_RECIPE_LIST_GET_RES = new PacketId(30, 16, 2, "S2C_CRAFT_RELEASED_CRAFT_RECIPE_LIST_GET_RES", ServerType.Game, PacketSource.Server); // 解放済みクラフトレシピリスト取得に
         public static readonly PacketId C2S_CRAFT_CRAFT_SKILL_ANALYZE_REQ = new PacketId(30, 17, 1, "C2S_CRAFT_CRAFT_SKILL_ANALYZE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CRAFT_CRAFT_SKILL_ANALYZE_RES = new PacketId(30, 17, 2, "S2C_CRAFT_CRAFT_SKILL_ANALYZE_RES", ServerType.Game, PacketSource.Server); // クラフトスキル分析に
-        public static readonly PacketId S2C_CRAFT_30_18_16_NTC = new PacketId(30, 18, 16, "S2C_CRAFT_30_18_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CRAFT_30_19_16_NTC = new PacketId(30, 19, 16, "S2C_CRAFT_30_19_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CRAFT_30_20_16_NTC = new PacketId(30, 20, 16, "S2C_CRAFT_30_20_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CRAFT_FINISH_CRAFT_NTC = new PacketId(30, 18, 16, "S2C_CRAFT_FINISH_CRAFT_NTC", ServerType.Game, PacketSource.Server, "S2C_CRAFT_30_18_16_NTC");
+        public static readonly PacketId S2C_CRAFT_CRAFT_EXP_UP_NTC = new PacketId(30, 19, 16, "S2C_CRAFT_CRAFT_EXP_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_CRAFT_30_19_16_NTC"); // S2C_CRAFT_EXP_UP_NOTICE
+        public static readonly PacketId S2C_CRAFT_CRAFT_RANK_UP_NTC = new PacketId(30, 20, 16, "S2C_CRAFT_CRAFT_RANK_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_CRAFT_30_20_16_NTC"); // S2C_CRAFT_RANK_UP_NOTICE
         public static readonly PacketId S2C_CRAFT_30_21_16_NTC = new PacketId(30, 21, 16, "S2C_CRAFT_30_21_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CRAFT_30_22_16_NTC = new PacketId(30, 22, 16, "S2C_CRAFT_30_22_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CRAFT_30_23_16_NTC = new PacketId(30, 23, 16, "S2C_CRAFT_30_23_16_NTC", ServerType.Game, PacketSource.Server);
@@ -3286,9 +3286,9 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CRAFT_RELEASED_CRAFT_RECIPE_LIST_GET_RES);
             AddPacketIdEntry(packetIds, C2S_CRAFT_CRAFT_SKILL_ANALYZE_REQ);
             AddPacketIdEntry(packetIds, S2C_CRAFT_CRAFT_SKILL_ANALYZE_RES);
-            AddPacketIdEntry(packetIds, S2C_CRAFT_30_18_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CRAFT_30_19_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CRAFT_30_20_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CRAFT_FINISH_CRAFT_NTC);
+            AddPacketIdEntry(packetIds, S2C_CRAFT_CRAFT_EXP_UP_NTC);
+            AddPacketIdEntry(packetIds, S2C_CRAFT_CRAFT_RANK_UP_NTC);
             AddPacketIdEntry(packetIds, S2C_CRAFT_30_21_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CRAFT_30_22_16_NTC);
             AddPacketIdEntry(packetIds, S2C_CRAFT_30_23_16_NTC);
