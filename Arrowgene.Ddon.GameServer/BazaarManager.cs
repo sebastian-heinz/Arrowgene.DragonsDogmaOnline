@@ -212,7 +212,9 @@ namespace Arrowgene.Ddon.GameServer
         {
             uint totalPrice = itemBaseInfo.Num*itemBaseInfo.Price;
             uint taxDeduction = (uint)(totalPrice * TAXES);
-            return Math.Clamp(totalPrice - taxDeduction, 0, uint.MaxValue);
+
+            //Minimum proceeds are 1 because the client UI won't let the player receive them if the total proceeds are less than 1.
+            return Math.Clamp(totalPrice - taxDeduction, 1, uint.MaxValue); 
         }
     }
 }
