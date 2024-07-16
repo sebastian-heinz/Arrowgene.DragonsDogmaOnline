@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Send empty response, no items bought
                 client.Send(new S2CItemUpdateCharacterItemNtc()
                 {
-                    UpdateType = 0x10a
+                    UpdateType = (ItemNoticeType) 0x10a // No enum for this?
                 });
             }
             else
@@ -85,7 +85,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 client.Send(new S2CItemUpdateCharacterItemNtc()
                 {
-                    UpdateType = 0x10a,
+                    UpdateType = (ItemNoticeType) 0x10a, // No enum for this?
                     UpdateWalletList = new List<CDataUpdateWalletPoint>()
                     {
                         new CDataUpdateWalletPoint()

@@ -26,8 +26,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             uint totalAmountToAdd = 0;
 
-            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 267;
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = (ItemNoticeType)267 // No named enum for this?
+            };
+            
             foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
             {
                 var ntcData = _itemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num);

@@ -38,8 +38,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             itemNum--;
 
-            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 3;
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.UseBag
+            };
 
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
             ntcData0.ItemList.ItemUId = item.UId;

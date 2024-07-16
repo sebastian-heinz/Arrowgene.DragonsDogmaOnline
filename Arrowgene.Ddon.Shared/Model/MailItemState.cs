@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
+    [Flags]
     public enum MailItemState : byte
     {
         None   = 0,

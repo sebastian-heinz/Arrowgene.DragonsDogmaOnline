@@ -31,20 +31,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         // Taken from sItemManager::moveItemsFunc (0xB9F867 in the PC Dump)
         // TODO: Cleanup
-        private ushort DetermineUpdateType(byte sourceGameStorageType)
+        private ItemNoticeType DetermineUpdateType(byte sourceGameStorageType)
         {
             switch ( sourceGameStorageType )
             {
                 case 1:
-                    return 49;
+                    return ItemNoticeType.TemporaryItems;
                 case 7:
-                    return 22;
+                    return ItemNoticeType.ExStorageItems;
                 case 19:
-                    return 8;
+                    return ItemNoticeType.StoreStorage_items;
                 case 20:
-                    return 9;
+                    return ItemNoticeType.LoadStorage_items;
                 default:
-                    return 0;
+                    return ItemNoticeType.Default;
             }
         }
     }

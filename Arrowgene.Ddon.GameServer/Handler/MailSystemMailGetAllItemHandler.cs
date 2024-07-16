@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = 18 // value from pcap
+                UpdateType = ItemNoticeType.StorePostItemMail
             };
 
             var attachments = Server.Database.SelectAttachmentsForSystemMail(request.MessageId);

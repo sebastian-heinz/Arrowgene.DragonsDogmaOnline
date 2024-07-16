@@ -27,13 +27,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var messages = Server.Database.SelectSystemMailMessages(client.Character.CharacterId);
             foreach (var message in messages)
             {
-                // 3 means has item? 1 means claimed?
-
-                byte itemState = 1;
+                byte itemState = (byte) MailItemState.Exist;
                 var attachments = Server.Database.SelectAttachmentsForSystemMail(message.MessageId);
                 if (attachments.Count > 0)
                 {
-                    itemState = (byte)(attachments.All(x => x.IsReceived) ? 1 : 3);
+                    // TODO: Should item state be based on attachment type?
+                    itemState = (byte)(attachments.All(x => x.IsReceived) ? MailItemState.Exist : MailItemState.Exist | MailItemState.Item);
                 }
 
                 result.MailInfo.Add(message.ToCDataMailInfo(itemState));
