@@ -1,0 +1,36 @@
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
+{
+    public class S2CSkillPawnNormalSkillLearnNtc : IPacketStructure
+    {
+        public PacketId Id => PacketId.S2C_SKILL_PAWN_NORMAL_SKILL_LEARN_NTC;
+
+        public uint PawnId { get; set; }
+        public CDataContextNormalSkillData NormalSkillData { get; set; }
+
+        public class Serializer : PacketEntitySerializer<S2CSkillPawnNormalSkillLearnNtc>
+        {
+            public override void Write(IBuffer buffer, S2CSkillPawnNormalSkillLearnNtc obj)
+            {
+                WriteUInt32(buffer, obj.PawnId);
+                WriteEntity<CDataContextNormalSkillData>(buffer, obj.NormalSkillData);
+            }
+
+            public override S2CSkillPawnNormalSkillLearnNtc Read(IBuffer buffer)
+            {
+                S2CSkillPawnNormalSkillLearnNtc obj = new S2CSkillPawnNormalSkillLearnNtc();
+                obj.PawnId = ReadUInt32(buffer);
+                obj.NormalSkillData = ReadEntity<CDataContextNormalSkillData>(buffer);
+                return obj;
+            }
+        }
+    }
+}

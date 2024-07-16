@@ -438,6 +438,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     SkillIndex = skillIndex,
                     NewJobPoint = characterJobData.JobPoint,
                 });
+
+                //Notify other members of the new skill.
+                client.Party.SendToAll(new S2CSkillNormalSkillLearnNtc()
+                {
+                    CharacterId = ((Character)character).CharacterId,
+                    NormalSkillData = new CDataContextNormalSkillData()
+                    {
+                        SkillIndex = (byte)skillIndex
+                    }
+                });
             }
             else
             {
@@ -448,12 +458,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     SkillIndex = skillIndex,
                     NewJobPoint = characterJobData.JobPoint,
                 });
-            }
 
-            // TODO: Send data to rest of party
-            // TODO: S2C_NORMAL_SKILL_LEARN_NTC currently not defined
-            // TODO: Need to investigate ID and layout
-            // Client.Party.SendToAll(S2C_NORMAL_SKILL_LEARN_NTC)
+                //Notify other members of the new skill.
+                client.Party.SendToAll(new S2CSkillPawnNormalSkillLearnNtc()
+                {
+                    PawnId = ((Pawn)character).PawnId,
+                    NormalSkillData = new CDataContextNormalSkillData()
+                    {
+                        SkillIndex = (byte)skillIndex
+                    }
+                });
+            }
         }
 
         public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)

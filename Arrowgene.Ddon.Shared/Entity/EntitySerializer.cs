@@ -810,8 +810,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillLearnPawnNormalSkillRes.Serializer());
             Create(new S2CSkillLearnPawnSkillRes.Serializer());
             Create(new S2CSkillLearnSkillRes.Serializer());
+            Create(new S2CSkillNormalSkillLearnNtc.Serializer());
             Create(new S2CSkillPawnAbilitySetNtc.Serializer());
             Create(new S2CSkillPawnCustomSkillSetNtc.Serializer());
+            Create(new S2CSkillPawnNormalSkillLearnNtc.Serializer());
             Create(new S2CSkillSetAbilityRes.Serializer());
             Create(new S2CSkillSetOffAbilityRes.Serializer());
             Create(new S2CSkillSetOffPawnAbilityRes.Serializer());
