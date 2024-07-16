@@ -431,27 +431,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
             database.UpdateCharacterJobData(character.CommonId, characterJobData);
 
             if (character is Character)
-                {
-                var result = new S2CSkillLearnNormalSkillRes()
+            {
+                client.Send(new S2CSkillLearnNormalSkillRes()
                 {
                     Job = job,
                     SkillIndex = skillIndex,
                     NewJobPoint = characterJobData.JobPoint,
-                };
-
-                client.Send(result);
+                });
             }
             else
             {
-                var result = new S2CSkillLearnPawnNormalSkillRes()
+                client.Send(new S2CSkillLearnPawnNormalSkillRes()
                 {
                     PawnId = ((Pawn)character).PawnId,
                     Job = job,
                     SkillIndex = skillIndex,
                     NewJobPoint = characterJobData.JobPoint,
-                };
-
-                client.Send(result);
+                });
             }
 
             // TODO: Send data to rest of party
