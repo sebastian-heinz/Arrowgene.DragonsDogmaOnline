@@ -44,24 +44,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             // client.Character.Storage.SetStorageItem(item.Item2, item.Item3, StorageType.ItemBagEquipment, item.Item1);
 
-#if false
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = (ushort) ItemNoticeType.StartAttachElement;
-            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, 100));
-            client.Send(updateCharacterItemNtc);
-
-            // TODO: Use values extracted from client file
-            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
-            {
-                PawnId = request.CraftMainPawnId,
-                AddExp = 100,
-                ExtraBonusExp = 0,
-                TotalExp = 100,
-                CraftRankLimit = 0
-            };
-            client.Send(expNtc);
-#endif
-
             return result;
         }
     }

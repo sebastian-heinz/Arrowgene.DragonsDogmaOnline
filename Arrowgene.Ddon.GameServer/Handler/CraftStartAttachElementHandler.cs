@@ -60,6 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Character.Storage.SetStorageItem(item.Item2, item.Item3, StorageType.ItemBagEquipment, item.Item1);
 
 #if false
+            // Do I actually need this for anything other than the wallet?
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = (ushort) ItemNoticeType.StartAttachElement;
             updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, 100));
