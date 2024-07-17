@@ -3,34 +3,28 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftStartAttachElementHandler : GameRequestPacketHandler<C2SCraftStartAttachElementReq, S2CCraftStartAttachElementRes>
+    public class CraftStartDetachElementHandler : GameRequestPacketHandler<C2SCraftStartDetachElementReq, S2CCraftStartDetachElementRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartAttachElementHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartDetachElementHandler));
 
-        public CraftStartAttachElementHandler(DdonGameServer server) : base(server)
+        public CraftStartDetachElementHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override S2CCraftStartAttachElementRes Handle(GameClient client, C2SCraftStartAttachElementReq request)
+        public override S2CCraftStartDetachElementRes Handle(GameClient client, C2SCraftStartDetachElementReq request)
         {
             var results = Server.Database.SelectEquipItemByCharacter(client.Character.CommonId);
 
-            var result = new S2CCraftStartAttachElementRes()
-            {
-                // TODO: Use values extracted from client file craft_element_exp.cee.json
-                // TODO: Level = itemrank - 1
-                Gold = 100,
-            };
-
+            var result = new S2CCraftStartDetachElementRes();
             result.CurrentEquip.EquipSlot.CharacterId = client.Character.CharacterId;
             result.CurrentEquip.EquipSlot.PawnId = 0;
             result.CurrentEquip.EquipSlot.EquipSlotNo = 0;
@@ -39,34 +33,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Item item = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, request.EquipItemUId);
             foreach (var element in request.CraftElementList)
             {
-                uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId);
-
-                Server.Database.InsertCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo, crestId, 0);
+                Server.Database.RemoveCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo);
                 result.EquipElementParamList.Add(new CDataWeaponCrestData()
                 {
-                    CrestId = crestId,
+                    CrestId = 0,
                     SlotNo = element.SlotNo,
                 });
 
-                item.WeaponCrestDataList.Add(new CDataWeaponCrestData()
-                {
-                    CrestId = crestId,
-                    SlotNo = element.SlotNo,
-                });
-
-                // TODO: Consume crest item
+                item.WeaponCrestDataList = item.WeaponCrestDataList.Where(x => x.SlotNo != element.SlotNo).ToList();
             }
-
             // client.Character.Storage.SetStorageItem(item.Item2, item.Item3, StorageType.ItemBagEquipment, item.Item1);
 
 #if false
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = (ushort) ItemNoticeType.StartAttachElement;
             updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, 100));
-
-            updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult(item));
             client.Send(updateCharacterItemNtc);
-#endif
 
             // TODO: Use values extracted from client file
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
@@ -78,6 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftRankLimit = 0
             };
             client.Send(expNtc);
+#endif
 
             return result;
         }

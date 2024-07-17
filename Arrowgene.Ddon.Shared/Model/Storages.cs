@@ -35,6 +35,19 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
+        public Item FindItemByUIdInStorage(List<StorageType> storageTypes, string uId)
+        {
+            foreach (var storage in storages)
+            {
+                var foundItem = storage.Value.FindItemByUId(uId);
+                if (foundItem != null)
+                {
+                    return foundItem.Item2;
+                }
+            }
+            return null;
+        }
+
         public Storage GetStorage(StorageType storageType)
         {
             return storages[storageType];

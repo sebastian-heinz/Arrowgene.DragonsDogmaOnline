@@ -268,5 +268,10 @@ namespace Arrowgene.Ddon.Database
         // Stamps
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);
         public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
+        // Crests
+        bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
+        bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
+        bool RemoveCrest(uint characterCommonId, string itemUId, uint slot);
+        List<Crest> GetCrests(uint characterCommonId, string itemUId);
     }
 }

@@ -3,6 +3,10 @@ using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Model;
+using System.Security.Cryptography;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -270,6 +274,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         item.Unk3 = GetByte(reader2, "unk3");
                         item.Color = GetByte(reader2, "color");
                         item.PlusValue = GetByte(reader2, "plus_value");
+
+                        ExecuteReader(conn, SqlSelectAllCrestData,
+                        command4 => {
+                            AddParameter(command4, "@CharacterId", character.CharacterId);
+                            AddParameter(command4, "@item_uid", item.UId);
+                        }, reader4 => {
+                            while (reader4.Read())
+                            {
+                                var result = ReadCrestData(reader4);
+                                item.WeaponCrestDataList.Add(result.ToCDataWeaponCrestData());
+                            }
+                        });
 
                         character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
                     }
