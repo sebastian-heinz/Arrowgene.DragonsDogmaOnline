@@ -10,6 +10,7 @@ using Arrowgene.Ddon.Shared.Json;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.AssetReader;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -56,7 +57,7 @@ namespace Arrowgene.Ddon.Shared
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
             ClientErrorCodes = new List<CDataErrorMessage>();
-            ClientItemInfos = new List<ClientItemInfo>();
+            ClientItemInfos = new Dictionary<uint, ClientItemInfo>();
             NamedParamAsset = new Dictionary<uint, NamedParam>();
             EnemySpawnAsset = new EnemySpawnAsset();
             GatheringItems = new Dictionary<(StageId, uint), List<GatheringItem>>();
@@ -76,7 +77,7 @@ namespace Arrowgene.Ddon.Shared
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
-        public List<ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
+        public Dictionary<uint, ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
         public Dictionary<uint, NamedParam> NamedParamAsset { get; private set; }
         public EnemySpawnAsset EnemySpawnAsset { get; private set; }
         public Dictionary<(StageId, uint), List<GatheringItem>> GatheringItems { get; private set; }
@@ -97,7 +98,7 @@ namespace Arrowgene.Ddon.Shared
         public void Initialize()
         {
             RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeCsv());
-            RegisterAsset(value => ClientItemInfos = value, ItemListKey, new ClientItemInfoCsv());
+            RegisterAsset(value => ClientItemInfos = value.ToDictionary(key => key.ItemId, val => val), ItemListKey, new ClientItemInfoCsv());
             RegisterAsset(value => NamedParamAsset = value, NamedParamsKey, new NamedParamAssetDeserializer());
             RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer(this.NamedParamAsset));
             RegisterAsset(value => GatheringItems = value, GatheringItemsKey, new GatheringItemCsv());
