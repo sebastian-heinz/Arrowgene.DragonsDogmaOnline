@@ -312,6 +312,14 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
+
+        public List<SystemMailMessage> SelectSystemMailMessages(uint characterId) { return new List<SystemMailMessage>(); }
+        public SystemMailMessage SelectSystemMailMessage(ulong messageId) { return new SystemMailMessage(); }
+        public bool UpdateSystemMailMessageState(ulong messageId, MailState messageState) {  return true; }
+        public bool DeleteSystemMailMessage(ulong messageId) { return true; }
+        public List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId) { return new List<SystemMailAttachment>(); }
+        public bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived) {  return true; }
+        public bool DeleteSystemMailAttachment(ulong messageId) { return true; }
     }
 
     class MockMigrationStrategy : IMigrationStrategy

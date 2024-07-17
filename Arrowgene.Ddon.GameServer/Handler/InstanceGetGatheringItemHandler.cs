@@ -31,8 +31,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.GatheringItemGetRequestList = req.Structure.GatheringItemGetRequestList;
             client.Send(res);
 
-            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 1;
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.Gather
+            };
+
             foreach (CDataGatheringItemGetRequest gatheringItemRequest in req.Structure.GatheringItemGetRequestList)
             {
                 InstancedGatheringItem gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)[(int) gatheringItemRequest.SlotNo];

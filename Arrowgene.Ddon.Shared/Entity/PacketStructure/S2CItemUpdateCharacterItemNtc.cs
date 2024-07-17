@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -17,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         // See ItemNoticeType
-        public ushort UpdateType;
+        public ItemNoticeType UpdateType;
         public List<CDataItemUpdateResult> UpdateItemList;
         public List<CDataUpdateWalletPoint> UpdateWalletList;
 
@@ -25,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, S2CItemUpdateCharacterItemNtc obj)
             {
-                WriteUInt16(buffer, obj.UpdateType);
+                WriteUInt16(buffer, (ushort) obj.UpdateType);
                 WriteEntityList<CDataItemUpdateResult>(buffer, obj.UpdateItemList);
                 WriteEntityList<CDataUpdateWalletPoint>(buffer, obj.UpdateWalletList);
             }
@@ -33,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CItemUpdateCharacterItemNtc Read(IBuffer buffer)
             {
                 S2CItemUpdateCharacterItemNtc obj = new S2CItemUpdateCharacterItemNtc();
-                obj.UpdateType = ReadUInt16(buffer);
+                obj.UpdateType = (ItemNoticeType) ReadUInt16(buffer);
                 obj.UpdateItemList = ReadEntityList<CDataItemUpdateResult>(buffer);
                 obj.UpdateWalletList = ReadEntityList<CDataUpdateWalletPoint>(buffer);
                 return obj;

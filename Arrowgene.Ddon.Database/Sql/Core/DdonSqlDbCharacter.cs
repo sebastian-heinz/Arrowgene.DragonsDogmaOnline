@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CharacterFields = new string[]
         {
-            "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "max_bazaar_exhibits"
+            /* character_id */ "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "max_bazaar_exhibits"
         };
 
         private static readonly string[] CDataMatchingProfileFields = new string[]

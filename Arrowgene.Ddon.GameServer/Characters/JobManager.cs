@@ -89,7 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     otherClient.Send(changeJobNotice);
                 }
 
-                updateCharacterItemNtc.UpdateType = 0x28;
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangeJob;
                 client.Send(updateCharacterItemNtc);
 
                 S2CJobChangeJobRes changeJobResponse = new S2CJobChangeJobRes();
@@ -127,7 +127,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     otherClient.Send(changeJobNotice);
                 }
 
-                updateCharacterItemNtc.UpdateType = 0x29;
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangePawnJob;
                 client.Send(updateCharacterItemNtc);
 
                 S2CJobChangePawnJobRes changeJobResponse = new S2CJobChangePawnJobRes();

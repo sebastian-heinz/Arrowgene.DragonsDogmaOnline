@@ -65,5 +65,8 @@ namespace Arrowgene.Ddon.Shared.Model
         DebugAdd = 0x64,
         DebugSub = 0x65,
         DebugEquipAdd = 0x66,
+
+        // ItemsBought = 0x10a,
+        // UseJobItem2 = 0x121,
     }
 }

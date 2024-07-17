@@ -213,5 +213,16 @@ namespace Arrowgene.Ddon.Database
         bool InsertPriorityQuest(uint characterCommonId, QuestId questId);
         List<QuestId> GetPriorityQuests(uint characterCommonId);
         bool DeletePriorityQuest(uint characterCommonId, QuestId questId);
+
+        // System mail
+        List<SystemMailMessage> SelectSystemMailMessages(uint characterId);
+        SystemMailMessage SelectSystemMailMessage(ulong messageId);
+        bool UpdateSystemMailMessageState(ulong messageId, MailState messageState);
+        bool DeleteSystemMailMessage(ulong messageId);
+
+        // System mail attachments
+        List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId);
+        bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived);
+        bool DeleteSystemMailAttachment(ulong messageId);
     }
 }
