@@ -1,4 +1,9 @@
-﻿CREATE TABLE IF NOT EXISTS setting
+﻿CREATE TABLE IF NOT EXISTS meta
+(
+    "db_version" INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS setting
 (
     "key"   VARCHAR(32) NOT NULL,
     "value" TEXT        NOT NULL,

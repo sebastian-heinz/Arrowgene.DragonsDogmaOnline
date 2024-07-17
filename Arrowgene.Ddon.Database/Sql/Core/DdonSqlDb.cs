@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data.Common;
 using System.Text;
+using Arrowgene.Ddon.Database.Sql.Core.Migration;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -8,7 +10,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     /// <summary>
     /// Implementation of Ddon database operations.
     /// </summary>
-    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>, IDatabase
         where TCon : DbConnection
         where TCom : DbCommand
         where TReader : DbDataReader
@@ -97,6 +99,32 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
 
             return sb.ToString();
+        }
+        
+        public abstract bool CreateDatabase();
+
+        public void Execute(DbConnection conn, string sql)
+        {
+            base.Execute((TCon) conn, sql);
+        }
+
+        public bool ExecuteInTransaction(Action<DbConnection> action)
+        {
+            return base.ExecuteInTransaction((conn) => action.Invoke(conn));
+        }
+
+        public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion)
+        {
+            uint currentVersion = GetMeta().DatabaseVersion;
+            bool result = migrator.MigrateDatabase(this, currentVersion, toVersion);
+            if (result)
+            {
+                SetMeta(new DatabaseMeta()
+                {
+                    DatabaseVersion = DdonDatabaseBuilder.Version
+                });
+            }
+            return result;
         }
 
         protected override void Exception(Exception ex, string query)

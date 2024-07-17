@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public bool CreateDatabase()
+        public override bool CreateDatabase()
         {
             if (_connectionString == null)
             {
