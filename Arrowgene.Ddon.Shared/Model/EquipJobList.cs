@@ -1,0 +1,69 @@
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Arrowgene.Ddon.Shared.Model
+{
+    public static class EquipJobListClass
+    {
+        public enum EquipJobList
+        {
+            All = 0,
+            Fighter = 1,
+            Seeker = 2,
+            Hunter = 3,
+            Priest = 4,
+            ShieldSage = 5,
+            Sorcerer = 6,
+            Warrior = 7,
+            ElementArcher = 8,
+            Alchemist = 9,
+            SpiritLancer = 10,
+            HighScepter = 11,
+            GroupHeavy = 12, // Fighter, Warrior
+            GroupPhysical = 13, // Fighter, Seeker, Hunter, Warrior, Spirit Lancer
+            GroupLight = 14, // Seeker, Hunter, Spirit Lancer
+            GroupMagickRanged = 15, // Priest, Sorcerer, Element Archer
+            GroupMagickal = 16, //Priest, Shield Sage, Sorcerer, Element Archer, Alchemist, High Scepter
+            GroupMagickMelee = 17, //Shield Sage, Alchemist, High Scepter
+        }
+
+        public static HashSet<JobId> ToJobIds(this EquipJobList list)
+        {
+            switch (list)
+            {
+                case EquipJobList.All:
+                    return Enum.GetValues(typeof(JobId)).Cast<JobId>().ToHashSet();
+                case EquipJobList.GroupHeavy:
+                    return new HashSet<JobId> { JobId.Fighter, JobId.Warrior };
+                case EquipJobList.GroupLight:
+                    return new HashSet<JobId> { JobId.Seeker, JobId.Hunter, JobId.SpiritLancer };
+                case EquipJobList.GroupPhysical:
+                    var heavy = EquipJobList.GroupHeavy.ToJobIds();
+                    var light = EquipJobList.GroupLight.ToJobIds();
+                    heavy.UnionWith(light);
+                    return heavy;
+                case EquipJobList.GroupMagickRanged:
+                    return new HashSet<JobId> { JobId.Priest, JobId.Sorcerer, JobId.ElementArcher };
+                case EquipJobList.GroupMagickMelee:
+                    return new HashSet<JobId> { JobId.ShieldSage, JobId.Alchemist, JobId.HighScepter };
+                case EquipJobList.GroupMagickal:
+                    var melee = EquipJobList.GroupMagickMelee.ToJobIds();
+                    var ranged = EquipJobList.GroupMagickRanged.ToJobIds();
+                    melee.UnionWith(ranged);
+                    return melee;
+                default:
+                    return new HashSet<JobId> { (JobId)((int)list) };
+            }
+        }
+
+        public static bool Contains(this EquipJobList list, JobId jobId)
+        {
+            return list.ToJobIds().Contains(jobId);
+        }
+    }
+}
