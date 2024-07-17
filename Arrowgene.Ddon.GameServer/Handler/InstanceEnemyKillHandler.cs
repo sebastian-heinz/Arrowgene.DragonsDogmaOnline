@@ -117,6 +117,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach(PartyMember member in client.Party.Members)
             {
+                if (member.JoinState != JoinState.On) continue; //Only fully joined members get rewards.
+
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = enemyKilled.GetDroppedExperience();
