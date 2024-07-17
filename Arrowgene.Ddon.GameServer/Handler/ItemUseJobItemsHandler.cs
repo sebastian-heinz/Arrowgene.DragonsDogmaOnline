@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = (ItemNoticeType)0x121 // No named enum for this?
+                UpdateType = ItemNoticeType.UseJobItem
             };
 
             foreach (CDataItemUIdList itemUIdListElement in packet.Structure.ItemUIdList)
