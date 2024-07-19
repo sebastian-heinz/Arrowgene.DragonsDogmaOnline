@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             SenderName = String.Empty;
             Body = String.Empty;
+            Attachments = new List<SystemMailAttachment>();
         }
 
         public ulong MessageId { get; set; }
@@ -23,6 +24,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public string Title { get; set; }
         public string Body { get; set; }
         public ulong SendDate { get; set; }
+        public List<SystemMailAttachment> Attachments { get; set; }
 
         public CDataMailInfo ToCDataMailInfo(byte itemState)
         {

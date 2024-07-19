@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 
 using System;
 using System.Data;
@@ -258,68 +258,68 @@ namespace Arrowgene.Ddon.Database.Sql
             return Parameter(command, name, value, DbType.String);
         }
 
-        protected void AddParameter(TCom command, string name, object? value, DbType type)
+        public void AddParameter(TCom command, string name, object? value, DbType type)
         {
             DbParameter parameter = Parameter(command, name, value, type);
             command.Parameters.Add(parameter);
         }
 
-        protected void AddParameter(TCom command, string name, string value)
+        public void AddParameter(TCom command, string name, string value)
         {
             AddParameter(command, name, value, DbType.String);
         }
 
-        protected void AddParameter(TCom command, string name, Int32 value)
+        public void AddParameter(TCom command, string name, Int32 value)
         {
             AddParameter(command, name, value, DbType.Int32);
         }
 
-        protected void AddParameter(TCom command, string name, float value)
+        public void AddParameter(TCom command, string name, float value)
         {
             AddParameter(command, name, value, DbType.Double);
         }
 
-        protected void AddParameter(TCom command, string name, byte value)
+        public void AddParameter(TCom command, string name, byte value)
         {
             AddParameter(command, name, value, DbType.Byte);
         }
 
-        protected void AddParameter(TCom command, string name, UInt16 value)
+        public void AddParameter(TCom command, string name, UInt16 value)
         {
             AddParameter(command, name, (short)value, DbType.Int16);
         }
 
-        protected void AddParameter(TCom command, string name, UInt32 value)
+        public void AddParameter(TCom command, string name, UInt32 value)
         {
             AddParameter(command, name, (int)value, DbType.Int32);
         }
 
-        protected void AddParameterEnumInt32<T>(TCom command, string name, T value) where T : Enum
+        public void AddParameterEnumInt32<T>(TCom command, string name, T value) where T : Enum
         {
             AddParameter(command, name, (Int32)(object)value, DbType.Int32);
         }
 
-        protected virtual void AddParameter(TCom command, string name, DateTime? value)
+        public virtual void AddParameter(TCom command, string name, DateTime? value)
         {
             AddParameter(command, name, value, DbType.DateTime);
         }
 
-        protected virtual void AddParameter(TCom command, string name, DateTime value)
+        public virtual void AddParameter(TCom command, string name, DateTime value)
         {
             AddParameter(command, name, value, DbType.DateTime);
         }
 
-        protected void AddParameter(TCom command, string name, byte[] value)
+        public void AddParameter(TCom command, string name, byte[] value)
         {
             AddParameter(command, name, value, DbType.Binary);
         }
 
-        protected void AddParameter(TCom command, string name, bool value)
+        public void AddParameter(TCom command, string name, bool value)
         {
             AddParameter(command, name, value, DbType.Boolean);
         }
 
-        protected virtual DateTime? GetDateTimeNullable(TReader reader, int ordinal)
+        public virtual DateTime? GetDateTimeNullable(TReader reader, int ordinal)
         {
             if (reader.IsDBNull(ordinal))
             {
@@ -329,7 +329,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetDateTime(ordinal);
         }
 
-        protected string? GetStringNullable(TReader reader, int ordinal)
+        public string? GetStringNullable(TReader reader, int ordinal)
         {
             if (reader.IsDBNull(ordinal))
             {
@@ -339,7 +339,7 @@ namespace Arrowgene.Ddon.Database.Sql
             return reader.GetString(ordinal);
         }
 
-        protected byte[]? GetBytesNullable(TReader reader, int ordinal, int size)
+        public byte[]? GetBytesNullable(TReader reader, int ordinal, int size)
         {
             if (reader.IsDBNull(ordinal))
             {
@@ -351,86 +351,86 @@ namespace Arrowgene.Ddon.Database.Sql
             return buffer;
         }
 
-        protected int GetInt32(TReader reader, string column)
+        public int GetInt32(TReader reader, string column)
         {
             return reader.GetInt32(reader.GetOrdinal(column));
         }
 
-        protected uint GetUInt32(TReader reader, string column)
+        public uint GetUInt32(TReader reader, string column)
         {
             return (uint)reader.GetInt32(reader.GetOrdinal(column));
         }
 
-        protected byte GetByte(TReader reader, string column)
+        public byte GetByte(TReader reader, string column)
         {
             return reader.GetByte(reader.GetOrdinal(column));
         }
 
-        protected short GetInt16(TReader reader, string column)
+        public short GetInt16(TReader reader, string column)
         {
             return reader.GetInt16(reader.GetOrdinal(column));
         }
 
-        protected ushort GetUInt16(TReader reader, string column)
+        public ushort GetUInt16(TReader reader, string column)
         {
             return (ushort)reader.GetInt16(reader.GetOrdinal(column));
         }
 
-        protected long GetInt64(TReader reader, string column)
+        public long GetInt64(TReader reader, string column)
         {
             return reader.GetInt64(reader.GetOrdinal(column));
         }
 
-        protected ulong GetUInt64(TReader reader, string column)
+        public ulong GetUInt64(TReader reader, string column)
         {
             return (ulong)reader.GetInt64(reader.GetOrdinal(column));
         }
 
-        protected float GetFloat(TReader reader, string column)
+        public float GetFloat(TReader reader, string column)
         {
             return reader.GetFloat(reader.GetOrdinal(column));
         }
 
-        protected string GetString(TReader reader, string column)
+        public string GetString(TReader reader, string column)
         {
             return reader.GetString(reader.GetOrdinal(column));
         }
 
-        protected bool GetBoolean(TReader reader, string column)
+        public bool GetBoolean(TReader reader, string column)
         {
             return reader.GetBoolean(reader.GetOrdinal(column));
         }
 
-        protected T GetEnumInt32<T>(TReader reader, string column) where T : Enum
+        public T GetEnumInt32<T>(TReader reader, string column) where T : Enum
         {
             return (T)(object)reader.GetInt32(reader.GetOrdinal(column));
         }
 
-        protected virtual DateTime GetDateTime(TReader reader, string column)
+        public virtual DateTime GetDateTime(TReader reader, string column)
         {
             return reader.GetDateTime(reader.GetOrdinal(column));
         }
 
-        protected byte[] GetBytes(TReader reader, string column, int size)
+        public byte[] GetBytes(TReader reader, string column, int size)
         {
             byte[] buffer = new byte[size];
             reader.GetBytes(reader.GetOrdinal(column), 0, buffer, 0, size);
             return buffer;
         }
 
-        protected DateTime? GetDateTimeNullable(TReader reader, string column)
+        public DateTime? GetDateTimeNullable(TReader reader, string column)
         {
             int ordinal = reader.GetOrdinal(column);
             return GetDateTimeNullable(reader, ordinal);
         }
 
-        protected string? GetStringNullable(TReader reader, string column)
+        public string? GetStringNullable(TReader reader, string column)
         {
             int ordinal = reader.GetOrdinal(column);
             return GetStringNullable(reader, ordinal);
         }
 
-        protected byte[]? GetBytesNullable(TReader reader, string column, int size)
+        public byte[]? GetBytesNullable(TReader reader, string column, int size)
         {
             int ordinal = reader.GetOrdinal(column);
             return GetBytesNullable(reader, ordinal, size);

@@ -9,6 +9,11 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class SystemMailAttachment
     {
+        public SystemMailAttachment()
+        {
+            Param0 = string.Empty;
+        }
+
         public ulong MessageId { get; set; }
         public ulong AttachmentId { get; set; }
         public SystemMailAttachmentType AttachmentType { get; set; }

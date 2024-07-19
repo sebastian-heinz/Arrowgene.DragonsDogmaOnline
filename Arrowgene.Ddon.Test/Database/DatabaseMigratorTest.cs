@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
@@ -177,6 +178,15 @@ namespace Arrowgene.Ddon.Test.Database
             action.Invoke(null); return true; 
         }
 
+        public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action)
+        {
+            return 1;
+        }
+
+        public void ExecuteReader(string command, Action<DbDataReader> action)
+        {
+        }
+
         public Account CreateAccount(string name, string mail, string hash) { return new Account(); }
         public bool CreateCharacter(Character character) { return true; }
         public bool CreateDatabase() { return true; }
@@ -276,6 +286,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<ContactListEntity> SelectContactsByCharacterId(uint characterId) { return new List<ContactListEntity>(); }
         public ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2) { return new ContactListEntity(); }
         public Item SelectItem(string uid) { return new Item(); }
+        public Item SelectItem(DbConnection conn, string uid) { return new Item(); }
         public List<CDataNormalSkillParam> SelectNormalSkillParam(uint commonId, JobId job) { return new List<CDataNormalSkillParam>(); }
         public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId) { return new CDataOrbGainExtendParam(); }
         public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId) { return new List<CDataReleaseOrbElement>(); }
@@ -313,14 +324,40 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
         public bool UpdateMyPawnSlot(uint characterId, uint num) { return true; }
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
-
+        public long InsertSystemMailMessage(SystemMailMessage message) { return 0; }
+        public long InsertSystemMailMessage(DbConnection connection, SystemMailMessage message) { return 0; }
         public List<SystemMailMessage> SelectSystemMailMessages(uint characterId) { return new List<SystemMailMessage>(); }
         public SystemMailMessage SelectSystemMailMessage(ulong messageId) { return new SystemMailMessage(); }
         public bool UpdateSystemMailMessageState(ulong messageId, MailState messageState) {  return true; }
         public bool DeleteSystemMailMessage(ulong messageId) { return true; }
+        public long InsertSystemMailAttachment(SystemMailAttachment attachment) { return 0; }
+        public long InsertSystemMailAttachment(DbConnection connection, SystemMailAttachment attachment) { return 0;  }
         public List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId) { return new List<SystemMailAttachment>(); }
         public bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived) {  return true; }
         public bool DeleteSystemMailAttachment(ulong messageId) { return true; }
+
+        public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
+        public void AddParameter(DbCommand command, string name, string value) { }
+        public void AddParameter(DbCommand command, string name, Int32 value) { }
+        public void AddParameter(DbCommand command, string name, float value) { }
+        public void AddParameter(DbCommand command, string name, byte value) { }
+        public void AddParameter(DbCommand command, string name, UInt16 value) { }
+        public void AddParameter(DbCommand command, string name, UInt32 value) { }
+        public void AddParameter(DbCommand command, string name, byte[] value) { }
+        public void AddParameter(DbCommand command, string name, bool value) { }
+        public string? GetStringNullable(DbDataReader reader, int ordinal) { return ""; }
+        public byte[]? GetBytesNullable(DbDataReader reader, int ordinal, int size) { return null; }
+        public int GetInt32(DbDataReader reader, string column) { return 0; }
+        public uint GetUInt32(DbDataReader reader, string column) { return 0; }
+        public byte GetByte(DbDataReader reader, string column) { return 0; }
+        public short GetInt16(DbDataReader reader, string column) { return 0; }
+        public ushort GetUInt16(DbDataReader reader, string column) { return 0; }
+        public long GetInt64(DbDataReader reader, string column) { return 0; }
+        public ulong GetUInt64(DbDataReader reader, string column) { return 0; }
+        public float GetFloat(DbDataReader reader, string column) { return 0; }
+        public string GetString(DbDataReader reader, string column) { return ""; }
+        public bool GetBoolean(DbDataReader reader, string column) { return false; }
+        public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }
     }
 
     class MockMigrationStrategy : IMigrationStrategy
