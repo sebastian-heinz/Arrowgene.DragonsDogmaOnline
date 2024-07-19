@@ -178,15 +178,9 @@ namespace Arrowgene.Ddon.Test.Database
             action.Invoke(null); return true; 
         }
 
-        public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action)
-        {
-            return 1;
-        }
-
-        public void ExecuteReader(string command, Action<DbDataReader> action)
-        {
-        }
-
+        public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action) { return 1; }
+        public void ExecuteReader(string command, Action<DbDataReader> action) {}
+        public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) {}
         public Account CreateAccount(string name, string mail, string hash) { return new Account(); }
         public bool CreateCharacter(Character character) { return true; }
         public bool CreateDatabase() { return true; }
@@ -256,6 +250,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill) { return true; }
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
         public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
+        public bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
         public bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType) { return true; }
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData) { return true; }
@@ -281,6 +276,8 @@ namespace Arrowgene.Ddon.Test.Database
         public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId) { return new List<QuestBoxRewards>(); }
         public Character SelectCharacter(uint characterId) { return new Character(); }
         public List<Character> SelectCharactersByAccountId(int accountId) { return new List<Character>(); }
+        public List<Character> SelectAllCharacters() { return new List<Character>(); }
+        public List<Character> SelectAllCharacters(DbConnection conn) { return new List<Character>(); }
         public List<Connection> SelectConnectionsByAccountId(int accountId) { return new List<Connection>(); }
         public ContactListEntity SelectContactListById(uint id) { return new ContactListEntity(); }
         public List<ContactListEntity> SelectContactsByCharacterId(uint characterId) { return new List<ContactListEntity>(); }
@@ -292,6 +289,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId) { return new List<CDataReleaseOrbElement>(); }
         public Pawn SelectPawn(uint pawnId) { return new Pawn(); }
         public List<Pawn> SelectPawnsByCharacterId(uint characterId) { return new List<Pawn>(); }
+        public List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId) { return new List<Pawn>(); }
         public List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId) { return new List<ReleasedWarpPoint>(); }
         public GameToken SelectToken(string tokenStr) { return new GameToken(); }
         public GameToken SelectTokenByAccountId(int accountId) { return new GameToken(); }
@@ -357,7 +355,7 @@ namespace Arrowgene.Ddon.Test.Database
         public float GetFloat(DbDataReader reader, string column) { return 0; }
         public string GetString(DbDataReader reader, string column) { return ""; }
         public bool GetBoolean(DbDataReader reader, string column) { return false; }
-        public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }
+        public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }        
     }
 
     class MockMigrationStrategy : IMigrationStrategy

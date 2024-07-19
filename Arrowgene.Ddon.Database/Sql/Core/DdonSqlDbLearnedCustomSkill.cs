@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return true;
         }
 
-        private CustomSkill ReadLearnedCustomSkill(TReader reader)
+        private CustomSkill ReadLearnedCustomSkill(DbDataReader reader)
         {
             CustomSkill skill = new CustomSkill();
             skill.Job = (JobId) GetByte(reader, "job");

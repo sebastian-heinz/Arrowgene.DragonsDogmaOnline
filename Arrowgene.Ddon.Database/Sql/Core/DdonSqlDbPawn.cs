@@ -95,23 +95,30 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public List<Pawn> SelectPawnsByCharacterId(uint characterId)
         {
-            List<Pawn> pawns = new List<Pawn>();
+            List<Pawn> pawns = null;
             ExecuteInTransaction(conn =>
             {
-                ExecuteReader(conn, SqlSelectAllPawnsDataByCharacterId,
-                    command => { AddParameter(command, "@character_id", characterId); }, reader =>
-                    {
-                        while (reader.Read())
-                        {
-                            Pawn pawn = ReadAllPawnData(reader);
-                            pawns.Add(pawn);
-                        }
-                    });
-                foreach (var pawn in pawns)
-                {
-                    QueryPawnData(conn, pawn);
-                }
+                pawns = SelectPawnsByCharacterId(conn, characterId);
             });
+            return pawns;
+        }
+
+        public List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId)
+        {
+            List<Pawn> pawns = new List<Pawn>();
+            ExecuteReader(conn, SqlSelectAllPawnsDataByCharacterId,
+                command => { AddParameter(command, "@character_id", characterId); }, reader =>
+                {
+                    while (reader.Read())
+                    {
+                        Pawn pawn = ReadAllPawnData(reader);
+                        pawns.Add(pawn);
+                    }
+                });
+            foreach (var pawn in pawns)
+            {
+                QueryPawnData(conn, pawn);
+            }
             return pawns;
         }
 
@@ -141,7 +148,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return characterUpdateRowsAffected > NoRowsAffected;
         }
 
-        private void QueryPawnData(TCon conn, Pawn pawn)
+        private void QueryPawnData(DbConnection conn, Pawn pawn)
         {
             QueryCharacterCommonData(conn, pawn);
 
@@ -388,7 +395,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        private Pawn ReadAllPawnData(TReader reader)
+        private Pawn ReadAllPawnData(DbDataReader reader)
         {
             Pawn pawn = new Pawn();
 
@@ -418,7 +425,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@available_training", pawn.AvailableTraining);
         }
  
-        private CDataPawnReaction ReadPawnReaction(TReader reader)
+        private CDataPawnReaction ReadPawnReaction(DbDataReader reader)
         {
             CDataPawnReaction pawnReaction = new CDataPawnReaction();
             pawnReaction.ReactionType = GetByte(reader, "reaction_type");
@@ -433,7 +440,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "motion_no", pawnReaction.MotionNo);
         }
 
-        private CDataSpSkill ReadSpSkill(TReader reader)
+        private CDataSpSkill ReadSpSkill(DbDataReader reader)
         {
             CDataSpSkill spSkill = new CDataSpSkill();
             spSkill.SpSkillId = GetByte(reader, "sp_skill_id");

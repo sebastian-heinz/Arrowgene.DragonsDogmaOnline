@@ -4,7 +4,6 @@ using System.Data.Common;
 using System.Runtime.CompilerServices;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -49,6 +48,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "WHERE \"account_id\" = @account_id";
+        private readonly string SqlSelectAllCharactersData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+            + "FROM \"ddon_character\" "
+            + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" ";
         private const string SqlDeleteCharacter = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_character\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_character\".\"character_common_id\" AND \"character_id\"=@character_id);";
         private const string SqlUpdateMyPawnSlot = "UPDATE \"ddon_character\" SET \"my_pawn_slot_num\"=@my_pawn_slot_num WHERE \"character_id\"=@character_id;";
 
@@ -172,6 +178,35 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     QueryCharacterData(conn, character);
                 }
             });
+            return characters;
+        }
+
+        public List<Character> SelectAllCharacters()
+        {
+            List<Character> characters = null;
+            ExecuteInTransaction(conn =>
+            {
+                characters = SelectAllCharacters(conn);
+            });
+            return characters;
+        }
+                
+        public List<Character> SelectAllCharacters(DbConnection conn)
+        {
+            List<Character> characters = new List<Character>();
+            ExecuteReader((TCon) conn, SqlSelectAllCharactersData,
+                command => {}, reader =>
+                {
+                    while (reader.Read())
+                    {
+                        Character character = ReadAllCharacterData(reader);
+                        characters.Add(character);
+                    }
+                });
+            foreach (var character in characters)
+            {
+                QueryCharacterData((TCon) conn, character);
+            }
             return characters;
         }
 

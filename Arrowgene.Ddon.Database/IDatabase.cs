@@ -18,8 +18,7 @@ namespace Arrowgene.Ddon.Database
         void Execute(DbConnection conn, string sql);
         bool ExecuteInTransaction(Action<DbConnection> action);
         int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> action);
-        void ExecuteReader(string command, Action<DbDataReader> action);
-
+        void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction);
 
         // Generic functions for getting/setting
         void AddParameter(DbCommand command, string name, object? value, DbType type);
@@ -73,6 +72,8 @@ namespace Arrowgene.Ddon.Database
         bool CreateCharacter(Character character);
         Character SelectCharacter(uint characterId);
         List<Character> SelectCharactersByAccountId(int accountId);
+        List<Character> SelectAllCharacters();
+        List<Character> SelectAllCharacters(DbConnection conn);
         bool DeleteCharacter(uint characterId);
         bool UpdateCharacterBaseInfo(Character character);
         bool UpdateCharacterMatchingProfile(Character character);
@@ -83,6 +84,7 @@ namespace Arrowgene.Ddon.Database
         bool CreatePawn(Pawn pawn);
         Pawn SelectPawn(uint pawnId);
         List<Pawn> SelectPawnsByCharacterId(uint characterId);
+        List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId);
         bool DeletePawn(uint pawnId);
         bool UpdatePawnBaseInfo(Pawn pawn);
 
@@ -127,6 +129,7 @@ namespace Arrowgene.Ddon.Database
 
         // Storage Item
         bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
+        bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
         bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
 

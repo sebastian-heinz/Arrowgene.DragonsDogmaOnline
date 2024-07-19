@@ -1,3 +1,7 @@
+UPDATE ddon_storage SET slot_max=30 WHERE storage_type=14;
+UPDATE ddon_storage SET slot_max=90 WHERE storage_type=15;
+
+DROP TABLE ddon_system_mail_attachment;
 CREATE TABLE "ddon_system_mail_attachment" (
     "attachment_id"	INTEGER NOT NULL,
 	"message_id"	INTEGER NOT NULL,

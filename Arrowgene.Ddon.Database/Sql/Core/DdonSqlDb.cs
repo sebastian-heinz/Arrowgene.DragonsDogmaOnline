@@ -120,9 +120,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return base.ExecuteNonQuery((TCon) conn, sql, action);
         }
 
-        public void ExecuteReader(string sql, Action<DbDataReader> action)
+        public void ExecuteReader(DbConnection conn, string sql, Action<DbDataReader> action)
         {
-            base.ExecuteReader(sql, (conn) => action.Invoke(conn));
+            base.ExecuteReader((TCon) conn, sql, (reader) => action.Invoke((TReader) reader));
+        }
+
+        public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction)
+        {
+            base.ExecuteReader((TCon) conn, sql, (command) => commandAction.Invoke((TCom) command), (reader) => readAction.Invoke((TReader) reader));
         }
 
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion)

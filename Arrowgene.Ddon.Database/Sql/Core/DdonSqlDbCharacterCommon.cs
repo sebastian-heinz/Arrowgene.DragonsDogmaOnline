@@ -101,7 +101,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         }
 
 
-        private void QueryCharacterCommonData(TCon conn, CharacterCommon common)
+        private void QueryCharacterCommonData(DbConnection conn, CharacterCommon common)
         {
             // Job data
             ExecuteReader(conn, SqlSelectCharacterJobDataByCharacter,
@@ -285,7 +285,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
-        private void ReadAllCharacterCommonData(TReader reader, CharacterCommon common)
+        private void ReadAllCharacterCommonData(DbDataReader reader, CharacterCommon common)
         {
             common.CommonId = GetUInt32(reader, "character_common_id");
             common.Job = (JobId) GetByte(reader, "job");
