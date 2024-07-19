@@ -245,7 +245,9 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut) { return true; }
         public bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill) { return true; }
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
-        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
+        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, Item item, uint itemNum) { return true; }
+        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, Item item, uint itemNum) { return true; }
+        public Item SelectStorageItemByUId(string uid) { return null; }
         public bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType) { return true; }
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData) { return true; }

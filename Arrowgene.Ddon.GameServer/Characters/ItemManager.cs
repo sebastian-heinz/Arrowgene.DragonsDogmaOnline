@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class ItemManager
     {
-        public static readonly List<StorageType> EquipmentStorageTypes = new List<StorageType> { StorageType.CharacterEquipment, StorageType.PawnEquipment, StorageType.ItemBagEquipment };
+        public static readonly List<StorageType> EquipmentStorageTypes = new List<StorageType> { /* StorageType.CharacterEquipment, StorageType.PawnEquipment, */ StorageType.ItemBagEquipment };
         public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
         public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
