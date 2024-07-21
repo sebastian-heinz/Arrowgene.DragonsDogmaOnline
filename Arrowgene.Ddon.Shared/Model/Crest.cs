@@ -9,9 +9,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint Amount { get; set; }
 
         // TODO: Rename to ToCDataEquipElementParam
-        public CDataWeaponCrestData ToCDataWeaponCrestData()
+        public CDataEquipElementParam ToCDataWeaponCrestData()
         {
-            return new CDataWeaponCrestData()
+            return new CDataEquipElementParam()
             {
                 SlotNo = (byte)Slot,
                 CrestId = CrestId,

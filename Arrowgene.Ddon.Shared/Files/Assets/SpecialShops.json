@@ -1,0 +1,260 @@
+{
+    "comment": [
+        "The 'shop_type' field is an enum defined inside of the server code.",
+        "This is the value send when you click on a particular NPC for some content.",
+        "Each NPC can have multiple categories of items listed in their store.",
+        "Each of these categories requires a string label which shows up in the UI."
+    ],
+    "shops": [
+        {
+            "shop_type": "Trinkets",
+            "comment": "shop listings: https://teraheppoco.jugem.jp/?cid=36",
+            "categories": [
+                {
+                    "label": "Pickup",
+                    "comment": "ピックアップ",
+                    "appraisals": [
+                        {
+                            "label": "＜Exchange＞ Rookie's Ring of Blessing",
+                            "comment": "＜交換＞祝福のルーキーズリング",
+                            "base_items": [
+                                {
+                                    "item_id": 9455,
+                                    "name": "Enlightened Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 11718,
+                                    "name": "Rookie's Ring of Blessing",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Hero's Lively Top",
+                            "comment": "《交換》英雄のライブリーウェア",
+                            "base_items": [
+                                {
+                                    "item_id": 25529,
+                                    "name": "Zircon",
+                                    "amount": 10
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 25506,
+                                    "name": "Hero's Lively Top",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Hero's Lively Underpants",
+                            "comment": "《交換》英雄のライブリーアンダーショーツ",
+                            "base_items": [
+                                {
+                                    "item_id": 25529,
+                                    "name": "Zircon",
+                                    "amount": 10
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 25511,
+                                    "name": "Hero's Lively Underpants",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Hero's Lively Cloak",
+                            "comment": "《交換》英雄のライブリークローク",
+                            "base_items": [
+                                {
+                                    "item_id": 25529,
+                                    "name": "Zircon",
+                                    "amount": 10
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 25516,
+                                    "name": "Hero's Lively Cloak",
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "label": "White Dragon Festival",
+                    "comment": "白竜祭 ～奉納～",
+                    "appraisals": []
+                },
+                {
+                    "label": "Ring Replacement",
+                    "comment": "リングプレート交換",
+                    "appraisals": []
+                },
+                {
+                    "label": "Rusty Weapon Exchange",
+                    "comment": "錆び武器交換",
+                    "appraisals": []
+                },
+                {
+                    "label": "Dragon Jewelry (I)",
+                    "comment": "竜技のジュエリーI",
+                    "appraisals": []
+                },
+                {
+                    "label": "Dragon Jewelry (II)",
+                    "comment": "竜技のジュエリーII",
+                    "appraisals": []
+                },
+                {
+                    "label": "Coin Exchange",
+                    "comment": "レリーフコイン【萌黄】交換",
+                    "appraisals": []
+                },
+                {
+                    "label": "War Mission",
+                    "comment": "ウォーミッション",
+                    "appraisals": []
+                },
+                {
+                    "label": "Jewlery Appraisal (Tsukihoshi)",
+                    "comment": "鑑定ジュエリー月星",
+                    "appraisals": []
+                },
+                {
+                    "label": "Jewlery Appraisal (Hanakaze)",
+                    "comment": "鑑定ジュエリー花風",
+                    "appraisals": []
+                },
+                {
+                    "label": "Jewlery Appraisal (Yukito)",
+                    "comment": "鑑定ジュエリー雪翔",
+                    "appraisals": []
+                },
+                {
+                    "label": "Jewlery Appraisal (Mizugumo)",
+                    "comment": "鑑定ジュエリー水雲",
+                    "appraisals": []
+                }
+            ]
+        },
+        {
+            "shop_type": "BitterBlackMaze",
+            "categories": [
+                {
+                    "label": "BBM Exchange",
+                    "appraisals": [
+                        {
+                            "label": "Bitterblack Deed Box Exchange",
+                            "base_items": [
+                                {
+                                    "item_id": 21630,
+                                    "name": "Bitterblack Deed Box",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21651,
+                                    "name": "Bitterblack Bracelet",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "BitterBlackBracelet"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Bitterblack Orb Exchange",
+                            "base_items": [
+                                {
+                                    "item_id": 23364,
+                                    "name": "Bitterblack Orb",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21380,
+                                    "name": "Fruit of Inspiration (Harden)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21381,
+                                    "name": "Fruit of Inspiration (Heavy)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21382,
+                                    "name": "Fruit of Inspiration (Restoration)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21383,
+                                    "name": "Fruit of Inspiration (Protection)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21384,
+                                    "name": "Fruit of Inspiration (Weaken)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21385,
+                                    "name": "Fruit of Inspiration (Attraction)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21386,
+                                    "name": "Fruit of Inspiration (Fearless)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21387,
+                                    "name": "Fruit of Inspiration (Concentration)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21388,
+                                    "name": "Fruit of Inspiration (Resurrection)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Bitterblack Chest of the Farthest End Exchange",
+                            "base_items": [
+                                {
+                                    "item_id": 24723,
+                                    "name": "Bitterblack Chest of the Farthest End",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 23711,
+                                    "name": "Bitterblack Earring",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "BitterBlackEarring"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 PlusValue = info.PlusValue,
                                                 WeaponCrestDataList = info.WeaponCrestDataList,
                                                 ArmorCrestDataList = info.ArmorCrestDataList,
-                                                EquipElementParamList = info.EquipElementParamList
+                                                Unk2List = info.Unk2List
                                             };
                                         }
                                     })
@@ -87,7 +87,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 PlusValue = info.PlusValue,
                                                 WeaponCrestDataList = info.WeaponCrestDataList,
                                                 ArmorCrestDataList = info.ArmorCrestDataList,
-                                                EquipElementParamList = info.EquipElementParamList
+                                                Unk2List = info.Unk2List
                                             };
                                         }
                                     })
@@ -193,30 +193,30 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.PrimaryWeaponColour,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.PWCrest1,
                                         Add = (ushort) (arisenPreset.PWC1Add1 << 8 | arisenPreset.PWC1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.PWCrest2,
                                         Add = (ushort) (arisenPreset.PWC2Add1 << 8 | arisenPreset.PWC2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.PWCrest3,
                                         Add = (ushort) (arisenPreset.PWC3Add1 << 8 | arisenPreset.PWC3Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 4,
                                         CrestId = arisenPreset.PWCrest4,
                                         Add = (ushort) (arisenPreset.PWC4Add1 << 8 | arisenPreset.PWC4Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                    new CDataArmorCrestData {
+                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
+                                    new CDataEquipItemInfoUnk1 {
                                         u0 = 1,
                                         u1 = 1,
                                         u2 = 0x59,
@@ -235,25 +235,25 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.HeadColour,
                                 PlusValue = 3,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.HeadCrest1,
                                         Add = (ushort) (arisenPreset.HC1Add1 << 8 | arisenPreset.HC1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.HeadCrest2,
                                         Add = (ushort) (arisenPreset.HC2Add1 << 8 | arisenPreset.HC2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.HeadCrest3,
                                         Add = (ushort) (arisenPreset.HC3Add1 << 8 | arisenPreset.HC3Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                    new CDataArmorCrestData {
+                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
+                                    new CDataEquipItemInfoUnk1 {
                                         u0 = 1,
                                         u1 = 1,
                                         u2 = 0x29D,
@@ -267,30 +267,30 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.BodyColour,
                                 PlusValue = 4,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.BodyCrest1,
                                         Add = (ushort) (arisenPreset.BC1Add1 << 8 | arisenPreset.BC1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.BodyCrest2,
                                         Add = (ushort) (arisenPreset.BC2Add1 << 8 | arisenPreset.BC2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.BodyCrest3,
                                         Add = (ushort) (arisenPreset.BC3Add1 << 8 | arisenPreset.BC3Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 4,
                                         CrestId = arisenPreset.BodyCrest4,
                                         Add = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                    new CDataArmorCrestData {
+                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
+                                    new CDataEquipItemInfoUnk1 {
                                         u0 = 1,
                                         u1 = 1,
                                         u2 = 0x280,
@@ -309,25 +309,25 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.ArmColour,
                                 PlusValue = 3,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.ArmCrest1,
                                         Add = (ushort) (arisenPreset.AC1Add1 << 8 | arisenPreset.AC1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.ArmCrest2,
                                         Add = (ushort) (arisenPreset.AC2Add1 << 8 | arisenPreset.AC2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.ArmCrest3,
                                         Add = (ushort) (arisenPreset.AC3Add1 << 8 | arisenPreset.AC3Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                    new CDataArmorCrestData {
+                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
+                                    new CDataEquipItemInfoUnk1 {
                                         u0 = 1,
                                         u1 = 1,
                                         u2 = 0x1D2,
@@ -341,25 +341,25 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.LegColour,
                                 PlusValue = 3,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.LegCrest1,
                                         Add = (ushort) (arisenPreset.LC1Add1 << 8 | arisenPreset.LC1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.LegCrest2,
                                         Add = (ushort) (arisenPreset.LC2Add1 << 8 | arisenPreset.LC2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.LegCrest3,
                                         Add = (ushort) (arisenPreset.LC3Add1 << 8 | arisenPreset.LC3Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataArmorCrestData>() {
-                                    new CDataArmorCrestData {
+                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
+                                    new CDataEquipItemInfoUnk1 {
                                         u0 = 1,
                                         u1 = 1,
                                         u2 = 0x225,
@@ -383,95 +383,95 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J1Crest1,
                                         Add = (ushort) (arisenPreset.J1C1Add1 << 8 | arisenPreset.J1C1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.J1Crest2,
                                         Add = (ushort) (arisenPreset.J1C2Add1 << 8 | arisenPreset.J1C2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.J1Crest3,
                                         Add = (ushort) (arisenPreset.J1C3Add1 << 8 | arisenPreset.J1C3Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J1Crest4,
                                         Add = (ushort) (arisenPreset.J1C4Add1 << 8 | arisenPreset.J1C4Add2),
                                     }
                                 },
                                 // Empty ArmorCrestDataList
-                                EquipElementParamList = new List<CDataEquipElementParam>() {
-                                    new CDataEquipElementParam {
+                                Unk2List = new List<CDataEquipItemInfoUnk2>() {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x2,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x3,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x4,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x5,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x6,
                                         ItemId = 0x50
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x7,
                                         ItemId = 0x3C
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x8,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x9,
                                         ItemId = 0x07
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xA,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xB,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xC,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xD,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xE,
                                         ItemId = 0x00
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xF,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x10,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x11,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x12,
                                         ItemId = 0x05
                                     },
@@ -482,95 +482,95 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J2Crest1,
                                         Add = (ushort) (arisenPreset.J2C1Add1 << 8 | arisenPreset.J2C1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.J2Crest2,
                                         Add = (ushort) (arisenPreset.J2C2Add1 << 8 | arisenPreset.J2C2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.J2Crest3,
                                         Add = (ushort) (arisenPreset.J2C3Add1 << 8 | arisenPreset.J2C3Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J2Crest4,
                                         Add = (ushort) (arisenPreset.J2C4Add1 << 8 | arisenPreset.J2C4Add2),
                                     }
                                 },
                                 // Empty ArmorCrestDataList
-                                EquipElementParamList = new List<CDataEquipElementParam>() {
-                                    new CDataEquipElementParam {
+                                Unk2List = new List<CDataEquipItemInfoUnk2>() {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x2,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x3,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x4,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x5,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x6,
                                         ItemId = 0x50
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x7,
                                         ItemId = 0x3C
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x8,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x9,
                                         ItemId = 0x07
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xA,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xB,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xC,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xD,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xE,
                                         ItemId = 0x00
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xF,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x10,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x11,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x12,
                                         ItemId = 0x05
                                     },
@@ -581,95 +581,95 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J3Crest1,
                                         Add = (ushort) (arisenPreset.J3C1Add1 << 8 | arisenPreset.J3C1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.J3Crest2,
                                         Add = (ushort) (arisenPreset.J3C2Add1 << 8 | arisenPreset.J3C2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.J3Crest3,
                                         Add = (ushort) (arisenPreset.J3C3Add1 << 8 | arisenPreset.J3C3Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J3Crest4,
                                         Add = (ushort) (arisenPreset.J3C4Add1 << 8 | arisenPreset.J3C4Add2),
                                     }
                                 },
                                 // Empty ArmorCrestDataList
-                                EquipElementParamList = new List<CDataEquipElementParam>() {
-                                    new CDataEquipElementParam {
+                                Unk2List = new List<CDataEquipItemInfoUnk2>() {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x2,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x3,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x4,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x5,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x6,
                                         ItemId = 0x50
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x7,
                                         ItemId = 0x3C
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x8,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x9,
                                         ItemId = 0x07
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xA,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xB,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xC,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xD,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xE,
                                         ItemId = 0x00
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xF,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x10,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x11,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x12,
                                         ItemId = 0x05
                                     },
@@ -680,95 +680,95 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J4Crest1,
                                         Add = (ushort) (arisenPreset.J4C1Add1 << 8 | arisenPreset.J4C1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.J4Crest2,
                                         Add = (ushort) (arisenPreset.J4C2Add1 << 8 | arisenPreset.J4C2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.J4Crest3,
                                         Add = (ushort) (arisenPreset.J4C3Add1 << 8 | arisenPreset.J4C3Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J4Crest4,
                                         Add = (ushort) (arisenPreset.J4C4Add1 << 8 | arisenPreset.J4C4Add2),
                                     }
                                 },
                                 // Empty ArmorCrestDataList
-                                EquipElementParamList = new List<CDataEquipElementParam>() {
-                                    new CDataEquipElementParam {
+                                Unk2List = new List<CDataEquipItemInfoUnk2>() {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x2,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x3,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x4,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x5,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x6,
                                         ItemId = 0x50
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x7,
                                         ItemId = 0x3C
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x8,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x9,
                                         ItemId = 0x07
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xA,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xB,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xC,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xD,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xE,
                                         ItemId = 0x00
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xF,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x10,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x11,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x12,
                                         ItemId = 0x05
                                     },
@@ -779,95 +779,95 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataWeaponCrestData>() {
-                                    new CDataWeaponCrestData {
+                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                    new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J5Crest1,
                                         Add = (ushort) (arisenPreset.J5C1Add1 << 8 | arisenPreset.J5C1Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 2,
                                         CrestId = arisenPreset.J5Crest2,
                                         Add = (ushort) (arisenPreset.J5C2Add1 << 8 | arisenPreset.J5C2Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 3,
                                         CrestId = arisenPreset.J5Crest3,
                                         Add = (ushort) (arisenPreset.J5C3Add1 << 8 | arisenPreset.J5C3Add2),
                                     },
-                                    new CDataWeaponCrestData {
+                                    new CDataEquipElementParam {
                                         SlotNo = 4,
                                         CrestId = arisenPreset.J5Crest4,
                                         Add = (ushort) (arisenPreset.J5C4Add1 << 8 | arisenPreset.J5C4Add2),
                                     }
                                 },
                                 // Empty ArmorCrestDataList
-                                EquipElementParamList = new List<CDataEquipElementParam>() {
-                                    new CDataEquipElementParam {
+                                Unk2List = new List<CDataEquipItemInfoUnk2>() {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x2,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x3,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x4,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x5,
                                         ItemId = 0x02
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x6,
                                         ItemId = 0x50
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x7,
                                         ItemId = 0x3C
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x8,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x9,
                                         ItemId = 0x07
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xA,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xB,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xC,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xD,
                                         ItemId = 0x04
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xE,
                                         ItemId = 0x00
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0xF,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x10,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x11,
                                         ItemId = 0x05
                                     },
-                                    new CDataEquipElementParam {
+                                    new CDataEquipItemInfoUnk2 {
                                         SlotNo = 0x12,
                                         ItemId = 0x05
                                     },

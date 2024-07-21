@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     EquipPawnID = DeterminePawnId(character, storageType, tuple.slot),
                     WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,
                     ArmorCrestDataList = tuple.item.Item1.ArmorCrestDataList,
-                    EquipElementParamList = tuple.item.Item1.EquipElementParamList
+                    Unk2List = tuple.item.Item1.Unk2List
                 })
                 .ToList();
         }
@@ -254,9 +254,9 @@ namespace Arrowgene.Ddon.Shared.Model
                     EquipSlot = tuple.slot,
                     Color = tuple.item?.Color ?? 0,
                     PlusValue = tuple.item?.PlusValue ?? 0,
-                    WeaponCrestDataList = tuple.item?.WeaponCrestDataList ?? new List<CDataWeaponCrestData>(),
-                    ArmorCrestDataList = tuple.item?.ArmorCrestDataList ?? new List<CDataArmorCrestData>(),
-                    EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>()
+                    WeaponCrestDataList = tuple.item?.WeaponCrestDataList ?? new List<CDataEquipElementParam>(),
+                    ArmorCrestDataList = tuple.item?.ArmorCrestDataList ?? new List<CDataEquipItemInfoUnk1>(),
+                    Unk2List = tuple.item?.Unk2List ?? new List<CDataEquipItemInfoUnk2>()
                 })
                 .ToList();
         }

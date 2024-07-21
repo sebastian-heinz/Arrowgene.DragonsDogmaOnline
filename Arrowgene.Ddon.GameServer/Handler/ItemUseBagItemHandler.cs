@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntcData0.ItemList.EquipPawnID = 0;
             ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
             ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-            ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
+            ntcData0.ItemList.Unk2List = item.Unk2List;
             ntcData0.UpdateItemNum = - (int) req.Structure.Amount;
             ntc.UpdateItemList.Add(ntcData0);
 
