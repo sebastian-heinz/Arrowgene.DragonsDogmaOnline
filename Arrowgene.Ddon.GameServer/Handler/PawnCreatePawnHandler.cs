@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 // We need to consume items for the cost
                 var uidItem = new Item() { ItemId = 10133 };
-                Server.ItemManager.ConsumeItemByUIdFromItemBag(Server, client.Character, uidItem.UId, 10);
+                Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, uidItem.UId, 10);
             }
 
             if (request.SlotNo == 1)

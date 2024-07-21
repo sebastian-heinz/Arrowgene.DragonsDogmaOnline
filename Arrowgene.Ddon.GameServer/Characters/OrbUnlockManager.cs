@@ -791,7 +791,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x0b] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
-                .Unlocks(OrbGainParamType.PawnAdventureNum, 1),
+                .Unlocks(OrbGainParamType.MainPawnSlot, 1),
             [0x0c] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group5, 2)
                 .HasTotalLevelsRestriction(44)
@@ -946,7 +946,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x10] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
-                .Unlocks(OrbGainParamType.MainPawnSlot, 1),
+                .Unlocks(OrbGainParamType.PawnAdventureNum, 1),
             [0x11] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group5, 2)
                 .HasTotalLevelsRestriction(60)
