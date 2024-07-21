@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .Select(jobId => (jobId, Enumerable.Repeat<Ability?>(null, 10).ToList()))
                 .ToDictionary(pair => pair.jobId, pair => pair.Item2);
             OnlineStatus = OnlineStatus.Offline;
+            ExtendedParams = new CDataOrbGainExtendParam();
         }
 
         public CDataCharacterJobData? ActiveCharacterJobData

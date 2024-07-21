@@ -131,6 +131,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     break;
                 case OrbGainParamType.MainPawnSlot:
                     obj.MainPawnSlot += (ushort)upgrade.Amount;
+                    // When the player unlocks this, the total number will be increased to 3.
+                    // TODO: Is there an NTC for this?
+                    _Database.UpdateMyPawnSlot(client.Character.CharacterId, 3);
+                    client.Character.MyPawnSlotNum = 3;
                     break;
                 case OrbGainParamType.SupportPawnSlot:
                     obj.SupportPawnSlot += (ushort)upgrade.Amount;

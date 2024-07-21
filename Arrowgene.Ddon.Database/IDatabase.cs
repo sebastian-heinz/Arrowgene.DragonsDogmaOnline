@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.Database
         bool UpdateCharacterBaseInfo(Character character);
         bool UpdateCharacterMatchingProfile(Character character);
         bool UpdateCharacterArisenProfile(Character character);
+        bool UpdateMyPawnSlot(uint characterId, uint num);
 
         // Pawn
         bool CreatePawn(Pawn pawn);

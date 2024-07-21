@@ -49,6 +49,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "WHERE \"account_id\" = @account_id";
         private const string SqlDeleteCharacter = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_character\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_character\".\"character_common_id\" AND \"character_id\"=@character_id);";
+        private const string SqlUpdateMyPawnSlot = "UPDATE \"ddon_character\" SET \"my_pawn_slot_num\"=@my_pawn_slot_num WHERE \"character_id\"=@character_id;";
 
 
         private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO \"ddon_character_matching_profile\" ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
@@ -264,6 +265,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.ReleasedWarpPoints.Add(ReadReleasedWarpPoint(reader));
                     }
                 });
+        }
+
+        public bool UpdateMyPawnSlot(uint characterId, uint num)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdateMyPawnSlot(connection, characterId, num);
+        }
+
+        public bool UpdateMyPawnSlot(TCon conn, uint characterId, uint num)
+        {
+            return ExecuteNonQuery(conn, SqlUpdateMyPawnSlot, command =>
+            {
+                AddParameter(command, "character_id", characterId);
+                AddParameter(command, "my_pawn_slot_num", num);
+            })  == 1;
         }
 
         private void StoreCharacterData(TCon conn, Character character)
