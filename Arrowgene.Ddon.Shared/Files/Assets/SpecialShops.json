@@ -11,7 +11,7 @@
             "comment": "shop listings: https://teraheppoco.jugem.jp/?cid=36",
             "categories": [
                 {
-                    "label": "Pickup",
+                    "label": "Pick Up",
                     "comment": "ピックアップ",
                     "appraisals": [
                         {
@@ -28,12 +28,19 @@
                                 {
                                     "item_id": 11718,
                                     "name": "Rookie's Ring of Blessing",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 1054,
+                                            "amount": 89
+                                        }
+                                    ]
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Hero's Lively Top",
+                            "label": "＜Exchange＞ Hero's Lively Wear",
                             "comment": "《交換》英雄のライブリーウェア",
                             "base_items": [
                                 {
@@ -45,13 +52,13 @@
                             "pool": [
                                 {
                                     "item_id": 25506,
-                                    "name": "Hero's Lively Top",
+                                    "name": "Hero's Lively Wear",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Hero's Lively Underpants",
+                            "label": "＜Exchange＞ Hero's Lively Undershorts",
                             "comment": "《交換》英雄のライブリーアンダーショーツ",
                             "base_items": [
                                 {
@@ -63,7 +70,7 @@
                             "pool": [
                                 {
                                     "item_id": 25511,
-                                    "name": "Hero's Lively Underpants",
+                                    "name": "Hero's Lively Undershorts",
                                     "amount": 1
                                 }
                             ]
@@ -91,12 +98,1723 @@
                 {
                     "label": "White Dragon Festival",
                     "comment": "白竜祭 ～奉納～",
-                    "appraisals": []
+                    "appraisals": [
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Fighter]",
+                            "comment": "＜交換＞竜彫りの秘装具II【ファイター】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21606,
+                                    "name": "Dragon Carving Equipment II [Fighter]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Hunter]",
+                            "comment": "＜交換＞竜彫りの秘装具II【ハンター】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21607,
+                                    "name": "Dragon Carving Equipment II [Hunter]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Priest]",
+                            "comment": "＜交換＞竜彫りの秘装具II【プリースト】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21608,
+                                    "name": "Dragon Carving Equipment II [Priest]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Shield Sage]",
+                            "comment": "＜交換＞竜彫りの秘装具II【Ｓセージ】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21609,
+                                    "name": "Dragon Carving Equipment II [Shield Sage]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Seeker]",
+                            "comment": "竜彫りの秘装具Ⅱ【シーカー】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21610,
+                                    "name": "Dragon Carving Equipment II [Seeker]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Sorcerer]",
+                            "comment": "竜彫りの秘装具Ⅱ【ソーサラー】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21611,
+                                    "name": "Dragon Carving Equipment II [Sorcerer]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Element Archer]",
+                            "comment": "竜彫りの秘装具Ⅱ【Eアーチャー】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21612,
+                                    "name": "Dragon Carving Equipment II [Element Archer]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Warrior]",
+                            "comment": "竜彫りの秘装具Ⅱ【ウォリアー】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21613,
+                                    "name": "Dragon Carving Equipment II [Warrior]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Alchemist]",
+                            "comment": "竜彫りの秘装具Ⅱ【アルケミスト】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21614,
+                                    "name": "Dragon Carving Equipment II [Alchemist]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [Spirit Lancer]",
+                            "comment": "竜彫りの秘装具Ⅱ【Sランサー】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21615,
+                                    "name": "Dragon Carving Equipment II [Spirit Lancer]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Dragon Carving Equipment II [High Scepter]",
+                            "comment": "竜彫りの秘装具Ⅱ【ハイセプター】",
+                            "base_items": [
+                                {
+                                    "item_id": 18725,
+                                    "name": "Dull Blue Pearl",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21355,
+                                    "name": "Dragon Carving Equipment II [High Scepter]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Appraisal＞Extreme Jewelry Lottery Coin [Grip Fly]",
+                            "base_items": [
+                                {
+                                    "item_id": 13819,
+                                    "name": "Extreme Jewelry Lottery Coin (Gripping Speed)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21299,
+                                    "name": "Bracelet of Seizing - Extreme (Fighter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21300,
+                                    "name": "Bracelet of Seizing - Extreme (Shield Sage)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21301,
+                                    "name": "Bracelet of Seizing - Extreme (Hunter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21302,
+                                    "name": "Bracelet of Seizing - Extreme (Priest)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21303,
+                                    "name": "Bracelet of Seizing - Extreme (Sorcerer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21304,
+                                    "name": "Bracelet of Seizing - Extreme (Seeker)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21305,
+                                    "name": "Bracelet of Seizing - Extreme (Element Archer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21306,
+                                    "name": "Bracelet of Seizing - Extreme (Warrior)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21307,
+                                    "name": "Bracelet of Seizing - Extreme (Alchemist)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21308,
+                                    "name": "Bracelet of Seizing - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21570,
+                                    "name": "Bracelet of Seizing - Extreme (High Scepter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21309,
+                                    "name": "Earrings of Soaring - Extreme (Fighter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21310,
+                                    "name": "Earrings of Soaring - Extreme (Shield Sage)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21311,
+                                    "name": "Earrings of Soaring - Extreme (Hunter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21312,
+                                    "name": "Earrings of Soaring - Extreme (Priest)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21313,
+                                    "name": "Earrings of Soaring - Extreme (Sorcerer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21314,
+                                    "name": "Earrings of Soaring - Extreme (Seeker)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21315,
+                                    "name": "Earrings of Soaring - Extreme (Element Archer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21316,
+                                    "name": "Earrings of Soaring - Extreme (Warrior)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21317,
+                                    "name": "Earrings of Soaring - Extreme (Alchemist)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21318,
+                                    "name": "Earrings of Soaring - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21569,
+                                    "name": "Earrings of Soaring - Extreme (High Scepter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 19367,
+                                    "name": "Custom-Made Service Ticket",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 13658,
+                                    "name": "Crest of Greater Power+",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 13659,
+                                    "name": "Crest of Greater Magick+",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 16078,
+                                    "name": "Crest of Unwavering",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 8052,
+                                    "name": "White Dragon Attack Upgrade Rock",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 8084,
+                                    "name": "White Dragon Defense Upgrade Rock",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 54,
+                                    "name": "White Dragon Miracle Cure",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 56,
+                                    "name": "White Dragon Gala Extract",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "<Appraisal> Extreme Jewelry Lottery Coin [Grip Fly]",
+                            "base_items": [
+                                {
+                                    "item_id": 13822,
+                                    "name": "Extreme Jewelry Lottery Coin (Great Pleasure)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21359,
+                                    "name": "Bracelet of Unburdening - Extreme (Fighter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21360,
+                                    "name": "Bracelet of Unburdening - Extreme (Shield Sage)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21361,
+                                    "name": "Bracelet of Unburdening - Extreme (Hunter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21362,
+                                    "name": "Bracelet of Unburdening - Extreme (Priest)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21363,
+                                    "name": "Bracelet of Unburdening - Extreme (Sorcerer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21364,
+                                    "name": "Bracelet of Unburdening - Extreme (Seeker)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21365,
+                                    "name": "Bracelet of Unburdening - Extreme (Element Archer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21366,
+                                    "name": "Bracelet of Unburdening - Extreme (Warrior)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21367,
+                                    "name": "Bracelet of Unburdening - Extreme (Alchemist)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21368,
+                                    "name": "Bracelet of Unburdening - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21604,
+                                    "name": "Bracelet of Unburdening - Extreme (High Scepter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21369,
+                                    "name": "Earrings of Dashing - Extreme (Fighter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21370,
+                                    "name": "Earrings of Dashing - Extreme (Shield Sage)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21371,
+                                    "name": "Earrings of Dashing - Extreme (Hunter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21372,
+                                    "name": "Earrings of Dashing - Extreme (Priest)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21373,
+                                    "name": "Earrings of Dashing - Extreme (Sorcerer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21374,
+                                    "name": "Earrings of Dashing - Extreme (Seeker)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21375,
+                                    "name": "Earrings of Dashing - Extreme (Element Archer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21376,
+                                    "name": "Earrings of Dashing - Extreme (Warrior)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21377,
+                                    "name": "Earrings of Dashing - Extreme (Alchemist)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21378,
+                                    "name": "Earrings of Dashing - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21605,
+                                    "name": "Earrings of Dashing - Extreme (High Scepter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 19367,
+                                    "name": "Custom-Made Service Ticket",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 13658,
+                                    "name": "Crest of Greater Power+",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 13659,
+                                    "name": "Crest of Greater Magick+",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 16078,
+                                    "name": "Crest of Unwavering",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 8052,
+                                    "name": "White Dragon Attack Upgrade Rock",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 8084,
+                                    "name": "White Dragon Defense Upgrade Rock",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 54,
+                                    "name": "White Dragon Miracle Cure",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 56,
+                                    "name": "White Dragon Gala Extract",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "<Appraisal> Extreme Jewelry Lottery Coin [Grip Fly]",
+                            "base_items": [
+                                {
+                                    "item_id": 13820,
+                                    "name": "Extreme Jewelry Confirmed Lottery Coin (Gripping Speed)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21299,
+                                    "name": "Bracelet of Seizing - Extreme (Fighter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21300,
+                                    "name": "Bracelet of Seizing - Extreme (Shield Sage)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21301,
+                                    "name": "Bracelet of Seizing - Extreme (Hunter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21302,
+                                    "name": "Bracelet of Seizing - Extreme (Priest)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21303,
+                                    "name": "Bracelet of Seizing - Extreme (Sorcerer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21304,
+                                    "name": "Bracelet of Seizing - Extreme (Seeker)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21305,
+                                    "name": "Bracelet of Seizing - Extreme (Element Archer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21306,
+                                    "name": "Bracelet of Seizing - Extreme (Warrior)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21307,
+                                    "name": "Bracelet of Seizing - Extreme (Alchemist)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21308,
+                                    "name": "Bracelet of Seizing - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21570,
+                                    "name": "Bracelet of Seizing - Extreme (High Scepter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21309,
+                                    "name": "Earrings of Soaring - Extreme (Fighter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21310,
+                                    "name": "Earrings of Soaring - Extreme (Shield Sage)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21311,
+                                    "name": "Earrings of Soaring - Extreme (Hunter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21312,
+                                    "name": "Earrings of Soaring - Extreme (Priest)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21313,
+                                    "name": "Earrings of Soaring - Extreme (Sorcerer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21314,
+                                    "name": "Earrings of Soaring - Extreme (Seeker)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21315,
+                                    "name": "Earrings of Soaring - Extreme (Element Archer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21316,
+                                    "name": "Earrings of Soaring - Extreme (Warrior)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21317,
+                                    "name": "Earrings of Soaring - Extreme (Alchemist)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21318,
+                                    "name": "Earrings of Soaring - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21569,
+                                    "name": "Earrings of Soaring - Extreme (High Scepter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "<Appraisal> Extreme Jewelry Lottery Coin [Grip Fly]",
+                            "base_items": [
+                                {
+                                    "item_id": 13823,
+                                    "name": "Extreme Jewelry Confirmed Lottery Coin (Great Pleasure)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21359,
+                                    "name": "Bracelet of Unburdening - Extreme (Fighter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21360,
+                                    "name": "Bracelet of Unburdening - Extreme (Shield Sage)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21361,
+                                    "name": "Bracelet of Unburdening - Extreme (Hunter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21362,
+                                    "name": "Bracelet of Unburdening - Extreme (Priest)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21363,
+                                    "name": "Bracelet of Unburdening - Extreme (Sorcerer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21364,
+                                    "name": "Bracelet of Unburdening - Extreme (Seeker)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21365,
+                                    "name": "Bracelet of Unburdening - Extreme (Element Archer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21366,
+                                    "name": "Bracelet of Unburdening - Extreme (Warrior)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21367,
+                                    "name": "Bracelet of Unburdening - Extreme (Alchemist)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21368,
+                                    "name": "Bracelet of Unburdening - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21604,
+                                    "name": "Bracelet of Unburdening - Extreme (High Scepter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21369,
+                                    "name": "Earrings of Dashing - Extreme (Fighter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21370,
+                                    "name": "Earrings of Dashing - Extreme (Shield Sage)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21371,
+                                    "name": "Earrings of Dashing - Extreme (Hunter)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21372,
+                                    "name": "Earrings of Dashing - Extreme (Priest)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21373,
+                                    "name": "Earrings of Dashing - Extreme (Sorcerer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21374,
+                                    "name": "Earrings of Dashing - Extreme (Seeker)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21375,
+                                    "name": "Earrings of Dashing - Extreme (Element Archer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21376,
+                                    "name": "Earrings of Dashing - Extreme (Warrior)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21377,
+                                    "name": "Earrings of Dashing - Extreme (Alchemist)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21378,
+                                    "name": "Earrings of Dashing - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 21605,
+                                    "name": "Earrings of Dashing - Extreme (High Scepter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Fighter]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21299,
+                                    "name": "Bracelet of Seizing - Extreme [Fighter]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Shield Sage]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21300,
+                                    "name": "Bracelet of Seizing - Extreme [Shield Sage]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Hunter]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21301,
+                                    "name": "Bracelet of Seizing - Extreme [Hunter]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Priest]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21302,
+                                    "name": "Bracelet of Seizing - Extreme [Priest]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Sorcerer]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21303,
+                                    "name": "Bracelet of Seizing - Extreme [Sorcerer]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Seeker]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21304,
+                                    "name": "Bracelet of Seizing - Extreme [Seeker]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Element Archer]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21305,
+                                    "name": "Bracelet of Seizing - Extreme [Element Archer]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Warrior]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21306,
+                                    "name": "Bracelet of Seizing - Extreme [Warrior]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Alchemist]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21307,
+                                    "name": "Bracelet of Seizing - Extreme [Alchemist]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Spirit Lancer]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21308,
+                                    "name": "Bracelet of Seizing - Extreme [Spirit Lancer]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [High Scepter]",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21570,
+                                    "name": "Bracelet of Seizing - Extreme [High Scepter]",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Fighter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21309,
+                                    "name": "Earrings of Soaring - Extreme (Fighter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Shield Sage)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21310,
+                                    "name": "Earrings of Soaring - Extreme (Shield Sage)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Hunter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21311,
+                                    "name": "Earrings of Soaring - Extreme (Hunter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Priest)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21312,
+                                    "name": "Earrings of Soaring - Extreme (Priest)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Sorcerer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21313,
+                                    "name": "Earrings of Soaring - Extreme (Sorcerer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Seeker)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21314,
+                                    "name": "Earrings of Soaring - Extreme (Seeker)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Element Archer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21315,
+                                    "name": "Earrings of Soaring - Extreme (Element Archer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Warrior)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21316,
+                                    "name": "Earrings of Soaring - Extreme (Warrior)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Alchemist)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21317,
+                                    "name": "Earrings of Soaring - Extreme (Alchemist)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Spirit Lancer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21318,
+                                    "name": "Earrings of Soaring - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (High Scepter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21569,
+                                    "name": "Earrings of Soaring - Extreme (High Scepter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Fighter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21359,
+                                    "name": "Bracelet of Unburdening - Extreme (Fighter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Shield Sage)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21360,
+                                    "name": "Bracelet of Unburdening - Extreme (Shield Sage)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Hunter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21361,
+                                    "name": "Bracelet of Unburdening - Extreme (Hunter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Priest)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21362,
+                                    "name": "Bracelet of Unburdening - Extreme (Priest)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Sorcerer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21363,
+                                    "name": "Bracelet of Unburdening - Extreme (Sorcerer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Seeker)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21364,
+                                    "name": "Bracelet of Unburdening - Extreme (Seeker)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Element Archer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21365,
+                                    "name": "Bracelet of Unburdening - Extreme (Element Archer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Warrior)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21366,
+                                    "name": "Bracelet of Unburdening - Extreme (Warrior)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Alchemist)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21367,
+                                    "name": "Bracelet of Unburdening - Extreme (Alchemist)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Spirit Lancer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21368,
+                                    "name": "Bracelet of Unburdening - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (High Scepter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21604,
+                                    "name": "Bracelet of Unburdening - Extreme (High Scepter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Fighter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21369,
+                                    "name": "Earrings of Dashing - Extreme (Fighter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Shield Sage)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21370,
+                                    "name": "Earrings of Dashing - Extreme (Shield Sage)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Hunter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21371,
+                                    "name": "Earrings of Dashing - Extreme (Hunter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Priest)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21372,
+                                    "name": "Earrings of Dashing - Extreme (Priest)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Sorcerer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21373,
+                                    "name": "Earrings of Dashing - Extreme (Sorcerer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Seeker)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21374,
+                                    "name": "Earrings of Dashing - Extreme (Seeker)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Element Archer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21375,
+                                    "name": "Earrings of Dashing - Extreme (Element Archer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Warrior)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21376,
+                                    "name": "Earrings of Dashing - Extreme (Warrior)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Alchemist)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21377,
+                                    "name": "Earrings of Dashing - Extreme (Alchemist)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Spirit Lancer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21378,
+                                    "name": "Earrings of Dashing - Extreme (Spirit Lancer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (High Scepter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19386,
+                                    "name": "Extreme Palm Fragment",
+                                    "amount": 20
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21605,
+                                    "name": "Earrings of Dashing - Extreme (High Scepter)",
+                                    "amount": 1
+                                }
+                            ]
+                        }
+
+                    ]
                 },
                 {
-                    "label": "Ring Replacement",
+                    "label": "Ring Plate Exchange",
                     "comment": "リングプレート交換",
-                    "appraisals": []
+                    "appraisals": [
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Dashing",
+                            "base_items": [
+                                {
+                                    "item_id": 11210,
+                                    "name": "Wind-Wrought Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 11048,
+                                    "name": "Bracelet of Dashing",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Soaring",
+                            "base_items": [
+                                {
+                                    "item_id": 11211,
+                                    "name": "Winged Crest Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 11049,
+                                    "name": "Bracelet of Soaring",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Seizing",
+                            "base_items": [
+                                {
+                                    "item_id": 11212,
+                                    "name": "Palm Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 11050,
+                                    "name": "Bracelet of Seizing",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening",
+                            "base_items": [
+                                {
+                                    "item_id": 9454,
+                                    "name": "Weightless Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 11652,
+                                    "name": "Bracelet of Unburdening",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Rookie's Ring of Blessing",
+                            "base_items": [
+                                {
+                                    "item_id": 9455,
+                                    "name": "Enlightened Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 11718,
+                                    "name": "Rookie's Ring of Blessing",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Supreme Jewelry [Myrmidon]",
+                            "base_items": [
+                                {
+                                    "item_id": 18611,
+                                    "name": "Myrmidon Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 18601,
+                                    "name": "Supreme Earrings (Myrmidon)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 18600,
+                                    "name": "Supreme Bracelet (Myrmidon)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 18599,
+                                    "name": "Supreme Ring (Myrmidon)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Supreme Jewelry [Inquiry]",
+                            "base_items": [
+                                {
+                                    "item_id": 18612,
+                                    "name": "Inquiry Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 18604,
+                                    "name": "Supreme Earrings (Inquiry)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 18603,
+                                    "name": "Supreme Bracelet (Inquiry)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 18602,
+                                    "name": "Supreme Ring (Inquiry)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Supreme Jewelry [Purge]",
+                            "base_items": [
+                                {
+                                    "item_id": 18613,
+                                    "name": "Purge Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 18607,
+                                    "name": "Supreme Earrings (Purge)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 18606,
+                                    "name": "Supreme Bracelet (Purge)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 18605,
+                                    "name": "Supreme Ring (Purge)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExchange\uff1e Supreme Jewelry [Night Emperor]",
+                            "base_items": [
+                                {
+                                    "item_id": 18614,
+                                    "name": "Night Emperor Ring Plate",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 18610,
+                                    "name": "Supreme Earrings (Night Emperor)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 18609,
+                                    "name": "Supreme Bracelet (Night Emperor)",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 18608,
+                                    "name": "Supreme Ring (Night Emperor)",
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "label": "Rusty Weapon Exchange",
@@ -104,17 +1822,17 @@
                     "appraisals": []
                 },
                 {
-                    "label": "Dragon Jewelry (I)",
+                    "label": "Dragon Skill Jewelry (I)",
                     "comment": "竜技のジュエリーI",
                     "appraisals": []
                 },
                 {
-                    "label": "Dragon Jewelry (II)",
+                    "label": "Dragon Skill Jewelry (II)",
                     "comment": "竜技のジュエリーII",
                     "appraisals": []
                 },
                 {
-                    "label": "Coin Exchange",
+                    "label": "Relief Coin (Yellowish Green) Exchange",
                     "comment": "レリーフコイン【萌黄】交換",
                     "appraisals": []
                 },
@@ -124,22 +1842,22 @@
                     "appraisals": []
                 },
                 {
-                    "label": "Jewlery Appraisal (Tsukihoshi)",
+                    "label": "Jewlery Appraisal (Lunar Star)",
                     "comment": "鑑定ジュエリー月星",
                     "appraisals": []
                 },
                 {
-                    "label": "Jewlery Appraisal (Hanakaze)",
+                    "label": "Jewlery Appraisal (Flower Wind)",
                     "comment": "鑑定ジュエリー花風",
                     "appraisals": []
                 },
                 {
-                    "label": "Jewlery Appraisal (Yukito)",
+                    "label": "Jewlery Appraisal (Snowfall)",
                     "comment": "鑑定ジュエリー雪翔",
                     "appraisals": []
                 },
                 {
-                    "label": "Jewlery Appraisal (Mizugumo)",
+                    "label": "Jewlery Appraisal (Seaweed)",
                     "comment": "鑑定ジュエリー水雲",
                     "appraisals": []
                 }

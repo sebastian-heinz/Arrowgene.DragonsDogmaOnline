@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
 
             foreach (var lotItem in LootPool)
             {
-                obj.LotItemList.Add(new CDataDispelLotData()
+                var item = new CDataDispelLotData()
                 {
                     ItemId = lotItem.ItemId,
                     ItemLot = new CDataDispelLotItem()
@@ -44,7 +44,20 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
                         ItemId = lotItem.ItemId,
                         Amount = (ushort)lotItem.Amount,
                     }
-                });
+                };
+
+                foreach (var crest in lotItem.Crests)
+                {
+                    if (crest.CrestType == AppraisalCrestType.Imbued)
+                    {
+                        item.CrestLot.Add(new CDataDispelLotCrest()
+                        {
+                            CrestItemId = crest.CrestId,
+                        });
+                    }
+                }
+
+                obj.LotItemList.Add(item);
             }
 
             return obj;
