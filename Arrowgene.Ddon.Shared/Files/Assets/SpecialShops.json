@@ -1819,7 +1819,70 @@
                 {
                     "label": "Rusty Weapon Exchange",
                     "comment": "錆び武器交換",
-                    "appraisals": []
+                    "appraisals": [
+                        {
+                            "label": "\uff1cExchange\uff1eRusty Iron Lump",
+                            "base_items": [
+                                {
+                                    "item_id": 16019,
+                                    "name": "Rusty Iron Lump",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 15673,
+                                    "name": "Rusted One-handed Sword",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15713,
+                                    "name": "Rusted Greatsword",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15733,
+                                    "name": "Rusted Greatshield",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15773,
+                                    "name": "Rusted Daggers",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15793,
+                                    "name": "Rusted Bow",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15813,
+                                    "name": "Rusted Magick Gauntlet",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15833,
+                                    "name": "Rusted Magick Bow",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15853,
+                                    "name": "Rusted Staff",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15873,
+                                    "name": "Rusted Archistaff",
+                                    "amount": 1
+                                },
+                                {
+                                    "item_id": 15893,
+                                    "name": "Rusted Spirit Lance",
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "label": "Dragon Skill Jewelry (I)",
@@ -1842,22 +1905,22 @@
                     "appraisals": []
                 },
                 {
-                    "label": "Jewlery Appraisal (Lunar Star)",
+                    "label": "Jewelry Appraisal (Lunar Star)",
                     "comment": "鑑定ジュエリー月星",
                     "appraisals": []
                 },
                 {
-                    "label": "Jewlery Appraisal (Flower Wind)",
+                    "label": "Jewelry Appraisal (Flower Wind)",
                     "comment": "鑑定ジュエリー花風",
                     "appraisals": []
                 },
                 {
-                    "label": "Jewlery Appraisal (Snowfall)",
+                    "label": "Jewelry Appraisal (Snowfall)",
                     "comment": "鑑定ジュエリー雪翔",
                     "appraisals": []
                 },
                 {
-                    "label": "Jewlery Appraisal (Seaweed)",
+                    "label": "Jewelry Appraisal (Seaweed)",
                     "comment": "鑑定ジュエリー水雲",
                     "appraisals": []
                 }
