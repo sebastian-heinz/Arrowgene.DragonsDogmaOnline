@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     new CDataMasterInfo()
                     {
                         UniqueId = packet.Structure.Base.UniqueId,
-                        MasterIndex = 0
+                        MasterIndex = (sbyte)context.Item2.MasterIndex
                     }
                 }
             });

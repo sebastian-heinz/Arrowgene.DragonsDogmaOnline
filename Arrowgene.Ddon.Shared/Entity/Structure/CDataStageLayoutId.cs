@@ -42,5 +42,15 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 return obj;
             }
         }
+
+        public override string ToString() 
+        { 
+            return $"{StageId}.{LayerNo}.{GroupId}";
+        }
+
+        public (uint, byte, uint) AsTuple()
+        {
+            return (StageId, LayerNo, GroupId);
+        }
     }
 }
