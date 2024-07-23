@@ -87,7 +87,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             if(storageType == StorageType.PawnEquipment)
             {
-                int pawnIndex = slot / (Equipment.TOTAL_EQUIP_SLOTS * 2);
+                int pawnIndex = slot / (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2);
                 return character.Pawns[pawnIndex].PawnId;
             }
             else

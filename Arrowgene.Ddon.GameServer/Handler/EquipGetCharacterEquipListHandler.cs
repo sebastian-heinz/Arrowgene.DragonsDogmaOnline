@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CharacterEquipList = client.Character.Equipment.getEquipmentAsCDataCharacterEquipInfo(client.Character.Job, EquipType.Performance)
                     .Union(client.Character.Equipment.getEquipmentAsCDataCharacterEquipInfo(client.Character.Job, EquipType.Visual))
                     .ToList(),
-                EquipJobItemList = client.Character.Equipment.getJobItemsAsCDataEquipJobItem(client.Character.Job),
+                EquipJobItemList = client.Character.EquipmentTemplate.JobItemsAsCDataEquipJobItem(client.Character.Job),
                 // TODO: PawnEquipItemList
             });
         }

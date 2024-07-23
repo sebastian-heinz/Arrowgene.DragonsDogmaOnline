@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
             {
                 Pawn pawn = (Pawn) characterCommon;
                 storageType = StorageType.PawnEquipment;
-                storageSlotOffset = owner.Pawns.IndexOf(pawn)*Equipment.TOTAL_EQUIP_SLOTS*2;
+                storageSlotOffset = owner.Pawns.IndexOf(pawn)*EquipmentTemplate.TOTAL_EQUIP_SLOTS*2;
                 name  = pawn.Name;
             }
             else
@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                 throw new Exception("CharacterCommon is not Character or Pawn");
             }
 
-            foreach (var jobAndEquipment in characterCommon.Equipment.GetAllEquipment())
+            foreach (var jobAndEquipment in characterCommon.EquipmentTemplate.GetAllEquipment())
             {
                 JobId job = jobAndEquipment.Key;
                 Dictionary<EquipType, List<Item>> equippedItemsByEquipType = jobAndEquipment.Value;

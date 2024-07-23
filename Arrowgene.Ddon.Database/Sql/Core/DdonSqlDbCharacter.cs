@@ -362,7 +362,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
 
             // Create equipment items
-            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.Equipment.GetAllEquipment())
+            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.EquipmentTemplate.GetAllEquipment())
             {
                 JobId job = jobEquipment.Key;
                 foreach (KeyValuePair<EquipType, List<Item>> equipment in jobEquipment.Value)

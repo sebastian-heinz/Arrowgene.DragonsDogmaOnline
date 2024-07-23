@@ -133,7 +133,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 if(reader2.Read())
                                 {
                                     Item item = ReadItem(reader2);
-                                    common.Equipment.SetEquipItem(item, job, equipType, equipSlot);
+                                    common.EquipmentTemplate.SetEquipItem(item, job, equipType, equipSlot);
                                 }
                             });
                     }
@@ -158,7 +158,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 if(reader2.Read())
                                 {
                                     Item item = ReadItem(reader2);
-                                    common.Equipment.SetJobItem(item, job, equipSlot);
+                                    common.EquipmentTemplate.SetJobItem(item, job, equipSlot);
                                 }
                             });
                     }

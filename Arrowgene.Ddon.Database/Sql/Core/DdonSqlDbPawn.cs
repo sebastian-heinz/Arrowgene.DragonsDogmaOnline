@@ -218,7 +218,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private void CreateItems(TCon conn, Pawn pawn)
         {
             // Create equipment items
-            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in pawn.Equipment.GetAllEquipment())
+            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in pawn.EquipmentTemplate.GetAllEquipment())
             {
                 JobId job = jobEquipment.Key;
                 foreach (KeyValuePair<EquipType, List<Item>> equipment in jobEquipment.Value)

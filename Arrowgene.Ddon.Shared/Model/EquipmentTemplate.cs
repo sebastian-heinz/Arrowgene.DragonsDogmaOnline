@@ -6,7 +6,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 namespace Arrowgene.Ddon.Shared.Model
 {
     #nullable enable
-    public class Equipment
+    public class EquipmentTemplate
     {
         public static readonly byte TOTAL_EQUIP_SLOTS = 15;
         private static readonly byte TOTAL_JOB_ITEM_SLOT = 2; // TODO: Verify
@@ -14,13 +14,13 @@ namespace Arrowgene.Ddon.Shared.Model
         private readonly Dictionary<JobId, Dictionary<EquipType, List<Item?>>> equipment;
         private readonly Dictionary<JobId, List<Item?>> jobItems;
 
-        public Equipment(Dictionary<JobId, Dictionary<EquipType, List<Item?>>> equipment, Dictionary<JobId, List<Item?>> jobItems)
+        public EquipmentTemplate(Dictionary<JobId, Dictionary<EquipType, List<Item?>>> equipment, Dictionary<JobId, List<Item?>> jobItems)
         {
             this.equipment = equipment;
             this.jobItems = jobItems;
         }
         
-        public Equipment()
+        public EquipmentTemplate()
         {
             equipment = new Dictionary<JobId, Dictionary<EquipType, List<Item?>>>();
             foreach (JobId job in Enum.GetValues(typeof(JobId)))
@@ -81,23 +81,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return oldItem;
         }
 
-
-        public List<CDataContextEquipData> getEquipmentAsCDataContextEquipData(JobId job, EquipType equipType)
-        {
-            // In the context equipment lists, the index is the slot. An element with all info set to 0 has to be in place if a slot is not filled
-            return GetEquipment(job, equipType)
-                .Select(x => x == null ? new CDataContextEquipData() : new CDataContextEquipData()
-                {
-                    ItemId = (ushort) x.ItemId,
-                    ColorNo = x.Color,
-                    QualityParam = x.Unk3,
-                    WeaponCrestDataList = x.WeaponCrestDataList,
-                    ArmorCrestDataList = x.ArmorCrestDataList
-                })
-                .ToList();
-        }
-
-        public List<CDataEquipItemInfo> getEquipmentAsCDataEquipItemInfo(JobId job, EquipType equipType)
+        public List<CDataEquipItemInfo> EquipmentAsCDataEquipItemInfo(JobId job, EquipType equipType)
         {
             return GetEquipment(job, equipType)
                 .Select((x, index) => new {item = x, slot = (byte)(index+1)})
@@ -116,21 +100,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public List<CDataCharacterEquipInfo> getEquipmentAsCDataCharacterEquipInfo(JobId job, EquipType equipType)
-        {
-            return GetEquipment(job, equipType)
-                .Select((x, index) => new {item = x, slot = (byte)(index+1)})
-                .Where(tuple => tuple.item != null)
-                .Select(tuple => new CDataCharacterEquipInfo()
-                {
-                    EquipItemUId = tuple.item.UId,
-                    EquipType = (byte) equipType,
-                    EquipCategory = tuple.slot
-                })
-                .ToList();
-        }
-
-        public List<CDataEquipJobItem> getJobItemsAsCDataEquipJobItem(JobId job)
+        public List<CDataEquipJobItem> JobItemsAsCDataEquipJobItem(JobId job)
         {
             return GetJobItems(job)
                 .Select((x, index) => new {itemAndNum = x, slot = (byte)(index+1)})

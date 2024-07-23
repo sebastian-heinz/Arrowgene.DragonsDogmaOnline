@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -19,20 +18,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     // UNEQUIP
                     // Remove from equipment
-                    characterToEquipTo.Equipment.SetJobItem(null, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
+                    characterToEquipTo.EquipmentTemplate.SetJobItem(null, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
                     server.Database.DeleteEquipJobItem(characterToEquipTo.CommonId, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
                 }
                 else
                 {
                     // EQUIP
                     Item item = server.Database.SelectItem(changeEquipJobItem.EquipJobItemUId);
-                    characterToEquipTo.Equipment.SetJobItem(item, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
+                    characterToEquipTo.EquipmentTemplate.SetJobItem(item, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
                     server.Database.ReplaceEquipJobItem(item.UId, characterToEquipTo.CommonId, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
                 }
             }
 
             // Send packets informing of the update
-            List<CDataEquipJobItem> equippedJobItems = characterToEquipTo.Equipment.getJobItemsAsCDataEquipJobItem(characterToEquipTo.Job);
+            List<CDataEquipJobItem> equippedJobItems = characterToEquipTo.EquipmentTemplate.JobItemsAsCDataEquipJobItem(characterToEquipTo.Job);
             if(characterToEquipTo is Character character)
             {
                 client.Send(new S2CEquipChangeCharacterEquipJobItemRes() 
