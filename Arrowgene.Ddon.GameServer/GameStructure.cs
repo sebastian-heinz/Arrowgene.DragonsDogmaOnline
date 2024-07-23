@@ -121,12 +121,12 @@ public static class GameStructure
         cDataPawnInfo.CharacterJobDataList = pawn.CharacterJobDataList;
         cDataPawnInfo.CharacterEquipDataList = new List<CDataCharacterEquipData>() {
             new CDataCharacterEquipData() {
-                Equips = pawn.Equipment.getEquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Performance)
+                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
             }
         };
         cDataPawnInfo.CharacterEquipViewDataList = new List<CDataCharacterEquipData>() {
             new CDataCharacterEquipData() {
-                Equips = pawn.Equipment.getEquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Visual)
+                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
             }
         };
         cDataPawnInfo.CharacterEquipJobItemList = pawn.EquipmentTemplate.JobItemsAsCDataEquipJobItem(pawn.Job);

@@ -43,6 +43,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipLantern { get; set; }
         public List<CDataCharacterJobData> CharacterJobDataList { get; set; }
         public EquipmentTemplate EquipmentTemplate { get; set; }
+        public Equipment Equipment { get; set; }
         public byte JewelrySlotNum { get; set; }
         public List<CDataNormalSkillParam> LearnedNormalSkills { get; set; }
         public List<CustomSkill> LearnedCustomSkills { get; set;}

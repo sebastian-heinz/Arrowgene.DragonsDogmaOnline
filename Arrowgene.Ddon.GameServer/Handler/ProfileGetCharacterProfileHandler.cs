@@ -45,8 +45,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.JobParam = targetClient.Character.ActiveCharacterJobData;
             GameStructure.CDataCharacterLevelParam(ntc.CharacterParam, client.Character);
             ntc.EditInfo = targetClient.Character.EditInfo;
-            ntc.EquipDataList = targetClient.Character.Equipment.getEquipmentAsCDataEquipItemInfo(targetClient.Character.Job, EquipType.Performance);
-            ntc.VisualEquipDataList = targetClient.Character.Equipment.getEquipmentAsCDataEquipItemInfo(targetClient.Character.Job, EquipType.Visual);
+            ntc.EquipDataList = targetClient.Character.Equipment.AsCDataEquipItemInfo(EquipType.Performance);
+            ntc.VisualEquipDataList = targetClient.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual);
             ntc.EquipJobItemList = targetClient.Character.EquipmentTemplate.JobItemsAsCDataEquipJobItem(targetClient.Character.Job);
             ntc.HideHead = targetClient.Character.HideEquipHead;
             ntc.HideLantern = targetClient.Character.HideEquipLantern;

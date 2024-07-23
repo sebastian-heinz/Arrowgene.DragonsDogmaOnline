@@ -76,57 +76,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
             foreach (CDataCharacterEquipInfo changeCharacterEquipInfo in changeCharacterEquipList)
             {
                 string itemUId = changeCharacterEquipInfo.EquipItemUId;
-                EquipType equipType = (EquipType) changeCharacterEquipInfo.EquipType;
+                EquipType equipType = changeCharacterEquipInfo.EquipType;
                 byte equipSlot = changeCharacterEquipInfo.EquipCategory;
-                ushort storageSlot = equipSlot;
-                
-                if(equipType == EquipType.Visual)
-                {
-                    storageSlot += Equipment.TOTAL_EQUIP_SLOTS;
-                }
-
-                uint characterId, pawnId;
-                StorageType equipmentStorageType;
-                if(characterToEquipTo is Character character1)
-                {
-                    characterId = character1.CharacterId;
-                    pawnId = 0;
-                    equipmentStorageType = StorageType.CharacterEquipment;
-                }
-                else if(characterToEquipTo is Pawn pawn)
-                {
-                    characterId = pawn.CharacterId;
-                    pawnId = pawn.PawnId; 
-                    equipmentStorageType = StorageType.PawnEquipment;
-                    storageSlot = (ushort)(storageSlot + client.Character.Pawns.IndexOf(pawn)*Equipment.TOTAL_EQUIP_SLOTS*2);
-                }
-                else
-                {
-                    throw new Exception("Unknown character type");
-                }
+                ushort equipItemStorageSlot = characterToEquipTo.Equipment.GetStorageSlot(equipType, equipSlot);
 
                 if(itemUId.Length == 0)
                 {
-                    // Unequip
-                    // TODO: Move to the other storage types if the first one is full
-                    StorageType destinationStorageType = storageTypes[0];
-                    Item? equippedItem = characterToEquipTo.Equipment.SetEquipItem(null, characterToEquipTo.Job, equipType, equipSlot);
-                    if(equippedItem == null)
-                    {
-                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND);
-                    }
+                    // UNEQUIP
+
+                    // Remove from equipment template
+                    characterToEquipTo.EquipmentTemplate.SetEquipItem(null, characterToEquipTo.Job, equipType, equipSlot);
                     server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot);
+
                     // Update storage
-                    updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, equipmentStorageType, equippedItem.UId, 1, destinationStorageType, 0));
+                    // TODO: Move to the other storage types if the first one is full
+                    Storage destinationStorage = client.Character.Storage.getStorage(storageTypes[0]);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, characterToEquipTo.Equipment.Storage, equipItemStorageSlot, 1, destinationStorage, 0));
                 }
                 else
                 {
-                    // Equip
-                    StorageType sourceStorageType = storageTypes[0];
-                    characterToEquipTo.Equipment.SetEquipItem(server.Database.SelectItem(itemUId), characterToEquipTo.Job, equipType, equipSlot);
+                    // EQUIP
+
+                    // Set in equipment template
+                    characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectItem(itemUId), characterToEquipTo.Job, equipType, equipSlot);
                     server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId);
-                    // Update storage
-                    updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorageType, itemUId, 1, equipmentStorageType, storageSlot));
+
+                    // Update storage, swapping if needed
+                    Storage sourceStorage = client.Character.Storage.getStorage(storageTypes[0]);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
                 }
             }
 
@@ -140,8 +117,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
                 {
                     CharacterId = character.CharacterId,
-                    EquipItemList = characterToEquipTo.Equipment.getEquipmentAsCDataEquipItemInfo(characterToEquipTo.Job, EquipType.Performance),
-                    VisualEquipItemList = characterToEquipTo.Equipment.getEquipmentAsCDataEquipItemInfo(characterToEquipTo.Job, EquipType.Visual)
+                    EquipItemList = character.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
+                    VisualEquipItemList = character.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
                     // TODO: Unk0
                 };
 
@@ -156,8 +133,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     CharacterId = pawn.CharacterId,
                     PawnId = pawn.PawnId,
-                    EquipItemList = characterToEquipTo.Equipment.getEquipmentAsCDataEquipItemInfo(characterToEquipTo.Job, EquipType.Performance),
-                    VisualEquipItemList = characterToEquipTo.Equipment.getEquipmentAsCDataEquipItemInfo(characterToEquipTo.Job, EquipType.Visual)
+                    EquipItemList = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
+                    VisualEquipItemList = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Visual),
                     // TODO: Unk0
                 };
 

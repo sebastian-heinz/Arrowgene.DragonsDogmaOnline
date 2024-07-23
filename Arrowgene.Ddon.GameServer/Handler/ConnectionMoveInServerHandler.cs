@@ -46,13 +46,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Account = account;
             client.Character = character;
+            client.Character.Equipment = client.Character.Storage.GetCharacterEquipment();
             client.Character.Server = Server.AssetRepository.ServerList[0];
             client.UpdateIdentity();
 
             client.Character.Pawns = Database.SelectPawnsByCharacterId(token.CharacterId);
-            foreach (Pawn pawn in client.Character.Pawns)
+            for (int i = 0; i < client.Character.Pawns.Count; i++)
             {
+                Pawn pawn = client.Character.Pawns[i];
                 pawn.Server = client.Character.Server;
+                pawn.Equipment = client.Character.Storage.GetPawnEquipment(i);
             }
 
             Logger.Info(client, "Moved Into GameServer");

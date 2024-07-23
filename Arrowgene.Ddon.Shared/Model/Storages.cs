@@ -45,6 +45,17 @@ namespace Arrowgene.Ddon.Shared.Model
             storages[storageType] = storage;
         }
 
+        public Equipment GetCharacterEquipment()
+        {
+            return new Equipment(getStorage(StorageType.CharacterEquipment), 0);
+        }
+
+        public Equipment GetPawnEquipment(int pawnIndex)
+        {
+            int offset = pawnIndex * EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2;
+            return new Equipment(getStorage(StorageType.PawnEquipment), offset);
+        }
+
         public List<CDataItemList> getStorageAsCDataItemList(Character character, StorageType storageType)
         {
             return getStorage(storageType).Items
@@ -156,6 +167,85 @@ namespace Arrowgene.Ddon.Shared.Model
             }
 
             return null;
+        }
+    }
+
+    public class Equipment
+    {
+        public Storage Storage { get; private set; }
+        public int Offset { get; private set; }
+
+        public Equipment(Storage equipmentStorage, int offset)
+        {
+            Storage = equipmentStorage;
+            Offset = offset;
+        }
+
+        public List<Item?> GetItems(EquipType equipType)
+        {
+            return Storage.Items
+                .Skip(Offset + calculateEquipTypeOffset(equipType))
+                .Take(EquipmentTemplate.TOTAL_EQUIP_SLOTS)
+                .Select(tuple => tuple?.Item1)
+                .ToList();
+        }
+
+        public ushort GetStorageSlot(EquipType equipType, byte equipSlot)
+        {
+            return (ushort)(Offset + calculateEquipTypeOffset(equipType) + equipSlot);
+        }
+
+        public List<CDataContextEquipData> AsCDataContextEquipData(EquipType equipType)
+        {
+            // In the context equipment lists, the index is the slot. An element with all info set to 0 has to be in place if a slot is not filled
+            return GetItems(equipType)
+                .Select(x => x == null ? new CDataContextEquipData() : new CDataContextEquipData()
+                {
+                    ItemId = (ushort) x.ItemId,
+                    ColorNo = x.Color,
+                    QualityParam = x.Unk3,
+                    WeaponCrestDataList = x.WeaponCrestDataList,
+                    ArmorCrestDataList = x.ArmorCrestDataList
+                })
+                .ToList();
+        }
+
+        public List<CDataEquipItemInfo> AsCDataEquipItemInfo(EquipType equipType)
+        {
+            return GetItems(equipType)
+                .Select((x, index) => new {item = x, slot = (byte)(index+1)})
+                .Select(tuple => new CDataEquipItemInfo()
+                {
+                    ItemId = tuple.item?.ItemId ?? 0,
+                    Unk0 = tuple.item?.Unk3 ?? 0,
+                    EquipType = equipType,
+                    EquipSlot = tuple.slot,
+                    Color = tuple.item?.Color ?? 0,
+                    PlusValue = tuple.item?.PlusValue ?? 0,
+                    WeaponCrestDataList = tuple.item?.WeaponCrestDataList ?? new List<CDataWeaponCrestData>(),
+                    ArmorCrestDataList = tuple.item?.ArmorCrestDataList ?? new List<CDataArmorCrestData>(),
+                    EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>()
+                })
+                .ToList();
+        }
+
+        public List<CDataCharacterEquipInfo> AsCDataCharacterEquipInfo(EquipType equipType)
+        {
+            return GetItems(equipType)
+                .Select((x, index) => new {item = x, slot = (byte)(index+1)})
+                .Where(tuple => tuple.item != null)
+                .Select(tuple => new CDataCharacterEquipInfo()
+                {
+                    EquipItemUId = tuple!.item!.UId,
+                    EquipType = equipType,
+                    EquipCategory = tuple!.slot
+                })
+                .ToList();
+        }
+        
+        private int calculateEquipTypeOffset(EquipType equipType)
+        {
+            return equipType == EquipType.Performance ? 0 : EquipmentTemplate.TOTAL_EQUIP_SLOTS;
         }
     }
 
