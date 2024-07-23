@@ -273,7 +273,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 if(reader3.Read())
                                 {
                                     Item item = ReadItem(reader3);
-                                    character.Storage.setStorageItem(item, itemNum, storageType, slot);
+                                    character.Storage.getStorage(storageType).SetItem(item, itemNum, slot);
                                 }
                             });
                     }

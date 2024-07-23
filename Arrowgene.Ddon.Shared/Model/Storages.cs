@@ -7,7 +7,6 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    #nullable enable
     public class Storages
     {
         private Dictionary<StorageType, Storage> storages;
@@ -17,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Model
             storages = new Dictionary<StorageType, Storage>();
             foreach (var tuple in maxSlotsDict)
             {
-                addStorage(tuple.Key, new Storage(tuple.Value));
+                addStorage(tuple.Key, new Storage(tuple.Key, tuple.Value));
             }
         }
 
@@ -72,34 +71,6 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public Tuple<Item, uint>? getStorageItem(StorageType storageType, ushort slot) {
-            return storages[storageType].Items[slot-1];
-        }
-
-        public ushort addStorageItem(Item newItem, uint itemCount, StorageType storageType) {
-            // TODO: Limit itemCount to the item ID's max stack size in storageType
-            var tuple = getStorage(storageType).Items
-                .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
-                .Where(tuple => tuple.item == null)
-                .First();
-            setStorageItem(newItem, itemCount, storageType, tuple.slot);
-            return tuple.slot;
-        }
-
-        public Tuple<Item, uint>? setStorageItem(Item? newItem, uint itemCount, StorageType storageType, ushort slot) {
-            if(newItem != null && newItem.ItemId == 0)
-            {
-                throw new ArgumentException("Item Id can't be 0", "newItem");
-            }
-            
-            // TODO: Limit itemCount to the item ID's max stack size in storageType
-            Tuple<Item, uint>? oldItem = getStorageItem(storageType, slot);
-            storages[storageType].Items[slot-1] = newItem == null
-                ? null
-                : new Tuple<Item, uint>(newItem, itemCount);
-            return oldItem;
-        }
-
         private uint DetermineCharacterId(Character character, StorageType storageType, ushort slot)
         {
             if(storageType == StorageType.CharacterEquipment)
@@ -128,21 +99,52 @@ namespace Arrowgene.Ddon.Shared.Model
 
     public class Storage
     {
+        public StorageType Type { get; private set; }
         public List<Tuple<Item, uint>?> Items { get; set; }
         public byte[] SortData { get; set; }
 
-        public Storage(ushort slotMax) : this(slotMax, new byte[1024])
+        public Storage(StorageType type, ushort slotMax) : this(type, slotMax, new byte[1024])
         {
 
         }
 
-        public Storage(ushort slotMax, byte[] sortData)
+        public Storage(StorageType type, ushort slotMax, byte[] sortData)
         {
+            Type = type;
             Items = Enumerable.Repeat<Tuple<Item, uint>?>(null, slotMax).ToList();
             SortData = sortData;
         }
 
-        public Tuple<ushort, Item, uint>? findItemByUId(string itemUId)
+        public Tuple<Item, uint>? GetItem(ushort slot) {
+            return Items[slot-1];
+        }
+
+        public ushort AddItem(Item newItem, uint itemCount) {
+            // TODO: Limit itemCount to the item's max stack size in storageType
+            // Right now this is being managed by ItemManager
+            var tuple = Items
+                .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
+                .Where(tuple => tuple.item == null)
+                .First();
+            SetItem(newItem, itemCount, tuple.slot);
+            return tuple.slot;
+        }
+
+        public Tuple<Item, uint>? SetItem(Item? newItem, uint itemCount, ushort slot) {
+            if(newItem != null && newItem.ItemId == 0)
+            {
+                throw new ArgumentException("Item Id can't be 0", "newItem");
+            }
+            
+            // TODO: Limit itemCount to the item ID's max stack size in storageType
+            Tuple<Item, uint>? oldItem = GetItem(slot);
+            Items[slot-1] = newItem == null
+                ? null
+                : new Tuple<Item, uint>(newItem, itemCount);
+            return oldItem;
+        }
+
+        public Tuple<ushort, Item, uint>? FindItemByUId(string itemUId)
         {
             for(int index = 0; index < this.Items.Count; index++)
             {

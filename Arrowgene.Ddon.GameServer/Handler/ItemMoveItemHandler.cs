@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.UpdateType = DetermineUpdateType(packet.Structure.SourceGameStorageType);
             foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
             {
-                ntc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(Server, client.Character, itemFromTo.SrcStorageType, itemFromTo.ItemUId, itemFromTo.Num, itemFromTo.DstStorageType, itemFromTo.SlotNo));
+                ntc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(Server, client.Character, client.Character.Storage.getStorage(itemFromTo.SrcStorageType), itemFromTo.ItemUId, itemFromTo.Num, client.Character.Storage.getStorage(itemFromTo.DstStorageType), itemFromTo.SlotNo));
             }
             client.Send(ntc);
             
