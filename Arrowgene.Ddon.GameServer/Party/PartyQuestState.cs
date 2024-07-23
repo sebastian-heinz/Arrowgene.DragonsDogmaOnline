@@ -1,18 +1,13 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using System;
-using System.Collections;
+using Arrowgene.Logging;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Party
 {
@@ -106,6 +101,9 @@ namespace Arrowgene.Ddon.GameServer.Party
 
     public class PartyQuestState
     {
+
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyQuestState));
+
         private Dictionary<QuestId, QuestState> ActiveQuests { get; set; }
         private Dictionary<StageId, List<QuestId>> QuestLookupTable { get; set; }
         private List<QuestId> CompletedWorldQuests {  get; set; }
@@ -547,8 +545,8 @@ namespace Arrowgene.Ddon.GameServer.Party
                 CharacterId = leaderClient.Character.CharacterId
             };
 
-            var prioirtyQuests = server.Database.GetPriorityQuests(leaderClient.Character.CommonId);
-            foreach (var priorityQuestId in prioirtyQuests)
+            var priorityQuests = server.Database.GetPriorityQuests(leaderClient.Character.CommonId);
+            foreach (var priorityQuestId in priorityQuests)
             {
                 var priorityQuest = QuestManager.GetQuest(priorityQuestId);
                 var questState = party.QuestState.GetQuestState(priorityQuest.QuestId);
