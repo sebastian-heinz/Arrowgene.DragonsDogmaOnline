@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Instance;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
@@ -11,6 +7,8 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Party
 {
@@ -340,6 +338,9 @@ namespace Arrowgene.Ddon.GameServer.Party
                     return;
                 }
 
+                //Hand off any enemy groups they're responsible for.
+                ContextManager.DelegateAllMasters(client);
+
                 // We need to get rid of pawn players associated with the person who left
                 foreach (var member in client.Party.Members)
                 {
@@ -408,6 +409,9 @@ namespace Arrowgene.Ddon.GameServer.Party
                         Logger.Error(client, $"[PartyId:{Id}][Kick] is not authorized (not leader)");
                         return ErrorRes<PartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER);
                     }
+
+                    //Hand off any enemy groups they're responsible for.
+                    ContextManager.DelegateAllMasters(player.Client);
 
                     FreeSlot(member.MemberIndex);
                     Logger.Info(client, $"[PartyId:{Id}][Kick] kicked player {player.Client.Identity}");
@@ -612,6 +616,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceDropItemManager.Clear();
+                client.Character.EnemyLayoutOwnership.Clear();
             }
             OmManager.ResetAllOmData(InstanceOmData);
             QuestState.ResetInstanceQuestState();
@@ -757,6 +762,11 @@ namespace Arrowgene.Ddon.GameServer.Party
             partyMember.SessionStatus = 0;
             partyMember.MemberIndex = InvalidSlotIndex;
             return partyMember;
+        }
+
+        public int ClientIndex(GameClient client)
+        {
+            return Clients.IndexOf(client);
         }
     }
 }
