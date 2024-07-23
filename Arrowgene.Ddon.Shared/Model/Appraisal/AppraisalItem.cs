@@ -48,12 +48,34 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
 
                 foreach (var crest in lotItem.Crests)
                 {
-                    if (crest.CrestType == AppraisalCrestType.Imbued)
+                    switch (crest.CrestType)
                     {
-                        item.CrestLot.Add(new CDataDispelLotCrest()
-                        {
-                            CrestItemId = crest.CrestId,
-                        });
+                        case AppraisalCrestType.Imbued:
+                            item.CrestLot.Add(new CDataDispelLotCrest()
+                            {
+                                CrestItemId = crest.CrestId,
+                            });
+                            break;
+                        case AppraisalCrestType.DragonTrinketAlpha:
+                            foreach (var roll in DragonTrinketAlphaRewards.Rolls[crest.JobId])
+                            {
+                                item.CrestLot.Add(new CDataDispelLotCrest()
+                                {
+                                    CrestItemId = roll
+                                });
+                            }
+                            break;
+                        case AppraisalCrestType.DragonTrinketBeta:
+                            foreach (var roll in DragonTrinketBetaRewards.Rolls[crest.JobId])
+                            {
+                                item.CrestLot.Add(new CDataDispelLotCrest()
+                                {
+                                    CrestItemId = roll
+                                });
+                            }
+                            break;
+                        default:
+                            break;
                     }
                 }
 

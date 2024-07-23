@@ -2,6 +2,7 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public enum JobId : byte
     {
+        None = 0,
         Fighter = 1,
         Seeker = 2,
         Hunter = 3,

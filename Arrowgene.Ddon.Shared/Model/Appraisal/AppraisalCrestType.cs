@@ -11,6 +11,8 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
         None = 0,
         Imbued,
         BitterBlackBracelet,
-        BitterBlackEarring
+        BitterBlackEarring,
+        DragonTrinketAlpha,
+        DragonTrinketBeta,
     }
 }

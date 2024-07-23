@@ -127,11 +127,24 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     amount = jAmount.GetUInt16();
                 }
 
+                JobId jobId = JobId.None;
+                if (crest.TryGetProperty("job_id", out JsonElement jJobId))
+                {
+                    if (!Enum.TryParse(jJobId.GetString(), true, out JobId pjobId))
+                    {
+                        var invalidType = crest.GetProperty("job_id").GetString();
+                        Logger.Error($"Invalid JobId '{invalidType}'. Unable to parse.");
+                        return false;
+                    }
+                    jobId = pjobId;
+                }
+
                 results.Add(new AppraisalCrest()
                 {
                     CrestType = crestType,
                     CrestId = crestId,
-                    Amount = amount
+                    Amount = amount,
+                    JobId = jobId,
                 });
             }
 

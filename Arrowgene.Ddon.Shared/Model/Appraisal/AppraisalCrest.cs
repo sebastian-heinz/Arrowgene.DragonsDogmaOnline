@@ -11,5 +11,6 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
         public AppraisalCrestType CrestType { get; set; }
         public uint CrestId { get; set; }
         public ushort Amount { get; set; }
+        public JobId JobId { get; set; }
     }
 }

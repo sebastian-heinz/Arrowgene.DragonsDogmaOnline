@@ -124,6 +124,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         equipElement.CrestId = appraisalCrest.CrestId;
                         equipElement.Add = appraisalCrest.Amount;
                         break;
+                    case AppraisalCrestType.DragonTrinketAlpha:
+                        equipElement.CrestId = AppraisalManager.RollDragonTrinketsAlpha(appraisalCrest.JobId);
+                        equipElement.Add = appraisalCrest.Amount;
+                        break;
+                    case AppraisalCrestType.DragonTrinketBeta:
+                        equipElement.CrestId = AppraisalManager.RollDragonTrinketsBeta(appraisalCrest.JobId);
+                        equipElement.Add = appraisalCrest.Amount;
+                        break;
                     case AppraisalCrestType.BitterBlackEarring:
                         // equipElement.CrestId = BitterBlackManager.RollEarringCrest(character.Job);
                         // equipElement.Add = BitterBlackManager.RollEarringPercent(character.Job);

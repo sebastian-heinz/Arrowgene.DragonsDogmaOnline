@@ -15,7 +15,7 @@
                     "comment": "ピックアップ",
                     "appraisals": [
                         {
-                            "label": "＜Exchange＞ Rookie's Ring of Blessing",
+                            "label": "＜Exch＞ Rookie's Ring of Blessing",
                             "comment": "＜交換＞祝福のルーキーズリング",
                             "base_items": [
                                 {
@@ -40,7 +40,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Hero's Lively Wear",
+                            "label": "＜Exch＞ Hero's Lively Wear",
                             "comment": "《交換》英雄のライブリーウェア",
                             "base_items": [
                                 {
@@ -58,7 +58,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Hero's Lively Undershorts",
+                            "label": "＜Exch＞ Hero's Lively Undershorts",
                             "comment": "《交換》英雄のライブリーアンダーショーツ",
                             "base_items": [
                                 {
@@ -76,7 +76,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Hero's Lively Cloak",
+                            "label": "＜Exch＞ Hero's Lively Cloak",
                             "comment": "《交換》英雄のライブリークローク",
                             "base_items": [
                                 {
@@ -100,7 +100,7 @@
                     "comment": "白竜祭 ～奉納～",
                     "appraisals": [
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Fighter]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Fighter]",
                             "comment": "＜交換＞竜彫りの秘装具II【ファイター】",
                             "base_items": [
                                 {
@@ -118,7 +118,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Hunter]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Hunter]",
                             "comment": "＜交換＞竜彫りの秘装具II【ハンター】",
                             "base_items": [
                                 {
@@ -137,7 +137,7 @@
                         },
 
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Priest]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Priest]",
                             "comment": "＜交換＞竜彫りの秘装具II【プリースト】",
                             "base_items": [
                                 {
@@ -155,7 +155,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Shield Sage]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Shield Sage]",
                             "comment": "＜交換＞竜彫りの秘装具II【Ｓセージ】",
                             "base_items": [
                                 {
@@ -173,7 +173,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Seeker]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Seeker]",
                             "comment": "竜彫りの秘装具Ⅱ【シーカー】",
                             "base_items": [
                                 {
@@ -191,7 +191,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Sorcerer]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Sorcerer]",
                             "comment": "竜彫りの秘装具Ⅱ【ソーサラー】",
                             "base_items": [
                                 {
@@ -209,7 +209,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Element Archer]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Element Archer]",
                             "comment": "竜彫りの秘装具Ⅱ【Eアーチャー】",
                             "base_items": [
                                 {
@@ -227,7 +227,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Warrior]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Warrior]",
                             "comment": "竜彫りの秘装具Ⅱ【ウォリアー】",
                             "base_items": [
                                 {
@@ -245,7 +245,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Alchemist]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Alchemist]",
                             "comment": "竜彫りの秘装具Ⅱ【アルケミスト】",
                             "base_items": [
                                 {
@@ -263,7 +263,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [Spirit Lancer]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [Spirit Lancer]",
                             "comment": "竜彫りの秘装具Ⅱ【Sランサー】",
                             "base_items": [
                                 {
@@ -281,7 +281,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Dragon Carving Equipment II [High Scepter]",
+                            "label": "＜Exch＞ Dragon Carving Equipment II [High Scepter]",
                             "comment": "竜彫りの秘装具Ⅱ【ハイセプター】",
                             "base_items": [
                                 {
@@ -299,7 +299,7 @@
                             ]
                         },
                         {
-                            "label": "＜Appraisal＞Extreme Jewelry Lottery Coin [Grip Fly]",
+                            "label": "＜Appr＞Extreme Jewelry Lottery Coin [Gripping Speed]",
                             "base_items": [
                                 {
                                     "item_id": 13819,
@@ -461,7 +461,7 @@
                             ]
                         },
                         {
-                            "label": "<Appraisal> Extreme Jewelry Lottery Coin [Grip Fly]",
+                            "label": "＜Appr＞Extreme Jewelry Lottery Coin [Great Pleasure]",
                             "base_items": [
                                 {
                                     "item_id": 13822,
@@ -623,7 +623,7 @@
                             ]
                         },
                         {
-                            "label": "<Appraisal> Extreme Jewelry Lottery Coin [Grip Fly]",
+                            "label": "＜Appr＞ Extreme Jewelry Lottery Coin [Gripping Speed]",
                             "base_items": [
                                 {
                                     "item_id": 13820,
@@ -745,7 +745,7 @@
                             ]
                         },
                         {
-                            "label": "<Appraisal> Extreme Jewelry Lottery Coin [Grip Fly]",
+                            "label": "＜Appr＞Extreme Jewelry Lottery Coin [Great Pleasure]",
                             "base_items": [
                                 {
                                     "item_id": 13823,
@@ -867,7 +867,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Fighter]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Fighter]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -884,7 +884,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Shield Sage]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Shield Sage]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -901,7 +901,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Hunter]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Hunter]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -918,7 +918,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Priest]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Priest]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -935,7 +935,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Sorcerer]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Sorcerer]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -952,7 +952,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Seeker]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Seeker]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -969,7 +969,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Element Archer]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Element Archer]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -986,7 +986,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Warrior]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Warrior]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1003,7 +1003,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Alchemist]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Alchemist]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1020,7 +1020,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [Spirit Lancer]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [Spirit Lancer]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1037,7 +1037,7 @@
                             ]
                         },
                         {
-                            "label": "＜Exchange＞ Bracelet of Seizing - Extreme [High Scepter]",
+                            "label": "＜Exch＞ Bracelet of Seizing - Extreme [High Scepter]",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1054,7 +1054,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Fighter)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Fighter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1071,7 +1071,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Shield Sage)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Shield Sage)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1088,7 +1088,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Hunter)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Hunter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1105,7 +1105,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Priest)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Priest)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1122,7 +1122,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Sorcerer)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Sorcerer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1139,7 +1139,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Seeker)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Seeker)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1156,7 +1156,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Element Archer)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Element Archer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1173,7 +1173,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Warrior)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Warrior)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1190,7 +1190,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Alchemist)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Alchemist)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1207,7 +1207,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (Spirit Lancer)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (Spirit Lancer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1224,7 +1224,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Soaring - Extreme (High Scepter)",
+                            "label": "\uff1cExch\uff1e Earrings of Soaring - Extreme (High Scepter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1241,7 +1241,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Fighter)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Fighter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1258,7 +1258,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Shield Sage)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Shield Sage)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1275,7 +1275,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Hunter)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Hunter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1292,7 +1292,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Priest)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Priest)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1309,7 +1309,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Sorcerer)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Sorcerer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1326,7 +1326,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Seeker)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Seeker)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1343,7 +1343,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Element Archer)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Element Archer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1360,7 +1360,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Warrior)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Warrior)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1377,7 +1377,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Alchemist)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Alchemist)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1394,7 +1394,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (Spirit Lancer)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (Spirit Lancer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1411,7 +1411,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening - Extreme (High Scepter)",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening - Extreme (High Scepter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1428,7 +1428,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Fighter)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Fighter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1445,7 +1445,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Shield Sage)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Shield Sage)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1462,7 +1462,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Hunter)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Hunter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1479,7 +1479,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Priest)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Priest)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1496,7 +1496,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Sorcerer)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Sorcerer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1513,7 +1513,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Seeker)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Seeker)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1530,7 +1530,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Element Archer)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Element Archer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1547,7 +1547,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Warrior)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Warrior)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1564,7 +1564,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Alchemist)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Alchemist)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1581,7 +1581,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (Spirit Lancer)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (Spirit Lancer)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1598,7 +1598,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Earrings of Dashing - Extreme (High Scepter)",
+                            "label": "\uff1cExch\uff1e Earrings of Dashing - Extreme (High Scepter)",
                             "base_items": [
                                 {
                                     "item_id": 19386,
@@ -1622,7 +1622,7 @@
                     "comment": "リングプレート交換",
                     "appraisals": [
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Dashing",
+                            "label": "\uff1cExch\uff1e Bracelet of Dashing",
                             "base_items": [
                                 {
                                     "item_id": 11210,
@@ -1634,12 +1634,18 @@
                                 {
                                     "item_id": 11048,
                                     "name": "Bracelet of Dashing",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 11045
+                                        }
+                                    ]
                                 }
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Soaring",
+                            "label": "\uff1cExch\uff1e Bracelet of Soaring",
                             "base_items": [
                                 {
                                     "item_id": 11211,
@@ -1651,12 +1657,18 @@
                                 {
                                     "item_id": 11049,
                                     "name": "Bracelet of Soaring",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 11046
+                                        }
+                                    ]
                                 }
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Seizing",
+                            "label": "\uff1cExch\uff1e Bracelet of Seizing",
                             "base_items": [
                                 {
                                     "item_id": 11212,
@@ -1668,12 +1680,18 @@
                                 {
                                     "item_id": 11050,
                                     "name": "Bracelet of Seizing",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 11047
+                                        }
+                                    ]
                                 }
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Bracelet of Unburdening",
+                            "label": "\uff1cExch\uff1e Bracelet of Unburdening",
                             "base_items": [
                                 {
                                     "item_id": 9454,
@@ -1685,12 +1703,18 @@
                                 {
                                     "item_id": 11652,
                                     "name": "Bracelet of Unburdening",
-                                    "amount": 1
+                                    "amount": 1,
+                                     "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 22071
+                                        }
+                                    ]
                                 }
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Rookie's Ring of Blessing",
+                            "label": "\uff1cExch\uff1e Rookie's Ring of Blessing",
                             "base_items": [
                                 {
                                     "item_id": 9455,
@@ -1702,12 +1726,19 @@
                                 {
                                     "item_id": 11718,
                                     "name": "Rookie's Ring of Blessing",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 1054,
+                                            "amount": 89
+                                        }
+                                    ]
                                 }
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Supreme Jewelry [Myrmidon]",
+                            "label": "\uff1cExch\uff1e Supreme Jewelry [Myrmidon]",
                             "base_items": [
                                 {
                                     "item_id": 18611,
@@ -1734,7 +1765,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Supreme Jewelry [Inquiry]",
+                            "label": "\uff1cExch\uff1e Supreme Jewelry [Inquiry]",
                             "base_items": [
                                 {
                                     "item_id": 18612,
@@ -1761,7 +1792,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Supreme Jewelry [Purge]",
+                            "label": "\uff1cExch\uff1e Supreme Jewelry [Purge]",
                             "base_items": [
                                 {
                                     "item_id": 18613,
@@ -1788,7 +1819,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cExchange\uff1e Supreme Jewelry [Night Emperor]",
+                            "label": "\uff1cExch\uff1e Supreme Jewelry [Night Emperor]",
                             "base_items": [
                                 {
                                     "item_id": 18614,
@@ -1821,7 +1852,7 @@
                     "comment": "錆び武器交換",
                     "appraisals": [
                         {
-                            "label": "\uff1cExchange\uff1eRusty Iron Lump",
+                            "label": "\uff1cExch\uff1eRusty Iron Lump",
                             "base_items": [
                                 {
                                     "item_id": 16019,
@@ -1887,12 +1918,1005 @@
                 {
                     "label": "Dragon Skill Jewelry (I)",
                     "comment": "竜技のジュエリーI",
-                    "appraisals": []
+                    "appraisals": [
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Fighter)",
+                            "base_items": [
+                                {
+                                    "item_id": 16374,
+                                    "name": "Unidentified Dragon Trinket (Fighter)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16385,
+                                    "name": "Dragon Skill Earrings (Fighter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Fighter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16384,
+                                    "name": "Dragon Skill Bracelet (Fighter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Fighter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16383,
+                                    "name": "Dragon Skill Ring (Fighter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Fighter"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Seeker)",
+                            "base_items": [
+                                {
+                                    "item_id": 16375,
+                                    "name": "Unidentified Dragon Trinket (Seeker)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16388,
+                                    "name": "Dragon Skill Earrings (Seeker)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Seeker"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16387,
+                                    "name": "Dragon Skill Bracelet (Seeker)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Seeker"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16386,
+                                    "name": "Dragon Skill Ring (Seeker)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Seeker"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Hunter)",
+                            "base_items": [
+                                {
+                                    "item_id": 16376,
+                                    "name": "Unidentified Dragon Trinket (Hunter)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16391,
+                                    "name": "Dragon Skill Earrings (Hunter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Hunter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16390,
+                                    "name": "Dragon Skill Bracelet (Hunter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Hunter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16389,
+                                    "name": "Dragon Skill Ring (Hunter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Hunter"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Priest)",
+                            "base_items": [
+                                {
+                                    "item_id": 16377,
+                                    "name": "Unidentified Dragon Trinket (Priest)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16439,
+                                    "name": "Dragon Skill Earrings (Priest)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Priest"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16438,
+                                    "name": "Dragon Skill Bracelet (Priest)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Priest"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16437,
+                                    "name": "Dragon Skill Ring (Priest)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Priest"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Shield Sage)",
+                            "base_items": [
+                                {
+                                    "item_id": 16378,
+                                    "name": "Unidentified Dragon Trinket (Shield Sage)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16442,
+                                    "name": "Dragon Skill Earrings (Shield Sage)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "ShieldSage"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16441,
+                                    "name": "Dragon Skill Bracelet (Shield Sage)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "ShieldSage"
+                                        }
+                                    ]
+
+                                },
+                                {
+                                    "item_id": 16440,
+                                    "name": "Dragon Skill Ring (Shield Sage)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "ShieldSage"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Sorcerer)",
+                            "base_items": [
+                                {
+                                    "item_id": 16379,
+                                    "name": "Unidentified Dragon Trinket (Sorcerer)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16445,
+                                    "name": "Dragon Skill Earrings (Sorcerer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Sorcerer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16444,
+                                    "name": "Dragon Skill Bracelet (Sorcerer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Sorcerer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16443,
+                                    "name": "Dragon Skill Ring (Sorcerer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Sorcerer"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Warrior)",
+                            "base_items": [
+                                {
+                                    "item_id": 16380,
+                                    "name": "Unidentified Dragon Trinket (Warrior)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16448,
+                                    "name": "Dragon Skill Earrings (Warrior)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Warrior"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16447,
+                                    "name": "Dragon Skill Bracelet (Warrior)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Warrior"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16446,
+                                    "name": "Dragon Skill Ring (Warrior)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Warrior"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Element Archer)",
+                            "base_items": [
+                                {
+                                    "item_id": 16381,
+                                    "name": "Unidentified Dragon Trinket (Element Archer)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16451,
+                                    "name": "Dragon Skill Earrings (Element Archer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "ElementArcher"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16450,
+                                    "name": "Dragon Skill Bracelet (Element Archer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "ElementArcher"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16449,
+                                    "name": "Dragon Skill Ring (Element Archer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "ElementArcher"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Alchemist)",
+                            "base_items": [
+                                {
+                                    "item_id": 16382,
+                                    "name": "Unidentified Dragon Trinket (Alchemist)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16454,
+                                    "name": "Dragon Skill Earrings (Alchemist)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Alchemist"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16453,
+                                    "name": "Dragon Skill Bracelet (Alchemist)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Alchemist"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16452,
+                                    "name": "Dragon Skill Ring (Alchemist)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "Alchemist"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (Spirit Lancer)",
+                            "base_items": [
+                                {
+                                    "item_id": 16725,
+                                    "name": "Unidentified Dragon Trinket (Spirit Lancer)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16724,
+                                    "name": "Dragon Skill Earrings (Spirit Lancer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "SpiritLancer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16723,
+                                    "name": "Dragon Skill Bracelet (Spirit Lancer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "SpiritLancer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 16722,
+                                    "name": "Dragon Skill Ring (Spirit Lancer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "SpiritLancer"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket (High Scepter)",
+                            "base_items": [
+                                {
+                                    "item_id": 21616,
+                                    "name": "Unidentified Dragon Trinket (High Scepter)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21572,
+                                    "name": "Dragon Skill Earrings (High Scepter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "HighScepter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21571,
+                                    "name": "Dragon Skill Bracelet (High Scepter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "HighScepter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21573,
+                                    "name": "Dragon Skill Ring (High Scepter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketAlpha",
+                                            "job_id": "HighScepter"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "label": "Dragon Skill Jewelry (II)",
                     "comment": "竜技のジュエリーII",
-                    "appraisals": []
+                    "appraisals": [
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Fighter)",
+                            "base_items": [
+                                {
+                                    "item_id": 21606,
+                                    "name": "Unidentified Dragon Trinket II (Fighter)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21594,
+                                    "name": "Dragon Skill Earrings II (Fighter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Fighter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21595,
+                                    "name": "Dragon Skill Bracelet II (Fighter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Fighter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21592,
+                                    "name": "Dragon Skill Ring II (Fighter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Fighter"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Hunter)",
+                            "base_items": [
+                                {
+                                    "item_id": 21607,
+                                    "name": "Unidentified Dragon Trinket II (Hunter)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21596,
+                                    "name": "Dragon Skill Earrings II (Hunter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Hunter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21598,
+                                    "name": "Dragon Skill Bracelet II (Hunter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Hunter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21597,
+                                    "name": "Dragon Skill Ring II (Hunter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Hunter"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Priest)",
+                            "base_items": [
+                                {
+                                    "item_id": 21608,
+                                    "name": "Unidentified Dragon Trinket II (Priest)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21600,
+                                    "name": "Dragon Skill Earrings II (Priest)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Priest"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21601,
+                                    "name": "Dragon Skill Bracelet II (Priest)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Priest"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21599,
+                                    "name": "Dragon Skill Ring II (Priest)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Priest"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Shield Sage)",
+                            "base_items": [
+                                {
+                                    "item_id": 21609,
+                                    "name": "Unidentified Dragon Trinket II (Shield Sage)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21589,
+                                    "name": "Dragon Skill Earrings II (Shield Sage)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "ShieldSage"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21590,
+                                    "name": "Dragon Skill Bracelet II (Shield Sage)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "ShieldSage"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21602,
+                                    "name": "Dragon Skill Ring II (Shield Sage)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "ShieldSage"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Seeker)",
+                            "base_items": [
+                                {
+                                    "item_id": 21610,
+                                    "name": "Unidentified Dragon Trinket II (Seeker)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21587,
+                                    "name": "Dragon Skill Earrings II (Seeker)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Seeker"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21588,
+                                    "name": "Dragon Skill Bracelet II (Seeker)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Seeker"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21591,
+                                    "name": "Dragon Skill Ring II (Seeker)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Seeker"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Sorcerer)",
+                            "base_items": [
+                                {
+                                    "item_id": 21611,
+                                    "name": "Unidentified Dragon Trinket II (Sorcerer)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21585,
+                                    "name": "Dragon Skill Earrings II (Sorcerer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Sorcerer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21584,
+                                    "name": "Dragon Skill Bracelet II (Sorcerer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Sorcerer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21586,
+                                    "name": "Dragon Skill Ring II (Sorcerer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Sorcerer"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Element Archer)",
+                            "base_items": [
+                                {
+                                    "item_id": 21612,
+                                    "name": "Unidentified Dragon Trinket II (Element Archer)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21582,
+                                    "name": "Dragon Skill Earrings II (Element Archer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "ElementArcher"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21581,
+                                    "name": "Dragon Skill Bracelet II (Element Archer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "ElementArcher"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21583,
+                                    "name": "Dragon Skill Ring II (Element Archer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "ElementArcher"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Warrior)",
+                            "base_items": [
+                                {
+                                    "item_id": 21613,
+                                    "name": "Unidentified Dragon Trinket II (Warrior)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21580,
+                                    "name": "Dragon Skill Earrings II (Warrior)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Warrior"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21579,
+                                    "name": "Dragon Skill Bracelet II (Warrior)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Warrior"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21603,
+                                    "name": "Dragon Skill Ring II (Warrior)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Warrior"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Alchemist)",
+                            "base_items": [
+                                {
+                                    "item_id": 21614,
+                                    "name": "Unidentified Dragon Trinket II (Alchemist)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21575,
+                                    "name": "Dragon Skill Earrings II (Alchemist)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Alchemist"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21576,
+                                    "name": "Dragon Skill Bracelet II (Alchemist)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Alchemist"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21578,
+                                    "name": "Dragon Skill Ring II (Alchemist)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "Alchemist"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (Spirit Lancer)",
+                            "base_items": [
+                                {
+                                    "item_id": 21615,
+                                    "name": "Unidentified Dragon Trinket II (Spirit Lancer)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21568,
+                                    "name": "Dragon Skill Earrings II (Spirit Lancer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "SpiritLancer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21574,
+                                    "name": "Dragon Skill Bracelet II (Spirit Lancer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "SpiritLancer"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 21577,
+                                    "name": "Dragon Skill Ring II (Spirit Lancer)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "SpiritLancer"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "label": "\uff1cExch\uff1e Unidentified Dragon Trinket II (High Scepter)",
+                            "base_items": [
+                                {
+                                    "item_id": 21355,
+                                    "name": "Unidentified Dragon Trinket II (High Scepter)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 23361,
+                                    "name": "Dragon Skill Earrings II (High Scepter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "HighScepter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 23363,
+                                    "name": "Dragon Skill Bracelet II (High Scepter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "HighScepter"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "item_id": 23362,
+                                    "name": "Dragon Skill Ring II (High Scepter)",
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "DragonTrinketBeta",
+                                            "job_id": "HighScepter"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "label": "Relief Coin (Yellowish Green) Exchange",
