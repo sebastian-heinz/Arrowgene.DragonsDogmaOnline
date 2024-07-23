@@ -2921,7 +2921,195 @@
                 {
                     "label": "Relief Coin (Yellowish Green) Exchange",
                     "comment": "レリーフコイン【萌黄】交換",
-                    "appraisals": []
+                    "appraisals": [
+                        {
+                            "label": "Unidentified Dragon Trinket (Fighter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16374,
+                                    "name": "Unidentified Dragon Trinket (Fighter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Seeker)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16375,
+                                    "name": "Unidentified Dragon Trinket (Seeker)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Hunter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16376,
+                                    "name": "Unidentified Dragon Trinket (Hunter)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Priest)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16377,
+                                    "name": "Unidentified Dragon Trinket (Priest)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Shield Sage)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16378,
+                                    "name": "Unidentified Dragon Trinket (Shield Sage)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Sorcerer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16379,
+                                    "name": "Unidentified Dragon Trinket (Sorcerer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Warrior)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16380,
+                                    "name": "Unidentified Dragon Trinket (Warrior)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Element Archer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16381,
+                                    "name": "Unidentified Dragon Trinket (Element Archer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Alchemist)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16382,
+                                    "name": "unidentified dragon trinket (Alchemist)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (Spirit Lancer)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 16725,
+                                    "name": "Unidentified Dragon Trinket (Spirit Lancer)",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Unidentified Dragon Trinket (High Scepter)",
+                            "base_items": [
+                                {
+                                    "item_id": 19329,
+                                    "name": "Relief Coin (Yellowish Green)",
+                                    "amount": 1
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21616,
+                                    "name": "Unidentified Dragon Trinket (High Scepter)",
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "label": "War Mission",
