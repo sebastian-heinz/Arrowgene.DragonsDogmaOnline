@@ -124,6 +124,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         equipElement.CrestId = appraisalCrest.CrestId;
                         equipElement.Add = appraisalCrest.Amount;
                         break;
+                    case AppraisalCrestType.CrestLottery:
+                        equipElement.CrestId = AppraisalManager.RollCrestLottery(appraisalCrest.CrestLottery);
+                        equipElement.Add = appraisalCrest.Amount;
+                        break;
                     case AppraisalCrestType.DragonTrinketAlpha:
                         equipElement.CrestId = AppraisalManager.RollDragonTrinketsAlpha(appraisalCrest.JobId);
                         equipElement.Add = appraisalCrest.Amount;

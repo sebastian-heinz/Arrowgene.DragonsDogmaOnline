@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
     {
         None = 0,
         Imbued,
+        CrestLottery,
         BitterBlackBracelet,
         BitterBlackEarring,
         DragonTrinketAlpha,

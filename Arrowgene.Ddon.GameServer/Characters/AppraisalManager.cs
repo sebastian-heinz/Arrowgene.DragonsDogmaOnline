@@ -35,5 +35,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return DragonTrinketBetaRewards.Rolls[jobId];
         }
 
+        public static uint RollCrestLottery(List<uint> rolls)
+        {
+            Random rnd = new Random();
+            return rolls[rnd.Next(0, rolls.Count)];
+        }
+
     }
 }

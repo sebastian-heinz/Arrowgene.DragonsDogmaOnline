@@ -1,5 +1,7 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Microsoft.VisualBasic;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Arrowgene.Ddon.Shared.Model.Appraisal
 {
@@ -67,6 +69,15 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
                             break;
                         case AppraisalCrestType.DragonTrinketBeta:
                             foreach (var roll in DragonTrinketBetaRewards.Rolls[crest.JobId])
+                            {
+                                item.CrestLot.Add(new CDataDispelLotCrest()
+                                {
+                                    CrestItemId = roll
+                                });
+                            }
+                            break;
+                        case AppraisalCrestType.CrestLottery:
+                            foreach (var roll in crest.CrestLottery)
                             {
                                 item.CrestLot.Add(new CDataDispelLotCrest()
                                 {

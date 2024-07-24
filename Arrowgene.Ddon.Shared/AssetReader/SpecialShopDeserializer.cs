@@ -139,12 +139,22 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     jobId = pjobId;
                 }
 
+                List<uint> crestLottery = new List<uint>();
+                if (crest.TryGetProperty("values", out JsonElement jValues))
+                {
+                    foreach (var jValue in jValues.EnumerateArray())
+                    {
+                        crestLottery.Add(jValue.GetUInt32());
+                    }
+                }
+
                 results.Add(new AppraisalCrest()
                 {
                     CrestType = crestType,
                     CrestId = crestId,
                     Amount = amount,
                     JobId = jobId,
+                    CrestLottery = crestLottery
                 });
             }
 
