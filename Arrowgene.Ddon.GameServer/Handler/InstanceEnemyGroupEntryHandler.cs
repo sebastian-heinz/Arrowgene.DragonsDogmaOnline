@@ -21,13 +21,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CDataStageLayoutId layout = packet.Structure.LayoutId;
 
-            //Somehow we've entered twice.
-            if (client.Character.EnemyLayoutOwnership.ContainsKey(layout))
-            {
-                Logger.Debug($"{client.Character.FirstName} double entry at {layout}.");
-                //return;
-            }
-
             //Check if anybody else is in this layout.
             var otherClients = client.Party.Clients.Where(x => x != client && x.Character.EnemyLayoutOwnership.ContainsKey(layout));
             if (otherClients.Any())

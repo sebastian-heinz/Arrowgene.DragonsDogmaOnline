@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.Structure.StageId);
             res.IsBase = false; // This is set true for audience chamber and WDT for exmaple
 
-            ContextManager.DelegateAllMasters(client); //TODO: Test if this causes havoc in open world.
+            ContextManager.DelegateAllMasters(client);
 
             client.Character.StageNo = res.StageNo;
             client.Character.Stage = new StageId(packet.Structure.StageId, 0, 0);
