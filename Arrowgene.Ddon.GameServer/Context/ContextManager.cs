@@ -90,13 +90,12 @@ namespace Arrowgene.Ddon.GameServer.Context
             return results;
         }
 
-        public static void AssignMaster(GameClient client, CDataStageLayoutId stageLayoutId)
+        public static void AssignMaster(GameClient client, CDataStageLayoutId stageLayout)
         {
-            client.Character.EnemyLayoutOwnership[stageLayoutId.AsTuple()] = true;
-            List<ulong> enemiesIds = CreateEnemyUIDs(client.Party.InstanceEnemyManager, stageLayoutId);
+            client.Character.EnemyLayoutOwnership[stageLayout] = true;
+            List<ulong> enemiesIds = CreateEnemyUIDs(client.Party.InstanceEnemyManager, stageLayout);
             var clientIndex = client.Party.ClientIndex(client);
 
-            Logger.Debug($"{client.Character.FirstName} taking {stageLayoutId}");
             foreach (var enemyId in enemiesIds)
             {
                 var context = GetContext(client.Party, enemyId);
@@ -107,7 +106,6 @@ namespace Arrowgene.Ddon.GameServer.Context
                 //    continue;
                 //}
 
-                Logger.Debug($"Enemy {enemyId} assigned to client {master}->{clientIndex} : {client.Character.FirstName}");
                 client.Party.SendToAll(new S2CContextMasterChangeNtc()
                 {
                     Info = new List<CDataMasterInfo>()
@@ -123,28 +121,20 @@ namespace Arrowgene.Ddon.GameServer.Context
             
         }
 
-        public static void DelegateMaster(GameClient client, (uint, byte, uint) stageLayoutTuple)
+        public static void DelegateMaster(GameClient client, CDataStageLayoutId stageLayout)
         {
-            bool isOwner = client.Character.EnemyLayoutOwnership.ContainsKey(stageLayoutTuple) 
-                && client.Character.EnemyLayoutOwnership[stageLayoutTuple];
+            bool isOwner = client.Character.EnemyLayoutOwnership.ContainsKey(stageLayout) 
+                && client.Character.EnemyLayoutOwnership[stageLayout];
 
-            client.Character.EnemyLayoutOwnership.Remove(stageLayoutTuple);
+            client.Character.EnemyLayoutOwnership.Remove(stageLayout);
 
             if (isOwner)
             {
-                var otherClients = client.Party.Clients.Where(x => x.Character.EnemyLayoutOwnership.ContainsKey(stageLayoutTuple));
+                var otherClients = client.Party.Clients.Where(x => x.Character.EnemyLayoutOwnership.ContainsKey(stageLayout));
                 if (otherClients.Any())
                 {
                     GameClient newOwner = otherClients.First();
-                    Logger.Debug($"{client.Character.FirstName} delegating {stageLayoutTuple} to {newOwner.Character.FirstName}");
-
-                    AssignMaster(newOwner, 
-                        new CDataStageLayoutId(
-                            stageLayoutTuple.Item1, 
-                            stageLayoutTuple.Item2, 
-                            stageLayoutTuple.Item3
-                            )
-                        );
+                    AssignMaster(newOwner, stageLayout);
                 }
                 else
                 {

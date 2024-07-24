@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyGroupLeaveNtc> packet)
         {
             Logger.Debug($"{client.Character.FirstName} leaving {packet.Structure.LayoutId}.");
-            ContextManager.DelegateMaster(client, packet.Structure.LayoutId.AsTuple());
+            ContextManager.DelegateMaster(client, packet.Structure.LayoutId);
         }
     }
 }
