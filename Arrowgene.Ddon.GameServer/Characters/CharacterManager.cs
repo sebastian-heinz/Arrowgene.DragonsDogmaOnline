@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return CharacterManager.BASE_ABILITY_COST_AMOUNT + character.ExtendedParams.AbilityCost;
         }
 
-        private void UpdateCharacterExtendedParams(CharacterCommon character)
+        public void UpdateCharacterExtendedParams(CharacterCommon character, bool newCharacter = false)
         {
             var ExtendedParams = character.ExtendedParams;
 
@@ -126,17 +126,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * scenarios where this may be required. The same trick also works
              * for stamina.
              */
-            if (character.StatusInfo.MaxHP != 0)
+            if (character.StatusInfo.MaxHP != 0 || newCharacter)
             {
                 character.StatusInfo.HP = CharacterManager.MAX_PLAYER_HP;
                 character.StatusInfo.WhiteHP = CharacterManager.MAX_PLAYER_HP;
             }
             character.StatusInfo.MaxHP = CharacterManager.BASE_HEALTH;
 
-            if (character.StatusInfo.MaxStamina != 0)
+            if (character.StatusInfo.MaxStamina != 0 || newCharacter)
             {
                 character.StatusInfo.Stamina = CharacterManager.MAX_PLAYER_STAMINA;
-
             }
             character.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
         }
