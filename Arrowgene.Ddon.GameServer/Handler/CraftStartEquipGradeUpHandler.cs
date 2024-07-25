@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = 0x1a; // GradeUp notice type
+            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp; // GradeUp notice type
 
 
             // Handles adding EquipPoints.
