@@ -108,6 +108,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGoodsParam.Serializer());
             Create(new CDataGoodsParamUnk7.Serializer());
             Create(new CDataGatheringItemElement.Serializer());
+            Create(new CDataGPDetail.Serializer());
+            Create(new CDataGPPeriod.Serializer());
             Create(new CDataGPCourseValidSerializer());
             Create(new CDataGPCourseInfoSerializer());
             Create(new CDataGPCourseEffectParamSerializer());
@@ -327,6 +329,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
             Create(new C2SGpGetGpReq.Serializer());
+            Create(new C2SGpGetGpDetailReq.Serializer());
+            Create(new C2SGpGetGpPeriodReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SGpGpEditGetVoiceListReq.Serializer());
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
@@ -609,6 +613,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
             Create(new S2CExtendEquipSlotNtc.Serializer());
             Create(new S2CGpGetGpRes.Serializer());
+            Create(new S2CGpGetGpDetailRes.Serializer());
+            Create(new S2CGpGetGpPeriodRes.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
             Create(new S2CGpGpEditGetVoiceListRes.Serializer());
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());

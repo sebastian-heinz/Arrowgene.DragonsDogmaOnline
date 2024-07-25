@@ -270,7 +270,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new FriendCancelFriendApplicationHandler(this));
             AddHandler(new FriendGetRecentCharacterListHandler(this));
 
-            AddHandler(new Gp_28_2_1_Handler(this));
+            AddHandler(new GpGetGpDetailHandler(this));
+            AddHandler(new GpGetGpPeriodHandler(this));
             AddHandler(new GpGetUpdateAppCourseBonusFlagHandler(this));
             AddHandler(new GpGetValidChatComGroupHandler(this));
             AddHandler(new GpGpEditGetVoiceListHandler(this));
