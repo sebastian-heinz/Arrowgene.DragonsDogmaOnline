@@ -323,6 +323,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2) {return true; }
         public bool InsertIfNotExistsAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2) {return true; }
         public bool UpdateItemEquipPoints(string itemUID, uint EquipPoints) {return true; }
+        public List<CDataAddStatusData> GetAddStatus(string itemUid, uint characterId) { return new List<CDataAddStatusData>(); }
 
     }
 

@@ -100,7 +100,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomQuality = 3;
             }
             
-            if (AddStatusID >= 0)
+            if (AddStatusID > 0)
             {
                 bool success = Server.Database.InsertAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
 

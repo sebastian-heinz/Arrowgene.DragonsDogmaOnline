@@ -64,7 +64,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp; // GradeUp notice type
+            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
+
+
+            // S2CItemUpdateCharacterItemNtc updateCharacterItemNtc2 = new S2CItemUpdateCharacterItemNtc();
+            // updateCharacterItemNtc2.UpdateType = ItemNoticeType.ResetCraftpoint;
+            // Potentially needed to reset the equippoints properly, but on some quick testing didn't seem to do anything.
 
 
             // Handles adding EquipPoints.
@@ -305,6 +310,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Upgradable = canContinue,
                     Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
                 };
+
             };
             client.Send(updateCharacterItemNtc);
             lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();

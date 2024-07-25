@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -60,13 +62,41 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             using TCon connection = OpenNewConnection();
             return InsertAddStatus(connection, itemUid, characterId, isAddStat1, isAddStat2, addStat1, addStat2);
         }
-
-        private void AddParameter(TCom command, string parameterName, object value)
+        public List<CDataAddStatusData> GetAddStatus(string itemUid, uint characterId)
         {
-            var parameter = command.CreateParameter();
-            parameter.ParameterName = parameterName;
-            parameter.Value = value;
-            command.Parameters.Add(parameter);
+            using TCon connection = OpenNewConnection();
+            return GetAddStatus(connection, itemUid, characterId);
+        }
+        public List<CDataAddStatusData> GetAddStatus(TCon connection, string itemUid, uint characterId)
+        {
+            List<CDataAddStatusData> results = new List<CDataAddStatusData>();
+
+            ExecuteInTransaction(connection =>
+            {
+                ExecuteReader(connection, SqlSelectADDS,
+                    command => {
+                        AddParameter(command, "item_uid", itemUid);
+                        AddParameter(command, "character_id", characterId);
+                    }, reader => {
+                        while (reader.Read())
+                        {
+                            var result = ReadAddStatus(reader);
+                            results.Add(result);
+                        }
+                    });
+            });
+
+            return results;
+        }
+
+        private CDataAddStatusData ReadAddStatus(TReader reader)
+        {
+            CDataAddStatusData AddStatus = new CDataAddStatusData();
+            AddStatus.IsAddStat1 = GetByte(reader, "is_add_stat1");
+            AddStatus.IsAddStat2 = GetByte(reader, "is_add_stat2");
+            AddStatus.AdditionalStatus1 = GetUInt16(reader, "additional_status1");
+            AddStatus.AdditionalStatus2 = GetUInt16(reader, "additional_status2");
+            return AddStatus;
         }
     }
 }

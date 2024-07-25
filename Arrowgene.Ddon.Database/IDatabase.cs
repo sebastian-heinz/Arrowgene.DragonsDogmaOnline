@@ -229,5 +229,6 @@ namespace Arrowgene.Ddon.Database
         // Additional Status
         bool InsertAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2);
         bool InsertIfNotExistsAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2);
+        List<CDataAddStatusData> GetAddStatus(string itemUid, uint characterId);
     }
 }
