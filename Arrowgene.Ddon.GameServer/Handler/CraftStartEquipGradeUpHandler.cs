@@ -125,33 +125,41 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
                 updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
-                // TODO: handle equippoints better, right now its very glitchy and lets you skip upgrades lol
-                int[] thresholds = new int[] { 350, 700, 1000, 1500 };
 
-                int nextThreshold = -1;
-                foreach (int threshold in thresholds)
-                {
-                    if (previousTotalEquipPoint < threshold && currentTotalEquipPoint >= threshold)
-                    {
-                        nextThreshold = threshold;
-                        currentTotalEquipPoint = (uint)threshold; // Clamps the value so theres no carry over, not sure if its meant to behave like this or not. 
-                        break;
-                    }
-                }
-                if (nextThreshold > 0)
-                {
-                    canUpgrade = true;
-                }
+            // Handling the check on how many points we need to upgrade the weapon in its current state.
+            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItemID);
+            byte currentStars = (byte)itemInfo.Quality;
+            int requiredPoints = 0;
 
-                uint cumulativeDifference = 0;
-                foreach (uint threshold in thresholds)
-                {
-                    while (currentTotalEquipPoint >= threshold)
-                    {
-                        currentTotalEquipPoint -= threshold;
-                        cumulativeDifference += threshold;
-                    }
-                }
+            if (currentStars == 0)
+            {
+                requiredPoints = 350;
+            }
+            else if (currentStars == 1)
+            {
+                requiredPoints = 700;
+            }
+            else if (currentStars == 2)
+            {
+                requiredPoints = 1000;
+            }
+            else if (currentStars == 3)
+            {
+                requiredPoints = 1500;
+            }
+            // else if (currentStars == 4)
+            // {
+            //     requiredPoints = 800;
+            // }
+            // TODO: Need to run a check on items that can become "TRUE" which only requires 800 points.
+
+            // Handling the comparison to permit upgrading or not.
+            if (currentTotalEquipPoint >= requiredPoints)
+            {
+                canUpgrade = true;
+                currentTotalEquipPoint = 0;
+            }
+            
 
             // More dummy data, looks like its dragonfroce related.
             CDataCraftStartEquipGradeUpUnk0Unk0 DragonForceData = new CDataCraftStartEquipGradeUpUnk0Unk0()
@@ -180,7 +188,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk3 = equipItem.Unk3,   // Safety setting,
                 Color = equipItem.Color,
                 PlusValue = currentPlusValue,
-                EquipPoints = currentTotalEquipPoint,
+                EquipPoints = 0,
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                 AddStatusData = equipItem.AddStatusData,
                 EquipElementParamList = new List<CDataEquipElementParam>()
@@ -247,6 +255,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (foundItem != null)
                     {
+                        bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                         (slotno, item, itemnum) = foundItem;
                         _itemManager.ReplaceStorageItem(
                             Server,
@@ -263,14 +272,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                     }
-
                         res = new S2CCraftStartEquipGradeUpRes()
                         {
                             GradeUpItemUID = UpgradedItem.UId, // Should be the UID for the gradeupitem.
                             GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                             GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                             AddEquipPoint = 0,
-                            TotalEquipPoint = 0,
+                            TotalEquipPoint = currentTotalEquipPoint,
                             EquipGrade = EquipRank,
                             Gold = goldRequired,
                             IsGreatSuccess = dogreatsuccess,
