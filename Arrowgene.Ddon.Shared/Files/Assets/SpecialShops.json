@@ -100,7 +100,7 @@
                     "comment": "白竜祭 ～奉納～",
                     "appraisals": [
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Fighter]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Fighter]",
                             "comment": "＜交換＞竜彫りの秘装具II【ファイター】",
                             "base_items": [
                                 {
@@ -112,13 +112,13 @@
                             "pool": [
                                 {
                                     "item_id": 21606,
-                                    "name": "Dragon Carving Equipment II [Fighter]",
+                                    "name": "Dragon Trinket Equipment II [Fighter]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Hunter]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Hunter]",
                             "comment": "＜交換＞竜彫りの秘装具II【ハンター】",
                             "base_items": [
                                 {
@@ -130,14 +130,14 @@
                             "pool": [
                                 {
                                     "item_id": 21607,
-                                    "name": "Dragon Carving Equipment II [Hunter]",
+                                    "name": "Dragon Trinket Equipment II [Hunter]",
                                     "amount": 1
                                 }
                             ]
                         },
 
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Priest]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Priest]",
                             "comment": "＜交換＞竜彫りの秘装具II【プリースト】",
                             "base_items": [
                                 {
@@ -149,13 +149,13 @@
                             "pool": [
                                 {
                                     "item_id": 21608,
-                                    "name": "Dragon Carving Equipment II [Priest]",
+                                    "name": "Dragon Trinket Equipment II [Priest]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Shield Sage]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Shield Sage]",
                             "comment": "＜交換＞竜彫りの秘装具II【Ｓセージ】",
                             "base_items": [
                                 {
@@ -167,13 +167,13 @@
                             "pool": [
                                 {
                                     "item_id": 21609,
-                                    "name": "Dragon Carving Equipment II [Shield Sage]",
+                                    "name": "Dragon Trinket Equipment II [Shield Sage]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Seeker]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Seeker]",
                             "comment": "竜彫りの秘装具Ⅱ【シーカー】",
                             "base_items": [
                                 {
@@ -185,13 +185,13 @@
                             "pool": [
                                 {
                                     "item_id": 21610,
-                                    "name": "Dragon Carving Equipment II [Seeker]",
+                                    "name": "Dragon Trinket Equipment II [Seeker]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Sorcerer]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Sorcerer]",
                             "comment": "竜彫りの秘装具Ⅱ【ソーサラー】",
                             "base_items": [
                                 {
@@ -203,13 +203,13 @@
                             "pool": [
                                 {
                                     "item_id": 21611,
-                                    "name": "Dragon Carving Equipment II [Sorcerer]",
+                                    "name": "Dragon Trinket Equipment II [Sorcerer]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Element Archer]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Element Archer]",
                             "comment": "竜彫りの秘装具Ⅱ【Eアーチャー】",
                             "base_items": [
                                 {
@@ -221,13 +221,13 @@
                             "pool": [
                                 {
                                     "item_id": 21612,
-                                    "name": "Dragon Carving Equipment II [Element Archer]",
+                                    "name": "Dragon Trinket Equipment II [Element Archer]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Warrior]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Warrior]",
                             "comment": "竜彫りの秘装具Ⅱ【ウォリアー】",
                             "base_items": [
                                 {
@@ -239,13 +239,13 @@
                             "pool": [
                                 {
                                     "item_id": 21613,
-                                    "name": "Dragon Carving Equipment II [Warrior]",
+                                    "name": "Dragon Trinket Equipment II [Warrior]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Alchemist]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Alchemist]",
                             "comment": "竜彫りの秘装具Ⅱ【アルケミスト】",
                             "base_items": [
                                 {
@@ -257,13 +257,13 @@
                             "pool": [
                                 {
                                     "item_id": 21614,
-                                    "name": "Dragon Carving Equipment II [Alchemist]",
+                                    "name": "Dragon Trinket Equipment II [Alchemist]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [Spirit Lancer]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [Spirit Lancer]",
                             "comment": "竜彫りの秘装具Ⅱ【Sランサー】",
                             "base_items": [
                                 {
@@ -275,13 +275,13 @@
                             "pool": [
                                 {
                                     "item_id": 21615,
-                                    "name": "Dragon Carving Equipment II [Spirit Lancer]",
+                                    "name": "Dragon Trinket Equipment II [Spirit Lancer]",
                                     "amount": 1
                                 }
                             ]
                         },
                         {
-                            "label": "＜Exch＞ Dragon Carving Equipment II [High Scepter]",
+                            "label": "＜Exch＞ Dragon Trinket Equipment II [High Scepter]",
                             "comment": "竜彫りの秘装具Ⅱ【ハイセプター】",
                             "base_items": [
                                 {
@@ -293,7 +293,7 @@
                             "pool": [
                                 {
                                     "item_id": 21355,
-                                    "name": "Dragon Carving Equipment II [High Scepter]",
+                                    "name": "Dragon Trinket Equipment II [High Scepter]",
                                     "amount": 1
                                 }
                             ]
@@ -311,112 +311,244 @@
                                 {
                                     "item_id": 21299,
                                     "name": "Bracelet of Seizing - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21300,
                                     "name": "Bracelet of Seizing - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21301,
                                     "name": "Bracelet of Seizing - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21302,
                                     "name": "Bracelet of Seizing - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21303,
                                     "name": "Bracelet of Seizing - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21304,
                                     "name": "Bracelet of Seizing - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21305,
                                     "name": "Bracelet of Seizing - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21306,
                                     "name": "Bracelet of Seizing - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21307,
                                     "name": "Bracelet of Seizing - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21308,
                                     "name": "Bracelet of Seizing - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21570,
                                     "name": "Bracelet of Seizing - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21309,
                                     "name": "Earrings of Soaring - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21310,
                                     "name": "Earrings of Soaring - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21311,
                                     "name": "Earrings of Soaring - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21312,
                                     "name": "Earrings of Soaring - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21313,
                                     "name": "Earrings of Soaring - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21314,
                                     "name": "Earrings of Soaring - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21315,
                                     "name": "Earrings of Soaring - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21316,
                                     "name": "Earrings of Soaring - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21317,
                                     "name": "Earrings of Soaring - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21318,
                                     "name": "Earrings of Soaring - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21569,
                                     "name": "Earrings of Soaring - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 19367,
@@ -473,112 +605,244 @@
                                 {
                                     "item_id": 21359,
                                     "name": "Bracelet of Unburdening - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21360,
                                     "name": "Bracelet of Unburdening - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21361,
                                     "name": "Bracelet of Unburdening - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21362,
                                     "name": "Bracelet of Unburdening - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21363,
                                     "name": "Bracelet of Unburdening - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21364,
                                     "name": "Bracelet of Unburdening - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21365,
                                     "name": "Bracelet of Unburdening - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21366,
                                     "name": "Bracelet of Unburdening - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21367,
                                     "name": "Bracelet of Unburdening - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21368,
                                     "name": "Bracelet of Unburdening - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21604,
                                     "name": "Bracelet of Unburdening - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21369,
                                     "name": "Earrings of Dashing - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21370,
                                     "name": "Earrings of Dashing - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21371,
                                     "name": "Earrings of Dashing - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21372,
                                     "name": "Earrings of Dashing - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21373,
                                     "name": "Earrings of Dashing - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21374,
                                     "name": "Earrings of Dashing - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21375,
                                     "name": "Earrings of Dashing - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21376,
                                     "name": "Earrings of Dashing - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21377,
                                     "name": "Earrings of Dashing - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21378,
                                     "name": "Earrings of Dashing - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21605,
                                     "name": "Earrings of Dashing - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 19367,
@@ -635,112 +899,244 @@
                                 {
                                     "item_id": 21299,
                                     "name": "Bracelet of Seizing - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21300,
                                     "name": "Bracelet of Seizing - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21301,
                                     "name": "Bracelet of Seizing - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21302,
                                     "name": "Bracelet of Seizing - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21303,
                                     "name": "Bracelet of Seizing - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21304,
                                     "name": "Bracelet of Seizing - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21305,
                                     "name": "Bracelet of Seizing - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21306,
                                     "name": "Bracelet of Seizing - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21307,
                                     "name": "Bracelet of Seizing - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21308,
                                     "name": "Bracelet of Seizing - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21570,
                                     "name": "Bracelet of Seizing - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21309,
                                     "name": "Earrings of Soaring - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21310,
                                     "name": "Earrings of Soaring - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21311,
                                     "name": "Earrings of Soaring - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21312,
                                     "name": "Earrings of Soaring - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21313,
                                     "name": "Earrings of Soaring - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21314,
                                     "name": "Earrings of Soaring - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21315,
                                     "name": "Earrings of Soaring - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21316,
                                     "name": "Earrings of Soaring - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21317,
                                     "name": "Earrings of Soaring - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21318,
                                     "name": "Earrings of Soaring - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21569,
                                     "name": "Earrings of Soaring - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -757,112 +1153,244 @@
                                 {
                                     "item_id": 21359,
                                     "name": "Bracelet of Unburdening - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21360,
                                     "name": "Bracelet of Unburdening - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21361,
                                     "name": "Bracelet of Unburdening - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21362,
                                     "name": "Bracelet of Unburdening - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21363,
                                     "name": "Bracelet of Unburdening - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21364,
                                     "name": "Bracelet of Unburdening - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21365,
                                     "name": "Bracelet of Unburdening - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21366,
                                     "name": "Bracelet of Unburdening - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21367,
                                     "name": "Bracelet of Unburdening - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21368,
                                     "name": "Bracelet of Unburdening - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21604,
                                     "name": "Bracelet of Unburdening - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21369,
                                     "name": "Earrings of Dashing - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21370,
                                     "name": "Earrings of Dashing - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21371,
                                     "name": "Earrings of Dashing - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21372,
                                     "name": "Earrings of Dashing - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21373,
                                     "name": "Earrings of Dashing - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21374,
                                     "name": "Earrings of Dashing - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21375,
                                     "name": "Earrings of Dashing - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21376,
                                     "name": "Earrings of Dashing - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21377,
                                     "name": "Earrings of Dashing - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21378,
                                     "name": "Earrings of Dashing - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 21605,
                                     "name": "Earrings of Dashing - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -879,7 +1407,13 @@
                                 {
                                     "item_id": 21299,
                                     "name": "Bracelet of Seizing - Extreme [Fighter]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -896,7 +1430,13 @@
                                 {
                                     "item_id": 21300,
                                     "name": "Bracelet of Seizing - Extreme [Shield Sage]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -913,7 +1453,13 @@
                                 {
                                     "item_id": 21301,
                                     "name": "Bracelet of Seizing - Extreme [Hunter]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -930,7 +1476,13 @@
                                 {
                                     "item_id": 21302,
                                     "name": "Bracelet of Seizing - Extreme [Priest]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -947,7 +1499,13 @@
                                 {
                                     "item_id": 21303,
                                     "name": "Bracelet of Seizing - Extreme [Sorcerer]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -964,7 +1522,13 @@
                                 {
                                     "item_id": 21304,
                                     "name": "Bracelet of Seizing - Extreme [Seeker]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -981,7 +1545,13 @@
                                 {
                                     "item_id": 21305,
                                     "name": "Bracelet of Seizing - Extreme [Element Archer]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -998,7 +1568,13 @@
                                 {
                                     "item_id": 21306,
                                     "name": "Bracelet of Seizing - Extreme [Warrior]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1015,7 +1591,13 @@
                                 {
                                     "item_id": 21307,
                                     "name": "Bracelet of Seizing - Extreme [Alchemist]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1032,7 +1614,13 @@
                                 {
                                     "item_id": 21308,
                                     "name": "Bracelet of Seizing - Extreme [Spirit Lancer]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1049,7 +1637,13 @@
                                 {
                                     "item_id": 21570,
                                     "name": "Bracelet of Seizing - Extreme [High Scepter]",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19377
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1066,7 +1660,13 @@
                                 {
                                     "item_id": 21309,
                                     "name": "Earrings of Soaring - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1083,7 +1683,13 @@
                                 {
                                     "item_id": 21310,
                                     "name": "Earrings of Soaring - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1100,7 +1706,13 @@
                                 {
                                     "item_id": 21311,
                                     "name": "Earrings of Soaring - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1117,7 +1729,13 @@
                                 {
                                     "item_id": 21312,
                                     "name": "Earrings of Soaring - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1134,7 +1752,13 @@
                                 {
                                     "item_id": 21313,
                                     "name": "Earrings of Soaring - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1151,7 +1775,13 @@
                                 {
                                     "item_id": 21314,
                                     "name": "Earrings of Soaring - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1168,7 +1798,13 @@
                                 {
                                     "item_id": 21315,
                                     "name": "Earrings of Soaring - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1185,7 +1821,13 @@
                                 {
                                     "item_id": 21316,
                                     "name": "Earrings of Soaring - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1202,7 +1844,13 @@
                                 {
                                     "item_id": 21317,
                                     "name": "Earrings of Soaring - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1219,7 +1867,13 @@
                                 {
                                     "item_id": 21318,
                                     "name": "Earrings of Soaring - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1236,7 +1890,13 @@
                                 {
                                     "item_id": 21569,
                                     "name": "Earrings of Soaring - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19378
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1253,7 +1913,13 @@
                                 {
                                     "item_id": 21359,
                                     "name": "Bracelet of Unburdening - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1270,7 +1936,13 @@
                                 {
                                     "item_id": 21360,
                                     "name": "Bracelet of Unburdening - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1287,7 +1959,13 @@
                                 {
                                     "item_id": 21361,
                                     "name": "Bracelet of Unburdening - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1304,7 +1982,13 @@
                                 {
                                     "item_id": 21362,
                                     "name": "Bracelet of Unburdening - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1321,7 +2005,13 @@
                                 {
                                     "item_id": 21363,
                                     "name": "Bracelet of Unburdening - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1338,7 +2028,13 @@
                                 {
                                     "item_id": 21364,
                                     "name": "Bracelet of Unburdening - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1355,7 +2051,13 @@
                                 {
                                     "item_id": 21365,
                                     "name": "Bracelet of Unburdening - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1372,7 +2074,13 @@
                                 {
                                     "item_id": 21366,
                                     "name": "Bracelet of Unburdening - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1389,7 +2097,13 @@
                                 {
                                     "item_id": 21367,
                                     "name": "Bracelet of Unburdening - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1406,7 +2120,13 @@
                                 {
                                     "item_id": 21368,
                                     "name": "Bracelet of Unburdening - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1423,7 +2143,13 @@
                                 {
                                     "item_id": 21604,
                                     "name": "Bracelet of Unburdening - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19379
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1440,7 +2166,13 @@
                                 {
                                     "item_id": 21369,
                                     "name": "Earrings of Dashing - Extreme (Fighter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1457,7 +2189,13 @@
                                 {
                                     "item_id": 21370,
                                     "name": "Earrings of Dashing - Extreme (Shield Sage)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1474,7 +2212,13 @@
                                 {
                                     "item_id": 21371,
                                     "name": "Earrings of Dashing - Extreme (Hunter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1491,7 +2235,13 @@
                                 {
                                     "item_id": 21372,
                                     "name": "Earrings of Dashing - Extreme (Priest)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1508,7 +2258,13 @@
                                 {
                                     "item_id": 21373,
                                     "name": "Earrings of Dashing - Extreme (Sorcerer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1525,7 +2281,13 @@
                                 {
                                     "item_id": 21374,
                                     "name": "Earrings of Dashing - Extreme (Seeker)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1542,7 +2304,13 @@
                                 {
                                     "item_id": 21375,
                                     "name": "Earrings of Dashing - Extreme (Element Archer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1559,7 +2327,13 @@
                                 {
                                     "item_id": 21376,
                                     "name": "Earrings of Dashing - Extreme (Warrior)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1576,7 +2350,13 @@
                                 {
                                     "item_id": 21377,
                                     "name": "Earrings of Dashing - Extreme (Alchemist)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1593,7 +2373,13 @@
                                 {
                                     "item_id": 21378,
                                     "name": "Earrings of Dashing - Extreme (Spirit Lancer)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1610,7 +2396,13 @@
                                 {
                                     "item_id": 21605,
                                     "name": "Earrings of Dashing - Extreme (High Scepter)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 19376
+                                        }
+                                    ]
                                 }
                             ]
                         }
@@ -1750,17 +2542,35 @@
                                 {
                                     "item_id": 18601,
                                     "name": "Supreme Earrings (Myrmidon)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18616
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 18600,
                                     "name": "Supreme Bracelet (Myrmidon)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18616
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 18599,
                                     "name": "Supreme Ring (Myrmidon)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18616
+                                        }
+                                   ]
                                 }
                             ]
                         },
@@ -1777,17 +2587,35 @@
                                 {
                                     "item_id": 18604,
                                     "name": "Supreme Earrings (Inquiry)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18617
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 18603,
                                     "name": "Supreme Bracelet (Inquiry)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18617
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 18602,
                                     "name": "Supreme Ring (Inquiry)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18617
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1804,17 +2632,35 @@
                                 {
                                     "item_id": 18607,
                                     "name": "Supreme Earrings (Purge)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18618
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 18606,
                                     "name": "Supreme Bracelet (Purge)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18618
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 18605,
                                     "name": "Supreme Ring (Purge)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18618
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1831,17 +2677,35 @@
                                 {
                                     "item_id": 18610,
                                     "name": "Supreme Earrings (Night Emperor)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18619
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 18609,
                                     "name": "Supreme Bracelet (Night Emperor)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18619
+                                        }
+                                    ]
                                 },
                                 {
                                     "item_id": 18608,
                                     "name": "Supreme Ring (Night Emperor)",
-                                    "amount": 1
+                                    "amount": 1,
+                                    "crests": [
+                                        {
+                                            "type": "Imbued",
+                                            "crest_id": 18619
+                                        }
+                                    ]
                                 }
                             ]
                         }
