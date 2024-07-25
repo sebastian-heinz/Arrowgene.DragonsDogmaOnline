@@ -523,6 +523,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new WarpReleaseWarpPointHandler(this));
             AddHandler(new WarpWarpHandler(this));
             AddHandler(new WarpWarpStartHandler(this));
+            AddHandler(new WarpWarpEndHandler(this));
         }
     }
 }
