@@ -21,8 +21,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CItemConsumeStorageItemRes res = new S2CItemConsumeStorageItemRes();
             try
             {
-                S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-                ntc.UpdateType = 4;
+                S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
+                {
+                    UpdateType = ItemNoticeType.ConsumeBag
+                };
+
                 foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
                 {
                     CDataItemUpdateResult itemUpdate;

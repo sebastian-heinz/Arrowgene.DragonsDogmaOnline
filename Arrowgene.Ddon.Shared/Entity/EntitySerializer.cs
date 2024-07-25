@@ -141,6 +141,16 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataLobbyMemberInfoSerializer());
             Create(new CDataLoginSettingSerializer());
             Create(new CDataLotQuestOrderList.Serializer());
+            Create(new CDataMailInfo.Serializer());
+            Create(new CDataMailTextInfo.Serializer());
+            Create(new CDataMailAttachmentList.Serializer());
+            Create(new CDataMailAttachmentInfo.Serializer());
+            Create(new CDataMailItemInfo.Serializer());
+            Create(new CDataMailGPInfo.Serializer());
+            Create(new CDataMailOptionCourseInfo.Serializer());
+            Create(new CDataMailLegendPawnInfo.Serializer());
+
+
             Create(new CDataMainQuestList.Serializer());
             Create(new CDataMainQuestOrderList.Serializer());
             Create(new CDataMasterInfo.Serializer());
@@ -364,6 +374,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SLobbyJoinReq.Serializer());
             Create(new C2SLobbyLeaveReq.Serializer());
             Create(new C2SLobbyLobbyDataMsgReq.Serializer());
+
+            Create(new C2SMailMailGetListHeadReq.Serializer());
+            Create(new C2SMailMailGetListFootReq.Serializer());
+            Create(new C2SMailMailGetListDataReq.Serializer());
+            Create(new C2SMailSystemMailGetListHeadReq.Serializer());
+            Create(new C2SMailSystemMailGetListFootReq.Serializer());
+            Create(new C2SMailSystemMailGetListDataReq.Serializer());
+            Create(new C2SMailSystemMailGetTextReq.Serializer());
+            Create(new C2SMailSystemMailGetAllItemReq.Serializer());
+            Create(new C2SMailSystemMailDeleteReq.Serializer());
+
             Create(new C2SMandragoraGetMyMandragoraReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
@@ -668,6 +689,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CLobbyJoinRes.Serializer());
             Create(new S2CLobbyLeaveRes.Serializer());
             Create(new S2CLobbyLobbyDataMsgNotice.Serializer());
+
+            Create(new S2CMailMailGetListHeadRes.Serializer());
+            Create(new S2CMailMailGetListFootRes.Serializer());
+            Create(new S2CMailMailGetListDataRes.Serializer());
+            Create(new S2CMailSystemMailGetListHeadRes.Serializer());
+            Create(new S2CMailSystemMailGetListFootRes.Serializer());
+            Create(new S2CMailSystemMailGetListDataRes.Serializer());
+            Create(new S2CMailSystemMailGetTextRes.Serializer());
+            Create(new S2CMailSystemGetAllItemRes.Serializer());
+            Create(new S2CMailSystemMailDeleteRes.Serializer());
+
             Create(new S2CMandragoraGetMyMandragoraRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
@@ -793,8 +825,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillLearnPawnNormalSkillRes.Serializer());
             Create(new S2CSkillLearnPawnSkillRes.Serializer());
             Create(new S2CSkillLearnSkillRes.Serializer());
+            Create(new S2CSkillNormalSkillLearnNtc.Serializer());
             Create(new S2CSkillPawnAbilitySetNtc.Serializer());
             Create(new S2CSkillPawnCustomSkillSetNtc.Serializer());
+            Create(new S2CSkillPawnNormalSkillLearnNtc.Serializer());
             Create(new S2CSkillSetAbilityRes.Serializer());
             Create(new S2CSkillSetOffAbilityRes.Serializer());
             Create(new S2CSkillSetOffPawnAbilityRes.Serializer());

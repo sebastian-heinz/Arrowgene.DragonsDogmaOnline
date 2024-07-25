@@ -512,7 +512,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = (ushort)ItemNoticeType.Quest
+                UpdateType = ItemNoticeType.Quest
             };
 
             foreach (var walletReward in quest.WalletRewards)

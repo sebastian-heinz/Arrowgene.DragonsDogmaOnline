@@ -1,6 +1,9 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Database.Sql.Core.Migration;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -10,11 +13,19 @@ namespace Arrowgene.Ddon.Database
     public interface IDatabase
     {
         void Execute(string sql);
+        void Execute(DbConnection conn, string sql);
+        bool ExecuteInTransaction(Action<DbConnection> action);
 
         /// <summary>
         /// Return true if database was created, or false if not.
         /// </summary>
         bool CreateDatabase();
+        bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion);
+
+        // Meta
+        bool CreateMeta(DatabaseMeta meta);
+        bool SetMeta(DatabaseMeta meta);
+        DatabaseMeta GetMeta();
 
         // Account
         Account CreateAccount(string name, string mail, string hash);
@@ -203,6 +214,17 @@ namespace Arrowgene.Ddon.Database
         bool InsertPriorityQuest(uint characterCommonId, QuestId questId);
         List<QuestId> GetPriorityQuests(uint characterCommonId);
         bool DeletePriorityQuest(uint characterCommonId, QuestId questId);
+
+        // System mail
+        List<SystemMailMessage> SelectSystemMailMessages(uint characterId);
+        SystemMailMessage SelectSystemMailMessage(ulong messageId);
+        bool UpdateSystemMailMessageState(ulong messageId, MailState messageState);
+        bool DeleteSystemMailMessage(ulong messageId);
+
+        // System mail attachments
+        List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId);
+        bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived);
+        bool DeleteSystemMailAttachment(ulong messageId);
 
         // Additional Status
         bool InsertAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2);

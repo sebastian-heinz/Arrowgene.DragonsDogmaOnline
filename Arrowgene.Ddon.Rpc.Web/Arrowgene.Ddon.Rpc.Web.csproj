@@ -9,12 +9,18 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
-    <Import Project="./../SetSourceRevision.targets"/>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
-        <ProjectReference Include="..\Arrowgene.Ddon.Rpc\Arrowgene.Ddon.Rpc.csproj"/>
-        <ProjectReference Include="..\Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj"/>
+        <ProjectReference Include="..\Arrowgene.Ddon.Rpc\Arrowgene.Ddon.Rpc.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Arrowgene.WebServer" Version="1.1.4"/>
+        <PackageReference Include="Arrowgene.WebServer" Version="1.1.4" />
     </ItemGroup>
 </Project>

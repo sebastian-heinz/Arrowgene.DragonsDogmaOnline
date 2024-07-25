@@ -70,9 +70,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, Action sendResponse)
         {
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new()
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = (ushort) updateType
+                UpdateType = updateType
             };
 
             foreach (CDataCharacterEquipInfo changeCharacterEquipInfo in changeCharacterEquipList)
