@@ -320,6 +320,10 @@ namespace Arrowgene.Ddon.Test.Database
         public List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId) { return new List<SystemMailAttachment>(); }
         public bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived) {  return true; }
         public bool DeleteSystemMailAttachment(ulong messageId) { return true; }
+        public bool InsertAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2) {return true; }
+        public bool InsertIfNotExistsAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2) {return true; }
+        public bool UpdateItemEquipPoints(string itemUID, uint EquipPoints) {return true; }
+
     }
 
     class MockMigrationStrategy : IMigrationStrategy

@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Single();
 
             // TODO: Need to check if the item is a Fighter Shield or Rod, these appear to not be intended for the Quality system?
+            // ClientItemInfo seems to track the job type? so this might be helpful for this particular bug!
 
             // TODO: Run in transaction
 
