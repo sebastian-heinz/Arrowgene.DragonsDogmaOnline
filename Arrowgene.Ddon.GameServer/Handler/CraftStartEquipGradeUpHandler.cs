@@ -125,7 +125,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
                 updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
-                // Will eventually handle the point stuff.
+                // TODO: handle equippoints better, right now its very glitchy and lets you skip upgrades lol
                 int[] thresholds = new int[] { 350, 700, 1000, 1500 };
 
                 int nextThreshold = -1;
@@ -134,6 +134,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (previousTotalEquipPoint < threshold && currentTotalEquipPoint >= threshold)
                     {
                         nextThreshold = threshold;
+                        currentTotalEquipPoint = (uint)threshold; // Clamps the value so theres no carry over, not sure if its meant to behave like this or not. 
                         break;
                     }
                 }
@@ -179,7 +180,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk3 = equipItem.Unk3,   // Safety setting,
                 Color = equipItem.Color,
                 PlusValue = currentPlusValue,
-                EquipPoints = 0,
+                EquipPoints = currentTotalEquipPoint,
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                 AddStatusData = equipItem.AddStatusData,
                 EquipElementParamList = new List<CDataEquipElementParam>()
