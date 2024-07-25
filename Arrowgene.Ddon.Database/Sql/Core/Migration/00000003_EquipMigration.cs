@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
             return true;
         }
 
-        public static void MigrateEquippedItems(IDatabase db, DbConnection conn, Character owner, CharacterCommon characterCommon)
+        private static void MigrateEquippedItems(IDatabase db, DbConnection conn, Character owner, CharacterCommon characterCommon)
         {
             StorageType storageType;
             int storageSlotOffset;
