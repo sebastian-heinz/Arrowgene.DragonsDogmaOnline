@@ -114,10 +114,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     new CDataCommonU32(gearupgradeID)
                 };
 
+                // Subtract less Gold if supportpawn is used.
+                if(packet.Structure.CraftSupportPawnIDList.Count > 0)
+                {
+                    goldRequired = (uint)(goldRequired*0.95);
+                    currentTotalEquipPoint += 10;
+                }
 
-
-                // TODO: I made this was the assumption the points carried over, they do not, infact. upon reaching a threshold it resets to 0, so need to update this and figure that out lol
-                // Probably use the EquipRank value as a comparison value to know which one we wanna compare against.
+                // Substract Gold based on JSON cost.
+                CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
+                updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
                 // Will eventually handle the point stuff.
                 int[] thresholds = new int[] { 350, 700, 1000, 1500 };
@@ -134,6 +140,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (nextThreshold > 0)
                 {
                     canUpgrade = true;
+                }
+
+                uint cumulativeDifference = 0;
+                foreach (uint threshold in thresholds)
+                {
+                    while (currentTotalEquipPoint >= threshold)
+                    {
+                        currentTotalEquipPoint -= threshold;
+                        cumulativeDifference += threshold;
+                    }
                 }
 
             // More dummy data, looks like its dragonfroce related.
@@ -157,23 +173,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             // TODO: Source these values accurately when we know what they are. ^
 
-            // Subtract less Gold if supportpawn is used.
-            if(packet.Structure.CraftSupportPawnIDList.Count > 0)
-            {
-                goldRequired = (uint)(goldRequired*0.95);
-            }
-
-            // Substract Gold based on JSON cost.
-            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
-            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-
             Item UpgradedItem = new Item()
             {
                 ItemId = gearupgradeID,
                 Unk3 = equipItem.Unk3,   // Safety setting,
                 Color = equipItem.Color,
                 PlusValue = currentPlusValue,
-                EquipPoints = currentTotalEquipPoint,
+                EquipPoints = 0,
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                 AddStatusData = equipItem.AddStatusData,
                 EquipElementParamList = new List<CDataEquipElementParam>()
@@ -262,8 +268,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             GradeUpItemUID = UpgradedItem.UId, // Should be the UID for the gradeupitem.
                             GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                             GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
-                            AddEquipPoint = addEquipPoint,
-                            TotalEquipPoint = previousTotalEquipPoint,
+                            AddEquipPoint = 0,
+                            TotalEquipPoint = 0,
                             EquipGrade = EquipRank,
                             Gold = goldRequired,
                             IsGreatSuccess = dogreatsuccess,
