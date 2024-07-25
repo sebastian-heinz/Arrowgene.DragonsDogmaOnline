@@ -218,9 +218,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     
                     if (moveResult == null)
                     {
-                        // Handle the item not being in storage anymore
+                        // Handle the item not being in storage anymore.
+                        // Remove from template and unequip whatever was in that slot (if anything)
                         common.EquipmentTemplate.SetEquipItem(null, newJobId, equipType, equipSlot);
                         _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot);
+
+                        try
+                        {
+                            // TODO: Attempt moving into other storages if the storage box is full
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.getStorage(StorageType.StorageBoxNormal), 0);
+                            itemUpdateResultList.AddRange(moveResult);
+                        }
+                        catch(ResponseErrorException ex)
+                        {
+                            if (ex.ErrorCode == ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND)
+                            {
+                                // Do nothing, the slot is empty. Nothing to unequip
+                            }
+                            else
+                            {
+                                throw ex;
+                            }
+                        }
                     }
                 }
             }
