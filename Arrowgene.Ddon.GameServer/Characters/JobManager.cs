@@ -155,15 +155,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // TODO: Run in a transaction
 
             List<CDataItemUpdateResult> itemUpdateResultList = new List<CDataItemUpdateResult>();
-            List<Item?> oldEquipmentTemplate = common.EquipmentTemplate.GetEquipment(oldJobId, equipType);
+            List<Item?> oldEquipment = common.Equipment.GetItems(equipType);
             List<Item?> newEquipmentTemplate = common.EquipmentTemplate.GetEquipment(newJobId, equipType);
             for (int i = 0; i < newEquipmentTemplate.Count; i++)
             {
                 byte equipSlot = (byte)(i+1);
                 ushort equipmentStorageSlot = common.Equipment.GetStorageSlot(equipType, equipSlot);
-                Item? oldEquipmentTemplateItem = oldEquipmentTemplate[i];
+                Item? oldEquipmentItem = oldEquipment[i];
                 Item? newEquipmentTemplateItem = newEquipmentTemplate[i];
-                if(oldEquipmentTemplateItem != null && newEquipmentTemplateItem == null)
+                if(oldEquipmentItem != null && newEquipmentTemplateItem == null)
                 {
                     // Unequip item if the new job has no item equipped in this slot
                     // TODO: Attempt moving into other storages if the storage box is full
@@ -178,7 +178,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         {
                             // Handle the item not being in equipment storage
                             // This should probably return an error response instead? Logging and handling gracefully prevents messy situations, but may be undesirable
-                            Logger.Error($"Failed to unequip item {oldEquipmentTemplateItem.UId} from {equipType} slot {equipSlot} of {oldJobId}. The item wasn't in the {common.Equipment.Storage.Type} slot {equipmentStorageSlot}");
+                            Logger.Error($"Failed to unequip item {oldEquipmentItem.UId} from {equipType} slot {equipSlot} of {oldJobId}. The item wasn't in the {common.Equipment.Storage.Type} slot {equipmentStorageSlot}");
                             common.EquipmentTemplate.SetEquipItem(null, oldJobId, equipType, equipSlot);
                             _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot);
                         }
@@ -188,7 +188,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         }
                     }
                 }
-                else if (newEquipmentTemplateItem != null && newEquipmentTemplateItem.UId != oldEquipmentTemplateItem?.UId)
+                else if (newEquipmentTemplateItem != null && newEquipmentTemplateItem.UId != oldEquipmentItem?.UId)
                 {
                     // Equip item to a slot, if said item is not already equipped. Search item in multiple storages
                     List<CDataItemUpdateResult>? moveResult = null;
