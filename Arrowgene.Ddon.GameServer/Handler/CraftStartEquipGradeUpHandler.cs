@@ -54,49 +54,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
-            uint nextGrade = json_data.Unk0; // This is Unk0 I guess?
+            uint EquipRank = json_data.Unk0;
             bool canContinue = true;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
-            uint previousTotalEquipPoint = equipItem.EquipPoints;
+            uint previousTotalEquipPoint = currentTotalEquipPoint;
             uint addEquipPoint = 0;     
             bool dogreatsuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
-            bool canUpgrade = true;
+            bool canUpgrade = false;
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-            
-
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = 0;
+            updateCharacterItemNtc.UpdateType = 0x1a; // GradeUp notice type
 
+
+            // Handles adding EquipPoints.
             if(dogreatsuccess == true)
             {
-                addEquipPoint = 40;
+                addEquipPoint = 100;
                 currentTotalEquipPoint += addEquipPoint;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-
-                if (updateSuccessful)
-                {
-                    Console.WriteLine("Equip points updated successfully!");
-                }
-                else
-                {
-                    Console.WriteLine("Failed to update equip points.");
-                }
             }
             else
             {
-                addEquipPoint = 10;
+                addEquipPoint = 30;
                 currentTotalEquipPoint += addEquipPoint;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-
-                if (updateSuccessful)
-                {
-                    Console.WriteLine("Equip points updated successfully!");
-                }
-                else
-                {
-                    Console.WriteLine("Failed to update equip points.");
-                }
             }
 
             if(currentTotalEquipPoint >= 1500)
@@ -105,6 +87,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
             // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next (potentially related to how we use UIDs)
+            // TODO: Figure out how to have the gradeup bar actually move again, lol
 
             // Removes crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
@@ -134,9 +117,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
                 // TODO: I made this was the assumption the points carried over, they do not, infact. upon reaching a threshold it resets to 0, so need to update this and figure that out lol
-                // Probably use the NextGrade value as a comparison value to know which one we wanna compare against.
+                // Probably use the EquipRank value as a comparison value to know which one we wanna compare against.
 
-                int[] thresholds = new int[] { 300, 700, 1000, 1500 };
+                // Will eventually handle the point stuff.
+                int[] thresholds = new int[] { 350, 700, 1000, 1500 };
 
                 int nextThreshold = -1;
                 foreach (int threshold in thresholds)
@@ -147,16 +131,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         break;
                     }
                 }
-
-                if (nextThreshold != -1)
+                if (nextThreshold > 0)
                 {
                     canUpgrade = true;
-                    currentTotalEquipPoint = 0;
-                    bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-                    if (updateSuccessful)
-                    {
-                        Logger.Debug("Points succesfully reset to 0");
-                    }
                 }
 
             // More dummy data, looks like its dragonfroce related.
@@ -287,12 +264,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                             AddEquipPoint = addEquipPoint,
                             TotalEquipPoint = previousTotalEquipPoint,
-                            EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
-                            Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
-                            IsGreatSuccess = dogreatsuccess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
-                            CurrentEquip = CurrentEquipInfo, // Client uses this to determine whats equipped to show the Arisen sign in the menu.              
-                            BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
-                            Upgradable = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
+                            EquipGrade = EquipRank,
+                            Gold = goldRequired,
+                            IsGreatSuccess = dogreatsuccess,
+                            CurrentEquip = CurrentEquipInfo,   
+                            BeforeItemID = equipItemID,
+                            Upgradable = canContinue,
                             Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
                         };
 
@@ -301,24 +278,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 
                 };
             };
-            
-
 
             // If GradeUpItemID & UID are populated it will auto fill the bar, I guess I need an if check somewhere to decide if we send that data or not. 
-            // TODO: Figure out how to have the gradeup bar actually move again, lol
             if(!canUpgrade)
             {
                 res = new S2CCraftStartEquipGradeUpRes()
                 {
-                    GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
+                    GradeUpItemUID = equipItemUID,
                     AddEquipPoint = addEquipPoint,
                     TotalEquipPoint = currentTotalEquipPoint,
-                    EquipGrade = nextGrade, // It expects a valid number or it won't show the result when you enhance, (presumably we give this value when filling the bar)
-                    Gold = goldRequired, // No noticable difference when supplying this info, but it wants it so whatever.
-                    IsGreatSuccess = dogreatsuccess, // Just changes the banner from "Success" to "GreatSuccess" we'd have to augment the addEquipPoint value when this is true.
-                    CurrentEquip = CurrentEquipInfo, // Client uses this to determine whats equipped to show the Arisen sign in the menu.              
-                    BeforeItemID = equipItemID, // I don't know why the response wants the "beforeid" its unclear what this means too? should it be 0 if step 1? hmm.
-                    Upgradable = canContinue, // If True it says "Gradeu Up" if False it says "Grade Max"
+                    Gold = goldRequired,
+                    IsGreatSuccess = dogreatsuccess,
+                    CurrentEquip = CurrentEquipInfo,
+                    Upgradable = canContinue,
                     Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
                 };
             };
