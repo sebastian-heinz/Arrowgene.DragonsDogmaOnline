@@ -177,9 +177,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.PhysicalDefence:
                 case OrbGainParamType.MagicalAttack:
                 case OrbGainParamType.AccessorySlot:
-                case OrbGainParamType.MainPawnSlot:
-                case OrbGainParamType.SupportPawnSlot:
                     _CharacterManager.UpdateCharacterExtendedParamsNtc(client, character);
+                    break;
+                case OrbGainParamType.MainPawnSlot:
+                    client.Send(new S2CPawnExtendMainPawnNtc() { TotalNum = 3, AddNum = 1 });
+                    break;
+                case OrbGainParamType.SupportPawnSlot:
                     break;
                 case OrbGainParamType.AbilityCost:
                     // Handeled by S2CSkillGetAbilityCostRes

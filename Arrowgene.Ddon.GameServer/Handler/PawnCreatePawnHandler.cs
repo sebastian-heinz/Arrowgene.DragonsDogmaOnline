@@ -43,16 +43,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, uidItem.UId, 10);
             }
 
-            if (request.SlotNo == 1)
-            {
-                // Update the number of allowed Pawns to 2
-                // We get 1 slot for the free pawn and a second slot is allowed
-                // assuming we collected 10 riftstone shards and pay it using the
-                // "Myrmidon's Pledge" menu option.
-                Server.Database.UpdateMyPawnSlot(client.Character.CharacterId, 2);
-                client.Character.MyPawnSlotNum = 2;
-            }
-
             Database.CreatePawn(pawn);
             Database.InsertGainExtendParam(pawn.CommonId, pawn.ExtendedParams);
 
