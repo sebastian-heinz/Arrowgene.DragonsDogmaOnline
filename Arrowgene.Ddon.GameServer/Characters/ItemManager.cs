@@ -7,11 +7,14 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class ItemManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemManager));
+
         public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
         public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
@@ -356,6 +359,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             results.Add(srcUpdateItem);
 
             // Add items to destination storage, adding multiple stacks if needed
+            // as long as it doesn't go over the destination storage stack limit
             uint itemsToMove = Math.Min(num, oldSrcItemNum);
             while(itemsToMove > 0)
             {
@@ -370,14 +374,43 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         {
                             // If there's an item in it, and it's not of the same type, swap items.
                             // Move the item in the destination slot to the source slot
-                            results.AddRange(MoveItem(server, character, toStorage, itemInDstSlot.Item1.UId, itemInDstSlot.Item2, fromStorage, fromSlotNo));
+                            results.AddRange(MoveItem(server, character, toStorage, toSlotNo, itemInDstSlot.Item2, fromStorage, fromSlotNo));
                         }
                         else
                         {
-                            // If there's an item in it, and it's of the same type, add both counts
-                            // TODO: Verify an infinite loop can't happen if it tries to add over the stack limit
-                            // in a slot that already has items
+                            // If there's an item in it, and it's of the same type, add both counts.
                             oldDstItemNum = itemInDstSlot.Item2;
+
+                            uint tmpNewDstItemNum = oldDstItemNum + itemsToMove;
+                            if(tmpNewDstItemNum > stackLimit)
+                            {
+                                // If it goes over the stack limit, add back the extra items to the source slot
+                                // This function here is the hackiest thing i've ever written, so much unnecesary adding/removing
+                                uint itemsOverStackLimit = tmpNewDstItemNum - stackLimit;
+
+                                fromStorage.SetItem(item, itemsOverStackLimit, fromSlotNo);
+                                server.Database.ReplaceStorageItem(character.CharacterId, fromStorage.Type, fromSlotNo, item.UId, itemsOverStackLimit);
+                                CDataItemUpdateResult srcExtraItemsBackUpdateItem = new CDataItemUpdateResult();
+                                srcExtraItemsBackUpdateItem.ItemList.ItemUId = item.UId;
+                                srcExtraItemsBackUpdateItem.ItemList.ItemId = item.ItemId;
+                                srcExtraItemsBackUpdateItem.ItemList.ItemNum = itemsOverStackLimit;
+                                srcExtraItemsBackUpdateItem.ItemList.Unk3 = item.Unk3;
+                                srcExtraItemsBackUpdateItem.ItemList.StorageType = fromStorage.Type;
+                                srcExtraItemsBackUpdateItem.ItemList.SlotNo = fromSlotNo;
+                                srcExtraItemsBackUpdateItem.ItemList.Color = item.Color;
+                                srcExtraItemsBackUpdateItem.ItemList.PlusValue = item.PlusValue;
+                                srcExtraItemsBackUpdateItem.ItemList.Bind = false;
+                                srcExtraItemsBackUpdateItem.ItemList.EquipPoint = 0;
+                                srcExtraItemsBackUpdateItem.ItemList.EquipCharacterID = 0;
+                                srcExtraItemsBackUpdateItem.ItemList.EquipPawnID = 0;
+                                srcExtraItemsBackUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+                                srcExtraItemsBackUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+                                srcExtraItemsBackUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
+                                srcExtraItemsBackUpdateItem.UpdateItemNum = (int) itemsOverStackLimit;
+                                results.Add(srcExtraItemsBackUpdateItem);
+                                
+                                itemsToMove -= itemsOverStackLimit;
+                            }
                         }
                     }
                     dstSlotNo = toSlotNo;
@@ -416,12 +449,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 dstUpdateItem.ItemList.Unk3 = item.Unk3;
                 dstUpdateItem.ItemList.StorageType = toStorage.Type;
                 dstUpdateItem.ItemList.SlotNo = dstSlotNo;
-                dstUpdateItem.ItemList.Color = item.Color; // ?
-                dstUpdateItem.ItemList.PlusValue = item.PlusValue; // ?
-                dstUpdateItem.ItemList.Bind = false;
+                dstUpdateItem.ItemList.Color = item.Color;
+                dstUpdateItem.ItemList.PlusValue = item.PlusValue;
+                dstUpdateItem.ItemList.Bind = false; // ?
                 dstUpdateItem.ItemList.EquipPoint = 0;
-                dstUpdateItem.ItemList.EquipCharacterID = 0;
-                dstUpdateItem.ItemList.EquipPawnID = 0;
+                dstUpdateItem.ItemList.EquipCharacterID = 0; // ?
+                dstUpdateItem.ItemList.EquipPawnID = 0; // ?
                 dstUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
                 dstUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
                 dstUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
