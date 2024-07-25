@@ -81,13 +81,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
 
-            if(currentTotalEquipPoint >= 1500)
-            {
-                canContinue = false;
-            }
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
             // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next (potentially related to how we use UIDs)
-            // TODO: Figure out how to have the gradeup bar actually move again, lol
 
             // Removes crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
@@ -146,6 +141,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else if (currentStars == 3)
             {
                 requiredPoints = 1500;
+                canContinue = false;
             }
             // else if (currentStars == 4)
             // {
@@ -157,7 +153,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (currentTotalEquipPoint >= requiredPoints)
             {
                 canUpgrade = true;
+                addEquipPoint = 0;
                 currentTotalEquipPoint = 0;
+                bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
             
 
@@ -255,7 +253,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (foundItem != null)
                     {
-                        bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                         (slotno, item, itemnum) = foundItem;
                         _itemManager.ReplaceStorageItem(
                             Server,
@@ -274,18 +271,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                         res = new S2CCraftStartEquipGradeUpRes()
                         {
-                            GradeUpItemUID = UpgradedItem.UId, // Should be the UID for the gradeupitem.
+                            GradeUpItemUID = UpgradedItem.UId, // Should be the UID for the gradeupitem. (which after the UID rework will just be the same as the original item)
                             GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
                             GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                             AddEquipPoint = 0,
-                            TotalEquipPoint = currentTotalEquipPoint,
+                            TotalEquipPoint = 0,
                             EquipGrade = EquipRank,
                             Gold = goldRequired,
                             IsGreatSuccess = dogreatsuccess,
-                            CurrentEquip = CurrentEquipInfo,   
+                            //CurrentEquip = CurrentEquipInfo,   
                             BeforeItemID = equipItemID,
                             Upgradable = canContinue,
-                            Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
+                            Unk1 = dummydata
                         };
 
                     List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, UpgradedItem, (byte)slotno);
@@ -309,11 +306,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
                 };
             };
-            client.Send(res);
             client.Send(updateCharacterItemNtc);
             lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
             GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
             client.Send(lobbyPlayerContextNtc);
+            client.Send(res);
         }
         private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
         {
