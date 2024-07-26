@@ -59,6 +59,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AdditionalStatus2 = 0,
             };
 
+
+            // TODO: You can change the quality EITHER for PlusValue OR AdditionalStatus, so I need to adjust the code flow to check what the player is intending.
+            // Right now, if you Change an items quality, say it becomes a +1, then open the menu again to give it an AddStat, it will also reroll the PlusValue because
+            // I don't check if someone has only supplied an item for AddStat, oopsie.
+
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
 
             // Check if a refinematerial is set (shouldn't be possible to have annything run without it but heyho)

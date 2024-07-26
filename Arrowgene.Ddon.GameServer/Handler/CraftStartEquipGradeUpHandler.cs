@@ -277,14 +277,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         res = new S2CCraftStartEquipGradeUpRes()
                         {
                             GradeUpItemUID = UpgradedItem.UId, // Should be the UID for the gradeupitem. (which after the UID rework will just be the same as the original item)
-                            GradeUpItemID = gearupgradeID, // This has to be the upgrade step ID.
+                            GradeUpItemID = UpgradedItem.ItemId,
                             GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                             AddEquipPoint = 0,
                             TotalEquipPoint = 0,
                             EquipGrade = EquipRank,
                             Gold = goldRequired,
                             IsGreatSuccess = dogreatsuccess,
-                            //CurrentEquip = CurrentEquipInfo,   
+                            CurrentEquip = CurrentEquipInfo,   
                             BeforeItemID = equipItemID,
                             Upgradable = canContinue,
                             Unk1 = dummydata

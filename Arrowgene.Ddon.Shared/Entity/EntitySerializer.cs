@@ -161,6 +161,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCurrentEquipInfo.Serializer());
             Create(new CDataCraftStartEquipGradeUpUnk0.Serializer());
             Create(new CDataCraftStartEquipGradeUpUnk0Unk0.Serializer());
+            Create(new CDataCraftColorant.Serializer());
             Create(new CDataEquipSlot.Serializer());
             Create(new CDataMoonSchedule.Serializer());
             Create(new CDataMoveItemUIDFromTo.Serializer());
@@ -321,6 +322,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCraftStartAttachElementReq.Serializer());
             Create(new C2SCraftStartCraftReq.Serializer());
             Create(new C2SCraftSkillAnalyzeReq.Serializer());
+            Create(new C2SCraftStartEquipColorChangeReq.Serializer());
+            Create(new S2CCraftStartEquipColorChangeRes.Serializer());
 
             Create(new C2SEquipChangeCharacterEquipJobItemReq.Serializer());
             Create(new C2SEquipChangeCharacterEquipReq.Serializer());
