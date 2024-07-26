@@ -199,7 +199,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return ntcData;
         }
 
-        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte getplusvalue = 0)
+        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte getplusvalue = 0, List<CDataAddStatusData> addstatus = null)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
             if(itemBag)
@@ -213,7 +213,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if(clientItemInfo.StorageType == StorageType.ItemBagEquipment)
                 {
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, getplusvalue);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, getplusvalue, addstatus);
                 }
                 else
                 {
@@ -223,7 +223,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte setplusvalue = 0)
+        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte setplusvalue = 0, List<CDataAddStatusData> SetAddStatList = null)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
             // The stack limit is specified by the stackLimit arg
@@ -245,7 +245,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint oldItemNum = itemAndNumWithSlot?.item?.Item2 ?? 0;
                 uint newItemNum = Math.Min(stackLimit, oldItemNum + itemsToAdd);
                 uint addedItems = newItemNum - oldItemNum;
+                bool addstatusDB = false;
                 itemsToAdd -= addedItems;
+
+                if (SetAddStatList == null)
+                {
+                    SetAddStatList = new List<CDataAddStatusData>();
+                }
+                else if (SetAddStatList.Count > 0)
+                {
+                    addstatusDB = true;
+                }
                 
                 if (item == null)
                 {
@@ -256,11 +266,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         PlusValue = setplusvalue,
                         EquipPoints = 0,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                        AddStatusData = new List<CDataAddStatusData>(),
+                        AddStatusData = SetAddStatList,
                         EquipElementParamList = new List<CDataEquipElementParam>()
                     };
                     database.InsertItem(item);
                     slot = character.Storage.addStorageItem(item, newItemNum, destinationStorageType);
+                    // TODO: v Improve this, I need to insert to the DB but lack the key info in the startcrafthandler, so it must be done here, very hackily.
+                    if (addstatusDB)
+                    {
+                        CDataAddStatusData firstEntry = SetAddStatList[0];
+                        bool success = database.InsertAddStatus(item.UId, character.CharacterId, 1, 0, firstEntry.AdditionalStatus1, 0);
+                    }
                 }
                 else
                 {
@@ -465,6 +481,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Console.WriteLine($"Item successfully replaced in storage: UID={newItem.UId}, SlotNo={slotNo}");
 
             return new List<CDataItemUpdateResult> { updateResult };
+            //TODO: After UID rework, probably should look at this again.
         }
     }
 

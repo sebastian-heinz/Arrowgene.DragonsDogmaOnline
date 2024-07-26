@@ -33,9 +33,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Where(recipe => recipe.RecipeID == packet.Structure.RecipeID)
                 .Single();
 
-            // TODO: Need to check if the item is a Fighter Shield or Rod, these appear to not be intended for the Quality system?
-            // ClientItemInfo seems to track the job type? so this might be helpful for this particular bug!
-
             // TODO: Run in transaction
 
             // TODO: Validate the info in the packet is consistent with the recipe
@@ -46,7 +43,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string RefineMaterial = packet.Structure.RefineMaterialUID;
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
-            ushort AddStat = packet.Structure.Unk0;
+            ushort AddStatusID = packet.Structure.Unk0;
+            CDataAddStatusData AddStat = new CDataAddStatusData()
+            {
+                IsAddStat1 = 0,
+                IsAddStat2 = 0,
+                AdditionalStatus1 = 0,
+                AdditionalStatus2 = 0,
+            };
+            List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>();
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = 0;
@@ -102,11 +107,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
             }
+            if (AddStatusID > 0)
+            {
+                //bool success = Server.Database.InsertAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
+                // TODO: Refactor this code to create the new Item here, and add the Quality & AdditionalStatus like that. I can't get the UID for the addstatus entries, for example.
+
+                AddStat = new CDataAddStatusData()
+                {
+                    IsAddStat1 = 1,
+                    IsAddStat2 = 0,
+                    AdditionalStatus1 = AddStatusID,
+                    AdditionalStatus2 = 0,
+                };
+                AddStatList = new List<CDataAddStatusData>()
+                {
+                    AddStat
+                };
+            };
 
 
             // TODO: Remove most logic since it should happen in the handler for when the craft time completes.
             
-            // TODO: Refactor this code to create the new Item here, and add the Quality & AdditionalStatus like that.
+
 
             // TODO: Calculate final craft price with the discounts from the craft pawns
             uint finalCraftCost = recipe.Cost * packet.Structure.CreateCount;
@@ -116,7 +138,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if(packet.Structure.CraftSupportPawnIDList.Count > 0)
             {
                 finalCraftCost = (uint)(finalCraftCost*0.95);
-                D100 =+ 10;
             }
             
 
@@ -125,7 +146,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             // Add crafted items
-            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num, RandomQuality);
+            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num, RandomQuality, AddStatList);
             updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);                                                       
 
             client.Send(updateCharacterItemNtc);

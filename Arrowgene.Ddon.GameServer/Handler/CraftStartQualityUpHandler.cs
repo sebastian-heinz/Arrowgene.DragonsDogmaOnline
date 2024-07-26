@@ -37,16 +37,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();    
             updateCharacterItemNtc.UpdateType = 0;
             string equipItemUID = packet.Structure.ItemUID;
-            uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID);
+            var equipItem = Server.Database.SelectItem(equipItemUID);
+            uint equipItemID = equipItem.ItemId;
             Character common = client.Character;
             ushort equipslot = 0;
             byte equiptype = 0;
             uint charid = client.Character.CharacterId;
             uint pawnid = packet.Structure.CraftMainPawnID;
-            var equipItem = Server.Database.SelectItem(equipItemUID);
             byte currentPlusValue = equipItem.PlusValue;
             bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
+            bool retainPlusValue = false;
             string RefineMaterial = packet.Structure.RefineUID;
             ushort AddStatusID = packet.Structure.AddStatusID;
             byte RandomQuality = 0;
@@ -58,11 +59,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AdditionalStatus1 = 0,
                 AdditionalStatus2 = 0,
             };
-
-
-            // TODO: You can change the quality EITHER for PlusValue OR AdditionalStatus, so I need to adjust the code flow to check what the player is intending.
-            // Right now, if you Change an items quality, say it becomes a +1, then open the menu again to give it an AddStat, it will also reroll the PlusValue because
-            // I don't check if someone has only supplied an item for AddStat, oopsie.
 
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
 
@@ -76,7 +72,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                        D100 = D100 + 10;
                     }
                     catch (NotEnoughItemsException e)
                     {
@@ -88,6 +83,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         return;
                     }
                 }
+            }
+            else
+            {
+                retainPlusValue = true; // This exists because you can change the additionalstatus whenever you want, even with one applied.
+                                        // However PlusValue (Quality) should stay static if its above 0.
             }
 
             
@@ -125,7 +125,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     AdditionalStatus1 = AddStatusID,
                     AdditionalStatus2 = 0,
                 };
-            }
+            };
 
 
             List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>()
@@ -144,6 +144,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AddStatusData = AddStatList,
                 EquipElementParamList = new List<CDataEquipElementParam>()
             };
+
+            if(retainPlusValue)
+            {   
+                QualityUpItem = new Item()
+                {
+                    ItemId = equipItemID,
+                    Unk3 = 0,   // Safety setting,
+                    Color = 0,
+                    PlusValue = currentPlusValue,
+                    EquipPoints = equipItem.EquipPoints,
+                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                    AddStatusData = AddStatList,
+                    EquipElementParamList = new List<CDataEquipElementParam>()
+                };
+            }
+            else
+            {
+                QualityUpItem = new Item()
+                {
+                    ItemId = equipItemID,
+                    Unk3 = 0,   // Safety setting,
+                    Color = 0,
+                    PlusValue = RandomQuality,
+                    EquipPoints = equipItem.EquipPoints,
+                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                    AddStatusData = AddStatList,
+                    EquipElementParamList = new List<CDataEquipElementParam>()
+                };
+            };
+
             
 
             if (isEquipped)

@@ -61,6 +61,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ItemUID = equipItemUID,
                 EquipSlot = EquipmentSlot
             };
+
+            // TODO: Potentially the packets changed in S3.
             
 
             S2CCraftStartEquipColorChangeRes res = new S2CCraftStartEquipColorChangeRes()

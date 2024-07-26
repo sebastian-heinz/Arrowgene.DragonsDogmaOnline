@@ -20,6 +20,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             $"SELECT {BuildQueryInsert(AdditionalStatusFields)} " +
             $"WHERE NOT EXISTS (SELECT 1 FROM \"ddon_additional_status\" WHERE \"item_uid\"=@item_uid);";
 
+        // TODO: Turns out you can hot swap additionalstatus, so 100% need an Update method lol
+
         private static readonly string SqlSelectADDS = $"SELECT {BuildQueryField(AdditionalStatusFields)} FROM \"ddon_additional_status\" WHERE \"item_uid\"=@item_uid;";
 
         public bool InsertIfNotExistsAddStatus(TCon conn, string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2)
