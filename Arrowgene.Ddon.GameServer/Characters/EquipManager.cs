@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     // Update storage
                     // TODO: Move to the other storage types if the first one is full
-                    Storage destinationStorage = client.Character.Storage.getStorage(storageTypes[0]);
+                    Storage destinationStorage = client.Character.Storage.GetStorage(storageTypes[0]);
                     updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, characterToEquipTo.Equipment.Storage, equipItemStorageSlot, 1, destinationStorage, 0));
                 }
                 else
@@ -102,8 +102,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId);
 
                     // Update storage, swapping if needed
-                    Storage sourceStorage = client.Character.Storage.getStorage(storageTypes[0]);
-                    // updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveEquipment(server, client.Character, sourceStorage, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
+                    Storage sourceStorage = client.Character.Storage.GetStorage(storageTypes[0]);
                     updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
                 }
             }

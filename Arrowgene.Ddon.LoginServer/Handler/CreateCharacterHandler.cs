@@ -1126,7 +1126,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 if(tuple.Item3.ItemId != 0)
                 {
-                    character.Storage.getStorage(tuple.Item1).AddItem(tuple.Item3, tuple.Item2);
+                    character.Storage.GetStorage(tuple.Item1).AddItem(tuple.Item3, tuple.Item2);
                 }
             }
 
@@ -1136,7 +1136,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 Item? item = performanceEquipItems[i];
                 ushort slot = (ushort)(i+1);
-                character.Storage.getStorage(StorageType.CharacterEquipment).SetItem(item, 1, slot);
+                character.Storage.GetStorage(StorageType.CharacterEquipment).SetItem(item, 1, slot);
             }
 
             List<Item?> visualEquipItems = character.EquipmentTemplate.GetEquipment(character.Job, EquipType.Visual);
@@ -1144,7 +1144,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 Item? item = visualEquipItems[i];
                 ushort slot = (ushort)(i+EquipmentTemplate.TOTAL_EQUIP_SLOTS+1);
-                character.Storage.getStorage(StorageType.CharacterEquipment).SetItem(item, 1, slot);
+                character.Storage.GetStorage(StorageType.CharacterEquipment).SetItem(item, 1, slot);
             }
 
             L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();

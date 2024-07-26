@@ -251,7 +251,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     while (reader.Read())
                     {
                         Tuple<StorageType, Storage> tuple = ReadStorage(reader);
-                        character.Storage.addStorage(tuple.Item1, tuple.Item2);
+                        character.Storage.AddStorage(tuple.Item1, tuple.Item2);
                     }
                 });
             ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
@@ -273,7 +273,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 if(reader3.Read())
                                 {
                                     Item item = ReadItem(reader3);
-                                    character.Storage.getStorage(storageType).SetItem(item, itemNum, slot);
+                                    character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
                                 }
                             });
                     }
@@ -331,9 +331,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ReplaceCommunicationShortcut(conn, character.CharacterId, communicationShortcut);
             }
 
-            foreach(StorageType storageType in character.Storage.getAllStorages().Keys)
+            foreach(StorageType storageType in character.Storage.GetAllStorages().Keys)
             {
-                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.getStorage(storageType));
+                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.GetStorage(storageType));
             }
 
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)
@@ -345,7 +345,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private void CreateItems(TCon conn, Character character)
         {
             // Create storage items
-            foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.getAllStorages())
+            foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.GetAllStorages())
             {
                 StorageType storageType = storage.Key;
                 for(ushort index=0; index < storage.Value.Items.Count; index++)

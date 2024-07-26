@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CItemGetStorageItemListRes res = new S2CItemGetStorageItemListRes()
             {
                 ItemList = packet.Structure.StorageList
-                    .SelectMany(cDataCommonU8 => client.Character.Storage.getStorageAsCDataItemList(client.Character, (StorageType) cDataCommonU8.Value))
+                    .SelectMany(cDataCommonU8 => client.Character.Storage.GetStorageAsCDataItemList(client.Character, (StorageType) cDataCommonU8.Value))
                     .ToList()
             };
             client.Send(res);

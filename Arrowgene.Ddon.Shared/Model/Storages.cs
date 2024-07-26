@@ -16,16 +16,16 @@ namespace Arrowgene.Ddon.Shared.Model
             storages = new Dictionary<StorageType, Storage>();
             foreach (var tuple in maxSlotsDict)
             {
-                addStorage(tuple.Key, new Storage(tuple.Key, tuple.Value));
+                AddStorage(tuple.Key, new Storage(tuple.Key, tuple.Value));
             }
         }
 
-        public Dictionary<StorageType, Storage> getAllStorages()
+        public Dictionary<StorageType, Storage> GetAllStorages()
         {
             return storages;
         }
 
-        public List<CDataCharacterItemSlotInfo> getAllStoragesAsCDataCharacterItemSlotInfoList()
+        public List<CDataCharacterItemSlotInfo> GetAllStoragesAsCDataCharacterItemSlotInfoList()
         {
             return storages
                 .Select(storage => new CDataCharacterItemSlotInfo() {
@@ -35,30 +35,30 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public Storage getStorage(StorageType storageType)
+        public Storage GetStorage(StorageType storageType)
         {
             return storages[storageType];
         }
 
-        public void addStorage(StorageType storageType, Storage storage)
+        public void AddStorage(StorageType storageType, Storage storage)
         {
             storages[storageType] = storage;
         }
 
         public Equipment GetCharacterEquipment()
         {
-            return new Equipment(getStorage(StorageType.CharacterEquipment), 0);
+            return new Equipment(GetStorage(StorageType.CharacterEquipment), 0);
         }
 
         public Equipment GetPawnEquipment(int pawnIndex)
         {
             int offset = pawnIndex * EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2;
-            return new Equipment(getStorage(StorageType.PawnEquipment), offset);
+            return new Equipment(GetStorage(StorageType.PawnEquipment), offset);
         }
 
-        public List<CDataItemList> getStorageAsCDataItemList(Character character, StorageType storageType)
+        public List<CDataItemList> GetStorageAsCDataItemList(Character character, StorageType storageType)
         {
-            return getStorage(storageType).Items
+            return GetStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataItemList()

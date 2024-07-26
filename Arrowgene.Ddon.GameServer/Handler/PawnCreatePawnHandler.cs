@@ -351,7 +351,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 Item? item = performanceEquipItems[i];
                 ushort slot = (ushort)(i + 1);
-                character.Storage.getStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
+                character.Storage.GetStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
                 if (item != null)
                 {
                     Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, item.UId, 1);
@@ -363,7 +363,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 Item? item = visualEquipItems[i];
                 ushort slot = (ushort)(i + EquipmentTemplate.TOTAL_EQUIP_SLOTS + 1);
-                character.Storage.getStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
+                character.Storage.GetStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
                 if (item != null)
                 {
                     Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, item.UId, 1);

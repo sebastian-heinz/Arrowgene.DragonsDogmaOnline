@@ -134,7 +134,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CDataItemUpdateResult? ConsumeItemByUId(DdonServer<GameClient> server, Character character, StorageType fromStorageType, string itemUId, uint consumeNum)
         {
-            var foundItem = character.Storage.getStorage(fromStorageType).FindItemByUId(itemUId);
+            var foundItem = character.Storage.GetStorage(fromStorageType).FindItemByUId(itemUId);
             if(foundItem == null)
             {
                 return null;
@@ -153,7 +153,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CDataItemUpdateResult? ConsumeItemInSlot(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, uint consumeNum)
         {
-            var foundItem = character.Storage.getStorage(fromStorageType).GetItem(slotNo);
+            var foundItem = character.Storage.GetStorage(fromStorageType).GetItem(slotNo);
             if(foundItem == null)
             {
                 return null;
@@ -186,7 +186,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
             ntcData.UpdateItemNum = -finalConsumeNum;
 
-            Storage fromStorage = character.Storage.getStorage(fromStorageType);
+            Storage fromStorage = character.Storage.GetStorage(fromStorageType);
             if(finalItemNum == 0)
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
@@ -234,7 +234,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint itemsToAdd = num;
             while(itemsToAdd > 0)
             {
-                var itemAndNumWithSlot = character.Storage.getStorage(destinationStorageType).Items
+                var itemAndNumWithSlot = character.Storage.GetStorage(destinationStorageType).Items
                     .Select((itemAndCount, index) => new {item = itemAndCount, slot = (ushort) (index + 1)})
                     .Where(itemAndNumWithSlot => (
                         itemAndNumWithSlot.item?.Item1.ItemId == itemId
@@ -249,7 +249,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint addedItems = newItemNum - oldItemNum;
                 itemsToAdd -= addedItems;
                 
-                Storage destinationStorage = character.Storage.getStorage(destinationStorageType);
+                Storage destinationStorage = character.Storage.GetStorage(destinationStorageType);
                 if (item == null)
                 {
                     item = new Item() {

@@ -104,7 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .Select(x => x.PlayPoint)
                     .FirstOrDefault(new CDataPlayPointData());
                 changeJobResponse.Unk0.Unk0 = (byte)jobId;
-                changeJobResponse.Unk0.Unk1 = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
+                changeJobResponse.Unk0.Unk1 = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
 
                 client.Send(changeJobResponse);
             }
@@ -169,7 +169,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Attempt moving into other storages if the storage box is full
                     try
                     {
-                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.getStorage(StorageType.StorageBoxNormal), 0);
+                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
                         itemUpdateResultList.AddRange(moveResult);
                     }
                     catch (ResponseErrorException ex)
@@ -196,7 +196,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         try
                         {
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.getStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.GetStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot);
                             itemUpdateResultList.AddRange(moveResult);
                             break;
                         }
@@ -226,7 +226,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         try
                         {
                             // TODO: Attempt moving into other storages if the storage box is full
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.getStorage(StorageType.StorageBoxNormal), 0);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
                             itemUpdateResultList.AddRange(moveResult);
                         }
                         catch(ResponseErrorException ex)
