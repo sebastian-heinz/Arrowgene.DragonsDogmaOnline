@@ -117,6 +117,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach(PartyMember member in client.Party.Members)
             {
+                if (member.JoinState != JoinState.On) continue; //Only fully joined members get rewards.
+
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = enemyKilled.GetDroppedExperience();
@@ -128,6 +130,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     memberClient = ((PlayerPartyMember) member).Client;
                     memberCharacter = memberClient.Character;
+
+                    if (memberCharacter.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
                     if(enemyKilled.BloodOrbs > 0)
@@ -172,6 +177,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Pawn pawn = ((PawnPartyMember) member).Pawn;
                     memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
                     memberCharacter = pawn;
+
+                    if (memberCharacter.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
                 }
                 else
                 {

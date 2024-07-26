@@ -31,13 +31,13 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             if (command.Length == 0)
             {
                 // check expected length before accessing
-                responses.Add(ChatResponse.CommandError(client, "no arguments provided"));
+                responses.Add(ChatResponse.CommandError(client, "No arguments provided."));
                 return;
             }
 
             if (!client.Party.GetPlayerPartyMember(client).IsLeader)
             {
-                responses.Add(ChatResponse.CommandError(client, "only the leader can send invites"));
+                responses.Add(ChatResponse.CommandError(client, "Only the party leader can invite players."));
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 
                 if (tuple == null)
                 {
-                    responses.Add(ChatResponse.CommandError(client, "no pawn found by that name"));
+                    responses.Add(ChatResponse.CommandError(client, "No pawn was found by that name."));
                     return;
                 }
 
@@ -66,7 +66,19 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 
                 if (targetClient == null)
                 {
-                    responses.Add(ChatResponse.CommandError(client, "no player found by that name"));
+                    responses.Add(ChatResponse.CommandError(client, "No player was found by that name."));
+                    return;
+                }
+
+                if (targetClient == client)
+                {
+                    responses.Add(ChatResponse.CommandError(client, "You cannot invite yourself."));
+                    return;
+                }
+
+                if (targetClient.Character.OnlineStatus == Shared.Model.OnlineStatus.Offline)
+                {
+                    responses.Add(ChatResponse.CommandError(client, $"{targetClient.Character.FirstName} {targetClient.Character.LastName} is not fully logged in."));
                     return;
                 }
 
@@ -75,7 +87,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     CharacterId = targetClient.Character.CharacterId
                 }));
 
-                responses.Add(ChatResponse.ServerMessage(client, "invite sent to "+targetClient.Character.FirstName+" "+targetClient.Character.LastName));
+                responses.Add(ChatResponse.ServerMessage(client, $"Party invite sent to {targetClient.Character.FirstName} {targetClient.Character.LastName}."));
             }
         }
     }

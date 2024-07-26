@@ -48,6 +48,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            if (invitedClient == client)
+            {
+                Logger.Error(client, $"can not invite (invitedClient == client)");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
+                return;
+            }
+
             PartyGroup party = client.Party;
             if (party == null)
             {
