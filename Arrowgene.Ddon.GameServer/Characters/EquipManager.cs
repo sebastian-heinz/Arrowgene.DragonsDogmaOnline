@@ -103,13 +103,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     // Update storage, swapping if needed
                     Storage sourceStorage = client.Character.Storage.getStorage(storageTypes[0]);
+                    // updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveEquipment(server, client.Character, sourceStorage, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
                     updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
                 }
             }
 
-            sendResponse.Invoke();
-
             client.Send(updateCharacterItemNtc);
+
+            sendResponse.Invoke();
 
             // Notify other players
             if (characterToEquipTo is Character character)

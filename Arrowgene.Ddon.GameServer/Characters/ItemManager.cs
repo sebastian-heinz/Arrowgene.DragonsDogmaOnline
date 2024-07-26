@@ -305,166 +305,171 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return MoveItem(server, character, fromStorage, fromSlotNo, num, toStorage, toSlotNo);
         }
 
+        private void DeleteItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo)
+        {
+            storage.SetItem(null, 0, slotNo);
+            server.Database.DeleteStorageItem(character.CharacterId, storage.Type, slotNo);
+        }
+
+        private void UpdateItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
+        {
+            storage.SetItem(item, num, slotNo);
+            server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, item.UId, num);
+        }
+
+        private void SaveItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
+        {
+            storage.SetItem(item, num, slotNo);
+            server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, item.UId, num);
+        }
+
         public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo)
         {
             List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
 
+            var toItem = toStorage.GetItem(toSlotNo);
             var fromItem = fromStorage.GetItem(fromSlotNo);
-            if(fromItem == null)
-             {
+            if (fromItem == null)
+            {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND);
             }
-            Item item = fromItem.Item1;
-            uint oldSrcItemNum = fromItem.Item2;
-            uint oldDstItemNum = 0;
 
-            // Figure out stack limit in destination storage
-            uint stackLimit = uint.MaxValue;
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, item.ItemId);
-            if(clientItemInfo.StorageType == StorageType.ItemBagEquipment || ItemBagStorageTypes.Contains(toStorage.Type))
+            if (toStorage.Type == StorageType.CharacterEquipment || toStorage.Type == StorageType.PawnEquipment)
             {
-                // Limit items to the item bag stack limit when moving to the item bag or when moving equipment
-                stackLimit = clientItemInfo.StackLimit;
-            }
+                // Swapping or equipping equipment
+                if (toItem != null)
+                {
+                    // Delete the item
+                    DeleteItem(server, character, toItem.Item1, toStorage, toSlotNo);
+                }
+                DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo);
 
-            // Remove items from source storage
-            uint newSrcItemNum = oldSrcItemNum - num;
-            if(newSrcItemNum == 0)
-            {
-                fromStorage.SetItem(null, 0, fromSlotNo);
-                server.Database.DeleteStorageItem(character.CharacterId, fromStorage.Type, fromSlotNo);
+                if (toItem != null)
+                {
+                    // Create Packets for it
+                    results.Add(CreateItemUpdateResult(character, toItem.Item1, toStorage, toSlotNo, 0, 0));
+                    results.Add(CreateItemUpdateResult(null, toItem.Item1, fromStorage, fromSlotNo, 1, 1));
+
+                    SaveItem(server, character, toItem.Item1, fromStorage, fromSlotNo, 1);
+                }
+
+                results.Add(CreateItemUpdateResult(character, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+                SaveItem(server, character, fromItem.Item1, toStorage, toSlotNo, 1);
             }
             else
             {
-                fromStorage.SetItem(item, newSrcItemNum, fromSlotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, fromStorage.Type, fromSlotNo, item.UId, newSrcItemNum);
-            }
-            CDataItemUpdateResult srcUpdateItem = new CDataItemUpdateResult();
-            srcUpdateItem.ItemList.ItemUId = item.UId;
-            srcUpdateItem.ItemList.ItemId = item.ItemId;
-            srcUpdateItem.ItemList.ItemNum = newSrcItemNum;
-            srcUpdateItem.ItemList.Unk3 = item.Unk3;
-            srcUpdateItem.ItemList.StorageType = fromStorage.Type;
-            srcUpdateItem.ItemList.SlotNo = fromSlotNo;
-            srcUpdateItem.ItemList.Color = item.Color; // ?
-            srcUpdateItem.ItemList.PlusValue = item.PlusValue; // ?
-            srcUpdateItem.ItemList.Bind = false;
-            srcUpdateItem.ItemList.EquipPoint = 0;
-            srcUpdateItem.ItemList.EquipCharacterID = 0;
-            srcUpdateItem.ItemList.EquipPawnID = 0;
-            srcUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            srcUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-            srcUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
-            srcUpdateItem.UpdateItemNum = (int) -num;
-            results.Add(srcUpdateItem);
-
-            // Add items to destination storage, adding multiple stacks if needed
-            // as long as it doesn't go over the destination storage stack limit
-            uint itemsToMove = Math.Min(num, oldSrcItemNum);
-            while(itemsToMove > 0)
-            {
-                ushort dstSlotNo;
-                if(toSlotNo != 0)
+                // Moving items to/from or unequipping an item
+                uint newSrcItemNum = fromItem.Item2 - num;
+                if (newSrcItemNum == 0)
                 {
-                    // Check item in the destination slot
-                    Tuple<Item, uint>? itemInDstSlot = toStorage.GetItem(toSlotNo);
-                    if(itemInDstSlot != null)
-                    {
-                        if(itemInDstSlot.Item1.UId != item.UId)
-                        {
-                            // If there's an item in it, and it's not of the same type, swap items.
-                            // Move the item in the destination slot to the source slot
-                            results.AddRange(MoveItem(server, character, toStorage, toSlotNo, itemInDstSlot.Item2, fromStorage, fromSlotNo));
-                        }
-                        else
-                        {
-                            // If there's an item in it, and it's of the same type, add both counts.
-                            oldDstItemNum = itemInDstSlot.Item2;
-
-                            uint tmpNewDstItemNum = oldDstItemNum + itemsToMove;
-                            if(tmpNewDstItemNum > stackLimit)
-                            {
-                                // If it goes over the stack limit, add back the extra items to the source slot
-                                // This function here is the hackiest thing i've ever written, so much unnecesary adding/removing
-                                uint itemsOverStackLimit = tmpNewDstItemNum - stackLimit;
-
-                                fromStorage.SetItem(item, itemsOverStackLimit, fromSlotNo);
-                                server.Database.ReplaceStorageItem(character.CharacterId, fromStorage.Type, fromSlotNo, item.UId, itemsOverStackLimit);
-                                CDataItemUpdateResult srcExtraItemsBackUpdateItem = new CDataItemUpdateResult();
-                                srcExtraItemsBackUpdateItem.ItemList.ItemUId = item.UId;
-                                srcExtraItemsBackUpdateItem.ItemList.ItemId = item.ItemId;
-                                srcExtraItemsBackUpdateItem.ItemList.ItemNum = itemsOverStackLimit;
-                                srcExtraItemsBackUpdateItem.ItemList.Unk3 = item.Unk3;
-                                srcExtraItemsBackUpdateItem.ItemList.StorageType = fromStorage.Type;
-                                srcExtraItemsBackUpdateItem.ItemList.SlotNo = fromSlotNo;
-                                srcExtraItemsBackUpdateItem.ItemList.Color = item.Color;
-                                srcExtraItemsBackUpdateItem.ItemList.PlusValue = item.PlusValue;
-                                srcExtraItemsBackUpdateItem.ItemList.Bind = false;
-                                srcExtraItemsBackUpdateItem.ItemList.EquipPoint = 0;
-                                srcExtraItemsBackUpdateItem.ItemList.EquipCharacterID = 0;
-                                srcExtraItemsBackUpdateItem.ItemList.EquipPawnID = 0;
-                                srcExtraItemsBackUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                                srcExtraItemsBackUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-                                srcExtraItemsBackUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
-                                srcExtraItemsBackUpdateItem.UpdateItemNum = (int) itemsOverStackLimit;
-                                results.Add(srcExtraItemsBackUpdateItem);
-                                
-                                itemsToMove -= itemsOverStackLimit;
-                            }
-                        }
-                    }
-                    dstSlotNo = toSlotNo;
+                    DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo);
                 }
                 else
                 {
-                    // Check if there's already an stack of the item in the dst storage that can fit new items
-                    var itemInDstStorage = toStorage.Items
-                        .Select((item, index) => new { item, index })
-                        .Where(tuple => item.UId == tuple.item?.Item1.UId && tuple.item?.Item2 < stackLimit)
-                        .FirstOrDefault();
+                    UpdateItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum);
+                }
 
-                    if(itemInDstStorage == null)
+                results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum, num));
+
+                uint stackLimit = 999;
+                ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, fromItem.Item1.ItemId);
+                if (clientItemInfo.StorageType == StorageType.ItemBagEquipment || ItemBagStorageTypes.Contains(toStorage.Type))
+                {
+                    stackLimit = clientItemInfo.StackLimit;
+                }
+
+                uint itemsToMove = num;
+                while (itemsToMove > 0)
+                {
+                    uint oldDstItemNum = 0;
+                    ushort dstSlotNo = toSlotNo;
+                    
+                    if (toSlotNo == 0)
                     {
-                        // If there's not, get the first free slot
-                        oldDstItemNum = 0;
-                        dstSlotNo = toStorage.AddItem(item, oldDstItemNum);
+                        var itemInDstStorage = toStorage.Items
+                            .Select((item, index) => new { item, index })
+                            .Where(tuple => fromItem.Item1.UId == tuple.item?.Item1.UId && tuple.item?.Item2 < stackLimit)
+                            .FirstOrDefault();
+
+                        if (itemInDstStorage == null)
+                        {
+                            // Allocate a new slot to stick these items
+                            oldDstItemNum = 0;
+                            dstSlotNo = toStorage.AddItem(fromItem.Item1, 0);
+                        }
+                        else
+                        {
+                            // There is an existing stack, try to merge them
+                            oldDstItemNum = itemInDstStorage.item!.Item2;
+                            dstSlotNo = (ushort)(itemInDstStorage.index + 1);
+                        }
                     }
                     else
                     {
-                        // If there is, use that item's stack slot
-                        oldDstItemNum = itemInDstStorage.item!.Item2;
-                        dstSlotNo = (ushort) (itemInDstStorage.index+1);
+                        if (toItem != null)
+                        {
+                            if (toItem.Item1.UId != fromItem.Item1.UId)
+                            {
+                                // There is another item in the desired slot but they are not the same
+                                // so we need to swap them.
+                                results.AddRange(MoveItem(server, character, toStorage, toSlotNo, toItem.Item2, fromStorage, fromSlotNo));
+                            }
+                            else
+                            {
+                                oldDstItemNum = toItem.Item2;
+                            }
+                        }
+                        dstSlotNo = toSlotNo;
                     }
+
+                    uint newDstItemNum = ((oldDstItemNum + itemsToMove) > stackLimit) ? stackLimit : (oldDstItemNum + itemsToMove);
+                    uint movedItemNum = newDstItemNum - oldDstItemNum;
+                    if (movedItemNum == 0)
+                    {
+                        // if we move 0 items, this code will get stuck in an infinite loop
+                        // break out and report an error so we can investigate it.
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
+                    }
+
+                    toStorage.SetItem(fromItem.Item1, newDstItemNum, dstSlotNo);
+                    if (oldDstItemNum == 0)
+                    {
+                        SaveItem(server, character, fromItem.Item1, toStorage, dstSlotNo, newDstItemNum);
+                    }
+                    else
+                    {
+                        UpdateItem(server, character, fromItem.Item1, toStorage, dstSlotNo, newDstItemNum);
+                    }
+                    results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, dstSlotNo, newDstItemNum, movedItemNum));
+
+                    itemsToMove -= movedItemNum;
                 }
-
-                uint newDstItemNum = Math.Min(stackLimit, oldDstItemNum + itemsToMove);
-                uint movedItemNum = newDstItemNum - oldDstItemNum;
-                toStorage.SetItem(item, newDstItemNum, dstSlotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, toStorage.Type, dstSlotNo, item.UId, newDstItemNum);
-
-                CDataItemUpdateResult dstUpdateItem = new CDataItemUpdateResult();
-                dstUpdateItem.ItemList.ItemUId = item.UId;
-                dstUpdateItem.ItemList.ItemId = item.ItemId;
-                dstUpdateItem.ItemList.ItemNum = newDstItemNum;
-                dstUpdateItem.ItemList.Unk3 = item.Unk3;
-                dstUpdateItem.ItemList.StorageType = toStorage.Type;
-                dstUpdateItem.ItemList.SlotNo = dstSlotNo;
-                dstUpdateItem.ItemList.Color = item.Color;
-                dstUpdateItem.ItemList.PlusValue = item.PlusValue;
-                dstUpdateItem.ItemList.Bind = false; // ?
-                dstUpdateItem.ItemList.EquipPoint = 0;
-                dstUpdateItem.ItemList.EquipCharacterID = 0; // ?
-                dstUpdateItem.ItemList.EquipPawnID = 0; // ?
-                dstUpdateItem.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                dstUpdateItem.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
-                dstUpdateItem.ItemList.EquipElementParamList = item.EquipElementParamList;
-                dstUpdateItem.UpdateItemNum = (int) movedItemNum;
-                results.Add(dstUpdateItem);
-
-                itemsToMove -= movedItemNum;
             }
 
             return results;
+        }
+
+        private CDataItemUpdateResult CreateItemUpdateResult(Character character, Item item, Storage storage, ushort slotNo, uint itemNum, uint updateItemNum)
+        {
+            CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
+            updateResult.ItemList.ItemUId = item.UId;
+            updateResult.ItemList.ItemId = item.ItemId;
+            updateResult.ItemList.ItemNum = itemNum;
+            updateResult.ItemList.Unk3 = item.Unk3;
+            updateResult.ItemList.StorageType = storage.Type;
+            updateResult.ItemList.SlotNo = slotNo;
+            updateResult.ItemList.Color = item.Color; // ?
+            updateResult.ItemList.PlusValue = item.PlusValue; // ?
+            updateResult.ItemList.Bind = false;
+            updateResult.ItemList.EquipPoint = 0;
+            updateResult.ItemList.EquipCharacterID = (character == null) ? 0 : character.CharacterId;
+            updateResult.ItemList.EquipPawnID = 0;
+            updateResult.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+            updateResult.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+            updateResult.ItemList.EquipElementParamList = item.EquipElementParamList;
+            updateResult.UpdateItemNum = (int) updateItemNum;
+
+            return updateResult;
         }
 
         public uint LookupItemByUID(DdonServer<GameClient> server, string itemUID)

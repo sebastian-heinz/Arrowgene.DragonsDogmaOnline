@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -33,8 +34,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ExtendedParams = new CDataOrbGainExtendParam(),
                 Server = client.Character.Server
             };
-            PopulateNewPawnData(pawn);
+            PopulateNewPawnData(client.Character, pawn);
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
+
+            if (request.SlotNo == 1)
+            {
+                client.Send(new S2CPawnExtendMainPawnNtc() { TotalNum = 2, AddNum = 2 });
+            }
 
             if (request.SlotNo > 1)
             {
@@ -49,12 +55,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn = Server.Database.SelectPawnsByCharacterId(client.Character.CharacterId).Where(x => x.PawnId == pawn.PawnId).FirstOrDefault();
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
 
+            pawn.Equipment = client.Character.Storage.GetPawnEquipment(request.SlotNo - 1);
+
             client.Character.Pawns.Add(pawn);
 
             return new S2CPawnCreatePawnRes();
         }
 
-        private void PopulateNewPawnData(Pawn pawn)
+        private void PopulateNewPawnData(Character character, Pawn pawn)
         {
             ArisenCsv activeJobPreset = Server.AssetRepository.ArisenAsset.Where(x => x.Job == pawn.Job).Single();
             pawn.StatusInfo = new CDataStatusInfo()
@@ -121,7 +129,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 MDefDownResist = arisenPreset.MDefDownResist
             }).ToList();
 
-            pawn.Equipment = new Equipment(Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(arisenPreset.Job, new Dictionary<EquipType, List<Item>>() {
+            pawn.EquipmentTemplate = new EquipmentTemplate(
+                Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(arisenPreset.Job, new Dictionary<EquipType, List<Item>>() {
                 {
                     EquipType.Performance,
                     new List<Item>() {
@@ -335,6 +344,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.LearnedAbilities = pawn.EquippedAbilitiesDictionary.SelectMany(jobAndAugs => jobAndAugs.Value).Where(aug => aug != null).ToList();
             pawn.TrainingPoints = int.MaxValue;
             pawn.AvailableTraining = uint.MaxValue;
+
+            // Add current job's equipment to the equipment storage
+            List<Item?> performanceEquipItems = pawn.EquipmentTemplate.GetEquipment(pawn.Job, EquipType.Performance);
+            for (int i = 0; i < performanceEquipItems.Count; i++)
+            {
+                Item? item = performanceEquipItems[i];
+                ushort slot = (ushort)(i + 1);
+                character.Storage.getStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
+                if (item != null)
+                {
+                    Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, item.UId, 1);
+                }
+            }
+
+            List<Item?> visualEquipItems = pawn.EquipmentTemplate.GetEquipment(pawn.Job, EquipType.Visual);
+            for (int i = 0; i < visualEquipItems.Count; i++)
+            {
+                Item? item = visualEquipItems[i];
+                ushort slot = (ushort)(i + EquipmentTemplate.TOTAL_EQUIP_SLOTS + 1);
+                character.Storage.getStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
+                if (item != null)
+                {
+                    Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, item.UId, 1);
+                }
+            }
         }
     }
 }

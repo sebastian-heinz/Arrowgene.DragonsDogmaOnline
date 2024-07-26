@@ -319,6 +319,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut) { return true; }
         public bool UpdateStatusInfo(CharacterCommon character) { return true; }
         public bool UpdateStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
+        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
         public bool UpdateMyPawnSlot(uint characterId, uint num) { return true; }
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }

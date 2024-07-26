@@ -127,7 +127,11 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public Tuple<Item, uint>? GetItem(ushort slot) {
-            return Items[slot-1];
+            if (slot == 0)
+            {
+                return null;
+            }
+            return Items[slot - 1];
         }
 
         public ushort AddItem(Item newItem, uint itemCount) {
