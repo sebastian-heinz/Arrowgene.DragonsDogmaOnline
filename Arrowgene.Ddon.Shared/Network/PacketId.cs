@@ -504,8 +504,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PAWN_GET_FREE_RENTAL_PAWN_LIST_RES = new PacketId(8, 31, 2, "S2C_PAWN_GET_FREE_RENTAL_PAWN_LIST_RES", ServerType.Game, PacketSource.Server); // 購入済みポーンリスト取得に
         public static readonly PacketId C2S_PAWN_GET_NORA_PAWN_DATA_REQ = new PacketId(8, 32, 1, "C2S_PAWN_GET_NORA_PAWN_DATA_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PAWN_GET_NORA_PAWN_DATA_RES = new PacketId(8, 32, 2, "S2C_PAWN_GET_NORA_PAWN_DATA_RES", ServerType.Game, PacketSource.Server); // 野良ポーンデータ取得に
+
         public static readonly PacketId S2C_PAWN_GET_PAWN_PROFILE_NTC = new PacketId(8, 33, 16, "S2C_PAWN_GET_PAWN_PROFILE_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_33_16_NTC");
-        public static readonly PacketId S2C_PAWN_HISTORY_INFO_NTC = new PacketId(8, 34, 16, "S2C_PAWN_HISTORY_INFO_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_34_16_NTC");
+        public static readonly PacketId S2C_PAWN_GET_PAWN_HISTORY_INFO_NTC = new PacketId(8, 34, 16, "S2C_PAWN_GET_PAWN_HISTORY_INFO_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_34_16_NTC");
         public static readonly PacketId S2C_PAWN_GET_PAWN_TOTAL_SCORE_INFO_NTC = new PacketId(8, 35, 16, "S2C_PAWN_GET_PAWN_TOTAL_SCORE_INFO_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_35_16_NTC");
         public static readonly PacketId S2C_PAWN_GET_PAWN_ORB_DEVOTE_INFO_NTC = new PacketId(8, 36, 16, "S2C_PAWN_GET_PAWN_ORB_DEVOTE_INFO_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_36_16_NTC");
         public static readonly PacketId S2C_PAWN_JOIN_PARTY_PAWN_NTC = new PacketId(8, 37, 16, "S2C_PAWN_JOIN_PARTY_PAWN_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_37_16_NTC");
@@ -1605,7 +1606,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_NTC = new PacketId(35, 3, 16, "S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_NTC", ServerType.Game, PacketSource.Server, "S2C_CONTEXT_35_3_16_NTC");
         public static readonly PacketId C2S_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_REQ = new PacketId(35, 4, 1, "C2S_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_RES = new PacketId(35, 4, 2, "S2C_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_RES", ServerType.Game, PacketSource.Server); // パーティレンタル済みポーンコンテキスト取得に
-        public static readonly PacketId S2C_CONTEXT_35_4_16_NTC = new PacketId(35, 4, 16, "S2C_CONTEXT_35_4_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_NTC = new PacketId(35, 4, 16, "S2C_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_NTC", ServerType.Game, PacketSource.Server, "S2C_CONTEXT_35_4_16_NTC");
         public static readonly PacketId C2S_CONTEXT_35_5_16_NTC = new PacketId(35, 5, 16, "C2S_CONTEXT_35_5_16_NTC", ServerType.Game, PacketSource.Client); //Fires after jumping off some ledges into the abyss?
         public static readonly PacketId C2S_CONTEXT_GET_SET_CONTEXT_REQ = new PacketId(35, 7, 1, "C2S_CONTEXT_GET_SET_CONTEXT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONTEXT_GET_SET_CONTEXT_RES = new PacketId(35, 7, 2, "S2C_CONTEXT_GET_SET_CONTEXT_RES", ServerType.Game, PacketSource.Server); // セットコンテキスト取得に
@@ -2430,7 +2431,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_PAWN_GET_NORA_PAWN_DATA_REQ);
             AddPacketIdEntry(packetIds, S2C_PAWN_GET_NORA_PAWN_DATA_RES);
             AddPacketIdEntry(packetIds, S2C_PAWN_GET_PAWN_PROFILE_NTC);
-            AddPacketIdEntry(packetIds, S2C_PAWN_HISTORY_INFO_NTC);
+            AddPacketIdEntry(packetIds, S2C_PAWN_GET_PAWN_HISTORY_INFO_NTC);
             AddPacketIdEntry(packetIds, S2C_PAWN_GET_PAWN_TOTAL_SCORE_INFO_NTC);
             AddPacketIdEntry(packetIds, S2C_PAWN_GET_PAWN_ORB_DEVOTE_INFO_NTC);
             AddPacketIdEntry(packetIds, S2C_PAWN_JOIN_PARTY_PAWN_NTC);
@@ -3530,7 +3531,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_PARTY_MYPAWN_CONTEXT_NTC);
             AddPacketIdEntry(packetIds, C2S_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_REQ);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_RES);
-            AddPacketIdEntry(packetIds, S2C_CONTEXT_35_4_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_PARTY_RENTED_PAWN_CONTEXT_NTC);
             AddPacketIdEntry(packetIds, C2S_CONTEXT_35_5_16_NTC);
             AddPacketIdEntry(packetIds, C2S_CONTEXT_GET_SET_CONTEXT_REQ);
             AddPacketIdEntry(packetIds, S2C_CONTEXT_GET_SET_CONTEXT_RES);

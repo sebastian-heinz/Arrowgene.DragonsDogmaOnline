@@ -84,14 +84,18 @@ namespace Arrowgene.Ddon.Database
         bool UpdateRentalPawnSlot(uint characterId, uint num);
         bool UpdateCharacterBinaryData(uint characterId, byte[] data);
         void CreateItems(DbConnection conn, Character character);
+        CDataCharacterSearchParam SelectCharacterNameById(uint characterId);
 
         // Pawn
         bool CreatePawn(Pawn pawn);
         Pawn SelectPawn(uint pawnId);
         List<Pawn> SelectPawnsByCharacterId(uint characterId);
         List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId);
+        List<uint> SelectOfficialPawns();
+        List<uint> SelectAllPlayerPawns();
         bool DeletePawn(uint pawnId);
         bool UpdatePawnBaseInfo(Pawn pawn);
+        uint GetPawnOwnerCharacterId(uint pawnId);
 
         // Pawn Training Status
         bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);

@@ -384,6 +384,10 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount) { return true; }
         public bool RemoveBBMContentTreasure(uint characterId) { return true; }
         public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId) { return new List<BitterblackMazeTreasure>(); }
+        public List<uint> SelectOfficialPawns() { return new List<uint>(); }
+        public List<uint> SelectAllPlayerPawns() { return new List<uint>(); }
+        public uint GetPawnOwnerCharacterId(uint pawnId) { return 0; }
+        public CDataCharacterSearchParam SelectCharacterNameById(uint characterId) { return new CDataCharacterSearchParam(); }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

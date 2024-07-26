@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
@@ -25,9 +26,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnGetPartyPawnDataReq> packet)
         {
+            // var owner = Server.CharacterManager.SelectCharacter(packet.Structure.CharacterId);
             GameClient owner = this.Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
             // TODO: Move this to a function or lookup class
-            Pawn pawn = owner.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).First();
+            List<Pawn> pawns = owner.Character.Pawns.Concat(client.Character.RentedPawns).ToList();
+            Pawn pawn = pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).First();
 
             var res = new S2CPawnGetPartyPawnDataRes();
             res.CharacterId = pawn.CharacterId;

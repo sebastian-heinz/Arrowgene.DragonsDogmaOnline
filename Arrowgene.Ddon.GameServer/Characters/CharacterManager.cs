@@ -28,6 +28,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public Character SelectCharacter(GameClient client, uint characterId)
         {
+            Character character = SelectCharacter(characterId);
+            client.Character = character;
+            client.Character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single();
+            client.UpdateIdentity();
+
+            return character;
+        }
+
+        public Character SelectCharacter(uint characterId)
+        {
             Character character = _Server.Database.SelectCharacter(characterId);
             if (character == null)
             {
@@ -46,13 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             UpdateCharacterExtendedParams(character);
 
-            client.Character = character;
-            client.Character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single();
-            client.UpdateIdentity();
-
             SelectPawns(character);
-
-            // TODO: Query things like main quest?
 
             return character;
         }

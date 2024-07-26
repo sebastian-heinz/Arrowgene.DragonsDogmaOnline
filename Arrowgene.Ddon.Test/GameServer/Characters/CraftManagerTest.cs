@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;

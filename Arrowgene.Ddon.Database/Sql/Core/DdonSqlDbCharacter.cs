@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
@@ -65,6 +66,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeleteCharacter = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_character\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_character\".\"character_common_id\" AND \"character_id\"=@character_id);";
         private const string SqlUpdateMyPawnSlot = "UPDATE \"ddon_character\" SET \"my_pawn_slot_num\"=@my_pawn_slot_num WHERE \"character_id\"=@character_id;";
         private const string SqlUpdateRentalPawnSlot = "UPDATE \"ddon_character\" SET \"rental_pawn_slot_num\"=@rental_pawn_slot_num WHERE \"character_id\"=@character_id;";
+        private const string SqlSelectCharacterNameByCharacterId = "SELECT \"first_name\", \"last_name\" FROM \"ddon_character\" WHERE \"character_id\"=@character_id;";
 
 
         private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO \"ddon_character_matching_profile\" ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
@@ -588,6 +590,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             return storages;
+        }
+
+        public CDataCharacterSearchParam SelectCharacterNameById(uint characterId)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectCharacterNameById(connection, characterId);
+        }
+
+        public CDataCharacterSearchParam SelectCharacterNameById(TCon connection, uint characterId)
+        {
+            CDataCharacterSearchParam result = new CDataCharacterSearchParam();
+            ExecuteReader(connection, SqlSelectCharacterNameByCharacterId,
+                command => { AddParameter(command, "@character_id", characterId); },
+                reader =>
+                {
+                    if (reader.Read())
+                    {
+                        result.FirstName = GetString(reader, "first_name");
+                        result.LastName = GetString(reader, "last_name");
+                    }
+                });
+            return result;
         }
 
         private Character ReadAllCharacterData(TReader reader)
