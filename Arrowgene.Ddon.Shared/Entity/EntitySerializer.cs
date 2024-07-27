@@ -652,6 +652,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobCharacterJobLevelUpNtc.Serializer());
             Create(new S2CJobCharacterJobLevelUpOtherNtc.Serializer());
             Create(new S2CJobGetJobChangeListRes.Serializer());
+            Create(new S2CJobUpdatePlayPointNtc.Serializer());
 
             Create(new S2COrbDevoteGetReleaseOrbElementListRes.Serializer());
             Create(new S2CJobOrbTreeGetJobOrbTreeStatusListRes.Serializer());

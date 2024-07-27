@@ -124,6 +124,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint gainedExp = enemyKilled.GetDroppedExperience();
                 uint extraBonusExp = 0; // TODO: Figure out what this is for (gp bonus?)
 
+                uint gainedPP = enemyKilled.GetDroppedPlayPoints();
+                uint gainedBonusPP = 0;
+
                 GameClient memberClient;
                 CharacterCommon memberCharacter;
                 if(member is PlayerPartyMember)
@@ -132,6 +135,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     memberCharacter = memberClient.Character;
 
                     if (memberCharacter.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+
+                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == 1) gainedPP = 0;
+                    else gainedExp = 0;
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -170,6 +176,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if(updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
                     {
                         memberClient.Send(updateCharacterItemNtc);
+                    }
+
+                    if (gainedPP > 0)
+                    {
+                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, gainedBonusPP, 1);
                     }
                 }
                 else if(member is PawnPartyMember)

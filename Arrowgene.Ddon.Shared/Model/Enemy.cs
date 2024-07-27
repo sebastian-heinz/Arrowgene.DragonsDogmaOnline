@@ -68,7 +68,12 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             return Experience * (NamedEnemyParams.Experience/100);
         }
-  
+
+        //TODO: Figure out how to do this properly.
+        public uint GetDroppedPlayPoints()
+        {
+            return 100;
+        }
 
         public CDataStageLayoutEnemyPresetEnemyInfoClient asCDataStageLayoutEnemyPresetEnemyInfoClient()
         {
