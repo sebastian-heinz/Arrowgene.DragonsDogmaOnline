@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.Linq;
 using System.Threading;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -24,7 +25,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             { 
                 JobId = packet.Structure.JobId,
                 JobValueType = packet.Structure.JobValueType,
-                JobValueShopItemList = GetLineup(packet.Structure.JobId)
+                //JobValueShopItemList = GetLineup(packet.Structure.JobId)
+                JobValueShopItemList = Server.AssetRepository.JobValueShopAsset.Where(x => x.Item1 == packet.Structure.JobId).Select(x => x.Item2).ToList()
             });
         }
 

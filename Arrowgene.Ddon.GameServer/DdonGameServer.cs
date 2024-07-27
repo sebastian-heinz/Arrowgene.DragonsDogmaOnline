@@ -315,6 +315,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new JobUpdateExpModeHandler(this));
             AddHandler(new JobGetPlayPointListHandler(this));
             AddHandler(new JobJobValueShopGetLineupHandler(this));
+            AddHandler(new JobJobValueShopBuyItemHandler(this));
 
             AddHandler(new JobOrbTreeGetJobOrbTreeStatusListHandler(this));
             AddHandler(new JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler(this));

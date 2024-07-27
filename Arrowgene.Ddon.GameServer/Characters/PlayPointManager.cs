@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (activeCharacterPlayPoint != null && activeCharacterPlayPoint.PlayPoint.PlayPoint < PP_MAX)
             {
-                var clampedNew = Math.Min(activeCharacterPlayPoint.PlayPoint.PlayPoint + gainedPoints + extraBonusPoints, PP_MAX);
+                uint clampedNew = (uint)Math.Clamp((long)activeCharacterPlayPoint.PlayPoint.PlayPoint + gainedPoints + extraBonusPoints, 0, PP_MAX);
                 activeCharacterPlayPoint.PlayPoint.PlayPoint = clampedNew;
 
                 S2CJobUpdatePlayPointNtc ppNtc = new S2CJobUpdatePlayPointNtc()
@@ -41,6 +41,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Type = type //Only pops up if type == 1.
                 };
                 
+                client.Send(ppNtc);
+
+                this._database.UpdateCharacterPlayPointData(client.Character.CommonId, activeCharacterPlayPoint);
+            }
+        }
+
+        public void RemovePlayPoint(GameClient client, uint removedPoints, byte type = 0)
+        {
+            CDataJobPlayPoint? activeCharacterPlayPoint = client.Character.ActiveCharacterPlayPointData;
+
+            if (activeCharacterPlayPoint != null && activeCharacterPlayPoint.PlayPoint.PlayPoint > 0)
+            {
+                uint clampedNew = (uint)Math.Clamp((long)activeCharacterPlayPoint.PlayPoint.PlayPoint - removedPoints, 0, PP_MAX);
+                activeCharacterPlayPoint.PlayPoint.PlayPoint = clampedNew;
+
+                S2CJobUpdatePlayPointNtc ppNtc = new S2CJobUpdatePlayPointNtc()
+                {
+                    JobId = activeCharacterPlayPoint.Job,
+                    UpdatePoint = 0,
+                    ExtraBonusPoint = 0,
+                    TotalPoint = activeCharacterPlayPoint.PlayPoint.PlayPoint,
+                    Type = type
+                };
+
                 client.Send(ppNtc);
 
                 this._database.UpdateCharacterPlayPointData(client.Character.CommonId, activeCharacterPlayPoint);
