@@ -242,6 +242,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer());
             Create(new CDataStatusInfoSerializer());
             Create(new CDataStorageItemUIDList.Serializer());
+
+            Create(new CDataStampBonus.Serializer());
+            Create(new CDataStampBonusDaily.Serializer());
+            Create(new CDataStampBonusTotal.Serializer());
+
             Create(new CDataTimeLimitedQuestOrderList.Serializer());
             Create(new CDataTraningRoomEnemyHeader.Serializer());
             Create(new CDataTutorialQuestOrderList.Serializer());
@@ -880,6 +885,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CInstanceGetOmInstantKeyValueAllRes.Serializer());
             Create(new S2CAreaGetLeaderAreaReleaseListRes.Serializer());
+
+            Create(new S2CStampBonusGetListRes.Serializer());
 
             Create(new ServerRes.Serializer());
         }
