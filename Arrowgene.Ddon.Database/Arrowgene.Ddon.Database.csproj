@@ -35,6 +35,7 @@
 
     <ItemGroup>
       <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
+      <ContentWithTargetPath Remove="files\database\script\uid_migration.sql" />
     </ItemGroup>
 
     <ItemGroup>
@@ -43,6 +44,9 @@
 
     <ItemGroup>
       <None Update="Files\Database\Script\equip_migration_sqlite.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Database\Script\uid_migration.sql">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
