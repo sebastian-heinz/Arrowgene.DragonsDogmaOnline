@@ -29,6 +29,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             res.PlayPointList.ForEach(x => x.PlayPoint.ExpMode = (byte)(3 - x.PlayPoint.ExpMode)); //Flip 1 <-> 2
 
+            foreach (CDataJobPlayPoint playpoint in res.PlayPointList)
+            {
+                Database.ReplaceCharacterPlayPointData(client.Character.CharacterId, playpoint);
+            }
+
             client.Send(res);
         }
     }

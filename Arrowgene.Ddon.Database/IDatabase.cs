@@ -259,5 +259,10 @@ namespace Arrowgene.Ddon.Database
         List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId);
         bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived);
         bool DeleteSystemMailAttachment(ulong messageId);
+
+        // Play points
+        bool ReplaceCharacterPlayPointData(uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData);
+        bool UpdateCharacterPlayPointData(uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData);
+
     }
 }

@@ -12,15 +12,17 @@ namespace Arrowgene.Ddon.Shared.Model
             FirstName = string.Empty;
             LastName = string.Empty;
             Created = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
-            PlayPointList = Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
-            {
-                Job = job,
-                PlayPoint = new CDataPlayPointData()
-                {
-                    ExpMode = 1, // EXP
-                    PlayPoint = 0
-                }
-            }).ToList();
+            PlayPointList = new List<CDataJobPlayPoint>();
+                
+            //Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
+            //{
+            //    Job = job,
+            //    PlayPoint = new CDataPlayPointData()
+            //    {
+            //        ExpMode = 1, // EXP
+            //        PlayPoint = 0
+            //    }
+            //}).ToList();
             Storage = new Storages(new Dictionary<StorageType, ushort>());
             Unk0 = new List<UnknownCharacterData0>();
             WalletPointList = new List<CDataWalletPoint>();
