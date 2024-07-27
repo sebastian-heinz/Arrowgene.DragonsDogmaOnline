@@ -120,7 +120,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        private CDataNormalSkillParam ReadNormalSkillParam(TReader reader)
+        private CDataNormalSkillParam ReadNormalSkillParam(DbDataReader reader)
         {
             CDataNormalSkillParam normalSkillParam = new CDataNormalSkillParam();
             normalSkillParam.Job = (JobId)GetByte(reader, "job");

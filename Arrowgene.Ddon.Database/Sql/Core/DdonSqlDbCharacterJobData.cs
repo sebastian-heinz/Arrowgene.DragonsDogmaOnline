@@ -86,7 +86,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlUpdateCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
         }
 
-        private CDataCharacterJobData ReadCharacterJobData(TReader reader)
+        private CDataCharacterJobData ReadCharacterJobData(DbDataReader reader)
         {
             CDataCharacterJobData characterJobData = new CDataCharacterJobData();
             characterJobData.Job = (JobId) GetByte(reader, "job");

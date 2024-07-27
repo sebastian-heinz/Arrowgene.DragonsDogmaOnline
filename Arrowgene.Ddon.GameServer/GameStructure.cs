@@ -121,15 +121,15 @@ public static class GameStructure
         cDataPawnInfo.CharacterJobDataList = pawn.CharacterJobDataList;
         cDataPawnInfo.CharacterEquipDataList = new List<CDataCharacterEquipData>() {
             new CDataCharacterEquipData() {
-                Equips = pawn.Equipment.getEquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Performance)
+                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
             }
         };
         cDataPawnInfo.CharacterEquipViewDataList = new List<CDataCharacterEquipData>() {
             new CDataCharacterEquipData() {
-                Equips = pawn.Equipment.getEquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Visual)
+                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
             }
         };
-        cDataPawnInfo.CharacterEquipJobItemList = pawn.Equipment.getJobItemsAsCDataEquipJobItem(pawn.Job);
+        cDataPawnInfo.CharacterEquipJobItemList = pawn.EquipmentTemplate.JobItemsAsCDataEquipJobItem(pawn.Job);
         cDataPawnInfo.JewelrySlotNum = pawn.JewelrySlotNum;
         // TODO: Pawn CharacterItemSlotInfoList, CraftData
         cDataPawnInfo.CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
@@ -155,7 +155,7 @@ public static class GameStructure
         cDataPawnInfo.AbilityCostMax = 15;
         cDataPawnInfo.ExtendParam = pawn.ExtendedParams;
         cDataPawnInfo.PawnType = pawn.PawnType;
-        // TODO: ShareRange, Likability, Unk0, Unk1
+        // TODO: ShareRange, Likability, Unk1
         cDataPawnInfo.ShareRange = 1;
         cDataPawnInfo.Likability = 2;
         cDataPawnInfo.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
@@ -183,6 +183,8 @@ public static class GameStructure
         contextBase.CharacterId = character.CharacterId;
         contextBase.FirstName = character.FirstName;
         contextBase.LastName = character.LastName;
+        contextBase.ContextEquipPerformanceList = character.Equipment.AsCDataContextEquipData(EquipType.Performance);
+        contextBase.ContextEquipVisualList = character.Equipment.AsCDataContextEquipData(EquipType.Visual);
         CDataContextBase_common(contextBase, character);
     }
 
@@ -191,10 +193,12 @@ public static class GameStructure
         contextBase.CharacterId = pawn.CharacterId;
         contextBase.FirstName = pawn.Name;
         contextBase.LastName = string.Empty;
+        contextBase.ContextEquipPerformanceList = pawn.Equipment.AsCDataContextEquipData(EquipType.Performance);
+        contextBase.ContextEquipVisualList = pawn.Equipment.AsCDataContextEquipData(EquipType.Visual);
         CDataContextBase_common(contextBase, pawn);
     }
 
-    public static void CDataContextBase_common(CDataContextBase contextBase, CharacterCommon character)
+    private static void CDataContextBase_common(CDataContextBase contextBase, CharacterCommon character)
     {
         int StageNo = (int)(character.StageNo);
         if (StageNo == 0)
@@ -207,9 +211,7 @@ public static class GameStructure
         contextBase.Sex = character.EditInfo.Sex;
         contextBase.HideEquipHead = character.HideEquipHead;
         contextBase.HideEquipLantern = character.HideEquipLantern;
-        contextBase.ContextEquipPerformanceList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Performance);
-        contextBase.ContextEquipVisualList = character.Equipment.getEquipmentAsCDataContextEquipData(character.Job, EquipType.Visual);
-        contextBase.ContextEquipJobItemList = character.Equipment.getJobItemsAsCDataEquipJobItem(character.Job)
+        contextBase.ContextEquipJobItemList = character.EquipmentTemplate.JobItemsAsCDataEquipJobItem(character.Job)
             .Select(x => new CDataContextEquipJobItemData(x)).ToList();
         contextBase.ContextNormalSkillList = character.LearnedNormalSkills
             .Where(x => x.Job == character.Job)
@@ -270,19 +272,8 @@ public static class GameStructure
     public static void CDataLobbyContextPlayer(CDataLobbyContextPlayer lobbyContextPlayer, Character character)
     {
         CDataContextBase(lobbyContextPlayer.Base, character);
-        CDataLobbyContextPlayer_common(lobbyContextPlayer, character);
-    }
-
-    public static void CDataLobbyContextPlayer(CDataLobbyContextPlayer lobbyContextPlayer, Pawn pawn)
-    {
-        CDataContextBase(lobbyContextPlayer.Base, pawn);
-        CDataLobbyContextPlayer_common(lobbyContextPlayer, pawn);
-    }
-
-    public static void CDataLobbyContextPlayer_common(CDataLobbyContextPlayer lobbyContextPlayer, CharacterCommon common)
-    {
-        CDataContextPlayerInfo(lobbyContextPlayer.PlayerInfo, common);
-        lobbyContextPlayer.EditInfo = common.EditInfo;
+        CDataContextPlayerInfo(lobbyContextPlayer.PlayerInfo, character);
+        lobbyContextPlayer.EditInfo = character.EditInfo;
     }
 
     public static void CDataContextResist(CDataContextResist contextResist, CharacterCommon character)

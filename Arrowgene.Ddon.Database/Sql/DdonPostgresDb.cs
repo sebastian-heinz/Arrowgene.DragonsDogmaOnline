@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using Arrowgene.Ddon.Database.Sql.Core;
 using Arrowgene.Logging;
@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.Database.Sql
             throw new NotImplementedException();
         }
 
-        protected override void AddParameter(NpgsqlCommand command, string name, DateTime? value)
+        public override void AddParameter(NpgsqlCommand command, string name, DateTime? value)
         {
             if (value.HasValue)
             {
@@ -95,17 +95,17 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        protected override void AddParameter(NpgsqlCommand command, string name, DateTime value)
+        public override void AddParameter(NpgsqlCommand command, string name, DateTime value)
         {
             AddParameter(command, name, DateTime.SpecifyKind(value, DateTimeKind.Utc), DbType.DateTime);
         }
 
-        protected override DateTime GetDateTime(NpgsqlDataReader reader, string column)
+        public override DateTime GetDateTime(NpgsqlDataReader reader, string column)
         {
             return DateTime.SpecifyKind(reader.GetDateTime(reader.GetOrdinal(column)), DateTimeKind.Utc);
         }
 
-        protected override DateTime? GetDateTimeNullable(NpgsqlDataReader reader, int ordinal)
+        public override DateTime? GetDateTimeNullable(NpgsqlDataReader reader, int ordinal)
         {
             if (reader.IsDBNull(ordinal))
             {

@@ -1,10 +1,6 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -14,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             SenderName = String.Empty;
             Body = String.Empty;
+            Attachments = new List<SystemMailAttachment>();
         }
 
         public ulong MessageId { get; set; }
@@ -23,6 +20,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public string Title { get; set; }
         public string Body { get; set; }
         public ulong SendDate { get; set; }
+        public List<SystemMailAttachment> Attachments { get; set; }
 
         public CDataMailInfo ToCDataMailInfo(byte itemState)
         {

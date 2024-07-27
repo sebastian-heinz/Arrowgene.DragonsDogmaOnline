@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.RegularExpressions;
 using Arrowgene.Ddon.Database.Model;
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Database
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonDatabaseBuilder));
         private const string DefaultSchemaFile = "Script/schema_sqlite.sql";
 
-        public const uint Version = 2;
+        public const uint Version = 3;
 
         public static IDatabase Build(DatabaseSetting settings)
         {
@@ -73,6 +74,19 @@ namespace Arrowgene.Ddon.Database
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        public static string AdaptSQLiteSchemaTo(string databaseTypeString, string schema)
+        {
+            DatabaseType databaseType = (DatabaseType)Enum.Parse(typeof(DatabaseType), databaseTypeString, true);
+            return AdaptSQLiteSchemaTo(databaseType, schema);
+        }
+
+        public static string GetAdaptedSchema(DatabaseSetting setting, string schemaPath)
+        {
+            string schemaFilePath = Path.Combine(setting.DatabaseFolder, schemaPath);
+            string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
+            return DdonDatabaseBuilder.AdaptSQLiteSchemaTo(setting.Type, schema);
         }
 
         public static string BuildSqLitePath(string databaseFolder)
