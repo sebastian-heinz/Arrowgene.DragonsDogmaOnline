@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                                 "!!!There may be more items than the 3 shown in the UI.!!!\n" +
                                 "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" +
                                 "\n\n" +
-                                "Press \"Receieve All\" to reclaim your items.\n" +
+                                "Press \"Recieve All\" to reclaim your items.\n" +
                                 "If you are unable to receive all the items. Make room and try again.\n" +
                                 "\n" +
                                 "NOTE: If your main weapon was unequipped, equip that weapon and relog for it to appear properly.",
