@@ -22,7 +22,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SJobUpdateExpModeReq> packet)
         {
-            // TODO: Store updated Exp mode in the character object and in DB
             var res = new S2CJobUpdateExpModeRes()
             {
                 PlayPointList = client.Character.PlayPointList.Where(x => packet.Structure.UpdateExpModeList.Any(y => y.Job == x.Job)).ToList()

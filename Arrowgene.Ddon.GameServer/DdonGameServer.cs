@@ -313,6 +313,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new JobChangePawnJobHandler(this));
             AddHandler(new JobGetJobChangeListHandler(this));
             AddHandler(new JobUpdateExpModeHandler(this));
+            AddHandler(new JobGetPlayPointListHandler(this));
 
             AddHandler(new JobOrbTreeGetJobOrbTreeStatusListHandler(this));
             AddHandler(new JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler(this));
