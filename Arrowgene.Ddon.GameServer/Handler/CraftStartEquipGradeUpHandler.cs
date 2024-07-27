@@ -61,6 +61,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint addEquipPoint = 0;     
             bool dogreatsuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             bool canUpgrade = false;
+
+            double minMultiplier = 0.8;
+            double maxMultiplier = 1.2;
+            double pointsMultiplier = minMultiplier + (_random.NextDouble() * (maxMultiplier - minMultiplier));
+
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
@@ -69,19 +74,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // S2CItemUpdateCharacterItemNtc updateCharacterItemNtc2 = new S2CItemUpdateCharacterItemNtc();
             // updateCharacterItemNtc2.UpdateType = ItemNoticeType.ResetCraftpoint;
-            // Potentially needed to reset the equippoints properly, but on some quick testing didn't seem to do anything.
+            // TODO: Explore this more ^^^ Potentially needed to reset the equippoints properly for minor visual bug.
 
 
             // Handles adding EquipPoints.
             if(dogreatsuccess == true)
             {
+
                 addEquipPoint = 100;
+                addEquipPoint = (uint)(addEquipPoint * pointsMultiplier);
                 currentTotalEquipPoint += addEquipPoint;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
             else
             {
                 addEquipPoint = 30;
+                addEquipPoint = (uint)(addEquipPoint * pointsMultiplier);
                 currentTotalEquipPoint += addEquipPoint;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
