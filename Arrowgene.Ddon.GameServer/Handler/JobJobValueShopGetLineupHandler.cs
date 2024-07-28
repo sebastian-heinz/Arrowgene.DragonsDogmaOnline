@@ -11,7 +11,7 @@ using System.Threading;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class JobJobValueShopGetLineupHandler : GameStructurePacketHandler<C2SJobJobValueShopGetLineupReq>
+    public class JobJobValueShopGetLineupHandler : GameRequestPacketHandler<C2SJobJobValueShopGetLineupReq, S2CJobJobValueShopGetLineupRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobGetPlayPointListHandler));
 
@@ -19,68 +19,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SJobJobValueShopGetLineupReq> packet)
+        public override S2CJobJobValueShopGetLineupRes Handle(GameClient client, C2SJobJobValueShopGetLineupReq packet)
         {
-            client.Send(new S2CJobJobValueShopGetLineupRes()
+            return new S2CJobJobValueShopGetLineupRes()
             { 
-                JobId = packet.Structure.JobId,
-                JobValueType = packet.Structure.JobValueType,
-                //JobValueShopItemList = GetLineup(packet.Structure.JobId)
-                JobValueShopItemList = Server.AssetRepository.JobValueShopAsset.Where(x => x.Item1 == packet.Structure.JobId).Select(x => x.Item2).ToList()
-            });
-        }
-
-        //TODO: Move this into a Manager.
-        private static List<CDataJobValueShopItem> GetLineup(JobId jobId)
-        {
-            List<uint> dragonTrinketIds = new List<uint>{
-                0,
-                16374,
-                16375,
-                16376,
-                16377,
-                16378,
-                16379,
-                16380,
-                16381,
-                16382,
-                16725,
-                21616
+                JobId = packet.JobId,
+                JobValueType = packet.JobValueType,
+                JobValueShopItemList = Server.AssetRepository.JobValueShopAsset.Where(x => x.Item1 == packet.JobId).Select(x => x.Item2).ToList()
             };
-
-            List<CDataJobValueShopItem> lineup = new List<CDataJobValueShopItem>();
-
-            lineup.Add(new CDataJobValueShopItem()
-            {
-                LineupId = 1,
-                ItemId = 13477, //Unappraised Moon Trinket (King)
-                Price = 200,
-                IsCountLimit = false,
-                CanSelectStorage = true,
-                UnableReason = 0
-            });
-
-            lineup.Add(new CDataJobValueShopItem()
-            {
-                LineupId = 2,
-                ItemId = dragonTrinketIds[(byte)jobId], //Unidentified Dragon Trinket ([JOB])
-                Price = 500,
-                IsCountLimit = false,
-                CanSelectStorage = true,
-                UnableReason = 0
-            });
-
-            lineup.Add(new CDataJobValueShopItem()
-            {
-                LineupId = 3,
-                ItemId = 18615, //Supreme Merit Medal
-                Price = 2000,
-                IsCountLimit = false,
-                CanSelectStorage = true,
-                UnableReason = 0
-            });
-
-            return lineup;
         }
     }
 }

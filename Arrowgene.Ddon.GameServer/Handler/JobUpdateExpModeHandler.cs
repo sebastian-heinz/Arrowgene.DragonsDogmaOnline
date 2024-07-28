@@ -22,6 +22,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SJobUpdateExpModeReq> packet)
         {
+            //Handle case where the character is somehow missing a PlayPoint structure.
+            var missingList = packet.Structure.UpdateExpModeList.Where(x => !client.Character.PlayPointList.Any(y => y.Job == x.Job)).ToList();
+            foreach (var missing in missingList)
+            {
+                client.Character.PlayPointList.Add(new CDataJobPlayPoint()
+                {
+                    Job = missing.Job,
+                    PlayPoint = new CDataPlayPointData()
+                    {
+                        PlayPoint = 0,
+                        ExpMode = 1,
+                    }
+                });
+            }
+            
             var res = new S2CJobUpdateExpModeRes()
             {
                 PlayPointList = client.Character.PlayPointList.Where(x => packet.Structure.UpdateExpModeList.Any(y => y.Job == x.Job)).ToList()

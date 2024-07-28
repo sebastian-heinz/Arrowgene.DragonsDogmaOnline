@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    internal class JobJobValueShopBuyItemHandler : GameStructurePacketHandler<C2SJobJobValueShopBuyItemReq>
+    internal class JobJobValueShopBuyItemHandler : GameRequestPacketHandler<C2SJobJobValueShopBuyItemReq, S2CJobJobValueShopBuyItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobGetPlayPointListHandler));
 
@@ -26,12 +26,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _playPointManager = server.PPManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SJobJobValueShopBuyItemReq> packet)
+        public override S2CJobJobValueShopBuyItemRes Handle(GameClient client, C2SJobJobValueShopBuyItemReq packet)
         {
-            uint boughtAmount = packet.Structure.Num;
+            uint boughtAmount = packet.Num;
 
             bool sendToItemBag;
-            switch (packet.Structure.StorageType)
+            switch (packet.StorageType)
             {
                 case 19:
                     // If packet.Structure.Destination is 19: Send to corresponding item bag
@@ -42,46 +42,37 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     sendToItemBag = false;
                     break;
                 default:
-                    throw new Exception("Unexpected destination when buying goods: " + packet.Structure.StorageType);
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, "\"Unexpected destination when buying goods: \" + packet.Structure.StorageType");
             }
 
             CDataJobValueShopItem boughtListing = Server.AssetRepository.JobValueShopAsset.Where(
-                x => x.Item1 == packet.Structure.JobId
-                && x.Item2.LineupId == packet.Structure.LineupId).First().Item2;
+                x => x.Item1 == packet.JobId
+                && x.Item2.LineupId == packet.LineupId).First().Item2;
 
             List<CDataItemUpdateResult> itemUpdateResults = _itemManager.AddItem(Server, client.Character, sendToItemBag, boughtListing.ItemId, boughtAmount);
             boughtAmount = (uint)itemUpdateResults.Select(result => result.UpdateItemNum).Sum();
 
-            var totalPrice = boughtAmount * packet.Structure.Price;
+            var totalPrice = boughtAmount * packet.Price;
 
-            if (boughtAmount == 0)
+            if (boughtAmount > 0)
             {
                 client.Send(new S2CItemUpdateCharacterItemNtc()
                 {
-                    UpdateType = ItemNoticeType.ShopGoods_buy
-                });
-            }
-            else
-            {
-                client.Send(new S2CItemUpdateCharacterItemNtc()
-                {
-                    UpdateType = ItemNoticeType.ShopGoods_buy,
                     UpdateItemList = itemUpdateResults
                 });
             }
 
             if (totalPrice > 0)
             {
-                _playPointManager.RemovePlayPoint(client, boughtAmount * packet.Structure.Price);
+                _playPointManager.RemovePlayPoint(client, boughtAmount * packet.Price);
             }
 
-            client.Send(new S2CJobJobValueShopBuyItemRes()
+            return new S2CJobJobValueShopBuyItemRes()
             {
-                JobId = packet.Structure.JobId,
-                JobValueType = packet.Structure.JobValueType,
-                Value = boughtAmount * packet.Structure.Price
-            });
-
+                JobId = packet.JobId,
+                JobValueType = packet.JobValueType,
+                Value = boughtAmount * packet.Price
+            };
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (activeCharacterPlayPoint != null && activeCharacterPlayPoint.PlayPoint.PlayPoint < PP_MAX)
             {
-                uint clampedNew = (uint)Math.Clamp((long)activeCharacterPlayPoint.PlayPoint.PlayPoint + gainedPoints + extraBonusPoints, 0, PP_MAX);
+                uint clampedNew = Math.Min(activeCharacterPlayPoint.PlayPoint.PlayPoint + gainedPoints + extraBonusPoints, PP_MAX);
                 activeCharacterPlayPoint.PlayPoint.PlayPoint = clampedNew;
 
                 S2CJobUpdatePlayPointNtc ppNtc = new S2CJobUpdatePlayPointNtc()
@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     UpdatePoint = gainedPoints,
                     ExtraBonusPoint = extraBonusPoints,
                     TotalPoint = activeCharacterPlayPoint.PlayPoint.PlayPoint,
-                    Type = type //Only pops up if type == 1.
+                    Type = type //Type == 1 (default) is "loud" and will show the UpdatePoint amount to the user, as both a chat log and floating text.
                 };
                 
                 client.Send(ppNtc);
@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (activeCharacterPlayPoint != null && activeCharacterPlayPoint.PlayPoint.PlayPoint > 0)
             {
-                uint clampedNew = (uint)Math.Clamp((long)activeCharacterPlayPoint.PlayPoint.PlayPoint - removedPoints, 0, PP_MAX);
+                uint clampedNew = Math.Min(activeCharacterPlayPoint.PlayPoint.PlayPoint - removedPoints, PP_MAX);
                 activeCharacterPlayPoint.PlayPoint.PlayPoint = clampedNew;
 
                 S2CJobUpdatePlayPointNtc ppNtc = new S2CJobUpdatePlayPointNtc()
@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     UpdatePoint = 0,
                     ExtraBonusPoint = 0,
                     TotalPoint = activeCharacterPlayPoint.PlayPoint.PlayPoint,
-                    Type = type
+                    Type = type //Type == 0 (default) is "silent" and will not notify the player, aside from updating some UI elements.
                 };
 
                 client.Send(ppNtc);

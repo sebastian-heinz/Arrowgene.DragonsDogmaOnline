@@ -1164,6 +1164,20 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 client.Send(res);
             }
 
+            // Populate playpoint data.
+            Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
+            {
+                Job = job,
+                PlayPoint = new CDataPlayPointData()
+                {
+                    ExpMode = 1, // EXP
+                    PlayPoint = 0
+                }
+            }).ToList().ForEach(x => { 
+                Database.ReplaceCharacterPlayPointData(character.CommonId, x);
+                character.PlayPointList.Add(x);
+            });
+
             // Default unlock some secret abilities based on server admin desires
             foreach (var ability in _AssetRepository.SecretAbilitiesAsset.DefaultSecretAbilities)
             {
