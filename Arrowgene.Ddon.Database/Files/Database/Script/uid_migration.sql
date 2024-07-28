@@ -35,5 +35,3 @@ CREATE TABLE ddon_equip_job_item_temp
 );
 
 INSERT INTO ddon_storage_item_temp (item_uid, character_id, storage_type, slot_no, item_num) SELECT * FROM ddon_storage_item;
-INSERT INTO ddon_equip_item_temp (item_uid, character_common_id, job, equip_type, equip_slot) SELECT * FROM ddon_equip_item;
-INSERT INTO ddon_equip_job_item_temp (item_uid, character_common_id, job, equip_slot) SELECT * FROM ddon_equip_job_item;

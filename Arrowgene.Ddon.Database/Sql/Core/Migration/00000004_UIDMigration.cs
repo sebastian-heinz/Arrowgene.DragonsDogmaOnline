@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Xml.Linq;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
@@ -79,38 +80,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                 }
             );
 
-            List<(string, uint)> ddon_equip_items = new List<(string, uint)>();
-            db.ExecuteReader(conn, "SELECT * from ddon_equip_item;",
-                command => { },
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        var item = (db.GetString(reader, "item_uid"), db.GetUInt32(reader, "character_common_id"));
-                        ddon_equip_items.Add(item);
-                    }
-                });
-
-            List<(string, uint)> ddon_equip_job_items = new List<(string, uint)>();
-            db.ExecuteReader(conn, "SELECT * from ddon_equip_job_item;",
-               command => { },
-               reader =>
-               {
-                   while (reader.Read())
-                   {
-                       var item = (db.GetString(reader, "item_uid"), db.GetUInt32(reader, "character_common_id"));
-                       ddon_equip_job_items.Add(item);
-                   }
-               });
-
-            List<(string, uint)> ddon_storage_items = new List<(string, uint)>();
+            // item_uid, character_id, storage_type, slot_no, item_num
+            List<(string, uint, ushort, ushort, uint)> ddon_storage_items = new List<(string, uint, ushort, ushort, uint)>();
             db.ExecuteReader(conn, "SELECT * from ddon_storage_item;",
                command => { },
                reader =>
                {
                    while (reader.Read())
                    {
-                       var item = (db.GetString(reader, "item_uid"), db.GetUInt32(reader, "character_id"));
+                       var item = (
+                            db.GetString(reader, "item_uid"),
+                            db.GetUInt32(reader, "character_id"),
+                            db.GetUInt16(reader, "storage_type"),
+                            db.GetUInt16(reader, "slot_no"),
+                            db.GetUInt32(reader, "item_num")
+                       );
                        ddon_storage_items.Add(item);
                    }
                });
@@ -126,52 +110,87 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
             db.Execute(conn, "ALTER TABLE ddon_equip_item_temp RENAME TO ddon_equip_item;");
             db.Execute(conn, "ALTER TABLE ddon_equip_job_item_temp RENAME TO ddon_equip_job_item;");
 
+            // Drop all existing items
+            db.Execute(conn, "DELETE FROM ddon_storage_item;");
+
             uint uid = 1;
             foreach (var storageItem in ddon_storage_items)
             {
                 var item = ddon_items[storageItem.Item1];
                 var newUid = $"{uid:X08}";
 
-                db.ExecuteNonQuery(conn, "UPDATE ddon_storage_item SET item_uid=@new_uid, item_id=@item_id, unk3=@unk3, color=@color, plus_value=@plus_value WHERE item_uid=@old_uid AND character_id=@character_id;", command =>
+                // item_uid, character_id, storage_type, slot_no, item_num
+                db.ExecuteNonQuery(conn, "INSERT INTO ddon_storage_item (item_uid, character_id, storage_type, slot_no, item_id, item_num, unk3, color, plus_value) VALUES(@item_uid, @character_id, @storage_type, @slot_no, @item_id, @item_num, @unk3, @color, @plus_value);",
+                command =>
                 {
-                    db.AddParameter(command, "old_uid", item.UId);
-                    db.AddParameter(command, "new_uid", newUid);
+                    db.AddParameter(command, "item_uid", newUid);
                     db.AddParameter(command, "character_id", storageItem.Item2);
+                    db.AddParameter(command, "storage_type", storageItem.Item3);
+                    db.AddParameter(command, "slot_no", storageItem.Item4);
                     db.AddParameter(command, "item_id", item.ItemId);
+                    db.AddParameter(command, "item_num", storageItem.Item5);
                     db.AddParameter(command, "unk3", item.Unk3);
                     db.AddParameter(command, "color", item.Color);
                     db.AddParameter(command, "plus_value", item.PlusValue);
                 });
 
-                List<uint> commonIds = CharacterIdMap[storageItem.Item2];
-
-                var matches0 = ddon_equip_items.Where(x => x.Item1 == item.UId && commonIds.Contains(x.Item2)).ToList();
-                foreach (var match in matches0)
-                {
-                    // Update the UID
-                    db.ExecuteNonQuery(conn, "UPDATE ddon_equip_item SET item_uid=@new_uid WHERE item_uid=@old_uid AND character_common_id=@character_common_id;", command =>
-                    {
-                        db.AddParameter(command, "old_uid", item.UId);
-                        db.AddParameter(command, "new_uid", newUid);
-                        db.AddParameter(command, "character_common_id", match.Item2);
-                    });
-                }
-
-                var matches1 = ddon_equip_job_items.Where(x => x.Item1 == item.UId && commonIds.Contains(x.Item2)).ToList();
-                foreach (var match in matches1)
-                {
-                    // Update the UID
-                    db.ExecuteNonQuery(conn, "UPDATE ddon_equip_job_item SET item_uid=@new_uid WHERE item_uid=@old_uid AND character_common_id=@character_common_id;", command =>
-                    {
-                        db.AddParameter(command, "old_uid", item.UId);
-                        db.AddParameter(command, "new_uid", newUid);
-                        db.AddParameter(command, "character_common_id", match.Item2);
-                    });
-                }
-
                 uid += 1;
             }
 
+#if false
+            Dictionary<uint,  SystemMailMessage> Deliveries = new Dictionary<uint, SystemMailMessage>();
+            foreach (var equippedItem in equippedItems)
+            {
+                if (!Deliveries.ContainsKey(equippedItem.Item2))
+                {
+                    Deliveries[equippedItem.Item2] = new SystemMailMessage()
+                    {
+                        Title = $"Unequipped Items",
+                        Body = "This mail contains items which used to be equipped.\n" +
+                                "\n" +
+                                "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" +
+                                "!!!There may be more items than the 3 shown in the UI.!!!\n" +
+                                "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" +
+                                "\n\n" +
+                                "Press \"Receieve All\" to reclaim your items.\n" +
+                                "If you are unable to receive all the items. Make room and try again.\n" +
+                                "\n" +
+                                "NOTE: If your main weapon was unequipped, equip that weapon and relog for it to appear properly.",
+                        CharacterId = equippedItem.Item2,
+                        SenderName = "Item Reclamation Service",
+                        MessageState = MailState.Unopened
+                    };
+                }
+
+                var mail = Deliveries[equippedItem.Item2];
+
+                var item = ddon_items[equippedItem.Item1];
+
+                mail.Attachments.Add(new SystemMailAttachment()
+                {
+                    AttachmentType = SystemMailAttachmentType.Item,
+                    Param1 = item.ItemId,
+                    Param2 = 1,
+                    MessageId = (ulong)(mail.Attachments.Count + 1),
+                    IsReceived = false,
+                });
+
+                // Delete the item from the DB
+                db.ExecuteNonQuery(conn, "DELETE FROM ddon_storage_item WHERE item_uid=@item_uid AND character_id=@character_id AND storage_type=@storage_type;",
+                command =>
+                {
+                    db.AddParameter(command, "item_uid", item.UId);
+                    db.AddParameter(command, "character_id", equippedItem.Item2);
+                    db.AddParameter(command, "storage_type", equippedItem.Item3);
+                });
+            }
+
+            // Send mail to players
+            foreach (var mail in Deliveries.Values)
+            {
+                SystemMailService.DeliverSystemMailMessage(db, conn, mail);
+            }
+#endif
             return true;
         }
     }
