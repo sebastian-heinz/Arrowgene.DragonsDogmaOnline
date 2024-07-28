@@ -501,7 +501,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return item.ItemId;
         }
 
-        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo, string oldUID = null)
+        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo, string oldUID)
         {
 
             Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newItem.UId}, NewItemID={newItem.ItemId} and the olduid={oldUID}");

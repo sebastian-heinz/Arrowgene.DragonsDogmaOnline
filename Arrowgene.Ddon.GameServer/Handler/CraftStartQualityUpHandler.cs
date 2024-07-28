@@ -104,6 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 RandomQuality = 3;
             }
+            // TODO: Looks like the bodypiece can be +4?
             
             if (AddStatusID > 0)
             {
@@ -192,25 +193,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
-                    _itemManager.ReplaceStorageItem(
+                    updateResults = _itemManager.ReplaceStorageItem(
                         Server,
                         client,
                         common,
                         charid,
                         storageType,
                         QualityUpItem,
-                        (byte)slotno
+                        (byte)slotno,
+                        equipItemUID
                     );
                     Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
                 else
                 {
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
-
-                updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, (byte)slotno, equipItemUID);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                //TODO: Figure out why when changing the Quality of an unequipped item it doesn't show the item icon in the box.
             
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()

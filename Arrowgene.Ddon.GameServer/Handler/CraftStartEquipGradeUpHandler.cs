@@ -66,15 +66,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             double maxMultiplier = 1.2;
             double pointsMultiplier = minMultiplier + (_random.NextDouble() * (maxMultiplier - minMultiplier));
 
+            List<CDataItemUpdateResult> updateResults;
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-
-
-            // S2CItemUpdateCharacterItemNtc updateCharacterItemNtc2 = new S2CItemUpdateCharacterItemNtc();
-            // updateCharacterItemNtc2.UpdateType = ItemNoticeType.ResetCraftpoint;
-            // TODO: Explore this more ^^^ Potentially needed to reset the equippoints properly for minor visual bug.
 
             // Handles adding EquipPoints.
             if(dogreatsuccess == true)
@@ -94,14 +90,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
-            // TODO: Figure out why the result infobox shows the original/previous step instead of the current/next (potentially related to how we use UIDs)
 
             // Removes crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
             {
                 try
                 {
-                    List<CDataItemUpdateResult> updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                    updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, craftMaterial.ItemUId, craftMaterial.ItemNum);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
                 catch (NotEnoughItemsException e)
@@ -258,16 +253,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (foundItem != null)
                     {
                         (slotno, item, itemnum) = foundItem;
-                        _itemManager.ReplaceStorageItem(
+                        updateResults = _itemManager.ReplaceStorageItem(
                             Server,
                             client,
                             common,
                             charid,
                             storageType,
                             UpgradedItem,
-                            (byte)slotno
+                            (byte)slotno,
+                            equipItemUID
                         );
                         Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
+                        updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                     }
                     else
                     {
@@ -288,10 +285,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             Upgradable = canContinue,
                             Unk1 = dummydata
                         };
-
-                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, UpgradedItem, (byte)slotno, equipItemUID);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                
                 };
 
             // If GradeUpItemID & UID are populated it will auto fill the bar, I guess I need an if check somewhere to decide if we send that data or not. 
