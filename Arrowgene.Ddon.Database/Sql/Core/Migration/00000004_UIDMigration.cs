@@ -137,60 +137,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                 uid += 1;
             }
 
-#if false
-            Dictionary<uint,  SystemMailMessage> Deliveries = new Dictionary<uint, SystemMailMessage>();
-            foreach (var equippedItem in equippedItems)
-            {
-                if (!Deliveries.ContainsKey(equippedItem.Item2))
-                {
-                    Deliveries[equippedItem.Item2] = new SystemMailMessage()
-                    {
-                        Title = $"Unequipped Items",
-                        Body = "This mail contains items which used to be equipped.\n" +
-                                "\n" +
-                                "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" +
-                                "!!!There may be more items than the 3 shown in the UI.!!!\n" +
-                                "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n" +
-                                "\n\n" +
-                                "Press \"Receieve All\" to reclaim your items.\n" +
-                                "If you are unable to receive all the items. Make room and try again.\n" +
-                                "\n" +
-                                "NOTE: If your main weapon was unequipped, equip that weapon and relog for it to appear properly.",
-                        CharacterId = equippedItem.Item2,
-                        SenderName = "Item Reclamation Service",
-                        MessageState = MailState.Unopened
-                    };
-                }
-
-                var mail = Deliveries[equippedItem.Item2];
-
-                var item = ddon_items[equippedItem.Item1];
-
-                mail.Attachments.Add(new SystemMailAttachment()
-                {
-                    AttachmentType = SystemMailAttachmentType.Item,
-                    Param1 = item.ItemId,
-                    Param2 = 1,
-                    MessageId = (ulong)(mail.Attachments.Count + 1),
-                    IsReceived = false,
-                });
-
-                // Delete the item from the DB
-                db.ExecuteNonQuery(conn, "DELETE FROM ddon_storage_item WHERE item_uid=@item_uid AND character_id=@character_id AND storage_type=@storage_type;",
-                command =>
-                {
-                    db.AddParameter(command, "item_uid", item.UId);
-                    db.AddParameter(command, "character_id", equippedItem.Item2);
-                    db.AddParameter(command, "storage_type", equippedItem.Item3);
-                });
-            }
-
-            // Send mail to players
-            foreach (var mail in Deliveries.Values)
-            {
-                SystemMailService.DeliverSystemMailMessage(db, conn, mail);
-            }
-#endif
             return true;
         }
     }
