@@ -133,6 +133,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AddStat
             };
 
+
+            if(retainPlusValue)
+            {
+                RandomQuality = currentPlusValue;
+            }
+
             Item QualityUpItem = new Item()
             {
                 ItemId = equipItemID,
@@ -143,35 +149,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                 AddStatusData = AddStatList,
                 EquipElementParamList = new List<CDataEquipElementParam>()
-            };
-
-            if(retainPlusValue)
-            {   
-                QualityUpItem = new Item()
-                {
-                    ItemId = equipItemID,
-                    Unk3 = 0,   // Safety setting,
-                    Color = 0,
-                    PlusValue = currentPlusValue,
-                    EquipPoints = equipItem.EquipPoints,
-                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                    AddStatusData = AddStatList,
-                    EquipElementParamList = new List<CDataEquipElementParam>()
-                };
-            }
-            else
-            {
-                QualityUpItem = new Item()
-                {
-                    ItemId = equipItemID,
-                    Unk3 = 0,   // Safety setting,
-                    Color = 0,
-                    PlusValue = RandomQuality,
-                    EquipPoints = equipItem.EquipPoints,
-                    WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                    AddStatusData = AddStatList,
-                    EquipElementParamList = new List<CDataEquipElementParam>()
-                };
             };
 
             
@@ -231,7 +208,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
 
-                updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, (byte)slotno);
+                updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, (byte)slotno, equipItemUID);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 //TODO: Figure out why when changing the Quality of an unequipped item it doesn't show the item icon in the box.
             

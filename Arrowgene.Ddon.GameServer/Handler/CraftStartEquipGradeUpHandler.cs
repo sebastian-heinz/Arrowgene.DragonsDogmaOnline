@@ -275,7 +275,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                         res = new S2CCraftStartEquipGradeUpRes()
                         {
-                            GradeUpItemUID = UpgradedItem.UId, // TODO: Make sure to retain the original UID when that PR merges.
+                            GradeUpItemUID = equipItemUID, // TODO: Make sure to retain the original UID when that PR merges.
                             GradeUpItemID = UpgradedItem.ItemId,
                             GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                             AddEquipPoint = 0,
@@ -289,7 +289,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             Unk1 = dummydata
                         };
 
-                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, UpgradedItem, (byte)slotno);
+                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, UpgradedItem, (byte)slotno, equipItemUID);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 
                 };

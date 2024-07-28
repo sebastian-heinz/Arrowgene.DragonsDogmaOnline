@@ -501,16 +501,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return item.ItemId;
         }
 
-        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
+        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo, string oldUID = null)
         {
 
-            Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newItem.UId}, NewItemID={newItem.ItemId}");
+            Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newItem.UId}, NewItemID={newItem.ItemId} and the olduid={oldUID}");
 
             server.Database.InsertItem(newItem);
-            server.Database.ReplaceStorageItem(characterID, storageType, slotNo, newItem.UId, 1);
+            server.Database.ReplaceStorageItem(characterID, storageType, slotNo, oldUID, 1);
+            // I tried using UpdateStorageItem but this just errors out and doesn't work.
+            // Replace will work on relog if you leave it in storage, for w/e reason.
 
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
-            updateResult.ItemList.ItemUId = newItem.UId;
+            updateResult.ItemList.ItemUId = oldUID;
             updateResult.ItemList.ItemId = newItem.ItemId;
             updateResult.ItemList.ItemNum = 1;
             updateResult.ItemList.Unk3 = newItem.Unk3;
@@ -527,7 +529,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
             updateResult.UpdateItemNum = 1;
 
-            Console.WriteLine($"Item successfully replaced in storage: UID={newItem.UId}, SlotNo={slotNo}");
+            Console.WriteLine($"Item successfully replaced in storage: UID={updateResult.ItemList.ItemUId}, SlotNo={slotNo}");
 
             return new List<CDataItemUpdateResult> { updateResult };
             //TODO: After UID rework, probably should look at this again.
