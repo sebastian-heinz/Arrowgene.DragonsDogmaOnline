@@ -61,6 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint addEquipPoint = 0;     
             bool dogreatsuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             bool canUpgrade = false;
+            bool isEquipped = false;
 
             double minMultiplier = 0.8;
             double maxMultiplier = 1.2;
@@ -75,7 +76,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // S2CItemUpdateCharacterItemNtc updateCharacterItemNtc2 = new S2CItemUpdateCharacterItemNtc();
             // updateCharacterItemNtc2.UpdateType = ItemNoticeType.ResetCraftpoint;
             // TODO: Explore this more ^^^ Potentially needed to reset the equippoints properly for minor visual bug.
-
 
             // Handles adding EquipPoints.
             if(dogreatsuccess == true)
@@ -218,52 +218,44 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EquipSlot = EquipmentSlot
             };
 
-            bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
+
             if (canUpgrade)
             {
-                if (isEquipped)
-                {
-                    List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
-                        .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
-                        .ToList();
-
-                    var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                    equipslot = equipInfo.EquipCategory;
-                    equiptype = equipInfo.EquipType;
-
-                    _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, UpgradedItem.UId, gearupgradeID, UpgradedItem, (EquipType)equiptype, (byte)equipslot);
-
-                    lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-                    GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
-                    client.Send(lobbyPlayerContextNtc);
-                }
-                else
-                {
                     StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
                     ushort slotno = 0;
                     uint itemnum = 0;
                     Item item;
-                    var foundItem = common.Storage.getStorage(StorageType.ItemBagEquipment).findItemByUId(equipItemUID);
+                    var foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
 
                     switch (storageType)
                     {
+                        case StorageType.CharacterEquipment:
+                            foundItem = common.Storage.GetStorage(StorageType.CharacterEquipment).FindItemByUId(equipItemUID);
+                            List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
+                                        .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
+                                        .ToList();
+
+                                var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
+                                equipslot = equipInfo.EquipCategory;
+                                equiptype = (byte)equipInfo.EquipType;
+
+                            break;
                         case StorageType.ItemBagEquipment:
-                            foundItem = common.Storage.getStorage(StorageType.ItemBagEquipment).findItemByUId(equipItemUID);
+                            foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
                             break;
                         case StorageType.StorageBoxNormal:
-                            foundItem = common.Storage.getStorage(StorageType.StorageBoxNormal).findItemByUId(equipItemUID);
+                            foundItem = common.Storage.GetStorage(StorageType.StorageBoxNormal).FindItemByUId(equipItemUID);
                             break;
                         case StorageType.StorageBoxExpansion:
-                            foundItem = common.Storage.getStorage(StorageType.StorageBoxExpansion).findItemByUId(equipItemUID);
+                            foundItem = common.Storage.GetStorage(StorageType.StorageBoxExpansion).FindItemByUId(equipItemUID);
                             break;
                         case StorageType.StorageChest:
-                            foundItem = common.Storage.getStorage(StorageType.StorageChest).findItemByUId(equipItemUID);
+                            foundItem = common.Storage.GetStorage(StorageType.StorageChest).FindItemByUId(equipItemUID);
                             break;
                         default:
                             Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
                             break;
                     }
-
                     if (foundItem != null)
                     {
                         (slotno, item, itemnum) = foundItem;
@@ -284,7 +276,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                         res = new S2CCraftStartEquipGradeUpRes()
                         {
-                            GradeUpItemUID = UpgradedItem.UId, // Should be the UID for the gradeupitem. (which after the UID rework will just be the same as the original item)
+                            GradeUpItemUID = UpgradedItem.UId, // TODO: Make sure to retain the original UID when that PR merges.
                             GradeUpItemID = UpgradedItem.ItemId,
                             GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                             AddEquipPoint = 0,
@@ -302,7 +294,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 
                 };
-            };
 
             // If GradeUpItemID & UID are populated it will auto fill the bar, I guess I need an if check somewhere to decide if we send that data or not. 
             if(!canUpgrade)
@@ -330,7 +321,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             foreach (var storageType in STORAGE_TYPES)
             {
-                var foundItem = character.Storage.getStorage(storageType).findItemByUId(itemUID);
+                var foundItem = character.Storage.GetStorage(storageType).FindItemByUId(itemUID);
                 if (foundItem != null)
                 {
                     return (storageType, (foundItem.Item1, foundItem.Item2, foundItem.Item3));

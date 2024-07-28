@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -38,21 +34,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Send to all or just the host?
 
             var baseContext = packet.Structure.Base;
-            var context = ContextManager.GetContext(client.Party, packet.Structure.Base.UniqueId);
+            var context = ContextManager.GetContext(client.Party, baseContext.UniqueId);
+
+            var clientIndex = client.Party.ClientIndex(client);
+            baseContext.MasterIndex = clientIndex; //Likely hacky.
+
             if (context == null)
             {
-                client.Party.SendToAll(new S2CContextSetContextBaseNtc()
+                var response = new S2CContextSetContextBaseNtc()
                 {
-                    Base = packet.Structure.Base
-                });
+                    Base = baseContext
+                };
+
+                client.Party.SendToAll(response);
             }
             else
             {
-                client.Party.SendToAll(new S2CContextSetContextNtc()
+                var response = new S2CContextSetContextNtc()
                 {
                     Base = context.Item1,
                     Additional = context.Item2
-                });
+                };
+
+                client.Party.SendToAll(response);
             }
 
             Logger.Debug("===================================================================");

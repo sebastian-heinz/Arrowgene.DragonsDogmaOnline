@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -48,7 +48,15 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "WHERE \"account_id\" = @account_id";
+        private readonly string SqlSelectAllCharactersData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+            + "FROM \"ddon_character\" "
+            + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
+            + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" ";
         private const string SqlDeleteCharacter = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_character\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_character\".\"character_common_id\" AND \"character_id\"=@character_id);";
+        private const string SqlUpdateMyPawnSlot = "UPDATE \"ddon_character\" SET \"my_pawn_slot_num\"=@my_pawn_slot_num WHERE \"character_id\"=@character_id;";
 
 
         private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO \"ddon_character_matching_profile\" ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
@@ -61,7 +69,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateCharacterArisenProfile = $"UPDATE \"ddon_character_arisen_profile\" SET {BuildQueryUpdate(CDataArisenProfileFields)} WHERE \"character_id\" = @character_id;";
         private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM \"ddon_character_arisen_profile\" WHERE \"character_id\" = @character_id;";
         private const string SqlDeleteCharacterArisenProfile = "DELETE FROM \"ddon_character_arisen_profile\" WHERE \"character_id\"=@character_id;";
-
 
         public bool CreateCharacter(Character character)
         {
@@ -174,6 +181,35 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return characters;
         }
 
+        public List<Character> SelectAllCharacters()
+        {
+            List<Character> characters = null;
+            ExecuteInTransaction(conn =>
+            {
+                characters = SelectAllCharacters(conn);
+            });
+            return characters;
+        }
+                
+        public List<Character> SelectAllCharacters(DbConnection conn)
+        {
+            List<Character> characters = new List<Character>();
+            ExecuteReader((TCon) conn, SqlSelectAllCharactersData,
+                command => {}, reader =>
+                {
+                    while (reader.Read())
+                    {
+                        Character character = ReadAllCharacterData(reader);
+                        characters.Add(character);
+                    }
+                });
+            foreach (var character in characters)
+            {
+                QueryCharacterData((TCon) conn, character);
+            }
+            return characters;
+        }
+
         public bool DeleteCharacter(uint characterId)
         {
             int rowsAffected = ExecuteNonQuery(SqlDeleteCharacter,
@@ -215,7 +251,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     while (reader.Read())
                     {
                         Tuple<StorageType, Storage> tuple = ReadStorage(reader);
-                        character.Storage.addStorage(tuple.Item1, tuple.Item2);
+                        character.Storage.AddStorage(tuple.Item1, tuple.Item2);
                     }
                 });
             ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
@@ -237,7 +273,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 if(reader3.Read())
                                 {
                                     Item item = ReadItem(reader3);
-                                    character.Storage.setStorageItem(item, itemNum, storageType, slot);
+                                    character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
                                 }
                             });
                     }
@@ -266,6 +302,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
         }
 
+        public bool UpdateMyPawnSlot(uint characterId, uint num)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdateMyPawnSlot(connection, characterId, num);
+        }
+
+        public bool UpdateMyPawnSlot(TCon conn, uint characterId, uint num)
+        {
+            return ExecuteNonQuery(conn, SqlUpdateMyPawnSlot, command =>
+            {
+                AddParameter(command, "character_id", characterId);
+                AddParameter(command, "my_pawn_slot_num", num);
+            })  == 1;
+        }
+
         private void StoreCharacterData(TCon conn, Character character)
         {
             StoreCharacterCommonData(conn, character);
@@ -280,9 +331,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ReplaceCommunicationShortcut(conn, character.CharacterId, communicationShortcut);
             }
 
-            foreach(StorageType storageType in character.Storage.getAllStorages().Keys)
+            foreach(StorageType storageType in character.Storage.GetAllStorages().Keys)
             {
-                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.getStorage(storageType));
+                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.GetStorage(storageType));
             }
 
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)
@@ -294,7 +345,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private void CreateItems(TCon conn, Character character)
         {
             // Create storage items
-            foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.getAllStorages())
+            foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.GetAllStorages())
             {
                 StorageType storageType = storage.Key;
                 for(ushort index=0; index < storage.Value.Items.Count; index++)
@@ -311,7 +362,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
 
             // Create equipment items
-            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.Equipment.GetAllEquipment())
+            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.EquipmentTemplate.GetAllEquipment())
             {
                 JobId job = jobEquipment.Key;
                 foreach (KeyValuePair<EquipType, List<Item>> equipment in jobEquipment.Value)

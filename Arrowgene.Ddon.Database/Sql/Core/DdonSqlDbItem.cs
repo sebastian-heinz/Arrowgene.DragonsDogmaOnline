@@ -1,5 +1,6 @@
 using System.Data.Common;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -41,19 +42,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public Item SelectItem(string uid)
         {
+            using TCon connection = OpenNewConnection();
+            return SelectItem(connection, uid);
+        }
+
+        public Item SelectItem(DbConnection conn, string uid)
+        {
             Item item = null;
-            ExecuteReader(SqlSelectItem, 
-            command => 
-            {
-                AddParameter(command, "uid", uid);
-            },
-            reader => 
-            {
-                if(reader.Read())
-                {
-                    item = ReadItem(reader);
-                }
-            });
+           
+            ExecuteReader((TCon) conn, SqlSelectItem,
+                command => {
+                    AddParameter(command, "uid", uid);
+                }, reader => {
+                    if (reader.Read())
+                    {
+                        item = ReadItem(reader);
+                    }
+                });
+
             return item;
         }
 

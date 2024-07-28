@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return true;
         }
 
-        private Ability ReadLearnedAbility(TReader reader)
+        private Ability ReadLearnedAbility(DbDataReader reader)
         {
             Ability ability = new Ability();
             ability.Job = (JobId) GetByte(reader, "job");

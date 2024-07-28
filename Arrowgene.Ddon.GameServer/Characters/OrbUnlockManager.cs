@@ -131,6 +131,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     break;
                 case OrbGainParamType.MainPawnSlot:
                     obj.MainPawnSlot += (ushort)upgrade.Amount;
+                    // When the player unlocks this, the total number will be increased to 3.
+                    // TODO: Is there an NTC for this?
+                    _Database.UpdateMyPawnSlot(client.Character.CharacterId, 3);
+                    client.Character.MyPawnSlotNum = 3;
                     break;
                 case OrbGainParamType.SupportPawnSlot:
                     obj.SupportPawnSlot += (ushort)upgrade.Amount;
@@ -173,9 +177,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.PhysicalDefence:
                 case OrbGainParamType.MagicalAttack:
                 case OrbGainParamType.AccessorySlot:
-                case OrbGainParamType.MainPawnSlot:
-                case OrbGainParamType.SupportPawnSlot:
                     _CharacterManager.UpdateCharacterExtendedParamsNtc(client, character);
+                    break;
+                case OrbGainParamType.MainPawnSlot:
+                    client.Send(new S2CPawnExtendMainPawnNtc() { TotalNum = 3, AddNum = 1 });
+                    break;
+                case OrbGainParamType.SupportPawnSlot:
                     break;
                 case OrbGainParamType.AbilityCost:
                     // Handeled by S2CSkillGetAbilityCostRes
@@ -787,7 +794,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x0b] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
-                .Unlocks(OrbGainParamType.PawnAdventureNum, 1),
+                .Unlocks(OrbGainParamType.MainPawnSlot, 1),
             [0x0c] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group5, 2)
                 .HasTotalLevelsRestriction(44)
@@ -942,7 +949,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x10] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
-                .Unlocks(OrbGainParamType.MainPawnSlot, 1),
+                .Unlocks(OrbGainParamType.PawnAdventureNum, 1),
             [0x11] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group5, 2)
                 .HasTotalLevelsRestriction(60)

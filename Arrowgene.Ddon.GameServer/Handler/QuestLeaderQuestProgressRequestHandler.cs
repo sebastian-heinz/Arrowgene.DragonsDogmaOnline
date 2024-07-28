@@ -22,7 +22,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ProcessNo = packet.Structure.ProcessNo
             });
 
-            // TODO: Send NTC?
+            client.Party.SendToAll(new S2CQuestLeaderQuestProgressRequestNtc()
+            {
+                RequestCharacterId = client.Character.CharacterId,
+                QuestScheduleId = packet.Structure.QuestScheduleId,
+                ProcessNo = packet.Structure.ProcessNo,
+                SequenceNo = packet.Structure.SequenceNo,
+                BlockNo = packet.Structure.BlockNo
+            });
         }
     }
 }

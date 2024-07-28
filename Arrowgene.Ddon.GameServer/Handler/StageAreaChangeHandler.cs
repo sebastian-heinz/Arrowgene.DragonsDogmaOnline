@@ -1,14 +1,11 @@
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Context;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
-using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -25,6 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
             res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.Structure.StageId);
             res.IsBase = false; // This is set true for audience chamber and WDT for exmaple
+
+            ContextManager.DelegateAllMasters(client);
 
             client.Character.StageNo = res.StageNo;
             client.Character.Stage = new StageId(packet.Structure.StageId, 0, 0);

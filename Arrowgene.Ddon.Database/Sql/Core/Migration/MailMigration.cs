@@ -22,8 +22,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
         {
             string schemaFilePath = Path.Combine(DatabaseSetting.DatabaseFolder, "Script/migration_mail_sqlite.sql");
             string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-            DatabaseType databaseType = (DatabaseType) Enum.Parse(typeof(DatabaseType), DatabaseSetting.Type, true);
-            string adaptedSchema = DdonDatabaseBuilder.AdaptSQLiteSchemaTo(databaseType, schema);
+            string adaptedSchema = DdonDatabaseBuilder.AdaptSQLiteSchemaTo(DatabaseSetting.Type, schema);
             db.Execute(conn, adaptedSchema);
             return true;
         }

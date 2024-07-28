@@ -6,21 +6,21 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 namespace Arrowgene.Ddon.Shared.Model
 {
     #nullable enable
-    public class Equipment
+    public class EquipmentTemplate
     {
-        private static readonly byte EQUIP_SLOT_NUMBER = 15;
-        private static readonly byte JOB_ITEM_SLOT_NUMBER = 2; // TODO: Verify
+        public static readonly byte TOTAL_EQUIP_SLOTS = 15;
+        private static readonly byte TOTAL_JOB_ITEM_SLOT = 2; // TODO: Verify
 
         private readonly Dictionary<JobId, Dictionary<EquipType, List<Item?>>> equipment;
         private readonly Dictionary<JobId, List<Item?>> jobItems;
 
-        public Equipment(Dictionary<JobId, Dictionary<EquipType, List<Item?>>> equipment, Dictionary<JobId, List<Item?>> jobItems)
+        public EquipmentTemplate(Dictionary<JobId, Dictionary<EquipType, List<Item?>>> equipment, Dictionary<JobId, List<Item?>> jobItems)
         {
             this.equipment = equipment;
             this.jobItems = jobItems;
         }
         
-        public Equipment()
+        public EquipmentTemplate()
         {
             equipment = new Dictionary<JobId, Dictionary<EquipType, List<Item?>>>();
             foreach (JobId job in Enum.GetValues(typeof(JobId)))
@@ -28,14 +28,14 @@ namespace Arrowgene.Ddon.Shared.Model
                 equipment[job] = new Dictionary<EquipType, List<Item?>>();
                 foreach (EquipType equipType in Enum.GetValues(typeof(EquipType)))
                 {
-                    equipment[job][equipType] = Enumerable.Repeat<Item?>(null, EQUIP_SLOT_NUMBER).ToList();
+                    equipment[job][equipType] = Enumerable.Repeat<Item?>(null, TOTAL_EQUIP_SLOTS).ToList();
                 }
             }
 
             jobItems = new Dictionary<JobId, List<Item?>>();
             foreach (JobId job in Enum.GetValues(typeof(JobId)))
             {
-                jobItems[job] = Enumerable.Repeat<Item?>(null, JOB_ITEM_SLOT_NUMBER).ToList();
+                jobItems[job] = Enumerable.Repeat<Item?>(null, TOTAL_JOB_ITEM_SLOT).ToList();
             }
         }
 
@@ -80,24 +80,7 @@ namespace Arrowgene.Ddon.Shared.Model
             jobItems[job][slot-1] = newItem;
             return oldItem;
         }
-
-
-        public List<CDataContextEquipData> getEquipmentAsCDataContextEquipData(JobId job, EquipType equipType)
-        {
-            // In the context equipment lists, the index is the slot. An element with all info set to 0 has to be in place if a slot is not filled
-            return GetEquipment(job, equipType)
-                .Select(x => x == null ? new CDataContextEquipData() : new CDataContextEquipData()
-                {
-                    ItemId = (ushort) x.ItemId,
-                    ColorNo = x.Color,
-                    PlusValue = x.PlusValue,
-                    WeaponCrestDataList = x.WeaponCrestDataList,
-                    AddStatusData = x.AddStatusData
-                })
-                .ToList();
-        }
-
-        public List<CDataEquipItemInfo> getEquipmentAsCDataEquipItemInfo(JobId job, EquipType equipType)
+        public List<CDataEquipItemInfo> EquipmentAsCDataEquipItemInfo(JobId job, EquipType equipType)
         {
             return GetEquipment(job, equipType)
                 .Select((x, index) => new {item = x, slot = (byte)(index+1)})
@@ -116,22 +99,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public List<CDataCharacterEquipInfo> getEquipmentAsCDataCharacterEquipInfo(JobId job, EquipType equipType)
-        {
-            return GetEquipment(job, equipType)
-                .Select((x, index) => new {item = x, slot = (byte)(index+1)})
-                .Where(tuple => tuple.item != null)
-                .Select(tuple => new CDataCharacterEquipInfo()
-                {
-                    EquipItemUId = tuple.item.UId,
-                    EquipType = (byte) equipType,
-                    EquipCategory = tuple.slot
-                })
-                .ToList();
-        }
-
-
-        public List<CDataEquipJobItem> getJobItemsAsCDataEquipJobItem(JobId job)
+        public List<CDataEquipJobItem> JobItemsAsCDataEquipJobItem(JobId job)
         {
             return GetJobItems(job)
                 .Select((x, index) => new {itemAndNum = x, slot = (byte)(index+1)})

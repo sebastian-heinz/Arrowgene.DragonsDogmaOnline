@@ -413,6 +413,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyMemberSetValueNtc.Serializer());
             Create(new S2CPartyPartyQuestProgressNtc.Serializer());
 
+            Create(new C2SPawnCreatePawnReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
             Create(new C2SPawnGetMypawnListReq.Serializer());
@@ -736,6 +737,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyRecvBinaryMsgAllNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
 
+            Create(new S2CPawnExtendMainPawnNtc.Serializer());
+            Create(new S2CPawnCreatePawnRes.Serializer());
             Create(new S2CPawn_8_33_16Ntc.Serializer());
             Create(new S2CPawn_8_34_16Ntc.Serializer());
             Create(new S2CPawn_8_35_16Ntc.Serializer());
@@ -775,6 +778,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestGetWorldManageQuestListRes.Serializer());
             Create(new S2CQuestJoinLobbyQuestInfoNtc.Serializer());
             Create(new S2CQuestLeaderQuestProgressRequestRes.Serializer());
+            Create(new S2CQuestLeaderQuestProgressRequestNtc.Serializer());
             Create(new S2CQuestPartyQuestProgressNtc.Serializer());
             Create(new S2CQuestQuestOrderRes.Serializer());
             Create(new S2CQuestQuestProgressNtc.Serializer());

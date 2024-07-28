@@ -45,6 +45,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return null;
             }
 
+            character.Equipment = character.Storage.GetCharacterEquipment();
+
             character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId);
             if (character.ExtendedParams == null)
             {
@@ -70,17 +72,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.CharacterId);
 
-            foreach (var pawn in character.Pawns)
+            for (int i = 0; i < character.Pawns.Count; i++)
             {
+                Pawn pawn = character.Pawns[i];
                 pawn.Server = character.Server;
-
+                pawn.Equipment = character.Storage.GetPawnEquipment(i);
                 pawn.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(pawn.CommonId);
                 if (pawn.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character
                     Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.CharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
                 }
-
                 UpdateCharacterExtendedParams(pawn);
             }
         }
@@ -90,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return CharacterManager.BASE_ABILITY_COST_AMOUNT + character.ExtendedParams.AbilityCost;
         }
 
-        private void UpdateCharacterExtendedParams(CharacterCommon character)
+        public void UpdateCharacterExtendedParams(CharacterCommon character, bool newCharacter = false)
         {
             var ExtendedParams = character.ExtendedParams;
 
@@ -126,17 +128,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * scenarios where this may be required. The same trick also works
              * for stamina.
              */
-            if (character.StatusInfo.MaxHP != 0)
+            if (character.StatusInfo.MaxHP != 0 || newCharacter)
             {
                 character.StatusInfo.HP = CharacterManager.MAX_PLAYER_HP;
                 character.StatusInfo.WhiteHP = CharacterManager.MAX_PLAYER_HP;
             }
             character.StatusInfo.MaxHP = CharacterManager.BASE_HEALTH;
 
-            if (character.StatusInfo.MaxStamina != 0)
+            if (character.StatusInfo.MaxStamina != 0 || newCharacter)
             {
                 character.StatusInfo.Stamina = CharacterManager.MAX_PLAYER_STAMINA;
-
             }
             character.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
         }

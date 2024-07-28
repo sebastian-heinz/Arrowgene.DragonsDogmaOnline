@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Send S2CItemUseBagItemNtc?
 
-            var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
+            var tuple = client.Character.Storage.GetStorage(DestinationStorageType).Items
                 .Select((x, index) => new {item = x, slot = index+1})
                 .Where(tuple => tuple.item?.Item1.UId == req.Structure.ItemUId)
                 .First();
@@ -65,12 +65,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if(itemNum == 0)
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
-                client.Character.Storage.setStorageItem(null, 0, DestinationStorageType, slotNo);
+                client.Character.Storage.GetStorage(DestinationStorageType).SetItem(null, 0, slotNo);
                 Server.Database.DeleteStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo);
             }
             else
             {
-                client.Character.Storage.setStorageItem(item, itemNum, DestinationStorageType, slotNo);
+                client.Character.Storage.GetStorage(DestinationStorageType).SetItem(item, itemNum, slotNo);
                 Server.Database.ReplaceStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo, item.UId, itemNum);
             }
 

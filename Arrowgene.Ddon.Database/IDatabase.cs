@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
+using System.Reflection.PortableExecutable;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
@@ -15,6 +17,32 @@ namespace Arrowgene.Ddon.Database
         void Execute(string sql);
         void Execute(DbConnection conn, string sql);
         bool ExecuteInTransaction(Action<DbConnection> action);
+        int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> action);
+        void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction);
+
+        // Generic functions for getting/setting
+        void AddParameter(DbCommand command, string name, object? value, DbType type);
+        void AddParameter(DbCommand command, string name, string value);
+        void AddParameter(DbCommand command, string name, Int32 value);
+        void AddParameter(DbCommand command, string name, float value);
+        void AddParameter(DbCommand command, string name, byte value);
+        void AddParameter(DbCommand command, string name, UInt16 value);
+        void AddParameter(DbCommand command, string name, UInt32 value);
+        void AddParameter(DbCommand command, string name, byte[] value);
+        void AddParameter(DbCommand command, string name, bool value);
+        string? GetStringNullable(DbDataReader reader, int ordinal);
+        byte[]? GetBytesNullable(DbDataReader reader, int ordinal, int size);
+        int GetInt32(DbDataReader reader, string column);
+        uint GetUInt32(DbDataReader reader, string column);
+        byte GetByte(DbDataReader reader, string column);
+        short GetInt16(DbDataReader reader, string column);
+        ushort GetUInt16(DbDataReader reader, string column);
+        long GetInt64(DbDataReader reader, string column);
+        ulong GetUInt64(DbDataReader reader, string column);
+        float GetFloat(DbDataReader reader, string column);
+        string GetString(DbDataReader reader, string column);
+        bool GetBoolean(DbDataReader reader, string column);
+        byte[] GetBytes(DbDataReader reader, string column, int size);
 
         /// <summary>
         /// Return true if database was created, or false if not.
@@ -44,15 +72,19 @@ namespace Arrowgene.Ddon.Database
         bool CreateCharacter(Character character);
         Character SelectCharacter(uint characterId);
         List<Character> SelectCharactersByAccountId(int accountId);
+        List<Character> SelectAllCharacters();
+        List<Character> SelectAllCharacters(DbConnection conn);
         bool DeleteCharacter(uint characterId);
         bool UpdateCharacterBaseInfo(Character character);
         bool UpdateCharacterMatchingProfile(Character character);
         bool UpdateCharacterArisenProfile(Character character);
+        bool UpdateMyPawnSlot(uint characterId, uint num);
 
         // Pawn
         bool CreatePawn(Pawn pawn);
         Pawn SelectPawn(uint pawnId);
         List<Pawn> SelectPawnsByCharacterId(uint characterId);
+        List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId);
         bool DeletePawn(uint pawnId);
         bool UpdatePawnBaseInfo(Pawn pawn);
 
@@ -88,6 +120,7 @@ namespace Arrowgene.Ddon.Database
         // Item
         bool InsertItem(Item item);
         Item SelectItem(string uid);
+        Item SelectItem(DbConnection conn, string uid);
         bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
 
         //Storage
@@ -97,14 +130,16 @@ namespace Arrowgene.Ddon.Database
 
         // Storage Item
         bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
+        bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
         bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
+        bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum);
 
         // Equip
         bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
-        bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot);
 
         // Job Items
         bool InsertEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo);
@@ -216,6 +251,10 @@ namespace Arrowgene.Ddon.Database
         bool DeletePriorityQuest(uint characterCommonId, QuestId questId);
 
         // System mail
+        long InsertSystemMailAttachment(SystemMailAttachment attachment);
+        long InsertSystemMailAttachment(DbConnection connection, SystemMailAttachment attachment);
+        long InsertSystemMailMessage(SystemMailMessage message);
+        long InsertSystemMailMessage(DbConnection connection, SystemMailMessage message);
         List<SystemMailMessage> SelectSystemMailMessages(uint characterId);
         SystemMailMessage SelectSystemMailMessage(ulong messageId);
         bool UpdateSystemMailMessageState(ulong messageId, MailState messageState);

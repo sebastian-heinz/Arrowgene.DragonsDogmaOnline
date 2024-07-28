@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return InsertIfNotExistsStorageItem(connection, characterId, storageType, slotNo, itemUId, itemNum);
         }
         
-        public bool InsertStorageItem(TCon conn, uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum)
+        public bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum)
         {
             return ExecuteNonQuery(conn, SqlInsertStorageItem, command =>
             {
@@ -88,7 +88,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "slot_no", slotNo);
             }) == 1;
         }
-        
+
         public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum)
         {
             using TCon connection = OpenNewConnection();

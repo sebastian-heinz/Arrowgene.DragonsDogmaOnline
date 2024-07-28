@@ -34,7 +34,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Files\Database\Script\equip_migration_sqlite.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

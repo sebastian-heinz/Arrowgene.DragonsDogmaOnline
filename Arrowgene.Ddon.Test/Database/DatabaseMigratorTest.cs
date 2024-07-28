@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
@@ -177,6 +178,9 @@ namespace Arrowgene.Ddon.Test.Database
             action.Invoke(null); return true; 
         }
 
+        public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action) { return 1; }
+        public void ExecuteReader(string command, Action<DbDataReader> action) {}
+        public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) {}
         public Account CreateAccount(string name, string mail, string hash) { return new Account(); }
         public bool CreateCharacter(Character character) { return true; }
         public bool CreateDatabase() { return true; }
@@ -191,7 +195,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteConnectionsByServerId(int serverId) { return true; }
         public int DeleteContact(uint requestingCharacterId, uint requestedCharacterId) { return 1; }
         public int DeleteContactById(uint id) { return 1; }
-        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
+        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot) { return true; }
         public bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo) { return true; }
         public bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob) { return true; }
         public bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo) { return true; }
@@ -246,6 +250,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill) { return true; }
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
         public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
+        public bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
         public bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType) { return true; }
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData) { return true; }
@@ -271,16 +276,20 @@ namespace Arrowgene.Ddon.Test.Database
         public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId) { return new List<QuestBoxRewards>(); }
         public Character SelectCharacter(uint characterId) { return new Character(); }
         public List<Character> SelectCharactersByAccountId(int accountId) { return new List<Character>(); }
+        public List<Character> SelectAllCharacters() { return new List<Character>(); }
+        public List<Character> SelectAllCharacters(DbConnection conn) { return new List<Character>(); }
         public List<Connection> SelectConnectionsByAccountId(int accountId) { return new List<Connection>(); }
         public ContactListEntity SelectContactListById(uint id) { return new ContactListEntity(); }
         public List<ContactListEntity> SelectContactsByCharacterId(uint characterId) { return new List<ContactListEntity>(); }
         public ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2) { return new ContactListEntity(); }
         public Item SelectItem(string uid) { return new Item(); }
+        public Item SelectItem(DbConnection conn, string uid) { return new Item(); }
         public List<CDataNormalSkillParam> SelectNormalSkillParam(uint commonId, JobId job) { return new List<CDataNormalSkillParam>(); }
         public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId) { return new CDataOrbGainExtendParam(); }
         public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId) { return new List<CDataReleaseOrbElement>(); }
         public Pawn SelectPawn(uint pawnId) { return new Pawn(); }
         public List<Pawn> SelectPawnsByCharacterId(uint characterId) { return new List<Pawn>(); }
+        public List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId) { return new List<Pawn>(); }
         public List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId) { return new List<ReleasedWarpPoint>(); }
         public GameToken SelectToken(string tokenStr) { return new GameToken(); }
         public GameToken SelectTokenByAccountId(int accountId) { return new GameToken(); }
@@ -310,13 +319,18 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut) { return true; }
         public bool UpdateStatusInfo(CharacterCommon character) { return true; }
         public bool UpdateStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
+        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
+        public bool UpdateMyPawnSlot(uint characterId, uint num) { return true; }
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
-
+        public long InsertSystemMailMessage(SystemMailMessage message) { return 0; }
+        public long InsertSystemMailMessage(DbConnection connection, SystemMailMessage message) { return 0; }
         public List<SystemMailMessage> SelectSystemMailMessages(uint characterId) { return new List<SystemMailMessage>(); }
         public SystemMailMessage SelectSystemMailMessage(ulong messageId) { return new SystemMailMessage(); }
         public bool UpdateSystemMailMessageState(ulong messageId, MailState messageState) {  return true; }
         public bool DeleteSystemMailMessage(ulong messageId) { return true; }
+        public long InsertSystemMailAttachment(SystemMailAttachment attachment) { return 0; }
+        public long InsertSystemMailAttachment(DbConnection connection, SystemMailAttachment attachment) { return 0;  }
         public List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId) { return new List<SystemMailAttachment>(); }
         public bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived) {  return true; }
         public bool DeleteSystemMailAttachment(ulong messageId) { return true; }
@@ -324,7 +338,28 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertIfNotExistsAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2) {return true; }
         public bool UpdateItemEquipPoints(string itemUID, uint EquipPoints) {return true; }
         public List<CDataAddStatusData> GetAddStatus(string itemUid, uint characterId) { return new List<CDataAddStatusData>(); }
-
+        public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
+        public void AddParameter(DbCommand command, string name, string value) { }
+        public void AddParameter(DbCommand command, string name, Int32 value) { }
+        public void AddParameter(DbCommand command, string name, float value) { }
+        public void AddParameter(DbCommand command, string name, byte value) { }
+        public void AddParameter(DbCommand command, string name, UInt16 value) { }
+        public void AddParameter(DbCommand command, string name, UInt32 value) { }
+        public void AddParameter(DbCommand command, string name, byte[] value) { }
+        public void AddParameter(DbCommand command, string name, bool value) { }
+        public string? GetStringNullable(DbDataReader reader, int ordinal) { return ""; }
+        public byte[]? GetBytesNullable(DbDataReader reader, int ordinal, int size) { return null; }
+        public int GetInt32(DbDataReader reader, string column) { return 0; }
+        public uint GetUInt32(DbDataReader reader, string column) { return 0; }
+        public byte GetByte(DbDataReader reader, string column) { return 0; }
+        public short GetInt16(DbDataReader reader, string column) { return 0; }
+        public ushort GetUInt16(DbDataReader reader, string column) { return 0; }
+        public long GetInt64(DbDataReader reader, string column) { return 0; }
+        public ulong GetUInt64(DbDataReader reader, string column) { return 0; }
+        public float GetFloat(DbDataReader reader, string column) { return 0; }
+        public string GetString(DbDataReader reader, string column) { return ""; }
+        public bool GetBoolean(DbDataReader reader, string column) { return false; }
+        public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }        
     }
 
     class MockMigrationStrategy : IMigrationStrategy
