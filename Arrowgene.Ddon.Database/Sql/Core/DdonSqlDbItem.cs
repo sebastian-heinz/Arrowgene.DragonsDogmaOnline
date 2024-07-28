@@ -1,3 +1,4 @@
+#if false
 using System.Data.Common;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -79,3 +80,4 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         }
     }
 }
+#endif

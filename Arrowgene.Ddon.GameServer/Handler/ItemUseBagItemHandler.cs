@@ -71,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 client.Character.Storage.GetStorage(DestinationStorageType).SetItem(item, itemNum, slotNo);
-                Server.Database.ReplaceStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo, item.UId, itemNum);
+                Server.Database.ReplaceStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo, itemNum, item);
             }
 
             client.Send(ntc);

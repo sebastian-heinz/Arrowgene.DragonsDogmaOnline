@@ -260,22 +260,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     while(reader2.Read())
                     {
-                        string UId = GetString(reader2, "item_uid");
+                        
                         StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
                         ushort slot = GetUInt16(reader2, "slot_no");
                         uint itemNum = GetUInt32(reader2, "item_num");
+                        var item = new Item();
+                        
+                        item.UId = GetString(reader2, "item_uid");
+                        item.ItemId = GetUInt32(reader2, "item_id");
+                        item.Unk3 = GetByte(reader2, "unk3");
+                        item.Color = GetByte(reader2, "color");
+                        item.PlusValue = GetByte(reader2, "plus_value");
 
-                        using TCon connection = OpenNewConnection();
-                        ExecuteReader(connection, SqlSelectItem,
-                            command3 => { AddParameter(command3, "@uid", UId); },
-                            reader3 =>
-                            {
-                                if(reader3.Read())
-                                {
-                                    Item item = ReadItem(reader3);
-                                    character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
-                                }
-                            });
+                        character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
                     }
                 });
 
@@ -355,8 +352,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Item item = storage.Value.Items[index].Item1;
                         uint itemNum = storage.Value.Items[index].Item2;
                         ushort slot = (ushort)(index+1);
-                        InsertItem(conn, item);
-                        InsertStorageItem(conn, character.CharacterId, storageType, slot, item.UId, itemNum);
+                        InsertStorageItem(conn, character.CharacterId, storageType, slot, itemNum, item);
                     }
                 }
             }
@@ -374,7 +370,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         if(item != null)
                         {
                             byte slot = (byte)(index+1);
-                            InsertItem(conn, item);
                             InsertEquipItem(conn, character.CommonId, job, equipType, slot, item.UId);
                         }
                     }

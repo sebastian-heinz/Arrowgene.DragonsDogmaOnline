@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                         if (equippedItem != null)
                         {
                             int storageSlot = storageSlotOffset + i+1;
-                            db.InsertStorageItem(conn, owner.CharacterId, storageType, (ushort) storageSlot, equippedItem.UId, 1);
+                            db.InsertStorageItem(conn, owner.CharacterId, storageType, (ushort) storageSlot, 1, equippedItem);
                         }
                     }
                 }
