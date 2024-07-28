@@ -7,7 +7,6 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    #nullable enable
     public class Storages
     {
         private Dictionary<StorageType, Storage> storages;
@@ -17,16 +16,16 @@ namespace Arrowgene.Ddon.Shared.Model
             storages = new Dictionary<StorageType, Storage>();
             foreach (var tuple in maxSlotsDict)
             {
-                addStorage(tuple.Key, new Storage(tuple.Value));
+                AddStorage(tuple.Key, new Storage(tuple.Key, tuple.Value));
             }
         }
 
-        public Dictionary<StorageType, Storage> getAllStorages()
+        public Dictionary<StorageType, Storage> GetAllStorages()
         {
             return storages;
         }
 
-        public List<CDataCharacterItemSlotInfo> getAllStoragesAsCDataCharacterItemSlotInfoList()
+        public List<CDataCharacterItemSlotInfo> GetAllStoragesAsCDataCharacterItemSlotInfoList()
         {
             return storages
                 .Select(storage => new CDataCharacterItemSlotInfo() {
@@ -36,19 +35,30 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public Storage getStorage(StorageType storageType)
+        public Storage GetStorage(StorageType storageType)
         {
             return storages[storageType];
         }
 
-        public void addStorage(StorageType storageType, Storage storage)
+        public void AddStorage(StorageType storageType, Storage storage)
         {
             storages[storageType] = storage;
         }
 
-        public List<CDataItemList> getStorageAsCDataItemList(StorageType storageType)
+        public Equipment GetCharacterEquipment()
         {
-            return getStorage(storageType).Items
+            return new Equipment(GetStorage(StorageType.CharacterEquipment), 0);
+        }
+
+        public Equipment GetPawnEquipment(int pawnIndex)
+        {
+            int offset = pawnIndex * EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2;
+            return new Equipment(GetStorage(StorageType.PawnEquipment), offset);
+        }
+
+        public List<CDataItemList> GetStorageAsCDataItemList(Character character, StorageType storageType)
+        {
+            return GetStorage(storageType).Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataItemList()
@@ -63,8 +73,8 @@ namespace Arrowgene.Ddon.Shared.Model
                     PlusValue = tuple.item.Item1.PlusValue,
                     Bind = true,
                     EquipPoint = 0,
-                    EquipCharacterID = 0,
-                    EquipPawnID = 0,
+                    EquipCharacterID = DetermineCharacterId(character, storageType, tuple.slot),
+                    EquipPawnID = DeterminePawnId(character, storageType, tuple.slot),
                     WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,
                     ArmorCrestDataList = tuple.item.Item1.ArmorCrestDataList,
                     EquipElementParamList = tuple.item.Item1.EquipElementParamList
@@ -72,52 +82,84 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public Tuple<Item, uint>? getStorageItem(StorageType storageType, ushort slot) {
-            return storages[storageType].Items[slot-1];
+        private uint DetermineCharacterId(Character character, StorageType storageType, ushort slot)
+        {
+            if(storageType == StorageType.CharacterEquipment)
+            {
+                return character.CharacterId;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
-        public ushort addStorageItem(Item newItem, uint itemCount, StorageType storageType) {
-            // TODO: Limit itemCount to the item ID's max stack size in storageType
-            var tuple = getStorage(storageType).Items
+        private uint DeterminePawnId(Character character, StorageType storageType, ushort slot)
+        {
+            if(storageType == StorageType.PawnEquipment)
+            {
+                int pawnIndex = slot / (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2);
+                return character.Pawns[pawnIndex].PawnId;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
+    public class Storage
+    {
+        public StorageType Type { get; private set; }
+        public List<Tuple<Item, uint>?> Items { get; set; }
+        public byte[] SortData { get; set; }
+
+        public Storage(StorageType type, ushort slotMax) : this(type, slotMax, new byte[1024])
+        {
+
+        }
+
+        public Storage(StorageType type, ushort slotMax, byte[] sortData)
+        {
+            Type = type;
+            Items = Enumerable.Repeat<Tuple<Item, uint>?>(null, slotMax).ToList();
+            SortData = sortData;
+        }
+
+        public Tuple<Item, uint>? GetItem(ushort slot) {
+            if (slot == 0)
+            {
+                return null;
+            }
+            return Items[slot - 1];
+        }
+
+        public ushort AddItem(Item newItem, uint itemCount) {
+            // TODO: Limit itemCount to the item's max stack size in storageType
+            // Right now this is being managed by ItemManager
+            var tuple = Items
                 .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
                 .Where(tuple => tuple.item == null)
                 .First();
-            setStorageItem(newItem, itemCount, storageType, tuple.slot);
+            SetItem(newItem, itemCount, tuple.slot);
             return tuple.slot;
         }
 
-        public Tuple<Item, uint>? setStorageItem(Item? newItem, uint itemCount, StorageType storageType, ushort slot) {
+        public Tuple<Item, uint>? SetItem(Item? newItem, uint itemCount, ushort slot) {
             if(newItem != null && newItem.ItemId == 0)
             {
                 throw new ArgumentException("Item Id can't be 0", "newItem");
             }
             
             // TODO: Limit itemCount to the item ID's max stack size in storageType
-            Tuple<Item, uint>? oldItem = getStorageItem(storageType, slot);
-            storages[storageType].Items[slot-1] = newItem == null
+            Tuple<Item, uint>? oldItem = GetItem(slot);
+            Items[slot-1] = newItem == null
                 ? null
                 : new Tuple<Item, uint>(newItem, itemCount);
             return oldItem;
         }
-    }
 
-    public class Storage
-    {
-        public List<Tuple<Item, uint>?> Items { get; set; }
-        public byte[] SortData { get; set; }
-
-        public Storage(ushort slotMax) : this(slotMax, new byte[1024])
-        {
-
-        }
-
-        public Storage(ushort slotMax, byte[] sortData)
-        {
-            Items = Enumerable.Repeat<Tuple<Item, uint>?>(null, slotMax).ToList();
-            SortData = sortData;
-        }
-
-        public Tuple<ushort, Item, uint>? findItemByUId(string itemUId)
+        public Tuple<ushort, Item, uint>? FindItemByUId(string itemUId)
         {
             for(int index = 0; index < this.Items.Count; index++)
             {
@@ -129,6 +171,85 @@ namespace Arrowgene.Ddon.Shared.Model
             }
 
             return null;
+        }
+    }
+
+    public class Equipment
+    {
+        public Storage Storage { get; private set; }
+        public int Offset { get; private set; }
+
+        public Equipment(Storage equipmentStorage, int offset)
+        {
+            Storage = equipmentStorage;
+            Offset = offset;
+        }
+
+        public List<Item?> GetItems(EquipType equipType)
+        {
+            return Storage.Items
+                .Skip(Offset + calculateEquipTypeOffset(equipType))
+                .Take(EquipmentTemplate.TOTAL_EQUIP_SLOTS)
+                .Select(tuple => tuple?.Item1)
+                .ToList();
+        }
+
+        public ushort GetStorageSlot(EquipType equipType, byte equipSlot)
+        {
+            return (ushort)(Offset + calculateEquipTypeOffset(equipType) + equipSlot);
+        }
+
+        public List<CDataContextEquipData> AsCDataContextEquipData(EquipType equipType)
+        {
+            // In the context equipment lists, the index is the slot. An element with all info set to 0 has to be in place if a slot is not filled
+            return GetItems(equipType)
+                .Select(x => x == null ? new CDataContextEquipData() : new CDataContextEquipData()
+                {
+                    ItemId = (ushort) x.ItemId,
+                    ColorNo = x.Color,
+                    QualityParam = x.Unk3,
+                    WeaponCrestDataList = x.WeaponCrestDataList,
+                    ArmorCrestDataList = x.ArmorCrestDataList
+                })
+                .ToList();
+        }
+
+        public List<CDataEquipItemInfo> AsCDataEquipItemInfo(EquipType equipType)
+        {
+            return GetItems(equipType)
+                .Select((x, index) => new {item = x, slot = (byte)(index+1)})
+                .Select(tuple => new CDataEquipItemInfo()
+                {
+                    ItemId = tuple.item?.ItemId ?? 0,
+                    Unk0 = tuple.item?.Unk3 ?? 0,
+                    EquipType = equipType,
+                    EquipSlot = tuple.slot,
+                    Color = tuple.item?.Color ?? 0,
+                    PlusValue = tuple.item?.PlusValue ?? 0,
+                    WeaponCrestDataList = tuple.item?.WeaponCrestDataList ?? new List<CDataWeaponCrestData>(),
+                    ArmorCrestDataList = tuple.item?.ArmorCrestDataList ?? new List<CDataArmorCrestData>(),
+                    EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>()
+                })
+                .ToList();
+        }
+
+        public List<CDataCharacterEquipInfo> AsCDataCharacterEquipInfo(EquipType equipType)
+        {
+            return GetItems(equipType)
+                .Select((x, index) => new {item = x, slot = (byte)(index+1)})
+                .Where(tuple => tuple.item != null)
+                .Select(tuple => new CDataCharacterEquipInfo()
+                {
+                    EquipItemUId = tuple!.item!.UId,
+                    EquipType = equipType,
+                    EquipCategory = tuple!.slot
+                })
+                .ToList();
+        }
+        
+        private int calculateEquipTypeOffset(EquipType equipType)
+        {
+            return equipType == EquipType.Performance ? 0 : EquipmentTemplate.TOTAL_EQUIP_SLOTS;
         }
     }
 
@@ -148,8 +269,8 @@ namespace Arrowgene.Ddon.Shared.Model
         Unk11 = 0xB,
         Unk12 = 0xC,
         Unk13 = 0xD,
-        Unk14 = 0xE,
-        Unk15 = 0xF,
+        CharacterEquipment = 0xE,
+        PawnEquipment = 0xF,
         Unk16 = 0x10,
         Unk17 = 0x11,
     }

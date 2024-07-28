@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var item in packet.Structure.SortList)
             {
                 StorageType storageType = (StorageType) item.Value; // why the hell is it U32 then
-                Storage storage = client.Character.Storage.getStorage(storageType);
+                Storage storage = client.Character.Storage.GetStorage(storageType);
 
                 CDataItemSort cdata = new CDataItemSort()
                 {

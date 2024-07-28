@@ -28,6 +28,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlDeleteSystemMailMessage = $"DELETE FROM \"ddon_system_mail\" WHERE \"message_id\"=@message_id;";
         private readonly string SqlUpdateSystemMailMessageState = $"UPDATE \"ddon_system_mail\" SET \"message_state\"=@message_state WHERE \"message_id\"=@message_id;";
 
+        public long InsertSystemMailMessage(SystemMailMessage message)
+        {
+            using TCon connection = OpenNewConnection();
+            return InsertSystemMailMessage(connection, message);
+        }
+
+        public long InsertSystemMailMessage(DbConnection connection, SystemMailMessage message)
+        {
+            ExecuteNonQuery((TCon) connection, SqlInsertSystemMailMessage, command =>
+            {
+                AddParameter(command, "character_id", message.CharacterId);
+                AddParameter(command, "message_state", (byte) message.MessageState);
+                AddParameter(command, "sender_name", message.SenderName);
+                AddParameter(command, "message_title", message.Title);
+                AddParameter(command, "message_body", message.Body);
+                AddParameter(command, "message_title", message.Title);
+                AddParameter(command, "send_date", message.SendDate);
+            }, out long autoIncrement);
+
+            return autoIncrement;
+        }
+
         public List<SystemMailMessage> SelectSystemMailMessages(uint characterId)
         {
             using TCon connection = OpenNewConnection();

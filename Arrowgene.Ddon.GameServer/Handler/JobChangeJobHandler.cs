@@ -4,7 +4,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.Shared.Entity;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -21,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SJobChangeJobReq> packet)
         {
-            jobManager.SetJob(Server, client, client.Character, packet.Structure.JobId);
+            jobManager.SetJob(client, client.Character, packet.Structure.JobId);
         }
     }
 }

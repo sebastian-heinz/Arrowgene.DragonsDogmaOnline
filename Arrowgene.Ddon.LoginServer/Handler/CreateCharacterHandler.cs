@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.Job = packet.Structure.CharacterInfo.Job;
             character.CharacterJobDataList = packet.Structure.CharacterInfo.CharacterJobDataList;
             character.PlayPointList = packet.Structure.CharacterInfo.PlayPointList;
-            character.Equipment = new Equipment(
+            character.EquipmentTemplate = new EquipmentTemplate(
                 new Dictionary<JobId, Dictionary<EquipType, List<Item>>>()
                 {
                     {
@@ -183,7 +183,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     MAtkDownResist = arisenPreset.MAtkDownResist,
                     MDefDownResist = arisenPreset.MDefDownResist
             }).ToList();
-            character.Equipment = new Equipment(
+            character.EquipmentTemplate = new EquipmentTemplate(
                 Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(arisenPreset.Job, new Dictionary<EquipType, List<Item>>() {
                     {
                         EquipType.Performance,
@@ -1126,8 +1126,25 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 if(tuple.Item3.ItemId != 0)
                 {
-                    character.Storage.addStorageItem(tuple.Item3, tuple.Item2, tuple.Item1);
+                    character.Storage.GetStorage(tuple.Item1).AddItem(tuple.Item3, tuple.Item2);
                 }
+            }
+
+            // Add current job's equipment to the equipment storage
+            List<Item?> performanceEquipItems = character.EquipmentTemplate.GetEquipment(character.Job, EquipType.Performance);
+            for (int i = 0; i < performanceEquipItems.Count; i++)
+            {
+                Item? item = performanceEquipItems[i];
+                ushort slot = (ushort)(i+1);
+                character.Storage.GetStorage(StorageType.CharacterEquipment).SetItem(item, 1, slot);
+            }
+
+            List<Item?> visualEquipItems = character.EquipmentTemplate.GetEquipment(character.Job, EquipType.Visual);
+            for (int i = 0; i < visualEquipItems.Count; i++)
+            {
+                Item? item = visualEquipItems[i];
+                ushort slot = (ushort)(i+EquipmentTemplate.TOTAL_EQUIP_SLOTS+1);
+                character.Storage.GetStorage(StorageType.CharacterEquipment).SetItem(item, 1, slot);
             }
 
             L2CCreateCharacterDataRes res = new L2CCreateCharacterDataRes();

@@ -20,15 +20,15 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterJobDataList = character.CharacterJobDataList;
             PlayPointList = character.PlayPointList;
             CharacterEquipDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
-                    Equips = character.Equipment.getEquipmentAsCDataEquipItemInfo(character.Job, EquipType.Performance)
+                    Equips = character.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
             }};
             CharacterEquipViewDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
-                    Equips = character.Equipment.getEquipmentAsCDataEquipItemInfo(character.Job, EquipType.Visual)
+                    Equips = character.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
             }};
-            CharacterEquipJobItemList = character.Equipment.getJobItemsAsCDataEquipJobItem(character.Job);
+            CharacterEquipJobItemList = character.EquipmentTemplate.JobItemsAsCDataEquipJobItem(character.Job);
             JewelrySlotNum = character.JewelrySlotNum;
             Unk0 = character.Unk0;
-            CharacterItemSlotInfoList = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
+            CharacterItemSlotInfoList = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
             WalletPointList = character.WalletPointList;
             MyPawnSlotNum = character.MyPawnSlotNum;
             RentalPawnSlotNum = character.RentalPawnSlotNum;

@@ -56,8 +56,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return new CDataJobChangeInfo()
             {
                 JobId = jobId,
-                EquipItemList = common.Equipment.getEquipmentAsCDataEquipItemInfo(jobId, EquipType.Performance)
-                    .Union(common.Equipment.getEquipmentAsCDataEquipItemInfo(jobId, EquipType.Visual))
+                EquipItemList = common.EquipmentTemplate.EquipmentAsCDataEquipItemInfo(jobId, EquipType.Performance)
+                    .Union(common.EquipmentTemplate.EquipmentAsCDataEquipItemInfo(jobId, EquipType.Visual))
                     .ToList()
             };
         }

@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             }
             else
             {
-                _server.JobManager.SetJob(_server, client, client.Character, (JobId) job);
+                _server.JobManager.SetJob(client, client.Character, (JobId) job);
             }
         }
     }

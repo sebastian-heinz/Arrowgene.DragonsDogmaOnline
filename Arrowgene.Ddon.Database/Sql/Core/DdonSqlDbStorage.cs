@@ -95,7 +95,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             StorageType storageType = (StorageType) GetByte(reader, "storage_type");
             ushort slotMax = GetUInt16(reader, "slot_max");
             byte[] sortData = GetBytes(reader, "item_sort", 1024);
-            return new Tuple<StorageType, Storage>(storageType, new Storage(slotMax, sortData));
+            return new Tuple<StorageType, Storage>(storageType, new Storage(storageType, slotMax, sortData));
         }
 
         private void AddParameter(TCom command, uint characterId, StorageType storageType, Storage storage)
