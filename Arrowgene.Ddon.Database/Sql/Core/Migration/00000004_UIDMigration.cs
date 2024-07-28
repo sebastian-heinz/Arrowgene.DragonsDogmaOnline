@@ -27,41 +27,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
             string adaptedSchema = DdonDatabaseBuilder.GetAdaptedSchema(DatabaseSetting, "Script/uid_migration.sql");
             db.Execute(conn, adaptedSchema);
 
-            Dictionary<uint, List<uint>> CharacterIdMap = new Dictionary<uint, List<uint>>();
-            db.ExecuteReader(conn, "SELECT * FROM ddon_character;",
-                command => { },
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        var characterId = db.GetUInt32(reader, "character_id");
-                        var commonId = db.GetUInt32(reader, "character_common_id");
-                        if (!CharacterIdMap.ContainsKey(characterId))
-                        {
-                            CharacterIdMap[characterId] = new List<uint>();
-                        }
-                        CharacterIdMap[characterId].Add(commonId);
-                    }
-                }
-            );
-
-            db.ExecuteReader(conn, "SELECT * FROM ddon_pawn;",
-                command => { },
-                reader =>
-                {
-                    while (reader.Read())
-                    {
-                        var characterId = db.GetUInt32(reader, "character_id");
-                        var commonId = db.GetUInt32(reader, "character_common_id");
-                        if (!CharacterIdMap.ContainsKey(characterId))
-                        {
-                            CharacterIdMap[characterId] = new List<uint>();
-                        }
-                        CharacterIdMap[characterId].Add(commonId);
-                    }
-                }
-            );
-
             Dictionary<string, Item> ddon_items = new Dictionary<string, Item>();
             db.ExecuteReader(conn, "SELECT * FROM ddon_item;",
                 command => {}, 
