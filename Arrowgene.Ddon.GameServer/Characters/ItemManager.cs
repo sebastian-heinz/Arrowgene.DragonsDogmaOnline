@@ -335,9 +335,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND);
             }
 
-            if (toStorage.Type == StorageType.CharacterEquipment || toStorage.Type == StorageType.PawnEquipment)
+            if (toStorage.Type == StorageType.CharacterEquipment || toStorage.Type == StorageType.PawnEquipment || toStorage.Type == StorageType.ItemBagEquipment)
             {
-                // Swapping or equipping equipment
                 if (toItem != null)
                 {
                     // Delete the item
@@ -354,7 +353,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     SaveItem(server, character, toItem.Item1, fromStorage, fromSlotNo, 1);
                 }
 
-                results.Add(CreateItemUpdateResult(character, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+                if (toSlotNo == 0)
+                {
+                    // Going to the equipment bag, no swap
+                    toSlotNo = toStorage.AddItem(fromItem.Item1, 0);
+
+                    results.Add(CreateItemUpdateResult(character, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
+                    results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+                }
+                else
+                {
+                    // Going to equipment
+                    if (toItem == null)
+                    {
+                        results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
+                    }
+                    results.Add(CreateItemUpdateResult(character, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+                }
                 SaveItem(server, character, fromItem.Item1, toStorage, toSlotNo, 1);
             }
             else
