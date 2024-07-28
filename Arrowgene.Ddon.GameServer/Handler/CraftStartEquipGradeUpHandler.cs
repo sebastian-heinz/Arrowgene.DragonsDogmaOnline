@@ -61,7 +61,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint addEquipPoint = 0;     
             bool dogreatsuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             bool canUpgrade = false;
-            bool isEquipped = false;
 
             double minMultiplier = 0.8;
             double maxMultiplier = 1.2;

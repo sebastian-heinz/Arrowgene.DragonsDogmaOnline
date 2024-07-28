@@ -35,18 +35,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte equiptype = 0;
 
 
+            List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
+                        .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
+                        .ToList();
 
-            bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
-            if(isEquipped)
-            {
-                List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
-                    .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
-                    .ToList();
-
-                var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                equipslot = equipInfo.EquipCategory;
-                equiptype = equipInfo.EquipType;
-            };
+            var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
+            equipslot = equipInfo.EquipCategory;
+            equiptype = (byte)equipInfo.EquipType;
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {

@@ -45,13 +45,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint charid = client.Character.CharacterId;
             uint pawnid = packet.Structure.CraftMainPawnID;
             byte currentPlusValue = equipItem.PlusValue;
-            bool isEquipped = _equipManager.IsItemEquipped(common, equipItemUID);
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             bool retainPlusValue = false;
             string RefineMaterial = packet.Structure.RefineUID;
             ushort AddStatusID = packet.Structure.AddStatusID;
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
+            List<CDataItemUpdateResult> updateResults;
             CDataAddStatusData AddStat = new CDataAddStatusData()
             {
                 IsAddStat1 = 0,
@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     try
                     {
-                        List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
+                        updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                     }
                     catch (NotEnoughItemsException e)
@@ -175,49 +175,42 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             
-
-            if (isEquipped)
-            {
-                List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
-                    .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
-                    .ToList();
-
-                var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                equipslot = equipInfo.EquipCategory;
-                equiptype = equipInfo.EquipType;
-
-                _equipManager.ReplaceEquippedItem(Server, client, common, StorageType.Unk14, equipItemUID, QualityUpItem.UId, QualityUpItem.ItemId, QualityUpItem, (EquipType)equiptype, (byte)equipslot);
-                lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-                GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, common);
-                client.Send(lobbyPlayerContextNtc);
-            }
-            else
-            {
                 Logger.Debug($"Attempting to find {equipItemUID}");
-                StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
-                ushort slotno = 0;
-                uint itemnum = 0;
-                Item item;
-                var foundItem = common.Storage.getStorage(StorageType.ItemBagEquipment).findItemByUId(equipItemUID);
+                    StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
+                    ushort slotno = 0;
+                    uint itemnum = 0;
+                    Item item;
+                    var foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
 
-                switch (storageType)
-                {
-                    case StorageType.ItemBagEquipment:
-                        foundItem = common.Storage.getStorage(StorageType.ItemBagEquipment).findItemByUId(equipItemUID);
-                        break;
-                    case StorageType.StorageBoxNormal:
-                        foundItem = common.Storage.getStorage(StorageType.StorageBoxNormal).findItemByUId(equipItemUID);
-                        break;
-                    case StorageType.StorageBoxExpansion:
-                        foundItem = common.Storage.getStorage(StorageType.StorageBoxExpansion).findItemByUId(equipItemUID);
-                        break;
-                    case StorageType.StorageChest:
-                        foundItem = common.Storage.getStorage(StorageType.StorageChest).findItemByUId(equipItemUID);
-                        break;
-                    default:
-                        Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
-                        break;
-                }
+                    switch (storageType)
+                    {
+                        case StorageType.CharacterEquipment:
+                            foundItem = common.Storage.GetStorage(StorageType.CharacterEquipment).FindItemByUId(equipItemUID);
+                            List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
+                                        .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
+                                        .ToList();
+
+                                var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
+                                equipslot = equipInfo.EquipCategory;
+                                equiptype = (byte)equipInfo.EquipType;
+
+                            break;
+                        case StorageType.ItemBagEquipment:
+                            foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
+                            break;
+                        case StorageType.StorageBoxNormal:
+                            foundItem = common.Storage.GetStorage(StorageType.StorageBoxNormal).FindItemByUId(equipItemUID);
+                            break;
+                        case StorageType.StorageBoxExpansion:
+                            foundItem = common.Storage.GetStorage(StorageType.StorageBoxExpansion).FindItemByUId(equipItemUID);
+                            break;
+                        case StorageType.StorageChest:
+                            foundItem = common.Storage.GetStorage(StorageType.StorageChest).FindItemByUId(equipItemUID);
+                            break;
+                        default:
+                            Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
+                            break;
+                    }
 
                 if (foundItem != null)
                 {
@@ -238,11 +231,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
 
-                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, (byte)slotno);
+                updateResults = Server.ItemManager.ReplaceStorageItem(Server, client, common, charid, storageType, QualityUpItem, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 //TODO: Figure out why when changing the Quality of an unequipped item it doesn't show the item icon in the box.
             
-            };
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
@@ -283,7 +275,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             foreach (var storageType in STORAGE_TYPES)
             {
-                var foundItem = character.Storage.getStorage(storageType).findItemByUId(itemUID);
+                var foundItem = character.Storage.GetStorage(storageType).FindItemByUId(itemUID);
                 if (foundItem != null)
                 {
                     return (storageType, (foundItem.Item1, foundItem.Item2, foundItem.Item3));
