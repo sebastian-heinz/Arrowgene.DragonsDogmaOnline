@@ -1,12 +1,10 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class GpGetGpDetailHandler : GameStructurePacketHandler<C2SGpGetGpDetailReq>
+    public class GpGetGpDetailHandler : GameRequestPacketHandler<C2SGpGetGpDetailReq, S2CGpGetGpDetailRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GpGetGpDetailHandler));
 
@@ -14,9 +12,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SGpGetGpDetailReq> packet)
+        public override S2CGpGetGpDetailRes Handle(GameClient client, C2SGpGetGpDetailReq packet)
         {
-            client.Send(new S2CGpGetGpDetailRes());
+            return new S2CGpGetGpDetailRes();
         }
     }
 }

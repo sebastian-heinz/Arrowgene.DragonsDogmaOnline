@@ -1,13 +1,11 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
-using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class GpGetGpPeriodHandler : GameStructurePacketHandler<C2SGpGetGpPeriodReq>
+    public class GpGetGpPeriodHandler : GameRequestPacketHandler<C2SGpGetGpPeriodReq, S2CGpGetGpPeriodRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GpGetGpPeriodHandler));
 
@@ -15,7 +13,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SGpGetGpPeriodReq> packet)
+        public override S2CGpGetGpPeriodRes Handle(GameClient client, C2SGpGetGpPeriodReq packet)
         {
             var res = new S2CGpGetGpPeriodRes();
             var amount = Server.WalletManager.GetWalletAmount(client.Character, Shared.Model.WalletType.GoldenGemstones);
@@ -27,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Period = 0
             });
 
-            client.Send(res);
+            return res;
         }
     }
 }
