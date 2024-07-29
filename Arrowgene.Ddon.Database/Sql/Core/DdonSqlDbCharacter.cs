@@ -3,10 +3,6 @@ using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -303,7 +299,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Play Points
             ExecuteReader(conn, SqlSelectCharacterPlayPointDataByCharacter,
-                command => { AddParameter(command, "@character_common_id", character.CommonId); },
+                command => { AddParameter(command, "@character_id", character.CharacterId); },
                 reader =>
                 {
                     while (reader.Read())

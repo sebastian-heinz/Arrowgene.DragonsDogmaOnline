@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class PPMigration : IMigrationStrategy
     {
-        public uint From => 3; 
-        public uint To => 4;
+        public uint From => 4; 
+        public uint To => 5;
 
         private readonly DatabaseSetting DatabaseSetting;
 
