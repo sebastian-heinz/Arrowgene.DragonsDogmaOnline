@@ -1,11 +1,10 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -13,43 +12,48 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StampBonusGetListHandler));
 
+        private readonly DdonGameServer _gameServer;
+
         public StampBonusGetListHandler(DdonGameServer server) : base(server)
         {
+            _gameServer = server;
         }
 
         public override PacketId Id => PacketId.C2S_STAMP_BONUS_GET_LIST_REQ;
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            var res = new S2CStampBonusGetListRes();
-            for (int i = 0; i < 8; i++)
+            //This handler gets called twice in a row; once for the daily bonus list and then once for the total bonus list.
+            //The sequence normally goes CHECK -> GET_LIST -> RECIEVE_DAILY -> GET_LIST -> RECIEVE_TOTAL
+            //Character.StampBonus is incremented in RECIEVE_DAILY, so the daily list portions need an offset and the total list portions don't.
+
+            ushort totalStampNum = (ushort)(client.Character.StampBonus.TotalStamp);
+            var res = new S2CStampBonusGetListRes()
             {
-                res.StampBonusDaily.Add(new CDataStampBonusAsset
-                {
-                    StampNum = (ushort)(i + 1),
-                    RecieveState = (byte)StampRecieveState.Claimed,
-                    StampBonus = new List<CDataStampBonus> { 
-                        new CDataStampBonus { BonusType = (uint)(i+7853), BonusValue = (uint)(i+1)}
-                    }
-                });
+                StampBonusDaily = _gameServer.StampManager.GetDailyStampAssets(),
+                StampBonusTotal = _gameServer.StampManager.GetTotalStampAssetsWindow(totalStampNum)
+            };
+
+            //If you missed a day, reset stamp to 0 (to be incremented up in RECIEVE_DAILY)
+            if (StampManager.CanResetConsecutiveStamp(client.Character.StampBonus)) client.Character.StampBonus.ConsecutiveStamp = 0;
+            //If you've finished the 8-stamp sequence and you're going to roll over to 9, reset stamp to 0.
+            if (client.Character.StampBonus.ConsecutiveStamp >= StampManager.MAX_DAILY_STAMP) client.Character.StampBonus.ConsecutiveStamp = 0;
+
+            foreach (var item in res.StampBonusDaily)
+            {
+                if (item.StampNum < client.Character.StampBonus.ConsecutiveStamp+1) item.RecieveState = (byte)StampRecieveState.Claimed;
+                else if (item.StampNum == client.Character.StampBonus.ConsecutiveStamp+1) item.RecieveState = (byte)StampRecieveState.ToBeClaimed;
+                else item.RecieveState = (byte)StampRecieveState.Unearned;
             }
 
-            List<ushort> TotalStamps = new() { 15, 30, 60, 90, 120, 150, 180, 210, 240, 270 };
-            for (int i = 0; i < 10; i++)
+            foreach (var item in res.StampBonusTotal)
             {
-                res.StampBonusTotal.Add(new CDataStampBonusAsset
-                {
-                    StampNum = TotalStamps[i],
-                    RecieveState = (byte)StampRecieveState.Claimed,
-                    StampBonus = new List<CDataStampBonus> {
-                        new CDataStampBonus { BonusType = 5, BonusValue = (uint)(10*(i+1))}
-                    }
-                });
+                if (item.StampNum < totalStampNum) item.RecieveState = (byte)StampRecieveState.Claimed;
+                else if (item.StampNum == totalStampNum) item.RecieveState = (byte)StampRecieveState.ToBeClaimed;
+                else item.RecieveState = (byte)StampRecieveState.Unearned;
             }
+            res.TotalStampNum = totalStampNum;
 
-            res.TotalStampNum = 420;
-
-            //client.Send(GameFull.Dump_700);
             client.Send(res);
         }
     }

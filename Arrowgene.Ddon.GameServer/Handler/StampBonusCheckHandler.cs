@@ -1,11 +1,8 @@
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Diagnostics;
-using System.Transactions;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -13,22 +10,39 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StampBonusCheckHandler));
 
+        private readonly DdonGameServer _gameServer;
+
         public StampBonusCheckHandler(DdonGameServer server) : base(server)
         {
+            _gameServer = server;
         }
 
         public override PacketId Id => PacketId.C2S_STAMP_BONUS_CHECK_REQ;
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            S2CStampBonusCheckRes res = new S2CStampBonusCheckRes()
-            {
-                SuppressTotal = false,
-                SuppressDaily = false
-            };
+            bool canTotal = _gameServer.StampManager.CanTotalStamp(client.Character.StampBonus);
+            bool canDaily = _gameServer.StampManager.CanDailyStamp(client.Character.StampBonus);
 
-            //client.Send(InGameDump.Dump_95);
-            client.Send(res);
+            if (canDaily)
+            {
+                client.Send(new S2CStampBonusCheckRes()
+                {
+                    SuppressTotal = !canTotal,
+                    SuppressDaily = !canDaily,
+                });
+            }
+            else 
+            {
+                //For whatever reason, suppresses the icon over Ophelia's head.
+                client.Send(new S2CStampBonusCheckRes() 
+                {
+                    Unk0 = 0,
+                    Unk1 = ushort.MaxValue,
+                    SuppressDaily = true,
+                    SuppressTotal = true
+                });
+            }  
         }
     }
 }

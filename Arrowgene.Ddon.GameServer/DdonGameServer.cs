@@ -20,16 +20,16 @@
  * along with Arrowgene.Ddon.GameServer. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.GameServer.Chat.Command;
 using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
@@ -40,8 +40,8 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
-using Arrowgene.Ddon.GameServer.Shop;
-using Arrowgene.Ddon.GameServer.Characters;
+using System;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -71,6 +71,7 @@ namespace Arrowgene.Ddon.GameServer
             CharacterManager = new CharacterManager(this);
             BazaarManager = new BazaarManager(this);
             RewardManager = new RewardManager(this);
+            StampManager = new StampManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -95,6 +96,7 @@ namespace Arrowgene.Ddon.GameServer
         public EquipManager EquipManager { get; }
         public BazaarManager BazaarManager { get; }
         public RewardManager RewardManager { get; }
+        public StampManager StampManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
