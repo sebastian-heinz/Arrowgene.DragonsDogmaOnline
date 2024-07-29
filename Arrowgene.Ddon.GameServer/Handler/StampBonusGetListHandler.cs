@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CStampBonusGetListRes();
             for (int i = 0; i < 8; i++)
             {
-                res.StampBonusDaily.Add(new CDataStampBonusDaily
+                res.StampBonusDaily.Add(new CDataStampBonusAsset
                 {
                     StampNum = (ushort)(i + 1),
                     RecieveState = (byte)StampRecieveState.Claimed,
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<ushort> TotalStamps = new() { 15, 30, 60, 90, 120, 150, 180, 210, 240, 270 };
             for (int i = 0; i < 10; i++)
             {
-                res.StampBonusTotal.Add(new CDataStampBonusTotal
+                res.StampBonusTotal.Add(new CDataStampBonusAsset
                 {
                     StampNum = TotalStamps[i],
                     RecieveState = (byte)StampRecieveState.Claimed,

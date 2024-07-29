@@ -16,11 +16,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
             Unk3 = 77;
             
-            StampBonusDaily = new List<CDataStampBonusDaily> { };
+            StampBonusDaily = new List<CDataStampBonusAsset> { };
 
             TotalStampNum = 252;
 
-            StampBonusTotal = new List<CDataStampBonusTotal> { };
+            StampBonusTotal = new List<CDataStampBonusAsset> { };
 
             Unk5 = 50;
 
@@ -30,9 +30,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint Unk1 {  get; set; } // 1
         public uint Unk2 { get; set; } // 1
         public uint Unk3 { get; set; } // 77
-        public List<CDataStampBonusDaily> StampBonusDaily { get; set; }
+        public List<CDataStampBonusAsset> StampBonusDaily { get; set; }
         public ushort TotalStampNum { get; set; } // 252
-        public List<CDataStampBonusTotal> StampBonusTotal { get; set; }
+        public List<CDataStampBonusAsset> StampBonusTotal { get; set; }
         public ushort Unk5 { get; set; } // 50;
         public byte Unk6 { get; set; } // 0;
 
@@ -44,9 +44,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.Unk1);
                 WriteUInt32(buffer, obj.Unk2);
                 WriteUInt32(buffer, obj.Unk3);
-                WriteEntityList<CDataStampBonusDaily>(buffer, obj.StampBonusDaily);
+                WriteEntityList<CDataStampBonusAsset>(buffer, obj.StampBonusDaily);
                 WriteUInt16(buffer, obj.TotalStampNum);
-                WriteEntityList<CDataStampBonusTotal>(buffer, obj.StampBonusTotal);
+                WriteEntityList<CDataStampBonusAsset>(buffer, obj.StampBonusTotal);
                 WriteUInt16(buffer, obj.Unk5);
                 WriteByte(buffer, obj.Unk6);
             }
@@ -58,9 +58,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Unk1 = ReadUInt32(buffer);
                 obj.Unk2 = ReadUInt32(buffer);
                 obj.Unk3 = ReadUInt32(buffer);
-                obj.StampBonusDaily = ReadEntityList<CDataStampBonusDaily>(buffer);
+                obj.StampBonusDaily = ReadEntityList<CDataStampBonusAsset>(buffer);
                 obj.TotalStampNum = ReadUInt16(buffer);
-                obj.StampBonusTotal = ReadEntityList<CDataStampBonusTotal>(buffer);
+                obj.StampBonusTotal = ReadEntityList<CDataStampBonusAsset>(buffer);
                 obj.Unk5 = ReadUInt16(buffer);
                 obj.Unk6 = ReadByte(buffer);
                 return obj;

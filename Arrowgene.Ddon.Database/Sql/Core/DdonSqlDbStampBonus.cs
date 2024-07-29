@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System.Data.Common;
 
@@ -14,57 +13,30 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "last_stamp_time", "consecutive_stamp", "total_stamp"
         };
         private readonly string SqlInsertCharacterStamp = $"INSERT INTO \"ddon_stamp_bonus\" ({BuildQueryField(CDataStampFields)}) VALUES ({BuildQueryInsert(CDataStampFields)});";
-        private static readonly string SqlUpdateCharacteStamp = $"UPDATE \"ddon_stamp_bonus\" SET {BuildQueryUpdate(CDataStampFields)} WHERE \"character_id\" = @character_id;";
+        private static readonly string SqlUpdateCharacterStamp = $"UPDATE \"ddon_stamp_bonus\" SET {BuildQueryUpdate(CDataStampFields)} WHERE \"character_id\" = @character_id;";
         private static readonly string SqlSelectCharacterStamp = $"SELECT {BuildQueryField(CDataStampFields)} FROM \"ddon_stamp_bonus\" WHERE \"character_id\" = @character_id;";
         private const string SqlDeleteCharacterStamp = "DELETE FROM \"ddon_stamp_bonus\" WHERE \"character_id\"=@character_id;";
-        public bool ReplaceCharacterPlayPointData(uint id, CharacterStampBonus stampData)
+
+        public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData)
         {
             using TCon connection = OpenNewConnection();
-            return ReplaceCharacterPlayPointData(connection, id, stampData);
+            return InsertCharacterStampData(connection, id, stampData);
         }
 
-        public bool ReplaceCharacterPlayPointData(TCon connection, uint id, CharacterStampBonus stampData)
+        public bool InsertCharacterStampData(TCon connection, uint id, CharacterStampBonus stampData)
         {
-            Logger.Debug("Inserting character playpoint data.");
-            if (!InsertIfNotExistsCharacterPlayPointData(connection, id, stampData))
-            {
-                Logger.Debug("Character playpoint data already exists, replacing.");
-                return UpdateCharacterPlayPointData(connection, id, stampData);
-            }
-            return true;
+            return ExecuteNonQuery(connection, SqlInsertCharacterStamp, command => { AddParameter(command, id, stampData); }) == 1;
         }
 
-        public bool InsertCharacterPlayPointData(uint id, CharacterStampBonus stampData)
+        public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData)
         {
             using TCon connection = OpenNewConnection();
-            return InsertCharacterPlayPointData(connection, id, stampData);
+            return UpdateCharacterStampData(connection, id, stampData);
         }
 
-        public bool InsertCharacterPlayPointData(TCon connection, uint id, CharacterStampBonus stampData)
+        public bool UpdateCharacterStampData(TCon connection, uint id, CharacterStampBonus stampData)
         {
-            return ExecuteNonQuery(connection, SqlInsertCharacterPlayPointData, command => { AddParameter(command, id, stampData); }) == 1;
-        }
-
-        public bool InsertIfNotExistsCharacterPlayPointData(uint id, CharacterStampBonus stampData)
-        {
-            using TCon connection = OpenNewConnection();
-            return InsertIfNotExistsCharacterPlayPointData(connection, id, stampData);
-        }
-
-        public bool InsertIfNotExistsCharacterPlayPointData(TCon connection, uint id, CharacterStampBonus stampData)
-        {
-            return ExecuteNonQuery(connection, SqlInsertIfNotExistsCharacterPlayPointData, command => { AddParameter(command, id, stampData); }) == 1;
-        }
-
-        public bool UpdateCharacterPlayPointData(uint id, CharacterStampBonus stampData)
-        {
-            using TCon connection = OpenNewConnection();
-            return UpdateCharacterPlayPointData(connection, id, stampData);
-        }
-
-        public bool UpdateCharacterPlayPointData(TCon connection, uint id, CharacterStampBonus stampData)
-        {
-            return ExecuteNonQuery(connection, SqlUpdateCharacterPlayPointData, command => { AddParameter(command, id, stampData); }) == 1;
+            return ExecuteNonQuery(connection, SqlUpdateCharacterStamp, command => { AddParameter(command, id, stampData); }) == 1;
         }
 
         private void AddParameter(TCom command, uint id, CharacterStampBonus stampData)

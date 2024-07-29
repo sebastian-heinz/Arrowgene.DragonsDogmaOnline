@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public class CDataStampBonusTotal
+    public class CDataStampBonusAsset
     {
-        public CDataStampBonusTotal()
+        public CDataStampBonusAsset()
         {
             StampBonus = new List<CDataStampBonus>();
         }
 
         public uint Unk0 = 1; //Nested list index? Weird MtArray stuff.
         public List<CDataStampBonus> StampBonus { get; set; }
-        public ushort StampNum { get; set; }
+        public ushort StampNum {  get; set; }
         public byte RecieveState { get; set; }
 
-        public class Serializer : EntitySerializer<CDataStampBonusTotal>
+        public class Serializer : EntitySerializer<CDataStampBonusAsset>
         {
-            public override void Write(IBuffer buffer, CDataStampBonusTotal obj)
+            public override void Write(IBuffer buffer, CDataStampBonusAsset obj)
             {
                 WriteUInt32(buffer, obj.Unk0);
                 WriteEntityList<CDataStampBonus>(buffer, obj.StampBonus);
@@ -29,9 +29,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.RecieveState);
             }
 
-            public override CDataStampBonusTotal Read(IBuffer buffer)
+            public override CDataStampBonusAsset Read(IBuffer buffer)
             {
-                CDataStampBonusTotal obj = new CDataStampBonusTotal();
+                CDataStampBonusAsset obj = new CDataStampBonusAsset();
                 obj.Unk0 = ReadUInt32(buffer);
                 obj.StampBonus = ReadEntityList<CDataStampBonus>(buffer);
                 obj.StampNum = ReadUInt16(buffer);

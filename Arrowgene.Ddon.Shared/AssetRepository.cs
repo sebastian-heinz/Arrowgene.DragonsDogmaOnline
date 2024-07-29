@@ -38,6 +38,7 @@ namespace Arrowgene.Ddon.Shared
         public const string SecretAbilityKey = "DefaultSecretAbilities.json";
         public const string QuestAssestKey = "quests";
         public const string JobValueShopKey = "JobValueShop.csv";
+        public const string StampBonusKey = "StampBonus.csv";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -97,6 +98,7 @@ namespace Arrowgene.Ddon.Shared
         public SecretAbilityAsset SecretAbilitiesAsset { get; private set; }
         public QuestAsset QuestAssets {  get; set; }
         public List<(JobId, CDataJobValueShopItem)> JobValueShopAsset { get; private set; }
+        public List<CDataStampBonusAsset> StampBonusAsset { get; private set; }
 
         public void Initialize()
         {
@@ -118,6 +120,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
             RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
             RegisterAsset(value => JobValueShopAsset = value, JobValueShopKey, new JobValueShopCsv());
+            RegisterAsset(value => StampBonusAsset = value, StampBonusKey, new StampBonusCsv());
 
             var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);

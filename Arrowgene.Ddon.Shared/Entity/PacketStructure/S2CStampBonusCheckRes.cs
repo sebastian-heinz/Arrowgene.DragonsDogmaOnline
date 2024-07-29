@@ -1,11 +1,5 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -24,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public override PacketId Id => PacketId.S2C_STAMP_BONUS_CHECK_RES;
 
         //The structure of this is probably mostly wrong and totally differs from what's in the debug symbols.
-        //Take many of these data types with a grain of salt.
+        //Take these data types with a grain of salt.
         public uint Unk0 { get; set; }
         public ushort Unk1 { get; set; }
         public bool SuppressDaily { get; set; }

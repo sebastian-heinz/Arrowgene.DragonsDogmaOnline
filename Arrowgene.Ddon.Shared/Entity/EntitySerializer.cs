@@ -244,8 +244,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataStorageItemUIDList.Serializer());
 
             Create(new CDataStampBonus.Serializer());
-            Create(new CDataStampBonusDaily.Serializer());
-            Create(new CDataStampBonusTotal.Serializer());
+            Create(new CDataStampBonusAsset.Serializer());
 
             Create(new CDataTimeLimitedQuestOrderList.Serializer());
             Create(new CDataTraningRoomEnemyHeader.Serializer());
