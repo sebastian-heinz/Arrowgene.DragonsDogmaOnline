@@ -1,9 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
-using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
