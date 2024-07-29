@@ -19,15 +19,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
         };
+        private static readonly List<StorageType> StorageEquipNBox = new List<StorageType> {
+            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest, StorageType.CharacterEquipment
+        };
 
         private readonly ItemManager _itemManager;
-        private readonly EquipManager _equipManager;
         private readonly Random _random;
 
         public CraftStartQualityUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
-            _equipManager = Server.EquipManager;
             _random = new Random();
         }
 
@@ -246,7 +247,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
         private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
         {
-            foreach (var storageType in STORAGE_TYPES)
+            foreach (var storageType in StorageEquipNBox)
             {
                 var foundItem = character.Storage.GetStorage(storageType).FindItemByUId(itemUID);
                 if (foundItem != null)

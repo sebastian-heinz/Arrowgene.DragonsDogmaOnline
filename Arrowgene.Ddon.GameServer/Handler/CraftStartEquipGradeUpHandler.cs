@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
         };
         private static readonly List<StorageType> StorageEquipNBox = new List<StorageType> {
-            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
+            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest, StorageType.CharacterEquipment
         };
 
         private readonly ItemManager _itemManager;
@@ -310,7 +310,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
         private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
         {
-            foreach (var storageType in STORAGE_TYPES)
+            foreach (var storageType in StorageEquipNBox)
             {
                 var foundItem = character.Storage.GetStorage(storageType).FindItemByUId(itemUID);
                 if (foundItem != null)
