@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -357,21 +358,52 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }
             }
 
-            // Create equipment items
+            var equipmentTemplates = character.EquipmentTemplate.GetAllEquipment()[character.Job];
+            foreach (var equipment in equipmentTemplates)
+            {
+                for (byte index = 0; index < equipment.Value.Count; index++)
+                {
+                    Item item = equipment.Value[index];
+                    if (item != null)
+                    {
+                        byte slot = (byte)(index + 1);
+                        InsertEquipItem(conn, character.CommonId, character.Job, equipment.Key, slot, item.UId);
+                    }
+                }
+            }
+
+            // Give starter weapon for all classes
+
+            var storageBoxNormal = character.Storage.GetAllStorages()[StorageType.StorageBoxNormal];
             foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.EquipmentTemplate.GetAllEquipment())
             {
                 JobId job = jobEquipment.Key;
-                foreach (KeyValuePair<EquipType, List<Item>> equipment in jobEquipment.Value)
+                if (job == character.Job)
                 {
-                    EquipType equipType = equipment.Key;
-                    for (byte index = 0; index < equipment.Value.Count; index++)
+                    // Skip the current job as we already populated data for it.
+                    continue;
+                }
+
+                // We are only interested in slot 1 and 2
+                for (byte i = 0; i < 2; i++)
+                {
+                    Item item = jobEquipment.Value[EquipType.Performance][i];
+                    if (item != null)
                     {
-                        Item item = equipment.Value[index];
-                        if(item != null)
-                        {
-                            byte slot = (byte)(index+1);
-                            InsertEquipItem(conn, character.CommonId, job, equipType, slot, item.UId);
-                        }
+                        ushort slot = storageBoxNormal.AddItem(item, 0);
+                        InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                        InsertStorageItem(conn, character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item);
+                    }
+                }
+
+                // Requip the base armor to the other jobs without creating new items
+                var baseJob = character.EquipmentTemplate.GetAllEquipment()[character.Job];
+                for (byte i = 2; i < baseJob[EquipType.Performance].Count; i++)
+                {
+                    Item item = baseJob[EquipType.Performance][i];
+                    if (item != null)
+                    {
+                        InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
                     }
                 }
             }
