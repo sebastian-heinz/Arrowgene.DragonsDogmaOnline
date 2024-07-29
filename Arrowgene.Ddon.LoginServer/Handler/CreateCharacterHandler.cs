@@ -234,7 +234,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 ItemId = arisenPreset.Head,
                                 Unk3 = 0,
                                 Color = arisenPreset.HeadColour,
-                                PlusValue = 3,
+                                PlusValue = 0,
                                 WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                     new CDataWeaponCrestData {
                                         SlotNo = 1,
@@ -266,7 +266,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 ItemId = arisenPreset.Body,
                                 Unk3 = 0,
                                 Color = arisenPreset.BodyColour,
-                                PlusValue = 4,
+                                PlusValue = 0,
                                 WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                     new CDataWeaponCrestData {
                                         SlotNo = 1,
@@ -308,7 +308,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 ItemId = arisenPreset.Arm,
                                 Unk3 = 0,
                                 Color = arisenPreset.ArmColour,
-                                PlusValue = 3,
+                                PlusValue = 0,
                                 WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                     new CDataWeaponCrestData {
                                         SlotNo = 1,
@@ -340,7 +340,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 ItemId = arisenPreset.Leg,
                                 Unk3 = 0,
                                 Color = arisenPreset.LegColour,
-                                PlusValue = 3,
+                                PlusValue = 0,
                                 WeaponCrestDataList = new List<CDataWeaponCrestData>() {
                                     new CDataWeaponCrestData {
                                         SlotNo = 1,

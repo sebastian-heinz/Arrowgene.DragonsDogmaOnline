@@ -168,7 +168,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
 
             // More dummy data, looks like its dragonfroce related.
-            CDataCraftStartEquipGradeUpUnk0Unk0 DragonForceData = new CDataCraftStartEquipGradeUpUnk0Unk0()
+            CDataCraftStartEquipGradeUpUnk0Unk0 DragonAugmentData = new CDataCraftStartEquipGradeUpUnk0Unk0()
             {
                 Unk0 = 1,          // Probably Dragon Force related.
                 Unk1 = 0,
@@ -180,11 +180,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Dummy data for Unk1.
             CDataCraftStartEquipGradeUpUnk0 dummydata = new CDataCraftStartEquipGradeUpUnk0()
             {
-                Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { DragonForceData },
+                Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { DragonAugmentData },
                 Unk1 = 0,
                 Unk2 = 0,
                 Unk3 = 0,               // No idea what these 3 bytes are for
-                DragonFroce = false,    // makes the Dragonforce slot popup appear if set to true.
+                DragonAugment = false,    // makes the DragonAugment slot popup appear if set to true.
             };
             // TODO: Source these values accurately when we know what they are. ^
 
@@ -272,9 +272,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                         res = new S2CCraftStartEquipGradeUpRes()
                         {
-                            GradeUpItemUID = equipItemUID, // TODO: Make sure to retain the original UID when that PR merges.
+                            GradeUpItemUID = equipItemUID,
                             GradeUpItemID = equipItem.ItemId,
-                            GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
+                            GradeUpItemIDList = gradeuplist,
                             AddEquipPoint = 0,
                             TotalEquipPoint = 0,
                             EquipGrade = EquipRank,
@@ -283,11 +283,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             CurrentEquip = CurrentEquipInfo,   
                             BeforeItemID = equipItemID,
                             Upgradable = canContinue,
-                            Unk1 = dummydata
+                            Unk1 = dummydata // Dragon Augment related I guess?
                         };
                 };
 
-            // If GradeUpItemID & UID are populated it will auto fill the bar, I guess I need an if check somewhere to decide if we send that data or not. 
             if(!canUpgrade)
             {
                 res = new S2CCraftStartEquipGradeUpRes()
@@ -299,7 +298,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     IsGreatSuccess = dogreatsuccess,
                     CurrentEquip = CurrentEquipInfo,
                     Upgradable = canContinue,
-                    Unk1 = dummydata // I think this is to track slotted crests, dyes, etc
+                    Unk1 = dummydata // Dragon Augment related I guess?
                 };
 
             };
