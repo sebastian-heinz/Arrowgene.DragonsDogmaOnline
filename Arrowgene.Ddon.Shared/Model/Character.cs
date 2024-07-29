@@ -26,6 +26,7 @@ namespace Arrowgene.Ddon.Shared.Model
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
             EnemyLayoutOwnership = new Dictionary<CDataStageLayoutId, bool>();
+            StampBonus = new CharacterStampBonus();
         }
 
         public int AccountId { get; set; }
@@ -74,5 +75,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             get { return PlayPointList.Where(x => x.Job == Job).SingleOrDefault(); }
         }
+
+        public CharacterStampBonus StampBonus { get; set; }
     }
 }
