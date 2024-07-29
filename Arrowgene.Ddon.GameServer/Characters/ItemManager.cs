@@ -218,7 +218,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if(clientItemInfo.StorageType == StorageType.ItemBagEquipment)
                 {
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, getplusvalue, addstatus);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, getplusvalue);
                 }
                 else
                 {
@@ -228,7 +228,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte setplusvalue = 0, List<CDataAddStatusData> SetAddStatList = null)
+        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte setplusvalue = 0)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
             // The stack limit is specified by the stackLimit arg
@@ -250,17 +250,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint oldItemNum = itemAndNumWithSlot?.item?.Item2 ?? 0;
                 uint newItemNum = Math.Min(stackLimit, oldItemNum + itemsToAdd);
                 uint addedItems = newItemNum - oldItemNum;
-                bool addstatusDB = false;
                 itemsToAdd -= addedItems;
-
-                if (SetAddStatList == null)
-                {
-                    SetAddStatList = new List<CDataAddStatusData>();
-                }
-                else if (SetAddStatList.Count > 0)
-                {
-                    addstatusDB = true;
-                }
                 
                 Storage destinationStorage = character.Storage.GetStorage(destinationStorageType);
                 if (item == null)
@@ -272,15 +262,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         PlusValue = setplusvalue,
                         EquipPoints = 0,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                        AddStatusData = SetAddStatList,
+                        AddStatusData = new List<CDataAddStatusData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()
                     };
-                    // TODO: v Improve this, I need to insert to the DB but lack the key info in the startcrafthandler, so it must be done here, very hackily.
-                    if (addstatusDB)
-                    {
-                        CDataAddStatusData firstEntry = SetAddStatList[0];
-                        bool success = database.InsertAddStatus(item.UId, character.CharacterId, 1, 0, firstEntry.AdditionalStatus1, 0);
-                    }
                     slot = destinationStorage.AddItem(item, newItemNum);
                 }
                 else
@@ -553,18 +537,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return item.ItemId;
         }
 
-        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo, string oldUID)
+        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
         {
-
-            Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newItem.UId}, NewItemID={newItem.ItemId} and the olduid={oldUID}");
 
             server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
             client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
-            // I tried using UpdateStorageItem but this just errors out and doesn't work.
-            // Replace will work on relog if you leave it in storage, for w/e reason.
 
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
-            updateResult.ItemList.ItemUId = oldUID;
+            updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;
             updateResult.ItemList.ItemNum = 1;
             updateResult.ItemList.Unk3 = newItem.Unk3;
@@ -581,10 +561,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
             updateResult.UpdateItemNum = 1;
 
-            Console.WriteLine($"Item successfully replaced in storage: UID={updateResult.ItemList.ItemUId}, SlotNo={slotNo}");
-
             return new List<CDataItemUpdateResult> { updateResult };
-            //TODO: After UID rework, probably should look at this again.
         }
     }
 

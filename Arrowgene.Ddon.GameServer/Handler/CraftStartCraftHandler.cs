@@ -146,7 +146,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             // Add crafted items
-            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num, RandomQuality, AddStatList);
+            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num, RandomQuality);
             updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);                                                       
 
             client.Send(updateCharacterItemNtc);

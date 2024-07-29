@@ -260,8 +260,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             charid,
                             storageType,
                             equipItem,
-                            (byte)slotno,
-                            equipItemUID
+                            (byte)slotno
                         );
                         Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);

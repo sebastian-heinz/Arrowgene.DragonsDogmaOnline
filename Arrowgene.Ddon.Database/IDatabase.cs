@@ -262,8 +262,9 @@ namespace Arrowgene.Ddon.Database
         bool DeleteSystemMailAttachment(ulong messageId);
 
         // Additional Status
-        bool InsertAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2);
-        bool InsertIfNotExistsAddStatus(string itemUId, uint characterId, byte isaddstat1, byte isaddstat2, ushort addstat1, ushort addstat2);
-        List<CDataAddStatusData> GetAddStatus(string itemUid, uint characterId);
+        bool InsertIfNotExistsAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
+        bool InsertAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
+        List<CDataAddStatusData> GetAddStatusByUID(string itemUid);
+        bool UpdateAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
     }
 }

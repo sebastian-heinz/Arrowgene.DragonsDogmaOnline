@@ -281,18 +281,18 @@ CREATE TABLE IF NOT EXISTS ddon_storage_item
     CONSTRAINT fk_storage_item_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
 
--- CREATE TABLE IF NOT EXISTS ddon_additional_status
--- (
---     "item_uid"           VARCHAR(8) NOT NULL,
---     "character_id"       INTEGER    NOT NULL,
---     "is_add_stat1"       TINYINT    NOT NULL DEFAULT 0,
---     "is_add_stat2"       TINYINT    NOT NULL DEFAULT 0,
---     "additional_status1" SMALLINT   NOT NULL DEFAULT 0,
---     "additional_status2" SMALLINT   NOT NULL DEFAULT 0,
---     CONSTRAINT pk_ddon_additional_status PRIMARY KEY (item_uid),
---     CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid", "character_id") REFERENCES ddon_storage_item ("item_uid", "character_id") ON DELETE CASCADE,
--- );
 
+CREATE TABLE IF NOT EXISTS ddon_additional_status
+(
+    "item_uid"          VARCHAR(8) NOT NULL,
+    "character_id"      INTEGER NOT NULL,
+    "is_add_stat1"      TINYINT NOT NULL DEFAULT 0,
+    "is_add_stat2"      TINYINT NOT NULL DEFAULT 0,
+    "additional_status1" SMALLINT NOT NULL DEFAULT 0,
+    "additional_status2" SMALLINT NOT NULL DEFAULT 0,
+    CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_storage_item ("item_uid") ON DELETE CASCADE,
+    CONSTRAINT fk_additional_status_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS ddon_equip_item
 (

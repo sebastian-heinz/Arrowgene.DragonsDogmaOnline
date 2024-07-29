@@ -109,7 +109,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             if (AddStatusID > 0)
             {
-                bool success = Server.Database.InsertAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
+                bool success = Server.Database.InsertIfNotExistsAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
 
                 if (success)
                     {
@@ -198,8 +198,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         charid,
                         storageType,
                         equipItem,
-                        (byte)slotno,
-                        equipItemUID
+                        (byte)slotno
                     );
                     Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
