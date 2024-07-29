@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 else
                 {
                     // EQUIP
-                    Item item = server.Database.SelectItem(changeEquipJobItem.EquipJobItemUId);
+                    Item item = server.Database.SelectStorageItemByUId(changeEquipJobItem.EquipJobItemUId);
                     characterToEquipTo.EquipmentTemplate.SetJobItem(item, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
                     server.Database.ReplaceEquipJobItem(item.UId, characterToEquipTo.CommonId, characterToEquipTo.Job, changeEquipJobItem.EquipSlotNo);
                 }
@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // EQUIP
 
                     // Set in equipment template
-                    characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectItem(itemUId), characterToEquipTo.Job, equipType, equipSlot);
+                    characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId), characterToEquipTo.Job, equipType, equipSlot);
                     server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId);
 
                     // Update storage, swapping if needed

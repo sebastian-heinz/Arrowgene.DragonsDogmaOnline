@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Reflection.Metadata.Ecma335;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
@@ -249,8 +250,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut) { return true; }
         public bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill) { return true; }
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
-        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
-        public bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
+        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
+        public bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
         public bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType) { return true; }
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData) { return true; }
@@ -264,7 +265,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool ReplaceReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut) { return true; }
-        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
+        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
         public bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public Account SelectAccountById(int accountId) { return new Account(); }
         public Account SelectAccountByLoginToken(string loginToken) { return new Account(); }
@@ -282,8 +283,7 @@ namespace Arrowgene.Ddon.Test.Database
         public ContactListEntity SelectContactListById(uint id) { return new ContactListEntity(); }
         public List<ContactListEntity> SelectContactsByCharacterId(uint characterId) { return new List<ContactListEntity>(); }
         public ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2) { return new ContactListEntity(); }
-        public Item SelectItem(string uid) { return new Item(); }
-        public Item SelectItem(DbConnection conn, string uid) { return new Item(); }
+        public Item SelectStorageItemByUId(string uId) { return new Item(); }
         public List<CDataNormalSkillParam> SelectNormalSkillParam(uint commonId, JobId job) { return new List<CDataNormalSkillParam>(); }
         public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId) { return new CDataOrbGainExtendParam(); }
         public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId) { return new List<CDataReleaseOrbElement>(); }
@@ -319,7 +319,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut) { return true; }
         public bool UpdateStatusInfo(CharacterCommon character) { return true; }
         public bool UpdateStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
-        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, string itemUId, uint itemNum) { return true; }
+        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
         public bool UpdateMyPawnSlot(uint characterId, uint num) { return true; }
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }

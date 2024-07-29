@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -260,22 +261,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     while(reader2.Read())
                     {
-                        string UId = GetString(reader2, "item_uid");
+                        
                         StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
                         ushort slot = GetUInt16(reader2, "slot_no");
                         uint itemNum = GetUInt32(reader2, "item_num");
+                        var item = new Item();
+                        
+                        item.UId = GetString(reader2, "item_uid");
+                        item.ItemId = GetUInt32(reader2, "item_id");
+                        item.Unk3 = GetByte(reader2, "unk3");
+                        item.Color = GetByte(reader2, "color");
+                        item.PlusValue = GetByte(reader2, "plus_value");
 
-                        using TCon connection = OpenNewConnection();
-                        ExecuteReader(connection, SqlSelectItem,
-                            command3 => { AddParameter(command3, "@uid", UId); },
-                            reader3 =>
-                            {
-                                if(reader3.Read())
-                                {
-                                    Item item = ReadItem(reader3);
-                                    character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
-                                }
-                            });
+                        character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
                     }
                 });
 
@@ -355,28 +353,57 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Item item = storage.Value.Items[index].Item1;
                         uint itemNum = storage.Value.Items[index].Item2;
                         ushort slot = (ushort)(index+1);
-                        InsertItem(conn, item);
-                        InsertStorageItem(conn, character.CharacterId, storageType, slot, item.UId, itemNum);
+                        InsertStorageItem(conn, character.CharacterId, storageType, slot, itemNum, item);
                     }
                 }
             }
 
-            // Create equipment items
+            var equipmentTemplates = character.EquipmentTemplate.GetAllEquipment()[character.Job];
+            foreach (var equipment in equipmentTemplates)
+            {
+                for (byte index = 0; index < equipment.Value.Count; index++)
+                {
+                    Item item = equipment.Value[index];
+                    if (item != null)
+                    {
+                        byte slot = (byte)(index + 1);
+                        InsertEquipItem(conn, character.CommonId, character.Job, equipment.Key, slot, item.UId);
+                    }
+                }
+            }
+
+            // Give starter weapon for all classes
+
+            var storageBoxNormal = character.Storage.GetAllStorages()[StorageType.StorageBoxNormal];
             foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.EquipmentTemplate.GetAllEquipment())
             {
                 JobId job = jobEquipment.Key;
-                foreach (KeyValuePair<EquipType, List<Item>> equipment in jobEquipment.Value)
+                if (job == character.Job)
                 {
-                    EquipType equipType = equipment.Key;
-                    for (byte index = 0; index < equipment.Value.Count; index++)
+                    // Skip the current job as we already populated data for it.
+                    continue;
+                }
+
+                // We are only interested in slot 1 and 2
+                for (byte i = 0; i < 2; i++)
+                {
+                    Item item = jobEquipment.Value[EquipType.Performance][i];
+                    if (item != null)
                     {
-                        Item item = equipment.Value[index];
-                        if(item != null)
-                        {
-                            byte slot = (byte)(index+1);
-                            InsertItem(conn, item);
-                            InsertEquipItem(conn, character.CommonId, job, equipType, slot, item.UId);
-                        }
+                        ushort slot = storageBoxNormal.AddItem(item, 0);
+                        InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                        InsertStorageItem(conn, character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item);
+                    }
+                }
+
+                // Requip the base armor to the other jobs without creating new items
+                var baseJob = character.EquipmentTemplate.GetAllEquipment()[character.Job];
+                for (byte i = 2; i < baseJob[EquipType.Performance].Count; i++)
+                {
+                    Item item = baseJob[EquipType.Performance][i];
+                    if (item != null)
+                    {
+                        InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
                     }
                 }
             }

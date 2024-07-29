@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Model;
@@ -27,6 +27,8 @@ namespace Arrowgene.Ddon.Test.Database
             c.FirstName = "Foo";
             c.LastName = "Bar";
             c.AccountId = account.Id;
+            c.Job = JobId.Fighter;
+            c.Storage.AddStorage(StorageType.StorageBoxNormal, new Storage(StorageType.StorageBoxNormal, 100));
 
             Assert.True(database.CreateCharacter(c));
 

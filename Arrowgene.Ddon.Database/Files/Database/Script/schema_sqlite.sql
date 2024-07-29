@@ -265,16 +265,19 @@ CREATE TABLE IF NOT EXISTS ddon_wallet_point
     CONSTRAINT fk_wallet_point_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS ddon_item
+CREATE TABLE IF NOT EXISTS ddon_storage_item
 (
-    -- See Item.cs, uid is at most of size 8.
-    "uid"        VARCHAR(8) NOT NULL,
-    "item_id"    INTEGER    NOT NULL,
-    unk3         SMALLINT   NOT NULL,
-    "color"      SMALLINT   NOT NULL,
-    "plus_value" SMALLINT   NOT NULL,
-    "equip_points" INTEGER  NOT NULL DEFAULT 0,
-    PRIMARY KEY ("uid")
+    "item_uid"     VARCHAR(8) NOT NULL,
+    "character_id" INTEGER    NOT NULL,
+    "storage_type" SMALLINT   NOT NULL,
+    "slot_no"      SMALLINT   NOT NULL,
+    "item_id"      INTEGER    NOT NULL,
+    "item_num"     INTEGER    NOT NULL,
+    "unk3"         SMALLINT   NOT NULL,
+    "color"        SMALLINT   NOT NULL,
+    "plus_value"   SMALLINT   NOT NULL,
+    CONSTRAINT pk_ddon_storage_item PRIMARY KEY (character_id, storage_type, slot_no),
+    CONSTRAINT fk_storage_item_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ddon_additional_status
@@ -285,20 +288,8 @@ CREATE TABLE IF NOT EXISTS ddon_additional_status
     "is_add_stat2"      TINYINT NOT NULL DEFAULT 0,
     "additional_status1" SMALLINT NOT NULL DEFAULT 0,
     "additional_status2" SMALLINT NOT NULL DEFAULT 0,
-    CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_item ("uid") ON DELETE CASCADE,
+    CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_storage_item ("uid") ON DELETE CASCADE,
     CONSTRAINT fk_additional_status_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS ddon_storage_item
-(
-    "item_uid"     VARCHAR(8) NOT NULL,
-    "character_id" INTEGER    NOT NULL,
-    "storage_type" SMALLINT   NOT NULL,
-    "slot_no"      SMALLINT   NOT NULL,
-    "item_num"     INTEGER    NOT NULL,
-    CONSTRAINT pk_ddon_storage_item PRIMARY KEY (character_id, storage_type, slot_no),
-    CONSTRAINT fk_storage_item_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_item ("uid") ON DELETE CASCADE,
-    CONSTRAINT fk_storage_item_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ddon_equip_item
@@ -309,7 +300,6 @@ CREATE TABLE IF NOT EXISTS ddon_equip_item
     "equip_type"          SMALLINT   NOT NULL,
     "equip_slot"          SMALLINT   NOT NULL,
     CONSTRAINT pk_ddon_equip_item PRIMARY KEY (character_common_id, job, equip_type, equip_slot),
-    CONSTRAINT fk_equip_item_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_item ("uid") ON DELETE CASCADE,
     CONSTRAINT fk_equip_item_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE
 );
 
@@ -320,7 +310,6 @@ CREATE TABLE IF NOT EXISTS ddon_equip_job_item
     "job"                 SMALLINT   NOT NULL,
     "equip_slot"          SMALLINT   NOT NULL,
     CONSTRAINT pk_ddon_equip_job_item PRIMARY KEY (character_common_id, job, equip_slot),
-    CONSTRAINT fk_equip_job_item_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_item ("uid") ON DELETE CASCADE,
     CONSTRAINT fk_equip_job_item_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE
 );
 
