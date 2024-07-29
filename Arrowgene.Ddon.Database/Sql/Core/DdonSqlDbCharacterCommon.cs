@@ -126,13 +126,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         byte equipSlot = GetByte(reader, "equip_slot");
 
                         using TCon connection = OpenNewConnection();
-                        ExecuteReader(connection, SqlSelectItem,
-                            command2 => { AddParameter(command2, "@uid", UId); },
+                        ExecuteReader(connection, SqlSelectStorageItemsByUId,
+                            command2 => { AddParameter(command2, "@item_uid", UId); },
                             reader2 =>
                             {
-                                if(reader2.Read())
+                                if (reader2.Read())
                                 {
-                                    Item item = ReadItem(reader2);
+                                    var item = new Item();
+                                    item.UId = GetString(reader2, "item_uid");
+                                    item.ItemId = GetUInt32(reader2, "item_id");
+                                    item.Unk3 = GetByte(reader2, "unk3");
+                                    item.Color = GetByte(reader2, "color");
+                                    item.PlusValue = GetByte(reader2, "plus_value");
+
                                     common.EquipmentTemplate.SetEquipItem(item, job, equipType, equipSlot);
                                 }
                             });
@@ -151,13 +157,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         byte equipSlot = GetByte(reader, "equip_slot");
 
                         using TCon connection = OpenNewConnection();
-                        ExecuteReader(connection, SqlSelectItem,
-                            command2 => { AddParameter(command2, "@uid", UId); },
+                        ExecuteReader(connection, SqlSelectStorageItemsByUId,
+                            command2 => { AddParameter(command2, "@item_uid", UId); },
                             reader2 =>
                             {
                                 if(reader2.Read())
                                 {
-                                    Item item = ReadItem(reader2);
+                                    var item = new Item();
+                                    item.UId = GetString(reader2, "item_uid");
+                                    item.ItemId = GetUInt32(reader2, "item_id");
+                                    item.Unk3 = GetByte(reader2, "unk3");
+                                    item.Color = GetByte(reader2, "color");
+                                    item.PlusValue = GetByte(reader2, "plus_value");
                                     common.EquipmentTemplate.SetJobItem(item, job, equipSlot);
                                 }
                             });

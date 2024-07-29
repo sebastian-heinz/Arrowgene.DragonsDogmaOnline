@@ -41,8 +41,22 @@ namespace Arrowgene.Ddon.Shared.Model
             EquipElementParamList = new List<CDataEquipElementParam>();
         }
 
+        public Item(Item obj)
+        {
+            this._uid = UpdateUId();
+            this.ItemId = obj.ItemId;
+            this.Unk3 = obj.Unk3;
+            this.Color = obj.Color;
+            this.PlusValue = obj.PlusValue;
+            // TODO: Make a copy constructor for these
+            this.WeaponCrestDataList = obj.WeaponCrestDataList;
+            this.ArmorCrestDataList = obj.ArmorCrestDataList;
+            this.EquipElementParamList = obj.EquipElementParamList;
+        }
+
         public string UpdateUId()
         {
+#if false
             IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5); // It's for comparison, who cares, it's fast.
             hash.AppendData(BitConverter.GetBytes(ItemId));
             hash.AppendData(BitConverter.GetBytes(Unk3));
@@ -67,6 +81,10 @@ namespace Arrowgene.Ddon.Shared.Model
                 hash.AppendData(BitConverter.GetBytes(equipElementParam.ItemId));
             }
             this._uid = BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, UIdLength);
+#else
+            Random rnd = new Random();
+            this._uid = $"{rnd.Next():X08}";
+#endif
             return this._uid;
         }
     }

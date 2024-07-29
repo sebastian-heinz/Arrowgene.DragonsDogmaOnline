@@ -354,7 +354,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 character.Storage.GetStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
                 if (item != null)
                 {
-                    Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, item.UId, 1);
+                    Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, 1, item);
                 }
             }
 
@@ -366,7 +366,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 character.Storage.GetStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
                 if (item != null)
                 {
-                    Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, item.UId, 1);
+                    Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, 1, item);
                 }
             }
         }

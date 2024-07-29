@@ -15,6 +15,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemManager));
 
+        private static readonly uint STACK_BOX_MAX = 999;
+
         public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
         public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
@@ -196,7 +198,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             else
             {
                 fromStorage.SetItem(item, finalItemNum, slotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, item.UId, finalItemNum);
+                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, finalItemNum, item);
             }
 
             return ntcData;
@@ -261,7 +263,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         ArmorCrestDataList = new List<CDataArmorCrestData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()
                     };
-                    database.InsertItem(item);
                     slot = destinationStorage.AddItem(item, newItemNum);
                 }
                 else
@@ -269,7 +270,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     destinationStorage.SetItem(item, newItemNum, slot);
                 }
 
-                database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, item.UId, newItemNum);
+                database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, newItemNum, item);
 
                 CDataItemUpdateResult result = new CDataItemUpdateResult();
                 result.ItemList.ItemUId = item.UId;
@@ -314,13 +315,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private void UpdateItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
         {
             storage.SetItem(item, num, slotNo);
-            server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, item.UId, num);
+            server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
         }
 
-        private void SaveItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
+        private void InsertItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
         {
             storage.SetItem(item, num, slotNo);
-            server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, item.UId, num);
+            server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
         }
 
         public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo)
@@ -334,9 +335,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND);
             }
 
-            if (toStorage.Type == StorageType.CharacterEquipment || toStorage.Type == StorageType.PawnEquipment)
+            if (toStorage.Type == StorageType.CharacterEquipment || toStorage.Type == StorageType.PawnEquipment || toStorage.Type == StorageType.ItemBagEquipment)
             {
-                // Swapping or equipping equipment
                 if (toItem != null)
                 {
                     // Delete the item
@@ -346,15 +346,57 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 if (toItem != null)
                 {
-                    // Create Packets for it
+                    // Create response which swaps position with the new item being equipped
                     results.Add(CreateItemUpdateResult(character, toItem.Item1, toStorage, toSlotNo, 0, 0));
                     results.Add(CreateItemUpdateResult(null, toItem.Item1, fromStorage, fromSlotNo, 1, 1));
 
-                    SaveItem(server, character, toItem.Item1, fromStorage, fromSlotNo, 1);
+                    InsertItem(server, character, toItem.Item1, fromStorage, fromSlotNo, 1);
                 }
 
-                results.Add(CreateItemUpdateResult(character, fromItem.Item1, toStorage, toSlotNo, 1, 1));
-                SaveItem(server, character, fromItem.Item1, toStorage, toSlotNo, 1);
+                if (toSlotNo == 0)
+                {
+                    // Going to some type of storage (bag or box)
+                    // Find a new slot for the item
+                    toSlotNo = toStorage.AddItem(fromItem.Item1, 0);
+
+                    // Create response which places the item in the new location
+                    if (fromStorage.Type == StorageType.CharacterEquipment || fromStorage.Type == StorageType.PawnEquipment)
+                    {
+                        results.Add(CreateItemUpdateResult(character, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
+                    }
+                    else
+                    {
+                        results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
+                    }
+                    results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+                }
+                else
+                {
+                    // This handles:
+                    // - equipment_bag -> equipment
+                    // - equipment     -> equipment_bag
+                    // - equipment     -> storage
+                    // - storage       -> equipment
+
+                    if (fromStorage.Type == StorageType.CharacterEquipment || fromStorage.Type == StorageType.PawnEquipment)
+                    {
+                        results.Add(CreateItemUpdateResult(character, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
+                    }
+                    else
+                    {
+                        results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
+                    }
+
+                    if (toStorage.Type == StorageType.CharacterEquipment || toStorage.Type == StorageType.PawnEquipment)
+                    {
+                        results.Add(CreateItemUpdateResult(character, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+                    }
+                    else
+                    {
+                        results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+                    }
+                }
+                InsertItem(server, character, fromItem.Item1, toStorage, toSlotNo, 1);
             }
             else
             {
@@ -371,7 +413,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum, num));
 
-                uint stackLimit = 999;
+                uint stackLimit = ItemManager.STACK_BOX_MAX;
                 ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, fromItem.Item1.ItemId);
                 if (clientItemInfo.StorageType == StorageType.ItemBagEquipment || ItemBagStorageTypes.Contains(toStorage.Type))
                 {
@@ -383,12 +425,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     uint oldDstItemNum = 0;
                     ushort dstSlotNo = toSlotNo;
-                    
+
+                    Item item = fromItem.Item1;
+
                     if (toSlotNo == 0)
                     {
                         var itemInDstStorage = toStorage.Items
                             .Select((item, index) => new { item, index })
-                            .Where(tuple => fromItem.Item1.UId == tuple.item?.Item1.UId && tuple.item?.Item2 < stackLimit)
+                            .Where(tuple => fromItem.Item1.ItemId == tuple.item?.Item1.ItemId && tuple.item?.Item2 < stackLimit)
                             .FirstOrDefault();
 
                         if (itemInDstStorage == null)
@@ -402,13 +446,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             // There is an existing stack, try to merge them
                             oldDstItemNum = itemInDstStorage.item!.Item2;
                             dstSlotNo = (ushort)(itemInDstStorage.index + 1);
+                            item = itemInDstStorage.item!.Item1;
                         }
                     }
                     else
                     {
                         if (toItem != null)
                         {
-                            if (toItem.Item1.UId != fromItem.Item1.UId)
+                            if (toItem.Item1.ItemId != fromItem.Item1.ItemId)
                             {
                                 // There is another item in the desired slot but they are not the same
                                 // so we need to swap them.
@@ -417,6 +462,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             else
                             {
                                 oldDstItemNum = toItem.Item2;
+                                item = toItem.Item1;
                             }
                         }
                         dstSlotNo = toSlotNo;
@@ -431,16 +477,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
                     }
 
-                    toStorage.SetItem(fromItem.Item1, newDstItemNum, dstSlotNo);
+                    if (clientItemInfo.StorageType != StorageType.ItemBagEquipment)
+                    {
+                        // Handles stacks being merged or new ones being created
+                        item = (oldDstItemNum == 0) ? new Item(item) : item;
+                    }
+
+                    toStorage.SetItem(item, newDstItemNum, dstSlotNo);
                     if (oldDstItemNum == 0)
                     {
-                        SaveItem(server, character, fromItem.Item1, toStorage, dstSlotNo, newDstItemNum);
+                        InsertItem(server, character, item, toStorage, dstSlotNo, newDstItemNum);
                     }
                     else
                     {
-                        UpdateItem(server, character, fromItem.Item1, toStorage, dstSlotNo, newDstItemNum);
+                        UpdateItem(server, character, item, toStorage, dstSlotNo, newDstItemNum);
                     }
-                    results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, dstSlotNo, newDstItemNum, movedItemNum));
+                    results.Add(CreateItemUpdateResult(null, item, toStorage, dstSlotNo, newDstItemNum, movedItemNum));
 
                     itemsToMove -= movedItemNum;
                 }
@@ -474,7 +526,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public uint LookupItemByUID(DdonServer<GameClient> server, string itemUID)
         {
-            var item = server.Database.SelectItem(itemUID);
+            var item = server.Database.SelectStorageItemByUId(itemUID);
             if (item == null)
             {
                 throw new ItemDoesntExistException(itemUID);
