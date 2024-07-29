@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();    
             updateCharacterItemNtc.UpdateType = 0;
             string equipItemUID = packet.Structure.ItemUID;
-            var equipItem = Server.Database.SelectItem(equipItemUID);
+            var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             uint equipItemID = equipItem.ItemId;
             Character common = client.Character;
             ushort equipslot = 0;
@@ -140,17 +140,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomQuality = currentPlusValue;
             }
 
-            Item QualityUpItem = new Item()
-            {
-                ItemId = equipItemID,
-                Unk3 = 0,   // Safety setting,
-                Color = 0,
-                PlusValue = RandomQuality,
-                EquipPoints = equipItem.EquipPoints,
-                WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                AddStatusData = AddStatList,
-                EquipElementParamList = new List<CDataEquipElementParam>()
-            };
+            // Updating the item.
+            equipItem.ItemId = equipItemID;
+            equipItem.Unk3 = equipItem.Unk3;
+            equipItem.Color = equipItem.Color;
+            equipItem.PlusValue = RandomQuality;
+            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
+            equipItem.AddStatusData = equipItem.AddStatusData;
+            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
 
             
                 Logger.Debug($"Attempting to find {equipItemUID}");
@@ -199,7 +196,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         common,
                         charid,
                         storageType,
-                        QualityUpItem,
+                        equipItem,
                         (byte)slotno,
                         equipItemUID
                     );

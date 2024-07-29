@@ -275,7 +275,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         AddStatusData = SetAddStatList,
                         EquipElementParamList = new List<CDataEquipElementParam>()
                     };
-                    database.InsertItem(item);
                     // TODO: v Improve this, I need to insert to the DB but lack the key info in the startcrafthandler, so it must be done here, very hackily.
                     if (addstatusDB)
                     {
@@ -559,8 +558,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Console.WriteLine($"Attempting to replace item in storage: CharacterID={characterID}, StorageType={storageType}, SlotNo={slotNo}, NewUID={newItem.UId}, NewItemID={newItem.ItemId} and the olduid={oldUID}");
 
-            server.Database.InsertItem(newItem);
-            server.Database.ReplaceStorageItem(characterID, storageType, slotNo, 1, newItem);
+            server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
+            client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
             // I tried using UpdateStorageItem but this just errors out and doesn't work.
             // Replace will work on relog if you leave it in storage, for w/e reason.
 

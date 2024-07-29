@@ -275,7 +275,7 @@ CREATE TABLE IF NOT EXISTS ddon_additional_status
     "is_add_stat2"      TINYINT NOT NULL DEFAULT 0,
     "additional_status1" SMALLINT NOT NULL DEFAULT 0,
     "additional_status2" SMALLINT NOT NULL DEFAULT 0,
-    CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_item ("uid") ON DELETE CASCADE,
+    CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_item ("item_uid") ON DELETE CASCADE,
     CONSTRAINT fk_additional_status_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
 

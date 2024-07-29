@@ -39,12 +39,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Character common = client.Character;
             string equipItemUID = packet.Structure.EquipItemUID;
+            var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID);
             ushort equipslot = 0;
             byte equiptype = 0;
             uint charid = client.Character.CharacterId;
             uint pawnid = packet.Structure.CraftMainPawnID;
-            var equipItem = Server.Database.SelectItem(equipItemUID);
             byte currentPlusValue = equipItem.PlusValue;
 
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -111,6 +111,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
                 // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
+                // 29/07/24, seems like points should be set to 0 upon upgrading, so this probably never allows more than one?
                 List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
                 {
                     new CDataCommonU32(gearupgradeID)
@@ -187,17 +188,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             // TODO: Source these values accurately when we know what they are. ^
 
-            Item UpgradedItem = new Item()
-            {
-                ItemId = gearupgradeID,
-                Unk3 = equipItem.Unk3,   // Safety setting,
-                Color = equipItem.Color,
-                PlusValue = currentPlusValue,
-                EquipPoints = 0,
-                WeaponCrestDataList = new List<CDataWeaponCrestData>(),
-                AddStatusData = equipItem.AddStatusData,
-                EquipElementParamList = new List<CDataEquipElementParam>()
-            };
+
+            // Updating the item.
+            equipItem.ItemId = gearupgradeID;
+            equipItem.Unk3 = equipItem.Unk3;
+            equipItem.Color = equipItem.Color;
+            equipItem.PlusValue = equipItem.PlusValue;
+            equipItem.EquipPoints = 0;
+            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
+            equipItem.AddStatusData = equipItem.AddStatusData;
+            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
@@ -259,7 +259,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             common,
                             charid,
                             storageType,
-                            UpgradedItem,
+                            equipItem,
                             (byte)slotno,
                             equipItemUID
                         );
@@ -273,7 +273,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         res = new S2CCraftStartEquipGradeUpRes()
                         {
                             GradeUpItemUID = equipItemUID, // TODO: Make sure to retain the original UID when that PR merges.
-                            GradeUpItemID = UpgradedItem.ItemId,
+                            GradeUpItemID = equipItem.ItemId,
                             GradeUpItemIDList = gradeuplist, // This list should start with the next ID.
                             AddEquipPoint = 0,
                             TotalEquipPoint = 0,
