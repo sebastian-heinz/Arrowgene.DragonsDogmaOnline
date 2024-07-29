@@ -261,8 +261,8 @@ namespace Arrowgene.Ddon.Database
         bool DeleteSystemMailAttachment(ulong messageId);
 
         // Play points
-        bool ReplaceCharacterPlayPointData(uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData);
-        bool UpdateCharacterPlayPointData(uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData);
+        bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
+        bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
 
     }
 }

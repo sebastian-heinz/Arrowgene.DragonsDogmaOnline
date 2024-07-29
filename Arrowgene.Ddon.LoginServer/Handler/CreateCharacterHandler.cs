@@ -1170,11 +1170,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Job = job,
                 PlayPoint = new CDataPlayPointData()
                 {
-                    ExpMode = 1, // EXP
+                    ExpMode = ExpMode.Experience, // EXP
                     PlayPoint = 0
                 }
             }).ToList().ForEach(x => { 
-                Database.ReplaceCharacterPlayPointData(character.CommonId, x);
+                Database.ReplaceCharacterPlayPointData(character.CharacterId, x);
                 character.PlayPointList.Add(x);
             });
 

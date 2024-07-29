@@ -1,14 +1,10 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -32,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     PlayPoint = new CDataPlayPointData()
                     {
                         PlayPoint = 0,
-                        ExpMode = 1,
+                        ExpMode = ExpMode.Experience,
                     }
                 });
             }
@@ -41,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 PlayPointList = client.Character.PlayPointList.Where(x => packet.Structure.UpdateExpModeList.Any(y => y.Job == x.Job)).ToList()
             };
-            res.PlayPointList.ForEach(x => x.PlayPoint.ExpMode = (byte)(3 - x.PlayPoint.ExpMode)); //Flip 1 <-> 2
+            res.PlayPointList.ForEach(x => x.PlayPoint.ExpMode = 3 - x.PlayPoint.ExpMode); //Flip 1 <-> 2
 
             foreach (CDataJobPlayPoint playpoint in res.PlayPointList)
             {

@@ -1,5 +1,6 @@
-using System;
-using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -7,10 +8,9 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.GameServer.Party;
+using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Quests;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -136,7 +136,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (memberCharacter.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
 
-                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == 1) gainedPP = 0;
+                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience) gainedPP = 0;
                     else gainedExp = 0;
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();

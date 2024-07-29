@@ -3,13 +3,9 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -42,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     sendToItemBag = false;
                     break;
                 default:
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, "\"Unexpected destination when buying goods: \" + packet.Structure.StorageType");
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Unexpected destination when buying goods: {packet.StorageType}");
             }
 
             CDataJobValueShopItem boughtListing = Server.AssetRepository.JobValueShopAsset.Where(

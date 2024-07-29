@@ -1,12 +1,6 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -17,82 +11,82 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         protected static readonly string[] CDataJobPlayPointFields = new string[]
         {
-            "character_common_id", "job", "play_point", "exp_mode"
+            "character_id", "job", "play_point", "exp_mode"
         };
 
         private readonly string SqlInsertCharacterPlayPointData =
             $"INSERT INTO \"ddon_character_playpoint_data\" ({BuildQueryField(CDataJobPlayPointFields)}) VALUES ({BuildQueryInsert(CDataJobPlayPointFields)});";
 
         protected virtual string SqlInsertIfNotExistsCharacterPlayPointData { get; } =
-            $"INSERT INTO \"ddon_character_playpoint_data\" ({BuildQueryField(CDataJobPlayPointFields)}) SELECT {BuildQueryInsert(CDataJobPlayPointFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_character_playpoint_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job);";
+            $"INSERT INTO \"ddon_character_playpoint_data\" ({BuildQueryField(CDataJobPlayPointFields)}) SELECT {BuildQueryInsert(CDataJobPlayPointFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_character_playpoint_data\" WHERE \"character_id\" = @character_id AND \"job\" = @job);";
 
         private static readonly string SqlUpdateCharacterPlayPointData =
-            $"UPDATE \"ddon_character_playpoint_data\" SET {BuildQueryUpdate(CDataJobPlayPointFields)} WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
+            $"UPDATE \"ddon_character_playpoint_data\" SET {BuildQueryUpdate(CDataJobPlayPointFields)} WHERE \"character_id\" = @character_id AND \"job\" = @job;";
 
         private static readonly string SqlSelectCharacterPlayPointData =
-            $"SELECT {BuildQueryField(CDataJobPlayPointFields)} FROM \"ddon_character_playpoint_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
+            $"SELECT {BuildQueryField(CDataJobPlayPointFields)} FROM \"ddon_character_playpoint_data\" WHERE \"character_id\" = @character_id AND \"job\" = @job;";
 
         private static readonly string SqlSelectCharacterPlayPointDataByCharacter =
-            $"SELECT {BuildQueryField(CDataJobPlayPointFields)} FROM \"ddon_character_playpoint_data\" WHERE \"character_common_id\" = @character_common_id;";
+            $"SELECT {BuildQueryField(CDataJobPlayPointFields)} FROM \"ddon_character_playpoint_data\" WHERE \"character_id\" = @character_id;";
 
-        private const string SqlDeleteCharacterPlayPointData = "DELETE FROM \"ddon_character_playpoint_data\" WHERE \"character_common_id\"=@character_common_id AND \"job\" = @job;";
+        private const string SqlDeleteCharacterPlayPointData = "DELETE FROM \"ddon_character_playpoint_data\" WHERE \"character_id\"=@character_id AND \"job\" = @job;";
 
-        public bool ReplaceCharacterPlayPointData(uint commonId, CDataJobPlayPoint replacedCharacterPlayPointData)
+        public bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint replacedCharacterPlayPointData)
         {
             using TCon connection = OpenNewConnection();
-            return ReplaceCharacterPlayPointData(connection, commonId, replacedCharacterPlayPointData);
+            return ReplaceCharacterPlayPointData(connection, id, replacedCharacterPlayPointData);
         }
 
-        public bool ReplaceCharacterPlayPointData(TCon connection, uint commonId, CDataJobPlayPoint replacedCharacterPlayPointData)
+        public bool ReplaceCharacterPlayPointData(TCon connection, uint id, CDataJobPlayPoint replacedCharacterPlayPointData)
         {
             Logger.Debug("Inserting character playpoint data.");
-            if (!InsertIfNotExistsCharacterPlayPointData(connection, commonId, replacedCharacterPlayPointData))
+            if (!InsertIfNotExistsCharacterPlayPointData(connection, id, replacedCharacterPlayPointData))
             {
                 Logger.Debug("Character playpoint data already exists, replacing.");
-                return UpdateCharacterPlayPointData(connection, commonId, replacedCharacterPlayPointData);
+                return UpdateCharacterPlayPointData(connection, id, replacedCharacterPlayPointData);
             }
             return true;
         }
 
-        public bool InsertCharacterPlayPointData(uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData)
+        public bool InsertCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
         {
             using TCon connection = OpenNewConnection();
-            return InsertCharacterPlayPointData(connection, commonId, updatedCharacterPlayPointData);
+            return InsertCharacterPlayPointData(connection, id, updatedCharacterPlayPointData);
         }
 
-        public bool InsertCharacterPlayPointData(TCon connection, uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData)
+        public bool InsertCharacterPlayPointData(TCon connection, uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
         {
-            return ExecuteNonQuery(connection, SqlInsertCharacterPlayPointData, command => { AddParameter(command, commonId, updatedCharacterPlayPointData); }) == 1;
+            return ExecuteNonQuery(connection, SqlInsertCharacterPlayPointData, command => { AddParameter(command, id, updatedCharacterPlayPointData); }) == 1;
         }
 
-        public bool InsertIfNotExistsCharacterPlayPointData(uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData)
-        {
-            using TCon connection = OpenNewConnection();
-            return InsertIfNotExistsCharacterPlayPointData(connection, commonId, updatedCharacterPlayPointData);
-        }
-
-        public bool InsertIfNotExistsCharacterPlayPointData(TCon connection, uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData)
-        {
-            return ExecuteNonQuery(connection, SqlInsertIfNotExistsCharacterPlayPointData, command => { AddParameter(command, commonId, updatedCharacterPlayPointData); }) == 1;
-        }
-
-        public bool UpdateCharacterPlayPointData(uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData)
+        public bool InsertIfNotExistsCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
         {
             using TCon connection = OpenNewConnection();
-            return UpdateCharacterPlayPointData(connection, commonId, updatedCharacterPlayPointData);
+            return InsertIfNotExistsCharacterPlayPointData(connection, id, updatedCharacterPlayPointData);
         }
 
-        public bool UpdateCharacterPlayPointData(TCon connection, uint commonId, CDataJobPlayPoint updatedCharacterPlayPointData)
+        public bool InsertIfNotExistsCharacterPlayPointData(TCon connection, uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
         {
-            return ExecuteNonQuery(connection, SqlUpdateCharacterPlayPointData, command => { AddParameter(command, commonId, updatedCharacterPlayPointData); }) == 1;
+            return ExecuteNonQuery(connection, SqlInsertIfNotExistsCharacterPlayPointData, command => { AddParameter(command, id, updatedCharacterPlayPointData); }) == 1;
         }
 
-        private void AddParameter(TCom command, uint commonId, CDataJobPlayPoint characterPlayPointData)
+        public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
         {
-            AddParameter(command, "character_common_id", commonId);
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterPlayPointData(connection, id, updatedCharacterPlayPointData);
+        }
+
+        public bool UpdateCharacterPlayPointData(TCon connection, uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
+        {
+            return ExecuteNonQuery(connection, SqlUpdateCharacterPlayPointData, command => { AddParameter(command, id, updatedCharacterPlayPointData); }) == 1;
+        }
+
+        private void AddParameter(TCom command, uint id, CDataJobPlayPoint characterPlayPointData)
+        {
+            AddParameter(command, "character_id", id);
             AddParameter(command, "job", (byte)characterPlayPointData.Job);
             AddParameter(command, "play_point", characterPlayPointData.PlayPoint.PlayPoint);
-            AddParameter(command, "exp_mode", characterPlayPointData.PlayPoint.ExpMode);
+            AddParameter(command, "exp_mode", (byte)characterPlayPointData.PlayPoint.ExpMode);
         }
 
         private CDataJobPlayPoint ReadCharacterPlayPointData(TReader reader)
@@ -100,7 +94,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             CDataJobPlayPoint characterPlayPointData = new CDataJobPlayPoint();
             characterPlayPointData.Job = (JobId)GetByte(reader, "job");
             characterPlayPointData.PlayPoint.PlayPoint = GetUInt32(reader, "play_point");
-            characterPlayPointData.PlayPoint.ExpMode = GetByte(reader, "exp_mode");
+            characterPlayPointData.PlayPoint.ExpMode = (ExpMode)GetByte(reader, "exp_mode");
 
             return characterPlayPointData;
         }
