@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +13,18 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint GP { get; set; }
         public uint Max { get; set; }
         public bool isFree { get; set; }
+        public GPDetailType Type {  get; set; }
+        public DateTimeOffset Expire { get; set; }
+        public DateTimeOffset Created { get; set; }
 
-        public uint Type {  get; set; }
-
-        public ulong Expire { get; set; }
-
-        public ulong Created { get; set; }
         public CDataGPDetail()
         {
             GP = 0;
             Max = 0;
             isFree = false;
-            Type = 0; //TODO: Figure this out.
-            Expire = ulong.MaxValue;
-            Created = 0;
+            Type = GPDetailType.None;
+            Expire = DateTimeOffset.MaxValue;
+            Created = DateTimeOffset.UnixEpoch;
         }
 
         public class Serializer : EntitySerializer<CDataGPDetail>
@@ -35,9 +34,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.GP);
                 WriteUInt32(buffer, obj.Max);
                 WriteBool(buffer, obj.isFree);
-                WriteUInt32(buffer, obj.Type);
-                WriteUInt64(buffer, obj.Expire);
-                WriteUInt64(buffer, obj.Created);
+                WriteUInt32(buffer, (uint)obj.Type);
+                WriteInt64(buffer, obj.Expire.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.Created.ToUnixTimeSeconds());
             }
 
             public override CDataGPDetail Read(IBuffer buffer)
@@ -46,9 +45,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.GP = ReadUInt32(buffer);
                 obj.Max = ReadUInt32(buffer);
                 obj.isFree = ReadBool(buffer);
-                obj.Type = ReadUInt32(buffer);
-                obj.Expire = ReadUInt64(buffer);
-                obj.Created = ReadUInt64(buffer);
+                obj.Type = (GPDetailType)ReadUInt32(buffer);
+                obj.Expire = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+                obj.Created = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 
                 return obj;
             }
