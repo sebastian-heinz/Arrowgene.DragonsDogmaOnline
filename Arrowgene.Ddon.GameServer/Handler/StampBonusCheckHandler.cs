@@ -30,6 +30,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     SuppressTotal = !canTotal,
                     SuppressDaily = !canDaily,
+                    Unk0 = 1,
+                    Unk1 = 0,
+                    Unk2 = 1,
+                    Unk3 = 77,
+                    Unk4 = 257
                 });
             }
             else 
@@ -40,7 +45,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Unk0 = 0,
                     Unk1 = ushort.MaxValue,
                     SuppressDaily = true,
-                    SuppressTotal = true
+                    SuppressTotal = true,
+                    Unk2 = 1,
+                    Unk3 = 77,
+                    Unk4 = 257
                 });
             }  
         }

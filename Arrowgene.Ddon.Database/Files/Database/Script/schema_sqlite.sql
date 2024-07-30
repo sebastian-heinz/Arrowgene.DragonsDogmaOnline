@@ -560,7 +560,6 @@ CREATE TABLE IF NOT EXISTS "ddon_character_playpoint_data" (
 	CONSTRAINT pk_character_playpoint PRIMARY KEY (character_id, job),
 	CONSTRAINT fk_character_playpoint_character_id FOREIGN KEY("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
-);
 
 CREATE TABLE IF NOT EXISTS "ddon_stamp_bonus"
 (

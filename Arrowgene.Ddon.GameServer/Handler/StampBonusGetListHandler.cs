@@ -31,7 +31,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CStampBonusGetListRes()
             {
                 StampBonusDaily = _gameServer.StampManager.GetDailyStampAssets(),
-                StampBonusTotal = _gameServer.StampManager.GetTotalStampAssetsWindow(totalStampNum)
+                StampBonusTotal = _gameServer.StampManager.GetTotalStampAssetsWindow(totalStampNum),
+                TotalStampNum = totalStampNum,
+                Unk1 = 1,
+                Unk2 = 1,
+                Unk3 = 77,
+                Unk5 = 50,
+                Unk6 = 0
             };
 
             //If you missed a day, reset stamp to 0 (to be incremented up in RECIEVE_DAILY)

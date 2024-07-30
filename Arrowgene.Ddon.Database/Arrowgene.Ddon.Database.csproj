@@ -37,8 +37,8 @@
       <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
       <ContentWithTargetPath Remove="files\database\script\uid_migration.sql" />
       <ContentWithTargetPath Remove="files\database\script\migration_stamp_sqlite.sql" />
-	  <ContentWithTargetPath Remove="files\database\script\migration_mail_sqlite.sql" />
-	  <ContentWithTargetPath Remove="files\database\script\migration_pp_sqlite.sql" />
+      <ContentWithTargetPath Remove="files\database\script\migration_mail_sqlite.sql" />
+      <ContentWithTargetPath Remove="files\database\script\migration_pp_sqlite.sql" />
     </ItemGroup>
 
     <ItemGroup>

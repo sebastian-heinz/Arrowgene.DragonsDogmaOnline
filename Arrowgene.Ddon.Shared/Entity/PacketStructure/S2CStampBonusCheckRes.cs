@@ -7,12 +7,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public S2CStampBonusCheckRes()
         {
-            //From InGameDump.Dump_95
-            Unk0 = 1;
-            Unk1 = 0;
-            Unk2 = 1;
-            Unk3 = 77;
-            Unk4 = 257;
         }
 
         public override PacketId Id => PacketId.S2C_STAMP_BONUS_CHECK_RES;
