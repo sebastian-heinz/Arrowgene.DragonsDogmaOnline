@@ -1223,8 +1223,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_GP_GET_GP_RES = new PacketId(28, 0, 2, "S2C_GP_GET_GP_RES", ServerType.Game, PacketSource.Server); // GP取得要求に
         public static readonly PacketId C2S_GP_GET_GP_DETAIL_REQ = new PacketId(28, 1, 1, "C2S_GP_GET_GP_DETAIL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_GP_GET_GP_DETAIL_RES = new PacketId(28, 1, 2, "S2C_GP_GET_GP_DETAIL_RES", ServerType.Game, PacketSource.Server); // GP詳細取得
-        public static readonly PacketId C2S_GP_28_2_1_REQ = new PacketId(28, 2, 1, "C2S_GP_28_2_1_REQ", ServerType.Game, PacketSource.Client);
-        public static readonly PacketId S2C_GP_28_2_2_RES = new PacketId(28, 2, 2, "S2C_GP_28_2_2_RES", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId C2S_GP_GET_GP_PERIOD_REQ = new PacketId(28, 2, 1, "C2S_GP_GET_GP_PERIOD_REQ", ServerType.Game, PacketSource.Client, "C2S_GP_28_2_1_REQ");
+        public static readonly PacketId S2C_GP_GET_GP_PERIOD_RES = new PacketId(28, 2, 2, "S2C_GP_GET_GP_PERIOD_RES", ServerType.Game, PacketSource.Server, "C2S_GP_28_2_2_RES");
         public static readonly PacketId C2S_GP_GET_CAP_REQ = new PacketId(28, 3, 1, "C2S_GP_GET_CAP_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_GP_GET_CAP_RES = new PacketId(28, 3, 2, "S2C_GP_GET_CAP_RES", ServerType.Game, PacketSource.Server); // CAP取得要求に
         public static readonly PacketId C2S_GP_GET_CAP_TO_GP_CHANGE_LIST_REQ = new PacketId(28, 4, 1, "C2S_GP_GET_CAP_TO_GP_CHANGE_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -3134,8 +3134,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_GP_GET_GP_RES);
             AddPacketIdEntry(packetIds, C2S_GP_GET_GP_DETAIL_REQ);
             AddPacketIdEntry(packetIds, S2C_GP_GET_GP_DETAIL_RES);
-            AddPacketIdEntry(packetIds, C2S_GP_28_2_1_REQ);
-            AddPacketIdEntry(packetIds, S2C_GP_28_2_2_RES);
+            AddPacketIdEntry(packetIds, C2S_GP_GET_GP_PERIOD_REQ);
+            AddPacketIdEntry(packetIds, S2C_GP_GET_GP_PERIOD_RES);
             AddPacketIdEntry(packetIds, C2S_GP_GET_CAP_REQ);
             AddPacketIdEntry(packetIds, S2C_GP_GET_CAP_RES);
             AddPacketIdEntry(packetIds, C2S_GP_GET_CAP_TO_GP_CHANGE_LIST_REQ);
