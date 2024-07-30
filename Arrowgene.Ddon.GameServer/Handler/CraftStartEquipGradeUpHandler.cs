@@ -263,6 +263,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             (byte)slotno
                         );
                         Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
+                        updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                     }
                     else

@@ -109,6 +109,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             if (AddStatusID > 0)
             {
+                
                 bool success = Server.Database.InsertIfNotExistsAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
 
                 if (success)
@@ -141,14 +142,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomQuality = currentPlusValue;
             }
 
-            // Updating the item.
-            equipItem.ItemId = equipItemID;
-            equipItem.Unk3 = equipItem.Unk3;
-            equipItem.Color = equipItem.Color;
-            equipItem.PlusValue = RandomQuality;
-            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
-            equipItem.AddStatusData = equipItem.AddStatusData;
-            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
+
+                    // Updating the item.
+                    equipItem.ItemId = equipItemID;
+                    equipItem.Unk3 = equipItem.Unk3;
+                    equipItem.Color = equipItem.Color;
+                    equipItem.PlusValue = RandomQuality;
+                    equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
+                    equipItem.AddStatusData = equipItem.AddStatusData;
+                    equipItem.EquipElementParamList = equipItem.EquipElementParamList;
 
             
                 Logger.Debug($"Attempting to find {equipItemUID}");
@@ -188,6 +190,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             break;
                     }
 
+
+
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
@@ -202,6 +206,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     );
                     Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                    updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
+
                 }
                 else
                 {
@@ -242,6 +248,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = CurrentEquipInfo
             };
             client.Send(updateCharacterItemNtc);
+            lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
+            GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
+            client.Send(lobbyPlayerContextNtc);
             client.Send(res);
         }
         private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)

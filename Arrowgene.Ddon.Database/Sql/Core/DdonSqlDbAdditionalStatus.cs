@@ -9,6 +9,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCom : DbCommand
         where TReader : DbDataReader
     {
+        #region Constants
+
         protected static readonly string[] AdditionalStatusFields = new string[]
         {
             "item_uid", "character_id", "is_add_stat1", "is_add_stat2", "additional_status1", "additional_status2"
@@ -19,17 +21,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             $"SELECT {BuildQueryInsert(AdditionalStatusFields)} " +
             $"WHERE NOT EXISTS (SELECT 1 FROM \"ddon_additional_status\" WHERE \"item_uid\"=@item_uid);";
 
-            protected virtual string SqlUpdateADDS { get; } =
+        protected virtual string SqlUpdateADDS { get; } =
             $"UPDATE \"ddon_additional_status\" SET " +
             $"\"character_id\"=@character_id, \"is_add_stat1\"=@is_add_stat1, \"is_add_stat2\"=@is_add_stat2, " +
             $"\"additional_status1\"=@additional_status1, \"additional_status2\"=@additional_status2 " +
             $"WHERE \"item_uid\"=@item_uid;";
 
-        // TODO: Turns out you can hot swap additionalstatus, so 100% need an Update method lol
+        private static readonly string SqlSelectADDS =
+            $"SELECT {BuildQueryField(AdditionalStatusFields)} FROM \"ddon_additional_status\" WHERE \"item_uid\"=@item_uid;";
 
-        private static readonly string SqlSelectADDS = $"SELECT {BuildQueryField(AdditionalStatusFields)} FROM \"ddon_additional_status\" WHERE \"item_uid\"=@item_uid;";
+        #endregion
 
-        
+        #region Methods
 
         public bool InsertIfNotExistsAddStatus(TCon conn, string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2)
         {
@@ -104,7 +107,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 ExecuteReader(connection, SqlSelectADDS,
                     command => {
-                        AddParameter(command, "item_uid", itemUid);
+                        AddParameter(command, "@item_uid", itemUid);
                     }, reader => {
                         while (reader.Read())
                         {
@@ -126,5 +129,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddStatus.AdditionalStatus2 = GetUInt16(reader, "additional_status2");
             return AddStatus;
         }
+
+        #endregion
     }
 }

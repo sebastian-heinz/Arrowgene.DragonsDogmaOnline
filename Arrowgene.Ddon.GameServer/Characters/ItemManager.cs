@@ -204,7 +204,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return ntcData;
         }
 
-        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte getplusvalue = 0, List<CDataAddStatusData> addstatus = null)
+        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte getplusvalue = 0)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
             if(itemBag)
@@ -503,27 +503,32 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
-        private CDataItemUpdateResult CreateItemUpdateResult(Character character, Item item, Storage storage, ushort slotNo, uint itemNum, uint updateItemNum)
+        public CDataItemUpdateResult CreateItemUpdateResult(Character character, Item item, StorageType storageType, ushort slotNo, uint itemNum, uint updateItemNum)
         {
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
             updateResult.ItemList.ItemUId = item.UId;
             updateResult.ItemList.ItemId = item.ItemId;
             updateResult.ItemList.ItemNum = itemNum;
             updateResult.ItemList.Unk3 = item.Unk3;
-            updateResult.ItemList.StorageType = storage.Type;
+            updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
             updateResult.ItemList.Color = item.Color; // ?
             updateResult.ItemList.PlusValue = item.PlusValue; // ?
             updateResult.ItemList.Bind = false;
-            updateResult.ItemList.EquipPoint = 0;
+            updateResult.ItemList.EquipPoint = item.EquipPoints;
             updateResult.ItemList.EquipCharacterID = (character == null) ? 0 : character.CharacterId;
             updateResult.ItemList.EquipPawnID = 0;
             updateResult.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
             updateResult.ItemList.AddStatusData = item.AddStatusData;
             updateResult.ItemList.EquipElementParamList = item.EquipElementParamList;
-            updateResult.UpdateItemNum = (int) updateItemNum;
+            updateResult.UpdateItemNum = (int)updateItemNum;
 
             return updateResult;
+        }
+
+        public CDataItemUpdateResult CreateItemUpdateResult(Character character, Item item, Storage storage, ushort slotNo, uint itemNum, uint updateItemNum)
+        {
+            return CreateItemUpdateResult(character, item, storage.Type, slotNo, itemNum, updateItemNum);
         }
 
         public uint LookupItemByUID(DdonServer<GameClient> server, string itemUID)
