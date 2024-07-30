@@ -35,14 +35,14 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        public Item FindItemByUIdInStorage(List<StorageType> storageTypes, string uId)
+        public Tuple<StorageType, Tuple<ushort, Item, uint>> FindItemByUIdInStorage(List<StorageType> storageTypes, string uId)
         {
             foreach (var storage in storages)
             {
                 var foundItem = storage.Value.FindItemByUId(uId);
                 if (foundItem != null)
                 {
-                    return foundItem.Item2;
+                    return (storage.Key, foundItem).ToTuple();
                 }
             }
             return null;

@@ -1,0 +1,602 @@
+[
+    {
+        "exp": 30,
+        "item_level": 1,
+        "cost": 100
+    },
+    {
+        "exp": 50,
+        "item_level": 2,
+        "cost": 200
+    },
+    {
+        "exp": 70,
+        "item_level": 3,
+        "cost": 350
+    },
+    {
+        "exp": 90,
+        "item_level": 4,
+        "cost": 800
+    },
+    {
+        "exp": 110,
+        "item_level": 5,
+        "cost": 1500
+    },
+    {
+        "exp": 140,
+        "item_level": 6,
+        "cost": 2500
+    },
+    {
+        "exp": 170,
+        "item_level": 7,
+        "cost": 5000
+    },
+    {
+        "exp": 200,
+        "item_level": 8,
+        "cost": 8500
+    },
+    {
+        "exp": 230,
+        "item_level": 9,
+        "cost": 10000
+    },
+    {
+        "exp": 260,
+        "item_level": 10,
+        "cost": 12000
+    },
+    {
+        "exp": 300,
+        "item_level": 11,
+        "cost": 15000
+    },
+    {
+        "exp": 350,
+        "item_level": 12,
+        "cost": 20000
+    },
+    {
+        "exp": 350,
+        "item_level": 13,
+        "cost": 20000
+    },
+    {
+        "exp": 350,
+        "item_level": 14,
+        "cost": 20000
+    },
+    {
+        "exp": 350,
+        "item_level": 15,
+        "cost": 21000
+    },
+    {
+        "exp": 350,
+        "item_level": 16,
+        "cost": 21000
+    },
+    {
+        "exp": 350,
+        "item_level": 17,
+        "cost": 21000
+    },
+    {
+        "exp": 350,
+        "item_level": 18,
+        "cost": 21000
+    },
+    {
+        "exp": 350,
+        "item_level": 19,
+        "cost": 21000
+    },
+    {
+        "exp": 350,
+        "item_level": 20,
+        "cost": 25000
+    },
+    {
+        "exp": 350,
+        "item_level": 21,
+        "cost": 25000
+    },
+    {
+        "exp": 350,
+        "item_level": 22,
+        "cost": 25000
+    },
+    {
+        "exp": 350,
+        "item_level": 23,
+        "cost": 25000
+    },
+    {
+        "exp": 350,
+        "item_level": 24,
+        "cost": 25000
+    },
+    {
+        "exp": 350,
+        "item_level": 25,
+        "cost": 27000
+    },
+    {
+        "exp": 350,
+        "item_level": 26,
+        "cost": 27000
+    },
+    {
+        "exp": 350,
+        "item_level": 27,
+        "cost": 27000
+    },
+    {
+        "exp": 350,
+        "item_level": 28,
+        "cost": 27000
+    },
+    {
+        "exp": 350,
+        "item_level": 29,
+        "cost": 27000
+    },
+    {
+        "exp": 350,
+        "item_level": 30,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 31,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 32,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 33,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 34,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 35,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 36,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 37,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 38,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 39,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 40,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 41,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 42,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 43,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 44,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 45,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 46,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 47,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 48,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 49,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 50,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 51,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 52,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 53,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 54,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 55,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 56,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 57,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 58,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 59,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 60,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 61,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 62,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 63,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 64,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 65,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 66,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 67,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 68,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 69,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 70,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 71,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 72,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 73,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 74,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 75,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 76,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 77,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 78,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 79,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 80,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 81,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 82,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 83,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 84,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 85,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 86,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 87,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 88,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 89,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 90,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 91,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 92,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 93,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 94,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 95,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 96,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 97,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 98,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 99,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 100,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 101,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 102,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 103,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 104,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 105,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 106,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 107,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 108,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 109,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 110,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 111,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 112,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 113,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 114,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 115,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 116,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 117,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 118,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 119,
+        "cost": 30000
+    },
+    {
+        "exp": 350,
+        "item_level": 120,
+        "cost": 30000
+    }
+]

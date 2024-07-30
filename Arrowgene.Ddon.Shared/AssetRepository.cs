@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.Shared
         public const string LearnedNormalSkillsKey = "LearnedNormalSkills.json";
         public const string GPCourseInfoKey = "GpCourseInfo.json";
         public const string SecretAbilityKey = "DefaultSecretAbilities.json";
+        public const string ElementAttachInfoKey = "ElementAttachInfo.json";
         public const string QuestAssestKey = "quests";
         public const string JobValueShopKey = "JobValueShop.csv";
         public const string StampBonusKey = "StampBonus.csv";
@@ -77,6 +78,7 @@ namespace Arrowgene.Ddon.Shared
             SecretAbilitiesAsset = new SecretAbilityAsset();
             QuestAssets = new QuestAsset();
             JobValueShopAsset = new List<(JobId, CDataJobValueShopItem)>();
+            ElementAttachInfoAsset = new ElementAttachInfoAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -96,6 +98,7 @@ namespace Arrowgene.Ddon.Shared
         public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
         public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
         public SecretAbilityAsset SecretAbilitiesAsset { get; private set; }
+        public ElementAttachInfoAsset ElementAttachInfoAsset { get; private set; }
         public QuestAsset QuestAssets {  get; set; }
         public List<(JobId, CDataJobValueShopItem)> JobValueShopAsset { get; private set; }
         public List<CDataStampBonusAsset> StampBonusAsset { get; private set; }
@@ -121,6 +124,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
             RegisterAsset(value => JobValueShopAsset = value, JobValueShopKey, new JobValueShopCsv());
             RegisterAsset(value => StampBonusAsset = value, StampBonusKey, new StampBonusCsv());
+            RegisterAsset(value => ElementAttachInfoAsset = value, ElementAttachInfoKey, new ElementAttachInfoAssetDeserializer());
 
             var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);

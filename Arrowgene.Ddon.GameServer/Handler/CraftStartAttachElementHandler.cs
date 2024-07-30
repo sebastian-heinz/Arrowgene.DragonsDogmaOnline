@@ -22,21 +22,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftStartAttachElementRes Handle(GameClient client, C2SCraftStartAttachElementReq request)
         {
-            var results = Server.Database.SelectEquipItemByCharacter(client.Character.CommonId);
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
-            var result = new S2CCraftStartAttachElementRes()
+            var (storageType, itemProps) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, request.EquipItemUId);
+            var (slotNo, item, amount) = itemProps;
+
+
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, item.ItemId);
+            var result = new S2CCraftStartAttachElementRes();
+
+            Character character = null;
+            if (storageType == StorageType.CharacterEquipment)
             {
-                // TODO: Use values extracted from client file craft_element_exp.cee.json
-                // TODO: Level = itemrank - 1
-                Gold = 100,
-            };
+                character = client.Character;
+                result.CurrentEquip.EquipSlot.CharacterId = client.Character.CharacterId;
+                result.CurrentEquip.EquipSlot.PawnId = 0;
+                result.CurrentEquip.EquipSlot.EquipSlotNo = slotNo;
+                result.CurrentEquip.EquipSlot.EquipType = EquipType.Performance;
+            }
 
-            result.CurrentEquip.EquipSlot.CharacterId = client.Character.CharacterId;
-            result.CurrentEquip.EquipSlot.PawnId = 0;
-            result.CurrentEquip.EquipSlot.EquipSlotNo = 0;
-            result.CurrentEquip.EquipSlot.EquipType = 0;
+            var craftInfo = Server.AssetRepository.ElementAttachInfoAsset.ElementAttachInfo[clientItemInfo.Rank];
+            uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
+            uint totalExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 
-            Item item = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, request.EquipItemUId);
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(character, item, storageType, slotNo, 0, 0));
             foreach (var element in request.CraftElementList)
             {
                 uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId);
@@ -54,28 +63,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     SlotNo = element.SlotNo,
                 });
 
-                // TODO: Consume crest item
+                // Consume the crest
+                updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
             }
-
-            // client.Character.Storage.SetStorageItem(item.Item2, item.Item3, StorageType.ItemBagEquipment, item.Item1);
-
-#if false
-            // Do I actually need this for anything other than the wallet?
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = (ushort) ItemNoticeType.StartAttachElement;
-            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, 100));
-
-            updateCharacterItemNtc.UpdateItemList.Add(new CDataItemUpdateResult(item));
+            
+            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
+            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(character, item, storageType, slotNo, 1, 1));
             client.Send(updateCharacterItemNtc);
-#endif
 
-            // TODO: Use values extracted from client file
+            // TODO: Store saved pawn exp
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
             {
                 PawnId = request.CraftMainPawnId,
-                AddExp = 100,
+                AddExp = totalExp,
                 ExtraBonusExp = 0,
-                TotalExp = 100,
+                TotalExp = totalExp,
                 CraftRankLimit = 0
             };
             client.Send(expNtc);

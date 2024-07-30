@@ -22,15 +22,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftStartDetachElementRes Handle(GameClient client, C2SCraftStartDetachElementReq request)
         {
-            var results = Server.Database.SelectEquipItemByCharacter(client.Character.CommonId);
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+
+            var (storageType, itemProps) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, request.EquipItemUId);
+            var (slotNo, item, amount) = itemProps;
 
             var result = new S2CCraftStartDetachElementRes();
             result.CurrentEquip.EquipSlot.CharacterId = client.Character.CharacterId;
             result.CurrentEquip.EquipSlot.PawnId = 0;
-            result.CurrentEquip.EquipSlot.EquipSlotNo = 0;
-            result.CurrentEquip.EquipSlot.EquipType = 0;
+            result.CurrentEquip.EquipSlot.EquipSlotNo = slotNo;
+            result.CurrentEquip.EquipSlot.EquipType = EquipType.Performance;
 
-            Item item = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, request.EquipItemUId);
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 0, 0));
             foreach (var element in request.CraftElementList)
             {
                 Server.Database.RemoveCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo);
@@ -42,7 +45,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 item.WeaponCrestDataList = item.WeaponCrestDataList.Where(x => x.SlotNo != element.SlotNo).ToList();
             }
-            // client.Character.Storage.SetStorageItem(item.Item2, item.Item3, StorageType.ItemBagEquipment, item.Item1);
+
+            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartDetachElement;
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 1, 1));
+            client.Send(updateCharacterItemNtc);
 
             return result;
         }
