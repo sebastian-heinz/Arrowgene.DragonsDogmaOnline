@@ -266,5 +266,10 @@ namespace Arrowgene.Ddon.Database
         bool InsertAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
         List<CDataAddStatusData> GetAddStatusByUID(string itemUid);
         bool UpdateAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
+
+        // Play points
+        bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
+        bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
+
     }
 }

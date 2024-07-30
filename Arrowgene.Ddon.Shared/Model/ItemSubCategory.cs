@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public enum ItemSubCategory //For serverside use only.
+    public enum ItemSubCategory : ushort //For serverside use only.
     {
         UseNone = 1,
         UseThrowing = 2,
@@ -48,39 +42,39 @@ namespace Arrowgene.Ddon.Shared.Model
         MaterialPawnInspiration = 132,
         MaterialDragonAbility = 133,
 
-        //EquipSlot, offset by 200
-        EquipArmorHelm = 203,
-        EquipArmorBody = 204,
-        EquipClothingBody = 205,
-        EquipArmorArm = 206,
-        EquipArmorLeg = 207,
-        EquipClothingLeg = 208,
-        EquipOverwear = 209,
-        EquipJewelry = 210,
-        EquipLantern = 211,
-        EquipEnsemble = 212,
+        //WeaponCategory, offset by 200
+        WeaponHand = 200,
+        WeaponSword = 201,
+        WeaponShield = 202,
+        WeaponGreatsword = 203,
+        WeaponGreatshield = 204,
+        WeaponRod = 205,
+        WeaponDagger = 206,
+        WeaponBow = 207,
+        WeaponGauntlet = 208,
+        WeaponMagickBow = 209,
+        WeaponStaff = 211,
+        WeaponArchistaff = 212,
+        WeaponLance = 213,
+        WeaponMagickSword = 215,
 
-        //JewelrySubCategory, offset by 300
-        JewelryCommon = 326,
-        JewelryRing = 342,
-        JewelryBracelet = 358,
-        JewelryPierce = 374,
-        EmblemStone = 390,
-        
-        //WeaponCategory, offset by 400
-        WeaponHand = 400,
-        WeaponSword = 401,
-        WeaponShield = 402,
-        WeaponGreatsword = 403,
-        WeaponGreatshield = 404,
-        WeaponRod = 405,
-        WeaponDagger = 406,
-        WeaponBow = 407,
-        WeaponGauntlet = 408,
-        WeaponMagickBow = 409,
-        WeaponStaff = 411,
-        WeaponArchistaff = 412,
-        WeaponLance = 413,
-        WeaponMagickSword = 415,
+        //EquipSlot, offset by 300
+        EquipArmorHelm = 303,
+        EquipArmorBody = 304,
+        EquipClothingBody = 305,
+        EquipArmorArm = 306,
+        EquipArmorLeg = 307,
+        EquipClothingLeg = 308,
+        EquipOverwear = 309,
+        EquipJewelry = 310,
+        EquipLantern = 311,
+        EquipEnsemble = 312,
+
+        //JewelrySubCategory, offset by 400
+        JewelryCommon = 426,
+        JewelryRing = 442,
+        JewelryBracelet = 458,
+        JewelryPierce = 474,
+        EmblemStone = 490,
     }
 }

@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ExtendedParams = new CDataOrbGainExtendParam(),
                 Server = client.Character.Server
             };
-            PopulateNewPawnData(client.Character, pawn);
+            PopulateNewPawnData(client.Character, pawn, request.SlotNo - 1);
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
 
             if (request.SlotNo == 1)
@@ -44,9 +44,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (request.SlotNo > 1)
             {
-                // We need to consume items for the cost
-                var uidItem = new Item() { ItemId = 10133 };
-                Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, uidItem.UId, 10);
+                // We need to consume 10 rift crystals for the cost
+                var result = Server.ItemManager.ConsumeItemByIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, 10133, 10);
+                if (result == null)
+                {
+                    return new S2CPawnCreatePawnRes()
+                    {
+                        Error = (uint) ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND
+                    };
+                }
             }
 
             Database.CreatePawn(pawn);
@@ -62,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return new S2CPawnCreatePawnRes();
         }
 
-        private void PopulateNewPawnData(Character character, Pawn pawn)
+        private void PopulateNewPawnData(Character character, Pawn pawn, int pawnIndex)
         {
             ArisenCsv activeJobPreset = Server.AssetRepository.ArisenAsset.Where(x => x.Job == pawn.Job).Single();
             pawn.StatusInfo = new CDataStatusInfo()
@@ -346,26 +352,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.AvailableTraining = uint.MaxValue;
 
             // Add current job's equipment to the equipment storage
+            // EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2
             List<Item?> performanceEquipItems = pawn.EquipmentTemplate.GetEquipment(pawn.Job, EquipType.Performance);
             for (int i = 0; i < performanceEquipItems.Count; i++)
             {
                 Item? item = performanceEquipItems[i];
-                ushort slot = (ushort)(i + 1);
-                character.Storage.GetStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
                 if (item != null)
                 {
-                    Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, 1, item);
-                }
-            }
-
-            List<Item?> visualEquipItems = pawn.EquipmentTemplate.GetEquipment(pawn.Job, EquipType.Visual);
-            for (int i = 0; i < visualEquipItems.Count; i++)
-            {
-                Item? item = visualEquipItems[i];
-                ushort slot = (ushort)(i + EquipmentTemplate.TOTAL_EQUIP_SLOTS + 1);
-                character.Storage.GetStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
-                if (item != null)
-                {
+                    ushort slot = (ushort)((i + 1) + (pawnIndex * (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2)));
+                    character.Storage.GetStorage(StorageType.PawnEquipment).SetItem(item, 1, slot);
                     Database.InsertStorageItem(character.CharacterId, StorageType.PawnEquipment, slot, 1, item);
                 }
             }

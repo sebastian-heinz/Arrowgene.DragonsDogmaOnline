@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Reflection.Metadata.Ecma335;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
@@ -10,6 +5,10 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -339,6 +338,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2) { return true; }
         public List<CDataAddStatusData> GetAddStatusByUID(string itemUid) { return new List<CDataAddStatusData>(); }
         public bool UpdateAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2) { return true; }
+        public bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
+        public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
         public void AddParameter(DbCommand command, string name, Int32 value) { }

@@ -108,6 +108,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGoodsParam.Serializer());
             Create(new CDataGoodsParamUnk7.Serializer());
             Create(new CDataGatheringItemElement.Serializer());
+            Create(new CDataGPDetail.Serializer());
+            Create(new CDataGPPeriod.Serializer());
             Create(new CDataGPCourseValidSerializer());
             Create(new CDataGPCourseInfoSerializer());
             Create(new CDataGPCourseEffectParamSerializer());
@@ -129,6 +131,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataReleaseOrbElement.Serializer());
             Create(new CDataJobExpMode.Serializer());
             Create(new CDataJobPlayPointSerializer());
+            Create(new CDataJobValueShopItem.Serializer());
             Create(new CDataJumpLocationSerializer());
             Create(new CDataLayoutEnemyData.Serializer());
             Create(new CDataLearnedSetAcquirementParam.Serializer());
@@ -339,6 +342,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
             Create(new C2SGpGetGpReq.Serializer());
+            Create(new C2SGpGetGpDetailReq.Serializer());
+            Create(new C2SGpGetGpPeriodReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SGpGpEditGetVoiceListReq.Serializer());
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
@@ -369,10 +374,15 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemSortSetItemSortDataBinReq.Serializer());
             Create(new C2SItemUseBagItemReq.Serializer());
             Create(new C2SItemUseJobItemsReq.Serializer());
+
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobChangePawnJobReq.Serializer());
             Create(new C2SJobGetJobChangeListReq.Serializer());
             Create(new C2SJobUpdateExpModeReq.Serializer());
+            Create(new C2SJobGetPlayPointListReq.Serializer());
+            Create(new C2SJobJobValueShopGetLineupReq.Serializer());
+            Create(new C2SJobJobValueShopBuyItemReq.Serializer());
+
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
             Create(new C2SLobbyLeaveReq.Serializer());
@@ -621,6 +631,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
             Create(new S2CExtendEquipSlotNtc.Serializer());
             Create(new S2CGpGetGpRes.Serializer());
+            Create(new S2CGpGetGpDetailRes.Serializer());
+            Create(new S2CGpGetGpPeriodRes.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
             Create(new S2CGpGpEditGetVoiceListRes.Serializer());
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());
@@ -660,6 +672,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemSellItemRes.Serializer());
             Create(new S2CItemUseBagItemRes.Serializer());
             Create(new S2CItemUseJobItemsRes.Serializer());
+
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());
             Create(new S2CJobChangeJobRes.Serializer());
@@ -670,6 +683,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobCharacterJobLevelUpNtc.Serializer());
             Create(new S2CJobCharacterJobLevelUpOtherNtc.Serializer());
             Create(new S2CJobGetJobChangeListRes.Serializer());
+            Create(new S2CJobUpdatePlayPointNtc.Serializer());
+            Create(new S2CJobGetPlayPointListRes.Serializer());
+            Create(new S2CJobJobValueShopGetLineupRes.Serializer());
+            Create(new S2CJobJobValueShopBuyItemRes.Serializer());
 
             Create(new S2COrbDevoteGetReleaseOrbElementListRes.Serializer());
             Create(new S2CJobOrbTreeGetJobOrbTreeStatusListRes.Serializer());

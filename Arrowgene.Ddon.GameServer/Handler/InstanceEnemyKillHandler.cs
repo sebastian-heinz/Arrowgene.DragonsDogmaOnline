@@ -1,5 +1,6 @@
-using System;
-using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -7,10 +8,9 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.GameServer.Party;
+using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Quests;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -124,6 +124,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint gainedExp = enemyKilled.GetDroppedExperience();
                 uint extraBonusExp = 0; // TODO: Figure out what this is for (gp bonus?)
 
+                uint gainedPP = enemyKilled.GetDroppedPlayPoints();
+                uint gainedBonusPP = 0;
+
                 GameClient memberClient;
                 CharacterCommon memberCharacter;
                 if(member is PlayerPartyMember)
@@ -132,6 +135,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     memberCharacter = memberClient.Character;
 
                     if (memberCharacter.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+
+                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience) gainedPP = 0;
+                    else gainedExp = 0;
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -171,6 +177,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         memberClient.Send(updateCharacterItemNtc);
                     }
+
+                    if (gainedPP > 0)
+                    {
+                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, gainedBonusPP, 1);
+                    }
                 }
                 else if(member is PawnPartyMember)
                 {
@@ -178,7 +189,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
                     memberCharacter = pawn;
 
-                    if (memberCharacter.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+                    if (memberClient.Character.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
                 }
                 else
                 {

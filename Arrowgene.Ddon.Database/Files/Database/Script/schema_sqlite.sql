@@ -267,7 +267,7 @@ CREATE TABLE IF NOT EXISTS ddon_wallet_point
 
 CREATE TABLE IF NOT EXISTS ddon_storage_item
 (
-    "item_uid"     VARCHAR(8) NOT NULL,
+    "item_uid"     VARCHAR(8) NOT NULL PRIMARY KEY,
     "character_id" INTEGER    NOT NULL,
     "storage_type" SMALLINT   NOT NULL,
     "slot_no"      SMALLINT   NOT NULL,
@@ -277,11 +277,9 @@ CREATE TABLE IF NOT EXISTS ddon_storage_item
     "color"        SMALLINT   NOT NULL,
     "plus_value"   SMALLINT   NOT NULL,
     "equip_points" INTEGER    NOT NULL DEFAULT 0,
-    CONSTRAINT pk_ddon_storage_item PRIMARY KEY ("item_uid"),
+    CONSTRAINT pk_ddon_storage_item UNIQUE (character_id, storage_type, slot_no),
     CONSTRAINT fk_storage_item_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
-
-
 
 CREATE TABLE IF NOT EXISTS ddon_additional_status
 (
@@ -567,4 +565,13 @@ CREATE TABLE IF NOT EXISTS "ddon_system_mail_attachment" (
 	"param3"	INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY("attachment_id" AUTOINCREMENT),
 	FOREIGN KEY("message_id") REFERENCES "ddon_system_mail"("message_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_character_playpoint_data" (
+	"character_id"	        INTEGER NOT NULL,
+	"job"					SMALLINT NOT NULL,
+	"play_point"			INTEGER NOT NULL DEFAULT 0,
+	"exp_mode"				TINYINT NOT NULL DEFAULT 1,
+	CONSTRAINT pk_character_playpoint PRIMARY KEY (character_id, job),
+	CONSTRAINT fk_character_playpoint_character_id FOREIGN KEY("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
