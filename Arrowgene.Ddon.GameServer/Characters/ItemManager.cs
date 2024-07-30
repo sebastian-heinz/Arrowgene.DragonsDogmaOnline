@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static readonly uint STACK_BOX_MAX = 999;
 
-        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
+        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.KeyItems };
         public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
 
@@ -148,9 +148,38 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CDataItemUpdateResult? ConsumeItemByUIdFromItemBag(DdonServer<GameClient> server, Character character, string itemUId, uint consumeNum)
         {
-            List<StorageType> itemBagStorage = new List<StorageType>() { StorageType.ItemBagConsumable, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.ItemBagMaterial, StorageType.KeyItems };
-            List<CDataItemUpdateResult> results = ConsumeItemByUIdFromMultipleStorages(server, character, itemBagStorage, itemUId, consumeNum);
+            List<CDataItemUpdateResult> results = ConsumeItemByUIdFromMultipleStorages(server, character, ItemBagStorageTypes, itemUId, consumeNum);
             return results.Count > 0 ? results[0] : null;
+        }
+
+        public CDataItemUpdateResult? ConsumeItemByIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> storages, uint itemId, uint consumeNum)
+        {
+            // List<Item> items = server.Database.SelectStorageItemsById(character.CharacterId, itemId);
+            foreach (StorageType storageType in storages)
+            {
+                var items = character.Storage.GetStorage(storageType).FindItemsById(itemId);
+                if (items.Count == 0)
+                {
+                    continue;
+                }
+
+                foreach (var item in items)
+                {
+                    if (item.Item3 < consumeNum)
+                    {
+                        continue;
+                    }
+
+                    return ConsumeItemByUId(server, character, storageType, item.Item2.UId, consumeNum);
+                }
+            }
+
+            return null;
+        }
+
+        public CDataItemUpdateResult? ConsumeItemByIdFromItemBag(DdonServer<GameClient> server, Character character, uint itemId, uint consumeNum)
+        {
+            return ConsumeItemByIdFromMultipleStorages(server, character, ItemBagStorageTypes, itemId, consumeNum);
         }
 
         public CDataItemUpdateResult? ConsumeItemInSlot(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, uint consumeNum)
