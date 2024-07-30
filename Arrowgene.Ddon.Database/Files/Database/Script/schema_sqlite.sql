@@ -267,7 +267,7 @@ CREATE TABLE IF NOT EXISTS ddon_wallet_point
 
 CREATE TABLE IF NOT EXISTS ddon_storage_item
 (
-    "item_uid"     VARCHAR(8) NOT NULL,
+    "item_uid"     VARCHAR(8) NOT NULL PRIMARY KEY,
     "character_id" INTEGER    NOT NULL,
     "storage_type" SMALLINT   NOT NULL,
     "slot_no"      SMALLINT   NOT NULL,
