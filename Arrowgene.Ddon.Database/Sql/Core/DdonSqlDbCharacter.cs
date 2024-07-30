@@ -1,10 +1,8 @@
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -298,6 +296,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.ReleasedWarpPoints.Add(ReadReleasedWarpPoint(reader));
                     }
                 });
+
+            // Play Points
+            ExecuteReader(conn, SqlSelectCharacterPlayPointDataByCharacter,
+                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.PlayPointList.Add(ReadCharacterPlayPointData(reader));
+                    }
+                });
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)
@@ -337,6 +346,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)
             {
                 ReplaceWalletPoint(conn, character.CharacterId, walletPoint);
+            }
+
+            foreach(CDataJobPlayPoint playPoint in character.PlayPointList)
+            {
+                ReplaceCharacterPlayPointData(conn, character.CharacterId, playPoint);
             }
         }
 
