@@ -1531,9 +1531,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_JOB_PAWN_JOB_EXP_UP_NTC = new PacketId(33, 15, 16, "S2C_JOB_PAWN_JOB_EXP_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_15_16_NTC");
         public static readonly PacketId S2C_JOB_PAWN_JOB_LEVEL_UP_NTC = new PacketId(33, 16, 16, "S2C_JOB_PAWN_JOB_LEVEL_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_16_16_NTC");
         public static readonly PacketId S2C_JOB_PAWN_JOB_LEVEL_UP_MEMBER_NTC = new PacketId(33, 17, 16, "S2C_JOB_PAWN_JOB_LEVEL_UP_MEMBER_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_17_16_NTC");
-        public static readonly PacketId S2C_JOB_33_18_16_NTC = new PacketId(33, 18, 16, "S2C_JOB_33_18_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_JOB_33_19_16_NTC = new PacketId(33, 19, 16, "S2C_JOB_33_19_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_JOB_33_20_16_NTC = new PacketId(33, 20, 16, "S2C_JOB_33_20_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_JOB_CHARACTER_JOB_POINT_NTC = new PacketId(33, 18, 16, "S2C_JOB_CHARACTER_JOB_POINT_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_18_16_NTC");
+        public static readonly PacketId S2C_JOB_PAWN_JOB_POINT_NTC = new PacketId(33, 19, 16, "S2C_JOB_PAWN_JOB_POINT_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_19_16_NTC");
+        public static readonly PacketId S2C_JOB_PLAY_POINT_NTC = new PacketId(33, 20, 16, "S2C_JOB_PLAY_POINT_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_33_20_16_NTC");
 
 // Group: 34 - (ENTRY)
         public static readonly PacketId C2S_ENTRY_BOARD_ENTRY_BOARD_LIST_REQ = new PacketId(34, 0, 1, "C2S_ENTRY_BOARD_ENTRY_BOARD_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -3442,9 +3442,9 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_JOB_PAWN_JOB_EXP_UP_NTC);
             AddPacketIdEntry(packetIds, S2C_JOB_PAWN_JOB_LEVEL_UP_NTC);
             AddPacketIdEntry(packetIds, S2C_JOB_PAWN_JOB_LEVEL_UP_MEMBER_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_18_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_19_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_33_20_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_CHARACTER_JOB_POINT_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_PAWN_JOB_POINT_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_PLAY_POINT_NTC);
 
 // Group: 34 - (ENTRY)
             AddPacketIdEntry(packetIds, C2S_ENTRY_BOARD_ENTRY_BOARD_LIST_REQ);

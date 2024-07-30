@@ -63,6 +63,7 @@ namespace Arrowgene.Ddon.GameServer
             ItemManager = new ItemManager();
             PartyManager = new PartyManager(assetRepository);
             ExpManager = new ExpManager(database, ClientLookup);
+            PPManager = new PlayPointManager(database, ClientLookup);
             JobManager = new JobManager(this);
             EquipManager = new EquipManager();
             ShopManager = new ShopManager(assetRepository, database);
@@ -85,6 +86,7 @@ namespace Arrowgene.Ddon.GameServer
         public ItemManager ItemManager { get; }
         public PartyManager PartyManager { get; }
         public ExpManager ExpManager { get; }
+        public PlayPointManager PPManager { get; }
         public ShopManager ShopManager { get; }
         public JobManager JobManager { get; }
         public OrbUnlockManager OrbUnlockManager { get; }
@@ -311,6 +313,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new JobChangePawnJobHandler(this));
             AddHandler(new JobGetJobChangeListHandler(this));
             AddHandler(new JobUpdateExpModeHandler(this));
+            AddHandler(new JobGetPlayPointListHandler(this));
+            AddHandler(new JobJobValueShopGetLineupHandler(this));
+            AddHandler(new JobJobValueShopBuyItemHandler(this));
 
             AddHandler(new JobOrbTreeGetJobOrbTreeStatusListHandler(this));
             AddHandler(new JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler(this));
