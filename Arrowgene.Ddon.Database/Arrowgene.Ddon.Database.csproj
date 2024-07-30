@@ -34,6 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ContentWithTargetPath Remove="files\database\script\crest_migration.sql" />
       <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
       <ContentWithTargetPath Remove="files\database\script\uid_migration.sql" />
       <ContentWithTargetPath Remove="files\database\script\migration_stamp_sqlite.sql" />
