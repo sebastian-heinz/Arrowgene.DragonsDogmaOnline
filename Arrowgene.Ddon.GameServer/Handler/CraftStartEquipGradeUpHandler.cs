@@ -25,18 +25,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         };
 
         private readonly ItemManager _itemManager;
-        private readonly EquipManager _equipManager;
         private readonly Random _random;
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
-            _equipManager = Server.EquipManager;
             _random = new Random();
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
         {
+            #region Initializing vars
             Character common = client.Character;
             string equipItemUID = packet.Structure.EquipItemUID;
             var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
@@ -71,6 +70,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
+
+            #endregion
 
             // Handles adding EquipPoints.
             if(dogreatsuccess == true)
