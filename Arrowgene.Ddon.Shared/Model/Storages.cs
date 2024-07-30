@@ -172,6 +172,21 @@ namespace Arrowgene.Ddon.Shared.Model
 
             return null;
         }
+
+        public List<Tuple<ushort, Item, uint>> FindItemsById(uint itemId)
+        {
+            var results = new List<Tuple<ushort, Item, uint>>();
+            for (int index = 0; index < this.Items.Count; index++)
+            {
+                var itemAndCount = this.Items[index];
+                if (itemAndCount?.Item1.ItemId == itemId)
+                {
+                    results.Add(new Tuple<ushort, Item, uint>((ushort)(index + 1), itemAndCount.Item1, itemAndCount.Item2));
+                }
+            }
+
+            return results;
+        }
     }
 
     public class Equipment

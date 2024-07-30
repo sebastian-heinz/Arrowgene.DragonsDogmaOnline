@@ -201,8 +201,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var item in questBlock.ConsumePlayerItems)
             {
-                var uidItem = new Item() { ItemId =  item.ItemId };
-                var result = server.ItemManager.ConsumeItemByUIdFromItemBag(server, client.Character, uidItem.UId, item.Amount);
+                var result = server.ItemManager.ConsumeItemByIdFromItemBag(server, client.Character, item.ItemId, item.Amount);
                 client.Send(new S2CItemUpdateCharacterItemNtc()
                 {
                     UpdateType = 0,
