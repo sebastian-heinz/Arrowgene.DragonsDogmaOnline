@@ -276,7 +276,7 @@ CREATE TABLE IF NOT EXISTS ddon_storage_item
     "unk3"         SMALLINT   NOT NULL,
     "color"        SMALLINT   NOT NULL,
     "plus_value"   SMALLINT   NOT NULL,
-    CONSTRAINT pk_ddon_storage_item PRIMARY KEY (character_id, storage_type, slot_no),
+    CONSTRAINT pk_ddon_storage_item UNIQUE (character_id, storage_type, slot_no),
     CONSTRAINT fk_storage_item_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
 
