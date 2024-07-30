@@ -32,6 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             ContextManager.SetContext(client.Party, context.Item1.UniqueId, context);
 
+            int index = context.Item2.MasterIndex;
+            index = Math.Max(index, 0); //Interpret -1 as "Any" and assign to host?
+
             // Send to all or just the host?
             client.Party.SendToAll(new S2CContextMasterChangeNtc()
             {
@@ -40,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     new CDataMasterInfo()
                     {
                         UniqueId = packet.Structure.Base.UniqueId,
-                        MasterIndex = (sbyte)context.Item2.MasterIndex
+                        MasterIndex = (sbyte)index
                     }
                 }
             });
