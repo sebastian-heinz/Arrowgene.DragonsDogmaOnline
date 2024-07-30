@@ -277,8 +277,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
                         ExecuteReader(conn, SqlSelectAllCrestData,
                         command4 => {
-                            AddParameter(command4, "@CharacterId", character.CharacterId);
-                            AddParameter(command4, "@item_uid", item.UId);
+                            AddParameter(command4, "character_common_id", character.CommonId);
+                            AddParameter(command4, "item_uid", item.UId);
                         }, reader4 => {
                             while (reader4.Read())
                             {
