@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class StampMigration : IMigrationStrategy
     {
-        public uint From => 4;
-        public uint To => 5;
+        public uint From => 5;
+        public uint To => 6;
 
         private readonly DatabaseSetting DatabaseSetting;
 

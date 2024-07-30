@@ -562,7 +562,7 @@ CREATE TABLE IF NOT EXISTS "ddon_character_playpoint_data" (
 );
 );
 
-CREATE TABLE IF NOT EXISTS ddon_stamp_bonus
+CREATE TABLE IF NOT EXISTS "ddon_stamp_bonus"
 (
     "character_id"    		  INTEGER PRIMARY KEY NOT NULL,
     "last_stamp"      		  DATETIME            NOT NULL,
