@@ -352,6 +352,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             storage.SetItem(item, num, slotNo);
             server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
+
+            foreach (var crest in item.WeaponCrestDataList)
+            {
+                server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add);
+            }
         }
 
         public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo)
