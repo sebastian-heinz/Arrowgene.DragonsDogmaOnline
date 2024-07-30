@@ -65,6 +65,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
 
             // Check if a refinematerial is set 
+
+            //TODO: There are 3 tiers, and the lowest tier can't become +3, and the highest has better chance of +3, so we need to do a direct ID comparison,
+            // So a total of 6 IDs? for armor and weapons. 3 each.
             if (!string.IsNullOrEmpty(RefineMaterial))
             {
                 foreach (var craftMaterial in packet.Structure.CraftMaterialList)
@@ -105,7 +108,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 RandomQuality = 3;
             }
-            // TODO: Looks like the bodypiece can be +4?
             
             if (AddStatusID > 0 && updatingAddStatus == false)
             {
