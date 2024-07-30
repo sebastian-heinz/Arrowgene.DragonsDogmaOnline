@@ -353,6 +353,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             storage.SetItem(item, num, slotNo);
             server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
+
+            foreach (var addStatus in item.AddStatusData)
+            {
+                server.Database.InsertAddStatus(item.UId, character.CharacterId, addStatus.IsAddStat1, addStatus.IsAddStat2, addStatus.AdditionalStatus1, addStatus.AdditionalStatus2);
+            }
         }
 
         public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo)

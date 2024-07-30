@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>();
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = 0;
+            updateCharacterItemNtc.UpdateType = ItemNoticeType.CraftCreate;
 
             // Remove crafting materials
             foreach (var craftMaterial in packet.Structure.CraftMaterialList)
@@ -85,16 +85,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                        
-                        var thresholds = new (int Threshold, int Quality)[]
-                        {
-                            (95, 3),
-                            (80, 2),
-                            (70, 1),
-                            (0, 0)  // This should always be the last one to catch all remaining cases
-                        };
-
-                        RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
                     }
                     catch (NotEnoughItemsException e)
                     {
@@ -110,7 +100,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (AddStatusID > 0)
             {
                 //bool success = Server.Database.InsertAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
-                // TODO: Refactor this code to create the new Item here, and add the Quality & AdditionalStatus like that. I can't get the UID for the addstatus entries, for example.
+                //TODO: When we refactor this code, we need to support newly made items gaining additional status too.
+                
 
                 AddStat = new CDataAddStatusData()
                 {
@@ -126,7 +117,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
 
-            // TODO: Remove most logic since it should happen in the handler for when the craft time completes.
+                        var thresholds = new (int Threshold, int Quality)[]
+                        {
+                            (95, 3),
+                            (80, 2),
+                            (70, 1),
+                            (0, 0)  // This should always be the last one to catch all remaining cases
+                        };
+
+                        RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
+
+            // TODO: Refactor to generate the actual item here,
+            // TODO: Quality is an innate principle, we need to check if the newly generated item belongs to certain subcats,found in ItemSubCategory,
+            // Weapons & Armor can have quality, but subweapons (shield/red), lantern and jewelry cannot, even though the client does support it, its not meant to happen.
+            // So we will have to filter them out.
+
+            //TODO: There are 3 tiers of quality up items, we need to handle those appropriately. Looks like they don't get sent in the request in a special way,
+            // So we'll need todo a direct ItemID comparison to know which one we're getting.
             
 
 

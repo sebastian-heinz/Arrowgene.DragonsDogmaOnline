@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte currentPlusValue = equipItem.PlusValue;
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             bool retainPlusValue = false;
+            bool updatingAddStatus = false;
             string RefineMaterial = packet.Structure.RefineUID;
             ushort AddStatusID = packet.Structure.AddStatusID;
             byte RandomQuality = 0;
@@ -63,10 +64,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
 
-            // Check if a refinematerial is set (shouldn't be possible to have annything run without it but heyho)
+            // Check if a refinematerial is set 
             if (!string.IsNullOrEmpty(RefineMaterial))
             {
-                // Remove Refinement material (and increase odds of better Stars)
                 foreach (var craftMaterial in packet.Structure.CraftMaterialList)
                 {
                     try
@@ -88,7 +88,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 retainPlusValue = true; // This exists because you can change the additionalstatus whenever you want, even with one applied.
-                                        // However PlusValue (Quality) should stay static if its above 0.
+                                        // However PlusValue (Quality) shouldn't get re-rolled if you're only changing additionalstatus.
             }
 
             
@@ -107,7 +107,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             // TODO: Looks like the bodypiece can be +4?
             
-            if (AddStatusID > 0)
+            if (AddStatusID > 0 && updatingAddStatus == false)
             {
                 
                 bool success = Server.Database.InsertIfNotExistsAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
@@ -116,10 +116,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         Console.WriteLine("Additional status added successfully.");
                     }
-                    else
+                else
                     {
-                        Console.WriteLine("Failed to add additional status.");
-                    }
+                        success = Server.Database.UpdateAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
+                        AddStat = new CDataAddStatusData()
+                        {
+                            IsAddStat1 = 1,
+                            IsAddStat2 = 0,
+                            AdditionalStatus1 = AddStatusID,
+                            AdditionalStatus2 = 0,
+                        };
+                        if (success)
+                        {
+                            Console.WriteLine("Additional status Updated successfully.");
+                        }
+                    };
 
                 AddStat = new CDataAddStatusData()
                 {
@@ -129,6 +140,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     AdditionalStatus2 = 0,
                 };
             };
+
 
 
             List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>()
@@ -230,7 +242,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: figuring out what this is
             // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
-            // I think this must be related to Crests or Dragon Force, since plugging in a bunch of data has 0 noticable changes.
+            // I think this must be related to Dragon Augment?, since plugging in a bunch of data has 0 noticable changes.
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
                 Unk0 = 0, // Potentially an ID?
