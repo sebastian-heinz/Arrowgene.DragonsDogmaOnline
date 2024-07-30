@@ -97,6 +97,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 UpdateType = updateType
             };
 
+            List<(EquipType, EquipSlot)> forceRemovals = new List<(EquipType, EquipSlot)>();
+
             foreach (CDataCharacterEquipInfo changeCharacterEquipInfo in changeCharacterEquipList)
             {
                 string itemUId = changeCharacterEquipInfo.EquipItemUId;
@@ -104,7 +106,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 byte equipSlot = changeCharacterEquipInfo.EquipCategory;
                 ushort equipItemStorageSlot = characterToEquipTo.Equipment.GetStorageSlot(equipType, equipSlot);
 
-                if(itemUId.Length == 0)
+                if (itemUId.Length == 0)
                 {
                     // UNEQUIP
 
@@ -131,7 +133,63 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     var result = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, itemUId);
                     Storage sourceStorage = client.Character.Storage.GetStorage(result.Item1);
                     updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
+
+                    //Check for costume requirements
+                    ClientItemInfo itemInfo = server.ItemManager.LookupInfoByUID(server, itemUId);
+                    if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                    {
+                        foreach (EquipSlot slot in EnsembleSlots)
+                        {
+                            var foo = characterToEquipTo.EquipmentTemplate.GetEquipItem(characterToEquipTo.Job, equipType, (byte)slot);
+                            if (foo is null) continue;
+                            forceRemovals.Add((equipType, slot));
+                        }
+                    }
+                    else if (EnsembleSlots.Contains((EquipSlot)(itemInfo.SubCategory - 300))) //Casting ItemSubCategory -> EquipSlot.
+                    {
+                        var currentBody = characterToEquipTo.EquipmentTemplate.GetEquipItem(characterToEquipTo.Job, equipType, (byte)EquipSlot.ArmorBody);
+                        if (currentBody != null)
+                        {
+                            ClientItemInfo bodyInfo = server.ItemManager.LookupInfoByItem(server, currentBody);
+                            if (bodyInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                            {
+                                forceRemovals.Add((equipType, EquipSlot.ArmorBody));
+                            }
+                        }
+                    }
                 }
+            }
+
+            //Post-process to handle the overrides.
+            foreach ((EquipType, EquipSlot) force in forceRemovals)
+            {
+                EquipType equipType = force.Item1;
+                EquipSlot slot = force.Item2;
+
+                //Handle template and DB
+                characterToEquipTo.EquipmentTemplate.SetEquipItem(null, characterToEquipTo.Job, equipType, (byte)slot);
+                server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, (byte)slot);
+
+                // Update storage
+                // TODO: Move to the other storage types if the first one is full
+                Storage destinationStorage = client.Character.Storage.GetStorage(storageTypes[0]);
+                updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(
+                    server,
+                    client.Character,
+                    characterToEquipTo.Equipment.Storage,
+                    characterToEquipTo.Equipment.GetStorageSlot(equipType, (byte)slot),
+                    1,
+                    destinationStorage,
+                    0
+                ));
+
+                //Handle the client.
+                changeCharacterEquipList.Add(new CDataCharacterEquipInfo()
+                {
+                    EquipItemUId = string.Empty,
+                    EquipCategory = (byte)slot,
+                    EquipType = equipType
+                });
             }
 
             client.Send(updateCharacterItemNtc);
