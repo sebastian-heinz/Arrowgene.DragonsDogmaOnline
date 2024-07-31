@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -36,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var baseContext = packet.Structure.Base;
             var context = ContextManager.GetContext(client.Party, baseContext.UniqueId);
 
-            var clientIndex = client.Party.ClientIndex(client);
+            var clientIndex = Math.Max(client.Party.ClientIndex(client), 0);
             baseContext.MasterIndex = clientIndex; //Likely hacky.
 
             if (context == null)

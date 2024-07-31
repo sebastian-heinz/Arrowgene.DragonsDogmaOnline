@@ -94,7 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Context
         {
             client.Character.EnemyLayoutOwnership[stageLayout] = true;
             List<ulong> enemiesIds = CreateEnemyUIDs(client.Party.InstanceEnemyManager, stageLayout);
-            var clientIndex = client.Party.ClientIndex(client);
+            var clientIndex = Math.Max(client.Party.ClientIndex(client), 0);
 
             foreach (var enemyId in enemiesIds)
             {
