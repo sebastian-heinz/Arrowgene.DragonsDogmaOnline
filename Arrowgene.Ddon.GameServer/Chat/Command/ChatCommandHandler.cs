@@ -32,6 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             AddCommand(new GiveItemCommand(server));
             AddCommand(new FinishQuestCommand(server));
             AddCommand(new GivePawnCommand(server));
+            AddCommand(new SkipTutorialCommand(server));
         }
 
         public void AddCommand(ChatCommand command)
