@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
@@ -11,10 +10,12 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public override string HelpText => "usage: `/givepowerfulitems` - Get a set of free stuff.";
 
         private DdonGameServer _server;
+        private GiveItemCommand _giveItem;
 
         public GivePowerfulItemsCommand(DdonGameServer server)
         {
             _server = server;
+            _giveItem = new GiveItemCommand(server);
         }
 
         static List<uint> Items = new List<uint>()
@@ -40,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         {
             foreach (var item in Items)
             {
-                _server.ChatManager.Handle(client, new ChatMessage(LobbyChatMsgType.Say, 0, 0, 0, $"/giveitem {item}"));
+                _giveItem.Execute(new[] { $"{item}" }, client, message, responses);
             }
         }
     }

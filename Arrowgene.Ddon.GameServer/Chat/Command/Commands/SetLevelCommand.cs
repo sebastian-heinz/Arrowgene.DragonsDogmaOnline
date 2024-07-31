@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public override AccountStateType AccountState => AccountStateType.User;
 
         public override string Key => "setlevel";
-        public override string HelpText => "usage: `/setlevel [jobid] [level]` - Set job level.";
+        public override string HelpText => "usage: `/setlevel [jobid] [level] [pawnname?]` - Set job level.";
 
         private DdonGameServer _server;
 
@@ -25,7 +25,6 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 
         public override void Execute(string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
         {
-            uint itemId = 0;
             if (command.Length == 0)
             {
                 responses.Add(ChatResponse.CommandError(client, "No arguments provided."));
@@ -78,24 +77,51 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 }
                 else
                 {
-                    responses.Add(ChatResponse.CommandError(client, $"Invalid level \"{command[1]}\". It must be a number"));
+                    responses.Add(ChatResponse.CommandError(client, $"Invalid level \"{command[1]}\". It must be a number."));
                     return;
                 }
             }
 
-
             CharacterCommon targetCharacter = client.Character;
+
+            if (command.Length >= 3)
+            {
+                var tuple = client.Character.Pawns
+                    .Select((pawn, index) => new { pawn = pawn, pawnNumber = (byte)(index + 1) })
+                    .Where(tuple => tuple.pawn.Name == command[2])
+                    .FirstOrDefault();
+
+                if (tuple == null)
+                {
+                    responses.Add(ChatResponse.CommandError(client, "No pawn was found by that name."));
+                    return;
+                }
+
+                targetCharacter = tuple.pawn;
+            }
+
             CDataCharacterJobData? targetJobData = targetCharacter.CharacterJobDataList.Where(x => x.Job == targetJob).SingleOrDefault();
 
             if (targetJobData is null) 
             {
-                responses.Add(ChatResponse.CommandError(client, "Missing CDataCharacterJobData. Something went wrong."));
+                responses.Add(ChatResponse.CommandError(client, "Missing job data. Switch to that job at least once to generate it."));
                 return;
             }
 
+            int startingLevel = (int)targetJobData.Lv;
+            int levelDifference = targetLevel > targetJobData.Lv ? (int)(targetLevel - targetJobData.Lv) : 0;
+
             targetJobData.Lv = targetLevel;
-            targetJobData.JobPoint = 50000;
-            targetJobData.Exp = 0;
+            targetJobData.Exp = ExpManager.TotalExpToLevelUpTo(targetLevel);
+
+            //Handle job points
+            uint cumulativeJobPoints = 0;
+            if (levelDifference > 0)
+            {
+                cumulativeJobPoints = (uint)ExpManager.LEVEL_UP_JOB_POINTS_EARNED.Skip(startingLevel+1).Take(levelDifference).Sum(x => x);
+            }
+
+            targetJobData.JobPoint += cumulativeJobPoints;
 
             CDataCharacterJobData newStats = ExpManager.CalculateBaseStats((JobId)targetJob, targetLevel);
             targetJobData.Atk = newStats.Atk;
@@ -103,20 +129,40 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             targetJobData.Def = newStats.Def;
             targetJobData.MDef = newStats.MDef;
 
+            string targetName = "";
+
             if (targetCharacter.ActiveCharacterJobData.Job == targetJob)
             {
-                S2CJobCharacterJobLevelUpNtc lvlNtc = new S2CJobCharacterJobLevelUpNtc();
-                lvlNtc.Job = (JobId)targetJob;
-                lvlNtc.Level = targetLevel;
-                lvlNtc.AddJobPoint = 0;
-                lvlNtc.TotalJobPoint = 50000;
-                GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Character)targetCharacter);
-                client.Send(lvlNtc);
+                if (targetCharacter is Character)
+                {
+                    S2CJobCharacterJobLevelUpNtc lvlNtc = new S2CJobCharacterJobLevelUpNtc();
+                    lvlNtc.Job = (JobId)targetJob;
+                    lvlNtc.Level = targetLevel;
+                    lvlNtc.AddJobPoint = 0;
+                    lvlNtc.TotalJobPoint = targetJobData.JobPoint;
+                    GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, targetCharacter);
+                    client.Send(lvlNtc);
+
+                    targetName = $"{((Character)targetCharacter).FirstName} {((Character)targetCharacter).LastName}";
+                }
+                else if (targetCharacter is Pawn)
+                {
+                    S2CJobPawnJobLevelUpNtc lvlNtc = new S2CJobPawnJobLevelUpNtc();
+                    lvlNtc.PawnId = ((Pawn)targetCharacter).PawnId;
+                    lvlNtc.Job = (JobId)targetJob;
+                    lvlNtc.Level = targetLevel;
+                    lvlNtc.AddJobPoint = 0;
+                    lvlNtc.TotalJobPoint = targetJobData.JobPoint;
+                    GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, targetCharacter);
+                    client.Send(lvlNtc);
+
+                    targetName = ((Pawn)targetCharacter).Name;
+                }
             }
 
             _server.Database.UpdateCharacterJobData(targetCharacter.CommonId, targetJobData);
 
-            responses.Add(ChatResponse.ServerMessage(client, $"Setting {targetJob.ToString()} to level {targetLevel}."));
+            responses.Add(ChatResponse.ServerMessage(client, $"Setting {targetName}'s {targetJob.ToString()} to level {targetLevel}."));
         }
     }
 }
