@@ -47,6 +47,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="Files\Database\Script\crest_migration.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Files\Database\Script\equip_migration_sqlite.sql">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>

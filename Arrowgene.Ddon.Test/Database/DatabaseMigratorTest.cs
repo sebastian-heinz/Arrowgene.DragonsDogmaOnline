@@ -237,7 +237,6 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool InsertIfNotExistsReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool InsertIfNotExistsReleasedWarpPoints(uint characterId, List<ReleasedWarpPoint> ReleasedWarpPoint) { return true; }
-        public bool InsertItem(Item item) { return true; }
         public bool InsertLearnedAbility(uint commonId, Ability ability) { return true; }
         public bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill) { return true; }
         public bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam) { return true; }
