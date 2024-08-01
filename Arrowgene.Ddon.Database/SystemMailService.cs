@@ -19,5 +19,19 @@ namespace Arrowgene.Ddon.Database
 
             return true;
         }
+
+        public static bool DeliverSystemMailMessage(IDatabase db, SystemMailMessage message)
+        {
+            message.SendDate = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            uint messageId = (uint)db.InsertSystemMailMessage(message);
+
+            foreach (var attachment in message.Attachments)
+            {
+                attachment.MessageId = messageId;
+                db.InsertSystemMailAttachment(attachment);
+            }
+
+            return true;
+        }
     }
 }

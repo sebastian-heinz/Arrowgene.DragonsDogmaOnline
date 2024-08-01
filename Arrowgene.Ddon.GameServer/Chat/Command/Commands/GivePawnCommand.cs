@@ -2,6 +2,7 @@ using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
@@ -31,7 +32,13 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             if (pawnCount > 1)
             {
                 //Give riftstone ore in preparation for the PawnCreatePawnHandler.
-                _giveItem.Execute(new[] { $"{10133}", $"{10}" }, client, message, responses);
+                S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc()
+                {
+                    UpdateType = ItemNoticeType.Default
+                };
+                itemUpdateNtc.UpdateItemList = _server.ItemManager.AddItem(_server, client.Character, false, 10133, 10);
+
+                client.Send(itemUpdateNtc);
             }
 
             string pawnName = "Pawn" + (char)((int)'A' + pawnCount - 1);

@@ -1,8 +1,10 @@
+using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 {
@@ -11,10 +13,10 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public override AccountStateType AccountState => AccountStateType.User;
 
         private static readonly uint DefaultAmount = 1;
-        private static readonly bool DefaultToBag = true;
+        private static readonly bool DefaultToStorage = false;
 
         public override string Key => "giveitem";
-        public override string HelpText => "usage: `/giveitem [itemid] [amount?] [toStorage?]` - Obtain items.";
+        public override string HelpText => "usage: `/giveitem [itemid] [amount?]` - Obtain items.";
 
         private DdonGameServer _server;
 
@@ -59,33 +61,37 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 }
             }
 
-            bool toBag = DefaultToBag;
-            if (command.Length >= 3)
+            if (!_server.AssetRepository.ClientItemInfos.ContainsKey(itemId))
             {
-                if (bool.TryParse(command[2], out bool parsedToBag))
-                {
-                    toBag = parsedToBag;
-                }
-                else
-                {
-                    responses.Add(ChatResponse.CommandError(client, $"Invalid to storage flag \"{command[2]}\". It must be a boolean."));
-                    return;
-                }
+                responses.Add(ChatResponse.CommandError(client, $"Invalid itemId \"{command[0]}\". This item does not exist."));
+                return;
             }
-
-            S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc()
-            {
-                UpdateType = ItemNoticeType.Default
-            };
-
-            itemUpdateNtc.UpdateItemList = _server.ItemManager.AddItem(_server, client.Character, toBag, itemId, amount);
-
-            client.Send(itemUpdateNtc);
 
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(_server.AssetRepository.ClientItemInfos, itemId);
 
-            responses.Add(ChatResponse.ServerMessage(client, $"Granting {itemInfo.Name} <{itemId}> x{amount}."));
+            SystemMailMessage mail = new SystemMailMessage()
+            {
+                Title = $"GiveItem: {itemInfo.Name} x{amount}",
+                Body = $"",
+                CharacterId = client.Character.CharacterId,
+                SenderName = "/giveitem",
+                MessageState = MailState.Unopened
+            };
+            mail.Attachments.Add(new SystemMailAttachment()
+            {
+                AttachmentType = SystemMailAttachmentType.Item,
+                Param1 = itemId,
+                Param2 = amount,
+                MessageId = (ulong)(mail.Attachments.Count + 1),
+                IsReceived = false,
+            });
+            SystemMailService.DeliverSystemMailMessage(_server.Database, mail);
 
+            S2CMailSystemMailSendNtc notice = new S2CMailSystemMailSendNtc()
+            {
+                MailInfo = mail.ToCDataMailInfo((byte)(MailItemState.Exist | MailItemState.Item))
+            };
+            client.Send(notice);
         }
     }
 }
