@@ -102,11 +102,18 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
                 if (connections.Count > 0)
                 {
-                    // todo check connection age?
-                    Logger.Error(client, $"Already logged in");
-                    res.Error = 1;
-                    client.Send(res);
-                    return;
+                    if (connections[0].ServerId == Server.Id && Server.ClientLookup.GetClientByAccountId(account.Id) == null)
+                    {
+                        // Remove stale connection
+                        Database.DeleteConnectionsByAccountId(account.Id);
+                    }
+                    else
+                    {
+                        Logger.Error(client, $"Already logged in");
+                        res.Error = 1;
+                        client.Send(res);
+                        return;
+                    }
                 }
                 
                 // Order Important,
