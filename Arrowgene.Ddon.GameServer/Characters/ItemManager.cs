@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.KeyItems };
         public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
-        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> { StorageType.CharacterEquipment, StorageType.PawnEquipment, StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion };
+        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> { StorageType.CharacterEquipment, StorageType.PawnEquipment, StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
 
         private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
             {7789, (WalletType.Gold, 1)},
@@ -536,8 +536,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
-        public CDataItemUpdateResult CreateItemUpdateResult(Character character, Item item, StorageType storageType, ushort slotNo, uint itemNum, uint updateItemNum)
+        public CDataItemUpdateResult CreateItemUpdateResult(CharacterCommon character, Item item, StorageType storageType, ushort slotNo, uint itemNum, uint updateItemNum)
         {
+            uint pawnId = 0;
+            uint characterId = 0;
+            if (character is Character)
+            {
+                characterId = ((Character)character).CharacterId;
+            }
+            else if (character is Pawn)
+            {
+                pawnId = ((Pawn)character).PawnId;
+            }
+
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
             updateResult.ItemList.ItemUId = item.UId;
             updateResult.ItemList.ItemId = item.ItemId;
@@ -545,12 +556,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.Unk3 = item.Unk3;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
-            updateResult.ItemList.Color = item.Color; // ?
-            updateResult.ItemList.PlusValue = item.PlusValue; // ?
+            updateResult.ItemList.Color = item.Color;
+            updateResult.ItemList.PlusValue = item.PlusValue;
             updateResult.ItemList.Bind = false;
-            updateResult.ItemList.EquipPoint = 0;
-            updateResult.ItemList.EquipCharacterID = (character == null) ? 0 : character.CharacterId;
-            updateResult.ItemList.EquipPawnID = 0;
+            updateResult.ItemList.EquipPoint = 0; // TODO: Add value to Item
+            updateResult.ItemList.EquipCharacterID = characterId;
+            updateResult.ItemList.EquipPawnID = pawnId;
             updateResult.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
             updateResult.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             updateResult.ItemList.EquipElementParamList = item.EquipElementParamList;

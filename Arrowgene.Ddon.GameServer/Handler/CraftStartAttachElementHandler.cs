@@ -27,25 +27,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var (storageType, itemProps) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, request.EquipItemUId);
             var (slotNo, item, amount) = itemProps;
 
-
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, item.ItemId);
             var result = new S2CCraftStartAttachElementRes();
 
-            Character character = null;
+            ushort relativeSlotNo = slotNo;
+            CharacterCommon characterCommon = null;
             if (storageType == StorageType.CharacterEquipment)
             {
-                character = client.Character;
+                characterCommon = client.Character;
                 result.CurrentEquip.EquipSlot.CharacterId = client.Character.CharacterId;
                 result.CurrentEquip.EquipSlot.PawnId = 0;
-                result.CurrentEquip.EquipSlot.EquipSlotNo = slotNo;
-                result.CurrentEquip.EquipSlot.EquipType = EquipType.Performance;
+                result.CurrentEquip.EquipSlot.EquipSlotNo = relativeSlotNo;
+                result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotNo);
+            }
+            else if (storageType == StorageType.PawnEquipment)
+            {
+                uint pawnId = Storages.DeterminePawnId(client.Character, storageType, slotNo);
+                characterCommon = client.Character.Pawns.Where(x => x.PawnId == pawnId).SingleOrDefault();
+                relativeSlotNo = Storages.DeterminePawnEquipSlot(slotNo);
+                result.CurrentEquip.EquipSlot.CharacterId = 0;
+                result.CurrentEquip.EquipSlot.PawnId = pawnId;
+                result.CurrentEquip.EquipSlot.EquipSlotNo = relativeSlotNo;
+                result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(relativeSlotNo);
             }
 
             var craftInfo = Server.AssetRepository.ElementAttachInfoAsset.ElementAttachInfo[clientItemInfo.Rank];
             uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
             uint totalExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 
-            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(character, item, storageType, slotNo, 0, 0));
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
             foreach (var element in request.CraftElementList)
             {
                 uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId);
@@ -69,7 +79,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
             updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
-            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(character, item, storageType, slotNo, 1, 1));
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
             client.Send(updateCharacterItemNtc);
 
             // TODO: Store saved pawn exp

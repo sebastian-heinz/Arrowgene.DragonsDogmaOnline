@@ -10,6 +10,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class EquipManager
     {
+        public static EquipType GetEquipTypeFromSlotNo(ushort slotNo)
+        {
+            return (slotNo > 15) ? EquipType.Visual : EquipType.Performance;
+        }
+
         public void EquipJobItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataChangeEquipJobItem> changeEquipJobItems)
         {
             foreach (CDataChangeEquipJobItem changeEquipJobItem in changeEquipJobItems)

@@ -95,7 +95,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToList();
         }
 
-        private uint DetermineCharacterId(Character character, StorageType storageType, ushort slot)
+        public static uint DetermineCharacterId(Character character, StorageType storageType, ushort slot)
         {
             if(storageType == StorageType.CharacterEquipment)
             {
@@ -107,7 +107,7 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         }
 
-        private uint DeterminePawnId(Character character, StorageType storageType, ushort slot)
+        public static uint DeterminePawnId(Character character, StorageType storageType, ushort slot)
         {
             if(storageType == StorageType.PawnEquipment)
             {
@@ -118,6 +118,13 @@ namespace Arrowgene.Ddon.Shared.Model
             {
                 return 0;
             }
+        }
+
+        public static ushort DeterminePawnEquipSlot(ushort storageSlot)
+        {
+            int pawnIndex = storageSlot / (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2);
+            var relativeSlot = ((storageSlot) - (pawnIndex * (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2)));
+            return (ushort) ((relativeSlot > 15) ? relativeSlot - 15 : relativeSlot);
         }
     }
 

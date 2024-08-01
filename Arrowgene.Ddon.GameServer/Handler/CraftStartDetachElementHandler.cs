@@ -28,12 +28,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var (slotNo, item, amount) = itemProps;
 
             var result = new S2CCraftStartDetachElementRes();
-            result.CurrentEquip.EquipSlot.CharacterId = client.Character.CharacterId;
-            result.CurrentEquip.EquipSlot.PawnId = 0;
-            result.CurrentEquip.EquipSlot.EquipSlotNo = slotNo;
-            result.CurrentEquip.EquipSlot.EquipType = EquipType.Performance;
 
-            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 0, 0));
+            ushort relativeSlotNo = slotNo;
+            CharacterCommon characterCommon = null;
+            if (storageType == StorageType.CharacterEquipment)
+            {
+                characterCommon = client.Character;
+                result.CurrentEquip.EquipSlot.CharacterId = client.Character.CharacterId;
+                result.CurrentEquip.EquipSlot.PawnId = 0;
+                result.CurrentEquip.EquipSlot.EquipSlotNo = slotNo;
+                result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotNo);
+            }
+            else if (storageType == StorageType.PawnEquipment)
+            {
+                uint pawnId = Storages.DeterminePawnId(client.Character, storageType, slotNo);
+                characterCommon = client.Character.Pawns.Where(x => x.PawnId == pawnId).SingleOrDefault();
+                relativeSlotNo = Storages.DeterminePawnEquipSlot(slotNo);
+                result.CurrentEquip.EquipSlot.CharacterId = 0;
+                result.CurrentEquip.EquipSlot.PawnId = pawnId;
+                result.CurrentEquip.EquipSlot.EquipSlotNo = relativeSlotNo;
+                result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(relativeSlotNo);
+            }
+
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
             foreach (var element in request.CraftElementList)
             {
                 Server.Database.RemoveCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo);
@@ -47,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartDetachElement;
-            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 1, 1));
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
             client.Send(updateCharacterItemNtc);
 
             return result;
