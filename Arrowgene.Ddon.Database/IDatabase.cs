@@ -264,5 +264,8 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
         bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
 
+        // Stamps
+        public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);
+        public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
     }
 }

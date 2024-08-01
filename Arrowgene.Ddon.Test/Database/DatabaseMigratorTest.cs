@@ -335,6 +335,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteSystemMailAttachment(ulong messageId) { return true; }
         public bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
         public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
+        public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
+        public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

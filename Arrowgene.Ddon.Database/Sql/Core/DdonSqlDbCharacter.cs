@@ -307,6 +307,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.PlayPointList.Add(ReadCharacterPlayPointData(reader));
                     }
                 });
+
+            // Login Stamp
+            ExecuteReader(conn, SqlSelectCharacterStamp,
+                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.StampBonus = ReadCharacterStampData(reader);
+                    }
+                });
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)
@@ -352,6 +363,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 ReplaceCharacterPlayPointData(conn, character.CharacterId, playPoint);
             }
+
+            ExecuteNonQuery(conn, SqlInsertCharacterStamp, command =>
+            {
+                AddParameter(command, character.CharacterId, character.StampBonus);
+            });
         }
 
         private void CreateItems(TCon conn, Character character)

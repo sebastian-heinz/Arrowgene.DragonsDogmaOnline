@@ -36,6 +36,9 @@
     <ItemGroup>
       <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
       <ContentWithTargetPath Remove="files\database\script\uid_migration.sql" />
+      <ContentWithTargetPath Remove="files\database\script\migration_stamp_sqlite.sql" />
+      <ContentWithTargetPath Remove="files\database\script\migration_mail_sqlite.sql" />
+      <ContentWithTargetPath Remove="files\database\script\migration_pp_sqlite.sql" />
     </ItemGroup>
 
     <ItemGroup>
@@ -49,10 +52,13 @@
       <None Update="Files\Database\Script\uid_migration.sql">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-    </ItemGroup>
-	
-	<ItemGroup>
-      <None Update="Files\Database\Script\migration_pp_sqlite.sql">
+	  <None Update="Files\Database\Script\migration_pp_sqlite.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Database\Script\migration_mail_sqlite.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+	   <None Update="Files\Database\Script\migration_stamp_sqlite.sql">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
