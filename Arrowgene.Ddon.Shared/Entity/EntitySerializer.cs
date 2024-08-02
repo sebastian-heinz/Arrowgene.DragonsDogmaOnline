@@ -706,6 +706,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMailSystemMailGetTextRes.Serializer());
             Create(new S2CMailSystemGetAllItemRes.Serializer());
             Create(new S2CMailSystemMailDeleteRes.Serializer());
+            Create(new S2CMailSystemMailSendNtc.Serializer());
 
             Create(new S2CMandragoraGetMyMandragoraRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());

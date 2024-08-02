@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 {
@@ -47,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 var tuple = client.Character.Pawns
                     .Select((pawn, index) => new {pawn = pawn, pawnNumber = (byte)(index+1)})
                     .Where(tuple => tuple.pawn.Name == command[0])
-                    .SingleOrDefault();
+                    .FirstOrDefault();
 
                 if (tuple == null)
                 {
