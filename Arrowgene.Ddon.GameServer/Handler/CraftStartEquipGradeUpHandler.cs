@@ -232,6 +232,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Logger.Error($"Item found in {storageType}. Which isn't supported.");
                         break;
                 }
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 0, 0));
                 if (foundItem != null)
                 {
@@ -246,7 +247,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         (byte)slotno
                     );
                     Logger.Debug($"Your Slot is: {slotno}, in {storageType} for UID {equipItem.UId}.");
-                    updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
+
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 1, 1));
                     client.Send(updateCharacterItemNtc);
                 }

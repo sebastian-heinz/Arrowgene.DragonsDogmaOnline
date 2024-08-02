@@ -50,6 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
             List<CDataItemUpdateResult> updateResults;
+
             CDataAddStatusData AddStat = new CDataAddStatusData()
             {
                 IsAddStat1 = 0,
@@ -57,6 +58,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AdditionalStatus1 = 0,
                 AdditionalStatus2 = 0,
             };
+
+
 
 
             //TODO: There are 3 tiers, and the lowest tier can't become +3, and the highest has better chance of +3, so we need to do a direct ID comparison,
@@ -90,40 +93,41 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomQuality = 3;
             }
             
-            if (AddStatusID > 0 && updatingAddStatus == false)
-            {
+            // if (AddStatusID > 0 && updatingAddStatus == false)
+            // {
                 
-                bool success = Server.Database.InsertIfNotExistsAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
-                AddStat = new CDataAddStatusData()
-                {
-                    IsAddStat1 = 1,
-                    IsAddStat2 = 0,
-                    AdditionalStatus1 = AddStatusID,
-                    AdditionalStatus2 = 0,
-                };
+            //     bool success = Server.Database.InsertIfNotExistsAddStatus(equipItemUID, charid, 1, 1, AddStatusID, AddStatusID);
+            //     AddStat = new CDataAddStatusData()
+            //     {
+            //         IsAddStat1 = 1,
+            //         IsAddStat2 = 0,
+            //         AdditionalStatus1 = AddStatusID,
+            //         AdditionalStatus2 = 0,
+            //     };
 
-                if (success)
-                    {
-                        Console.WriteLine("Additional status added successfully.");
-                    }
-                else
-                    {
-                        success = Server.Database.UpdateAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
-                        AddStat = new CDataAddStatusData()
-                        {
-                            IsAddStat1 = 1,
-                            IsAddStat2 = 0,
-                            AdditionalStatus1 = AddStatusID,
-                            AdditionalStatus2 = 0,
-                        };
-                        if (success)
-                        {
-                            Console.WriteLine("Additional status Updated successfully.");
-                        }
-                    };
-            };
+            //     if (success)
+            //         {
+            //             Console.WriteLine("Additional status added successfully.");
+            //         }
+            //     else
+            //         {
+            //             success = Server.Database.UpdateAddStatus(equipItemUID, charid, 1, 1, AddStatusID, AddStatusID);
+            //             AddStat = new CDataAddStatusData()
+            //             {
+            //                 IsAddStat1 = 1,
+            //                 IsAddStat2 = 0,
+            //                 AdditionalStatus1 = AddStatusID,
+            //                 AdditionalStatus2 = 0,
+            //             };
+            //             if (success)
+            //             {
+            //                 Console.WriteLine("Additional status Updated successfully.");
+            //             }
+            //         };
+            // };
 
-
+            // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
+            // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
 
             List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>()
             {
