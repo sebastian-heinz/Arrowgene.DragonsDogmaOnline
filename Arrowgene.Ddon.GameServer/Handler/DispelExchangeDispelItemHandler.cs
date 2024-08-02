@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     foreach (var elementParam in purchase.EquipElementParamList)
                     {
                         Server.Database.InsertCrest(client.Character.CommonId, itemUpdateResults[0].ItemList.ItemUId, elementParam.SlotNo, elementParam.CrestId, elementParam.Add);
-                        newItem.WeaponCrestDataList.Add(elementParam);
+                        newItem.EquipElementParamList.Add(elementParam);
                     }
 
                     itemUpdateResults[0].ItemList.WeaponCrestDataList = purchase.EquipElementParamList;

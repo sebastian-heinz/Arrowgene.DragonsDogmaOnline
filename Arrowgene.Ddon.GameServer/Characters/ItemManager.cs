@@ -213,7 +213,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.EquipPoint = 0;
             ntcData.ItemList.EquipCharacterID = 0;
             ntcData.ItemList.EquipPawnID = 0;
-            ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+            ntcData.ItemList.WeaponCrestDataList = item.EquipElementParamList;
             ntcData.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             ntcData.ItemList.Unk2List = item.Unk2List;
             ntcData.UpdateItemNum = -finalConsumeNum;
@@ -289,7 +289,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Unk3 = 0,
                         Color = 0,
                         PlusValue = 0,
-                        WeaponCrestDataList = new List<CDataEquipElementParam>(),
+                        EquipElementParamList = new List<CDataEquipElementParam>(),
                         ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>(),
                         Unk2List = new List<CDataEquipItemInfoUnk2>()
                     };
@@ -315,7 +315,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.EquipPoint = 0;
                 result.ItemList.EquipCharacterID = 0;
                 result.ItemList.EquipPawnID = 0;
-                result.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+                result.ItemList.WeaponCrestDataList = item.EquipElementParamList;
                 result.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
                 result.ItemList.Unk2List = item.Unk2List;
                 result.UpdateItemNum = (int) addedItems;
@@ -353,7 +353,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             storage.SetItem(item, num, slotNo);
             server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
 
-            foreach (var crest in item.WeaponCrestDataList)
+            foreach (var crest in item.EquipElementParamList)
             {
                 server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add);
             }
@@ -562,7 +562,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipPoint = 0; // TODO: Add value to Item
             updateResult.ItemList.EquipCharacterID = characterId;
             updateResult.ItemList.EquipPawnID = pawnId;
-            updateResult.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
+            updateResult.ItemList.WeaponCrestDataList = item.EquipElementParamList;
             updateResult.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             updateResult.ItemList.Unk2List = item.Unk2List;
             updateResult.UpdateItemNum = (int) updateItemNum;

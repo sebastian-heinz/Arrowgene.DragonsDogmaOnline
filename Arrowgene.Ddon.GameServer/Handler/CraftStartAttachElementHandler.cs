@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     SlotNo = element.SlotNo,
                 });
 
-                item.WeaponCrestDataList.Add(new CDataEquipElementParam()
+                item.EquipElementParamList.Add(new CDataEquipElementParam()
                 {
                     CrestId = crestId,
                     SlotNo = element.SlotNo,

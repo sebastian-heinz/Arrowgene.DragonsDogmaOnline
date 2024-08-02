@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 Unk3 = info.Unk0,
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
-                                                WeaponCrestDataList = info.WeaponCrestDataList,
+                                                EquipElementParamList = info.WeaponCrestDataList,
                                                 ArmorCrestDataList = info.ArmorCrestDataList,
                                                 Unk2List = info.Unk2List
                                             };
@@ -85,7 +85,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 Unk3 = info.Unk0,
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
-                                                WeaponCrestDataList = info.WeaponCrestDataList,
+                                                EquipElementParamList = info.WeaponCrestDataList,
                                                 ArmorCrestDataList = info.ArmorCrestDataList,
                                                 Unk2List = info.Unk2List
                                             };
@@ -193,7 +193,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.PrimaryWeaponColour,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.PWCrest1,
@@ -235,7 +235,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.HeadColour,
                                 PlusValue = 3,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.HeadCrest1,
@@ -267,7 +267,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.BodyColour,
                                 PlusValue = 4,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.BodyCrest1,
@@ -309,7 +309,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.ArmColour,
                                 PlusValue = 3,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.ArmCrest1,
@@ -341,7 +341,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = arisenPreset.LegColour,
                                 PlusValue = 3,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.LegCrest1,
@@ -383,7 +383,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J1Crest1,
@@ -482,7 +482,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J2Crest1,
@@ -581,7 +581,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J3Crest1,
@@ -680,7 +680,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J4Crest1,
@@ -779,7 +779,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 Unk3 = 0,
                                 Color = 0,
                                 PlusValue = 0,
-                                WeaponCrestDataList = new List<CDataEquipElementParam>() {
+                                EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 1,
                                         CrestId = arisenPreset.J5Crest1,

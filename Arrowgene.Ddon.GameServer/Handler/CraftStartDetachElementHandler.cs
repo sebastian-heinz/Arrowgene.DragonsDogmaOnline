@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     SlotNo = element.SlotNo,
                 });
 
-                item.WeaponCrestDataList = item.WeaponCrestDataList.Where(x => x.SlotNo != element.SlotNo).ToList();
+                item.EquipElementParamList = item.EquipElementParamList.Where(x => x.SlotNo != element.SlotNo).ToList();
             }
 
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartDetachElement;
