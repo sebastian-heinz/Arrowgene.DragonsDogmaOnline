@@ -340,6 +340,9 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2) { return true; }
         public bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
         public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
+        public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
+        public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
+
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
         public void AddParameter(DbCommand command, string name, Int32 value) { }

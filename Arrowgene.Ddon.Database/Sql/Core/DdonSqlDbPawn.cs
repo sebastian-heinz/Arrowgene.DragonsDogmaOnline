@@ -68,8 +68,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
                     ExecuteNonQuery(conn, SqlInsertEditInfo, command => { AddParameter(command, pawn); });
                     ExecuteNonQuery(conn, SqlInsertStatusInfo, command => { AddParameter(command, pawn); });
-
-                    CreateItems(conn, pawn);
                     
                     StorePawnData(conn, pawn);
                 });
@@ -212,29 +210,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             foreach ((JobId job, byte[] trainingStatus) in pawn.TrainingStatus)
             {
                 ReplacePawnTrainingStatus(conn, pawn.PawnId, job, trainingStatus);
-            }
-        }
-
-        private void CreateItems(TCon conn, Pawn pawn)
-        {
-            // Create equipment items
-            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in pawn.EquipmentTemplate.GetAllEquipment())
-            {
-                JobId job = jobEquipment.Key;
-                foreach (KeyValuePair<EquipType, List<Item>> equipment in jobEquipment.Value)
-                {
-                    EquipType equipType = equipment.Key;
-                    for (byte index = 0; index < equipment.Value.Count; index++)
-                    {
-                        Item item = equipment.Value[index];
-                        if(item != null)
-                        {
-                            byte slot = (byte)(index + 1);
-                            InsertStorageItem(conn, pawn.CharacterId, StorageType.PawnEquipment, slot, 1, item);
-                            InsertEquipItem(conn, pawn.CommonId, job, equipType, slot, item.UId);
-                        }
-                    }
-                }
             }
         }
         
