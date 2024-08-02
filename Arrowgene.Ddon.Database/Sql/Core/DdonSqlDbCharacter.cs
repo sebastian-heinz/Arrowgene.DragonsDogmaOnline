@@ -270,7 +270,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         item.Unk3 = GetByte(reader2, "unk3");
                         item.Color = GetByte(reader2, "color");
                         item.PlusValue = GetByte(reader2, "plus_value");
-                        // Fetch and add additionalstatus data to item
+                        item.EquipPoints = GetUInt32(reader2, "equip_points");
                         ExecuteReader(conn, SqlSelectADDS,
                             command3 => { AddParameter(command3, "@item_uid", item.UId); },
                             reader3 =>

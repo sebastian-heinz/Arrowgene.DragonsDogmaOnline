@@ -592,7 +592,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.PlusValue = newItem.PlusValue;
             updateResult.ItemList.Bind = false;
             updateResult.ItemList.EquipPoint = newItem.EquipPoints;
-            updateResult.ItemList.EquipCharacterID = characterID;
+            updateResult.ItemList.EquipCharacterID = 0;
             updateResult.ItemList.EquipPawnID = 0;
             updateResult.ItemList.WeaponCrestDataList = newItem.WeaponCrestDataList;
             updateResult.ItemList.AddStatusData = newItem.AddStatusData;

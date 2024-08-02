@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private readonly Random _random;
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
-            _random = new Random();
+            _random = Random.Shared;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartCraftReq> packet)

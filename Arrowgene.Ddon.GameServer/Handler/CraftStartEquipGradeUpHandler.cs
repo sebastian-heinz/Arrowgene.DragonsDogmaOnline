@@ -33,11 +33,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             #region Initializing vars
             Character common = client.Character;
             string equipItemUID = request.EquipItemUID;
-            var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
+            Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID);
             uint charid = client.Character.CharacterId;
             uint pawnid = request.CraftMainPawnID;
-            byte currentPlusValue = equipItem.PlusValue;
 
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
@@ -61,7 +60,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataItemUpdateResult> updateResults;
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
 
             #endregion
 
@@ -124,7 +122,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 _ => throw new InvalidOperationException("Invalid star level")
             };
 
+            // TODO: Check if an item can reach "True" and handle the UI properly here
             if (currentStars == 3) canContinue = false;
+
+            // Updating the item.
+            equipItem.ItemId = gearupgradeID;
+            equipItem.Unk3 = equipItem.Unk3;
+            equipItem.Color = equipItem.Color;
+            equipItem.PlusValue = equipItem.PlusValue;
+            equipItem.EquipPoints = equipItem.EquipPoints;
+            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
+            equipItem.AddStatusData = equipItem.AddStatusData;
+            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
 
             // Handling the comparison to permit upgrading or not.
             if (currentTotalEquipPoint >= requiredPoints)
@@ -132,6 +141,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 canUpgrade = true;
                 addEquipPoint = 0;
                 currentTotalEquipPoint = 0;
+                equipItem.EquipPoints = 0;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
             
@@ -158,15 +168,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Source these values accurately when we know what they are. ^
 
 
-            // Updating the item.
-            equipItem.ItemId = gearupgradeID;
-            equipItem.Unk3 = equipItem.Unk3;
-            equipItem.Color = equipItem.Color;
-            equipItem.PlusValue = equipItem.PlusValue;
-            equipItem.EquipPoints = 0;
-            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
-            equipItem.AddStatusData = equipItem.AddStatusData;
-            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
+
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
@@ -266,10 +268,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     GradeUpItemUID = equipItemUID,
                     GradeUpItemID = equipItem.ItemId,
-                    GradeUpItemIDList = gradeuplist,
+                    GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
                     AddEquipPoint = 0,
                     TotalEquipPoint = 0,
-                    EquipGrade = EquipRank,
+                    EquipGrade = EquipRank, // Unclear why the client wants this? as long as its a number it doesn't seem to matter waht you set it
                     Gold = goldRequired,
                     IsGreatSuccess = dogreatsuccess,
                     CurrentEquip = CurrentEquipInfo,   
@@ -293,7 +295,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 };
 
             };
-            client.Send(updateCharacterItemNtc);
             return res;
         }
         private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
