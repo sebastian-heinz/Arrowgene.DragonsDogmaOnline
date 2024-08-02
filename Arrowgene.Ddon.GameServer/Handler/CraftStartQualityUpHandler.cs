@@ -72,11 +72,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
             }
-            else
-            {
-                retainPlusValue = true; // This exists because you can change the additionalstatus whenever you want, even with one applied.
-                                        // However PlusValue (Quality) shouldn't get re-rolled if you're only changing additionalstatus.
-            }
+            // else
+            // {
+            //     retainPlusValue = true; // This exists because you can change the additionalstatus whenever you want, even with one applied.
+            //                             // However PlusValue (Quality) shouldn't get re-rolled if you're only changing additionalstatus.
+            // }
 
             
             var thresholds = new (int Threshold, int Quality)[]
@@ -141,6 +141,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
 
+
             // Updating the item.
             equipItem.ItemId = equipItemID;
             equipItem.Unk3 = equipItem.Unk3;
@@ -203,7 +204,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         (byte)slotno
                     );
                     updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-                    Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
+                    Logger.Debug($"Your Slot is: {slotno}, in {storageType} for UID {equipItem.UId}.");
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 1, 1));
                     client.Send(updateCharacterItemNtc);
                 }
