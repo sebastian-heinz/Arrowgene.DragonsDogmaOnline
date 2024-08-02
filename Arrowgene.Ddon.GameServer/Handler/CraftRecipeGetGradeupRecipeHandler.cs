@@ -8,7 +8,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftRecipeGetGradeupRecipeHandler : GameStructurePacketHandler<C2SCraftRecipeGetCraftGradeupRecipeReq>
+    public class CraftRecipeGetGradeupRecipeHandler : GameRequestPacketHandler<C2SCraftRecipeGetCraftGradeupRecipeReq, S2CCraftRecipeGetCraftGradeupRecipeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftRecipeGetGradeupRecipeHandler));
 
@@ -16,32 +16,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftRecipeGetCraftGradeupRecipeReq> packet)
+        public override S2CCraftRecipeGetCraftGradeupRecipeRes Handle(GameClient client, C2SCraftRecipeGetCraftGradeupRecipeReq request)
         {
             List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
-                //.Where(recipes => recipes.Category == packet.Structure.Category)
-                // TODO: Figure out why trying to filter by Category ^ doesn't work, it doesn't populate anything below the highest Category Number,
-                // and even that list doesn't fully populate correctly.
                 .SelectMany(recipes => recipes.RecipeList)
-                .Where(recipe => packet.Structure.ItemList.Any(itemId => itemId.Value == recipe.ItemID))
+                .Where(recipe => request.ItemList.Any(itemId => itemId.Value == recipe.ItemID))
                 .ToList();
 
-            // To populate the UnknownItemList in Response with the current Itemlist, this seems to fix the infinite req/res spam soft lock.
-            List<CDataCommonU32> ItemList = packet.Structure.ItemList;
-                
-            var res = new S2CCraftRecipeGetCraftGradeupRecipeRes()
+                // TODO: Consider supporting filtering by Category, previous attempts were super broken.
+                // Example: .Where(recipes => recipes.Category == packet.Structure.Category)
+                // Including this at the start of the above Linq would result in only ever searching the highest category and only the very first recipe within it.
+
+            List<CDataCommonU32> ItemList = request.ItemList;
+
+            var response = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
-                Category = packet.Structure.Category,
+                Category = request.Category,
                 RecipeList = allRecipesInCategory
-                    .Skip((int)packet.Structure.Offset)
-                    .Take((int)packet.Structure.Num)
+                    .Skip((int)request.Offset)
+                    .Take((int)request.Num)
                     .ToList(),
-                UnknownItemList = ItemList, // Unknown why but populating this list fixes the infinite req/res spam.
-                IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
+                UnknownItemList = ItemList,
+                IsEnd = (request.Offset + request.Num) >= allRecipesInCategory.Count
             };
-            client.Send(res);
-            }
-                
+
+            return response;
         }
     }
-
+}

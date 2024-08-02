@@ -322,7 +322,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCraftRecipeGetCraftGradeupRecipeReq.Serializer());
             Create(new C2SCraftStartEquipGradeUpReq.Serializer());
             Create(new C2SCraftStartQualityUpReq.Serializer());
-            Create(new C2SCraftStartAttachElementReq.Serializer());
             Create(new C2SCraftStartCraftReq.Serializer());
             Create(new C2SCraftSkillAnalyzeReq.Serializer());
             Create(new C2SCraftStartEquipColorChangeReq.Serializer());
@@ -608,7 +607,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftRecipeGetCraftGradeupRecipeRes.Serializer());
             Create(new S2CCraftStartEquipGradeUpRes.Serializer());
             Create(new S2CCraftStartQualityUpRes.Serializer());
-            Create(new S2CCraftStartAttachElementRes.Serializer());
             Create(new S2CCraft_30_21_16_NTC.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());

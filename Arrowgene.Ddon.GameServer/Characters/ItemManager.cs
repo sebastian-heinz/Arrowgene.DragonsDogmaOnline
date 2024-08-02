@@ -233,7 +233,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return ntcData;
         }
 
-        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte getplusvalue = 0)
+        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
             if(itemBag)
@@ -247,7 +247,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if(clientItemInfo.StorageType == StorageType.ItemBagEquipment)
                 {
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, getplusvalue);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, plusvalue);
                 }
                 else
                 {
@@ -257,7 +257,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte setplusvalue = 0)
+        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte plusvalue = 0)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
             // The stack limit is specified by the stackLimit arg
@@ -269,7 +269,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .Select((itemAndCount, index) => new {item = itemAndCount, slot = (ushort) (index + 1)})
                     .Where(itemAndNumWithSlot => (
                         itemAndNumWithSlot.item?.Item1.ItemId == itemId
-                        && itemAndNumWithSlot.item?.Item1.PlusValue == setplusvalue
+                        && itemAndNumWithSlot.item?.Item1.PlusValue == plusvalue
                         && itemAndNumWithSlot.item?.Item2 < stackLimit
                     ))
                     .FirstOrDefault();
@@ -288,7 +288,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         ItemId = itemId,
                         Unk3 = 0,
                         Color = 0,
-                        PlusValue = setplusvalue,
+                        PlusValue = plusvalue,
                         EquipPoints = 0,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                         AddStatusData = new List<CDataAddStatusData>(),
@@ -576,12 +576,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return item.ItemId;
         }
 
-        public List<CDataItemUpdateResult> ReplaceStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
+        public List<CDataItemUpdateResult> UpdateStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
         {
-
-            server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
             client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
-
+            server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
+            
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
             updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;
@@ -593,7 +592,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.PlusValue = newItem.PlusValue;
             updateResult.ItemList.Bind = false;
             updateResult.ItemList.EquipPoint = newItem.EquipPoints;
-            updateResult.ItemList.EquipCharacterID = 0;
+            updateResult.ItemList.EquipCharacterID = characterID;
             updateResult.ItemList.EquipPawnID = 0;
             updateResult.ItemList.WeaponCrestDataList = newItem.WeaponCrestDataList;
             updateResult.ItemList.AddStatusData = newItem.AddStatusData;

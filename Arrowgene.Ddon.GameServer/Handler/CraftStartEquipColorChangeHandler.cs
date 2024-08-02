@@ -13,24 +13,22 @@ using Arrowgene.Ddon.Database;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftStartEquipColorChangeHandler : GameStructurePacketHandler<C2SCraftStartEquipColorChangeReq>
+    public class CraftStartEquipColorChangeHandler : GameRequestPacketHandler<C2SCraftStartEquipColorChangeReq, S2CCraftStartEquipColorChangeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipColorChangeHandler));
-        private readonly EquipManager _equipManager;
 
         public CraftStartEquipColorChangeHandler(DdonGameServer server) : base(server)
         {
-            _equipManager = Server.EquipManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipColorChangeReq> packet)
+        public override S2CCraftStartEquipColorChangeRes Handle(GameClient client, C2SCraftStartEquipColorChangeReq request)
         {
             Character common = client.Character;
             uint charId = client.Character.CharacterId;
-            string equipItemUID = packet.Structure.EquipItemUID;
-            byte color = packet.Structure.Color;
+            string equipItemUID = request.EquipItemUID;
+            byte color = request.Color;
             List<CDataCraftColorant> colorlist = new List<CDataCraftColorant>(); // this is probably for consuming the dye
-            uint pawnId = packet.Structure.CraftMainPawnID;
+            uint pawnId = request.CraftMainPawnID;
             ushort equipslot = 0;
             byte equiptype = 0;
 
@@ -60,12 +58,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Potentially the packets changed in S3.
             
 
-            S2CCraftStartEquipColorChangeRes res = new S2CCraftStartEquipColorChangeRes()
+            var res = new S2CCraftStartEquipColorChangeRes()
                 {
                     ColorNo = color,
                     CurrentEquipInfo = CurrentEquipInfo
                 };
-            client.Send(res);
+            return res;
         }
     }
 }

@@ -5,9 +5,9 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CCraftStartEquipColorChangeRes : IPacketStructure
+    public class S2CCraftStartEquipColorChangeRes : ServerResponse
     {
-        public PacketId Id => PacketId.S2C_CRAFT_START_EQUIP_COLOR_CHANGE_RES;
+        public override PacketId Id => PacketId.S2C_CRAFT_START_EQUIP_COLOR_CHANGE_RES;
 
         public S2CCraftStartEquipColorChangeRes()
         {

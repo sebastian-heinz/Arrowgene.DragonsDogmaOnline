@@ -12,13 +12,9 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftStartQualityUpHandler : GameStructurePacketHandler<C2SCraftStartQualityUpReq>
+    public class CraftStartQualityUpHandler : GameRequestPacketHandler<C2SCraftStartQualityUpReq, S2CCraftStartQualityUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartQualityUpHandler));
-        private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
-            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
-        };
         private static readonly List<StorageType> StorageEquipNBox = new List<StorageType> {
             StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest, StorageType.CharacterEquipment
         };
@@ -29,28 +25,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public CraftStartQualityUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
-            _random = new Random();
+            _random = Random.Shared;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftStartQualityUpReq> packet)
+        public override S2CCraftStartQualityUpRes Handle(GameClient client, C2SCraftStartQualityUpReq request)
         {
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();    
             updateCharacterItemNtc.UpdateType = 0;
-            string equipItemUID = packet.Structure.ItemUID;
+            string equipItemUID = request.ItemUID;
             var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             uint equipItemID = equipItem.ItemId;
             Character common = client.Character;
             ushort equipslot = 0;
             byte equiptype = 0;
             uint charid = client.Character.CharacterId;
-            uint pawnid = packet.Structure.CraftMainPawnID;
+            uint pawnid = request.CraftMainPawnID;
             byte currentPlusValue = equipItem.PlusValue;
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             bool retainPlusValue = false;
             bool updatingAddStatus = false;
-            string RefineMaterial = packet.Structure.RefineUID;
-            ushort AddStatusID = packet.Structure.AddStatusID;
+            string RefineMaterial = request.RefineUID;
+            ushort AddStatusID = request.AddStatusID;
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
             List<CDataItemUpdateResult> updateResults;
@@ -62,30 +58,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AdditionalStatus2 = 0,
             };
 
-            S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-
-            // Check if a refinematerial is set 
 
             //TODO: There are 3 tiers, and the lowest tier can't become +3, and the highest has better chance of +3, so we need to do a direct ID comparison,
             // So a total of 6 IDs? for armor and weapons. 3 each.
             if (!string.IsNullOrEmpty(RefineMaterial))
             {
-                foreach (var craftMaterial in packet.Structure.CraftMaterialList)
+                foreach (var craftMaterial in request.CraftMaterialList)
                 {
-                    try
-                    {
-                        updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
+                        updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                    }
-                    catch (NotEnoughItemsException e)
-                    {
-                        Logger.Exception(e);
-                        client.Send(new S2CCraftStartCraftRes()
-                        {
-                            Result = 1
-                        });
-                        return;
-                    }
                 }
             }
             else
@@ -113,6 +94,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 
                 bool success = Server.Database.InsertIfNotExistsAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
+                AddStat = new CDataAddStatusData()
+                {
+                    IsAddStat1 = 1,
+                    IsAddStat2 = 0,
+                    AdditionalStatus1 = AddStatusID,
+                    AdditionalStatus2 = 0,
+                };
 
                 if (success)
                     {
@@ -133,14 +121,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             Console.WriteLine("Additional status Updated successfully.");
                         }
                     };
-
-                AddStat = new CDataAddStatusData()
-                {
-                    IsAddStat1 = 1,
-                    IsAddStat2 = 0,
-                    AdditionalStatus1 = AddStatusID,
-                    AdditionalStatus2 = 0,
-                };
             };
 
 
@@ -157,59 +137,59 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
 
-                    // Updating the item.
-                    equipItem.ItemId = equipItemID;
-                    equipItem.Unk3 = equipItem.Unk3;
-                    equipItem.Color = equipItem.Color;
-                    equipItem.PlusValue = RandomQuality;
-                    equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
-                    equipItem.AddStatusData = equipItem.AddStatusData;
-                    equipItem.EquipElementParamList = equipItem.EquipElementParamList;
+            // Updating the item.
+            equipItem.ItemId = equipItemID;
+            equipItem.Unk3 = equipItem.Unk3;
+            equipItem.Color = equipItem.Color;
+            equipItem.PlusValue = RandomQuality;
+            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
+            equipItem.AddStatusData = AddStatList;
+            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
 
             
-                Logger.Debug($"Attempting to find {equipItemUID}");
-                    StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
-                    ushort slotno = 0;
-                    uint itemnum = 0;
-                    Item item;
-                    var foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
+            Logger.Debug($"Attempting to find {equipItemUID}");
+                StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
+                ushort slotno = 0;
+                uint itemnum = 0;
+                Item item;
+                var foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
 
-                    switch (storageType)
-                    {
-                        case StorageType.CharacterEquipment:
-                            foundItem = common.Storage.GetStorage(StorageType.CharacterEquipment).FindItemByUId(equipItemUID);
-                            List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
-                                        .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
-                                        .ToList();
+                switch (storageType)
+                {
+                    case StorageType.CharacterEquipment:
+                        foundItem = common.Storage.GetStorage(StorageType.CharacterEquipment).FindItemByUId(equipItemUID);
+                        List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
+                                    .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
+                                    .ToList();
 
-                                var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                                equipslot = equipInfo.EquipCategory;
-                                equiptype = (byte)equipInfo.EquipType;
+                            var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
+                            equipslot = equipInfo.EquipCategory;
+                            equiptype = (byte)equipInfo.EquipType;
 
-                            break;
-                        case StorageType.ItemBagEquipment:
-                            foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
-                            break;
-                        case StorageType.StorageBoxNormal:
-                            foundItem = common.Storage.GetStorage(StorageType.StorageBoxNormal).FindItemByUId(equipItemUID);
-                            break;
-                        case StorageType.StorageBoxExpansion:
-                            foundItem = common.Storage.GetStorage(StorageType.StorageBoxExpansion).FindItemByUId(equipItemUID);
-                            break;
-                        case StorageType.StorageChest:
-                            foundItem = common.Storage.GetStorage(StorageType.StorageChest).FindItemByUId(equipItemUID);
-                            break;
-                        default:
-                            Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
-                            break;
-                    }
+                        break;
+                    case StorageType.ItemBagEquipment:
+                        foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageBoxNormal:
+                        foundItem = common.Storage.GetStorage(StorageType.StorageBoxNormal).FindItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageBoxExpansion:
+                        foundItem = common.Storage.GetStorage(StorageType.StorageBoxExpansion).FindItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageChest:
+                        foundItem = common.Storage.GetStorage(StorageType.StorageChest).FindItemByUId(equipItemUID);
+                        break;
+                    default:
+                        Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
+                        break;
+                }
 
 
-
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 0, 0));
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
-                    updateResults = _itemManager.ReplaceStorageItem(
+                    updateResults = _itemManager.UpdateStorageItem(
                         Server,
                         client,
                         common,
@@ -218,10 +198,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         equipItem,
                         (byte)slotno
                     );
-                    Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
-                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                     updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-
+                    Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
+                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 1, 1));
+                    client.Send(updateCharacterItemNtc);
                 }
                 else
                 {
@@ -261,11 +241,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AddStatusDataList = AddStatList,
                 CurrentEquip = CurrentEquipInfo
             };
-            client.Send(updateCharacterItemNtc);
-            lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-            GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
-            client.Send(lobbyPlayerContextNtc);
-            client.Send(res);
+
+            return res;
         }
         private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
         {

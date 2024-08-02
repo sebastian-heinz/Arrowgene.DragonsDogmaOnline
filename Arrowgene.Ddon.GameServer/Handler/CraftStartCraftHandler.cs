@@ -15,11 +15,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartCraftHandler : GameStructurePacketHandler<C2SCraftStartCraftReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
-        private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> 
-        {
-            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
-        };
         private readonly Random _random;
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
@@ -83,7 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     try
                     {
-                        List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, RefineMaterial, 1);
+                        List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                     }
                     catch (NotEnoughItemsException e)
@@ -104,16 +99,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 
 
                 AddStat = new CDataAddStatusData()
-                {
-                    IsAddStat1 = 1,
-                    IsAddStat2 = 0,
-                    AdditionalStatus1 = AddStatusID,
-                    AdditionalStatus2 = 0,
-                };
+                    {
+                        IsAddStat1 = 1,
+                        IsAddStat2 = 0,
+                        AdditionalStatus1 = AddStatusID,
+                        AdditionalStatus2 = 0,
+                    };
+
                 AddStatList = new List<CDataAddStatusData>()
-                {
-                    AddStat
-                };
+                    {
+                        AddStat
+                    };
             };
 
 

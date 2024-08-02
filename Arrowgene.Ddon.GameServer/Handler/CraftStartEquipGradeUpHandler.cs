@@ -5,23 +5,17 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.Database;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftStartEquipGradeUpHandler : GameStructurePacketHandler<C2SCraftStartEquipGradeUpReq>
+    public class CraftStartEquipGradeUpHandler : GameRequestPacketHandler<C2SCraftStartEquipGradeUpReq, S2CCraftStartEquipGradeUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipGradeUpHandler));
-        private static readonly List<StorageType> STORAGE_TYPES = new List<StorageType> {
-            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest
-        };
         private static readonly List<StorageType> StorageEquipNBox = new List<StorageType> {
-            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest, StorageType.CharacterEquipment
+            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest, StorageType.CharacterEquipment, StorageType.PawnEquipment
         };
 
         private readonly ItemManager _itemManager;
@@ -30,20 +24,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
-            _random = new Random();
+            _random = Random.Shared;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftStartEquipGradeUpReq> packet)
+        public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
+
         {
             #region Initializing vars
             Character common = client.Character;
-            string equipItemUID = packet.Structure.EquipItemUID;
+            string equipItemUID = request.EquipItemUID;
             var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             uint equipItemID = _itemManager.LookupItemByUID(Server, equipItemUID);
-            ushort equipslot = 0;
-            byte equiptype = 0;
             uint charid = client.Character.CharacterId;
-            uint pawnid = packet.Structure.CraftMainPawnID;
+            uint pawnid = request.CraftMainPawnID;
             byte currentPlusValue = equipItem.PlusValue;
 
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -67,48 +60,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             List<CDataItemUpdateResult> updateResults;
             var res = new S2CCraftStartEquipGradeUpRes();
-            S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
 
             #endregion
 
+            #region Point Distribution 
             // Handles adding EquipPoints.
             if(dogreatsuccess == true)
             {
-
-                addEquipPoint = 100;
+                addEquipPoint = 300;
                 addEquipPoint = (uint)(addEquipPoint * pointsMultiplier);
                 currentTotalEquipPoint += addEquipPoint;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
             else
             {
-                addEquipPoint = 30;
+                addEquipPoint = 180;
                 addEquipPoint = (uint)(addEquipPoint * pointsMultiplier);
                 currentTotalEquipPoint += addEquipPoint;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
+            #endregion
 
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
 
             // Removes crafting materials
-            foreach (var craftMaterial in packet.Structure.CraftMaterialList)
+            foreach (var craftMaterial in request.CraftMaterialList)
             {
-                try
-                {
-                    updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, STORAGE_TYPES, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                    updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                }
-                catch (NotEnoughItemsException e)
-                {
-                    Logger.Exception(e);
-                    client.Send(new S2CCraftStartEquipGradeUpRes()
-                    {
-                        Result = 1
-                    });
-                    return;
-                }
             }
 
                 // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
@@ -119,7 +100,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 };
 
                 // Subtract less Gold if supportpawn is used.
-                if(packet.Structure.CraftSupportPawnIDList.Count > 0)
+                if(request.CraftSupportPawnIDList.Count > 0)
                 {
                     goldRequired = (uint)(goldRequired*0.95);
                     currentTotalEquipPoint += 10;
@@ -133,30 +114,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Handling the check on how many points we need to upgrade the weapon in its current state.
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItemID);
             byte currentStars = (byte)itemInfo.Quality;
-            int requiredPoints = 0;
+            int requiredPoints = currentStars switch
+            {
+                0 => 350,
+                1 => 700,
+                2 => 1000,
+                3 => 1500,
+                4 => 800,
+                _ => throw new InvalidOperationException("Invalid star level")
+            };
 
-            if (currentStars == 0)
-            {
-                requiredPoints = 350;
-            }
-            else if (currentStars == 1)
-            {
-                requiredPoints = 700;
-            }
-            else if (currentStars == 2)
-            {
-                requiredPoints = 1000;
-            }
-            else if (currentStars == 3)
-            {
-                requiredPoints = 1500;
-                canContinue = false;
-            }
-            // else if (currentStars == 4)
-            // {
-            //     requiredPoints = 800;
-            // }
-            // TODO: Need to run a check on items that can become "TRUE" which only requires 800 points.
+            if (currentStars == 3) canContinue = false;
 
             // Handling the comparison to permit upgrading or not.
             if (currentTotalEquipPoint >= requiredPoints)
@@ -204,8 +172,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 CharId = charid,
                 PawnId = pawnid,
-                EquipType = equiptype,
-                EquipSlot = equipslot,
+                EquipType = 0,
+                EquipSlot = 0
             };
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
@@ -216,79 +184,101 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (canUpgrade)
             {
-                    StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
-                    ushort slotno = 0;
-                    uint itemnum = 0;
-                    Item item;
-                    var foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
+                StorageType storageType = FindItemByUID(common, equipItemUID).StorageType ?? throw new Exception("Item not found in any storage type");
+                ushort slotno = 0;
+                uint itemnum = 0;
+                Item item;
+                var foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
 
-                    switch (storageType)
-                    {
-                        case StorageType.CharacterEquipment:
-                            foundItem = common.Storage.GetStorage(StorageType.CharacterEquipment).FindItemByUId(equipItemUID);
-                            List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
-                                        .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
-                                        .ToList();
+                switch (storageType)
+                {
+                    case StorageType.CharacterEquipment:
+                        foundItem = common.Storage.GetStorage(StorageType.CharacterEquipment).FindItemByUId(equipItemUID);
+                        List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
+                                    .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
+                                    .ToList();
 
-                                var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                                equipslot = equipInfo.EquipCategory;
-                                equiptype = (byte)equipInfo.EquipType;
+                            var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
+                            EquipmentSlot.EquipSlot = equipInfo.EquipCategory;
+                            EquipmentSlot.EquipType = (byte)equipInfo.EquipType;
+                        break;
 
-                            break;
-                        case StorageType.ItemBagEquipment:
-                            foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
-                            break;
-                        case StorageType.StorageBoxNormal:
-                            foundItem = common.Storage.GetStorage(StorageType.StorageBoxNormal).FindItemByUId(equipItemUID);
-                            break;
-                        case StorageType.StorageBoxExpansion:
-                            foundItem = common.Storage.GetStorage(StorageType.StorageBoxExpansion).FindItemByUId(equipItemUID);
-                            break;
-                        case StorageType.StorageChest:
-                            foundItem = common.Storage.GetStorage(StorageType.StorageChest).FindItemByUId(equipItemUID);
-                            break;
-                        default:
-                            Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
-                            break;
-                    }
-                    if (foundItem != null)
-                    {
-                        (slotno, item, itemnum) = foundItem;
-                        updateResults = _itemManager.ReplaceStorageItem(
-                            Server,
-                            client,
-                            common,
-                            charid,
-                            storageType,
-                            equipItem,
-                            (byte)slotno
-                        );
-                        Logger.Debug($"Your Slot is: {slotno}, in {storageType} hopefully thats right?");
-                        updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-                        updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                    }
-                    else
-                    {
-                        Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
-                    }
-                        res = new S2CCraftStartEquipGradeUpRes()
-                        {
-                            GradeUpItemUID = equipItemUID,
-                            GradeUpItemID = equipItem.ItemId,
-                            GradeUpItemIDList = gradeuplist,
-                            AddEquipPoint = 0,
-                            TotalEquipPoint = 0,
-                            EquipGrade = EquipRank,
-                            Gold = goldRequired,
-                            IsGreatSuccess = dogreatsuccess,
-                            CurrentEquip = CurrentEquipInfo,   
-                            BeforeItemID = equipItemID,
-                            Upgradable = canContinue,
-                            Unk1 = dummydata // Dragon Augment related I guess?
-                        };
+                    case StorageType.PawnEquipment:
+                        foundItem = common.Storage.GetStorage(StorageType.PawnEquipment).FindItemByUId(equipItemUID);
+                        characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
+                                    .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
+                                    .ToList();
+
+                            equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
+                            EquipmentSlot.EquipSlot = equipInfo.EquipCategory;
+                            EquipmentSlot.EquipType = (byte)equipInfo.EquipType;
+                        break;
+
+                    case StorageType.ItemBagEquipment:
+                        foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageBoxNormal:
+                        foundItem = common.Storage.GetStorage(StorageType.StorageBoxNormal).FindItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageBoxExpansion:
+                        foundItem = common.Storage.GetStorage(StorageType.StorageBoxExpansion).FindItemByUId(equipItemUID);
+                        break;
+                    case StorageType.StorageChest:
+                        foundItem = common.Storage.GetStorage(StorageType.StorageChest).FindItemByUId(equipItemUID);
+                        break;
+                    default:
+                        Logger.Error($"Item found in {storageType}. Which isn't supported.");
+                        break;
+                }
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 0, 0));
+                if (foundItem != null)
+                {
+                    (slotno, item, itemnum) = foundItem;
+                    updateResults = _itemManager.UpdateStorageItem(
+                        Server,
+                        client,
+                        common,
+                        charid,
+                        storageType,
+                        equipItem,
+                        (byte)slotno
+                    );
+                    Logger.Debug($"Your Slot is: {slotno}, in {storageType} for UID {equipItem.UId}.");
+                    updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
+                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 1, 1));
+                    client.Send(updateCharacterItemNtc);
+                }
+                else
+                {
+                    Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
+                }
+
+                if (storageType == StorageType.PawnEquipment)
+                {
+                    CurrentEquipInfo.EquipSlot.CharId = 0;
+                }
+                else
+                {
+                    CurrentEquipInfo.EquipSlot.PawnId = 0;
+                }
+                
+                res = new S2CCraftStartEquipGradeUpRes()
+                {
+                    GradeUpItemUID = equipItemUID,
+                    GradeUpItemID = equipItem.ItemId,
+                    GradeUpItemIDList = gradeuplist,
+                    AddEquipPoint = 0,
+                    TotalEquipPoint = 0,
+                    EquipGrade = EquipRank,
+                    Gold = goldRequired,
+                    IsGreatSuccess = dogreatsuccess,
+                    CurrentEquip = CurrentEquipInfo,   
+                    BeforeItemID = equipItemID,
+                    Upgradable = canContinue,
+                    Unk1 = dummydata // Dragon Augment related I guess?
                 };
-
-            if(!canUpgrade)
+            }
+            else
             {
                 res = new S2CCraftStartEquipGradeUpRes()
                 {
@@ -304,10 +294,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             };
             client.Send(updateCharacterItemNtc);
-            lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-            GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, client.Character);
-            client.Send(lobbyPlayerContextNtc);
-            client.Send(res);
+            return res;
         }
         private (StorageType? StorageType, (ushort SlotNo, Item Item, uint ItemNum)?) FindItemByUID(Character character, string itemUID)
         {
