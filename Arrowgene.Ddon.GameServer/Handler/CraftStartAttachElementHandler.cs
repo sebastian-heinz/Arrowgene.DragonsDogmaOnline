@@ -37,16 +37,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 characterCommon = client.Character;
                 result.CurrentEquip.EquipSlot.CharacterId = client.Character.CharacterId;
                 result.CurrentEquip.EquipSlot.PawnId = 0;
-                result.CurrentEquip.EquipSlot.EquipSlotNo = relativeSlotNo;
-                result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotNo);
             }
             else if (storageType == StorageType.PawnEquipment)
             {
-                uint pawnId = Storages.DeterminePawnId(client.Character, storageType, slotNo);
+                uint pawnId = Storages.DeterminePawnId(client.Character, storageType, relativeSlotNo);
                 characterCommon = client.Character.Pawns.Where(x => x.PawnId == pawnId).SingleOrDefault();
-                relativeSlotNo = Storages.DeterminePawnEquipSlot(slotNo);
+                relativeSlotNo = EquipManager.DeterminePawnEquipSlot(relativeSlotNo);
                 result.CurrentEquip.EquipSlot.CharacterId = 0;
                 result.CurrentEquip.EquipSlot.PawnId = pawnId;
+
+            }
+
+            if (storageType == StorageType.CharacterEquipment || storageType == StorageType.PawnEquipment)
+            {
                 result.CurrentEquip.EquipSlot.EquipSlotNo = relativeSlotNo;
                 result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(relativeSlotNo);
             }

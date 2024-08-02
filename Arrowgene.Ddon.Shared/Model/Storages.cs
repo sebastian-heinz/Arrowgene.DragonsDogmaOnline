@@ -119,13 +119,6 @@ namespace Arrowgene.Ddon.Shared.Model
                 return 0;
             }
         }
-
-        public static ushort DeterminePawnEquipSlot(ushort storageSlot)
-        {
-            int pawnIndex = storageSlot / (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2);
-            var relativeSlot = ((storageSlot) - (pawnIndex * (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2)));
-            return (ushort) ((relativeSlot > 15) ? relativeSlot - 15 : relativeSlot);
-        }
     }
 
     public class Storage
