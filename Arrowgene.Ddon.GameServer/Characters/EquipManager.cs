@@ -10,6 +10,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class EquipManager
     {
+        public static EquipType GetEquipTypeFromSlotNo(ushort slotNo)
+        {
+            ushort relativeSlotNo = slotNo;
+            if (slotNo > 30)
+            {
+                relativeSlotNo = DeterminePawnEquipSlot(slotNo);
+            }
+
+            return (relativeSlotNo > 15) ? EquipType.Visual : EquipType.Performance;
+        }
+
+        public static ushort DeterminePawnEquipSlot(ushort slotNo)
+        {
+            int pawnIndex = (slotNo - 1) / (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2);
+            var relativeSlotNo = ((slotNo) - (pawnIndex * (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2)));
+            return (ushort)((relativeSlotNo > 15) ? relativeSlotNo - 15 : relativeSlotNo);
+        }
+
+        public static ushort DetermineEquipSlot(ushort slotNo)
+        {
+            return (ushort) ((slotNo > 15) ? (slotNo - 15) : slotNo);
+        }
+
         public void EquipJobItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataChangeEquipJobItem> changeEquipJobItems)
         {
             foreach (CDataChangeEquipJobItem changeEquipJobItem in changeEquipJobItems)

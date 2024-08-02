@@ -139,6 +139,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                     item.Color = GetByte(reader2, "color");
                                     item.PlusValue = GetByte(reader2, "plus_value");
 
+                                    ExecuteReader(connection, SqlSelectAllCrestData,
+                                        command3 => {
+                                            AddParameter(command3, "character_common_id", common.CommonId);
+                                            AddParameter(command3, "item_uid", item.UId);
+                                        }, reader4 => {
+                                        while (reader4.Read())
+                                        {
+                                            var result = ReadCrestData(reader4);
+                                            item.WeaponCrestDataList.Add(result.ToCDataWeaponCrestData());
+                                        }
+                                    });
+
                                     common.EquipmentTemplate.SetEquipItem(item, job, equipType, equipSlot);
                                 }
                             });

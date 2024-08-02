@@ -56,35 +56,8 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public string UpdateUId()
         {
-#if false
-            IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5); // It's for comparison, who cares, it's fast.
-            hash.AppendData(BitConverter.GetBytes(ItemId));
-            hash.AppendData(BitConverter.GetBytes(Unk3));
-            hash.AppendData(BitConverter.GetBytes(Color));
-            hash.AppendData(BitConverter.GetBytes(PlusValue));
-            foreach (var weaponCrestData in WeaponCrestDataList)
-            {
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.SlotNo));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.CrestId));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.Add));
-            }
-            foreach (var armorCrestData in ArmorCrestDataList)
-            {
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u0));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u1));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u2));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u3));
-            }
-            foreach (var equipElementParam in EquipElementParamList)
-            {
-                hash.AppendData(BitConverter.GetBytes(equipElementParam.SlotNo));
-                hash.AppendData(BitConverter.GetBytes(equipElementParam.ItemId));
-            }
-            this._uid = BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, UIdLength);
-#else
             Random rnd = new Random();
             this._uid = $"{rnd.Next():X08}";
-#endif
             return this._uid;
         }
     }
