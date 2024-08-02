@@ -60,11 +60,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
-                
-
                 var updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
                 {
-                    UpdateType = ItemNoticeType.ShopGoods_buy
+                    UpdateType = ItemNoticeType.GetDispelItem
                 };
 
                 // Consume payment
@@ -78,12 +76,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, toBag, purchase.ItemId, purchase.ItemNum);
 
+                var newItem = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, itemUpdateResults[0].ItemList.ItemUId).Item2.Item2;
                 if (purchase.EquipElementParamList.Count > 0)
                 {
                     foreach (var elementParam in purchase.EquipElementParamList)
                     {
-                        // TODO: Uncomment after crest PR is merged
-                        // Server.Database.InsertCrest(client.Character.CommonId, itemUpdateResults[0].ItemList.ItemUId, elementParam.SlotNo, elementParam.CrestId, elementParam.Add);
+                        Server.Database.InsertCrest(client.Character.CommonId, itemUpdateResults[0].ItemList.ItemUId, elementParam.SlotNo, elementParam.CrestId, elementParam.Add);
+                        newItem.WeaponCrestDataList.Add(elementParam);
                     }
 
                     itemUpdateResults[0].ItemList.WeaponCrestDataList = purchase.EquipElementParamList;
