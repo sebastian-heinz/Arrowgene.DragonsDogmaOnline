@@ -28,6 +28,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (ushort)((relativeSlotNo > 15) ? relativeSlotNo - 15 : relativeSlotNo);
         }
 
+        public static ushort DetermineEquipSlot(ushort slotNo)
+        {
+            return (ushort) ((slotNo > 15) ? (slotNo - 15) : slotNo);
+        }
+
         public void EquipJobItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataChangeEquipJobItem> changeEquipJobItems)
         {
             foreach (CDataChangeEquipJobItem changeEquipJobItem in changeEquipJobItems)

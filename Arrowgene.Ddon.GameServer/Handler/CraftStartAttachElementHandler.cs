@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (storageType == StorageType.CharacterEquipment || storageType == StorageType.PawnEquipment)
             {
-                result.CurrentEquip.EquipSlot.EquipSlotNo = relativeSlotNo;
+                result.CurrentEquip.EquipSlot.EquipSlotNo = EquipManager.DetermineEquipSlot(relativeSlotNo);
                 result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(relativeSlotNo);
             }
 

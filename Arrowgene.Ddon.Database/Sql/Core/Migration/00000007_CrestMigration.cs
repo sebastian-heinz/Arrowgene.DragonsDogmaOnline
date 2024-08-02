@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 
         public bool Migrate(IDatabase db, DbConnection conn)
         {
-            string adaptedSchema = DdonDatabaseBuilder.GetAdaptedSchema(DatabaseSetting, "Script/00000007_CrestMigration.sql");
+            string adaptedSchema = DdonDatabaseBuilder.GetAdaptedSchema(DatabaseSetting, "Script/crest_migration.sql");
             db.Execute(conn, adaptedSchema);
             return true;
         }
