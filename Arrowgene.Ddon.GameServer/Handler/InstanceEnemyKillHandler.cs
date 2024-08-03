@@ -122,7 +122,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = enemyKilled.GetDroppedExperience();
-                uint extraBonusExp = 0; // TODO: Figure out what this is for (gp bonus?)
+                uint extraBonusExp = 0;
 
                 uint gainedPP = enemyKilled.GetDroppedPlayPoints();
                 uint gainedBonusPP = 0;
@@ -134,10 +134,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     memberClient = ((PlayerPartyMember) member).Client;
                     memberCharacter = memberClient.Character;
 
-                    if (memberCharacter.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+                    if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
 
-                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience) gainedPP = 0;
-                    else gainedExp = 0;
+                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience)
+                    {
+                        gainedPP = 0;
+                        extraBonusExp += ExpManager.GetRookiesRingBonus(_gameServer, memberClient.Character, gainedExp);
+                    }
+                    else
+                    {
+                        gainedExp = 0;
+                    }
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -190,6 +197,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     memberCharacter = pawn;
 
                     if (memberClient.Character.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+
+                    // TODO: Should ring work for pawns?
+                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience)
+                    {
+                        extraBonusExp += ExpManager.GetRookiesRingBonus(_gameServer, pawn, gainedExp);
+                    }
                 }
                 else
                 {

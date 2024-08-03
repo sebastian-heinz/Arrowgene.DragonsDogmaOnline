@@ -7,6 +7,8 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Server.Network;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -496,6 +498,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 totalExp += EXP_UNTIL_NEXT_LV[i];
             }
             return totalExp;
+        }
+
+        private static double RookiesRingBonus(DdonServer<GameClient> server)
+        {
+            // TODO: Make configurable from global server settings
+            return 1.0;
+        }
+
+        private static uint RookiesRingMaxLevel(DdonServer<GameClient> server)
+        {
+            // TODO: Make configurable from global server settings
+            return 89;
+        }
+
+        public static uint GetRookiesRingBonus(DdonServer<GameClient> server, CharacterCommon characterCommon, uint baseExpAmount)
+        {
+            if (characterCommon.ActiveCharacterJobData.Lv > ExpManager.RookiesRingMaxLevel(server))
+            {
+                return 0;
+            }
+
+            var results = characterCommon.Equipment.GetItems(EquipType.Performance).Where(x => x?.ItemId == 11718).ToList();
+            if (results.Count == 0)
+            {
+                return 0;
+            }
+
+            double result = baseExpAmount * ExpManager.RookiesRingBonus(server);
+            return (uint)result;
         }
     }
 }
