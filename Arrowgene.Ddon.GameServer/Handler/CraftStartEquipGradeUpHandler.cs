@@ -100,6 +100,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             #region Point Distribution 
             // Handles adding EquipPoints.
+            // These values for adding equippoints are completely made up and not representative of any real Pawn craft levels.
             if(IsGreatSuccess == true)
             {
                 addEquipPoint = 300;
@@ -124,11 +125,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Removes crafting materials
             foreach (var craftMaterial in request.CraftMaterialList)
             {
-                    updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             }
 
-            // Subtract less Gold if supportpawn is used.
+            // Subtract less Gold if supportpawn is used and add slightly more points
             if(request.CraftSupportPawnIDList.Count > 0)
             {
                 goldRequired = (uint)(goldRequired*0.95);
@@ -141,7 +142,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
 
-            #region EnhancedState Check
+            #region DoUpgrade Check
 
             // Handling the check on how many points we need to upgrade the weapon in its current state.
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
@@ -156,8 +157,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 _ => throw new InvalidOperationException("Invalid star level")
             };
 
-            // TODO: Check if the gear can reach "True" level and handle that properly here.
+            // TODO: Check if the gear can reach "True" level (4 in the above ^) and handle that properly here.
             if (currentStars == 3) canContinue = false;
+
+            // Handling the comparison to permit upgrading or not.
+            if (currentTotalEquipPoint >= requiredPoints)
+            {
+                DoUpgrade = true;
+                addEquipPoint = 0;
+                currentTotalEquipPoint = 0;
+                equipItem.EquipPoints = 0;
+                bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
+                // Points must be set to 0 after Upgrade actually happens.
+            }
 
             #endregion
 
@@ -171,18 +183,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
             equipItem.AddStatusParamList = equipItem.AddStatusParamList;
             equipItem.EquipElementParamList = equipItem.EquipElementParamList;
-
-            // Handling the comparison to permit upgrading or not.
-            if (currentTotalEquipPoint >= requiredPoints)
-            {
-                DoUpgrade = true;
-                addEquipPoint = 0;
-                currentTotalEquipPoint = 0;
-                equipItem.EquipPoints = 0;
-                bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-                // Points must be set to 0 after Upgrade actually happens.
-            }
-
 
             if (DoUpgrade)
             {

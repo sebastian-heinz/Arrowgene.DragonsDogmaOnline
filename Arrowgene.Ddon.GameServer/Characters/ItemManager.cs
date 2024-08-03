@@ -614,7 +614,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
             updateResult.UpdateItemNum = 1;
 
-            Console.Write("Upgraded Item in DataBase");
+            Logger.Debug($"Upgraded {newItem.UId} Item in DataBase");
 
             return new List<CDataItemUpdateResult> { updateResult };
         }
