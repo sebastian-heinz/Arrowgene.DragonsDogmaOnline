@@ -768,5 +768,21 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             return Clients.IndexOf(client);
         }
+
+        public bool Contains(CharacterCommon character)
+        {
+            foreach (PartyMember member in Members)
+            {
+                if (member is PlayerPartyMember playerMember)
+                {
+                    if (playerMember.Client.Character == character) return true;
+                }
+                else if (member is PawnPartyMember pawnMember)
+                {
+                    if (pawnMember.Pawn == character) return true;
+                }
+            }
+            return false;
+        }
     }
 }

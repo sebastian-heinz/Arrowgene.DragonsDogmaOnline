@@ -4,6 +4,8 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class Enemy
     {       
+        private static uint EXP_PER_PP = 7500;
+
         public Enemy()
         {
             NamedEnemyParams = NamedParam.DEFAULT_NAMED_PARAM;
@@ -71,7 +73,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public uint GetDroppedPlayPoints()
         {
-            return GetDroppedExperience()/7500; //TODO: Totally arbitrary. Figure out how to do this properly.
+            return GetDroppedExperience()/EXP_PER_PP; //TODO: Totally arbitrary. Figure out how to do this properly.
         }
 
         public CDataStageLayoutEnemyPresetEnemyInfoClient asCDataStageLayoutEnemyPresetEnemyInfoClient()

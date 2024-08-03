@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ExpManager));
 
-        private static readonly byte LV_CAP = 120;
+        public static readonly byte LV_CAP = 120;
 
         // E.g. EXP_UNTIL_NEXT_LV[3] = 800, meaning as Lv 3 you need 800 exp to level to Lv 4
         public static readonly uint[] EXP_UNTIL_NEXT_LV = new uint[] {
