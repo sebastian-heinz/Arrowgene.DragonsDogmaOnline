@@ -31,8 +31,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             Character character = client.Character;
             uint pawnid = request.CraftMainPawnID;
-            bool IsGreatSuccess = Random.Shared.Next(5) == 0;
-            string RefineMaterial = request.RefineUID;
+            bool IsGreatSuccess = Random.Shared.Next(10) == 0;
+            string RefineMaterialUID = request.RefineUID;
+            var RefineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
             ushort AddStatusID = request.AddStatusID;
             byte RandomQuality = 0;
             int D100 =  Random.Shared.Next(100);
@@ -67,21 +68,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             //TODO: There are 3 tiers, and the lowest tier can't become +3, and the highest has better chance of +3, so we need to do a direct ID comparison,
             // So a total of 6 IDs? for armor and weapons. 3 each.
-            if (!string.IsNullOrEmpty(RefineMaterial))
+            if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
-                updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
+                if (RefineMaterialItem.ItemId == 8036 || RefineMaterialItem.ItemId == 8068 ) // Checking if its one of the better rocks because they augment the odds of +3.
+                {
+                    D100 += 40;
+                }
+                else if (RefineMaterialItem.ItemId == 8052 || RefineMaterialItem.ItemId == 8084)
+                {
+                    D100 += 60;
+                };
+                updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             }
 
             var thresholds = new (int Threshold, int Quality)[]
-            {
-                (65, 2),
-                (15, 1),
+            {   
+                (85, 2),
+                (45, 1),
                 (0, 0)
             };
 
             RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
-
+            if (D100 > 150)
+            {
+                IsGreatSuccess = true;
+            }
             if (IsGreatSuccess)
             {
                 RandomQuality = 3;
