@@ -172,14 +172,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
-                CharId = charid,
+                CharacterId = charid,
                 PawnId = pawnid,
                 EquipType = 0,
-                EquipSlot = 0
+                EquipSlotNo = 0
             };
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
-                ItemUID = equipItemUID,
+                ItemUId = equipItemUID,
                 EquipSlot = EquipmentSlot
             };
 
@@ -201,8 +201,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                     .ToList();
 
                             var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                            EquipmentSlot.EquipSlot = equipInfo.EquipCategory;
-                            EquipmentSlot.EquipType = (byte)equipInfo.EquipType;
+                            EquipmentSlot.EquipSlotNo = equipInfo.EquipCategory;
+                            EquipmentSlot.EquipType = equipInfo.EquipType;
                         break;
 
                     case StorageType.PawnEquipment:
@@ -212,8 +212,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                     .ToList();
 
                             equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                            EquipmentSlot.EquipSlot = equipInfo.EquipCategory;
-                            EquipmentSlot.EquipType = (byte)equipInfo.EquipType;
+                            EquipmentSlot.EquipSlotNo = equipInfo.EquipCategory;
+                            EquipmentSlot.EquipType = equipInfo.EquipType;
                         break;
 
                     case StorageType.ItemBagEquipment:
@@ -237,7 +237,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
-                    updateResults = _itemManager.UpdateStorageItem(
+                    updateResults = _itemManager.UpgradeStorageItem(
                         Server,
                         client,
                         common,
@@ -258,7 +258,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (storageType == StorageType.PawnEquipment)
                 {
-                    CurrentEquipInfo.EquipSlot.CharId = 0;
+                    CurrentEquipInfo.EquipSlot.CharacterId = 0;
                 }
                 else
                 {

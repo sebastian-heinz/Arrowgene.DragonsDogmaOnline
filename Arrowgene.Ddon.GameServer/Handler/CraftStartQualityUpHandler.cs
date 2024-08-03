@@ -194,7 +194,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
-                    updateResults = _itemManager.UpdateStorageItem(
+                    updateResults = _itemManager.UpgradeStorageItem(
                         Server,
                         client,
                         common,
@@ -216,14 +216,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
-                CharId = charid,
+                CharacterId = charid,
                 PawnId = pawnid,
-                EquipType = equiptype,
-                EquipSlot = equipslot,
+                EquipType = (EquipType)equiptype,
+                EquipSlotNo = equipslot,
             };
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
-                ItemUID = equipItemUID,
+                ItemUId = equipItemUID,
                 EquipSlot = EquipmentSlot
             };
 
