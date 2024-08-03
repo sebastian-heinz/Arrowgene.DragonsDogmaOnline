@@ -7,6 +7,8 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Server.Network;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -331,13 +333,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 },
             };
 
-        public ExpManager(IDatabase database, GameClientLookup gameClientLookup)
+        public ExpManager(DdonServer<GameClient> server, GameClientLookup gameClientLookup)
         {
-            this._database = database;
+            this._Server = server;
             this._gameClientLookup = gameClientLookup;
         }
 
-        protected readonly IDatabase _database;
+        private DdonServer<GameClient> _Server;
         protected readonly GameClientLookup _gameClientLookup;
 
         private bool CalculateAndAssignStats(CharacterCommon Character)
@@ -389,7 +391,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, uint extraBonusExp, byte type = 0)
+        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, byte type = 0)
         {
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
             if (activeCharacterJobData != null && activeCharacterJobData.Lv < ExpManager.LV_CAP)
@@ -397,10 +399,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // ------
                 // EXP UP
 
+                uint extraBonusExp = CalculateExpBonus(characterToAddExpTo, gainedExp);
+
                 activeCharacterJobData.Exp += gainedExp;
                 activeCharacterJobData.Exp += extraBonusExp;
 
-                if(characterToAddExpTo is Character)
+                if (characterToAddExpTo is Character)
                 {
                     S2CJobCharacterJobExpUpNtc expNtc = new S2CJobCharacterJobExpUpNtc();
                     expNtc.JobId = activeCharacterJobData.Job;
@@ -484,7 +488,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 // PERSIST CHANGES IN DB
-                this._database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
+                _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
             }
         }
 
@@ -496,6 +500,43 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 totalExp += EXP_UNTIL_NEXT_LV[i];
             }
             return totalExp;
+        }
+
+        private double RookiesRingBonus()
+        {
+            // TODO: Make configurable from global server settings
+            return 1.0;
+        }
+
+        private uint RookiesRingMaxLevel()
+        {
+            // TODO: Make configurable from global server settings
+            return 89;
+        }
+
+        private uint GetRookiesRingBonus(CharacterCommon characterCommon, uint baseExpAmount)
+        {
+            if (characterCommon.ActiveCharacterJobData.Lv > RookiesRingMaxLevel())
+            {
+                return 0;
+            }
+
+            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == 11718))
+            {
+                return 0;
+            }
+
+            double result = baseExpAmount * RookiesRingBonus();
+            return (uint)result;
+        }
+
+        public uint CalculateExpBonus(CharacterCommon characterCommon, uint baseExpAmount)
+        {
+            uint bonusAmount = 0;
+
+            bonusAmount += GetRookiesRingBonus(characterCommon, baseExpAmount);
+
+            return bonusAmount;
         }
     }
 }

@@ -122,7 +122,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = enemyKilled.GetDroppedExperience();
-                uint extraBonusExp = 0; // TODO: Figure out what this is for (gp bonus?)
 
                 uint gainedPP = enemyKilled.GetDroppedPlayPoints();
                 uint gainedBonusPP = 0;
@@ -134,10 +133,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     memberClient = ((PlayerPartyMember) member).Client;
                     memberCharacter = memberClient.Character;
 
-                    if (memberCharacter.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+                    if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
 
-                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience) gainedPP = 0;
-                    else gainedExp = 0;
+                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience)
+                    {
+                        gainedPP = 0;
+                    }
+                    else
+                    {
+                        gainedExp = 0;
+                    }
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -198,7 +203,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (gainedExp > 0)
                 {
-                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, extraBonusExp);
+                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp);
                 }
             }
         }
