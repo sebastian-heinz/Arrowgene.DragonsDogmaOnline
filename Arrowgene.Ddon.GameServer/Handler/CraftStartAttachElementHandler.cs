@@ -64,13 +64,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId);
 
                 Server.Database.InsertCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo, crestId, 0);
-                result.EquipElementParamList.Add(new CDataWeaponCrestData()
+                result.EquipElementParamList.Add(new CDataEquipElementParam()
                 {
                     CrestId = crestId,
                     SlotNo = element.SlotNo,
                 });
 
-                item.WeaponCrestDataList.Add(new CDataWeaponCrestData()
+                item.EquipElementParamList.Add(new CDataEquipElementParam()
                 {
                     CrestId = crestId,
                     SlotNo = element.SlotNo,

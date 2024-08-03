@@ -28,17 +28,17 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte Unk3 { get; set; } // QualityParam?
         public byte Color { get; set; }
         public byte PlusValue { get; set; }
-        public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
-        public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
+        public List<CDataAddStatusParam> AddStatusParamList { get; set; }
+        public List<CDataEquipItemInfoUnk2> Unk2List { get; set; }
 
         private string _uid;
 
         public Item()
         {
-            WeaponCrestDataList = new List<CDataWeaponCrestData>();
-            ArmorCrestDataList = new List<CDataArmorCrestData>();
             EquipElementParamList = new List<CDataEquipElementParam>();
+            AddStatusParamList = new List<CDataAddStatusParam>();
+            Unk2List = new List<CDataEquipItemInfoUnk2>();
         }
 
         public Item(Item obj)
@@ -49,9 +49,9 @@ namespace Arrowgene.Ddon.Shared.Model
             this.Color = obj.Color;
             this.PlusValue = obj.PlusValue;
             // TODO: Make a copy constructor for these
-            this.WeaponCrestDataList = obj.WeaponCrestDataList;
-            this.ArmorCrestDataList = obj.ArmorCrestDataList;
             this.EquipElementParamList = obj.EquipElementParamList;
+            this.AddStatusParamList = obj.AddStatusParamList;
+            this.Unk2List = obj.Unk2List;
         }
 
         public string UpdateUId()
