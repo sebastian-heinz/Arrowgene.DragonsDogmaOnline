@@ -125,7 +125,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId);
 
                     // Update storage, swapping if needed
-                    Storage sourceStorage = client.Character.Storage.GetStorage(storageTypes[0]);
+                    var result = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, itemUId);
+                    Storage sourceStorage = client.Character.Storage.GetStorage(result.Item1);
                     updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
                 }
             }
