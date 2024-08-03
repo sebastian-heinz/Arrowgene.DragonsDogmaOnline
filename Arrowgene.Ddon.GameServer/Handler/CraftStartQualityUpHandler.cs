@@ -32,10 +32,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftStartQualityUpRes Handle(GameClient client, C2SCraftStartQualityUpReq request)
         {  
+            #region Initializing Params
             string equipItemUID = request.ItemUID;
             var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             Character character = client.Character;
-            uint charid = client.Character.CharacterId;
             uint pawnid = request.CraftMainPawnID;
             bool IsGreatSuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             string RefineMaterial = request.RefineUID;
@@ -52,58 +52,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AdditionalStatus1 = 0,
                 AdditionalStatus2 = 0,
             };
-
-
-
-
-            //TODO: There are 3 tiers, and the lowest tier can't become +3, and the highest has better chance of +3, so we need to do a direct ID comparison,
-            // So a total of 6 IDs? for armor and weapons. 3 each.
-            if (!string.IsNullOrEmpty(RefineMaterial))
-            {
-                updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-            }
-
-            
-            var thresholds = new (int Threshold, int Quality)[]
-            {
-                (65, 2),
-                (15, 1),
-                (0, 0)
-            };
-            // TODO: Supposedly the base Refinement material cannot hit 3, only 1, unless it greatsuccess in which it can hit 2.
-            // 3 appears to be exclusive to the better refinement material?
-
-            RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
-
-            if (IsGreatSuccess)
-            {
-                RandomQuality = 3;
-            }
-            
-            // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
-            // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
-
             List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>()
             {
                 AddStat
             };
-
-            if (equipItem.PlusValue > RandomQuality)
-            {
-                RandomQuality = equipItem.PlusValue;
-                // Wiki's say you can't lower quality.
-            }
-
-            // Updating the item.
-            equipItem.ItemId = equipItem.ItemId;
-            equipItem.Unk3 = equipItem.Unk3;
-            equipItem.Color = equipItem.Color;
-            equipItem.PlusValue = RandomQuality;
-            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
-            equipItem.AddStatusParamList = equipItem.AddStatusParamList;
-            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
-
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
                 CharacterId = 0,
@@ -116,9 +68,65 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ItemUId = equipItemUID,
                 EquipSlot = EquipmentSlot
             };
+            // TODO: figuring out what this is
+            // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
+            CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
+            {
+                Unk0 = 0, // Potentially an ID?
+                Unk1 = 0,
+                Unk2 = 0, // Genuinely no idea what this could be for. 
+                Unk3 = 0, // Potentially an ID for something?
+                Unk4 = 0, // Potentially an ID for something too?
+                IsGreatSuccess = IsGreatSuccess
+            };
+            #endregion
+
+
+
+            // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
+            // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
+
+            #region Getting Quality
+            //TODO: There are 3 tiers, and the lowest tier can't become +3, and the highest has better chance of +3, so we need to do a direct ID comparison,
+            // So a total of 6 IDs? for armor and weapons. 3 each.
+            if (!string.IsNullOrEmpty(RefineMaterial))
+            {
+                updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
+                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+            }
+
+            var thresholds = new (int Threshold, int Quality)[]
+            {
+                (65, 2),
+                (15, 1),
+                (0, 0)
+            };
+
+            RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
+
+            if (IsGreatSuccess)
+            {
+                RandomQuality = 3;
+            }
+            if (equipItem.PlusValue > RandomQuality)
+            {
+                RandomQuality = equipItem.PlusValue;
+                // Wiki's say you can't lower quality.
+            }
+            #endregion
+
+            #region Upgrading Item
+
+            // Updating the item.
+            equipItem.ItemId = equipItem.ItemId;
+            equipItem.Unk3 = equipItem.Unk3;
+            equipItem.Color = equipItem.Color;
+            equipItem.PlusValue = RandomQuality;
+            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
+            equipItem.AddStatusParamList = equipItem.AddStatusParamList;
+            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
 
             var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(StorageEquipNBox, equipItemUID);
-
             if (foundItem != null)
             {
                 var (slotno, item, itemnum) = foundItem;
@@ -137,7 +145,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 else if(storageType == StorageType.CharacterEquipment)
                 {
-                    CurrentEquipInfo.EquipSlot.CharacterId = charid;
+                    CurrentEquipInfo.EquipSlot.CharacterId = character.CharacterId;
                     characterCommon = character;
                 }
 
@@ -149,7 +157,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateResults = _itemManager.UpgradeStorageItem(
                         Server,
                         client,
-                        charid,
+                        character.CharacterId,
                         storageType,
                         equipItem,
                         (byte)slotno
@@ -163,20 +171,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
             }
-            
-
-            // TODO: figuring out what this is
-            // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
-            // I think this must be related to Dragon Augment?, since plugging in a bunch of data has 0 noticable changes.
-            CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
-            {
-                Unk0 = 0, // Potentially an ID?
-                Unk1 = 0,
-                Unk2 = 0, // Genuinely no idea what this could be for. 
-                Unk3 = 0, // Potentially an ID for something?
-                Unk4 = 0, // Potentially an ID for something too?
-                IsGreatSuccess = IsGreatSuccess
-            };
+            #endregion
+        
 
             var res = new S2CCraftStartQualityUpRes()
             {

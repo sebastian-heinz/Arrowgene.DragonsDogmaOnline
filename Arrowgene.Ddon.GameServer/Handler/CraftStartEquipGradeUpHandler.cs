@@ -56,6 +56,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
             double maxMultiplier = 1.2;
             double pointsMultiplier = minMultiplier + (_random.NextDouble() * (maxMultiplier - minMultiplier));
 
+            // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
+            List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
+            {
+                new CDataCommonU32(gearupgradeID)
+            };
+            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
+            {
+                CharacterId = 0,
+                PawnId = 0,
+                EquipType = 0,
+                EquipSlotNo = 0
+            };
+            CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
+            {
+                ItemUId = equipItemUID,
+                EquipSlot = EquipmentSlot
+            };
             // More dummy data, looks like its DragonAugment related.
             CDataCraftStartEquipGradeUpUnk0Unk0 DragonAugmentData = new CDataCraftStartEquipGradeUpUnk0Unk0()
             {
@@ -97,22 +114,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 currentTotalEquipPoint += addEquipPoint;
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
+
             #endregion
 
             // TODO: we need to implement Pawn craft levels since that affects the points that get added
 
+
+            #region Taking Cost
             // Removes crafting materials
             foreach (var craftMaterial in request.CraftMaterialList)
             {
                     updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             }
-
-            // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
-            List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
-            {
-                new CDataCommonU32(gearupgradeID)
-            };
 
             // Subtract less Gold if supportpawn is used.
             if(request.CraftSupportPawnIDList.Count > 0)
@@ -121,10 +135,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 currentTotalEquipPoint += 10;
             }
 
-            // Substract Gold based on JSON cost.
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+            #endregion
 
+
+
+            #region EnhancedState Check
 
             // Handling the check on how many points we need to upgrade the weapon in its current state.
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
@@ -142,6 +159,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Check if the gear can reach "True" level and handle that properly here.
             if (currentStars == 3) canContinue = false;
 
+            #endregion
+
+            #region Upgrading Item
             // Updating the item.
             equipItem.ItemId = gearupgradeID;
             equipItem.Unk3 = equipItem.Unk3;
@@ -162,19 +182,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 // Points must be set to 0 after Upgrade actually happens.
             }
-
-            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
-            {
-                CharacterId = 0,
-                PawnId = 0,
-                EquipType = 0,
-                EquipSlotNo = 0
-            };
-            CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
-            {
-                ItemUId = equipItemUID,
-                EquipSlot = EquipmentSlot
-            };
 
 
             if (DoUpgrade)
@@ -227,21 +234,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
                 
-                res = new S2CCraftStartEquipGradeUpRes()
-                {
-                    GradeUpItemUID = equipItemUID,
-                    GradeUpItemID = equipItem.ItemId,
-                    GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
-                    AddEquipPoint = 0,
-                    TotalEquipPoint = 0,
-                    EquipGrade = EquipRank, // Unclear why the client wants this? as long as its a number it doesn't seem to matter waht you set it
-                    Gold = goldRequired,
-                    IsGreatSuccess = IsGreatSuccess,
-                    CurrentEquip = CurrentEquipInfo,   
-                    BeforeItemID = equipItem.ItemId,
-                    Upgradable = canContinue,
-                    Unk1 = dummydata // Dragon Augment related I guess?
-                };
+            res = new S2CCraftStartEquipGradeUpRes()
+            {
+                GradeUpItemUID = equipItemUID,
+                GradeUpItemID = equipItem.ItemId,
+                GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
+                AddEquipPoint = 0,
+                TotalEquipPoint = 0,
+                EquipGrade = EquipRank, // Unclear why the client wants this? as long as its a number it doesn't seem to matter waht you set it
+                Gold = goldRequired,
+                IsGreatSuccess = IsGreatSuccess,
+                CurrentEquip = CurrentEquipInfo,   
+                BeforeItemID = equipItem.ItemId,
+                Upgradable = canContinue,
+                Unk1 = dummydata // Dragon Augment related I guess?
+            };
+            #endregion
             }
             else
             {
@@ -255,6 +263,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquip = CurrentEquipInfo,
                     Upgradable = canContinue,
                     Unk1 = dummydata // Dragon Augment related I guess?
+                    // Response for adding equippoints and not upgrading.
                 };
 
             };
