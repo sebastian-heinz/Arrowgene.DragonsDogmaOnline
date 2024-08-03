@@ -30,6 +30,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectADDS =
             $"SELECT {BuildQueryField(AdditionalStatusFields)} FROM \"ddon_additional_status\" WHERE \"item_uid\"=@item_uid;";
 
+        protected virtual string SqlInsertAddStatus { get; } =
+            $"INSERT INTO \"ddon_additional_status\" ({BuildQueryField(AdditionalStatusFields)}) " +
+            $"VALUES (@item_uid, @character_id, @is_add_stat1, @is_add_stat2, @additional_status1, @additional_status2);";
+
         #endregion
 
         #region Methods
@@ -55,18 +59,15 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool InsertAddStatus(TCon conn, string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2)
         {
-            return ExecuteNonQuery(conn, 
-                $"INSERT INTO \"ddon_additional_status\" ({BuildQueryField(AdditionalStatusFields)}) " +
-                $"VALUES (@item_uid, @character_id, @is_add_stat1, @is_add_stat2, @additional_status1, @additional_status2);",
-                command =>
-                {
-                    AddParameter(command, "item_uid", itemUid);
-                    AddParameter(command, "character_id", characterId);
-                    AddParameter(command, "is_add_stat1", isAddStat1);
-                    AddParameter(command, "is_add_stat2", isAddStat2);
-                    AddParameter(command, "additional_status1", addStat1);
-                    AddParameter(command, "additional_status2", addStat2);
-                }) == 1;
+            return ExecuteNonQuery(conn, SqlInsertAddStatus, command =>
+            {
+                AddParameter(command, "item_uid", itemUid);
+                AddParameter(command, "character_id", characterId);
+                AddParameter(command, "is_add_stat1", isAddStat1);
+                AddParameter(command, "is_add_stat2", isAddStat2);
+                AddParameter(command, "additional_status1", addStat1);
+                AddParameter(command, "additional_status2", addStat2);
+            }) == 1;
         }
 
         public bool InsertAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2)
@@ -94,14 +95,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return UpdateAddStatus(connection, itemUid, characterId, isAddStat1, isAddStat2, addStat1, addStat2);
         }
 
-        public List<CDataAddStatusData> GetAddStatusByUID(string itemUid)
+        public List<CDataAddStatusParam> GetAddStatusByUID(string itemUid)
         {
             using TCon connection = OpenNewConnection();
             return GetAddStatusByUID(connection, itemUid);
         }
-        public List<CDataAddStatusData> GetAddStatusByUID(TCon connection, string itemUid)
+        public List<CDataAddStatusParam> GetAddStatusByUID(TCon connection, string itemUid)
         {
-            List<CDataAddStatusData> results = new List<CDataAddStatusData>();
+            List<CDataAddStatusParam> results = new List<CDataAddStatusParam>();
 
             ExecuteInTransaction(connection =>
             {
@@ -120,9 +121,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return results;
         }
 
-        private CDataAddStatusData ReadAddStatus(TReader reader)
+        private CDataAddStatusParam ReadAddStatus(TReader reader)
         {
-            CDataAddStatusData AddStatus = new CDataAddStatusData();
+            CDataAddStatusParam AddStatus = new CDataAddStatusParam();
             AddStatus.IsAddStat1 = GetBoolean(reader, "is_add_stat1");
             AddStatus.IsAddStat2 = GetBoolean(reader, "is_add_stat2");
             AddStatus.AdditionalStatus1 = GetUInt16(reader, "additional_status1");

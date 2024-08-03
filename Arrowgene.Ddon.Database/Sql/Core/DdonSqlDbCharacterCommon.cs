@@ -139,25 +139,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                     item.Color = GetByte(reader2, "color");
                                     item.PlusValue = GetByte(reader2, "plus_value");
                                     item.EquipPoints = GetUInt32(reader2, "equip_points");
-
-                                    // Fetch and add additionalstatus data to item
-                                    ExecuteReader(conn, SqlSelectADDS,
-                                        command3 => { AddParameter(command3, "@item_uid", item.UId); },
-                                        reader3 =>
-                                        {
-                                            while (reader3.Read())
-                                            {
-                                                var addStatusData = new CDataAddStatusData
-                                                {
-                                                    IsAddStat1 = GetBoolean(reader3, "is_add_stat1"),
-                                                    IsAddStat2 = GetBoolean(reader3, "is_add_stat2"),
-                                                    AdditionalStatus1 = GetUInt16(reader3, "additional_status1"),
-                                                    AdditionalStatus2 = GetUInt16(reader3, "additional_status2")
-                                                };
-                                                item.AddStatusParamList.Add(addStatusData);
-                                            }
-                                        });
-
                                     ExecuteReader(connection, SqlSelectAllCrestData,
                                         command3 => {
                                             AddParameter(command3, "character_common_id", common.CommonId);
@@ -201,22 +182,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                     item.Color = GetByte(reader2, "color");
                                     item.PlusValue = GetByte(reader2, "plus_value");
                                     item.EquipPoints = GetUInt32(reader2, "equip_points");
-                                    ExecuteReader(conn, SqlSelectADDS,
-                                        command3 => { AddParameter(command3, "@item_uid", item.UId); },
-                                        reader3 =>
-                                        {
-                                            while (reader3.Read())
-                                            {
-                                                var addStatusData = new CDataAddStatusData
-                                                {
-                                                    IsAddStat1 = GetBoolean(reader3, "is_add_stat1"),
-                                                    IsAddStat2 = GetBoolean(reader3, "is_add_stat2"),
-                                                    AdditionalStatus1 = GetUInt16(reader3, "additional_status1"),
-                                                    AdditionalStatus2 = GetUInt16(reader3, "additional_status2")
-                                                };
-                                                item.AddStatusParamList.Add(addStatusData);
-                                            }
-                                        });
                                     common.EquipmentTemplate.SetJobItem(item, job, equipSlot);
                                 }
                             });

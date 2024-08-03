@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             ItemUId = string.Empty;
             WeaponCrestDataList = new List<CDataWeaponCrestData>();
-            AddStatusData = new List<CDataAddStatusData>();
+            AddStatusParamList = new List<CDataAddStatusParam>();
             EquipElementParamList = new List<CDataEquipElementParam>();
         }
 
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint EquipCharacterID { get; set; }
         public uint EquipPawnID { get; set; }
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
-        public List<CDataAddStatusData> AddStatusData { get; set; }
+        public List<CDataAddStatusParam> AddStatusParamList { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
         
         public class Serializer : EntitySerializer<CDataItemList>
@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.EquipCharacterID);
                 WriteUInt32(buffer, obj.EquipPawnID);
                 WriteEntityList<CDataWeaponCrestData>(buffer, obj.WeaponCrestDataList);
-                WriteEntityList<CDataAddStatusData>(buffer, obj.AddStatusData);
+                WriteEntityList<CDataAddStatusParam>(buffer, obj.AddStatusParamList);
                 WriteEntityList<CDataEquipElementParam>(buffer, obj.EquipElementParamList);
             }
 
@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.EquipCharacterID = ReadUInt32(buffer);
                 obj.EquipPawnID = ReadUInt32(buffer);
                 obj.WeaponCrestDataList = ReadEntityList<CDataWeaponCrestData>(buffer);
-                obj.AddStatusData = ReadEntityList<CDataAddStatusData>(buffer);
+                obj.AddStatusParamList = ReadEntityList<CDataAddStatusParam>(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 return obj;
             }

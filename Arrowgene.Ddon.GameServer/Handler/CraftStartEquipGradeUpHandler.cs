@@ -14,17 +14,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartEquipGradeUpHandler : GameRequestPacketHandler<C2SCraftStartEquipGradeUpReq, S2CCraftStartEquipGradeUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipGradeUpHandler));
-        private static readonly List<StorageType> StorageEquipNBox = new List<StorageType> {
-            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest, StorageType.CharacterEquipment, StorageType.PawnEquipment
-        };
-
         private readonly ItemManager _itemManager;
-        private readonly Random _random;
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
-            _random = Random.Shared;
         }
 
         public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
@@ -46,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint goldRequired = json_data.Cost;
             uint EquipRank = json_data.Unk0;
             bool canContinue = true;
-            bool IsGreatSuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
+            bool IsGreatSuccess = Random.Shared.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             bool DoUpgrade = false;
 
             uint currentTotalEquipPoint = equipItem.EquipPoints;
@@ -54,7 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint addEquipPoint = 0;     
             double minMultiplier = 0.8;
             double maxMultiplier = 1.2;
-            double pointsMultiplier = minMultiplier + (_random.NextDouble() * (maxMultiplier - minMultiplier));
+            double pointsMultiplier = minMultiplier + (Random.Shared.NextDouble() * (maxMultiplier - minMultiplier));
 
             // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
             List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
@@ -186,47 +180,44 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (DoUpgrade)
             {
-            var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(StorageEquipNBox, equipItemUID);
+                var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
 
-            if (foundItem != null)
-            {
-                var (slotno, item, itemnum) = foundItem;
-
-
-                CharacterCommon characterCommon = null;
-                if (storageType == StorageType.CharacterEquipment || storageType == StorageType.PawnEquipment)
-                {
-                    CurrentEquipInfo.EquipSlot.EquipSlotNo = EquipManager.DetermineEquipSlot(slotno);
-                    CurrentEquipInfo.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotno);
-                }
-                if (storageType == StorageType.PawnEquipment)
-                {
-                    CurrentEquipInfo.EquipSlot.PawnId = pawnid;
-                    characterCommon = character.Pawns.Where(x => x.PawnId == pawnid).SingleOrDefault();
-                }
-                else if(storageType == StorageType.CharacterEquipment)
-                {
-                    CurrentEquipInfo.EquipSlot.CharacterId = charid;
-                    characterCommon = character;
-                }
-
-
-                updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
                 if (foundItem != null)
                 {
-                    (slotno, item, itemnum) = foundItem;
-                    updateResults = _itemManager.UpgradeStorageItem(
-                        Server,
-                        client,
-                        charid,
-                        storageType,
-                        equipItem,
-                        (byte)slotno
-                    );
-                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
+                    var (slotno, item, itemnum) = foundItem;
+                    CharacterCommon characterCommon = null;
+                    if (storageType == StorageType.CharacterEquipment || storageType == StorageType.PawnEquipment)
+                    {
+                        CurrentEquipInfo.EquipSlot.EquipSlotNo = EquipManager.DetermineEquipSlot(slotno);
+                        CurrentEquipInfo.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotno);
+                    }
+                    if (storageType == StorageType.PawnEquipment)
+                    {
+                        CurrentEquipInfo.EquipSlot.PawnId = pawnid;
+                        characterCommon = character.Pawns.Where(x => x.PawnId == pawnid).SingleOrDefault();
+                    }
+                    else if(storageType == StorageType.CharacterEquipment)
+                    {
+                        CurrentEquipInfo.EquipSlot.CharacterId = charid;
+                        characterCommon = character;
+                    }
 
-                    client.Send(updateCharacterItemNtc);
+                    updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
+                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
+                    if (foundItem != null)
+                    {
+                        (slotno, item, itemnum) = foundItem;
+                        _itemManager.UpgradeStorageItem(
+                            Server,
+                            client,
+                            charid,
+                            storageType,
+                            equipItem,
+                            (byte)slotno
+                        );
+                        updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
+
+                        client.Send(updateCharacterItemNtc);
                 }
                 else
                 {

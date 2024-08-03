@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
                                                 WeaponCrestDataList = info.WeaponCrestDataList,
-                                                AddStatusParamList = info.AddStatusData,
+                                                AddStatusParamList = info.AddStatusParamList,
                                                 EquipElementParamList = info.EquipElementParamList
                                             };
                                         }
@@ -86,7 +86,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
                                                 WeaponCrestDataList = info.WeaponCrestDataList,
-                                                AddStatusParamList = info.AddStatusData,
+                                                AddStatusParamList = info.AddStatusParamList,
                                                 EquipElementParamList = info.EquipElementParamList
                                             };
                                         }
@@ -215,8 +215,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.PWC4Add1 << 8 | arisenPreset.PWC4Add2),
                                     }
                                 },
-                                AddStatusParamList = new List<CDataAddStatusData>() {
-                                    new CDataAddStatusData {
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
                                         IsAddStat1 = true,
                                         IsAddStat2 = true,
                                         AdditionalStatus1 = 0x59,
@@ -252,8 +252,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.HC3Add1 << 8 | arisenPreset.HC3Add2),
                                     }
                                 },
-                                AddStatusParamList = new List<CDataAddStatusData>() {
-                                    new CDataAddStatusData {
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
                                         IsAddStat1 = true,
                                         IsAddStat2 = true,
                                         AdditionalStatus1 = 0x29D,
@@ -289,8 +289,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
                                     }
                                 },
-                                AddStatusParamList = new List<CDataAddStatusData>() {
-                                    new CDataAddStatusData {
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
                                         IsAddStat1 = true,
                                         IsAddStat2 = true,
                                         AdditionalStatus1 = 0x280,
@@ -326,8 +326,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.AC3Add1 << 8 | arisenPreset.AC3Add2),
                                     }
                                 },
-                                AddStatusParamList = new List<CDataAddStatusData>() {
-                                    new CDataAddStatusData {
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
                                         IsAddStat1 = true,
                                         IsAddStat2 = true,
                                         AdditionalStatus1 = 0x1D2,
@@ -358,8 +358,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.LC3Add1 << 8 | arisenPreset.LC3Add2),
                                     }
                                 },
-                                AddStatusParamList = new List<CDataAddStatusData>() {
-                                    new CDataAddStatusData {
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
                                         IsAddStat1 = true,
                                         IsAddStat2 = true,
                                         AdditionalStatus1 = 0x225,
@@ -405,7 +405,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.J1C4Add1 << 8 | arisenPreset.J1C4Add2),
                                     }
                                 },
-                                // Empty AddStatusData
+                                // Empty AddStatusParamList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 0x2,
@@ -504,7 +504,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.J2C4Add1 << 8 | arisenPreset.J2C4Add2),
                                     }
                                 },
-                                // Empty AddStatusData
+                                // Empty AddStatusParamList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 0x2,
@@ -603,7 +603,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.J3C4Add1 << 8 | arisenPreset.J3C4Add2),
                                     }
                                 },
-                                // Empty AddStatusData
+                                // Empty AddStatusParamList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 0x2,
@@ -702,7 +702,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.J4C4Add1 << 8 | arisenPreset.J4C4Add2),
                                     }
                                 },
-                                // Empty AddStatusData
+                                // Empty AddStatusParamList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 0x2,
@@ -801,7 +801,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.J5C4Add1 << 8 | arisenPreset.J5C4Add2),
                                     }
                                 },
-                                // Empty AddStatusData
+                                // Empty AddStatusParamList
                                 EquipElementParamList = new List<CDataEquipElementParam>() {
                                     new CDataEquipElementParam {
                                         SlotNo = 0x2,

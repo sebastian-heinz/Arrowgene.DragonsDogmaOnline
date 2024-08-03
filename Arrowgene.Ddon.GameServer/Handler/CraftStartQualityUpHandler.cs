@@ -16,18 +16,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartQualityUpHandler : GameRequestPacketHandler<C2SCraftStartQualityUpReq, S2CCraftStartQualityUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartQualityUpHandler));
-        private static readonly List<StorageType> StorageEquipNBox = new List<StorageType> {
-            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion,
-            StorageType.StorageChest, StorageType.CharacterEquipment, StorageType.PawnEquipment
-        };
 
         private readonly ItemManager _itemManager;
-        private readonly Random _random;
 
         public CraftStartQualityUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
-            _random = Random.Shared;
         }
 
         public override S2CCraftStartQualityUpRes Handle(GameClient client, C2SCraftStartQualityUpReq request)
@@ -37,22 +31,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             Character character = client.Character;
             uint pawnid = request.CraftMainPawnID;
-            bool IsGreatSuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
+            bool IsGreatSuccess = Random.Shared.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             string RefineMaterial = request.RefineUID;
             ushort AddStatusID = request.AddStatusID;
             byte RandomQuality = 0;
-            int D100 =  _random.Next(100);
+            int D100 =  Random.Shared.Next(100);
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();  
 
-            CDataAddStatusData AddStat = new CDataAddStatusData()
+            CDataAddStatusParam AddStat = new CDataAddStatusParam()
             {
                 IsAddStat1 = false,
                 IsAddStat2 = false,
                 AdditionalStatus1 = 0,
                 AdditionalStatus2 = 0,
             };
-            List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>()
+            List<CDataAddStatusParam> AddStatList = new List<CDataAddStatusParam>()
             {
                 AddStat
             };
@@ -126,7 +120,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             equipItem.AddStatusParamList = equipItem.AddStatusParamList;
             equipItem.EquipElementParamList = equipItem.EquipElementParamList;
 
-            var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(StorageEquipNBox, equipItemUID);
+            var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             if (foundItem != null)
             {
                 var (slotno, item, itemnum) = foundItem;
@@ -154,7 +148,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
-                    updateResults = _itemManager.UpgradeStorageItem(
+                    _itemManager.UpgradeStorageItem(
                         Server,
                         client,
                         character.CharacterId,

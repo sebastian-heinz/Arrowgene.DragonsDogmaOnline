@@ -12,12 +12,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public S2CCraftStartQualityUpRes()
         {
             Unk0 = new CDataS2CCraftStartQualityUpResUnk0();
-            AddStatusDataList = new List<CDataAddStatusData>();
+            AddStatusDataList = new List<CDataAddStatusParam>();
             CurrentEquip = new CDataCurrentEquipInfo();            
         }
 
         public CDataS2CCraftStartQualityUpResUnk0 Unk0 { get; set; }
-        public List<CDataAddStatusData> AddStatusDataList { get; set; }
+        public List<CDataAddStatusParam> AddStatusDataList { get; set; }
         public CDataCurrentEquipInfo CurrentEquip { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCraftStartQualityUpRes>
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntity<CDataS2CCraftStartQualityUpResUnk0>(buffer, obj.Unk0);
-                WriteEntityList<CDataAddStatusData>(buffer, obj.AddStatusDataList);
+                WriteEntityList<CDataAddStatusParam>(buffer, obj.AddStatusDataList);
                 WriteEntity<CDataCurrentEquipInfo>(buffer, obj.CurrentEquip);
             }
 
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CCraftStartQualityUpRes obj = new S2CCraftStartQualityUpRes();
                 ReadServerResponse(buffer, obj);
                 obj.Unk0 = ReadEntity<CDataS2CCraftStartQualityUpResUnk0>(buffer);
-                obj.AddStatusDataList = ReadEntityList<CDataAddStatusData>(buffer);
+                obj.AddStatusDataList = ReadEntityList<CDataAddStatusParam>(buffer);
                 obj.CurrentEquip = ReadEntity<CDataCurrentEquipInfo>(buffer);
                 return obj;
             }

@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEditParamPalette.Serializer());
             Create(new CDataEquipElementParam.Serializer());
             Create(new CDataWeaponCrestData.Serializer());
-            Create(new CDataAddStatusData.Serializer());
+            Create(new CDataAddStatusParam.Serializer());
             Create(new CDataBazaarCharacterInfo.Serializer());
             Create(new CDataBazaarItemBaseInfo.Serializer());
             Create(new CDataBazaarItemHistoryInfo.Serializer());

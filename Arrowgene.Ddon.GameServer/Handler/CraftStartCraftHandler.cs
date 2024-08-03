@@ -15,10 +15,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartCraftHandler : GameStructurePacketHandler<C2SCraftStartCraftReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
-        private readonly Random _random;
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
-            _random = Random.Shared;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartCraftReq> packet)
@@ -37,16 +35,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // time passes.
             string RefineMaterial = packet.Structure.RefineMaterialUID;
             byte RandomQuality = 0;
-            int D100 =  _random.Next(100);
+            int D100 =  Random.Shared.Next(100);
             ushort AddStatusID = packet.Structure.Unk0;
-            CDataAddStatusData AddStat = new CDataAddStatusData()
+            CDataAddStatusParam AddStat = new CDataAddStatusParam()
             {
                 IsAddStat1 = false,
                 IsAddStat2 = false,
                 AdditionalStatus1 = 0,
                 AdditionalStatus2 = 0,
             };
-            List<CDataAddStatusData> AddStatList = new List<CDataAddStatusData>();
+            List<CDataAddStatusParam> AddStatList = new List<CDataAddStatusParam>();
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateType = ItemNoticeType.CraftCreate;
@@ -73,55 +71,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Check if a refinematerial is set
             if (!string.IsNullOrEmpty(RefineMaterial))
             {
-                // Remove Refinement material (and increase odds of better Stars)
-                foreach (var craftMaterial in packet.Structure.CraftMaterialList)
-                {
-                    try
-                    {
-                        List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
-                        updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                    }
-                    catch (NotEnoughItemsException e)
-                    {
-                        Logger.Exception(e);
-                        client.Send(new S2CCraftStartCraftRes()
-                        {
-                            Result = 1
-                        });
-                        return;
-                    }
-                }
+                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
+                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                D100 += 20;
             }
-            if (AddStatusID > 0)
+
+            var thresholds = new (int Threshold, int Quality)[]
             {
-                //bool success = Server.Database.InsertAddStatus(equipItemUID, charid, 1, 0, AddStatusID, 0);
-                //TODO: When we refactor this code, we need to support newly made items gaining additional status too.
-                
-
-                AddStat = new CDataAddStatusData()
-                    {
-                        IsAddStat1 = true,
-                        IsAddStat2 = false,
-                        AdditionalStatus1 = AddStatusID,
-                        AdditionalStatus2 = 0,
-                    };
-
-                AddStatList = new List<CDataAddStatusData>()
-                    {
-                        AddStat
-                    };
+                (95, 3),
+                (80, 2),
+                (70, 1),
+                (0, 0)  // This should always be the last one to catch all remaining cases
             };
 
-
-                        var thresholds = new (int Threshold, int Quality)[]
-                        {
-                            (95, 3),
-                            (80, 2),
-                            (70, 1),
-                            (0, 0)  // This should always be the last one to catch all remaining cases
-                        };
-
-                        RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
+            RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
 
             // TODO: Refactor to generate the actual item here,
             // TODO: Quality is an innate principle, we need to check if the newly generated item belongs to certain subcats,found in ItemSubCategory,
@@ -142,7 +105,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 finalCraftCost = (uint)(finalCraftCost*0.95);
             }
-            
 
             // Substract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, finalCraftCost);

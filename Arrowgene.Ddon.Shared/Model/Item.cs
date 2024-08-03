@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/
         public uint EquipPoints { get; set; }
         public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
-        public List<CDataAddStatusData> AddStatusParamList { get; set; }
+        public List<CDataAddStatusParam> AddStatusParamList { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
 
         private string _uid;
@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public Item()
         {
             WeaponCrestDataList = new List<CDataWeaponCrestData>();
-            AddStatusParamList = new List<CDataAddStatusData>();
+            AddStatusParamList = new List<CDataAddStatusParam>();
             EquipElementParamList = new List<CDataEquipElementParam>();
         }
 
