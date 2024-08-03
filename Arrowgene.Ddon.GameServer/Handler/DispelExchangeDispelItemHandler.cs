@@ -74,7 +74,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var purchase = AppraiseItem(client.Character, appraisialItems[item.Id]);
 
                 List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, toBag, purchase.ItemId, purchase.ItemNum);
-                Debug.Assert(itemUpdateResults.Count == 1);
+                if (itemUpdateResults.Count != 1)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
+                }
 
                 var newItem = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, itemUpdateResults[0].ItemList.ItemUId).Item2.Item2;
                 if (purchase.EquipElementParamList.Count > 0)
