@@ -15,16 +15,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartCraftHandler : GameStructurePacketHandler<C2SCraftStartCraftReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
+        private static readonly HashSet<ItemSubCategory> BannedSubCategories = new HashSet<ItemSubCategory>
+        {
+            ItemSubCategory.WeaponShield,
+            ItemSubCategory.WeaponRod,
+            ItemSubCategory.EquipJewelry,
+            ItemSubCategory.EquipLantern,
+            ItemSubCategory.JewelryCommon,
+            ItemSubCategory.JewelryRing,
+            ItemSubCategory.JewelryBracelet,
+            ItemSubCategory.JewelryPierce,
+            ItemSubCategory.EmblemStone,
+            ItemSubCategory.EquipOverwear,
+            ItemSubCategory.EquipClothingBody,
+            ItemSubCategory.EquipClothingLeg,
+        };
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartCraftReq> packet)
-        {
+        {       
+            bool CanPlusValue = false;
             CDataMDataCraftRecipe recipe = Server.AssetRepository.CraftingRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
                 .Where(recipe => recipe.RecipeID == packet.Structure.RecipeID)
                 .Single();
+
+            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, recipe.ItemID);
+            if (itemInfo.SubCategory.HasValue && BannedSubCategories.Contains(itemInfo.SubCategory.Value))
+            {
+                CanPlusValue = false;
+            }
+            else
+            {
+                CanPlusValue = true;
+            };
+
 
             // TODO: Run in transaction
 
@@ -37,6 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var RefineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
             byte RandomQuality = 0;
             int D100 =  Random.Shared.Next(100);
+
             ushort AddStatusID = packet.Structure.Unk0;
             CDataAddStatusParam AddStat = new CDataAddStatusParam()
             {
@@ -85,15 +113,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 D100 += 10;
             }
 
-            var thresholds = new (int Threshold, int Quality)[]
+            if (CanPlusValue == true)
             {
-                (100, 3),
-                (90, 2),
-                (70, 1),
-                (0, 0)  // This should always be the last one to catch all remaining cases
+                var thresholds = new (int Threshold, int Quality)[]
+                {
+                    (100, 3),
+                    (90, 2),
+                    (70, 1),
+                    (0, 0)  // This should always be the last one to catch all remaining cases
+                };
+                RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
             };
-
-            RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
 
             // TODO: Refactor to generate the actual item here,
             // TODO: Quality is an innate principle, we need to check if the newly generated item belongs to certain subcats,found in ItemSubCategory,
