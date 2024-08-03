@@ -16,40 +16,39 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartQualityUpHandler));
         private static readonly List<StorageType> StorageEquipNBox = new List<StorageType> {
-            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest, StorageType.CharacterEquipment
+            StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion,
+            StorageType.StorageChest, StorageType.CharacterEquipment, StorageType.PawnEquipment
         };
 
         private readonly ItemManager _itemManager;
+        private readonly EquipManager _equipManager;
         private readonly Random _random;
 
         public CraftStartQualityUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
+            _equipManager = Server.EquipManager;
             _random = Random.Shared;
         }
 
         public override S2CCraftStartQualityUpRes Handle(GameClient client, C2SCraftStartQualityUpReq request)
-        {
-
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();    
-            updateCharacterItemNtc.UpdateType = 0;
+        {  
             string equipItemUID = request.ItemUID;
             var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             uint equipItemID = equipItem.ItemId;
             Character common = client.Character;
-            ushort equipslot = 0;
-            byte equiptype = 0;
             uint charid = client.Character.CharacterId;
             uint pawnid = request.CraftMainPawnID;
-            byte currentPlusValue = equipItem.PlusValue;
             bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
-            bool retainPlusValue = false;
-            bool updatingAddStatus = false;
+            // byte currentPlusValue = equipItem.PlusValue;
+            // bool retainPlusValue = false;
+            // bool updatingAddStatus = false;
             string RefineMaterial = request.RefineUID;
             ushort AddStatusID = request.AddStatusID;
             byte RandomQuality = 0;
             int D100 =  _random.Next(100);
             List<CDataItemUpdateResult> updateResults;
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();  
 
             CDataAddStatusData AddStat = new CDataAddStatusData()
             {
@@ -135,10 +134,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
 
-            if(retainPlusValue)
-            {
-                RandomQuality = currentPlusValue;
-            }
+            // if(retainPlusValue)
+            // {
+            //     RandomQuality = currentPlusValue;
+            // }
 
 
 
@@ -148,8 +147,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             equipItem.Color = equipItem.Color;
             equipItem.PlusValue = RandomQuality;
             equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
-            equipItem.AddStatusData = AddStatList;
+            equipItem.AddStatusData = equipItem.AddStatusData;
             equipItem.EquipElementParamList = equipItem.EquipElementParamList;
+
+            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
+            {
+                CharacterId = charid,
+                PawnId = pawnid,
+                EquipType = 0,
+                EquipSlotNo = 0,
+            };
+            CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
+            {
+                ItemUId = equipItemUID,
+                EquipSlot = EquipmentSlot
+            };
 
             
             Logger.Debug($"Attempting to find {equipItemUID}");
@@ -163,15 +175,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     case StorageType.CharacterEquipment:
                         foundItem = common.Storage.GetStorage(StorageType.CharacterEquipment).FindItemByUId(equipItemUID);
-                        List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
-                                    .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
-                                    .ToList();
+                        var equipmentStorage = common.Storage.GetStorage(StorageType.CharacterEquipment);
+                        var equipment = new Equipment(equipmentStorage, 0);
+                        _equipManager.GetEquipTypeandSlot(equipment, equipItemUID, out EquipType equipType, out byte equipSlot);
 
-                            var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                            equipslot = equipInfo.EquipCategory;
-                            equiptype = (byte)equipInfo.EquipType;
-
+                        EquipmentSlot.EquipSlotNo = equipSlot;
+                        EquipmentSlot.EquipType = equipType;
                         break;
+
+                    case StorageType.PawnEquipment:
+                        foundItem = common.Storage.GetStorage(StorageType.PawnEquipment).FindItemByUId(equipItemUID);
+                        equipmentStorage = common.Storage.GetStorage(StorageType.PawnEquipment);
+                        equipment = new Equipment(equipmentStorage, 0);
+                        _equipManager.GetEquipTypeandSlot(equipment, equipItemUID, out equipType, out equipSlot);
+
+                        EquipmentSlot.EquipSlotNo = equipSlot;
+                        EquipmentSlot.EquipType = equipType;
+                        break;
+
                     case StorageType.ItemBagEquipment:
                         foundItem = common.Storage.GetStorage(StorageType.ItemBagEquipment).FindItemByUId(equipItemUID);
                         break;
@@ -185,11 +206,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         foundItem = common.Storage.GetStorage(StorageType.StorageChest).FindItemByUId(equipItemUID);
                         break;
                     default:
-                        Logger.Debug($"Bruh this found an item in {storageType}, not cool.");
+                        Logger.Error($"Item found in {storageType}. Which isn't supported.");
                         break;
                 }
 
-
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 0, 0));
                 if (foundItem != null)
                 {
@@ -203,29 +224,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         equipItem,
                         (byte)slotno
                     );
-                    updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
                     Logger.Debug($"Your Slot is: {slotno}, in {storageType} for UID {equipItem.UId}.");
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(common, equipItem, storageType, (byte)slotno, 1, 1));
+
                     client.Send(updateCharacterItemNtc);
                 }
                 else
                 {
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 }
+                if (storageType == StorageType.PawnEquipment)
+                {
+                    CurrentEquipInfo.EquipSlot.CharacterId = 0;
+                }
+                else
+                {
+                    CurrentEquipInfo.EquipSlot.PawnId = 0;
+                }
             
-
-            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
-            {
-                CharacterId = charid,
-                PawnId = pawnid,
-                EquipType = (EquipType)equiptype,
-                EquipSlotNo = equipslot,
-            };
-            CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
-            {
-                ItemUId = equipItemUID,
-                EquipSlot = EquipmentSlot
-            };
 
             // TODO: figuring out what this is
             // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.

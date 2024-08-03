@@ -19,11 +19,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         };
 
         private readonly ItemManager _itemManager;
+        private readonly EquipManager _equipmanager;
         private readonly Random _random;
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
+            _equipmanager = Server.EquipManager;
             _random = Random.Shared;
         }
 
@@ -196,24 +198,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     case StorageType.CharacterEquipment:
                         foundItem = common.Storage.GetStorage(StorageType.CharacterEquipment).FindItemByUId(equipItemUID);
-                        List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
-                                    .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
-                                    .ToList();
+                        var equipmentStorage = common.Storage.GetStorage(StorageType.CharacterEquipment);
+                        var equipment = new Equipment(equipmentStorage, 0);
+                        _equipmanager.GetEquipTypeandSlot(equipment, equipItemUID, out EquipType equipType, out byte equipSlot);
 
-                            var equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                            EquipmentSlot.EquipSlotNo = equipInfo.EquipCategory;
-                            EquipmentSlot.EquipType = equipInfo.EquipType;
+                        EquipmentSlot.EquipSlotNo = equipSlot;
+                        EquipmentSlot.EquipType = equipType;
                         break;
 
                     case StorageType.PawnEquipment:
                         foundItem = common.Storage.GetStorage(StorageType.PawnEquipment).FindItemByUId(equipItemUID);
-                        characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
-                                    .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
-                                    .ToList();
+                        equipmentStorage = common.Storage.GetStorage(StorageType.PawnEquipment);
+                        equipment = new Equipment(equipmentStorage, 0);
+                        _equipmanager.GetEquipTypeandSlot(equipment, equipItemUID, out equipType, out equipSlot);
 
-                            equipInfo = characterEquipList.FirstOrDefault(info => info.EquipItemUId == equipItemUID);
-                            EquipmentSlot.EquipSlotNo = equipInfo.EquipCategory;
-                            EquipmentSlot.EquipType = equipInfo.EquipType;
+                        EquipmentSlot.EquipSlotNo = equipSlot;
+                        EquipmentSlot.EquipType = equipType;
                         break;
 
                     case StorageType.ItemBagEquipment:

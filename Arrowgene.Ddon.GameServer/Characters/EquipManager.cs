@@ -167,5 +167,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
         }
+        public void GetEquipTypeandSlot(Equipment equipment, string uid, out EquipType equipType, out byte equipSlot)
+        {
+            for (int i = 0; i < EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2; i++)
+            {
+                var tuple = equipment.Storage.Items[equipment.Offset + i];
+                if (tuple?.Item1?.UId == uid)
+                {
+                    equipSlot = (byte)(i + 1);
+                    equipType = equipSlot <= EquipmentTemplate.TOTAL_EQUIP_SLOTS ? EquipType.Performance : EquipType.Visual;
+                    return;
+                }
+            }
+            throw new Exception("Item not found");
+        }
     }
 }
