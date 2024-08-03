@@ -33,7 +33,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Instead of giving the player the item immediately
             // save the crafting to DB, and notify the player when the craft
             // time passes.
-            string RefineMaterial = packet.Structure.RefineMaterialUID;
+            string RefineMaterialUID = packet.Structure.RefineMaterialUID;
+            var RefineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
             byte RandomQuality = 0;
             int D100 =  Random.Shared.Next(100);
             ushort AddStatusID = packet.Structure.Unk0;
@@ -69,17 +70,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             
             // Check if a refinematerial is set
-            if (!string.IsNullOrEmpty(RefineMaterial))
+            if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
-                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
+                if (RefineMaterialItem.ItemId == 8036 || RefineMaterialItem.ItemId == 8068 ) // Checking if its one of the better rocks because they augment the odds of +3.
+                {
+                    D100 += 40;
+                }
+                else if (RefineMaterialItem.ItemId == 8052 || RefineMaterialItem.ItemId == 8084)
+                {
+                    D100 += 60;
+                };
+                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                D100 += 20;
+                D100 += 10;
             }
 
             var thresholds = new (int Threshold, int Quality)[]
             {
-                (95, 3),
-                (80, 2),
+                (100, 3),
+                (90, 2),
                 (70, 1),
                 (0, 0)  // This should always be the last one to catch all remaining cases
             };
