@@ -93,7 +93,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     Color = tuple.item?.Color ?? 0,
                     PlusValue = tuple.item?.PlusValue ?? 0,
                     WeaponCrestDataList = tuple.item?.WeaponCrestDataList ?? new List<CDataWeaponCrestData>(),
-                    AddStatusData = tuple.item?.AddStatusData ?? new List<CDataAddStatusData>(),
+                    AddStatusData = tuple.item?.AddStatusParamList ?? new List<CDataAddStatusData>(),
                     EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>()
                 })
                 .ToList();

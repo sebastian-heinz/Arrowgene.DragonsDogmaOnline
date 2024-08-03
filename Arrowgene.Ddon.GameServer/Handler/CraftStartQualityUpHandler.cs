@@ -22,13 +22,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         };
 
         private readonly ItemManager _itemManager;
-        private readonly EquipManager _equipManager;
         private readonly Random _random;
 
         public CraftStartQualityUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
-            _equipManager = Server.EquipManager;
             _random = Random.Shared;
         }
 
@@ -39,10 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Character character = client.Character;
             uint charid = client.Character.CharacterId;
             uint pawnid = request.CraftMainPawnID;
-            bool dogreatsucess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
-            // byte currentPlusValue = equipItem.PlusValue;
-            // bool retainPlusValue = false;
-            // bool updatingAddStatus = false;
+            bool IsGreatSuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
             string RefineMaterial = request.RefineUID;
             ushort AddStatusID = request.AddStatusID;
             byte RandomQuality = 0;
@@ -65,11 +60,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // So a total of 6 IDs? for armor and weapons. 3 each.
             if (!string.IsNullOrEmpty(RefineMaterial))
             {
-                foreach (var craftMaterial in request.CraftMaterialList)
-                {
-                        updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
-                        updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                }
+                updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterial, 1);
+                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             }
 
             
@@ -84,7 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
 
-            if (dogreatsucess)
+            if (IsGreatSuccess)
             {
                 RandomQuality = 3;
             }
@@ -109,7 +101,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             equipItem.Color = equipItem.Color;
             equipItem.PlusValue = RandomQuality;
             equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
-            equipItem.AddStatusData = equipItem.AddStatusData;
+            equipItem.AddStatusParamList = equipItem.AddStatusParamList;
             equipItem.EquipElementParamList = equipItem.EquipElementParamList;
 
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
@@ -125,14 +117,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EquipSlot = EquipmentSlot
             };
 
-            
-            Logger.Debug($"Attempting to find {equipItemUID}");
             var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(StorageEquipNBox, equipItemUID);
 
             if (foundItem != null)
             {
-                Logger.Debug($"Found {equipItemUID} inside {storageType}");
-                // Extract slotno, item, itemnum from the foundItem tuple
                 var (slotno, item, itemnum) = foundItem;
 
 
@@ -153,7 +141,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     characterCommon = character;
                 }
 
-
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
                 if (foundItem != null)
@@ -162,13 +149,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateResults = _itemManager.UpgradeStorageItem(
                         Server,
                         client,
-                        character,
                         charid,
                         storageType,
                         equipItem,
                         (byte)slotno
                     );
-                    Logger.Debug($"Your Slot is: {slotno}, in {storageType} for UID {equipItem.UId}.");
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
 
                     client.Send(updateCharacterItemNtc);
@@ -190,7 +175,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk2 = 0, // Genuinely no idea what this could be for. 
                 Unk3 = 0, // Potentially an ID for something?
                 Unk4 = 0, // Potentially an ID for something too?
-                IsGreatSuccess = dogreatsucess
+                IsGreatSuccess = IsGreatSuccess
             };
 
             var res = new S2CCraftStartQualityUpRes()

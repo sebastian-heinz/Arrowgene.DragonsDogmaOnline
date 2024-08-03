@@ -154,7 +154,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                                     AdditionalStatus1 = GetUInt16(reader3, "additional_status1"),
                                                     AdditionalStatus2 = GetUInt16(reader3, "additional_status2")
                                                 };
-                                                item.AddStatusData.Add(addStatusData);
+                                                item.AddStatusParamList.Add(addStatusData);
                                             }
                                         });
 
@@ -214,7 +214,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                                     AdditionalStatus1 = GetUInt16(reader3, "additional_status1"),
                                                     AdditionalStatus2 = GetUInt16(reader3, "additional_status2")
                                                 };
-                                                item.AddStatusData.Add(addStatusData);
+                                                item.AddStatusParamList.Add(addStatusData);
                                             }
                                         });
                                     common.EquipmentTemplate.SetJobItem(item, job, equipSlot);

@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
                                                 WeaponCrestDataList = info.WeaponCrestDataList,
-                                                AddStatusData = info.AddStatusData,
+                                                AddStatusParamList = info.AddStatusData,
                                                 EquipElementParamList = info.EquipElementParamList
                                             };
                                         }
@@ -86,7 +86,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
                                                 WeaponCrestDataList = info.WeaponCrestDataList,
-                                                AddStatusData = info.AddStatusData,
+                                                AddStatusParamList = info.AddStatusData,
                                                 EquipElementParamList = info.EquipElementParamList
                                             };
                                         }
@@ -215,7 +215,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.PWC4Add1 << 8 | arisenPreset.PWC4Add2),
                                     }
                                 },
-                                AddStatusData = new List<CDataAddStatusData>() {
+                                AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
                                         IsAddStat1 = 1,
                                         IsAddStat2 = 1,
@@ -252,7 +252,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.HC3Add1 << 8 | arisenPreset.HC3Add2),
                                     }
                                 },
-                                AddStatusData = new List<CDataAddStatusData>() {
+                                AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
                                         IsAddStat1 = 1,
                                         IsAddStat2 = 1,
@@ -289,7 +289,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
                                     }
                                 },
-                                AddStatusData = new List<CDataAddStatusData>() {
+                                AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
                                         IsAddStat1 = 1,
                                         IsAddStat2 = 1,
@@ -326,7 +326,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.AC3Add1 << 8 | arisenPreset.AC3Add2),
                                     }
                                 },
-                                AddStatusData = new List<CDataAddStatusData>() {
+                                AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
                                         IsAddStat1 = 1,
                                         IsAddStat2 = 1,
@@ -358,7 +358,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.LC3Add1 << 8 | arisenPreset.LC3Add2),
                                     }
                                 },
-                                AddStatusData = new List<CDataAddStatusData>() {
+                                AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
                                         IsAddStat1 = 1,
                                         IsAddStat2 = 1,
