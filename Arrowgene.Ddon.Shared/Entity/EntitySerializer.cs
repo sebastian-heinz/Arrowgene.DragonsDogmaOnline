@@ -84,13 +84,24 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDeliveryItem.Serializer());
+            Create(new CDataDispelItemCategoryInfo.Serializer());
+            Create(new CDataDispelBaseItem.Serializer());
+            Create(new CDataDispelBaseItemData.Serializer());
+            Create(new CDataDispelLotData.Serializer());
+            Create(new CDataDispelLotItem.Serializer());
+            Create(new CDataDispelLotCrest.Serializer());
+            Create(new CDataDispelLotCrestUnk2.Serializer());
+            Create(new CDataDispelLotColor.Serializer());
+            Create(new CDataDispelLotPlus.Serializer());
+            Create(new CDataGetDispelItem.Serializer());
+            Create(new CDataDispelResultInfo.Serializer());
             Create(new CDataDropItemSetInfo.Serializer());
             Create(new CDataEditInfoSerializer());
             Create(new CDataEditParam.Serializer());
             Create(new CDataEditParamPalette.Serializer());
             Create(new CDataEquipElementParam.Serializer());
-            Create(new CDataWeaponCrestData.Serializer());
             Create(new CDataAddStatusParam.Serializer());
+            Create(new CDataEquipItemInfoUnk2.Serializer());
             Create(new CDataBazaarCharacterInfo.Serializer());
             Create(new CDataBazaarItemBaseInfo.Serializer());
             Create(new CDataBazaarItemHistoryInfo.Serializer());
@@ -333,6 +344,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftStartEquipColorChangeRes.Serializer());
             Create(new C2SCraftStartAttachElementReq.Serializer());
             Create(new C2SCraftStartDetachElementReq.Serializer());
+
+            Create(new C2SDispelGetDispelItemSettingsReq.Serializer());
+            Create(new C2SDispelGetDispelItemListReq.Serializer());
+            Create(new C2SDispelExchangeDispelItemReq.Serializer());
 
             Create(new C2SEquipChangeCharacterEquipJobItemReq.Serializer());
             Create(new C2SEquipChangeCharacterEquipReq.Serializer());
@@ -619,6 +634,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftStartDetachElementRes.Serializer());
             Create(new S2CCraftFinishCraftNtc.Serializer());
             Create(new S2CCraftCraftExpUpNtc.Serializer());
+
+            Create(new S2CDispelGetDispelItemSettingsRes.Serializer());
+            Create(new S2CDispelGetDispelItemListRes.Serializer());
+            Create(new S2CDispelExchangeDispelItemRes.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());

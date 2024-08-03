@@ -41,6 +41,7 @@ namespace Arrowgene.Ddon.Shared
         public const string QuestAssestKey = "quests";
         public const string JobValueShopKey = "JobValueShop.csv";
         public const string StampBonusKey = "StampBonus.csv";
+        public const string SpecialShopKey = "SpecialShops.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -81,6 +82,7 @@ namespace Arrowgene.Ddon.Shared
             QuestAssets = new QuestAsset();
             JobValueShopAsset = new List<(JobId, CDataJobValueShopItem)>();
             ElementAttachInfoAsset = new ElementAttachInfoAsset();
+            SpecialShopAsset = new SpecialShopAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -105,6 +107,7 @@ namespace Arrowgene.Ddon.Shared
         public QuestAsset QuestAssets {  get; set; }
         public List<(JobId, CDataJobValueShopItem)> JobValueShopAsset { get; private set; }
         public List<CDataStampBonusAsset> StampBonusAsset { get; private set; }
+        public SpecialShopAsset SpecialShopAsset { get; private set; }
 
         public void Initialize()
         {
@@ -129,6 +132,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => JobValueShopAsset = value, JobValueShopKey, new JobValueShopCsv());
             RegisterAsset(value => StampBonusAsset = value, StampBonusKey, new StampBonusCsv());
             RegisterAsset(value => ElementAttachInfoAsset = value, ElementAttachInfoKey, new ElementAttachInfoAssetDeserializer());
+            RegisterAsset(value => SpecialShopAsset = value, SpecialShopKey, new SpecialShopDeserializer());
 
             var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);

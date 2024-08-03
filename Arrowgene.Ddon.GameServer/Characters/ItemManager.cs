@@ -214,9 +214,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.EquipPoint = item.EquipPoints;
             ntcData.ItemList.EquipCharacterID = 0;
             ntcData.ItemList.EquipPawnID = 0;
-            ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            ntcData.ItemList.AddStatusParamList = item.AddStatusParamList;
             ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
+            ntcData.ItemList.AddStatusParamList = item.AddStatusParamList;
+            ntcData.ItemList.Unk2List = item.Unk2List;
             ntcData.UpdateItemNum = -finalConsumeNum;
 
             Storage fromStorage = character.Storage.GetStorage(fromStorageType);
@@ -292,9 +292,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Color = 0,
                         PlusValue = plusvalue,
                         EquipPoints = 0,
-                        WeaponCrestDataList = new List<CDataWeaponCrestData>(),
+                        EquipElementParamList = new List<CDataEquipElementParam>(),
                         AddStatusParamList = new List<CDataAddStatusParam>(),
-                        EquipElementParamList = new List<CDataEquipElementParam>()
+                        Unk2List = new List<CDataEquipItemInfoUnk2>()
                     };
                     slot = destinationStorage.AddItem(item, newItemNum);
                 }
@@ -318,9 +318,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.EquipPoint = item.EquipPoints;
                 result.ItemList.EquipCharacterID = 0;
                 result.ItemList.EquipPawnID = 0;
-                result.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-                result.ItemList.AddStatusParamList = item.AddStatusParamList;
                 result.ItemList.EquipElementParamList = item.EquipElementParamList;
+                result.ItemList.AddStatusParamList = item.AddStatusParamList;
+                result.ItemList.Unk2List = item.Unk2List;
                 result.UpdateItemNum = (int) addedItems;
                 results.Add(result);
             }
@@ -357,7 +357,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
             
 
-            foreach (var crest in item.WeaponCrestDataList)
+            foreach (var crest in item.EquipElementParamList)
             {
                 server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add);
             }
@@ -566,10 +566,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipPoint = item.EquipPoints;
             updateResult.ItemList.EquipCharacterID = characterId;
             updateResult.ItemList.EquipPawnID = pawnId;
-            updateResult.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            updateResult.ItemList.AddStatusParamList = item.AddStatusParamList;
             updateResult.ItemList.EquipElementParamList = item.EquipElementParamList;
-            updateResult.UpdateItemNum = (int)updateItemNum;
+            updateResult.ItemList.AddStatusParamList = item.AddStatusParamList;
+            updateResult.ItemList.Unk2List = item.Unk2List;
+            updateResult.UpdateItemNum = (int) updateItemNum;
 
             return updateResult;
         }
@@ -589,8 +589,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return item.ItemId;
         }
-
-
         public void UpgradeStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
         {
             client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
@@ -609,12 +607,40 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipPoint = newItem.EquipPoints;
             updateResult.ItemList.EquipCharacterID = 0;
             updateResult.ItemList.EquipPawnID = 0;
-            updateResult.ItemList.WeaponCrestDataList = newItem.WeaponCrestDataList;
-            updateResult.ItemList.AddStatusParamList = newItem.AddStatusParamList;
             updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
+            updateResult.ItemList.AddStatusParamList = newItem.AddStatusParamList;
+            updateResult.ItemList.Unk2List = newItem.Unk2List;
             updateResult.UpdateItemNum = 1;
 
             Logger.Debug($"Upgraded {newItem.UId} Item in DataBase");
+        }
+
+        public bool HasItem(DdonServer<GameClient> server, Character character, StorageType fromStorage, string itemUId, uint num)
+        {
+            var foundItem = character.Storage.GetStorage(fromStorage).FindItemByUId(itemUId);
+            if (foundItem == null)
+            {
+                return false;
+            }
+
+            return foundItem.Item3 >= num;
+        }
+
+        public bool HasItem(DdonServer<GameClient> server, Character character, List<StorageType> storages, string itemUId, uint num)
+        {
+            uint amountFound = 0;
+            foreach (var storage in storages)
+            {
+                var foundItem = character.Storage.GetStorage(storage).FindItemByUId(itemUId);
+                if (foundItem == null)
+                {
+                    continue;
+                }
+
+                amountFound += foundItem.Item3;
+            }
+
+            return amountFound >= num;
         }
     }
 

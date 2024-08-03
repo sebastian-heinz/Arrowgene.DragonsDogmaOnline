@@ -88,9 +88,9 @@ namespace Arrowgene.Ddon.Shared.Model
                     EquipPoint = tuple.item.Item1.EquipPoints,
                     EquipCharacterID = DetermineCharacterId(character, storageType, tuple.slot),
                     EquipPawnID = DeterminePawnId(character, storageType, tuple.slot),
-                    WeaponCrestDataList = tuple.item.Item1.WeaponCrestDataList,
+                    EquipElementParamList = tuple.item.Item1.EquipElementParamList,
                     AddStatusParamList = tuple.item.Item1.AddStatusParamList,
-                    EquipElementParamList = tuple.item.Item1.EquipElementParamList
+                    Unk2List = tuple.item.Item1.Unk2List
                 })
                 .ToList();
         }
@@ -236,7 +236,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     ItemId = (ushort) x.ItemId,
                     ColorNo = x.Color,
                     PlusValue = x.Unk3,
-                    WeaponCrestDataList = x.WeaponCrestDataList,
+                    EquipElementParamList = x.EquipElementParamList,
                     AddStatusParamList = x.AddStatusParamList
                 })
                 .ToList();
@@ -254,9 +254,9 @@ namespace Arrowgene.Ddon.Shared.Model
                     EquipSlot = tuple.slot,
                     Color = tuple.item?.Color ?? 0,
                     PlusValue = tuple.item?.PlusValue ?? 0,
-                    WeaponCrestDataList = tuple.item?.WeaponCrestDataList ?? new List<CDataWeaponCrestData>(),
+                    EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>(),
                     AddStatusParamList = tuple.item?.AddStatusParamList ?? new List<CDataAddStatusParam>(),
-                    EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>()
+                    Unk2List = tuple.item?.Unk2List ?? new List<CDataEquipItemInfoUnk2>()
                 })
                 .ToList();
         }

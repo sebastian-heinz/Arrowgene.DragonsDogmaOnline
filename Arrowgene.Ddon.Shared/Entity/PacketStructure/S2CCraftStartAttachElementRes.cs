@@ -9,14 +9,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public S2CCraftStartAttachElementRes()
         {
-            EquipElementParamList = new List<CDataWeaponCrestData>();
+            EquipElementParamList = new List<CDataEquipElementParam>();
             CurrentEquip = new CDataCurrentEquipInfo();
         }
 
         public override PacketId Id => PacketId.S2C_CRAFT_START_ATTACH_ELEMENT_RES;
 
         public uint Gold {  get; set; }
-        public List<CDataWeaponCrestData> EquipElementParamList {  get; set; }
+        public List<CDataEquipElementParam> EquipElementParamList {  get; set; }
         public CDataCurrentEquipInfo CurrentEquip { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCraftStartAttachElementRes>
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CCraftStartAttachElementRes obj = new S2CCraftStartAttachElementRes();
                 ReadServerResponse(buffer, obj);
                 obj.Gold = ReadUInt32(buffer);
-                obj.EquipElementParamList = ReadEntityList<CDataWeaponCrestData>(buffer);
+                obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 obj.CurrentEquip = ReadEntity<CDataCurrentEquipInfo>(buffer);
                 return obj;
             }

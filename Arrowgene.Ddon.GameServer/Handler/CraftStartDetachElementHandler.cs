@@ -57,13 +57,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var element in request.CraftElementList)
             {
                 Server.Database.RemoveCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo);
-                result.EquipElementParamList.Add(new CDataWeaponCrestData()
+                result.EquipElementParamList.Add(new CDataEquipElementParam()
                 {
                     CrestId = 0,
                     SlotNo = element.SlotNo,
                 });
 
-                item.WeaponCrestDataList = item.WeaponCrestDataList.Where(x => x.SlotNo != element.SlotNo).ToList();
+                item.EquipElementParamList = item.EquipElementParamList.Where(x => x.SlotNo != element.SlotNo).ToList();
             }
 
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartDetachElement;
