@@ -123,8 +123,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private CDataAddStatusData ReadAddStatus(TReader reader)
         {
             CDataAddStatusData AddStatus = new CDataAddStatusData();
-            AddStatus.IsAddStat1 = GetByte(reader, "is_add_stat1");
-            AddStatus.IsAddStat2 = GetByte(reader, "is_add_stat2");
+            AddStatus.IsAddStat1 = GetBoolean(reader, "is_add_stat1");
+            AddStatus.IsAddStat2 = GetBoolean(reader, "is_add_stat2");
             AddStatus.AdditionalStatus1 = GetUInt16(reader, "additional_status1");
             AddStatus.AdditionalStatus2 = GetUInt16(reader, "additional_status2");
             return AddStatus;

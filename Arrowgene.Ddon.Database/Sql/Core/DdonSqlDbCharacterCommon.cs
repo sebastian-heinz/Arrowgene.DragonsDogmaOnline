@@ -149,8 +149,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                             {
                                                 var addStatusData = new CDataAddStatusData
                                                 {
-                                                    IsAddStat1 = GetByte(reader3, "is_add_stat1"),
-                                                    IsAddStat2 = GetByte(reader3, "is_add_stat2"),
+                                                    IsAddStat1 = GetBoolean(reader3, "is_add_stat1"),
+                                                    IsAddStat2 = GetBoolean(reader3, "is_add_stat2"),
                                                     AdditionalStatus1 = GetUInt16(reader3, "additional_status1"),
                                                     AdditionalStatus2 = GetUInt16(reader3, "additional_status2")
                                                 };
@@ -209,8 +209,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                             {
                                                 var addStatusData = new CDataAddStatusData
                                                 {
-                                                    IsAddStat1 = GetByte(reader3, "is_add_stat1"),
-                                                    IsAddStat2 = GetByte(reader3, "is_add_stat2"),
+                                                    IsAddStat1 = GetBoolean(reader3, "is_add_stat1"),
+                                                    IsAddStat2 = GetBoolean(reader3, "is_add_stat2"),
                                                     AdditionalStatus1 = GetUInt16(reader3, "additional_status1"),
                                                     AdditionalStatus2 = GetUInt16(reader3, "additional_status2")
                                                 };

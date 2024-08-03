@@ -47,8 +47,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             CDataAddStatusData AddStat = new CDataAddStatusData()
             {
-                IsAddStat1 = 0,
-                IsAddStat2 = 0,
+                IsAddStat1 = false,
+                IsAddStat2 = false,
                 AdditionalStatus1 = 0,
                 AdditionalStatus2 = 0,
             };

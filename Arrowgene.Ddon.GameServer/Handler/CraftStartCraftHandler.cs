@@ -41,8 +41,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ushort AddStatusID = packet.Structure.Unk0;
             CDataAddStatusData AddStat = new CDataAddStatusData()
             {
-                IsAddStat1 = 0,
-                IsAddStat2 = 0,
+                IsAddStat1 = false,
+                IsAddStat2 = false,
                 AdditionalStatus1 = 0,
                 AdditionalStatus2 = 0,
             };
@@ -100,8 +100,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 AddStat = new CDataAddStatusData()
                     {
-                        IsAddStat1 = 1,
-                        IsAddStat2 = 0,
+                        IsAddStat1 = true,
+                        IsAddStat2 = false,
                         AdditionalStatus1 = AddStatusID,
                         AdditionalStatus2 = 0,
                     };

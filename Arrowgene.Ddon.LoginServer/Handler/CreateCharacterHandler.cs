@@ -217,8 +217,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                                 AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
-                                        IsAddStat1 = 1,
-                                        IsAddStat2 = 1,
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
                                         AdditionalStatus1 = 0x59,
                                         AdditionalStatus2 = 0x04
                                     }
@@ -254,8 +254,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                                 AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
-                                        IsAddStat1 = 1,
-                                        IsAddStat2 = 1,
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
                                         AdditionalStatus1 = 0x29D,
                                         AdditionalStatus2 = 0x01
                                     }
@@ -291,8 +291,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                                 AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
-                                        IsAddStat1 = 1,
-                                        IsAddStat2 = 1,
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
                                         AdditionalStatus1 = 0x280,
                                         AdditionalStatus2 = 0x01
                                     }
@@ -328,8 +328,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                                 AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
-                                        IsAddStat1 = 1,
-                                        IsAddStat2 = 1,
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
                                         AdditionalStatus1 = 0x1D2,
                                         AdditionalStatus2 = 0x01
                                     }
@@ -360,8 +360,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                 },
                                 AddStatusParamList = new List<CDataAddStatusData>() {
                                     new CDataAddStatusData {
-                                        IsAddStat1 = 1,
-                                        IsAddStat2 = 1,
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
                                         AdditionalStatus1 = 0x225,
                                         AdditionalStatus2 = 0x01
                                     }
