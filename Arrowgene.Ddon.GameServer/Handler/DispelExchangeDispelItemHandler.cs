@@ -10,6 +10,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -30,8 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 if (!appraisialItems.ContainsKey(item.Id))
                 {
-                    // TODO: Throw an exception?
-                    continue;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND);
                 }
 
                 bool toBag = false;
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         toBag = false;
                         break;
                     default:
-                        throw new Exception($"Unexpected destination when exchanging items {item.StorageType}");
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Unexpected destination when exchanging items {item.StorageType}");
                 }
 
                 // Check for cost
@@ -56,8 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (!hasFullPayment)
                 {
-                    // Probably a hacker or cheater
-                    continue;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_DISPEL_LACK_MONEY);
                 }
 
                 var updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
@@ -75,6 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var purchase = AppraiseItem(client.Character, appraisialItems[item.Id]);
 
                 List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, toBag, purchase.ItemId, purchase.ItemNum);
+                Debug.Assert(itemUpdateResults.Count == 1);
 
                 var newItem = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, itemUpdateResults[0].ItemList.ItemUId).Item2.Item2;
                 if (purchase.EquipElementParamList.Count > 0)
@@ -100,7 +100,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private CDataDispelResultInfo AppraiseItem(Character character, AppraisalItem item)
         {
-            var lotResult = item.LootPool[(new Random()).Next(0, item.LootPool.Count)];
+            var lotResult = item.LootPool[Random.Shared.Next(0, item.LootPool.Count)];
 
             var itemResult = new CDataDispelResultInfo()
             {
@@ -151,4 +151,3 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
     }
 }
-

@@ -15,8 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         public static uint RollDragonTrinketsAlpha(JobId jobId)
         {
-            Random rnd = new Random();
-            return DragonTrinketAlphaRewards.Rolls[jobId][rnd.Next(0, DragonTrinketAlphaRewards.Rolls[jobId].Count)];
+            return DragonTrinketAlphaRewards.Rolls[jobId][Random.Shared.Next(0, DragonTrinketAlphaRewards.Rolls[jobId].Count)];
         }
 
         public static List<uint> GetDragonTrinketAlphaRolls(JobId jobId)
@@ -26,8 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static uint RollDragonTrinketsBeta(JobId jobId)
         {
-            Random rnd = new Random();
-            return DragonTrinketBetaRewards.Rolls[jobId][rnd.Next(0, DragonTrinketBetaRewards.Rolls[jobId].Count)];
+            return DragonTrinketBetaRewards.Rolls[jobId][Random.Shared.Next(0, DragonTrinketBetaRewards.Rolls[jobId].Count)];
         }
 
         public static List<uint> GetDragonTrinketBetaRolls(JobId jobId)
@@ -37,8 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static uint RollCrestLottery(List<uint> rolls)
         {
-            Random rnd = new Random();
-            return rolls[rnd.Next(0, rolls.Count)];
+            return rolls[Random.Shared.Next(0, rolls.Count)];
         }
 
     }
