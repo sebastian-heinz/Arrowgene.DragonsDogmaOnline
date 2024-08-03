@@ -22,121 +22,65 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
 
         public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
-
         {
-            #region Initializing vars
             Character character = client.Character;
             string equipItemUID = request.EquipItemUID;
             Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             uint charid = client.Character.CharacterId;
             uint pawnid = request.CraftMainPawnID;
 
+            // Fetch the crafting recipe data for the item
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
-                .Where(recipe => recipe.ItemID == equipItem.ItemId)
-                .First();
+                .First(recipe => recipe.ItemID == equipItem.ItemId);
 
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
             uint EquipRank = json_data.Unk0;
             bool canContinue = true;
-            bool IsGreatSuccess = Random.Shared.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
-            bool DoUpgrade = false;
-
+            bool IsGreatSuccess = Random.Shared.Next(5) == 0;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
-            uint previousTotalEquipPoint = currentTotalEquipPoint;
-            uint addEquipPoint = 0;     
-            double minMultiplier = 0.8;
-            double maxMultiplier = 1.2;
-            double pointsMultiplier = minMultiplier + (Random.Shared.NextDouble() * (maxMultiplier - minMultiplier));
 
-            // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
-            List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
-            {
-                new CDataCommonU32(gearupgradeID)
-            };
-            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
-            {
-                CharacterId = 0,
-                PawnId = 0,
-                EquipType = 0,
-                EquipSlotNo = 0
-            };
-            CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
+            List<CDataCommonU32> gradeuplist = new() { new CDataCommonU32(gearupgradeID) };
+            CDataEquipSlot EquipmentSlot = new();
+            CDataCurrentEquipInfo CurrentEquipInfo = new()
             {
                 ItemUId = equipItemUID,
                 EquipSlot = EquipmentSlot
             };
+
             // More dummy data, looks like its DragonAugment related.
-            CDataCraftStartEquipGradeUpUnk0Unk0 DragonAugmentData = new CDataCraftStartEquipGradeUpUnk0Unk0()
-            {
-                Unk0 = 0,          // Probably DragonAugment related.
-                Unk1 = 0,
-                Unk2 = 0,          // setting this to a value above 0 seems to stop displaying "UP" ?
-                Unk3 = 0,          // displays "UP" next to the DA upon succesful enhance.
-                IsMax = false,      // displays Max on the DA popup.
-            };
-            CDataCraftStartEquipGradeUpUnk0 dummydata = new CDataCraftStartEquipGradeUpUnk0()
+            CDataCraftStartEquipGradeUpUnk0Unk0 DragonAugmentData = new();
+            CDataCraftStartEquipGradeUpUnk0 dummydata = new() // TODO: Figure this out
             {
                 Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { DragonAugmentData },
-                Unk1 = 0,
-                Unk2 = 0,
-                Unk3 = 0,               // No idea what these 3 bytes are for
                 DragonAugment = false,    // makes the DragonAugment slot popup appear if set to true.
             };
-            // TODO: Source these values accurately when we know what they are. ^
 
-            List<CDataItemUpdateResult> updateResults;
             var res = new S2CCraftStartEquipGradeUpRes();
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new();
 
-            #endregion
+            // Update item equip points in the database
+            uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
+            currentTotalEquipPoint += addEquipPoint;
+            Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
 
-            #region Point Distribution 
-            // Handles adding EquipPoints.
-            // These values for adding equippoints are completely made up and not representative of any real Pawn craft levels.
-            if(IsGreatSuccess == true)
-            {
-                addEquipPoint = 300;
-                addEquipPoint = (uint)(addEquipPoint * pointsMultiplier);
-                currentTotalEquipPoint += addEquipPoint;
-                bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-            }
-            else
-            {
-                addEquipPoint = 180;
-                addEquipPoint = (uint)(addEquipPoint * pointsMultiplier);
-                currentTotalEquipPoint += addEquipPoint;
-                bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-            }
-
-            #endregion
-
-            // TODO: we need to implement Pawn craft levels since that affects the points that get added
-
-
-            #region Taking Cost
             // Removes crafting materials
             foreach (var craftMaterial in request.CraftMaterialList)
             {
-                updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                var updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             }
 
-            // Subtract less Gold if supportpawn is used and add slightly more points
-            if(request.CraftSupportPawnIDList.Count > 0)
+            // Subtract less Gold if support pawn is used and add slightly more points
+            if (request.CraftSupportPawnIDList.Count > 0)
             {
-                goldRequired = (uint)(goldRequired*0.95);
+                goldRequired = (uint)(goldRequired * 0.95);
                 currentTotalEquipPoint += 10;
             }
 
-            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
+            var updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-            #endregion
-
-
-
-            #region DoUpgrade Check
 
             // Handling the check on how many points we need to upgrade the weapon in its current state.
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
@@ -147,118 +91,100 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 1 => 700,
                 2 => 1000,
                 3 => 1500,
-                4 => 800,
+                4 => 800,  // TODO: Check if the gear can reach "True" level (4) and handle that properly with "canContinue"
                 _ => throw new InvalidOperationException("Invalid star level")
             };
 
-            // TODO: Check if the gear can reach "True" level (4 in the above ^) and handle that properly here.
             if (currentStars == 3) canContinue = false;
-
-            // Handling the comparison to permit upgrading or not.
-            if (currentTotalEquipPoint >= requiredPoints)
+            bool DoUpgrade = currentTotalEquipPoint >= requiredPoints;
+            if (DoUpgrade)
             {
-                DoUpgrade = true;
-                addEquipPoint = 0;
                 currentTotalEquipPoint = 0;
-                equipItem.EquipPoints = 0;
-                bool updateSuccessful = Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-                // Points must be set to 0 after Upgrade actually happens.
+                Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
 
-            #endregion
-
-            #region Upgrading Item
-            // Updating the item.
             equipItem.ItemId = gearupgradeID;
-            equipItem.Unk3 = equipItem.Unk3;
-            equipItem.Color = equipItem.Color;
-            equipItem.PlusValue = equipItem.PlusValue;
-            equipItem.EquipPoints = equipItem.EquipPoints;
-            equipItem.WeaponCrestDataList = equipItem.WeaponCrestDataList;
-            equipItem.AddStatusParamList = equipItem.AddStatusParamList;
-            equipItem.EquipElementParamList = equipItem.EquipElementParamList;
+            equipItem.EquipPoints = currentTotalEquipPoint;
 
             if (DoUpgrade)
             {
-                var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
-
-                if (foundItem != null)
-                {
-                    var (slotno, item, itemnum) = foundItem;
-                    CharacterCommon characterCommon = null;
-                    if (storageType == StorageType.CharacterEquipment || storageType == StorageType.PawnEquipment)
-                    {
-                        CurrentEquipInfo.EquipSlot.EquipSlotNo = EquipManager.DetermineEquipSlot(slotno);
-                        CurrentEquipInfo.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotno);
-                    }
-                    if (storageType == StorageType.PawnEquipment)
-                    {
-                        CurrentEquipInfo.EquipSlot.PawnId = pawnid;
-                        characterCommon = character.Pawns.Where(x => x.PawnId == pawnid).SingleOrDefault();
-                    }
-                    else if(storageType == StorageType.CharacterEquipment)
-                    {
-                        CurrentEquipInfo.EquipSlot.CharacterId = charid;
-                        characterCommon = character;
-                    }
-
-                    updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
-                    if (foundItem != null)
-                    {
-                        (slotno, item, itemnum) = foundItem;
-                        _itemManager.UpgradeStorageItem(
-                            Server,
-                            client,
-                            charid,
-                            storageType,
-                            equipItem,
-                            (byte)slotno
-                        );
-                        updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
-
-                        client.Send(updateCharacterItemNtc);
-                }
-                else
-                {
-                    Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
-                }
-            }
-                
-            res = new S2CCraftStartEquipGradeUpRes()
-            {
-                GradeUpItemUID = equipItemUID,
-                GradeUpItemID = equipItem.ItemId,
-                GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
-                AddEquipPoint = 0,
-                TotalEquipPoint = 0,
-                EquipGrade = EquipRank, // Unclear why the client wants this? as long as its a number it doesn't seem to matter waht you set it
-                Gold = goldRequired,
-                IsGreatSuccess = IsGreatSuccess,
-                CurrentEquip = CurrentEquipInfo,   
-                BeforeItemID = equipItem.ItemId,
-                Upgradable = canContinue,
-                Unk1 = dummydata // Dragon Augment related I guess?
-            };
-            #endregion
+                UpdateCharacterItem(client, equipItemUID, equipItem, gradeuplist, charid, pawnid, updateCharacterItemNtc, CurrentEquipInfo);
+                res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
-                res = new S2CCraftStartEquipGradeUpRes()
-                {
-                    GradeUpItemUID = equipItemUID,
-                    AddEquipPoint = addEquipPoint,
-                    TotalEquipPoint = currentTotalEquipPoint,
-                    Gold = goldRequired,
-                    IsGreatSuccess = IsGreatSuccess,
-                    CurrentEquip = CurrentEquipInfo,
-                    Upgradable = canContinue,
-                    Unk1 = dummydata // Dragon Augment related I guess?
-                    // Response for adding equippoints and not upgrading.
-                };
+                res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, IsGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
+            }
 
-            };
             return res;
+        }
+
+        private void UpdateCharacterItem(GameClient client, string equipItemUID, Item equipItem, List<CDataCommonU32> gradeuplist, uint charid, uint pawnid, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, CDataCurrentEquipInfo CurrentEquipInfo)
+        {
+            var (storageType, foundItem) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
+            if (foundItem != null)
+            {
+                var (slotno, item, itemnum) = foundItem;
+                CharacterCommon characterCommon = null;
+                if (storageType == StorageType.CharacterEquipment || storageType == StorageType.PawnEquipment)
+                {
+                    CurrentEquipInfo.EquipSlot.EquipSlotNo = EquipManager.DetermineEquipSlot(slotno);
+                    CurrentEquipInfo.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotno);
+                }
+                if (storageType == StorageType.PawnEquipment)
+                {
+                    CurrentEquipInfo.EquipSlot.PawnId = pawnid;
+                    characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnid);
+                }
+                else if (storageType == StorageType.CharacterEquipment)
+                {
+                    CurrentEquipInfo.EquipSlot.CharacterId = charid;
+                    characterCommon = client.Character;
+                }
+
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
+
+                _itemManager.UpgradeStorageItem(Server, client, charid, storageType, equipItem, (byte)slotno);
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
+                client.Send(updateCharacterItemNtc);
+            }
+            else
+            {
+                Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
+            }
+        }
+        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist, uint equipGrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+        {
+            return new S2CCraftStartEquipGradeUpRes
+            {
+                GradeUpItemUID = equipItemUID,
+                GradeUpItemID = gradeUpItemID,
+                GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
+                AddEquipPoint = 0,
+                TotalEquipPoint = 0,
+                EquipGrade = equipGrade, // Unclear why the client wants this? as long as its a number it doesn't seem to matter what you set it as.
+                Gold = gold,
+                IsGreatSuccess = isGreatSuccess,
+                CurrentEquip = currentEquip,
+                BeforeItemID = beforeItemID,
+                Upgradable = upgradable,
+                Unk1 = unk1 // Dragon Augment related I guess?
+            };
+        }
+        private S2CCraftStartEquipGradeUpRes CreateEquipPointResponse(string equipItemUID, uint addEquipPoint, uint totalEquipPoint, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+        {
+            return new S2CCraftStartEquipGradeUpRes
+            {
+                GradeUpItemUID = equipItemUID,
+                AddEquipPoint = addEquipPoint,
+                TotalEquipPoint = totalEquipPoint,
+                Gold = gold,
+                IsGreatSuccess = isGreatSuccess,
+                CurrentEquip = currentEquip,
+                Upgradable = upgradable,
+                Unk1 = unk1 // Dragon Augment related I guess?
+            };
         }
     }
 }
