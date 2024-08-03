@@ -2,7 +2,6 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
 
@@ -14,14 +13,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static uint PP_MAX = 2000;
 
-        public PlayPointManager(IDatabase database, GameClientLookup gameClientLookup)
+        public PlayPointManager(IDatabase database)
         {
-            this._database = database;
-            this._gameClientLookup = gameClientLookup;
+            _database = database;
         }
 
         protected readonly IDatabase _database;
-        protected readonly GameClientLookup _gameClientLookup;
 
         public void AddPlayPoint(GameClient client, uint gainedPoints, uint extraBonusPoints, byte type = 1)
         {
@@ -43,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 client.Send(ppNtc);
 
-                this._database.UpdateCharacterPlayPointData(client.Character.CommonId, activeCharacterPlayPoint);
+                _database.UpdateCharacterPlayPointData(client.Character.CommonId, activeCharacterPlayPoint);
             }
         }
 
@@ -67,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 client.Send(ppNtc);
 
-                this._database.UpdateCharacterPlayPointData(client.Character.CommonId, activeCharacterPlayPoint);
+                _database.UpdateCharacterPlayPointData(client.Character.CommonId, activeCharacterPlayPoint);
             }
         }
     }

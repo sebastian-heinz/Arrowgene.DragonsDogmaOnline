@@ -81,6 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     return;
                 }
             }
+            targetLevel = Math.Clamp(targetLevel, 1, ExpManager.LV_CAP);
 
             CharacterCommon targetCharacter = client.Character;
 
@@ -129,9 +130,10 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             targetJobData.Def = newStats.Def;
             targetJobData.MDef = newStats.MDef;
 
-            string targetName = "";
+            string targetName = $"{client.Character.FirstName} {client.Character.LastName}";
+            if (targetCharacter is Pawn) targetName = ((Pawn)targetCharacter).Name;
 
-            if (targetCharacter.ActiveCharacterJobData.Job == targetJob)
+            if (client.Party.Contains(targetCharacter) && targetCharacter.ActiveCharacterJobData.Job == targetJob)
             {
                 if (targetCharacter is Character)
                 {
@@ -142,8 +144,6 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     lvlNtc.TotalJobPoint = targetJobData.JobPoint;
                     GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, targetCharacter);
                     client.Send(lvlNtc);
-
-                    targetName = $"{((Character)targetCharacter).FirstName} {((Character)targetCharacter).LastName}";
                 }
                 else if (targetCharacter is Pawn)
                 {

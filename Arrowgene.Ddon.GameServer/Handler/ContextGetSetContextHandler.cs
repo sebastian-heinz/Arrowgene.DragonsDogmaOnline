@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
@@ -34,10 +35,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Sending S2CInstanceAreaResetNtc resets it (Like its done in StageAreaChangeHandler)
             // Send to all or just the host?
 
-            var baseContext = packet.Structure.Base;
-            var context = ContextManager.GetContext(client.Party, baseContext.UniqueId);
+            CDataContextSetBase baseContext = packet.Structure.Base;
+            Tuple<CDataContextSetBase,CDataContextSetAdditional> context = ContextManager.GetContext(client.Party, baseContext.UniqueId);
 
-            var clientIndex = Math.Max(client.Party.ClientIndex(client), 0);
+            int originalBaseIndex = baseContext.MasterIndex;
+            int originalAdditionalContext = (context != null) ? context.Item2.MasterIndex : -99;
+
+            int clientIndex = Math.Max(client.Party.ClientIndex(client), 0);
             baseContext.MasterIndex = clientIndex; //Likely hacky.
 
             if (context == null)
@@ -61,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             Logger.Debug("===================================================================");
-            Logger.Debug($"ContextGetSetContextHandler: ContextId: {baseContext.ContextId}, UniqueId: 0x{baseContext.UniqueId:x16}");
+            Logger.Debug($"ContextGetSetContextHandler: ContextId: {baseContext.ContextId}, UniqueId: 0x{baseContext.UniqueId:x16}, Context: {originalBaseIndex}/{originalAdditionalContext}/{clientIndex}");
             Logger.Debug("===================================================================");
         }
     }

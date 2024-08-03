@@ -568,7 +568,7 @@ CREATE TABLE IF NOT EXISTS "ddon_stamp_bonus"
     "consecutive_stamp"       INTEGER             NOT NULL,
     "total_stamp"             INTEGER             NOT NULL,
     CONSTRAINT fk_stamp_bonus_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
-)
+);
 
 CREATE TABLE IF NOT EXISTS "ddon_crests" (
 	"character_common_id"	INTEGER NOT NULL,
