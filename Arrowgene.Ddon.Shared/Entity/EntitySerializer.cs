@@ -78,6 +78,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCraftSupportPawnID.Serializer());
             Create(new CDataCraftTimeSaveCost.Serializer());
             Create(new CDataCraftSkillAnalyzeResult.Serializer());
+            Create(new CDataCraftElement.Serializer());
+            Create(new CDataCurrentEquipInfo.Serializer());
+            Create(new CDataEquipSlot.Serializer());
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDeliveryItem.Serializer());
@@ -330,6 +333,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCraftSkillAnalyzeReq.Serializer());
             Create(new C2SCraftStartEquipColorChangeReq.Serializer());
             Create(new S2CCraftStartEquipColorChangeRes.Serializer());
+            Create(new C2SCraftStartAttachElementReq.Serializer());
+            Create(new C2SCraftStartDetachElementReq.Serializer());
 
             Create(new C2SEquipChangeCharacterEquipJobItemReq.Serializer());
             Create(new C2SEquipChangeCharacterEquipReq.Serializer());
@@ -612,6 +617,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftStartEquipGradeUpRes.Serializer());
             Create(new S2CCraftStartQualityUpRes.Serializer());
             Create(new S2CCraft_30_21_16_NTC.Serializer());
+            Create(new S2CCraftStartAttachElementRes.Serializer());
+            Create(new S2CCraftStartDetachElementRes.Serializer());
+            Create(new S2CCraftFinishCraftNtc.Serializer());
+            Create(new S2CCraftCraftExpUpNtc.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());

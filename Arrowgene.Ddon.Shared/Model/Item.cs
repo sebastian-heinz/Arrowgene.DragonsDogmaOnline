@@ -58,36 +58,8 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public string UpdateUId()
         {
-#if false
-            IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5); // It's for comparison, who cares, it's fast.
-            hash.AppendData(BitConverter.GetBytes(ItemId));
-            hash.AppendData(BitConverter.GetBytes(Unk3));
-            hash.AppendData(BitConverter.GetBytes(Color));
-            hash.AppendData(BitConverter.GetBytes(PlusValue));
-            hash.AppendData(BitConverter.GetBytes(EquipPoints));
-            foreach (var weaponCrestData in WeaponCrestDataList)
-            {
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.SlotNo));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.CrestId));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.Add));
-            }
-            foreach (var addStatData in AddStatusData)
-            {
-                hash.AppendData(BitConverter.GetBytes(addStatData.IsAddStat1));
-                hash.AppendData(BitConverter.GetBytes(addStatData.IsAddStat2));
-                hash.AppendData(BitConverter.GetBytes(addStatData.AdditionalStatus1));
-                hash.AppendData(BitConverter.GetBytes(addStatData.AdditionalStatus2));
-            }
-            foreach (var equipElementParam in EquipElementParamList)
-            {
-                hash.AppendData(BitConverter.GetBytes(equipElementParam.SlotNo));
-                hash.AppendData(BitConverter.GetBytes(equipElementParam.ItemId));
-            }
-            this._uid = BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, UIdLength);
-#else
             Random rnd = new Random();
             this._uid = $"{rnd.Next():X08}";
-#endif
             return this._uid;
         }
     }

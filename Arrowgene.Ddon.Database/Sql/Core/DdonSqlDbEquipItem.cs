@@ -88,7 +88,46 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
+        public List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectEquipItemByCharacter(connection, characterCommonId);
+        }
+
+        public List<EquipItem> SelectEquipItemByCharacter(TCon connection, uint characterCommonId)
+        {
+            List<EquipItem> results = new List<EquipItem>();
+
+            ExecuteInTransaction(conn =>
+            {
+                ExecuteReader(conn, SqlSelectEquipItemByCharacter,
+                    command => {
+                        AddParameter(command, "@character_common_id", characterCommonId);
+                    }, reader => {
+                        while (reader.Read())
+                        {
+                            results.Add(ReadEquipItem(reader));
+                        }
+                    });
+            });
+
+            return results;
+        }
+
+        private EquipItem ReadEquipItem(TReader reader)
+        {
+            EquipItem obj = new EquipItem();
+            obj.UId = GetString(reader, "item_uid");
+            obj.CharacterCommonId = GetUInt32(reader, "character_common_id");
+            obj.Job = (JobId)GetByte(reader, "job");
+            obj.EquipType = (EquipType)GetByte(reader, "equip_type");
+            obj.EquipSlot = GetByte(reader, "equip_slot");
+            return obj;
+        }
+
+
         private void AddParameter(TCom command, uint commonId, JobId job, EquipType equipType, byte equipSlot)
+
         {
             AddParameter(command, "character_common_id", commonId);
             AddParameter(command, "job", (byte) job);

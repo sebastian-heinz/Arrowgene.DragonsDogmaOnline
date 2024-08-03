@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.KeyItems };
         public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
+        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> { StorageType.CharacterEquipment, StorageType.PawnEquipment, StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
 
         private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
             {7789, (WalletType.Gold, 1)},
@@ -194,9 +195,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consuneNum)
+        private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consumeNum)
         {
-            uint finalItemNum = (uint) Math.Max(0, (int)itemNum - (int)consuneNum);
+            uint finalItemNum = (uint) Math.Max(0, (int)itemNum - (int)consumeNum);
             int finalConsumeNum = (int)itemNum - (int)finalItemNum;
 
             CDataItemUpdateResult ntcData = new CDataItemUpdateResult();
@@ -209,7 +210,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.Color = item.Color;
             ntcData.ItemList.PlusValue = item.PlusValue;
             ntcData.ItemList.Bind = false;
-            ntcData.ItemList.EquipPoint = item.EquipPoints;
+            ntcData.ItemList.EquipPoint = 0;
             ntcData.ItemList.EquipCharacterID = 0;
             ntcData.ItemList.EquipPawnID = 0;
             ntcData.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
@@ -233,7 +234,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return ntcData;
         }
 
-        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0)
+        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
             if(itemBag)
@@ -247,7 +248,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if(clientItemInfo.StorageType == StorageType.ItemBagEquipment)
                 {
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, plusvalue);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit);
                 }
                 else
                 {
@@ -257,7 +258,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte plusvalue = 0)
+        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
             // The stack limit is specified by the stackLimit arg
@@ -269,7 +270,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .Select((itemAndCount, index) => new {item = itemAndCount, slot = (ushort) (index + 1)})
                     .Where(itemAndNumWithSlot => (
                         itemAndNumWithSlot.item?.Item1.ItemId == itemId
-                        && itemAndNumWithSlot.item?.Item1.PlusValue == plusvalue
                         && itemAndNumWithSlot.item?.Item2 < stackLimit
                     ))
                     .FirstOrDefault();
@@ -288,8 +288,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         ItemId = itemId,
                         Unk3 = 0,
                         Color = 0,
-                        PlusValue = plusvalue,
-                        EquipPoints = 0,
+                        PlusValue = 0,
                         WeaponCrestDataList = new List<CDataWeaponCrestData>(),
                         AddStatusData = new List<CDataAddStatusData>(),
                         EquipElementParamList = new List<CDataEquipElementParam>()
@@ -310,10 +309,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.Unk3 = item.Unk3;
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
-                result.ItemList.Color = item.Color;
-                result.ItemList.PlusValue = item.PlusValue;
+                result.ItemList.Color = item.Color; // ?
+                result.ItemList.PlusValue = item.PlusValue; // ?
                 result.ItemList.Bind = false;
-                result.ItemList.EquipPoint = item.EquipPoints;
+                result.ItemList.EquipPoint = 0;
                 result.ItemList.EquipCharacterID = 0;
                 result.ItemList.EquipPawnID = 0;
                 result.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
@@ -353,10 +352,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             storage.SetItem(item, num, slotNo);
             server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
+            
 
-            foreach (var addStatus in item.AddStatusData)
+            foreach (var crest in item.WeaponCrestDataList)
             {
-                server.Database.InsertAddStatus(item.UId, character.CharacterId, addStatus.IsAddStat1, addStatus.IsAddStat2, addStatus.AdditionalStatus1, addStatus.AdditionalStatus2);
+                server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add);
             }
         }
 
@@ -537,8 +537,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
-        public CDataItemUpdateResult CreateItemUpdateResult(Character character, Item item, StorageType storageType, ushort slotNo, uint itemNum, uint updateItemNum)
+        public CDataItemUpdateResult CreateItemUpdateResult(CharacterCommon character, Item item, StorageType storageType, ushort slotNo, uint itemNum, uint updateItemNum)
         {
+            uint pawnId = 0;
+            uint characterId = 0;
+            if (character is Character)
+            {
+                characterId = ((Character)character).CharacterId;
+            }
+            else if (character is Pawn)
+            {
+                pawnId = ((Pawn)character).PawnId;
+            }
+
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
             updateResult.ItemList.ItemUId = item.UId;
             updateResult.ItemList.ItemId = item.ItemId;
@@ -546,12 +557,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.Unk3 = item.Unk3;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
-            updateResult.ItemList.Color = item.Color; // ?
-            updateResult.ItemList.PlusValue = item.PlusValue; // ?
+            updateResult.ItemList.Color = item.Color;
+            updateResult.ItemList.PlusValue = item.PlusValue;
             updateResult.ItemList.Bind = false;
-            updateResult.ItemList.EquipPoint = item.EquipPoints;
-            updateResult.ItemList.EquipCharacterID = (character == null) ? 0 : character.CharacterId;
-            updateResult.ItemList.EquipPawnID = 0;
+            updateResult.ItemList.EquipPoint = 0; // TODO: Add value to Item
+            updateResult.ItemList.EquipCharacterID = characterId;
+            updateResult.ItemList.EquipPawnID = pawnId;
             updateResult.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
             updateResult.ItemList.AddStatusData = item.AddStatusData;
             updateResult.ItemList.EquipElementParamList = item.EquipElementParamList;
@@ -576,7 +587,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return item.ItemId;
         }
 
-        public List<CDataItemUpdateResult> UpdateStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
+
+        public List<CDataItemUpdateResult> UpgradeStorageItem(DdonGameServer server, GameClient client, Character character, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
         {
             client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
             server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
@@ -602,6 +614,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return new List<CDataItemUpdateResult> { updateResult };
         }
     }
+
+
 
 
     [Serializable]

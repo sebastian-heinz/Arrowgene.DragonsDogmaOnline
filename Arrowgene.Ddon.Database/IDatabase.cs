@@ -136,6 +136,7 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot);
+        List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId);
 
         // Job Items
         bool InsertEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo);
@@ -274,5 +275,10 @@ namespace Arrowgene.Ddon.Database
         // Stamps
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);
         public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
+        // Crests
+        bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
+        bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
+        bool RemoveCrest(uint characterCommonId, string itemUId, uint slot);
+        List<Crest> GetCrests(uint characterCommonId, string itemUId);
     }
 }
