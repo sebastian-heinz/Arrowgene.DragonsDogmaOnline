@@ -534,8 +534,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 if (expPoint.Type == ExpType.ExperiencePoints)
                 {
-                    uint bonusExp = ExpManager.GetRookiesRingBonus(server, client.Character, expPoint.Reward);
-                    server.ExpManager.AddExp(client, client.Character, expPoint.Reward, bonusExp, 2); // I think type 2 means quest
+                    server.ExpManager.AddExp(client, client.Character, expPoint.Reward, 2); // I think type 2 means quest
                 }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {

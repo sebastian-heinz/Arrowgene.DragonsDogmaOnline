@@ -122,7 +122,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = enemyKilled.GetDroppedExperience();
-                uint extraBonusExp = 0;
 
                 uint gainedPP = enemyKilled.GetDroppedPlayPoints();
                 uint gainedBonusPP = 0;
@@ -139,7 +138,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience)
                     {
                         gainedPP = 0;
-                        extraBonusExp += ExpManager.GetRookiesRingBonus(_gameServer, memberClient.Character, gainedExp);
                     }
                     else
                     {
@@ -197,12 +195,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     memberCharacter = pawn;
 
                     if (memberClient.Character.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
-
-                    // TODO: Should ring work for pawns?
-                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience)
-                    {
-                        extraBonusExp += ExpManager.GetRookiesRingBonus(_gameServer, pawn, gainedExp);
-                    }
                 }
                 else
                 {
@@ -211,7 +203,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (gainedExp > 0)
                 {
-                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, extraBonusExp);
+                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp);
                 }
             }
         }
