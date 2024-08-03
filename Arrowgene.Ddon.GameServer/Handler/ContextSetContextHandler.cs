@@ -26,14 +26,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // To the client or to all party?
             Tuple<CDataContextSetBase, CDataContextSetAdditional> context = new Tuple<CDataContextSetBase, CDataContextSetAdditional>(packet.Structure.Base, packet.Structure.Additional);
 
-            Logger.Debug("===================================================================");
-            Logger.Debug($"C2SSetContextNtc: ContextId: {context.Item1.ContextId}, UniqueId: 0x{context.Item1.UniqueId:x16}");
-            Logger.Debug("===================================================================");
-
             ContextManager.SetContext(client.Party, context.Item1.UniqueId, context);
 
             int index = context.Item2.MasterIndex;
-            index = Math.Max(index, 0); //Interpret -1 as "Any" and assign to host?
+            
+            if (index == -1)
+            {
+                index = client.Party.ClientIndex(client);
+            }
+
+            Logger.Debug("===================================================================");
+            Logger.Debug($"C2SSetContextNtc: ContextId: {context.Item1.ContextId}, UniqueId: 0x{context.Item1.UniqueId:x16}, Context: {context.Item2.MasterIndex}/{index}");
+            Logger.Debug("===================================================================");
 
             // Send to all or just the host?
             client.Party.SendToAll(new S2CContextMasterChangeNtc()

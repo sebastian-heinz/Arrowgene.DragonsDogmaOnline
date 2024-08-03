@@ -106,6 +106,14 @@ namespace Arrowgene.Ddon.Cli.Command
                 _database = DdonDatabaseBuilder.Build(_setting.DatabaseSetting);
             }
 
+            uint currentDatabaseVersion = _database.GetMeta().DatabaseVersion;
+            if (currentDatabaseVersion != DdonDatabaseBuilder.Version)
+            {
+                Logger.Error($"Database version is {currentDatabaseVersion}. Please update the database to version {DdonDatabaseBuilder.Version}.");
+                Logger.Error("$You can do this by running the server with the \"dbmigration\" flag.");
+                return CommandResultType.Exit;
+            }
+
             if (_assetRepository == null)
             {
                 _assetRepository = new AssetRepository(_setting.AssetPath);
