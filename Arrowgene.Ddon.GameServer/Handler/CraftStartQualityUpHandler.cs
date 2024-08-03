@@ -71,19 +71,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
             }
-            // else
-            // {
-            //     retainPlusValue = true; // This exists because you can change the additionalstatus whenever you want, even with one applied.
-            //                             // However PlusValue (Quality) shouldn't get re-rolled if you're only changing additionalstatus.
-            // }
 
             
             var thresholds = new (int Threshold, int Quality)[]
             {
-                (75, 2),
-                (25, 1),
-                (0, 0)  // This should always be the last one to catch all remaining cases
+                (65, 2),
+                (15, 1),
+                (0, 0)
             };
+            // TODO: Supposedly the base Refinement material cannot hit 3, only 1, unless it greatsuccess in which it can hit 2.
+            // 3 appears to be exclusive to the better refinement material?
 
             RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
 
@@ -92,39 +89,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomQuality = 3;
             }
             
-            // if (AddStatusID > 0 && updatingAddStatus == false)
-            // {
-                
-            //     bool success = Server.Database.InsertIfNotExistsAddStatus(equipItemUID, charid, 1, 1, AddStatusID, AddStatusID);
-            //     AddStat = new CDataAddStatusData()
-            //     {
-            //         IsAddStat1 = 1,
-            //         IsAddStat2 = 0,
-            //         AdditionalStatus1 = AddStatusID,
-            //         AdditionalStatus2 = 0,
-            //     };
-
-            //     if (success)
-            //         {
-            //             Console.WriteLine("Additional status added successfully.");
-            //         }
-            //     else
-            //         {
-            //             success = Server.Database.UpdateAddStatus(equipItemUID, charid, 1, 1, AddStatusID, AddStatusID);
-            //             AddStat = new CDataAddStatusData()
-            //             {
-            //                 IsAddStat1 = 1,
-            //                 IsAddStat2 = 0,
-            //                 AdditionalStatus1 = AddStatusID,
-            //                 AdditionalStatus2 = 0,
-            //             };
-            //             if (success)
-            //             {
-            //                 Console.WriteLine("Additional status Updated successfully.");
-            //             }
-            //         };
-            // };
-
             // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
             // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
 
@@ -133,13 +97,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 AddStat
             };
 
-
-            // if(retainPlusValue)
-            // {
-            //     RandomQuality = currentPlusValue;
-            // }
-
-
+            if (equipItem.PlusValue > RandomQuality)
+            {
+                RandomQuality = equipItem.PlusValue;
+                // Wiki's say you can't lower quality.
+            }
 
             // Updating the item.
             equipItem.ItemId = equipItem.ItemId;

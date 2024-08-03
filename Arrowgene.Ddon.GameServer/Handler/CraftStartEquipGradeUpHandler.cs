@@ -52,7 +52,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint previousTotalEquipPoint = currentTotalEquipPoint;
             uint addEquipPoint = 0;     
             bool dogreatsuccess = _random.Next(5) == 0; // 1 in 5 chance to be true, someone said it was 20%.
-            bool canUpgrade = false;
+            bool DoUpgrade = false;
 
             double minMultiplier = 0.8;
             double maxMultiplier = 1.2;
@@ -91,23 +91,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
             }
 
-                // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
-                // 29/07/24, seems like points should be set to 0 upon upgrading, so this probably never allows more than one?
-                List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
-                {
-                    new CDataCommonU32(gearupgradeID)
-                };
+            // TODO: Figure out if you can upgrade several times in a single interaction and if so, handle that lol
+            // 29/07/24, seems like points should be set to 0 upon upgrading, so this probably never allows more than one?
+            List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>()
+            {
+                new CDataCommonU32(gearupgradeID)
+            };
 
-                // Subtract less Gold if supportpawn is used.
-                if(request.CraftSupportPawnIDList.Count > 0)
-                {
-                    goldRequired = (uint)(goldRequired*0.95);
-                    currentTotalEquipPoint += 10;
-                }
+            // Subtract less Gold if supportpawn is used.
+            if(request.CraftSupportPawnIDList.Count > 0)
+            {
+                goldRequired = (uint)(goldRequired*0.95);
+                currentTotalEquipPoint += 10;
+            }
 
-                // Substract Gold based on JSON cost.
-                CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
-                updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+            // Substract Gold based on JSON cost.
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
 
             // Handling the check on how many points we need to upgrade the weapon in its current state.
@@ -139,7 +139,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Handling the comparison to permit upgrading or not.
             if (currentTotalEquipPoint >= requiredPoints)
             {
-                canUpgrade = true;
+                DoUpgrade = true;
                 addEquipPoint = 0;
                 currentTotalEquipPoint = 0;
                 equipItem.EquipPoints = 0;
@@ -168,9 +168,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             // TODO: Source these values accurately when we know what they are. ^
 
-
-
-
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
             {
                 CharacterId = 0,
@@ -185,7 +182,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
 
-            if (canUpgrade)
+            if (DoUpgrade)
             {
             Logger.Debug($"Attempting to find {equipItemUID}");
             var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(StorageEquipNBox, equipItemUID);
