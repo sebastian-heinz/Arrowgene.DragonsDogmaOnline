@@ -22,8 +22,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public ushort Unk2 { get; set; } // Filling this above 0 prevents the "UP" display? Unknown
         public ushort Unk3 { get; set; } // Displays "UP" next to the DragonAugment upon succesful enhance, probably some ID for dragonforce levels?
         public bool IsMax { get; set; } // Displays "MAX" next to the DragonAugment icon.
-
-
         public class Serializer : EntitySerializer<CDataCraftStartEquipGradeUpUnk0Unk0>
         {
             public override void Write(IBuffer buffer, CDataCraftStartEquipGradeUpUnk0Unk0 obj)

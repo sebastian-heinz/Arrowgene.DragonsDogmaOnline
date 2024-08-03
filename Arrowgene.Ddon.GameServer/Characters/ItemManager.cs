@@ -644,9 +644,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
     }
 
-
-
-
     [Serializable]
     internal class ItemDoesntExistException : Exception
     {

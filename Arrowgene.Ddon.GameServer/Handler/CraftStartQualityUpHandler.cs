@@ -10,6 +10,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.CodeDom;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -47,25 +48,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             List<CDataAddStatusParam> AddStatList = new List<CDataAddStatusParam>()
             {
-                AddStat
+                new CDataAddStatusParam(),
             };
-            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
-            {
-            };
+            CDataEquipSlot EquipmentSlot = new CDataEquipSlot();
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
-                ItemUId = equipItemUID,
-                EquipSlot = EquipmentSlot
+                ItemUId = equipItemUID, // potentially readd equipment slot here.
             };
             // TODO: figuring out what this is
             // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
-                Unk0 = 0, // Potentially an ID?
-                Unk1 = 0,
-                Unk2 = 0, // Genuinely no idea what this could be for. 
-                Unk3 = 0, // Potentially an ID for something?
-                Unk4 = 0, // Potentially an ID for something too?
                 IsGreatSuccess = IsGreatSuccess
             };
 
@@ -93,6 +86,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 RandomQuality = 3;
             }
+
             if (equipItem.PlusValue > RandomQuality)
             {
                 RandomQuality = equipItem.PlusValue;
@@ -114,6 +108,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo.EquipSlot.EquipSlotNo = EquipManager.DetermineEquipSlot(slotno);
                     CurrentEquipInfo.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotno);
                 }
+
                 if (storageType == StorageType.PawnEquipment)
                 {
                     CurrentEquipInfo.EquipSlot.PawnId = pawnid;
@@ -126,6 +121,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
+
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
@@ -143,14 +139,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 else
                 {
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
+                    throw new Exception($"Item with UID {equipItemUID} not found in {storageType}");
                 }
             }
+            
             var res = new S2CCraftStartQualityUpRes()
             {
                 Unk0 = dummydata,
                 AddStatusDataList = AddStatList,
                 CurrentEquip = CurrentEquipInfo
             };
+            // TODO: Store saved pawn exp
+            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            {
+                PawnId = request.CraftMainPawnID,
+                AddExp = 10,
+                ExtraBonusExp = 0,
+                TotalExp = 10,
+                CraftRankLimit = 0
+            };
+            client.Send(expNtc);
 
             return res;
         }

@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, S2CCraftStartEquipColorChangeRes obj)
             {
+                WriteServerResponse(buffer, obj);
                 WriteByte(buffer, obj.ColorNo);
                 WriteEntity<CDataCurrentEquipInfo>(buffer, obj.CurrentEquipInfo);
             }
@@ -28,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CCraftStartEquipColorChangeRes Read(IBuffer buffer)
             {
                 S2CCraftStartEquipColorChangeRes obj = new S2CCraftStartEquipColorChangeRes();
+                ReadServerResponse(buffer, obj);
                 obj.ColorNo = ReadByte(buffer);
                 obj.CurrentEquipInfo = ReadEntity<CDataCurrentEquipInfo>(buffer);
                 return obj;

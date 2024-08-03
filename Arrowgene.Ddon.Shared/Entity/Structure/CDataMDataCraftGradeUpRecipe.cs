@@ -45,7 +45,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     obj.Unk1 = ReadBool(buffer);
                     obj.CraftMaterialList = ReadEntityList<CDataMDataCraftMaterial>(buffer);
                     return obj;
-                
             }
         }
     }

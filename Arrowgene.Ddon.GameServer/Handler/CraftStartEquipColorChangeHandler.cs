@@ -27,19 +27,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Character character = client.Character;
             uint charid = client.Character.CharacterId;
             string equipItemUID = request.EquipItemUID;
+            List<CDataCraftColorant> colorList = request.CraftColorantList;
             Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             byte color = request.Color;
             List<CDataCraftColorant> colorlist = new List<CDataCraftColorant>(); // this is probably for consuming the dye
             uint pawnid = request.CraftMainPawnID;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            CDataEquipSlot EquipmentSlot = new CDataEquipSlot()
-            {
-            };
+            CDataEquipSlot EquipmentSlot = new CDataEquipSlot();
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
                 ItemUId = equipItemUID,
                 EquipSlot = EquipmentSlot
             };
+            var colorantList = colorList[0];
+            byte number = colorantList.ItemNum;
+
+            equipItem.Color = color;
 
             var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
 
@@ -47,11 +50,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 var (slotno, item, itemnum) = foundItem;
                 CharacterCommon characterCommon = null;
+
                 if (storageType == StorageType.CharacterEquipment || storageType == StorageType.PawnEquipment)
                 {
                     CurrentEquipInfo.EquipSlot.EquipSlotNo = EquipManager.DetermineEquipSlot(slotno);
                     CurrentEquipInfo.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotno);
                 }
+
                 if (storageType == StorageType.PawnEquipment)
                 {
                     CurrentEquipInfo.EquipSlot.PawnId = pawnid;
@@ -65,6 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipColorChang;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
+                
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
@@ -77,7 +83,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         (byte)slotno
                     );
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
-
                     client.Send(updateCharacterItemNtc);
                 }
             }
@@ -89,6 +94,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     ColorNo = color,
                     CurrentEquipInfo = CurrentEquipInfo
                 };
+
+            // TODO: Store saved pawn exp
+            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            {
+                PawnId = request.CraftMainPawnID,
+                AddExp = 10,
+                ExtraBonusExp = 0,
+                TotalExp = 10,
+                CraftRankLimit = 0
+            };
+            client.Send(expNtc);
+            
             return res;
         }
     }

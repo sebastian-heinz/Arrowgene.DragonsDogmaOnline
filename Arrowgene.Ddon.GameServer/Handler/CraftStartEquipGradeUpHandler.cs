@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
             uint EquipRank = json_data.Unk0;
+            uint PawnExp = json_data.Exp;
             bool canContinue = true;
             bool IsGreatSuccess = Random.Shared.Next(5) == 0;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
@@ -95,8 +96,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 _ => throw new InvalidOperationException("Invalid star level")
             };
 
-            if (currentStars == 3) canContinue = false;
+            if (currentStars == 3)
+            {
+                canContinue = false;
+            }
             bool DoUpgrade = currentTotalEquipPoint >= requiredPoints;
+            
             if (DoUpgrade)
             {
                 currentTotalEquipPoint = 0;
@@ -116,6 +121,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, IsGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
 
+            // TODO: Store saved pawn exp
+            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            {
+                PawnId = request.CraftMainPawnID,
+                AddExp = PawnExp,
+                ExtraBonusExp = 0,
+                TotalExp = PawnExp,
+                CraftRankLimit = 0
+            };
+            client.Send(expNtc);
+
             return res;
         }
 
@@ -131,6 +147,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo.EquipSlot.EquipSlotNo = EquipManager.DetermineEquipSlot(slotno);
                     CurrentEquipInfo.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(slotno);
                 }
+
                 if (storageType == StorageType.PawnEquipment)
                 {
                     CurrentEquipInfo.EquipSlot.PawnId = pawnid;
@@ -152,7 +169,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
+                throw new Exception($"Item with UID {equipItemUID} not found in {storageType}");
             }
+
         }
         private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist, uint equipGrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
@@ -172,6 +191,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk1 = unk1 // Dragon Augment related I guess?
             };
         }
+        
         private S2CCraftStartEquipGradeUpRes CreateEquipPointResponse(string equipItemUID, uint addEquipPoint, uint totalEquipPoint, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
             return new S2CCraftStartEquipGradeUpRes

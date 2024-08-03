@@ -21,8 +21,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataCraftColorant> CraftColorantList { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
-        
-
         public class Serializer : PacketEntitySerializer<C2SCraftStartEquipColorChangeReq>
         {
             public override void Write(IBuffer buffer, C2SCraftStartEquipColorChangeReq obj)
