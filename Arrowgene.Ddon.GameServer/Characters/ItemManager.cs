@@ -213,8 +213,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.EquipPoint = 0;
             ntcData.ItemList.EquipCharacterID = 0;
             ntcData.ItemList.EquipPawnID = 0;
-            ntcData.ItemList.WeaponCrestDataList = item.EquipElementParamList;
-            ntcData.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+            ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
+            ntcData.ItemList.AddStatusParamList = item.AddStatusParamList;
             ntcData.ItemList.Unk2List = item.Unk2List;
             ntcData.UpdateItemNum = -finalConsumeNum;
 
@@ -290,7 +290,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         Color = 0,
                         PlusValue = 0,
                         EquipElementParamList = new List<CDataEquipElementParam>(),
-                        ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>(),
+                        AddStatusParamList = new List<CDataAddStatusParam>(),
                         Unk2List = new List<CDataEquipItemInfoUnk2>()
                     };
                     slot = destinationStorage.AddItem(item, newItemNum);
@@ -315,8 +315,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.EquipPoint = 0;
                 result.ItemList.EquipCharacterID = 0;
                 result.ItemList.EquipPawnID = 0;
-                result.ItemList.WeaponCrestDataList = item.EquipElementParamList;
-                result.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+                result.ItemList.EquipElementParamList = item.EquipElementParamList;
+                result.ItemList.AddStatusParamList = item.AddStatusParamList;
                 result.ItemList.Unk2List = item.Unk2List;
                 result.UpdateItemNum = (int) addedItems;
                 results.Add(result);
@@ -562,8 +562,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipPoint = 0; // TODO: Add value to Item
             updateResult.ItemList.EquipCharacterID = characterId;
             updateResult.ItemList.EquipPawnID = pawnId;
-            updateResult.ItemList.WeaponCrestDataList = item.EquipElementParamList;
-            updateResult.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
+            updateResult.ItemList.EquipElementParamList = item.EquipElementParamList;
+            updateResult.ItemList.AddStatusParamList = item.AddStatusParamList;
             updateResult.ItemList.Unk2List = item.Unk2List;
             updateResult.UpdateItemNum = (int) updateItemNum;
 

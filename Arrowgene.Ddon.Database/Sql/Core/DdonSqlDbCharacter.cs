@@ -283,7 +283,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             while (reader4.Read())
                             {
                                 var result = ReadCrestData(reader4);
-                                item.EquipElementParamList.Add(result.ToCDataWeaponCrestData());
+                                item.EquipElementParamList.Add(result.ToCDataEquipElementParam());
                             }
                         });
 

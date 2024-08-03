@@ -85,7 +85,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         newItem.EquipElementParamList.Add(elementParam);
                     }
 
-                    itemUpdateResults[0].ItemList.WeaponCrestDataList = purchase.EquipElementParamList;
+                    itemUpdateResults[0].ItemList.EquipElementParamList = purchase.EquipElementParamList;
                 }
 
                 updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResults);

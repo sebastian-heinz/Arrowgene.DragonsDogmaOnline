@@ -63,8 +63,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 Unk3 = info.Unk0,
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
-                                                EquipElementParamList = info.WeaponCrestDataList,
-                                                ArmorCrestDataList = info.ArmorCrestDataList,
+                                                EquipElementParamList = info.EquipElementParamList,
+                                                AddStatusParamList = info.AddStatusParamList,
                                                 Unk2List = info.Unk2List
                                             };
                                         }
@@ -85,8 +85,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 Unk3 = info.Unk0,
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
-                                                EquipElementParamList = info.WeaponCrestDataList,
-                                                ArmorCrestDataList = info.ArmorCrestDataList,
+                                                EquipElementParamList = info.EquipElementParamList,
+                                                AddStatusParamList = info.AddStatusParamList,
                                                 Unk2List = info.Unk2List
                                             };
                                         }
@@ -215,12 +215,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.PWC4Add1 << 8 | arisenPreset.PWC4Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
-                                    new CDataEquipItemInfoUnk1 {
-                                        u0 = 1,
-                                        u1 = 1,
-                                        u2 = 0x59,
-                                        u3 = 0x04
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
+                                        AdditionalStatus1 = 0x59,
+                                        AdditionalStatus2 = 0x04
                                     }
                                 },
                                 // Empty EquipElementParamList
@@ -252,12 +252,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.HC3Add1 << 8 | arisenPreset.HC3Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
-                                    new CDataEquipItemInfoUnk1 {
-                                        u0 = 1,
-                                        u1 = 1,
-                                        u2 = 0x29D,
-                                        u3 = 0x01
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
+                                        AdditionalStatus1 = 0x29D,
+                                        AdditionalStatus2 = 0x01
                                     }
                                 },
                                 // Empty EquipElementParamList
@@ -289,12 +289,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.BC4Add1 << 8 | arisenPreset.BC4Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
-                                    new CDataEquipItemInfoUnk1 {
-                                        u0 = 1,
-                                        u1 = 1,
-                                        u2 = 0x280,
-                                        u3 = 0x01
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
+                                        AdditionalStatus1 = 0x280,
+                                        AdditionalStatus2 = 0x01
                                     }
                                 },
                                 // Empty EquipElementParamList
@@ -326,12 +326,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.AC3Add1 << 8 | arisenPreset.AC3Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
-                                    new CDataEquipItemInfoUnk1 {
-                                        u0 = 1,
-                                        u1 = 1,
-                                        u2 = 0x1D2,
-                                        u3 = 0x01
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
+                                        AdditionalStatus1 = 0x1D2,
+                                        AdditionalStatus2 = 0x01
                                     }
                                 },
                                 // Empty EquipElementParamList
@@ -358,12 +358,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                         Add = (ushort) (arisenPreset.LC3Add1 << 8 | arisenPreset.LC3Add2),
                                     }
                                 },
-                                ArmorCrestDataList = new List<CDataEquipItemInfoUnk1>() {
-                                    new CDataEquipItemInfoUnk1 {
-                                        u0 = 1,
-                                        u1 = 1,
-                                        u2 = 0x225,
-                                        u3 = 0x01
+                                AddStatusParamList = new List<CDataAddStatusParam>() {
+                                    new CDataAddStatusParam {
+                                        IsAddStat1 = true,
+                                        IsAddStat2 = true,
+                                        AdditionalStatus1 = 0x225,
+                                        AdditionalStatus2 = 0x01
                                     }
                                 },
                                 // Empty EquipElementParamList
