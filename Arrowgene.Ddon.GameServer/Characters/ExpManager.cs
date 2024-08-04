@@ -408,7 +408,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     S2CJobCharacterJobExpUpNtc expNtc = new S2CJobCharacterJobExpUpNtc();
                     expNtc.JobId = activeCharacterJobData.Job;
-                    expNtc.AddExp = gainedExp;
+                    expNtc.AddExp = gainedExp + extraBonusExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
                     expNtc.Type = type; // TODO: Figure out
@@ -418,7 +418,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     S2CJobPawnJobExpUpNtc expNtc = new S2CJobPawnJobExpUpNtc();
                     expNtc.JobId = activeCharacterJobData.Job;
-                    expNtc.AddExp = gainedExp;
+                    expNtc.AddExp = gainedExp + extraBonusExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
                     expNtc.Type = type; // TODO: Figure out
