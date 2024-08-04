@@ -1,0 +1,34 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "comment": "Highway Security",
+  "quest_id": 40000001,
+  "base_level": 1,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 75
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 225
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 63
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DummyBlock",
+      "announce_type": "Accept",
+      "enemy_id": "0x011300",
+      "level": 20,
+      "amount": 10
+    }
+  ]
+}
