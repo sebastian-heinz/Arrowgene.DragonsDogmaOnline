@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 client.Send(ppNtc);
 
-                _database.UpdateCharacterPlayPointData(client.Character.CommonId, activeCharacterPlayPoint);
+                _database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 client.Send(ppNtc);
 
-                _database.UpdateCharacterPlayPointData(client.Character.CommonId, activeCharacterPlayPoint);
+                _database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
             }
         }
     }
