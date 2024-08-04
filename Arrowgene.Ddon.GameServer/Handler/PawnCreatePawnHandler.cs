@@ -136,92 +136,92 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }).ToList();
 
             pawn.EquipmentTemplate = new EquipmentTemplate(
-                Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(arisenPreset.Job, new Dictionary<EquipType, List<Item>>() {
+                Server.AssetRepository.ArisenAsset.Select(pawnGearPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(pawnGearPreset.Job, new Dictionary<EquipType, List<Item>>() {
                 {
                     EquipType.Performance,
                     new List<Item>() {
                         new Item {
-                            ItemId = arisenPreset.PrimaryWeapon,
+                            ItemId = pawnGearPreset.PrimaryWeapon,
                             Unk3 = 0,
-                            Color = arisenPreset.PrimaryWeaponColour,
+                            Color = 0,
                             PlusValue = 0
                         },
                         new Item {
-                            ItemId = arisenPreset.SecondaryWeapon,
+                            ItemId = pawnGearPreset.SecondaryWeapon,
                             Unk3 = 0,
-                            Color = arisenPreset.SecondaryWeaponColour
+                            Color = 0
                         },
                         new Item {
-                            ItemId = arisenPreset.Head,
+                            ItemId = 0,
                             Unk3 = 0,
-                            Color = arisenPreset.HeadColour,
-                            PlusValue = 3
+                            Color = 0,
+                            PlusValue = 0
                         },
                         new Item {
-                            ItemId = arisenPreset.Body,
-                            Unk3 = 0,
-                            Color = arisenPreset.BodyColour,
-                            PlusValue = 4,
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Clothing,
-                            Unk3 = 0,
-                            Color = arisenPreset.ClothingColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Arm,
-                            Unk3 = 0,
-                            Color = arisenPreset.ArmColour,
-                            PlusValue = 3
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Leg,
-                            Unk3 = 0,
-                            Color = arisenPreset.LegColour,
-                            PlusValue = 3
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Legwear,
-                            Unk3 = 0,
-                            Color = arisenPreset.LegwearColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Overwear,
-                            Unk3 = 0,
-                            Color = arisenPreset.OverwearColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Jewelry1,
+                            ItemId = 0,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Jewelry2,
+                            ItemId = 499,
+                            Unk3 = 0,
+                            Color = 0
+                        },
+                        new Item {
+                            ItemId = 0,
+                            Unk3 = 0,
+                            Color = 0,
+                            PlusValue = 0
+                        },
+                        new Item {
+                            ItemId = 0,
+                            Unk3 = 0,
+                            Color = 0,
+                            PlusValue = 0
+                        },
+                        new Item {
+                            ItemId = 509,
+                            Unk3 = 0,
+                            Color = 0
+                        },
+                        new Item {
+                            ItemId = 0,
+                            Unk3 = 0,
+                            Color = 0
+                        },
+                        new Item {
+                            ItemId = 0,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Jewelry3,
+                            ItemId = 0,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Jewelry4,
+                            ItemId = 0,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Jewelry5,
+                            ItemId = 0,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Lantern,
+                            ItemId = 0,
+                            Unk3 = 0,
+                            Color = 0,
+                            PlusValue = 0,
+                        },
+                        new Item {
+                            ItemId = 0,
                             Unk3 = 0,
                         }
                     }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
