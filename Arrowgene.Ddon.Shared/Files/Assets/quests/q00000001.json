@@ -200,9 +200,8 @@
                     "type": "Raw",
                     "announce_type": "Accept",
                     "flags": [
-                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Starts check for login in second process"},
                         {"type": "MyQst", "action": "Set", "value": 4, "comment": "Leo Waiting for Action to Begin"},
-                        {"type": "MyQst", "action": "Set", "value": 11, "comment": "Iris NPC FSM"}
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Starts check for login in second process"}
                     ],
                     "check_commands": [
                         {"type": "SceHitIn", "Param1": 101, "Param2": 1}
@@ -213,6 +212,7 @@
                 {
                     "type": "KillGroup",
                     "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 11, "comment": "Iris NPC FSM"},
                         {"type": "MyQst", "action": "Set", "value": 934, "comment": "Move in front of the enemy"},
                         {"type": "MyQst", "action": "Set", "value": 935, "comment": "Move in front of the enemy"}
                     ],
