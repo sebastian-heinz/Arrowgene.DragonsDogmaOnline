@@ -11,7 +11,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public string ItemUId { get; set; }
         public byte SlotNo { get; set; }
-    
 
         public class Serializer : EntitySerializer<CDataCraftElement>
         {

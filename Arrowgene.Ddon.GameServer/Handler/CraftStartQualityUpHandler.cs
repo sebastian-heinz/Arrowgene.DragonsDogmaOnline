@@ -151,7 +151,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 else
                 {
                     Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
-                    throw new Exception($"Item with UID {equipItemUID} not found in {storageType}");
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
                 }
             }
             

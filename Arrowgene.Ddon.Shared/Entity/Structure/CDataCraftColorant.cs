@@ -25,10 +25,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
             public override CDataCraftColorant Read(IBuffer buffer)
             {
-                    CDataCraftColorant obj = new CDataCraftColorant();
-                    obj.ItemUID = ReadMtString(buffer);
-                    obj.ItemNum = ReadByte(buffer);
-                    return obj;
+                CDataCraftColorant obj = new CDataCraftColorant();
+                obj.ItemUID = ReadMtString(buffer);
+                obj.ItemNum = ReadByte(buffer);
+                return obj;
             }
         }
     }
