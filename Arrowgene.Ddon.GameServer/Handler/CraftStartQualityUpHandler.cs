@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot();
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
-                ItemUId = equipItemUID, // potentially readd equipment slot here.
+                ItemUId = equipItemUID,
             };
             // TODO: figuring out what this is
             // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
