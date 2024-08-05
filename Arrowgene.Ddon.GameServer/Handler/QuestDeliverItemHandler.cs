@@ -30,6 +30,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ProcessNo = packet.Structure.ProcessNo,
             };
 
+
+
             QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
             var questState = client.Party.QuestState.GetQuestState(questId);
 
@@ -37,6 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataItemUpdateResult> itemUpdateResults = new List<CDataItemUpdateResult>();
             foreach (var item in packet.Structure.ItemUIDList)
             {
+                uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
                 var itemUpdate = Server.ItemManager.ConsumeItemByUIdFromItemBag(Server, client.Character, item.UId, item.Num);
                 if (itemUpdate == null)
                 {
@@ -45,8 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     return;
                 }
                 itemUpdateResults.Add(itemUpdate);
-
-                uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
+                
                 if (!deliveredItems.ContainsKey(itemId))
                 {
                     deliveredItems[itemId] = new CDataDeliveredItem()
