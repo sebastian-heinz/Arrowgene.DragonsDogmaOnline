@@ -136,92 +136,92 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }).ToList();
 
             pawn.EquipmentTemplate = new EquipmentTemplate(
-                Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(arisenPreset.Job, new Dictionary<EquipType, List<Item>>() {
+                Server.AssetRepository.PawnStartGearAsset.Select(pawnGearPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(pawnGearPreset.Job, new Dictionary<EquipType, List<Item>>() {
                 {
                     EquipType.Performance,
                     new List<Item>() {
                         new Item {
-                            ItemId = arisenPreset.PrimaryWeapon,
+                            ItemId = pawnGearPreset.Primary,
                             Unk3 = 0,
-                            Color = arisenPreset.PrimaryWeaponColour,
+                            Color = 0,
                             PlusValue = 0
                         },
                         new Item {
-                            ItemId = arisenPreset.SecondaryWeapon,
+                            ItemId = pawnGearPreset.Secondary,
                             Unk3 = 0,
-                            Color = arisenPreset.SecondaryWeaponColour
+                            Color = 0
                         },
                         new Item {
-                            ItemId = arisenPreset.Head,
+                            ItemId = pawnGearPreset.Head,
                             Unk3 = 0,
-                            Color = arisenPreset.HeadColour,
-                            PlusValue = 3
+                            Color = 0,
+                            PlusValue = 0
                         },
                         new Item {
-                            ItemId = arisenPreset.Body,
-                            Unk3 = 0,
-                            Color = arisenPreset.BodyColour,
-                            PlusValue = 4,
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Clothing,
-                            Unk3 = 0,
-                            Color = arisenPreset.ClothingColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Arm,
-                            Unk3 = 0,
-                            Color = arisenPreset.ArmColour,
-                            PlusValue = 3
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Leg,
-                            Unk3 = 0,
-                            Color = arisenPreset.LegColour,
-                            PlusValue = 3
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Legwear,
-                            Unk3 = 0,
-                            Color = arisenPreset.LegwearColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Overwear,
-                            Unk3 = 0,
-                            Color = arisenPreset.OverwearColour
-                        },
-                        new Item {
-                            ItemId = arisenPreset.Jewelry1,
+                            ItemId = pawnGearPreset.Body,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Jewelry2,
+                            ItemId = pawnGearPreset.BodyClothing,
+                            Unk3 = 0,
+                            Color = 0
+                        },
+                        new Item {
+                            ItemId = pawnGearPreset.Arm,
+                            Unk3 = 0,
+                            Color = 0,
+                            PlusValue = 0
+                        },
+                        new Item {
+                            ItemId = pawnGearPreset.Leg,
+                            Unk3 = 0,
+                            Color = 0,
+                            PlusValue = 0
+                        },
+                        new Item {
+                            ItemId = pawnGearPreset.LegWear,
+                            Unk3 = 0,
+                            Color = 0
+                        },
+                        new Item {
+                            ItemId = pawnGearPreset.OverWear,
+                            Unk3 = 0,
+                            Color = 0
+                        },
+                        new Item {
+                            ItemId = pawnGearPreset.JewelrySlot1,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Jewelry3,
+                            ItemId = pawnGearPreset.JewelrySlot2,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Jewelry4,
+                            ItemId = pawnGearPreset.JewelrySlot3,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Jewelry5,
+                            ItemId = pawnGearPreset.JewelrySlot4,
                             Unk3 = 0,
                             Color = 0,
                             PlusValue = 0,
                         },
                         new Item {
-                            ItemId = arisenPreset.Lantern,
+                            ItemId = pawnGearPreset.JewelrySlot5,
+                            Unk3 = 0,
+                            Color = 0,
+                            PlusValue = 0,
+                        },
+                        new Item {
+                            ItemId = pawnGearPreset.Lantern,
                             Unk3 = 0,
                         }
                     }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()

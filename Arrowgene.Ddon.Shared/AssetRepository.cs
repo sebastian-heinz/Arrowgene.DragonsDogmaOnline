@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.Shared
         public const string MyPawnAssetKey = "MyPawn.csv";
         public const string MyRoomAssetKey = "MyRoom.csv";
         public const string ArisenAssetKey = "Arisen.csv";
+        public const string PawnStartGearKey = "PawnStartGear.csv";
         public const string StorageKey = "Storage.csv";
         public const string StorageItemKey = "StorageItem.csv";
         public const string ShopKey = "Shop.json";
@@ -69,6 +70,7 @@ namespace Arrowgene.Ddon.Shared
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
             ArisenAsset = new List<ArisenCsv>();
+            PawnStartGearAsset = new List<PawnStartGearCsv>();
             StorageAsset = new List<CDataCharacterItemSlotInfo>();
             StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
             ShopAsset = new List<Shop>();
@@ -92,6 +94,7 @@ namespace Arrowgene.Ddon.Shared
         public List<MyPawnCsv> MyPawnAsset { get; private set; }
         public List<MyRoomCsv> MyRoomAsset { get; private set; }
         public List<ArisenCsv> ArisenAsset { get; private set; }
+        public List<PawnStartGearCsv> PawnStartGearAsset { get; private set; }
         public List<CDataCharacterItemSlotInfo> StorageAsset { get; private set; }
         public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; private set; }
         public List<Shop> ShopAsset { get; private set; }
@@ -116,6 +119,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => MyPawnAsset = value, MyPawnAssetKey, new MyPawnCsvReader());
             RegisterAsset(value => MyRoomAsset = value, MyRoomAssetKey, new MyRoomCsvReader());
             RegisterAsset(value => ArisenAsset = value, ArisenAssetKey, new ArisenCsvReader());
+            RegisterAsset(value => PawnStartGearAsset = value, PawnStartGearKey, new PawnStartGearCsvReader());
             RegisterAsset(value => ServerList = value, ServerListKey, new GameServerListInfoCsv());
             RegisterAsset(value => StorageAsset = value, StorageKey, new StorageCsv());
             RegisterAsset(value => StorageItemAsset = value, StorageItemKey, new StorageItemCsv());
