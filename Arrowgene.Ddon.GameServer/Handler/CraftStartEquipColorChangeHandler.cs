@@ -38,7 +38,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ItemUId = equipItemUID,
             };
             var colorantList = colorList[0];
-            byte number = colorantList.ItemNum;
+            string DyeUId = colorantList.ItemUID;
+
+            if (!string.IsNullOrEmpty(DyeUId))
+            {
+                var updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, DyeUId, 1);
+                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+            }
+
+            //Applying the Dye
             equipItem.Color = color;
 
             var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
