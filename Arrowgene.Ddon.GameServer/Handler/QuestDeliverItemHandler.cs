@@ -30,8 +30,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ProcessNo = packet.Structure.ProcessNo,
             };
 
-
-
             QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
             var questState = client.Party.QuestState.GetQuestState(questId);
 
@@ -48,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     return;
                 }
                 itemUpdateResults.Add(itemUpdate);
-                
+
                 if (!deliveredItems.ContainsKey(itemId))
                 {
                     deliveredItems[itemId] = new CDataDeliveredItem()
