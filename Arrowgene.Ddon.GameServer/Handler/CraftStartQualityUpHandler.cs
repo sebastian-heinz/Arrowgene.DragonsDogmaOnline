@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = request.ItemUID;
             var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             Character character = client.Character;
-            uint pawnid = request.CraftMainPawnID;
+            uint craftpawnid = request.CraftMainPawnID;
             bool IsGreatSuccess = Random.Shared.Next(10) == 0;
             string RefineMaterialUID = request.RefineUID;
             var RefineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
@@ -123,8 +123,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (storageType == StorageType.PawnEquipment)
                 {
-                    CurrentEquipInfo.EquipSlot.PawnId = pawnid;
-                    characterCommon = character.Pawns.Where(x => x.PawnId == pawnid).SingleOrDefault();
+                    uint pawnId = Storages.DeterminePawnId(client.Character, storageType, slotno);
+                    CurrentEquipInfo.EquipSlot.PawnId = pawnId;
+                    characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnId);
                 }
                 else if(storageType == StorageType.CharacterEquipment)
                 {

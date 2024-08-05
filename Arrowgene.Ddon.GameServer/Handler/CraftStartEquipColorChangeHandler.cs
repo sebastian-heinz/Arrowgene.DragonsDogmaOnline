@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             byte color = request.Color;
             List<CDataCraftColorant> colorlist = new List<CDataCraftColorant>(); // this is probably for consuming the dye
-            uint pawnid = request.CraftMainPawnID;
+            uint craftpawnid = request.CraftMainPawnID;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             CDataEquipSlot EquipmentSlot = new CDataEquipSlot();
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
@@ -41,7 +41,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             var colorantList = colorList[0];
             byte number = colorantList.ItemNum;
-
             equipItem.Color = color;
 
             var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
@@ -59,8 +58,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (storageType == StorageType.PawnEquipment)
                 {
-                    CurrentEquipInfo.EquipSlot.PawnId = pawnid;
-                    characterCommon = character.Pawns.Where(x => x.PawnId == pawnid).SingleOrDefault();
+                    uint pawnId = Storages.DeterminePawnId(client.Character, storageType, slotno);
+                    CurrentEquipInfo.EquipSlot.PawnId = pawnId;
+                    characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnId);
                 }
                 else if(storageType == StorageType.CharacterEquipment)
                 {

@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = request.EquipItemUID;
             Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             uint charid = client.Character.CharacterId;
-            uint pawnid = request.CraftMainPawnID;
+            uint craftpawnid = request.CraftMainPawnID;
 
             // Fetch the crafting recipe data for the item
             CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -113,7 +113,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (DoUpgrade)
             {
-                UpdateCharacterItem(client, equipItemUID, equipItem, gradeuplist, charid, pawnid, updateCharacterItemNtc, CurrentEquipInfo);
+                UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
                 res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
@@ -135,7 +135,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return res;
         }
 
-        private void UpdateCharacterItem(GameClient client, string equipItemUID, Item equipItem, List<CDataCommonU32> gradeuplist, uint charid, uint pawnid, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, CDataCurrentEquipInfo CurrentEquipInfo)
+        private void UpdateCharacterItem(GameClient client, string equipItemUID, Item equipItem, uint charid, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, CDataCurrentEquipInfo CurrentEquipInfo)
         {
             var (storageType, foundItem) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             if (foundItem != null)
@@ -150,8 +150,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (storageType == StorageType.PawnEquipment)
                 {
-                    CurrentEquipInfo.EquipSlot.PawnId = pawnid;
-                    characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnid);
+                    uint pawnId = Storages.DeterminePawnId(client.Character, storageType, slotno);
+                    CurrentEquipInfo.EquipSlot.PawnId = pawnId;
+                    characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnId);
                 }
                 else if (storageType == StorageType.CharacterEquipment)
                 {
