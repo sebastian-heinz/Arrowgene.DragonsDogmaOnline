@@ -76,6 +76,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 for (byte i = 0; i < abilities.Count; i++)
                 {
                     Ability ability = abilities[i];
+                    if (ability == null) continue;
                     byte slotNo = (byte)(i + 1);
                     InsertEquippedAbility(connection, commonId, equippedToJob, slotNo, ability);
                 }
