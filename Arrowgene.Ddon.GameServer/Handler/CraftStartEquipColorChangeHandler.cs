@@ -33,11 +33,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataCraftColorant> colorlist = new List<CDataCraftColorant>(); // this is probably for consuming the dye
             uint craftpawnid = request.CraftMainPawnID;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            CDataEquipSlot EquipmentSlot = new CDataEquipSlot();
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
                 ItemUId = equipItemUID,
-                EquipSlot = EquipmentSlot
             };
             var colorantList = colorList[0];
             byte number = colorantList.ItemNum;

@@ -51,7 +51,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 new CDataAddStatusParam(),
             };
-            CDataEquipSlot EquipmentSlot = new CDataEquipSlot();
             CDataCurrentEquipInfo CurrentEquipInfo = new CDataCurrentEquipInfo()
             {
                 ItemUId = equipItemUID,

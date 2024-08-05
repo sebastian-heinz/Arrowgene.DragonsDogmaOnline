@@ -43,11 +43,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint currentTotalEquipPoint = equipItem.EquipPoints;
 
             List<CDataCommonU32> gradeuplist = new() { new CDataCommonU32(gearupgradeID) };
-            CDataEquipSlot EquipmentSlot = new();
             CDataCurrentEquipInfo CurrentEquipInfo = new()
             {
                 ItemUId = equipItemUID,
-                EquipSlot = EquipmentSlot
             };
 
             // More dummy data, looks like its DragonAugment related.
