@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataItemUpdateResult> itemUpdateResults = new List<CDataItemUpdateResult>();
             foreach (var item in packet.Structure.ItemUIDList)
             {
+                uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
                 var itemUpdate = Server.ItemManager.ConsumeItemByUIdFromItemBag(Server, client.Character, item.UId, item.Num);
                 if (itemUpdate == null)
                 {
@@ -46,7 +47,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 itemUpdateResults.Add(itemUpdate);
 
-                uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
                 if (!deliveredItems.ContainsKey(itemId))
                 {
                     deliveredItems[itemId] = new CDataDeliveredItem()

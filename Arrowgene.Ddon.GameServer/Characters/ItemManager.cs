@@ -649,7 +649,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private string itemUID;
 
-        public ItemDoesntExistException(string itemUID) : base ($"An item with the UID ${itemUID} is missing in the database")
+        public ItemDoesntExistException(string itemUID) : base ($"An item with the UID {itemUID} is missing in the database")
         {
             this.itemUID = itemUID;
         }
