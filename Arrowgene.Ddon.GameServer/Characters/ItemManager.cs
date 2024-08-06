@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks.Dataflow;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -210,7 +211,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.Color = item.Color;
             ntcData.ItemList.PlusValue = item.PlusValue;
             ntcData.ItemList.Bind = false;
-            ntcData.ItemList.EquipPoint = 0;
+            ntcData.ItemList.EquipPoint = item.EquipPoints;
             ntcData.ItemList.EquipCharacterID = 0;
             ntcData.ItemList.EquipPawnID = 0;
             ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
@@ -234,7 +235,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return ntcData;
         }
 
-        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num)
+        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
             if(itemBag)
@@ -248,7 +249,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if(clientItemInfo.StorageType == StorageType.ItemBagEquipment)
                 {
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, plusvalue);
                 }
                 else
                 {
@@ -258,7 +259,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue)
+        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte plusvalue = 0)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
             // The stack limit is specified by the stackLimit arg
@@ -270,6 +271,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .Select((itemAndCount, index) => new {item = itemAndCount, slot = (ushort) (index + 1)})
                     .Where(itemAndNumWithSlot => (
                         itemAndNumWithSlot.item?.Item1.ItemId == itemId
+                        && itemAndNumWithSlot.item?.Item1.PlusValue == plusvalue
                         && itemAndNumWithSlot.item?.Item2 < stackLimit
                     ))
                     .FirstOrDefault();
@@ -288,7 +290,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         ItemId = itemId,
                         Unk3 = 0,
                         Color = 0,
-                        PlusValue = 0,
+                        PlusValue = plusvalue,
+                        EquipPoints = 0,
                         EquipElementParamList = new List<CDataEquipElementParam>(),
                         AddStatusParamList = new List<CDataAddStatusParam>(),
                         Unk2List = new List<CDataEquipItemInfoUnk2>()
@@ -309,10 +312,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.Unk3 = item.Unk3;
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
-                result.ItemList.Color = item.Color; // ?
-                result.ItemList.PlusValue = item.PlusValue; // ?
+                result.ItemList.Color = item.Color;
+                result.ItemList.PlusValue = item.PlusValue;
                 result.ItemList.Bind = false;
-                result.ItemList.EquipPoint = 0;
+                result.ItemList.EquipPoint = item.EquipPoints;
                 result.ItemList.EquipCharacterID = 0;
                 result.ItemList.EquipPawnID = 0;
                 result.ItemList.EquipElementParamList = item.EquipElementParamList;
@@ -352,6 +355,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             storage.SetItem(item, num, slotNo);
             server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
+            
 
             foreach (var crest in item.EquipElementParamList)
             {
@@ -559,7 +563,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.Color = item.Color;
             updateResult.ItemList.PlusValue = item.PlusValue;
             updateResult.ItemList.Bind = false;
-            updateResult.ItemList.EquipPoint = 0; // TODO: Add value to Item
+            updateResult.ItemList.EquipPoint = item.EquipPoints;
             updateResult.ItemList.EquipCharacterID = characterId;
             updateResult.ItemList.EquipPawnID = pawnId;
             updateResult.ItemList.EquipElementParamList = item.EquipElementParamList;
@@ -584,6 +588,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return item.ItemId;
+        }
+        public void UpgradeStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
+        {
+            client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
+            server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
+            
+            CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
+            updateResult.ItemList.ItemUId = newItem.UId;
+            updateResult.ItemList.ItemId = newItem.ItemId;
+            updateResult.ItemList.ItemNum = 1;
+            updateResult.ItemList.Unk3 = newItem.Unk3;
+            updateResult.ItemList.StorageType = storageType;
+            updateResult.ItemList.SlotNo = slotNo;
+            updateResult.ItemList.Color = newItem.Color;
+            updateResult.ItemList.PlusValue = newItem.PlusValue;
+            updateResult.ItemList.Bind = false;
+            updateResult.ItemList.EquipPoint = newItem.EquipPoints;
+            updateResult.ItemList.EquipCharacterID = 0;
+            updateResult.ItemList.EquipPawnID = 0;
+            updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
+            updateResult.ItemList.AddStatusParamList = newItem.AddStatusParamList;
+            updateResult.ItemList.Unk2List = newItem.Unk2List;
+            updateResult.UpdateItemNum = 1;
+
+            Logger.Debug($"Upgraded {newItem.UId} Item in DataBase");
         }
 
         public bool HasItem(DdonServer<GameClient> server, Character character, StorageType fromStorage, string itemUId, uint num)

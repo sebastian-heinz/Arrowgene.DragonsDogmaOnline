@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.Shared
         public const string ServerListKey = "GameServerList.csv";
         public const string WarpPointsKey = "WarpPoints.csv";
         public const string CraftingRecipesKey = "CraftingRecipes.json";
+        public const string CraftingRecipesGradeUpKey = "CraftingRecipesGradeUp.json";
         public const string LearnedNormalSkillsKey = "LearnedNormalSkills.json";
         public const string GPCourseInfoKey = "GpCourseInfo.json";
         public const string SecretAbilityKey = "DefaultSecretAbilities.json";
@@ -76,6 +77,7 @@ namespace Arrowgene.Ddon.Shared
             ShopAsset = new List<Shop>();
             WarpPoints = new List<WarpPoint>();
             CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
+            CraftingGradeUpRecipesAsset = new List<S2CCraftRecipeGetCraftGradeupRecipeRes>();
             LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
             GPCourseInfoAsset = new GPCourseInfoAsset();
             SecretAbilitiesAsset = new SecretAbilityAsset();
@@ -100,6 +102,7 @@ namespace Arrowgene.Ddon.Shared
         public List<Shop> ShopAsset { get; private set; }
         public List<WarpPoint> WarpPoints { get; private set; }
         public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
+        public List<S2CCraftRecipeGetCraftGradeupRecipeRes> CraftingGradeUpRecipesAsset { get; private set; }
         public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
         public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
         public SecretAbilityAsset SecretAbilitiesAsset { get; private set; }
@@ -126,6 +129,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => ShopAsset = value, ShopKey, new JsonReaderWriter<List<Shop>>());
             RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
             RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
+            RegisterAsset(value => CraftingGradeUpRecipesAsset = value, CraftingRecipesGradeUpKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftGradeupRecipeRes>>());
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
             RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());

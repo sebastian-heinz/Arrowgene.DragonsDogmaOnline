@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         protected static readonly string[] StorageItemFields = new string[]
         {
-            "item_uid", "character_id", "storage_type", "slot_no", "item_id", "item_num", "unk3", "color", "plus_value"
+            "item_uid", "character_id", "storage_type", "slot_no", "item_id", "item_num", "unk3", "color", "plus_value", "equip_points"
         };
 
         private static readonly string SqlInsertStorageItem = $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) VALUES ({BuildQueryInsert(StorageItemFields)});";
@@ -23,7 +23,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectStorageItemsByCharacterAndStorageType = $"SELECT {BuildQueryField(StorageItemFields)} FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type;";
         private static readonly string SqlDeleteStorageItem = "DELETE FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type AND \"slot_no\"=@slot_no;";
         private static readonly string SqlUpdateStorageItem = $"UPDATE \"ddon_storage_item\" SET {BuildQueryUpdate(StorageItemFields)} WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type AND \"slot_no\"=@slot_no;";
-        
+        private static readonly string SqlUpdateEquipPoints =
+            "UPDATE \"ddon_storage_item\" SET \"equip_points\" = @equip_points " +
+            "WHERE \"item_uid\" = @item_uid;";
         public Item SelectStorageItemByUId(string uId)
         {
             using TCon connection = OpenNewConnection();
@@ -47,6 +49,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             item.Unk3 = GetByte(reader, "unk3");
                             item.Color = GetByte(reader, "color");
                             item.PlusValue = GetByte(reader, "plus_value");
+                            item.EquipPoints = GetUInt32(reader, "equip_points");
                         }
                     });
             });
@@ -67,6 +70,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "unk3", item.Unk3);
                 AddParameter(command, "color", item.Color);
                 AddParameter(command, "plus_value", item.PlusValue);
+                AddParameter(command, "equip_points", item.EquipPoints);
             }) == 1;
         }
 
@@ -89,6 +93,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "unk3", item.Unk3);
                 AddParameter(command, "color", item.Color);
                 AddParameter(command, "plus_value", item.PlusValue);
+                AddParameter(command, "equip_points", item.EquipPoints);
             }) == 1;
         }
 
@@ -144,7 +149,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "unk3", item.Unk3);
                 AddParameter(command, "color", item.Color);
                 AddParameter(command, "plus_value", item.PlusValue);
+                AddParameter(command, "equip_points", item.EquipPoints);
             }) == 1;
         }
+        
+        public bool UpdateItemEquipPoints(string uid, uint equipPoints)
+        {
+            using (TCon connection = OpenNewConnection())
+            {
+                return ExecuteNonQuery(connection, SqlUpdateEquipPoints, command =>
+                {
+                    AddParameter(command, "item_uid", uid);
+                    AddParameter(command, "equip_points", equipPoints);
+                }) == 1;
+            }
+        }
+
     }
 }

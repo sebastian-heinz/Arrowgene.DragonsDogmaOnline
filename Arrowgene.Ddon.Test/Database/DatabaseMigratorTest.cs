@@ -333,6 +333,11 @@ namespace Arrowgene.Ddon.Test.Database
         public List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId) { return new List<SystemMailAttachment>(); }
         public bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived) {  return true; }
         public bool DeleteSystemMailAttachment(ulong messageId) { return true; }
+        public bool UpdateItemEquipPoints(string itemUID, uint EquipPoints) {return true; }
+        public bool InsertIfNotExistsAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2) { return true; }
+        public bool InsertAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2) { return true; }
+        public List<CDataAddStatusParam> GetAddStatusByUID(string itemUid) { return new List<CDataAddStatusParam>(); }
+        public bool UpdateAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2) { return true; }
         public bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
         public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
