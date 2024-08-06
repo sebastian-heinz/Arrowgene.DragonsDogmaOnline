@@ -25,9 +25,10 @@ namespace Arrowgene.Ddon.Shared.Model
         }
         
         public uint ItemId { get; set; }
-        public byte Unk3 { get; set; } // QualityParam?
+        public byte Unk3 { get; set; } // This is safety setting.
         public byte Color { get; set; }
-        public byte PlusValue { get; set; }
+        public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/
+        public uint EquipPoints { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
         public List<CDataAddStatusParam> AddStatusParamList { get; set; }
         public List<CDataEquipItemInfoUnk2> Unk2List { get; set; }
@@ -48,6 +49,7 @@ namespace Arrowgene.Ddon.Shared.Model
             this.Unk3 = obj.Unk3;
             this.Color = obj.Color;
             this.PlusValue = obj.PlusValue;
+            this.EquipPoints = obj.EquipPoints;
             // TODO: Make a copy constructor for these
             this.EquipElementParamList = obj.EquipElementParamList;
             this.AddStatusParamList = obj.AddStatusParamList;

@@ -7,6 +7,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataEquipSlot()
         {
+            CharacterId = 0;
+            PawnId = 0;
         }
 
         public uint CharacterId { get; set; }

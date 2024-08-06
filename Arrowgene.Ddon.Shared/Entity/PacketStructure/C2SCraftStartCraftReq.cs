@@ -12,19 +12,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public C2SCraftStartCraftReq()
         {
             CraftMaterialList = new List<CDataCraftMaterial>();
-            wstrToppingUID = string.Empty;
-            Unk1 = new List<CDataCraftMaterial>();
+            RefineMaterialUID = string.Empty;
+            AdditionalStatusItems = new List<CDataCraftMaterial>();
             CraftSupportPawnIDList = new List<CDataCraftSupportPawnID>();
         }
 
         public uint RecipeID { get; set; }
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
-        public string wstrToppingUID { get; set; }
-        public ushort Unk0 { get; set; }
-        public List<CDataCraftMaterial> Unk1 { get; set; } // Probably the refining material?
+        public string RefineMaterialUID { get; set; } // Refine material UID
+        public ushort Unk0 { get; set; } // Looks like this might be an ID for the Additional Status?
+        public List<CDataCraftMaterial> AdditionalStatusItems { get; set; } // List of Additional Status items I guess? can there be more than 1 though? weird.
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
-        public List<CDataCommonU32> Unk3 { get; set; }
+        public List<CDataCommonU32> Unk3 { get; set; } // Was empty despite filling all the crafting menus? truly unknown I suppose.
         public uint CreateCount { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SCraftStartCraftReq>
@@ -33,9 +33,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteUInt32(buffer, obj.RecipeID);
                 WriteEntityList<CDataCraftMaterial>(buffer, obj.CraftMaterialList);
-                WriteMtString(buffer, obj.wstrToppingUID);
+                WriteMtString(buffer, obj.RefineMaterialUID);
                 WriteUInt16(buffer, obj.Unk0);
-                WriteEntityList<CDataCraftMaterial>(buffer, obj.Unk1);
+                WriteEntityList<CDataCraftMaterial>(buffer, obj.AdditionalStatusItems);
                 WriteUInt32(buffer, obj.CraftMainPawnID);
                 WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftSupportPawnIDList);
                 WriteEntityList<CDataCommonU32>(buffer, obj.Unk3);
@@ -47,9 +47,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 C2SCraftStartCraftReq obj = new C2SCraftStartCraftReq();
                 obj.RecipeID = ReadUInt32(buffer);
                 obj.CraftMaterialList = ReadEntityList<CDataCraftMaterial>(buffer);
-                obj.wstrToppingUID = ReadMtString(buffer);
+                obj.RefineMaterialUID = ReadMtString(buffer);
                 obj.Unk0 = ReadUInt16(buffer);
-                obj.Unk1 = ReadEntityList<CDataCraftMaterial>(buffer);
+                obj.AdditionalStatusItems = ReadEntityList<CDataCraftMaterial>(buffer);
                 obj.CraftMainPawnID = ReadUInt32(buffer);
                 obj.CraftSupportPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
                 obj.Unk3 = ReadEntityList<CDataCommonU32>(buffer);

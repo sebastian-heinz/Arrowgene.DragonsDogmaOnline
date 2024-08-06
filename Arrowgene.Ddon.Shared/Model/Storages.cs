@@ -85,7 +85,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     Color = tuple.item.Item1.Color,
                     PlusValue = tuple.item.Item1.PlusValue,
                     Bind = true,
-                    EquipPoint = 0,
+                    EquipPoint = tuple.item.Item1.EquipPoints,
                     EquipCharacterID = DetermineCharacterId(character, storageType, tuple.slot),
                     EquipPawnID = DeterminePawnId(character, storageType, tuple.slot),
                     EquipElementParamList = tuple.item.Item1.EquipElementParamList,
@@ -235,7 +235,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 {
                     ItemId = (ushort) x.ItemId,
                     ColorNo = x.Color,
-                    QualityParam = x.Unk3,
+                    PlusValue = x.Unk3,
                     EquipElementParamList = x.EquipElementParamList,
                     AddStatusParamList = x.AddStatusParamList
                 })
