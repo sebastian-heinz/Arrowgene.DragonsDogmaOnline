@@ -129,6 +129,7 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
         bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
+        bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
 
         // Equip
         bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
@@ -260,6 +261,12 @@ namespace Arrowgene.Ddon.Database
         List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId);
         bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived);
         bool DeleteSystemMailAttachment(ulong messageId);
+
+        // Additional Status
+        bool InsertIfNotExistsAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
+        bool InsertAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
+        List<CDataAddStatusParam> GetAddStatusByUID(string itemUid);
+        bool UpdateAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
 
         // Play points
         bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);

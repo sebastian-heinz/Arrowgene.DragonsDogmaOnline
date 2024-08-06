@@ -80,7 +80,6 @@ namespace Arrowgene.Ddon.Shared.Model
             jobItems[job][slot-1] = newItem;
             return oldItem;
         }
-
         public List<CDataEquipItemInfo> EquipmentAsCDataEquipItemInfo(JobId job, EquipType equipType)
         {
             return GetEquipment(job, equipType)
