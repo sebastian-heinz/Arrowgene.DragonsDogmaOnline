@@ -69,10 +69,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
-                catch (NotEnoughItemsException e)
+                catch (NotEnoughItemsException)
                 {
-                    Logger.Exception(e);
-                    return new S2CCraftStartEquipGradeUpRes();
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                 }
             }
 
@@ -173,7 +172,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
             }
 

@@ -83,10 +83,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
-                catch (NotEnoughItemsException e)
+                catch (NotEnoughItemsException)
                 {
-                    Logger.Exception(e);
-                    return new S2CCraftStartQualityUpRes();
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                 }
             }
 
