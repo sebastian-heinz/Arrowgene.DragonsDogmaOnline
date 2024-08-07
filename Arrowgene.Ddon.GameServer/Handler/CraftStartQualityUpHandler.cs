@@ -62,23 +62,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
-                equipItem.PlusValue = 1;
-                GreatSuccessValue = 2;
-                byte GreatSuccessOdds = 10;
-
-                if (RefineMaterialItem.ItemId == 8036 || RefineMaterialItem.ItemId == 8068 ) // Quality Rocks (Tier2)
-                {
-                    equipItem.PlusValue = 2; // Quality rocks gurantee a minimum, standard is 1, Quality and WhiteDragon are 2.
-                    GreatSuccessValue = 3; // Quality Rocks determine the highest you can roll, standard is +2, Quality and WhiteDragon are +3. (Max requires greatsuccess)
-                }
-                else if (RefineMaterialItem.ItemId == 8052 || RefineMaterialItem.ItemId == 8084) // WhiteDragon Rocks (Tier3)
-                {
-                    equipItem.PlusValue = 2;
-                    GreatSuccessValue = 3;
-                    GreatSuccessOdds = 5; // WhiteDragon Rocks have better odds of GreatSuccess.
-                }
-
-                IsGreatSuccess = Random.Shared.Next(GreatSuccessOdds) == 0;
+                var (isGreatSuccess, randomQuality) = _itemManager.ItemChangeQuality(RefineMaterialItem);
+                IsGreatSuccess = isGreatSuccess;
+                RandomQuality = randomQuality;
 
                 try
                 {
@@ -89,11 +75,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                 }
-            }
-
-            if (IsGreatSuccess)
-            {
-                RandomQuality = GreatSuccessValue;
             }
 
             // TODO: figuring out what this is

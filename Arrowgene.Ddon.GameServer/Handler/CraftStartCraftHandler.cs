@@ -15,6 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartCraftHandler : GameStructurePacketHandler<C2SCraftStartCraftReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
+        private readonly ItemManager _itemManager;
         private static readonly HashSet<ItemSubCategory> BannedSubCategories = new HashSet<ItemSubCategory>
         {
             ItemSubCategory.WeaponShield,
@@ -32,6 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         };
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
+            _itemManager = Server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartCraftReq> packet)
@@ -99,33 +101,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (CanPlusValue == true)
             {
-                byte GreatSuccessValue = 1;
-                byte GreatSuccessOdds = 10;
-
                 if (!string.IsNullOrEmpty(RefineMaterialUID)) // Check if a refinematerial is set
                 {
-                    RandomQuality = 1;
-                    if (RefineMaterialItem.ItemId == 8036 || RefineMaterialItem.ItemId == 8068 ) // Checking if its one of the better rocks because they augment the odds of +3.
-                    {
-                        RandomQuality = 2; // Quality rocks gurantee a minimum, standard is 1, Quality and WhiteDragon are 2.
-                        GreatSuccessValue = 3; // Quality Rocks determine the highest you can roll, standard is +2, Quality and WhiteDragon are +3. (Max requires greatsuccess)
-                    }
-                    else if (RefineMaterialItem.ItemId == 8052 || RefineMaterialItem.ItemId == 8084)
-                    {
-                        RandomQuality = 2;
-                        GreatSuccessValue = 3;
-                        GreatSuccessOdds = 5; // WhiteDragon Rocks have better odds of GreatSuccess.
-                    };
+                    var (isGreatSuccess, randomQuality) = _itemManager.ItemChangeQuality(RefineMaterialItem);
+                    IsGreatSuccess = isGreatSuccess;
+                    RandomQuality = randomQuality;
 
                     List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                }
-
-                IsGreatSuccess = Random.Shared.Next(GreatSuccessOdds) == 0;
-
-                if (IsGreatSuccess)
-                {
-                    RandomQuality = GreatSuccessValue;
                 }
             };
 

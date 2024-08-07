@@ -642,6 +642,41 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return amountFound >= num;
         }
+
+        public (bool IsGreatSuccess, byte RandomQuality) ItemChangeQuality(Item refineMaterialItem)
+        {
+            byte greatSuccessValue = 1;
+            byte greatSuccessOdds = 10;
+            bool isGreatSuccess;
+            byte RandomQuality = 1;
+
+            if (refineMaterialItem.ItemId == 8036 || refineMaterialItem.ItemId == 8068) // Quality Rocks (Tier2)
+            {
+                RandomQuality = 2;
+                greatSuccessValue = 3;
+            }
+            else if (refineMaterialItem.ItemId == 8052 || refineMaterialItem.ItemId == 8084) // WhiteDragon Rocks (Tier3)
+            {
+                RandomQuality = 2;
+                greatSuccessValue = 3;
+                greatSuccessOdds = 5;
+            }
+            else if (refineMaterialItem.ItemId == 8035 || refineMaterialItem.ItemId == 8067) // Standard Rocks (Tier1)
+            {
+                RandomQuality = 1;
+                greatSuccessValue = 2;
+            }
+
+            isGreatSuccess = Random.Shared.Next(greatSuccessOdds) == 0;
+
+            if (isGreatSuccess)
+            {
+                RandomQuality = greatSuccessValue;
+            }
+
+            return (isGreatSuccess, RandomQuality);
+        }
+
     }
 
     [Serializable]
