@@ -28,8 +28,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CCraftStartQualityUpRes Handle(GameClient client, C2SCraftStartQualityUpReq request)
         {  
             string equipItemUID = request.ItemUID;
-            var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             Character character = client.Character;
+            var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
+            var equipItem = ramItem.Item2.Item2;
             uint craftpawnid = request.CraftMainPawnID;
             bool IsGreatSuccess = Random.Shared.Next(10) == 0;
             string RefineMaterialUID = request.RefineUID;

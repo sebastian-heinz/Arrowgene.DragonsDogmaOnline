@@ -23,9 +23,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
         {
-            Character character = client.Character;
             string equipItemUID = request.EquipItemUID;
-            Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
+            Character character = client.Character;
+            var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
+            var equipItem = ramItem.Item2.Item2;
             uint charid = client.Character.CharacterId;
             uint craftpawnid = request.CraftMainPawnID;
 

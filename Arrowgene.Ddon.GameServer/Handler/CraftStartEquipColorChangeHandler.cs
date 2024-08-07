@@ -28,7 +28,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint charid = client.Character.CharacterId;
             string equipItemUID = request.EquipItemUID;
             List<CDataCraftColorant> colorList = request.CraftColorantList;
-            Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
+            var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
+            var equipItem = ramItem.Item2.Item2;
             byte color = request.Color;
             List<CDataCraftColorant> colorlist = new List<CDataCraftColorant>(); // this is probably for consuming the dye
             uint craftpawnid = request.CraftMainPawnID;
