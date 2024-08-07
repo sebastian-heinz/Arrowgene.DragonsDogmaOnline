@@ -28,7 +28,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint charid = client.Character.CharacterId;
             string equipItemUID = request.EquipItemUID;
             List<CDataCraftColorant> colorList = request.CraftColorantList;
-            Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
+            var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
+            var equipItem = ramItem.Item2.Item2;
             byte color = request.Color;
             List<CDataCraftColorant> colorlist = new List<CDataCraftColorant>(); // this is probably for consuming the dye
             uint craftpawnid = request.CraftMainPawnID;
@@ -42,8 +43,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (!string.IsNullOrEmpty(DyeUId))
             {
-                var updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, DyeUId, 1);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                try
+                {
+                    var updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, DyeUId, 1);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                }
+                catch (NotEnoughItemsException)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
+                }
             }
 
             //Applying the Dye
@@ -94,7 +102,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
             }
             
