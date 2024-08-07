@@ -101,12 +101,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (CanPlusValue == true)
             {
-                if (!string.IsNullOrEmpty(RefineMaterialUID)) // Check if a refinematerial is set
-                {
-                    var (isGreatSuccess, randomQuality) = _itemManager.ItemChangeQuality(RefineMaterialItem);
-                    IsGreatSuccess = isGreatSuccess;
-                    RandomQuality = randomQuality;
+                var (isGreatSuccess, randomQuality) = _itemManager.ItemChangeQuality(RefineMaterialItem);
+                IsGreatSuccess = isGreatSuccess;
+                RandomQuality = randomQuality;
 
+                if (!string.IsNullOrEmpty(RefineMaterialUID))
+                {
                     List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
