@@ -100,23 +100,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 canContinue = false;
             }
             bool DoUpgrade = currentTotalEquipPoint >= requiredPoints;
-            
+
             if (DoUpgrade)
             {
+                equipItem.ItemId = gearupgradeID;
                 currentTotalEquipPoint = 0;
+                equipItem.EquipPoints = currentTotalEquipPoint;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-            }
-
-            equipItem.ItemId = gearupgradeID;
-            equipItem.EquipPoints = currentTotalEquipPoint;
-
-            if (DoUpgrade)
-            {
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
                 res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
+                equipItem.ItemId = equipItem.ItemId;
+                equipItem.EquipPoints = currentTotalEquipPoint;
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, IsGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
 
