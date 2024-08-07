@@ -60,18 +60,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new();
 
-            // Update item equip points in the database
-            uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
-            currentTotalEquipPoint += addEquipPoint;
-            Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
 
             // Removes crafting materials
             foreach (var craftMaterial in request.CraftMaterialList)
             {
                 try
                 {
-                    var updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                var updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
                 catch (NotEnoughItemsException e)
                 {
@@ -79,6 +75,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     return new S2CCraftStartEquipGradeUpRes();
                 }
             }
+
+            // Update item equip points in the database
+            uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
+            currentTotalEquipPoint += addEquipPoint;
+            Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
 
             // Subtract less Gold if support pawn is used and add slightly more points
             if (request.CraftSupportPawnIDList.Count > 0)
@@ -135,7 +136,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftRankLimit = 0
             };
             client.Send(expNtc);
-
+            client.Send(updateCharacterItemNtc);
             return res;
         }
 
@@ -169,7 +170,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 _itemManager.UpgradeStorageItem(Server, client, charid, storageType, equipItem, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
-                client.Send(updateCharacterItemNtc);
             }
             else
             {
@@ -210,6 +210,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Upgradable = upgradable,
                 Unk1 = unk1 // Dragon Augment related I guess?
             };
+            
         }
     }
 }
