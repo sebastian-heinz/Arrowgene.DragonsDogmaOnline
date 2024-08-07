@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
-                var (isGreatSuccess, randomQuality) = _itemManager.ItemChangeQuality(RefineMaterialItem);
+                var (isGreatSuccess, randomQuality) = _itemManager.ItemQualityCalculation(RefineMaterialItem);
                 IsGreatSuccess = isGreatSuccess;
                 RandomQuality = randomQuality;
 

@@ -643,7 +643,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return amountFound >= num;
         }
 
-        public (bool IsGreatSuccess, byte RandomQuality) ItemChangeQuality(Item? refineMaterialItem)
+        public (bool IsGreatSuccess, byte RandomQuality) ItemQualityCalculation(Item? refineMaterialItem)
         {
             byte greatSuccessValue = 1;
             byte greatSuccessOdds = 10;
