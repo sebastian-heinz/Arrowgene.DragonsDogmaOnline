@@ -23,9 +23,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
         {
-            Character character = client.Character;
             string equipItemUID = request.EquipItemUID;
-            Item equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
+            Character character = client.Character;
+            var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
+            var equipItem = ramItem.Item2.Item2;
             uint charid = client.Character.CharacterId;
             uint craftpawnid = request.CraftMainPawnID;
 
@@ -59,17 +60,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new();
 
-            // Update item equip points in the database
-            uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
-            currentTotalEquipPoint += addEquipPoint;
-            Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
 
             // Removes crafting materials
             foreach (var craftMaterial in request.CraftMaterialList)
             {
+                try
+                {
                 var updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
                 updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                }
+                catch (NotEnoughItemsException)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
+                }
             }
+
+            // Update item equip points in the database
+            uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
+            currentTotalEquipPoint += addEquipPoint;
+            Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
 
             // Subtract less Gold if support pawn is used and add slightly more points
             if (request.CraftSupportPawnIDList.Count > 0)
@@ -99,23 +108,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 canContinue = false;
             }
             bool DoUpgrade = currentTotalEquipPoint >= requiredPoints;
-            
+
             if (DoUpgrade)
             {
+                equipItem.ItemId = gearupgradeID;
                 currentTotalEquipPoint = 0;
+                equipItem.EquipPoints = currentTotalEquipPoint;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-            }
-
-            equipItem.ItemId = gearupgradeID;
-            equipItem.EquipPoints = currentTotalEquipPoint;
-
-            if (DoUpgrade)
-            {
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
                 res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
+                equipItem.ItemId = equipItem.ItemId;
+                equipItem.EquipPoints = currentTotalEquipPoint;
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, IsGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
 
@@ -129,7 +135,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftRankLimit = 0
             };
             client.Send(expNtc);
-
+            client.Send(updateCharacterItemNtc);
             return res;
         }
 
@@ -163,11 +169,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 _itemManager.UpgradeStorageItem(Server, client, charid, storageType, equipItem, (byte)slotno);
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
-                client.Send(updateCharacterItemNtc);
             }
             else
             {
-                Logger.Error($"Item with UID {equipItemUID} not found in {storageType}");
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
             }
 
@@ -204,6 +208,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Upgradable = upgradable,
                 Unk1 = unk1 // Dragon Augment related I guess?
             };
+            
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CraftStartCraftHandler : GameStructurePacketHandler<C2SCraftStartCraftReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartCraftHandler));
+        private readonly ItemManager _itemManager;
         private static readonly HashSet<ItemSubCategory> BannedSubCategories = new HashSet<ItemSubCategory>
         {
             ItemSubCategory.WeaponShield,
@@ -32,11 +33,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         };
         public CraftStartCraftHandler(DdonGameServer server) : base(server)
         {
+            _itemManager = Server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SCraftStartCraftReq> packet)
         {       
             bool CanPlusValue = false;
+            bool IsGreatSuccess = false;
             CDataMDataCraftRecipe recipe = Server.AssetRepository.CraftingRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
                 .Where(recipe => recipe.RecipeID == packet.Structure.RecipeID)
@@ -63,7 +66,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string RefineMaterialUID = packet.Structure.RefineMaterialUID;
             var RefineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
             byte RandomQuality = 0;
-            int D100 =  Random.Shared.Next(100);
 
             ushort AddStatusID = packet.Structure.Unk0;
             CDataAddStatusParam AddStat = new CDataAddStatusParam()
@@ -96,45 +98,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     return;
                 }
             }
-            
-            // Check if a refinematerial is set
-            if (!string.IsNullOrEmpty(RefineMaterialUID))
-            {
-                if (RefineMaterialItem.ItemId == 8036 || RefineMaterialItem.ItemId == 8068 ) // Checking if its one of the better rocks because they augment the odds of +3.
-                {
-                    D100 += 40;
-                }
-                else if (RefineMaterialItem.ItemId == 8052 || RefineMaterialItem.ItemId == 8084)
-                {
-                    D100 += 60;
-                };
-                List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                D100 += 10;
-            }
 
             if (CanPlusValue == true)
             {
-                var thresholds = new (int Threshold, int Quality)[]
+                var (isGreatSuccess, randomQuality) = _itemManager.ItemQualityCalculation(RefineMaterialItem);
+                IsGreatSuccess = isGreatSuccess;
+                RandomQuality = randomQuality;
+
+                if (!string.IsNullOrEmpty(RefineMaterialUID))
                 {
-                    (100, 3),
-                    (90, 2),
-                    (70, 1),
-                    (0, 0)  // This should always be the last one to catch all remaining cases
-                };
-                RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
+                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                }
             };
 
+
+
             // TODO: Refactor to generate the actual item here,
-            // TODO: Quality is an innate principle, we need to check if the newly generated item belongs to certain subcats,found in ItemSubCategory,
-            // Weapons & Armor can have quality, but subweapons (shield/red), lantern and jewelry cannot, even though the client does support it, its not meant to happen.
-            // So we will have to filter them out.
-
-            //TODO: There are 3 tiers of quality up items, we need to handle those appropriately. Looks like they don't get sent in the request in a special way,
-            // So we'll need todo a direct ItemID comparison to know which one we're getting.
-            
-
-
             // TODO: Calculate final craft price with the discounts from the craft pawns
             uint finalCraftCost = recipe.Cost * packet.Structure.CreateCount;
 
