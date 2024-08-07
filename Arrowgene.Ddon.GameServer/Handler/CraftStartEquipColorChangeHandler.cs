@@ -43,8 +43,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (!string.IsNullOrEmpty(DyeUId))
             {
-                var updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, DyeUId, 1);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                try
+                {
+                    var updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, DyeUId, 1);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                }
+                catch (NotEnoughItemsException e)
+                {
+                    Logger.Exception(e);
+                    return new S2CCraftStartEquipColorChangeRes();
+                }
             }
 
             //Applying the Dye

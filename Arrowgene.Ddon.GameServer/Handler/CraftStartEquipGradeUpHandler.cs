@@ -68,8 +68,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Removes crafting materials
             foreach (var craftMaterial in request.CraftMaterialList)
             {
-                var updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                try
+                {
+                    var updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                }
+                catch (NotEnoughItemsException e)
+                {
+                    Logger.Exception(e);
+                    return new S2CCraftStartEquipGradeUpRes();
+                }
             }
 
             // Subtract less Gold if support pawn is used and add slightly more points

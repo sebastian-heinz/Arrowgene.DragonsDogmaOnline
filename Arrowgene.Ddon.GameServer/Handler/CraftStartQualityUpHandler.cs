@@ -78,8 +78,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     D100 += 60;
                 };
-                updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                try
+                {
+                    updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                }
+                catch (NotEnoughItemsException e)
+                {
+                    Logger.Exception(e);
+                    return new S2CCraftStartQualityUpRes();
+                }
             }
 
             var thresholds = new (int Threshold, int Quality)[]
