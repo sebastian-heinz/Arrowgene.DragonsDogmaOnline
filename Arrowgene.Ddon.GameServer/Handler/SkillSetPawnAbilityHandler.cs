@@ -10,7 +10,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillSetPawnAbilityHandler : GameStructurePacketHandler<C2SSkillSetPawnAbilityReq>
+    public class SkillSetPawnAbilityHandler : GameRequestPacketHandler<C2SSkillSetPawnAbilityReq, S2CSkillSetPawnAbilityRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillSetPawnAbilityHandler));
         
@@ -21,9 +21,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             jobManager = server.JobManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillSetPawnAbilityReq> packet)
+        public override S2CSkillSetPawnAbilityRes Handle(GameClient client, C2SSkillSetPawnAbilityReq packet)
         {
-            if(packet.Structure.SlotNo == 0)
+            if(packet.SlotNo == 0)
             {
                 Logger.Error(client, $"Requesting to set an ability to slot 0");
             }
@@ -34,19 +34,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var AllAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Concat(SkillGetAcquirableAbilityListHandler.AllSecretAbilities);
             JobId abilityJob = AllAbilities
-                .Where(aug => aug.AbilityNo == packet.Structure.SkillId )
+                .Where(aug => aug.AbilityNo == packet.SkillId )
                 .Select(aug => aug.Job)
                 .Single();
 
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            Ability abilitySlot = jobManager.SetAbility(Server.Database, client, pawn, abilityJob, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.PawnId).Single();
+            Ability abilitySlot = jobManager.SetAbility(Server.Database, client, pawn, abilityJob, packet.SlotNo, packet.SkillId, packet.SkillLv);
 
-            client.Send(new S2CSkillSetPawnAbilityRes() {
+            return new S2CSkillSetPawnAbilityRes() {
                 PawnId = pawn.PawnId,
-                SlotNo = packet.Structure.SlotNo,
+                SlotNo = packet.SlotNo,
                 AbilityId = abilitySlot.AbilityId,
                 AbilityLv = abilitySlot.AbilityLv
-            });
+            };
         }
     }
 }

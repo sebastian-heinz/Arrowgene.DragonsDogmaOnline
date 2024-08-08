@@ -853,6 +853,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CServerGetServerListRes.Serializer());
+
             Create(new S2CSkillAbilitySetNtc.Serializer());
             Create(new S2CSkillChangeExSkillRes.Serializer());
             Create(new S2CSkillCustomSkillSetNtc.Serializer());
@@ -890,6 +891,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillSetPawnAbilityRes.Serializer());
             Create(new S2CSkillSetPawnSkillRes.Serializer());
             Create(new S2CSkillSetSkillRes.Serializer());
+            Create(new S2CSkillSetPresetAbilityNtc.Serializer());
+            Create(new S2CSkillSetPresetPawnAbilityNtc.Serializer());
+            Create(new S2CSkillGetCharacterSkillInfoNtc.Serializer());
+
             Create(new S2CSetCommunicationShortcutRes.Serializer());
             Create(new S2CSetShortcutRes.Serializer());
             Create(new S2CShopBuyShopGoodsRes.Serializer());
