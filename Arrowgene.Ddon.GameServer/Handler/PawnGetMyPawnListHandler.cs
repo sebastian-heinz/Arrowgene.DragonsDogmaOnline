@@ -22,8 +22,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnGetMypawnListReq> packet)
         {
-            S2CPawnGetMypawnListRes pcap = EntitySerializer.Get<S2CPawnGetMypawnListRes>().Read(SelectedDump.data_Dump_32_A);
-
             client.Send(new S2CPawnGetMypawnListRes() {
                 PawnList = client.Character.Pawns.Select((pawn, index) => new CDataPawnList() {
                     PawnId = (int) pawn.PawnId,
