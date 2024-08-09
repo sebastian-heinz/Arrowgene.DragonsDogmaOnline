@@ -10,11 +10,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillRegisterPresetAbilityHandler));
 
-        private DdonGameServer _server;
-
         public SkillSetPresetAbilityNameHandler(DdonGameServer server) : base(server)
         {
-            _server = server;
         }
 
         public override S2CSkillSetPresetAbilityNameRes Handle(GameClient client, C2SSkillSetPresetAbilityNameReq packet)
@@ -26,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             preset.PresetName = packet.PresetName;
 
-            //Write to DB.
+            Server.Database.UpdateAbilityPreset(client.Character.CharacterId, preset);
 
             return new S2CSkillSetPresetAbilityNameRes();
         }

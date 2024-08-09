@@ -11,17 +11,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillRegisterPresetAbilityHandler));
 
-        private DdonGameServer _server;
-
         public SkillRegisterPresetAbilityHandler(DdonGameServer server) : base(server)
         {
-            _server = server;
         }
 
         public override S2CSkillRegisterPresetAbilityRes Handle(GameClient client, C2SSkillRegisterPresetAbilityReq packet)
         {
-            Logger.Info($"Registering Preset for ID {packet.PawnId}, slot {packet.PresetNo}");
-
             CharacterCommon sourceCharacter = client.Character;
             if (packet.PawnId > 0)
             {
@@ -34,11 +29,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             string newName = $"Preset {packet.PresetNo}";
+            var existingPreset = client.Character.AbilityPresets.Where(x => x.PresetNo == packet.PresetNo).FirstOrDefault();
+            if (existingPreset is not null)
+            {
+                newName = existingPreset.PresetName;
+            }
+
             var newPreset = JobManager.MakePresetAbilityParam(sourceCharacter, sourceCharacter.EquippedAbilitiesDictionary[sourceCharacter.Job], packet.PresetNo, newName);
             client.Character.AbilityPresets.RemoveAll(x => x.PresetNo == packet.PresetNo);
             client.Character.AbilityPresets.Add(newPreset);
 
-            //Write to DB.
+            Server.Database.ReplaceAbilityPreset(client.Character.CharacterId, newPreset);
 
             return new S2CSkillRegisterPresetAbilityRes();
         }

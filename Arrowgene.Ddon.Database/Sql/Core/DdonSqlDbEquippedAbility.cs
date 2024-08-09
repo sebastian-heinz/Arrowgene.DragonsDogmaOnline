@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -139,6 +140,93 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "slot_no", slotNo);
             AddParameter(command, "ability_id", ability.AbilityId);
             AddParameter(command, "ability_lv", ability.AbilityLv);
+        }
+
+        protected static readonly string[] PresetAbilityFields = new string[]
+        {
+            "character_id", "preset_no", "preset_name",
+            "ability_1", "ability_2", "ability_3", "ability_4", "ability_5",
+            "ability_6", "ability_7", "ability_8", "ability_9", "ability_10"
+        };
+
+        private readonly string SqlInsertIfNotExistsAbilityPreset = $"INSERT INTO \"ddon_preset_ability\" ({BuildQueryField(PresetAbilityFields)}) SELECT {BuildQueryInsert(PresetAbilityFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_preset_ability\" WHERE \"character_id\"=@character_id AND \"preset_no\"=@preset_no);";
+        private static readonly string SqlUpdateAbilityPreset = $"UPDATE \"ddon_preset_ability\" SET {BuildQueryUpdate(PresetAbilityFields)} WHERE \"character_id\"=@character_id AND \"preset_no\"=@preset_no;";
+        private static readonly string SqlSelectAbilityPresets = $"SELECT {BuildQueryField(PresetAbilityFields)} FROM \"ddon_preset_ability\" WHERE \"character_id\"=@character_id ORDER BY preset_no;";
+
+        public bool InsertIfNotExistsAbilityPreset(TCon connection, uint characterId, CDataPresetAbilityParam preset)
+        {
+            return ExecuteNonQuery(connection, SqlInsertIfNotExistsAbilityPreset, command =>
+            {
+                AddParameter(command, characterId, preset);
+            }) == 1;
+        }
+
+        public bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset)
+        {
+            using TCon connection = OpenNewConnection();
+            return ReplaceAbilityPreset(connection, characterId, preset);
+        }
+
+        public bool ReplaceAbilityPreset(TCon connection, uint characterId, CDataPresetAbilityParam preset)
+        {
+            if (!InsertIfNotExistsAbilityPreset(connection, characterId, preset))
+            {
+                return UpdateAbilityPreset(connection, characterId, preset);
+            }
+            return true;
+        }
+
+        public bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdateAbilityPreset(connection, characterId, preset);
+        }
+
+        public bool UpdateAbilityPreset(TCon connection, uint characterId, CDataPresetAbilityParam preset)
+        {
+            return ExecuteNonQuery(connection, SqlUpdateAbilityPreset, command =>
+            {
+                AddParameter(command, characterId, preset);
+            }) == 1;
+        }
+
+        private void AddParameter(TCom command, uint characterId, CDataPresetAbilityParam preset)
+        {
+            AddParameter(command, "character_id", characterId);
+            AddParameter(command, "preset_no", preset.PresetNo);
+            AddParameter(command, "preset_name", preset.PresetName);
+            for (int i = 0; i < 10; i++)
+            {
+                string key = $"ability_{i + 1}";
+                if (i < preset.AbilityList.Count)
+                {
+                    AddParameter(command, key, preset.AbilityList[i].AcquirementNo);
+                }
+                else 
+                {
+                    AddParameter(command, key, -1);
+                }
+            }
+        }
+
+        private CDataPresetAbilityParam ReadAbilityPreset(TReader reader)
+        {
+            CDataPresetAbilityParam preset = new CDataPresetAbilityParam();
+
+            preset.PresetNo = GetByte(reader, "preset_no");
+            preset.PresetName = GetString(reader, "preset_name");
+            for (int i = 0; i < 10; i++)
+            {
+                string key = $"ability_{i + 1}";
+                var value = GetInt32(reader, key);
+                if (value == -1) continue;
+                preset.AbilityList.Add(new CDataSetAcquirementParam()
+                {
+                    AcquirementNo = (uint)value
+                });
+            }
+
+            return preset;
         }
     }
 }

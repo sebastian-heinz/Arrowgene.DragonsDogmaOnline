@@ -734,10 +734,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 if (i >= preset.AbilityList.Count)
                 {
-                    if (equippedAbilities[i] != null)
-                    {
-                        equippedAbilities[i] = null;
-                    }
+                    equippedAbilities[i] = null;
                 }
                 else
                 {
