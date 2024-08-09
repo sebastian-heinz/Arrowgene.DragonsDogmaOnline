@@ -39,11 +39,18 @@
                 },
                 {
                     "type": "PlayEvent",
-                    "announce_type": "Accept",
                     "stage_id": {
                         "id": 3
                     },
-                    "event_id": 100,
+                    "event_id": 100
+				},
+                {
+                    "type": "PlayEvent",
+					"announce_type": "Accept",
+                    "stage_id": {
+                        "id": 76
+                    },
+                    "event_id": 15,
                     "jump_stage_id": {
                         "id": 2
                     },
