@@ -128,6 +128,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 equipItem.ItemId = equipItem.ItemId;
                 equipItem.EquipPoints = currentTotalEquipPoint;
+                UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, IsGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
 
