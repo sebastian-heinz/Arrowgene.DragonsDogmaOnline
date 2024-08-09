@@ -172,10 +172,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 0, 0));
 
-                _itemManager.UpgradeStorageItem(Server, client, charid, storageType, equipItem, (byte)slotno);
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
+                _itemManager.UpgradeStorageItem(Server, client, charid, storageType, equipItem, slotno);
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
             }
             else
             {

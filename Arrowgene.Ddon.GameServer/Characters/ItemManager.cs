@@ -589,7 +589,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return item.ItemId;
         }
-        public void UpgradeStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
+        public void UpgradeStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, ushort slotNo)
         {
             client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
             server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);

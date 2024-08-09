@@ -112,7 +112,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     characterCommon = character;
                 }
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 0, 0));
 
                 if (foundItem != null)
                 {
@@ -123,9 +123,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         character.CharacterId,
                         storageType,
                         equipItem,
-                        (byte)slotno
+                        slotno
                     );
-                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
+                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
                     client.Send(updateCharacterItemNtc);
                 }
                 else
