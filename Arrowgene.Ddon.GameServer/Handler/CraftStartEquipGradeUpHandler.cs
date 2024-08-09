@@ -78,7 +78,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Update item equip points in the database
             uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
             currentTotalEquipPoint += addEquipPoint;
-            //Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
 
             // Subtract less Gold if support pawn is used and add slightly more points
             if (request.CraftSupportPawnIDList.Count > 0)
@@ -115,14 +114,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (canContinue)
                 {
                     currentTotalEquipPoint -= (uint)requiredPoints;
-                    Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 }
                 else
                 {
                     currentTotalEquipPoint = 0;
-                    Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 }
                 equipItem.EquipPoints = currentTotalEquipPoint;
+                Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
                 res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, addEquipPoint, currentTotalEquipPoint, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
