@@ -28,15 +28,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CCraftStartQualityUpRes Handle(GameClient client, C2SCraftStartQualityUpReq request)
         {  
             string equipItemUID = request.ItemUID;
-            var equipItem = Server.Database.SelectStorageItemByUId(equipItemUID);
             Character character = client.Character;
+            var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
+            var equipItem = ramItem.Item2.Item2;
             uint craftpawnid = request.CraftMainPawnID;
-            bool IsGreatSuccess = Random.Shared.Next(10) == 0;
+            bool IsGreatSuccess = false;
             string RefineMaterialUID = request.RefineUID;
             var RefineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
             ushort AddStatusID = request.AddStatusID;
             byte RandomQuality = 0;
-            int D100 =  Random.Shared.Next(100);
+            byte GreatSuccessValue = 0;
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();  
 
@@ -55,54 +56,33 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 ItemUId = equipItemUID,
             };
+
+            // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
+            // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
+            
+            if (!string.IsNullOrEmpty(RefineMaterialUID))
+            {
+                var (isGreatSuccess, randomQuality) = _itemManager.ItemQualityCalculation(RefineMaterialItem);
+                IsGreatSuccess = isGreatSuccess;
+                RandomQuality = randomQuality;
+
+                try
+                {
+                    updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                }
+                catch (NotEnoughItemsException)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
+                }
+            }
+
             // TODO: figuring out what this is
             // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
                 IsGreatSuccess = IsGreatSuccess
             };
-
-            // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
-            // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
-
-            //TODO: There are 3 tiers, and the lowest tier can't become +3, and the highest has better chance of +3, so we need to do a direct ID comparison,
-            // So a total of 6 IDs? for armor and weapons. 3 each.
-            if (!string.IsNullOrEmpty(RefineMaterialUID))
-            {
-                if (RefineMaterialItem.ItemId == 8036 || RefineMaterialItem.ItemId == 8068 ) // Checking if its one of the better rocks because they augment the odds of +3.
-                {
-                    D100 += 40;
-                }
-                else if (RefineMaterialItem.ItemId == 8052 || RefineMaterialItem.ItemId == 8084)
-                {
-                    D100 += 60;
-                };
-                updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, RefineMaterialUID, 1);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-            }
-
-            var thresholds = new (int Threshold, int Quality)[]
-            {   
-                (85, 2),
-                (45, 1),
-                (0, 0)
-            };
-
-            RandomQuality = (byte)thresholds.First(t => D100 >= t.Threshold).Quality;
-            if (D100 > 150)
-            {
-                IsGreatSuccess = true;
-            }
-            if (IsGreatSuccess)
-            {
-                RandomQuality = 3;
-            }
-
-            if (equipItem.PlusValue > RandomQuality)
-            {
-                RandomQuality = equipItem.PlusValue;
-                // Wiki's say you can't lower quality.
-            }
 
             // Updating the item.
             equipItem.ItemId = equipItem.ItemId;
