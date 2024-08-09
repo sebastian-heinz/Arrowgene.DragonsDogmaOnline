@@ -42,7 +42,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool IsGreatSuccess = Random.Shared.Next(5) == 0;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
 
-            List<CDataCommonU32> gradeuplist = new() { new CDataCommonU32(gearupgradeID) };
             CDataCurrentEquipInfo CurrentEquipInfo = new()
             {
                 ItemUId = equipItemUID,
@@ -90,21 +89,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 1 => 700,
                 2 => 1000,
                 3 => 1500,
-                4 => 800,  // TODO: Check if the gear can reach "True" level (4) and handle that properly with "canContinue"
+                4 => 800,
                 _ => throw new InvalidOperationException("Invalid star level")
             };
 
-            if (currentStars == 3)
-            {
-                canContinue = false;
-            }
+            canContinue = gearupgradeID != 0;
+
             bool DoUpgrade = currentTotalEquipPoint >= requiredPoints;
             
             if (DoUpgrade)
             {
-                currentTotalEquipPoint = 0;
+                currentTotalEquipPoint -= (uint)requiredPoints;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
             }
+
+            List<CDataCommonU32> gradeuplist = new() { new CDataCommonU32(gearupgradeID) }; //TODO: Find out if you can upgrade more than once and handle that if so.
 
             equipItem.ItemId = gearupgradeID;
             equipItem.EquipPoints = currentTotalEquipPoint;
@@ -112,7 +111,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (DoUpgrade)
             {
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
-                res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
+                res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, currentTotalEquipPoint, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
@@ -172,7 +171,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
         }
-        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist, uint equipGrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist,uint currentTotalEquipPoint, uint equipGrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
             return new S2CCraftStartEquipGradeUpRes
             {
@@ -180,7 +179,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 GradeUpItemID = gradeUpItemID,
                 GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
                 AddEquipPoint = 0,
-                TotalEquipPoint = 0,
+                TotalEquipPoint = currentTotalEquipPoint,
                 EquipGrade = equipGrade, // Unclear why the client wants this? as long as its a number it doesn't seem to matter what you set it as.
                 Gold = gold,
                 IsGreatSuccess = isGreatSuccess,
