@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CSkillPawnAbilitySetNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_SKILL_19_47_16_NTC; // Not 100% sure about this one either, only testing will tell
+        public PacketId Id => PacketId.S2C_SKILL_PAWN_ABILITY_SET_NTC; // Not 100% sure about this one either, only testing will tell
 
         public S2CSkillPawnAbilitySetNtc()
         {

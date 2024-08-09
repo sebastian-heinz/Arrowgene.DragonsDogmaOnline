@@ -636,10 +636,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         public Ability SetAbility(IDatabase database, GameClient client, CharacterCommon character, JobId abilityJob, byte slotNo, uint abilityId, byte abilityLv)
-        {
+        {            
             Ability ability = character.LearnedAbilities
-                .Where(aug =>aug.AbilityId == abilityId && aug.AbilityLv == abilityLv)
-                .Single();
+                .Where(aug =>aug.AbilityId == abilityId)
+                .SingleOrDefault();
+
+            if (ability is null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
+            }
 
             character.EquippedAbilitiesDictionary[character.Job][slotNo - 1] = ability;
 
@@ -682,7 +687,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return _Server.Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
         }
 
-        public static CDataPresetAbilityParam ToPresetAbilityParam(CharacterCommon character, List<Ability> abilities, byte presetNo, string presetName = "")
+        public static CDataPresetAbilityParam MakePresetAbilityParam(CharacterCommon character, List<Ability> abilities, byte presetNo, string presetName = "")
         {
             CDataPresetAbilityParam preset = new CDataPresetAbilityParam()
             {
@@ -698,6 +703,71 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return preset;
+        }
+    
+        public void SetAbilityPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
+        {
+            uint cost = 0;
+            uint costMax = _Server.CharacterManager.GetMaxAugmentAllocation(character);
+            foreach (var presetAbility in preset.AbilityList)
+            {
+                Ability ability = character.LearnedAbilities
+                    .Where(aug => aug.AbilityId == presetAbility.AcquirementNo)
+                    .SingleOrDefault();
+
+                if (ability is null)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
+                }
+
+                cost += SkillGetAcquirableAbilityListHandler.GetAbilityFromId(presetAbility.AcquirementNo).Cost;
+
+                if (cost > costMax)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_COST_OVER);
+                }
+            }
+            
+            List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
+
+            for (byte i = 0; i < 10; i++)
+            {
+                if (i >= preset.AbilityList.Count)
+                {
+                    if (equippedAbilities[i] != null)
+                    {
+                        equippedAbilities[i] = null;
+                    }
+                }
+                else
+                {
+                    Ability ability = character.LearnedAbilities
+                    .Where(aug => aug.AbilityId == preset.AbilityList[i].AcquirementNo)
+                    .SingleOrDefault();
+
+                    character.EquippedAbilitiesDictionary[character.Job][i] = ability;
+
+                    if (character is Character)
+                    {
+                        client.Party.SendToAll(new S2CSkillAbilitySetNtc()
+                        {
+                            CharacterId = ((Character)character).CharacterId,
+                            ContextAcquirementData = ability.AsCDataContextAcquirementData((byte)(i + 1))
+                        });
+                    }
+                    else if (character is Pawn)
+                    {
+                        client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
+                        {
+                            PawnId = ((Pawn)character).PawnId,
+                            ContextAcquirementData = ability.AsCDataContextAcquirementData((byte)(i + 1))
+                        });
+                    }
+                }
+            }
+
+            //We wait until the end to do all of the DB updating in a single transaction.
+            database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
         }
     }
 }

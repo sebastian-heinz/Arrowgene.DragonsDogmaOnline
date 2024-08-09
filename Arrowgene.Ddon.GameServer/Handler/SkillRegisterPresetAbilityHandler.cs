@@ -1,7 +1,9 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -20,10 +22,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Logger.Info($"Registering Preset for ID {packet.PawnId}, slot {packet.PresetNo}");
 
-            string newName = $"Preset {packet.PresetNo}";
+            CharacterCommon sourceCharacter = client.Character;
+            if (packet.PawnId > 0)
+            {
+                sourceCharacter = client.Character.Pawns.Where(x => x.PawnId == packet.PawnId).FirstOrDefault();
+            }
 
-            var foo = JobManager.ToPresetAbilityParam(client.Character, client.Character.EquippedAbilitiesDictionary[client.Character.Job], packet.PresetNo, newName);
-            client.Character.AbilityPresets.Add(foo);
+            if (sourceCharacter is null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID);
+            }
+
+            string newName = $"Preset {packet.PresetNo}";
+            var newPreset = JobManager.MakePresetAbilityParam(sourceCharacter, sourceCharacter.EquippedAbilitiesDictionary[sourceCharacter.Job], packet.PresetNo, newName);
+            client.Character.AbilityPresets.RemoveAll(x => x.PresetNo == packet.PresetNo);
+            client.Character.AbilityPresets.Add(newPreset);
+
+            //Write to DB.
 
             return new S2CSkillRegisterPresetAbilityRes();
         }
