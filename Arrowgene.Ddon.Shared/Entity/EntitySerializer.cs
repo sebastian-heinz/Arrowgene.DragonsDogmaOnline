@@ -486,6 +486,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
+
             Create(new C2SSkillChangeExSkillReq.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
             Create(new C2SSkillGetAcquirableAbilityListReq.Serializer());
@@ -516,6 +517,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSkillSetPawnAbilityReq.Serializer());
             Create(new C2SSkillSetPawnSkillReq.Serializer());
             Create(new C2SSkillSetSkillReq.Serializer());
+            Create(new C2SSkillRegisterPresetAbilityReq.Serializer());
+
             Create(new C2SSetShortcutReq.Serializer());
             Create(new C2SShopBuyShopGoodsReq.Serializer());
             Create(new C2SShopGetShopGoodsListReq.Serializer());
@@ -894,6 +897,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillSetPresetAbilityNtc.Serializer());
             Create(new S2CSkillSetPresetPawnAbilityNtc.Serializer());
             Create(new S2CSkillGetCharacterSkillInfoNtc.Serializer());
+            Create(new S2CSkillRegisterPresetAbilityRes.Serializer());
 
             Create(new S2CSetCommunicationShortcutRes.Serializer());
             Create(new S2CSetShortcutRes.Serializer());

@@ -25,6 +25,7 @@ namespace Arrowgene.Ddon.Shared.Model
             EquippedAbilitiesDictionary = ((JobId[]) JobId.GetValues(typeof(JobId)))
                 .Select(jobId => (jobId, Enumerable.Repeat<Ability?>(null, 10).ToList()))
                 .ToDictionary(pair => pair.jobId, pair => pair.Item2);
+            AbilityPresets = new List<CDataPresetAbilityParam>();
             OnlineStatus = OnlineStatus.Offline;
             ExtendedParams = new CDataOrbGainExtendParam();
         }
@@ -52,6 +53,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<JobId, List<Ability?>> EquippedAbilitiesDictionary { get; set; }
         public OnlineStatus OnlineStatus { get; set; }
         public CDataOrbGainExtendParam ExtendedParams { get; set; }
+        public List<CDataPresetAbilityParam> AbilityPresets { get; set; }
 
         /// TODO combine into a location class ?
         public StageId Stage { get; set; }

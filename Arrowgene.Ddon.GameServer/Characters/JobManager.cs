@@ -681,5 +681,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return _Server.Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
         }
+
+        public static CDataPresetAbilityParam ToPresetAbilityParam(CharacterCommon character, List<Ability> abilities, byte presetNo, string presetName = "")
+        {
+            CDataPresetAbilityParam preset = new CDataPresetAbilityParam()
+            {
+                PresetNo = presetNo,
+                PresetName = presetName,
+            };
+
+            byte i = 1;
+            foreach (Ability ability in abilities)
+            {
+                if (ability is null) continue;
+                preset.AbilityList.Add(ability.AsCDataSetAcquirementParam(i++));
+            }
+
+            return preset;
+        }
     }
 }
