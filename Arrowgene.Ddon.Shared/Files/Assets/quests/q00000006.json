@@ -50,33 +50,47 @@
                 "id": 67,
                 "group_id": 2
             },
+			"placement_type": "Manual",
             "enemies": [
                 {
                     "enemy_id": "0x015040",
                     "level": 20,
                     "exp": 4660,
                     "named_enemy_params_id": 141,
-                    "is_boss": true
+                    "is_boss": true,
+					"index": 6
                 },
                 {
                     "enemy_id": "0x010201",
                     "level": 18,
-                    "exp": 64
+					"named_enemy_params_id": 142,
+					"index": 3,
+                    "exp": 64,
+					"index": 4
                 },
-                {
+				{
                     "enemy_id": "0x010201",
                     "level": 18,
-                    "exp": 64
+					"named_enemy_params_id": 142,
+					"index": 3,
+                    "exp": 64,
+					"index": 10
                 },
-                {
+				{
                     "enemy_id": "0x010201",
                     "level": 18,
-                    "exp": 64
+					"named_enemy_params_id": 142,
+					"index": 3,
+                    "exp": 64,
+					"index": 11
                 },
-                {
+				{
                     "enemy_id": "0x010201",
                     "level": 18,
-                    "exp": 64
+					"named_enemy_params_id": 142,
+					"index": 3,
+                    "exp": 64,
+					"index": 12
                 }
             ]
         }
@@ -118,6 +132,9 @@
             "stage_id": {
                 "id": 1
             },
+			"flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 977, "comment": "Spawns Gerd and the White Knights outside Glowworm Cave"}
+            ],
             "event_id": 20
         },
         {
@@ -138,6 +155,10 @@
             "stage_id": {
                 "id": 67
             },
+			"jump_stage_id": {
+                "id": 67
+            },
+            "start_pos_no": 2,
             "event_id": 0
         },
         {
@@ -149,6 +170,13 @@
             "groups": [0]
         },
         {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 67
+            },
+            "event_id": 10
+        },
+		{
             "type": "PlayEvent",
             "stage_id": {
                 "id": 67
