@@ -651,22 +651,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             database.ReplaceEquippedAbility(character.CommonId, character.Job, slotNo, ability);
 
             // Inform party members of the change
-            if (character is Character)
-            {
-                client.Party.SendToAll(new S2CSkillAbilitySetNtc()
-                {
-                    CharacterId = ((Character)character).CharacterId,
-                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
-                });
-            }
-            else if (character is Pawn)
-            {
-                client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
-                {
-                    PawnId = ((Pawn)character).PawnId,
-                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
-                });
-            }
+            AbilitySetNotifyParty(client, character, ability, slotNo);
 
             return ability;
         }
@@ -744,27 +729,32 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     character.EquippedAbilitiesDictionary[character.Job][i] = ability;
 
-                    if (character is Character)
-                    {
-                        client.Party.SendToAll(new S2CSkillAbilitySetNtc()
-                        {
-                            CharacterId = ((Character)character).CharacterId,
-                            ContextAcquirementData = ability.AsCDataContextAcquirementData((byte)(i + 1))
-                        });
-                    }
-                    else if (character is Pawn)
-                    {
-                        client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
-                        {
-                            PawnId = ((Pawn)character).PawnId,
-                            ContextAcquirementData = ability.AsCDataContextAcquirementData((byte)(i + 1))
-                        });
-                    }
+                    AbilitySetNotifyParty(client, character, ability, (byte)(i + 1));
                 }
             }
 
             //We wait until the end to do all of the DB updating in a single transaction.
             database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
+        }
+
+        private void AbilitySetNotifyParty(GameClient client, CharacterCommon character, Ability ability, byte slotNo)
+        {
+            if (character is Character)
+            {
+                client.Party.SendToAll(new S2CSkillAbilitySetNtc()
+                {
+                    CharacterId = ((Character)character).CharacterId,
+                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
+                });
+            }
+            else if (character is Pawn)
+            {
+                client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
+                {
+                    PawnId = ((Pawn)character).PawnId,
+                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
+                });
+            }
         }
     }
 }

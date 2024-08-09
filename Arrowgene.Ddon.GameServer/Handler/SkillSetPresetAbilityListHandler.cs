@@ -33,6 +33,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (packet.PawnId > 0)
             {
                 targetCharacter = client.Character.Pawns.Where(x => x.PawnId == packet.PawnId).FirstOrDefault();
+
+                if (targetCharacter is null)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO);
+                }
             }
 
             _jobManager.SetAbilityPreset(Server.Database, client, targetCharacter, preset);
