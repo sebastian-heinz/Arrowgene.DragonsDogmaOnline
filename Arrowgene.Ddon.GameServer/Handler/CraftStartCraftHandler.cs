@@ -132,8 +132,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Add crafted items
             List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num, RandomQuality);
             updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);                                                       
+            S2CCraftFinishCraftNtc FinishCraftNTC = new S2CCraftFinishCraftNtc();    
+            FinishCraftNTC.PawnId = packet.Structure.CraftMainPawnID;
 
             client.Send(updateCharacterItemNtc);
+            client.Send(FinishCraftNTC);
             client.Send(new S2CCraftStartCraftRes());
         }
     }
