@@ -1,16 +1,30 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using Arrowgene.Ddon.Database.Deferred;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class EquipManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipManager));
+
+        private static readonly List<EquipSlot> EnsembleSlots = new List<EquipSlot>()
+            {
+                EquipSlot.ArmorLeg,
+                EquipSlot.ArmorHelm,
+                EquipSlot.ArmorArm,
+                EquipSlot.WearBody,
+                EquipSlot.WearLeg,
+                EquipSlot.Accessory
+            };
+
         public static EquipType GetEquipTypeFromSlotNo(ushort slotNo)
         {
             ushort relativeSlotNo = slotNo;
@@ -134,7 +148,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Storage sourceStorage = client.Character.Storage.GetStorage(result.Item1);
                     updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
 
-                    //Check for costume requirements
+                    //Check for ensemble requirements
                     ClientItemInfo itemInfo = server.ItemManager.LookupInfoByUID(server, itemUId);
                     if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
                     {
@@ -145,7 +159,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             forceRemovals.Add((equipType, slot));
                         }
                     }
-                    else if (EnsembleSlots.Contains((EquipSlot)(itemInfo.SubCategory - 300))) //Casting ItemSubCategory -> EquipSlot.
+                    else if (EnsembleSlots.Contains((EquipSlot)itemInfo.EquipSlot))
                     {
                         var currentBody = characterToEquipTo.EquipmentTemplate.GetEquipItem(characterToEquipTo.Job, equipType, (byte)EquipSlot.ArmorBody);
                         if (currentBody != null)
@@ -168,7 +182,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 //Handle template and DB
                 characterToEquipTo.EquipmentTemplate.SetEquipItem(null, characterToEquipTo.Job, equipType, (byte)slot);
-                server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, (byte)slot);
+                server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, (byte)slot, true);
 
                 // Update storage
                 // TODO: Move to the other storage types if the first one is full
@@ -242,6 +256,38 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
             throw new Exception("Item not found");
+        }
+    
+        public List<(EquipType, EquipSlot)> CleanGenderedEquipTemplates(DdonGameServer server, CharacterCommon character)
+        {
+            List<(EquipType, EquipSlot)> forceRemovals = new List<(EquipType, EquipSlot)>();
+            //Clean equip templates.
+            foreach (JobId job in Enum.GetValues(typeof(JobId)))
+            {
+                foreach (EquipType equipType in Enum.GetValues(typeof(EquipType)))
+                {
+                    foreach (EquipSlot equipSlot in Enumerable.Range(1, 15))
+                    {
+                        Item? item = character.EquipmentTemplate.GetEquipItem(job, equipType, (byte)equipSlot);
+                        if (item is null) continue;
+                        ClientItemInfo itemInfo = server.ItemManager.LookupInfoByItem(server, item);
+                        if (itemInfo.Gender == Gender.Any) continue;
+                        if ((character.EditInfo.Sex == 1 && itemInfo.Gender == Gender.Female)
+                            || (character.EditInfo.Sex == 2 && itemInfo.Gender == Gender.Male))
+                        {
+                            character.EquipmentTemplate.SetEquipItem(null, job, equipType, (byte)equipSlot);
+                            server.Database.DeleteEquipItem(character.CommonId, job, equipType, (byte)equipSlot);
+
+                            if (job == character.Job)
+                            {
+                                forceRemovals.Add((equipType, equipSlot));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return forceRemovals;
         }
     }
 }
