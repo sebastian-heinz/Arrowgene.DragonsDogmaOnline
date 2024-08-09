@@ -78,7 +78,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Update item equip points in the database
             uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
             currentTotalEquipPoint += addEquipPoint;
-            Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
 
             // Subtract less Gold if support pawn is used and add slightly more points
             if (request.CraftSupportPawnIDList.Count > 0)
@@ -112,11 +111,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (DoUpgrade)
             {
                 equipItem.ItemId = gearupgradeID;
-                currentTotalEquipPoint = 0;
+                if (canContinue)
+                {
+                    currentTotalEquipPoint -= (uint)requiredPoints;
+                }
+                else
+                {
+                    currentTotalEquipPoint = 0;
+                }
                 equipItem.EquipPoints = currentTotalEquipPoint;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
-                res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
+                res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, addEquipPoint, currentTotalEquipPoint, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
@@ -176,15 +182,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
         }
-        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist, uint equipGrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist, uint addEquipPoint, uint currentTotalEquipPoint, uint equipGrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
             return new S2CCraftStartEquipGradeUpRes
             {
                 GradeUpItemUID = equipItemUID,
                 GradeUpItemID = gradeUpItemID,
                 GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
-                AddEquipPoint = 0,
-                TotalEquipPoint = 0,
+                AddEquipPoint = addEquipPoint,
+                TotalEquipPoint = currentTotalEquipPoint,
                 EquipGrade = equipGrade, // Unclear why the client wants this? as long as its a number it doesn't seem to matter what you set it as.
                 Gold = gold,
                 IsGreatSuccess = isGreatSuccess,
