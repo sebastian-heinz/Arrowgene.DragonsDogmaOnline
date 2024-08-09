@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
@@ -10,6 +6,9 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -574,17 +573,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)
         {
-            // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
-            Ability lowerLevelAbility = character.LearnedAbilities.Where(aug => aug != null && aug.Job == job && aug.AbilityId == abilityId).SingleOrDefault();
+            //The job passed to this function can lie. 
+            //By using the Augment search, you can buy augments from other jobs while passing a job parameter from the character's *current* job.
+            //As such, always look up the ID to make sure you know what job it's really coming from.
 
-            Logger.Debug($"The Ability ID is {abilityId}");
+            CDataAbilityParam abilityData = SkillGetAcquirableAbilityListHandler.GetAbilityFromId(abilityId);
+            JobId owningJob = abilityData.Job;
+
+            Logger.Debug($"Unlocking/upgrading ability {owningJob.ToString()}: {abilityId}");
+
+            // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
+            Ability lowerLevelAbility = character.LearnedAbilities.Where(aug => aug != null && aug.AbilityId == abilityId).SingleOrDefault();
 
             if (lowerLevelAbility == null)
             {
                 // New ability
                 Ability newAbility = new Ability()
                 {
-                    Job = job,
+                    Job = owningJob,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
                 };
@@ -598,18 +604,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility);
             }
 
-            List<CDataAbilityParam> Abilities = (job == 0) ? SkillGetAcquirableAbilityListHandler.AllSecretAbilities : SkillGetAcquirableAbilityListHandler.AllAbilities;
-            uint jpCost = Abilities
-                .Where(aug => aug.Job == job && aug.AbilityNo == abilityId)
-                .SelectMany(aug => aug.Params)
-                .Where(augParams => augParams.Lv == abilityLv)
-                .Select(augParams => augParams.RequireJobPoint)
-                .Single();
+            uint jpCost = abilityData.Params.Where(x => x.Lv == abilityLv).Single().RequireJobPoint;
 
-            // TODO: Check that this doesn't end up negative
-            CDataCharacterJobData learnedAbilityCharacterJobData = job == 0
+            CDataCharacterJobData learnedAbilityCharacterJobData = owningJob == 0
                 ? character.ActiveCharacterJobData // Secret Augments -> Use current job's JP TODO: Verify if this is the correct behaviour
-                : character.CharacterJobDataList.Where(jobData => jobData.Job == job).Single(); // Job Augments -> Use that job's JP
+                : character.CharacterJobDataList.Where(jobData => jobData.Job == owningJob).Single(); // Job Augments -> Use that job's JP
             learnedAbilityCharacterJobData.JobPoint -= jpCost;
             database.UpdateCharacterJobData(character.CommonId, learnedAbilityCharacterJobData);
 

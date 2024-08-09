@@ -1,12 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -32,11 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // This is, also for whatever reason, important so it works properly, so we have to set it ourselves
             // TODO: Investigate this more, or optimize this
 
-            var AllAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Concat(SkillGetAcquirableAbilityListHandler.AllSecretAbilities);
-            JobId abilityJob = AllAbilities
-                .Where(aug => aug.AbilityNo == packet.SkillId )
-                .Select(aug => aug.Job)
-                .Single();
+            JobId abilityJob = SkillGetAcquirableAbilityListHandler.GetAbilityFromId(packet.SkillId).Job;
 
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.PawnId).Single();
             Ability abilitySlot = jobManager.SetAbility(Server.Database, client, pawn, abilityJob, packet.SlotNo, packet.SkillId, packet.SkillLv);
