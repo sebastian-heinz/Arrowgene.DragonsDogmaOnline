@@ -59,8 +59,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var res = new S2CCraftStartEquipGradeUpRes();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new();
-
-
             // Removes crafting materials
             foreach (var craftMaterial in request.CraftMaterialList)
             {
@@ -131,17 +129,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, IsGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
-
-            // TODO: Store saved pawn exp
-            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
-            {
-                PawnId = request.CraftMainPawnID,
-                AddExp = PawnExp,
-                ExtraBonusExp = 0,
-                TotalExp = PawnExp,
-                CraftRankLimit = 0
-            };
-            client.Send(expNtc);
             client.Send(updateCharacterItemNtc);
             return res;
         }
