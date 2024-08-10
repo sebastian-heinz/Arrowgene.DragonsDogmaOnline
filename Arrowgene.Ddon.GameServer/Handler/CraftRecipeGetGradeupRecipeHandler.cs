@@ -19,13 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CCraftRecipeGetCraftGradeupRecipeRes Handle(GameClient client, C2SCraftRecipeGetCraftGradeupRecipeReq request)
         {
             List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
-                .SelectMany(recipes => recipes.RecipeList)
-                .Where(recipe => request.ItemList.Any(itemId => itemId.Value == recipe.ItemID))
-                .ToList();
-
-                // TODO: Consider supporting filtering by Category, previous attempts were super broken.
-                // Example: .Where(recipes => recipes.Category == packet.Structure.Category)
-                // Including this at the start of the above Linq would result in only ever searching the highest category and only the very first recipe within it.
+                .Where(allRecipesInCategory => allRecipesInCategory.Category == request.Category)
+                .Select(allRecipesInCategory => allRecipesInCategory.RecipeList)
+                .SingleOrDefault( new List<CDataMDataCraftGradeupRecipe>());
 
             List<CDataCommonU32> ItemList = request.ItemList;
 
