@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterDecideCharacterIdHandler : PacketHandler<GameClient>
+    public class CharacterDecideCharacterIdHandler : GameStructurePacketHandler<C2SCharacterDecideCharacterIdReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterDecideCharacterIdHandler));
 
@@ -25,9 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _AssetRepo = server.AssetRepository;
         }
 
-        public override PacketId Id => PacketId.C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterDecideCharacterIdReq> packet)
         {
             S2CCharacterDecideCharacterIdRes pcap = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
@@ -35,6 +33,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
 
             res.Unk0 = pcap.Unk0; // Removing this makes tons of tutorials pop up
+            if (Server.TemporaryBinaryDataStorage.ContainsKey(client.Character.CharacterId))
+            {
+                Logger.Info($"Loading stored binary data for {client.Character.CharacterId}");
+                res.Unk0 = Server.TemporaryBinaryDataStorage[client.Character.CharacterId];
+            }
+
             client.Send(res);
 
             // Unlocks menu options such as inventory, warping, etc.
