@@ -1,12 +1,10 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetPresetAbilityListHandler : StructurePacketHandler<GameClient, C2SSkillGetPresetAbilityListReq>
+    public class SkillGetPresetAbilityListHandler : GameRequestPacketHandler<C2SSkillGetPresetAbilityListReq, S2CSkillGetPresetAbilityListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetPresetAbilityListHandler));
 
@@ -14,9 +12,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetPresetAbilityListReq> packet)
+        public override S2CSkillGetPresetAbilityListRes Handle(GameClient client, C2SSkillGetPresetAbilityListReq packet)
         {
-            client.Send(new S2CSkillGetPresetAbilityListRes());
+            return new S2CSkillGetPresetAbilityListRes()
+            {
+                PresetAbilityParamList = client.Character.AbilityPresets
+            };
         }
     }
 }

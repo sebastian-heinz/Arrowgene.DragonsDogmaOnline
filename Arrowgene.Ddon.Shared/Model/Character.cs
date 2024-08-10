@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.Shared.Model
             OnlineStatus = OnlineStatus.Offline;
             EnemyLayoutOwnership = new Dictionary<CDataStageLayoutId, bool>();
             StampBonus = new CharacterStampBonus();
+            AbilityPresets = new List<CDataPresetAbilityParam>();
         }
 
         public int AccountId { get; set; }
@@ -51,6 +52,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipHeadPawn;
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
+        public List<CDataPresetAbilityParam> AbilityPresets;
 
         public List<Pawn> Pawns { get; set; }
 
