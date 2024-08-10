@@ -42,7 +42,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {19508,(WalletType.Gold,1000)},
             {19509,(WalletType.Gold,10000)},
             {19510,(WalletType.RiftPoints,1000)},
-            {19511,(WalletType.BloodOrbs,1000)}
+            {19511,(WalletType.BloodOrbs,1000)},
+            // TODO: Requires special item notice type 47, could be offered in adventure pass shop
+            {11262,(WalletType.ResetCraftSkills,1)}
             // TODO: Find all items that add wallet points
         };
 

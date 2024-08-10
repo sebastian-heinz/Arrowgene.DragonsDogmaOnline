@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CDataUpdateWalletPoint AddToWallet(Character Character, WalletType Type, uint Amount)
         {
-            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
+            CDataWalletPoint Wallet = Character.WalletPointList.Single(wp => wp.Type == Type);
 
             Wallet.Value += Amount;
 

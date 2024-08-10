@@ -247,6 +247,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CraftRecipeGetCraftRecipeHandler(this));
             AddHandler(new CraftStartCraftHandler(this));
             AddHandler(new CraftSkillUpHandler(this));
+            AddHandler(new CraftResetCraftpointHandler(this));
             AddHandler(new CraftStartEquipGradeUpHandler(this));
             AddHandler(new CraftStartQualityUpHandler(this));
             AddHandler(new CraftSkillAnalyzeHandler(this));
