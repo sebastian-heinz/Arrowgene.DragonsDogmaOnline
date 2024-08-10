@@ -12,12 +12,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetPresetAbilityListHandler));
 
-        private readonly JobManager _jobManager;
-
-
         public SkillSetPresetAbilityListHandler(DdonGameServer server) : base(server)
         {
-            _jobManager = server.JobManager;
         }
 
         public override S2CSkillSetPresetAbilityListRes Handle(GameClient client, C2SSkillSetPresetAbilityListReq packet)
@@ -40,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            _jobManager.SetAbilityPreset(Server.Database, client, targetCharacter, preset);
+            Server.JobManager.SetAbilityPreset(Server.Database, client, targetCharacter, preset);
 
             if (targetCharacter is Character character)
             {
@@ -48,9 +44,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     CharacterId = character.CharacterId,
                     AbilityDataList = character.EquippedAbilitiesDictionary[character.Job]
-                .Where(x => x != null)
-                .Select((x, i) => x.AsCDataContextAcquirementData((byte)(i + 1)))
-                .ToList()
+                        .Where(x => x != null)
+                        .Select((x, i) => x.AsCDataContextAcquirementData((byte)(i + 1)))
+                        .ToList()
                 });
             }    
             else if (targetCharacter is Pawn pawn)
@@ -59,9 +55,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     PawnId = pawn.PawnId,
                     AbilityDataList = pawn.EquippedAbilitiesDictionary[pawn.Job]
-                .Where(x => x != null)
-                .Select((x, i) => x.AsCDataContextAcquirementData((byte)(i + 1)))
-                .ToList()
+                        .Where(x => x != null)
+                        .Select((x, i) => x.AsCDataContextAcquirementData((byte)(i + 1)))
+                        .ToList()
                 });
             }
 
