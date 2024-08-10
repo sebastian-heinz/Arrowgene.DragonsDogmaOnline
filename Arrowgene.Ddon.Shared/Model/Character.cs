@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -28,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Model
             ContextOwnership = new Dictionary<ulong, bool>();
             StampBonus = new CharacterStampBonus();
             AbilityPresets = new List<CDataPresetAbilityParam>();
+            BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
         }
 
         public int AccountId { get; set; }
@@ -53,6 +55,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
         public List<CDataPresetAbilityParam> AbilityPresets;
+        public byte[] BinaryData;
 
         public List<Pawn> Pawns { get; set; }
 

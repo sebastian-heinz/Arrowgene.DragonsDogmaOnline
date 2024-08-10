@@ -110,8 +110,6 @@ namespace Arrowgene.Ddon.GameServer
         // TODO: Maybe place somewhere else
         public readonly Dictionary<uint, DateTime> LastRevivalPowerRechargeTime = new Dictionary<uint, DateTime>();
 
-        public Dictionary<uint, byte[]> TemporaryBinaryDataStorage = new Dictionary<uint, byte[]>();
-
         public override void Start()
         {
             QuestManager.LoadQuests(this.AssetRepository);

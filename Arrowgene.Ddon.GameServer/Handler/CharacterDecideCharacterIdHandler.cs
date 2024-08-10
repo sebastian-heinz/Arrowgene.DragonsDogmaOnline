@@ -27,17 +27,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCharacterDecideCharacterIdReq> packet)
         {
-            S2CCharacterDecideCharacterIdRes pcap = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.CharacterId;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
-
-            res.Unk0 = pcap.Unk0; // Removing this makes tons of tutorials pop up
-            if (Server.TemporaryBinaryDataStorage.ContainsKey(client.Character.CharacterId))
-            {
-                Logger.Info($"Loading stored binary data for {client.Character.CharacterId}");
-                res.Unk0 = Server.TemporaryBinaryDataStorage[client.Character.CharacterId];
-            }
+            res.BinaryData = client.Character.BinaryData;
 
             client.Send(res);
 

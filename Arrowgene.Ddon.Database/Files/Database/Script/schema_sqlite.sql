@@ -649,3 +649,11 @@ CREATE TABLE "ddon_pawn_craft_progress"
     FOREIGN KEY ("craft_character_id") REFERENCES "ddon_character" ("character_id"),
     FOREIGN KEY ("craft_lead_pawn_id") REFERENCES "ddon_pawn" ("pawn_id")
 );
+
+CREATE TABLE IF NOT EXISTS "ddon_binary_data"
+(
+    "character_id" INTEGER  NOT NULL,
+    "binary_data"    BLOB     NOT NULL,
+    CONSTRAINT pk_binary_data PRIMARY KEY (character_id),
+    CONSTRAINT fk_binary_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);

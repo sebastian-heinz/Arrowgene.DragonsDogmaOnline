@@ -14,15 +14,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBinarySaveSetCharacterBinSaveDataRes Handle(GameClient client, C2SBinarySaveSetCharacterBinSaveDataReq request)
         {
-            Logger.Debug($"Storing binary data for character {client.Character.CharacterId}");
-            if (Server.TemporaryBinaryDataStorage.ContainsKey(client.Character.CharacterId))
-            {
-                Server.TemporaryBinaryDataStorage[client.Character.CharacterId] = request.BinaryData;
-            }
-            else
-            {
-                Server.TemporaryBinaryDataStorage.Add(client.Character.CharacterId, request.BinaryData);
-            }
+            client.Character.BinaryData = request.BinaryData;
+
+            Server.Database.UpdateCharacterBinaryData(client.Character.CharacterId, request.BinaryData);
 
             return new S2CBinarySaveSetCharacterBinSaveDataRes();
         }
