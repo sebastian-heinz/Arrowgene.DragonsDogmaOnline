@@ -340,6 +340,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCraftStartQualityUpReq.Serializer());
             Create(new C2SCraftStartCraftReq.Serializer());
             Create(new C2SCraftSkillUpReq.Serializer());
+            Create(new C2SCraftGetCraftProductInfoReq.Serializer());
+            Create(new C2SCraftCancelCraftReq.Serializer());
+            Create(new C2SCraftTimeSaveReq.Serializer());
+            Create(new C2SCraftGetCraftProductReq.Serializer());
             Create(new C2SCraftResetCraftpointReq.Serializer());
             Create(new C2SCraftSkillAnalyzeReq.Serializer());
             Create(new C2SCraftStartEquipColorChangeReq.Serializer());
@@ -629,6 +633,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextSetContextNtc.Serializer());
             Create(new S2CCraftGetCraftIRCollectionValueListRes.Serializer());
             Create(new S2CCraftGetCraftProgressListRes.Serializer());
+            Create(new C2SCraftGetCraftProductInfoRes.Serializer());
+            Create(new C2SCraftCancelCraftRes.Serializer());
+            Create(new S2CCraftTimeSaveRes.Serializer());
+            Create(new C2SCraftGetCraftProductRes.Serializer());
             Create(new S2CCraftGetCraftSettingRes.Serializer());
             Create(new S2CCraftRecipeGetCraftRecipeRes.Serializer());
             Create(new S2CCraftStartCraftRes.Serializer());

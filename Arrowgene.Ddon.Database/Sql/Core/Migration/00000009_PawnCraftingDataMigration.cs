@@ -2,14 +2,14 @@ using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
-    public class MyPawnCraftingDataMigration : IMigrationStrategy
+    public class PawnCraftingDataMigration : IMigrationStrategy
     {
         public uint From => 8;
         public uint To => 9;
 
         private readonly DatabaseSetting DatabaseSetting;
 
-        public MyPawnCraftingDataMigration(DatabaseSetting databaseSetting)
+        public PawnCraftingDataMigration(DatabaseSetting databaseSetting)
         {
             DatabaseSetting = databaseSetting;
         }

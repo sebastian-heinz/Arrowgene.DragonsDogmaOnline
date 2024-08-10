@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -22,13 +21,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnGetMypawnListReq> packet)
         {
-            client.Send(new S2CPawnGetMypawnListRes() {
-                PawnList = client.Character.Pawns.Select((pawn, index) => new CDataPawnList() {
-                    PawnId = (int) pawn.PawnId,
-                    SlotNo = (uint) (index+1),
+            List<CDataPawnList> PawnList = new List<CDataPawnList>();
+
+            uint index = 1;
+            foreach (Pawn pawn in client.Character.Pawns)
+            {
+                CDataPawnList pawnListData = new CDataPawnList()
+                {
+                    PawnId = (int)pawn.PawnId,
+                    SlotNo = index++,
                     Name = pawn.Name,
                     Sex = pawn.EditInfo.Sex,
-                    PawnListData = new CDataPawnListData() 
+                    PawnListData = new CDataPawnListData()
                     {
                         Job = pawn.Job,
                         Level = pawn.ActiveCharacterJobData.Lv,
@@ -38,14 +42,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         // TODO: CraftRank, PawnCraftSkillList, CommentSize, LatestReturnDate
                     }
                     // TODO: PawnState, ShareRange, Unk0, Unk1, Unk2
-                }).ToList(),
-                // TODO: PartnerInfo
-                PartnerInfo = new CDataPartnerPawnInfo() {
-                    PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
-                    Likability = 1,
-                    Personality = 1
-                },
-            });
+                };
+                PawnList.Add(pawnListData);
+            }
+
+            // TODO: PartnerInfo
+            CDataPartnerPawnInfo PartnerInfo = new CDataPartnerPawnInfo()
+            {
+                PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
+                Likability = 1,
+                Personality = 1
+            };
+
+            S2CPawnGetMypawnListRes res = new S2CPawnGetMypawnListRes();
+            res.PawnList = PawnList;
+            res.PartnerInfo = PartnerInfo;
+
+            client.Send(res);
         }
     }
 }

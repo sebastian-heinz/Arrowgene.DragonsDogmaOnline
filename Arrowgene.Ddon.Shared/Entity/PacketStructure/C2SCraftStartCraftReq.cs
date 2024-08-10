@@ -20,10 +20,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint RecipeID { get; set; }
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
         public string RefineMaterialUID { get; set; } // Refine material UID
+        // Directly correlated with CraftProgress Unk0
         public ushort Unk0 { get; set; } // Looks like this might be an ID for the Additional Status?
         public List<CDataCraftMaterial> AdditionalStatusItems { get; set; } // List of Additional Status items I guess? can there be more than 1 though? weird.
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
+        // Directly correlated with CraftProgress Unk3
         public List<CDataCommonU32> Unk3 { get; set; } // Was empty despite filling all the crafting menus? truly unknown I suppose.
         public uint CreateCount { get; set; }
 

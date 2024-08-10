@@ -125,16 +125,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 finalCraftCost = (uint)(finalCraftCost*0.95);
             }
 
+            uint supportPawnId1 = packet.Structure.CraftSupportPawnIDList.ElementAtOrDefault(0)?.PawnId ?? 0;
+            uint supportPawnId2 = packet.Structure.CraftSupportPawnIDList.ElementAtOrDefault(1)?.PawnId ?? 0;
+            uint supportPawnId3 = packet.Structure.CraftSupportPawnIDList.ElementAtOrDefault(2)?.PawnId ?? 0;
+            // TODO: check if course bonus provides exp bonus for crafting
+            bool expBonus = false;
+            // TODO: remain time factor should be configurable externally, but once it's >0 we will need some mechanism to deduct time periodically
+            Server.Database.InsertPawnCraftProgress(client.Character.CharacterId, packet.Structure.CraftMainPawnID, supportPawnId1, supportPawnId2, supportPawnId3, 
+                packet.Structure.RecipeID, recipe.Exp, (int)NpcActionType.NpcActionStithy, recipe.ItemID, packet.Structure.Unk0, recipe.Time * 0, expBonus, packet.Structure.CreateCount);
+
             // Substract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, finalCraftCost);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             // Add crafted items
-            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num, RandomQuality);
-            updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);                                                       
+            // TODO: should be handled in product handler instead
+            // List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, false, recipe.ItemID, packet.Structure.CreateCount * recipe.Num, RandomQuality);
+            // updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResult);                                                       
 
-            client.Send(updateCharacterItemNtc);
+            // client.Send(updateCharacterItemNtc);
             client.Send(new S2CCraftStartCraftRes());
+            client.Send(new S2CCraftFinishCraftNtc {PawnId = packet.Structure.CraftMainPawnID});
         }
     }
 }

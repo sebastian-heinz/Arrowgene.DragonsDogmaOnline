@@ -133,12 +133,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Based on season 1 evidence:
             //  4x lvl 45 => min 390 / max 468 pt
             //  1x lvl 45 + 3x lvl 1 => min 266 / max 319 pt
+            // According to wikis: 150 + (levelValue - 1 ) * 1.73
             CDataCraftSkillAnalyzeResult equipEnhancementAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.EquipmentEnhancement,
                 Rate = 0,
-                Value0 = (uint)Math.Clamp(craftRankAndEquipmentEnhancementLevel.Select(d => d.Value * 2.16).Sum(), 0, 605),
-                Value1 = (uint)Math.Clamp(craftRankAndEquipmentEnhancementLevel.Select(d => d.Value * 2.6).Sum(), 0, 728),
+                Value0 = (uint)(150 + craftRankAndEquipmentEnhancementLevel.Select(d => d.Value * 1.73).Sum()),
+                Value1 = (uint)(150 + craftRankAndEquipmentEnhancementLevel.Select(d => d.Value * 2.076).Sum())
             };
             return equipEnhancementAnalysisResult;
         }
