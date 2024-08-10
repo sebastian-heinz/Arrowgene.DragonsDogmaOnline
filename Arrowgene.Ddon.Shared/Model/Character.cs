@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Model
             Created = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
             PlayPointList = new List<CDataJobPlayPoint>();
             Storage = new Storages(new Dictionary<StorageType, ushort>());
-            Unk0 = new List<UnknownCharacterData0>();
+            CharacterEquipItemInfoUnk2 = new List<CDataEquipItemInfoUnk2>();
             WalletPointList = new List<CDataWalletPoint>();
             OrbStatusList = new List<CDataOrbPageStatus>();
             MsgSetList = new List<CDataCharacterMsgSet>();
@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public string LastName;
         public List<CDataJobPlayPoint> PlayPointList;
         public Storages Storage;
-        public List<UnknownCharacterData0> Unk0;
+        public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2;
         public List<CDataWalletPoint> WalletPointList;
         public byte MyPawnSlotNum;
         public byte RentalPawnSlotNum;
