@@ -67,12 +67,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     };
                     // Number of elements determines number icon pop up on Production Status 
                     res.CraftProgressList.Add(CDataCraftProgress);
-                    if (CDataCraftProgress.RemainTime == 0)
+                    if (craftProgress.RemainTime == 0)
                     {
                         res.CreatedRecipeList.Add(new CDataCommonU32(CDataCraftProgress.RecipeId));
-
+                    }
+                    else
+                    {
                         // TODO: this needs to be sent by some background thread which periodically deducts time => triggers mypawn/progress req/res, can infinitely loop if sent at the wrong time
-                        //client.Send(new S2CCraftFinishCraftNtc { PawnId = leadPawn.PawnId });
+                        craftProgress.RemainTime = 0;
+                        Server.Database.UpdatePawnCraftProgress(craftProgress);
+                        client.Send(new S2CCraftFinishCraftNtc { PawnId = leadPawn.PawnId });
                     }
                 }
             }
