@@ -249,6 +249,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CraftRecipeGetCraftRecipeHandler(this));
             AddHandler(new CraftStartCraftHandler(this));
             AddHandler(new CraftSkillUpHandler(this));
+            AddHandler(new GpShopDisplayTypeHandler(this));
+            AddHandler(new GpCogGetIdHandler(this));
+            AddHandler(new GpGetCapToGpChangeListHandler(this));
             AddHandler(new CraftGetCraftProductInfoHandler(this));
             AddHandler(new CraftCancelCraftHandler(this));
             AddHandler(new CraftTimeSaveHandler(this));

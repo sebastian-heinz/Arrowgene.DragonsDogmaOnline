@@ -203,6 +203,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnFeedback.Serializer());
             Create(new CDataPawnHistory.Serializer());
             Create(new CDataPawnHp.Serializer());
+            Create(new CDataGPShopDisplayType.Serializer());
+            Create(new CDataCAPtoGPChangeElement.Serializer());
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPawnInfo.Serializer());
             Create(new CDataPawnList.Serializer());
@@ -370,11 +372,16 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHideCharacterLanternReq.Serializer());
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
+            
             Create(new C2SGpGetGpReq.Serializer());
             Create(new C2SGpGetGpDetailReq.Serializer());
             Create(new C2SGpGetGpPeriodReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SGpGpEditGetVoiceListReq.Serializer());
+            Create(new C2SGpShopDisplayGetTypeReq.Serializer());
+            Create(new C2SGpCogGetIdReq.Serializer());
+            Create(new C2SGpGetCapToGpChangeListReq.Serializer());
+            
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnStayInnReq.Serializer());
@@ -677,6 +684,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHidePawnHeadArmorRes.Serializer());
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
             Create(new S2CExtendEquipSlotNtc.Serializer());
+            
             Create(new S2CGpGetGpRes.Serializer());
             Create(new S2CGpGetGpDetailRes.Serializer());
             Create(new S2CGpGetGpPeriodRes.Serializer());
@@ -684,6 +692,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CGpGpEditGetVoiceListRes.Serializer());
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());
             Create(new S2CGPCourseStartNtc.Serializer());
+            Create(new S2CGpShopDisplayGetTypeRes.Serializer());
+            Create(new S2CGpCogGetIdRes.Serializer());
+            Create(new S2CGpGetCapToGpChangeListRes.Serializer());
+            
             Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
             Create(new S2CInnStayInnRes.Serializer());
