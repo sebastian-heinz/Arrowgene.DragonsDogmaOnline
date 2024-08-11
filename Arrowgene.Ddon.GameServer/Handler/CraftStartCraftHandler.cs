@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataAddStatusParam> AddStatList = new List<CDataAddStatusParam>();
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateType = ItemNoticeType.CraftCreate;
+            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartCraft;
 
             // Remove crafting materials
             foreach (var craftMaterial in request.CraftMaterialList)
@@ -156,6 +156,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
                 Server.CraftManager.CalculateRecipeCost(recipe.Cost, costPerformanceLevels) * request.CreateCount);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+            
+            client.Send(updateCharacterItemNtc);
 
             return new S2CCraftStartCraftRes();
         }

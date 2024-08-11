@@ -25,8 +25,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataCraftMaterial> AdditionalStatusItems { get; set; } // List of Additional Status items I guess? can there be more than 1 though? weird.
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
-        // Directly correlated with CraftProgress Unk3
-        public List<CDataCommonU32> Unk3 { get; set; } // Was empty despite filling all the crafting menus? truly unknown I suppose.
+        // Directly correlated with CraftProgress CraftMasterPawnInfoList
+        public List<CDataCraftSupportPawnID> CraftMasterPawnIDList { get; set; } // Was empty despite filling all the crafting menus? truly unknown I suppose.
         public uint CreateCount { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SCraftStartCraftReq>
@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataCraftMaterial>(buffer, obj.AdditionalStatusItems);
                 WriteUInt32(buffer, obj.CraftMainPawnID);
                 WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftSupportPawnIDList);
-                WriteEntityList<CDataCommonU32>(buffer, obj.Unk3);
+                WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftMasterPawnIDList);
                 WriteUInt32(buffer, obj.CreateCount);
             }
 
@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.AdditionalStatusItems = ReadEntityList<CDataCraftMaterial>(buffer);
                 obj.CraftMainPawnID = ReadUInt32(buffer);
                 obj.CraftSupportPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
-                obj.Unk3 = ReadEntityList<CDataCommonU32>(buffer);
+                obj.CraftMasterPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
                 obj.CreateCount = ReadUInt32(buffer);
                 return obj;
             }

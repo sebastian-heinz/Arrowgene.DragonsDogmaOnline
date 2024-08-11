@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 PlusValue = (byte)craftProgress.PlusValue
             };
 
-            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, request.StorageType != StorageType.CharacterEquipment,
+            List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, request.StorageType != StorageType.ReceiveInStorageCraft,
                 craftProgress.ItemId, craftProgress.CreateCount, (byte)craftProgress.PlusValue);
             craftGetCraftProductRes.UpdateItemList.AddRange(itemUpdateResult);
             
