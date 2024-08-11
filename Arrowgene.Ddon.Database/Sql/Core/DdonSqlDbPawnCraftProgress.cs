@@ -8,9 +8,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         where TCom : DbCommand
         where TReader : DbDataReader
     {
-        protected static readonly string[] PawnCraftProgressFields = {
+        protected static readonly string[] PawnCraftProgressFields =
+        {
             "craft_character_id", "craft_lead_pawn_id", "craft_support_pawn_id1", "craft_support_pawn_id2", "craft_support_pawn_id3", "recipe_id", "exp", "npc_action_id",
-            "item_id", "unk0", "remain_time", "exp_bonus", "create_count"
+            "item_id", "unk0", "remain_time", "exp_bonus", "create_count", "plus_value", "great_success", "bonus_exp", "additional_quantity"
         };
 
         private readonly string SqlInsertPawnCraftProgress =
@@ -28,114 +29,55 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeletePawnCraftProgress =
             "DELETE FROM \"ddon_pawn_craft_progress\" WHERE \"craft_character_id\" = @craft_character_id AND \"craft_lead_pawn_id\" = @craft_lead_pawn_id;";
 
-        public bool ReplacePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2, uint craft_support_pawn_id3,
-            uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count)
+        public bool ReplacePawnCraftProgress(CraftProgress craftProgress)
         {
             using TCon connection = OpenNewConnection();
-            return ReplacePawnCraftProgress(connection, craftCharacterId, craftLeadPawnId, craft_support_pawn_id1, craft_support_pawn_id2, craft_support_pawn_id3, recipe_id, exp,
-                npc_action_id, item_id, unk0, remain_time, exp_bonus, create_count);
+            return ReplacePawnCraftProgress(connection, craftProgress);
         }
 
-        public bool ReplacePawnCraftProgress(TCon connection, uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2,
-            uint craft_support_pawn_id3, uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count)
+        public bool ReplacePawnCraftProgress(TCon connection, CraftProgress craftProgress)
         {
             Logger.Debug("Inserting pawn craft progress.");
-            if (!InsertIfNotExistsPawnCraftProgress(connection, craftCharacterId, craftLeadPawnId, craft_support_pawn_id1, craft_support_pawn_id2, craft_support_pawn_id3,
-                    recipe_id, exp, npc_action_id, item_id, unk0, remain_time, exp_bonus, create_count))
+            if (!InsertIfNotExistsPawnCraftProgress(connection, craftProgress))
             {
                 Logger.Debug("Pawn craft progress already exists, replacing.");
-                return UpdatePawnCraftProgress(connection, craftCharacterId, craftLeadPawnId, craft_support_pawn_id1, craft_support_pawn_id2, craft_support_pawn_id3, recipe_id,
-                    exp, npc_action_id, item_id, unk0, remain_time, exp_bonus, create_count);
+                return UpdatePawnCraftProgress(connection, craftProgress);
             }
 
             return true;
         }
 
-        public bool InsertPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2, uint craft_support_pawn_id3,
-            uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count)
+        public bool InsertPawnCraftProgress(CraftProgress craftProgress)
         {
             using TCon connection = OpenNewConnection();
-            return InsertPawnCraftProgress(connection, craftCharacterId, craftLeadPawnId, craft_support_pawn_id1, craft_support_pawn_id2, craft_support_pawn_id3, recipe_id, exp,
-                npc_action_id, item_id, unk0, remain_time, exp_bonus, create_count);
+            return InsertPawnCraftProgress(connection, craftProgress);
         }
 
-        public bool InsertPawnCraftProgress(TCon connection, uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2,
-            uint craft_support_pawn_id3, uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count)
+        public bool InsertPawnCraftProgress(TCon connection, CraftProgress craftProgress)
         {
-            return ExecuteNonQuery(connection, SqlInsertPawnCraftProgress, command =>
-            {
-                AddParameter(command, "@craft_character_id", craftCharacterId);
-                AddParameter(command, "@craft_lead_pawn_id", craftLeadPawnId);
-                AddParameter(command, "@craft_support_pawn_id1", craft_support_pawn_id1);
-                AddParameter(command, "@craft_support_pawn_id2", craft_support_pawn_id2);
-                AddParameter(command, "@craft_support_pawn_id3", craft_support_pawn_id3);
-                AddParameter(command, "@recipe_id", recipe_id);
-                AddParameter(command, "@exp", exp);
-                AddParameter(command, "@npc_action_id", npc_action_id);
-                AddParameter(command, "@item_id", item_id);
-                AddParameter(command, "@unk0", unk0);
-                AddParameter(command, "@remain_time", remain_time);
-                AddParameter(command, "@exp_bonus", exp_bonus);
-                AddParameter(command, "@create_count", create_count);
-            }) == 1;
+            return ExecuteNonQuery(connection, SqlInsertPawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1;
         }
 
-        public bool InsertIfNotExistsPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2,
-            uint craft_support_pawn_id3, uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count)
+        public bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress)
         {
             using TCon connection = OpenNewConnection();
-            return InsertIfNotExistsPawnCraftProgress(connection, craftCharacterId, craftLeadPawnId, craft_support_pawn_id1, craft_support_pawn_id2, craft_support_pawn_id3,
-                recipe_id, exp, npc_action_id, item_id, unk0, remain_time, exp_bonus, create_count);
+            return InsertIfNotExistsPawnCraftProgress(connection, craftProgress);
         }
 
-        public bool InsertIfNotExistsPawnCraftProgress(TCon connection, uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2,
-            uint craft_support_pawn_id3, uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count)
+        public bool InsertIfNotExistsPawnCraftProgress(TCon connection, CraftProgress craftProgress)
         {
-            return ExecuteNonQuery(connection, SqlInsertIfNotExistsPawnCraftProgress, command =>
-            {
-                AddParameter(command, "@craft_character_id", craftCharacterId);
-                AddParameter(command, "@craft_lead_pawn_id", craftLeadPawnId);
-                AddParameter(command, "@craft_support_pawn_id1", craft_support_pawn_id1);
-                AddParameter(command, "@craft_support_pawn_id2", craft_support_pawn_id2);
-                AddParameter(command, "@craft_support_pawn_id3", craft_support_pawn_id3);
-                AddParameter(command, "@recipe_id", recipe_id);
-                AddParameter(command, "@exp", exp);
-                AddParameter(command, "@npc_action_id", npc_action_id);
-                AddParameter(command, "@item_id", item_id);
-                AddParameter(command, "@unk0", unk0);
-                AddParameter(command, "@remain_time", remain_time);
-                AddParameter(command, "@exp_bonus", exp_bonus);
-                AddParameter(command, "@create_count", create_count);
-            }) == 1;
+            return ExecuteNonQuery(connection, SqlInsertIfNotExistsPawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1;
         }
 
-        public bool UpdatePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2, uint craft_support_pawn_id3,
-            uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count)
+        public bool UpdatePawnCraftProgress(CraftProgress craftProgress)
         {
             using TCon connection = OpenNewConnection();
-            return UpdatePawnCraftProgress(connection, craftCharacterId, craftLeadPawnId, craft_support_pawn_id1, craft_support_pawn_id2, craft_support_pawn_id3, recipe_id, exp,
-                npc_action_id, item_id, unk0, remain_time, exp_bonus, create_count);
+            return UpdatePawnCraftProgress(connection, craftProgress);
         }
 
-        public bool UpdatePawnCraftProgress(TCon connection, uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2,
-            uint craft_support_pawn_id3, uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count)
+        public bool UpdatePawnCraftProgress(TCon connection, CraftProgress craftProgress)
         {
-            return ExecuteNonQuery(connection, SqlUpdatePawnCraftProgress, command =>
-            {
-                AddParameter(command, "@craft_character_id", craftCharacterId);
-                AddParameter(command, "@craft_lead_pawn_id", craftLeadPawnId);
-                AddParameter(command, "@craft_support_pawn_id1", craft_support_pawn_id1);
-                AddParameter(command, "@craft_support_pawn_id2", craft_support_pawn_id2);
-                AddParameter(command, "@craft_support_pawn_id3", craft_support_pawn_id3);
-                AddParameter(command, "@recipe_id", recipe_id);
-                AddParameter(command, "@exp", exp);
-                AddParameter(command, "@npc_action_id", npc_action_id);
-                AddParameter(command, "@item_id", item_id);
-                AddParameter(command, "@unk0", unk0);
-                AddParameter(command, "@remain_time", remain_time);
-                AddParameter(command, "@exp_bonus", exp_bonus);
-                AddParameter(command, "@create_count", create_count);
-            }) == 1;
+            return ExecuteNonQuery(connection, SqlUpdatePawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1;
         }
 
         public bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId)
@@ -186,6 +128,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 CraftSupportPawnId1 = GetUInt32(reader, "craft_support_pawn_id1"),
                 CraftSupportPawnId2 = GetUInt32(reader, "craft_support_pawn_id2"),
                 CraftSupportPawnId3 = GetUInt32(reader, "craft_support_pawn_id3"),
+
                 RecipeId = GetUInt32(reader, "recipe_id"),
                 Exp = GetUInt32(reader, "exp"),
                 NpcActionId = (NpcActionType)GetInt32(reader, "npc_action_id"),
@@ -193,10 +136,38 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 Unk0 = GetUInt16(reader, "unk0"),
                 RemainTime = GetUInt32(reader, "remain_time"),
                 ExpBonus = GetBoolean(reader, "exp_bonus"),
-                CreateCount = GetUInt32(reader, "create_count")
+                CreateCount = GetUInt32(reader, "create_count"),
+
+                PlusValue = GetUInt32(reader, "plus_value"),
+                GreatSuccess = GetBoolean(reader, "great_success"),
+                BonusExp = GetUInt32(reader, "bonus_exp"),
+                AdditionalQuantity = GetUInt32(reader, "additional_quantity"),
             };
 
             return craftProgress;
+        }
+
+        private void AddAllParameters(DbCommand command, CraftProgress craftProgress)
+        {
+            AddParameter(command, "@craft_character_id", craftProgress.CraftCharacterId);
+            AddParameter(command, "@craft_lead_pawn_id", craftProgress.CraftLeadPawnId);
+            AddParameter(command, "@craft_support_pawn_id1", craftProgress.CraftSupportPawnId1);
+            AddParameter(command, "@craft_support_pawn_id2", craftProgress.CraftSupportPawnId2);
+            AddParameter(command, "@craft_support_pawn_id3", craftProgress.CraftSupportPawnId3);
+
+            AddParameter(command, "@recipe_id", craftProgress.RecipeId);
+            AddParameter(command, "@exp", craftProgress.Exp);
+            AddParameter(command, "@npc_action_id", (int)craftProgress.NpcActionId);
+            AddParameter(command, "@item_id", craftProgress.ItemId);
+            AddParameter(command, "@unk0", craftProgress.Unk0);
+            AddParameter(command, "@remain_time", craftProgress.RemainTime);
+            AddParameter(command, "@exp_bonus", craftProgress.ExpBonus);
+            AddParameter(command, "@create_count", craftProgress.CreateCount);
+
+            AddParameter(command, "@plus_value", craftProgress.PlusValue);
+            AddParameter(command, "@great_success", craftProgress.GreatSuccess);
+            AddParameter(command, "@bonus_exp", craftProgress.BonusExp);
+            AddParameter(command, "@additional_quantity", craftProgress.AdditionalQuantity);
         }
     }
 }

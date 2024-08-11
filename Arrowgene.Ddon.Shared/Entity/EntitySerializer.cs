@@ -79,6 +79,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCraftTimeSaveCost.Serializer());
             Create(new CDataCraftSkillAnalyzeResult.Serializer());
             Create(new CDataCraftElement.Serializer());
+            Create(new CDataCraftProductInfo.Serializer());
+            Create(new CDataCraftProduct.Serializer());
+            Create(new S2CCraftCraftRankUpNtc.Serializer());
             Create(new CDataCurrentEquipInfo.Serializer());
             Create(new CDataEquipSlot.Serializer());
             Create(new CDataDeliveredItem.Serializer());

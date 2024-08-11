@@ -1,7 +1,7 @@
 ﻿ALTER TABLE "ddon_pawn"
     ADD COLUMN "craft_rank" INTEGER NOT NULL DEFAULT 1;
 ALTER TABLE "ddon_pawn"
-    ADD COLUMN "craft_rank_limit" INTEGER NOT NULL DEFAULT 71;
+    ADD COLUMN "craft_rank_limit" INTEGER NOT NULL DEFAULT 8;
 ALTER TABLE "ddon_pawn"
     ADD COLUMN "craft_exp" INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE "ddon_pawn"
@@ -34,6 +34,11 @@ CREATE TABLE "ddon_pawn_craft_progress"
     "remain_time"            INTEGER NOT NULL,
     "exp_bonus"              BOOLEAN NOT NULL,
     "create_count"           INTEGER NOT NULL,
+
+    "plus_value"             INTEGER NOT NULL,
+    "great_success"          BOOLEAN NOT NULL,
+    "bonus_exp"              INTEGER NOT NULL,
+    "additional_quantity"    INTEGER NOT NULL,
     FOREIGN KEY ("craft_character_id") REFERENCES "ddon_character" ("character_id"),
     FOREIGN KEY ("craft_lead_pawn_id") REFERENCES "ddon_pawn" ("pawn_id")
 );

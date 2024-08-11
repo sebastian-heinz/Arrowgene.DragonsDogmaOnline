@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -14,7 +14,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftSkillAnalyzeHandler));
 
-
         public CraftSkillAnalyzeHandler(DdonGameServer server) : base(server)
         {
         }
@@ -24,23 +23,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<uint> pawnIds = new List<uint> { packet.Structure.PawnId };
             pawnIds.AddRange(packet.Structure.AssistPawnIds.Select(p => p.Value));
 
-            Dictionary<uint, uint> craftRankAndProductionSpeedLevel = new Dictionary<uint, uint>();
-            Dictionary<uint, uint> craftRankAndEquipmentEnhancementLevel = new Dictionary<uint, uint>();
-            Dictionary<uint, uint> craftRankAndEquipmentQualityLevel = new Dictionary<uint, uint>();
-            Dictionary<uint, uint> craftRankAndConsumableQuantityLevel = new Dictionary<uint, uint>();
-            Dictionary<uint, uint> craftRankAndCostPerformanceLevel = new Dictionary<uint, uint>();
+            List<uint> productionSpeedLevels = new List<uint>();
+            List<uint> equipmentEnhancementLevels = new List<uint>();
+            List<uint> equipmentQualityLevels = new List<uint>();
+            List<uint> consumableQuantityLevels = new List<uint>();
+            List<uint> costPerformanceLevels = new List<uint>();
 
             foreach (uint pawnId in pawnIds)
             {
                 Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
-                craftRankAndProductionSpeedLevel.Add(pawn.CraftData.CraftRank, pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.ProductionSpeed).Level);
-                craftRankAndEquipmentEnhancementLevel.Add(pawn.CraftData.CraftRank,
-                    pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentEnhancement).Level);
-                craftRankAndEquipmentQualityLevel.Add(pawn.CraftData.CraftRank,
-                    pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentQuality).Level);
-                craftRankAndConsumableQuantityLevel.Add(pawn.CraftData.CraftRank,
-                    pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.ConsumableQuantity).Level);
-                craftRankAndCostPerformanceLevel.Add(pawn.CraftData.CraftRank, pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.CostPerformance).Level);
+                productionSpeedLevels.Add(CraftManager.GetPawnProductionSpeedLevel(pawn));
+                equipmentEnhancementLevels.Add(CraftManager.GetPawnEquipmentEnhancementLevel(pawn));
+                equipmentQualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
+                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
             }
 
             S2CCraftSkillAnalyzeRes craftSkillAnalyzeRes = new S2CCraftSkillAnalyzeRes();
@@ -61,124 +57,111 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     // CDataMDataCraftRecipe recipe = Server.AssetRepository.CraftingRecipesAsset
                     // .SelectMany(recipes => recipes.RecipeList)
                     // .Single(recipe => recipe.RecipeID == packet.Structure.RecipeId);
-                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeProductionSpeed(craftRankAndProductionSpeedLevel));
-                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipmentQuality(craftRankAndEquipmentQualityLevel));
-                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeConsumableQuantity(craftRankAndConsumableQuantityLevel));
-                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(craftRankAndCostPerformanceLevel));
+                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeProductionSpeed(productionSpeedLevels));
+                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipmentQuality(equipmentQualityLevels));
+                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeConsumableQuantity(consumableQuantityLevels));
+                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(costPerformanceLevels));
                     break;
                 // enhancement uses 2 / 5 skills: Equipment Enhancement, Cost Performance
                 case CraftType.CraftTypeUpgrade:
-                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipEnhancement(craftRankAndEquipmentEnhancementLevel));
-                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(craftRankAndCostPerformanceLevel));
+                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipmentEnhancement(equipmentEnhancementLevels));
+                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(costPerformanceLevels));
                     break;
                 // element/crest uses 1 / 5 skills: Cost Performance
                 case CraftType.CraftTypeElement:
                     // TODO: client times out for crest/color, maybe because assistants are not allowed and only a single result is expected?
-                    //craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(craftRankAndCostPerformanceLevel));
+                    //craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(costPerformanceLevels));
                     break;
                 // color uses 1 / 5 skills: Cost Performance
                 case CraftType.CraftTypeColor:
                     // TODO: client times out for crest/color, maybe because assistants are not allowed and only a single result is expected?
-                    //craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(craftRankAndCostPerformanceLevel));
+                    //craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(costPerformanceLevels));
                     break;
                 // change quality uses 2 / 5 skills: Equipment Quality, Cost Performance
                 case CraftType.CraftTypeQuality:
-                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipmentQuality(craftRankAndEquipmentQualityLevel));
-                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(craftRankAndCostPerformanceLevel));
+                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipmentQuality(equipmentQualityLevels));
+                    craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(costPerformanceLevels));
                     break;
             }
 
             client.Send(craftSkillAnalyzeRes);
         }
 
-        private static CDataCraftSkillAnalyzeResult AnalyzeProductionSpeed(Dictionary<uint, uint> craftRankAndProductionSpeedLevel)
+        /// <summary>
+        /// For Production Speed Value0 & Value1 are unused, Rate is equal to % of crafting time reduction shown in the UI as "Working hours 50% OFF"
+        /// </summary>
+        /// <param name="productionSpeedLevel"></param>
+        /// <returns></returns>
+        private CDataCraftSkillAnalyzeResult AnalyzeProductionSpeed(List<uint> productionSpeedLevel)
         {
-            // For Production Speed Value0 & Value1 are unused, Rate is equal to % of crafting time reduction
-            // shown in the UI as "Working hours 50% OFF"
-            // TODO: Figure out actual formula + lower/upper bounds client uses
-            //  4x lvl 1 => 1% 
             CDataCraftSkillAnalyzeResult productionSpeedAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.ProductionSpeed,
-                Rate = (byte)Math.Clamp(craftRankAndProductionSpeedLevel.Select(d => Math.Floor((d.Key + d.Value) * 1.5)).Sum(), 0, 100),
-                Value0 = 0,
-                Value1 = 0
+                Rate = (byte)Server.CraftManager.GetCraftingTimeReductionRate(productionSpeedLevel)
             };
             return productionSpeedAnalysisResult;
         }
 
-        private static CDataCraftSkillAnalyzeResult AnalyzeEquipmentQuality(Dictionary<uint, uint> craftRankAndEquipmentQualityLevel)
+        /// <summary>
+        /// For Equipment Quality Value0 & Value1 are unused, Rate is equal to % of success rate shown in the UI as "Success rate: 64%"
+        /// </summary>
+        /// <param name="equipmentQualityLevel"></param>
+        /// <returns></returns>
+        private CDataCraftSkillAnalyzeResult AnalyzeEquipmentQuality(List<uint> equipmentQualityLevel)
         {
-            // For Equipment Quality Value0 & Value1 are unused, Rate is equal to % of success rate
-            // shown in the UI as "Success rate: 64%"
-            // TODO: Figure out actual formula + lower/upper bounds client uses
-            // Based on season 1 evidence:
-            //  3x lvl 45 1x lvl 44 => 79% 
-            // 1x lvl44, 3x lvl 1 => 63%
             CDataCraftSkillAnalyzeResult equipmentQualityAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.EquipmentQuality,
-                Rate = (byte)Math.Clamp(craftRankAndEquipmentQualityLevel.Select(d => Math.Floor((d.Key + d.Value) / 10f)).Sum(), 0, 100),
-                Value0 = 0,
-                Value1 = 0
+                Rate = (byte)Server.CraftManager.GetEquipmentQualityIncreaseRate(equipmentQualityLevel)
             };
             return equipmentQualityAnalysisResult;
         }
 
-        private static CDataCraftSkillAnalyzeResult AnalyzeEquipEnhancement(Dictionary<uint, uint> craftRankAndEquipmentEnhancementLevel)
+        /// <summary>
+        /// For Equip Enhancement Rate is unused, Value0 and Value1 indicate a range where Value0 is the lower bound and Value1 the upper bound shown in the UI as "Value~Value1 pt"
+        /// </summary>
+        /// <param name="equipmentEnhancementLevels"></param>
+        /// <returns></returns>
+        private CDataCraftSkillAnalyzeResult AnalyzeEquipmentEnhancement(List<uint> equipmentEnhancementLevels)
         {
-            // For Equip Enhancement Rate is unused, Value0 and Value1 indicate a range where Value0 is the lower bound and Value1 the upper bound
-            // shown in the UI as "Value~Value1 pt"
-            // TODO: Figure out actual formula + lower/upper bounds client uses
-            // Based on season 1 evidence:
-            //  4x lvl 45 => min 390 / max 468 pt
-            //  1x lvl 45 + 3x lvl 1 => min 266 / max 319 pt
-            // According to wikis: 150 + (levelValue - 1 ) * 1.73
             CDataCraftSkillAnalyzeResult equipEnhancementAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.EquipmentEnhancement,
-                Rate = 0,
-                Value0 = (uint)(150 + craftRankAndEquipmentEnhancementLevel.Select(d => d.Value * 1.73).Sum()),
-                Value1 = (uint)(150 + craftRankAndEquipmentEnhancementLevel.Select(d => d.Value * 2.076).Sum())
+                Value0 = (uint)Server.CraftManager.GetEquipmentEnhancementPoints(equipmentEnhancementLevels),
+                Value1 = (uint)Server.CraftManager.GetEquipmentEnhancementPointsGreatSuccess(equipmentEnhancementLevels)
             };
             return equipEnhancementAnalysisResult;
         }
 
-        private static CDataCraftSkillAnalyzeResult AnalyzeConsumableQuantity(Dictionary<uint, uint> craftRankAndConsumableQuantityLevel)
+        /// <summary>
+        /// For Consumable Quantity Value1 is unused, Value0 is equal to additional quantity/pieces, Rate is equal to % of occurrence chance shown in the UI as "34% chance of + 3 pieces"
+        /// </summary>
+        /// <param name="consumableQuantityLevels"></param>
+        /// <returns></returns>
+        private CDataCraftSkillAnalyzeResult AnalyzeConsumableQuantity(List<uint> consumableQuantityLevels)
         {
-            // For Consumable Quantity Value1 is unused, Value0 is equal to additional quantity/pieces, Rate is equal to % of occurrence chance
-            // shown in the UI as "34% chance of + 3 pieces"
-            // TODO: Figure out actual formula + lower/upper bounds client uses
             CDataCraftSkillAnalyzeResult consumableQuantityAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.ConsumableQuantity,
-                Rate = (byte)Math.Clamp(craftRankAndConsumableQuantityLevel.Select(d => Math.Floor((d.Key + d.Value) / 10f)).Sum(), 0, 100),
-                Value0 = (byte)Math.Clamp(craftRankAndConsumableQuantityLevel.Select(d => Math.Floor(d.Value / 10f)).Sum(), 0, 100),
-                Value1 = 0
+                Rate = (byte)Server.CraftManager.GetAdditionalConsumableQuantityRate(consumableQuantityLevels),
+                Value0 = (byte)Server.CraftManager.GetAdditionalConsumableQuantityMaximum(consumableQuantityLevels)
             };
             return consumableQuantityAnalysisResult;
         }
 
-        private static CDataCraftSkillAnalyzeResult AnalyzeCostPerformance(Dictionary<uint, uint> craftRankAndCostPerformanceLevel)
+        /// <summary>
+        /// For Cost Performance Value0 & Value1 are unused, Rate is equal to % of cost reduction shown in the UI as "Cost 13% OFF"
+        /// </summary>
+        /// <param name="costPerformanceLevels"></param>
+        /// <returns></returns>
+        private CDataCraftSkillAnalyzeResult AnalyzeCostPerformance(List<uint> costPerformanceLevels)
         {
-            // For Cost Performance Value0 & Value1 are unused, Rate is equal to % of cost reduction
-            // shown in the UI as "Cost 13% OFF"
-            // TODO: Figure out actual formula + lower/upper bounds client uses
-            // Based on season 1 evidence:
-            //  1x lvl 2, 3x lvl 1 == 16% maximum
             CDataCraftSkillAnalyzeResult costPerformanceAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.CostPerformance,
-                Rate = (byte)Math.Clamp(craftRankAndCostPerformanceLevel.Select(d => Math.Floor((d.Key + d.Value) / 5f)).Sum(), 0, 100),
-                Value0 = 0,
-                Value1 = 0
+                Rate = (byte)Server.CraftManager.GetCraftCostReductionRate(costPerformanceLevels)
             };
             return costPerformanceAnalysisResult;
-        }
-
-        private static float MapToRange(float value, float oldMin, float oldMax, float newMin, float newMax)
-        {
-            return newMin + (value - oldMin) * (newMax - newMin) / (oldMax - oldMin);
         }
     }
 }

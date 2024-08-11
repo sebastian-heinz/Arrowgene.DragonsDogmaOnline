@@ -17,16 +17,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCraftTimeSaveReq> packet)
         {
             // TODO: consume GG
-            
+
             CraftProgress craftProgress = Server.Database.SelectPawnCraftProgress(client.Character.CharacterId, packet.Structure.PawnID);
+            craftProgress.RemainTime = 0;
+            Server.Database.UpdatePawnCraftProgress(craftProgress);
 
-            uint remainTime = 0;
-
-            Server.Database.UpdatePawnCraftProgress(client.Character.CharacterId, packet.Structure.PawnID, craftProgress.CraftSupportPawnId1, craftProgress.CraftSupportPawnId2,
-                craftProgress.CraftSupportPawnId3, craftProgress.RecipeId, craftProgress.Exp, (int)NpcActionType.NpcActionStithy, craftProgress.ItemId, craftProgress.Unk0,
-                remainTime, craftProgress.ExpBonus, craftProgress.CreateCount);
-
-            client.Send(new S2CCraftTimeSaveRes { PawnID = packet.Structure.PawnID, RemainTime = remainTime });
+            client.Send(new S2CCraftTimeSaveRes { PawnID = packet.Structure.PawnID, RemainTime = 0 });
             client.Send(new S2CCraftFinishCraftNtc { PawnId = packet.Structure.PawnID });
         }
     }

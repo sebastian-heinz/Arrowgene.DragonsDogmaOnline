@@ -30,6 +30,12 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 26)] public bool LogIncomingPacketStructure { get; set; }
         [DataMember(Order = 27)] public bool LogOutgoingPacketStructure { get; set; }
         [DataMember(Order = 100)] public AsyncEventSettings ServerSocketSettings { get; set; }
+        
+        /// <summary>
+        /// Additional factor to manipulate outcome - should be between 0 and 1 to reduce time taken further or greater than 1 to increase time taken.
+        /// </summary>
+        [DataMember(Order = 1000)] public double AdditionalProductionSpeedFactor { get; set; }
+        [DataMember(Order = 1001)] public double AdditionalCostPerformanceFactor { get; set; }
 
         public ServerSetting()
         {
@@ -47,6 +53,8 @@ namespace Arrowgene.Ddon.Server
             LogIncomingPacketPayload = false;
             ServerSocketSettings = new AsyncEventSettings();
             ServerSocketSettings.MaxUnitOfOrder = 1;
+            AdditionalProductionSpeedFactor = 1.0;
+            AdditionalCostPerformanceFactor = 1.0;
         }
 
         public ServerSetting(ServerSetting setting)

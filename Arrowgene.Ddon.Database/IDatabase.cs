@@ -95,14 +95,10 @@ namespace Arrowgene.Ddon.Database
         bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         
         #region Pawn craft progress
-        bool ReplacePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2, uint craft_support_pawn_id3,
-            uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count);
-        bool InsertPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2, uint craft_support_pawn_id3,
-            uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count);
-        bool InsertIfNotExistsPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2, uint craft_support_pawn_id3,
-            uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count);
-        bool UpdatePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, uint craft_support_pawn_id1, uint craft_support_pawn_id2, uint craft_support_pawn_id3,
-            uint recipe_id, uint exp, int npc_action_id, uint item_id, ushort unk0, uint remain_time, bool exp_bonus, uint create_count);
+        bool ReplacePawnCraftProgress(CraftProgress craftProgress);
+        bool InsertPawnCraftProgress(CraftProgress craftProgress);
+        bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress);
+        bool UpdatePawnCraftProgress(CraftProgress craftProgress);
         bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
         CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
         #endregion

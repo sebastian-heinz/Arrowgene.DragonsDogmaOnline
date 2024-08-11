@@ -246,6 +246,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility) { return true; }
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut) { return true; }
+        public CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId) { return new CraftProgress(); }
         public bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill) { return true; }
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
         public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
@@ -313,6 +314,11 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param) { return true; }
         public bool UpdatePawnBaseInfo(Pawn pawn) { return true; }
         public bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
+        public bool ReplacePawnCraftProgress(CraftProgress craftProgress) { return true; }
+        public bool InsertPawnCraftProgress(CraftProgress craftProgress) { return true; }
+        public bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress) { return true; }
+        public bool UpdatePawnCraftProgress(CraftProgress craftProgress) { return true; }
+        public bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId) { return true; }
         public bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step) { return true; }
         public bool UpdateReleasedWarpPoint(uint characterId, ReleasedWarpPoint updatedReleasedWarpPoint) { return true; }
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut) { return true; }

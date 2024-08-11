@@ -22,7 +22,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint toppingCounter = 1;
             foreach (Pawn pawn in client.Character.Pawns)
             {
-                // TODO: should we fetch this from the DB? Is there a chance for inconsistency..? only after this RES is handled will values change
                 res.CraftMyPawnList.Add(new CDataCraftPawnList()
                 {
                     PawnId = pawn.PawnId,
@@ -58,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Unk3 = new List<CDataCommonU32>(),
                         RecipeId = craftProgress.RecipeId,
                         Exp = craftProgress.Exp,
-                        NpcActionId = NpcActionType.NpcActionStithy,
+                        NpcActionId = craftProgress.NpcActionId,
                         ItemId = craftProgress.ItemId,
                         ToppingId = toppingCounter++,
                         Unk0 = craftProgress.Unk0,
@@ -71,6 +70,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (CDataCraftProgress.RemainTime == 0)
                     {
                         res.CreatedRecipeList.Add(new CDataCommonU32(CDataCraftProgress.RecipeId));
+
+                        // TODO: this needs to be sent by some background thread which periodically deducts time => triggers mypawn/progress req/res, can infinitely loop if sent at the wrong time
+                        //client.Send(new S2CCraftFinishCraftNtc { PawnId = leadPawn.PawnId });
                     }
                 }
             }
