@@ -18,7 +18,7 @@ ALTER TABLE "ddon_pawn"
 ALTER TABLE "ddon_pawn"
     ADD COLUMN "cost_performance_level" INTEGER NOT NULL DEFAULT 0;
 
-CREATE TABLE "ddon_pawn_craft_progress"
+CREATE TABLE IF NOT EXISTS "ddon_pawn_craft_progress"
 (
     "craft_character_id"     INTEGER NOT NULL,
     "craft_lead_pawn_id"     INTEGER NOT NULL,
