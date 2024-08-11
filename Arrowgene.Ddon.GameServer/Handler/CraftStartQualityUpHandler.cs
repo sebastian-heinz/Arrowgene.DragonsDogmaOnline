@@ -140,8 +140,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             // TODO: Find exp for item recipe
-            Server.CraftManager.HandlePawnExpUp(client, leadPawn, 10, 0);
-            Server.CraftManager.HandlePawnRankUp(client, leadPawn);
+            if (Server.CraftManager.CanPawnExpUp(leadPawn))
+            {
+                Server.CraftManager.HandlePawnExpUp(client, leadPawn, 10, 0);
+            }
+            if (Server.CraftManager.CanPawnRankUp(leadPawn))
+            {
+                Server.CraftManager.HandlePawnRankUp(client, leadPawn);
+            }
             Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             return res;

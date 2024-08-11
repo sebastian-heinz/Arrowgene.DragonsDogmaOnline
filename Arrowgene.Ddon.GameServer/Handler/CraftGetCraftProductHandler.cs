@@ -25,14 +25,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 ItemID = craftProgress.ItemId,
                 ItemNum = craftProgress.CreateCount,
-                Unk0 = craftProgress.Unk0,
                 PlusValue = (byte)craftProgress.PlusValue
             };
 
             List<CDataItemUpdateResult> itemUpdateResult = Server.ItemManager.AddItem(Server, client.Character, request.StorageType != StorageType.CharacterEquipment,
-                craftProgress.ItemId, craftProgress.CreateCount);
+                craftProgress.ItemId, craftProgress.CreateCount, (byte)craftProgress.PlusValue);
             craftGetCraftProductRes.UpdateItemList.AddRange(itemUpdateResult);
-
+            
             Server.Database.DeletePawnCraftProgress(client.Character.CharacterId, request.CraftMainPawnID);
 
             return craftGetCraftProductRes;

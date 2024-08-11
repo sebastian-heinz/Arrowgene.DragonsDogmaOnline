@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class PawnCraftingDataMigration : IMigrationStrategy
     {
-        public uint From => 8;
-        public uint To => 9;
+        public uint From => 9;
+        public uint To => 10;
 
         private readonly DatabaseSetting DatabaseSetting;
 

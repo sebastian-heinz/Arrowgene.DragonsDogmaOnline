@@ -805,9 +805,9 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CPawnExtendMainPawnNtc.Serializer());
             Create(new S2CPawnCreatePawnRes.Serializer());
-            Create(new S2CPawn_8_33_16Ntc.Serializer());
-            Create(new S2CPawn_8_34_16Ntc.Serializer());
-            Create(new S2CPawn_8_35_16Ntc.Serializer());
+            Create(new S2CPawnGetPawnProfileNtc.Serializer());
+            Create(new S2CPawnHistoryInfoNtc.Serializer());
+            Create(new S2CPawnGetPawnTotalScoreInfoNtc.Serializer());
             Create(new S2CPawnGetPawnOrbDevoteInfoNtc.Serializer());
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());

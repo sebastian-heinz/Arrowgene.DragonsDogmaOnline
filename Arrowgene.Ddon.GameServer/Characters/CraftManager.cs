@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -15,8 +14,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
     public class CraftManager
     {
+        // TODO: introduce new assets instead
+        private static readonly List<uint> craftRankExpLimit = new List<uint>
+        {
+            0, 8, 120, 240, 400, 800, 1400, 2150, 3050, 4100, 5300, 6600, 8000, 9500, 11000, 13000, 15000, 17500, 20000, 23000, 27000, 29500, 32500, 36000, 39500, 43500, 47000,
+            51000, 55000, 60000, 63000, 67461, 72101, 76927, 81946, 87165, 92593, 98239, 104110, 110216, 116566, 123170, 130039, 137182, 144611, 152337, 160372, 168728, 177419,
+            186457, 195857, 205633, 215800, 226374, 237370, 248807, 260701, 273070, 285935, 299314, 313228, 327699, 342748, 358400, 374678, 391606, 409212, 427522, 446565, 466369
+        };
+        private static readonly Dictionary<uint, uint> craftRankLimitPromotionRecipes = new Dictionary<uint, uint>
+        {
+            { 8, 1406 }, { 16, 1488 }, { 21, 1490 }, { 26, 1523 }, { 31, 1841 }, { 36, 1903 }, { 41, 2282 }, { 46, 2283 }, { 51, 2466 }, { 56, 2680 }, { 61, 2826 }, { 66, 2949 }
+        };
+        private static readonly Dictionary<uint, uint> craftRankLimits = new Dictionary<uint, uint>
+        {
+            { 8, 16 }, { 16, 21 }, { 21, 26 }, { 26, 31 }, { 31, 36 }, { 36, 41 }, { 41, 46 }, { 46, 51 }, { 51, 56 }, { 56, 61 }, { 61, 66 }, { 66, 71 }
+        };
+
         private const int GreatSuccessOddsDefault = 10;
         private const uint CraftSkillLevelMax = 70;
+        private const uint PawnCraftRankMaxLimit = 71;
         private const double CraftPawnsMax = 4;
 
         private const uint ProductionSpeedMaximumTotal = 50;
@@ -273,15 +289,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == craftSkillType).Level;
         }
 
-        // TODO: introduce new asset for craft level based on craft_common/craft/craft_exp.cee.json
-        // TODO: handle potential multi-rank-ups especially at early levels this is quite possible
+        public bool IsCraftRankLimitPromotionRecipe(Pawn pawn, uint recipeId)
+        {
+            return craftRankLimitPromotionRecipes.ContainsKey(pawn.CraftData.CraftRank) && craftRankLimitPromotionRecipes[pawn.CraftData.CraftRank] == recipeId;
+        }
+
+        public void PromotePawnRankLimit(Pawn pawn)
+        {
+            pawn.CraftData.CraftRankLimit = craftRankLimits[pawn.CraftData.CraftRankLimit];
+        }
+
+        public bool CanPawnRankUp(Pawn pawn)
+        {
+            return pawn.CraftData.CraftExp >= craftRankExpLimit[(int)pawn.CraftData.CraftRank] && pawn.CraftData.CraftRank < pawn.CraftData.CraftRankLimit;
+        }
+
         public uint CalculatePawnRankUp(Pawn pawn)
         {
-            bool canRankUp = pawn.CraftData.CraftExp > 100 && pawn.CraftData.CraftRank < pawn.CraftData.CraftRankLimit;
             uint rankUps = 0;
-            if (canRankUp)
+            for (int i = (int)pawn.CraftData.CraftRank; i < PawnCraftRankMaxLimit; i++)
             {
-                rankUps++;
+                if (pawn.CraftData.CraftExp >= craftRankExpLimit[i])
+                {
+                    rankUps++;
+                }
+                else
+                {
+                    break;
+                }
             }
 
             return rankUps;
@@ -292,27 +327,42 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint rankUps = CalculatePawnRankUp(leadPawn);
             if (rankUps > 0)
             {
-                leadPawn.CraftData.CraftRank += rankUps;
-                leadPawn.CraftData.CraftPoint += rankUps;
+                uint rankUpDelta = Math.Clamp(leadPawn.CraftData.CraftRank + rankUps, leadPawn.CraftData.CraftRank, PawnCraftRankMaxLimit) - leadPawn.CraftData.CraftRank;
+                leadPawn.CraftData.CraftRank += rankUpDelta;
+                leadPawn.CraftData.CraftPoint += rankUpDelta;
+                leadPawn.CraftData.CraftExp = Math.Clamp(leadPawn.CraftData.CraftExp, 0, craftRankExpLimit[(int)leadPawn.CraftData.CraftRank]);
                 S2CCraftCraftRankUpNtc rankUpNtc = new S2CCraftCraftRankUpNtc
                 {
                     PawnId = leadPawn.PawnId,
                     CraftRank = leadPawn.CraftData.CraftRank,
-                    AddCraftPoints = 1,
+                    AddCraftPoints = rankUpDelta,
                     TotalCraftPoint = leadPawn.CraftData.CraftPoint
                 };
                 client.Send(rankUpNtc);
             }
         }
 
+        public bool CanPawnExpUp(Pawn pawn)
+        {
+            return pawn.CraftData.CraftRank < pawn.CraftData.CraftRankLimit;
+        }
+
         public void HandlePawnExpUp(GameClient client, Pawn leadPawn, uint exp, uint bonusExp)
         {
+            uint expUp = 0;
+            uint bonusExpUp = 0;
+            if (CanPawnExpUp(leadPawn))
+            {
+                expUp = exp;
+                bonusExpUp = bonusExp;
+            }
+
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
             {
                 PawnId = leadPawn.PawnId,
-                AddExp = exp,
-                ExtraBonusExp = bonusExp,
-                TotalExp = exp + bonusExp,
+                AddExp = expUp,
+                ExtraBonusExp = bonusExpUp,
+                TotalExp = expUp + bonusExpUp,
                 CraftRankLimit = leadPawn.CraftData.CraftRankLimit
             };
             leadPawn.CraftData.CraftExp += expNtc.TotalExp;

@@ -19,15 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             C2SCraftGetCraftProductInfoRes craftProductInfoRes = new C2SCraftGetCraftProductInfoRes();
 
             CraftProgress craftProgress = Server.Database.SelectPawnCraftProgress(client.Character.CharacterId, request.CraftMainPawnID);
-            // TODO: check if course bonus provides exp bonus for crafting
-            // TODO: calculate bonus EXP now that remaining time is 0
-            // TODO: Decide whether bonus exp should be calculated when craft is started vs. received
-            bool expBonus = false;
-            uint bonusExp = 0;
-            if (expBonus)
-            {
-                bonusExp = 100;
-            }
 
             CDataCraftProductInfo craftProductInfo = new CDataCraftProductInfo()
             {
@@ -43,9 +34,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // The lead pawn can only be a pawn owned by the player, no need to search in DB.
             Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
-            Server.CraftManager.HandlePawnExpUp(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
-            Server.CraftManager.HandlePawnRankUp(client, leadPawn);
+
+            if (Server.CraftManager.IsCraftRankLimitPromotionRecipe(leadPawn, craftProgress.RecipeId))
+            {
+                Server.CraftManager.PromotePawnRankLimit(leadPawn);
+                // TODO: increase pawn assistant slot count for promotion from 8 -> 16
+            }
+            if (Server.CraftManager.CanPawnExpUp(leadPawn))
+            {
+                Server.CraftManager.HandlePawnExpUp(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
+            }
+            if (Server.CraftManager.CanPawnRankUp(leadPawn))
+            {
+                Server.CraftManager.HandlePawnRankUp(client, leadPawn);
+            }
+
             Server.Database.UpdatePawnBaseInfo(leadPawn);
+
+            // TODO: track and increase CraftCount for NTC 8.35.16
 
             return craftProductInfoRes;
         }

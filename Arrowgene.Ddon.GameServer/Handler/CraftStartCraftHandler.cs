@@ -118,6 +118,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 consumableAdditionalQuantity = request.CreateCount * craftCalculationResult.CalculatedValue;
                 isGreatSuccessConsumableQuantity = craftCalculationResult.IsGreatSuccess;
             }
+            
+            // TODO: check if course bonus provides exp bonus for crafting
+            // TODO: calculate bonus EXP now that remaining time is 0
+            // TODO: Decide whether bonus exp should be calculated when craft is started vs. received
+            bool expBonus = false;
+            uint bonusExp = 0;
+            if (expBonus)
+            {
+                bonusExp = recipe.Exp * request.CreateCount;
+            }
 
             CraftProgress craftProgress = new CraftProgress
             {
@@ -127,17 +137,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftSupportPawnId2 = request.CraftSupportPawnIDList.ElementAtOrDefault(1)?.PawnId ?? 0,
                 CraftSupportPawnId3 = request.CraftSupportPawnIDList.ElementAtOrDefault(2)?.PawnId ?? 0,
                 RecipeId = request.RecipeID,
-                Exp = recipe.Exp,
+                Exp = recipe.Exp * request.CreateCount,
                 NpcActionId = NpcActionType.NpcActionStithy,
                 ItemId = recipe.ItemID,
                 Unk0 = request.Unk0,
                 // TODO: implement mechanism to deduct time periodically
                 RemainTime = Server.CraftManager.CalculateRecipeProductionSpeed(recipe.Time, productionSpeedLevels),
-                ExpBonus = false,
+                ExpBonus = expBonus,
                 CreateCount = request.CreateCount,
                 PlusValue = plusValue,
                 GreatSuccess = isGreatSuccessEquipmentQuality || isGreatSuccessConsumableQuantity,
-                BonusExp = 0,
+                BonusExp = bonusExp,
                 AdditionalQuantity = consumableAdditionalQuantity
             };
             Server.Database.InsertPawnCraftProgress(craftProgress);
