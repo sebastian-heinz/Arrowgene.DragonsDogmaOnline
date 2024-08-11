@@ -676,6 +676,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SGpGpEditGetVoiceListReq.Serializer());
 
+            Create(new C2SGpShopDisplayGetTypeReq.Serializer());
+            Create(new C2SGpCogGetIdReq.Serializer());
+            Create(new C2SGpGetCapToGpChangeListReq.Serializer());
+            
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnHpRecoveryCompleteNtc.Serializer());
