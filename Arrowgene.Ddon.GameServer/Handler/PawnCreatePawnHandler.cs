@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     CraftExp = 0,
                     CraftRank = 1,
-                    CraftRankLimit = 71,
+                    CraftRankLimit = 8,
                     CraftPoint = 0,
                     PawnCraftSkillList = new List<CDataPawnCraftSkill>()
                     {
