@@ -50,33 +50,33 @@
             "enemies": [
                 {
                     "enemy_id": "0x015800",
-                    "level": 30,
+                    "level": 28,
                     "exp": 996,
-                    "named_enemy_params_id": 930
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 28,
+                    "exp": 996,
+                    "named_enemy_params_id": 125
                 },
                 {
                     "enemy_id": "0x015800",
                     "level": 30,
                     "exp": 996,
-                    "named_enemy_params_id": 930
+                    "named_enemy_params_id": 125
                 },
                 {
                     "enemy_id": "0x015800",
-                    "level": 30,
+                    "level": 28,
                     "exp": 996,
-                    "named_enemy_params_id": 930
+                    "named_enemy_params_id": 125
                 },
                 {
                     "enemy_id": "0x015800",
-                    "level": 30,
+                    "level": 28,
                     "exp": 996,
-                    "named_enemy_params_id": 930
-                },
-                {
-                    "enemy_id": "0x015800",
-                    "level": 30,
-                    "exp": 996,
-                    "named_enemy_params_id": 930
+                    "named_enemy_params_id": 125
                 }
             ]
         },
@@ -85,42 +85,43 @@
                 "id": 83,
                 "group_id": 0
             },
+			"placement_type": "Manual",
             "enemies": [
                 {
                     "enemy_id": "0x010205",
-                    "level": 30,
+                    "level": 28,
                     "exp": 996,
+					"index": 6,
                     "named_enemy_params_id": 147
                 },
                 {
                     "enemy_id": "0x010205",
-                    "level": 30,
+                    "level": 28,
                     "exp": 996,
+					"index": 7,
+                    "named_enemy_params_id": 147
+                },
+				{
+                    "enemy_id": "0x010205",
+                    "level": 28,
+                    "exp": 996,
+					"index": 8,
                     "named_enemy_params_id": 147
                 },
                 {
                     "enemy_id": "0x015800",
-                    "level": 30,
+                    "level": 28,
                     "exp": 996,
-                    "named_enemy_params_id": 930
-                },
-                {
-                    "enemy_id": "0x010205",
-                    "level": 30,
-                    "exp": 996,
-                    "named_enemy_params_id": 147
-                },
-                {
-                    "enemy_id": "0x010205",
-                    "level": 30,
-                    "exp": 996,
-                    "named_enemy_params_id": 147
+					"index": 9,
+                    "named_enemy_params_id": 125
                 },
                 {
                     "enemy_id": "0x015002",
-                    "level": 32,
+                    "level": 30,
                     "exp": 1126,
-                    "named_enemy_params_id": 147
+					"index": 4,
+					"is_boss": true,
+                    "named_enemy_params_id": 146
                 }
            ]
         }
@@ -186,10 +187,18 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+			"flags": [
+                {"type": "QstLayout", "action": "Set", "value": 981, "comment": "Spawns Vanessa and other NPC"},
+				{"type": "MyQst", "action": "Set", "value": 80, "comment": "Starts Vanessa FSM"}
+			],
             "groups": [0]
         },
         {
             "type": "PlayEvent",
+			"flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 981, "comment": "Spawns Vanessa and other NPC"},
+				{"type": "MyQst", "action": "Clear", "value": 80, "comment": "Starts Vanessa FSM"}
+			],
             "stage_id": {
                 "id": 83
             },
@@ -202,10 +211,18 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+			"flags": [
+                {"type": "QstLayout", "action": "Set", "value": 981, "comment": "Spawns Vanessa and other NPC"},
+				{"type": "MyQst", "action": "Set", "value": 80, "comment": "Starts Vanessa FSM"}
+			],
             "groups": [1]
         },
         {
             "type": "PlayEvent",
+			"flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 981, "comment": "Spawns Vanessa and other NPC"},
+				{"type": "MyQst", "action": "Clear", "value": 80, "comment": "Starts Vanessa FSM"}
+			],
             "stage_id": {
                 "id": 83
             },
