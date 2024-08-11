@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
@@ -181,6 +182,7 @@ namespace Arrowgene.Ddon.Test.Database
         public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action) { return 1; }
         public void ExecuteReader(string command, Action<DbDataReader> action) {}
         public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) {}
+        public bool ExecuteDeferred(List<DeferredOperation> actions) { return true; }
         public Account CreateAccount(string name, string mail, string hash) { return new Account(); }
         public bool CreateCharacter(Character character) { return true; }
         public bool CreateDatabase() { return true; }
@@ -264,6 +266,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplaceReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut) { return true; }
         public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
+        public bool ReplaceStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
         public bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public Account SelectAccountById(int accountId) { return new Account(); }
         public Account SelectAccountByLoginToken(string loginToken) { return new Account(); }
@@ -319,7 +322,9 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateStatusInfo(CharacterCommon character) { return true; }
         public bool UpdateStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
         public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
+        public bool UpdateStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
+        public bool UpdateWalletPoint(DbConnection conn, uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
         public bool UpdateMyPawnSlot(uint characterId, uint num) { return true; }
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
         public long InsertSystemMailMessage(SystemMailMessage message) { return 0; }
@@ -343,6 +348,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
         public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
         public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount) { return true; }
+        public bool InsertCrest(DbConnection conn, uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount) { return true; }
         public bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount) { return true; }
         public bool RemoveCrest(uint characterCommonId, string itemUId, uint slot) { return true; }
         public List<Crest> GetCrests(uint characterCommonId, string itemUId) { return new List<Crest>(); }

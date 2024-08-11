@@ -1,11 +1,15 @@
-using System;
-using System.Data;
-using System.Data.Common;
-using System.Drawing;
-using System.Text;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Text;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -261,6 +265,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public byte[] GetBytes(DbDataReader reader, string column, int size)
         {
             return base.GetBytes((TReader)reader, column, size);
+        }
+
+        public bool ExecuteDeferred(List<DeferredOperation> actions)
+        {
+            if (!actions.Any()) return true;
+            
+            bool ret = true;
+            using TCon connection = OpenNewConnection();
+
+            ExecuteInTransaction(conn =>
+            {
+                foreach (DeferredOperation action in actions)
+                {
+                    ret = action.Handle(conn);
+                    if (!ret) break;
+                }
+            });
+
+            return ret;
         }
     }
 }

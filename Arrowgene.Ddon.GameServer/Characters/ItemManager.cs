@@ -1,9 +1,15 @@
 #nullable enable
 using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks.Dataflow;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -90,7 +96,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         // old = 'プレイポイント'
         // new = 'Play Point'
 
-        public void GatherItem(DdonServer<GameClient> server, Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems)
+        public void GatherItem(DdonServer<GameClient> server, Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, List<DeferredOperation>? deferredOperations = null)
         {
             if(ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) {
                 var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheringItem.ItemId];
@@ -98,7 +104,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 CDataWalletPoint characterWalletPoint = character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.Type).First();
                 characterWalletPoint.Value += totalQuantityToAdd; // TODO: Cap to maximum for that wallet
-                server.Database.UpdateWalletPoint(character.CharacterId, characterWalletPoint);
+
+                if (deferredOperations is null)
+                {
+                    server.Database.UpdateWalletPoint(character.CharacterId, characterWalletPoint);
+                }
+                else
+                {
+                    deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.UpdateWalletPoint(conn, character.CharacterId, characterWalletPoint)));
+                }
 
                 CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
                 walletUpdate.Type = walletTypeAndQuantity.Type;
@@ -114,13 +128,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public List<CDataItemUpdateResult> ConsumeItemByUIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> fromStorageTypes, string itemUId, uint consumeNum)
+        public List<CDataItemUpdateResult> ConsumeItemByUIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> fromStorageTypes, string itemUId, uint consumeNum, List<DeferredOperation>? deferredOperations = null)
         {
             int remainingItems = (int) consumeNum;
             List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
             foreach (StorageType storageType in fromStorageTypes)
             {
-                CDataItemUpdateResult? result = ConsumeItemByUId(server, character, storageType, itemUId, (uint) remainingItems);
+                CDataItemUpdateResult? result = ConsumeItemByUId(server, character, storageType, itemUId, (uint) remainingItems, deferredOperations);
                 if (result != null)
                 {
                     results.Add(result);
@@ -136,7 +150,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             throw new NotEnoughItemsException(itemUId, consumeNum, remainingItems);
         }
 
-        public CDataItemUpdateResult? ConsumeItemByUId(DdonServer<GameClient> server, Character character, StorageType fromStorageType, string itemUId, uint consumeNum)
+        public CDataItemUpdateResult? ConsumeItemByUId(DdonServer<GameClient> server, Character character, StorageType fromStorageType, string itemUId, uint consumeNum, List<DeferredOperation>? deferredOperations = null)
         {
             var foundItem = character.Storage.GetStorage(fromStorageType).FindItemByUId(itemUId);
             if(foundItem == null)
@@ -144,17 +158,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return null;
             } else {
                 (ushort slotNo, Item item, uint itemNum) = foundItem;
-                return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum);
+                return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum, deferredOperations);
             }
         }
 
-        public CDataItemUpdateResult? ConsumeItemByUIdFromItemBag(DdonServer<GameClient> server, Character character, string itemUId, uint consumeNum)
+        public CDataItemUpdateResult? ConsumeItemByUIdFromItemBag(DdonServer<GameClient> server, Character character, string itemUId, uint consumeNum, List<DeferredOperation>? deferredOperations = null)
         {
-            List<CDataItemUpdateResult> results = ConsumeItemByUIdFromMultipleStorages(server, character, ItemBagStorageTypes, itemUId, consumeNum);
+            List<CDataItemUpdateResult> results = ConsumeItemByUIdFromMultipleStorages(server, character, ItemBagStorageTypes, itemUId, consumeNum, deferredOperations);
             return results.Count > 0 ? results[0] : null;
         }
 
-        public CDataItemUpdateResult? ConsumeItemByIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> storages, uint itemId, uint consumeNum)
+        public CDataItemUpdateResult? ConsumeItemByIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> storages, uint itemId, uint consumeNum, List<DeferredOperation>? deferredOperations = null)
         {
             // List<Item> items = server.Database.SelectStorageItemsById(character.CharacterId, itemId);
             foreach (StorageType storageType in storages)
@@ -172,19 +186,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         continue;
                     }
 
-                    return ConsumeItemByUId(server, character, storageType, item.Item2.UId, consumeNum);
+                    return ConsumeItemByUId(server, character, storageType, item.Item2.UId, consumeNum, deferredOperations);
                 }
             }
 
             return null;
         }
 
-        public CDataItemUpdateResult? ConsumeItemByIdFromItemBag(DdonServer<GameClient> server, Character character, uint itemId, uint consumeNum)
+        public CDataItemUpdateResult? ConsumeItemByIdFromItemBag(DdonServer<GameClient> server, Character character, uint itemId, uint consumeNum, List<DeferredOperation>? deferredOperations = null)
         {
-            return ConsumeItemByIdFromMultipleStorages(server, character, ItemBagStorageTypes, itemId, consumeNum);
+            return ConsumeItemByIdFromMultipleStorages(server, character, ItemBagStorageTypes, itemId, consumeNum, deferredOperations);
         }
 
-        public CDataItemUpdateResult? ConsumeItemInSlot(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, uint consumeNum)
+        public CDataItemUpdateResult? ConsumeItemInSlot(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, uint consumeNum, List<DeferredOperation>? deferredOperations = null)
         {
             var foundItem = character.Storage.GetStorage(fromStorageType).GetItem(slotNo);
             if(foundItem == null)
@@ -192,11 +206,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return null;
             } else {
                 (Item item, uint itemNum) = foundItem;
-                return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum);
+                return ConsumeItem(server, character, fromStorageType, slotNo, item, itemNum, consumeNum, deferredOperations);
             }
         }
 
-        private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consumeNum)
+        private CDataItemUpdateResult ConsumeItem(DdonServer<GameClient> server, Character character, StorageType fromStorageType, ushort slotNo, Item item, uint itemNum, uint consumeNum, List<DeferredOperation>? deferredOperations = null)
         {
             uint finalItemNum = (uint) Math.Max(0, (int)itemNum - (int)consumeNum);
             int finalConsumeNum = (int)itemNum - (int)finalItemNum;
@@ -224,24 +238,38 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
                 fromStorage.SetItem(null, 0, slotNo);
-                server.Database.DeleteStorageItem(character.CharacterId, fromStorageType, slotNo);
+                if (deferredOperations is null)
+                {
+                    server.Database.DeleteStorageItem(character.CharacterId, fromStorageType, slotNo);
+                }
+                else
+                {
+                    deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.DeleteStorageItem(character.CharacterId, fromStorageType, slotNo)));
+                }
             }
             else
             {
                 fromStorage.SetItem(item, finalItemNum, slotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, finalItemNum, item);
+                if (deferredOperations is null)
+                {
+                    server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, finalItemNum, item);
+                }
+                else
+                {
+                    deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.ReplaceStorageItem(conn, character.CharacterId, fromStorageType, slotNo, finalItemNum, item)));
+                }
             }
 
             return ntcData;
         }
 
-        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0)
+        public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0, List<DeferredOperation>? deferredOperations = null)
         {
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
             if(itemBag)
             {
                 // Limit stacks when adding to the item bag.
-                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit);
+                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit, deferredOperations:deferredOperations);
             }
             else
             {
@@ -249,17 +277,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if(clientItemInfo.StorageType == StorageType.ItemBagEquipment)
                 {
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, plusvalue);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, clientItemInfo.StackLimit, plusvalue, deferredOperations);
                 }
                 else
                 {
                     // Move to storage box without stack limit if it's not equipment
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, deferredOperations: deferredOperations);
                 }
             }
         }
 
-        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte plusvalue = 0)
+        private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte plusvalue = 0, List<DeferredOperation>? deferredOperations = null)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
             // The stack limit is specified by the stackLimit arg
@@ -303,7 +331,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     destinationStorage.SetItem(item, newItemNum, slot);
                 }
 
-                database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, newItemNum, item);
+                if (deferredOperations is null)
+                {
+                    database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, newItemNum, item);
+                }
+                else
+                {
+                    deferredOperations.Add(new GenericDeferred(database, (db, conn) => db.ReplaceStorageItem(conn, character.CharacterId, destinationStorageType, slot, newItemNum, item)));
+                }
 
                 CDataItemUpdateResult result = new CDataItemUpdateResult();
                 result.ItemList.ItemUId = item.UId;
@@ -327,7 +362,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
-        public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, string itemUId, uint num, Storage toStorage, ushort toSlotNo)
+        public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, string itemUId, uint num, Storage toStorage, ushort toSlotNo, List<DeferredOperation>? deferredOperations = null)
         {
             var foundItem = fromStorage.FindItemByUId(itemUId);
             if(foundItem == null)
@@ -336,22 +371,36 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             (ushort fromSlotNo, Item fromItem, uint fromItemNum) = foundItem;
-            return MoveItem(server, character, fromStorage, fromSlotNo, num, toStorage, toSlotNo);
+            return MoveItem(server, character, fromStorage, fromSlotNo, num, toStorage, toSlotNo, deferredOperations);
         }
 
-        private void DeleteItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo)
+        private void DeleteItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, List<DeferredOperation>? deferredOperations = null)
         {
             storage.SetItem(null, 0, slotNo);
-            server.Database.DeleteStorageItem(character.CharacterId, storage.Type, slotNo);
+            if (deferredOperations is null)
+            {
+                server.Database.DeleteStorageItem(character.CharacterId, storage.Type, slotNo);
+            }
+            else
+            {
+                deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.DeleteStorageItem(character.CharacterId, storage.Type, slotNo)));
+            }
         }
 
-        private void UpdateItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
+        private void UpdateItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num, List<DeferredOperation>? deferredOperations = null)
         {
             storage.SetItem(item, num, slotNo);
-            server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
+            if (deferredOperations is null)
+            {
+                server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
+            }
+            else
+            {
+                deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.UpdateStorageItem(conn, character.CharacterId, storage.Type, slotNo, num, item)));
+            }
         }
 
-        private void InsertItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
+        private void InsertItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num, List<DeferredOperation>? deferredOperations = null)
         {
             storage.SetItem(item, num, slotNo);
             server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
@@ -363,7 +412,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo)
+        public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo, List<DeferredOperation>? deferredOperations = null)
         {
             List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
 
@@ -379,9 +428,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if (toItem != null)
                 {
                     // Delete the item
-                    DeleteItem(server, character, toItem.Item1, toStorage, toSlotNo);
+                    DeleteItem(server, character, toItem.Item1, toStorage, toSlotNo, deferredOperations);
                 }
-                DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo);
+                DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, deferredOperations);
 
                 if (toItem != null)
                 {
@@ -389,7 +438,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     results.Add(CreateItemUpdateResult(character, toItem.Item1, toStorage, toSlotNo, 0, 0));
                     results.Add(CreateItemUpdateResult(null, toItem.Item1, fromStorage, fromSlotNo, 1, 1));
 
-                    InsertItem(server, character, toItem.Item1, fromStorage, fromSlotNo, 1);
+                    InsertItem(server, character, toItem.Item1, fromStorage, fromSlotNo, 1, deferredOperations);
                 }
 
                 if (toSlotNo == 0)
@@ -435,7 +484,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, toSlotNo, 1, 1));
                     }
                 }
-                InsertItem(server, character, fromItem.Item1, toStorage, toSlotNo, 1);
+                InsertItem(server, character, fromItem.Item1, toStorage, toSlotNo, 1, deferredOperations);
             }
             else
             {
@@ -443,11 +492,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint newSrcItemNum = fromItem.Item2 - num;
                 if (newSrcItemNum == 0)
                 {
-                    DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo);
+                    DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, deferredOperations);
                 }
                 else
                 {
-                    UpdateItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum);
+                    UpdateItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum, deferredOperations);
                 }
 
                 results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum, num));
@@ -525,11 +574,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     toStorage.SetItem(item, newDstItemNum, dstSlotNo);
                     if (oldDstItemNum == 0)
                     {
-                        InsertItem(server, character, item, toStorage, dstSlotNo, newDstItemNum);
+                        InsertItem(server, character, item, toStorage, dstSlotNo, newDstItemNum, deferredOperations);
                     }
                     else
                     {
-                        UpdateItem(server, character, item, toStorage, dstSlotNo, newDstItemNum);
+                        UpdateItem(server, character, item, toStorage, dstSlotNo, newDstItemNum, deferredOperations);
                     }
                     results.Add(CreateItemUpdateResult(null, item, toStorage, dstSlotNo, newDstItemNum, movedItemNum));
 
@@ -589,11 +638,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return item.ItemId;
         }
-        public void UpgradeStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo)
+        public void UpgradeStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, byte slotNo, List<DeferredOperation>? deferredOperations = null)
         {
             client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
-            server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
-            
+            if (deferredOperations is null)
+            {
+                server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
+            }
+            else
+            {
+                deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.UpdateStorageItem(conn, characterID, storageType, slotNo, 1, newItem)));
+            }
+
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
             updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;

@@ -103,10 +103,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return InsertStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
         }
 
-        public bool ReplaceStorageItem(TCon conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
+        public bool ReplaceStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
         {
             Logger.Debug("Inserting storage item.");
-            if (!InsertIfNotExistsStorageItem(conn, characterId, storageType, slotNo, itemNum, item))
+            if (!InsertIfNotExistsStorageItem((TCon)conn, characterId, storageType, slotNo, itemNum, item))
             {
                 Logger.Debug("Storage item already exists, replacing.");
                 return UpdateStorageItem(conn, characterId, storageType, slotNo, itemNum, item);
@@ -136,7 +136,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return UpdateStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
         }        
         
-        public bool UpdateStorageItem(TCon connection, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
+        public bool UpdateStorageItem(DbConnection connection, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
         {
             return ExecuteNonQuery(connection, SqlUpdateStorageItem, command =>
             {

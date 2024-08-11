@@ -71,9 +71,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return UpdateWalletPoint(connection, characterId, updatedWalletPoint);
         }
         
-        public bool UpdateWalletPoint(TCon connection, uint characterId, CDataWalletPoint updatedWalletPoint)
+        public bool UpdateWalletPoint(DbConnection connection, uint characterId, CDataWalletPoint updatedWalletPoint)
         {
-            return ExecuteNonQuery(connection, SqlUpdateWalletPoint, command =>
+            return ExecuteNonQuery((TCon) connection, SqlUpdateWalletPoint, command =>
             {
                 AddParameter(command, characterId, updatedWalletPoint);
             }) == 1;

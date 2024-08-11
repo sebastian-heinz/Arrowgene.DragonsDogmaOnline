@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return InsertCrest(connection, characterCommonId, itemUId, slot, crestId, crestAmount);
         }
 
-        public bool InsertCrest(TCon connection, uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)
+        public bool InsertCrest(DbConnection connection, uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)
         {
             return ExecuteNonQuery(connection, SqlInsertCrestData, command =>
             {
