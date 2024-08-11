@@ -38,12 +38,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (Server.CraftManager.IsCraftRankLimitPromotionRecipe(leadPawn, craftProgress.RecipeId))
             {
                 Server.CraftManager.PromotePawnRankLimit(leadPawn);
-                // TODO: increase pawn assistant slot count for promotion from 8 -> 16
+
+                // TODO: This is not accurate to the original game but currently there is no other way to gain crafting reset points.
+                CDataWalletPoint resetCraftSkillWalletPoint = client.Character.WalletPointList.Find(l => l.Type == WalletType.ResetCraftSkills);
+                resetCraftSkillWalletPoint.Value++;
+                S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc();
+                itemUpdateNtc.UpdateType = ItemNoticeType.ResetCraftpoint;
+                itemUpdateNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
+                {
+                    Type = WalletType.ResetCraftSkills,
+                    Value = resetCraftSkillWalletPoint.Value,
+                    AddPoint = 1,
+                    ExtraBonusPoint = 0
+                });
+                Server.Database.UpdateWalletPoint(client.Character.CharacterId, resetCraftSkillWalletPoint);
+                client.Send(itemUpdateNtc);
             }
+
             if (Server.CraftManager.CanPawnExpUp(leadPawn))
             {
                 Server.CraftManager.HandlePawnExpUp(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
             }
+
             if (Server.CraftManager.CanPawnRankUp(leadPawn))
             {
                 Server.CraftManager.HandlePawnRankUp(client, leadPawn);
