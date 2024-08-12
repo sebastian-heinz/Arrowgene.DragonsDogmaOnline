@@ -59,7 +59,8 @@
             "enemies": [
                 {
                     "enemy_id": "0x015200",
-                    "level": 21,
+                    "level": 18,
+					"named_enemy_params_id": 457,
                     "exp": 1771,
                     "is_boss": true
                 }
