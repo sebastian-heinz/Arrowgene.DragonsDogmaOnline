@@ -210,6 +210,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId) { return true; }
         public bool DeleteStorage(uint characterId, StorageType storageType) { return true; }
         public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo) { return true; }
+        public bool DeleteStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo) { return true; }
         public bool DeleteToken(string token) { return true; }
         public bool DeleteTokenByAccountId(int accountId) { return true; }
         public bool DeleteWalletPoint(uint characterId, WalletType type) { return true; }

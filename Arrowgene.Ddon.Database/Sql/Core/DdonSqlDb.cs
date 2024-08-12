@@ -270,16 +270,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public bool ExecuteDeferred(List<DeferredOperation> actions)
         {
             if (!actions.Any()) return true;
-            
             bool ret = true;
-            using TCon connection = OpenNewConnection();
 
             ExecuteInTransaction(conn =>
             {
                 foreach (DeferredOperation action in actions)
                 {
                     ret = action.Handle(conn);
-                    if (!ret) break;
                 }
             });
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -14,11 +15,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetDropItemHandler));
         
-        private readonly ItemManager _itemManager;
-
         public InstanceGetDropItemHandler(DdonGameServer server) : base(server)
         {
-            this._itemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetDropItemReq> packet)
@@ -39,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (CDataGatheringItemGetRequest gatheringItemRequest in packet.Structure.GatheringItemGetRequestList)
             {
                 InstancedGatheringItem dropItem = items[(int) gatheringItemRequest.SlotNo];
-                this._itemManager.GatherItem(Server, client.Character, ntc, dropItem, gatheringItemRequest.Num);
+                Server.ItemManager.GatherItem(Server, client.Character, ntc, dropItem, gatheringItemRequest.Num, DeferredOperations);
             }
 
             client.Send(ntc);

@@ -132,6 +132,7 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
         bool ReplaceStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
+        bool DeleteStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo);
         bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
         bool UpdateStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
         bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);

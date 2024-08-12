@@ -122,7 +122,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 gatheringItem.ItemNum -= pickedGatherItems;
             } else {
-                List<CDataItemUpdateResult> results = AddItem(server, character, true, gatheringItem.ItemId, pickedGatherItems);
+                List<CDataItemUpdateResult> results = AddItem(server, character, true, gatheringItem.ItemId, pickedGatherItems, deferredOperations:deferredOperations);
                 ntc.UpdateItemList.AddRange(results);
                 gatheringItem.ItemNum -= (uint) results.Select(result => result.UpdateItemNum).Sum();
             }
@@ -379,11 +379,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             storage.SetItem(null, 0, slotNo);
             if (deferredOperations is null)
             {
+                Logger.Info($"Deleting item {item.UId} from {storage.ToString()}:{slotNo}");
                 server.Database.DeleteStorageItem(character.CharacterId, storage.Type, slotNo);
             }
             else
             {
-                deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.DeleteStorageItem(character.CharacterId, storage.Type, slotNo)));
+                Logger.Info($"DEFERRED: Deleting item {item.UId} from {storage.ToString()}:{slotNo}");
+                deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.DeleteStorageItem(conn, character.CharacterId, storage.Type, slotNo)));
             }
         }
 
@@ -392,10 +394,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             storage.SetItem(item, num, slotNo);
             if (deferredOperations is null)
             {
+                Logger.Info($"Updating item {item.UId} x{num} at {storage.ToString()}:{slotNo}");
                 server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
             }
             else
             {
+                Logger.Info($"DEFERRED: Updating item {item.UId} x{num} at {storage.ToString()}:{slotNo}");
                 deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.UpdateStorageItem(conn, character.CharacterId, storage.Type, slotNo, num, item)));
             }
         }
@@ -403,12 +407,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private void InsertItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num, List<DeferredOperation>? deferredOperations = null)
         {
             storage.SetItem(item, num, slotNo);
-            server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
-            
-
+            if (deferredOperations is null)
+            {
+                Logger.Info($"Inserting item {item.UId} x{num} at {storage.ToString()}:{slotNo}");
+                server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
+            }
+            else
+            {
+                Logger.Info($"DEFERRED: Inserting item {item.UId} x{num} at {storage.ToString()}:{slotNo}");
+                deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.InsertStorageItem(conn, character.CharacterId, storage.Type, slotNo, num, item)));
+            }
             foreach (var crest in item.EquipElementParamList)
             {
-                server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add);
+                if (deferredOperations is null)
+                {
+                    server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add);
+                }
+                else
+                {
+                    deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.InsertCrest(conn, character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add)));
+                }
             }
         }
 

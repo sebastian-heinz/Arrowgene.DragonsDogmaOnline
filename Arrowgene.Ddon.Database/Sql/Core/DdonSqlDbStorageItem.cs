@@ -130,6 +130,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
+        public bool DeleteStorageItem(DbConnection connection, uint characterId, StorageType storageType, ushort slotNo)
+        {
+            return ExecuteNonQuery(connection, SqlDeleteStorageItem, command =>
+            {
+                AddParameter(command, "character_id", characterId);
+                AddParameter(command, "storage_type", (byte)storageType);
+                AddParameter(command, "slot_no", slotNo);
+            }) == 1;
+        }
+
         public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
         {
             using TCon connection = OpenNewConnection();

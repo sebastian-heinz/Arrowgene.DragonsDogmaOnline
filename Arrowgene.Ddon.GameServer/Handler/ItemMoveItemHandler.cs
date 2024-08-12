@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -22,8 +20,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.UpdateType = DetermineUpdateType(packet.Structure.SourceGameStorageType);
             foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
             {
-                ntc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(Server, client.Character, client.Character.Storage.GetStorage(itemFromTo.SrcStorageType), itemFromTo.ItemUId, itemFromTo.Num, client.Character.Storage.GetStorage(itemFromTo.DstStorageType), itemFromTo.SlotNo));
+                ntc.UpdateItemList.AddRange(
+                    Server.ItemManager.MoveItem(
+                        Server,
+                        client.Character,
+                        client.Character.Storage.GetStorage(itemFromTo.SrcStorageType),
+                        itemFromTo.ItemUId,
+                        itemFromTo.Num,
+                        client.Character.Storage.GetStorage(itemFromTo.DstStorageType),
+                        itemFromTo.SlotNo,
+                        DeferredOperations
+                        )
+                    );
             }
+
             client.Send(ntc);
             
             client.Send(new S2CItemMoveItemRes());
