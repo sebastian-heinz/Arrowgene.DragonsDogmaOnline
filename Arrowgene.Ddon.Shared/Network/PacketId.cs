@@ -304,9 +304,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_CHARACTER_GOLDEN_REVIVE_RES = new PacketId(2, 17, 2, "S2C_CHARACTER_CHARACTER_GOLDEN_REVIVE_RES", ServerType.Game, PacketSource.Server); // キャラクタ復活(黄金石消費)に
         public static readonly PacketId C2S_CHARACTER_CHARACTER_PENALTY_REVIVE_REQ = new PacketId(2, 18, 1, "C2S_CHARACTER_CHARACTER_PENALTY_REVIVE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_CHARACTER_PENALTY_REVIVE_RES = new PacketId(2, 18, 2, "S2C_CHARACTER_CHARACTER_PENALTY_REVIVE_RES", ServerType.Game, PacketSource.Server); // キャラクタ復活(デスペナ付与)に
-        public static readonly PacketId C2S_CHARACTER_2_19_16_NTC = new PacketId(2, 19, 16, "C2S_CHARACTER_2_19_16_NTC", ServerType.Game, PacketSource.Server); //Fires when pawn is downed.
-        public static readonly PacketId C2S_CHARACTER_2_20_16_NTC = new PacketId(2, 20, 16, "C2S_CHARACTER_2_20_16_NTC", ServerType.Game, PacketSource.Server); //Fires when pawn is picked back up.
-        public static readonly PacketId C2S_CHARACTER_2_21_16_NTC = new PacketId(2, 21, 16, "C2S_CHARACTER_2_21_16_NTC", ServerType.Game, PacketSource.Server); //Fires when pawn dies after being downed.
+        public static readonly PacketId C2S_CHARACTER_PAWN_DOWN_NTC = new PacketId(2, 19, 16, "C2S_CHARACTER_PAWN_DOWN_NTC", ServerType.Game, PacketSource.Server, "C2S_CHARACTER_2_19_16_NTC"); //Fires when pawn is downed.
+        public static readonly PacketId C2S_CHARACTER_PAWN_RECOVER_NTC = new PacketId(2, 20, 16, "C2S_CHARACTER_PAWN_RECOVER_NTC", ServerType.Game, PacketSource.Server, "C2S_CHARACTER_2_19_16_NTC"); //Fires when pawn is picked back up.
+        public static readonly PacketId C2S_CHARACTER_PAWN_DEATH_NTC = new PacketId(2, 21, 16, "C2S_CHARACTER_PAWN_DEATH_NTC", ServerType.Game, PacketSource.Server, "C2S_CHARACTER_2_19_16_NTC"); //Fires when pawn dies after being downed.
         public static readonly PacketId C2S_CHARACTER_PAWN_POINT_REVIVE_REQ = new PacketId(2, 22, 1, "C2S_CHARACTER_PAWN_POINT_REVIVE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_PAWN_POINT_REVIVE_RES = new PacketId(2, 22, 2, "S2C_CHARACTER_PAWN_POINT_REVIVE_RES", ServerType.Game, PacketSource.Server); // ポーン復活(復活力消費)に
         public static readonly PacketId C2S_CHARACTER_PAWN_GOLDEN_REVIVE_REQ = new PacketId(2, 23, 1, "C2S_CHARACTER_PAWN_GOLDEN_REVIVE_REQ", ServerType.Game, PacketSource.Client);
@@ -1081,9 +1081,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_INN_GET_STAY_PRICE_RES = new PacketId(21, 0, 2, "S2C_INN_GET_STAY_PRICE_RES", ServerType.Game, PacketSource.Server); // 宿泊費の取得に
         public static readonly PacketId C2S_INN_STAY_INN_REQ = new PacketId(21, 1, 1, "C2S_INN_STAY_INN_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_INN_STAY_INN_RES = new PacketId(21, 1, 2, "S2C_INN_STAY_INN_RES", ServerType.Game, PacketSource.Server); // 宿泊に
-        public static readonly PacketId C2S_INN_21_2_16_NTC = new PacketId(21, 2, 16, "C2S_INN_21_2_16_NTC", ServerType.Game, PacketSource.Client); //C2S_HP_RECOVERY_COMPLETE_NOTICE?
-        public static readonly PacketId C2S_INN_21_3_16_NTC = new PacketId(21, 3, 16, "C2S_INN_21_3_16_NTC", ServerType.Game, PacketSource.Client); //C2S_HP_RECOVERY_CHARACTER_COMPLETE_NOTICE?
-        public static readonly PacketId C2S_INN_21_4_16_NTC = new PacketId(21, 4, 16, "C2S_INN_21_4_16_NTC", ServerType.Game, PacketSource.Client); //C2S_HP_RECOVERY_PAWN_COMPLETE_NOTICE?
+        public static readonly PacketId C2S_INN_HP_RECOVERY_COMPLETE_NTC = new PacketId(21, 2, 16, "C2S_INN_HP_RECOVERY_COMPLETE_NTC", ServerType.Game, PacketSource.Client, "C2S_INN_21_2_16_NTC");
+        public static readonly PacketId C2S_INN_HP_RECOVERY_CHARACTER_COMPLETE_NTC = new PacketId(21, 3, 16, "C2S_INN_HP_RECOVERY_CHARACTER_COMPLETE_NTC", ServerType.Game, PacketSource.Client, "C2S_INN_21_3_16_NTC"); 
+        public static readonly PacketId C2S_INN_HP_RECOVERY_PAWN_COMPLETE_NTC = new PacketId(21, 4, 16, "C2S_INN_HP_RECOVERY_PAWN_COMPLETE_NTC", ServerType.Game, PacketSource.Client, "C2S_INN_21_4_16_NTC"); 
         public static readonly PacketId C2S_INN_GET_PENALTY_HEAL_STAY_PRICE_REQ = new PacketId(21, 5, 1, "C2S_INN_GET_PENALTY_HEAL_STAY_PRICE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_INN_GET_PENALTY_HEAL_STAY_PRICE_RES = new PacketId(21, 5, 2, "S2C_INN_GET_PENALTY_HEAL_STAY_PRICE_RES", ServerType.Game, PacketSource.Server); // 弱化回復宿泊費の取得に
         public static readonly PacketId C2S_INN_STAY_PENALTY_HEAL_INN_REQ = new PacketId(21, 6, 1, "C2S_INN_STAY_PENALTY_HEAL_INN_REQ", ServerType.Game, PacketSource.Client);
@@ -2225,9 +2225,9 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_CHARACTER_GOLDEN_REVIVE_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_CHARACTER_PENALTY_REVIVE_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_CHARACTER_PENALTY_REVIVE_RES);
-            AddPacketIdEntry(packetIds, C2S_CHARACTER_2_19_16_NTC);
-            AddPacketIdEntry(packetIds, C2S_CHARACTER_2_20_16_NTC);
-            AddPacketIdEntry(packetIds, C2S_CHARACTER_2_21_16_NTC);
+            AddPacketIdEntry(packetIds, C2S_CHARACTER_PAWN_DOWN_NTC);
+            AddPacketIdEntry(packetIds, C2S_CHARACTER_PAWN_RECOVER_NTC);
+            AddPacketIdEntry(packetIds, C2S_CHARACTER_PAWN_DEATH_NTC);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_PAWN_POINT_REVIVE_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_PAWN_POINT_REVIVE_RES);
             AddPacketIdEntry(packetIds, C2S_CHARACTER_PAWN_GOLDEN_REVIVE_REQ);
@@ -3002,9 +3002,9 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_INN_GET_STAY_PRICE_RES);
             AddPacketIdEntry(packetIds, C2S_INN_STAY_INN_REQ);
             AddPacketIdEntry(packetIds, S2C_INN_STAY_INN_RES);
-            AddPacketIdEntry(packetIds, C2S_INN_21_2_16_NTC);
-            AddPacketIdEntry(packetIds, C2S_INN_21_3_16_NTC);
-            AddPacketIdEntry(packetIds, C2S_INN_21_4_16_NTC);
+            AddPacketIdEntry(packetIds, C2S_INN_HP_RECOVERY_COMPLETE_NTC);
+            AddPacketIdEntry(packetIds, C2S_INN_HP_RECOVERY_CHARACTER_COMPLETE_NTC);
+            AddPacketIdEntry(packetIds, C2S_INN_HP_RECOVERY_PAWN_COMPLETE_NTC);
             AddPacketIdEntry(packetIds, C2S_INN_GET_PENALTY_HEAL_STAY_PRICE_REQ);
             AddPacketIdEntry(packetIds, S2C_INN_GET_PENALTY_HEAL_STAY_PRICE_RES);
             AddPacketIdEntry(packetIds, C2S_INN_STAY_PENALTY_HEAL_INN_REQ);
