@@ -76,6 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+            // TODO: make use of pawn crafting skills instead
             // Update item equip points in the database
             uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4)));
             currentTotalEquipPoint += addEquipPoint;
@@ -138,13 +139,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Lead pawn is always owned by player.
             Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
-            if (Server.CraftManager.CanPawnExpUp(leadPawn))
+            if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                Server.CraftManager.HandlePawnExpUp(client, leadPawn, PawnExp, 0);
+                CraftManager.HandlePawnExpUp(client, leadPawn, PawnExp, 0);
             }
-            if (Server.CraftManager.CanPawnRankUp(leadPawn))
+            if (CraftManager.CanPawnRankUp(leadPawn))
             {
-                Server.CraftManager.HandlePawnRankUp(client, leadPawn);
+                CraftManager.HandlePawnRankUp(client, leadPawn);
             }
             Server.Database.UpdatePawnBaseInfo(leadPawn);
 

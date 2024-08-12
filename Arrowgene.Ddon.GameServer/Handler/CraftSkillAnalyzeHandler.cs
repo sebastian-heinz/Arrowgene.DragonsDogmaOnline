@@ -112,7 +112,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftSkillAnalyzeResult equipmentQualityAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.EquipmentQuality,
-                Rate = (byte)Server.CraftManager.GetEquipmentQualityIncreaseRate(equipmentQualityLevel)
+                Rate = (byte)CraftManager.GetEquipmentQualityIncreaseRate(equipmentQualityLevel)
             };
             return equipmentQualityAnalysisResult;
         }
@@ -127,8 +127,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftSkillAnalyzeResult equipEnhancementAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.EquipmentEnhancement,
-                Value0 = (uint)Server.CraftManager.GetEquipmentEnhancementPoints(equipmentEnhancementLevels),
-                Value1 = (uint)Server.CraftManager.GetEquipmentEnhancementPointsGreatSuccess(equipmentEnhancementLevels)
+                Value0 = (uint)CraftManager.GetEquipmentEnhancementPoints(equipmentEnhancementLevels),
+                Value1 = (uint)CraftManager.GetEquipmentEnhancementPointsGreatSuccess(equipmentEnhancementLevels)
             };
             return equipEnhancementAnalysisResult;
         }
@@ -143,8 +143,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftSkillAnalyzeResult consumableQuantityAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.ConsumableQuantity,
-                Rate = (byte)Server.CraftManager.GetAdditionalConsumableQuantityRate(consumableQuantityLevels),
-                Value0 = (byte)Server.CraftManager.GetAdditionalConsumableQuantityMaximum(consumableQuantityLevels)
+                Rate = (byte)CraftManager.GetAdditionalConsumableQuantityRate(consumableQuantityLevels),
+                Value0 = (byte)CraftManager.GetAdditionalConsumableQuantityMaximum(consumableQuantityLevels)
             };
             return consumableQuantityAnalysisResult;
         }

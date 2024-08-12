@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
                 Item refineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
-                CraftCalculationResult craftCalculationResult = Server.CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
                 plusValue = craftCalculationResult.CalculatedValue;
                 isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
 
@@ -140,13 +140,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             // TODO: Find exp for item recipe
-            if (Server.CraftManager.CanPawnExpUp(leadPawn))
+            if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                Server.CraftManager.HandlePawnExpUp(client, leadPawn, 10, 0);
+                CraftManager.HandlePawnExpUp(client, leadPawn, 10, 0);
             }
-            if (Server.CraftManager.CanPawnRankUp(leadPawn))
+            if (CraftManager.CanPawnRankUp(leadPawn))
             {
-                Server.CraftManager.HandlePawnRankUp(client, leadPawn);
+                CraftManager.HandlePawnRankUp(client, leadPawn);
             }
             Server.Database.UpdatePawnBaseInfo(leadPawn);
 

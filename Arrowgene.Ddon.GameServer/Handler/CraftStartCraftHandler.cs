@@ -94,7 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (canPlusValue && !string.IsNullOrEmpty(request.RefineMaterialUID))
             {
                 Item refineMaterialItem = Server.Database.SelectStorageItemByUId(request.RefineMaterialUID);
-                CraftCalculationResult craftCalculationResult = Server.CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
                 plusValue = craftCalculationResult.CalculatedValue;
                 isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
 
@@ -114,7 +114,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool isGreatSuccessConsumableQuantity = false;
             if (itemInfo.StorageType == StorageType.ItemBagConsumable)
             {
-                CraftCalculationResult craftCalculationResult = Server.CraftManager.CalculateConsumableQuantity(consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateConsumableQuantity(consumableQuantityLevels);
                 consumableAdditionalQuantity = request.CreateCount * craftCalculationResult.CalculatedValue;
                 isGreatSuccessConsumableQuantity = craftCalculationResult.IsGreatSuccess;
             }

@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -35,9 +36,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // The lead pawn can only be a pawn owned by the player, no need to search in DB.
             Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
 
-            if (Server.CraftManager.IsCraftRankLimitPromotionRecipe(leadPawn, craftProgress.RecipeId))
+            if (CraftManager.IsCraftRankLimitPromotionRecipe(leadPawn, craftProgress.RecipeId))
             {
-                Server.CraftManager.PromotePawnRankLimit(leadPawn);
+                CraftManager.PromotePawnRankLimit(leadPawn);
 
                 // TODO: This is not accurate to the original game but currently there is no other way to gain crafting reset points.
                 CDataWalletPoint resetCraftSkillWalletPoint = client.Character.WalletPointList.Find(l => l.Type == WalletType.ResetCraftSkills);
@@ -55,14 +56,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(itemUpdateNtc);
             }
 
-            if (Server.CraftManager.CanPawnExpUp(leadPawn))
+            if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                Server.CraftManager.HandlePawnExpUp(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
+                CraftManager.HandlePawnExpUp(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
             }
 
-            if (Server.CraftManager.CanPawnRankUp(leadPawn))
+            if (CraftManager.CanPawnRankUp(leadPawn))
             {
-                Server.CraftManager.HandlePawnRankUp(client, leadPawn);
+                CraftManager.HandlePawnRankUp(client, leadPawn);
             }
 
             Server.Database.UpdatePawnBaseInfo(leadPawn);

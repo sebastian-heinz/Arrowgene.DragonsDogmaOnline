@@ -26,7 +26,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
         // Directly correlated with CraftProgress CraftMasterPawnInfoList
-        public List<CDataCraftSupportPawnID> CraftMasterPawnIDList { get; set; } // Was empty despite filling all the crafting menus? truly unknown I suppose.
+        // Contains list of craft master / legend pawn IDs
+        // TODO: support craft master / legend pawn involvement
+        public List<CDataCraftSupportPawnID> CraftMasterPawnIDList { get; set; } 
         public uint CreateCount { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SCraftStartCraftReq>

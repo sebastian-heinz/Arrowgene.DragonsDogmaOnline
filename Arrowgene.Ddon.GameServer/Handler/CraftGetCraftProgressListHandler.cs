@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CCraftGetCraftProgressListRes res = new S2CCraftGetCraftProgressListRes();
 
+            // TODO: unsure what this is for, "topping" sounds like the sorting in the UI?..
             uint toppingCounter = 1;
             foreach (Pawn pawn in client.Character.Pawns)
             {
