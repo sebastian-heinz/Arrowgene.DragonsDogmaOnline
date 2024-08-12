@@ -1705,6 +1705,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_EDIT_GET_SHOP_PRICE_RES = new PacketId(41, 8, 2, "S2C_CHARACTER_EDIT_GET_SHOP_PRICE_RES", ServerType.Game, PacketSource.Server); // 美容院と従者の転生の価格の取得
 
 // Group: 42 - (PHOTO)
+        public static readonly PacketId C2S_PHOTO_PHOTO_TAKE_NTC = new PacketId(42, 0, 16, "C2S_PHOTO_PHOTO_TAKE_NTC", ServerType.Game, PacketSource.Client);
         public static readonly PacketId C2S_PHOTO_PHOTO_GET_AUTH_ADDRESS_REQ = new PacketId(42, 1, 1, "C2S_PHOTO_PHOTO_GET_AUTH_ADDRESS_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PHOTO_PHOTO_GET_AUTH_ADDRESS_RES = new PacketId(42, 1, 2, "S2C_PHOTO_PHOTO_GET_AUTH_ADDRESS_RES", ServerType.Game, PacketSource.Server); // フォトアップロード認証用アドレス取得に
 
@@ -3616,6 +3617,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CHARACTER_EDIT_GET_SHOP_PRICE_RES);
 
 // Group: 42 - (PHOTO)
+            AddPacketIdEntry(packetIds, C2S_PHOTO_PHOTO_TAKE_NTC);
             AddPacketIdEntry(packetIds, C2S_PHOTO_PHOTO_GET_AUTH_ADDRESS_REQ);
             AddPacketIdEntry(packetIds, S2C_PHOTO_PHOTO_GET_AUTH_ADDRESS_RES);
 

@@ -409,6 +409,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnTrainingSetTrainingStatusHandler(this));
             AddHandler(new PawnCreatePawnHandler(this));
 
+            AddHandler(new PhotoPhotoTakeHandler(this));
+
             AddHandler(new ProfileGetCharacterProfileHandler(this));
             AddHandler(new ProfileGetMyCharacterProfileHandler(this));
 
@@ -459,6 +461,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ServerGetRealTimeHandler(this));
             AddHandler(new ServerGetServerListHandler(this));
             AddHandler(new ServerWeatherForecastGetHandler(this));
+            AddHandler(new ServerGetScreenShotCategoryHandler(this));
 
             AddHandler(new SkillChangeExSkillHandler(this));
             AddHandler(new SkillGetAbilityCostHandler(this));

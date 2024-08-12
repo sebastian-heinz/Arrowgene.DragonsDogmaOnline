@@ -251,6 +251,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0.Serializer());
             Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0Unk1.Serializer());
             Create(new CDataWildHuntQuestOrderList.Serializer());
+            Create(new CDataScreenShotCategory.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
             Create(new CDataSetQuestDetail.Serializer());
             Create(new CDataSetQuestList.Serializer());
@@ -370,11 +371,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHideCharacterLanternReq.Serializer());
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
+
             Create(new C2SGpGetGpReq.Serializer());
             Create(new C2SGpGetGpDetailReq.Serializer());
             Create(new C2SGpGetGpPeriodReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SGpGpEditGetVoiceListReq.Serializer());
+
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnStayInnReq.Serializer());
@@ -469,8 +472,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnTrainingGetPreparetionInfoToAdviceReq.Serializer());
             Create(new C2SPawnTrainingGetTrainingStatusReq.Serializer());
             Create(new C2SPawnTrainingSetTrainingStatusReq.Serializer());
+
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
+
+            Create(new C2SPhotoPhotoTakeNtc.Serializer());
 
             Create(new C2SQuestCancelPriorityQuestReq.Serializer());
             Create(new C2SQuestGetLightQuestListReq.Serializer());
@@ -494,6 +500,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
+            Create(new C2SServerGetScreenShotCategoryReq.Serializer());
 
             Create(new C2SSkillChangeExSkillReq.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
@@ -872,6 +879,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CServerGetServerListRes.Serializer());
+            Create(new S2CServerGetScreenShotCategoryRes.Serializer());
 
             Create(new S2CSkillAbilitySetNtc.Serializer());
             Create(new S2CSkillChangeExSkillRes.Serializer());
