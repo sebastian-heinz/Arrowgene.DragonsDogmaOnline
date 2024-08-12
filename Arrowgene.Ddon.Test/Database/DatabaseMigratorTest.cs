@@ -257,6 +257,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType) { return true; }
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData) { return true; }
         public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut) { return true; }
+        public bool ReplaceCommunicationShortcut(DbConnection conn, uint characterId, CDataCommunicationShortCut communicationShortcut) { return true; }
         public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
         public bool ReplaceEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo) { return true; }
         public bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities) { return true; }
@@ -266,6 +267,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool ReplaceReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut) { return true; }
+        public bool ReplaceShortcut(DbConnection conn, uint characterId, CDataShortCut shortcut) { return true; }
         public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
         public bool ReplaceStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
         public bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }

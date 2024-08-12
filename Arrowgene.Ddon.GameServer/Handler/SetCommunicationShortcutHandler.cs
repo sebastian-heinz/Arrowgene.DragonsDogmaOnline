@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -21,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CSetCommunicationShortcutRes response = new S2CSetCommunicationShortcutRes();
             foreach(CDataCommunicationShortCut shortcut in request.Structure.CommunicationShortCutList)
             {
-                Database.ReplaceCommunicationShortcut(client.Character.CharacterId, shortcut);
+                DeferredOperations.Add(new GenericDeferred(Database, (db, conn) => db.ReplaceCommunicationShortcut(conn, client.Character.CharacterId, shortcut)));
             }
             client.Character.CommunicationShortCutList = request.Structure.CommunicationShortCutList;
             client.Send(response);

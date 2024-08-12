@@ -183,12 +183,14 @@ namespace Arrowgene.Ddon.Database
         // Shortcut
         bool InsertShortcut(uint characterId, CDataShortCut shortcut);
         bool ReplaceShortcut(uint characterId, CDataShortCut shortcut);
+        bool ReplaceShortcut(DbConnection conn, uint characterId, CDataShortCut shortcut);
         bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut);
         bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo);
 
         // CommunicationShortcut
         bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
         bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+        bool ReplaceCommunicationShortcut(DbConnection connection, uint characterId, CDataCommunicationShortCut communicationShortcut);
         bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut);
         bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
 

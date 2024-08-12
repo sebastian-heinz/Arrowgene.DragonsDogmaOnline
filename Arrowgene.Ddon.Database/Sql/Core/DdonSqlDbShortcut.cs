@@ -53,13 +53,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ReplaceShortcut(connection, characterId, shortcut);
         }       
         
-        public bool ReplaceShortcut(TCon connection, uint characterId, CDataShortCut shortcut)
+        public bool ReplaceShortcut(DbConnection connection, uint characterId, CDataShortCut shortcut)
         {
             Logger.Debug("Inserting shortcut.");
-            if (!InsertIfNotExistsShortcut(connection, characterId, shortcut))
+            if (!InsertIfNotExistsShortcut((TCon)connection, characterId, shortcut))
             {
                 Logger.Debug("Shortcut already exists, replacing.");
-                return UpdateShortcut(connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
+                return UpdateShortcut((TCon)connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
             }
             return true;
         }
