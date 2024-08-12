@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = request.ItemUID;
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
-            var equipItem = ramItem.Item2.Item2;
+            Item equipItem = ramItem.Item2.Item2;
             uint craftpawnid = request.CraftMainPawnID;
             bool IsGreatSuccess = false;
             string RefineMaterialUID = request.RefineUID;
@@ -81,6 +81,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
+                Unk0 = 27,
+                Unk1 = 27,
+                Unk2 = 27,
+                Unk3 = 27,
+                Unk4 = AddStatusID,
                 IsGreatSuccess = IsGreatSuccess
             };
 
