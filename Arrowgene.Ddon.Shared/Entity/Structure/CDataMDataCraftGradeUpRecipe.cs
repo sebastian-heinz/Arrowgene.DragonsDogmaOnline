@@ -12,11 +12,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
         public uint RecipeID { get; set; }
         public uint ItemID { get; set; }
-        public uint Unk0 { get; set; } // this might be IR? 
+        public uint Upgradable { get; set; } // 1 is yes, 0 is no. will prompt a warning "will become max grade" 
         public uint GradeupItemID { get; set; }
         public uint Cost { get; set; }
         public uint Exp { get; set; }
-        public bool Unk1 { get; set; }
+        public bool Unk1 { get; set; } // Prompts a warning that you can't get multiple levels for this item.
         public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; }
 
         public class Serializer : EntitySerializer<CDataMDataCraftGradeupRecipe>
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.RecipeID);
                 WriteUInt32(buffer, obj.ItemID);
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.Upgradable);
                 WriteUInt32(buffer, obj.GradeupItemID);
                 WriteUInt32(buffer, obj.Cost);
                 WriteUInt32(buffer, obj.Exp);
@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     CDataMDataCraftGradeupRecipe obj = new CDataMDataCraftGradeupRecipe();
                     obj.RecipeID = ReadUInt32(buffer);
                     obj.ItemID = ReadUInt32(buffer);
-                    obj.Unk0 = ReadUInt32(buffer);
+                    obj.Upgradable = ReadUInt32(buffer);
                     obj.GradeupItemID = ReadUInt32(buffer);
                     obj.Cost = ReadUInt32(buffer);
                     obj.Exp = ReadUInt32(buffer);

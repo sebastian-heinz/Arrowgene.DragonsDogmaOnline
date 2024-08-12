@@ -23,19 +23,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .SelectMany(recipes => recipes.RecipeList)
                 .ToList();
 
-            Logger.Debug($"Fetched {categoryRecipes.Count} recipes for Category {request.Category}, Num is {request.Num}, offset is {request.Offset}");
-
             List<CDataCommonU32> itemList = request.ItemList;
+            //TODO: Since the client sends a list of items that can be upgraded in the given category,
+            // We can make an optimization pass that splits the JSON into gear trees too. (so all bronzesword recipes together in a subcat, etc)
 
             var response = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
                 Category = request.Category, 
                 RecipeList = categoryRecipes.Skip((int)request.Offset).Take(request.Num).ToList(),
-                UnknownItemList = itemList,  
+                UpgradableItemList = itemList,  
                 IsEnd = (request.Offset + request.Num) >= categoryRecipes.Count
             };
-
-            Logger.Debug($"Sending adjusted response for Category {request.Category}: {response.RecipeList.Count} recipes");
             return response;
         }
     }

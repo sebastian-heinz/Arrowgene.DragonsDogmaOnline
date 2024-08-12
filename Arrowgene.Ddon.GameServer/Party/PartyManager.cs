@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.GameServer.Party;
 
 public class PartyManager
 {
-    public const uint MaxNumParties = 1000;
+    public const uint MaxNumParties = 100; // TODO: Set this to 1000 or something in a different PR.
     public const uint InvalidPartyId = 0;
     public const ushort InvitationTimeoutSec = 30;
 

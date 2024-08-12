@@ -11,13 +11,13 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public S2CCraftRecipeGetCraftGradeupRecipeRes()
         {
             RecipeList = new List<CDataMDataCraftGradeupRecipe>();
-            UnknownItemList = new List<CDataCommonU32>();
+            UpgradableItemList = new List<CDataCommonU32>();
         }
         public override PacketId Id => PacketId.S2C_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_RES;
 
         public byte Category { get; set; }
         public List<CDataMDataCraftGradeupRecipe> RecipeList { get; set; }
-        public List<CDataCommonU32> UnknownItemList { get; set; }
+        public List<CDataCommonU32> UpgradableItemList { get; set; }
         public bool IsEnd { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCraftRecipeGetCraftGradeupRecipeRes>
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteServerResponse(buffer, obj);
                 WriteByte(buffer, obj.Category);
                 WriteEntityList<CDataMDataCraftGradeupRecipe>(buffer, obj.RecipeList);
-                WriteEntityList<CDataCommonU32>(buffer, obj.UnknownItemList);
+                WriteEntityList<CDataCommonU32>(buffer, obj.UpgradableItemList);
                 WriteBool(buffer, obj.IsEnd);
             }
 
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 ReadServerResponse(buffer, obj);
                 obj.Category = ReadByte(buffer);
                 obj.RecipeList = ReadEntityList<CDataMDataCraftGradeupRecipe>(buffer);
-                obj.UnknownItemList = ReadEntityList<CDataCommonU32>(buffer);
+                obj.UpgradableItemList = ReadEntityList<CDataCommonU32>(buffer);
                 obj.IsEnd = ReadBool(buffer);
                 return obj;
             }

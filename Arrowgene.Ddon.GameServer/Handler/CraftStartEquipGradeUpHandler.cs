@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             uint gearupgradeID = json_data.GradeupItemID;
             uint goldRequired = json_data.Cost;
-            uint EquipRank = json_data.Unk0;
+            uint CanUpgrade = json_data.Upgradable;
             uint PawnExp = json_data.Exp;
             bool canContinue = true;
             bool IsGreatSuccess = Random.Shared.Next(5) == 0;
@@ -97,11 +97,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 1 => 700,
                 2 => 1000,
                 3 => 1500,
-                4 => 800,  // TODO: Check if the gear can reach "True" level (4) and handle that properly with "canContinue"
+                4 => 800, 
                 _ => throw new InvalidOperationException("Invalid star level")
             };
 
-            if (currentStars == 3)
+            if (json_data.Upgradable == 0)
             {
                 canContinue = false;
             }
@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equipItem.EquipPoints = currentTotalEquipPoint;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
-                res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, addEquipPoint, currentTotalEquipPoint, EquipRank, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
+                res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, addEquipPoint, currentTotalEquipPoint, CanUpgrade, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
@@ -130,6 +130,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, IsGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
+
+            
+            // TODO: Store saved pawn exp
+            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            {
+                PawnId = request.CraftMainPawnID,
+                AddExp = PawnExp,
+                ExtraBonusExp = 0,
+                TotalExp = PawnExp,
+                CraftRankLimit = 0
+            };
+            client.Send(expNtc);
 
             client.Send(updateCharacterItemNtc);
             return res;
@@ -172,7 +184,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
         }
-        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist, uint addEquipPoint, uint currentTotalEquipPoint, uint equipGrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist, uint addEquipPoint, uint currentTotalEquipPoint, uint canUpgrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
             return new S2CCraftStartEquipGradeUpRes
             {
@@ -181,7 +193,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
                 AddEquipPoint = addEquipPoint,
                 TotalEquipPoint = currentTotalEquipPoint,
-                EquipGrade = equipGrade, // Unclear why the client wants this? as long as its a number it doesn't seem to matter what you set it as.
+                EquipGrade = canUpgrade, // Unclear why the client wants this? as long as its a number it doesn't seem to matter what you set it as.
                 Gold = gold,
                 IsGreatSuccess = isGreatSuccess,
                 CurrentEquip = currentEquip,

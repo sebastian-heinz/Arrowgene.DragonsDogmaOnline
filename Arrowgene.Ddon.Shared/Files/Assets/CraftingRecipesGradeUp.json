@@ -8,7 +8,7 @@
         "GradeupItemID": 1674,
         "Cost": 10,
         "Exp": 10,
-        "Unk0": 1,
+        "Upgradable": 1,
         "Unk1": true,
         "CraftMaterialList": [
           {
@@ -25,7 +25,7 @@
         "GradeupItemID": 2697,
         "Cost": 10,
         "Exp": 10,
-        "Unk0": 1,
+        "Upgradable": 1,
         "Unk1": true,
         "CraftMaterialList": [
           {
@@ -42,7 +42,7 @@
         "GradeupItemID": 3720,
         "Cost": 10,
         "Exp": 10,
-        "Unk0": 1,
+        "Upgradable": 1,
         "Unk1": true,
         "CraftMaterialList": [
           {
@@ -59,7 +59,7 @@
         "GradeupItemID": 4743,
         "Cost": 10,
         "Exp": 10,
-        "Unk0": 0,
+        "Upgradable": 0,
         "Unk1": true,
         "CraftMaterialList": [
           {
@@ -81,7 +81,7 @@
         "GradeupItemID": 1685,
         "Cost": 140,
         "Exp": 10,
-        "Unk0": 1,
+        "Upgradable": 1,
         "Unk1": true,
         "CraftMaterialList": [
           {
@@ -98,7 +98,7 @@
         "GradeupItemID": 2698,
         "Cost": 140,
         "Exp": 10,
-        "Unk0": 1,
+        "Upgradable": 1,
         "Unk1": true,
         "CraftMaterialList": [
           {
@@ -115,7 +115,7 @@
         "GradeupItemID": 3721,
         "Cost": 140,
         "Exp": 10,
-        "Unk0": 1,
+        "Upgradable": 1,
         "Unk1": true,
         "CraftMaterialList": [
           {
@@ -132,7 +132,7 @@
         "GradeupItemID": 4744,
         "Cost": 140,
         "Exp": 10,
-        "Unk0": 0,
+        "Upgradable": 0,
         "Unk1": true,
         "CraftMaterialList": [
           {
@@ -149,7 +149,7 @@
         "GradeupItemID": 1676,
         "Cost": 200,
         "Exp": 10,
-        "Unk0": 0,
+        "Upgradable": 0,
         "Unk1": true,
         "CraftMaterialList": [
           {
