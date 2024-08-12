@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SJobChangePawnJobReq> packet)
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            jobManager.SetJob(client, pawn, packet.Structure.JobId);
+            jobManager.SetJob(client, pawn, packet.Structure.JobId, DeferredOperations);
         }
     }
 }
