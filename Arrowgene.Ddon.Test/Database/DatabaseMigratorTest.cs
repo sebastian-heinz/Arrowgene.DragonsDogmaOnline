@@ -198,6 +198,7 @@ namespace Arrowgene.Ddon.Test.Database
         public int DeleteContact(uint requestingCharacterId, uint requestedCharacterId) { return 1; }
         public int DeleteContactById(uint id) { return 1; }
         public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot) { return true; }
+        public bool DeleteEquipItem(DbConnection conn, uint commonId, JobId job, EquipType equipType, byte equipSlot) { return true; }
         public bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo) { return true; }
         public bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob) { return true; }
         public bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo) { return true; }
@@ -259,6 +260,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut) { return true; }
         public bool ReplaceCommunicationShortcut(DbConnection conn, uint characterId, CDataCommunicationShortCut communicationShortcut) { return true; }
         public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
+        public bool ReplaceEquipItem(DbConnection conn, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
         public bool ReplaceEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo) { return true; }
         public bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities) { return true; }
         public bool ReplaceEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability) { return true; }

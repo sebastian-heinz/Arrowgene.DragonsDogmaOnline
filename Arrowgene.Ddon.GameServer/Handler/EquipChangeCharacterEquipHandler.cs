@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -27,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CharacterEquipList = packet.Structure.ChangeCharacterEquipList
                     // TODO: Unk0
                 });
-            });
+            }, DeferredOperations);
         }
     }
 

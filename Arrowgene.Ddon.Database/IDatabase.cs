@@ -140,8 +140,10 @@ namespace Arrowgene.Ddon.Database
         // Equip
         bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool ReplaceEquipItem(DbConnection conn,uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot);
+        bool DeleteEquipItem(DbConnection conn, uint commonId, JobId job, EquipType equipType, byte equipSlot);
         List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId);
 
         // Job Items

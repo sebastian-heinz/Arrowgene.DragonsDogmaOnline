@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CharacterEquipList = packet.Structure.ChangeCharacterEquipList
                     // TODO: Unk0
                 });
-            });
+            }, DeferredOperations);
         }
     }
 }

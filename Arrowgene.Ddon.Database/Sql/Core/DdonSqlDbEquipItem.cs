@@ -55,13 +55,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ReplaceEquipItem(connection, commonId, job, equipType, equipSlot, itemUId);
         }
         
-        public bool ReplaceEquipItem(TCon conn, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
+        public bool ReplaceEquipItem(DbConnection conn, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
             Logger.Debug("Inserting equip item.");
-            if (!InsertIfNotExistsEquipItem(conn, commonId, job, equipType, equipSlot, itemUId))
+            if (!InsertIfNotExistsEquipItem((TCon)conn, commonId, job, equipType, equipSlot, itemUId))
             {
                 Logger.Debug("Equip item already exists, replacing.");
-                return UpdateEquipItem(conn, commonId, job, equipType, equipSlot, itemUId);
+                return UpdateEquipItem((TCon)conn, commonId, job, equipType, equipSlot, itemUId);
             }
             return true;
         }
@@ -85,6 +85,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(SqlDeleteEquipItem, command =>
             {
                 AddParameter(command, commonId, job, equipType, equipSlot);
+            }) == 1;
+        }
+
+        public bool DeleteEquipItem(DbConnection connection, uint commonId, JobId job, EquipType equipType, byte equipSlot)
+        {
+            return ExecuteNonQuery(connection, SqlDeleteEquipItem, command =>
+            {
+                AddParameter((TCom)command, commonId, job, equipType, equipSlot);
             }) == 1;
         }
 
