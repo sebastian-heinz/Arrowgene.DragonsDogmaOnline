@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SJobChangeJobReq> packet)
         {
-            jobManager.SetJob(client, client.Character, packet.Structure.JobId, DeferredOperations);
+            jobManager.SetJob(client, client.Character, packet.Structure.JobId);
         }
     }
 }

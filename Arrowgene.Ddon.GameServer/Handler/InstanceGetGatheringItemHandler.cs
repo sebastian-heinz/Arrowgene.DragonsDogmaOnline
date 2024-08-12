@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (CDataGatheringItemGetRequest gatheringItemRequest in req.Structure.GatheringItemGetRequestList)
             {
                 InstancedGatheringItem gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)[(int) gatheringItemRequest.SlotNo];
-                this._itemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, DeferredOperations);
+                this._itemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num);
             }
 
             client.Send(ntc);

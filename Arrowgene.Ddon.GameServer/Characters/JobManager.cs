@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public void SetJob(GameClient client, CharacterCommon common, JobId jobId, List<DeferredOperation>? deferredOperations = null)
+        public void SetJob(GameClient client, CharacterCommon common, JobId jobId)
         {
             // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
             // (or give a lvl 1 weapon for free?)
@@ -32,8 +32,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             common.Job = jobId;
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance, deferredOperations));
-            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual, deferredOperations));
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance));
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual));
             client.Send(updateCharacterItemNtc);
 
             CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
@@ -151,7 +151,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId, EquipType equipType, List<DeferredOperation>? deferredOperations = null)
+        private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId, EquipType equipType)
         {
             // TODO: Run in a transaction
 
@@ -170,7 +170,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Attempt moving into other storages if the storage box is full
                     try
                     {
-                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, deferredOperations);
+                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
                         itemUpdateResultList.AddRange(moveResult);
                     }
                     catch (ResponseErrorException ex)
@@ -197,7 +197,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         try
                         {
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.GetStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot, deferredOperations);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.GetStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot);
                             itemUpdateResultList.AddRange(moveResult);
                             break;
                         }
@@ -227,7 +227,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         try
                         {
                             // TODO: Attempt moving into other storages if the storage box is full
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, deferredOperations);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
                             itemUpdateResultList.AddRange(moveResult);
                         }
                         catch(ResponseErrorException ex)

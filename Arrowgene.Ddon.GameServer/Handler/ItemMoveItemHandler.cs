@@ -28,8 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         itemFromTo.ItemUId,
                         itemFromTo.Num,
                         client.Character.Storage.GetStorage(itemFromTo.DstStorageType),
-                        itemFromTo.SlotNo,
-                        DeferredOperations
+                        itemFromTo.SlotNo
                         )
                     );
             }

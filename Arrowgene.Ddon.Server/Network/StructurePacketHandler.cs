@@ -16,21 +16,19 @@ namespace Arrowgene.Ddon.Server.Network
             Database = server.Database;
             // Create a instance to obtain PacketId information.
             Id = new TReqStruct().Id;
-            DeferredOperations = new List<DeferredOperation>();
         }
 
         public PacketId Id { get; }
         protected DdonServer<TClient> Server { get; }
         protected IDatabase Database { get; }
-        protected List<DeferredOperation> DeferredOperations { get; }
 
         public abstract void Handle(TClient client, StructurePacket<TReqStruct> packet);
 
         public void Handle(TClient client, IPacket packet)
         {
-            DeferredOperations.Clear();
+            Server.Database.ClearDeferred();
             Handle(client, new StructurePacket<TReqStruct>(packet));
-            Server.Database.ExecuteDeferred(DeferredOperations);
+            Server.Database.ExecuteDeferred();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -47,8 +48,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut)
+        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    this,
+                    (conn) => ReplaceCommunicationShortcut(conn, characterId, communicationShortcut)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return ReplaceCommunicationShortcut(connection, characterId, communicationShortcut);
         }      

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 
@@ -49,8 +50,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
+        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, bool deferred=false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    this,
+                    (conn) => ReplaceEquipItem(conn, commonId, job, equipType, equipSlot, itemUId)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return ReplaceEquipItem(connection, commonId, job, equipType, equipSlot, itemUId);
         }
@@ -80,8 +90,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot)
+        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    this,
+                    (conn) => DeleteEquipItem(conn, commonId, job, equipType, equipSlot)
+                ));
+                return true;
+            }
+
             return ExecuteNonQuery(SqlDeleteEquipItem, command =>
             {
                 AddParameter(command, commonId, job, equipType, equipSlot);

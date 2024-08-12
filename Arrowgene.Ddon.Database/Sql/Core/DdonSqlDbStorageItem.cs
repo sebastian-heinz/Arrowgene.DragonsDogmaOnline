@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 
@@ -97,8 +98,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
+        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    this,
+                    (conn) => InsertStorageItem(conn, characterId, storageType, slotNo, itemNum, item)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return InsertStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
         }
@@ -114,14 +124,32 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return true;
         }
 
-        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
+        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    this,
+                    (conn) => ReplaceStorageItem(conn, characterId, storageType, slotNo, itemNum, item)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return ReplaceStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
         }
 
-        public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo)
+        public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    this,
+                    (conn) => DeleteStorageItem(conn, characterId, storageType, slotNo)
+                ));
+                return true;
+            }
+
             return ExecuteNonQuery(SqlDeleteStorageItem, command =>
             {
                 AddParameter(command, "character_id", characterId);
@@ -140,8 +168,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
+        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    this,
+                    (conn) => UpdateStorageItem(conn, characterId, storageType, slotNo, itemNum, item)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return UpdateStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
         }        

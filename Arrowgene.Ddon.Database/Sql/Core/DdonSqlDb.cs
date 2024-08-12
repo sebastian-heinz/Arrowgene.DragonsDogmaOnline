@@ -23,8 +23,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom, TReader>));
 
+        private readonly List<DeferredOperation> DeferredOperations;
+
         public DdonSqlDb()
         {
+            DeferredOperations = new List<DeferredOperation>();
         }
 
         public static string BuildQueryField(params string[][] fieldLists)
@@ -267,20 +270,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return base.GetBytes((TReader)reader, column, size);
         }
 
-        public bool ExecuteDeferred(List<DeferredOperation> actions)
+        public bool ExecuteDeferred()
         {
-            if (!actions.Any()) return true;
+            if (!DeferredOperations.Any()) return true;
             bool ret = true;
 
             ExecuteInTransaction(conn =>
             {
-                foreach (DeferredOperation action in actions)
+                foreach (DeferredOperation action in DeferredOperations)
                 {
                     ret = action.Handle(conn);
                 }
             });
 
+            ClearDeferred();
+
             return ret;
         }
+        public void ClearDeferred()
+        {
+            DeferredOperations.Clear();
+        }
+
     }
 }

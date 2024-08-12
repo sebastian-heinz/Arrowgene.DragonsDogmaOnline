@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Server.Network
         public sealed override void Handle(TClient client, StructurePacket<TReqStruct> request)
         {
             TResStruct response;
-            DeferredOperations.Clear();
+            Server.Database.ClearDeferred();
             try
             {
                 response = Handle(client, request.Structure);
@@ -30,17 +30,17 @@ namespace Arrowgene.Ddon.Server.Network
                 response = new TResStruct();
                 response.Error = (uint) ex.ErrorCode;
                 client.Send(response);
-                DeferredOperations.Clear();
+                Server.Database.ClearDeferred();
             }
             catch (Exception)
             {
                 response = new TResStruct();
                 response.Error = (uint) ErrorCode.ERROR_CODE_FAIL;
-                DeferredOperations.Clear();
+                Server.Database.ClearDeferred();
                 throw;
             }    
             client.Send(response);
-            Server.Database.ExecuteDeferred(DeferredOperations);
+            Server.Database.ExecuteDeferred();
         }
 
     }

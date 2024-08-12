@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CSetShortcutRes response = new S2CSetShortcutRes();
             foreach(CDataShortCut shortcut in request.Structure.ShortCutList)
             {
-                DeferredOperations.Add(new GenericDeferred(Database, (db, conn) => db.ReplaceShortcut(conn, client.Character.CharacterId, shortcut)));
+                Server.Database.ReplaceShortcut(client.Character.CharacterId, shortcut, true);
             }
             client.Character.ShortCutList = request.Structure.ShortCutList;
             client.Send(response);

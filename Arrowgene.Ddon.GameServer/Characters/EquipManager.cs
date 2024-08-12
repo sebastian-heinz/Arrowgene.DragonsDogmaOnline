@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, Action sendResponse, List<DeferredOperation>? deferredOperations = null)
+        public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, Action sendResponse)
         {
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
@@ -111,19 +111,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Remove from equipment template
                     characterToEquipTo.EquipmentTemplate.SetEquipItem(null, characterToEquipTo.Job, equipType, equipSlot);
 
-                    if (deferredOperations is null)
-                    {
-                        server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot);
-                    }
-                    else
-                    {
-                        deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.DeleteEquipItem(conn, characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot)));
-                    }
+                    server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, true);
 
                     // Update storage
                     // TODO: Move to the other storage types if the first one is full
                     Storage destinationStorage = client.Character.Storage.GetStorage(storageTypes[0]);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, characterToEquipTo.Equipment.Storage, equipItemStorageSlot, 1, destinationStorage, 0, deferredOperations));
+                    updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, characterToEquipTo.Equipment.Storage, equipItemStorageSlot, 1, destinationStorage, 0));
                 }
                 else
                 {
@@ -132,19 +125,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Set in equipment template
                     //TODO: Move this lookup to memory instead of the DB if possible.
                     characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId), characterToEquipTo.Job, equipType, equipSlot);
-
-                    if (deferredOperations is null)
-                    {
-                        server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId);
-                    }
-                    else
-                    {
-                        deferredOperations.Add(new GenericDeferred(server.Database, (db, conn) => db.ReplaceEquipItem(conn, characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId)));
-                    }
-                        // Update storage, swapping if needed
+                    server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId, true);
+                    
+                    // Update storage, swapping if needed
                     var result = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, itemUId);
                     Storage sourceStorage = client.Character.Storage.GetStorage(result.Item1);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot, deferredOperations));
+                    updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
                 }
             }
 

@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -65,8 +66,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return true;
         }
 
-        public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint)
+        public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    this,
+                    (conn) => UpdateWalletPoint(conn, characterId, updatedWalletPoint)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return UpdateWalletPoint(connection, characterId, updatedWalletPoint);
         }

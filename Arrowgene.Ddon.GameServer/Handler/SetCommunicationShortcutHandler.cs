@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CSetCommunicationShortcutRes response = new S2CSetCommunicationShortcutRes();
             foreach(CDataCommunicationShortCut shortcut in request.Structure.CommunicationShortCutList)
             {
-                DeferredOperations.Add(new GenericDeferred(Database, (db, conn) => db.ReplaceCommunicationShortcut(conn, client.Character.CharacterId, shortcut)));
+                Server.Database.ReplaceCommunicationShortcut(client.Character.CharacterId, shortcut, true);
             }
             client.Character.CommunicationShortCutList = request.Structure.CommunicationShortCutList;
             client.Send(response);
