@@ -77,8 +77,8 @@
     "RecipeList": [
       {
         "RecipeID": 5,
-        "ItemID": 63,
-        "GradeupItemID": 1675,
+        "ItemID": 73,
+        "GradeupItemID": 1685,
         "Cost": 140,
         "Exp": 10,
         "Unk0": 1,

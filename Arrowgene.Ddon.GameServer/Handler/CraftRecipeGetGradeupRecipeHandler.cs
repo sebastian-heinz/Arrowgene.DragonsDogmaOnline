@@ -23,13 +23,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .SelectMany(recipes => recipes.RecipeList)
                 .ToList();
 
-            Logger.Debug($"Fetched {categoryRecipes.Count} recipes for Category {request.Category}");
+            Logger.Debug($"Fetched {categoryRecipes.Count} recipes for Category {request.Category}, Num is {request.Num}, offset is {request.Offset}");
 
             List<CDataCommonU32> itemList = request.ItemList;
 
             var response = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
-                Category = request.Category,
+                Category = request.Category, 
                 RecipeList = categoryRecipes.Skip((int)request.Offset).Take(request.Num).ToList(),
                 UnknownItemList = itemList,  
                 IsEnd = (request.Offset + request.Num) >= categoryRecipes.Count
