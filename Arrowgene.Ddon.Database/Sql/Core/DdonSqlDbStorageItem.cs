@@ -103,7 +103,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
                     (conn) => InsertStorageItem(conn, characterId, storageType, slotNo, itemNum, item)
                 ));
                 return true;
@@ -129,8 +128,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
-                    (conn) => ReplaceStorageItem(conn, characterId, storageType, slotNo, itemNum, item)
+                    (connection) => ReplaceStorageItem(connection, characterId, storageType, slotNo, itemNum, item)
                 ));
                 return true;
             }
@@ -144,8 +142,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
-                    (conn) => DeleteStorageItem(conn, characterId, storageType, slotNo)
+                    (connection) => DeleteStorageItem(connection, characterId, storageType, slotNo)
                 ));
                 return true;
             }
@@ -173,8 +170,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
-                    (conn) => UpdateStorageItem(conn, characterId, storageType, slotNo, itemNum, item)
+                    (connection) => UpdateStorageItem(connection, characterId, storageType, slotNo, itemNum, item)
                 ));
                 return true;
             }

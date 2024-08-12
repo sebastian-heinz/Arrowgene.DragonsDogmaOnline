@@ -71,8 +71,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
-                    (conn) => UpdateWalletPoint(conn, characterId, updatedWalletPoint)
+                    (connection) => UpdateWalletPoint(connection, characterId, updatedWalletPoint)
                 ));
                 return true;
             }

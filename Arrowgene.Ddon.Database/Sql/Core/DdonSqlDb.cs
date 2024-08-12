@@ -1,15 +1,13 @@
 using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Text;
 using System.Linq;
+using System.Text;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -279,7 +277,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 foreach (DeferredOperation action in DeferredOperations)
                 {
-                    ret = action.Handle(conn);
+                    ret &= action.Handle(conn);
+                    if (!ret) throw new Exception("Deferred operation failed, rolling back.");
                 }
             });
 

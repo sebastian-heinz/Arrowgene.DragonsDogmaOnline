@@ -55,8 +55,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
-                    (conn) => ReplaceEquipItem(conn, commonId, job, equipType, equipSlot, itemUId)
+                    (connection) => ReplaceEquipItem(connection, commonId, job, equipType, equipSlot, itemUId)
                 ));
                 return true;
             }
@@ -95,8 +94,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
-                    (conn) => DeleteEquipItem(conn, commonId, job, equipType, equipSlot)
+                    (connection) => DeleteEquipItem(connection, commonId, job, equipType, equipSlot)
                 ));
                 return true;
             }

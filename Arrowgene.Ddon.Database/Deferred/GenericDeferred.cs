@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Database.Deferred
 {
     public class GenericDeferred : DeferredOperation
     {
-        public GenericDeferred(IDatabase db, Func<DbConnection, bool> action) : base(db)
+        public GenericDeferred(Func<DbConnection, bool> action) : base()
         {
             Action = action;
         }

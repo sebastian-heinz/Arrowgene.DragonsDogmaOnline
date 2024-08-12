@@ -53,8 +53,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
-                    (conn) => ReplaceShortcut(conn, characterId, shortcut)
+                    (connection) => ReplaceShortcut(connection, characterId, shortcut)
                 ));
                 return true;
             }

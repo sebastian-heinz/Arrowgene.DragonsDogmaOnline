@@ -35,8 +35,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (deferred)
             {
                 DeferredOperations.Add(new GenericDeferred(
-                    this,
-                    (conn) => InsertCrest(conn, characterCommonId, itemUId, slot, crestId, crestAmount)
+                    (connection) => InsertCrest(connection, characterCommonId, itemUId, slot, crestId, crestAmount)
                 ));
                 return true;
             }
