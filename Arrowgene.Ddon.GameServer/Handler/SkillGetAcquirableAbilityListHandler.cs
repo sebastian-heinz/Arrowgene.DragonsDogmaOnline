@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -9,6 +6,8 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -21697,6 +21696,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }}
         };
+
+        public static CDataAbilityParam GetAbilityFromId(uint abilityId)
+        {
+            var abilities = AllAbilities.Concat(AllSecretAbilities);
+            return abilities.Where(x => x.AbilityNo == abilityId).FirstOrDefault();
+        }
 
         private IDatabase _Database;
 

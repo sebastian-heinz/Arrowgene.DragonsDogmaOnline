@@ -483,6 +483,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new SkillSetPawnAbilityHandler(this));
             AddHandler(new SkillSetPawnSkillHandler(this));
             AddHandler(new SkillSetSkillHandler(this));
+            AddHandler(new SkillRegisterPresetAbilityHandler(this));
+            AddHandler(new SkillSetPresetAbilityNameHandler(this));
+            AddHandler(new SkillSetPresetAbilityListHandler(this));
+
             AddHandler(new SetShortcutHandler(this));
             AddHandler(new ShopBuyShopGoodsHandler(this));
             AddHandler(new ShopGetShopGoodsListHandler(this));

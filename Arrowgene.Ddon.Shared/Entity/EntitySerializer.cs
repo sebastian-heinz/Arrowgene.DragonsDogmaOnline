@@ -486,6 +486,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
+
             Create(new C2SSkillChangeExSkillReq.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
             Create(new C2SSkillGetAcquirableAbilityListReq.Serializer());
@@ -516,6 +517,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSkillSetPawnAbilityReq.Serializer());
             Create(new C2SSkillSetPawnSkillReq.Serializer());
             Create(new C2SSkillSetSkillReq.Serializer());
+            Create(new C2SSkillRegisterPresetAbilityReq.Serializer());
+            Create(new C2SSkillSetPresetAbilityNameReq.Serializer());
+            Create(new C2SSkillSetPresetAbilityListReq.Serializer());
+
             Create(new C2SSetShortcutReq.Serializer());
             Create(new C2SShopBuyShopGoodsReq.Serializer());
             Create(new C2SShopGetShopGoodsListReq.Serializer());
@@ -853,6 +858,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
             Create(new S2CServerGetServerListRes.Serializer());
+
             Create(new S2CSkillAbilitySetNtc.Serializer());
             Create(new S2CSkillChangeExSkillRes.Serializer());
             Create(new S2CSkillCustomSkillSetNtc.Serializer());
@@ -890,6 +896,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillSetPawnAbilityRes.Serializer());
             Create(new S2CSkillSetPawnSkillRes.Serializer());
             Create(new S2CSkillSetSkillRes.Serializer());
+            Create(new S2CSkillSetPresetAbilityNtc.Serializer());
+            Create(new S2CSkillSetPresetPawnAbilityNtc.Serializer());
+            Create(new S2CSkillGetCharacterSkillInfoNtc.Serializer());
+            Create(new S2CSkillRegisterPresetAbilityRes.Serializer());
+            Create(new S2CSkillSetPresetAbilityNameRes.Serializer());
+            Create(new S2CSkillSetPresetAbilityListRes.Serializer());
+
             Create(new S2CSetCommunicationShortcutRes.Serializer());
             Create(new S2CSetShortcutRes.Serializer());
             Create(new S2CShopBuyShopGoodsRes.Serializer());

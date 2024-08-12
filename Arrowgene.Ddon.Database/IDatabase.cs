@@ -160,6 +160,8 @@ namespace Arrowgene.Ddon.Database
         bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, JobId equipptedToJob, byte slotNo, Ability ability);
         bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo);
         bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob);
+        bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset);
+        bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset);
 
         bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility);
         List<SecretAbility> SelectAllUnlockedSecretAbilities(uint commonId);
