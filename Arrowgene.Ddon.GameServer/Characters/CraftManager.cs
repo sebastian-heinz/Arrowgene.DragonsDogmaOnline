@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private const int GreatSuccessOddsDefault = 10;
         private const uint CraftSkillLevelMax = 70;
-        private const uint PawnCraftRankMaxLimit = 71;
+        private const uint PawnCraftRankMaxLimit = 70;
         private const double CraftPawnsMax = 4;
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public uint CalculateRecipeProductionSpeed(uint recipeTime, List<uint> productionSpeedLevels)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
-            double productionSpeedFactor = 100 - GetCraftingTimeReductionRate(productionSpeedLevels) / 100;
+            double productionSpeedFactor = (100 - GetCraftingTimeReductionRate(productionSpeedLevels)) / 100;
             return (uint)Math.Clamp(recipeTime * productionSpeedFactor, 0, recipeTime);
         }
 
@@ -294,7 +294,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // TODO: Figure out actual formula + lower/upper bounds client uses
             // Based on season 1 evidence:
             //  1x lvl 2, 3x lvl 1 == 16% maximum
-            double costPerformanceFactor = 100 - GetCraftCostReductionRate(costPerformanceLevels) / 100;
+            double costPerformanceFactor = (100 - GetCraftCostReductionRate(costPerformanceLevels)) / 100;
             return (uint)Math.Clamp(recipeCost * costPerformanceFactor, 0, recipeCost);
         }
 
