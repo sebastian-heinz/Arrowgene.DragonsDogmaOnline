@@ -12,11 +12,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
         public uint RecipeID { get; set; }
         public uint ItemID { get; set; }
-        public uint Unk0 { get; set; } // This appears to be "NextGrade", but that might be stored in the DB? 
+        public uint Unk0 { get; set; } // this might be IR? 
         public uint GradeupItemID { get; set; }
         public uint Cost { get; set; }
         public uint Exp { get; set; }
-        public bool Unk1 { get; set; } // This appears to determine if its the max version or not, This may also be stored in the DB though.
+        public bool Unk1 { get; set; }
         public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; }
 
         public class Serializer : EntitySerializer<CDataMDataCraftGradeupRecipe>

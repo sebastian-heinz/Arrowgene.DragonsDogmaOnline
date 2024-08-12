@@ -18,24 +18,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftRecipeGetCraftGradeupRecipeRes Handle(GameClient client, C2SCraftRecipeGetCraftGradeupRecipeReq request)
         {
-            List<CDataMDataCraftGradeupRecipe> allRecipesInCategory = Server.AssetRepository.CraftingGradeUpRecipesAsset
-                .Where(allRecipesInCategory => allRecipesInCategory.Category == request.Category)
-                .Select(allRecipesInCategory => allRecipesInCategory.RecipeList)
-                .SingleOrDefault( new List<CDataMDataCraftGradeupRecipe>());
+            var categoryRecipes = Server.AssetRepository.CraftingGradeUpRecipesAsset
+                .Where(recipes => recipes.Category == request.Category)
+                .SelectMany(recipes => recipes.RecipeList)
+                .ToList();
 
-            List<CDataCommonU32> ItemList = request.ItemList;
+            Logger.Debug($"Fetched {categoryRecipes.Count} recipes for Category {request.Category}");
+
+            List<CDataCommonU32> itemList = request.ItemList;
 
             var response = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
                 Category = request.Category,
-                RecipeList = allRecipesInCategory
-                    .Skip((int)request.Offset)
-                    .Take((int)request.Num)
-                    .ToList(),
-                UnknownItemList = ItemList,
-                IsEnd = (request.Offset + request.Num) >= allRecipesInCategory.Count
+                RecipeList = categoryRecipes.Skip((int)request.Offset).Take(request.Num).ToList(),
+                UnknownItemList = itemList,  
+                IsEnd = (request.Offset + request.Num) >= categoryRecipes.Count
             };
 
+            Logger.Debug($"Sending adjusted response for Category {request.Category}: {response.RecipeList.Count} recipes");
             return response;
         }
     }

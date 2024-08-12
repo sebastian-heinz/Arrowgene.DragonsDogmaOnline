@@ -17,7 +17,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public C2SCraftRecipeGetCraftGradeupRecipeReq()
         {
             ItemList = new List<CDataCommonU32>();
-            Category = 0;
         }
 
         public class Serializer : PacketEntitySerializer<C2SCraftRecipeGetCraftGradeupRecipeReq>
