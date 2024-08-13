@@ -42,6 +42,14 @@ public class PartyManager
 
     public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party)
     {
+        if (_invites.TryRemove(invitee, out PartyInvitation existingInvite))
+        {
+            if (_inviteTimers.TryRemove(invitee, out Timer existingTimer))
+            {
+                existingTimer.Dispose();
+            }
+        }
+
         PartyInvitation invitation = new PartyInvitation();
         invitation.Invitee = invitee;
         invitation.Host = host;
