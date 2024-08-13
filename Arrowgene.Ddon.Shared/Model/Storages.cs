@@ -291,9 +291,9 @@ namespace Arrowgene.Ddon.Shared.Model
         KeyItems = 0x5,
         StorageBoxNormal = 0x6,
         StorageBoxExpansion = 0x7,
-        StorageChest = 0x8, // The one in the Arisen Room
-        Unk9 = 0x9,
-        Unk10 = 0xA,
+        StorageChestPage1 = 0x8, // The one in the Arisen Room
+        StorageChestPage2 = 0x9,
+        StorageChestPage3 = 0xA,
         Unk11 = 0xB,
         Unk12 = 0xC,
         Unk13 = 0xD,
