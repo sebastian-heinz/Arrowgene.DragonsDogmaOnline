@@ -5,7 +5,7 @@ using Arrowgene.Logging;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using System.IO;
+using System.Threading;
 
 namespace Arrowgene.Ddon.GameServer.Party;
 
@@ -23,6 +23,7 @@ public class PartyManager
     private readonly ConcurrentStack<uint> _idPool;
     private readonly ConcurrentDictionary<uint, PartyGroup> _parties;
     private readonly ConcurrentDictionary<GameClient, PartyInvitation> _invites;
+    private readonly ConcurrentDictionary<GameClient, Timer> _inviteTimers;
 
     public PartyManager(AssetRepository assetRepository)
     {
@@ -36,6 +37,7 @@ public class PartyManager
 
         _parties = new ConcurrentDictionary<uint, PartyGroup>();
         _invites = new ConcurrentDictionary<GameClient, PartyInvitation>();
+        _inviteTimers = new ConcurrentDictionary<GameClient, Timer>();  
     }
 
     public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party)
@@ -51,7 +53,29 @@ public class PartyManager
             return false;
         }
 
+        var timer = new Timer(RemoveExpiredInvite, invitee, InvitationTimeoutSec * 1000, Timeout.Infinite);
+        _inviteTimers.TryAdd(invitee, timer);
+
         return true;
+    }
+
+    private void RemoveExpiredInvite(object inviteeObj)
+    {
+        var invitee = inviteeObj as GameClient;
+
+        if (invitee == null)
+        {
+            Logger.Error("Failed to cast inviteeObj to GameClient in RemoveExpiredInvite.");
+            return;
+        }
+
+        _invites.TryRemove(invitee, out _);
+        if (_inviteTimers.TryRemove(invitee, out Timer timer))
+        {
+            timer.Dispose();
+        }
+
+        Logger.Info(invitee, "Invitation removed due to timeout.");
     }
 
     public PartyInvitation GetPartyInvitation(GameClient client)
