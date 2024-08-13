@@ -218,6 +218,12 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterEditUpdateCharacterEditParamExHandler(this));
 			AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
             AddHandler(new CharacterEditUpdatePawnEditParamExHandler(this));
+            AddHandler(new CharacterCharacterDeadHandler(this));
+            AddHandler(new CharacterCharacterDownCancelHandler(this));
+            AddHandler(new CharacterCharacterDownHandler(this));
+            AddHandler(new CharacterPawnDeadHandler(this));
+            AddHandler(new CharacterPawnDownCancelHandler(this));
+            AddHandler(new CharacterPawnDownHandler(this));
 
             AddHandler(new ClanClanBaseGetInfoHandler(this));
             AddHandler(new ClanClanConciergeGetListHandler(this));
@@ -243,6 +249,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ContextGetSetContextHandler(this));
             AddHandler(new ContextMasterThrowHandler(this));
             AddHandler(new ContextSetContextHandler(this));
+            AddHandler(new Context_35_5_16_Handler(this));
+
             AddHandler(new CraftGetCraftIRCollectionValueListHandler(this));
             AddHandler(new CraftGetCraftProgressListHandler(this));
             AddHandler(new CraftGetCraftSettingHandler(this));
@@ -281,6 +289,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EquipUpdateHidePawnHeadArmorHandler(this));
             AddHandler(new EquipUpdateHidePawnLanternHandler(this));
 
+            AddHandler(new EventStartHandler(this));
+            AddHandler(new EventEndHandler(this));
+
             AddHandler(new FriendGetFriendListHandler(this));
             AddHandler(new FriendApplyFriendListHandler(this));
             AddHandler(new FriendApproveFriendListHandler(this));
@@ -303,6 +314,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InnGetStayPriceHandler(this));
             AddHandler(new InnStayInnHandler(this));
             AddHandler(new InnStayPenaltyHealInn(this));
+            AddHandler(new InnHpRecoveryCompleteHandler(this));
 
             AddHandler(new InstanceEnemyGroupEntryHandler(this));
             AddHandler(new InstanceEnemyGroupLeaveHandler(this));
@@ -317,7 +329,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceSetOmInstantKeyValueHandler(this));
             AddHandler(new InstanceTreasurePointGetCategoryListHandler(this));
             AddHandler(new InstanceTreasurePointGetListHandler(this));
-
+            AddHandler(new InstanceCharacterEndBadStatusHandler(this));
+            AddHandler(new InstanceCharacterStartBadStatusHandler(this));
+            AddHandler(new InstancePlTouchOmHandler(this));
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
 
             AddHandler(new ItemConsumeStorageItemHandler(this));

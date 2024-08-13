@@ -320,6 +320,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCharacterPawnPointReviveReq.Serializer());
             Create(new C2SCharacterSetOnlineStatusReq.Serializer());
 
+            Create(new C2SCharacterCharacterDeadNtc.Serializer());
+            Create(new C2SCharacterCharacterDownNtc.Serializer());
+            Create(new C2SCharacterCharacterDownCancelNtc.Serializer());
+            Create(new C2SCharacterPawnDeadNtc.Serializer());
+            Create(new C2SCharacterPawnDownNtc.Serializer());
+            Create(new C2SCharacterPawnDownCancelNtc.Serializer());
+
             Create(new C2SClanClanBaseGetInfoReq.Serializer());
             Create(new C2SClanClanConciergeGetListReq.Serializer());
             Create(new C2SClanClanConciergeUpdateReq.Serializer());
@@ -334,6 +341,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SContextGetSetContextReq.Serializer());
             Create(new C2SContextMasterThrowReq.Serializer());
             Create(new C2SContextSetContextNtc.Serializer());
+            Create(new C2SContext_35_5_16_Ntc.Serializer());
+
             Create(new C2SCraftGetCraftIRCollectionValueListReq.Serializer());
             Create(new C2SCraftGetCraftProgressListReq.Serializer());
             Create(new C2SCraftGetCraftSettingReq.Serializer());
@@ -372,6 +381,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
 
+            Create(new C2SEventEndNtc.Serializer());
+            Create(new C2SEventStartNtc.Serializer());
+
             Create(new C2SGpGetGpReq.Serializer());
             Create(new C2SGpGetGpDetailReq.Serializer());
             Create(new C2SGpGetGpPeriodReq.Serializer());
@@ -397,6 +409,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstanceTreasurePointGetCategoryListReq.Serializer());
             Create(new C2SInstanceTreasurePointGetListReq.Serializer());
             Create(new C2SInstancePlTouchOmNtc.Serializer());
+            Create(new C2SInstanceCharacterEndBadStatusNtc.Serializer());
+            Create(new C2SInstanceCharacterStartBadStatusNtc.Serializer());
 
             Create(new C2SItemConsumeStorageItemReq.Serializer());
             Create(new C2SItemGetStorageItemListReq.Serializer());
