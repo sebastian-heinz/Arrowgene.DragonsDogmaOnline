@@ -343,6 +343,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemUseBagItemHandler(this));
             AddHandler(new ItemUseJobItemsHandler(this));
             AddHandler(new ItemGetValuableItemListHandler(this));
+            AddHandler(new ItemGetPostItemListHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));

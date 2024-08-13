@@ -30,14 +30,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
         };
         public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { 
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
-            StorageType.StorageChestPage1, StorageType.StorageChestPage2, StorageType.StorageChestPage3 
+            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
         };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
         public static readonly List<StorageType> EquipmentStorages = new List<StorageType> { 
             StorageType.CharacterEquipment, StorageType.PawnEquipment, 
             StorageType.ItemBagEquipment, 
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
-            StorageType.StorageChestPage1, StorageType.StorageChestPage2, StorageType.StorageChestPage3 
+            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
         };
 
         private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 

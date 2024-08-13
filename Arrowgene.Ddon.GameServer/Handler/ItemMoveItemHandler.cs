@@ -4,7 +4,6 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -21,8 +20,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.UpdateType = DetermineUpdateType(packet.Structure.SourceGameStorageType);
             foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
             {
-                Logger.Info($"Moving {itemFromTo.ItemUId} from {itemFromTo.SrcStorageType} to {itemFromTo.DstStorageType}");
-
                 ntc.UpdateItemList.AddRange(
                     Server.ItemManager.MoveItem(
                         Server,
@@ -36,7 +33,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     );
             }
 
-            Logger.Info($"Sending ItemUpdateCharacterItemNtc {ntc.UpdateType}.");
             client.Send(ntc);
 
             client.Send(new S2CItemMoveItemRes());
@@ -46,7 +42,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         // TODO: Cleanup
         private ItemNoticeType DetermineUpdateType(byte sourceGameStorageType)
         {
-            Logger.Info($"Source storage type {sourceGameStorageType}");
             switch ( sourceGameStorageType )
             {
                 case 1:
@@ -57,6 +52,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 case 9:
                 case 10:
                     return ItemNoticeType.BaggageItems; //Found by binary search, may not be the "correct" one, but it does work.
+                case 13:
+                    return ItemNoticeType.LoadPostItems;
                 case 19:
                     return ItemNoticeType.StoreStorage_items;
                 case 20:

@@ -291,12 +291,12 @@ namespace Arrowgene.Ddon.Shared.Model
         KeyItems = 0x5,
         StorageBoxNormal = 0x6,
         StorageBoxExpansion = 0x7,
-        StorageChestPage1 = 0x8, // The one in the Arisen Room
-        StorageChestPage2 = 0x9,
-        StorageChestPage3 = 0xA,
+        StorageChestDrawer1 = 0x8, // The one in the Arisen Room
+        StorageChestDrawer2 = 0x9,
+        StorageChestDrawer3 = 0xA,
         Unk11 = 0xB,
         Unk12 = 0xC,
-        Unk13 = 0xD,
+        ItemPost = 0xD,
         CharacterEquipment = 0xE,
         PawnEquipment = 0xF,
         Unk16 = 0x10,
