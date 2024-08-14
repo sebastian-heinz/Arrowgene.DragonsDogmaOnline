@@ -23,8 +23,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Select(recipes => recipes.RecipeList)
                 .SingleOrDefault(new List<CDataMDataCraftRecipe>());
 
-            //TODO: Mimic the gradeuprecipehandler so that it works with categories too.
-
             client.Send(new S2CCraftRecipeGetCraftRecipeRes()
             {
                 Category = packet.Structure.Category,

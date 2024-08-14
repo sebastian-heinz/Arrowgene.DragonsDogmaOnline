@@ -35,13 +35,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .SelectMany(recipes => recipes.RecipeList)
                 .First(recipe => recipe.ItemID == equipItem.ItemId);
 
-            uint gearupgradeID = recipeData.GradeupItemID;
+            uint gearUpgradeID = recipeData.GradeupItemID;
             uint goldRequired = recipeData.Cost;
-            uint CanUpgrade = recipeData.Upgradable;
-            uint PawnExp = recipeData.Exp;
+            uint canUpgrade = recipeData.Upgradable;
+            uint pawnExp = recipeData.Exp;
             bool canContinue = true;
-            bool IsGreatSuccess = Random.Shared.Next(5) == 0;
-            bool DoUpgrade = false;
+            bool isGreatSuccess = Random.Shared.Next(5) == 0;
+            bool doUpgrade = false;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
 
             CDataCurrentEquipInfo CurrentEquipInfo = new()
@@ -50,10 +50,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             // More dummy data, looks like its DragonAugment related.
-            CDataCraftStartEquipGradeUpUnk0Unk0 DragonAugmentData = new();
+            CDataCraftStartEquipGradeUpUnk0Unk0 dragonAugmentData = new();
             CDataCraftStartEquipGradeUpUnk0 dummydata = new() // TODO: Figure this out
             {
-                Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { DragonAugmentData },
+                Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { dragonAugmentData },
                 DragonAugment = false,    // makes the DragonAugment slot popup appear if set to true.
             };
 
@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                 }
             }
-            uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
+            uint addEquipPoint = (uint)((isGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
             currentTotalEquipPoint += addEquipPoint;
 
             // Subtract less Gold if support pawn is used and add slightly more points
@@ -89,7 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             byte currentStars = (byte)itemInfo.Quality;
             uint remainingPoints = currentTotalEquipPoint;
-            List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>();
+            List<CDataCommonU32> gradeupList = new List<CDataCommonU32>();
 
             // Define the required points for the current star level
             int requiredPoints = currentStars switch
@@ -104,8 +104,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (currentTotalEquipPoint >= requiredPoints)
             {
-                DoUpgrade = true;
-                List<CDataMDataCraftGradeupRecipe> ItemIDsList = FindRecipeFamily(recipeData);
+                doUpgrade = true;
+                List<CDataMDataCraftGradeupRecipe> itemIDsList = FindRecipeFamily(recipeData);
                 remainingPoints = currentTotalEquipPoint;
                 int thresholdsExceeded = 0;
 
@@ -125,19 +125,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                gradeuplist = ItemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
-                CanUpgrade = ItemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
-                gearupgradeID = gradeuplist.Count > 0 ? gradeuplist.Last().Value : 0;
+                gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
+                canUpgrade = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
+                gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
 
             }
-            if (CanUpgrade == 0) // This should handle a "True" state because I pull it from the Recipe directly.
+            if (canUpgrade == 0) // This should handle a "True" state because I pull it from the Recipe directly.
             {
                 canContinue = false;
             }
 
-            if (DoUpgrade)
+            if (doUpgrade)
             {
-                equipItem.ItemId = gearupgradeID;
+                equipItem.ItemId = gearUpgradeID;
                 if (canContinue)
                 {
                     currentTotalEquipPoint = remainingPoints;
@@ -149,14 +149,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equipItem.EquipPoints = currentTotalEquipPoint;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
-                res = CreateUpgradeResponse(equipItemUID, gearupgradeID, gradeuplist, addEquipPoint, currentTotalEquipPoint, CanUpgrade, goldRequired, IsGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
+                res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, canUpgrade, goldRequired, isGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
                 equipItem.ItemId = equipItem.ItemId;
                 equipItem.EquipPoints = currentTotalEquipPoint;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-                res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, IsGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
+                res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, isGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
 
             
@@ -164,9 +164,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
             {
                 PawnId = request.CraftMainPawnID,
-                AddExp = PawnExp,
+                AddExp = pawnExp,
                 ExtraBonusExp = 0,
-                TotalExp = PawnExp,
+                TotalExp = pawnExp,
                 CraftRankLimit = 0
             };
             client.Send(expNtc);
@@ -212,13 +212,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
         }
-        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeuplist, uint addEquipPoint, uint currentTotalEquipPoint, uint canUpgrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeupList, uint addEquipPoint, uint currentTotalEquipPoint, uint canUpgrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
             return new S2CCraftStartEquipGradeUpRes
             {
                 GradeUpItemUID = equipItemUID,
-                GradeUpItemID = gradeUpItemID, // This has to be the last ID found in gradeuplist or it will continue grading up into it.
-                GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
+                GradeUpItemID = gradeUpItemID, // This has to be the last ID found in gradeupList or it will continue grading up into it.
+                GradeUpItemIDList = gradeupList, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
                 AddEquipPoint = addEquipPoint,
                 TotalEquipPoint = currentTotalEquipPoint,
                 EquipGrade = canUpgrade, // Unclear why the client wants this? as long as its a number it doesn't seem to matter what you set it as.
