@@ -42,6 +42,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<QuestItem> ConsumePlayerItems { get; set; }
         public List<QuestNpcOrder> NpcOrderDetails { get; set; }
         public QuestOrder QuestOrderDetails { get; set; }
+        
+        public QuestTargetEnemy TargetEnemy { get; set; }
 
         public CDataQuestProcessState QuestProcessState { get; set; }
 
@@ -71,6 +73,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             QuestEvent = new QuestEvent();
             QuestCameraEvent = new QuestCameraEvent();
             OmInteractEvent = new QuestOmInteractEvent();
+
+            TargetEnemy = new QuestTargetEnemy();
         }
     }
 }

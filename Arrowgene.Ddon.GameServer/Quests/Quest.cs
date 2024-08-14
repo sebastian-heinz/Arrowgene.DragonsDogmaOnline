@@ -1,21 +1,14 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
-using YamlDotNet.Core.Tokens;
 
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -308,6 +301,35 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 Param = ToCDataQuestList(step)
             };
+        }
+
+        public virtual CDataLightQuestList ToCDataLightQuestList(uint step)
+        {
+            var result = new CDataLightQuestList()
+            {
+                Param = ToCDataQuestList(step),
+                Contents = new CDataQuestContents()
+                {
+                    Type = 2,
+                    Param01 = 0x011200,
+                    Param02 = 2,
+                    Param03 = 2,
+                    Param04 = 0,
+                    Unk0 = 6,
+                    Unk1 = 6,
+                },
+                Detail = new CDataLightQuestDetail()
+                {
+                    AreaId = (uint)QuestAreaId.HidellPlains,
+                    BaseAreaPoint = 25,
+                    BoardType = 1, // 1 == Normal, 2 == Clan?
+                    OrderLimit = 25,
+                    ClearNum = 0,
+                    GetCP = 25 // This is reward area points
+                }
+            };
+
+            return result;
         }
 
         public abstract List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
