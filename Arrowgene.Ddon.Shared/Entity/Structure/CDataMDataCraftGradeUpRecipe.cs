@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint GradeupItemID { get; set; }
         public uint Cost { get; set; }
         public uint Exp { get; set; }
-        public bool Unk1 { get; set; } // Prompts a warning that you can't get multiple levels for this item.
+        public bool AllowMultiGrade { get; set; } // Prompts a warning that you can't get multiple levels for this item.
         public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; }
 
         public class Serializer : EntitySerializer<CDataMDataCraftGradeupRecipe>
@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.GradeupItemID);
                 WriteUInt32(buffer, obj.Cost);
                 WriteUInt32(buffer, obj.Exp);
-                WriteBool(buffer, obj.Unk1);
+                WriteBool(buffer, obj.AllowMultiGrade);
                 WriteEntityList<CDataMDataCraftMaterial>(buffer, obj.CraftMaterialList);
             }
 
@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     obj.GradeupItemID = ReadUInt32(buffer);
                     obj.Cost = ReadUInt32(buffer);
                     obj.Exp = ReadUInt32(buffer);
-                    obj.Unk1 = ReadBool(buffer);
+                    obj.AllowMultiGrade = ReadBool(buffer);
                     obj.CraftMaterialList = ReadEntityList<CDataMDataCraftMaterial>(buffer);
                     return obj;
             }

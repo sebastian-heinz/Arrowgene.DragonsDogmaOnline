@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (request.CraftSupportPawnIDList.Count > 0)
             {
                 goldRequired = (uint)(goldRequired * 0.95);
-                currentTotalEquipPoint = (uint)(currentTotalEquipPoint * 1.5); // Fake stuff until pawn craft levels
+                currentTotalEquipPoint = (uint)(currentTotalEquipPoint * 25); // Fake stuff until pawn craft levels
             }
 
             var updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
@@ -92,53 +92,57 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint remainingPoints = currentTotalEquipPoint;
             List<CDataCommonU32> gradeupList = new List<CDataCommonU32>();
 
-            // Define the required points for the current star level
-            int requiredPoints = currentStars switch
+            uint[] thresholds = { 350, 700, 1000, 1500, 800 };
+
+            // Determine the required points based on the current star level
+            int requiredPoints = currentStars >= 0 && currentStars < thresholds.Length 
+                ? (int)thresholds[currentStars] 
+                : throw new InvalidOperationException("Invalid star level");
+
+            if (recipeData.AllowMultiGrade)
             {
-                0 => 350,
-                1 => 700,
-                2 => 1000,
-                3 => 1500,
-                4 => 800,
-                _ => throw new InvalidOperationException("Invalid star level")
-            };
-
-            if (!recipeData.Unk1)
-            {
-                //TODO: If this bool is false, you only let the item upgrade a single tier, even if it have the skill to
-                // multi-level, and if the points exceed multiple thresholds, clamp it to a single point before rolling over.
-                // No idea what gear this is meant for, but thats what the UI element this bool controls say.
-            }
-
-            if (currentTotalEquipPoint >= requiredPoints)
-            {
-                doUpgrade = true;
-                List<CDataMDataCraftGradeupRecipe> itemIDsList = FindRecipeFamily(recipeData);
-                remainingPoints = currentTotalEquipPoint;
-                int thresholdsExceeded = 0;
-
-                // Calculate thresholds based on the star levels
-                uint[] thresholds = { 350, 700, 1000, 1500, 800 };
-
-                for (int i = currentStars; i < thresholds.Length; i++)
+                if (currentTotalEquipPoint >= requiredPoints)
                 {
-                    if (remainingPoints >= thresholds[i])
+                    doUpgrade = true;
+                    List<CDataMDataCraftGradeupRecipe> itemIDsList = FindRecipeFamily(recipeData);
+                    remainingPoints = currentTotalEquipPoint;
+                    int thresholdsExceeded = 0;
+
+                    for (int i = currentStars; i < thresholds.Length; i++)
                     {
-                        remainingPoints -= thresholds[i];
-                        thresholdsExceeded++;
+                        if (remainingPoints >= thresholds[i])
+                        {
+                            remainingPoints -= thresholds[i];
+                            thresholdsExceeded++;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
-                    {
-                        break;
-                    }
+
+                    gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
+                    canUpgrade = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
+                    upgradableStatus = (UpgradableStatus)canUpgrade;
+                    gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
                 }
-
-                gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
-                canUpgrade = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
-                upgradableStatus = (UpgradableStatus)canUpgrade;
-                gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
-
             }
+            else
+            {
+                if (currentTotalEquipPoint >= requiredPoints)
+                {
+                    int nextThresholdIndex = currentStars + 1;
+                    if (nextThresholdIndex < thresholds.Length && remainingPoints >= thresholds[nextThresholdIndex])
+                    {
+                        // Cap the remainingPoints to 1 point short of the next threshold
+                        remainingPoints = thresholds[nextThresholdIndex] - 1;
+                    }
+                    gradeupList = new() { new CDataCommonU32(gearUpgradeID) };
+                    doUpgrade = true;
+                }
+            }
+
+
             if (upgradableStatus == UpgradableStatus.No) // This should handle a "True" state because I pull it from the Recipe directly.
             {
                 canContinue = false;
@@ -179,7 +183,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftRankLimit = 0
             };
             client.Send(expNtc);
-
             client.Send(updateCharacterItemNtc);
             return res;
         }
