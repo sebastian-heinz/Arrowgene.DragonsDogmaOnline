@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -109,7 +110,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     // Remove from equipment template
                     characterToEquipTo.EquipmentTemplate.SetEquipItem(null, characterToEquipTo.Job, equipType, equipSlot);
-                    server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot);
+
+                    server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, true);
 
                     // Update storage
                     // TODO: Move to the other storage types if the first one is full
@@ -121,9 +123,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // EQUIP
 
                     // Set in equipment template
+                    //TODO: Move this lookup to memory instead of the DB if possible.
                     characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId), characterToEquipTo.Job, equipType, equipSlot);
-                    server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId);
-
+                    server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId, true);
+                    
                     // Update storage, swapping if needed
                     var result = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, itemUId);
                     Storage sourceStorage = client.Character.Storage.GetStorage(result.Item1);

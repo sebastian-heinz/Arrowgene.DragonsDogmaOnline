@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;

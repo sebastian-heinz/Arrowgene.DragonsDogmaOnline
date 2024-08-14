@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -47,19 +48,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut)
+        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    (connection) => ReplaceCommunicationShortcut(connection, characterId, communicationShortcut)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return ReplaceCommunicationShortcut(connection, characterId, communicationShortcut);
         }      
         
-        public bool ReplaceCommunicationShortcut(TCon connection, uint characterId, CDataCommunicationShortCut communicationShortcut)
+        public bool ReplaceCommunicationShortcut(DbConnection connection, uint characterId, CDataCommunicationShortCut communicationShortcut)
         {
             Logger.Debug("Inserting communication shortcut.");
-            if (!InsertIfNotExistsCommunicationShortcut(connection, characterId, communicationShortcut))
+            if (!InsertIfNotExistsCommunicationShortcut((TCon)connection, characterId, communicationShortcut))
             {
                 Logger.Debug("Communication shortcut already exists, replacing.");
-                return UpdateCommunicationShortcut(connection, characterId, communicationShortcut.PageNo, communicationShortcut.ButtonNo, communicationShortcut);
+                return UpdateCommunicationShortcut((TCon)connection, characterId, communicationShortcut.PageNo, communicationShortcut.ButtonNo, communicationShortcut);
             }
             return true;
         }
