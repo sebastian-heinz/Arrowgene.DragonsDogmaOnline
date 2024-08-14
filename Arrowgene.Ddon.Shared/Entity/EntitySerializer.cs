@@ -51,6 +51,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterName.Serializer());
             Create(new CDataCharacterReleaseElement.Serializer());
             Create(new CDataCharacterSearchParam.Serializer());
+            Create(new CDataCharacterEditPriceInfo.Serializer());
             Create(new CDataClanMemberInfo.Serializer());
             Create(new CDataClanParam.Serializer());
             Create(new CDataClanServerParam.Serializer());
@@ -632,6 +633,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterSetOnlineStatusRes.Serializer());
             Create(new S2CCharacterStartDeathPenaltyNtc.Serializer());
             Create(new S2CCharacterUpdateRevivePointNtc.Serializer());
+            Create(new S2CCharacterEditGetShopPriceRes.Serializer());
 
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
             Create(new S2CClanClanConciergeGetListRes.Serializer());
