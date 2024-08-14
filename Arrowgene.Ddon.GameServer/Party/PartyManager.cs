@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using System.Threading;
+using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Party;
 
@@ -61,13 +66,13 @@ public class PartyManager
             return false;
         }
 
-        var timer = new Timer(RemoveExpiredInvite, invitee, InvitationTimeoutSec * 1000, Timeout.Infinite);
+        var timer = new Timer(RemoveExpiredInvite<S2CPartyPartyInviteCancelNtc>, invitee, (InvitationTimeoutSec + 2) * 1000, Timeout.Infinite);
         _inviteTimers.TryAdd(invitee, timer);
 
         return true;
     }
 
-    private void RemoveExpiredInvite(object inviteeObj)
+    private void RemoveExpiredInvite<T>(object inviteeObj) where T : class, IPacketStructure, new()
     {
         var invitee = inviteeObj as GameClient;
 
@@ -83,6 +88,11 @@ public class PartyManager
             timer.Dispose();
         }
 
+        var packetId = new T().Id;
+        IBuffer responseBuffer = new StreamBuffer();
+        responseBuffer.WriteUInt32((uint)ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT, Endianness.Big);
+        Packet packet = new Packet(packetId, responseBuffer.GetAllBytes());
+        invitee.Send(packet);
         Logger.Info(invitee, "Invitation removed due to timeout.");
     }
 
