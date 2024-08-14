@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
@@ -9,6 +6,9 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -573,17 +573,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)
         {
-            // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
-            Ability lowerLevelAbility = character.LearnedAbilities.Where(aug => aug != null && aug.Job == job && aug.AbilityId == abilityId).SingleOrDefault();
+            //The job passed to this function can lie. 
+            //By using the Augment search, you can buy augments from other jobs while passing a job parameter from the character's *current* job.
+            //As such, always look up the ID to make sure you know what job it's really coming from.
 
-            Logger.Debug($"The Ability ID is {abilityId}");
+            CDataAbilityParam abilityData = SkillGetAcquirableAbilityListHandler.GetAbilityFromId(abilityId);
+            JobId owningJob = abilityData.Job;
+
+            Logger.Debug($"Unlocking/upgrading ability {owningJob.ToString()}: {abilityId}");
+
+            // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
+            Ability lowerLevelAbility = character.LearnedAbilities.Where(aug => aug != null && aug.AbilityId == abilityId).SingleOrDefault();
 
             if (lowerLevelAbility == null)
             {
                 // New ability
                 Ability newAbility = new Ability()
                 {
-                    Job = job,
+                    Job = owningJob,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
                 };
@@ -597,18 +604,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility);
             }
 
-            List<CDataAbilityParam> Abilities = (job == 0) ? SkillGetAcquirableAbilityListHandler.AllSecretAbilities : SkillGetAcquirableAbilityListHandler.AllAbilities;
-            uint jpCost = Abilities
-                .Where(aug => aug.Job == job && aug.AbilityNo == abilityId)
-                .SelectMany(aug => aug.Params)
-                .Where(augParams => augParams.Lv == abilityLv)
-                .Select(augParams => augParams.RequireJobPoint)
-                .Single();
+            uint jpCost = abilityData.Params.Where(x => x.Lv == abilityLv).Single().RequireJobPoint;
 
-            // TODO: Check that this doesn't end up negative
-            CDataCharacterJobData learnedAbilityCharacterJobData = job == 0
+            CDataCharacterJobData learnedAbilityCharacterJobData = owningJob == 0
                 ? character.ActiveCharacterJobData // Secret Augments -> Use current job's JP TODO: Verify if this is the correct behaviour
-                : character.CharacterJobDataList.Where(jobData => jobData.Job == job).Single(); // Job Augments -> Use that job's JP
+                : character.CharacterJobDataList.Where(jobData => jobData.Job == owningJob).Single(); // Job Augments -> Use that job's JP
             learnedAbilityCharacterJobData.JobPoint -= jpCost;
             database.UpdateCharacterJobData(character.CommonId, learnedAbilityCharacterJobData);
 
@@ -636,16 +636,109 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         public Ability SetAbility(IDatabase database, GameClient client, CharacterCommon character, JobId abilityJob, byte slotNo, uint abilityId, byte abilityLv)
-        {
+        {            
             Ability ability = character.LearnedAbilities
-                .Where(aug => aug.Job == abilityJob && aug.AbilityId == abilityId && aug.AbilityLv == abilityLv)
-                .Single();
+                .Where(aug =>aug.AbilityId == abilityId)
+                .SingleOrDefault();
+
+            if (ability is null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
+            }
 
             character.EquippedAbilitiesDictionary[character.Job][slotNo - 1] = ability;
 
             database.ReplaceEquippedAbility(character.CommonId, character.Job, slotNo, ability);
 
             // Inform party members of the change
+            AbilitySetNotifyParty(client, character, ability, slotNo);
+
+            return ability;
+        }
+
+        public void RemoveAbility(IDatabase database, CharacterCommon character, byte slotNo)
+        {
+            List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
+
+            equippedAbilities[slotNo - 1] = null; //Mark ability as null.
+            equippedAbilities.RemoveAll(x => x is null); //Squash list.
+            equippedAbilities.AddRange(Enumerable.Repeat<Ability>(null, 10 - equippedAbilities.Count)); //Resize back to 10.
+
+            database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
+        }
+
+        public bool UnlockSecretAbility(CharacterCommon Character, SecretAbility secretAbilityType)
+        {
+            return _Server.Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
+        }
+
+        public static CDataPresetAbilityParam MakePresetAbilityParam(CharacterCommon character, List<Ability> abilities, byte presetNo, string presetName = "")
+        {
+            CDataPresetAbilityParam preset = new CDataPresetAbilityParam()
+            {
+                PresetNo = presetNo,
+                PresetName = presetName,
+            };
+
+            byte i = 1;
+            foreach (Ability ability in abilities)
+            {
+                if (ability is null) continue;
+                preset.AbilityList.Add(ability.AsCDataSetAcquirementParam(i++));
+            }
+
+            return preset;
+        }
+    
+        public void SetAbilityPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
+        {
+            uint cost = 0;
+            uint costMax = _Server.CharacterManager.GetMaxAugmentAllocation(character);
+            foreach (var presetAbility in preset.AbilityList)
+            {
+                Ability ability = character.LearnedAbilities
+                    .Where(aug => aug.AbilityId == presetAbility.AcquirementNo)
+                    .SingleOrDefault();
+
+                if (ability is null)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
+                }
+
+                cost += SkillGetAcquirableAbilityListHandler.GetAbilityFromId(presetAbility.AcquirementNo).Cost;
+
+                if (cost > costMax)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_COST_OVER);
+                }
+            }
+            
+            List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
+
+            for (byte i = 0; i < 10; i++)
+            {
+                if (i >= preset.AbilityList.Count)
+                {
+                    equippedAbilities[i] = null;
+                }
+                else
+                {
+                    Ability ability = character.LearnedAbilities
+                    .Where(aug => aug.AbilityId == preset.AbilityList[i].AcquirementNo)
+                    .SingleOrDefault();
+
+                    character.EquippedAbilitiesDictionary[character.Job][i] = ability;
+
+                    AbilitySetNotifyParty(client, character, ability, (byte)(i + 1));
+                }
+            }
+
+            //We wait until the end to do all of the DB updating in a single transaction.
+            database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
+        }
+
+        private void AbilitySetNotifyParty(GameClient client, CharacterCommon character, Ability ability, byte slotNo)
+        {
             if (character is Character)
             {
                 client.Party.SendToAll(new S2CSkillAbilitySetNtc()
@@ -662,51 +755,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
                 });
             }
-
-            return ability;
-        }
-
-        public void RemoveAbility(IDatabase database, CharacterCommon character, byte slotNo)
-        {
-            // TODO: Performance
-            List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
-            lock (equippedAbilities)
-            {
-                byte removedAbilitySlotNo = Byte.MaxValue;
-                for (int i = 0; i < equippedAbilities.Count; i++)
-                {
-                    Ability equippedAbility = equippedAbilities[i];
-                    byte equippedAbilitySlotNo = (byte)(i + 1);
-                    if (character.Job == character.Job && equippedAbilitySlotNo == slotNo)
-                    {
-                        equippedAbilities[i] = null;
-                        removedAbilitySlotNo = equippedAbilitySlotNo;
-                        break;
-                    }
-                }
-
-                for (int i = 0; i < equippedAbilities.Count; i++)
-                {
-                    Ability equippedAbility = equippedAbilities[i];
-                    byte equippedAbilitySlotNo = (byte)(i + 1);
-                    if (character.Job == character.Job)
-                    {
-                        if (equippedAbilitySlotNo > removedAbilitySlotNo)
-                        {
-                            equippedAbilitySlotNo--;
-                        }
-                    }
-                }
-            }
-
-            database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
-
-            // Same as skills, i haven't found an Ability off NTC. It may not be required
-        }
-
-        public bool UnlockSecretAbility(CharacterCommon Character, SecretAbility secretAbilityType)
-        {
-            return _Server.Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
         }
     }
 }

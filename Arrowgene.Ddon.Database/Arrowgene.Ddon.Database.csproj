@@ -34,6 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ContentWithTargetPath Remove="files\database\script\abilitypresets_migration_sqlite.sql" />
       <ContentWithTargetPath Remove="files\database\script\crest_migration.sql" />
       <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
       <ContentWithTargetPath Remove="files\database\script\uid_migration.sql" />
@@ -47,10 +48,19 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="Files\Database\Script\abilitypresets_migration_sqlite.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Files\Database\Script\crest_migration.sql">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Files\Database\Script\equippoints_migration.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
       <None Update="Files\Database\Script\equip_migration_sqlite.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Database\Script\schema_sqlite.sql">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="Files\Database\Script\uid_migration.sql">

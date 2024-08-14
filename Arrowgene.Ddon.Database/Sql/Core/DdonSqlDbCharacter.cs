@@ -3,10 +3,6 @@ using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using Arrowgene.Ddon.Database.Model;
-using System.Security.Cryptography;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -333,6 +329,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     while (reader.Read())
                     {
                         character.StampBonus = ReadCharacterStampData(reader);
+                    }
+                });
+
+            // Ability Presets
+            ExecuteReader(conn, SqlSelectAbilityPresets,
+                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        character.AbilityPresets.Add(ReadAbilityPreset(reader));
                     }
                 });
         }
