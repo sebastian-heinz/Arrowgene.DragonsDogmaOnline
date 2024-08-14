@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -47,19 +48,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut)
+        public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    (connection) => ReplaceShortcut(connection, characterId, shortcut)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return ReplaceShortcut(connection, characterId, shortcut);
         }       
         
-        public bool ReplaceShortcut(TCon connection, uint characterId, CDataShortCut shortcut)
+        public bool ReplaceShortcut(DbConnection connection, uint characterId, CDataShortCut shortcut)
         {
             Logger.Debug("Inserting shortcut.");
-            if (!InsertIfNotExistsShortcut(connection, characterId, shortcut))
+            if (!InsertIfNotExistsShortcut((TCon)connection, characterId, shortcut))
             {
                 Logger.Debug("Shortcut already exists, replacing.");
-                return UpdateShortcut(connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
+                return UpdateShortcut((TCon)connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
             }
             return true;
         }

@@ -1,4 +1,6 @@
 #nullable enable
+using Arrowgene.Ddon.Database.Deferred;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -7,8 +9,6 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
