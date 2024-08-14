@@ -17,19 +17,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CGpGetCapToGpChangeListRes Handle(GameClient client, C2SGpGetCapToGpChangeListReq request)
         {
-            // TODO: implement S2C_GP_GET_CAP_TO_GP_CHANGE_LIST_RES
             S2CGpGetCapToGpChangeListRes res = new S2CGpGetCapToGpChangeListRes();
 
-            res.List.Add(new CDataCAPtoGPChangeElement
+            // TODO: introduce some form of asset to track all potential variants of GG
+            res.List.AddRange(new List<CDataCAPtoGPChangeElement>
             {
-                ID = 1,
-                CAP = 1,
-                GP = 1,
-                Comment = "Test",
-                BackIconID = 0,
-                FrameIconID = 0
+                new()
+                {
+                    ID = 1,
+                    CAP = 0,
+                    GP = 1,
+                    Comment = "ID1 0CAP for 1GG",
+                    BackIconID = 0,
+                    FrameIconID = 0
+                },
+                new()
+                {
+                    ID = 2,
+                    CAP = 0,
+                    GP = 10,
+                    Comment = "ID2 0CAP for 10GG",
+                    BackIconID = 0,
+                    FrameIconID = 1
+                }
             });
-            
+
             return res;
         }
     }

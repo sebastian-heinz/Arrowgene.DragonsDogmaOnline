@@ -12,16 +12,19 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
     {
         private static readonly Dictionary<string, WalletType> WalletTypeNames = new Dictionary<string, WalletType>()
         {
-            {"G", WalletType.Gold},
-            {"RP", WalletType.RiftPoints},
-            {"BO", WalletType.BloodOrbs},
-            {"HO", WalletType.HighOrbs},
-            {"GG", WalletType.GoldenGemstones},
-            {"RC", WalletType.ResetCraftSkills}
+            { "G", WalletType.Gold },
+            { "RP", WalletType.RiftPoints },
+            { "BO", WalletType.BloodOrbs },
+            { "HO", WalletType.HighOrbs },
+            { "GG", WalletType.GoldenGemstones },
+            { "RC", WalletType.ResetCraftSkills },
+            { "ST", WalletType.SilverTickets },
         };
 
         private static readonly uint DefaultAmount = 10000;
-        private static readonly HashSet<WalletType> DefaultWalletTypes = new HashSet<WalletType> {
+
+        private static readonly HashSet<WalletType> DefaultWalletTypes = new HashSet<WalletType>
+        {
             WalletType.Gold,
             WalletType.RiftPoints,
             WalletType.BloodOrbs
@@ -42,8 +45,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         {
             uint amount = DefaultAmount;
             if (command.Length >= 1)
-            { 
-                if(UInt32.TryParse(command[0], out uint parsedAmount))
+            {
+                if (UInt32.TryParse(command[0], out uint parsedAmount))
                 {
                     amount = parsedAmount;
                 }
@@ -66,7 +69,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     }
                     else
                     {
-                        responses.Add(ChatResponse.CommandError(client, $"Invalid wallet type \"{arg}\". It must be one of the following: {string.Join(", ", WalletTypeNames.Keys)}"));
+                        responses.Add(ChatResponse.CommandError(client,
+                            $"Invalid wallet type \"{arg}\". It must be one of the following: {string.Join(", ", WalletTypeNames.Keys)}"));
                         return;
                     }
                 }
@@ -78,6 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 CDataUpdateWalletPoint updateWalletPoint = _server.WalletManager.AddToWallet(client.Character, walletType, amount);
                 updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             }
+
             client.Send(updateCharacterItemNtc);
         }
     }
