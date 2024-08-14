@@ -1,4 +1,5 @@
 using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Arrowgene.Ddon.GameServer.Characters;
@@ -26,11 +27,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CQuestQuestOrderRes();
 
             QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
+            var quest = QuestManager.GetQuest(questId);
             if (client.Party.QuestState.GetActiveQuestIds().Contains(questId))
             {
-                var quest = QuestManager.GetQuest(questId);
                 var questState = client.Party.QuestState.GetQuestState(questId);
                 res.QuestProcessStateList = quest.ToCDataQuestList(questState.Step).QuestProcessStateList;
+            }
+            else
+            {
+                Logger.Debug($"Quest q{questId} inactive.");
             }
 
             client.Send(res);

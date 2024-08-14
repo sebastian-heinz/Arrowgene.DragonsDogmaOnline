@@ -74,8 +74,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList<CDataCharacterReleaseElement>(buffer, obj.ContentsReleaseList);
                 WriteEntityList<CDataQuestOrderConditionParam>(buffer, obj.QuestOrderConditionParamList);
                 // CQuestLog
-                    WriteEntityList<CDataQuestAnnounce>(buffer, obj.QuestAnnounceList);
-                    WriteEntityList<CDataQuestTalkInfo>(buffer, obj.QuestTalkInfoList);
+                WriteEntityList<CDataQuestAnnounce>(buffer, obj.QuestAnnounceList);
+                WriteEntityList<CDataQuestTalkInfo>(buffer, obj.QuestTalkInfoList);
                 WriteEntityList<CDataQuestFlag>(buffer, obj.QuestFlagList);
                 WriteEntityList<CDataQuestLayoutFlag>(buffer, obj.QuestLayoutFlagList);
                 WriteEntityList<CDataQuestProcessState>(buffer, obj.QuestProcessStateList);

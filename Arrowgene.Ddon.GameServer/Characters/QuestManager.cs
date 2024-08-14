@@ -3124,5 +3124,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem, Work01 = (int) npcId, Work02 = work02, Work03 = work03, Work04 = work04 };
             }
         }
+
+        public static bool IsBoardQuest(QuestId questId)
+        {
+            return (((uint)questId) >= 40000000) && (((uint)questId) < 50000000);
+        }
+
+        public static bool IsWorldQuest(QuestId questId)
+        {
+            return (((uint)questId) >= 20000000) && (((uint)questId) < 30000000);
+        }
     }
 }
