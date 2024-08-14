@@ -48,4 +48,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             }
         }
     }
+    public enum UpgradableStatus
+    {
+        No = 0,
+        Yes = 1
+    }
 }

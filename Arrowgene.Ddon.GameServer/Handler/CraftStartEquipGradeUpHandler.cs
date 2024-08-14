@@ -38,6 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint gearUpgradeID = recipeData.GradeupItemID;
             uint goldRequired = recipeData.Cost;
             uint canUpgrade = recipeData.Upgradable;
+            UpgradableStatus upgradableStatus = (UpgradableStatus)canUpgrade;
             uint pawnExp = recipeData.Exp;
             bool canContinue = true;
             bool isGreatSuccess = Random.Shared.Next(5) == 0;
@@ -134,10 +135,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
                 canUpgrade = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
+                upgradableStatus = (UpgradableStatus)canUpgrade;
                 gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
 
             }
-            if (canUpgrade == 0) // This should handle a "True" state because I pull it from the Recipe directly.
+            if (upgradableStatus == UpgradableStatus.No) // This should handle a "True" state because I pull it from the Recipe directly.
             {
                 canContinue = false;
             }
@@ -156,7 +158,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 equipItem.EquipPoints = currentTotalEquipPoint;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
-                res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, canUpgrade, goldRequired, isGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
+                res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, (uint)upgradableStatus, goldRequired, isGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
@@ -228,7 +230,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 GradeUpItemIDList = gradeupList, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
                 AddEquipPoint = addEquipPoint,
                 TotalEquipPoint = currentTotalEquipPoint,
-                EquipGrade = canUpgrade, // Unclear why the client wants this? as long as its a number it doesn't seem to matter what you set it as.
+                EquipGrade = canUpgrade,
                 Gold = gold,
                 IsGreatSuccess = isGreatSuccess,
                 CurrentEquip = currentEquip,
