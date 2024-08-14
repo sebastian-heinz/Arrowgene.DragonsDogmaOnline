@@ -625,7 +625,7 @@ CREATE TABLE IF NOT EXISTS "ddon_preset_ability"
     CONSTRAINT "pk_preset_ability" PRIMARY KEY ("character_id", "preset_no")
 );
 
-CREATE TABLE "ddon_pawn_craft_progress"
+CREATE TABLE IF NOT EXISTS "ddon_pawn_craft_progress"
 (
     "craft_character_id"     INTEGER NOT NULL,
     "craft_lead_pawn_id"     INTEGER NOT NULL,
@@ -652,8 +652,8 @@ CREATE TABLE "ddon_pawn_craft_progress"
 
 CREATE TABLE IF NOT EXISTS "ddon_binary_data"
 (
-    "character_id" INTEGER  NOT NULL,
-    "binary_data"    BLOB     NOT NULL,
+    "character_id"      INTEGER  NOT NULL,
+    "binary_data"       BLOB     NOT NULL,
     CONSTRAINT pk_binary_data PRIMARY KEY (character_id),
     CONSTRAINT fk_binary_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
