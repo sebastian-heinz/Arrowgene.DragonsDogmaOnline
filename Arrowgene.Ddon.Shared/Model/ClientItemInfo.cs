@@ -68,6 +68,19 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         }
 
+        public EquipSlot? EquipSlot { get
+            {
+                if (SubCategory is null) return null;
+                else if (SubCategory > ItemSubCategory.JewelrySubCategoryOffset) return Model.EquipSlot.Jewelry1; //All Jewelry
+                else if (SubCategory == ItemSubCategory.EquipEnsemble) return (Model.EquipSlot.ArmorBody); //Ensembles
+                else if (SubCategory == ItemSubCategory.EquipLantern) return (Model.EquipSlot.Lantern); //Lanterns
+                else if (SubCategory > ItemSubCategory.EquipSlotOffset) return (EquipSlot)(SubCategory - ItemSubCategory.EquipSlotOffset); //Other armor
+                else if (SubCategory == ItemSubCategory.WeaponShield || SubCategory == ItemSubCategory.WeaponRod) return Model.EquipSlot.WepSub; //Subweapons
+                else if (SubCategory > ItemSubCategory.WeaponCategoryOffset) return Model.EquipSlot.WepMain; //Main weapons
+                else return null;
+            } 
+        }
+
         public override string ToString()
         {
             return String.Format("{0} <{1}>", Name, ItemId);
