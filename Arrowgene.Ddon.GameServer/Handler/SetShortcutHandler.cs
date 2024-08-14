@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -20,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CSetShortcutRes response = new S2CSetShortcutRes();
             foreach(CDataShortCut shortcut in request.Structure.ShortCutList)
             {
-                Database.ReplaceShortcut(client.Character.CharacterId, shortcut);
+                Server.Database.ReplaceShortcut(client.Character.CharacterId, shortcut, true);
             }
             client.Character.ShortCutList = request.Structure.ShortCutList;
             client.Send(response);

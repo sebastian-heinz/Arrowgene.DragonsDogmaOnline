@@ -1,11 +1,13 @@
-using System;
-using System.Data;
-using System.Data.Common;
-using System.Drawing;
-using System.Text;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
+using System.Linq;
+using System.Text;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -19,8 +21,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom, TReader>));
 
+        private readonly List<DeferredOperation> DeferredOperations;
+
         public DdonSqlDb()
         {
+            DeferredOperations = new List<DeferredOperation>();
         }
 
         public static string BuildQueryField(params string[][] fieldLists)
@@ -262,5 +267,29 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             return base.GetBytes((TReader)reader, column, size);
         }
+
+        public bool ExecuteDeferred()
+        {
+            if (!DeferredOperations.Any()) return true;
+            bool ret = true;
+
+            ExecuteInTransaction(conn =>
+            {
+                foreach (DeferredOperation action in DeferredOperations)
+                {
+                    ret &= action.Handle(conn);
+                    if (!ret) throw new Exception("Deferred operation failed, rolling back.");
+                }
+            });
+
+            ClearDeferred();
+
+            return ret;
+        }
+        public void ClearDeferred()
+        {
+            DeferredOperations.Clear();
+        }
+
     }
 }

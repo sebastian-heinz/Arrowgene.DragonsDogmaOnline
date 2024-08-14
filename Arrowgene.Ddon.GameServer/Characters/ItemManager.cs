@@ -1,9 +1,15 @@
 #nullable enable
 using System;
+using System.Buffers;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks.Dataflow;
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -98,7 +104,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 CDataWalletPoint characterWalletPoint = character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.Type).First();
                 characterWalletPoint.Value += totalQuantityToAdd; // TODO: Cap to maximum for that wallet
-                server.Database.UpdateWalletPoint(character.CharacterId, characterWalletPoint);
+
+                server.Database.UpdateWalletPoint(character.CharacterId, characterWalletPoint, true);
 
                 CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
                 walletUpdate.Type = walletTypeAndQuantity.Type;
@@ -224,12 +231,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
                 fromStorage.SetItem(null, 0, slotNo);
-                server.Database.DeleteStorageItem(character.CharacterId, fromStorageType, slotNo);
+                server.Database.DeleteStorageItem(character.CharacterId, fromStorageType, slotNo, true);
             }
             else
             {
                 fromStorage.SetItem(item, finalItemNum, slotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, finalItemNum, item);
+                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, finalItemNum, item, true);
             }
 
             return ntcData;
@@ -303,8 +310,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     destinationStorage.SetItem(item, newItemNum, slot);
                 }
 
-                database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, newItemNum, item);
-
+                database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, newItemNum, item, true);
+               
                 CDataItemUpdateResult result = new CDataItemUpdateResult();
                 result.ItemList.ItemUId = item.UId;
                 result.ItemList.ItemId = item.ItemId;
@@ -342,24 +349,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private void DeleteItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo)
         {
             storage.SetItem(null, 0, slotNo);
-            server.Database.DeleteStorageItem(character.CharacterId, storage.Type, slotNo);
+            server.Database.DeleteStorageItem(character.CharacterId, storage.Type, slotNo, true);
         }
 
         private void UpdateItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
         {
             storage.SetItem(item, num, slotNo);
-            server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
+            server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, num, item, true);
         }
 
         private void InsertItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num)
         {
             storage.SetItem(item, num, slotNo);
-            server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item);
-            
 
+            server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item, true);
+            
             foreach (var crest in item.EquipElementParamList)
             {
-                server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add);
+                server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add, true);
             }
         }
 
@@ -592,8 +599,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public void UpgradeStorageItem(DdonGameServer server, GameClient client, UInt32 characterID, StorageType storageType, Item newItem, ushort slotNo)
         {
             client.Character.Storage.GetStorage(storageType).SetItem(newItem, 1, slotNo);
-            server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem);
-            
+            server.Database.UpdateStorageItem(characterID, storageType, slotNo, 1, newItem, true);
+
             CDataItemUpdateResult updateResult = new CDataItemUpdateResult();
             updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;

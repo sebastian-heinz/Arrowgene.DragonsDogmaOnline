@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Reflection.PortableExecutable;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -19,6 +19,8 @@ namespace Arrowgene.Ddon.Database
         bool ExecuteInTransaction(Action<DbConnection> action);
         int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> action);
         void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction);
+        bool ExecuteDeferred();
+        void ClearDeferred();
 
         // Generic functions for getting/setting
         void AddParameter(DbCommand command, string name, object? value, DbType type);
@@ -105,7 +107,8 @@ namespace Arrowgene.Ddon.Database
         // Wallet Points
         bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint);
         bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint);
-        bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint);
+        bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, bool deferred = false);
+
         bool DeleteWalletPoint(uint characterId, WalletType type);
 
         // Released Warp Points
@@ -124,18 +127,17 @@ namespace Arrowgene.Ddon.Database
         bool DeleteStorage(uint characterId, StorageType storageType);
 
         // Storage Item
-        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
-        bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
-        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
-        bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo);
-        bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item);
+        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false);
+        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false);
+        bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, bool deferred = false);
+        bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false);
         bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
 
         // Equip
         bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
-        bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
+        bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, bool deferred = false);
         bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
-        bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot);
+        bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, bool deferred = false);
         List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId);
 
         // Job Items
@@ -176,13 +178,13 @@ namespace Arrowgene.Ddon.Database
 
         // Shortcut
         bool InsertShortcut(uint characterId, CDataShortCut shortcut);
-        bool ReplaceShortcut(uint characterId, CDataShortCut shortcut);
+        bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, bool deferred = false);
         bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut);
         bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo);
 
         // CommunicationShortcut
         bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
-        bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+        bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, bool deferred = false);
         bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut);
         bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
 
@@ -278,7 +280,7 @@ namespace Arrowgene.Ddon.Database
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);
         public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
         // Crests
-        bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
+        bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, bool deferred=false);
         bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
         bool RemoveCrest(uint characterCommonId, string itemUId, uint slot);
         List<Crest> GetCrests(uint characterCommonId, string itemUId);

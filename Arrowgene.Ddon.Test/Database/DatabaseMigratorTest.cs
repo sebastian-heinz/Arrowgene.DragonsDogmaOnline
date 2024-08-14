@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
@@ -181,6 +182,8 @@ namespace Arrowgene.Ddon.Test.Database
         public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action) { return 1; }
         public void ExecuteReader(string command, Action<DbDataReader> action) {}
         public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) {}
+        public bool ExecuteDeferred() { return true; }
+        public void ClearDeferred() {}
         public Account CreateAccount(string name, string mail, string hash) { return new Account(); }
         public bool CreateCharacter(Character character) { return true; }
         public bool CreateDatabase() { return true; }
@@ -195,7 +198,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteConnectionsByServerId(int serverId) { return true; }
         public int DeleteContact(uint requestingCharacterId, uint requestedCharacterId) { return 1; }
         public int DeleteContactById(uint id) { return 1; }
-        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot) { return true; }
+        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, bool deferred) { return true; }
         public bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo) { return true; }
         public bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob) { return true; }
         public bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo) { return true; }
@@ -207,7 +210,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo) { return true; }
         public bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId) { return true; }
         public bool DeleteStorage(uint characterId, StorageType storageType) { return true; }
-        public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo) { return true; }
+        public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, bool deferred) { return true; }
         public bool DeleteToken(string token) { return true; }
         public bool DeleteTokenByAccountId(int accountId) { return true; }
         public bool DeleteWalletPoint(uint characterId, WalletType type) { return true; }
@@ -248,13 +251,12 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut) { return true; }
         public bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill) { return true; }
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
-        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
-        public bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
+        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred) { return true; }
         public bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType) { return true; }
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData) { return true; }
-        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut) { return true; }
-        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
+        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, bool deferred) { return true; }
+        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, bool deferred) { return true; }
         public bool ReplaceEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo) { return true; }
         public bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities) { return true; }
         public bool ReplaceEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability) { return true; }
@@ -262,8 +264,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplaceNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam) { return true; }
         public bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool ReplaceReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
-        public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut) { return true; }
-        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
+        public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, bool deferred) { return true; }
+        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred) { return true; }
         public bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public Account SelectAccountById(int accountId) { return new Account(); }
         public Account SelectAccountByLoginToken(string loginToken) { return new Account(); }
@@ -318,8 +320,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut) { return true; }
         public bool UpdateStatusInfo(CharacterCommon character) { return true; }
         public bool UpdateStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
-        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item) { return true; }
-        public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint) { return true; }
+        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred) { return true; }
+        public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, bool deferred) { return true; }
         public bool UpdateMyPawnSlot(uint characterId, uint num) { return true; }
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
         public long InsertSystemMailMessage(SystemMailMessage message) { return 0; }
@@ -342,7 +344,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData) { return true; }
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
         public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
-        public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount) { return true; }
+        public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, bool deferred = false) { return true; }
         public bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount) { return true; }
         public bool RemoveCrest(uint characterCommonId, string itemUId, uint slot) { return true; }
         public List<Crest> GetCrests(uint characterCommonId, string itemUId) { return new List<Crest>(); }

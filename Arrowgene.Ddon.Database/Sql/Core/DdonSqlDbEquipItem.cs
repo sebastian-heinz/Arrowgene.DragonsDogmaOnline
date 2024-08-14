@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 
@@ -49,19 +50,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
+        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, bool deferred=false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    (connection) => ReplaceEquipItem(connection, commonId, job, equipType, equipSlot, itemUId)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return ReplaceEquipItem(connection, commonId, job, equipType, equipSlot, itemUId);
         }
         
-        public bool ReplaceEquipItem(TCon conn, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
+        public bool ReplaceEquipItem(DbConnection conn, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
             Logger.Debug("Inserting equip item.");
-            if (!InsertIfNotExistsEquipItem(conn, commonId, job, equipType, equipSlot, itemUId))
+            if (!InsertIfNotExistsEquipItem((TCon)conn, commonId, job, equipType, equipSlot, itemUId))
             {
                 Logger.Debug("Equip item already exists, replacing.");
-                return UpdateEquipItem(conn, commonId, job, equipType, equipSlot, itemUId);
+                return UpdateEquipItem((TCon)conn, commonId, job, equipType, equipSlot, itemUId);
             }
             return true;
         }
@@ -80,11 +89,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot)
+        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    (connection) => DeleteEquipItem(connection, commonId, job, equipType, equipSlot)
+                ));
+                return true;
+            }
+
             return ExecuteNonQuery(SqlDeleteEquipItem, command =>
             {
                 AddParameter(command, commonId, job, equipType, equipSlot);
+            }) == 1;
+        }
+
+        public bool DeleteEquipItem(DbConnection connection, uint commonId, JobId job, EquipType equipType, byte equipSlot)
+        {
+            return ExecuteNonQuery(connection, SqlDeleteEquipItem, command =>
+            {
+                AddParameter((TCom)command, commonId, job, equipType, equipSlot);
             }) == 1;
         }
 
