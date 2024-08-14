@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (request.CraftSupportPawnIDList.Count > 0)
             {
                 goldRequired = (uint)(goldRequired * 0.95);
-                currentTotalEquipPoint = (uint)(currentTotalEquipPoint * 25); // Fake stuff until pawn craft levels
+                currentTotalEquipPoint = (uint)(currentTotalEquipPoint * 1.5); // Fake stuff until pawn craft levels
             }
 
             var updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
