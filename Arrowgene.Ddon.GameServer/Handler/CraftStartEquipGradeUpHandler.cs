@@ -31,19 +31,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint craftpawnid = request.CraftMainPawnID;
 
             // Fetch the crafting recipe data for the item
-            CDataMDataCraftGradeupRecipe json_data = Server.AssetRepository.CraftingGradeUpRecipesAsset
+            CDataMDataCraftGradeupRecipe recipeData = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
                 .First(recipe => recipe.ItemID == equipItem.ItemId);
 
-            uint gearupgradeID = json_data.GradeupItemID;
-            uint goldRequired = json_data.Cost;
-            uint CanUpgrade = json_data.Upgradable;
-            uint PawnExp = json_data.Exp;
+            uint gearupgradeID = recipeData.GradeupItemID;
+            uint goldRequired = recipeData.Cost;
+            uint CanUpgrade = recipeData.Upgradable;
+            uint PawnExp = recipeData.Exp;
             bool canContinue = true;
             bool IsGreatSuccess = Random.Shared.Next(5) == 0;
+            bool DoUpgrade = false;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
 
-            List<CDataCommonU32> gradeuplist = new() { new CDataCommonU32(gearupgradeID) };
             CDataCurrentEquipInfo CurrentEquipInfo = new()
             {
                 ItemUId = equipItemUID,
@@ -73,8 +73,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                 }
             }
-
-            // Update item equip points in the database
             uint addEquipPoint = (uint)((IsGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
             currentTotalEquipPoint += addEquipPoint;
 
@@ -82,37 +80,67 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (request.CraftSupportPawnIDList.Count > 0)
             {
                 goldRequired = (uint)(goldRequired * 0.95);
-                currentTotalEquipPoint += 10;
+                currentTotalEquipPoint = currentTotalEquipPoint * (uint)1.5; // Fake stuff until pawn craft levels
             }
 
             var updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
-            // Handling the check on how many points we need to upgrade the weapon in its current state.
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             byte currentStars = (byte)itemInfo.Quality;
+            uint remainingPoints = currentTotalEquipPoint;
+            List<CDataCommonU32> gradeuplist = new List<CDataCommonU32>();
+
+            // Define the required points for the current star level
             int requiredPoints = currentStars switch
             {
                 0 => 350,
                 1 => 700,
                 2 => 1000,
                 3 => 1500,
-                4 => 800, 
+                4 => 800,
                 _ => throw new InvalidOperationException("Invalid star level")
             };
 
-            if (json_data.Upgradable == 0)
+            if (currentTotalEquipPoint >= requiredPoints)
+            {
+                DoUpgrade = true;
+                List<CDataMDataCraftGradeupRecipe> ItemIDsList = FindRecipeFamily(recipeData);
+                remainingPoints = currentTotalEquipPoint;
+                int thresholdsExceeded = 0;
+
+                // Calculate thresholds based on the star levels
+                uint[] thresholds = { 350, 700, 1000, 1500, 800 };
+
+                for (int i = currentStars; i < thresholds.Length; i++)
+                {
+                    if (remainingPoints >= thresholds[i])
+                    {
+                        remainingPoints -= thresholds[i];
+                        thresholdsExceeded++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                gradeuplist = ItemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
+                CanUpgrade = ItemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
+                gearupgradeID = gradeuplist.Count > 0 ? gradeuplist.Last().Value : 0;
+
+            }
+            if (CanUpgrade == 0) // This should handle a "True" state because I pull it from the Recipe directly.
             {
                 canContinue = false;
             }
-            bool DoUpgrade = currentTotalEquipPoint >= requiredPoints;
 
             if (DoUpgrade)
             {
                 equipItem.ItemId = gearupgradeID;
                 if (canContinue)
                 {
-                    currentTotalEquipPoint -= (uint)requiredPoints;
+                    currentTotalEquipPoint = remainingPoints;
                 }
                 else
                 {
@@ -189,7 +217,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return new S2CCraftStartEquipGradeUpRes
             {
                 GradeUpItemUID = equipItemUID,
-                GradeUpItemID = gradeUpItemID,
+                GradeUpItemID = gradeUpItemID, // This has to be the last ID found in gradeuplist or it will continue grading up into it.
                 GradeUpItemIDList = gradeuplist, // Only assign this when its meant to become the next item, or it will autofill the gauge everytime.
                 AddEquipPoint = addEquipPoint,
                 TotalEquipPoint = currentTotalEquipPoint,
@@ -217,6 +245,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk1 = unk1 // Dragon Augment related I guess?
             };
             
+        }
+
+        private List<CDataMDataCraftGradeupRecipe> FindRecipeFamily(CDataMDataCraftGradeupRecipe startingRecipe)
+        {
+            List<CDataMDataCraftGradeupRecipe> recipeFamily = new List<CDataMDataCraftGradeupRecipe>();
+            recipeFamily.Add(startingRecipe);
+            CDataMDataCraftGradeupRecipe? node = startingRecipe;
+            //Search forwards
+            while (node is not null)
+            {
+                node = Server.AssetRepository.CraftingGradeUpRecipesAsset
+                    .SelectMany(recipes => recipes.RecipeList)
+                    .Where(x => x.ItemID == node.GradeupItemID)
+                    .FirstOrDefault();
+
+                if (node is not null)
+                {
+                    recipeFamily.Add(node);
+                }
+            }
+
+            recipeFamily = recipeFamily.OrderBy(x => x.RecipeID).ToList();
+            recipeFamily.ForEach(x => Logger.Debug($"Found recipe family: {startingRecipe.RecipeID} -> {x.RecipeID}"));
+            return recipeFamily;
         }
     }
 }
