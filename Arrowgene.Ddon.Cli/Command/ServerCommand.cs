@@ -110,7 +110,7 @@ namespace Arrowgene.Ddon.Cli.Command
             if (currentDatabaseVersion != DdonDatabaseBuilder.Version)
             {
                 Logger.Error($"Database version is {currentDatabaseVersion}. Please update the database to version {DdonDatabaseBuilder.Version}.");
-                Logger.Error("$You can do this by running the server with the \"dbmigration\" flag.");
+                Logger.Error("You can do this by running the server with the \"dbmigration\" flag.");
                 return CommandResultType.Exit;
             }
 

@@ -4,11 +4,11 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CPawn_8_35_16Ntc : IPacketStructure
+    public class S2CPawnGetPawnTotalScoreInfoNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_PAWN_8_35_16_NTC;
+        public PacketId Id => PacketId.S2C_PAWN_GET_PAWN_TOTAL_SCORE_INFO_NTC;
 
-        public S2CPawn_8_35_16Ntc()
+        public S2CPawnGetPawnTotalScoreInfoNtc()
         {
             PawnTotalScore = new CDataPawnTotalScore();
         }
@@ -17,18 +17,18 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint PawnId { get; set; }
         public CDataPawnTotalScore PawnTotalScore { get; set; }
 
-        public class Serializer : PacketEntitySerializer<S2CPawn_8_35_16Ntc>
+        public class Serializer : PacketEntitySerializer<S2CPawnGetPawnTotalScoreInfoNtc>
         {
-            public override void Write(IBuffer buffer, S2CPawn_8_35_16Ntc obj)
+            public override void Write(IBuffer buffer, S2CPawnGetPawnTotalScoreInfoNtc obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteUInt32(buffer, obj.PawnId);
                 WriteEntity<CDataPawnTotalScore>(buffer, obj.PawnTotalScore);
             }
 
-            public override S2CPawn_8_35_16Ntc Read(IBuffer buffer)
+            public override S2CPawnGetPawnTotalScoreInfoNtc Read(IBuffer buffer)
             {
-                S2CPawn_8_35_16Ntc obj = new S2CPawn_8_35_16Ntc();
+                S2CPawnGetPawnTotalScoreInfoNtc obj = new S2CPawnGetPawnTotalScoreInfoNtc();
                 obj.CharacterId = ReadUInt32(buffer);
                 obj.PawnId = ReadUInt32(buffer);
                 obj.PawnTotalScore = ReadEntity<CDataPawnTotalScore>(buffer);

@@ -1,16 +1,13 @@
 #nullable enable
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.CodeDom;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,28 +15,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartQualityUpHandler));
 
-        private readonly ItemManager _itemManager;
 
         public CraftStartQualityUpHandler(DdonGameServer server) : base(server)
         {
-            _itemManager = Server.ItemManager;
         }
 
         public override S2CCraftStartQualityUpRes Handle(GameClient client, C2SCraftStartQualityUpReq request)
-        {  
+        {
             string equipItemUID = request.ItemUID;
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             var equipItem = ramItem.Item2.Item2;
-            uint craftpawnid = request.CraftMainPawnID;
-            bool IsGreatSuccess = false;
             string RefineMaterialUID = request.RefineUID;
-            var RefineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
             ushort AddStatusID = request.AddStatusID;
-            byte RandomQuality = 0;
-            byte GreatSuccessValue = 0;
             List<CDataItemUpdateResult> updateResults;
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();  
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
             CDataAddStatusParam AddStat = new CDataAddStatusParam()
             {
@@ -59,12 +49,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
             // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
-            
+
+            List<uint> consumableQuantityLevels = new List<uint>();
+            // Lead pawn is always owned by player.
+            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
+            consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(leadPawn));
+            foreach (uint pawnId in request.CraftSupportPawnIDList.Select(p => p.PawnId))
+            {
+                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
+                consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
+            }
+
+            uint plusValue = 0;
+            bool isGreatSuccessEquipmentQuality = false;
             if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
-                var (isGreatSuccess, randomQuality) = _itemManager.ItemQualityCalculation(RefineMaterialItem);
-                IsGreatSuccess = isGreatSuccess;
-                RandomQuality = randomQuality;
+                Item refineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
+                plusValue = craftCalculationResult.CalculatedValue;
+                isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
 
                 try
                 {
@@ -81,12 +84,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // I've tried plugging Crest IDs & Equipment ID/RandomQuality n such, and just random numbers Unk0 - Unk4 just don't seem to change anything.
             CDataS2CCraftStartQualityUpResUnk0 dummydata = new CDataS2CCraftStartQualityUpResUnk0()
             {
-                IsGreatSuccess = IsGreatSuccess
+                IsGreatSuccess = isGreatSuccessEquipmentQuality
             };
 
             // Updating the item.
             equipItem.ItemId = equipItem.ItemId;
-            equipItem.PlusValue = RandomQuality;
+            equipItem.PlusValue = (byte)plusValue;
             equipItem.AddStatusParamList = equipItem.AddStatusParamList;
 
             var (storageType, foundItem) = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
@@ -106,25 +109,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo.EquipSlot.PawnId = pawnId;
                     characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnId);
                 }
-                else if(storageType == StorageType.CharacterEquipment)
+                else if (storageType == StorageType.CharacterEquipment)
                 {
                     CurrentEquipInfo.EquipSlot.CharacterId = character.CharacterId;
                     characterCommon = character;
                 }
+
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
 
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
-                    _itemManager.UpgradeStorageItem(
-                        Server,
-                        client,
-                        character.CharacterId,
-                        storageType,
-                        equipItem,
-                        (byte)slotno
-                    );
+                    Server.ItemManager.UpgradeStorageItem(Server, client, character.CharacterId, storageType, equipItem, (byte)slotno);
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
                     client.Send(updateCharacterItemNtc);
                 }
@@ -134,23 +131,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
                 }
             }
-            
+
             var res = new S2CCraftStartQualityUpRes()
             {
                 Unk0 = dummydata,
                 AddStatusDataList = AddStatList,
                 CurrentEquip = CurrentEquipInfo
             };
-            // TODO: Store saved pawn exp
-            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+
+            // TODO: Find exp for item recipe
+            if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                PawnId = request.CraftMainPawnID,
-                AddExp = 10,
-                ExtraBonusExp = 0,
-                TotalExp = 10,
-                CraftRankLimit = 0
-            };
-            client.Send(expNtc);
+                CraftManager.HandlePawnExpUp(client, leadPawn, 10, 0);
+            }
+            if (CraftManager.CanPawnRankUp(leadPawn))
+            {
+                CraftManager.HandlePawnRankUp(client, leadPawn);
+            }
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             return res;
         }

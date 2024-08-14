@@ -12,18 +12,18 @@
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+        <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+        <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     </PropertyGroup>
-    <Import Project="./../SetSourceRevision.targets" />
+    <Import Project="./../SetSourceRevision.targets"/>
     <ItemGroup>
-      <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
-      <PackageReference Include="System.Data.SQLite" Version="1.0.115.5" />
-      <PackageReference Include="Npgsql" Version="7.0.6" />
-      <PackageReference Include="MySqlConnector" Version="2.2.7" />
+        <PackageReference Include="Arrowgene.Logging" Version="1.2.1"/>
+        <PackageReference Include="System.Data.SQLite" Version="1.0.115.5"/>
+        <PackageReference Include="Npgsql" Version="7.0.6"/>
+        <PackageReference Include="MySqlConnector" Version="2.2.7"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -34,47 +34,53 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ContentWithTargetPath Remove="files\database\script\abilitypresets_migration_sqlite.sql" />
-      <ContentWithTargetPath Remove="files\database\script\crest_migration.sql" />
-      <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
-      <ContentWithTargetPath Remove="files\database\script\uid_migration.sql" />
-      <ContentWithTargetPath Remove="files\database\script\migration_stamp_sqlite.sql" />
-      <ContentWithTargetPath Remove="files\database\script\migration_mail_sqlite.sql" />
-      <ContentWithTargetPath Remove="files\database\script\migration_pp_sqlite.sql" />
+        <ContentWithTargetPath Remove="files\database\script\abilitypresets_migration_sqlite.sql"/>
+        <ContentWithTargetPath Remove="files\database\script\crest_migration.sql"/>
+        <ContentWithTargetPath Remove="Files\Database\Script\equippoints_migration.sql"/>
+        <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql"/>
+        <ContentWithTargetPath Remove="Files\Database\Script\pawncraftingdata_migration.sql"/>
+        <ContentWithTargetPath Remove="Files\Database\Script\schema_sqlite.sql"/>
+        <ContentWithTargetPath Remove="files\database\script\uid_migration.sql"/>
+        <ContentWithTargetPath Remove="files\database\script\migration_pp_sqlite.sql"/>
+        <ContentWithTargetPath Remove="files\database\script\migration_mail_sqlite.sql"/>
+        <ContentWithTargetPath Remove="files\database\script\migration_stamp_sqlite.sql"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Files\Database\Script\abilitypresets_migration_sqlite.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Database\Script\crest_migration.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Database\Script\equippoints_migration.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Database\Script\equip_migration_sqlite.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Database\Script\schema_sqlite.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Database\Script\uid_migration.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-	  <None Update="Files\Database\Script\migration_pp_sqlite.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Database\Script\migration_mail_sqlite.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-	   <None Update="Files\Database\Script\migration_stamp_sqlite.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <None Update="Files\Database\Script\abilitypresets_migration_sqlite.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\crest_migration.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\equippoints_migration.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\equip_migration_sqlite.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\pawncraftingdata_migration.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\schema_sqlite.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\uid_migration.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\migration_pp_sqlite.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\migration_mail_sqlite.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\migration_stamp_sqlite.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

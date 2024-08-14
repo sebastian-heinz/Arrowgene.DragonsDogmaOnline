@@ -79,6 +79,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCraftTimeSaveCost.Serializer());
             Create(new CDataCraftSkillAnalyzeResult.Serializer());
             Create(new CDataCraftElement.Serializer());
+            Create(new CDataCraftProductInfo.Serializer());
+            Create(new CDataCraftProduct.Serializer());
+            Create(new S2CCraftCraftRankUpNtc.Serializer());
             Create(new CDataCurrentEquipInfo.Serializer());
             Create(new CDataEquipSlot.Serializer());
             Create(new CDataDeliveredItem.Serializer());
@@ -338,6 +341,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCraftStartEquipGradeUpReq.Serializer());
             Create(new C2SCraftStartQualityUpReq.Serializer());
             Create(new C2SCraftStartCraftReq.Serializer());
+            Create(new C2SCraftSkillUpReq.Serializer());
+            Create(new C2SCraftGetCraftProductInfoReq.Serializer());
+            Create(new C2SCraftCancelCraftReq.Serializer());
+            Create(new C2SCraftTimeSaveReq.Serializer());
+            Create(new C2SCraftGetCraftProductReq.Serializer());
+            Create(new C2SCraftResetCraftpointReq.Serializer());
             Create(new C2SCraftSkillAnalyzeReq.Serializer());
             Create(new C2SCraftStartEquipColorChangeReq.Serializer());
             Create(new S2CCraftStartEquipColorChangeRes.Serializer());
@@ -446,7 +455,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnCreatePawnReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
-            Create(new C2SPawnGetMypawnListReq.Serializer());
+            Create(new C2SPawnGetMyPawnListReq.Serializer());
             Create(new C2SPawnGetPartyPawnDataReq.Serializer());
             Create(new C2SPawnGetPawnHistoryListReq.Serializer());
             Create(new C2SPawnGetPawnTotalScoreReq.Serializer());
@@ -626,9 +635,15 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextSetContextNtc.Serializer());
             Create(new S2CCraftGetCraftIRCollectionValueListRes.Serializer());
             Create(new S2CCraftGetCraftProgressListRes.Serializer());
+            Create(new C2SCraftGetCraftProductInfoRes.Serializer());
+            Create(new C2SCraftCancelCraftRes.Serializer());
+            Create(new S2CCraftTimeSaveRes.Serializer());
+            Create(new C2SCraftGetCraftProductRes.Serializer());
             Create(new S2CCraftGetCraftSettingRes.Serializer());
             Create(new S2CCraftRecipeGetCraftRecipeRes.Serializer());
             Create(new S2CCraftStartCraftRes.Serializer());
+            Create(new S2CCraftSkillUpRes.Serializer());
+            Create(new S2CCraftResetCraftpointRes.Serializer());
             Create(new S2CCraftSkillAnalyzeRes.Serializer());
             Create(new S2CCraftRecipeGetCraftGradeupRecipeRes.Serializer());
             Create(new S2CCraftStartEquipGradeUpRes.Serializer());
@@ -789,9 +804,9 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CPawnExtendMainPawnNtc.Serializer());
             Create(new S2CPawnCreatePawnRes.Serializer());
-            Create(new S2CPawn_8_33_16Ntc.Serializer());
-            Create(new S2CPawn_8_34_16Ntc.Serializer());
-            Create(new S2CPawn_8_35_16Ntc.Serializer());
+            Create(new S2CPawnGetPawnProfileNtc.Serializer());
+            Create(new S2CPawnHistoryInfoNtc.Serializer());
+            Create(new S2CPawnGetPawnTotalScoreInfoNtc.Serializer());
             Create(new S2CPawnGetPawnOrbDevoteInfoNtc.Serializer());
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());

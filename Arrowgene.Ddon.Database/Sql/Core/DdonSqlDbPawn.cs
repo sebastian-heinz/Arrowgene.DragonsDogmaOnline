@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] PawnFields = new string[]
         {
-            "character_common_id", "character_id", "name", "hm_type", "pawn_type", "training_points", "available_training"
+            "character_common_id", "character_id", "name", "hm_type", "pawn_type", "training_points", "available_training", "craft_exp", "craft_rank", "craft_rank_limit", "craft_points", "production_speed_level", "equipment_enhancement_level", "equipment_quality_level", "consumable_quantity_level", "cost_performance_level"
         };
 
         protected static readonly string[] CDataPawnReactionFields = new string[]
@@ -383,6 +383,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             pawn.PawnType = GetByte(reader, "pawn_type");
             pawn.TrainingPoints = GetUInt32(reader, "training_points");
             pawn.AvailableTraining = GetUInt32(reader, "available_training");
+            
+            pawn.CraftData.CraftExp = GetUInt32(reader, "craft_exp");
+            pawn.CraftData.CraftRank = GetUInt32(reader, "craft_rank");
+            pawn.CraftData.CraftRankLimit = GetUInt32(reader, "craft_rank_limit");
+            pawn.CraftData.CraftPoint = GetUInt32(reader, "craft_points");
+            
+            pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.ProductionSpeed).Level = GetUInt32(reader, "production_speed_level");
+            pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentEnhancement).Level = GetUInt32(reader, "equipment_enhancement_level");
+            pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentQuality).Level = GetUInt32(reader, "equipment_quality_level");
+            pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.ConsumableQuantity).Level = GetUInt32(reader, "consumable_quantity_level");
+            pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.CostPerformance).Level = GetUInt32(reader, "cost_performance_level");
 
             return pawn;
         }
@@ -398,6 +409,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@pawn_type", pawn.PawnType);
             AddParameter(command, "@training_points", pawn.TrainingPoints);
             AddParameter(command, "@available_training", pawn.AvailableTraining);
+            
+            AddParameter(command, "@craft_exp", pawn.CraftData.CraftExp);
+            AddParameter(command, "@craft_rank", pawn.CraftData.CraftRank);
+            AddParameter(command, "@craft_rank_limit", pawn.CraftData.CraftRankLimit);
+            AddParameter(command, "@craft_points", pawn.CraftData.CraftPoint);
+            
+            AddParameter(command, "@production_speed_level", pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.ProductionSpeed).Level);
+            AddParameter(command, "@equipment_enhancement_level", pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentEnhancement).Level);
+            AddParameter(command, "@equipment_quality_level", pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentQuality).Level);
+            AddParameter(command, "@consumable_quantity_level", pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.ConsumableQuantity).Level);
+            AddParameter(command, "@cost_performance_level", pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.CostPerformance).Level);
         }
  
         private CDataPawnReaction ReadPawnReaction(DbDataReader reader)
