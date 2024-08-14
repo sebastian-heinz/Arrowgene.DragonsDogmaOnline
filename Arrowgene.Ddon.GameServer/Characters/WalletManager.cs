@@ -24,7 +24,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Server = server;
             WalletLimits = server.Setting.GameLogicSetting.WalletLimits;
         }
-        public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount,  uint BonusAmount = 0, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
+
+        public uint AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount,  uint BonusAmount = 0, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
         {
             CDataUpdateWalletPoint UpdateWalletPoint = AddToWallet(Character, Type, Amount, BonusAmount, connectionIn);
 
@@ -34,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Client.Send(UpdateCharacterItemNtc);
 
-            return true;
+            return UpdateWalletPoint.Value;
         }
 
         public CDataUpdateWalletPoint AddToWallet(Character Character, WalletType Type, uint Amount, uint BonusAmount = 0, DbConnection? connectionIn = null)

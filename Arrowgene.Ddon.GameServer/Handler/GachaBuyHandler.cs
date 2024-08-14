@@ -37,26 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 itemUpdateResult.AddRange(Server.ItemManager.AddItem(Server, client.Character, true, gachaItemInfo.ItemId, gachaItemInfo.ItemNum));
             }
 
-            // TODO: based on Settlement ID we have to figure out which currency was used
-            CDataWalletPoint walletPoint = client.Character.WalletPointList.Find(l => l.Type == WalletType.GoldenGemstones);
-            walletPoint.Value--;
-
-            S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc
-            {
-                UpdateType = ItemNoticeType.Default,
-                UpdateItemList = itemUpdateResult,
-                UpdateWalletList = new List<CDataUpdateWalletPoint>
-                {
-                    new()
-                    {
-                        Type = WalletType.GoldenGemstones,
-                        Value = walletPoint.Value,
-                        AddPoint = (int)-request.Price,
-                        ExtraBonusPoint = 0
-                    }
-                }
-            };
-            client.Send(itemUpdateNtc);
+            // TODO: based on Settlement ID figure out which currency was used
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, request.Price);
 
             return res;
         }
