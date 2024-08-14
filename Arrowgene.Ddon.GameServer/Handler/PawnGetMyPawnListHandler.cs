@@ -10,18 +10,17 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetMyPawnListHandler : StructurePacketHandler<GameClient, C2SPawnGetMypawnListReq>
+    public class PawnGetMyPawnListHandler : StructurePacketHandler<GameClient, C2SPawnGetMyPawnListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMyPawnListHandler));
-
 
         public PawnGetMyPawnListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnGetMypawnListReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SPawnGetMyPawnListReq> packet)
         {
-            List<CDataPawnList> PawnList = new List<CDataPawnList>();
+            List<CDataPawnList> pawnList = new List<CDataPawnList>();
 
             uint index = 1;
             foreach (Pawn pawn in client.Character.Pawns)
@@ -36,18 +35,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         Job = pawn.Job,
                         Level = pawn.ActiveCharacterJobData.Lv,
-                        // TODO: Fetch from DB
                         CraftRank = pawn.CraftData.CraftRank,
                         PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList
-                        // TODO: CraftRank, PawnCraftSkillList, CommentSize, LatestReturnDate
+                        // TODO: CommentSize, LatestReturnDate
                     }
                     // TODO: PawnState, ShareRange, Unk0, Unk1, Unk2
                 };
-                PawnList.Add(pawnListData);
+                pawnList.Add(pawnListData);
             }
 
             // TODO: PartnerInfo
-            CDataPartnerPawnInfo PartnerInfo = new CDataPartnerPawnInfo()
+            CDataPartnerPawnInfo partnerInfo = new CDataPartnerPawnInfo()
             {
                 PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
                 Likability = 1,
@@ -55,8 +53,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             S2CPawnGetMypawnListRes res = new S2CPawnGetMypawnListRes();
-            res.PawnList = PawnList;
-            res.PartnerInfo = PartnerInfo;
+            res.PawnList = pawnList;
+            res.PartnerInfo = partnerInfo;
 
             client.Send(res);
         }

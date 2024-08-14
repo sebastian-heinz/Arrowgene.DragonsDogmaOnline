@@ -138,7 +138,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftSupportPawnId3 = request.CraftSupportPawnIDList.ElementAtOrDefault(2)?.PawnId ?? 0,
                 RecipeId = request.RecipeID,
                 Exp = recipe.Exp * request.CreateCount,
-                NpcActionId = NpcActionType.NpcActionStithy,
+                NpcActionId = NpcActionType.NpcActionSmithy,
                 ItemId = recipe.ItemID,
                 Unk0 = request.Unk0,
                 // TODO: implement mechanism to deduct time periodically

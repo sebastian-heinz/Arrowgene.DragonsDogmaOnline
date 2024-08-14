@@ -31,10 +31,14 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 27)] public bool LogOutgoingPacketStructure { get; set; }
         [DataMember(Order = 100)] public AsyncEventSettings ServerSocketSettings { get; set; }
         
+        // TODO: Create a new Game/Logic/Settings wrapper instead of combining low-level server settings with high-level functional settings.
         /// <summary>
-        /// Additional factor to manipulate outcome - should be between 0 and 1 to reduce time taken further or greater than 1 to increase time taken.
+        /// Additional factor to change how long crafting a recipe will take to finish.
         /// </summary>
         [DataMember(Order = 1000)] public double AdditionalProductionSpeedFactor { get; set; }
+        /// <summary>
+        /// Additional factor to change how much a recipe will cost.
+        /// </summary>
         [DataMember(Order = 1001)] public double AdditionalCostPerformanceFactor { get; set; }
 
         public ServerSetting()

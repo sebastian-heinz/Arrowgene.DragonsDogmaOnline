@@ -456,7 +456,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnCreatePawnReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
-            Create(new C2SPawnGetMypawnListReq.Serializer());
+            Create(new C2SPawnGetMyPawnListReq.Serializer());
             Create(new C2SPawnGetPartyPawnDataReq.Serializer());
             Create(new C2SPawnGetPawnHistoryListReq.Serializer());
             Create(new C2SPawnGetPawnTotalScoreReq.Serializer());

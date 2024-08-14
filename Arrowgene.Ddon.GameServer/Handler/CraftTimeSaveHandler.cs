@@ -21,19 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftProgress.RemainTime = 0;
             Server.Database.UpdatePawnCraftProgress(craftProgress);
 
-            CDataWalletPoint resetCraftSkillWalletPoint = client.Character.WalletPointList.Find(l => l.Type == WalletType.GoldenGemstones);
-            resetCraftSkillWalletPoint.Value--;
-            S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc();
-            itemUpdateNtc.UpdateType = ItemNoticeType.ResetCraftpoint;
-            itemUpdateNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
-            {
-                Type = WalletType.GoldenGemstones,
-                Value = resetCraftSkillWalletPoint.Value,
-                AddPoint = -1,
-                ExtraBonusPoint = 0
-            });
-            Server.Database.UpdateWalletPoint(client.Character.CharacterId, resetCraftSkillWalletPoint);
-            client.Send(itemUpdateNtc);
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, 1);
 
             client.Send(new S2CCraftTimeSaveRes { PawnID = packet.Structure.PawnID, RemainTime = 0 });
             client.Send(new S2CCraftFinishCraftNtc { PawnId = packet.Structure.PawnID });
