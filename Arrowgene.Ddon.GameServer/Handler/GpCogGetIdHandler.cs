@@ -17,8 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CGpCogGetIdRes res = new S2CGpCogGetIdRes();
 
-            // TODO: implement S2C_GP_COG_GET_ID_RES
-
+            // TODO: store CogId somewhere in account
             res.CogId = "Arrowgene";
             
             return res;

@@ -215,6 +215,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataHasRegionBreakReward.Serializer());
 
             Create(new CDataGPShopDisplayType.Serializer());
+            Create(new CDataGPShopBuyHistoryElement.Serializer());
             
             Create(new CDataGachaInfo.Serializer());
             Create(new CDataGachaDrawGroupInfo.Serializer());
@@ -343,6 +344,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnHistory.Serializer());
             Create(new CDataPawnHp.Serializer());
             Create(new CDataPawnInfo.Serializer());
+            
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPawnList.Serializer());
             Create(new CDataPawnListData.Serializer());
@@ -697,14 +699,18 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SGpGetCapToGpChangeListReq.Serializer());
             Create(new C2SGpChangeCapToGpReq.Serializer());
             Create(new C2SGpCourseGetAvailableListReq.Serializer());
+            Create(new C2SGpCourseGetValidListReq.Serializer());
+            Create(new C2SGpShopGetBuyHistoryReq.Serializer());
+            Create(new C2SGpCourseUseFromAvailableReq.Serializer());
+            Create(new C2SGpGetCapReq.Serializer());
             
             Create(new C2SGachaListReq.Serializer());
             Create(new C2SBoxGachaListReq.Serializer());
             Create(new C2SBoxGachaBuyReq.Serializer());
             Create(new C2SBoxGachaDrawInfoReq.Serializer());
             Create(new C2SGachaBuyReq.Serializer());
+            
             Create(new C2SEventCodeInputReq.Serializer());
-            Create(new C2SItemGetItemStorageInfoReq.Serializer());
             
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());

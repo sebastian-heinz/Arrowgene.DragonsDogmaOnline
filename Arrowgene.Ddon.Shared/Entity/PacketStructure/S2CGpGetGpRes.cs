@@ -10,7 +10,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CGpGetGpRes()
         {
-            RealTime = DateTimeOffset.MinValue;
         }
 
         public uint GP { get; set; }
