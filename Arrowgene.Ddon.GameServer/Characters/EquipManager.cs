@@ -1,15 +1,30 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class EquipManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipManager));
+
+        private static readonly List<EquipSlot> EnsembleSlots = new List<EquipSlot>()
+            {
+                EquipSlot.ArmorLeg,
+                EquipSlot.ArmorHelm,
+                EquipSlot.ArmorArm,
+                EquipSlot.WearBody,
+                EquipSlot.WearLeg,
+                EquipSlot.Accessory
+            };
+
         public static EquipType GetEquipTypeFromSlotNo(ushort slotNo)
         {
             ushort relativeSlotNo = slotNo;
@@ -96,6 +111,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 UpdateType = updateType
             };
 
+            List<(EquipType, EquipSlot)> forceRemovals = new List<(EquipType, EquipSlot)>();
+
             foreach (CDataCharacterEquipInfo changeCharacterEquipInfo in changeCharacterEquipList)
             {
                 string itemUId = changeCharacterEquipInfo.EquipItemUId;
@@ -103,13 +120,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 byte equipSlot = changeCharacterEquipInfo.EquipCategory;
                 ushort equipItemStorageSlot = characterToEquipTo.Equipment.GetStorageSlot(equipType, equipSlot);
 
-                if(itemUId.Length == 0)
+                if (itemUId.Length == 0)
                 {
                     // UNEQUIP
 
                     // Remove from equipment template
                     characterToEquipTo.EquipmentTemplate.SetEquipItem(null, characterToEquipTo.Job, equipType, equipSlot);
-                    server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot);
+
+                    server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, true);
 
                     // Update storage
                     // TODO: Move to the other storage types if the first one is full
@@ -121,14 +139,71 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // EQUIP
 
                     // Set in equipment template
+                    //TODO: Move this lookup to memory instead of the DB if possible.
                     characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId), characterToEquipTo.Job, equipType, equipSlot);
-                    server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId);
-
+                    server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId, true);
+                    
                     // Update storage, swapping if needed
                     var result = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, itemUId);
                     Storage sourceStorage = client.Character.Storage.GetStorage(result.Item1);
                     updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(server, client.Character, sourceStorage, itemUId, 1, characterToEquipTo.Equipment.Storage, equipItemStorageSlot));
+
+                    //Check for ensemble requirements
+                    ClientItemInfo itemInfo = server.ItemManager.LookupInfoByUID(server, itemUId);
+                    if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                    {
+                        foreach (EquipSlot slot in EnsembleSlots)
+                        {
+                            var foo = characterToEquipTo.EquipmentTemplate.GetEquipItem(characterToEquipTo.Job, equipType, (byte)slot);
+                            if (foo is null) continue;
+                            forceRemovals.Add((equipType, slot));
+                        }
+                    }
+                    else if (EnsembleSlots.Contains((EquipSlot)itemInfo.EquipSlot))
+                    {
+                        var currentBody = characterToEquipTo.EquipmentTemplate.GetEquipItem(characterToEquipTo.Job, equipType, (byte)EquipSlot.ArmorBody);
+                        if (currentBody != null)
+                        {
+                            ClientItemInfo bodyInfo = server.ItemManager.LookupInfoByItem(server, currentBody);
+                            if (bodyInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                            {
+                                forceRemovals.Add((equipType, EquipSlot.ArmorBody));
+                            }
+                        }
+                    }
                 }
+            }
+
+            //Post-process to handle the overrides.
+            foreach ((EquipType, EquipSlot) force in forceRemovals)
+            {
+                EquipType equipType = force.Item1;
+                EquipSlot slot = force.Item2;
+
+                //Handle template and DB
+                characterToEquipTo.EquipmentTemplate.SetEquipItem(null, characterToEquipTo.Job, equipType, (byte)slot);
+                server.Database.DeleteEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, (byte)slot, true);
+
+                // Update storage
+                // TODO: Move to the other storage types if the first one is full
+                Storage destinationStorage = client.Character.Storage.GetStorage(storageTypes[0]);
+                updateCharacterItemNtc.UpdateItemList.AddRange(server.ItemManager.MoveItem(
+                    server,
+                    client.Character,
+                    characterToEquipTo.Equipment.Storage,
+                    characterToEquipTo.Equipment.GetStorageSlot(equipType, (byte)slot),
+                    1,
+                    destinationStorage,
+                    0
+                ));
+
+                //Handle the client.
+                changeCharacterEquipList.Add(new CDataCharacterEquipInfo()
+                {
+                    EquipItemUId = string.Empty,
+                    EquipCategory = (byte)slot,
+                    EquipType = equipType
+                });
             }
 
             client.Send(updateCharacterItemNtc);
@@ -181,6 +256,38 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
             throw new Exception("Item not found");
+        }
+    
+        public List<(EquipType, EquipSlot)> CleanGenderedEquipTemplates(DdonGameServer server, CharacterCommon character)
+        {
+            List<(EquipType, EquipSlot)> forceRemovals = new List<(EquipType, EquipSlot)>();
+            //Clean equip templates.
+            foreach (JobId job in Enum.GetValues(typeof(JobId)))
+            {
+                foreach (EquipType equipType in Enum.GetValues(typeof(EquipType)))
+                {
+                    foreach (EquipSlot equipSlot in Enumerable.Range(1, 15))
+                    {
+                        Item? item = character.EquipmentTemplate.GetEquipItem(job, equipType, (byte)equipSlot);
+                        if (item is null) continue;
+                        ClientItemInfo itemInfo = server.ItemManager.LookupInfoByItem(server, item);
+                        if (itemInfo.Gender == Gender.Any) continue;
+                        if ((character.EditInfo.Sex == 1 && itemInfo.Gender == Gender.Female)
+                            || (character.EditInfo.Sex == 2 && itemInfo.Gender == Gender.Male))
+                        {
+                            character.EquipmentTemplate.SetEquipItem(null, job, equipType, (byte)equipSlot);
+                            server.Database.DeleteEquipItem(character.CommonId, job, equipType, (byte)equipSlot);
+
+                            if (job == character.Job)
+                            {
+                                forceRemovals.Add((equipType, equipSlot));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return forceRemovals;
         }
     }
 }

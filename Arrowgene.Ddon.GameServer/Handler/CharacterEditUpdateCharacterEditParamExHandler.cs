@@ -1,8 +1,12 @@
+#nullable enable
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -24,6 +28,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Character.FirstName = packet.Structure.FirstName;
                 Server.Database.UpdateCharacterBaseInfo(client.Character);
             }
+
+            //Client won't let you reincarnate if you're wearing a gender-locked item, but EquipmentTemplates also have to be cleaned.
+            Server.EquipManager.CleanGenderedEquipTemplates(Server, client.Character);
 
             client.Send(new S2CCharacterEditUpdateCharacterEditParamExRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {

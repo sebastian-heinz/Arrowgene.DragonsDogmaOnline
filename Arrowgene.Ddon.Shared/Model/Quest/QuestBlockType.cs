@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         IsStageNo,
         IsQuestOrdered,
         PlayEvent,
+        KillTargetEnemies,
         Raw,
         DummyBlock,
         DummyBlockNoProgress,

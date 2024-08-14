@@ -229,7 +229,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataQuestLayoutFlagSetInfo.Serializer());
             Create(new CDataQuestList.Serializer());
             Create(new CDataQuestExp.Serializer());
-            Create(new CDataQuestListUnk7.Serializer());
             Create(new CDataQuestLog.Serializer());
             Create(new CDataQuestOrderConditionParam.Serializer());
             Create(new CDataQuestOrderList.Serializer());

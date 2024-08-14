@@ -1,6 +1,8 @@
-﻿using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -24,7 +26,9 @@ namespace Arrowgene.Ddon.Server.Network
 
         public void Handle(TClient client, IPacket packet)
         {
+            Server.Database.ClearDeferred();
             Handle(client, new StructurePacket<TReqStruct>(packet));
+            Server.Database.ExecuteDeferred();
         }
     }
 }

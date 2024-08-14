@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Text.RegularExpressions;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
-using static Arrowgene.Ddon.GameServer.Characters.QuestManager;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Quests
 {
@@ -516,6 +511,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                                         questBlock.QuestEvent.StartPosNo));
                                 break;
                         }
+                    }
+                    break;
+                case QuestBlockType.KillTargetEnemies:
+                    {
+                        // Handles kill x amount of monster type quests
+                        checkCommands.Add(QuestManager.CheckCommand.EmDieLight((int)questBlock.TargetEnemy.EnemyId, (int)questBlock.TargetEnemy.Level, (int)questBlock.TargetEnemy.Amount));
                     }
                     break;
                 case QuestBlockType.Raw:

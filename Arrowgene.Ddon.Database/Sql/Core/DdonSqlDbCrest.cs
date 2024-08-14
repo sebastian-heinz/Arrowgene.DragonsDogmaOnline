@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using System.Web;
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -29,13 +30,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                                        $"\"character_common_id\" = @character_common_id AND \"item_uid\"=@item_uid;";
 
 
-        public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)
+        public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, bool deferred = false)
         {
+            if (deferred)
+            {
+                DeferredOperations.Add(new GenericDeferred(
+                    (connection) => InsertCrest(connection, characterCommonId, itemUId, slot, crestId, crestAmount)
+                ));
+                return true;
+            }
+
             using TCon connection = OpenNewConnection();
             return InsertCrest(connection, characterCommonId, itemUId, slot, crestId, crestAmount);
         }
 
-        public bool InsertCrest(TCon connection, uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)
+        public bool InsertCrest(DbConnection connection, uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)
         {
             return ExecuteNonQuery(connection, SqlInsertCrestData, command =>
             {
