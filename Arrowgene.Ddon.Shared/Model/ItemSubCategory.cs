@@ -11,6 +11,7 @@ namespace Arrowgene.Ddon.Shared.Model
         UseDoorKey = 8,
 
         //MaterialCategory, offset by 100
+        MaterialCategoryOffset = 100,
         MaterialInorganicMetal = 101,
         MaterialInorganicOre = 102,
         MaterialInorganicSand = 103,
@@ -43,6 +44,7 @@ namespace Arrowgene.Ddon.Shared.Model
         MaterialDragonAbility = 133,
 
         //WeaponCategory, offset by 200
+        WeaponCategoryOffset = 200,
         WeaponHand = 200,
         WeaponSword = 201,
         WeaponShield = 202,
@@ -59,6 +61,7 @@ namespace Arrowgene.Ddon.Shared.Model
         WeaponMagickSword = 215,
 
         //EquipSlot, offset by 300
+        EquipSlotOffset = 300,
         EquipArmorHelm = 303,
         EquipArmorBody = 304,
         EquipClothingBody = 305,
@@ -71,6 +74,7 @@ namespace Arrowgene.Ddon.Shared.Model
         EquipEnsemble = 312,
 
         //JewelrySubCategory, offset by 400
+        JewelrySubCategoryOffset = 400,
         JewelryCommon = 426,
         JewelryRing = 442,
         JewelryBracelet = 458,
