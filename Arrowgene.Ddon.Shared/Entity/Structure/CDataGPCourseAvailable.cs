@@ -9,15 +9,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
-        // Character ID?
         public uint ID { get; set; }
         public string Name { get; set; }
         public DateTimeOffset UseLimitTime { get; set; }
         public uint CourseID { get; set; }
         public uint LineupID { get; set; }
-        public uint BackIconID { get; set; }
-        public uint FrameIconID { get; set; }
-
+        public string ImageAddr { get; set; }
+        
         public class Serializer : EntitySerializer<CDataGPCourseAvailable>
         {
             public override void Write(IBuffer buffer, CDataGPCourseAvailable obj)
@@ -27,8 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt64(buffer, (ulong)obj.UseLimitTime.ToUnixTimeSeconds());
                 WriteUInt32(buffer, obj.CourseID);
                 WriteUInt32(buffer, obj.LineupID);
-                WriteUInt32(buffer, obj.BackIconID);
-                WriteUInt32(buffer, obj.FrameIconID);
+                WriteMtString(buffer, obj.ImageAddr);
             }
 
             public override CDataGPCourseAvailable Read(IBuffer buffer)
@@ -40,8 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.UseLimitTime = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
                 obj.CourseID = ReadUInt32(buffer);
                 obj.LineupID = ReadUInt32(buffer);
-                obj.BackIconID = ReadUInt32(buffer);
-                obj.FrameIconID = ReadUInt32(buffer);
+                obj.ImageAddr = ReadMtString(buffer);
 
                 return obj;
             }

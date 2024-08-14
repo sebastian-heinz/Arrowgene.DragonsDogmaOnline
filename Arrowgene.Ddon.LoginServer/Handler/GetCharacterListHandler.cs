@@ -52,10 +52,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 {
                     CDataGPCourseValid cDataGPCourseValid = new CDataGPCourseValid()
                     {
-                        Id = c.CharacterId,
-                        CourseId = ValidCourse.Value.Id,
-                        NameA = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
-                        NameB = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
+                        ID = c.CharacterId,
+                        CourseID = ValidCourse.Value.Id,
+                        Name = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
+                        ImageAddr = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
                         StartTime = ValidCourse.Value.StartTime,
                         EndTime = ValidCourse.Value.EndTime,
                     };

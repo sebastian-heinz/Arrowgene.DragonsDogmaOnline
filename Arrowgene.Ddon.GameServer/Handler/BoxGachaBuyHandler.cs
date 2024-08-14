@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -40,25 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // TODO: based on Settlement ID figure out which currency was used
-            CDataWalletPoint walletPoint = client.Character.WalletPointList.Find(l => l.Type == WalletType.GoldenGemstones);
-            walletPoint.Value--;
-
-            S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc
-            {
-                UpdateType = ItemNoticeType.Default,
-                UpdateItemList = itemUpdateResult,
-                UpdateWalletList = new List<CDataUpdateWalletPoint>
-                {
-                    new()
-                    {
-                        Type = WalletType.GoldenGemstones,
-                        Value = walletPoint.Value,
-                        AddPoint = (int)-request.Price,
-                        ExtraBonusPoint = 0
-                    }
-                }
-            };
-            client.Send(itemUpdateNtc);
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, request.Price);
 
             return res;
         }
