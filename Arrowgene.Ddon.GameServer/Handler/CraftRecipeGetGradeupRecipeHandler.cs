@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftRecipeGetCraftGradeupRecipeRes Handle(GameClient client, C2SCraftRecipeGetCraftGradeupRecipeReq request)
         {
-            var categoryRecipes = Server.AssetRepository.CraftingGradeUpRecipesAsset
+            List<CDataMDataCraftGradeupRecipe> categoryRecipes = Server.AssetRepository.CraftingGradeUpRecipesAsset
                 .Where(recipes => recipes.Category == request.Category)
                 .SelectMany(recipes => recipes.RecipeList)
                 .ToList();
