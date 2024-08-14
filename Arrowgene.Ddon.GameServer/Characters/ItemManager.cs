@@ -687,6 +687,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (isGreatSuccess, RandomQuality);
         }
 
+        public ClientItemInfo LookupInfoByUID(DdonGameServer server, string itemUID)
+        {
+            var item = server.Database.SelectStorageItemByUId(itemUID);
+            if (item == null)
+            {
+                throw new ItemDoesntExistException(itemUID);
+            }
+            return LookupInfoByItem(server, item);
+        }
+
+        public ClientItemInfo LookupInfoByItem(DdonGameServer server, Item item)
+        {
+            var id = item.ItemId;
+            if (!server.AssetRepository.ClientItemInfos.ContainsKey(id))
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
+            }
+            return server.AssetRepository.ClientItemInfos[id];
+        }
+
     }
 
     [Serializable]
