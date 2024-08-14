@@ -5,7 +5,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
                 {
-                    UpdateType = ItemNoticeType.ChangePawnEquip
+                    UpdateType = ItemNoticeType.StorePostItemMail //Probably an abuse of this notice type.
                 };
 
                 S2CEquipChangePawnEquipNtc updateEquipNtc = new S2CEquipChangePawnEquipNtc()
@@ -50,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EquipType equipType = force.Item1;
                     EquipSlot slot = force.Item2;
 
-                    Storage destinationStorage = client.Character.Storage.GetStorage(StorageType.ItemBagEquipment);
+                    Storage destinationStorage = client.Character.Storage.GetStorage(StorageType.ItemPost);
                     updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(
                         Server,
                         client.Character,
