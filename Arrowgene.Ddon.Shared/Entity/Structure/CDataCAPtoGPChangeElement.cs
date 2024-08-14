@@ -1,18 +1,25 @@
-using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
-        
+
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCAPtoGPChangeElement
     {
         public uint ID { get; set; }
+
+        /// cost in COG CAP currency
         public uint CAP { get; set; }
+
+        // Amount of golden Gemstones offered
         public uint GP { get; set; }
+
         public string Comment { get; set; }
+
+        // Seemingly only one icon, can be either 0, 1, .. makes no difference
         public uint BackIconID { get; set; }
+
+        // Two icons, 0 is a regular gold frame, 1 has an additional fancy + sign 
         public uint FrameIconID { get; set; }
-    
+
         public class Serializer : EntitySerializer<CDataCAPtoGPChangeElement>
         {
             public override void Write(IBuffer buffer, CDataCAPtoGPChangeElement obj)
@@ -24,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.BackIconID);
                 WriteUInt32(buffer, obj.FrameIconID);
             }
-        
+
             public override CDataCAPtoGPChangeElement Read(IBuffer buffer)
             {
                 CDataCAPtoGPChangeElement obj = new CDataCAPtoGPChangeElement();

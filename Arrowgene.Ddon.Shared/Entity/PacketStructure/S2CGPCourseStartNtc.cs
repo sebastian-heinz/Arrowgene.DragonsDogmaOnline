@@ -1,6 +1,5 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
-using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -8,8 +7,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.S2C_GP_COURSE_START_NTC;
 
-        public UInt32 CourseID { get; set; }
-        public UInt64 ExpiryTimestamp { get; set; }
+        public uint CourseID { get; set; }
+        public ulong ExpiryTimestamp { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CGPCourseStartNtc>
         {

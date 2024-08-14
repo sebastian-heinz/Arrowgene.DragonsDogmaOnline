@@ -296,7 +296,7 @@ namespace Arrowgene.Ddon.Shared.Model
         Unk10 = 0xA,
         Unk11 = 0xB,
         Unk12 = 0xC,
-        Unk13 = 0xD,
+        ItemPost = 0xD,
         CharacterEquipment = 0xE,
         PawnEquipment = 0xF,
         Unk16 = 0x10,
