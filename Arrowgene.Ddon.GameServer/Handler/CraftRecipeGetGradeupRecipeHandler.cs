@@ -24,8 +24,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .ToList();
 
             List<CDataCommonU32> itemList = request.ItemList;
-            //TODO: Since the client sends a list of items that can be upgraded in the given category,
-            // We can make an optimization pass that splits the JSON into gear trees too. (so all bronzesword recipes together in a subcat, etc)
 
             var response = new S2CCraftRecipeGetCraftGradeupRecipeRes()
             {
