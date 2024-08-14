@@ -111,7 +111,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataBazaarItemInfo.Serializer());
             Create(new CDataBazaarItemNumOfExhibitionInfo.Serializer());
             Create(new CDataChangeEquipJobItem.Serializer());
-            Create(new CDataCharacterEditUpdatePawnEditParamReqUnk0.Serializer());
+            Create(new CDataCharacterEditPrice.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
             Create(new CDataEquipJobItem.Serializer());
             Create(new CDataErrorMessage.Serializer());

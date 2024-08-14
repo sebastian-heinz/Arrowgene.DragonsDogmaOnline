@@ -1,6 +1,5 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -11,14 +10,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SCharacterEditUpdatePawnEditParamExReq()
         {
-            Unk0 = new CDataCharacterEditUpdatePawnEditParamReqUnk0();
+            EditPrice = new CDataCharacterEditPrice();
             EditInfo = new CDataEditInfo();
             Name = string.Empty;
         }
 
         public byte SlotNo { get; set; }
         public byte UpdateType { get; set; }
-        public CDataCharacterEditUpdatePawnEditParamReqUnk0 Unk0 { get; set; }
+        public CDataCharacterEditPrice EditPrice { get; set; }
         public CDataEditInfo EditInfo { get; set; }
         public string Name { get; set; }
 
@@ -28,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteByte(buffer, obj.SlotNo);
                 WriteByte(buffer, obj.UpdateType);
-                WriteEntity(buffer, obj.Unk0);
+                WriteEntity(buffer, obj.EditPrice);
                 WriteEntity(buffer, obj.EditInfo);
                 WriteMtString(buffer, obj.Name);
             }
@@ -38,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 C2SCharacterEditUpdatePawnEditParamExReq obj = new C2SCharacterEditUpdatePawnEditParamExReq();
                 obj.SlotNo = ReadByte(buffer);
                 obj.UpdateType = ReadByte(buffer);
-                obj.Unk0 = ReadEntity<CDataCharacterEditUpdatePawnEditParamReqUnk0>(buffer);
+                obj.EditPrice = ReadEntity<CDataCharacterEditPrice>(buffer);
                 obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
                 obj.Name = ReadMtString(buffer);
                 return obj;

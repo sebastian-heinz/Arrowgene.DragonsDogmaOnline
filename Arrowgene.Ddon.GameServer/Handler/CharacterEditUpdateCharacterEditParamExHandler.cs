@@ -2,11 +2,8 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
-using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -20,7 +17,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamExReq> packet)
         {
-            // TODO: Substract GG
+
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
+                packet.Structure.EditPrice.PointType, packet.Structure.EditPrice.Value);
+
             client.Character.EditInfo = packet.Structure.EditInfo;
             Server.Database.UpdateEditInfo(client.Character);
             

@@ -20,7 +20,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdatePawnEditParamExReq> packet)
         {
-            // TODO: Substract GG
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
+                packet.Structure.EditPrice.PointType, packet.Structure.EditPrice.Value);
+
             Pawn pawn = client.Character.PawnBySlotNo(packet.Structure.SlotNo);
             pawn.EditInfo = packet.Structure.EditInfo;
             Server.Database.UpdateEditInfo(pawn);

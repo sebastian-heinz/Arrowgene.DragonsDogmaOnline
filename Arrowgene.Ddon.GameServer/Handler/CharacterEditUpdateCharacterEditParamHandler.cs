@@ -16,7 +16,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamReq> packet)
         {
-            // TODO: Substract GG/Tickets
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
+                            packet.Structure.EditPrice.PointType, packet.Structure.EditPrice.Value);
+
             client.Character.EditInfo = packet.Structure.EditInfo;
             Server.Database.UpdateEditInfo(client.Character);
             client.Send(new S2CCharacterEditUpdateCharacterEditParamRes());
