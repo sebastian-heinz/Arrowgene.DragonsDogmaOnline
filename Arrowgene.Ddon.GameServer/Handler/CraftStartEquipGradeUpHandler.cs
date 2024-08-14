@@ -102,6 +102,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 _ => throw new InvalidOperationException("Invalid star level")
             };
 
+            if (!recipeData.Unk1)
+            {
+                //TODO: If this bool is false, you only let the item upgrade a single tier, even if it have the skill to
+                // multi-level, and if the points exceed multiple thresholds, clamp it to a single point before rolling over.
+                // No idea what gear this is meant for, but thats what the UI element this bool controls say.
+            }
+
             if (currentTotalEquipPoint >= requiredPoints)
             {
                 doUpgrade = true;
