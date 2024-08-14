@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -30,7 +28,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
                 ReadServerResponse(buffer, obj);
 
-                // は忘れないように注意しましょう。
                 obj.CogId = ReadMtString(buffer);
 
                 return obj;
