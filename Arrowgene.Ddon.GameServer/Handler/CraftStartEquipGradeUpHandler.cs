@@ -274,7 +274,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             recipeFamily = recipeFamily.OrderBy(x => x.RecipeID).ToList();
-            recipeFamily.ForEach(x => Logger.Debug($"Found recipe family: {startingRecipe.RecipeID} -> {x.RecipeID}"));
+            //recipeFamily.ForEach(x => Logger.Debug($"Found recipe family: {startingRecipe.RecipeID} -> {x.RecipeID}"));
             return recipeFamily;
         }
     }
