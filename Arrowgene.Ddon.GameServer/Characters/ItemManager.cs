@@ -48,7 +48,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {19508,(WalletType.Gold,1000)},
             {19509,(WalletType.Gold,10000)},
             {19510,(WalletType.RiftPoints,1000)},
-            {19511,(WalletType.BloodOrbs,1000)}
+            {19511,(WalletType.BloodOrbs,1000)},
+            // TODO: Requires special item notice type 47, could be offered in adventure pass shop
+            {11262,(WalletType.ResetCraftSkills,1)}
             // TODO: Find all items that add wallet points
         };
 
@@ -248,7 +250,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if(itemBag)
             {
                 // Limit stacks when adding to the item bag.
-                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit);
+                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit, plusvalue);
             }
             else
             {
@@ -649,44 +651,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return amountFound >= num;
         }
-
-        public (bool IsGreatSuccess, byte RandomQuality) ItemQualityCalculation(Item? refineMaterialItem)
-        {
-            byte greatSuccessValue = 1;
-            byte greatSuccessOdds = 10;
-            bool isGreatSuccess;
-            byte RandomQuality = 0;
-
-            if (refineMaterialItem != null)
-            {
-                if (refineMaterialItem.ItemId == 8036 || refineMaterialItem.ItemId == 8068) // Quality Rocks (Tier2)
-                {
-                    RandomQuality = 2;
-                    greatSuccessValue = 3;
-                }
-                else if (refineMaterialItem.ItemId == 8052 || refineMaterialItem.ItemId == 8084) // WhiteDragon Rocks (Tier3)
-                {
-                    RandomQuality = 2;
-                    greatSuccessValue = 3;
-                    greatSuccessOdds = 5;
-                }
-                else if (refineMaterialItem.ItemId == 8035 || refineMaterialItem.ItemId == 8067) // Standard Rocks (Tier1)
-                {
-                    RandomQuality = 1;
-                    greatSuccessValue = 2;
-                }
-            }
-
-            isGreatSuccess = Random.Shared.Next(greatSuccessOdds) == 0;
-
-            if (isGreatSuccess)
-            {
-                RandomQuality = greatSuccessValue;
-            }
-
-            return (isGreatSuccess, RandomQuality);
-        }
-
         public ClientItemInfo LookupInfoByUID(DdonGameServer server, string itemUID)
         {
             var item = server.Database.SelectStorageItemByUId(itemUID);

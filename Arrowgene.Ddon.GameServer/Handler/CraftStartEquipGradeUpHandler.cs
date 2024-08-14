@@ -1,4 +1,6 @@
 #nullable enable
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
@@ -6,8 +8,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -66,15 +66,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 try
                 {
-                var updateResults = _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
-                updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
+                    var updateResults =
+                        _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
+                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
                 catch (NotEnoughItemsException)
                 {
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                 }
             }
-            uint addEquipPoint = (uint)((isGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4))); 
+            uint addEquipPoint = (uint)((isGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4)));
+            // TODO: make use of pawn crafting skills instead
             currentTotalEquipPoint += addEquipPoint;
 
             // Subtract less Gold if support pawn is used and add slightly more points
@@ -120,7 +122,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             break;
                         }
                     }
-
                     gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
                     canUpgrade = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
                     upgradableStatus = (UpgradableStatus)canUpgrade;
@@ -159,10 +160,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     currentTotalEquipPoint = 0;
                 }
+
                 equipItem.EquipPoints = currentTotalEquipPoint;
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
-                res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, (uint)upgradableStatus, goldRequired, isGreatSuccess, CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
+                res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, (uint)upgradableStatus, goldRequired, isGreatSuccess,
+                                            CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
@@ -171,23 +174,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, isGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
-
             
-            // TODO: Store saved pawn exp
-            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            // Lead pawn is always owned by player.
+            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
+            if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                PawnId = request.CraftMainPawnID,
-                AddExp = pawnExp,
-                ExtraBonusExp = 0,
-                TotalExp = pawnExp,
-                CraftRankLimit = 0
-            };
-            client.Send(expNtc);
+                CraftManager.HandlePawnExpUp(client, leadPawn, pawnExp, 0);
+            }
+            if (CraftManager.CanPawnRankUp(leadPawn))
+            {
+                CraftManager.HandlePawnRankUp(client, leadPawn);
+            }
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
+
             client.Send(updateCharacterItemNtc);
             return res;
         }
 
-        private void UpdateCharacterItem(GameClient client, string equipItemUID, Item equipItem, uint charid, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc, CDataCurrentEquipInfo CurrentEquipInfo)
+        private void UpdateCharacterItem(GameClient client, string equipItemUID, Item equipItem, uint charid, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc,
+            CDataCurrentEquipInfo CurrentEquipInfo)
         {
             var (storageType, foundItem) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             if (foundItem != null)
@@ -222,9 +227,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
             }
-
         }
-        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeupList, uint addEquipPoint, uint currentTotalEquipPoint, uint canUpgrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+
+        private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeupList,
+                        uint addEquipPoint, uint currentTotalEquipPoint, uint canUpgrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip,
+                        uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
             return new S2CCraftStartEquipGradeUpRes
             {
@@ -242,8 +249,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Unk1 = unk1 // Dragon Augment related I guess?
             };
         }
-        
-        private S2CCraftStartEquipGradeUpRes CreateEquipPointResponse(string equipItemUID, uint addEquipPoint, uint totalEquipPoint, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+
+        private S2CCraftStartEquipGradeUpRes CreateEquipPointResponse(string equipItemUID, uint addEquipPoint, uint totalEquipPoint, uint gold, bool isGreatSuccess,
+            CDataCurrentEquipInfo currentEquip, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
             return new S2CCraftStartEquipGradeUpRes
             {
@@ -256,7 +264,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Upgradable = upgradable,
                 Unk1 = unk1 // Dragon Augment related I guess?
             };
-            
         }
 
         private List<CDataMDataCraftGradeupRecipe> FindRecipeFamily(CDataMDataCraftGradeupRecipe startingRecipe)

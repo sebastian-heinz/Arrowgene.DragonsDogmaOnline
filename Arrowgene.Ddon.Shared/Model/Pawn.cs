@@ -12,23 +12,22 @@ namespace Arrowgene.Ddon.Shared.Model
             OnlineStatus = OnlineStatus.None;
             PawnReactionList = new List<CDataPawnReaction>();
             SpSkills = new Dictionary<JobId, List<CDataSpSkill>>();
-            // TODO: Fetch from DB
             CraftData = new CDataPawnCraftData() {
                 CraftExp = 0,
-                CraftRank = 0,
-                CraftRankLimit = 8,
+                CraftRank = 1,
+                CraftRankLimit = 71,
                 CraftPoint = 0,
                 PawnCraftSkillList = new List<CDataPawnCraftSkill>() {
-                    new CDataPawnCraftSkill() {Type = 1, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 2, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 3, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 4, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 5, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 6, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 7, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 8, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 9, Level = 0},
-                    new CDataPawnCraftSkill() {Type = 10, Level = 0}
+                    new() {Type = CraftSkillType.ProductionSpeed, Level = 0},
+                    new() {Type = CraftSkillType.EquipmentEnhancement, Level = 0},
+                    new() {Type = CraftSkillType.EquipmentQuality, Level = 0},
+                    new() {Type = CraftSkillType.ConsumableQuantity, Level = 0},
+                    new() {Type = CraftSkillType.CostPerformance, Level = 0},
+                    new() {Type = CraftSkillType.Placeholder6, Level = 0},
+                    new() {Type = CraftSkillType.Placeholder7, Level = 0},
+                    new() {Type = CraftSkillType.Placeholder8, Level = 0},
+                    new() {Type = CraftSkillType.Placeholder9, Level = 0},
+                    new() {Type = CraftSkillType.Placeholder10, Level = 0}
                 }
             };
             TrainingStatus = new Dictionary<JobId, byte[]>();

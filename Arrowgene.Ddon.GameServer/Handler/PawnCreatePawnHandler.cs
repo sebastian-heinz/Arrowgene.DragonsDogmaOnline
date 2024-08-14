@@ -32,7 +32,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 HmType = 1,
                 PawnType = 1,
                 ExtendedParams = new CDataOrbGainExtendParam(),
-                Server = client.Character.Server
+                Server = client.Character.Server,
+                CraftData = new CDataPawnCraftData
+                {
+                    CraftExp = 0,
+                    CraftRank = 1,
+                    CraftRankLimit = 8,
+                    CraftPoint = 0,
+                    PawnCraftSkillList = new List<CDataPawnCraftSkill>()
+                    {
+                        new() { Type = CraftSkillType.ProductionSpeed, Level = 0 },
+                        new() { Type = CraftSkillType.EquipmentEnhancement, Level = 0 },
+                        new() { Type = CraftSkillType.EquipmentQuality, Level = 0 },
+                        new() { Type = CraftSkillType.ConsumableQuantity, Level = 0 },
+                        new() { Type = CraftSkillType.CostPerformance, Level = 0 },
+                        new() { Type = CraftSkillType.Placeholder6, Level = 0 },
+                        new() { Type = CraftSkillType.Placeholder7, Level = 0 },
+                        new() { Type = CraftSkillType.Placeholder8, Level = 0 },
+                        new() { Type = CraftSkillType.Placeholder9, Level = 0 },
+                        new() { Type = CraftSkillType.Placeholder10, Level = 0 }
+                    }
+                }
             };
             PopulateNewPawnData(client.Character, pawn, request.SlotNo - 1);
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
@@ -50,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     return new S2CPawnCreatePawnRes()
                     {
-                        Error = (uint) ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND
+                        Error = (uint)ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND
                     };
                 }
             }
@@ -136,103 +156,123 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }).ToList();
 
             pawn.EquipmentTemplate = new EquipmentTemplate(
-                Server.AssetRepository.PawnStartGearAsset.Select(pawnGearPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(pawnGearPreset.Job, new Dictionary<EquipType, List<Item>>() {
-                {
-                    EquipType.Performance,
-                    new List<Item>() {
-                        new Item {
-                            ItemId = pawnGearPreset.Primary,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0
+                Server.AssetRepository.PawnStartGearAsset.Select(pawnGearPreset => new Tuple<JobId, Dictionary<EquipType, List<Item>>>(pawnGearPreset.Job,
+                    new Dictionary<EquipType, List<Item>>()
+                    {
+                        {
+                            EquipType.Performance,
+                            new List<Item>()
+                            {
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.Primary,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.Secondary,
+                                    Unk3 = 0,
+                                    Color = 0
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.Head,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.Body,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0,
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.BodyClothing,
+                                    Unk3 = 0,
+                                    Color = 0
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.Arm,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.Leg,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.LegWear,
+                                    Unk3 = 0,
+                                    Color = 0
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.OverWear,
+                                    Unk3 = 0,
+                                    Color = 0
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.JewelrySlot1,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0,
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.JewelrySlot2,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0,
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.JewelrySlot3,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0,
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.JewelrySlot4,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0,
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.JewelrySlot5,
+                                    Unk3 = 0,
+                                    Color = 0,
+                                    PlusValue = 0,
+                                },
+                                new Item
+                                {
+                                    ItemId = pawnGearPreset.Lantern,
+                                    Unk3 = 0,
+                                }
+                            }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                         },
-                        new Item {
-                            ItemId = pawnGearPreset.Secondary,
-                            Unk3 = 0,
-                            Color = 0
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.Head,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.Body,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.BodyClothing,
-                            Unk3 = 0,
-                            Color = 0
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.Arm,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.Leg,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.LegWear,
-                            Unk3 = 0,
-                            Color = 0
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.OverWear,
-                            Unk3 = 0,
-                            Color = 0
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.JewelrySlot1,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.JewelrySlot2,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.JewelrySlot3,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.JewelrySlot4,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.JewelrySlot5,
-                            Unk3 = 0,
-                            Color = 0,
-                            PlusValue = 0,
-                        },
-                        new Item {
-                            ItemId = pawnGearPreset.Lantern,
-                            Unk3 = 0,
+                        {
+                            EquipType.Visual,
+                            new List<Item>()
+                            {
+                            }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                         }
-                    }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
-                },
+                    })).ToDictionary(x => x.Item1, x => x.Item2),
+                Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Item>>(arisenPreset.Job, new List<Item>()
                 {
-                    EquipType.Visual,
-                    new List<Item>() {
-                    }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
-                }
-            })).ToDictionary(x => x.Item1, x => x.Item2),
-            Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Item>>(arisenPreset.Job, new List<Item>() {
                     new Item()
                     {
                         ItemId = arisenPreset.ClassItem1
@@ -244,107 +284,128 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 })).ToDictionary(x => x.Item1, x => x.Item2)
             );
 
-            pawn.EquippedCustomSkillsDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CustomSkill>>(arisenPreset.Job, new List<CustomSkill>() {
-                // Main Palette
-                new CustomSkill() {
-                    Job = arisenPreset.Job,
-                    SkillId = arisenPreset.Cs1MpId,
-                    SkillLv = arisenPreset.Cs1MpLv
-                },
-                new CustomSkill() {
-                    Job = arisenPreset.Job,
-                    SkillId = arisenPreset.Cs2MpId,
-                    SkillLv = arisenPreset.Cs2MpLv
-                },
-                new CustomSkill() {
-                    Job = arisenPreset.Job,
-                    SkillId = arisenPreset.Cs3MpId,
-                    SkillLv = arisenPreset.Cs3MpLv
-                },
-                new CustomSkill() {
-                    Job = arisenPreset.Job,
-                    SkillId = arisenPreset.Cs4MpId,
-                    SkillLv = arisenPreset.Cs4MpLv
-                },
-                null, null, null, null, null, null, null, null, null, null, null, null, // Padding from slots 0x04 (Main Palette slot 4) to 0x11 (Sub Palette slot 1)
-                // Sub Palette
-                new CustomSkill() {
-                    Job = arisenPreset.Job,
-                    SkillId = arisenPreset.Cs1SpId,
-                    SkillLv = arisenPreset.Cs1SpLv
-                },
-                new CustomSkill() {
-                    Job = arisenPreset.Job,
-                    SkillId = arisenPreset.Cs2SpId,
-                    SkillLv = arisenPreset.Cs2SpLv
-                },
-                new CustomSkill() {
-                    Job = arisenPreset.Job,
-                    SkillId = arisenPreset.Cs3SpId,
-                    SkillLv = arisenPreset.Cs3SpLv
-                },
-                new CustomSkill() {
-                    Job = arisenPreset.Job,
-                    SkillId = arisenPreset.Cs4SpId,
-                    SkillLv = arisenPreset.Cs4SpLv
-                }
-            }.Select(skill => skill?.SkillId == 0 ? null : skill).ToList()
+            pawn.EquippedCustomSkillsDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CustomSkill>>(arisenPreset.Job,
+                new List<CustomSkill>()
+                {
+                    // Main Palette
+                    new CustomSkill()
+                    {
+                        Job = arisenPreset.Job,
+                        SkillId = arisenPreset.Cs1MpId,
+                        SkillLv = arisenPreset.Cs1MpLv
+                    },
+                    new CustomSkill()
+                    {
+                        Job = arisenPreset.Job,
+                        SkillId = arisenPreset.Cs2MpId,
+                        SkillLv = arisenPreset.Cs2MpLv
+                    },
+                    new CustomSkill()
+                    {
+                        Job = arisenPreset.Job,
+                        SkillId = arisenPreset.Cs3MpId,
+                        SkillLv = arisenPreset.Cs3MpLv
+                    },
+                    new CustomSkill()
+                    {
+                        Job = arisenPreset.Job,
+                        SkillId = arisenPreset.Cs4MpId,
+                        SkillLv = arisenPreset.Cs4MpLv
+                    },
+                    null, null, null, null, null, null, null, null, null, null, null, null, // Padding from slots 0x04 (Main Palette slot 4) to 0x11 (Sub Palette slot 1)
+                    // Sub Palette
+                    new CustomSkill()
+                    {
+                        Job = arisenPreset.Job,
+                        SkillId = arisenPreset.Cs1SpId,
+                        SkillLv = arisenPreset.Cs1SpLv
+                    },
+                    new CustomSkill()
+                    {
+                        Job = arisenPreset.Job,
+                        SkillId = arisenPreset.Cs2SpId,
+                        SkillLv = arisenPreset.Cs2SpLv
+                    },
+                    new CustomSkill()
+                    {
+                        Job = arisenPreset.Job,
+                        SkillId = arisenPreset.Cs3SpId,
+                        SkillLv = arisenPreset.Cs3SpLv
+                    },
+                    new CustomSkill()
+                    {
+                        Job = arisenPreset.Job,
+                        SkillId = arisenPreset.Cs4SpId,
+                        SkillLv = arisenPreset.Cs4SpLv
+                    }
+                }.Select(skill => skill?.SkillId == 0 ? null : skill).ToList()
             )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
 
             pawn.LearnedCustomSkills = pawn.EquippedCustomSkillsDictionary.SelectMany(jobAndSkills => jobAndSkills.Value).Where(skill => skill != null).ToList();
 
-            pawn.EquippedAbilitiesDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Ability>>(arisenPreset.Job, new List<Ability>() {
-                new Ability() {
-                    Job = arisenPreset.Ab1Jb,
-                    AbilityId = arisenPreset.Ab1Id,
-                    AbilityLv = arisenPreset.Ab1Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab2Jb,
-                    AbilityId = arisenPreset.Ab2Id,
-                    AbilityLv = arisenPreset.Ab2Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab3Jb,
-                    AbilityId = arisenPreset.Ab3Id,
-                    AbilityLv = arisenPreset.Ab3Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab4Jb,
-                    AbilityId = arisenPreset.Ab4Id,
-                    AbilityLv = arisenPreset.Ab4Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab5Jb,
-                    AbilityId = arisenPreset.Ab5Id,
-                    AbilityLv = arisenPreset.Ab5Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab6Jb,
-                    AbilityId = arisenPreset.Ab6Id,
-                    AbilityLv = arisenPreset.Ab6Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab7Jb,
-                    AbilityId = arisenPreset.Ab7Id,
-                    AbilityLv = arisenPreset.Ab7Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab8Jb,
-                    AbilityId = arisenPreset.Ab8Id,
-                    AbilityLv = arisenPreset.Ab8Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab9Jb,
-                    AbilityId = arisenPreset.Ab9Id,
-                    AbilityLv = arisenPreset.Ab9Lv
-                },
-                new Ability() {
-                    Job = arisenPreset.Ab10Jb,
-                    AbilityId = arisenPreset.Ab10Id,
-                    AbilityLv = arisenPreset.Ab10Lv
-                }
-            }.Select(aug => aug?.AbilityId == 0 ? null : aug).ToList()
+            pawn.EquippedAbilitiesDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Ability>>(arisenPreset.Job, new List<Ability>()
+                {
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab1Jb,
+                        AbilityId = arisenPreset.Ab1Id,
+                        AbilityLv = arisenPreset.Ab1Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab2Jb,
+                        AbilityId = arisenPreset.Ab2Id,
+                        AbilityLv = arisenPreset.Ab2Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab3Jb,
+                        AbilityId = arisenPreset.Ab3Id,
+                        AbilityLv = arisenPreset.Ab3Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab4Jb,
+                        AbilityId = arisenPreset.Ab4Id,
+                        AbilityLv = arisenPreset.Ab4Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab5Jb,
+                        AbilityId = arisenPreset.Ab5Id,
+                        AbilityLv = arisenPreset.Ab5Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab6Jb,
+                        AbilityId = arisenPreset.Ab6Id,
+                        AbilityLv = arisenPreset.Ab6Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab7Jb,
+                        AbilityId = arisenPreset.Ab7Id,
+                        AbilityLv = arisenPreset.Ab7Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab8Jb,
+                        AbilityId = arisenPreset.Ab8Id,
+                        AbilityLv = arisenPreset.Ab8Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab9Jb,
+                        AbilityId = arisenPreset.Ab9Id,
+                        AbilityLv = arisenPreset.Ab9Lv
+                    },
+                    new Ability()
+                    {
+                        Job = arisenPreset.Ab10Jb,
+                        AbilityId = arisenPreset.Ab10Id,
+                        AbilityLv = arisenPreset.Ab10Lv
+                    }
+                }.Select(aug => aug?.AbilityId == 0 ? null : aug).ToList()
             )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
 
             pawn.LearnedAbilities = pawn.EquippedAbilitiesDictionary.SelectMany(jobAndAugs => jobAndAugs.Value).Where(aug => aug != null).ToList();

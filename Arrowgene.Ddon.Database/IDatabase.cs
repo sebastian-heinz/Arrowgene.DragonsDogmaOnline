@@ -95,7 +95,16 @@ namespace Arrowgene.Ddon.Database
         bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
-
+        
+        #region Pawn craft progress
+        bool ReplacePawnCraftProgress(CraftProgress craftProgress);
+        bool InsertPawnCraftProgress(CraftProgress craftProgress);
+        bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress);
+        bool UpdatePawnCraftProgress(CraftProgress craftProgress);
+        bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
+        CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
+        #endregion
+        
         // Pawn Sp Skills
         bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill);
         bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId);

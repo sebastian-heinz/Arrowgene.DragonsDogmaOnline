@@ -61,6 +61,7 @@ namespace Arrowgene.Ddon.GameServer
             ChatLogHandler = new ChatLogHandler();
             ChatManager = new ChatManager(this, Router);
             ItemManager = new ItemManager();
+            CraftManager = new CraftManager(this);
             PartyManager = new PartyManager(assetRepository);
             ExpManager = new ExpManager(this, ClientLookup);
             PPManager = new PlayPointManager(database);
@@ -85,6 +86,7 @@ namespace Arrowgene.Ddon.GameServer
         public GameServerSetting Setting { get; }
         public ChatManager ChatManager { get; }
         public ItemManager ItemManager { get; }
+        public CraftManager CraftManager { get; }
         public PartyManager PartyManager { get; }
         public ExpManager ExpManager { get; }
         public PlayPointManager PPManager { get; }
@@ -246,6 +248,12 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CraftGetCraftSettingHandler(this));
             AddHandler(new CraftRecipeGetCraftRecipeHandler(this));
             AddHandler(new CraftStartCraftHandler(this));
+            AddHandler(new CraftSkillUpHandler(this));
+            AddHandler(new CraftGetCraftProductInfoHandler(this));
+            AddHandler(new CraftCancelCraftHandler(this));
+            AddHandler(new CraftTimeSaveHandler(this));
+            AddHandler(new CraftGetCraftProductHandler(this));
+            AddHandler(new CraftResetCraftpointHandler(this));
             AddHandler(new CraftStartEquipGradeUpHandler(this));
             AddHandler(new CraftStartQualityUpHandler(this));
             AddHandler(new CraftSkillAnalyzeHandler(this));

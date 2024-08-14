@@ -301,5 +301,8 @@ namespace Arrowgene.Ddon.Shared.Model
         PawnEquipment = 0xF,
         Unk16 = 0x10,
         Unk17 = 0x11,
+        Unk18 = 0x12,
+        ReceiveInItemBagCraft = 0x13,
+        ReceiveInStorageCraft = 0x14
     }
 }

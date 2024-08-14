@@ -4,11 +4,11 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CPawn_8_33_16Ntc : ServerResponse
+    public class S2CPawnGetPawnProfileNtc : ServerResponse
     {
-        public override PacketId Id => PacketId.S2C_PAWN_8_33_16_NTC;
+        public override PacketId Id => PacketId.S2C_PAWN_GET_PAWN_PROFILE_NTC;
 
-        public S2CPawn_8_33_16Ntc()
+        public S2CPawnGetPawnProfileNtc()
         {
             OwnerFirstName = string.Empty;
             OwnerLastName = string.Empty;
@@ -27,9 +27,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public string Unk7 { get; set; } // Probably a profile description
         public uint Unk8 { get; set; } // Probably a profile setting
 
-        public class Serializer : PacketEntitySerializer<S2CPawn_8_33_16Ntc>
+        public class Serializer : PacketEntitySerializer<S2CPawnGetPawnProfileNtc>
         {
-            public override void Write(IBuffer buffer, S2CPawn_8_33_16Ntc obj)
+            public override void Write(IBuffer buffer, S2CPawnGetPawnProfileNtc obj)
             {
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteUInt32(buffer, obj.PawnId);
@@ -42,9 +42,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.Unk8);
             }
 
-            public override S2CPawn_8_33_16Ntc Read(IBuffer buffer)
+            public override S2CPawnGetPawnProfileNtc Read(IBuffer buffer)
             {
-                S2CPawn_8_33_16Ntc obj = new S2CPawn_8_33_16Ntc();
+                S2CPawnGetPawnProfileNtc obj = new S2CPawnGetPawnProfileNtc();
                 obj.CharacterId = ReadUInt32(buffer);
                 obj.PawnId = ReadUInt32(buffer);
                 obj.OwnerCharacterId = ReadUInt32(buffer);
