@@ -1,13 +1,12 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.ComponentModel;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -60,6 +59,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var worldQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.World).Select(x => x.QuestId).ToList();
             foreach (var quest in QuestManager.GetQuestsByType(QuestType.World))
             {
+                if (QuestManager.IsBoardQuest(quest.Key))
+                {
+                    continue;
+                }
                 if (!worldQuests.Contains(quest.Key))
                 {
                     party.QuestState.AddNewQuest(quest.Key, 0);
