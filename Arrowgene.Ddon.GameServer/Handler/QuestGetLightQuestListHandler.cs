@@ -29,7 +29,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var activeQuests = client.Party.QuestState.GetActiveQuestIds();
             var quests = QuestManager.GetQuestsByType(QuestType.Light);
-            Logger.Info($"{quests.Count}");
             foreach (var quest in quests)
             {
                 if (activeQuests.Contains(quest.Key))
