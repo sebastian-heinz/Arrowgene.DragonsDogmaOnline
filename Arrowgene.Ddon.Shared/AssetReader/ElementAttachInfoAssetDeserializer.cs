@@ -8,15 +8,15 @@ using Arrowgene.Ddon.Shared.Asset;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
-    public class ElementAttachInfoAssetDeserializer : IAssetDeserializer<ElementAttachInfoAsset>
+    public class CostExpScalingAssetDeserializer : IAssetDeserializer<CostExpScalingAsset>
     {
-        private static readonly ILogger Logger = LogProvider.Logger(typeof(ElementAttachInfoAssetDeserializer));
+        private static readonly ILogger Logger = LogProvider.Logger(typeof(CostExpScalingAssetDeserializer));
 
-        public ElementAttachInfoAsset ReadPath(string path)
+        public CostExpScalingAsset ReadPath(string path)
         {
             Logger.Info($"Reading {path}");
 
-            ElementAttachInfoAsset asset = new ElementAttachInfoAsset();
+            CostExpScalingAsset asset = new CostExpScalingAsset();
 
             string json = File.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 var cost = elementAttachInfo.GetProperty("cost").GetUInt32(); ;
                 var exp = elementAttachInfo.GetProperty("exp").GetUInt32();
 
-                asset.ElementAttachInfo[itemLevel] = new ElementAttachInfo()
+                asset.CostExpScalingInfo[itemLevel] = new ElementAttachInfo()
                 {
                     ItemLevel = itemLevel,
                     Cost = cost,

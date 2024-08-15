@@ -17,9 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipColorChangeHandler));
         private readonly ItemManager _itemmanager;
+        private readonly CraftManager _craftManager;
         public CraftStartEquipColorChangeHandler(DdonGameServer server) : base(server)
         {
             _itemmanager = server.ItemManager;
+            _craftManager = Server.CraftManager;
         }
 
         public override S2CCraftStartEquipColorChangeRes Handle(GameClient client, C2SCraftStartEquipColorChangeReq request)
@@ -30,6 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataCraftColorant> colorList = request.CraftColorantList;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             var equipItem = ramItem.Item2.Item2;
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             byte color = request.Color;
             List<CDataCraftColorant> colorlist = new List<CDataCraftColorant>(); // this is probably for consuming the dye
             uint craftpawnid = request.CraftMainPawnID;
@@ -97,7 +100,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         slotno
                     );
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
-                    client.Send(updateCharacterItemNtc);
                 }
             }
             else
@@ -111,10 +113,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo = CurrentEquipInfo
                 };
 
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
+            uint originalCost = craftInfo.Cost;
+            uint totalExp = craftInfo.Exp;
+
             Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
+            List<uint> pawnIds = new List<uint> { leadPawn.PawnId };
+            pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
+            List<uint> costPerformanceLevels = new List<uint>();
+
+            foreach (uint pawnId in pawnIds)
+            {
+                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
+                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+            }
+
+            double finalCost = _craftManager.CalculateRecipeCost(originalCost, costPerformanceLevels);
+            Logger.Debug($"your discount is {finalCost} and original is: {originalCost}");
+
+            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, (uint)finalCost));
+            client.Send(updateCharacterItemNtc);
+
             if (CraftManager.CanPawnExpUp(leadPawn))
-            {                                                           // TODO: Make a function for both crests and Dyes exp calc
-                CraftManager.HandlePawnExpUp(client, leadPawn, 30, 0); // EXP scales depending on Recieving Gears IR. Same as Dye it looks like?
+            {
+                CraftManager.HandlePawnExpUp(client, leadPawn, totalExp, 0);
             }
             if (CraftManager.CanPawnRankUp(leadPawn))
             {

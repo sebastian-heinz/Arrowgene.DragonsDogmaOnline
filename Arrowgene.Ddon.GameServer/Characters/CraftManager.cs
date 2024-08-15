@@ -317,6 +317,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             //  1x lvl 2, 3x lvl 1 == 16% maximum
             double costPerformanceFactor = (100 - GetCraftCostReductionRate(costPerformanceLevels)) / 100;
             return (uint)Math.Clamp(recipeCost * costPerformanceFactor, 0, recipeCost);
+            // GetCraftCostReductionRate returns 0 even with a level 2, which the client knows should be reducing by some amount.
         }
 
         #endregion

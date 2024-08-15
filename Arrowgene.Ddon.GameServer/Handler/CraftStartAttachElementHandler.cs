@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(relativeSlotNo);
             }
 
-            var craftInfo = Server.AssetRepository.ElementAttachInfoAsset.ElementAttachInfo[clientItemInfo.Rank];
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
             uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
             uint totalExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 
@@ -87,8 +87,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnId);
             if (CraftManager.CanPawnExpUp(leadPawn))
-            {                                                           // TODO: Make a function for both crests and Dyes exp calc
-                CraftManager.HandlePawnExpUp(client, leadPawn, 30, 0); // EXP scales depending on Recieving Gears IR. Same as Dye it looks like?
+            {
+                CraftManager.HandlePawnExpUp(client, leadPawn, totalExp, 0);
             }
             if (CraftManager.CanPawnRankUp(leadPawn))
             {

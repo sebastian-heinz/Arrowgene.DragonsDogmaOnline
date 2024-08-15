@@ -8,13 +8,13 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Asset
 {
-    public class ElementAttachInfoAsset
+    public class CostExpScalingAsset
     {
-        public ElementAttachInfoAsset()
+        public CostExpScalingAsset()
         {
-            ElementAttachInfo = new Dictionary<uint, ElementAttachInfo>();
+            CostExpScalingInfo = new Dictionary<uint, ElementAttachInfo>();
         }
 
-        public Dictionary<uint, ElementAttachInfo> ElementAttachInfo {  get; set; }
+        public Dictionary<uint, ElementAttachInfo> CostExpScalingInfo {  get; set; }
     }
 }

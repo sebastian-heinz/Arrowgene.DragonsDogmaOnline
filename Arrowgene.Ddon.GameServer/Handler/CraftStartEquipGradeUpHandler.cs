@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
-             _craftManager = Server.CraftManager;
+            _craftManager = Server.CraftManager;
         }
 
         public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
