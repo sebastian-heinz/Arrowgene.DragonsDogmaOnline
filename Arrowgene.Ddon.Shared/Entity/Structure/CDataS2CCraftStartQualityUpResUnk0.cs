@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataS2CCraftStartQualityUpResUnk0
     {
         public uint Unk0 { get; set; }
-        public ushort Unk1 { get; set; }
+        public ushort Unk1 { get; set; } // if this unk drives addstatus then this is definitely the addstatusID.
         public byte Unk2 { get; set; }
         public uint Unk3 { get; set; }
         public uint Unk4 { get; set; }

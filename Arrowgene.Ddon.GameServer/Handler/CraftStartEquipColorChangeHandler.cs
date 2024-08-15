@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipColorChang;
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 0, 0));
                 
                 if (foundItem != null)
                 {
@@ -94,9 +94,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         charid,
                         storageType,
                         equipItem,
-                        (byte)slotno
+                        slotno
                     );
-                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
+                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
                     client.Send(updateCharacterItemNtc);
                 }
             }

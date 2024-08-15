@@ -20,8 +20,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public bool IsGreatSuccess { get; set; }
         public CDataCurrentEquipInfo CurrentEquip { get; set; }
         public uint BeforeItemID { get; set; }
-        public bool Upgradable { get; set; }  // When true the item can keep upgrading but when False it displays "grade max". (you can keep upgrading if it can though, strictly UI.)
-        public CDataCraftStartEquipGradeUpUnk0 Unk1 { get; set; } // Based on structure this looks like a bunch of info about crests n such?
+        public bool Upgradable { get; set; }
+        public CDataCraftStartEquipGradeUpUnk0 Unk1 { get; set; } // Dragon Augments?
 
         public S2CCraftStartEquipGradeUpRes()
         {
