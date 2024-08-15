@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -15,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
         public override PacketId Id => PacketId.S2C_CRAFT_RECIPE_GET_CRAFT_GRADEUP_RECIPE_RES;
 
-        public byte Category { get; set; }
+        public RecipeCategory Category { get; set; }
         public List<CDataMDataCraftGradeupRecipe> RecipeList { get; set; }
         public List<CDataCommonU32> UnknownItemList { get; set; } // filled with random item IDs, didn't seem to do anything?
         public bool IsEnd { get; set; }
@@ -25,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CCraftRecipeGetCraftGradeupRecipeRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteByte(buffer, obj.Category);
+                WriteByte(buffer, (byte)obj.Category);
                 WriteEntityList<CDataMDataCraftGradeupRecipe>(buffer, obj.RecipeList);
                 WriteEntityList<CDataCommonU32>(buffer, obj.UnknownItemList);
                 WriteBool(buffer, obj.IsEnd);
@@ -35,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CCraftRecipeGetCraftGradeupRecipeRes obj = new S2CCraftRecipeGetCraftGradeupRecipeRes();
                 ReadServerResponse(buffer, obj);
-                obj.Category = ReadByte(buffer);
+                obj.Category = (RecipeCategory)ReadByte(buffer);
                 obj.RecipeList = ReadEntityList<CDataMDataCraftGradeupRecipe>(buffer);
                 obj.UnknownItemList = ReadEntityList<CDataCommonU32>(buffer);
                 obj.IsEnd = ReadBool(buffer);
