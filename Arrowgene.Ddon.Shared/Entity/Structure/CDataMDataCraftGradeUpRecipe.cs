@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
         public uint RecipeID { get; set; }
         public uint ItemID { get; set; }
-        public uint UpgradableStatus { get; set; } // 1 is yes, 0 is no. will prompt a warning "will become max grade" 
+        public UpgradableStatus Upgradable { get; set; } // 1 is yes, 0 is no. will prompt a warning "will become max grade" 
         public uint GradeupItemID { get; set; }
         public uint Cost { get; set; }
         public uint Exp { get; set; }
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.RecipeID);
                 WriteUInt32(buffer, obj.ItemID);
-                WriteUInt32(buffer, obj.UpgradableStatus);
+                WriteUInt32(buffer, (uint)obj.Upgradable);
                 WriteUInt32(buffer, obj.GradeupItemID);
                 WriteUInt32(buffer, obj.Cost);
                 WriteUInt32(buffer, obj.Exp);
@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                     CDataMDataCraftGradeupRecipe obj = new CDataMDataCraftGradeupRecipe();
                     obj.RecipeID = ReadUInt32(buffer);
                     obj.ItemID = ReadUInt32(buffer);
-                    obj.UpgradableStatus = ReadUInt32(buffer);
+                    obj.Upgradable = (UpgradableStatus)ReadUInt32(buffer); 
                     obj.GradeupItemID = ReadUInt32(buffer);
                     obj.Cost = ReadUInt32(buffer);
                     obj.Exp = ReadUInt32(buffer);
