@@ -2,12 +2,11 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdatePawnEditParamHandler : GameStructurePacketHandler<C2SCharacterEditUpdatePawnEditParamReq>
+    public class CharacterEditUpdatePawnEditParamHandler : GameRequestPacketHandler<C2SCharacterEditUpdatePawnEditParamReq, S2CCharacterEditUpdatePawnEditParamRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdatePawnEditParamHandler));
 
@@ -15,15 +14,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdatePawnEditParamReq> packet)
+        public override S2CCharacterEditUpdatePawnEditParamRes Handle(GameClient client, C2SCharacterEditUpdatePawnEditParamReq packet)
         {
-            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
-                packet.Structure.EditPrice.PointType, packet.Structure.EditPrice.Value);
+            CharacterEditGetShopPriceHandler.CheckPrice(packet.UpdateType, packet.EditPrice.PointType, packet.EditPrice.Value);
 
-            Pawn pawn = client.Character.PawnBySlotNo(packet.Structure.SlotNo);
-            pawn.EditInfo = packet.Structure.EditInfo;
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
+                packet.EditPrice.PointType, packet.EditPrice.Value);
+
+            Pawn pawn = client.Character.PawnBySlotNo(packet.SlotNo);
+            pawn.EditInfo = packet.EditInfo;
             Server.Database.UpdateEditInfo(pawn);
-            client.Send(new S2CCharacterEditUpdatePawnEditParamRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamNtc() {
                     CharacterId = pawn.CharacterId,
@@ -31,6 +31,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EditInfo = pawn.EditInfo
                 });
             }
+
+            return new S2CCharacterEditUpdatePawnEditParamRes();
         }
     }
 }
