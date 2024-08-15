@@ -64,9 +64,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Party.SendToAll(response);
             }
 
-            Logger.Debug("===================================================================");
             Logger.Debug($"ContextGetSetContextHandler: ContextId: {baseContext.ContextId}, UniqueId: 0x{baseContext.UniqueId:x16}, Context: {originalBaseIndex}/{originalAdditionalContext}/{clientIndex}");
-            Logger.Debug("===================================================================");
+
+            ContextManager.AssignMaster(client, baseContext.UniqueId, clientIndex);
         }
     }
 }
