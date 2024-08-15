@@ -81,9 +81,33 @@ namespace Arrowgene.Ddon.Shared.Model
             } 
         }
 
+        public RecipeCategory? RecipeCategory { get
+            {
+                switch (Category)
+                {
+                    case 1: //Use
+                        return Model.RecipeCategory.Use;
+                    case 2: //Material
+                        return Model.RecipeCategory.Material;
+                    case 3: //Equips
+                        if (SubCategory > ItemSubCategory.JewelrySubCategoryOffset) return Model.RecipeCategory.EquipJewelry;
+
+                        bool parsed = Enum.TryParse(SubCategory.ToString(), out RecipeCategory category);
+                        if (parsed) return category;
+                        else return null;
+                    case 5: //Job Items
+                        return Model.RecipeCategory.Job;
+                    case 6: //Furniture
+                        return Model.RecipeCategory.Furniture;
+                    default:
+                        return null;
+                }
+            } 
+        }
+
         public override string ToString()
         {
-            return String.Format("{0} <{1}>", Name, ItemId);
+            return $"{Name} <{ItemId}>";
         }
 
         public static ClientItemInfo GetInfoForItemId(Dictionary<uint, ClientItemInfo> clientItemInfos, uint itemId)
