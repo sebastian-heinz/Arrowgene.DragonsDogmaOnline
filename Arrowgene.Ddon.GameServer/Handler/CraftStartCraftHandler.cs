@@ -154,7 +154,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Subtract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                Server.CraftManager.CalculateRecipeCost(recipe.Cost, costPerformanceLevels) * request.CreateCount);
+                            Server.CraftManager.CalculateRecipeCost(recipe.Cost, costPerformanceLevels) * request.CreateCount);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             
             client.Send(updateCharacterItemNtc);

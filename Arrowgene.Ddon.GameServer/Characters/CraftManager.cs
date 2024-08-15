@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         public uint CalculatedValue { get; set; }
         public bool IsGreatSuccess { get; set; }
+        public uint Exp { get; set; }
     }
 
     public class CraftManager
@@ -152,16 +153,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// <param name="refineMaterialItem"></param>
         /// <param name="equipmentQualityLevels"></param>
         /// <returns></returns>
-        public static CraftCalculationResult CalculateEquipmentQuality(Item refineMaterialItem, List<uint> equipmentQualityLevels)
+        public static CraftCalculationResult CalculateEquipmentQuality(Item refineMaterialItem, List<uint> equipmentQualityLevels, byte itemRank=0)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
             // Based on season 1 evidence:
             //  3x lvl 45 1x lvl 44 => 79% 
             // 1x lvl44, 3x lvl 1 => 63
+            // EXP has a base value and scales based on IR, standard always 2, Quality and WD share until above IR10, Quality stays 100 and WD goes up to 350 cap with IR35.
 
             byte greatSuccessValue = 1;
             int greatSuccessOdds = GreatSuccessOddsDefault;
             byte RandomQuality = 0;
+            uint exp = 0;
 
             if (refineMaterialItem != null)
             {
@@ -171,17 +174,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     case 8036 or 8068:
                         RandomQuality = 2;
                         greatSuccessValue = 3;
+                        exp = CalculateQualityExp(itemRank, false);
                         break;
                     // WhiteDragon Rocks (Tier3)
                     case 8052 or 8084:
                         RandomQuality = 2;
                         greatSuccessValue = 3;
                         greatSuccessOdds = 5;
+                        exp = CalculateQualityExp(itemRank, true);
                         break;
                     // Standard Rocks (Tier1)
                     case 8035 or 8067:
                         RandomQuality = 1;
                         greatSuccessValue = 2;
+                        exp = 2;
                         break;
                 }
             }
@@ -196,8 +202,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return new CraftCalculationResult()
             {
                 CalculatedValue = RandomQuality,
-                IsGreatSuccess = isGreatSuccess
+                IsGreatSuccess = isGreatSuccess,
+                Exp = exp
             };
+        }
+
+        public static uint CalculateQualityExp(byte itemRank, bool isTier3)
+        {
+            uint baseExp = 10;
+            uint maxExp = isTier3 ? 350u : 100u; // Tier3 caps at 350, Tier2 caps at 100
+
+            return Math.Min(baseExp * itemRank, maxExp);
         }
 
         #endregion

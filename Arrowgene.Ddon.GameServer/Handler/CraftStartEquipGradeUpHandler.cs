@@ -8,6 +8,8 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+#nullable disable
+
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -15,10 +17,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipGradeUpHandler));
         private readonly ItemManager _itemManager;
+        private readonly CraftManager _craftManager;
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
+             _craftManager = Server.CraftManager;
         }
 
         public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
@@ -26,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = request.EquipItemUID;
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
-            var equipItem = ramItem.Item2.Item2;
+            Item equipItem = ramItem.Item2.Item2;
             uint charid = client.Character.CharacterId;
             uint craftpawnid = request.CraftMainPawnID;
 
@@ -41,7 +45,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             UpgradableStatus upgradableStatus = (UpgradableStatus)canUpgrade;
             uint pawnExp = recipeData.Exp;
             bool canContinue = true;
-            bool isGreatSuccess = Random.Shared.Next(5) == 0;
             bool doUpgrade = false;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
 
@@ -75,19 +78,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                 }
             }
-            uint addEquipPoint = (uint)((isGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4)));
-            // TODO: make use of pawn crafting skills instead
-            currentTotalEquipPoint += addEquipPoint;
 
-            // Subtract less Gold if support pawn is used and add slightly more points
-            if (request.CraftSupportPawnIDList.Count > 0)
+            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
+
+            List<uint> pawnIds = new List<uint> { leadPawn.PawnId };
+            pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
+            List<uint> enhancementLevels = new List<uint>();
+            List<uint> costPerformanceLevels = new List<uint>();
+
+            foreach (uint pawnId in pawnIds)
             {
-                goldRequired = (uint)(goldRequired * 0.95);
-                currentTotalEquipPoint = (uint)(currentTotalEquipPoint * 1.5); // Fake stuff until pawn craft levels
+                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
+                enhancementLevels.Add(CraftManager.GetPawnEquipmentEnhancementLevel(pawn));
+                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
             }
 
-            var updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
+            CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(enhancementLevels);
+            bool isGreatSuccess = enhnacementResult.IsGreatSuccess;
+            uint addEquipPoint = enhnacementResult.CalculatedValue;
+
+            currentTotalEquipPoint += addEquipPoint;
+
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
+                            Server.CraftManager.CalculateRecipeCost(recipeData.Cost, costPerformanceLevels));
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+            // The formula needs work, the client shows 9G with a second pawn of base level for bronze sword Enhancement, but we still charge 10G.
 
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             byte currentStars = (byte)itemInfo.Quality;
@@ -143,8 +158,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-
-            if (upgradableStatus == UpgradableStatus.No) // This should handle a "True" state because I pull it from the Recipe directly.
+            if (upgradableStatus == UpgradableStatus.No) // This should handle a "True" weapon because I pull it from the Recipe directly.
             {
                 canContinue = false;
             }
@@ -174,9 +188,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, isGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
-            
-            // Lead pawn is always owned by player.
-            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
+
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
                 CraftManager.HandlePawnExpUp(client, leadPawn, pawnExp, 0);
@@ -271,7 +283,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataMDataCraftGradeupRecipe> recipeFamily = new List<CDataMDataCraftGradeupRecipe>();
             recipeFamily.Add(startingRecipe);
             CDataMDataCraftGradeupRecipe? node = startingRecipe;
-            //Search forwards
             while (node is not null)
             {
                 node = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -284,7 +295,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     recipeFamily.Add(node);
                 }
             }
-
             recipeFamily = recipeFamily.OrderBy(x => x.RecipeID).ToList();
             //recipeFamily.ForEach(x => Logger.Debug($"Found recipe family: {startingRecipe.RecipeID} -> {x.RecipeID}"));
             return recipeFamily;

@@ -26,9 +26,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             Item equipItem = ramItem.Item2.Item2;
+            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+            byte itemRank = itemInfo.Rank;
             uint craftpawnid = request.CraftMainPawnID;
             string RefineMaterialUID = request.RefineUID;
             ushort AddStatusID = request.AddStatusID;
+            uint pawnExp = 0;
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -66,9 +69,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
                 Item refineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
-                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels, itemRank);
                 plusValue = craftCalculationResult.CalculatedValue;
                 isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
+                pawnExp = craftCalculationResult.Exp;
 
                 try
                 {
@@ -140,10 +144,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = CurrentEquipInfo
             };
 
-            // TODO: Find exp for item recipe
+            // exp rewarded is based on the rock used and the items IR.
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUp(client, leadPawn, 10, 0);
+                CraftManager.HandlePawnExpUp(client, leadPawn, pawnExp, 0);
             }
             if (CraftManager.CanPawnRankUp(leadPawn))
             {
