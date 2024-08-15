@@ -24,14 +24,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
             string adaptedSchema = DdonDatabaseBuilder.GetAdaptedSchema(DatabaseSetting, "Script/binarydata_migration.sql");
             db.Execute(conn, adaptedSchema);
 
-            byte[] blankBlob = new byte[0x400];
+            byte[] blankBlob = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
 
             db.ExecuteReader(conn, @"SELECT ddon_character.character_id FROM ddon_character;", action => { }, reader =>
             {
                 while (reader.Read())
                 {
                     uint characterId = db.GetUInt32(reader, "character_id");
-                    Logger.Info($"Assigning pcap binary data to character ID {characterId}");
+                    Logger.Info($"Assigning blank binary data to character ID {characterId}");
                     db.ExecuteNonQuery(conn, @"INSERT INTO ddon_binary_data(character_id, binary_data)
                                                         VALUES(@character_id, @binary_data);",
                             action =>

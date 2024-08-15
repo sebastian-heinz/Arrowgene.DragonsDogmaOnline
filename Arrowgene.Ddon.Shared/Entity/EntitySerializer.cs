@@ -283,7 +283,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataWorldManageQuestList.Serializer());
             Create(new CDataStageLayoutId.Serializer());
             Create(new CDataFriendInfo.Serializer());
-            Create(new UnkownCharacterData0Serializer());
             Create(new CDataOmData.Serializer());
             Create(new CDataReleaseAreaInfoSet.Serializer());
 

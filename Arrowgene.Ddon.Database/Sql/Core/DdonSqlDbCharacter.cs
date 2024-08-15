@@ -556,12 +556,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             AddParameter(command, "@binary_data", character.BinaryData);
         }
-
-        private void AddParameter(TCom command, uint characterId, byte[] binaryData)
-        {
-            AddParameter(command, "@character_id", characterId);
-            AddParameter(command, "@binary_data", binaryData);
-        }
     
         public bool UpdateCharacterBinaryData(uint characterId, byte[] data)
         {
@@ -573,7 +567,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             int rowsAffected = ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command =>
             {
-                AddParameter(command, characterId, data);
+                AddParameter(command, "@character_id", characterId);
+                AddParameter(command, "@binary_data", data);
             });
 
             return rowsAffected > NoRowsAffected;

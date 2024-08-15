@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.CharacterId = ReadUInt32(buffer);
                 obj.CharacterInfo = ReadEntity<CDataCharacterInfo>(buffer);
                 obj.IsReturnPrepare = ReadBool(buffer);
-                obj.BinaryData = ReadByteArray(buffer, 0x400);
+                obj.BinaryData = ReadByteArray(buffer, C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE);
                 obj.Unk1 = ReadByte(buffer);
                 return obj;
             }
