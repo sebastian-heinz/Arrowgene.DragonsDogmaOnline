@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             uint gearUpgradeID = recipeData.GradeupItemID;
             uint goldRequired = recipeData.Cost;
-            uint canUpgrade = recipeData.Upgradable;
+            uint canUpgrade = recipeData.UpgradableStatus;
             UpgradableStatus upgradableStatus = (UpgradableStatus)canUpgrade;
             uint pawnExp = recipeData.Exp;
             bool canContinue = true;
@@ -123,7 +123,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     }
                     gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
-                    canUpgrade = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
+                    canUpgrade = itemIDsList.Take(thresholdsExceeded).LastOrDefault().UpgradableStatus;
                     upgradableStatus = (UpgradableStatus)canUpgrade;
                     gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
                 }
