@@ -75,11 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     return;
                 }
 
-                if (targetClient.Character.OnlineStatus == Shared.Model.OnlineStatus.Offline)
-                {
-                    responses.Add(ChatResponse.CommandError(client, $"{targetClient.Character.FirstName} {targetClient.Character.LastName} is not fully logged in."));
-                    return;
-                }
+                //TODO: Revisit how to check if a player can actually receive an invite or not.
 
                 _inviteCharacterHandler.Handle(client, new StructurePacket<C2SPartyPartyInviteCharacterReq>(new C2SPartyPartyInviteCharacterReq()
                 {
