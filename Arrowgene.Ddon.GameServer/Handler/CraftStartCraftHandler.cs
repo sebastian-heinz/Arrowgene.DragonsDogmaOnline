@@ -158,7 +158,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             
             client.Send(updateCharacterItemNtc);
-
             return new S2CCraftStartCraftRes();
         }
     }

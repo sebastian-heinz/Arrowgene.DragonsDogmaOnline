@@ -30,8 +30,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/
         public uint EquipPoints { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
-        public List<CDataAddStatusParam> AddStatusParamList { get; set; }
-        public List<CDataEquipItemInfoUnk2> Unk2List { get; set; }
+        public List<CDataAddStatusParam> AddStatusParamList { get; set; } // Actually LimitBreak/Bonus from Craig I guess.
+        public List<CDataEquipItemInfoUnk2> Unk2List { get; set; } // Am thinking this might be addstatus but struggling to get this to work ingame.
 
         private string _uid;
 

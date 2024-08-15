@@ -16,8 +16,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             CurrentEquip = new CDataCurrentEquipInfo();            
         }
 
-        public CDataS2CCraftStartQualityUpResUnk0 Unk0 { get; set; }
-        public List<CDataAddStatusParam> AddStatusDataList { get; set; }
+        public CDataS2CCraftStartQualityUpResUnk0 Unk0 { get; set; } // I'm thinking this is AddStatus
+        public List<CDataAddStatusParam> AddStatusDataList { get; set; } // I think this is Craigs Limit break?
         public CDataCurrentEquipInfo CurrentEquip { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCraftStartQualityUpRes>
