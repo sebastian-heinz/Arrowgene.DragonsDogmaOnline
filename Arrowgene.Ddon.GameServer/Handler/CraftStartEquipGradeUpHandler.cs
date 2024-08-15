@@ -75,8 +75,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                 }
             }
-            uint addEquipPoint = (uint)((isGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4)));
             // TODO: make use of pawn crafting skills instead
+            uint addEquipPoint = (uint)((isGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4)));
+
             currentTotalEquipPoint += addEquipPoint;
 
             // Subtract less Gold if support pawn is used and add slightly more points
