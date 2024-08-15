@@ -66,13 +66,13 @@ public class PartyManager
             return false;
         }
 
-        var timer = new Timer(RemoveExpiredInvite<S2CPartyPartyInviteCancelNtc>, invitee, (InvitationTimeoutSec + 2) * 1000, Timeout.Infinite);
+        var timer = new Timer(RemoveExpiredInvite, invitee, (InvitationTimeoutSec + 2) * 1000, Timeout.Infinite);
         _inviteTimers.TryAdd(invitee, timer);
 
         return true;
     }
 
-    private void RemoveExpiredInvite<T>(object inviteeObj) where T : class, IPacketStructure, new()
+    private void RemoveExpiredInvite(object inviteeObj) 
     {
         var invitee = inviteeObj as GameClient;
 
@@ -88,11 +88,12 @@ public class PartyManager
             timer.Dispose();
         }
 
-        var packetId = new T().Id;
-        IBuffer responseBuffer = new StreamBuffer();
-        responseBuffer.WriteUInt32((uint)ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT, Endianness.Big);
-        Packet packet = new Packet(packetId, responseBuffer.GetAllBytes());
-        invitee.Send(packet);
+        var ntc = new S2CPartyPartyInviteCancelNtc
+        {
+            ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT
+        };
+        invitee.Send(ntc);
+
         Logger.Info(invitee, "Invitation removed due to timeout.");
     }
 
