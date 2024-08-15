@@ -105,24 +105,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
             }
             
-            // TODO: Potentially the packets changed in S3.
-            
             var res = new S2CCraftStartEquipColorChangeRes()
                 {
                     ColorNo = color,
                     CurrentEquipInfo = CurrentEquipInfo
                 };
 
-            // TODO: Store saved pawn exp
-            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
+            if (CraftManager.CanPawnExpUp(leadPawn))
+            {                                                           // TODO: Make a function for both crests and Dyes exp calc
+                CraftManager.HandlePawnExpUp(client, leadPawn, 30, 0); // EXP scales depending on Recieving Gears IR. Same as Dye it looks like?
+            }
+            if (CraftManager.CanPawnRankUp(leadPawn))
             {
-                PawnId = request.CraftMainPawnID,
-                AddExp = 10,
-                ExtraBonusExp = 0,
-                TotalExp = 10,
-                CraftRankLimit = 0
-            };
-            client.Send(expNtc);
+                CraftManager.HandlePawnRankUp(client, leadPawn);
+            }
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
             
             return res;
         }

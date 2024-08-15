@@ -64,12 +64,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
             }
 
+            List<uint> qualityLevels = new List<uint>();
+            qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(leadPawn));
+            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
+
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
+
+            //TODO: Need to calculate the Gold cost and remove it. Cost is based on the Equipments IR.
+            // Probably do what Crests do and make a JSON for it?
             if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
                 Item refineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
-                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels, itemRank);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds, itemRank);
                 plusValue = craftCalculationResult.CalculatedValue;
                 isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
                 pawnExp = craftCalculationResult.Exp;

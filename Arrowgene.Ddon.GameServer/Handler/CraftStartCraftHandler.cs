@@ -79,6 +79,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<uint> productionSpeedLevels = new List<uint>();
             List<uint> consumableQuantityLevels = new List<uint>();
             List<uint> costPerformanceLevels = new List<uint>();
+            List<uint> qualityLevels = new List<uint>();
 
             foreach (uint pawnId in pawnIds)
             {
@@ -86,15 +87,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 productionSpeedLevels.Add(CraftManager.GetPawnProductionSpeedLevel(pawn));
                 consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
                 costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
             }
 
+            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
             bool canPlusValue = !itemInfo.SubCategory.HasValue || !BannedSubCategories.Contains(itemInfo.SubCategory.Value);
             if (canPlusValue && !string.IsNullOrEmpty(request.RefineMaterialUID))
             {
                 Item refineMaterialItem = Server.Database.SelectStorageItemByUId(request.RefineMaterialUID);
-                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds);
                 plusValue = craftCalculationResult.CalculatedValue;
                 isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
 
@@ -114,7 +117,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool isGreatSuccessConsumableQuantity = false;
             if (itemInfo.StorageType == StorageType.ItemBagConsumable)
             {
-                CraftCalculationResult craftCalculationResult = CraftManager.CalculateConsumableQuantity(consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateConsumableQuantity(consumableQuantityLevels, (uint)calculatedOdds);
                 consumableAdditionalQuantity = request.CreateCount * craftCalculationResult.CalculatedValue;
                 isGreatSuccessConsumableQuantity = craftCalculationResult.IsGreatSuccess;
             }

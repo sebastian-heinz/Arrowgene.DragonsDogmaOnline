@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -61,7 +63,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// </summary>
         private const uint EquipmentQualityMinimumPerPawn = 4;
 
-        private const double EquipmentQualityIncrementPerLevel = (EquipmentQualityMaximumTotal / CraftPawnsMax - EquipmentQualityMinimumPerPawn) / CraftSkillLevelMax;
+        /// <summary>
+        /// This calc is totally made up, but workable.
+        /// Added a multiplication of 2 since the returned value was always exceptionally low, making it scale really badly.
+        /// </summary>
+        private const double EquipmentQualityIncrementPerLevel = 2 * (EquipmentQualityMaximumTotal - EquipmentQualityMinimumPerPawn * CraftPawnsMax) / (CraftSkillLevelMax * CraftPawnsMax);
 
         /// <summary>
         /// Minimum enhancement points at 150 total based on video evidence.
@@ -142,7 +148,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         #region equipment quality
 
-        public static double GetEquipmentQualityIncreaseRate(List<uint> equipmentQualityLevels)
+        public static double CalculateEquipmentQualityIncreaseRate(List<uint> equipmentQualityLevels)
         {
             return Math.Clamp(equipmentQualityLevels.Select(level => level * EquipmentQualityIncrementPerLevel + EquipmentQualityMinimumPerPawn).Sum(), 0, 100);
         }
@@ -153,7 +159,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// <param name="refineMaterialItem"></param>
         /// <param name="equipmentQualityLevels"></param>
         /// <returns></returns>
-        public static CraftCalculationResult CalculateEquipmentQuality(Item refineMaterialItem, List<uint> equipmentQualityLevels, byte itemRank=0)
+        public static CraftCalculationResult CalculateEquipmentQuality(Item refineMaterialItem, uint calculatedOdds, byte itemRank=0)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
             // Based on season 1 evidence:
@@ -180,7 +186,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     case 8052 or 8084:
                         RandomQuality = 2;
                         greatSuccessValue = 3;
-                        greatSuccessOdds = 5;
+                        greatSuccessOdds = 25;
                         exp = CalculateQualityExp(itemRank, true);
                         break;
                     // Standard Rocks (Tier1)
@@ -192,7 +198,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
 
-            var isGreatSuccess = CalculateIsGreatSuccess(greatSuccessOdds);
+            var isGreatSuccess = CalculateIsGreatSuccess(greatSuccessOdds, calculatedOdds);
 
             if (isGreatSuccess)
             {
@@ -229,7 +235,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEquipmentEnhancementPoints(equipmentEnhancementLevels) * EquipmentEnhancementGreatSuccessFactor;
         }
 
-        public CraftCalculationResult CalculateEquipmentEnhancement(List<uint> equipmentEnhancementLevels)
+        public CraftCalculationResult CalculateEquipmentEnhancement(List<uint> equipmentEnhancementLevels, uint calculatedOdds)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
             // Based on season 1 evidence:
@@ -238,7 +244,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // According to wikis: 150 + (levelValue - 1 ) * 1.73 => mostly season 1
 
             double equipmentEnhancementPoints = GetEquipmentEnhancementPoints(equipmentEnhancementLevels);
-            bool isGreatSuccess = CalculateIsGreatSuccess();
+            bool isGreatSuccess = CalculateIsGreatSuccess(GreatSuccessOddsDefault, calculatedOdds);
             equipmentEnhancementPoints *= isGreatSuccess ? EquipmentEnhancementGreatSuccessFactor : 1;
             return new CraftCalculationResult()
             {
@@ -264,7 +270,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// <summary>
         /// Takes craft rank and craft skill level of all pawns into account and allows to push the minimum chance to 50% to add up to 3 additional items.
         /// </summary>
-        public static CraftCalculationResult CalculateConsumableQuantity(List<uint> consumableQuantityLevels)
+        public static CraftCalculationResult CalculateConsumableQuantity(List<uint> consumableQuantityLevels, uint calculatedOdds)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
             double consumableQuantityChance = GetAdditionalConsumableQuantityRate(consumableQuantityLevels);
@@ -274,7 +280,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 quantity += Random.Shared.Next(100) < consumableQuantityChance ? ConsumableQuantityMaximumQuantityPerPawn : 0;
             }
 
-            bool isGreatSuccess = CalculateIsGreatSuccess();
+            bool isGreatSuccess = CalculateIsGreatSuccess(GreatSuccessOddsDefault, calculatedOdds);
             if (isGreatSuccess)
             {
                 quantity++;
@@ -315,10 +321,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         #endregion
 
-        public static bool CalculateIsGreatSuccess(int odds = GreatSuccessOddsDefault)
+        public static bool CalculateIsGreatSuccess(int baseOdds, uint calculatedOdds)
         {
-            return Random.Shared.Next(odds) == 0;
+            int adjustedOdds = baseOdds + (int)calculatedOdds;
+            int roll = Random.Shared.Next(100);
+
+            Console.Write($"adjustedodds: {adjustedOdds}, and Roll: {roll}");
+
+            return roll < adjustedOdds;
         }
+
 
         public static uint GetPawnProductionSpeedLevel(Pawn pawn)
         {

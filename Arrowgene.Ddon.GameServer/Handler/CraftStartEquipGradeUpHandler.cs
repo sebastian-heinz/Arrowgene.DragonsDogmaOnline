@@ -84,15 +84,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
             List<uint> enhancementLevels = new List<uint>();
             List<uint> costPerformanceLevels = new List<uint>();
+            List<uint> qualityLevels = new List<uint>();
 
             foreach (uint pawnId in pawnIds)
             {
                 Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
                 enhancementLevels.Add(CraftManager.GetPawnEquipmentEnhancementLevel(pawn));
                 costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
             }
 
-            CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(enhancementLevels);
+            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
+            CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(enhancementLevels, (uint)calculatedOdds);
             bool isGreatSuccess = enhnacementResult.IsGreatSuccess;
             uint addEquipPoint = enhnacementResult.CalculatedValue;
 

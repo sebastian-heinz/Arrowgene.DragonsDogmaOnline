@@ -85,16 +85,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
             client.Send(updateCharacterItemNtc);
 
-            // TODO: Store saved pawn exp
-            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnId);
+            if (CraftManager.CanPawnExpUp(leadPawn))
+            {                                                           // TODO: Make a function for both crests and Dyes exp calc
+                CraftManager.HandlePawnExpUp(client, leadPawn, 30, 0); // EXP scales depending on Recieving Gears IR. Same as Dye it looks like?
+            }
+            if (CraftManager.CanPawnRankUp(leadPawn))
             {
-                PawnId = request.CraftMainPawnId,
-                AddExp = totalExp,
-                ExtraBonusExp = 0,
-                TotalExp = totalExp,
-                CraftRankLimit = 0
-            };
-            client.Send(expNtc);
+                CraftManager.HandlePawnRankUp(client, leadPawn);
+            }
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             return result;
         }
