@@ -12,7 +12,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             CreateParam = new CDataClanParam();
         }
-
         public CDataClanParam CreateParam { get; set; }
         public long LeaveTime { get; set; } 
 

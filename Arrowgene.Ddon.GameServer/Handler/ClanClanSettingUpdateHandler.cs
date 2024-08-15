@@ -1,12 +1,10 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ClanClanSettingUpdateHandler : PacketHandler<GameClient>
+    public class ClanClanSettingUpdateHandler : GameRequestPacketHandler<C2SClanClanSettingUpdateReq, S2CClanClanSettingUpdateRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanClanSettingUpdateHandler));
 
@@ -15,11 +13,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_CLAN_CLAN_SETTING_UPDATE_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CClanClanSettingUpdateRes Handle(GameClient client, C2SClanClanSettingUpdateReq request)
         {
-            client.Send(GameDump.Dump_18);
+            return new S2CClanClanSettingUpdateRes()
+            {
+                IsMemberNotice = false
+            };
         }
     }
 }

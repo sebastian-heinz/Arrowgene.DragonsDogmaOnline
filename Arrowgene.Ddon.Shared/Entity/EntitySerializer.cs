@@ -430,6 +430,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SClanClanPartnerPawnDataGetReq.Serializer());
             Create(new C2SClanGetFurnitureReq.Serializer());
             Create(new C2SClanSetFurnitureReq.Serializer());
+            Create(new C2SClanClanSettingUpdateReq.Serializer());
+            Create(new C2SClanClanScoutEntryGetMyReq.Serializer());
 
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
@@ -851,6 +853,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanClanPartnerPawnDataGetRes.Serializer());
             Create(new S2CClanGetFurnitureRes.Serializer());
             Create(new S2CClanSetFurnitureRes.Serializer());
+            Create(new S2CClanClanSettingUpdateRes.Serializer());
+            Create(new S2CClanClanScoutEntryGetMyRes.Serializer());
+
             Create(new S2CConnectionLoginRes.Serializer());
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveInServerRes.Serializer());
