@@ -21,14 +21,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             string json = File.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
-            var elementAttachInfoElements = document.RootElement.EnumerateArray().ToList();
-            foreach (var elementAttachInfo in elementAttachInfoElements)
+            var costExpInfoElements = document.RootElement.EnumerateArray().ToList();
+            foreach (var costExpInfo in costExpInfoElements)
             {
-                var itemLevel = elementAttachInfo.GetProperty("item_level").GetUInt32();
-                var cost = elementAttachInfo.GetProperty("cost").GetUInt32(); ;
-                var exp = elementAttachInfo.GetProperty("exp").GetUInt32();
+                var itemLevel = costExpInfo.GetProperty("item_level").GetUInt32();
+                var cost = costExpInfo.GetProperty("cost").GetUInt32(); ;
+                var exp = costExpInfo.GetProperty("exp").GetUInt32();
 
-                asset.CostExpScalingInfo[itemLevel] = new ElementAttachInfo()
+                asset.CostExpScalingInfo[itemLevel] = new CostExpInfo()
                 {
                     ItemLevel = itemLevel,
                     Cost = cost,

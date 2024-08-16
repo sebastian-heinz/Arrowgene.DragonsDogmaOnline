@@ -114,7 +114,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 };
 
             var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
-            uint originalCost = craftInfo.Cost;
+            uint totalCost = craftInfo.Cost;
             uint totalExp = craftInfo.Exp;
 
             Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
@@ -128,10 +128,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
             }
 
-            double finalCost = _craftManager.CalculateRecipeCost(originalCost, costPerformanceLevels);
-            Logger.Debug($"your discount is {finalCost} and original is: {originalCost}");
-
-            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, (uint)finalCost));
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
+                            Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels));
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             client.Send(updateCharacterItemNtc);
 
             if (CraftManager.CanPawnExpUp(leadPawn))

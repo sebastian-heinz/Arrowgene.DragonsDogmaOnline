@@ -79,13 +79,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Consume the crest
                 updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
             }
+
+
+
+            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnId);
+            List<uint> pawnIds = new List<uint> { leadPawn.PawnId };
+            pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
+            List<uint> costPerformanceLevels = new List<uint>();
+
+            foreach (uint pawnId in pawnIds)
+            {
+                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
+                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+            }
             
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
-            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
+                            Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels));
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
             client.Send(updateCharacterItemNtc);
 
-            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnId);
+            
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
                 CraftManager.HandlePawnExpUp(client, leadPawn, totalExp, 0);

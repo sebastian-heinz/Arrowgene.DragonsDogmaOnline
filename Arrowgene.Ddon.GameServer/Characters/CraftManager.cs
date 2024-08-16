@@ -297,12 +297,44 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         #region cost performance
 
-        public double GetCraftCostReductionRate(List<uint> costPerformanceLevels)
+public double GetCraftCostReductionRate(List<uint> costPerformanceLevels)
+{
+    uint total = 0;
+    foreach (uint level in costPerformanceLevels)
+    {
+        total += level;
+    }
+
+    if (_server.AssetRepository.PawnCostReductionAsset.PawnCostReductionInfo.TryGetValue(total, out PawnCostReductionInfo costReductionInfo))
+    {
+        int numberOfPawns = costPerformanceLevels.Count;
+        float selectedCostRate;
+
+        switch (numberOfPawns)
         {
-            return Math.Clamp(
-                costPerformanceLevels.Select(level => level * CostPerformanceIncrementPerLevel + CostPerformanceMinimumPerPawn).Sum() *
-                _server.Setting.ServerSetting.AdditionalCostPerformanceFactor, 0, 100);
+            case 1:
+                selectedCostRate = costReductionInfo.CostRate1;
+                break;
+            case 2:
+                selectedCostRate = costReductionInfo.CostRate2;
+                break;
+            case 3:
+                selectedCostRate = costReductionInfo.CostRate3;
+                break;
+            case 4:
+                selectedCostRate = costReductionInfo.CostRate4;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException($"Number of pawns {numberOfPawns} is out of expected range (1-4).");
         }
+
+        return selectedCostRate;
+    }
+    else
+    {
+        throw new KeyNotFoundException($"No cost reduction information found for total level: {total}");
+    }
+}
 
         /// <summary>
         /// Takes craft skill level of all pawns into account and allows for a maximum of 50% reduction by default.
@@ -312,12 +344,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// <returns></returns>
         public uint CalculateRecipeCost(uint recipeCost, List<uint> costPerformanceLevels)
         {
-            // TODO: Figure out actual formula + lower/upper bounds client uses
-            // Based on season 1 evidence:
-            //  1x lvl 2, 3x lvl 1 == 16% maximum
-            double costPerformanceFactor = (100 - GetCraftCostReductionRate(costPerformanceLevels)) / 100;
-            return (uint)Math.Clamp(recipeCost * costPerformanceFactor, 0, recipeCost);
-            // GetCraftCostReductionRate returns 0 even with a level 2, which the client knows should be reducing by some amount.
+            double discountValue = GetCraftCostReductionRate(costPerformanceLevels) / 100;
+            double finalCost = discountValue * recipeCost;
+            return (uint)finalCost;
         }
 
         #endregion
