@@ -63,22 +63,22 @@ public class CraftManagerTest
         Assert.True(result.CalculatedValue >= 150);
     }
 
-    // [Fact]
-    // public void CalculatePawnRankUp_ShouldReturnCorrectRankUpsRank70()
-    // {
-    //     Pawn pawn = new Pawn
-    //     {
-    //         CraftData = new CDataPawnCraftData()
-    //         {
-    //             CraftRank = 1,
-    //             CraftExp = 999999
-    //         }
-    //     };
+    [Fact]
+    public void CalculatePawnRankUp_ShouldReturnCorrectRankUpsRank70()
+    {
+        Pawn pawn = new Pawn
+        {
+            CraftData = new CDataPawnCraftData()
+            {
+                CraftRank = 1,
+                CraftExp = 999999
+            }
+        };
 
-    //     uint rankUps = CraftManager.CalculatePawnRankUp(pawn);
+        uint rankUps = CraftManager.CalculatePawnRankUp(pawn);
 
-    //     Assert.Equal(69u, rankUps);
-    // }
+        Assert.Equal(69u, rankUps);
+    }
     
     [Fact]
     public void CanPawnRankUp_ShouldReturnFalse_WhenCraftRankLimitReached()
