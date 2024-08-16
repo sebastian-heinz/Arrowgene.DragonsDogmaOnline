@@ -621,7 +621,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceDropItemManager.Clear();
-                client.Character.EnemyLayoutOwnership.Clear();
+                client.Character.ContextOwnership.Clear();
             }
             OmManager.ResetAllOmData(InstanceOmData);
             QuestState.ResetInstanceQuestState();

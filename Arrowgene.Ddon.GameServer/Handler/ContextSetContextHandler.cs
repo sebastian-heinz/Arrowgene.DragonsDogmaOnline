@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -7,6 +5,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -26,31 +25,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // To the client or to all party?
             Tuple<CDataContextSetBase, CDataContextSetAdditional> context = new Tuple<CDataContextSetBase, CDataContextSetAdditional>(packet.Structure.Base, packet.Structure.Additional);
 
-            ContextManager.SetContext(client.Party, context.Item1.UniqueId, context);
-
             int index = context.Item2.MasterIndex;
-            
+
             if (index == -1)
             {
                 index = client.Party.ClientIndex(client);
             }
 
-            Logger.Debug("===================================================================");
-            Logger.Debug($"C2SSetContextNtc: ContextId: {context.Item1.ContextId}, UniqueId: 0x{context.Item1.UniqueId:x16}, Context: {context.Item2.MasterIndex}/{index}");
-            Logger.Debug("===================================================================");
+            ContextManager.SetContext(client.Party, context.Item1.UniqueId, context);
+            ContextManager.AssignMaster(client, packet.Structure.Base.UniqueId, index);
 
-            // Send to all or just the host?
-            client.Party.SendToAll(new S2CContextMasterChangeNtc()
-            {
-                Info = new List<CDataMasterInfo>()
-                {
-                    new CDataMasterInfo()
-                    {
-                        UniqueId = packet.Structure.Base.UniqueId,
-                        MasterIndex = (sbyte)index
-                    }
-                }
-            });
-        }        
+            Logger.Debug($"C2SSetContextNtc: ContextId: {context.Item1.ContextId}, UniqueId: 0x{context.Item1.UniqueId:x16}, Context: {context.Item2.MasterIndex}/{index}");
+        }
     }
 }

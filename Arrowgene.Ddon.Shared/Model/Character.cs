@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Model
             Pawns = new List<Pawn>();
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
-            EnemyLayoutOwnership = new Dictionary<CDataStageLayoutId, bool>();
+            ContextOwnership = new Dictionary<ulong, bool>();
             StampBonus = new CharacterStampBonus();
             AbilityPresets = new List<CDataPresetAbilityParam>();
         }
@@ -71,7 +71,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return Pawns[SlotNo-1];
         }
 
-        public Dictionary<CDataStageLayoutId, bool> EnemyLayoutOwnership { get; set; }
+        public Dictionary<ulong, bool> ContextOwnership { get; set; }
 
         public CDataJobPlayPoint? ActiveCharacterPlayPointData
         {
