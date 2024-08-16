@@ -2,15 +2,11 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
-using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdateCharacterEditParamExHandler : GameStructurePacketHandler<C2SCharacterEditUpdateCharacterEditParamExReq>
+    public class CharacterEditUpdateCharacterEditParamExHandler : GameRequestPacketHandler<C2SCharacterEditUpdateCharacterEditParamExReq, S2CCharacterEditUpdateCharacterEditParamExRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdateCharacterEditParamExHandler));
         
@@ -18,21 +14,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamExReq> packet)
+        public override S2CCharacterEditUpdateCharacterEditParamExRes Handle(GameClient client, C2SCharacterEditUpdateCharacterEditParamExReq packet)
         {
-            // TODO: Substract GG
-            client.Character.EditInfo = packet.Structure.EditInfo;
+
+            CharacterEditGetShopPriceHandler.CheckPrice(packet.UpdateType, packet.EditPrice.PointType, packet.EditPrice.Value);
+
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
+                packet.EditPrice.PointType, packet.EditPrice.Value);
+
+            client.Character.EditInfo = packet.EditInfo;
             Server.Database.UpdateEditInfo(client.Character);
             
-            if(packet.Structure.FirstName.Length > 0) {
-                client.Character.FirstName = packet.Structure.FirstName;
+            if(packet.FirstName.Length > 0) {
+                client.Character.FirstName = packet.FirstName;
                 Server.Database.UpdateCharacterBaseInfo(client.Character);
             }
 
             //Client won't let you reincarnate if you're wearing a gender-locked item, but EquipmentTemplates also have to be cleaned.
             Server.EquipManager.CleanGenderedEquipTemplates(Server, client.Character);
 
-            client.Send(new S2CCharacterEditUpdateCharacterEditParamExRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamExNtc() {
                     CharacterId = client.Character.CharacterId,
@@ -41,6 +41,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Name = client.Character.FirstName
                 });
             }
+
+            return new S2CCharacterEditUpdateCharacterEditParamExRes();
         }
     }
 }
