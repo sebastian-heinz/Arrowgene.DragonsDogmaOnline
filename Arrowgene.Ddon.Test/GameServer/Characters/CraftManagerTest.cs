@@ -71,14 +71,14 @@ public class CraftManagerTest
             CraftData = new CDataPawnCraftData()
             {
                 CraftRank = 1,
-                CraftExp = 3051,
-                CraftRankLimit = 8
+                CraftExp = 999999,
+                CraftRankLimit = 70
             }
         };
 
         uint rankUps = CraftManager.CalculatePawnRankUp(pawn);
 
-        Assert.Equal(8u, rankUps);
+        Assert.Equal(69u, rankUps);
     }
     
     [Fact]
