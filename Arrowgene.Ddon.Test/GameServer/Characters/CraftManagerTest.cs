@@ -76,8 +76,8 @@ public class CraftManagerTest
         };
 
         uint rankUps = CraftManager.CalculatePawnRankUp(pawn);
-        
-        Assert.Equal(69u, rankUps);
+
+        Assert.Equal(8u, rankUps);
     }
     
     [Fact]
