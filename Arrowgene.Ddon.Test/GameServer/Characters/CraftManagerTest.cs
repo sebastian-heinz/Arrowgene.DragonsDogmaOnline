@@ -71,7 +71,8 @@ public class CraftManagerTest
             CraftData = new CDataPawnCraftData()
             {
                 CraftRank = 1,
-                CraftExp = 999999
+                CraftExp = 999999,
+                CraftRankLimit = 70
             }
         };
 

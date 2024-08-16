@@ -391,7 +391,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static uint CalculatePawnRankUp(Pawn pawn)
         {
             uint rankUps = 0;
-            for (int i = (int)pawn.CraftData.CraftRank; i < PawnCraftRankMaxLimit; i++)
+            for (int i = (int)pawn.CraftData.CraftRank; i < pawn.CraftData.CraftRankLimit; i++)
             {
                 if (pawn.CraftData.CraftExp >= craftRankExpLimit[i])
                 {
