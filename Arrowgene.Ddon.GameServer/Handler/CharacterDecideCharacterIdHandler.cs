@@ -1,20 +1,15 @@
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterDecideCharacterIdHandler : PacketHandler<GameClient>
+    public class CharacterDecideCharacterIdHandler : GameStructurePacketHandler<C2SCharacterDecideCharacterIdReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterDecideCharacterIdHandler));
 
@@ -25,16 +20,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _AssetRepo = server.AssetRepository;
         }
 
-        public override PacketId Id => PacketId.C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterDecideCharacterIdReq> packet)
         {
-            S2CCharacterDecideCharacterIdRes pcap = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.CharacterId;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
+            res.BinaryData = client.Character.BinaryData;
 
-            res.Unk0 = pcap.Unk0; // Removing this makes tons of tutorials pop up
             client.Send(res);
 
             // Unlocks menu options such as inventory, warping, etc.

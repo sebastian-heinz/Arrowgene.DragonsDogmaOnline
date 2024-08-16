@@ -283,7 +283,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataWorldManageQuestList.Serializer());
             Create(new CDataStageLayoutId.Serializer());
             Create(new CDataFriendInfo.Serializer());
-            Create(new UnkownCharacterData0Serializer());
             Create(new CDataOmData.Serializer());
             Create(new CDataReleaseAreaInfoSet.Serializer());
 
@@ -307,6 +306,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SBazaarReceiveProceedsReq.Serializer());
             Create(new C2SBazaarReExhibitReq.Serializer());
 
+            Create(new C2SCharacterDecideCharacterIdReq.Serializer());
             Create(new C2SCharacterCharacterGoldenReviveReq.Serializer());
             Create(new C2SCharacterCharacterPenaltyReviveReq.Serializer());
             Create(new C2SCharacterCharacterPointReviveReq.Serializer());
@@ -580,6 +580,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SFriendRegisterFavoriteFriendReq.Serializer());
             Create(new C2SFriendCancelFriendApplicationReq.Serializer());
             Create(new C2SCharacterCommunityCharacterStatusGetReq.Serializer());
+
+            Create(new C2SBinarySaveSetCharacterBinSaveDataReq.Serializer());
 
             Create(new L2CCreateCharacterDataNtc.Serializer());
             Create(new L2CCreateCharacterDataRes.Serializer());
@@ -986,6 +988,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CStampBonusGetListRes.Serializer());
             Create(new S2CStampBonusCheckRes.Serializer());
+
+            Create(new S2CBinarySaveSetCharacterBinSaveDataRes.Serializer());
 
             Create(new ServerRes.Serializer());
         }

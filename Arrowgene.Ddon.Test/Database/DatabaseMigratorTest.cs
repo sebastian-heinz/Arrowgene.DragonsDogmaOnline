@@ -356,6 +356,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<Crest> GetCrests(uint characterCommonId, string itemUId) { return new List<Crest>(); }
         public bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset) {return true; }
         public bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset) { return true; }
+        public bool UpdateCharacterBinaryData(uint characterId, byte[] data) { return true; }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
