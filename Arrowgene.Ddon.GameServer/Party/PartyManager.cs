@@ -28,7 +28,6 @@ public class PartyManager
     private readonly ConcurrentStack<uint> _idPool;
     private readonly ConcurrentDictionary<uint, PartyGroup> _parties;
     private readonly ConcurrentDictionary<GameClient, PartyInvitation> _invites;
-    private readonly ConcurrentDictionary<GameClient, Timer> _inviteTimers;
 
     public PartyManager(AssetRepository assetRepository)
     {
@@ -42,59 +41,46 @@ public class PartyManager
 
         _parties = new ConcurrentDictionary<uint, PartyGroup>();
         _invites = new ConcurrentDictionary<GameClient, PartyInvitation>();
-        _inviteTimers = new ConcurrentDictionary<GameClient, Timer>();  
     }
 
     public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party)
     {
         if (_invites.TryRemove(invitee, out PartyInvitation existingInvite))
         {
-            if (_inviteTimers.TryRemove(invitee, out Timer existingTimer))
-            {
-                existingTimer.Dispose();
-            }
+            existingInvite.CancelTimer();
         }
 
-        PartyInvitation invitation = new PartyInvitation();
-        invitation.Invitee = invitee;
-        invitation.Host = host;
-        invitation.Party = party;
-        invitation.Date = DateTime.UtcNow;
+        PartyInvitation invitation = new PartyInvitation
+        {
+            Invitee = invitee,
+            Host = host,
+            Party = party,
+            Date = DateTime.UtcNow
+        };
+
         if (!_invites.TryAdd(invitee, invitation))
         {
             Logger.Error(invitee, $"Already has pending invite)");
             return false;
         }
 
-        var timer = new Timer(RemoveExpiredInvite, invitee, (InvitationTimeoutSec + 2) * 1000, Timeout.Infinite);
-        _inviteTimers.TryAdd(invitee, timer);
+        invitation.StartTimer(RemoveExpiredInvite, InvitationTimeoutSec + 2);
 
         return true;
     }
 
-    private void RemoveExpiredInvite(object inviteeObj) 
+    private void RemoveExpiredInvite(PartyInvitation invitation) 
     {
-        var invitee = inviteeObj as GameClient;
-
-        if (invitee == null)
+        if (_invites.ContainsKey(invitation.Invitee) && _invites.TryRemove(invitation.Invitee, out _))
         {
-            Logger.Error("Failed to cast inviteeObj to GameClient in RemoveExpiredInvite.");
-            return;
+            var ntc = new S2CPartyPartyInviteCancelNtc
+            {
+                ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT
+            };
+            invitation.Invitee.Send(ntc);
+
+            Logger.Info(invitation.Invitee, "Invitation removed due to timeout.");
         }
-
-        _invites.TryRemove(invitee, out _);
-        if (_inviteTimers.TryRemove(invitee, out Timer timer))
-        {
-            timer.Dispose();
-        }
-
-        var ntc = new S2CPartyPartyInviteCancelNtc
-        {
-            ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT
-        };
-        invitee.Send(ntc);
-
-        Logger.Info(invitee, "Invitation removed due to timeout.");
     }
 
     public PartyInvitation GetPartyInvitation(GameClient client)
