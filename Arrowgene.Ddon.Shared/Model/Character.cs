@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Model
             Created = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
             PlayPointList = new List<CDataJobPlayPoint>();
             Storage = new Storages(new Dictionary<StorageType, ushort>());
-            Unk0 = new List<UnknownCharacterData0>();
+            CharacterEquipItemInfoUnk2 = new List<CDataEquipItemInfoUnk2>();
             WalletPointList = new List<CDataWalletPoint>();
             OrbStatusList = new List<CDataOrbPageStatus>();
             MsgSetList = new List<CDataCharacterMsgSet>();
@@ -25,9 +26,10 @@ namespace Arrowgene.Ddon.Shared.Model
             Pawns = new List<Pawn>();
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
-            EnemyLayoutOwnership = new Dictionary<CDataStageLayoutId, bool>();
+            ContextOwnership = new Dictionary<ulong, bool>();
             StampBonus = new CharacterStampBonus();
             AbilityPresets = new List<CDataPresetAbilityParam>();
+            BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
         }
 
         public int AccountId { get; set; }
@@ -39,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public string LastName;
         public List<CDataJobPlayPoint> PlayPointList;
         public Storages Storage;
-        public List<UnknownCharacterData0> Unk0;
+        public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2;
         public List<CDataWalletPoint> WalletPointList;
         public byte MyPawnSlotNum;
         public byte RentalPawnSlotNum;
@@ -53,6 +55,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
         public List<CDataPresetAbilityParam> AbilityPresets;
+        public byte[] BinaryData;
 
         public List<Pawn> Pawns { get; set; }
 
@@ -71,7 +74,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return Pawns[SlotNo-1];
         }
 
-        public Dictionary<CDataStageLayoutId, bool> EnemyLayoutOwnership { get; set; }
+        public Dictionary<ulong, bool> ContextOwnership { get; set; }
 
         public CDataJobPlayPoint? ActiveCharacterPlayPointData
         {

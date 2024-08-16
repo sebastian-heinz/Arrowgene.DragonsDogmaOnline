@@ -1,0 +1,162 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "An Approaching Menace",
+    "quest_id": 20050000,
+    "base_level": 10,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 330
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 270
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 30
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment" : "Fluorite Earrings",
+                    "item_id": 8931,
+                    "num": 1
+                },
+                {
+                    "comment" : "Healing Potion",
+                    "item_id": 34,
+                    "num": 3				
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 52
+            },
+			"starting_index": 1,			
+            "enemies": [
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70
+                },
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70
+                },
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70
+                },
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70
+                },
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70					
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 50
+            },
+			"starting_index": 1,			
+            "enemies": [
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70				
+                },
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70	
+                },
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70						
+                },
+                {
+                    "comment" : "Redcap",
+                    "enemy_id": "0x011110",
+                    "level": 10,
+                    "exp": 70	
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1055, "comment": "Spawns Travelling NPC"}
+            ],
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "LightlyEquippedSoldier",
+            "message_id": 11372
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [1]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [1]
+        },
+        {
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "LightlyEquippedSoldier",
+            "message_id": 11842
+        }
+    ]
+}

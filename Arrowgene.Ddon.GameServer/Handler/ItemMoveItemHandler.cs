@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             client.Send(ntc);
-            
+
             client.Send(new S2CItemMoveItemRes());
         }
 
@@ -48,6 +48,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     return ItemNoticeType.TemporaryItems;
                 case 7:
                     return ItemNoticeType.ExStorageItems;
+                case 8:
+                case 9:
+                case 10:
+                    return ItemNoticeType.BaggageItems; //Found by binary search, may not be the "correct" one, but it does work.
+                case 13:
+                    return ItemNoticeType.LoadPostItems;
                 case 19:
                     return ItemNoticeType.StoreStorage_items;
                 case 20:

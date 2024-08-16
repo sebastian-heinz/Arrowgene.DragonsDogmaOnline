@@ -5,7 +5,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -21,18 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CDataStageLayoutId layout = packet.Structure.LayoutId;
 
-            //Check if anybody else is in this layout.
-            var otherClients = client.Party.Clients.Where(x => x != client && x.Character.EnemyLayoutOwnership.ContainsKey(layout));
-            if (otherClients.Any())
-            {
-                //Somebody else got here first, so wait in line.
-                client.Character.EnemyLayoutOwnership[layout] = false;
-            }
-            else
-            {
-                //Take ownership of it
-                ContextManager.AssignMaster(client, layout);
-            }
+            ContextManager.HandleEntry(client, layout);
         }
     }
 }

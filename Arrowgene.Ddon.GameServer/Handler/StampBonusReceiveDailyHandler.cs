@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -22,6 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
+            _gameServer.Database.ClearDeferred();
+
             //Update stamp bonus data.
             client.Character.StampBonus.LastStamp = DateTime.Now;
             client.Character.StampBonus.ConsecutiveStamp += 1;
@@ -34,6 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _gameServer.StampManager.HandleStampBonuses(client, dailyStamps);
 
             client.Send(GameFull.Dump_701);
+
+            _gameServer.Database.ExecuteDeferred();
         }
     }
 } 

@@ -15,14 +15,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             CharacterId = 0;
             CharacterInfo = new CDataCharacterInfo();
             IsReturnPrepare = false;
-            Unk0 = new byte[0x400];
+            BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
             Unk1 = 0;
         }
 
         public uint CharacterId { get; set; }
         public CDataCharacterInfo CharacterInfo { get; set; }
         public bool IsReturnPrepare { get; set; }
-        public byte[] Unk0 { get; set; }
+        public byte[] BinaryData { get; set; }
         public byte Unk1 { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCharacterDecideCharacterIdRes>
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteEntity<CDataCharacterInfo>(buffer, obj.CharacterInfo);
                 WriteBool(buffer, obj.IsReturnPrepare);
-                WriteByteArray(buffer, obj.Unk0);
+                WriteByteArray(buffer, obj.BinaryData);
                 WriteByte(buffer, obj.Unk1);
             }
 
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.CharacterId = ReadUInt32(buffer);
                 obj.CharacterInfo = ReadEntity<CDataCharacterInfo>(buffer);
                 obj.IsReturnPrepare = ReadBool(buffer);
-                obj.Unk0 = ReadByteArray(buffer, 0x400);
+                obj.BinaryData = ReadByteArray(buffer, C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE);
                 obj.Unk1 = ReadByte(buffer);
                 return obj;
             }

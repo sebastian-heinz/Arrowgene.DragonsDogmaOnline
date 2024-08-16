@@ -3,15 +3,13 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdatePawnEditParamExHandler : GameStructurePacketHandler<C2SCharacterEditUpdatePawnEditParamExReq>
+    public class CharacterEditUpdatePawnEditParamExHandler : GameRequestPacketHandler<C2SCharacterEditUpdatePawnEditParamExReq, S2CCharacterEditUpdatePawnEditParamExRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdatePawnEditParamExHandler));
         
@@ -19,13 +17,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdatePawnEditParamExReq> packet)
+        public override S2CCharacterEditUpdatePawnEditParamExRes Handle(GameClient client, C2SCharacterEditUpdatePawnEditParamExReq packet)
         {
-            // TODO: Substract GG
-            Pawn pawn = client.Character.PawnBySlotNo(packet.Structure.SlotNo);
-            pawn.EditInfo = packet.Structure.EditInfo;
+            CharacterEditGetShopPriceHandler.CheckPrice(packet.UpdateType, packet.EditPrice.PointType, packet.EditPrice.Value);
+
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
+                packet.EditPrice.PointType, packet.EditPrice.Value);
+
+            Pawn pawn = client.Character.PawnBySlotNo(packet.SlotNo);
+            pawn.EditInfo = packet.EditInfo;
             Server.Database.UpdateEditInfo(pawn);
-            pawn.Name = packet.Structure.Name;
+            pawn.Name = packet.Name;
             Server.Database.UpdatePawnBaseInfo(pawn);
 
             //Weirdly enough, pawns can reincarnate while wearing gender-locked equipment just fine.
@@ -34,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
                 {
-                    UpdateType = ItemNoticeType.ChangePawnEquip
+                    UpdateType = ItemNoticeType.StorePostItemMail //Probably an abuse of this notice type.
                 };
 
                 S2CEquipChangePawnEquipNtc updateEquipNtc = new S2CEquipChangePawnEquipNtc()
@@ -50,7 +52,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EquipType equipType = force.Item1;
                     EquipSlot slot = force.Item2;
 
-                    Storage destinationStorage = client.Character.Storage.GetStorage(StorageType.ItemBagEquipment);
+                    Storage destinationStorage = client.Character.Storage.GetStorage(StorageType.ItemPost);
                     updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(
                         Server,
                         client.Character,
@@ -66,7 +68,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(updateEquipNtc);
             }
 
-            client.Send(new S2CCharacterEditUpdatePawnEditParamExRes());
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamExNtc() {
                     CharacterId = pawn.CharacterId,
@@ -75,6 +76,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Name = pawn.Name
                 });
             }
+
+            return new S2CCharacterEditUpdatePawnEditParamExRes();
         }
     }
 }

@@ -1,25 +1,24 @@
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class BinarySaveSetCharacterBinSavedataHandler : PacketHandler<GameClient>
+    public class BinarySaveSetCharacterBinSavedataHandler : GameRequestPacketHandler<C2SBinarySaveSetCharacterBinSaveDataReq, S2CBinarySaveSetCharacterBinSaveDataRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BinarySaveSetCharacterBinSavedataHandler));
-
 
         public BinarySaveSetCharacterBinSavedataHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_BINARY_SAVE_SET_CHARACTER_BIN_SAVEDATA_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CBinarySaveSetCharacterBinSaveDataRes Handle(GameClient client, C2SBinarySaveSetCharacterBinSaveDataReq request)
         {
-            client.Send(SelectedDump.AntiDc9_1_2);
+            client.Character.BinaryData = request.BinaryData;
+
+            Server.Database.UpdateCharacterBinaryData(client.Character.CharacterId, request.BinaryData);
+
+            return new S2CBinarySaveSetCharacterBinSaveDataRes();
         }
     }
 }

@@ -75,9 +75,7 @@ namespace Arrowgene.Ddon.GameServer
                     }
                     else
                     {
-                        //TODO: Send to Item Post when that's implemented.
-                        //Sends to storage.
-                        totalItems = totalItems.Concat(Server.ItemManager.AddItem(Server, client.Character, false, bonus.BonusType, bonus.BonusValue)).ToList();
+                        totalItems = totalItems.Concat(Server.ItemManager.AddItemRaw(Server, client.Character, StorageType.ItemPost, bonus.BonusType, bonus.BonusValue)).ToList();
                     }
                 }
             }
@@ -88,8 +86,7 @@ namespace Arrowgene.Ddon.GameServer
                 {
                     UpdateItemList = totalItems,
                     UpdateWalletList = totalWallet,
-                    //UpdateType = ItemNoticeType.StampBonus //StampBonus prints "%s sent to Item Post", which is wrong for the moment.
-                    UpdateType = ItemNoticeType.Default
+                    UpdateType = ItemNoticeType.StampBonus
                 });
             }
         }

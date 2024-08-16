@@ -27,33 +27,41 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_id", "background_id", "title_uid", "title_index", "motion_id", "motion_frame_no"
         };
 
+        private static readonly string[] CharacterBinaryDataFields = new string[]
+        {
+            "character_id", "binary_data"
+        };
+
         private readonly string SqlInsertCharacter = $"INSERT INTO \"ddon_character\" ({BuildQueryField(CharacterFields)}) VALUES ({BuildQueryInsert(CharacterFields)});";
         private static readonly string SqlUpdateCharacter = $"UPDATE \"ddon_character\" SET {BuildQueryUpdate(CharacterFields)} WHERE \"character_id\" = @character_id;";
         private static readonly string SqlSelectCharacter = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField(CharacterFields)} FROM \"ddon_character\" WHERE \"character_id\" = @character_id;";
         private static readonly string SqlSelectCharactersByAccountId = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField(CharacterFields)} FROM \"ddon_character\" WHERE \"account_id\" = @account_id;";
-        private readonly string SqlSelectAllCharacterData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+        private readonly string SqlSelectAllCharacterData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)}, {BuildQueryField("ddon_binary_data", CharacterBinaryDataFields)} "
             + "FROM \"ddon_character\" "
             + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_binary_data\" ON \"ddon_binary_data\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "WHERE \"ddon_character\".\"character_id\" = @character_id";
-        private readonly string SqlSelectAllCharactersDataByAccountId = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+        private readonly string SqlSelectAllCharactersDataByAccountId = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)}, {BuildQueryField("ddon_binary_data", CharacterBinaryDataFields)} "
             + "FROM \"ddon_character\" "
             + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_binary_data\" ON \"ddon_binary_data\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "WHERE \"account_id\" = @account_id";
-        private readonly string SqlSelectAllCharactersData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)} "
+        private readonly string SqlSelectAllCharactersData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)}, {BuildQueryField("ddon_binary_data", CharacterBinaryDataFields)} "
             + "FROM \"ddon_character\" "
             + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
-            + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" ";
+            + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
+            + "LEFT JOIN \"ddon_binary_data\" ON \"ddon_binary_data\".\"character_id\" = \"ddon_character\".\"character_id\" ";
         private const string SqlDeleteCharacter = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_character\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_character\".\"character_common_id\" AND \"character_id\"=@character_id);";
         private const string SqlUpdateMyPawnSlot = "UPDATE \"ddon_character\" SET \"my_pawn_slot_num\"=@my_pawn_slot_num WHERE \"character_id\"=@character_id;";
 
@@ -68,6 +76,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateCharacterArisenProfile = $"UPDATE \"ddon_character_arisen_profile\" SET {BuildQueryUpdate(CDataArisenProfileFields)} WHERE \"character_id\" = @character_id;";
         private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM \"ddon_character_arisen_profile\" WHERE \"character_id\" = @character_id;";
         private const string SqlDeleteCharacterArisenProfile = "DELETE FROM \"ddon_character_arisen_profile\" WHERE \"character_id\"=@character_id;";
+
+        private readonly string SqlReplaceCharacterBinaryData = $"REPLACE INTO \"ddon_binary_data\" ({BuildQueryField(CharacterBinaryDataFields)}) VALUES ({BuildQueryInsert(CharacterBinaryDataFields)});";
+        private static readonly string SqlSelectCharacterBinaryData = $"SELECT {BuildQueryField(CharacterBinaryDataFields)} FROM \"ddon_binary_data\" WHERE \"character_id\" = @character_id;";
 
         public bool CreateCharacter(Character character)
         {
@@ -85,6 +96,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     ExecuteNonQuery(conn, SqlInsertStatusInfo, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterMatchingProfile, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
+                    ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command => {AddParameter(command, character);});
 
                     CreateItems(conn, character);
 
@@ -501,6 +513,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             character.MaxBazaarExhibits = GetUInt32(reader, "max_bazaar_exhibits");
 
+            character.BinaryData = GetBytes(reader, "binary_data", 0x400);
+
             return character;
         }
 
@@ -539,6 +553,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@fav_warp_slot_num", character.FavWarpSlotNum);
 
             AddParameter(command, "@max_bazaar_exhibits", character.MaxBazaarExhibits);
+
+            AddParameter(command, "@binary_data", character.BinaryData);
+        }
+    
+        public bool UpdateCharacterBinaryData(uint characterId, byte[] data)
+        {
+            using TCon connection = OpenNewConnection();
+            return UpdateCharacterBinaryData(connection, characterId, data);
+        }
+
+        public bool UpdateCharacterBinaryData(TCon conn, uint characterId, byte[] data)
+        {
+            int rowsAffected = ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command =>
+            {
+                AddParameter(command, "@character_id", characterId);
+                AddParameter(command, "@binary_data", data);
+            });
+
+            return rowsAffected > NoRowsAffected;
         }
     }
 }

@@ -1,20 +1,13 @@
 #nullable enable
-using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.Entity;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks.Dataflow;
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -24,10 +17,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static readonly uint STACK_BOX_MAX = 999;
 
-        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, StorageType.KeyItems };
-        public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
+        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { 
+            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
+            StorageType.KeyItems 
+        };
+        public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { 
+            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
+            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
+        };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
-        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> { StorageType.CharacterEquipment, StorageType.PawnEquipment, StorageType.ItemBagEquipment, StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, StorageType.StorageChest };
+        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> { 
+            StorageType.CharacterEquipment, StorageType.PawnEquipment, 
+            StorageType.ItemBagEquipment, 
+            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
+            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
+        };
 
         private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
             {7789, (WalletType.Gold, 1)},
@@ -264,6 +268,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     // Move to storage box without stack limit if it's not equipment
                     return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num);
+                }
+            }
+        }
+
+        public List<CDataItemUpdateResult> AddItemRaw(DdonServer<GameClient> server, Character character, StorageType destinationStorage, uint itemId, uint num, byte plusvalue = 0)
+        {
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
+            if (destinationStorage == StorageType.ItemBagConsumable || destinationStorage == StorageType.ItemBagMaterial || destinationStorage == StorageType.ItemBagJob)
+            {
+                // Limit stacks when adding to the item bag.
+                return DoAddItem(server.Database, character, clientItemInfo.StorageType, itemId, num, clientItemInfo.StackLimit);
+            }
+            else
+            {
+                // TODO: Support adding to the extension boxes if the storage box is full and the GG course allows it
+                if (clientItemInfo.StorageType == StorageType.ItemBagEquipment)
+                {
+                    // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
+                    return DoAddItem(server.Database, character, destinationStorage, itemId, num, clientItemInfo.StackLimit, plusvalue);
+                }
+                else
+                {
+                    // Move to storage box without stack limit if it's not equipment
+                    return DoAddItem(server.Database, character, destinationStorage, itemId, num);
                 }
             }
         }
