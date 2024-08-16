@@ -339,8 +339,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             int adjustedOdds = baseOdds + (int)calculatedOdds;
             int roll = Random.Shared.Next(100);
 
-            Console.Write($"adjustedodds: {adjustedOdds}, and Roll: {roll}");
-
             return roll < adjustedOdds;
         }
 
@@ -442,7 +440,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 expUp = exp;
                 bonusExpUp = bonusExp;
             }
-
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
             {
                 PawnId = leadPawn.PawnId,

@@ -104,7 +104,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
                             Server.CraftManager.CalculateRecipeCost(recipeData.Cost, costPerformanceLevels));
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-            // The formula needs work, the client shows 9G with a second pawn of base level for bronze sword Enhancement, but we still charge 10G.
 
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             byte currentStars = (byte)itemInfo.Quality;
