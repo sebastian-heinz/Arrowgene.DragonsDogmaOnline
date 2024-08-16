@@ -369,7 +369,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 if (pawn.CraftData.CraftRank + rankUps > pawn.CraftData.CraftRankLimit)
                 {
-                    // Adjust rankUps to not exceed the rank limit
+                    // Adjust rankUps to not exceed the rank limit.
                     rankUps = (uint)(pawn.CraftData.CraftRankLimit - pawn.CraftData.CraftRank);
                 }
             }
