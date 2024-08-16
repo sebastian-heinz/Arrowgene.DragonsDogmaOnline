@@ -353,7 +353,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static uint CalculatePawnRankUp(Pawn pawn)
         {
             uint rankUps = 0;
-            for (int i = (int)pawn.CraftData.CraftRank; i < PawnCraftRankMaxLimit; i++)
+            for (int i = (int)pawn.CraftData.CraftRank; i < pawn.CraftData.CraftRankLimit; i++)
             {
                 if (pawn.CraftData.CraftExp >= craftRankExpLimit[i])
                 {
@@ -365,14 +365,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
 
-            if (pawn.CraftData.CraftRank != pawn.CraftData.CraftRankLimit)
-            {
-                if (pawn.CraftData.CraftRank + rankUps > pawn.CraftData.CraftRankLimit)
-                {
-                    // Adjust rankUps to not exceed the rank limit.
-                    rankUps = (uint)(pawn.CraftData.CraftRankLimit - pawn.CraftData.CraftRank);
-                }
-            }
+            // if (pawn.CraftData.CraftRank != pawn.CraftData.CraftRankLimit)
+            // {
+            //     if (pawn.CraftData.CraftRank + rankUps > pawn.CraftData.CraftRankLimit)
+            //     {
+            //         // Adjust rankUps to not exceed the rank limit.
+            //         rankUps = (uint)(pawn.CraftData.CraftRankLimit - pawn.CraftData.CraftRank);
+            //     }
+            // }
             return rankUps;
         }
 

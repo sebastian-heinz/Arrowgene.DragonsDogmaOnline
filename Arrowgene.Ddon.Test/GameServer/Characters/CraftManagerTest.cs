@@ -74,18 +74,9 @@ public class CraftManagerTest
                 CraftExp = 999999
             }
         };
-        
+
         uint rankUps = CraftManager.CalculatePawnRankUp(pawn);
-
-        if (pawn.CraftData.CraftRank != pawn.CraftData.CraftRankLimit)
-            {
-                if (pawn.CraftData.CraftRank + rankUps > pawn.CraftData.CraftRankLimit)
-                {
-                    // Adjust rankUps to not exceed the rank limit.
-                    rankUps = (uint)(pawn.CraftData.CraftRankLimit - pawn.CraftData.CraftRank);
-                }
-            }
-
+        
         Assert.Equal(69u, rankUps);
     }
     
