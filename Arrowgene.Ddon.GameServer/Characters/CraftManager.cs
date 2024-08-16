@@ -103,18 +103,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private const double ConsumableQuantityIncrementPerLevel = (ConsumableQuantityMaximumTotal / CraftPawnsMax - ConsumableQuantityMinimumPerPawn) / CraftSkillLevelMax;
 
-        /// <summary>
-        /// Randomly chosen maximum of 50% reduction.
-        /// </summary>
-        private const uint CostPerformanceMaximumTotal = 50;
-
-        /// <summary>
-        /// Randomly chosen minimum of 4% reduction added per pawn.
-        /// </summary>
-        private const uint CostPerformanceMinimumPerPawn = 4;
-
-        private const double CostPerformanceIncrementPerLevel = (CostPerformanceMaximumTotal / CraftPawnsMax - CostPerformanceMinimumPerPawn) / CraftSkillLevelMax;
-
         private readonly DdonGameServer _server;
 
         public CraftManager(DdonGameServer server)
@@ -299,12 +287,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
 public double GetCraftCostReductionRate(List<uint> costPerformanceLevels)
 {
-    uint total = 0;
-    foreach (uint level in costPerformanceLevels)
-    {
-        total += level;
-    }
-
+    uint total = costPerformanceLevels[0];
     if (_server.AssetRepository.PawnCostReductionAsset.PawnCostReductionInfo.TryGetValue(total, out PawnCostReductionInfo costReductionInfo))
     {
         int numberOfPawns = costPerformanceLevels.Count;
@@ -313,9 +296,9 @@ public double GetCraftCostReductionRate(List<uint> costPerformanceLevels)
         switch (numberOfPawns)
         {
             case 1:
-                selectedCostRate = costReductionInfo.CostRate1;
-                break;
-            case 2:
+                selectedCostRate = costReductionInfo.CostRate1; // TODO: Figure out wtf CostRate2/3/4 Do.
+                break;                                          // If theres 1 Pawn this stuff is accurate, I'm struggling to figure out
+            case 2:                                             // how to get a 2nd/3rd/4th Pawns calculations accurate based on this dump.
                 selectedCostRate = costReductionInfo.CostRate2;
                 break;
             case 3:
