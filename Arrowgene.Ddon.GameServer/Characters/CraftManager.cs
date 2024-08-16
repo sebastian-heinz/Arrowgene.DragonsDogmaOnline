@@ -285,39 +285,39 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         #region cost performance
 
-public double GetCraftCostReductionRate(List<uint> costPerformanceLevels)
-{
-    uint total = costPerformanceLevels[0];
-    if (_server.AssetRepository.PawnCostReductionAsset.PawnCostReductionInfo.TryGetValue(total, out PawnCostReductionInfo costReductionInfo))
-    {
-        int numberOfPawns = costPerformanceLevels.Count;
-        float selectedCostRate;
-
-        switch (numberOfPawns)
+        public double GetCraftCostReductionRate(List<uint> costPerformanceLevels)
         {
-            case 1:
-                selectedCostRate = costReductionInfo.CostRate1; // TODO: Figure out wtf CostRate2/3/4 Do.
-                break;                                          // If theres 1 Pawn this stuff is accurate, I'm struggling to figure out
-            case 2:                                             // how to get a 2nd/3rd/4th Pawns calculations accurate based on this dump.
-                selectedCostRate = costReductionInfo.CostRate2;
-                break;
-            case 3:
-                selectedCostRate = costReductionInfo.CostRate3;
-                break;
-            case 4:
-                selectedCostRate = costReductionInfo.CostRate4;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException($"Number of pawns {numberOfPawns} is out of expected range (1-4).");
-        }
+            uint total = costPerformanceLevels[0];
+            if (_server.AssetRepository.PawnCostReductionAsset.PawnCostReductionInfo.TryGetValue(total, out PawnCostReductionInfo costReductionInfo))
+            {
+                int numberOfPawns = costPerformanceLevels.Count;
+                float selectedCostRate;
 
-        return selectedCostRate;
-    }
-    else
-    {
-        throw new KeyNotFoundException($"No cost reduction information found for total level: {total}");
-    }
-}
+                switch (numberOfPawns)
+                {
+                    case 1:
+                        selectedCostRate = costReductionInfo.CostRate1; // TODO: Figure out wtf CostRate2/3/4 Do.
+                        break;                                          // If theres 1 Pawn this stuff is accurate, I'm struggling to figure out
+                    case 2:                                             // how to get a 2nd/3rd/4th Pawns calculations accurate based on this dump.
+                        selectedCostRate = costReductionInfo.CostRate2;
+                        break;
+                    case 3:
+                        selectedCostRate = costReductionInfo.CostRate3;
+                        break;
+                    case 4:
+                        selectedCostRate = costReductionInfo.CostRate4;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException($"Number of pawns {numberOfPawns} is out of expected range (1-4).");
+                }
+
+                return selectedCostRate;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"No cost reduction information found for total level: {total}");
+            }
+        }
 
         /// <summary>
         /// Takes craft skill level of all pawns into account and allows for a maximum of 50% reduction by default.
