@@ -339,6 +339,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
             Create(new C2SConnectionMoveOutServerReq.Serializer());
+            Create(new C2SConnectionReserveServerReq.Serializer());
 
             Create(new C2SContextGetSetContextReq.Serializer());
             Create(new C2SContextMasterThrowReq.Serializer());
@@ -653,6 +654,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveInServerRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
+            Create(new S2CConnectionReserveServerRes.Serializer());
+            
             Create(new S2CContextGetAllPlayerContextNtc.Serializer());
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
             Create(new S2CContextGetPartyMypawnContextNtc.Serializer());
