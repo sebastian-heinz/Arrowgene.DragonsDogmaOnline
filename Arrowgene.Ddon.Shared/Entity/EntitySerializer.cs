@@ -186,6 +186,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMoveItemUIDFromTo.Serializer());
             Create(new CDataNamedEnemyParamClient.Serializer());
             Create(new CDataNormalSkillParam.Serializer());
+            Create(new CDataNpcExtendedFacilityMenuItem.Serializer());
             Create(new CDataOcdActive.Serializer());
             Create(new CDataOrbCategoryStatusSerializer());
             Create(new CDataOrbGainExtendParam.Serializer());
@@ -451,6 +452,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
+
+            Create(new C2SNpcGetNpcExtendedFacilityReq.Serializer());
+
             Create(new C2SPartnerPawnPawnLikabilityRewardListGetReq.Serializer());
 
             Create(new C2SPartyPartyBreakupReq.Serializer());
@@ -803,6 +807,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
+
+            Create(new S2CNpcGetNpcExtendedFacilityRes.Serializer());
+
             Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
 
             Create(new S2CPartyPartyBreakupNtc.Serializer());
