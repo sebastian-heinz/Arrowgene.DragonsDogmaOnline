@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.Cli
             File.WriteAllText(filePath, json);
         }
 
+        [DataMember(Order = 0)] public string LogPath { get; set; }
         [DataMember(Order = 10)] public WebServerSetting WebServerSetting { get; set; }
         [DataMember(Order = 20)] public GameServerSetting GameServerSetting { get; set; }
         [DataMember(Order = 30)] public LoginServerSetting LoginServerSetting { get; set; }
@@ -38,6 +39,7 @@ namespace Arrowgene.Ddon.Cli
 
         public Setting()
         {
+            LogPath = "Logs";
             WebServerSetting = new WebServerSetting();
             GameServerSetting = new GameServerSetting();
             LoginServerSetting = new LoginServerSetting();

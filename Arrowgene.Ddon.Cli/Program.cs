@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This file is part of Arrowgene.Ddon.Cli
  *
  * Arrowgene.Ddon.Cli is a server implementation for the game "Dragons Dogma Online".
@@ -69,16 +69,11 @@ namespace Arrowgene.Ddon.Cli
         private readonly Dictionary<string, ICommand> _commands;
         private ICommand _lastCommand;
         private readonly object _consoleLock;
-        private readonly DirectoryInfo _logDir;
+        private Setting _setting;
+        private DirectoryInfo _logDir;
 
         private Program()
         {
-            _logDir = new DirectoryInfo(Path.Combine(Util.ExecutingDirectory(), "Logs"));
-            if (!_logDir.Exists)
-            {
-                Directory.CreateDirectory(_logDir.FullName);
-            }
-
             _lastCommand = null;
             _consoleLock = new object();
             _commands = new Dictionary<string, ICommand>();
@@ -90,7 +85,7 @@ namespace Arrowgene.Ddon.Cli
         private void LoadCommands()
         {
             AddCommand(new ShowCommand());
-            AddCommand(new ServerCommand());
+            AddCommand(new ServerCommand(_setting));
             AddCommand(new HelpCommand(_commands));
             AddCommand(new ClientCommand());
             AddCommand(new PacketCommand());
@@ -100,15 +95,32 @@ namespace Arrowgene.Ddon.Cli
         private void RunArguments(string[] arguments)
         {
             LogProvider.Start();
-            if (arguments.Length <= 0)
+
+            CommandParameter parameter = ParseParameter(arguments);
+
+            string settingPath = Path.Combine(Util.ExecutingDirectory(), "Files/Arrowgene.Ddon.config.json");
+            string settingLogMessage;
+            _setting = Setting.Load(settingPath);
+            if (_setting == null)
             {
-                Logger.Error("No Arguments Provided");
-                return;
+                _setting = new Setting();
+                _setting.Save(settingPath);
+                settingLogMessage = $"Created new settings and saved to:{settingPath}";
             }
+            else
+            {
+                settingLogMessage = $"Loaded settings from:{settingPath}";
+            }
+
+            _logDir = new DirectoryInfo(Path.Combine(Util.ExecutingDirectory(), _setting.LogPath));
+            if (!_logDir.Exists)
+            {
+                Directory.CreateDirectory(_logDir.FullName);
+            }
+            Logger.Info(settingLogMessage);
 
             LoadCommands();
             ShowCopyright();
-            CommandParameter parameter = ParseParameter(arguments);
             CommandResultType result = ProcessArguments(parameter);
 
             if (result != CommandResultType.Exit)
