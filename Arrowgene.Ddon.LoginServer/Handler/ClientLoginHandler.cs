@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -102,18 +103,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
                 if (connections.Count > 0)
                 {
-                    if (connections[0].ServerId == Server.Id && Server.ClientLookup.GetClientByAccountId(account.Id) == null)
-                    {
-                        // Remove stale connection
-                        Database.DeleteConnectionsByAccountId(account.Id);
-                    }
-                    else
-                    {
-                        Logger.Error(client, $"Already logged in");
-                        res.Error = 1;
-                        client.Send(res);
-                        return;
-                    }
+                    Logger.Error(client, $"Already logged in");
+                    res.Error = (uint) ErrorCode.ERROR_CODE_AUTH_MULTIPLE_LOGIN;
+                    client.Send(res);
+                    return;
                 }
                 
                 // Order Important,

@@ -2,12 +2,11 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionMoveInServerHandler : GameStructurePacketHandler<C2SConnectionMoveInServerReq>
+    public class ConnectionMoveInServerHandler : GameRequestPacketHandler<C2SConnectionMoveInServerReq, S2CConnectionMoveInServerRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionMoveInServerHandler));
 
@@ -15,13 +14,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SConnectionMoveInServerReq> packet)
+        public override S2CConnectionMoveInServerRes Handle(GameClient client, C2SConnectionMoveInServerReq request)
         {
-            Logger.Debug(client, $"Received SessionKey:{packet.Structure.SessionKey}");
-            GameToken token = Database.SelectToken(packet.Structure.SessionKey);
+            Logger.Debug(client, $"Received SessionKey:{request.SessionKey}");
+            GameToken token = Database.SelectToken(request.SessionKey);
             if (token == null)
             {
-                Logger.Error(client, $"SessionKey:{packet.Structure.SessionKey} not found");
+                Logger.Error(client, $"SessionKey:{request.SessionKey} not found");
                 // TODO reply error
                 // return;
             }
@@ -32,30 +31,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (account == null)
             {
                 Logger.Error(client, $"AccountId:{token.AccountId} not found");
-                // TODO reply error
-                // return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL);
             }
+            client.Account = account;
 
-            Character character = Database.SelectCharacter(token.CharacterId);
+            Character character = Server.CharacterManager.SelectCharacter(client, token.CharacterId);
             if (character == null)
             {
                 Logger.Error(client, $"CharacterId:{token.CharacterId} not found");
-                // TODO reply error
-                // return;
-            }
-
-            client.Account = account;
-            client.Character = character;
-            client.Character.Equipment = client.Character.Storage.GetCharacterEquipment();
-            client.Character.Server = Server.AssetRepository.ServerList[0];
-            client.UpdateIdentity();
-
-            client.Character.Pawns = Database.SelectPawnsByCharacterId(token.CharacterId);
-            for (int i = 0; i < client.Character.Pawns.Count; i++)
-            {
-                Pawn pawn = client.Character.Pawns[i];
-                pawn.Server = client.Character.Server;
-                pawn.Equipment = client.Character.Storage.GetPawnEquipment(i);
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_DATA_INVALID_CHARACTER_ID);
             }
 
             Logger.Info(client, "Moved Into GameServer");
@@ -66,7 +50,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(GameFull.Dump_5);
             //  client.Send(GameFull.Dump_6);
 
-            client.Send(new S2CConnectionMoveInServerRes());
+            foreach (var ValidCourse in Server.AssetRepository.GPCourseInfoAsset.ValidCourses)
+            {
+                S2CGPCourseExtendNtc courseExtendNtc = new S2CGPCourseExtendNtc()
+                {
+                    CourseID = ValidCourse.Value.Id,
+                    ExpiryTimestamp = ValidCourse.Value.EndTime
+                };
+                client.Send(courseExtendNtc);
+            }
+
+            return new S2CConnectionMoveInServerRes();
         }
     }
 }
