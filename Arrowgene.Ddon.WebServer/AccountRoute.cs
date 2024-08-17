@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
@@ -33,6 +34,55 @@ namespace Arrowgene.Ddon.WebServer
             public string Token { get; set; }
         }
 
+        private class AccountVerification
+        {
+
+            public bool Error { get; set; }
+            public string Message { get; set; }
+            public string AccountID { get; set; }
+            public string Password { get; set; }
+
+            public AccountVerification(string username, string password)
+            {
+                AccountID = username;
+                Password = password;
+
+                // Very simple data checks on the parameters. Anything further would require refactoring.
+
+                if (AccountID.Trim().Length == 0)
+                {
+                    Error = true;
+                    Message = "AccountID cannot be empty";
+                    return;
+                }
+
+                // Disallow any whitespace.
+
+                if (Regex.IsMatch(AccountID, @"\s"))
+                {
+                    Error = true;
+                    Message = "AccountID cannot contain spaces";
+                    return;
+                }
+
+                if (Password.Trim().Length == 0)
+                {
+                    Error = true;
+                    Message = "Password cannot be empty";
+                    return;
+                }
+
+                // Disallow whitespace.
+
+                if (Regex.IsMatch(Password, @"\s"))
+                {
+                    Error = true;
+                    Message = "Password cannot contain spaces";
+                    return;
+                }
+            }
+        }
+
         public AccountRoute(IDatabase database)
         {
             _database = database;
@@ -47,9 +97,22 @@ namespace Arrowgene.Ddon.WebServer
             }
 
             AccountResponse res = new AccountResponse();
+            AccountVerification accountCheck = new(req.Account, req.Password);
+
             switch (req.Action)
             {
                 case "login":
+
+                    // !!!
+                    // This will prevent any current users logging in who have any of the disallowed inputs.
+                    // I recommend only running the check on account creation to ensure happy people.
+
+                    if (accountCheck.Error)
+                    {
+                        res.Error = accountCheck.Message;
+                        break;
+                    }
+
                     string token = CreateToken(req.Account, req.Password);
                     if (token == null)
                     {
@@ -61,6 +124,13 @@ namespace Arrowgene.Ddon.WebServer
                     res.Token = token;
                     break;
                 case "create":
+
+                    if (accountCheck.Error)
+                    {
+                        res.Error = accountCheck.Message;
+                        break;
+                    }
+
                     Account account = CreateAccount(req.Account, $"{req.Account}@dd.on", req.Password);
                     if (account == null)
                     {
