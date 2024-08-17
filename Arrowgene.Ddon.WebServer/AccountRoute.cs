@@ -36,20 +36,19 @@ namespace Arrowgene.Ddon.WebServer
 
         private class AccountVerification
         {
-
             public bool Error { get; set; }
             public string Message { get; set; }
-            public string AccountID { get; set; }
+            public string Username { get; set; }
             public string Password { get; set; }
 
             public AccountVerification(string username, string password)
             {
-                AccountID = username;
+                Username = username;
                 Password = password;
 
                 // Very simple data checks on the parameters.
 
-                if (AccountID.Trim().Length == 0)
+                if (Username.Trim().Length == 0)
                 {
                     Error = true;
                     Message = "Account ID cannot be empty";
@@ -58,7 +57,7 @@ namespace Arrowgene.Ddon.WebServer
 
                 // Disallow any whitespace.
 
-                if (Regex.IsMatch(AccountID, @"\s"))
+                if (Regex.IsMatch(Username, @"\s"))
                 {
                     Error = true;
                     Message = "Account ID cannot contain spaces";
