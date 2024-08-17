@@ -5,7 +5,12 @@ using Arrowgene.Logging;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using System.IO;
+using System.Threading;
+using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Party;
 
@@ -40,18 +45,42 @@ public class PartyManager
 
     public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party)
     {
-        PartyInvitation invitation = new PartyInvitation();
-        invitation.Invitee = invitee;
-        invitation.Host = host;
-        invitation.Party = party;
-        invitation.Date = DateTime.UtcNow;
+        if (_invites.TryRemove(invitee, out PartyInvitation existingInvite))
+        {
+            existingInvite.CancelTimer();
+        }
+
+        PartyInvitation invitation = new PartyInvitation
+        {
+            Invitee = invitee,
+            Host = host,
+            Party = party,
+            Date = DateTime.UtcNow
+        };
+
         if (!_invites.TryAdd(invitee, invitation))
         {
             Logger.Error(invitee, $"Already has pending invite)");
             return false;
         }
 
+        invitation.StartTimer(RemoveExpiredInvite, InvitationTimeoutSec + 2);
+
         return true;
+    }
+
+    private void RemoveExpiredInvite(PartyInvitation invitation) 
+    {
+        if (_invites.ContainsKey(invitation.Invitee) && _invites.TryRemove(invitation.Invitee, out _))
+        {
+            var ntc = new S2CPartyPartyInviteCancelNtc
+            {
+                ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT
+            };
+            invitation.Invitee.Send(ntc);
+
+            Logger.Info(invitation.Invitee, "Invitation removed due to timeout.");
+        }
     }
 
     public PartyInvitation GetPartyInvitation(GameClient client)
