@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.WebServer
                 AccountID = username;
                 Password = password;
 
-                // Very simple data checks on the parameters. Anything further would require refactoring.
+                // Very simple data checks on the parameters.
 
                 if (AccountID.Trim().Length == 0)
                 {
@@ -71,8 +71,6 @@ namespace Arrowgene.Ddon.WebServer
                     Message = "Password cannot be empty";
                     return;
                 }
-
-                // Disallow whitespace.
 
                 if (Regex.IsMatch(Password, @"\s"))
                 {
@@ -102,16 +100,6 @@ namespace Arrowgene.Ddon.WebServer
             switch (req.Action)
             {
                 case "login":
-
-                    // !!!
-                    // This will prevent any current users logging in who have any of the disallowed inputs.
-                    // I recommend only running the check on account creation to ensure happy people.
-
-                    if (accountCheck.Error)
-                    {
-                        res.Error = accountCheck.Message;
-                        break;
-                    }
 
                     string token = CreateToken(req.Account, req.Password);
                     if (token == null)
