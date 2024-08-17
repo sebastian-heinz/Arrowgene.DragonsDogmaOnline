@@ -1,4 +1,4 @@
-/*
+﻿/*
  * This file is part of Arrowgene.Ddon.Cli
  *
  * Arrowgene.Ddon.Cli is a server implementation for the game "Dragons Dogma Online".
@@ -98,7 +98,8 @@ namespace Arrowgene.Ddon.Cli
 
             CommandParameter parameter = ParseParameter(arguments);
 
-            string settingPath = Path.Combine(Util.ExecutingDirectory(), "Files/Arrowgene.Ddon.config.json");
+            string settingArgument = parameter.SwitchMap.GetValueOrDefault("--config", "Files/Arrowgene.Ddon.config.json");                
+            string settingPath = Path.Combine(Util.ExecutingDirectory(), settingArgument);
             string settingLogMessage;
             _setting = Setting.Load(settingPath);
             if (_setting == null)
