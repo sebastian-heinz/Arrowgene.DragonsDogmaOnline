@@ -20,7 +20,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             C2SCraftGetCraftProductInfoRes craftProductInfoRes = new C2SCraftGetCraftProductInfoRes();
 
             CraftProgress craftProgress = Server.Database.SelectPawnCraftProgress(client.Character.CharacterId, request.CraftMainPawnID);
-
             CDataCraftProductInfo craftProductInfo = new CDataCraftProductInfo()
             {
                 ItemID = craftProgress.ItemId,
@@ -31,33 +30,38 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ExtraBonus = craftProgress.BonusExp,
                 IsGreatSuccess = craftProgress.GreatSuccess
             };
-            craftProductInfoRes.CraftProductInfo = craftProductInfo;
 
             // The lead pawn can only be a pawn owned by the player, no need to search in DB.
-            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
-
-            if (CraftManager.IsCraftRankLimitPromotionRecipe(leadPawn, craftProgress.RecipeId))
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            if (CraftManager.IsCraftRankLimitPromotionRecipe(craftProgress.RecipeId))
             {
                 CraftManager.PromotePawnRankLimit(leadPawn);
-
+                // Mandatory to send otherwise the UI gets stuck.
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
                 // TODO: This is not accurate to the original game but currently there is no other way to gain crafting reset points.
                 Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.ResetCraftSkills, 1, ItemNoticeType.ResetCraftpoint);
+                Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
-
-            if (CraftManager.CanPawnExpUp(leadPawn))
+            else
             {
-                CraftManager.HandlePawnExpUp(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
+                if(CraftManager.CanPawnExpUp(leadPawn))
+                {
+                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
+                    if (CraftManager.CanPawnRankUp(leadPawn))
+                    {
+                        CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    }
+                    Server.Database.UpdatePawnBaseInfo(leadPawn);
+                }
+                else
+                {
+                    // Mandatory to send otherwise the UI gets stuck.
+                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+                }
             }
-
-            if (CraftManager.CanPawnRankUp(leadPawn))
-            {
-                CraftManager.HandlePawnRankUp(client, leadPawn);
-            }
-
-            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             // TODO: track and increase CraftCount for NTC 8.35.16
-
+            craftProductInfoRes.CraftProductInfo = craftProductInfo;
             return craftProductInfoRes;
         }
     }

@@ -1,5 +1,4 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -13,9 +12,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public uint PawnId { get; set; }
-        public uint CraftRank {  get; set; }
-        public uint AddCraftPoints {  get; set; }
-        public uint TotalCraftPoint {  get; set; }
+        public uint CraftRank { get; set; }
+        public uint AddCraftPoints { get; set; }
+        public uint TotalCraftPoint { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCraftCraftRankUpNtc>
         {
@@ -39,4 +38,3 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
     }
 }
-

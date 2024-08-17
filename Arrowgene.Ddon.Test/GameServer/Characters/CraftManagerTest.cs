@@ -22,7 +22,7 @@ public class CraftManagerTest
     public void GetCraftingTimeReductionRate_ShouldReturnCorrectValue()
     {
         List<uint> productionSpeedLevels = new List<uint> { 10, 20, 30 };
-        _mockServer.Setting.ServerSetting.AdditionalProductionSpeedFactor = 1.0;
+        _mockServer.Setting.GameLogicSetting.AdditionalProductionSpeedFactor = 1.0;
 
         double result = _craftManager.GetCraftingTimeReductionRate(productionSpeedLevels);
 
@@ -34,7 +34,7 @@ public class CraftManagerTest
     {
         List<uint> productionSpeedLevels = new List<uint> { 70, 70, 70, 70 };
         const uint recipeTime = 100;
-        _mockServer.Setting.ServerSetting.AdditionalProductionSpeedFactor = 1.0;
+        _mockServer.Setting.GameLogicSetting.AdditionalProductionSpeedFactor = 1.0;
 
         uint result = _craftManager.CalculateRecipeProductionSpeed(recipeTime, productionSpeedLevels);
 
@@ -46,7 +46,7 @@ public class CraftManagerTest
     {
         List<uint> productionSpeedLevels = new List<uint> { 70, 70, 70, 70 };
         const uint recipeTime = 100;
-        _mockServer.Setting.ServerSetting.AdditionalProductionSpeedFactor = 100;
+        _mockServer.Setting.GameLogicSetting.AdditionalProductionSpeedFactor = 100;
 
         uint result = _craftManager.CalculateRecipeProductionSpeed(recipeTime, productionSpeedLevels);
 

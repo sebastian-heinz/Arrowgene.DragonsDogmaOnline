@@ -1,15 +1,13 @@
 #nullable enable
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
-using Arrowgene.Ddon.Database;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -17,6 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipColorChangeHandler));
         private readonly ItemManager _itemmanager;
+
         public CraftStartEquipColorChangeHandler(DdonGameServer server) : base(server)
         {
             _itemmanager = server.ItemManager;
@@ -76,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo.EquipSlot.PawnId = pawnId;
                     characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnId);
                 }
-                else if(storageType == StorageType.CharacterEquipment)
+                else if (storageType == StorageType.CharacterEquipment)
                 {
                     CurrentEquipInfo.EquipSlot.CharacterId = charid;
                     characterCommon = character;
@@ -84,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipColorChang;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 0, 0));
-                
+
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
@@ -104,26 +103,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
             }
-            
-            // TODO: Potentially the packets changed in S3.
-            
-            var res = new S2CCraftStartEquipColorChangeRes()
-                {
-                    ColorNo = color,
-                    CurrentEquipInfo = CurrentEquipInfo
-                };
 
-            // TODO: Store saved pawn exp
-            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            // TODO: Potentially the packets changed in S3.
+
+            var res = new S2CCraftStartEquipColorChangeRes()
             {
-                PawnId = request.CraftMainPawnID,
-                AddExp = 10,
-                ExtraBonusExp = 0,
-                TotalExp = 10,
-                CraftRankLimit = 0
+                ColorNo = color,
+                CurrentEquipInfo = CurrentEquipInfo
             };
-            client.Send(expNtc);
-            
+
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            if (CraftManager.CanPawnExpUp(leadPawn))
+            {
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 10, 0);
+                if (CraftManager.CanPawnRankUp(leadPawn))
+                {
+                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                }
+                Server.Database.UpdatePawnBaseInfo(leadPawn);
+            }
+            else
+            {
+                // Mandatory to send otherwise the UI gets stuck.
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+            }
+
             return res;
         }
     }

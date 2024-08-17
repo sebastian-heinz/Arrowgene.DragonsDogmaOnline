@@ -51,15 +51,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
             // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
 
-            List<uint> consumableQuantityLevels = new List<uint>();
             // Lead pawn is always owned by player.
-            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
-            consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(leadPawn));
-            foreach (uint pawnId in request.CraftSupportPawnIDList.Select(p => p.PawnId))
-            {
-                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
-                consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
-            }
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId, true)));
+            List<uint> consumableQuantityLevels = pawns.Select(CraftManager.GetPawnConsumableQuantityLevel).ToList();
 
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
@@ -140,16 +136,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = CurrentEquipInfo
             };
 
-            // TODO: Find exp for item recipe
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUp(client, leadPawn, 10, 0);
+                // TODO: Find exp for item recipe
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 10, 0);
+                if (CraftManager.CanPawnRankUp(leadPawn))
+                {
+                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                }
+                Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
-            if (CraftManager.CanPawnRankUp(leadPawn))
-            {
-                CraftManager.HandlePawnRankUp(client, leadPawn);
-            }
-            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             return res;
         }
