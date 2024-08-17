@@ -52,7 +52,7 @@ namespace Arrowgene.Ddon.WebServer
                 if (AccountID.Trim().Length == 0)
                 {
                     Error = true;
-                    Message = "AccountID cannot be empty";
+                    Message = "Account ID cannot be empty";
                     return;
                 }
 
@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.WebServer
                 if (Regex.IsMatch(AccountID, @"\s"))
                 {
                     Error = true;
-                    Message = "AccountID cannot contain spaces";
+                    Message = "Account ID cannot contain spaces";
                     return;
                 }
 
