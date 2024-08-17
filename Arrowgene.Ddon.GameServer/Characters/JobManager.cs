@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
@@ -17,6 +16,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobManager));
         private readonly DdonGameServer _Server;
+
+        private static readonly List<EquipSlot> JEWELRY_SLOTS = new List<EquipSlot>
+        {
+            EquipSlot.Jewelry1, EquipSlot.Jewelry2, EquipSlot.Jewelry3, EquipSlot.Jewelry4, EquipSlot.Jewelry5,
+        };
 
         public JobManager(DdonGameServer server)
         {
@@ -153,8 +157,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId, EquipType equipType)
         {
-            // TODO: Run in a transaction
-
             List<CDataItemUpdateResult> itemUpdateResultList = new List<CDataItemUpdateResult>();
             List<Item?> oldEquipment = common.Equipment.GetItems(equipType);
             List<Item?> newEquipmentTemplate = common.EquipmentTemplate.GetEquipment(newJobId, equipType);
@@ -193,6 +195,37 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     // Equip item to a slot, if said item is not already equipped. Search item in multiple storages
                     List<CDataItemUpdateResult>? moveResult = null;
+
+                    //Search ahead for jewelry and remove in advance.
+                    if (JEWELRY_SLOTS.Contains((EquipSlot)equipSlot))
+                    {
+                        foreach (EquipSlot jewelrySlot in JEWELRY_SLOTS)
+                        {
+                            if ((byte)jewelrySlot <= equipSlot) continue;
+                            Item? oldJewelryItem = oldEquipment[(int)jewelrySlot - 1];
+                            if (oldJewelryItem != null && newEquipmentTemplateItem.UId == oldJewelryItem?.UId)
+                            {
+                                ushort laterSlot = common.Equipment.GetStorageSlot(equipType, (byte)jewelrySlot);
+                                try
+                                {
+                                    _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, laterSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
+                                }
+                                catch (ResponseErrorException ex)
+                                {
+                                    if (ex.ErrorCode == ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND)
+                                    {
+                                        // Do nothing, the slot is empty. Nothing to unequip
+                                    }
+                                    else
+                                    {
+                                        throw ex;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+
                     foreach (StorageType searchStorageType in ItemManager.BothStorageTypes)
                     {
                         try
@@ -216,7 +249,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             }
                         }
                     }
-                    
+
                     if (moveResult == null)
                     {
                         // Handle the item not being in storage anymore.
