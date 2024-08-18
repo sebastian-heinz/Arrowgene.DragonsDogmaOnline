@@ -30,16 +30,6 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 26)] public bool LogIncomingPacketStructure { get; set; }
         [DataMember(Order = 27)] public bool LogOutgoingPacketStructure { get; set; }
         [DataMember(Order = 100)] public AsyncEventSettings ServerSocketSettings { get; set; }
-        
-        // TODO: Create a new Game/Logic/Settings wrapper instead of combining low-level server settings with high-level functional settings.
-        /// <summary>
-        /// Additional factor to change how long crafting a recipe will take to finish.
-        /// </summary>
-        [DataMember(Order = 1000)] public double AdditionalProductionSpeedFactor { get; set; }
-        /// <summary>
-        /// Additional factor to change how much a recipe will cost.
-        /// </summary>
-        [DataMember(Order = 1001)] public double AdditionalCostPerformanceFactor { get; set; }
 
         public ServerSetting()
         {
@@ -57,8 +47,6 @@ namespace Arrowgene.Ddon.Server
             LogIncomingPacketPayload = false;
             ServerSocketSettings = new AsyncEventSettings();
             ServerSocketSettings.MaxUnitOfOrder = 1;
-            AdditionalProductionSpeedFactor = 1.0;
-            AdditionalCostPerformanceFactor = 1.0;
         }
 
         public ServerSetting(ServerSetting setting)

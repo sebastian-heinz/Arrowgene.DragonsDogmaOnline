@@ -62,14 +62,23 @@ CREATE TABLE IF NOT EXISTS ddon_character
 
 CREATE TABLE IF NOT EXISTS ddon_pawn
 (
-    "pawn_id"             INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    "character_common_id" INTEGER                           NOT NULL,
-    "character_id"        INTEGER                           NOT NULL,
-    "name"                TEXT                              NOT NULL,
-    "hm_type"             SMALLINT                          NOT NULL,
-    "pawn_type"           SMALLINT                          NOT NULL,
-    "training_points"     INTEGER                           NOT NULL,
-    "available_training"  INTEGER                           NOT NULL,
+    "pawn_id"                     INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "character_common_id"         INTEGER                           NOT NULL,
+    "character_id"                INTEGER                           NOT NULL,
+    "name"                        TEXT                              NOT NULL,
+    "hm_type"                     SMALLINT                          NOT NULL,
+    "pawn_type"                   SMALLINT                          NOT NULL,
+    "training_points"             INTEGER                           NOT NULL,
+    "available_training"          INTEGER                           NOT NULL,
+    "craft_rank"                  INTEGER                           NOT NULL,
+    "craft_rank_limit"            INTEGER                           NOT NULL,
+    "craft_exp"                   INTEGER                           NOT NULL,
+    "craft_points"                INTEGER                           NOT NULL,
+    "production_speed_level"      INTEGER                           NOT NULL,
+    "equipment_enhancement_level" INTEGER                           NOT NULL,
+    "equipment_quality_level"     INTEGER                           NOT NULL,
+    "consumable_quantity_level"   INTEGER                           NOT NULL,
+    "cost_performance_level"      INTEGER                           NOT NULL,
     CONSTRAINT fk_pawn_character_common_id FOREIGN KEY ("character_common_id") REFERENCES ddon_character_common ("character_common_id") ON DELETE CASCADE,
     CONSTRAINT fk_character_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
 );
@@ -646,14 +655,14 @@ CREATE TABLE IF NOT EXISTS "ddon_pawn_craft_progress"
     "great_success"          BOOLEAN NOT NULL,
     "bonus_exp"              INTEGER NOT NULL,
     "additional_quantity"    INTEGER NOT NULL,
-    FOREIGN KEY ("craft_character_id") REFERENCES "ddon_character" ("character_id"),
-    FOREIGN KEY ("craft_lead_pawn_id") REFERENCES "ddon_pawn" ("pawn_id")
+    FOREIGN KEY ("craft_character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
+    FOREIGN KEY ("craft_lead_pawn_id") REFERENCES "ddon_pawn" ("pawn_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_binary_data"
 (
-    "character_id"      INTEGER  NOT NULL,
-    "binary_data"       BLOB     NOT NULL,
+    "character_id" INTEGER NOT NULL,
+    "binary_data"  BLOB    NOT NULL,
     CONSTRAINT pk_binary_data PRIMARY KEY (character_id),
-    CONSTRAINT fk_binary_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+    CONSTRAINT fk_binary_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
