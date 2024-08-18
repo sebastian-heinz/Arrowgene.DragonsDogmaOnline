@@ -101,7 +101,7 @@ namespace Arrowgene.Ddon.Cli
             string settingArgument = parameter.SwitchMap.GetValueOrDefault("--config", "Files/Arrowgene.Ddon.config.json");                
             string settingPath = Path.Combine(Util.ExecutingDirectory(), settingArgument);
             string settingLogMessage;
-            _setting = Setting.Load(settingPath);
+            _setting = Setting.LoadFromFile(settingPath);
             if (_setting == null)
             {
                 _setting = new Setting();
