@@ -16,16 +16,27 @@ namespace Arrowgene.Ddon.GameServer
             ServerSetting.Name = "Game";
             ServerSetting.ServerPort = 52000;
             ServerSetting.ServerSocketSettings.Identity = "Game";
-            
+
             GameLogicSetting = new GameLogicSetting();
-            GameLogicSetting.AdditionalProductionSpeedFactor = 1.0;
-            GameLogicSetting.AdditionalCostPerformanceFactor = 1.0;
         }
 
         public GameServerSetting(GameServerSetting setting)
         {
             ServerSetting = new ServerSetting(setting.ServerSetting);
             GameLogicSetting = new GameLogicSetting(setting.GameLogicSetting);
+        }
+
+        // Note: method is called after the object is completely deserialized - constructors are skipped.
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext context)
+        {
+            ServerSetting ??= new ServerSetting();
+            ServerSetting.Id = 10;
+            ServerSetting.Name = "Game";
+            ServerSetting.ServerPort = 52000;
+            ServerSetting.ServerSocketSettings.Identity = "Game";
+
+            GameLogicSetting ??= new GameLogicSetting();
         }
     }
 }

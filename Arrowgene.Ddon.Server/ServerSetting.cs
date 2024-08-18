@@ -65,5 +65,13 @@ namespace Arrowgene.Ddon.Server
             LogIncomingPacketPayload = setting.LogIncomingPacketPayload;
             ServerSocketSettings = new AsyncEventSettings(setting.ServerSocketSettings);
         }
+
+        // Note: method is called after the object is completely deserialized - constructors are skipped.
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext context)
+        {
+            ServerSocketSettings ??= new AsyncEventSettings();
+            ServerSocketSettings.MaxUnitOfOrder = 1;
+        }
     }
 }

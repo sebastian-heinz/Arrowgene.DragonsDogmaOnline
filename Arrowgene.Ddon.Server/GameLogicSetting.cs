@@ -25,6 +25,14 @@ namespace Arrowgene.Ddon.Server
 
         public GameLogicSetting(GameLogicSetting setting)
         {
+            AdditionalProductionSpeedFactor = setting.AdditionalProductionSpeedFactor;
+            AdditionalCostPerformanceFactor = setting.AdditionalCostPerformanceFactor;
+        }
+
+        // Note: method is called after the object is completely deserialized - constructors are skipped.
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext context)
+        {
         }
     }
 }

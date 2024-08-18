@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.Shared
             catch (Exception exception)
             {
                 Debug.WriteLine(exception.ToString());
+                throw;
             }
             finally
             {
@@ -70,6 +71,7 @@ namespace Arrowgene.Ddon.Shared
             catch (Exception exception)
             {
                 Debug.WriteLine(exception.ToString());
+                throw;
             }
             finally
             {
