@@ -428,7 +428,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             client.Send(expNtc);
         }
 
-        public Pawn FindPawn(GameClient client, uint pawnId, bool fallbackToDatabase=false)
+        public Pawn FindPawn(GameClient client, uint pawnId)
         {
             Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId);
             if (pawn == null)

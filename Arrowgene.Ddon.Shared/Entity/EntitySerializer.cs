@@ -478,6 +478,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyQuestProgressNtc.Serializer());
 
             Create(new C2SPawnCreatePawnReq.Serializer());
+            Create(new C2SPawnDeleteMyPawnReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
             Create(new C2SPawnGetMyPawnListReq.Serializer());
@@ -845,6 +846,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CPawnExtendMainPawnNtc.Serializer());
             Create(new S2CPawnCreatePawnRes.Serializer());
+            Create(new S2CPawnDeleteMyPawnRes.Serializer());
             Create(new S2CPawnGetPawnProfileNtc.Serializer());
             Create(new S2CPawnHistoryInfoNtc.Serializer());
             Create(new S2CPawnGetPawnTotalScoreInfoNtc.Serializer());
