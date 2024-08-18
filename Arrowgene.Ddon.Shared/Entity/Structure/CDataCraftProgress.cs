@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             CraftMainPawnInfo = new CDataCraftPawnInfo();
             CraftSupportPawnInfoList = new List<CDataCraftPawnInfo>();
-            CraftMasterPawnInfoList = new List<CDataCraftPawnInfo>();
+            CraftMasterLegendPawnInfoList = new List<CDataCraftPawnInfo>();
         }
 
         // Must be unique from other progresses sent in the same list or client associates successful crafting to both products because client-side a single pawn can only craft a single item
@@ -18,8 +18,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public List<CDataCraftPawnInfo> CraftSupportPawnInfoList { get; set; }
 
-        // Directly correlated with C2SCraftStartCraftReq CraftMasterPawnInfoList
-        public List<CDataCraftPawnInfo> CraftMasterPawnInfoList { get; set; }
+        /// Directly correlated with C2SCraftStartCraftReq CraftMasterLegendPawnInfoList
+        public List<CDataCraftPawnInfo> CraftMasterLegendPawnInfoList { get; set; }
         public uint RecipeId { get; set; }
         public uint Exp { get; set; }
         public NpcActionType NpcActionId { get; set; }
@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteEntity<CDataCraftPawnInfo>(buffer, obj.CraftMainPawnInfo);
                 WriteEntityList<CDataCraftPawnInfo>(buffer, obj.CraftSupportPawnInfoList);
-                WriteEntityList<CDataCraftPawnInfo>(buffer, obj.CraftMasterPawnInfoList);
+                WriteEntityList<CDataCraftPawnInfo>(buffer, obj.CraftMasterLegendPawnInfoList);
                 WriteUInt32(buffer, obj.RecipeId);
                 WriteUInt32(buffer, obj.Exp);
                 WriteInt32(buffer, (int)obj.NpcActionId);
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataCraftProgress obj = new CDataCraftProgress();
                 obj.CraftMainPawnInfo = ReadEntity<CDataCraftPawnInfo>(buffer);
                 obj.CraftSupportPawnInfoList = ReadEntityList<CDataCraftPawnInfo>(buffer);
-                obj.CraftMasterPawnInfoList = ReadEntityList<CDataCraftPawnInfo>(buffer);
+                obj.CraftMasterLegendPawnInfoList = ReadEntityList<CDataCraftPawnInfo>(buffer);
                 obj.RecipeId = ReadUInt32(buffer);
                 obj.Exp = ReadUInt32(buffer);
                 obj.NpcActionId = (NpcActionType)ReadInt32(buffer);

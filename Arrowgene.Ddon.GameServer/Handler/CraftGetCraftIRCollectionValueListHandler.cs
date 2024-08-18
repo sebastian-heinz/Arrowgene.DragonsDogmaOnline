@@ -15,6 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+        // TODO: S2C_CRAFT_GET_CRAFT_IR_COLLECTION_VALUE_LIST_RES
         public override void Handle(GameClient client, StructurePacket<C2SCraftGetCraftIRCollectionValueListReq> packet)
         {
             S2CCraftGetCraftIRCollectionValueListRes res = EntitySerializer.Get<S2CCraftGetCraftIRCollectionValueListRes>().Read(InGameDump.data_Dump_109);

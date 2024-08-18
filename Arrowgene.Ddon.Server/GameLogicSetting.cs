@@ -17,16 +17,20 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 1)]
         public double AdditionalCostPerformanceFactor { get; set; }
 
+        public byte CraftConsumableProductionTimesMax { get; set; } = 10;
+
         public GameLogicSetting()
         {
             AdditionalProductionSpeedFactor = 1.0;
             AdditionalCostPerformanceFactor = 1.0;
+            CraftConsumableProductionTimesMax = 10;
         }
 
         public GameLogicSetting(GameLogicSetting setting)
         {
             AdditionalProductionSpeedFactor = setting.AdditionalProductionSpeedFactor;
             AdditionalCostPerformanceFactor = setting.AdditionalCostPerformanceFactor;
+            CraftConsumableProductionTimesMax = setting.CraftConsumableProductionTimesMax;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.

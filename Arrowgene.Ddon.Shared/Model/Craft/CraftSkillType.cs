@@ -8,11 +8,19 @@ namespace Arrowgene.Ddon.Shared.Model
         ConsumableQuantity = 4,
         CostPerformance = 5,
 
-        // unused skill slots
-        Placeholder6 = 6,
-        Placeholder7 = 7,
-        Placeholder8 = 8,
-        Placeholder9 = 9,
-        Placeholder10 = 10,
+        /// shows up in analysis UI
+        ConsumableProductionIsAlwaysGreatSuccess = 6,
+
+        /// shows up in analysis UI
+        CreatingHighQualityEquipmentIsAlwaysGreatSuccess = 7,
+
+        /// shows up in analysis UI (competes with skill level and reports wrong value if this is set by itself, e.g. 10 > 5 instead of 10 > 2)
+        CostPerformanceEffectUpFactor1 = 8,
+
+        /// doesn't show up in analysis UI  (competes with skill level and reports wrong value if this is set by itself, e.g. 10 > 6 instead of 10 > 2)
+        CostPerformanceEffectUpFactor2 = 9,
+        
+        /// Unknown effect currently
+        UnknownEffect10 = 10
     }
 }

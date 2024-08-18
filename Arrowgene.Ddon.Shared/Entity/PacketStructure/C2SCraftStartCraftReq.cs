@@ -25,10 +25,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataCraftMaterial> AdditionalStatusItems { get; set; } // List of Additional Status items I guess? can there be more than 1 though? weird.
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
-        // Directly correlated with CraftProgress CraftMasterPawnInfoList
-        // Contains list of craft master / legend pawn IDs
-        // TODO: support craft master / legend pawn involvement
-        public List<CDataCraftSupportPawnID> CraftMasterPawnIDList { get; set; } 
+        /// <summary>
+        /// Directly correlated with CraftProgress CraftMasterLegendPawnInfoList
+        /// Contains list of craft master / legend pawn IDs
+        /// TODO: support craft master / legend pawn involvement
+        /// </summary>
+        public List<CDataCraftSupportPawnID> CraftMasterLegendPawnIDList { get; set; } 
         public uint CreateCount { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SCraftStartCraftReq>
@@ -42,7 +44,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataCraftMaterial>(buffer, obj.AdditionalStatusItems);
                 WriteUInt32(buffer, obj.CraftMainPawnID);
                 WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftSupportPawnIDList);
-                WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftMasterPawnIDList);
+                WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftMasterLegendPawnIDList);
                 WriteUInt32(buffer, obj.CreateCount);
             }
 
@@ -56,7 +58,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.AdditionalStatusItems = ReadEntityList<CDataCraftMaterial>(buffer);
                 obj.CraftMainPawnID = ReadUInt32(buffer);
                 obj.CraftSupportPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
-                obj.CraftMasterPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
+                obj.CraftMasterLegendPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
                 obj.CreateCount = ReadUInt32(buffer);
                 return obj;
             }

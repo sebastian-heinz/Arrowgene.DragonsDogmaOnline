@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         CraftMainPawnInfo = leadPawn,
                         CraftSupportPawnInfoList = supportPawns,
-                        CraftMasterPawnInfoList = new List<CDataCraftPawnInfo>(),
+                        CraftMasterLegendPawnInfoList = new List<CDataCraftPawnInfo>(),
                         RecipeId = craftProgress.RecipeId,
                         Exp = craftProgress.Exp,
                         NpcActionId = craftProgress.NpcActionId,

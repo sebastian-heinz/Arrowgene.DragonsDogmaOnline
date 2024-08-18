@@ -13,19 +13,23 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             ColorRegulateItemList = new List<CDataCommonU32>();
             TimeSaveCostList = new List<CDataCraftTimeSaveCost>();
-            Unk0 = new List<CDataS2CCraftGetCraftSettingResUnk0>();
-            Unk3 = new List<CDataS2CCraftGetCraftSettingResUnk3>();
+            CraftMasterLegendPawnInfoList = new List<CDataRegisteredLegendPawnInfo>();
+            RefiningMaterialInfoList = new List<CDataRefiningMaterialInfo>();
         }
 
+        /// <summary>
+        /// List of items whose color can not be changed/dyed via crafting regardless of stars
+        /// </summary>
         public List<CDataCommonU32> ColorRegulateItemList { get; set; }
         public List<CDataCraftTimeSaveCost> TimeSaveCostList { get; set; }
         public uint ReasonableCraftLv { get; set; }
         public uint CraftItemLv { get; set; }
         public byte CreateCountMax { get; set; }
-        public List<CDataS2CCraftGetCraftSettingResUnk0> Unk0 { get; set; }
-        public uint Unk1 { get; set; }
-        public uint Unk2 { get; set; }
-        public List<CDataS2CCraftGetCraftSettingResUnk3> Unk3 { get; set; }
+        /// See CPacket_S2C_GET_LEGEND_PAWN_LIST_RES + MtTypedArray<CDataRegisterdPawnList> LegendPawnList;
+        public List<CDataRegisteredLegendPawnInfo> CraftMasterLegendPawnInfoList { get; set; }
+        public uint Unk1 { get; set; } // Value 49 => maybe craft Filter ID / Preview character ID / settings for Craig?
+        public uint Unk2 { get; set; } // Value 30 => maybe craft Filter ID / Preview character ID / settings for Craig?
+        public List<CDataRefiningMaterialInfo> RefiningMaterialInfoList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CCraftGetCraftSettingRes>
         {
@@ -37,10 +41,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.ReasonableCraftLv);
                 WriteUInt32(buffer, obj.CraftItemLv);
                 WriteByte(buffer, obj.CreateCountMax);
-                WriteEntityList<CDataS2CCraftGetCraftSettingResUnk0>(buffer, obj.Unk0);
+                WriteEntityList<CDataRegisteredLegendPawnInfo>(buffer, obj.CraftMasterLegendPawnInfoList);
                 WriteUInt32(buffer, obj.Unk1);
                 WriteUInt32(buffer, obj.Unk2);
-                WriteEntityList<CDataS2CCraftGetCraftSettingResUnk3>(buffer, obj.Unk3);
+                WriteEntityList<CDataRefiningMaterialInfo>(buffer, obj.RefiningMaterialInfoList);
             }
 
             public override S2CCraftGetCraftSettingRes Read(IBuffer buffer)
@@ -52,10 +56,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.ReasonableCraftLv = ReadUInt32(buffer);
                 obj.CraftItemLv = ReadUInt32(buffer);
                 obj.CreateCountMax = ReadByte(buffer);
-                obj.Unk0 = ReadEntityList<CDataS2CCraftGetCraftSettingResUnk0>(buffer);
+                obj.CraftMasterLegendPawnInfoList = ReadEntityList<CDataRegisteredLegendPawnInfo>(buffer);
                 obj.Unk1 = ReadUInt32(buffer);
                 obj.Unk2 = ReadUInt32(buffer);
-                obj.Unk3 = ReadEntityList<CDataS2CCraftGetCraftSettingResUnk3>(buffer);
+                obj.RefiningMaterialInfoList = ReadEntityList<CDataRefiningMaterialInfo>(buffer);
                 return obj;
             }
         }

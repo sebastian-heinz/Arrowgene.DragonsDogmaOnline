@@ -241,9 +241,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataRewardItem.Serializer());
             Create(new CDataRewardBoxRecord.Serializer());
             Create(new CDataRewardBoxItem.Serializer());
-            Create(new CDataS2CCraftGetCraftSettingResUnk0.Serializer());
+            Create(new CDataRegisteredLegendPawnInfo.Serializer());
             Create(new CDataS2CCraftGetCraftSettingResUnk0Unk6.Serializer());
-            Create(new CDataS2CCraftGetCraftSettingResUnk3.Serializer());
+            Create(new CDataRefiningMaterialInfo.Serializer());
             Create(new CDataS2CCraftStartQualityUpResUnk0.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk6.Serializer());
