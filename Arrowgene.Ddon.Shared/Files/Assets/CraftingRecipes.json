@@ -63196,43 +63196,6 @@
               ]
           },
           {
-              "RecipeID": 1687,
-              "ItemID": 9009,
-              "Time": 4800,
-              "Num": 1,
-              "Cost": 16000,
-              "Exp": 260,
-              "NeedRank": 15,
-              "NpcAct": 2,
-              "IsHide": false,
-              "CraftMaterialList": [
-                  {
-                      "ItemId": 7986,
-                      "Num": 2,
-                      "SortNo": 1,
-                      "IsSp": true
-                  },
-                  {
-                      "ItemId": 7830,
-                      "Num": 2,
-                      "SortNo": 2,
-                      "IsSp": true
-                  },
-                  {
-                      "ItemId": 8981,
-                      "Num": 1,
-                      "SortNo": 3,
-                      "IsSp": true
-                  },
-                  {
-                      "ItemId": 7902,
-                      "Num": 3,
-                      "SortNo": 4,
-                      "IsSp": true
-                  }
-              ]
-          },
-          {
               "RecipeID": 1688,
               "ItemID": 9010,
               "Time": 6000,
@@ -63628,43 +63591,6 @@
                       "ItemId": 7961,
                       "Num": 1,
                       "SortNo": 3,
-                      "IsSp": true
-                  }
-              ]
-          },
-          {
-              "RecipeID": 1699,
-              "ItemID": 9466,
-              "Time": 450,
-              "Num": 1,
-              "Cost": 1500,
-              "Exp": 24,
-              "NeedRank": 5,
-              "NpcAct": 2,
-              "IsHide": false,
-              "CraftMaterialList": [
-                  {
-                      "ItemId": 7853,
-                      "Num": 2,
-                      "SortNo": 1,
-                      "IsSp": true
-                  },
-                  {
-                      "ItemId": 7803,
-                      "Num": 3,
-                      "SortNo": 2,
-                      "IsSp": true
-                  },
-                  {
-                      "ItemId": 7825,
-                      "Num": 2,
-                      "SortNo": 3,
-                      "IsSp": true
-                  },
-                  {
-                      "ItemId": 7963,
-                      "Num": 2,
-                      "SortNo": 4,
                       "IsSp": true
                   }
               ]
@@ -66037,31 +65963,6 @@
                   },
                   {
                       "ItemId": 41,
-                      "Num": 1,
-                      "SortNo": 1,
-                      "IsSp": true
-                  }
-              ]
-          },
-          {
-              "RecipeID": 1779,
-              "ItemID": 11407,
-              "Time": 360,
-              "Num": 1,
-              "Cost": 3000,
-              "Exp": 1,
-              "NeedRank": 20,
-              "NpcAct": 1,
-              "IsHide": false,
-              "CraftMaterialList": [
-                  {
-                      "ItemId": 11510,
-                      "Num": 3,
-                      "SortNo": 1,
-                      "IsSp": true
-                  },
-                  {
-                      "ItemId": 8033,
                       "Num": 1,
                       "SortNo": 1,
                       "IsSp": true
@@ -70125,25 +70026,6 @@
                   {
                       "ItemId": 11790,
                       "Num": 1,
-                      "SortNo": 1,
-                      "IsSp": true
-                  }
-              ]
-          },
-          {
-              "RecipeID": 1910,
-              "ItemID": 11790,
-              "Time": 360,
-              "Num": 1,
-              "Cost": 10000,
-              "Exp": 190,
-              "NeedRank": 20,
-              "NpcAct": 1,
-              "IsHide": false,
-              "CraftMaterialList": [
-                  {
-                      "ItemId": 11789,
-                      "Num": 20,
                       "SortNo": 1,
                       "IsSp": true
                   }
