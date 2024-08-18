@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -31,11 +32,33 @@ namespace Arrowgene.Ddon.Shared.Model
             AbilityPresets = new List<CDataPresetAbilityParam>();
             BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
             LastSeenLobby = new Dictionary<uint, uint>();
+            BbmProgress = new BitterblackMazeProgress();
         }
 
         public int AccountId { get; set; }
         public DateTime Created { get; set; }
-        public uint CharacterId;
+
+        public uint CharacterId
+        {
+            get
+            {
+                if (BbmCharacterId != 0)
+                {
+                    return this.BbmCharacterId;
+                }
+                else
+                {
+                    return this.NormalCharacterId;
+                }
+            }
+            set
+            {
+                this.NormalCharacterId = value;
+            }
+        }
+
+        public uint NormalCharacterId;
+        public uint BbmCharacterId;
         public uint UserId;
         public uint Version;
         public string FirstName;
@@ -57,6 +80,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte ArisenProfileShareRange;
         public List<CDataPresetAbilityParam> AbilityPresets;
         public byte[] BinaryData;
+        public GameMode GameMode {  get; set; }
 
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
 
@@ -64,6 +88,9 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
+
+        public BitterblackMazeProgress BbmProgress;
+        public uint NextBBMStageId {  get; set; }
 
         public uint MaxBazaarExhibits { get; set; }
 

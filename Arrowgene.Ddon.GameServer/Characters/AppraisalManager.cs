@@ -38,5 +38,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return rolls[Random.Shared.Next(0, rolls.Count)];
         }
 
+        public static uint RollBitterBlackMazeEarringCrest(JobId jobId)
+        {
+            var jobCrests = BitterBlackMazeRewards.EarringRolls[jobId];
+            return jobCrests[Random.Shared.Next(0, jobCrests.Count)];
+        }
+
+        public static ushort RollBitterBlackMazeEarringPercent(JobId job)
+        {
+            if (job == JobId.Warrior || job == JobId.ShieldSage)
+            {
+                // [8, 20]
+                return (ushort)Random.Shared.Next(8, 20 + 1);
+            }
+            // [1, 13]
+            return (ushort)Random.Shared.Next(1, 13 + 1);
+        }
     }
 }

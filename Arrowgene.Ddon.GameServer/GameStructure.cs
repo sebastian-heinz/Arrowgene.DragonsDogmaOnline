@@ -32,7 +32,7 @@ public static class GameStructure
         CharacterCommon character)
     {
         cDataCharacterListElement.ServerId = character.Server.Id;
-        cDataCharacterListElement.OnlineStatus = 0;
+        cDataCharacterListElement.OnlineStatus = character.OnlineStatus;
         CDataJobBaseInfo(cDataCharacterListElement.CurrentJobBaseInfo, character.Job,
             (byte)character.ActiveCharacterJobData.Lv);
         CDataJobBaseInfo(cDataCharacterListElement.EntryJobBaseInfo, character.Job,
@@ -45,7 +45,7 @@ public static class GameStructure
         CDataCommunityCharacterBaseInfo cDataCommunityCharacterBaseInfo,
         Character character)
     {
-        cDataCommunityCharacterBaseInfo.CharacterId = character.CharacterId;
+        cDataCommunityCharacterBaseInfo.CharacterId = character.NormalCharacterId;
         CDataCharacterName(cDataCommunityCharacterBaseInfo.CharacterName, character);
         cDataCommunityCharacterBaseInfo.ClanName = ""; // TODO: Clan
     }
@@ -180,7 +180,7 @@ public static class GameStructure
 
     public static void CDataContextBase(CDataContextBase contextBase, Character character)
     {
-        contextBase.CharacterId = character.CharacterId;
+        contextBase.CharacterId = character.NormalCharacterId;
         contextBase.FirstName = character.FirstName;
         contextBase.LastName = character.LastName;
         contextBase.ContextEquipPerformanceList = character.Equipment.AsCDataContextEquipData(EquipType.Performance);
@@ -313,7 +313,7 @@ public static class GameStructure
 
     public static void S2CContextGetLobbyPlayerContextNtc(S2CContextGetLobbyPlayerContextNtc ntc, Character character)
     {
-        ntc.CharacterId = character.CharacterId;
+        ntc.CharacterId = character.NormalCharacterId;
         GameStructure.CDataLobbyContextPlayer(ntc.Context, character);
     }
 }

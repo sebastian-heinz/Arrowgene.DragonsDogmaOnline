@@ -1,0 +1,58 @@
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
+using Microsoft.VisualBasic;
+using System.Collections.Generic;
+
+namespace Arrowgene.Ddon.GameServer.Handler
+{
+    public class ItemEmbodyPayCostHandler : GameRequestPacketHandler<C2SItemGetEmbodyPayCostReq, S2CItemGetEmbodyPayCostRes>
+    {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemEmbodyPayCostHandler));
+
+        public ItemEmbodyPayCostHandler(DdonGameServer server) : base(server)
+        {
+        }
+
+        public override S2CItemGetEmbodyPayCostRes Handle(GameClient client, C2SItemGetEmbodyPayCostReq request)
+        {
+            var result = new S2CItemGetEmbodyPayCostRes();
+
+            var normalCharacter = Server.Database.SelectCharacter(client.Character.NormalCharacterId);
+            result.EmbodyCostList.Add(new CDataItemEmbodyCostParam()
+            {
+                // Wallet total? If 0, popup says "not enough gold"
+                Unk0 = (uint) WalletType.GoldenDragonMark,
+                // Cost
+                WalletPoints = new List<CDataWalletPoint>()
+                {
+                    new CDataWalletPoint()
+                    {
+                        Type = WalletType.GoldenDragonMark,
+                        Value = 3
+                    }
+                },
+            });
+
+            result.EmbodyCostList.Add(new CDataItemEmbodyCostParam()
+            {
+                // Wallet total? If 0, popup says "not enough gold"
+                Unk0 = (uint) WalletType.GoldenGemstones,
+                // Cost
+                WalletPoints = new List<CDataWalletPoint>()
+                {
+                    new CDataWalletPoint()
+                    {
+                        Type = WalletType.GoldenGemstones,
+                        Value = 3
+                    }
+                },
+            });
+
+            return result;
+        }
+    }
+}

@@ -34,7 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         // List of "safe" areas, where the context reset NTC will be sent.
         // TODO: Complete with all the safe areas. Maybe move it to DB or config?
-        private static readonly HashSet<uint> SafeStageIds = new HashSet<uint>(){
+        private static readonly HashSet<uint> SafeStageIds = new HashSet<uint>()
+        {
             2, // White Dragon Temple
             341, // Dana Centrum
             487, // Fortress City Megado: Residential Level
@@ -107,6 +108,97 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static bool IsHubArea(StageId stageId)
         {
             return StageManager.IsHubArea(stageId.Id);
+        }
+
+        public static readonly uint BitterblackCove = 602;
+
+        private static readonly HashSet<uint> BitterBlackStageIds = new HashSet<uint>()
+        {
+            602, // Bitterblack Maze Cove
+            603, // Garden of Ignominy
+            604, // Duskmoon Tower
+            605, // Rotunda of Dread
+            610, // Netherworld 1
+            611, // Netherworld 1
+            612, // Netherworld 1
+            614, // Netherworld 2
+            615, // Netherworld 2
+            616, // Netherworld 2
+            617, // Netherworld 3
+            618, // Netherworld 3
+            619, // Netherworld 3
+            620, // Netherworld 3
+            621, // Netherworld 3
+            622, // Netherworld 3
+            623, // Rift
+            624, // Rift
+            682, // Noxious Cathedral
+            683, // Traitors Cathedral
+            684, // Fallen City
+            685, // Altar of the Black Curse
+            686, // Netherworld 1
+            687, // Netherworld 1
+            688, // Netherworld 1
+            689, // Netherworld 2
+            690, // Netherworld 2
+            691, // Netherworld 2
+            692, // Netherworld 3
+            693, // Netherworld 3
+            694, // Netherworld 3
+            695, // Netherworld 4
+            696, // Netherworld 4
+            697, // Netherworld 4
+            698, // Rift
+            699, // Rift
+            700, // Rift
+            715, // Netherworld 4
+            716, // Netherworld 4
+            717, // Netherworld 4
+        };
+
+        public static bool IsBitterBlackMazeStageId(uint stageId)
+        {
+            return BitterBlackStageIds.Contains(stageId);
+        }
+
+        public static bool IsBitterBlackMazeStageId(StageId stageId)
+        {
+            return StageManager.IsBitterBlackMazeStageId(stageId.Id);
+        }
+
+        private static readonly HashSet<uint> BitterBlackNormalBossStageIds = new HashSet<uint>()
+        {
+            603, // Garden of Ignominy
+            604, // Duskmoon Tower
+            605, // Rotunda of Dread
+        };
+
+        public static bool IsBitterBlackMazeBossStageId(uint stageId)
+        {
+            return BitterBlackNormalBossStageIds.Contains(stageId);
+        }
+
+        public static bool IsBitterBlackMazeBossStageId(StageId stageId)
+        {
+            return StageManager.IsBitterBlackMazeBossStageId(stageId.Id);
+        }
+
+        private static readonly HashSet<uint> BitterBlackAbyssBossStageIds = new HashSet<uint>()
+        {
+            682, // Noxious Cathedral
+            683, // Traitors Tower
+            684, // Fallen City
+            685, // Alter of the Black Curse
+        };
+
+        public static bool IsBitterBlackMazeAbyssBossStageId(uint stageId)
+        {
+            return BitterBlackAbyssBossStageIds.Contains(stageId);
+        }
+
+        public static bool IsBitterBlackMazeAbyssBossStageId(StageId stageId)
+        {
+            return StageManager.IsBitterBlackMazeAbyssBossStageId(stageId.Id);
         }
     }
 }

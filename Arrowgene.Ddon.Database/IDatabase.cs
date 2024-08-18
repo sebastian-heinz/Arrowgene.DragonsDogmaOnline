@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,7 @@ namespace Arrowgene.Ddon.Database
         bool UpdateCharacterArisenProfile(Character character);
         bool UpdateMyPawnSlot(uint characterId, uint num);
         bool UpdateCharacterBinaryData(uint characterId, byte[] data);
+        void CreateItems(Character character);
 
         // Pawn
         bool CreatePawn(Pawn pawn);
@@ -139,6 +141,8 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null);
         bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
+        public void DeleteAllStorageItems(uint characterId);
+
         bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
 
         // Equip
@@ -146,6 +150,7 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, DbConnection? connectionIn = null);
         bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, DbConnection? connectionIn = null);
+        void DeleteAllEquipItems(uint commonId);
         List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId);
 
         // Job Items
@@ -287,10 +292,36 @@ namespace Arrowgene.Ddon.Database
         // Stamps
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);
         public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
+
         // Crests
         bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null);
         bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
         bool RemoveCrest(uint characterCommonId, string itemUId, uint slot);
         List<Crest> GetCrests(uint characterCommonId, string itemUId);
+
+        // Bitterblack Maze Progress
+        bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId);
+        uint SelectBBMCharacterId(uint characterId);
+        uint SelectBBMNormalCharacterId(uint bbmCharacterId);
+        bool InsertBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime);
+        bool UpdateBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime);
+        bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress);
+        BitterblackMazeProgress SelectBBMProgress(uint characterId);
+        bool RemoveBBMProgress(uint characterId);
+
+        // Bitterblack Maze Rewards
+        bool InsertBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks);
+        bool UpdateBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks);
+        bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards);
+        bool RemoveBBMRewards(uint characterId);
+        BitterblackMazeRewards SelectBBMRewards(uint characterId);
+
+        // Bitterblack Maze Treasure
+        bool InsertBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure, DbConnection? connectionIn = null);
+        bool InsertBBMContentTreasure(uint characterId, uint contentId, uint amount, DbConnection? connectionIn = null);
+        bool UpdateBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure);
+        bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount);
+        bool RemoveBBMContentTreasure(uint characterId);
+        List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId);
     }
 }

@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Wallet.Value += Amount;
 
-            _Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
+            _Database.UpdateWalletPoint(Character.NormalCharacterId, Wallet, connectionIn);
 
             CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
             UpdateWalletPoint.Type = Type;
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Wallet.Value -= Amount;
 
-            _Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
+            _Database.UpdateWalletPoint(Character.NormalCharacterId, Wallet, connectionIn);
 
             CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
             UpdateWalletPoint.Type = Type;

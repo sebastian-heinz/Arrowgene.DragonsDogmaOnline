@@ -33,6 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
             StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
         };
+        public static readonly List<StorageType> BbmEmbodyStorages = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob};
 
         private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
             {7789, (WalletType.Gold, 1)},
@@ -341,7 +342,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
-               
+                if (BitterblackMazeManager.IsMazeReward(item.ItemId))
+                {
+                    item = BitterblackMazeManager.ApplyCrest(database, character, item, connectionIn);
+                }
+
                 CDataItemUpdateResult result = new CDataItemUpdateResult();
                 result.ItemList.ItemUId = item.UId;
                 result.ItemList.ItemId = item.ItemId;
@@ -585,7 +590,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint characterId = 0;
             if (character is Character)
             {
-                characterId = ((Character)character).CharacterId;
+                characterId = ((Character)character).NormalCharacterId;
             }
             else if (character is Pawn)
             {
@@ -616,6 +621,40 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public CDataItemUpdateResult CreateItemUpdateResult(Character character, Item item, Storage storage, ushort slotNo, uint itemNum, uint updateItemNum)
         {
             return CreateItemUpdateResult(character, item, storage.Type, slotNo, itemNum, updateItemNum);
+        }
+
+        public List<CDataItemUpdateResult> SwapCharacterInventories(Character character, Storages storageA, Storages storageB, List<StorageType> storageTypes)
+        {
+            var results = new List<CDataItemUpdateResult>();
+            foreach (var storageType in storageTypes)
+            {
+                for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++)
+                {
+                    ushort slotNo = (ushort)(i + 1);
+
+                    var storageItemA = storageA.GetStorage(storageType).GetItem(slotNo);
+                    if (storageItemA != null)
+                    {
+                        results.Add(CreateItemUpdateResult(null, storageItemA.Item1, storageType, slotNo, 0, 0));
+                    }
+
+                    var storageItemB = storageB.GetStorage(storageType).GetItem(slotNo);
+                    if (storageItemB != null)
+                    {
+                        results.Add(CreateItemUpdateResult(null, storageItemB.Item1, storageType, slotNo, storageItemB.Item2, storageItemB.Item2));
+                    }
+                    else if (storageItemA != null)
+                    {
+                        Item item = new Item()
+                        {
+                            ItemId = 0,
+                            UId = ""
+                        };
+                        results.Add(CreateItemUpdateResult(null, item, storageType, slotNo, storageItemA.Item2, storageItemA.Item2));
+                    }
+                }
+            }
+            return results;
         }
 
         public uint LookupItemByUID(DdonServer<GameClient> server, string itemUID, DbConnection? connectionIn = null)
@@ -702,6 +741,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return server.AssetRepository.ClientItemInfos[id];
         }
 
+        public static bool SendToItemBag(uint storageType)
+        {
+            bool toBag = false;
+            switch (storageType)
+            {
+                case 19:
+                    toBag = true;
+                    break;
+                case 20:
+                    toBag = false;
+                    break;
+                default:
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Unexpected destination when exchanging items {storageType}");
+            }
+            return toBag;
+        }
     }
 
     [Serializable]

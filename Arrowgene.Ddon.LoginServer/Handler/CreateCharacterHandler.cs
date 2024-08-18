@@ -35,6 +35,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.CharacterId = packet.Structure.CharacterInfo.CharacterId;
             character.UserId = packet.Structure.CharacterInfo.UserId;
             character.Version = packet.Structure.CharacterInfo.Version;
+            character.GameMode = GameMode.Normal;
             character.FirstName = packet.Structure.CharacterInfo.FirstName;
             character.LastName = packet.Structure.CharacterInfo.LastName;
             character.EditInfo = packet.Structure.CharacterInfo.EditInfo;
@@ -492,7 +493,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.CustomMadeServiceTickets,
+                    Type = WalletType.BitterblackMazeResetTicket,
                     Value = 0
                 },
                 new CDataWalletPoint() {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -33,7 +34,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(ntc);
             }
 
-            List<InstancedGatheringItem> gatheringItems = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId);
+            List<InstancedGatheringItem> gatheringItems = new List<InstancedGatheringItem>();
+
+            uint posId = req.Structure.PosId;
+            var stageId = req.Structure.LayoutId.AsStageId();
+            Logger.Info($"id={stageId}, pos={posId}");
+            if (StageManager.IsBitterBlackMazeStageId(stageId))
+            {
+                if (!client.InstanceBbmItemManager.HasBitterblackLootGenerated(stageId, posId))
+                {
+                    var items = BitterblackMazeManager.RollChestLoot(Server, client.Character, stageId, posId);
+                    client.InstanceBbmItemManager.AddBitterblackLootTable(stageId, posId, items);
+                }
+                gatheringItems.AddRange(client.InstanceBbmItemManager.FetchBitterblackItems(stageId, posId));
+            }
+            else
+            {
+                gatheringItems.AddRange(client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, posId));
+            }
 
             S2CInstanceGetGatheringItemListRes res = new S2CInstanceGetGatheringItemListRes();
             res.LayoutId = req.Structure.LayoutId;

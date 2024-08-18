@@ -1,0 +1,972 @@
+{
+    "maze_configurations": {
+        "rotunda": [
+            {
+				"content_id": 2,
+				"next_content_ids": [3],
+                "tier": 1,
+                "name": "Bitterblack Maze Rotunda: Netherworld 1",
+                "stage_id": {
+                    "id": 602,
+                    "group_id": 26,
+                    "layer_no": 0
+                },
+                "destinations": [610, 611, 612]
+            },
+            {
+				"content_id": 3,
+				"next_content_ids": [4],
+                "tier": 2,
+                "name": "Bitterblack Maze Rotunda: Netherworld 2",
+                "stage_id": {
+                    "id": 603,
+                    "group_id": 26,
+                    "layer_no": 0
+                },
+                "destinations": [614, 615, 616]
+            },
+            {
+				"content_id": 4,
+				"next_content_ids": [],
+                "tier": 3,
+                "name": "Bitterblack Maze Rotunda: Netherworld 3",
+                "stage_id": {
+                    "id": 604,
+                    "group_id": 26,
+                    "layer_no": 0
+                },
+                "destinations": [617, 618, 619, 620, 621, 622]
+            }
+        ],
+        "abyss": [
+            {
+				"content_id": 10,
+				"next_content_ids": [11],
+                "tier": 1,
+                "name": "Bitterblack Maze Abyss: Netherworld 1",
+                "stage_id": {
+                    "id": 602,
+                    "group_id": 27,
+                    "layer_no": 0
+                },
+                "destinations": [686, 687, 688]
+            },
+            {
+				"content_id": 11,
+				"next_content_ids": [12],
+                "tier": 2,
+                "name": "Bitterblack Maze Abyss: Netherworld 2",
+                "stage_id": {
+                    "id": 682,
+                    "group_id": 26,
+                    "layer_no": 0
+                },
+                "destinations": [689, 690, 691]
+            },
+            {
+				"content_id": 12,
+				"next_content_ids": [13],
+                "tier": 3,
+                "name": "Bitterblack Maze Abyss: Netherworld 3",
+                "stage_id": {
+                    "id": 683,
+                    "group_id": 26,
+                    "layer_no": 0
+                },
+                "destinations": [692, 693, 694]
+            },
+            {
+				"content_id": 13,
+				"next_content_ids": [],
+                "tier": 4,
+                "name": "Bitterblack Maze Abyss: Netherworld 4",
+                "stage_id": {
+                    "id": 684,
+                    "group_id": 26,
+                    "layer_no": 0
+                },
+                "destinations": [695, 696, 697, 715, 716, 717]
+            }
+        ]
+    },
+	"rare_item_appraisal_list": [
+		21630,
+		23364,
+		24723
+	],
+	"item_takeaway_list": [
+		21380,
+		21381,
+		21382,
+		21383,
+		21384,
+		21385,
+		21386,
+		21387,
+		21388,
+		21396,
+		21397,
+		21398,
+		21399,
+		21400,
+		21401,
+		21402,
+		21403,
+		21651,
+		23710,
+		23711,
+		24601,
+		24605,
+		24609,
+		24614,
+		24615,
+		24616,
+		24617,
+		24618
+	],
+    "starter_equipment": [
+        {
+            "job": "ShieldSage",
+            "equipment": [
+                {
+                    "comment": "94,バトルシールド,Battle Shield,",
+                    "item_id": 94,
+                    "slot": 1
+                },
+                {
+                    "comment": "88,スパイクロッド,Spike Rod,",
+                    "item_id": 88,
+                    "slot": 2
+                },
+                {
+                    "comment": "8168,了知のヘルム,Intellect Helm,",
+                    "item_id": 8168,
+                    "slot": 3
+                },
+                {
+                    "comment": "8273,エリートドレープ,Elite Drapes,",
+                    "item_id": 8273,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "8473,エリートグラブ,Elite Gloves,",
+                    "item_id": 8473,
+                    "slot": 6
+                },
+                {
+                    "comment": "8373,エリートレッグス,Elite Legs,",
+                    "item_id": 8373,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "Alchemist",
+            "equipment": [
+                {
+                    "comment": "132,ソリトゥス,Solitus,",
+                    "item_id": 132,
+                    "slot": 1
+                },
+                {
+                    "comment": "",
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "8168,了知のヘルム,Intellect Helm,",
+                    "item_id": 8168,
+                    "slot": 3
+                },
+                {
+                    "comment": "8273,エリートドレープ,Elite Drapes,",
+                    "item_id": 8273,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "8473,エリートグラブ,Elite Gloves,",
+                    "item_id": 8473,
+                    "slot": 6
+                },
+                {
+                    "comment": "8373,エリートレッグス,Elite Legs,",
+                    "item_id": 8373,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "HighScepter",
+            "equipment": [
+                {
+                    "comment": "20028,シミター,Scimitar,",
+                    "item_id": 20028,
+                    "slot": 1
+                },
+                {
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "8168,了知のヘルム,Intellect Helm,",
+                    "item_id": 8168,
+                    "slot": 3
+                },
+                {
+                    "comment": "8273,エリートドレープ,Elite Drapes,",
+                    "item_id": 8273,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "8473,エリートグラブ,Elite Gloves,",
+                    "item_id": 8473,
+                    "slot": 6
+                },
+                {
+                    "comment": "8373,エリートレッグス,Elite Legs,",
+                    "item_id": 8373,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "Seeker",
+            "equipment": [
+                {
+                    "comment": "101,スリットダガー,Slit Daggers",
+                    "item_id": 101,
+                    "slot": 1
+                },
+                {
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "8198,プレートコイフ,Plate Coif,",
+                    "item_id": 8198,
+                    "slot": 3
+                },
+                {
+                    "comment": "8298,バトルジャケット,Battle Jacket,",
+                    "item_id": 8298,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "8498,アイアンマニカ,Iron Manicae",
+                    "item_id": 8498,
+                    "slot": 6
+                },
+                {
+                    "comment": "8398,傭兵のレッグガード,Mercenary Leg-Guards,",
+                    "item_id": 8398,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "Hunter",
+            "equipment": [
+                {
+                    "comment": "76,コンポジットロングボウ,Composite Longbow,",
+                    "item_id": 76,
+                    "slot": 1
+                },
+                {
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "8198,プレートコイフ,Plate Coif,",
+                    "item_id": 8198,
+                    "slot": 3
+                },
+                {
+                    "comment": "8298,バトルジャケット,Battle Jacket,",
+                    "item_id": 8298,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "8498,アイアンマニカ,Iron Manicae",
+                    "item_id": 8498,
+                    "slot": 6
+                },
+                {
+                    "comment": "8398,傭兵のレッグガード,Mercenary Leg-Guards,",
+                    "item_id": 8398,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "SpiritLancer",
+            "equipment": [
+                {
+                    "comment": "14737,ノービススピア,Novice Spear,",
+                    "item_id": 14737,
+                    "slot": 1
+                },
+                {
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "8198,プレートコイフ,Plate Coif,",
+                    "item_id": 8198,
+                    "slot": 3
+                },
+                {
+                    "comment": "8298,バトルジャケット,Battle Jacket,",
+                    "item_id": 8298,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "8498,アイアンマニカ,Iron Manicae",
+                    "item_id": 8498,
+                    "slot": 6
+                },
+                {
+                    "comment": "8398,傭兵のレッグガード,Mercenary Leg-Guards,",
+                    "item_id": 8398,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "Fighter",
+            "equipment": [
+                {
+                    "comment": "64,メイス,Mace,",
+                    "item_id": 64,
+                    "slot": 1
+                },
+                {
+                    "comment": "69,ペルテー,Pelta,",
+                    "item_id": 69,
+                    "slot": 2
+                },
+                {
+                    "comment": "425,ブロンズサーリット,Bronze Sallet,",
+                    "item_id": 425,
+                    "slot": 3
+                },
+                {
+                    "comment": "8223,ハーフキュイラス,Half Cuirass,",
+                    "item_id": 8223,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "8423,ブロンズガントレット,Bronze Gauntlet,",
+                    "item_id": 8423,
+                    "slot": 6
+                },
+                {
+                    "comment": "8323,ブロンズサバトン,Bronze Sabatons,",
+                    "item_id": 8323,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "Warrior",
+            "equipment": [
+                {
+                    "comment": "124,ジャッジハンマー,Judge's Hammer,",
+                    "item_id": 124,
+                    "slot": 1
+                },
+                {
+                    "comment": "",
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "425,ブロンズサーリット,Bronze Sallet,",
+                    "item_id": 425,
+                    "slot": 3
+                },
+                {
+                    "comment": "8223,ハーフキュイラス,Half Cuirass,",
+                    "item_id": 8223,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "8423,ブロンズガントレット,Bronze Gauntlet,",
+                    "item_id": 8423,
+                    "slot": 6
+                },
+                {
+                    "comment": "8323,ブロンズサバトン,Bronze Sabatons,",
+                    "item_id": 8323,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "Priest",
+            "equipment": [
+                {
+                    "comment": "83,パームフラワー,Palm Flower,",
+                    "item_id": 83,
+                    "slot": 1
+                },
+                {
+                    "comment": "",
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "8148,マジシャンフード,Magician's Hood,",
+                    "item_id": 8148,
+                    "slot": 3
+                },
+                {
+                    "comment": "8248,マジシャンコート,Magician's Coat,",
+                    "item_id": 8248,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "4126,マジシャンズバングル,Magician's Bangles,",
+                    "item_id": 4126,
+                    "slot": 6
+                },
+                {
+                    "comment": "8348,碧落の腰巻,Sky Blue Waistguard,",
+                    "item_id": 8348,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "Sorcerer",
+            "equipment": [
+                {
+                    "comment": "108,パームトゥリーズ,Palm Trees,",
+                    "item_id": 108,
+                    "slot": 1
+                },
+                {
+                    "comment": "",
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "8148,マジシャンフード,Magician's Hood,",
+                    "item_id": 8148,
+                    "slot": 3
+                },
+                {
+                    "comment": "8248,マジシャンコート,Magician's Coat,",
+                    "item_id": 8248,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "4126,マジシャンズバングル,Magician's Bangles,",
+                    "item_id": 4126,
+                    "slot": 6
+                },
+                {
+                    "comment": "8348,碧落の腰巻,Sky Blue Waistguard,",
+                    "item_id": 8348,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        },
+        {
+            "job": "ElementArcher",
+            "equipment": [
+                {
+                    "comment": "115,ブロンツァボーゲン,Bronze Bogen,",
+                    "item_id": 115,
+                    "slot": 1
+                },
+                {
+                    "comment": "",
+                    "item_id": 0,
+                    "slot": 2
+                },
+                {
+                    "comment": "8148,マジシャンフード,Magician's Hood,",
+                    "item_id": 8148,
+                    "slot": 3
+                },
+                {
+                    "comment": "8248,マジシャンコート,Magician's Coat,",
+                    "item_id": 8248,
+                    "slot": 4
+                },
+                {
+                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "item_id": 500,
+                    "slot": 5
+                },
+                {
+                    "comment": "4126,マジシャンズバングル,Magician's Bangles,",
+                    "item_id": 4126,
+                    "slot": 6
+                },
+                {
+                    "comment": "8348,碧落の腰巻,Sky Blue Waistguard,",
+                    "item_id": 8348,
+                    "slot": 7
+                },
+                {
+                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "item_id": 508,
+                    "slot": 8
+                },
+                {
+                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "item_id": 513,
+                    "slot": 9
+                },
+                {
+                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "item_id": 8931,
+                    "slot": 10
+                },
+                {
+                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "item_id": 8934,
+                    "slot": 11
+                },
+                {
+                    "item_id": 0,
+                    "slot": 12
+                },
+                {
+                    "item_id": 0,
+                    "slot": 13
+                },
+                {
+                    "item_id": 0,
+                    "slot": 14
+                },
+                {
+                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "item_id": 9467,
+                    "slot": 15
+                }
+            ]
+        }
+    ]
+}

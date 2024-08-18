@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -50,28 +51,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            var quests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
-            foreach (var quest in quests)
+            if (client.GameMode == GameMode.Normal || client.GameMode == GameMode.BitterblackMaze)
             {
-                party.QuestState.AddNewQuest(quest.QuestId, quest.Step);
-            }
+                var worldQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.World).Select(x => x.QuestId).ToList();
+                foreach (var quest in QuestManager.GetQuestsByType(QuestType.World))
+                {
+                    if (QuestManager.IsBoardQuest(quest.Key))
+                    {
+                        continue;
+                    }
 
-            var worldQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.World).Select(x => x.QuestId).ToList();
-            foreach (var quest in QuestManager.GetQuestsByType(QuestType.World))
-            {
-                if (QuestManager.IsBoardQuest(quest.Key))
-                {
-                    continue;
-                }
-                if (!worldQuests.Contains(quest.Key))
-                {
-                    party.QuestState.AddNewQuest(quest.Key, 0);
+                    if (!worldQuests.Contains(quest.Key))
+                    {
+                        party.QuestState.AddNewQuest(quest.Key, 0);
+                    }
                 }
             }
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
-            ntc.HostCharacterId = client.Character.CharacterId;
-            ntc.LeaderCharacterId = client.Character.CharacterId;
+            ntc.HostCharacterId = client.Character.NormalCharacterId;
+            ntc.LeaderCharacterId = client.Character.NormalCharacterId;
             ntc.PartyMembers.Add(join.Value.GetCDataPartyMember());
             client.Send(ntc);
 

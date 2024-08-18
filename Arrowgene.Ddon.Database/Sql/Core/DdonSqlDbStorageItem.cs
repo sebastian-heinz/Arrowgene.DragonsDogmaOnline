@@ -24,6 +24,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateEquipPoints =
             "UPDATE \"ddon_storage_item\" SET \"equip_points\" = @equip_points " +
             "WHERE \"item_uid\" = @item_uid;";
+        private static readonly string SqlDeleteAllStorageItems = "DELETE FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id;";
 
         public Item SelectStorageItemByUId(string uId, DbConnection connectionIn = null)
         {
@@ -169,6 +170,20 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
+        public void DeleteAllStorageItems(uint characterId)
+        {
+            using TCon connection = OpenNewConnection();
+            DeleteAllStorageItems(connection, characterId);
+        }
+
+        public void DeleteAllStorageItems(DbConnection connection, uint characterId)
+        {
+            ExecuteNonQuery(connection, SqlDeleteAllStorageItems, command =>
+            {
+                AddParameter(command, "character_id", characterId);
+            });
+        }
+
         public bool UpdateItemEquipPoints(string uid, uint equipPoints)
         {
             using (TCon connection = OpenNewConnection())
@@ -180,6 +195,5 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }) == 1;
             }
         }
-
     }
 }

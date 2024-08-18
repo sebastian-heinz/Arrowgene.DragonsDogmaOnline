@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             foreach (CDataChangeEquipJobItem changeEquipJobItem in changeEquipJobItems)
             {
-                if(changeEquipJobItem.EquipJobItemUId.Length == 0)
+                if (changeEquipJobItem.EquipJobItemUId.Length == 0)
                 {
                     // UNEQUIP
                     // Remove from equipment
@@ -73,22 +73,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Send packets informing of the update
             List<CDataEquipJobItem> equippedJobItems = characterToEquipTo.EquipmentTemplate.JobItemsAsCDataEquipJobItem(characterToEquipTo.Job);
-            if(characterToEquipTo is Character character)
+            if (characterToEquipTo is Character character)
             {
-                client.Send(new S2CEquipChangeCharacterEquipJobItemRes() 
+                client.Send(new S2CEquipChangeCharacterEquipJobItemRes()
                 {
                     EquipJobItemList = equippedJobItems
                 });
 
                 client.Party.SendToAll(new S2CEquipChangeCharacterEquipJobItemNtc()
                 {
-                    CharacterId = character.CharacterId,
+                    CharacterId = character.NormalCharacterId,
                     EquipJobItemList = equippedJobItems
                 });
-            } 
+            }
             else if (characterToEquipTo is Pawn pawn)
             {
-                client.Send(new S2CEquipChangePawnEquipJobItemRes() 
+                client.Send(new S2CEquipChangePawnEquipJobItemRes()
                 {
                     PawnId = pawn.PawnId,
                     EquipJobItemList = equippedJobItems
@@ -146,6 +146,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Set in equipment template
                     //TODO: Move this lookup to memory instead of the DB if possible.
                     characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId), characterToEquipTo.Job, equipType, equipSlot);
+
                     server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId, connectionIn);
                     
                     // Update storage, swapping if needed
@@ -219,7 +220,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
                 {
-                    CharacterId = character.CharacterId,
+                    CharacterId = character.NormalCharacterId,
                     EquipItemList = character.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
                     VisualEquipItemList = character.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
                     // TODO: Unk0
@@ -243,6 +244,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); //TODO: Find a better code.
         }
+
         public void GetEquipTypeandSlot(Equipment equipment, string uid, out EquipType equipType, out byte equipSlot)
         {
             for (int i = 0; i < SLOTS * 2; i++)
@@ -257,7 +259,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             throw new Exception("Item not found");
         }
-    
+
         public List<(EquipType, EquipSlot)> CleanGenderedEquipTemplates(DdonGameServer server, CharacterCommon character, DbConnection? connectionIn = null)
         {
             List<(EquipType, EquipSlot)> forceRemovals = new List<(EquipType, EquipSlot)>();

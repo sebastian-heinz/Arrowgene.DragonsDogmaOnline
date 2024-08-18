@@ -28,6 +28,7 @@ namespace Arrowgene.Ddon.Test.Database
             c.LastName = "Bar";
             c.AccountId = account.Id;
             c.Job = JobId.Fighter;
+            c.GameMode = GameMode.Normal;
             c.Storage.AddStorage(StorageType.StorageBoxNormal, new Storage(StorageType.StorageBoxNormal, 100));
 
             Assert.True(database.CreateCharacter(c));

@@ -37,6 +37,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             Logger.Info(client, $"Found: {characters.Count} Characters");
             foreach (Character c in characters)
             {
+                if (c.GameMode != GameMode.Normal)
+                {
+                    continue;
+                }
+
                 c.Equipment = c.Storage.GetCharacterEquipment();
 
                 CDataCharacterListInfo cResponse = new CDataCharacterListInfo();

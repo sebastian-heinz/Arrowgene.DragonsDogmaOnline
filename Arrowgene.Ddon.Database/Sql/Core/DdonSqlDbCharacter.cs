@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CharacterFields = new string[]
         {
-            /* character_id */ "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "max_bazaar_exhibits"
+            /* character_id */ "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "max_bazaar_exhibits", "game_mode"
         };
 
         private static readonly string[] CDataMatchingProfileFields = new string[]
@@ -406,7 +406,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        private void CreateItems(TCon conn, Character character)
+        public void CreateItems(Character character)
+        {
+            using TCon connection = OpenNewConnection();
+            CreateItems(connection, character);
+        }
+
+        public void CreateItems(TCon conn, Character character)
         {
             // Create storage items
             foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.GetAllStorages())
@@ -424,52 +430,76 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }
             }
 
-            var equipmentTemplates = character.EquipmentTemplate.GetAllEquipment()[character.Job];
-            foreach (var equipment in equipmentTemplates)
+            var storageBoxNormal = character.Storage.GetAllStorages()[StorageType.StorageBoxNormal];
+            if (character.GameMode == GameMode.Normal)
             {
-                for (byte index = 0; index < equipment.Value.Count; index++)
+                var equipmentTemplates = character.EquipmentTemplate.GetAllEquipment()[character.Job];
+                foreach (var equipment in equipmentTemplates)
                 {
-                    Item item = equipment.Value[index];
-                    if (item != null)
+                    for (byte index = 0; index < equipment.Value.Count; index++)
                     {
-                        byte slot = (byte)(index + 1);
-                        InsertEquipItem(conn, character.CommonId, character.Job, equipment.Key, slot, item.UId);
+                        Item item = equipment.Value[index];
+                        if (item != null)
+                        {
+                            byte slot = (byte)(index + 1);
+                            InsertEquipItem(conn, character.CommonId, character.Job, equipment.Key, slot, item.UId);
+                        }
+                    }
+                }
+
+                foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.EquipmentTemplate.GetAllEquipment())
+                {
+                    JobId job = jobEquipment.Key;
+                    if (job == character.Job)
+                    {
+                        // Skip the current job as we already populated data for it.
+                        continue;
+                    }
+
+                    // Give starter weapon for all classes
+                    // If creating a character for normal mode, Wwe are only interested in slot 1 and 2
+                    for (byte i = 0; i < 2; i++)
+                    {
+                        Item item = jobEquipment.Value[EquipType.Performance][i];
+                        if (item != null)
+                        {
+                            ushort slot = storageBoxNormal.AddItem(item, 0);
+                            InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                            InsertStorageItem(character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
+                        }
+                    }
+
+                    // Requip the base armor to the other jobs without creating new items
+                    var baseJob = character.EquipmentTemplate.GetAllEquipment()[character.Job];
+                    for (byte i = 2; i < baseJob[EquipType.Performance].Count; i++)
+                    {
+                        Item item = baseJob[EquipType.Performance][i];
+                        if (item != null)
+                        {
+                            InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                        }
                     }
                 }
             }
-
-            // Give starter weapon for all classes
-
-            var storageBoxNormal = character.Storage.GetAllStorages()[StorageType.StorageBoxNormal];
-            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.EquipmentTemplate.GetAllEquipment())
+            else if (character.GameMode == GameMode.BitterblackMaze)
             {
-                JobId job = jobEquipment.Key;
-                if (job == character.Job)
+                // If creating a character for BBM, we need gear for all classes.
+                foreach (var (jobId, equipmentTemplate) in character.EquipmentTemplate.GetAllEquipment())
                 {
-                    // Skip the current job as we already populated data for it.
-                    continue;
-                }
-
-                // We are only interested in slot 1 and 2
-                for (byte i = 0; i < 2; i++)
-                {
-                    Item item = jobEquipment.Value[EquipType.Performance][i];
-                    if (item != null)
+                    var equipment = equipmentTemplate[EquipType.Performance];
+                    for (byte i = 0; i < equipment.Count; i++)
                     {
-                        ushort slot = storageBoxNormal.AddItem(item, 0);
-                        InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
-                        InsertStorageItem( character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
-                    }
-                }
+                        Item item = equipment[i];
+                        if (item != null && item.ItemId > 0)
+                        {
+                            ushort slot = storageBoxNormal.AddItem(item, 0);
+                            InsertEquipItem(conn, character.CommonId, jobId, EquipType.Performance, (byte)(i + 1), item.UId);
 
-                // Requip the base armor to the other jobs without creating new items
-                var baseJob = character.EquipmentTemplate.GetAllEquipment()[character.Job];
-                for (byte i = 2; i < baseJob[EquipType.Performance].Count; i++)
-                {
-                    Item item = baseJob[EquipType.Performance][i];
-                    if (item != null)
-                    {
-                        InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                            if (jobId != character.Job)
+                            {
+                                InsertStorageItem(character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
+                            }
+                        }
                     }
                 }
             }
@@ -492,6 +522,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.HideEquipHeadPawn = GetBoolean(reader, "hide_equip_head_pawn");
             character.HideEquipLanternPawn = GetBoolean(reader, "hide_equip_lantern_pawn");
             character.ArisenProfileShareRange = GetByte(reader, "arisen_profile_share_range");
+            character.GameMode = (GameMode) GetUInt32(reader, "game_mode");
 
             character.MatchingProfile.EntryJob = (JobId) GetByte(reader, "entry_job");
             character.MatchingProfile.EntryJobLevel = GetUInt32(reader, "entry_job_level");
@@ -555,6 +586,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@max_bazaar_exhibits", character.MaxBazaarExhibits);
 
             AddParameter(command, "@binary_data", character.BinaryData);
+            AddParameter(command, "@game_mode", (uint)character.GameMode);
         }
     
         public bool UpdateCharacterBinaryData(uint characterId, byte[] data)
