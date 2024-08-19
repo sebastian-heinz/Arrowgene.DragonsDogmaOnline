@@ -74,32 +74,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         SlotNo = element.SlotNo,
                     });
 
-                // Consume the crest
-                updateCharacterItemNtc.UpdateItemList.AddRange(
-                    Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
-            }
-
-            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
-            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
-            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
-            client.Send(updateCharacterItemNtc);
-
-            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
-            if (CraftManager.CanPawnExpUp(leadPawn))
-            {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
-                if (CraftManager.CanPawnRankUp(leadPawn))
-                {
-                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    // Consume the crest
+                    updateCharacterItemNtc.UpdateItemList.AddRange(
+                        Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
                 }
-                Server.Database.UpdatePawnBaseInfo(leadPawn);
-            }
-            else
-            {
-                // Mandatory to send otherwise the UI gets stuck.
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
-            }
 
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
+                updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
+                client.Send(updateCharacterItemNtc);
+
+                Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
+                if (CraftManager.CanPawnExpUp(leadPawn))
+                {
+                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
+                    if (CraftManager.CanPawnRankUp(leadPawn))
+                    {
+                        CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    }
+                    Server.Database.UpdatePawnBaseInfo(leadPawn);
+                }
+                else
+                {
+                    // Mandatory to send otherwise the UI gets stuck.
+                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+                }
+            });
             return result;
         }
     }

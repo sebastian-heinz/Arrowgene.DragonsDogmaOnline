@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (request.StorageType == 13)
                         {
                             itemUpdateNtc.UpdateItemList.AddRange(
-                                Server.ItemManager.AddItemRaw(
+                                Server.ItemManager.AddItem(
                                     Server,
                                     client.Character,
                                     (StorageType)request.StorageType,
