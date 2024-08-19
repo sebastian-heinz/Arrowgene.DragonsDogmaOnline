@@ -1,8 +1,6 @@
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Server.Network
 {

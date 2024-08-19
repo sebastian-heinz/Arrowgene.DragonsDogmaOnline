@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Logging;
@@ -21,11 +20,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqlDb<TCon, TCom, TReader>));
 
-        private readonly List<DeferredOperation> DeferredOperations;
-
         public DdonSqlDb()
         {
-            DeferredOperations = new List<DeferredOperation>();
         }
 
         public static string BuildQueryField(params string[][] fieldLists)

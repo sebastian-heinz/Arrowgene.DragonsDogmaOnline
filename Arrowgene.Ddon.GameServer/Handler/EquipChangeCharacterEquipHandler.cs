@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
