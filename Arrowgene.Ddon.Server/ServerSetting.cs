@@ -71,7 +71,6 @@ namespace Arrowgene.Ddon.Server
         void OnDeserialized(StreamingContext context)
         {
             ServerSocketSettings ??= new AsyncEventSettings();
-            ServerSocketSettings.MaxUnitOfOrder = 1;
         }
     }
 }

@@ -27,7 +27,8 @@ namespace Arrowgene.Ddon.Test.GameServer
                 ""GameServerSetting"": {
                     ""ServerSetting"": {
                         ""Id"": 10,
-                        ""Name"": ""Game""
+                        ""Name"": ""CustomServerName"",
+                        ""ServerPort"": 42000
                     },
                     ""GameLogicSetting"": {
                         ""AdditionalProductionSpeedFactor"": 1.5,
@@ -40,6 +41,8 @@ namespace Arrowgene.Ddon.Test.GameServer
 
             Assert.Equal("Logs", setting.LogPath);
             Assert.Equal("C:\\Assets", setting.AssetPath);
+            Assert.Equal("CustomServerName", setting.GameServerSetting.ServerSetting.Name);
+            Assert.Equal(42000, setting.GameServerSetting.ServerSetting.ServerPort);
             Assert.Equal(1.5, setting.GameServerSetting.GameLogicSetting.AdditionalProductionSpeedFactor);
             Assert.Equal(1.2, setting.GameServerSetting.GameLogicSetting.AdditionalCostPerformanceFactor);
         }
@@ -53,6 +56,8 @@ namespace Arrowgene.Ddon.Test.GameServer
 
             Assert.Equal("Logs", setting.LogPath);
             Assert.NotNull(setting.GameServerSetting);
+            Assert.Equal("Game", setting.GameServerSetting.ServerSetting.Name);
+            Assert.Equal(52000, setting.GameServerSetting.ServerSetting.ServerPort);
             Assert.Equal(1.0, setting.GameServerSetting.GameLogicSetting.AdditionalProductionSpeedFactor);
         }
 
