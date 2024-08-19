@@ -546,6 +546,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     uint newDstItemNum = ((oldDstItemNum + itemsToMove) > stackLimit) ? stackLimit : (oldDstItemNum + itemsToMove);
                     uint movedItemNum = newDstItemNum - oldDstItemNum;
+                    if (newDstItemNum == stackLimit) toSlotNo = 0;
+
                     if (movedItemNum == 0)
                     {
                         // if we move 0 items, this code will get stuck in an infinite loop
