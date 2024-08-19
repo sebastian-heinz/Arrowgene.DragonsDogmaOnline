@@ -546,7 +546,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     uint newDstItemNum = ((oldDstItemNum + itemsToMove) > stackLimit) ? stackLimit : (oldDstItemNum + itemsToMove);
                     uint movedItemNum = newDstItemNum - oldDstItemNum;
-                    if (newDstItemNum == stackLimit) toSlotNo = 0;
+                    if (newDstItemNum == stackLimit) toSlotNo = 0; //Stack filled, so roll over into the next found stack/empty slot.
 
                     if (movedItemNum == 0)
                     {
