@@ -210,7 +210,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                                 ushort laterSlot = common.Equipment.GetStorageSlot(equipType, (byte)jewelrySlot);
                                 try
                                 {
-                                    _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, laterSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
+                                    _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, laterSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
                                 }
                                 catch (ResponseErrorException ex)
                                 {
