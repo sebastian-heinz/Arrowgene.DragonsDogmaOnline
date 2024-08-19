@@ -113,8 +113,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint[] thresholds = { 350, 700, 1000, 1500, 800 };
 
             // Determine the required points based on the current star level
-            int requiredPoints = currentStars >= 0 && currentStars < thresholds.Length 
-                ? (int)thresholds[currentStars] 
+            uint requiredPoints = currentStars >= 0 && currentStars < thresholds.Length 
+                ? thresholds[currentStars] 
                 : throw new InvalidOperationException("Invalid star level");
 
             if (recipeData.AllowMultiGrade)
@@ -147,11 +147,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 if (currentTotalEquipPoint >= requiredPoints)
                 {
-                    int nextThresholdIndex = currentStars + 1;
-                    if (nextThresholdIndex < thresholds.Length && remainingPoints >= thresholds[nextThresholdIndex])
+                    if (currentStars != 4)
                     {
-                        // Cap the remainingPoints to 1 point short of the next threshold
-                        remainingPoints = thresholds[nextThresholdIndex] - 1;
+                        int nextThresholdIndex = currentStars + 1;
+                        if (nextThresholdIndex < thresholds.Length && remainingPoints >= thresholds[nextThresholdIndex])
+                        {
+                            // Cap the remainingPoints to 1 point short of the next threshold
+                            remainingPoints = thresholds[nextThresholdIndex] - 1;
+                        }
+                        else
+                        {
+                            remainingPoints -= requiredPoints;
+                        }
+                    }
+                    else
+                    {
+                        remainingPoints -= requiredPoints;
                     }
                     gradeupList = new() { new CDataCommonU32(gearUpgradeID) };
                     doUpgrade = true;
