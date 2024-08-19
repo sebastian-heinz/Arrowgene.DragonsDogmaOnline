@@ -54,50 +54,52 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
             uint totalExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 
-            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
-            foreach (var element in request.CraftElementList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId);
-
-                Server.Database.InsertCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo, crestId, 0);
-                result.EquipElementParamList.Add(new CDataEquipElementParam()
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
+                foreach (var element in request.CraftElementList)
                 {
-                    CrestId = crestId,
-                    SlotNo = element.SlotNo,
-                });
+                    uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId, connection);
 
-                item.EquipElementParamList.Add(new CDataEquipElementParam()
-                {
-                    CrestId = crestId,
-                    SlotNo = element.SlotNo,
-                });
+                    Server.Database.InsertCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo, crestId, 0);
+                    result.EquipElementParamList.Add(new CDataEquipElementParam()
+                    {
+                        CrestId = crestId,
+                        SlotNo = element.SlotNo,
+                    });
 
-                // Consume the crest
-                updateCharacterItemNtc.UpdateItemList.AddRange(
-                    Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
-            }
+                    item.EquipElementParamList.Add(new CDataEquipElementParam()
+                    {
+                        CrestId = crestId,
+                        SlotNo = element.SlotNo,
+                    });
 
-            updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
-            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
-            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
-            client.Send(updateCharacterItemNtc);
-
-            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
-            if (CraftManager.CanPawnExpUp(leadPawn))
-            {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
-                if (CraftManager.CanPawnRankUp(leadPawn))
-                {
-                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    // Consume the crest
+                    updateCharacterItemNtc.UpdateItemList.AddRange(
+                        Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
                 }
-                Server.Database.UpdatePawnBaseInfo(leadPawn);
-            }
-            else
-            {
-                // Mandatory to send otherwise the UI gets stuck.
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
-            }
 
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
+                updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
+                client.Send(updateCharacterItemNtc);
+
+                Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
+                if (CraftManager.CanPawnExpUp(leadPawn))
+                {
+                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
+                    if (CraftManager.CanPawnRankUp(leadPawn))
+                    {
+                        CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    }
+                    Server.Database.UpdatePawnBaseInfo(leadPawn);
+                }
+                else
+                {
+                    // Mandatory to send otherwise the UI gets stuck.
+                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+                }
+            });
             return result;
         }
     }

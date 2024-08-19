@@ -1,3 +1,4 @@
+#nullable enable
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
@@ -8,6 +9,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -27,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public void SetJob(GameClient client, CharacterCommon common, JobId jobId)
+        public void SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
         {
             // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
             // (or give a lvl 1 weapon for free?)
@@ -36,8 +38,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             common.Job = jobId;
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance));
-            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual));
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance, connectionIn));
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual, connectionIn));
             client.Send(updateCharacterItemNtc);
 
             CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
@@ -155,7 +157,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId, EquipType equipType)
+        private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId, EquipType equipType, DbConnection? connectionIn = null)
         {
             List<CDataItemUpdateResult> itemUpdateResultList = new List<CDataItemUpdateResult>();
             List<Item?> oldEquipment = common.Equipment.GetItems(equipType);
@@ -172,7 +174,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Attempt moving into other storages if the storage box is full
                     try
                     {
-                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
+                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
                         itemUpdateResultList.AddRange(moveResult);
                     }
                     catch (ResponseErrorException ex)
@@ -183,7 +185,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             // This should probably return an error response instead? Logging and handling gracefully prevents messy situations, but may be undesirable
                             Logger.Error($"Failed to unequip item {oldEquipmentItem.UId} from {equipType} slot {equipSlot} of {oldJobId}. The item wasn't in the {common.Equipment.Storage.Type} slot {equipmentStorageSlot}");
                             common.EquipmentTemplate.SetEquipItem(null, oldJobId, equipType, equipSlot);
-                            _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot);
+                            _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot, connectionIn);
                         }
                         else
                         {
@@ -230,7 +232,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         try
                         {
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.GetStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.GetStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot, connectionIn);
                             itemUpdateResultList.AddRange(moveResult);
                             break;
                         }
@@ -255,12 +257,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         // Handle the item not being in storage anymore.
                         // Remove from template and unequip whatever was in that slot (if anything)
                         common.EquipmentTemplate.SetEquipItem(null, newJobId, equipType, equipSlot);
-                        _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot);
+                        _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot, connectionIn);
 
                         try
                         {
                             // TODO: Attempt moving into other storages if the storage box is full
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
                             itemUpdateResultList.AddRange(moveResult);
                         }
                         catch(ResponseErrorException ex)
@@ -279,7 +281,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             // Persist job change in DB
-            _Server.Database.UpdateCharacterCommonBaseInfo(common);
+            _Server.Database.UpdateCharacterCommonBaseInfo(common, connectionIn);
 
             return itemUpdateResultList;
         }

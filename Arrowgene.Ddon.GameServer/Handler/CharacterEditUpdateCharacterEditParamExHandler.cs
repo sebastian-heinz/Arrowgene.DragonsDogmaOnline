@@ -31,7 +31,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             //Client won't let you reincarnate if you're wearing a gender-locked item, but EquipmentTemplates also have to be cleaned.
-            Server.EquipManager.CleanGenderedEquipTemplates(Server, client.Character);
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                Server.EquipManager.CleanGenderedEquipTemplates(Server, client.Character, connection);
+            });
 
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamExNtc() {
