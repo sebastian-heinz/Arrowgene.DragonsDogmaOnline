@@ -30,12 +30,15 @@ namespace Arrowgene.Ddon.GameServer
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
-            ServerSetting ??= new ServerSetting();
-            ServerSetting.Id = 10;
-            ServerSetting.Name = "Game";
-            ServerSetting.ServerPort = 52000;
-            ServerSetting.ServerSocketSettings.Identity = "Game";
-
+            if(ServerSetting == null)
+            {
+                ServerSetting = new ServerSetting();
+                ServerSetting.Id = 10;
+                ServerSetting.Name = "Game";
+                ServerSetting.ServerPort = 52000;
+                ServerSetting.ServerSocketSettings.Identity = "Game";
+            }
+            
             GameLogicSetting ??= new GameLogicSetting();
         }
     }

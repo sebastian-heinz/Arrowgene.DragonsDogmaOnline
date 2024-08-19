@@ -9,13 +9,13 @@ namespace Arrowgene.Ddon.Server
         /// Additional factor to change how long crafting a recipe will take to finish.
         /// </summary>
         [DataMember(Order = 0)]
-        public double AdditionalProductionSpeedFactor { get; set; } = 1.0;
+        public double AdditionalProductionSpeedFactor { get; set; }
 
         /// <summary>
         /// Additional factor to change how much a recipe will cost.
         /// </summary>
         [DataMember(Order = 1)]
-        public double AdditionalCostPerformanceFactor { get; set; } = 1.0;
+        public double AdditionalCostPerformanceFactor { get; set; }
 
         public GameLogicSetting()
         {
