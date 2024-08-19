@@ -1,7 +1,7 @@
-using System.Data.Common;
-using Arrowgene.Ddon.Database.Deferred;
+#nullable enable
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -61,31 +61,26 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (!InsertIfNotExistsWalletPoint(connection, characterId, walletPoint))
             {
                 Logger.Debug("Wallet point already exists, replacing.");
-                return UpdateWalletPoint(connection, characterId, walletPoint);
+                return UpdateWalletPoint(characterId, walletPoint, connection);
             }
             return true;
         }
 
-        public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, bool deferred = false)
+        public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, DbConnection? connectionIn = null)
         {
-            if (deferred)
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => UpdateWalletPoint(connection, characterId, updatedWalletPoint)
-                ));
-                return true;
+                return ExecuteNonQuery(connection, SqlUpdateWalletPoint, command =>
+                {
+                    AddParameter(command, characterId, updatedWalletPoint);
+                }) == 1;
             }
-
-            using TCon connection = OpenNewConnection();
-            return UpdateWalletPoint(connection, characterId, updatedWalletPoint);
-        }
-        
-        public bool UpdateWalletPoint(DbConnection connection, uint characterId, CDataWalletPoint updatedWalletPoint)
-        {
-            return ExecuteNonQuery((TCon) connection, SqlUpdateWalletPoint, command =>
+            finally
             {
-                AddParameter(command, characterId, updatedWalletPoint);
-            }) == 1;
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool DeleteWalletPoint(uint characterId, WalletType type)

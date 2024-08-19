@@ -267,29 +267,5 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             return base.GetBytes((TReader)reader, column, size);
         }
-
-        public bool ExecuteDeferred()
-        {
-            if (!DeferredOperations.Any()) return true;
-            bool ret = true;
-
-            ExecuteInTransaction(conn =>
-            {
-                foreach (DeferredOperation action in DeferredOperations)
-                {
-                    ret &= action.Handle(conn);
-                    if (!ret) throw new Exception("Deferred operation failed, rolling back.");
-                }
-            });
-
-            ClearDeferred();
-
-            return ret;
-        }
-        public void ClearDeferred()
-        {
-            DeferredOperations.Clear();
-        }
-
     }
 }

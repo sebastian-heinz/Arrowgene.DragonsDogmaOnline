@@ -34,12 +34,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = ItemNoticeType.Drop
             };
 
-            foreach (CDataGatheringItemGetRequest gatheringItemRequest in packet.Structure.GatheringItemGetRequestList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                InstancedGatheringItem dropItem = items[(int) gatheringItemRequest.SlotNo];
-                Server.ItemManager.GatherItem(Server, client.Character, ntc, dropItem, gatheringItemRequest.Num);
-            }
-
+                foreach (CDataGatheringItemGetRequest gatheringItemRequest in packet.Structure.GatheringItemGetRequestList)
+                {
+                    InstancedGatheringItem dropItem = items[(int)gatheringItemRequest.SlotNo];
+                    Server.ItemManager.GatherItem(Server, client.Character, ntc, dropItem, gatheringItemRequest.Num, connection);
+                }
+            });
+            
             client.Send(ntc);
         }
     }

@@ -26,9 +26,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public void Handle(TClient client, IPacket packet)
         {
-            Server.Database.ClearDeferred();
             Handle(client, new StructurePacket<TReqStruct>(packet));
-            Server.Database.ExecuteDeferred();
         }
     }
 }

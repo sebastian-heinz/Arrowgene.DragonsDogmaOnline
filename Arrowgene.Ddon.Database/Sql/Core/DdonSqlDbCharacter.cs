@@ -377,12 +377,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataShortCut shortcut in character.ShortCutList)
             {
-                ReplaceShortcut(conn, character.CharacterId, shortcut);
+                ReplaceShortcut(character.CharacterId, shortcut, conn);
             }
 
             foreach(CDataCommunicationShortCut communicationShortcut in character.CommunicationShortCutList)
             {
-                ReplaceCommunicationShortcut(conn, character.CharacterId, communicationShortcut);
+                ReplaceCommunicationShortcut(character.CharacterId, communicationShortcut, conn);
             }
 
             foreach(StorageType storageType in character.Storage.GetAllStorages().Keys)
@@ -419,7 +419,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Item item = storage.Value.Items[index].Item1;
                         uint itemNum = storage.Value.Items[index].Item2;
                         ushort slot = (ushort)(index+1);
-                        InsertStorageItem(conn, character.CharacterId, storageType, slot, itemNum, item);
+                        InsertStorageItem(character.CharacterId, storageType, slot, itemNum, item, conn);
                     }
                 }
             }
@@ -458,7 +458,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     {
                         ushort slot = storageBoxNormal.AddItem(item, 0);
                         InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
-                        InsertStorageItem(conn, character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item);
+                        InsertStorageItem( character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
                     }
                 }
 

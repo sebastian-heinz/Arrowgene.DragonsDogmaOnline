@@ -22,13 +22,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SEquipChangePawnStorageEquipReq> packet)
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            equipManager.HandleChangeEquipList(Server, client, pawn, packet.Structure.ChangeCharacterEquipList, ItemNoticeType.ChangeStoragePawnEquip, ItemManager.BoxStorageTypes, () => {
-                client.Send(new S2CEquipChangePawnStorageEquipRes()
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                equipManager.HandleChangeEquipList(Server, client, pawn, packet.Structure.ChangeCharacterEquipList, ItemNoticeType.ChangeStoragePawnEquip, ItemManager.BoxStorageTypes, () =>
                 {
-                    PawnId = packet.Structure.PawnId,
-                    CharacterEquipList = packet.Structure.ChangeCharacterEquipList
-                    // TODO: Unk0
-                });
+                    client.Send(new S2CEquipChangePawnStorageEquipRes()
+                    {
+                        PawnId = packet.Structure.PawnId,
+                        CharacterEquipList = packet.Structure.ChangeCharacterEquipList
+                        // TODO: Unk0
+                    });
+                }, connection);
             });
         }
     }

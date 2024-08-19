@@ -1,6 +1,6 @@
-using System.Data.Common;
-using Arrowgene.Ddon.Database.Deferred;
+#nullable enable
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -48,29 +48,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, bool deferred = false)
+        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null)
         {
-            if (deferred)
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => ReplaceCommunicationShortcut(connection, characterId, communicationShortcut)
-                ));
+                Logger.Debug("Inserting communication shortcut.");
+                if (!InsertIfNotExistsCommunicationShortcut((TCon)connection, characterId, communicationShortcut))
+                {
+                    Logger.Debug("Communication shortcut already exists, replacing.");
+                    return UpdateCommunicationShortcut((TCon)connection, characterId, communicationShortcut.PageNo, communicationShortcut.ButtonNo, communicationShortcut);
+                }
                 return true;
             }
-
-            using TCon connection = OpenNewConnection();
-            return ReplaceCommunicationShortcut(connection, characterId, communicationShortcut);
-        }      
-        
-        public bool ReplaceCommunicationShortcut(DbConnection connection, uint characterId, CDataCommunicationShortCut communicationShortcut)
-        {
-            Logger.Debug("Inserting communication shortcut.");
-            if (!InsertIfNotExistsCommunicationShortcut((TCon)connection, characterId, communicationShortcut))
+            finally
             {
-                Logger.Debug("Communication shortcut already exists, replacing.");
-                return UpdateCommunicationShortcut((TCon)connection, characterId, communicationShortcut.PageNo, communicationShortcut.ButtonNo, communicationShortcut);
+                if (!isTransaction) connection.Dispose();
             }
-            return true;
         }
 
         public bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut)

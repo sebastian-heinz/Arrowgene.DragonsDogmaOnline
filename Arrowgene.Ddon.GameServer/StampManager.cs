@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer
                     }
                     else
                     {
-                        totalItems = totalItems.Concat(Server.ItemManager.AddItemRaw(Server, client.Character, StorageType.ItemPost, bonus.BonusType, bonus.BonusValue)).ToList();
+                        totalItems = totalItems.Concat(Server.ItemManager.AddItem(Server, client.Character, StorageType.ItemPost, bonus.BonusType, bonus.BonusValue)).ToList();
                     }
                 }
             }

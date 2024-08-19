@@ -18,21 +18,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
             ntc.UpdateType = DetermineUpdateType(packet.Structure.SourceGameStorageType);
-            foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                ntc.UpdateItemList.AddRange(
-                    Server.ItemManager.MoveItem(
-                        Server,
-                        client.Character,
-                        client.Character.Storage.GetStorage(itemFromTo.SrcStorageType),
-                        itemFromTo.ItemUId,
-                        itemFromTo.Num,
-                        client.Character.Storage.GetStorage(itemFromTo.DstStorageType),
-                        itemFromTo.SlotNo
+                foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
+                {
+                    ntc.UpdateItemList.AddRange(
+                        Server.ItemManager.MoveItem(
+                            Server,
+                            client.Character,
+                            client.Character.Storage.GetStorage(itemFromTo.SrcStorageType),
+                            itemFromTo.ItemUId,
+                            itemFromTo.Num,
+                            client.Character.Storage.GetStorage(itemFromTo.DstStorageType),
+                            itemFromTo.SlotNo,
+                            connection
                         )
                     );
-            }
-
+                }
+            });
+            
             client.Send(ntc);
 
             client.Send(new S2CItemMoveItemRes());
