@@ -14898,5 +14898,45 @@
                 }
             ]
         }
+    },
+    {
+        "ShopId": 247,
+        "Data": {
+            "Unk0": 0,
+            "Unk1": 0,
+            "WalletType": 15,
+            "GoodsParamList": [
+                {
+                    "Index": 0,
+                    "ItemId": 21630,
+                    "Price": 50,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 1,
+                    "ItemId": 23364,
+                    "Price": 150,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                },
+                {
+                    "Index": 2,
+                    "ItemId": 24723,
+                    "Price": 50,
+                    "Stock": 255,
+                    "Unk4": false,
+                    "Unk5": 0,
+                    "Unk6": 0,
+                    "Unk7": []
+                }
+            ]
+        }
     }
 ]
