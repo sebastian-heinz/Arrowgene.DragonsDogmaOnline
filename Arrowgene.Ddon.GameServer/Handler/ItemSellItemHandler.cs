@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = ItemNoticeType.ShopItemSell // No named enum for this?
+                UpdateType = ItemNoticeType.ShopItemSell
             };
 
             Server.Database.ExecuteInTransaction(connection =>

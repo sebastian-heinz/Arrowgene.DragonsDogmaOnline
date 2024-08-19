@@ -26,17 +26,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 EquipSlot.Accessory
             };
 
-        private static byte SLOTS = EquipmentTemplate.TOTAL_EQUIP_SLOTS;
+        private static readonly byte SLOTS = EquipmentTemplate.TOTAL_EQUIP_SLOTS;
 
         public static EquipType GetEquipTypeFromSlotNo(ushort slotNo)
         {
             ushort relativeSlotNo = slotNo;
-            if (slotNo > (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2))
+            if (slotNo > (SLOTS * 2))
             {
                 relativeSlotNo = DeterminePawnEquipSlot(slotNo);
             }
 
-            return (relativeSlotNo > EquipmentTemplate.TOTAL_EQUIP_SLOTS) ? EquipType.Visual : EquipType.Performance;
+            return (relativeSlotNo > SLOTS) ? EquipType.Visual : EquipType.Performance;
         }
 
         public static ushort DeterminePawnEquipSlot(ushort slotNo)
@@ -253,13 +253,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
         public void GetEquipTypeandSlot(Equipment equipment, string uid, out EquipType equipType, out byte equipSlot)
         {
-            for (int i = 0; i < EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2; i++)
+            for (int i = 0; i < SLOTS * 2; i++)
             {
                 var tuple = equipment.Storage.Items[equipment.Offset + i];
                 if (tuple?.Item1?.UId == uid)
                 {
                     equipSlot = (byte)(i + 1);
-                    equipType = equipSlot <= EquipmentTemplate.TOTAL_EQUIP_SLOTS ? EquipType.Performance : EquipType.Visual;
+                    equipType = equipSlot <= SLOTS ? EquipType.Performance : EquipType.Visual;
                     return;
                 }
             }

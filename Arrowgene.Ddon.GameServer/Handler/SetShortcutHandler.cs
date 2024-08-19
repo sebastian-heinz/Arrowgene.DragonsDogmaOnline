@@ -18,8 +18,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSetShortcutReq> request)
         {
             S2CSetShortcutRes response = new S2CSetShortcutRes();
-            client.Character.ShortCutList = request.Structure.ShortCutList;
-            client.Send(response);
 
             Server.Database.ExecuteInTransaction(connection =>
             {
@@ -28,6 +26,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Server.Database.ReplaceShortcut(client.Character.CharacterId, shortcut, connection);
                 }
             });
+
+            client.Character.ShortCutList = request.Structure.ShortCutList;
+            client.Send(response);
         }
     }
 }

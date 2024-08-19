@@ -19,9 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSetCommunicationShortcutReq> request)
         {
             S2CSetCommunicationShortcutRes response = new S2CSetCommunicationShortcutRes();
-            
-            client.Character.CommunicationShortCutList = request.Structure.CommunicationShortCutList;
-            client.Send(response);
 
             Server.Database.ExecuteInTransaction(connection =>
             {
@@ -30,6 +27,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Server.Database.ReplaceCommunicationShortcut(client.Character.CharacterId, shortcut, connection);
                 }
             });
+
+            client.Character.CommunicationShortCutList = request.Structure.CommunicationShortCutList;
+            client.Send(response);
         }
     }
 }
