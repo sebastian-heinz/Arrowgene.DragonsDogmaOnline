@@ -681,7 +681,7 @@ CREATE TABLE IF NOT EXISTS "ddon_bbm_progress" (
     "content_mode"     INTEGER NOT NULL,
 	"tier"	           INTEGER NOT NULL,
     "killed_death"     BOOLEAN NOT NULL,
-    "last_ticket_time" DATETIME NOT NULL,
+    "last_ticket_time" INTEGER NOT NULL,
 	CONSTRAINT fk_ddon_bbm_progress_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
