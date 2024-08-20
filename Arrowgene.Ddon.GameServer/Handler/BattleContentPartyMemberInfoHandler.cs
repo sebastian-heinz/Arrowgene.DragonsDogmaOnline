@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // This NTC will force the player into the dungeon and skip the board
-            S2CBattleContentAreaChange ntc = new S2CBattleContentAreaChange()
+            S2CBattleContentAreaChangeNtc ntc = new S2CBattleContentAreaChangeNtc()
             {
                 // Unk0 = 2, // client.Character.NormalCharacterId,
                 StageId = client.Character.NextBBMStageId,

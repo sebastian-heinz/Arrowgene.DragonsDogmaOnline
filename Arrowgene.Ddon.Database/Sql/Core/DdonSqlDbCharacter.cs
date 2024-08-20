@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "LEFT JOIN \"ddon_binary_data\" ON \"ddon_binary_data\".\"character_id\" = \"ddon_character\".\"character_id\" "
-            + "WHERE \"account_id\" = @account_id";
+            + "WHERE \"account_id\" = @account_id AND \"game_mode\" = @game_mode;";
         private readonly string SqlSelectAllCharactersData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)}, {BuildQueryField("ddon_binary_data", CharacterBinaryDataFields)} "
             + "FROM \"ddon_character\" "
             + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
@@ -170,13 +170,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return character;
         }
 
-        public List<Character> SelectCharactersByAccountId(int accountId)
+        public List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode)
         {
             List<Character> characters = new List<Character>();
             ExecuteInTransaction(conn =>
             {
                 ExecuteReader(conn, SqlSelectAllCharactersDataByAccountId,
-                    command => { AddParameter(command, "@account_id", accountId); }, reader =>
+                    command => { 
+                        AddParameter(command, "@account_id", accountId);
+                        AddParameter(command, "@game_mode", (uint) gameMode);
+                    }, reader =>
                     {
                         while (reader.Read())
                         {
@@ -223,6 +226,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool DeleteCharacter(uint characterId)
         {
+            uint bbmCharacterId = SelectBBMCharacterId(characterId);
+            if (bbmCharacterId > 0)
+            {
+                ExecuteNonQuery(SqlDeleteCharacter,
+                command => { AddParameter(command, "@character_id", bbmCharacterId); });
+            }
+
             int rowsAffected = ExecuteNonQuery(SqlDeleteCharacter,
                 command => { AddParameter(command, "@character_id", characterId); });
             return rowsAffected > NoRowsAffected;
@@ -503,6 +513,66 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 }
             }
+        }
+
+        public Storages SelectAllStoragesByCharacterId(uint characterId)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectAllStoragesByCharacterId(connection, characterId);
+        }
+
+        public Storages SelectAllStoragesByCharacterId(TCon connection, uint characterId)
+        {
+            Storages storages = new Storages(new Dictionary<StorageType, ushort>());
+
+            ExecuteReader(connection, SqlSelectAllStoragesByCharacter,
+                command => { AddParameter(command, "@character_id", characterId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        Tuple<StorageType, Storage> tuple = ReadStorage(reader);
+                        storages.AddStorage(tuple.Item1, tuple.Item2);
+                    }
+                });
+
+            ExecuteReader(connection, SqlSelectStorageItemsByCharacter,
+                command => { 
+                    AddParameter(command, "@character_id", characterId);
+                },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+
+                        StorageType storageType = (StorageType)GetByte(reader, "storage_type");
+                        ushort slot = GetUInt16(reader, "slot_no");
+                        uint itemNum = GetUInt32(reader, "item_num");
+                        var item = new Item();
+
+                        item.UId = GetString(reader, "item_uid");
+                        item.ItemId = GetUInt32(reader, "item_id");
+                        item.Unk3 = GetByte(reader, "unk3");
+                        item.Color = GetByte(reader, "color");
+                        item.PlusValue = GetByte(reader, "plus_value");
+                        item.EquipPoints = GetUInt32(reader, "equip_points");
+
+                        ExecuteReader(connection, SqlSelectAllCrestDataByUid,
+                        command2 => {
+                            AddParameter(command2, "item_uid", item.UId);
+                        }, reader2 => {
+                            while (reader2.Read())
+                            {
+                                var result = ReadCrestData(reader2);
+                                item.EquipElementParamList.Add(result.ToCDataEquipElementParam());
+                            }
+                        });
+
+                        storages.GetStorage(storageType).SetItem(item, itemNum, slot);
+                    }
+                });
+
+            return storages;
         }
 
         private Character ReadAllCharacterData(TReader reader)

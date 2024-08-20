@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
@@ -11,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Unk1 = new List<CDataS2CEquipEnhancedGetPacksResUnk0Unk6>();
         }
 
-        public uint Unk0 { get; set; } // Total Currency?
+        public WalletType WalletType { get; set; } // Not sure if accurate but what it is being used for.
         public List<CDataWalletPoint> WalletPoints { get; set; }
         public List<CDataS2CEquipEnhancedGetPacksResUnk0Unk6> Unk1 {  get; set; }
 
@@ -19,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataItemEmbodyCostParam obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, (uint) obj.WalletType);
                 WriteEntityList<CDataWalletPoint>(buffer, obj.WalletPoints);
                 WriteEntityList<CDataS2CEquipEnhancedGetPacksResUnk0Unk6>(buffer, obj.Unk1);
             }
@@ -27,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataItemEmbodyCostParam Read(IBuffer buffer)
             {
                 CDataItemEmbodyCostParam obj = new CDataItemEmbodyCostParam();
-                obj.Unk0 = ReadUInt32(buffer);
+                obj.WalletType = (WalletType) ReadUInt32(buffer);
                 obj.WalletPoints = ReadEntityList<CDataWalletPoint>(buffer);
                 obj.Unk1 = ReadEntityList<CDataS2CEquipEnhancedGetPacksResUnk0Unk6>(buffer);
                 return obj;

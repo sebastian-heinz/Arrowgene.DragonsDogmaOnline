@@ -51,20 +51,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            if (client.GameMode == GameMode.Normal || client.GameMode == GameMode.BitterblackMaze)
+            var quests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var quest in quests)
             {
-                var worldQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.World).Select(x => x.QuestId).ToList();
-                foreach (var quest in QuestManager.GetQuestsByType(QuestType.World))
-                {
-                    if (QuestManager.IsBoardQuest(quest.Key))
-                    {
-                        continue;
-                    }
+                party.QuestState.AddNewQuest(quest.QuestId, quest.Step);
+            }
 
-                    if (!worldQuests.Contains(quest.Key))
-                    {
-                        party.QuestState.AddNewQuest(quest.Key, 0);
-                    }
+            var worldQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.World).Select(x => x.QuestId).ToList();
+            foreach (var quest in QuestManager.GetQuestsByType(QuestType.World))
+            {
+                if (QuestManager.IsBoardQuest(quest.Key))
+                {
+                    continue;
+                }
+
+                if (!worldQuests.Contains(quest.Key))
+                {
+                    party.QuestState.AddNewQuest(quest.Key, 0);
                 }
             }
 

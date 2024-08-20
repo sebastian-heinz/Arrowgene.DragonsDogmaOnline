@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CBattleContentAreaChange : IPacketStructure
+    public class S2CBattleContentAreaChangeNtc : IPacketStructure
     {
         public PacketId Id => PacketId.S2C_BATTLE_CONTENT_AREA_CHANGE_NTC;
 
-        public S2CBattleContentAreaChange()
+        public S2CBattleContentAreaChangeNtc()
         {
             Unk5 = new List<CDataBattleContentUnk5>();
             Unk1 = string.Empty;
@@ -22,9 +22,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public bool Unk4 { get; set; }
         public List<CDataBattleContentUnk5> Unk5 { get; set; }
 
-        public class Serializer : PacketEntitySerializer<S2CBattleContentAreaChange>
+        public class Serializer : PacketEntitySerializer<S2CBattleContentAreaChangeNtc>
         {
-            public override void Write(IBuffer buffer, S2CBattleContentAreaChange obj)
+            public override void Write(IBuffer buffer, S2CBattleContentAreaChangeNtc obj)
             {
                 WriteUInt32(buffer, obj.Unk0);
                 WriteMtString(buffer, obj.Unk1);
@@ -34,9 +34,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList(buffer, obj.Unk5);
             }
 
-            public override S2CBattleContentAreaChange Read(IBuffer buffer)
+            public override S2CBattleContentAreaChangeNtc Read(IBuffer buffer)
             {
-                S2CBattleContentAreaChange obj = new S2CBattleContentAreaChange();
+                S2CBattleContentAreaChangeNtc obj = new S2CBattleContentAreaChangeNtc();
                 obj.Unk0 = ReadUInt32(buffer);
                 obj.Unk1 = ReadMtString(buffer);
                 obj.StageId = ReadUInt32(buffer);

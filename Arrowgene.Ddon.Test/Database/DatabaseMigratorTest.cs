@@ -279,7 +279,7 @@ namespace Arrowgene.Ddon.Test.Database
         public BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId) { return new BazaarExhibition(); }
         public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId) { return new List<QuestBoxRewards>(); }
         public Character SelectCharacter(uint characterId) { return new Character(); }
-        public List<Character> SelectCharactersByAccountId(int accountId) { return new List<Character>(); }
+        public List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode) { return new List<Character>(); }
         public List<Character> SelectAllCharacters() { return new List<Character>(); }
         public List<Character> SelectAllCharacters(DbConnection conn) { return new List<Character>(); }
         public List<Connection> SelectConnectionsByAccountId(int accountId) { return new List<Connection>(); }
@@ -297,6 +297,7 @@ namespace Arrowgene.Ddon.Test.Database
         public GameToken SelectToken(string tokenStr) { return new GameToken(); }
         public GameToken SelectTokenByAccountId(int accountId) { return new GameToken(); }
         public List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId) { return new List<EquipItem>(); }
+        public Storages SelectAllStoragesByCharacterId(uint characterId) { return new Storages(new Dictionary<StorageType, ushort>()); }
         public bool SetMeta(DatabaseMeta meta) { return true; }
         public bool SetToken(GameToken token) { return true; }
         public bool UpdateAccount(Account account) { return true; }

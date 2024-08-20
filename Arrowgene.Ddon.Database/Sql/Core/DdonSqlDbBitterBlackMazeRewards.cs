@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private readonly string SqlSelectBBMRewards = $"SELECT {BuildQueryField(BitterBlackMazeRewardsFields)} FROM \"ddon_bbm_rewards\" WHERE \"character_id\"=@character_id;";
-        private readonly string SqlInsertBBMRewards = $"INSERT INTO \"ddon_bbm_rewards\" ({BuildQueryField(BitterBlackMazeRewardsFields)}) VALUES ({BuildQueryInsert(BitterBlackMazeProgressFields)});";
+        private readonly string SqlInsertBBMRewards = $"INSERT INTO \"ddon_bbm_rewards\" ({BuildQueryField(BitterBlackMazeRewardsFields)}) VALUES ({BuildQueryInsert(BitterBlackMazeRewardsFields)});";
         private readonly string SqlUpdateBBMRewards = $"UPDATE \"ddon_bbm_rewards\" SET {BuildQueryUpdate(BitterBlackMazeRewardsFields)} WHERE \"character_id\"=@character_id;";
         private readonly string SqlDeleteBBMRewards = $"DELETE FROM \"ddon_bbm_rewards\" WHERE \"character_id\"=@character_id;";
 

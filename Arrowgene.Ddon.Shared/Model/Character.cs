@@ -38,6 +38,17 @@ namespace Arrowgene.Ddon.Shared.Model
         public int AccountId { get; set; }
         public DateTime Created { get; set; }
 
+        /**
+         * @brief CharacterId is used by the client to identify different players in the game.
+         * To support other game modes, such as Bitterblack Maze, internally the server creates
+         * a second character as a majority of the tables overlap. When we switch to the BBM
+         * game mode, it still thinks we are the original character we logged in as. This is where
+         * NormalCharacterId and BbmCharacterId come into play. Certain systems such as the party,
+         * wallet and equipment systems require the original character ID regardless of the gamemode.
+         * In this case we would use directly the variable "NormalCharacterId". For everything else, we
+         * can use CharacterId directly. Then depending on the GameMode it will return either the
+         * CharacterId for the normal mode of play or the CharacterId for BBM related operations.
+         */
         public uint CharacterId
         {
             get

@@ -623,40 +623,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return CreateItemUpdateResult(character, item, storage.Type, slotNo, itemNum, updateItemNum);
         }
 
-        public List<CDataItemUpdateResult> SwapCharacterInventories(Character character, Storages storageA, Storages storageB, List<StorageType> storageTypes)
-        {
-            var results = new List<CDataItemUpdateResult>();
-            foreach (var storageType in storageTypes)
-            {
-                for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++)
-                {
-                    ushort slotNo = (ushort)(i + 1);
-
-                    var storageItemA = storageA.GetStorage(storageType).GetItem(slotNo);
-                    if (storageItemA != null)
-                    {
-                        results.Add(CreateItemUpdateResult(null, storageItemA.Item1, storageType, slotNo, 0, 0));
-                    }
-
-                    var storageItemB = storageB.GetStorage(storageType).GetItem(slotNo);
-                    if (storageItemB != null)
-                    {
-                        results.Add(CreateItemUpdateResult(null, storageItemB.Item1, storageType, slotNo, storageItemB.Item2, storageItemB.Item2));
-                    }
-                    else if (storageItemA != null)
-                    {
-                        Item item = new Item()
-                        {
-                            ItemId = 0,
-                            UId = ""
-                        };
-                        results.Add(CreateItemUpdateResult(null, item, storageType, slotNo, storageItemA.Item2, storageItemA.Item2));
-                    }
-                }
-            }
-            return results;
-        }
-
         public uint LookupItemByUID(DdonServer<GameClient> server, string itemUID, DbConnection? connectionIn = null)
         {
             var item = server.Database.SelectStorageItemByUId(itemUID, connectionIn);

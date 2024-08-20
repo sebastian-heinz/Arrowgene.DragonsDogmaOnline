@@ -13,17 +13,12 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceGetGatheringItemHandler : StructurePacketHandler<GameClient, C2SInstanceGetGatheringItemReq>
+    public class InstanceGetGatheringItemHandler : GameStructurePacketHandler<C2SInstanceGetGatheringItemReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemHandler));
 
-        private readonly ItemManager _itemManager;
-        private readonly DdonGameServer _Server;
-
         public InstanceGetGatheringItemHandler(DdonGameServer server) : base(server)
         {
-            this._itemManager = server.ItemManager;
-            this._Server = server;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetGatheringItemReq> req)
@@ -43,14 +38,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (StageManager.IsBitterBlackMazeStageId(stageId))
                     {
-                        gatheredItem = client.InstanceBbmItemManager.FetchBitterblackItems(stageId, posId)[(int)gatheringItemRequest.SlotNo];
+                        gatheredItem = client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
                     }
                     else
                     {
                         gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)[(int)gatheringItemRequest.SlotNo];
                     }
 
-                    this._itemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
+                    Server.ItemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
                 }
             });
 
@@ -64,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (req.Structure.EquipToCharacter == 1)
             {
-                var itemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, ntc.UpdateItemList[0].ItemList.ItemId);
+                var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntc.UpdateItemList[0].ItemList.ItemId);
                 var equipInfo = new CDataCharacterEquipInfo()
                 {
                     EquipItemUId = ntc.UpdateItemList[0].ItemList.ItemUId,
@@ -75,8 +70,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 (S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc) equipResult = (null, null);
                 Server.Database.ExecuteInTransaction(connection =>
                 {
-                    equipResult = ((S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc)) _Server.EquipManager.HandleChangeEquipList(
-                        _Server,
+                    equipResult =((S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc)) Server.EquipManager.HandleChangeEquipList(
+                        Server,
                         client,
                         client.Character,
                         new List<CDataCharacterEquipInfo>() { equipInfo },

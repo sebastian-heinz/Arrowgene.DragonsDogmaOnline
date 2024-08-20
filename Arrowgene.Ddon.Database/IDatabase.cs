@@ -63,6 +63,7 @@ namespace Arrowgene.Ddon.Database
         Account SelectAccountByLoginToken(string loginToken);
         bool UpdateAccount(Account account);
         bool DeleteAccount(int accountId);
+        Storages SelectAllStoragesByCharacterId(uint characterId);
 
         // CharacterCommon
         bool UpdateCharacterCommonBaseInfo(CharacterCommon common, DbConnection? connectionIn = null);
@@ -72,7 +73,7 @@ namespace Arrowgene.Ddon.Database
         // Character
         bool CreateCharacter(Character character);
         Character SelectCharacter(uint characterId);
-        List<Character> SelectCharactersByAccountId(int accountId);
+        List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode);
         List<Character> SelectAllCharacters();
         List<Character> SelectAllCharacters(DbConnection conn);
         bool DeleteCharacter(uint characterId);

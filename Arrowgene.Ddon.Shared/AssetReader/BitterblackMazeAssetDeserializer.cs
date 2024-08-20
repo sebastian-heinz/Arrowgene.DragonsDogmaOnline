@@ -12,6 +12,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -64,6 +65,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     asset.Stages[configElement.StageId] = configElement;
                 }
             }
+
+            // Fill up Null items for JobId.None
+            asset.StarterEquipment[JobId.None] = new Dictionary<EquipType, List<Item?>>();
+            asset.StarterEquipment[JobId.None][EquipType.Performance] = Enumerable.Repeat((Item) null, 15).ToList();
+            asset.StarterEquipment[JobId.None][EquipType.Visual] = Enumerable.Repeat((Item) null, 15).ToList();
+            asset.JobEquipment[JobId.None] = Enumerable.Repeat((Item) null, 2).ToList();
 
             var starterEquipment = document.RootElement.GetProperty("starter_equipment").EnumerateArray();
             foreach (var jEquipmentSet in starterEquipment)

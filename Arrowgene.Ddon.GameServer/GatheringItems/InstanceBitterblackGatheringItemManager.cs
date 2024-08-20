@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,18 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             BitterBlackLootTables = new Dictionary<(StageId, uint), List<InstancedGatheringItem>>();
         }
 
-        public List<InstancedGatheringItem> FetchBitterblackItems(StageId stageId, uint posId)
+        public List<InstancedGatheringItem> FetchBitterblackItems(DdonGameServer server, GameClient client, StageId stageId, uint posId)
         {
+            if (!HasBitterblackLootGenerated(stageId, posId))
+            {
+                var items = BitterblackMazeManager.RollChestLoot(server, client.Character, stageId, posId);
+                client.InstanceBbmItemManager.AddBitterblackLootTable(stageId, posId, items);
+            }
+
             return BitterBlackLootTables[(stageId, posId)];
         }
 
-        public bool HasBitterblackLootGenerated(StageId stageId, uint posId)
+        private bool HasBitterblackLootGenerated(StageId stageId, uint posId)
         {
             return BitterBlackLootTables.ContainsKey((stageId, posId));
         }

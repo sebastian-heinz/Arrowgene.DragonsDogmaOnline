@@ -38,15 +38,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             uint posId = req.Structure.PosId;
             var stageId = req.Structure.LayoutId.AsStageId();
-            Logger.Info($"id={stageId}, pos={posId}");
             if (StageManager.IsBitterBlackMazeStageId(stageId))
             {
-                if (!client.InstanceBbmItemManager.HasBitterblackLootGenerated(stageId, posId))
-                {
-                    var items = BitterblackMazeManager.RollChestLoot(Server, client.Character, stageId, posId);
-                    client.InstanceBbmItemManager.AddBitterblackLootTable(stageId, posId, items);
-                }
-                gatheringItems.AddRange(client.InstanceBbmItemManager.FetchBitterblackItems(stageId, posId));
+                gatheringItems.AddRange(client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId));
             }
             else
             {

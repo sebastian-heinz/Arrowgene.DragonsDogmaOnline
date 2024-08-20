@@ -46,6 +46,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static ushort RollBitterBlackMazeEarringPercent(JobId job)
         {
+            /**
+             * Based on research in discord, Warrior and Shield sage earrings can roll a
+             * higher % range 8-20% when being appraised. The rest of the jobs can roll
+             * 1-13% bonus on their equipment. The percentage values are incoded as ushorts.
+             * For example 2 == 2% in the UI.
+             */
             if (job == JobId.Warrior || job == JobId.ShieldSage)
             {
                 // [8, 20]

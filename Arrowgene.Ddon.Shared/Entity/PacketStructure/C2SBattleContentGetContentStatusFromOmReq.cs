@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, C2SBattleContentGetContentStatusFromOmReq obj)
             {
                 WriteEntity(buffer, obj.StageLayoutId);
+                WriteUInt32(buffer, obj.Unk0);
             }
 
             public override C2SBattleContentGetContentStatusFromOmReq Read(IBuffer buffer)
@@ -32,6 +33,5 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 return obj;
             }
         }
-
     }
 }

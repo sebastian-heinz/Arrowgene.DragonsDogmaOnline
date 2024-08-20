@@ -130,7 +130,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
                 UpdateType = ItemNoticeType.SwitchingStorage,
-                UpdateItemList = Server.ItemManager.SwapCharacterInventories(client.Character, storagesA, client.Character.Storage, ItemManager.ItemBagStorageTypes)
+                UpdateItemList = SwapCharacterInventories(client.Character, storagesA, client.Character.Storage, ItemManager.ItemBagStorageTypes)
             };
             client.Send(updateCharacterItemNtc);
 
@@ -282,7 +282,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }.Select(skill => skill?.SkillId == 0 ? null : skill).ToList()
             )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
-            
+
+            // In BBM, all custom skills are already learned so add them
             character.LearnedCustomSkills = SkillGetAcquirableSkillListHandler.AllSkills.Select(x => new CustomSkill()
             {
                 Job = x.Job,
@@ -344,6 +345,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }.Select(aug => aug?.AbilityId == 0 ? null : aug).ToList()
             )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
 
+            // In BBM, all abilities are already learned so add them
             character.LearnedAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Select(x => new Ability()
             {
                 Job = x.Job,
@@ -514,6 +516,45 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             return character;
+        }
+
+        /**
+         * @brief Swaps character inventories for content where the player looses access to their normal inventory such as Bitterblack Maze.
+         * This swap is a visual swap in the client UI -- by this we mean the server will use different inventory storage which shows up in
+         * the players storage in the client UI. It doesn't impact the actual storage during normal gameplay.
+         */
+        private List<CDataItemUpdateResult> SwapCharacterInventories(Character character, Storages storageA, Storages storageB, List<StorageType> storageTypes)
+        {
+            var results = new List<CDataItemUpdateResult>();
+            foreach (var storageType in storageTypes)
+            {
+                for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++)
+                {
+                    ushort slotNo = (ushort)(i + 1);
+
+                    var storageItemA = storageA.GetStorage(storageType).GetItem(slotNo);
+                    if (storageItemA != null)
+                    {
+                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItemA.Item1, storageType, slotNo, 0, 0));
+                    }
+
+                    var storageItemB = storageB.GetStorage(storageType).GetItem(slotNo);
+                    if (storageItemB != null)
+                    {
+                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItemB.Item1, storageType, slotNo, storageItemB.Item2, storageItemB.Item2));
+                    }
+                    else if (storageItemA != null)
+                    {
+                        Item item = new Item()
+                        {
+                            ItemId = 0,
+                            UId = ""
+                        };
+                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, item, storageType, slotNo, storageItemA.Item2, storageItemA.Item2));
+                    }
+                }
+            }
+            return results;
         }
     }
 }

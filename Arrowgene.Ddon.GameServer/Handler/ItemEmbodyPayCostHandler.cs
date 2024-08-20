@@ -24,9 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var normalCharacter = Server.Database.SelectCharacter(client.Character.NormalCharacterId);
             result.EmbodyCostList.Add(new CDataItemEmbodyCostParam()
             {
-                // Wallet total? If 0, popup says "not enough gold"
-                Unk0 = (uint) WalletType.GoldenDragonMark,
-                // Cost
+                WalletType = WalletType.GoldenDragonMark,
                 WalletPoints = new List<CDataWalletPoint>()
                 {
                     new CDataWalletPoint()
@@ -39,9 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             result.EmbodyCostList.Add(new CDataItemEmbodyCostParam()
             {
-                // Wallet total? If 0, popup says "not enough gold"
-                Unk0 = (uint) WalletType.GoldenGemstones,
-                // Cost
+                WalletType = WalletType.GoldenGemstones,
                 WalletPoints = new List<CDataWalletPoint>()
                 {
                     new CDataWalletPoint()

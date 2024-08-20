@@ -661,7 +661,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CBattleContentContentResetRes.Serializer());
             Create(new S2CbattleContentContentResetNtc.Serializer());
 
-            Create(new S2CBattleContentAreaChange.Serializer());
+            Create(new S2CBattleContentAreaChangeNtc.Serializer());
             Create(new S2C_BATTLE_71_13_16_NTC.Serializer());
 
             Create(new S2CBazaarCancelRes.Serializer());
