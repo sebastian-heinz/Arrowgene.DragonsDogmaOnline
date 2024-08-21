@@ -26,12 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // Reset Inventory
             var updateItemList = RemoveAllItemsFromInventory(client.Character, client.Character.Storage, ItemManager.ItemBagStorageTypes);
-
-            Server.Database.DeleteAllStorageItems(client.Character.ContentCharacterId);
             client.Character.Storage.Clear();
-
-            // Remove items equipped in the database
-            Server.Database.DeleteAllEquipItems(client.Character.CommonId);
 
             // Flush Storage
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
@@ -42,10 +37,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(updateCharacterItemNtc);
 
             // Add back equipment templates
-            client.Character.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.StarterEquipment, Server.AssetRepository.BitterblackMazeAsset.JobEquipment);
+            client.Character.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.GenerateStarterEquipment(), Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobEquipment());
 
-            // Recreate starting items for player
-            Server.Database.CreateItems(client.Character);
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                // Delete all existing storage items
+                Server.Database.DeleteAllStorageItems(connection, client.Character.ContentCharacterId);
+
+                // Remove items equipped in the database
+                Server.Database.DeleteAllEquipItems(client.Character.CommonId, connection);
+
+                // Recreate starting items for player
+                Server.Database.CreateItems(connection, client.Character);
+            });
 
             // Add back equipment
             client.Character.Equipment = client.Character.Storage.GetCharacterEquipment();

@@ -187,7 +187,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool CreateCharacter(Character character) { return true; }
         public bool CreateDatabase() { return true; }
         public bool CreatePawn(Pawn pawn) { return true; }
-        public void CreateItems(Character character) { }
+        public void CreateItems(DbConnection connection, Character character) { }
         public bool DeleteAccount(int accountId) { return true; }
         public int DeleteBazaarExhibition(ulong bazaarId) { return 1; }
         public bool DeleteBoxRewardItem(uint commonId, uint uniqId) { return true; }
@@ -211,8 +211,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId) { return true; }
         public bool DeleteStorage(uint characterId, StorageType storageType) { return true; }
         public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null) { return true; }
-        public void DeleteAllStorageItems(uint characterId) { }
-        public void DeleteAllEquipItems(uint commonId) { }
+        public void DeleteAllStorageItems(DbConnection connection, uint characterId) { }
+        public void DeleteAllEquipItems(uint commonId, DbConnection? connectionIn = null) { }
         public bool DeleteToken(string token) { return true; }
         public bool DeleteTokenByAccountId(int accountId) { return true; }
         public bool DeleteWalletPoint(uint characterId, WalletType type) { return true; }

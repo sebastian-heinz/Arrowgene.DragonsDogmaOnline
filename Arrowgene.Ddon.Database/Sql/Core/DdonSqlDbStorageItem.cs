@@ -170,12 +170,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
-        public void DeleteAllStorageItems(uint characterId)
-        {
-            using TCon connection = OpenNewConnection();
-            DeleteAllStorageItems(connection, characterId);
-        }
-
         public void DeleteAllStorageItems(DbConnection connection, uint characterId)
         {
             ExecuteNonQuery(connection, SqlDeleteAllStorageItems, command =>

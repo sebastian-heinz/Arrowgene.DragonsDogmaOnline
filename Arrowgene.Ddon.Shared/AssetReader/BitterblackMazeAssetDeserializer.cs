@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             asset.StarterEquipment[JobId.None] = new Dictionary<EquipType, List<Item?>>();
             asset.StarterEquipment[JobId.None][EquipType.Performance] = Enumerable.Repeat((Item) null, 15).ToList();
             asset.StarterEquipment[JobId.None][EquipType.Visual] = Enumerable.Repeat((Item) null, 15).ToList();
-            asset.JobEquipment[JobId.None] = Enumerable.Repeat((Item) null, 2).ToList();
+            asset.StarterJobEquipment[JobId.None] = Enumerable.Repeat((Item) null, 2).ToList();
 
             var starterEquipment = document.RootElement.GetProperty("starter_equipment").EnumerateArray();
             foreach (var jEquipmentSet in starterEquipment)
@@ -96,10 +96,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     asset.StarterEquipment[jobId][EquipType.Visual].Add(null);
                 }
 
-                asset.JobEquipment[jobId] = new List<Item>();
+                asset.StarterJobEquipment[jobId] = new List<Item>();
                 for (int i = 0; i < 2; i++)
                 {
-                    asset.JobEquipment[jobId].Add(null);
+                    asset.StarterJobEquipment[jobId].Add(null);
                 }
             }
 

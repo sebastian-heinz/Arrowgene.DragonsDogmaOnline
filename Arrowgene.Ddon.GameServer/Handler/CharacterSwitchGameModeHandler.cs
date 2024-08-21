@@ -234,7 +234,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 MDefDownResist = arisenPreset.MDefDownResist
             }).ToList();
 
-            bbmCharacter.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.StarterEquipment, Server.AssetRepository.BitterblackMazeAsset.JobEquipment);
+            bbmCharacter.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.GenerateStarterEquipment(), Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobEquipment());
 
             bbmCharacter.EquippedCustomSkillsDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CustomSkill>>(arisenPreset.Job, new List<CustomSkill>() {
                 // Main Palette

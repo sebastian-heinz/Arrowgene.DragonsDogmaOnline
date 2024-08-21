@@ -102,18 +102,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
-        public void DeleteAllEquipItems(uint commonId)
+        public void DeleteAllEquipItems(uint commonId, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            DeleteAllEquipItems(connection, commonId);
-        }
-
-        public void DeleteAllEquipItems(DbConnection connection, uint commonId)
-        {
-            ExecuteNonQuery(connection, SqlDeleteAllEquipItems, command =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                AddParameter(command, "character_common_id", commonId);
-            });
+                ExecuteNonQuery(connection, SqlDeleteAllEquipItems, command =>
+                {
+                    AddParameter(command, "character_common_id", commonId);
+                });
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId)

@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         {
             Stages = new Dictionary<StageId, BitterblackMazeConfig>();
             StarterEquipment = new Dictionary<JobId, Dictionary<EquipType, List<Item>>>();
-            JobEquipment = new Dictionary<JobId, List<Item>>();
+            StarterJobEquipment = new Dictionary<JobId, List<Item>>();
             RareItemAppraisalList = new List<CDataCommonU32>();
             ItemTakeawayList = new List<CDataCommonU32>();
             StageProgressionList = new List<CDataBattleContentStageProgression>();
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Asset
 
         public Dictionary<StageId, BitterblackMazeConfig> Stages { get; set; }
         public Dictionary<JobId, Dictionary<EquipType, List<Item>>> StarterEquipment {  get; set; }
-        public Dictionary<JobId, List<Item>> JobEquipment { get; set; }
+        public Dictionary<JobId, List<Item>> StarterJobEquipment { get; set; }
         public List<CDataCommonU32> RareItemAppraisalList { get; set; }
         public List<CDataCommonU32> ItemTakeawayList {  get; set; }
         public List<CDataBattleContentStageProgression> StageProgressionList {  get; set; }
@@ -38,5 +38,41 @@ namespace Arrowgene.Ddon.Shared.Asset
         public Dictionary<BitterblackMazeEquipmentClass, List<uint>> HighQualityArmors { get; set; }
         public List<uint> LowQualityOther {  get; set; }
         public List<uint> HighQualityOther {  get; set; }
+
+        public Dictionary<JobId, Dictionary<EquipType, List<Item>>> GenerateStarterEquipment()
+        {
+            var result = new Dictionary<JobId, Dictionary<EquipType, List<Item>>>();
+
+            foreach (var (jobId, equipMap) in StarterEquipment)
+            {
+                result[jobId] = new Dictionary<EquipType, List<Item>>();
+                foreach (var (equipType, items) in equipMap)
+                {
+                    result[jobId][equipType] = new List<Item>();
+                    foreach (var item in items)
+                    {
+                        result[jobId][equipType].Add((item == null) ? null : new Item(item));
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public Dictionary<JobId, List<Item>> GenerateStarterJobEquipment()
+        {
+            var result = new Dictionary<JobId, List<Item>>();
+
+            foreach (var (jobId, items) in StarterJobEquipment)
+            {
+                result[jobId] = new List<Item>();
+                foreach (var item in items)
+                {
+                    result[jobId].Add((item == null) ? null : new Item(item));
+                }
+            }
+
+            return result;
+        }
     }
 }

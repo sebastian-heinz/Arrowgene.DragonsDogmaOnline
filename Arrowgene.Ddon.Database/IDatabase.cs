@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.Database
         bool UpdateCharacterArisenProfile(Character character);
         bool UpdateMyPawnSlot(uint characterId, uint num);
         bool UpdateCharacterBinaryData(uint characterId, byte[] data);
-        void CreateItems(Character character);
+        void CreateItems(DbConnection conn, Character character);
 
         // Pawn
         bool CreatePawn(Pawn pawn);
@@ -142,7 +142,7 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
         bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null);
         bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
-        public void DeleteAllStorageItems(uint characterId);
+        public void DeleteAllStorageItems(DbConnection connection, uint characterId);
 
         bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
 
@@ -151,7 +151,7 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, DbConnection? connectionIn = null);
         bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
         bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, DbConnection? connectionIn = null);
-        void DeleteAllEquipItems(uint commonId);
+        void DeleteAllEquipItems(uint commonId, DbConnection? connectionIn = null);
         List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId);
 
         // Job Items

@@ -421,13 +421,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }));
         }
 
-        public void CreateItems(Character character)
-        {
-            using TCon connection = OpenNewConnection();
-            CreateItems(connection, character);
-        }
-
-        public void CreateItems(TCon conn, Character character)
+        public void CreateItems(DbConnection conn, Character character)
         {
             // Create storage items
             foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.GetAllStorages())
@@ -457,7 +451,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         if (item != null)
                         {
                             byte slot = (byte)(index + 1);
-                            InsertEquipItem(conn, character.CommonId, character.Job, equipment.Key, slot, item.UId);
+                            InsertEquipItem((TCon) conn, character.CommonId, character.Job, equipment.Key, slot, item.UId);
                         }
                     }
                 }
@@ -479,7 +473,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         if (item != null)
                         {
                             ushort slot = storageBoxNormal.AddItem(item, 0);
-                            InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                            InsertEquipItem((TCon) conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
                             InsertStorageItem(character.ContentCharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
                         }
                     }
@@ -491,7 +485,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Item item = baseJob[EquipType.Performance][i];
                         if (item != null)
                         {
-                            InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                            InsertEquipItem((TCon) conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
                         }
                     }
                 }
@@ -508,7 +502,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         if (item != null && item.ItemId > 0)
                         {
                             ushort slot = storageBoxNormal.AddItem(item, 0);
-                            InsertEquipItem(conn, character.CommonId, jobId, EquipType.Performance, (byte)(i + 1), item.UId);
+                            InsertEquipItem((TCon) conn, character.CommonId, jobId, EquipType.Performance, (byte)(i + 1), item.UId);
 
                             if (jobId != character.Job)
                             {
