@@ -264,6 +264,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataStageAttribute.Serializer());
             Create(new CDataStageInfo.Serializer());
             Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer());
+            Create(new CDataStageAreaChangeResUnk0.Serializer());
+            Create(new CDataStageAreaChangeResUnk1.Serializer());
             Create(new CDataStatusInfoSerializer());
             Create(new CDataStorageItemUIDList.Serializer());
 
