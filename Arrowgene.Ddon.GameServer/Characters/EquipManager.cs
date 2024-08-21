@@ -1,6 +1,6 @@
 #nullable enable
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -107,7 +107,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, Action sendResponse, DbConnection? connectionIn = null)
+        public (IPacketStructure, IPacketStructure) HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, DbConnection? connectionIn = null)
         {
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
@@ -214,10 +214,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 });
             }
 
-            client.Send(updateCharacterItemNtc);
-
-            sendResponse.Invoke();
-
             // Notify other players
             if (characterToEquipTo is Character character)
             {
@@ -229,10 +225,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Unk0
                 };
 
-                foreach (Client otherClient in server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(changeCharacterEquipNtc);
-                }
+                return (updateCharacterItemNtc, changeCharacterEquipNtc);
             } 
             else if(characterToEquipTo is Pawn pawn)
             {
@@ -245,11 +238,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Unk0
                 };
 
-                foreach (Client otherClient in server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(changePawnEquipNtc);
-                }
+                return (updateCharacterItemNtc, changePawnEquipNtc);
             }
+
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); //TODO: Find a better code.
         }
         public void GetEquipTypeandSlot(Equipment equipment, string uid, out EquipType equipType, out byte equipSlot)
         {
