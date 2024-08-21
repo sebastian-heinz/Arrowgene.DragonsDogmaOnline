@@ -113,6 +113,66 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 asset.ItemTakeawayList.Add(new CDataCommonU32() { Value = itemId.GetUInt32() });
             }
 
+            var jArmorLoot = document.RootElement.GetProperty("chest_loot").GetProperty("armor");
+            foreach (var quality in jArmorLoot.EnumerateObject())
+            {
+                foreach (var equipmentCategory in quality.Value.EnumerateObject())
+                {
+                    if (!Enum.TryParse(equipmentCategory.Name, true, out BitterblackMazeEquipmentClass equipmentClass))
+                    {
+                        Logger.Error($"Unexpected category {equipmentCategory.Name}");
+                        return null;
+                    }
+
+                    Dictionary<BitterblackMazeEquipmentClass, List<uint>> items = quality.NameEquals("low_quality") ? asset.LowQualityArmors : asset.HighQualityArmors;
+
+                    if (!items.ContainsKey(equipmentClass))
+                    {
+                        items[equipmentClass] = new List<uint>();
+                    }
+
+                    foreach (var itemId in equipmentCategory.Value.EnumerateArray())
+                    {
+                        items[equipmentClass].Add(itemId.GetUInt32());
+                    }
+                }
+            }
+
+            var jWeaponLoot = document.RootElement.GetProperty("chest_loot").GetProperty("weapons");
+            foreach (var quality in jWeaponLoot.EnumerateObject())
+            {
+                foreach (var equipmentCategory in quality.Value.EnumerateObject())
+                {
+                    if (!Enum.TryParse(equipmentCategory.Name, true, out JobId jobId))
+                    {
+                        Logger.Error($"Unexpected JobId {equipmentCategory.Name}");
+                        return null;
+                    }
+
+                    Dictionary<JobId, List<uint>> items = quality.NameEquals("low_quality") ? asset.LowQualityWeapons : asset.HighQualityWeapons;
+
+                    if (!items.ContainsKey(jobId))
+                    {
+                        items[jobId] = new List<uint>();
+                    }
+
+                    foreach (var itemId in equipmentCategory.Value.EnumerateArray())
+                    {
+                        items[jobId].Add(itemId.GetUInt32());
+                    }
+                }
+            }
+
+            var jOtherLoot = document.RootElement.GetProperty("chest_loot").GetProperty("other");
+            foreach (var quality in jOtherLoot.EnumerateObject())
+            {
+                List<uint> items = quality.NameEquals("low_quality") ? asset.LowQualityOther : asset.HighQualityOther;
+                foreach (var itemId in quality.Value.EnumerateArray())
+                {
+                    items.Add(itemId.GetUInt32());
+                }
+            }
+
             return asset;
         }
 
