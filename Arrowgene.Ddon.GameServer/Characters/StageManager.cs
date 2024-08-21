@@ -77,7 +77,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             576, // Fort Thines: Great Dining Hall
             580, // Fortress City Megado: Craft Room
             584, // Eli Guard Tower
-            594  // Northern Bandit Hideout
+            594, // Northern Bandit Hideout
+            602, // Bitterblack Maze Cove
         };
         public static bool IsSafeArea(uint stageId)
         {
@@ -98,6 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             486, // Fortress City Megado: Residential Level
             487, // Fortress City Megado: Residential Level
             488, // Fortress City Megado: Royal Palace Level
+            602, // Bitterblack Maze Cove
         };
 
         public static bool IsHubArea(uint stageId)
