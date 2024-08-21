@@ -120,7 +120,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CEquipChangeCharacterEquipLobbyNtc characterEquipLobbyNtc = new S2CEquipChangeCharacterEquipLobbyNtc()
             {
-                CharacterId = client.Character.NormalCharacterId,
+                CharacterId = client.Character.CharacterId,
                 Job = client.Character.Job,
                 EquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
                 VisualEquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual),
@@ -142,35 +142,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private Character CreateNewCharacter(Character normalCharacter)
         {
-            Character character = new Character();
+            Character bbmCharacter = new Character();
 
-            character.AccountId = normalCharacter.AccountId;
-            character.CharacterId = 0;
-            character.UserId = normalCharacter.UserId;
-            character.Version = normalCharacter.Version;
-            character.GameMode = GameMode.BitterblackMaze;
-            character.FirstName = normalCharacter.FirstName;
-            character.LastName = normalCharacter.LastName;
-            character.EditInfo = normalCharacter.EditInfo;
-            character.StatusInfo = normalCharacter.StatusInfo;
-            character.Job = normalCharacter.Job;
-            character.JewelrySlotNum = 1;
-            character.MyPawnSlotNum = 0;
-            character.RentalPawnSlotNum = 0;
-            character.MatchingProfile = normalCharacter.MatchingProfile;
-            character.ArisenProfile = normalCharacter.ArisenProfile;
-            character.HideEquipHead = normalCharacter.HideEquipHead;
-            character.HideEquipLantern = normalCharacter.HideEquipLantern;
-            character.HideEquipHeadPawn = normalCharacter.HideEquipHeadPawn;
-            character.HideEquipLanternPawn = normalCharacter.HideEquipLanternPawn;
-            character.ArisenProfileShareRange = normalCharacter.ArisenProfileShareRange;
-            character.OnlineStatus = normalCharacter.OnlineStatus;
-            character.Server = normalCharacter.Server;
-            character.FavWarpSlotNum = 1;
-            character.BbmProgress = normalCharacter.BbmProgress;
+            bbmCharacter.AccountId = normalCharacter.AccountId;
+            bbmCharacter.CharacterId = 0;
+            bbmCharacter.UserId = normalCharacter.UserId;
+            bbmCharacter.Version = normalCharacter.Version;
+            bbmCharacter.GameMode = GameMode.BitterblackMaze;
+            bbmCharacter.FirstName = normalCharacter.FirstName;
+            bbmCharacter.LastName = normalCharacter.LastName;
+            bbmCharacter.EditInfo = normalCharacter.EditInfo;
+            bbmCharacter.StatusInfo = normalCharacter.StatusInfo;
+            bbmCharacter.Job = normalCharacter.Job;
+            bbmCharacter.JewelrySlotNum = 1;
+            bbmCharacter.MyPawnSlotNum = 0;
+            bbmCharacter.RentalPawnSlotNum = 0;
+            bbmCharacter.MatchingProfile = normalCharacter.MatchingProfile;
+            bbmCharacter.ArisenProfile = normalCharacter.ArisenProfile;
+            bbmCharacter.HideEquipHead = normalCharacter.HideEquipHead;
+            bbmCharacter.HideEquipLantern = normalCharacter.HideEquipLantern;
+            bbmCharacter.HideEquipHeadPawn = normalCharacter.HideEquipHeadPawn;
+            bbmCharacter.HideEquipLanternPawn = normalCharacter.HideEquipLanternPawn;
+            bbmCharacter.ArisenProfileShareRange = normalCharacter.ArisenProfileShareRange;
+            bbmCharacter.OnlineStatus = normalCharacter.OnlineStatus;
+            bbmCharacter.Server = normalCharacter.Server;
+            bbmCharacter.FavWarpSlotNum = 1;
+            bbmCharacter.BbmProgress = normalCharacter.BbmProgress;
 
-            ArisenCsv ActiveJobPreset = Server.AssetRepository.ArisenAsset.Where(x => x.Job == character.Job).Single();
-            character.StatusInfo = new CDataStatusInfo()
+            ArisenCsv ActiveJobPreset = Server.AssetRepository.ArisenAsset.Where(x => x.Job == bbmCharacter.Job).Single();
+            bbmCharacter.StatusInfo = new CDataStatusInfo()
             {
                 HP = ActiveJobPreset.HP,
                 Stamina = ActiveJobPreset.Stamina,
@@ -186,7 +186,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 GainMagicDefense = ActiveJobPreset.GainMagicDefense
             };
 
-            character.CharacterJobDataList = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new CDataCharacterJobData
+            bbmCharacter.CharacterJobDataList = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new CDataCharacterJobData
             {
                 Job = arisenPreset.Job,
                 Exp = arisenPreset.Exp,
@@ -234,9 +234,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 MDefDownResist = arisenPreset.MDefDownResist
             }).ToList();
 
-            character.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.StarterEquipment, Server.AssetRepository.BitterblackMazeAsset.JobEquipment);
+            bbmCharacter.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.StarterEquipment, Server.AssetRepository.BitterblackMazeAsset.JobEquipment);
 
-            character.EquippedCustomSkillsDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CustomSkill>>(arisenPreset.Job, new List<CustomSkill>() {
+            bbmCharacter.EquippedCustomSkillsDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<CustomSkill>>(arisenPreset.Job, new List<CustomSkill>() {
                 // Main Palette
                 new CustomSkill() {
                     Job = arisenPreset.Job,
@@ -284,14 +284,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
 
             // In BBM, all custom skills are already learned so add them
-            character.LearnedCustomSkills = SkillGetAcquirableSkillListHandler.AllSkills.Select(x => new CustomSkill()
+            bbmCharacter.LearnedCustomSkills = SkillGetAcquirableSkillListHandler.AllSkills.Select(x => new CustomSkill()
             {
                 Job = x.Job,
                 SkillId = x.SkillNo,
                 SkillLv = x.Params.Max(x => x.Lv)
             }).ToList();
             
-            character.EquippedAbilitiesDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Ability>>(arisenPreset.Job, new List<Ability>() {
+            bbmCharacter.EquippedAbilitiesDictionary = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new Tuple<JobId, List<Ability>>(arisenPreset.Job, new List<Ability>() {
                 new Ability() {
                     Job = arisenPreset.Ab1Jb,
                     AbilityId = arisenPreset.Ab1Id,
@@ -346,16 +346,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
 
             // In BBM, all abilities are already learned so add them
-            character.LearnedAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Select(x => new Ability()
+            bbmCharacter.LearnedAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Select(x => new Ability()
             {
                 Job = x.Job,
                 AbilityId = x.AbilityNo,
                 AbilityLv = x.Params.Max(x => x.Lv)
             }).ToList();
 
-            character.Storage = new Storages(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
+            bbmCharacter.Storage = new Storages(Server.AssetRepository.StorageAsset.ToDictionary(x => x.StorageType, x => x.SlotMax));
 
-            character.WalletPointList = new List<CDataWalletPoint>()
+            bbmCharacter.WalletPointList = new List<CDataWalletPoint>()
             {
                 new CDataWalletPoint() {
                     Type = WalletType.Gold,
@@ -433,12 +433,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (tuple.Item3.ItemId != 0)
                 {
-                    character.Storage.GetStorage(tuple.Item1).AddItem(tuple.Item3, tuple.Item2);
+                    bbmCharacter.Storage.GetStorage(tuple.Item1).AddItem(tuple.Item3, tuple.Item2);
                 }
             }
 
             // Add current job's equipment to the equipment storage
-            List<Item?> performanceEquipItems = character.EquipmentTemplate.GetEquipment(character.Job, EquipType.Performance);
+            List<Item?> performanceEquipItems = bbmCharacter.EquipmentTemplate.GetEquipment(bbmCharacter.Job, EquipType.Performance);
             for (int i = 0; i < performanceEquipItems.Count; i++)
             {
                 Item? item = performanceEquipItems[i];
@@ -446,16 +446,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ushort slot = (ushort)(i + 1);
                 if (item == null || item.ItemId == 0)
                 {
-                    character.Storage.GetStorage(StorageType.CharacterEquipment).SetItem(null, 1, slot);
+                    bbmCharacter.Storage.GetStorage(StorageType.CharacterEquipment).SetItem(null, 1, slot);
                 }
                 else
                 {
-                    character.Storage.GetStorage(StorageType.CharacterEquipment).SetItem(item, 1, slot);
+                    bbmCharacter.Storage.GetStorage(StorageType.CharacterEquipment).SetItem(item, 1, slot);
                 }
             }
 
-            Server.CharacterManager.UpdateCharacterExtendedParams(character, true);
-            if (!Database.CreateCharacter(character))
+            Server.CharacterManager.UpdateCharacterExtendedParams(bbmCharacter, true);
+            if (!Database.CreateCharacter(bbmCharacter))
             {
                 return null;
             }
@@ -477,8 +477,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             PreSkillNo = 0
                         };
 
-                        character.LearnedNormalSkills.Add(newSkill);
-                        Server.Database.InsertIfNotExistsNormalSkillParam(character.CommonId, newSkill);
+                        bbmCharacter.LearnedNormalSkills.Add(newSkill);
+                        Server.Database.InsertIfNotExistsNormalSkillParam(bbmCharacter.CommonId, newSkill);
 
                         index++;
                     }
@@ -491,7 +491,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 JewelrySlot = 3,
             };
 
-            if (!Database.InsertGainExtendParam(character.CommonId, ExtendParams))
+            if (!Database.InsertGainExtendParam(bbmCharacter.CommonId, ExtendParams))
             {
                 return null;
             }
@@ -504,18 +504,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     ExpMode = ExpMode.Experience, // EXP
                     PlayPoint = 0
                 }
-            }).ToList().ForEach(x => {
-                Database.ReplaceCharacterPlayPointData(character.CharacterId, x);
-                character.PlayPointList.Add(x);
-            });
+            }).ToList().ForEach((Action<CDataJobPlayPoint>)(x => {
+                Database.ReplaceCharacterPlayPointData((uint)bbmCharacter.ContentCharacterId, x);
+                bbmCharacter.PlayPointList.Add(x);
+            }));
 
-            if (!Server.Database.InsertBBMCharacterId(normalCharacter.CharacterId, character.CharacterId))
+            if (!Server.Database.InsertBBMCharacterId(normalCharacter.CharacterId, bbmCharacter.CharacterId))
             {
                 // Failed to save character
                 return null;
             }
 
-            return character;
+            return bbmCharacter;
         }
 
         /**

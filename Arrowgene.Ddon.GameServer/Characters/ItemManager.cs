@@ -238,12 +238,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
                 fromStorage.SetItem(null, 0, slotNo);
-                server.Database.DeleteStorageItem(character.CharacterId, fromStorageType, slotNo, connectionIn);
+                server.Database.DeleteStorageItem(character.ContentCharacterId, fromStorageType, slotNo, connectionIn);
             }
             else
             {
                 fromStorage.SetItem(item, finalItemNum, slotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, finalItemNum, item, connectionIn);
+                server.Database.ReplaceStorageItem(character.ContentCharacterId, fromStorageType, slotNo, finalItemNum, item, connectionIn);
             }
 
             return ntcData;
@@ -341,7 +341,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     destinationStorage.SetItem(item, newItemNum, slot);
                 }
 
-                database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
+                database.ReplaceStorageItem(character.ContentCharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
                 if (BitterblackMazeManager.IsMazeReward(item.ItemId))
                 {
                     item = BitterblackMazeManager.ApplyCrest(database, character, item, connectionIn);
@@ -384,20 +384,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private void DeleteItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, DbConnection? connectionIn = null)
         {
             storage.SetItem(null, 0, slotNo);
-            server.Database.DeleteStorageItem(character.CharacterId, storage.Type, slotNo, connectionIn);
+            server.Database.DeleteStorageItem(character.ContentCharacterId, storage.Type, slotNo, connectionIn);
         }
 
         private void UpdateItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num,DbConnection? connectionIn = null)
         {
             storage.SetItem(item, num, slotNo);
-            server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, num, item, connectionIn);
+            server.Database.UpdateStorageItem(character.ContentCharacterId, storage.Type, slotNo, num, item, connectionIn);
         }
 
         private void InsertItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num, DbConnection? connectionIn = null)
         {
             storage.SetItem(item, num, slotNo);
 
-            server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item, connectionIn);
+            server.Database.InsertStorageItem(character.ContentCharacterId, storage.Type, slotNo, num, item, connectionIn);
             
             foreach (var crest in item.EquipElementParamList)
             {
@@ -590,7 +590,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint characterId = 0;
             if (character is Character)
             {
-                characterId = ((Character)character).NormalCharacterId;
+                characterId = ((Character)character).CharacterId;
             }
             else if (character is Pawn)
             {

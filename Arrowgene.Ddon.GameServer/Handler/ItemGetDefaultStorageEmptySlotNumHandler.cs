@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var result = new S2CItemGetDefaultStorageEmptySlotNumRes();
 
-            var characterStorage = Server.Database.SelectAllStoragesByCharacterId(client.Character.NormalCharacterId);
+            var characterStorage = Server.Database.SelectAllStoragesByCharacterId(client.Character.CharacterId);
             foreach (var storageType in ItemManager.BbmEmbodyStorages)
             {
                 var storage = characterStorage.GetStorage(storageType);

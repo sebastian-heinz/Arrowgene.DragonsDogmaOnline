@@ -39,36 +39,30 @@ namespace Arrowgene.Ddon.Shared.Model
         public DateTime Created { get; set; }
 
         /**
-         * @brief CharacterId is used by the client to identify different players in the game.
+         * @brief ContentCharacter is used when there is an alias mapping between one
+         * "main character id" (the one the player logs in as) and a particular content or gamemode.
          * To support other game modes, such as Bitterblack Maze, internally the server creates
          * a second character as a majority of the tables overlap. When we switch to the BBM
          * game mode, it still thinks we are the original character we logged in as. This is where
-         * NormalCharacterId and BbmCharacterId come into play. Certain systems such as the party,
-         * wallet and equipment systems require the original character ID regardless of the gamemode.
-         * In this case we would use directly the variable "NormalCharacterId". For everything else, we
-         * can use CharacterId directly. Then depending on the GameMode it will return either the
-         * CharacterId for the normal mode of play or the CharacterId for BBM related operations.
+         * ContentCharacterId comes into play. Paritculary we need this for Database operations
+         * when selecting between different tables depending on the game mode.
          */
-        public uint CharacterId
+        public uint ContentCharacterId
         {
             get
             {
-                if (BbmCharacterId != 0)
+                if (this.GameMode == GameMode.BitterblackMaze)
                 {
                     return this.BbmCharacterId;
                 }
                 else
                 {
-                    return this.NormalCharacterId;
+                    return this.CharacterId;
                 }
-            }
-            set
-            {
-                this.NormalCharacterId = value;
             }
         }
 
-        public uint NormalCharacterId;
+        public uint CharacterId;
         public uint BbmCharacterId;
         public uint UserId;
         public uint Version;

@@ -60,10 +60,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             var progress = character.BbmProgress;
 
-            var rewards = server.Database.SelectBBMRewards(character.NormalCharacterId);
+            var rewards = server.Database.SelectBBMRewards(character.CharacterId);
 
             var availableRewards = new List<CDataBattleContentAvailableRewards>();
-            var trackedRewards = server.Database.SelectBBMContentTreasure(character.NormalCharacterId);
+            var trackedRewards = server.Database.SelectBBMContentTreasure(character.CharacterId);
             foreach (var stage in server.AssetRepository.BitterblackMazeAsset.Stages)
             {
                 var matches = trackedRewards.Select(x => x.ContentId == stage.Value.ContentId).ToList();
@@ -136,15 +136,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 progress.ContentId = 0;
                 progress.Tier = 0;
             }
-            server.Database.UpdateBBMProgress(character.NormalCharacterId, progress);
+            server.Database.UpdateBBMProgress(character.CharacterId, progress);
 
-            var rewards = server.Database.SelectBBMRewards(character.NormalCharacterId);
+            var rewards = server.Database.SelectBBMRewards(character.CharacterId);
             // TODO: handle BattleContentRewardBonus.Up (some sort of reward bonus)
             // TODO: Is there a reason we wouldn't get a reward here?
             rewards.GoldMarks += 1;
             rewards.SilverMarks += 5;
             rewards.RedMarks += 15;
-            server.Database.UpdateBBMRewards(character.NormalCharacterId, rewards);
+            server.Database.UpdateBBMRewards(character.CharacterId, rewards);
 
             // Update the situation information
             S2CBattleContentProgressNtc progressNtc = new S2CBattleContentProgressNtc();
@@ -316,7 +316,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Check to see if player claimed loot already
                 // If not, populate it in the chest loot table
-                var treasure = server.Database.SelectBBMContentTreasure(character.NormalCharacterId).Where(x => x.ContentId == character.BbmProgress.ContentId).ToList();
+                var treasure = server.Database.SelectBBMContentTreasure(character.CharacterId).Where(x => x.ContentId == character.BbmProgress.ContentId).ToList();
                 if (treasure.Count == 0)
                 {
                     uint itemId = (chestType == ChestType.Bracelet) ? BitterblackMazeManager.BitterblackBraceletItemId : BitterblackMazeManager.BitterblackEarringItemId;

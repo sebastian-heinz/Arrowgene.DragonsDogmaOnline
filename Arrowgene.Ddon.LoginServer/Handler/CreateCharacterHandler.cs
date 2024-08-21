@@ -568,10 +568,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     ExpMode = ExpMode.Experience, // EXP
                     PlayPoint = 0
                 }
-            }).ToList().ForEach(x => { 
-                Database.ReplaceCharacterPlayPointData(character.CharacterId, x);
+            }).ToList().ForEach((Action<CDataJobPlayPoint>)(x => {
+                Database.ReplaceCharacterPlayPointData((uint)character.CharacterId, x);
                 character.PlayPointList.Add(x);
-            });
+            }));
 
             // Default unlock some secret abilities based on server admin desires
             foreach (var ability in _AssetRepository.SecretAbilitiesAsset.DefaultSecretAbilities)

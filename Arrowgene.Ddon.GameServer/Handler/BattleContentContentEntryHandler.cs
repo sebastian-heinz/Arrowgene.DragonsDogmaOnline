@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (progress.StartTime == 0)
             {
                 progress.StartTime = (ulong) DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                Server.Database.UpdateBBMProgress(client.Character.NormalCharacterId, progress);
+                Server.Database.UpdateBBMProgress(client.Character.CharacterId, progress);
             }
 
             var contentStatus = BitterblackMazeManager.GetUpdatedContentStatus(Server, client.Character);

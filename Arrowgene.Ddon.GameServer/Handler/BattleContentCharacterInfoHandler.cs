@@ -31,13 +31,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pcap.BattleContentStatusList[0].BattleContentSituationData.ReportReset = 1;
             pcap.BattleContentStatusList[0].BattleContentSituationData.ReportSearchResults = 0;
 
-            // pcap.BattleContentStatusList[0].BattleContentSituationData.Unk1 = 1723853465;
-
-            // foreach (var loot in pcap.BattleContentStatusList[0].Unk1)
-            // {
-            //    loot.Unk1 = 0;
-            // }
-
             var result = new S2CBattleContentCharacterInfoRes()
             {
                 SituationData = pcap.BattleContentStatusList[0].BattleContentSituationData,

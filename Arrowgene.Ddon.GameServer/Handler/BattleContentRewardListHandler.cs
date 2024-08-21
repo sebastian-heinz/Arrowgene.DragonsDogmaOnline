@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentRewardListRes Handle(GameClient client, C2SBattleContentRewardListReq request)
         {
-            var rewards = Server.Database.SelectBBMRewards(client.Character.NormalCharacterId);
+            var rewards = Server.Database.SelectBBMRewards(client.Character.CharacterId);
             var result = new S2CBattleContentRewardListRes();
 
             if (rewards.GoldMarks > 0)

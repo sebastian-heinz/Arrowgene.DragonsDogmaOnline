@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool CreateCharacter(Character character)
         {
-            return ExecuteInTransaction(conn =>
+            return ExecuteInTransaction((Action<TCon>)(conn =>
                 {
                     character.Created = DateTime.UtcNow;
 
@@ -91,17 +91,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
                     ExecuteNonQuery(conn, SqlInsertCharacter, command => { AddParameter(command, character); }, out long characterId);
                     character.CharacterId = (uint) characterId;
+                    
+                    if (character.GameMode == GameMode.BitterblackMaze)
+                    {
+                        character.BbmCharacterId = (uint) characterId;
+                    }
 
                     ExecuteNonQuery(conn, SqlInsertEditInfo, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertStatusInfo, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterMatchingProfile, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
-                    ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command => {AddParameter(command, character);});
+                    ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command => { AddParameter(command, character);});
 
                     CreateItems(conn, character);
 
                     StoreCharacterData(conn, character);
-                });
+                }));
         }
 
         public bool UpdateCharacterBaseInfo(Character character)
@@ -244,7 +249,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Shortcuts
             ExecuteReader(conn, SqlSelectShortcuts,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -255,7 +260,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // CommunicationShortcuts
             ExecuteReader(conn, SqlSelectCommunicationShortcuts,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -266,7 +271,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Storage
             ExecuteReader(conn, SqlSelectAllStoragesByCharacter,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -276,13 +281,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
             ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
-                command2 => { AddParameter(command2, "@character_id", character.CharacterId); },
+                (Action<DbCommand>)(                command2 => { AddParameter(command2, "@character_id", (uint)character.CharacterId); }),
                 reader2 =>
                 {
                     while(reader2.Read())
                     {
-                        
-                        StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
+
+                        StorageType storageType = (StorageType)GetByte(reader2, "storage_type");
                         ushort slot = GetUInt16(reader2, "slot_no");
                         uint itemNum = GetUInt32(reader2, "item_num");
                         var item = new Item();
@@ -312,7 +317,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Wallet Points
             ExecuteReader(conn, SqlSelectWalletPoints,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -323,7 +328,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Warp Points
             ExecuteReader(conn, SqlSelectReleasedWarpPoints,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -334,7 +339,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Play Points
             ExecuteReader(conn, SqlSelectCharacterPlayPointDataByCharacter,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -345,7 +350,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Login Stamp
             ExecuteReader(conn, SqlSelectCharacterStamp,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -356,7 +361,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Ability Presets
             ExecuteReader(conn, SqlSelectAbilityPresets,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -387,33 +392,33 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataShortCut shortcut in character.ShortCutList)
             {
-                ReplaceShortcut(character.CharacterId, shortcut, conn);
+                ReplaceShortcut(character.ContentCharacterId, shortcut, conn);
             }
 
             foreach(CDataCommunicationShortCut communicationShortcut in character.CommunicationShortCutList)
             {
-                ReplaceCommunicationShortcut(character.CharacterId, communicationShortcut, conn);
+                ReplaceCommunicationShortcut(character.ContentCharacterId, communicationShortcut, conn);
             }
 
             foreach(StorageType storageType in character.Storage.GetAllStorages().Keys)
             {
-                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.GetStorage(storageType));
+                ReplaceStorage(conn, character.ContentCharacterId, storageType, character.Storage.GetStorage(storageType));
             }
 
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)
             {
-                ReplaceWalletPoint(conn, character.CharacterId, walletPoint);
+                ReplaceWalletPoint(conn, character.ContentCharacterId, walletPoint);
             }
 
             foreach(CDataJobPlayPoint playPoint in character.PlayPointList)
             {
-                ReplaceCharacterPlayPointData(conn, character.CharacterId, playPoint);
+                ReplaceCharacterPlayPointData(conn, character.ContentCharacterId, playPoint);
             }
 
-            ExecuteNonQuery(conn, SqlInsertCharacterStamp, command =>
+            ExecuteNonQuery(conn, SqlInsertCharacterStamp, (Action<TCom>)(command =>
             {
-                AddParameter(command, character.CharacterId, character.StampBonus);
-            });
+                AddParameter(command, (uint)character.ContentCharacterId, character.StampBonus);
+            }));
         }
 
         public void CreateItems(Character character)
@@ -435,7 +440,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Item item = storage.Value.Items[index].Item1;
                         uint itemNum = storage.Value.Items[index].Item2;
                         ushort slot = (ushort)(index+1);
-                        InsertStorageItem(character.CharacterId, storageType, slot, itemNum, item, conn);
+                        InsertStorageItem(character.ContentCharacterId, storageType, slot, itemNum, item, conn);
                     }
                 }
             }
@@ -475,7 +480,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         {
                             ushort slot = storageBoxNormal.AddItem(item, 0);
                             InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
-                            InsertStorageItem(character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
+                            InsertStorageItem(character.ContentCharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
                         }
                     }
 
@@ -507,7 +512,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
                             if (jobId != character.Job)
                             {
-                                InsertStorageItem(character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
+                                InsertStorageItem(character.ContentCharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
                             }
                         }
                     }
@@ -624,7 +629,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, (CharacterCommon) character);
             // CharacterFields
             AddParameter(command, "@account_id", character.AccountId);
-            AddParameter(command, "@character_id", character.CharacterId);
+            AddParameter(command, "@character_id", character.ContentCharacterId);
             AddParameter(command, "@version", character.Version);
             AddParameter(command, "@first_name", character.FirstName);
             AddParameter(command, "@last_name", character.LastName);

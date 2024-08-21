@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var result = new S2CItemGetEmbodyPayCostRes();
 
-            var normalCharacter = Server.Database.SelectCharacter(client.Character.NormalCharacterId);
+            var normalCharacter = Server.Database.SelectCharacter(client.Character.CharacterId);
             result.EmbodyCostList.Add(new CDataItemEmbodyCostParam()
             {
                 WalletType = WalletType.GoldenDragonMark,

@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CBattleContentGetRewardRes Handle(GameClient client, C2SBattleContentGetRewardReq request)
         {
             // Claim marks
-            var rewards = Server.Database.SelectBBMRewards(client.Character.NormalCharacterId);
+            var rewards = Server.Database.SelectBBMRewards(client.Character.CharacterId);
             List<CDataUpdateWalletPoint> results = new List<CDataUpdateWalletPoint>();
             if (rewards.GoldMarks > 0)
             {
@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(updateWalletNtc);
             }
 
-            Server.Database.UpdateBBMRewards(client.Character.NormalCharacterId, rewards);
+            Server.Database.UpdateBBMRewards(client.Character.CharacterId, rewards);
 
             // Update Situation Data
             S2CBattleContentProgressNtc progressNtc = new S2CBattleContentProgressNtc();

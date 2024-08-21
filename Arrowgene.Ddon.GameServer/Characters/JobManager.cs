@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 Character character = (Character) common;
                 S2CJobChangeJobNtc changeJobNotice = new S2CJobChangeJobNtc();
-                changeJobNotice.CharacterId = character.NormalCharacterId;
+                changeJobNotice.CharacterId = character.CharacterId;
                 changeJobNotice.CharacterJobData = activeCharacterJobData;
                 changeJobNotice.EquipItemInfo = equipItemInfos;
                 changeJobNotice.SetAcquirementParamList = skills;

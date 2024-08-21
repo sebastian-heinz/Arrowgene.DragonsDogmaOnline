@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Reset Inventory
             var updateItemList = RemoveAllItemsFromInventory(client.Character, client.Character.Storage, ItemManager.ItemBagStorageTypes);
 
-            Server.Database.DeleteAllStorageItems(client.Character.CharacterId);
+            Server.Database.DeleteAllStorageItems(client.Character.ContentCharacterId);
             client.Character.Storage.Clear();
 
             // Remove items equipped in the database
@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.BbmProgress.ContentId = 0;
             client.Character.BbmProgress.Tier = 0;
             client.Character.BbmProgress.KilledDeath = false;
-            Server.Database.UpdateBBMProgress(client.Character.NormalCharacterId, client.Character.BbmProgress);
+            Server.Database.UpdateBBMProgress(client.Character.CharacterId, client.Character.BbmProgress);
 
             // Update the situation information
             S2CBattleContentProgressNtc ntc2 = new S2CBattleContentProgressNtc();

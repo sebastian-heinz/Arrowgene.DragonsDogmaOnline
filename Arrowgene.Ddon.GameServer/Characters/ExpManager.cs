@@ -526,7 +526,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                         // Inform other party members
                         S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
-                        lvlMemberNtc.CharacterId = ((Character) characterToAddExpTo).NormalCharacterId;
+                        lvlMemberNtc.CharacterId = ((Character) characterToAddExpTo).CharacterId;
                         lvlMemberNtc.Job = characterToAddExpTo.Job;
                         lvlMemberNtc.Level = activeCharacterJobData.Lv;
                         GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Character) characterToAddExpTo);
@@ -596,7 +596,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     // Inform other party members
                     S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
-                    lvlMemberNtc.CharacterId = ((Character)characterCommon).NormalCharacterId;
+                    lvlMemberNtc.CharacterId = ((Character)characterCommon).CharacterId;
                     lvlMemberNtc.Job = jobData.Job;
                     lvlMemberNtc.Level = jobData.Lv;
                     GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Character)characterCommon);

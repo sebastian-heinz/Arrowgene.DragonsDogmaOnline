@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CItemEmbodyItemsRes Handle(GameClient client, C2SItemEmbodyItemsReq request)
         {
             var bbmCharacter = client.Character;
-            var normalCharacter = Server.Database.SelectCharacter(client.Character.NormalCharacterId);
+            var normalCharacter = Server.Database.SelectCharacter(client.Character.CharacterId);
 
             bool toItemBag = ItemManager.SendToItemBag(request.StorageType);
             foreach (var embodyItem in request.ItemList)

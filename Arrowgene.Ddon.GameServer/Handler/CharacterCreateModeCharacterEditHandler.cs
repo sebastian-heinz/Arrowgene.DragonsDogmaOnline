@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 other.Send(new S2CCharacterEditUpdateEditParamExNtc()
                 {
-                    CharacterId = client.Character.NormalCharacterId,
+                    CharacterId = client.Character.CharacterId,
                     PawnId = 0,
                     EditInfo = client.Character.EditInfo,
                     Name = client.Character.FirstName

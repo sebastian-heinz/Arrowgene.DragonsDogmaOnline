@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 client.Party.SendToAll(new S2CEquipChangeCharacterEquipJobItemNtc()
                 {
-                    CharacterId = character.NormalCharacterId,
+                    CharacterId = character.CharacterId,
                     EquipJobItemList = equippedJobItems
                 });
             }
@@ -220,7 +220,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
                 {
-                    CharacterId = character.NormalCharacterId,
+                    CharacterId = character.CharacterId,
                     EquipItemList = character.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
                     VisualEquipItemList = character.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
                     // TODO: Unk0

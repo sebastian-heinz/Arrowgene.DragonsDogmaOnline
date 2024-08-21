@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var result = new S2CItemGetSpecifiedHavingItemListRes();
 
-            var characterStorage = Server.Database.SelectAllStoragesByCharacterId(client.Character.NormalCharacterId);
+            var characterStorage = Server.Database.SelectAllStoragesByCharacterId(client.Character.CharacterId);
             foreach (var storage in characterStorage.GetAllStorages())
             {
                 var matches = storage.Value.FindItemsById(request.ItemId);
