@@ -24,13 +24,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var leader = client.Party.Leader.Client.Character;
 
-            // Temp hack since member board doesn't work
-            if (client.Character.CharacterId != leader.CharacterId)
-            {
-                return new S2CBattleContentPartyMemberInfoRes();
-            }
-
-
             bool contentSynced = true;
             foreach (var memberClient in client.Party.Clients)
             {
@@ -43,15 +36,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_CYCLE_CONTENTS_PLAY_START_INVALID_SITUATION_LEVEL, $"Not all players are synced");
             }
 
+            if (client.Character.CharacterId != leader.CharacterId && client.Character.StageNo == leader.StageNo)
+            {
+                // Temp hack since member board doesn't work
+                // Let the leader go first, then everyone else can join
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_MATCHING_PLAY_ENTRY_IS_NOT_READY, $"Leader didn't enter yet");
+            }
+
             // This NTC will force the player into the dungeon and skip the board
             S2CBattleContentAreaChangeNtc ntc = new S2CBattleContentAreaChangeNtc()
             {
                 // Unk0 = 2, // client.Character.NormalCharacterId,
-                StageId = client.Character.NextBBMStageId,
+                StageId = leader.NextBBMStageId,
                 StartPos = 0,
                 Unk4 = true,
             };
-            client.Party.SendToAll(ntc);
+            client.Send(ntc);
 
             return new S2CBattleContentPartyMemberInfoRes();
         }
