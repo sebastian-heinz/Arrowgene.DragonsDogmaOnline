@@ -334,18 +334,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 for (int i = 0; i < picks; i++)
                 {
                     List<uint> items = new List<uint>();
+                    items.AddRange(BitterblackMazeManager.SelectGearType(assets.LowQualityWeapons[jobId], DetermineEquipClass(assets.LowQualityArmors, jobId), assets.LowQualityOther));
                     switch (chestType)
                     {
                         case ChestType.Orange:
                         case ChestType.Purple:
                             items.AddRange(BitterblackMazeManager.SelectGearType(assets.HighQualityWeapons[jobId], DetermineEquipClass(assets.HighQualityArmors, jobId), assets.HighQualityOther));
                             break;
-                        case ChestType.Normal:
-                            items.AddRange(BitterblackMazeManager.SelectGearType(assets.LowQualityWeapons[jobId], DetermineEquipClass(assets.LowQualityArmors, jobId), assets.LowQualityOther));
-                            break;
                     }
 
-                    uint itemId = BitterblackMazeManager.SelectGear(server, character, items);
+                    uint itemId = BitterblackMazeManager.SelectGear(server, character, items, chestType);
                     if (itemId > 0)
                     {
                         results.Add(new InstancedGatheringItem()
@@ -361,7 +359,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Sealed chests should have at least one piece of equipment
                 var items = BitterblackMazeManager.SelectGearType(assets.HighQualityWeapons[jobId], DetermineEquipClass(assets.HighQualityArmors, jobId), assets.HighQualityOther);
-                uint itemId = BitterblackMazeManager.SelectGear(server, character, items);
+                uint itemId = BitterblackMazeManager.SelectGear(server, character, items, chestType);
                 results.Add(new InstancedGatheringItem()
                 {
                     ItemId = itemId,
@@ -446,40 +444,59 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return weapons;
         }
 
-        private static (uint, uint) DetermineItemTier(Character character)
+        private static (uint, uint) DetermineItemTier(Character character, ChestType chestType)
         {
             var progress = character.BbmProgress;
+
+            (uint, uint) result = (3, 3);
             switch (progress.ContentMode)
             {
                 case BattleContentMode.Rotunda:
                     switch (progress.Tier)
                     {
                         case 1:
-                            return (3, 4);
+                            result = (3, 4);
+                            break;
                         case 2:
-                            return (4, 5);
+                            result = (4, 5);
+                            break;
                         case 3:
-                            return (6, 10);
+                            result = (6, 10);
+                            break;
                     }
                     break;
                 case BattleContentMode.Abyss:
                     switch (progress.Tier)
                     {
                         case 1:
-                            return (3, 4);
+                            result = (3, 4);
+                            break;
                         case 2:
-                            return (5, 6);
+                            result = (5, 6);
+                            break;
                         case 3:
-                            return (7, 11);
+                            result = (7, 11);
+                            break;
                         case 4:
-                            return (11, 11);
+                            result = (11, 11);
+                            break;
                     }
                     break;
             }
-            return (1, 1);
+
+            // If we have a special chest, adjust the lower and upper bound of the item range
+            switch (chestType)
+            {
+                case ChestType.Orange:
+                case ChestType.Purple:
+                    result = (result.Item2, result.Item2 + 1);
+                    break;
+            }
+
+            return result;
         }
 
-        private static uint SelectGear(DdonGameServer server, Character character, List<uint> items)
+        private static uint SelectGear(DdonGameServer server, Character character, List<uint> items, ChestType chestType)
         {
             if (items.Count == 0)
             {
@@ -488,7 +505,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             uint attempts = 0;
             uint itemId = 0;
-            var itemRankRange = DetermineItemTier(character);
+            var itemRankRange = DetermineItemTier(character, chestType);
             do
             {
                 itemId = items[Random.Shared.Next(items.Count)];
