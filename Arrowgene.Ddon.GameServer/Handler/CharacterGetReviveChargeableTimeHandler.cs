@@ -22,9 +22,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if(Server.LastRevivalPowerRechargeTime.ContainsKey(client.Character.CharacterId))
             {
-                DateTime lastRechargeTime = Server.LastRevivalPowerRechargeTime[client.Character.CharacterId];
-                DateTime nextRechargeTime = lastRechargeTime.Add(DdonGameServer.RevivalPowerRechargeTimeSpan);
-                TimeSpan remainTimeSpan = nextRechargeTime - DateTime.UtcNow;
+                // Refresh revival at 12:00AM JST
+                DateTime utcNow = DateTime.UtcNow;
+                TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+                DateTime jstNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, jstZone);
+                DateTime nextMidnightJST = new DateTime(jstNow.Year, jstNow.Month, jstNow.Day, 0, 0, 0, jstNow.Kind).AddDays(1);
+                TimeSpan remainTimeSpan = nextMidnightJST - jstNow;
                 res.RemainTime = (uint) Math.Max(0, remainTimeSpan.TotalSeconds);
             }
             else
