@@ -26,19 +26,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     UpdateType = ItemNoticeType.ConsumeBag
                 };
 
-                foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
+                Server.Database.ExecuteInTransaction(connection => 
                 {
-                    CDataItemUpdateResult itemUpdate;
-                    if(consumeItem.SlotNo == 0)
+                    foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
                     {
-                        itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num);
+                        CDataItemUpdateResult itemUpdate;
+                        if (consumeItem.SlotNo == 0)
+                        {
+                            itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num, connection);
+                        }
+                        else
+                        {
+                            itemUpdate = Server.ItemManager.ConsumeItemInSlot(Server, client.Character, consumeItem.StorageType, consumeItem.SlotNo, consumeItem.Num, connection);
+                        }
+                        ntc.UpdateItemList.Add(itemUpdate);
                     }
-                    else
-                    {
-                        itemUpdate = Server.ItemManager.ConsumeItemInSlot(Server, client.Character, consumeItem.StorageType, consumeItem.SlotNo, consumeItem.Num);
-                    }
-                    ntc.UpdateItemList.Add(itemUpdate);
-                }
+                });
+                
                 client.Send(ntc);
             }
             catch(Exception _)

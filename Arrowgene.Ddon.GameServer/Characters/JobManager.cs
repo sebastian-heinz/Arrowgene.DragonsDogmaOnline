@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -29,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public void SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
+        public (IPacketStructure jobRes, IPacketStructure itemNtc, IPacketStructure jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
         {
             // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
             // (or give a lvl 1 weapon for free?)
@@ -91,13 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
 
-                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(changeJobNotice);
-                }
-
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangeJob;
-                client.Send(updateCharacterItemNtc);
 
                 S2CJobChangeJobRes changeJobResponse = new S2CJobChangeJobRes();
                 changeJobResponse.CharacterJobData = activeCharacterJobData;
@@ -113,7 +108,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobResponse.Unk0.Unk0 = (byte)jobId;
                 changeJobResponse.Unk0.Unk1 = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
 
-                client.Send(changeJobResponse);
+                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
             }
             else if (common is Pawn)
             {
@@ -129,13 +124,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
-                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(changeJobNotice);
-                }
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangePawnJob;
-                client.Send(updateCharacterItemNtc);
 
                 S2CJobChangePawnJobRes changeJobResponse = new S2CJobChangePawnJobRes();
                 changeJobResponse.PawnId = pawn.PawnId;
@@ -149,7 +139,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // changeJobResponse.Unk0.Unk1 = pawn.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList(); // TODO: What
                 changeJobResponse.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
                 changeJobResponse.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
-                client.Send(changeJobResponse);
+
+                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
             }
             else
             {

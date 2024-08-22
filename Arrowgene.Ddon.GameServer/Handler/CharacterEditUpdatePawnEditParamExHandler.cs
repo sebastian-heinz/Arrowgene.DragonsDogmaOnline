@@ -1,6 +1,5 @@
 #nullable enable
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
@@ -12,7 +11,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class CharacterEditUpdatePawnEditParamExHandler : GameRequestPacketHandler<C2SCharacterEditUpdatePawnEditParamExReq, S2CCharacterEditUpdatePawnEditParamExRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdatePawnEditParamExHandler));
-        
+
         public CharacterEditUpdatePawnEditParamExHandler(DdonGameServer server) : base(server)
         {
         }
@@ -30,25 +29,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.Name = packet.Name;
             Server.Database.UpdatePawnBaseInfo(pawn);
 
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.StorePostItemMail //Probably an abuse of this notice type.
+            };
+
+            List<(EquipType, EquipSlot)> forceRemovals = new List<(EquipType, EquipSlot)>();
+
             //Weirdly enough, pawns can reincarnate while wearing gender-locked equipment just fine.
             Server.Database.ExecuteInTransaction(connection =>
             {
-                List<(EquipType, EquipSlot)> forceRemovals = Server.EquipManager.CleanGenderedEquipTemplates(Server, pawn, connection);
+                forceRemovals = Server.EquipManager.CleanGenderedEquipTemplates(Server, pawn, connection);
                 if (forceRemovals.Any())
                 {
-                    S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
-                    {
-                        UpdateType = ItemNoticeType.StorePostItemMail //Probably an abuse of this notice type.
-                    };
-
-                    S2CEquipChangePawnEquipNtc updateEquipNtc = new S2CEquipChangePawnEquipNtc()
-                    {
-                        CharacterId = client.Character.CharacterId,
-                        PawnId = pawn.PawnId,
-                        EquipItemList = pawn.EquipmentTemplate.EquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Performance),
-                        VisualEquipItemList = pawn.EquipmentTemplate.EquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Visual)
-                    };
-
                     foreach ((EquipType, EquipSlot) force in forceRemovals)
                     {
                         EquipType equipType = force.Item1;
@@ -65,20 +58,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             0
                         ));
                     }
-
-                    client.Send(updateCharacterItemNtc);
-                    client.Send(updateEquipNtc);
                 }
             });
-            
-            foreach(Client other in Server.ClientLookup.GetAll()) {
-                other.Send(new S2CCharacterEditUpdateEditParamExNtc() {
-                    CharacterId = pawn.CharacterId,
+
+            if (forceRemovals.Any())
+            {
+                client.Send(updateCharacterItemNtc);
+
+                S2CEquipChangePawnEquipNtc updateEquipNtc = new S2CEquipChangePawnEquipNtc()
+                {
+                    CharacterId = client.Character.CharacterId,
                     PawnId = pawn.PawnId,
-                    EditInfo = pawn.EditInfo,
-                    Name = pawn.Name
-                });
+                    EquipItemList = pawn.EquipmentTemplate.EquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Performance),
+                    VisualEquipItemList = pawn.EquipmentTemplate.EquipmentAsCDataEquipItemInfo(pawn.Job, EquipType.Visual)
+                };
+
+                client.Send(updateEquipNtc);
             }
+
+            client.Party.SendToAllExcept(new S2CCharacterEditUpdateEditParamExNtc()
+            {
+                CharacterId = pawn.CharacterId,
+                PawnId = pawn.PawnId,
+                EditInfo = pawn.EditInfo,
+                Name = pawn.Name
+            }, client);
+
 
             return new S2CCharacterEditUpdatePawnEditParamExRes();
         }
