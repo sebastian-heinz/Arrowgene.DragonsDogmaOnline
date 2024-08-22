@@ -1,5 +1,5 @@
-using System;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Shop;
@@ -7,6 +7,8 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Networking.Tcp;
+using System;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -18,6 +20,11 @@ namespace Arrowgene.Ddon.GameServer
             InstanceGatheringItemManager = new InstanceGatheringItemManager(assetRepository);
             InstanceDropItemManager = new InstanceDropItemManager(this);
             InstanceShopManager = new InstanceShopManager(shopManager);
+            LocalLobbyContext = new Dictionary<uint, HashSet<WeakReference<GameClient>>>();
+            foreach (var stageId in StageManager.HubStageIds)
+            {
+                LocalLobbyContext[stageId] = new HashSet<WeakReference<GameClient>>();
+            }
         }
 
         public void UpdateIdentity()
@@ -44,6 +51,7 @@ namespace Arrowgene.Ddon.GameServer
         public InstanceShopManager InstanceShopManager { get; }
         public InstanceGatheringItemManager InstanceGatheringItemManager { get; }
         public InstanceDropItemManager InstanceDropItemManager { get; }
+        public Dictionary<uint, HashSet<WeakReference<GameClient>>> LocalLobbyContext { get; set; }
 
         // TODO: Place somewhere else more sensible
         public uint LastWarpPointId { get; set; }

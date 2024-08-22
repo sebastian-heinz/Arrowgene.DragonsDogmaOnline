@@ -31,6 +31,14 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 3)]
         public double RookiesRingBonus { get; set; }
 
+        /// <summary>
+        /// Controls whether to use the pass lobby context packets on demand or only on entry to the server.
+        /// True = Server entry only. Lower packet load, but also causes invisible people in lobbies.
+        /// False = On-demand. May cause performance issues due to packet load.
+        /// </summary>
+        [DataMember(Order = 4)]
+        public bool NaiveLobbyContextHandling { get; set; }
+
         public GameLogicSetting()
         {
             AdditionalProductionSpeedFactor = 1.0;

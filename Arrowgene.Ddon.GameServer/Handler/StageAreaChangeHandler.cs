@@ -1,15 +1,18 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
+using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class StageAreaChangeHandler : GameStructurePacketHandler<C2SStageAreaChangeReq>
+    public class StageAreaChangeHandler : GameRequestPacketHandler<C2SStageAreaChangeReq, S2CStageAreaChangeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageAreaChangeHandler));
 
@@ -17,23 +20,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SStageAreaChangeReq> packet)
+        public override S2CStageAreaChangeRes Handle(GameClient client, C2SStageAreaChangeReq packet)
         {
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
-            res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.Structure.StageId);
+            res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.StageId);
             res.IsBase = false; // This is set true for audience chamber and WDT for exmaple
 
             ContextManager.DelegateAllMasters(client);
+            Server.HubManager.LeaveLobbyContext(client, client.Character.Stage.Id);
 
             client.Character.StageNo = res.StageNo;
-            client.Character.Stage = new StageId(packet.Structure.StageId, 0, 0);
+            client.Character.Stage = new StageId(packet.StageId, 0, 0);
+
+            Server.HubManager.JoinLobbyContext(client, client.Character.Stage.Id);
 
             foreach (var pawn in client.Character.Pawns)
             {
                 pawn.StageNo = res.StageNo;
             }
 
-            Logger.Info($"StageNo:{client.Character.StageNo} StageId{packet.Structure.StageId}");
+            Logger.Info($"StageNo: {client.Character.StageNo} StageId: {packet.StageId}");
 
             if (StageManager.IsSafeArea(client.Character.Stage))
             {
@@ -65,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            client.Send(res);
+            return res;
         }
     }
 }

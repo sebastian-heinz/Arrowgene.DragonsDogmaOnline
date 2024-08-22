@@ -1,5 +1,3 @@
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -9,18 +7,13 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class LobbyLobbyLeaveHandler : StructurePacketHandler<GameClient, C2SLobbyLeaveReq>
+    public class LobbyLobbyLeaveHandler : GameStructurePacketHandler<C2SLobbyLeaveReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LobbyLobbyLeaveHandler));
-
-        private CharacterManager _CharacterManager;
-        private PartyManager _PartyManager;
 
         public LobbyLobbyLeaveHandler(DdonGameServer server) : base(server)
         {
             server.ClientConnectionChangeEvent += OnClientConnectionChangeEvent;
-            _CharacterManager = server.CharacterManager;
-            _PartyManager = server.PartyManager;
         }
 
         // I have no idea on when this gets called, not when exiting the game, thats for sure
@@ -45,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Notice all other users
                 S2CUserListLeaveNtc ntc = new S2CUserListLeaveNtc();
                 ntc.CharacterList.Add(new CDataCommonU32(client.Character.CharacterId));
-                foreach (Client otherClient in Server.Clients)
+                foreach (Client otherClient in Server.ClientLookup.GetAll())
                 {
                     if (otherClient != client)
                     {
@@ -53,8 +46,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                _CharacterManager.UpdateDatabaseOnExit(client.Character);
-                _PartyManager.CleanupOnExit(client);
+                Server.HubManager.LeaveAllLobbies(client);
+                Server.CharacterManager.UpdateDatabaseOnExit(client.Character);
+                Server.PartyManager.CleanupOnExit(client);
             }
         }
     }
