@@ -128,7 +128,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 var clearNtc = new S2CBattleContentClearContentNtc()
                 {
                     Unk0 = progress.ContentId,
-                    ContentName = (match.ContentMode == BattleContentMode.Rotunda) ? "Bitterblack Maze Rotunda Cleared" : "Bitterblack Maze Abyss Cleared",
+                    ContentName = (match.ContentMode == BattleContentMode.Rotunda) ? "Bitterblack Maze Rotunda" : "Bitterblack Maze Abyss",
                     ClearTime = (ulong) (DateTimeOffset.UtcNow.ToUnixTimeSeconds() - (long) progress.StartTime)
                 };
                 client.Send(clearNtc);
@@ -529,7 +529,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static uint RollRareArmor(StageId stageId)
         {
             uint itemId = 0;
-            var dropTable = StageManager.IsBitterBlackMazeBossStageId(stageId) ? gRareNormalDrops : gRareAbyssNormalDrops;
+            var dropTable = StageManager.IsBitterBlackMazeBossStageId(stageId) ? gRareRotundaDrops : gRareAbyssNormalDrops;
             if (Random.Shared.Next(100) > 98)
             {
                 itemId = dropTable[Random.Shared.Next(dropTable.Count)];
@@ -546,7 +546,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             (7552, 2), // Healing Elixer
         };
 
-        private static readonly List<uint> gRareNormalDrops = new List<uint>()
+        private static readonly List<uint> gRareRotundaDrops = new List<uint>()
         {
             21396, // カースドヘルム,Cursed Helm,
             21397, // カースドアーマー,Cursed Armor,
