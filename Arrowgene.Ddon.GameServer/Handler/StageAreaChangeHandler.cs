@@ -33,7 +33,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.StageNo = res.StageNo;
             client.Character.Stage = new StageId(packet.StageId, 0, 0);
 
-            Server.HubManager.TransitionLobbyContext(client, sourceStageId, packet.StageId);
+            //For shared spaces, deal with all the context updating required for characters to be visible.
+            //Must be done after Character.StageNo is set because of how the context is structured.
+            Server.HubManager.MoveStageUpdateLastSeen(client, sourceStageId, packet.StageId);
 
             foreach (var pawn in client.Character.Pawns)
             {

@@ -53,11 +53,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             SelectPawns(character);
 
-            foreach (var stageId in StageManager.HubStageIds)
-            {
-                character.LocalLobbyContext[stageId] = new HashSet<uint>();
-            }
-
             // TODO: Query things like main quest?
 
             return character;

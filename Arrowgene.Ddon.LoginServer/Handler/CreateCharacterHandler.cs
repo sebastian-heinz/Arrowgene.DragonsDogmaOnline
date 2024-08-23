@@ -517,12 +517,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             // TODO: Figure out a proper default value and not hardcode it
             character.MaxBazaarExhibits = 5;
 
-            //Setup LocalLobbyContext for this character.
-            foreach (var stageId in StageManager.HubStageIds)
-            {
-                character.LocalLobbyContext[stageId] = new HashSet<uint>();
-            }
-
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)
             {
