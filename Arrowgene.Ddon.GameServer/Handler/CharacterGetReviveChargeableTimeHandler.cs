@@ -16,19 +16,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterGetReviveChargeableTimeReq> packet)
+       public override void Handle(GameClient client, StructurePacket<C2SCharacterGetReviveChargeableTimeReq> packet)
         {
             S2CCharacterGetReviveChargeableTimeRes res = new S2CCharacterGetReviveChargeableTimeRes();
 
+           //  Refresh revival at 12:00AM JST. jstNow is needed to allow the else statement to update LastRevivalPowerRechargeTime if necessary.
+
             if(Server.LastRevivalPowerRechargeTime.ContainsKey(client.Character.CharacterId))
             {
-                // Refresh revival at 12:00AM JST
                 DateTime utcNow = DateTime.UtcNow;
                 TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
                 DateTime jstNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, jstZone);
-                DateTime nextMidnightJST = new DateTime(jstNow.Year, jstNow.Month, jstNow.Day, 0, 0, 0, jstNow.Kind).AddDays(1);
-                TimeSpan remainTimeSpan = nextMidnightJST - jstNow;
-                res.RemainTime = (uint) Math.Max(0, remainTimeSpan.TotalSeconds);
+                DateTime todayMidnightJST = new DateTime(jstNow.Year, jstNow.Month, jstNow.Day, 0, 0, 0, DateTimeKind.Local);
+                DateTime nextMidnightJST = todayMidnightJST.AddDays(1);
+                DateTime lastRechargeTime = Server.LastRevivalPowerRechargeTime[client.Character.CharacterId];
+                DateTime nextRechargeTime = (lastRechargeTime >= todayMidnightJST) ? nextMidnightJST : todayMidnightJST;
+                TimeSpan remainTimeSpan = nextRechargeTime - jstNow;
+                res.RemainTime = (uint)Math.Max(0, remainTimeSpan.TotalSeconds);
             }
             else
             {
