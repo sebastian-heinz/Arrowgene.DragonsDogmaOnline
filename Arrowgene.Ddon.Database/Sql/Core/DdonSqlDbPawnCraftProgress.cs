@@ -133,7 +133,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 Exp = GetUInt32(reader, "exp"),
                 NpcActionId = (NpcActionType)GetInt32(reader, "npc_action_id"),
                 ItemId = GetUInt32(reader, "item_id"),
-                Unk0 = GetUInt16(reader, "unk0"),
+                AdditionalStatusId = GetUInt16(reader, "unk0"),
                 RemainTime = GetUInt32(reader, "remain_time"),
                 ExpBonus = GetBoolean(reader, "exp_bonus"),
                 CreateCount = GetUInt32(reader, "create_count"),
@@ -159,7 +159,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@exp", craftProgress.Exp);
             AddParameter(command, "@npc_action_id", (int)craftProgress.NpcActionId);
             AddParameter(command, "@item_id", craftProgress.ItemId);
-            AddParameter(command, "@unk0", craftProgress.Unk0);
+            AddParameter(command, "@unk0", craftProgress.AdditionalStatusId);
             AddParameter(command, "@remain_time", craftProgress.RemainTime);
             AddParameter(command, "@exp_bonus", craftProgress.ExpBonus);
             AddParameter(command, "@create_count", craftProgress.CreateCount);

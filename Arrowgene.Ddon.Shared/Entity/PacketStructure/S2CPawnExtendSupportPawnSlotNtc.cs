@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CPawnExtendSupportPawnSlotNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_PAWN_EXTEND_MAIN_PAWN_SLOT_NTC;
+        public PacketId Id => PacketId.S2C_PAWN_EXTEND_SUPPORT_PAWN_SLOT_NTC;
 
         public S2CPawnExtendSupportPawnSlotNtc()
         {

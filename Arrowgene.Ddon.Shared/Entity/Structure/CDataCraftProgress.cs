@@ -25,15 +25,18 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public NpcActionType NpcActionId { get; set; }
         public uint ItemId { get; set; }
 
+        /// <summary>
+        /// ToppingId == RefineMaterialId
+        /// We store plusvalue in DB instead and can skip storing topping ID
+        /// </summary>
         public uint ToppingId { get; set; }
 
-        // Directly correlated with C2SCraftStartCraftReq Unk0
-        public ushort Unk0 { get; set; }
+        public ushort AdditionalStatusId { get; set; }
 
-        // Remaining time in seconds
+        /// Remaining time in seconds
         public uint RemainTime { get; set; }
 
-        // Determines whether GG-based bonus is active
+        /// Determines whether GG-based bonus is active
         public bool ExpBonus { get; set; }
         public uint CreateCount { get; set; }
 
@@ -49,7 +52,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteInt32(buffer, (int)obj.NpcActionId);
                 WriteUInt32(buffer, obj.ItemId);
                 WriteUInt32(buffer, obj.ToppingId);
-                WriteUInt16(buffer, obj.Unk0);
+                WriteUInt16(buffer, obj.AdditionalStatusId);
                 WriteUInt32(buffer, obj.RemainTime);
                 WriteBool(buffer, obj.ExpBonus);
                 WriteUInt32(buffer, obj.CreateCount);
@@ -66,7 +69,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.NpcActionId = (NpcActionType)ReadInt32(buffer);
                 obj.ItemId = ReadUInt32(buffer);
                 obj.ToppingId = ReadUInt32(buffer);
-                obj.Unk0 = ReadUInt16(buffer);
+                obj.AdditionalStatusId = ReadUInt16(buffer);
                 obj.RemainTime = ReadUInt32(buffer);
                 obj.ExpBonus = ReadBool(buffer);
                 obj.CreateCount = ReadUInt32(buffer);

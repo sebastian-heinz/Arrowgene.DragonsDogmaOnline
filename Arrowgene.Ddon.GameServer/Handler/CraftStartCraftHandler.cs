@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, recipe.ItemID);
 
 
-            ushort AddStatusID = request.Unk0;
+            ushort AddStatusID = request.AdditionalStatusId;
             CDataAddStatusParam AddStat = new CDataAddStatusParam()
             {
                 IsAddStat1 = false,
@@ -128,7 +128,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RecipeId = request.RecipeID,
                 NpcActionId = NpcActionType.NpcActionSmithy,
                 ItemId = recipe.ItemID,
-                Unk0 = request.Unk0,
+                AdditionalStatusId = request.AdditionalStatusId,
                 // TODO: implement mechanism to deduct time periodically
                 RemainTime = Server.CraftManager.CalculateRecipeProductionSpeed(recipe.Time, productionSpeedLevels),
                 CreateCount = recipe.Num * request.CreateCount,

@@ -17,7 +17,8 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 1)]
         public double AdditionalCostPerformanceFactor { get; set; }
 
-        public byte CraftConsumableProductionTimesMax { get; set; } = 10;
+        [DataMember(Order = 2)]
+        public byte CraftConsumableProductionTimesMax { get; set; }
 
         public GameLogicSetting()
         {
@@ -37,6 +38,18 @@ namespace Arrowgene.Ddon.Server
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
+            if (AdditionalProductionSpeedFactor < 0)
+            {
+                CraftConsumableProductionTimesMax = 1;
+            }
+            if (AdditionalCostPerformanceFactor < 0)
+            {
+                CraftConsumableProductionTimesMax = 1;
+            }
+            if (CraftConsumableProductionTimesMax < 1)
+            {
+                CraftConsumableProductionTimesMax = 10;
+            }
         }
     }
 }

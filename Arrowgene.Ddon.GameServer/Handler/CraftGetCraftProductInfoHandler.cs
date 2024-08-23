@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 ItemID = craftProgress.ItemId,
                 ItemNum = craftProgress.CreateCount,
-                Unk0 = craftProgress.Unk0,
+                Unk0 = craftProgress.AdditionalStatusId,
                 PlusValue = (byte)craftProgress.PlusValue,
                 Exp = craftProgress.Exp,
                 ExtraBonus = craftProgress.BonusExp,

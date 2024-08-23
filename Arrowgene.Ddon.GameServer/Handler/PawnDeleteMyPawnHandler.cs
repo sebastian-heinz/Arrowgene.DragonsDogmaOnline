@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Pawn pawn = client.Character.Pawns[pawnIndex];
             Equipment pawnEquipment = client.Character.Storage.GetPawnEquipment(pawnIndex);
             List<Item> pawnStorageItems = new List<Item>(pawnEquipment.GetItems(EquipType.Performance).ToArray());
+            pawnStorageItems.AddRange(pawnEquipment.GetItems(EquipType.Visual).ToArray());
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc
             {
@@ -35,12 +36,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
-                // TODO: unequip pawn and store items in player storage instead of deleting
                 if (request.IsKeepEquip)
                 {
+                    updateItems.AddRange(Server.ItemManager.MoveItem(Server, client.Character, pawn.Equipment.Storage, storageItem.UId, 1,
+                        client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0));
                 }
-                CDataItemUpdateResult ntcData = Server.ItemManager.ConsumeItemByUId(Server, client.Character, StorageType.PawnEquipment, storageItem.UId, 1);
-                updateItems.Add(ntcData);
+                else
+                {
+                    updateItems.Add(Server.ItemManager.ConsumeItemByUId(Server, client.Character, StorageType.PawnEquipment, storageItem.UId, 1));
+                }
             }
 
             updateCharacterItemNtc.UpdateItemList.AddRange(updateItems);
@@ -48,8 +52,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Character.Pawns.Remove(pawn);
             Server.Database.DeletePawn(pawn.PawnId);
-
-            // TODO: send some form of NTC to notify client
 
             return res;
         }
