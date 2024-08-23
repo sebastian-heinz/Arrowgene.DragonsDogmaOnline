@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         // List of lobby areas, where you're supposed to see all other players.
         // TODO: Complete with all the safe areas. Maybe move it to DB or config?
-        private static readonly HashSet<uint> HubStageIds = new HashSet<uint>(){
+        public static readonly HashSet<uint> HubStageIds = new HashSet<uint>(){
             2, // White Dragon Temple
             141, // Breya Coast (Summer Event Hub Area)
             341, // Dana Centrum

@@ -73,6 +73,7 @@ namespace Arrowgene.Ddon.GameServer
             BazaarManager = new BazaarManager(this);
             RewardManager = new RewardManager(this);
             StampManager = new StampManager(this);
+            HubManager = new HubManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -99,6 +100,7 @@ namespace Arrowgene.Ddon.GameServer
         public BazaarManager BazaarManager { get; }
         public RewardManager RewardManager { get; }
         public StampManager StampManager { get; }
+        public HubManager HubManager { get; }
         public GameRouter Router { get; }
 
         public ChatLogHandler ChatLogHandler { get; }

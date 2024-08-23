@@ -32,10 +32,18 @@ namespace Arrowgene.Ddon.Server
         public double RookiesRingBonus { get; set; }
 
         /// <summary>
+        /// Controls whether to pass lobby context packets on demand or only on entry to the server.
+        /// True = Server entry only. Lower packet load, but also causes invisible people in lobbies.
+        /// False = On-demand. May cause performance issues due to packet load.
+        /// </summary>
+        [DataMember(Order = 4)]
+        public bool NaiveLobbyContextHandling { get; set; }
+
+        /// <summary>
         /// Determines the maximum amount of consumable items that can be crafted in one go with a pawn.
         /// The default is a value of 10 which is equivalent to the original game's behavior.
         /// </summary>
-        [DataMember(Order = 4)] public byte CraftConsumableProductionTimesMax { get; set; }
+        [DataMember(Order = 5)] public byte CraftConsumableProductionTimesMax { get; set; }
 
         public GameLogicSetting()
         {
@@ -43,6 +51,7 @@ namespace Arrowgene.Ddon.Server
             AdditionalCostPerformanceFactor = 1.0;
             RookiesRingMaxLevel = 89;
             RookiesRingBonus = 1.0;
+            NaiveLobbyContextHandling = true;
             CraftConsumableProductionTimesMax = 10;
         }
 
@@ -52,6 +61,7 @@ namespace Arrowgene.Ddon.Server
             AdditionalCostPerformanceFactor = setting.AdditionalCostPerformanceFactor;
             RookiesRingMaxLevel = setting.RookiesRingMaxLevel;
             RookiesRingBonus = setting.RookiesRingBonus;
+            NaiveLobbyContextHandling = setting.NaiveLobbyContextHandling;
             CraftConsumableProductionTimesMax = setting.CraftConsumableProductionTimesMax;
         }
 
