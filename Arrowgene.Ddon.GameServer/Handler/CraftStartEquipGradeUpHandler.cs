@@ -143,33 +143,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
                 }
             }
+
             else
             {
                 if (currentTotalEquipPoint >= requiredPoints)
                 {
-                    if (currentStars != 4)
+                    currentTotalEquipPoint -= requiredPoints;
+
+                    if (currentStars < 4)
                     {
                         int nextThresholdIndex = currentStars + 1;
-                        if (nextThresholdIndex < thresholds.Length && remainingPoints >= thresholds[nextThresholdIndex])
-                        {
-                            // Cap the remainingPoints to 1 point short of the next threshold
-                            remainingPoints = thresholds[nextThresholdIndex] - 1;
-                        }
-                        else
-                        {
-                            remainingPoints -= requiredPoints;
-                        }
+                        uint nextThreshold = thresholds[nextThresholdIndex];
+
+                        // Cap remaining points or just update them based on the next threshold
+                        remainingPoints = Math.Min(currentTotalEquipPoint, nextThreshold - 1);
                     }
                     else
                     {
-                        remainingPoints -= requiredPoints;
+                        remainingPoints = currentTotalEquipPoint;
                     }
+
+                    // Prepare to grade up
                     gradeupList = new() { new CDataCommonU32(gearUpgradeID) };
                     doUpgrade = true;
                 }
             }
-
-            if (upgradableStatus == UpgradableStatus.No) // This should handle a "True" weapon because I pull it from the Recipe directly.
+            if (upgradableStatus == UpgradableStatus.No)
             {
                 canContinue = false;
             }
