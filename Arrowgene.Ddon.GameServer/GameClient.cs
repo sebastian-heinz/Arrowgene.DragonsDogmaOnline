@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Shop;
@@ -8,7 +7,6 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Networking.Tcp;
 using System;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer
 {

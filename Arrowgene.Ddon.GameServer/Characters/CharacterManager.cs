@@ -3,7 +3,6 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters

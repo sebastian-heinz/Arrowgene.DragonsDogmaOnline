@@ -26,16 +26,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.StageId);
             res.IsBase = false; // This is set true for audience chamber and WDT for exmaple
 
-            uint sourceStageId = client.Character.Stage.Id;
+            uint previousStageId = client.Character.Stage.Id;
 
             ContextManager.DelegateAllMasters(client);
 
             client.Character.StageNo = res.StageNo;
             client.Character.Stage = new StageId(packet.StageId, 0, 0);
 
-            //For shared spaces, deal with all the context updating required for characters to be visible.
-            //Must be done after Character.StageNo is set because of how the context is structured.
-            Server.HubManager.MoveStageUpdateLastSeen(client, sourceStageId, packet.StageId);
+            // For shared spaces, deal with all the context updating required for characters to be visible.
+            // Must be done after Character.StageNo is set because of how the context is structured.
+            Server.HubManager.UpdateLobbyContextOnStageChange(client, previousStageId, packet.StageId);
 
             foreach (var pawn in client.Character.Pawns)
             {

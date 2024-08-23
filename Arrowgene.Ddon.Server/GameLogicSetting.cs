@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Server
         public double RookiesRingBonus { get; set; }
 
         /// <summary>
-        /// Controls whether to use the pass lobby context packets on demand or only on entry to the server.
+        /// Controls whether to pass lobby context packets on demand or only on entry to the server.
         /// True = Server entry only. Lower packet load, but also causes invisible people in lobbies.
         /// False = On-demand. May cause performance issues due to packet load.
         /// </summary>
@@ -45,6 +45,7 @@ namespace Arrowgene.Ddon.Server
             AdditionalCostPerformanceFactor = 1.0;
             RookiesRingMaxLevel = 89;
             RookiesRingBonus = 1.0;
+            NaiveLobbyContextHandling = true;
         }
 
         public GameLogicSetting(GameLogicSetting setting)
@@ -53,6 +54,7 @@ namespace Arrowgene.Ddon.Server
             AdditionalCostPerformanceFactor = setting.AdditionalCostPerformanceFactor;
             RookiesRingMaxLevel = setting.RookiesRingMaxLevel;
             RookiesRingBonus = setting.RookiesRingBonus;
+            NaiveLobbyContextHandling = setting.NaiveLobbyContextHandling;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.
