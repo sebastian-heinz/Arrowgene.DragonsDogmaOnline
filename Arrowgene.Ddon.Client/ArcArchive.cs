@@ -184,19 +184,6 @@ namespace Arrowgene.Ddon.Client
             return new FileIndexSearch();
         }
 
-        /// <summary>
-        /// Path inside .arc files use `\` to separate directories.
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
-        public static string ToArcPath(string path)
-        {
-            path = path.Replace('/', '\\');
-            path = path.Replace(Path.DirectorySeparatorChar, '\\');
-            path = path.Replace(Path.AltDirectorySeparatorChar, '\\');
-            return path;
-        }
-
         private readonly List<ArcFile> _files;
 
         public ArcArchive()
@@ -590,7 +577,7 @@ namespace Arrowgene.Ddon.Client
             public string ArcPath
             {
                 get => _arcPath;
-                set => _arcPath = ToArcPath(value);
+                set => _arcPath = Util.ToArcPath(value);
             }
 
             public bool Match(FileIndex fileIndex)
