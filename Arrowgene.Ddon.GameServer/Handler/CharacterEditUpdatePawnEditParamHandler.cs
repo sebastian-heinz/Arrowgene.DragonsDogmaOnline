@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
@@ -24,13 +23,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Pawn pawn = client.Character.PawnBySlotNo(packet.SlotNo);
             pawn.EditInfo = packet.EditInfo;
             Server.Database.UpdateEditInfo(pawn);
-            foreach(Client other in Server.ClientLookup.GetAll()) {
-                other.Send(new S2CCharacterEditUpdateEditParamNtc() {
-                    CharacterId = pawn.CharacterId,
-                    PawnId = pawn.PawnId,
-                    EditInfo = pawn.EditInfo
-                });
-            }
+
+            client.Party.SendToAllExcept(new S2CCharacterEditUpdateEditParamNtc()
+            {
+                CharacterId = pawn.CharacterId,
+                PawnId = pawn.PawnId,
+                EditInfo = pawn.EditInfo
+            }, client);
 
             return new S2CCharacterEditUpdatePawnEditParamRes();
         }

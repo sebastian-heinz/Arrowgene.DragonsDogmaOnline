@@ -45,21 +45,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new Exception("Unexpected destination when buying goods: "+packet.Destination);
             }
 
+            S2CItemUpdateCharacterItemNtc itemNtc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.ShopGoods_buy
+            };
+
             Server.Database.ExecuteInTransaction(connection =>
             {
                 // UPDATE INVENTORY
                 List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, sendToItemBag, good.ItemId, boughtAmount, connectionIn: connection);
 
                 boughtAmount = (uint)itemUpdateResults.Select(result => result.UpdateItemNum).Sum();
-                if (boughtAmount == 0)
-                {
-                    // Send empty response, no items bought
-                    client.Send(new S2CItemUpdateCharacterItemNtc()
-                    {
-                        UpdateType = ItemNoticeType.ShopGoods_buy
-                    });
-                }
-                else
+                if (boughtAmount > 0) 
                 {
                     // Substract stock, substract wallet points, and send response with the stock, wallet points and inventory
                     totalPrice = good.Price * boughtAmount;
@@ -72,17 +69,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
 
                     // UPDATE CHARACTER WALLET
-                    client.Send(new S2CItemUpdateCharacterItemNtc()
-                    {
-                        UpdateType = ItemNoticeType.ShopGoods_buy,
-                        UpdateWalletList = new List<CDataUpdateWalletPoint>()
+                    itemNtc.UpdateWalletList = new List<CDataUpdateWalletPoint>()
                     {
                         Server.WalletManager.RemoveFromWallet(client.Character, shop.WalletType, totalPrice, connection)
-                    },
-                        UpdateItemList = itemUpdateResults
-                    });
+                    };
+                    itemNtc.UpdateItemList = itemUpdateResults;
                 }
             });
+
+            client.Send(itemNtc);
             
             // Send packets
             return new S2CShopBuyShopGoodsRes()
