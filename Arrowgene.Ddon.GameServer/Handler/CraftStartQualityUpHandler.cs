@@ -32,6 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string RefineMaterialUID = request.RefineUID;
             ushort AddStatusID = request.AddStatusID;
             uint pawnExp = 0;
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank]; // TODO: Make a new JSON for Quality, its different from Crests/Dyes.
+            uint totalCost = (uint)(craftInfo.Cost * 1);
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -56,12 +59,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Lead pawn is always owned by player.
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
-            List<Pawn> pawns = new List<Pawn> { leadPawn };
-            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId, true)));
-            List<uint> consumableQuantityLevels = pawns.Select(CraftManager.GetPawnConsumableQuantityLevel).ToList();
-
             List<uint> qualityLevels = new List<uint>();
-            qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(leadPawn));
+            List<uint> pawnIds = new List<uint> { leadPawn.PawnId };
+            pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
+            List<uint> costPerformanceLevels = new List<uint>();
+
+            foreach (uint pawnId in pawnIds)
+            {
+                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
+                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+            }
             double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
 
             uint plusValue = 0;
@@ -131,7 +138,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     (slotno, item, itemnum) = foundItem;
                     Server.ItemManager.UpgradeStorageItem(Server, client, character.CharacterId, storageType, equipItem, slotno);
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
-                    client.Send(updateCharacterItemNtc);
                 }
                 else
                 {
@@ -140,6 +146,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
+                                         Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels));
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+
             var res = new S2CCraftStartQualityUpRes()
             {
                 Unk0 = dummydata,
@@ -147,8 +157,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = CurrentEquipInfo
             };
 
-            // exp rewarded is based on the rock used and the items IR.
-            // TODO: Cost reduction, it seems pretty consistent.
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
                 CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, 0);
@@ -158,6 +166,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftManager.HandlePawnRankUpNtc(client, leadPawn);
             }
 
+            client.Send(updateCharacterItemNtc);
             return res;
         }
     }
