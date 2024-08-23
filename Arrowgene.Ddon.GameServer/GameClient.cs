@@ -18,6 +18,8 @@ namespace Arrowgene.Ddon.GameServer
             InstanceGatheringItemManager = new InstanceGatheringItemManager(assetRepository);
             InstanceDropItemManager = new InstanceDropItemManager(this);
             InstanceShopManager = new InstanceShopManager(shopManager);
+            InstanceBbmItemManager = new InstanceBitterblackGatheringItemManager();
+            GameMode = GameMode.Normal;
         }
 
         public void UpdateIdentity()
@@ -44,6 +46,9 @@ namespace Arrowgene.Ddon.GameServer
         public InstanceShopManager InstanceShopManager { get; }
         public InstanceGatheringItemManager InstanceGatheringItemManager { get; }
         public InstanceDropItemManager InstanceDropItemManager { get; }
+        public InstanceBitterblackGatheringItemManager InstanceBbmItemManager { get; }
+
+        public GameMode GameMode { get; set; }
 
         // TODO: Place somewhere else more sensible
         public uint LastWarpPointId { get; set; }

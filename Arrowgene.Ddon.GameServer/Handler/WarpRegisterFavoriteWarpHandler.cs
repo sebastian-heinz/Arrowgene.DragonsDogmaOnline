@@ -25,6 +25,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 oldFavorite.FavoriteSlotNo = 0;
                 Server.Database.UpdateReleasedWarpPoint(client.Character.CharacterId, oldFavorite);
             }
+            else
+            {
+                oldFavorite = new ReleasedWarpPoint()
+                {
+                    WarpPointId = request.Structure.WarpPointId,
+                    FavoriteSlotNo = request.Structure.SlotNo
+                };
+            }
 
             ReleasedWarpPoint newFavorite = client.Character.ReleasedWarpPoints.Where(rwp => rwp.WarpPointId == request.Structure.WarpPointId).Single();
             newFavorite.FavoriteSlotNo = request.Structure.SlotNo;

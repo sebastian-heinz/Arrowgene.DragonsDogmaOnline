@@ -1,4 +1,4 @@
-﻿/* Style hints:
+/* Style hints:
    when a primary key is made up of a single column embed the primary key syntax in the column definition
    embed AUTOINCREMENT in column definition
    do not embed unique qualifier syntax, instead it should be part of a constraint definition
@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS "ddon_character"
     "arisen_profile_share_range" SMALLINT                          NOT NULL,
     "fav_warp_slot_num"          INTEGER                           NOT NULL,
     "max_bazaar_exhibits"        INTEGER                           NOT NULL,
+    "game_mode"                  INTEGER                           NOT NULL,
     CONSTRAINT "fk_ddon_character_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_character_account_id" FOREIGN KEY ("account_id") REFERENCES "account" ("id") ON DELETE CASCADE
 );
@@ -303,16 +304,16 @@ CREATE TABLE IF NOT EXISTS "ddon_storage_item"
 
 -- CREATE TABLE IF NOT EXISTS ddon_additional_status
 -- (
---     "item_uid"          VARCHAR(8) NOT NULL,
---     "character_id"      INTEGER NOT NULL,
---     "is_add_stat1"      TINYINT NOT NULL,
---     "is_add_stat2"      TINYINT NOT NULL,
---     "additional_status1" SMALLINT NOT NULL,
---     "additional_status2" SMALLINT NOT NULL,
---     CONSTRAINT pk_ddon_additional_status PRIMARY KEY ("item_uid"),
---     CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_storage_item ("item_uid") ON DELETE CASCADE,
---     CONSTRAINT fk_additional_status_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
--- );
+    --     "item_uid"          VARCHAR(8) NOT NULL,
+    --     "character_id"      INTEGER NOT NULL,
+    --     "is_add_stat1"      TINYINT NOT NULL,
+    --     "is_add_stat2"      TINYINT NOT NULL,
+    --     "additional_status1" SMALLINT NOT NULL,
+    --     "additional_status2" SMALLINT NOT NULL,
+    --     CONSTRAINT pk_ddon_additional_status PRIMARY KEY ("item_uid"),
+    --     CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_storage_item ("item_uid") ON DELETE CASCADE,
+    --     CONSTRAINT fk_additional_status_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
+    -- );
 -- Put in comments because it seems this might be apart of a larger system. TODO: Revisit this when we start messing around with Craig's crafting.
 
 
@@ -672,4 +673,36 @@ CREATE TABLE IF NOT EXISTS "ddon_binary_data"
     "character_id" INTEGER PRIMARY KEY NOT NULL,
     "binary_data"  BLOB                NOT NULL,
     CONSTRAINT "fk_ddon_binary_data_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_bbm_character_map" (
+    "character_id"     INTEGER PRIMARY KEY NOT NULL,
+    "bbm_character_id" INTEGER NOT NULL,
+    CONSTRAINT fk_ddon_bbm_character_map_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_bbm_progress" (
+    "character_id"     INTEGER PRIMARY KEY NOT NULL,
+    "start_time"       INTEGER NOT NULL,
+    "content_id"       INTEGER NOT NULL,
+    "content_mode"     INTEGER NOT NULL,
+    "tier"             INTEGER NOT NULL,
+    "killed_death"     BOOLEAN NOT NULL,
+    "last_ticket_time" INTEGER NOT NULL,
+    CONSTRAINT fk_ddon_bbm_progress_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_bbm_rewards" (
+    "character_id" INTEGER PRIMARY KEY NOT NULL,
+    "gold_marks"   INTEGER NOT NULL,
+    "silver_marks" INTEGER NOT NULL,
+    "red_marks"    INTEGER NOT NULL,
+    CONSTRAINT fk_ddon_bbm_rewards_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_bbm_content_treasure" (
+    "character_id" INTEGER PRIMARY KEY NOT NULL,
+    "content_id"   INTEGER NOT NULL,
+    "amount"       INTEGER NOT NULL,
+    CONSTRAINT fk_ddon_bbm_content_treasure_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );

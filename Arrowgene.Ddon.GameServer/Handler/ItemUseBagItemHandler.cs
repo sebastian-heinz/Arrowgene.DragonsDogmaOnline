@@ -66,12 +66,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
                 client.Character.Storage.GetStorage(DestinationStorageType).SetItem(null, 0, slotNo);
-                Server.Database.DeleteStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo);
+                Server.Database.DeleteStorageItem(client.Character.ContentCharacterId, DestinationStorageType, slotNo);
             }
             else
             {
                 client.Character.Storage.GetStorage(DestinationStorageType).SetItem(item, itemNum, slotNo);
-                Server.Database.ReplaceStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo, itemNum, item);
+                Server.Database.ReplaceStorageItem(client.Character.ContentCharacterId, DestinationStorageType, slotNo, itemNum, item);
             }
 
             client.Send(ntc);

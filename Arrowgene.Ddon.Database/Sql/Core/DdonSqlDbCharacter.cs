@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CharacterFields = new string[]
         {
-            /* character_id */ "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "max_bazaar_exhibits"
+            /* character_id */ "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "max_bazaar_exhibits", "game_mode"
         };
 
         private static readonly string[] CDataMatchingProfileFields = new string[]
@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
             + "LEFT JOIN \"ddon_binary_data\" ON \"ddon_binary_data\".\"character_id\" = \"ddon_character\".\"character_id\" "
-            + "WHERE \"account_id\" = @account_id";
+            + "WHERE \"account_id\" = @account_id AND \"game_mode\" = @game_mode;";
         private readonly string SqlSelectAllCharactersData = $"SELECT \"ddon_character\".\"character_id\", {BuildQueryField("ddon_character", CharacterFields)}, \"ddon_character_common\".\"character_common_id\", {BuildQueryField("ddon_character_common", CharacterCommonFields)}, {BuildQueryField("ddon_edit_info", CDataEditInfoFields)}, {BuildQueryField("ddon_status_info", CDataStatusInfoFields)}, {BuildQueryField("ddon_character_matching_profile", CDataMatchingProfileFields)}, {BuildQueryField("ddon_character_arisen_profile", CDataArisenProfileFields)}, {BuildQueryField("ddon_binary_data", CharacterBinaryDataFields)} "
             + "FROM \"ddon_character\" "
             + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool CreateCharacter(Character character)
         {
-            return ExecuteInTransaction(conn =>
+            return ExecuteInTransaction((Action<TCon>)(conn =>
                 {
                     character.Created = DateTime.UtcNow;
 
@@ -92,17 +92,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
                     ExecuteNonQuery(conn, SqlInsertCharacter, command => { AddParameter(command, character); }, out long characterId);
                     character.CharacterId = (uint) characterId;
+                    
+                    if (character.GameMode == GameMode.BitterblackMaze)
+                    {
+                        character.BbmCharacterId = (uint) characterId;
+                    }
 
                     ExecuteNonQuery(conn, SqlInsertEditInfo, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertStatusInfo, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterMatchingProfile, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
-                    ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command => {AddParameter(command, character);});
+                    ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command => { AddParameter(command, character);});
 
                     CreateItems(conn, character);
 
                     StoreCharacterData(conn, character);
-                });
+                }));
         }
 
         public bool UpdateCharacterBaseInfo(Character character)
@@ -171,13 +176,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return character;
         }
 
-        public List<Character> SelectCharactersByAccountId(int accountId)
+        public List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode)
         {
             List<Character> characters = new List<Character>();
             ExecuteInTransaction(conn =>
             {
                 ExecuteReader(conn, SqlSelectAllCharactersDataByAccountId,
-                    command => { AddParameter(command, "@account_id", accountId); }, reader =>
+                    command => { 
+                        AddParameter(command, "@account_id", accountId);
+                        AddParameter(command, "@game_mode", (uint) gameMode);
+                    }, reader =>
                     {
                         while (reader.Read())
                         {
@@ -224,6 +232,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool DeleteCharacter(uint characterId)
         {
+            uint bbmCharacterId = SelectBBMCharacterId(characterId);
+            if (bbmCharacterId > 0)
+            {
+                ExecuteNonQuery(SqlDeleteCharacter,
+                command => { AddParameter(command, "@character_id", bbmCharacterId); });
+            }
+
             int rowsAffected = ExecuteNonQuery(SqlDeleteCharacter,
                 command => { AddParameter(command, "@character_id", characterId); });
             return rowsAffected > NoRowsAffected;
@@ -235,7 +250,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Shortcuts
             ExecuteReader(conn, SqlSelectShortcuts,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -246,7 +261,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // CommunicationShortcuts
             ExecuteReader(conn, SqlSelectCommunicationShortcuts,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -257,7 +272,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Storage
             ExecuteReader(conn, SqlSelectAllStoragesByCharacter,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -267,13 +282,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
             ExecuteReader(conn, SqlSelectStorageItemsByCharacter,
-                command2 => { AddParameter(command2, "@character_id", character.CharacterId); },
+                (Action<DbCommand>)(                command2 => { AddParameter(command2, "@character_id", (uint)character.CharacterId); }),
                 reader2 =>
                 {
                     while(reader2.Read())
                     {
-                        
-                        StorageType storageType = (StorageType) GetByte(reader2, "storage_type");
+
+                        StorageType storageType = (StorageType)GetByte(reader2, "storage_type");
                         ushort slot = GetUInt16(reader2, "slot_no");
                         uint itemNum = GetUInt32(reader2, "item_num");
                         var item = new Item();
@@ -303,7 +318,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Wallet Points
             ExecuteReader(conn, SqlSelectWalletPoints,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -314,7 +329,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Warp Points
             ExecuteReader(conn, SqlSelectReleasedWarpPoints,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -325,7 +340,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Play Points
             ExecuteReader(conn, SqlSelectCharacterPlayPointDataByCharacter,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -336,7 +351,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Login Stamp
             ExecuteReader(conn, SqlSelectCharacterStamp,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -347,7 +362,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Ability Presets
             ExecuteReader(conn, SqlSelectAbilityPresets,
-                command => { AddParameter(command, "@character_id", character.CharacterId); },
+                (Action<TCom>)(                command => { AddParameter(command, "@character_id", (uint)character.CharacterId); }),
                 reader =>
                 {
                     while (reader.Read())
@@ -393,36 +408,36 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataShortCut shortcut in character.ShortCutList)
             {
-                ReplaceShortcut(character.CharacterId, shortcut, conn);
+                ReplaceShortcut(character.ContentCharacterId, shortcut, conn);
             }
 
             foreach(CDataCommunicationShortCut communicationShortcut in character.CommunicationShortCutList)
             {
-                ReplaceCommunicationShortcut(character.CharacterId, communicationShortcut, conn);
+                ReplaceCommunicationShortcut(character.ContentCharacterId, communicationShortcut, conn);
             }
 
             foreach(StorageType storageType in character.Storage.GetAllStorages().Keys)
             {
-                ReplaceStorage(conn, character.CharacterId, storageType, character.Storage.GetStorage(storageType));
+                ReplaceStorage(conn, character.ContentCharacterId, storageType, character.Storage.GetStorage(storageType));
             }
 
             foreach(CDataWalletPoint walletPoint in character.WalletPointList)
             {
-                ReplaceWalletPoint(conn, character.CharacterId, walletPoint);
+                ReplaceWalletPoint(conn, character.ContentCharacterId, walletPoint);
             }
 
             foreach(CDataJobPlayPoint playPoint in character.PlayPointList)
             {
-                ReplaceCharacterPlayPointData(conn, character.CharacterId, playPoint);
+                ReplaceCharacterPlayPointData(conn, character.ContentCharacterId, playPoint);
             }
 
-            ExecuteNonQuery(conn, SqlInsertCharacterStamp, command =>
+            ExecuteNonQuery(conn, SqlInsertCharacterStamp, (Action<TCom>)(command =>
             {
-                AddParameter(command, character.CharacterId, character.StampBonus);
-            });
+                AddParameter(command, (uint)character.ContentCharacterId, character.StampBonus);
+            }));
         }
 
-        private void CreateItems(TCon conn, Character character)
+        public void CreateItems(DbConnection conn, Character character)
         {
             // Create storage items
             foreach (KeyValuePair<StorageType, Storage> storage in character.Storage.GetAllStorages())
@@ -435,60 +450,144 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Item item = storage.Value.Items[index].Item1;
                         uint itemNum = storage.Value.Items[index].Item2;
                         ushort slot = (ushort)(index+1);
-                        InsertStorageItem(character.CharacterId, storageType, slot, itemNum, item, conn);
+                        InsertStorageItem(character.ContentCharacterId, storageType, slot, itemNum, item, conn);
                     }
                 }
             }
-
-            var equipmentTemplates = character.EquipmentTemplate.GetAllEquipment()[character.Job];
-            foreach (var equipment in equipmentTemplates)
-            {
-                for (byte index = 0; index < equipment.Value.Count; index++)
-                {
-                    Item item = equipment.Value[index];
-                    if (item != null)
-                    {
-                        byte slot = (byte)(index + 1);
-                        InsertEquipItem(conn, character.CommonId, character.Job, equipment.Key, slot, item.UId);
-                    }
-                }
-            }
-
-            // Give starter weapon for all classes
 
             var storageBoxNormal = character.Storage.GetAllStorages()[StorageType.StorageBoxNormal];
-            foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.EquipmentTemplate.GetAllEquipment())
+            if (character.GameMode == GameMode.Normal)
             {
-                JobId job = jobEquipment.Key;
-                if (job == character.Job)
+                var equipmentTemplates = character.EquipmentTemplate.GetAllEquipment()[character.Job];
+                foreach (var equipment in equipmentTemplates)
                 {
-                    // Skip the current job as we already populated data for it.
-                    continue;
-                }
-
-                // We are only interested in slot 1 and 2
-                for (byte i = 0; i < 2; i++)
-                {
-                    Item item = jobEquipment.Value[EquipType.Performance][i];
-                    if (item != null)
+                    for (byte index = 0; index < equipment.Value.Count; index++)
                     {
-                        ushort slot = storageBoxNormal.AddItem(item, 0);
-                        InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
-                        InsertStorageItem( character.CharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
+                        Item item = equipment.Value[index];
+                        if (item != null)
+                        {
+                            byte slot = (byte)(index + 1);
+                            InsertEquipItem((TCon) conn, character.CommonId, character.Job, equipment.Key, slot, item.UId);
+                        }
                     }
                 }
 
-                // Requip the base armor to the other jobs without creating new items
-                var baseJob = character.EquipmentTemplate.GetAllEquipment()[character.Job];
-                for (byte i = 2; i < baseJob[EquipType.Performance].Count; i++)
+                foreach (KeyValuePair<JobId, Dictionary<EquipType, List<Item>>> jobEquipment in character.EquipmentTemplate.GetAllEquipment())
                 {
-                    Item item = baseJob[EquipType.Performance][i];
-                    if (item != null)
+                    JobId job = jobEquipment.Key;
+                    if (job == character.Job)
                     {
-                        InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                        // Skip the current job as we already populated data for it.
+                        continue;
+                    }
+
+                    // Give starter weapon for all classes
+                    // If creating a character for normal mode, Wwe are only interested in slot 1 and 2
+                    for (byte i = 0; i < 2; i++)
+                    {
+                        Item item = jobEquipment.Value[EquipType.Performance][i];
+                        if (item != null)
+                        {
+                            ushort slot = storageBoxNormal.AddItem(item, 0);
+                            InsertEquipItem((TCon) conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                            InsertStorageItem(character.ContentCharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
+                        }
+                    }
+
+                    // Requip the base armor to the other jobs without creating new items
+                    var baseJob = character.EquipmentTemplate.GetAllEquipment()[character.Job];
+                    for (byte i = 2; i < baseJob[EquipType.Performance].Count; i++)
+                    {
+                        Item item = baseJob[EquipType.Performance][i];
+                        if (item != null)
+                        {
+                            InsertEquipItem((TCon) conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
+                        }
                     }
                 }
             }
+            else if (character.GameMode == GameMode.BitterblackMaze)
+            {
+                // If creating a character for BBM, we need gear for all classes.
+                foreach (var (jobId, equipmentTemplate) in character.EquipmentTemplate.GetAllEquipment())
+                {
+                    var equipment = equipmentTemplate[EquipType.Performance];
+                    for (byte i = 0; i < equipment.Count; i++)
+                    {
+                        Item item = equipment[i];
+                        if (item != null && item.ItemId > 0)
+                        {
+                            ushort slot = storageBoxNormal.AddItem(item, 0);
+                            InsertEquipItem((TCon) conn, character.CommonId, jobId, EquipType.Performance, (byte)(i + 1), item.UId);
+
+                            if (jobId != character.Job)
+                            {
+                                InsertStorageItem(character.ContentCharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public Storages SelectAllStoragesByCharacterId(uint characterId)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectAllStoragesByCharacterId(connection, characterId);
+        }
+
+        public Storages SelectAllStoragesByCharacterId(TCon connection, uint characterId)
+        {
+            Storages storages = new Storages(new Dictionary<StorageType, ushort>());
+
+            ExecuteReader(connection, SqlSelectAllStoragesByCharacter,
+                command => { AddParameter(command, "@character_id", characterId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        Tuple<StorageType, Storage> tuple = ReadStorage(reader);
+                        storages.AddStorage(tuple.Item1, tuple.Item2);
+                    }
+                });
+
+            ExecuteReader(connection, SqlSelectStorageItemsByCharacter,
+                command => { 
+                    AddParameter(command, "@character_id", characterId);
+                },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+
+                        StorageType storageType = (StorageType)GetByte(reader, "storage_type");
+                        ushort slot = GetUInt16(reader, "slot_no");
+                        uint itemNum = GetUInt32(reader, "item_num");
+                        var item = new Item();
+
+                        item.UId = GetString(reader, "item_uid");
+                        item.ItemId = GetUInt32(reader, "item_id");
+                        item.Unk3 = GetByte(reader, "unk3");
+                        item.Color = GetByte(reader, "color");
+                        item.PlusValue = GetByte(reader, "plus_value");
+                        item.EquipPoints = GetUInt32(reader, "equip_points");
+
+                        ExecuteReader(connection, SqlSelectAllCrestDataByUid,
+                        command2 => {
+                            AddParameter(command2, "item_uid", item.UId);
+                        }, reader2 => {
+                            while (reader2.Read())
+                            {
+                                var result = ReadCrestData(reader2);
+                                item.EquipElementParamList.Add(result.ToCDataEquipElementParam());
+                            }
+                        });
+
+                        storages.GetStorage(storageType).SetItem(item, itemNum, slot);
+                    }
+                });
+
+            return storages;
         }
 
         private Character ReadAllCharacterData(TReader reader)
@@ -508,6 +607,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.HideEquipHeadPawn = GetBoolean(reader, "hide_equip_head_pawn");
             character.HideEquipLanternPawn = GetBoolean(reader, "hide_equip_lantern_pawn");
             character.ArisenProfileShareRange = GetByte(reader, "arisen_profile_share_range");
+            character.GameMode = (GameMode) GetUInt32(reader, "game_mode");
 
             character.MatchingProfile.EntryJob = (JobId) GetByte(reader, "entry_job");
             character.MatchingProfile.EntryJobLevel = GetUInt32(reader, "entry_job_level");
@@ -539,7 +639,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, (CharacterCommon) character);
             // CharacterFields
             AddParameter(command, "@account_id", character.AccountId);
-            AddParameter(command, "@character_id", character.CharacterId);
+            AddParameter(command, "@character_id", character.ContentCharacterId);
             AddParameter(command, "@version", character.Version);
             AddParameter(command, "@first_name", character.FirstName);
             AddParameter(command, "@last_name", character.LastName);
@@ -571,6 +671,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@max_bazaar_exhibits", character.MaxBazaarExhibits);
 
             AddParameter(command, "@binary_data", character.BinaryData);
+            AddParameter(command, "@game_mode", (uint)character.GameMode);
         }
     
         public bool UpdateCharacterBinaryData(uint characterId, byte[] data)

@@ -33,6 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
             StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
         };
+        public static readonly List<StorageType> BbmEmbodyStorages = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob};
 
         private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
             {7789, (WalletType.Gold, 1)},
@@ -237,12 +238,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
                 fromStorage.SetItem(null, 0, slotNo);
-                server.Database.DeleteStorageItem(character.CharacterId, fromStorageType, slotNo, connectionIn);
+                server.Database.DeleteStorageItem(character.ContentCharacterId, fromStorageType, slotNo, connectionIn);
             }
             else
             {
                 fromStorage.SetItem(item, finalItemNum, slotNo);
-                server.Database.ReplaceStorageItem(character.CharacterId, fromStorageType, slotNo, finalItemNum, item, connectionIn);
+                server.Database.ReplaceStorageItem(character.ContentCharacterId, fromStorageType, slotNo, finalItemNum, item, connectionIn);
             }
 
             return ntcData;
@@ -340,8 +341,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     destinationStorage.SetItem(item, newItemNum, slot);
                 }
 
-                database.ReplaceStorageItem(character.CharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
-               
+                database.ReplaceStorageItem(character.ContentCharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
+                if (BitterblackMazeManager.IsMazeReward(item.ItemId))
+                {
+                    item = BitterblackMazeManager.ApplyCrest(database, character, item, connectionIn);
+                }
+
                 CDataItemUpdateResult result = new CDataItemUpdateResult();
                 result.ItemList.ItemUId = item.UId;
                 result.ItemList.ItemId = item.ItemId;
@@ -379,20 +384,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private void DeleteItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, DbConnection? connectionIn = null)
         {
             storage.SetItem(null, 0, slotNo);
-            server.Database.DeleteStorageItem(character.CharacterId, storage.Type, slotNo, connectionIn);
+            server.Database.DeleteStorageItem(character.ContentCharacterId, storage.Type, slotNo, connectionIn);
         }
 
         private void UpdateItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num,DbConnection? connectionIn = null)
         {
             storage.SetItem(item, num, slotNo);
-            server.Database.UpdateStorageItem(character.CharacterId, storage.Type, slotNo, num, item, connectionIn);
+            server.Database.UpdateStorageItem(character.ContentCharacterId, storage.Type, slotNo, num, item, connectionIn);
         }
 
         private void InsertItem(DdonServer<GameClient> server, Character character, Item item, Storage storage, ushort slotNo, uint num, DbConnection? connectionIn = null)
         {
             storage.SetItem(item, num, slotNo);
 
-            server.Database.InsertStorageItem(character.CharacterId, storage.Type, slotNo, num, item, connectionIn);
+            server.Database.InsertStorageItem(character.ContentCharacterId, storage.Type, slotNo, num, item, connectionIn);
             
             foreach (var crest in item.EquipElementParamList)
             {
@@ -702,6 +707,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return server.AssetRepository.ClientItemInfos[id];
         }
 
+        public static bool SendToItemBag(uint storageType)
+        {
+            bool toBag = false;
+            switch (storageType)
+            {
+                case 19:
+                    toBag = true;
+                    break;
+                case 20:
+                    toBag = false;
+                    break;
+                default:
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Unexpected destination when exchanging items {storageType}");
+            }
+            return toBag;
+        }
     }
 
     [Serializable]

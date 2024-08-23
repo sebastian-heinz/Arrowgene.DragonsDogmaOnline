@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             buffer.WriteInt32(0, Endianness.Big); // result
 
             List<CDataCharacterListInfo> characterListResponse = new List<CDataCharacterListInfo>();
-            List<Character> characters = Database.SelectCharactersByAccountId(client.Account.Id);
+            List<Character> characters = Database.SelectCharactersByAccountId(client.Account.Id, GameMode.Normal);
             Logger.Info(client, $"Found: {characters.Count} Characters");
             foreach (Character c in characters)
             {

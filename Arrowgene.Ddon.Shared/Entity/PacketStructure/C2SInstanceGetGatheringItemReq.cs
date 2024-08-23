@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public CDataStageLayoutId LayoutId { get; set; }
         public uint PosId { get; set; }
-        public byte Unk0 { get; set; }
+        public byte EquipToCharacter { get; set; }
         public uint Unk1 { get; set; }
         public List<CDataGatheringItemGetRequest> GatheringItemGetRequestList { get; set; }
 
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteEntity(buffer, obj.LayoutId);
                 WriteUInt32(buffer, obj.PosId);
-                WriteByte(buffer, obj.Unk0);
+                WriteByte(buffer, obj.EquipToCharacter);
                 WriteUInt32(buffer, obj.Unk1);
                 WriteEntityList<CDataGatheringItemGetRequest>(buffer, obj.GatheringItemGetRequestList);
             }
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 C2SInstanceGetGatheringItemReq obj = new C2SInstanceGetGatheringItemReq();
                 obj.LayoutId = ReadEntity<CDataStageLayoutId>(buffer);
                 obj.PosId = ReadUInt32(buffer);
-                obj.Unk0 = ReadByte(buffer);
+                obj.EquipToCharacter = ReadByte(buffer);
                 obj.Unk1 = ReadUInt32(buffer);
                 obj.GatheringItemGetRequestList = ReadEntityList<CDataGatheringItemGetRequest>(buffer);
                 return obj;

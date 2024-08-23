@@ -21,6 +21,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlUpdateCrestData = $"UPDATE \"ddon_crests\" SET {BuildQueryUpdate(CrestFields)} WHERE \"character_common_id\"=@character_common_id AND \"item_uid\"=@item_uid AND \"slot\"=@slot;";
         private readonly string SqlSelectAllCrestData = $"SELECT {BuildQueryField(CrestFields)} FROM \"ddon_crests\" WHERE " +
                                                        $"\"character_common_id\" = @character_common_id AND \"item_uid\"=@item_uid;";
+        private readonly string SqlSelectAllCrestDataByUid = $"SELECT {BuildQueryField(CrestFields)} FROM \"ddon_crests\" WHERE " +
+                                                       $"\"item_uid\"=@item_uid;";
+
 
         public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null)
         {

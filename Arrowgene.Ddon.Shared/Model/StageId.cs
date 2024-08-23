@@ -23,6 +23,13 @@ namespace Arrowgene.Ddon.Shared.Model
             GroupId = groupId;
         }
 
+        public StageId(CDataStageLayoutId stageLayoutId)
+        {
+            Id = stageLayoutId.StageId;
+            LayerNo = stageLayoutId.LayerNo;
+            GroupId = stageLayoutId.GroupId;
+        }
+
         public CDataStageLayoutId ToStageLayoutId()
         {
             return new CDataStageLayoutId
@@ -32,7 +39,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 GroupId = GroupId
             };
         }
-        
+
         public bool Equals(StageId other)
         {
             return Id == other.Id && LayerNo == other.LayerNo && GroupId == other.GroupId;
