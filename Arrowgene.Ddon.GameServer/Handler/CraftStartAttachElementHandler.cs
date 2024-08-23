@@ -55,24 +55,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
             uint totalExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 
-            Server.Database.ExecuteInTransaction(connection =>
-            {
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
-                foreach (var element in request.CraftElementList)
-                {
-                    uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId, connection);
 
-                    Server.Database.InsertCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo, crestId, 0);
-                    result.EquipElementParamList.Add(new CDataEquipElementParam()
-                    {
-                        CrestId = crestId,
-                        SlotNo = element.SlotNo,
-                    });
+            updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
+            foreach (var element in request.CraftElementList)
+            {
+                uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId);
+
+                Server.Database.InsertCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo, crestId, 0);
+                result.EquipElementParamList.Add(new CDataEquipElementParam()
+                {
+                    CrestId = crestId,
+                    SlotNo = element.SlotNo,
+                });
+
+                item.EquipElementParamList.Add(new CDataEquipElementParam()
+                {
+                    CrestId = crestId,
+                    SlotNo = element.SlotNo,
+                });
 
                 // Consume the crest
                 updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
             }
-
 
 
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
@@ -101,8 +105,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftManager.HandlePawnRankUpNtc(client, leadPawn);
             }
             Server.Database.UpdatePawnBaseInfo(leadPawn);
-
-            });
             return result;
         }
     }
