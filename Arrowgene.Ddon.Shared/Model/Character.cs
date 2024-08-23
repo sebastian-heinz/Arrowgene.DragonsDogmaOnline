@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Model
             Created = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
             PlayPointList = new List<CDataJobPlayPoint>();
             Storage = new Storages(new Dictionary<StorageType, ushort>());
-            CharacterEquipItemInfoUnk2 = new List<CDataEquipItemInfoUnk2>();
+            CharacterEquipItemInfoUnk2 = new List<CDataEquipStatParam>();
             WalletPointList = new List<CDataWalletPoint>();
             OrbStatusList = new List<CDataOrbPageStatus>();
             MsgSetList = new List<CDataCharacterMsgSet>();
@@ -56,6 +56,8 @@ namespace Arrowgene.Ddon.Shared.Model
             JobMasterActiveOrders = new();
             AcquirableSkills = new();
             AcquirableAbilities = new();
+
+            JobEmblems = new();
         }
 
         public int AccountId { get; set; }
@@ -93,7 +95,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public string LastName { get; set; }
         public List<CDataJobPlayPoint> PlayPointList { get; set; }
         public Storages Storage { get; set; }
-        public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2 { get; set; }
+        public List<CDataEquipStatParam> CharacterEquipItemInfoUnk2 { get; set; }
         public List<CDataWalletPoint> WalletPointList { get; set; }
         public QuestAreaId AreaId { get; set; }
 
@@ -141,6 +143,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public ClanName ClanName { get; set; }
         public bool IsLanternLit { get; set; }
         public uint LanternTimer { get; set; }
+
+        public Dictionary<JobId, JobEmblem> JobEmblems { get; set; }
 
         public EpitaphRoadState EpitaphRoadState { get; set; }
         public Dictionary<QuestAreaId, AreaRank> AreaRanks { get; set; }

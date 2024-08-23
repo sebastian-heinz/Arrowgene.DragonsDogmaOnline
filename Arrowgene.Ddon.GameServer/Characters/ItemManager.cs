@@ -392,7 +392,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.EquipPawnID = 0;
             ntcData.ItemList.EquipElementParamList = item.EquipElementParamList;
             ntcData.ItemList.AddStatusParamList = item.AddStatusParamList;
-            ntcData.ItemList.Unk2List = item.Unk2List;
+            ntcData.ItemList.EquipStatParamList = item.EquipStatParamList;
             ntcData.UpdateItemNum = -finalConsumeNum;
 
             Storage fromStorage = character.Storage.GetStorage(fromStorageType);
@@ -535,7 +535,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         EquipPoints = 0,
                         EquipElementParamList = new List<CDataEquipElementParam>(),
                         AddStatusParamList = new List<CDataAddStatusParam>(),
-                        Unk2List = new List<CDataEquipItemInfoUnk2>()
+                        EquipStatParamList = new List<CDataEquipStatParam>()
                     };
                     slot = destinationStorage.AddItem(item, newItemNum);
                 }
@@ -548,6 +548,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if (BitterblackMazeManager.IsMazeReward(item.ItemId))
                 {
                     item = BitterblackMazeManager.ApplyCrest(database, character, item, connectionIn);
+                }
+                else if (_Server.JobEmblemManager.IsEmblemItem((ItemId) item.ItemId))
+                {
+                    _Server.JobEmblemManager.AddNewEmblemItem(character, item.UId);
                 }
 
                 CDataItemUpdateResult result = new CDataItemUpdateResult();
@@ -565,7 +569,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.EquipPawnID = 0;
                 result.ItemList.EquipElementParamList = item.EquipElementParamList;
                 result.ItemList.AddStatusParamList = item.AddStatusParamList;
-                result.ItemList.Unk2List = item.Unk2List;
+                result.ItemList.EquipStatParamList = item.EquipStatParamList;
                 result.UpdateItemNum = (int) addedItems;
                 results.Add(result);
             }
@@ -596,7 +600,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     EquipPoints = 0,
                     EquipElementParamList = new List<CDataEquipElementParam>(),
                     AddStatusParamList = new List<CDataAddStatusParam>(),
-                    Unk2List = new List<CDataEquipItemInfoUnk2>()
+                    EquipStatParamList = new List<CDataEquipStatParam>()
                 };
                 ushort slot = destinationStorage.AddItem(item, newItemNum);
 
@@ -621,7 +625,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.EquipPawnID = 0;
                 result.ItemList.EquipElementParamList = item.EquipElementParamList;
                 result.ItemList.AddStatusParamList = item.AddStatusParamList;
-                result.ItemList.Unk2List = item.Unk2List;
+                result.ItemList.EquipStatParamList = item.EquipStatParamList;
                 result.UpdateItemNum = (int)addedItems;
                 results.Add(result);
             }
@@ -890,7 +894,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipPawnID = pawnId;
             updateResult.ItemList.EquipElementParamList = item.EquipElementParamList;
             updateResult.ItemList.AddStatusParamList = item.AddStatusParamList;
-            updateResult.ItemList.Unk2List = item.Unk2List;
+            updateResult.ItemList.EquipStatParamList = item.EquipStatParamList;
             updateResult.UpdateItemNum = (int) updateItemNum;
 
             return updateResult;
@@ -932,7 +936,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.EquipPawnID = 0;
             updateResult.ItemList.EquipElementParamList = newItem.EquipElementParamList;
             updateResult.ItemList.AddStatusParamList = newItem.AddStatusParamList;
-            updateResult.ItemList.Unk2List = newItem.Unk2List;
+            updateResult.ItemList.EquipStatParamList = newItem.EquipStatParamList;
             updateResult.UpdateItemNum = 1;
 
             Logger.Debug($"Upgraded {newItem.UId} Item in DataBase");

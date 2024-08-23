@@ -283,7 +283,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
             // If this quest unlocks something at this step, add it to the unlocked cache
             if (questBlock.ContentsReleased.Count > 0)
             {
-                client.Character.ContentsReleased.UnionWith(questBlock.ContentsReleased.Select(x => x.ReleaseId).ToHashSet());
+                client.Character.ContentsReleased.UnionWith(questBlock.ContentsReleased
+                    .Where(x => x.ReleaseId != Shared.Model.ContentsRelease.None)
+                    .Select(x => x.ReleaseId)
+                    .ToHashSet());
             }
 
             bool ShouldResetGroup = false;

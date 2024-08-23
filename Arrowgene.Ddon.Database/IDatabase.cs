@@ -407,10 +407,11 @@ public interface IDatabase
         string itemUId,
         uint slot,
         uint crestId,
-        uint crestAmount
+        uint crestAmount,
+        DbConnection? ConnectionIn = null
     );
 
-    bool RemoveCrest(uint characterCommonId, string itemUId, uint slot);
+    bool RemoveCrest(uint characterCommonId, string itemUId, uint slot, DbConnection? connectionIn = null);
     List<Crest> GetCrests(uint characterCommonId, string itemUId);
 
     // Bitterblack Maze Progress
@@ -582,6 +583,10 @@ public interface IDatabase
 
     bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null);
     HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null);
+
+    public bool UpsertJobEmblemData(uint characterId, JobEmblem jobEmblem, DbConnection? connectionIn = null);
+    public JobEmblem GetJobEmblemData(uint characterId, JobId jobId, DbConnection? connectionIn = null);
+    public List<JobEmblem> GetAllJobEmblemData(uint characterId, DbConnection? connectionIn = null);
 
     #region Pawn craft progress
 

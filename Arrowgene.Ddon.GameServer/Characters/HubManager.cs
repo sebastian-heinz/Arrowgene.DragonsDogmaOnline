@@ -142,29 +142,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private static void SendContext(GameClient sourceClient, GameClient targetClient)
+        private void SendContext(GameClient sourceClient, GameClient targetClient)
         {
             S2CContextGetLobbyPlayerContextNtc contextNtc = new S2CContextGetLobbyPlayerContextNtc();
-            GameStructure.S2CContextGetLobbyPlayerContextNtc(contextNtc, sourceClient.Character);
+            GameStructure.S2CContextGetLobbyPlayerContextNtc(Server, contextNtc, sourceClient.Character);
             targetClient.Send(contextNtc);
         }
 
-        private static void SendContext(GameClient sourceClient, IEnumerable<GameClient> targetClients)
+        private void SendContext(GameClient sourceClient, IEnumerable<GameClient> targetClients)
         {
             S2CContextGetLobbyPlayerContextNtc contextNtc = new S2CContextGetLobbyPlayerContextNtc();
-            GameStructure.S2CContextGetLobbyPlayerContextNtc(contextNtc, sourceClient.Character);
+            GameStructure.S2CContextGetLobbyPlayerContextNtc(Server, contextNtc, sourceClient.Character);
             foreach (GameClient client in targetClients)
             {
                 client.Send(contextNtc);
             }
         }
 
-        private static void GatherContexts(IEnumerable<GameClient> sourceClients, GameClient targetClient)
+        private void GatherContexts(IEnumerable<GameClient> sourceClients, GameClient targetClient)
         {
             foreach (GameClient source in sourceClients)
             {
                 S2CContextGetLobbyPlayerContextNtc contextNtc = new S2CContextGetLobbyPlayerContextNtc();
-                GameStructure.S2CContextGetLobbyPlayerContextNtc(contextNtc, source.Character);
+                GameStructure.S2CContextGetLobbyPlayerContextNtc(Server, contextNtc, source.Character);
                 targetClient.Send(contextNtc);
             }
         }

@@ -51,6 +51,19 @@ namespace Arrowgene.Ddon.Shared.Model
             return null;
         }
 
+        public List<(StorageType StorageType, (ushort Index, Item Item, uint Amount))> FindItemsByIdInStorage(List<StorageType> storageTypes, ItemId itemId)
+        {
+            var result = new List<(StorageType StorageType, (ushort Index, Item Item, uint Amount))>();
+            foreach (var storage in GetAllStorages().Where(x => storageTypes.Contains(x.Key)).ToList())
+            {
+                foreach (var match in storage.Value.FindItemsById((uint)itemId))
+                {
+                    result.Add(new(storage.Key, (match.Item1, match.Item2, match.Item3)));
+                }
+            }
+            return result;
+        }
+
         public Storage GetStorage(StorageType storageType)
         {
             return storages[storageType];
@@ -117,7 +130,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     EquipPawnID = DeterminePawnId(character, storageType, tuple.slot),
                     EquipElementParamList = tuple.item.Item1.EquipElementParamList,
                     AddStatusParamList = tuple.item.Item1.AddStatusParamList,
-                    Unk2List = tuple.item.Item1.Unk2List
+                    EquipStatParamList = tuple.item.Item1.EquipStatParamList
                 })
                 .ToList();
         }
@@ -309,7 +322,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     ColorNo = x.Color,
                     PlusValue = x.SafetySetting,
                     EquipElementParamList = x.EquipElementParamList,
-                    AddStatusParamList = x.AddStatusParamList
+                    AddStatusParamList = x.AddStatusParamList,
                 })
                 .ToList();
         }
@@ -328,7 +341,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     PlusValue = tuple.item?.PlusValue ?? 0,
                     EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>(),
                     AddStatusParamList = tuple.item?.AddStatusParamList ?? new List<CDataAddStatusParam>(),
-                    Unk2List = tuple.item?.Unk2List ?? new List<CDataEquipItemInfoUnk2>()
+                    EquipStatParamList = tuple.item?.EquipStatParamList ?? new List<CDataEquipStatParam>()
                 })
                 .ToList();
         }

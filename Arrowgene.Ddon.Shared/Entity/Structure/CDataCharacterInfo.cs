@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataCharacterEquipData> CharacterEquipViewDataList { get; set; } = new();
         public List<CDataEquipJobItem> CharacterEquipJobItemList { get; set; } = new();
         public byte JewelrySlotNum { get; set; }
-        public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2 { get; set; } = new();//from Ghidra
+        public List<CDataEquipStatParam> CharacterEquipItemInfoUnk2 { get; set; } = new();//from Ghidra
         public List<CDataCharacterItemSlotInfo> CharacterItemSlotInfoList { get; set; } = new();
         public List<CDataWalletPoint> WalletPointList { get; set; } = new();
         public byte MyPawnSlotNum { get; set; }
@@ -135,7 +135,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.CharacterEquipViewDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
                 obj.CharacterEquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
                 obj.JewelrySlotNum = ReadByte(buffer);
-                obj.CharacterEquipItemInfoUnk2 = ReadEntityList<CDataEquipItemInfoUnk2>(buffer);
+                obj.CharacterEquipItemInfoUnk2 = ReadEntityList<CDataEquipStatParam>(buffer);
                 obj.CharacterItemSlotInfoList = ReadEntityList<CDataCharacterItemSlotInfo>(buffer);
                 obj.WalletPointList = ReadEntityList<CDataWalletPoint>(buffer);
                 obj.MyPawnSlotNum = ReadByte(buffer);

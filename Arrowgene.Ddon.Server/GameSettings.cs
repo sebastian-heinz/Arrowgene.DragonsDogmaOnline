@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Server
         public SeasonalEventSettings SeasonalEventsSettings { get; private set; }
         public PointModifierSettings PointModifiersSettings { get; private set; }
         public ChatCommandSettings ChatCommandsSettings { get; private set; }
+        public EmblemSettings EmblemSettings { get; private set; }
 
         public GameSettings(ScriptableSettings settingsData)
         {
@@ -18,6 +19,7 @@ namespace Arrowgene.Ddon.Server
             SeasonalEventsSettings = new SeasonalEventSettings(SettingsData);
             PointModifiersSettings = new PointModifierSettings(SettingsData);
             ChatCommandsSettings = new ChatCommandSettings(SettingsData);
+            EmblemSettings = new EmblemSettings(SettingsData);
         }
 
         public T Get<T>(string scriptName, string variableName)

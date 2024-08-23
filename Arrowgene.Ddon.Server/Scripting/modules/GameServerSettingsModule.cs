@@ -43,6 +43,7 @@ namespace Arrowgene.Ddon.Server.Scripting.modules
                 GameSettings.ChatCommandsSettings,
                 GameSettings.SeasonalEventsSettings,
                 GameSettings.PointModifiersSettings,
+                GameSettings.EmblemSettings,
             };
         }
 
