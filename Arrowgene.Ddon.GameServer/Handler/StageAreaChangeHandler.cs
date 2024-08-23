@@ -26,13 +26,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.StageId);
             res.IsBase = false; // This is set true for audience chamber and WDT for exmaple
 
+            uint sourceStageId = client.Character.Stage.Id;
+
             ContextManager.DelegateAllMasters(client);
-            Server.HubManager.LeaveLobbyContext(client, client.Character.Stage.Id);
 
             client.Character.StageNo = res.StageNo;
             client.Character.Stage = new StageId(packet.StageId, 0, 0);
 
-            Server.HubManager.JoinLobbyContext(client, client.Character.Stage.Id);
+            Server.HubManager.TransitionLobbyContext(client, sourceStageId, packet.StageId);
 
             foreach (var pawn in client.Character.Pawns)
             {

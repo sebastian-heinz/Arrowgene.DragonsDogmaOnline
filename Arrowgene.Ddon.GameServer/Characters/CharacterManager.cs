@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -51,6 +52,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             client.UpdateIdentity();
 
             SelectPawns(character);
+
+            foreach (var stageId in StageManager.HubStageIds)
+            {
+                character.LocalLobbyContext[stageId] = new HashSet<uint>();
+            }
 
             // TODO: Query things like main quest?
 
