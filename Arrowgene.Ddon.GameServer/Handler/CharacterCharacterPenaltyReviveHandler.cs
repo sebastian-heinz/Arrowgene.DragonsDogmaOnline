@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -25,14 +26,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CCharacterCharacterPenaltyReviveRes res = new S2CCharacterCharacterPenaltyReviveRes();
             client.Send(res);
 
-            // Weakness
-            client.Send(new S2CCharacterStartDeathPenaltyNtc()
+            if (client.GameMode != GameMode.BitterblackMaze)
             {
-                RemainTime = (uint) WeaknessTimeSpan.Seconds
-            });
+                // Weakness
+                client.Send(new S2CCharacterStartDeathPenaltyNtc()
+                {
+                    RemainTime = (uint)WeaknessTimeSpan.Seconds
+                });
 
-            // Restore after time passes
-            Task.Delay(WeaknessTimeSpan).ContinueWith(_ => client.Send(new S2CCharacterFinishDeathPenaltyNtc()));
+                // Restore after time passes
+                Task.Delay(WeaknessTimeSpan).ContinueWith(_ => client.Send(new S2CCharacterFinishDeathPenaltyNtc()));
+            }
         }
     }
 }

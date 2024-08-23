@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
@@ -8,9 +9,12 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
     {
         private readonly AssetRepository _assetRepository;
 
+        private Dictionary<(StageId, uint), List<GatheringItem>> BitterBlackLootTables; 
+
         public InstanceGatheringItemManager(AssetRepository assetRepository)
         {
             this._assetRepository = assetRepository;
+            BitterBlackLootTables = new Dictionary<(StageId, uint), List<GatheringItem>>();
         }
 
         protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, uint subGroupId)

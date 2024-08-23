@@ -26,6 +26,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             GroupId = groupId;
         }
 
+        public StageId AsStageId()
+        {
+            return new StageId(this);
+        }
+
         public class Serializer : EntitySerializer<CDataStageLayoutId>
         {
             public override void Write(IBuffer buffer, CDataStageLayoutId obj)

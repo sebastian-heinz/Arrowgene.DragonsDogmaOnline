@@ -55,7 +55,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
             uint totalExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 
-
             updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
             foreach (var element in request.CraftElementList)
             {

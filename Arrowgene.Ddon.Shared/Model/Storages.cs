@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -56,6 +58,14 @@ namespace Arrowgene.Ddon.Shared.Model
         public void AddStorage(StorageType storageType, Storage storage)
         {
             storages[storageType] = storage;
+        }
+
+        public void Clear()
+        {
+            foreach (var (type, storage) in storages)
+            {
+                storage.Clear();
+            }
         }
 
         public Equipment GetCharacterEquipment()
@@ -139,6 +149,12 @@ namespace Arrowgene.Ddon.Shared.Model
             SortData = sortData;
         }
 
+        public void Clear()
+        {
+            Items = Enumerable.Repeat<Tuple<Item, uint>?>(null, Items.Count).ToList();
+            SortData = new byte[1024];
+        }
+
         public Tuple<Item, uint>? GetItem(ushort slot) {
             if (slot == 0)
             {
@@ -199,6 +215,26 @@ namespace Arrowgene.Ddon.Shared.Model
             }
 
             return results;
+        }
+
+        public ushort EmptySlots()
+        {
+            ushort emptySlots = 0;
+
+            foreach (var item in Items)
+            {
+                if (item == null)
+                {
+                    emptySlots += 1;
+                }
+            }
+            
+            return emptySlots;
+        }
+
+        public ushort MaxSlots()
+        {
+            return (ushort) Items.Count;
         }
     }
 

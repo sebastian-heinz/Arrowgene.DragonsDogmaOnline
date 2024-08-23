@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -30,11 +31,39 @@ namespace Arrowgene.Ddon.Shared.Model
             StampBonus = new CharacterStampBonus();
             AbilityPresets = new List<CDataPresetAbilityParam>();
             BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
+            LastSeenLobby = new Dictionary<uint, uint>();
+            BbmProgress = new BitterblackMazeProgress();
         }
 
         public int AccountId { get; set; }
         public DateTime Created { get; set; }
+
+        /**
+         * @brief ContentCharacter is used when there is an alias mapping between one
+         * "main character id" (the one the player logs in as) and a particular content or gamemode.
+         * To support other game modes, such as Bitterblack Maze, internally the server creates
+         * a second character as a majority of the tables overlap. When we switch to the BBM
+         * game mode, it still thinks we are the original character we logged in as. This is where
+         * ContentCharacterId comes into play. Paritculary we need this for Database operations
+         * when selecting between different tables depending on the game mode.
+         */
+        public uint ContentCharacterId
+        {
+            get
+            {
+                if (this.GameMode == GameMode.BitterblackMaze)
+                {
+                    return this.BbmCharacterId;
+                }
+                else
+                {
+                    return this.CharacterId;
+                }
+            }
+        }
+
         public uint CharacterId;
+        public uint BbmCharacterId;
         public uint UserId;
         public uint Version;
         public string FirstName;
@@ -56,11 +85,17 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte ArisenProfileShareRange;
         public List<CDataPresetAbilityParam> AbilityPresets;
         public byte[] BinaryData;
+        public GameMode GameMode {  get; set; }
+
+        public Dictionary<uint, uint> LastSeenLobby { get; set; }
 
         public List<Pawn> Pawns { get; set; }
 
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
+
+        public BitterblackMazeProgress BbmProgress;
+        public uint NextBBMStageId {  get; set; }
 
         public uint MaxBazaarExhibits { get; set; }
 

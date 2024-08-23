@@ -1,6 +1,7 @@
 #nullable enable
 using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -20,6 +21,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateEquipItem = $"UPDATE \"ddon_equip_item\" SET {BuildQueryUpdate(CDataEquipItemFields)} WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"equip_type\"=@equip_type AND \"equip_slot\"=@equip_slot;";
         private static readonly string SqlSelectEquipItemByCharacter = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id;";
         private static readonly string SqlDeleteEquipItem = "DELETE FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"equip_type\"=@equip_type AND \"equip_slot\"=@equip_slot;";
+        private static readonly string SqlDeleteAllEquipItems = "DELETE FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id;";
 
         public bool InsertIfNotExistsEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
@@ -93,6 +95,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     AddParameter((TCom)command, commonId, job, equipType, equipSlot);
                 }) == 1;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+        }
+
+        public void DeleteAllEquipItems(uint commonId, DbConnection? connectionIn = null)
+        {
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                ExecuteNonQuery(connection, SqlDeleteAllEquipItems, command =>
+                {
+                    AddParameter(command, "character_common_id", commonId);
+                });
             }
             finally
             {

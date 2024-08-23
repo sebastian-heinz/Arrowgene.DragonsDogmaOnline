@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
         public List<AppraisalBaseItem> BaseItems { get; set; } // RequiredItems
         public List<AppraisalLotteryItem> LootPool { get; set; } // Potential Rewards
 
-        public CDataDispelBaseItem AsCDataDispelBaseItem()
+        public CDataDispelBaseItem AsCDataDispelBaseItem(JobId jobId)
         {
             var obj = new CDataDispelBaseItem()
             {
@@ -78,6 +78,15 @@ namespace Arrowgene.Ddon.Shared.Model.Appraisal
                             break;
                         case AppraisalCrestType.CrestLottery:
                             foreach (var roll in crest.CrestLottery)
+                            {
+                                item.CrestLot.Add(new CDataDispelLotCrest()
+                                {
+                                    CrestItemId = roll
+                                });
+                            }
+                            break;
+                        case AppraisalCrestType.BitterBlackEarring:
+                            foreach (var roll in BitterBlackMazeRewards.EarringRolls[jobId])
                             {
                                 item.CrestLot.Add(new CDataDispelLotCrest()
                                 {

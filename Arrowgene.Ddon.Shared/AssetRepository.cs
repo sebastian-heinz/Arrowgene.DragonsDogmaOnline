@@ -44,6 +44,7 @@ namespace Arrowgene.Ddon.Shared
         public const string StampBonusKey = "StampBonus.csv";
         public const string SpecialShopKey = "SpecialShops.json";
         public const string PawnCostReductionKey = "PawnCostReduction.json"; 
+        public const string BitterblackMazeKey = "BitterblackMaze.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -87,6 +88,7 @@ namespace Arrowgene.Ddon.Shared
             CostExpScalingAsset = new CostExpScalingAsset();
             SpecialShopAsset = new SpecialShopAsset();
             PawnCostReductionAsset = new PawnCostReductionAsset();
+            BitterblackMazeAsset = new BitterblackMazeAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -114,6 +116,7 @@ namespace Arrowgene.Ddon.Shared
         public List<CDataStampBonusAsset> StampBonusAsset { get; private set; }
         public SpecialShopAsset SpecialShopAsset { get; private set; }
         public PawnCostReductionAsset PawnCostReductionAsset { get; private set; }
+        public BitterblackMazeAsset BitterblackMazeAsset { get; private set; }
 
         public void Initialize()
         {
@@ -141,6 +144,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => CostExpScalingAsset = value, CostExpScalingInfoKey, new CostExpScalingAssetDeserializer());
             RegisterAsset(value => SpecialShopAsset = value, SpecialShopKey, new SpecialShopDeserializer());
             RegisterAsset(value => PawnCostReductionAsset = value, PawnCostReductionKey, new PawnCostReductionAssetDeserializer());
+            RegisterAsset(value => BitterblackMazeAsset = value, BitterblackMazeKey, new BitterblackMazeAssetDeserializer());
 
             var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);

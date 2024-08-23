@@ -39,6 +39,20 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataAreaBaseInfo.Serializer());
             Create(new CDataAreaRank.Serializer());
             Create(new CDataArisenProfileSerializer());
+            
+            Create(new CDataBattleContentInfo.Serializer());
+            Create(new CDataBattleContentStage.Serializer());
+            Create(new CDataBattleContentSituationData.Serializer());
+            Create(new CDataBattleContentStageProgression.Serializer());
+            Create(new CDataBattleContentAvailableRewards.Serializer());
+            Create(new CDataBattleContentStatus.Serializer());
+            Create(new CDataBattleContentUnk4.Serializer());
+            Create(new CDataBattleContentUnk5.Serializer());
+            Create(new CDataBattleContentUnk6.Serializer());
+            Create(new CDataBattleContentRewardParam.Serializer());
+            Create(new CDataResetInfoUnk0.Serializer());
+            Create(new CDataResetInfo.Serializer());
+
             Create(new CDataCharacterEquipDataSerializer());
             Create(new CDataCharacterEquipInfo.Serializer());
             Create(new CDataCharacterInfoSerializer());
@@ -140,6 +154,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataItemStorageIndicateNum.Serializer());
             Create(new CDataItemUIdList.Serializer());
             Create(new CDataItemUpdateResult.Serializer());
+            Create(new CDataItemEmbodyCostParam.Serializer());
             Create(new CDataJobChangeInfo.Serializer());
             Create(new CDataJobChangeJobResUnk0.Serializer());
             Create(new CDataCharacterItemSlotInfo.Serializer());
@@ -264,8 +279,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataStageAttribute.Serializer());
             Create(new CDataStageInfo.Serializer());
             Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer());
+            Create(new CDataStageAreaChangeResUnk0.Serializer());
+            Create(new CDataStageAreaChangeResUnk1.Serializer());
             Create(new CDataStatusInfoSerializer());
             Create(new CDataStorageItemUIDList.Serializer());
+            Create(new CDataStorageEmptySlotNum.Serializer());
 
             Create(new CDataStampBonus.Serializer());
             Create(new CDataStampBonusAsset.Serializer());
@@ -295,6 +313,19 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
             Create(new C2SAreaGetAreaBaseInfoListReq.Serializer());
 
+            Create(new C2SBattleContentGetContentStatusFromOmReq.Serializer());
+            Create(new C2SBattleContentInfoListReq.Serializer());
+            Create(new C2SBattleContentContentEntryReq.Serializer());
+            Create(new C2SBattleContentInstantClearInfoReq.Serializer());
+            Create(new C2SBattleContentPartyMemberInfoReq.Serializer());
+            Create(new C2SBattleContentPartyMemberInfoUpdateReq.Serializer());
+            Create(new C2SBattleContentContentFirstPhaseChangeReq.Serializer());
+            Create(new C2SBattleContentCharacterInfoReq.Serializer());
+            Create(new C2SBattleContentRewardListReq.Serializer());
+            Create(new C2SBattleContentResetInfoReq.Serializer());
+            Create(new C2SBattleContentGetRewardReq.Serializer());
+            Create(new C2SBattleContentContentResetReq.Serializer());
+
             Create(new C2SBazaarCancelReq.Serializer());
             Create(new C2SBazaarExhibitReq.Serializer());
             Create(new C2SBazaarGetCharacterListReq.Serializer());
@@ -321,6 +352,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCharacterPawnGoldenReviveReq.Serializer());
             Create(new C2SCharacterPawnPointReviveReq.Serializer());
             Create(new C2SCharacterSetOnlineStatusReq.Serializer());
+            Create(new C2SCharacterSwitchGameModeReq.Serializer());
+            Create(new C2SCharacterCreateModeCharacterEditParamReq.Serializer());
 
             Create(new C2SCharacterCharacterDeadNtc.Serializer());
             Create(new C2SCharacterCharacterDownNtc.Serializer());
@@ -425,6 +458,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemUseJobItemsReq.Serializer());
             Create(new C2SItemGetValuableItemListReq.Serializer());
             Create(new C2SItemGetPostItemListReq.Serializer());
+            Create(new C2SItemGetDefaultStorageEmptySlotNumReq.Serializer());
+            Create(new C2SItemGetEmbodyPayCostReq.Serializer());
+            Create(new C2SItemGetSpecifiedHavingItemListReq.Serializer());
+            Create(new C2SItemEmbodyItemsReq.Serializer());
+            Create(new CDataItemEmbodyItem.Serializer());
 
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobChangePawnJobReq.Serializer());
@@ -603,6 +641,29 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
             Create(new S2CAreaGetAreaBaseInfoListRes.Serializer());
 
+            Create(new S2CBattleContentGetContentStatusFromOmRes.Serializer());
+            Create(new S2CBattleContentInfoListRes.Serializer());
+            Create(new S2CBattleContentContentEntryRes.Serializer());
+            Create(new S2CBattleContentContentEntryNtc.Serializer());
+            Create(new S2CBattleContentInstantClearInfoRes.Serializer());
+            Create(new S2CBattleContentPartyMemberInfoRes.Serializer());
+            Create(new S2CBattleContentPartyMemberInfoUpdateRes.Serializer());
+            Create(new S2CBattleContentPartyMemberInfoUpdateNtc.Serializer());
+            Create(new S2CBattleContentContentFirstPhaseChangeRes.Serializer());
+            Create(new S2CBattleContentClearTierNtc.Serializer());
+            Create(new S2CBattleContentClearContentNtc.Serializer());
+            Create(new S2CBattleContentCharacterInfoRes.Serializer());
+            Create(new S2CBattleContentRewardListRes.Serializer());
+            Create(new S2CBattleContentResetInfoRes.Serializer());
+            Create(new S2CBattleContentGetRewardRes.Serializer());
+            Create(new S2CBattleContentGetRewardsNtc.Serializer());
+            Create(new S2CBattleContentProgressNtc.Serializer());
+            Create(new S2CBattleContentContentResetRes.Serializer());
+            Create(new S2CbattleContentContentResetNtc.Serializer());
+
+            Create(new S2CBattleContentAreaChangeNtc.Serializer());
+            Create(new S2C_BATTLE_71_13_16_NTC.Serializer());
+
             Create(new S2CBazaarCancelRes.Serializer());
             Create(new S2CBazaarExhibitRes.Serializer());
             Create(new S2CBazaarGetCharacterListRes.Serializer());
@@ -641,6 +702,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterStartDeathPenaltyNtc.Serializer());
             Create(new S2CCharacterUpdateRevivePointNtc.Serializer());
             Create(new S2CCharacterEditGetShopPriceRes.Serializer());
+            Create(new S2CCharacterSwitchGameModeRes.Serializer());
+            Create(new S2CCharacterSwitchGameModeNtc.Serializer());
+            Create(new S2CCharacterCreateModeCharacterEditParamRes.Serializer());
 
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
             Create(new S2CClanClanConciergeGetListRes.Serializer());
@@ -757,6 +821,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemUseJobItemsRes.Serializer());
             Create(new S2CItemGetValuableItemListRes.Serializer());
             Create(new S2CItemGetPostItemListRes.Serializer());
+            Create(new S2CItemGetDefaultStorageEmptySlotNumRes.Serializer());
+            Create(new S2CItemGetEmbodyPayCostRes.Serializer());
+            Create(new S2CItemGetSpecifiedHavingItemListRes.Serializer());
+            Create(new S2CItemEmbodyItemsRes.Serializer());
 
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());

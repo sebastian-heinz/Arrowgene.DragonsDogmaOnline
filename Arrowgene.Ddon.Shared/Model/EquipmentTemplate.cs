@@ -39,7 +39,6 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         }
 
-
         public Dictionary<JobId, Dictionary<EquipType, List<Item?>>> GetAllEquipment()
         {
             return equipment;
