@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class AddMissingOnDeleteCascades : IMigrationStrategy
     {
-        public uint From => 11;
-        public uint To => 12;
+        public uint From => 12;
+        public uint To => 13;
 
         private readonly DatabaseSetting DatabaseSetting;
 

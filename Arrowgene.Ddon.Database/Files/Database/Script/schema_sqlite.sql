@@ -304,16 +304,16 @@ CREATE TABLE IF NOT EXISTS "ddon_storage_item"
 
 -- CREATE TABLE IF NOT EXISTS ddon_additional_status
 -- (
-    --     "item_uid"          VARCHAR(8) NOT NULL,
-    --     "character_id"      INTEGER NOT NULL,
-    --     "is_add_stat1"      TINYINT NOT NULL,
-    --     "is_add_stat2"      TINYINT NOT NULL,
-    --     "additional_status1" SMALLINT NOT NULL,
-    --     "additional_status2" SMALLINT NOT NULL,
-    --     CONSTRAINT pk_ddon_additional_status PRIMARY KEY ("item_uid"),
-    --     CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_storage_item ("item_uid") ON DELETE CASCADE,
-    --     CONSTRAINT fk_additional_status_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
-    -- );
+--     "item_uid"          VARCHAR(8) NOT NULL,
+--     "character_id"      INTEGER NOT NULL,
+--     "is_add_stat1"      TINYINT NOT NULL,
+--     "is_add_stat2"      TINYINT NOT NULL,
+--     "additional_status1" SMALLINT NOT NULL,
+--     "additional_status2" SMALLINT NOT NULL,
+--     CONSTRAINT pk_ddon_additional_status PRIMARY KEY ("item_uid"),
+--     CONSTRAINT fk_additional_status_item_uid FOREIGN KEY ("item_uid") REFERENCES ddon_storage_item ("item_uid") ON DELETE CASCADE,
+--     CONSTRAINT fk_additional_status_character_id FOREIGN KEY ("character_id") REFERENCES ddon_character ("character_id") ON DELETE CASCADE
+-- );
 -- Put in comments because it seems this might be apart of a larger system. TODO: Revisit this when we start messing around with Craig's crafting.
 
 
@@ -675,34 +675,38 @@ CREATE TABLE IF NOT EXISTS "ddon_binary_data"
     CONSTRAINT "fk_ddon_binary_data_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "ddon_bbm_character_map" (
+CREATE TABLE IF NOT EXISTS "ddon_bbm_character_map"
+(
     "character_id"     INTEGER PRIMARY KEY NOT NULL,
-    "bbm_character_id" INTEGER NOT NULL,
-    CONSTRAINT fk_ddon_bbm_character_map_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    "bbm_character_id" INTEGER             NOT NULL,
+    CONSTRAINT "fk_ddon_bbm_character_map_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "ddon_bbm_progress" (
+CREATE TABLE IF NOT EXISTS "ddon_bbm_progress"
+(
     "character_id"     INTEGER PRIMARY KEY NOT NULL,
-    "start_time"       INTEGER NOT NULL,
-    "content_id"       INTEGER NOT NULL,
-    "content_mode"     INTEGER NOT NULL,
-    "tier"             INTEGER NOT NULL,
-    "killed_death"     BOOLEAN NOT NULL,
-    "last_ticket_time" INTEGER NOT NULL,
-    CONSTRAINT fk_ddon_bbm_progress_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    "start_time"       INTEGER             NOT NULL,
+    "content_id"       INTEGER             NOT NULL,
+    "content_mode"     INTEGER             NOT NULL,
+    "tier"             INTEGER             NOT NULL,
+    "killed_death"     BOOLEAN             NOT NULL,
+    "last_ticket_time" INTEGER             NOT NULL,
+    CONSTRAINT "fk_ddon_bbm_progress_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "ddon_bbm_rewards" (
+CREATE TABLE IF NOT EXISTS "ddon_bbm_rewards"
+(
     "character_id" INTEGER PRIMARY KEY NOT NULL,
-    "gold_marks"   INTEGER NOT NULL,
-    "silver_marks" INTEGER NOT NULL,
-    "red_marks"    INTEGER NOT NULL,
-    CONSTRAINT fk_ddon_bbm_rewards_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    "gold_marks"   INTEGER             NOT NULL,
+    "silver_marks" INTEGER             NOT NULL,
+    "red_marks"    INTEGER             NOT NULL,
+    CONSTRAINT "fk_ddon_bbm_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS "ddon_bbm_content_treasure" (
+CREATE TABLE IF NOT EXISTS "ddon_bbm_content_treasure"
+(
     "character_id" INTEGER PRIMARY KEY NOT NULL,
-    "content_id"   INTEGER NOT NULL,
-    "amount"       INTEGER NOT NULL,
-    CONSTRAINT fk_ddon_bbm_content_treasure_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    "content_id"   INTEGER             NOT NULL,
+    "amount"       INTEGER             NOT NULL,
+    CONSTRAINT "fk_ddon_bbm_content_treasure_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );

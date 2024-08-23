@@ -1,4 +1,6 @@
-﻿PRAGMA foreign_keys=OFF;
+﻿COMMIT TRANSACTION;
+
+PRAGMA foreign_keys=OFF;
 
 BEGIN TRANSACTION;
 
@@ -83,6 +85,8 @@ ALTER TABLE "ddon_pawn_craft_progress_new" RENAME TO "ddon_pawn_craft_progress";
 
 PRAGMA foreign_key_check;
 
-END TRANSACTION;
+COMMIT TRANSACTION;
 
 PRAGMA foreign_keys=ON;
+
+BEGIN TRANSACTION;

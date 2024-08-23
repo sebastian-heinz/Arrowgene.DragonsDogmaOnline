@@ -142,11 +142,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.EquipItemSlot:
                     obj.EquipItemSlot += (ushort)upgrade.Amount;
                     break;
-                // Unhandled
+                // TODO: OrbGainParamType.PawnAdventureNum Unhandled
                 case OrbGainParamType.PawnAdventureNum:
-                // Unhandled
+                // TODO: OrbGainParamType.PawnCraftNum Unhandled => this might be a relic from pre season 3
                 case OrbGainParamType.PawnCraftNum:
-                // Unhandled
+                // TODO: OrbGainParamType.MainPawnLostRate
                 case OrbGainParamType.MainPawnLostRate:
                     break;
                 case OrbGainParamType.SecretAbility:
