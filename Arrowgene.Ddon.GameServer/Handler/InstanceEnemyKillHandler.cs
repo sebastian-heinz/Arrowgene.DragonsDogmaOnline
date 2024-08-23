@@ -203,7 +203,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (gainedExp > 0)
                 {
-                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp);
+                    _gameServer.ExpManager.AddExp(_gameServer.Setting.GameLogicSetting, memberClient, memberCharacter, gainedExp);
                 }
             }
         }

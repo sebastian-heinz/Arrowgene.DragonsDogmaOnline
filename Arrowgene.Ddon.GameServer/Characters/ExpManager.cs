@@ -391,7 +391,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, byte type = 0)
+        public void AddExp(GameLogicSetting gameSettings, GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, byte type = 0)
         {
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
             if (activeCharacterJobData != null && activeCharacterJobData.Lv < ExpManager.LV_CAP)
@@ -399,7 +399,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // ------
                 // EXP UP
 
-                uint extraBonusExp = CalculateExpBonus(characterToAddExpTo, gainedExp);
+                uint extraBonusExp = CalculateExpBonus(gameSettings, characterToAddExpTo, gainedExp);
 
                 activeCharacterJobData.Exp += gainedExp;
                 activeCharacterJobData.Exp += extraBonusExp;
@@ -502,21 +502,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return totalExp;
         }
 
-        private double RookiesRingBonus()
+        private double RookiesRingBonus(GameLogicSetting gameSettings)
         {
-            // TODO: Make configurable from global server settings
-            return 1.0;
+            var multiplier = gameSettings.RookiesRingBonus;
+            if (multiplier < 0)
+            {
+                // We shouldn't have negative exp bonus.
+                // Default to some sane value
+                multiplier = 1.0;
+            }
+            return multiplier;
         }
 
-        private uint RookiesRingMaxLevel()
+        private uint RookiesRingMaxLevel(GameLogicSetting gameSettings)
         {
-            // TODO: Make configurable from global server settings
-            return 89;
+            return gameSettings.RookiesRingMaxLevel;
         }
 
-        private uint GetRookiesRingBonus(CharacterCommon characterCommon, uint baseExpAmount)
+        private uint GetRookiesRingBonus(GameLogicSetting gameSettings, CharacterCommon characterCommon, uint baseExpAmount)
         {
-            if (characterCommon.ActiveCharacterJobData.Lv > RookiesRingMaxLevel())
+            if (characterCommon.ActiveCharacterJobData.Lv > RookiesRingMaxLevel(gameSettings))
             {
                 return 0;
             }
@@ -526,15 +531,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return 0;
             }
 
-            double result = baseExpAmount * RookiesRingBonus();
+            double result = baseExpAmount * RookiesRingBonus(gameSettings);
             return (uint)result;
         }
 
-        public uint CalculateExpBonus(CharacterCommon characterCommon, uint baseExpAmount)
+        public uint CalculateExpBonus(GameLogicSetting gameSettings, CharacterCommon characterCommon, uint baseExpAmount)
         {
             uint bonusAmount = 0;
 
-            bonusAmount += GetRookiesRingBonus(characterCommon, baseExpAmount);
+            bonusAmount += GetRookiesRingBonus(gameSettings, characterCommon, baseExpAmount);
 
             return bonusAmount;
         }
