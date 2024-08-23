@@ -333,14 +333,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 },
             };
 
-        public ExpManager(DdonServer<GameClient> server, GameClientLookup gameClientLookup)
+        public ExpManager(DdonGameServer server, GameClientLookup gameClientLookup)
         {
             this._Server = server;
             this._gameClientLookup = gameClientLookup;
+            this._GameSettings = server.Setting.GameLogicSetting;
         }
 
-        private DdonServer<GameClient> _Server;
+        private DdonGameServer _Server;
         protected readonly GameClientLookup _gameClientLookup;
+        private GameLogicSetting _GameSettings;
 
         private bool CalculateAndAssignStats(CharacterCommon Character)
         {
@@ -504,14 +506,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private double RookiesRingBonus()
         {
-            // TODO: Make configurable from global server settings
-            return 1.0;
+            return _GameSettings.RookiesRingBonus;
         }
 
         private uint RookiesRingMaxLevel()
         {
-            // TODO: Make configurable from global server settings
-            return 89;
+            return _GameSettings.RookiesRingMaxLevel;
         }
 
         private uint GetRookiesRingBonus(CharacterCommon characterCommon, uint baseExpAmount)

@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
 namespace Arrowgene.Ddon.Server
 {
@@ -17,13 +17,32 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 1)]
         public double AdditionalCostPerformanceFactor { get; set; }
 
+        /// <summary>
+        /// Sets the maximim level that the exp ring will reward a bonus.
+        /// </summary>
         [DataMember(Order = 2)]
-        public byte CraftConsumableProductionTimesMax { get; set; }
+        public uint RookiesRingMaxLevel { get; set; }
+
+        /// <summary>
+        /// The multiplier applied to the bonus amount of exp rewarded.
+        /// Must be a non-negtive value. If it is less than 0.0, a default of 1.0
+        /// will be selected.
+        /// </summary>
+        [DataMember(Order = 3)]
+        public double RookiesRingBonus { get; set; }
+
+        /// <summary>
+        /// Determines the maximum amount of consumable items that can be crafted in one go with a pawn.
+        /// The default is a value of 10 which is equivalent to the original game's behavior.
+        /// </summary>
+        [DataMember(Order = 4)] public byte CraftConsumableProductionTimesMax { get; set; }
 
         public GameLogicSetting()
         {
             AdditionalProductionSpeedFactor = 1.0;
             AdditionalCostPerformanceFactor = 1.0;
+            RookiesRingMaxLevel = 89;
+            RookiesRingBonus = 1.0;
             CraftConsumableProductionTimesMax = 10;
         }
 
@@ -31,6 +50,8 @@ namespace Arrowgene.Ddon.Server
         {
             AdditionalProductionSpeedFactor = setting.AdditionalProductionSpeedFactor;
             AdditionalCostPerformanceFactor = setting.AdditionalCostPerformanceFactor;
+            RookiesRingMaxLevel = setting.RookiesRingMaxLevel;
+            RookiesRingBonus = setting.RookiesRingBonus;
             CraftConsumableProductionTimesMax = setting.CraftConsumableProductionTimesMax;
         }
 
@@ -38,6 +59,10 @@ namespace Arrowgene.Ddon.Server
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
+            if (RookiesRingBonus < 0)
+            {
+                RookiesRingBonus = 1.0;
+            }
             if (AdditionalProductionSpeedFactor < 0)
             {
                 CraftConsumableProductionTimesMax = 1;
