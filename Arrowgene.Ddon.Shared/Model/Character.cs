@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.Shared.Model
             StampBonus = new CharacterStampBonus();
             AbilityPresets = new List<CDataPresetAbilityParam>();
             BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
+            LastSeenLobby = new Dictionary<uint, uint>();
         }
 
         public int AccountId { get; set; }
@@ -56,6 +57,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte ArisenProfileShareRange;
         public List<CDataPresetAbilityParam> AbilityPresets;
         public byte[] BinaryData;
+
+        public Dictionary<uint, uint> LastSeenLobby { get; set; }
 
         public List<Pawn> Pawns { get; set; }
 
