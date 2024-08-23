@@ -327,6 +327,11 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null) { return true; }
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, DbConnection? connectionIn = null) { return true; }
         public bool UpdateMyPawnSlot(uint characterId, uint num) { return true; }
+        public bool UpdateRentalPawnSlot(uint characterId, uint num)
+        {
+            return true;
+        }
+
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
         public long InsertSystemMailMessage(SystemMailMessage message) { return 0; }
         public long InsertSystemMailMessage(DbConnection connection, SystemMailMessage message) { return 0; }

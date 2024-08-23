@@ -22,6 +22,48 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnCreatePawnRes Handle(GameClient client, C2SPawnCreatePawnReq request)
         {
+            if (request.SlotNo == 1)
+            {
+                const byte myPawnSlotNum = 2;
+                client.Character.MyPawnSlotNum = myPawnSlotNum;
+                Server.Database.UpdateMyPawnSlot(client.Character.CharacterId, myPawnSlotNum);
+                client.Send(new S2CPawnExtendMainPawnSlotNtc
+                {
+                    AddNum = myPawnSlotNum,
+                    TotalNum = myPawnSlotNum
+                });                
+                
+                const byte supportPawnSlotNum = 3;
+                client.Character.RentalPawnSlotNum = supportPawnSlotNum;
+                Server.Database.UpdateRentalPawnSlot(client.Character.CharacterId, supportPawnSlotNum);
+                client.Send(new S2CPawnExtendSupportPawnSlotNtc()
+                {
+                    AddNum = supportPawnSlotNum,
+                    TotalNum = supportPawnSlotNum
+                });
+            }
+            if (client.Character.MyPawnSlotNum < request.SlotNo)
+            {
+                Logger.Error($"Character with ID {client.Character.CharacterId} has attempted to create a pawn without having the necessary number of slots: {client.Character.MyPawnSlotNum}/{request.SlotNo}. Client should have disallowed that, sending error response.");
+                return new S2CPawnCreatePawnRes()
+                {
+                    Error = (uint)ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO
+                };
+            }
+            if (request.SlotNo > 1)
+            {
+                // We need to consume 10 rift crystals for the cost
+                var result = Server.ItemManager.ConsumeItemByIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, 10133, 10);
+                if (result == null)
+                {
+                    Logger.Debug($"Character with ID {client.Character.CharacterId} has attempted to create a pawn without having the necessary number of riftstone shards, sending error response.");
+                    return new S2CPawnCreatePawnRes()
+                    {
+                        Error = (uint)ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND
+                    };
+                }
+            }           
+            
             Pawn pawn = new Pawn(client.Character.CharacterId)
             {
                 Name = request.PawnInfo.Name,
@@ -57,28 +99,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             PopulateNewPawnData(client.Character, pawn, request.SlotNo - 1);
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
 
-            if (request.SlotNo == 1)
-            {
-                client.Send(new S2CPawnExtendMainPawnNtc() { TotalNum = 2, AddNum = 2 });
-            }
-
-            if (request.SlotNo > 1)
-            {
-                // We need to consume 10 rift crystals for the cost
-                var result = Server.ItemManager.ConsumeItemByIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, 10133, 10);
-                if (result == null)
-                {
-                    return new S2CPawnCreatePawnRes()
-                    {
-                        Error = (uint)ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND
-                    };
-                }
-            }
-
             Database.CreatePawn(pawn);
             Database.InsertGainExtendParam(pawn.CommonId, pawn.ExtendedParams);
 
-            pawn = Server.Database.SelectPawnsByCharacterId(client.Character.CharacterId).Where(x => x.PawnId == pawn.PawnId).FirstOrDefault();
+            pawn = Server.Database.SelectPawnsByCharacterId(client.Character.CharacterId).Find(x => x.PawnId == pawn.PawnId);
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
 
             pawn.Equipment = client.Character.Storage.GetPawnEquipment(request.SlotNo - 1);
@@ -90,7 +114,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private void PopulateNewPawnData(Character character, Pawn pawn, int pawnIndex)
         {
-            ArisenCsv activeJobPreset = Server.AssetRepository.ArisenAsset.Where(x => x.Job == pawn.Job).Single();
+            ArisenCsv activeJobPreset = Server.AssetRepository.ArisenAsset.Single(x => x.Job == pawn.Job);
             pawn.StatusInfo = new CDataStatusInfo()
             {
                 HP = activeJobPreset.HP,
