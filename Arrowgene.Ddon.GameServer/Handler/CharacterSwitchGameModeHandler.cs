@@ -127,10 +127,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(characterEquipLobbyNtc);
 
+            var itemStorages = ItemManager.ItemBagStorageTypes.Concat(new List<StorageType>() { StorageType.CharacterEquipment}).ToList();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
                 UpdateType = ItemNoticeType.SwitchingStorage,
-                UpdateItemList = SwapCharacterInventories(client.Character, storagesA, client.Character.Storage, ItemManager.ItemBagStorageTypes)
+                UpdateItemList = SwapCharacterInventories(client.Character, storagesA, client.Character.Storage, itemStorages)
             };
             client.Send(updateCharacterItemNtc);
 

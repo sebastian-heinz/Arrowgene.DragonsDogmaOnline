@@ -40,15 +40,39 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     UpdateType = ItemNoticeType.SwitchingStorage
                 };
 
-                // Remove the item from the BBM character
                 exchangeItemNtc.UpdateItemList.Add(Server.ItemManager.ConsumeItemByUId(Server, bbmCharacter, storageType, embodyItem.UId, embodyItem.Num));
                 client.Send(exchangeItemNtc);
+
+                // Remove the item from the BBM character
+                if (storageType == StorageType.CharacterEquipment)
+                {
+                    var equipNtc = new S2CItemUpdateCharacterItemNtc()
+                    {
+                        UpdateType = ItemNoticeType.GatherEquipItem
+                    };
+                    equipNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(bbmCharacter, item, storageType, slotNo, 0, 0));
+                    equipNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(null, new Item() { ItemId = 0, UId = "" }, storageType, slotNo, 1, 1));
+                    client.Send(equipNtc);
+
+                    S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
+                    {
+                        CharacterId = bbmCharacter.CharacterId,
+                        EquipItemList = bbmCharacter.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
+                        VisualEquipItemList = bbmCharacter.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
+                    };
+                    client.Send(changeCharacterEquipNtc);
+                }
 
                 // Add the item to the Normal Character
                 List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, normalCharacter, toItemBag, item.ItemId, amount);
                 if (itemUpdateResults.Count != 1)
                 {
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
+                }
+
+                if (storageType == StorageType.CharacterEquipment)
+                {
+                    storageType = StorageType.ItemBagEquipment;
                 }
 
                 var newItem = normalCharacter.Storage.GetStorage(storageType).FindItemByUId(itemUpdateResults[0].ItemList.ItemUId).Item2;
